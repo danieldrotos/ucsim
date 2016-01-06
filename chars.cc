@@ -105,6 +105,11 @@ chars::append(char *s)
   return *this;
 }
 
+bool
+chars::empty()
+{
+  return chars_length == 0;
+}
 
 // Assignment operators
 chars &

@@ -46,7 +46,8 @@ private:
 
 public:
   virtual chars &append(char *s);
-
+  virtual bool empty();
+  
 public:
   // Operators
 
