@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef CMD_NEWCMDFDCL_HEADER
 #define CMD_NEWCMDFDCL_HEADER
 
+#include "fiocl.h"
 #include "newcmdcl.h"
 #include "cmdutil.h"
 
@@ -40,16 +41,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_console: public cl_console_base
 {
 protected:
-  FILE *in, *out, *rout/*redirected output*/;
-
+  FILE *in/*, *out, *rout*//*redirected output*/;
+  cl_f *fin, *fout, *frout;
+  
 public:
-  cl_console(void) { in = out = rout = 0; }
-  cl_console(const char *fin, const char *fout, class cl_app *the_app);
-  cl_console(FILE *fin, FILE *fout, class cl_app *the_app);
+  cl_console(void) { in /*= out = rout*/ = 0; fin= fout= frout= 0; }
+  cl_console(const char *_fin, const char *_fout, class cl_app *the_app);
+  cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app);
   int cmd_do_print(const char *format, va_list ap);
 
   virtual ~cl_console(void);
-  virtual class cl_console *clone_for_exec(char *fin);
+  virtual class cl_console *clone_for_exec(char *_fin);
 
   virtual void redirect(char *fname, char *mode);
   virtual void un_redirect(void);
@@ -60,7 +62,8 @@ public:
   virtual char *read_line(void);
 
 private:
-  FILE *get_out(void) { return rout ? rout : out; }
+  //FILE *get_out(void) { return rout ? rout : out; }
+  class cl_f *get_fout(void) { return frout ? frout : fout; }
 };
 
 #ifdef SOCKET_AVAIL

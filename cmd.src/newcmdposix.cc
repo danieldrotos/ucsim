@@ -69,64 +69,80 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  *____________________________________________________________________________
  */
 
-cl_console::cl_console(const char *fin, const char *fout, class cl_app *the_app)
+cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_app)
 {
   FILE *f;
 
   app= the_app;
   in= 0;
-  if (fin)
-    if (f= fopen(fin, "r"), in= f, !f)
-      fprintf(stderr, "Can't open `%s': %s\n", fin, strerror(errno));
-  out= 0;
-  if (fout)
-    if (f= fopen(fout, "w"), out= f, !f)
-      fprintf(stderr, "Can't open `%s': %s\n", fout, strerror(errno));
+  fin= 0;
+  if (_fin)
+    {
+      if (f= fopen(_fin, "r"), in= f, !f)
+	fprintf(stderr, "Can't open `%s': %s\n", _fin, strerror(errno));
+      fin= mk_io(_fin, cchars("r"));
+    }
+  //out= 0;
+  fout= 0;
+  if (_fout)
+    {
+      /*
+      if (f= fopen(_fout, "w"), out= f, !f)
+	fprintf(stderr, "Can't open `%s': %s\n", _fout, strerror(errno));
+      */
+      fout= mk_io(_fout, cchars("w"));
+    }
   prompt= 0;
   flags= CONS_NONE;
   if (is_tty())
     flags|= CONS_INTERACTIVE;
   else
     ;//fprintf(stderr, "Warning: non-interactive console\n");
-  rout= 0;
+  //rout= 0;
+  frout= 0;
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
 }
 
-cl_console::cl_console(FILE *fin, FILE *fout, class cl_app *the_app)
+cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
 {
   app= the_app;
-  in = fin;
-  out= fout;
+  in = _fin;
+  fin= cp_io(_fin, "r");
+  //out= _fout;
+  fout= cp_io(_fout, "w");
   prompt= 0;
   flags= CONS_NONE;
   if (is_tty())
     flags|= CONS_INTERACTIVE;
   else
     ;//fprintf(stderr, "Warning: non-interactive console\n");
-  rout= 0;
+  //rout= 0;
+  frout= 0;
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
 }
 
 class cl_console *
-cl_console::clone_for_exec(char *fin)
+cl_console::clone_for_exec(char *_fin)
 {
   FILE *fi= 0, *fo= 0;
 
-  if (!fin)
+  if (!_fin)
     return(0);
-  if (fi= fopen(fin, "r"), !fi)
+  if (fi= fopen(_fin, "r"), !fi)
     {
-      fprintf(stderr, "Can't open `%s': %s\n", fin, strerror(errno));
+      fprintf(stderr, "Can't open `%s': %s\n", _fin, strerror(errno));
       return(0);
     }
-  if ((fo= fdopen(dup(fileno(out)), "a")) == 0)
+  
+  if ((fo= fdopen(dup(fileno(fout->file_f)), "a")) == 0)
     {
       fclose(fi);
       fprintf(stderr, "Can't re-open output file: %s\n", strerror(errno));
       return(0);
     }
+    
   class cl_console *con= new cl_sub_console(this, fi, fo, app);
   return(con);
 }
@@ -136,13 +152,15 @@ cl_console::~cl_console(void)
   if (in)
     fclose(in);
   un_redirect();
-  if (out)
+  if (fout)
     {
       if (flags & CONS_PROMPT)
-        fprintf(out, "\n");
-      fflush(out);
-      fclose(out);
+        fprintf(fout->file_f, "\n");
+      fflush(fout->file_f);
+      fclose(fout->file_f);
     }
+  delete fin;
+  delete fout;
   delete prompt_option;
   delete null_prompt_option;
   delete debug_option;
@@ -163,30 +181,40 @@ cl_console::~cl_console(void)
 void
 cl_console::redirect(char *fname, char *mode)
 {
+  /*
   if ((rout= fopen(fname, mode)) == NULL)
     dd_printf("Unable to open file '%s' for %s: %s\n",
               fname, (mode[0]=='w')?"write":"append", strerror(errno));
+  */
+  frout= mk_io(fname, mode);
 }
 
 void
 cl_console::un_redirect(void)
 {
+  /*
   if (!rout)
     return;
   fclose(rout);
   rout = NULL;
+  */
+  if (!frout)
+    return;
+  delete frout;
+  frout= 0;
 }
 
 int
 cl_console::cmd_do_print(const char *format, va_list ap)
 {
   int ret;
-  FILE *f = get_out();
-
-  if (f)
-   {
-      ret= vfprintf(f, format, ap);
-      fflush(f);
+  //FILE *f = get_out();
+  class cl_f *fo= get_fout();
+  
+  if (fo)
+    {
+      ret= vfprintf(/*f*/fo->file_f, format, ap);
+      fflush(/*f*/fo->file_f);
       return ret;
     }
   else
@@ -245,7 +273,8 @@ cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
         fprintf(stderr, "Listen on port %d: %s\n",
                 serverport, strerror(errno));
     }
-  in= out= rout= 0;
+  in/*= out= rout*/= 0;
+  fout= frout= 0;
 }
 
 int
