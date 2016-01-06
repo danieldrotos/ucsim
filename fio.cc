@@ -44,11 +44,11 @@ cl_f::cl_f(void)
   file_id= -1;
   own= false;
   tty= false;
-  file_name= NULL;
-  file_mode= NULL;
+  file_name= 0;
+  file_mode= 0;
 }
 
-cl_f::cl_f(char *fn, char *mode):
+cl_f::cl_f(chars fn, chars mode):
   cl_base()
 {
   file_f= NULL;
@@ -63,16 +63,21 @@ cl_f::cl_f(char *fn, char *mode):
 int
 cl_f::init(void)
 {
-  if ((file_f= fopen(file_name, file_mode)) != NULL)
+  if (!file_name.empty())
     {
-      file_id= fileno(file_f);
-      tty= isatty(file_id);
-      own= true;
-    }
-  else
-    {
-      file_id= -1;
-      own= false;
+      if (file_mode.empty())
+	file_mode= cchars("r+");
+      if ((file_f= fopen(file_name, file_mode)) != NULL)
+	{
+	  file_id= fileno(file_f);
+	  tty= isatty(file_id);
+	  own= true;
+	}
+      else
+	{
+	  file_id= -1;
+	  own= false;
+	}
     }
   return file_id;
 }
@@ -105,10 +110,12 @@ cl_f::use_opened(int opened_file_id, char *mode)
   close();
   if (mode)
     file_mode= mode;
+  else
+    file_mode= cchars("r+");
   own= false;
   if (opened_file_id >= 0)
     {
-      file_f= fdopen(opened_file_id, mode);
+      file_f= fdopen(opened_file_id, file_mode);
       if (file_f != NULL)
 	{
 	  file_id= opened_file_id;
@@ -128,10 +135,12 @@ cl_f::close(void)
   if (file_f)
     {
       i= fclose(file_f);
-      file_f= NULL;
-      file_id= -1;
-      own= false;
     }
+  file_f= NULL;
+  file_id= -1;
+  own= false;
+  file_name= 0;
+  file_mode= 0;
   return i;
 }
 
@@ -141,6 +150,8 @@ cl_f::stop_use(void)
   file_f= NULL;
   file_id= -1;
   own= false;
+  file_name= 0;
+  file_mode= 0;
   return 0;
 }
 
@@ -231,6 +242,27 @@ cl_f::input_avail(void)
       return FD_ISSET(file_id, &s);
     }
   return 0;
+}
+
+
+/* Socket functions */
+
+int
+cl_f::listen(int on_port)
+{
+  return -1;
+}
+
+class cl_f *
+cl_f::accept()
+{
+  return NULL;
+}
+
+int
+cl_f::connect(chars host, int to_port)
+{
+  return -1;
 }
 
 

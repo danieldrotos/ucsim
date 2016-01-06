@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef FIOCL_HEADER
 #define FIOCL_HEADER
 
+#include <stdio.h>
+
 #include "pobjcl.h"
 
 
@@ -36,14 +38,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_f: public cl_base
 {
  public:
-  char *file_name, *file_mode;
+  chars file_name, file_mode;
   FILE *file_f;
   int file_id;
   bool tty;
   bool own;
  public:
   cl_f(void);
-  cl_f(char *fn, char *mode);
+  cl_f(chars fn, chars mode);
   virtual ~cl_f(void);
   virtual int init(void);
   virtual int open(void) { return init(); }
@@ -64,7 +66,15 @@ class cl_f: public cl_base
   virtual int raw(void);
   virtual int cooked(void);
   virtual int input_avail(void);
+
+  virtual int listen(int on_port);
+  virtual class cl_f *accept();
+  virtual int connect(chars host, int to_port);
 };
+
+
+extern class cl_f *mk_io(chars fn, chars mode);
+extern class cl_f *cp_io(FILE *f, chars mode);
 
 
 #endif
