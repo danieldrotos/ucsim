@@ -27,6 +27,7 @@ CPPFLAGS        = @CPPFLAGS@ -I$(top_builddir) -I$(srcdir) \
 		  -I$(top_srcdir)/$(CMDDIR) -I$(top_srcdir)/$(GUIDIR)
 CFLAGS          = @CFLAGS@ -I$(top_builddir) @WALL_FLAG@
 CXXFLAGS        = @CXXFLAGS@ -I$(top_builddir) @WALL_FLAG@
+WINSOCK_AVAIL   = @WINSOCK_AVAIL@
 LDFLAGS		= @LDFLAGS@
 
 EXEEXT		= @EXEEXT@
@@ -50,6 +51,11 @@ srcdir          = @srcdir@
 VPATH           = @srcdir@
 
 OBJECTS         = pobj.o globals.o utils.o error.o app.o option.o chars.o fio.o
+ifeq ($(WINSOCK_AVAIL), 1)
+OBJECTS		+= fwio.o
+else
+OBJECTS		+= fuio.o
+endif
 SOURCES		= $(patsubst %.o,%.cc,$(OBJECTS))
 UCSIM_OBJECTS	= ucsim.o
 UCSIM_SOURCES	= $(patsubst %.o,%.cc,$(UCSIM_OBJECTS))
