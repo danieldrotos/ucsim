@@ -36,6 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "globals.h"
 #include "utils.h"
 #include "cmdutil.h"
+#include "charscl.h"
 
 #include "sim51cl.h"
 //#include "cmd51cl.h"
