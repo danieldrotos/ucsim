@@ -205,6 +205,23 @@ cl_f::write_str(const char *s)
 }
 
 
+bool
+cl_f::eof(void)
+{
+  if (file_f == NULL)
+    return true;
+  return feof(file_f);
+}
+
+
+void
+cl_f::flush(void)
+{
+  if (file_f)
+    fflush(file_f);
+}
+
+
 /* Device handling */
 
 int

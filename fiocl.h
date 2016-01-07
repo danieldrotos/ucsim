@@ -62,7 +62,9 @@ class cl_f: public cl_base
   virtual int write(char *buf, int count);
   virtual int write_str(char *s);
   virtual int write_str(const char *s);
-
+  virtual bool eof(void);
+  virtual void flush(void);
+  
   virtual int raw(void);
   virtual int cooked(void);
   virtual int input_avail(void);
