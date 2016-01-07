@@ -57,6 +57,8 @@ public:
 
   double start_at;
   unsigned long start_tick;
+  unsigned long steps_done;
+  unsigned long steps_todo; // use this if not 0
   
   //char *accept_args;
   //class cl_list *arguments;
@@ -74,8 +76,7 @@ public:
   // messages from app to handle and broadcast
   //virtual void mem_cell_changed(class cl_address_space *m, t_addr addr);
   
-  virtual int main(void);
-  virtual void start(class cl_console_base *con);
+  virtual void start(class cl_console_base *con, unsigned long steps_to_do);
   virtual void stop(int reason);
   virtual void stop(class cl_ev_brk *brk);
   virtual int step(void);

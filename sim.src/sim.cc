@@ -84,40 +84,17 @@ cl_sim::mk_controller(void)
 }
 
 
-/*
- * Main cycle of the simulator
- */
-
-int
-cl_sim::main(void)
-{
-  int done= 0;
-
-  while (!done &&
-	 (state & SIM_QUIT) == 0)
-    {
-      if (state & SIM_GO)
-	{
-	  uc->do_inst(-1);
-	  if (app->get_commander()->input_avail())
-	    {
-	      done= app->get_commander()->proc_input();
-	    }
-	}
-      else
-	{
-	  app->get_commander()->wait_input();
-	  done= app->get_commander()->proc_input();
-	}
-    }
-  return(0);
-}
-
 int
 cl_sim::step(void)
 {
   if (state & SIM_GO)
-    uc->do_inst(1);
+    {
+      uc->do_inst(1);
+      steps_done++;
+      if ((steps_todo > 0) &&
+	  (steps_done >= steps_todo))
+	stop(resSTEP);
+    }
   return(0);
 }
 
@@ -140,7 +117,7 @@ cl_sim::do_cmd(char *cmdstr, class cl_console *console)
 }*/
 
 void
-cl_sim::start(class cl_console_base *con)
+cl_sim::start(class cl_console_base *con, unsigned long steps_to_do)
 {
   state|= SIM_GO;
   con->flags|= CONS_FROZEN;
@@ -149,6 +126,8 @@ cl_sim::start(class cl_console_base *con)
   start_at= dnow();
   if (uc)
     start_tick= uc->ticks->ticks;
+  steps_done= 0;
+  steps_todo= steps_to_do;
 }
 
 void
@@ -195,6 +174,9 @@ cl_sim::stop(int reason)
 					     uc->rom->get(uc->PC));
 	  }
          break;
+	case resSTEP:
+	  uc->print_regs(cmd->frozen_console);
+	  break;
 	case resERROR:
 	  // uc::check_error prints error messages...
 	  break;
@@ -204,10 +186,11 @@ cl_sim::stop(int reason)
 	}
       cmd->frozen_console->dd_printf("F 0x%06x\n", uc->PC); // for sdcdb
       unsigned long dt= uc?(uc->ticks->ticks - start_tick):0;
-      cmd->frozen_console->dd_printf("Simulated %ul ticks in %f sec, rate=%f\n",
-				     dt,
-				     dnow() - start_at,
-				     (dt*(1/uc->xtal)) / (dnow() - start_at));
+      if (reason != resSTEP)
+	cmd->frozen_console->dd_printf("Simulated %ul ticks in %f sec, rate=%f\n",
+				       dt,
+				       dnow() - start_at,
+				       (dt*(1/uc->xtal)) / (dnow() - start_at));
       //if (cmd->actual_console != cmd->frozen_console)
       cmd->frozen_console->flags&= ~CONS_FROZEN;
       cmd->frozen_console->print_prompt();

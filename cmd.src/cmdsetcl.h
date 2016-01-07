@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // STATE
 COMMAND_ON(sim,cl_run_cmd);
 COMMAND_ON(sim,cl_stop_cmd);
-COMMAND_ON(uc,cl_step_cmd);
+COMMAND_ON(sim,cl_step_cmd);
 COMMAND_ON(sim,cl_next_cmd);
 
 //COMMAND_ON(app,cl_help_cmd);

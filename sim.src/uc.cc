@@ -1522,7 +1522,8 @@ cl_uc::fetch(t_mem *code)
   if (!code)
     return(0);
   if ((sim->state & SIM_GO) &&
-      rom)
+      rom &&
+      (sim->steps_done > 0))
     {
       if (rom->get_cell_flag(PC, CELL_FETCH_BRK) &&
 	  (brk= fbrk->get_bp(PC, &idx)) &&

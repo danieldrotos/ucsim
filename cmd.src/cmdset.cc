@@ -97,10 +97,11 @@ COMMAND_DO_WORK_SIM(cl_run_cmd)
 	}
     }
   con->dd_printf(cchars("Simulation started, PC=0x%06x\n"), sim->uc->PC);
+  /*
   if (sim->uc->fbrk_at(sim->uc->PC))
     sim->uc->do_inst(1);
-
-  sim->start(con);
+  */
+  sim->start(con, 0);
   return(DD_FALSE);
 }
 
@@ -129,12 +130,15 @@ COMMAND_DO_WORK_SIM(cl_stop_cmd)
 //int
 //cl_step_cmd::do_work(class cl_sim *sim,
 //		     class cl_cmdline *cmdline, class cl_console *con)
-COMMAND_DO_WORK_UC(cl_step_cmd)
+COMMAND_DO_WORK_SIM(cl_step_cmd)
 {
-  //printf("step %x\n",uc->PC);
-  uc->do_inst(1);
-  //printf("step done %x\n",uc->PC);
-  uc->print_regs(con);
+  class cl_cmd_arg *parm= cmdline->param(0);
+  int instrs= 1;
+  if (parm != NULL)
+    instrs= parm->i_value;
+  if (instrs <= 0)
+    instrs= 1;
+  sim->start(con, instrs);
   return(0);
 }
 
@@ -185,14 +189,17 @@ COMMAND_DO_WORK_SIM(cl_next_cmd)
 	  sim->uc->fbrk->add(b);
 	  b->activate();
 	}
-      if (sim->uc->fbrk_at(sim->uc->PC))
-	sim->uc->do_inst(1);
-      sim->start(con);
+      /*if (sim->uc->fbrk_at(sim->uc->PC))
+	sim->uc->do_inst(1);*/
+      sim->start(con, 0);
       //sim->uc->do_inst(-1);
     }
   else {
-    sim->uc->do_inst(1);
-    sim->uc->print_regs(con);
+    //sim->uc->do_inst(1);
+    sim->start(con, 1);
+    //sim->step();
+    //sim->stop(resSTEP);
+    //sim->uc->print_regs(con);
   }
   return(DD_FALSE);
 }

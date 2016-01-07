@@ -166,7 +166,9 @@ enum mem_class
 #define resINV_INST	106	/* Invalid instruction */
 #define resBITADDR	107	/* Bit address is uninterpretable */
 #define resERROR	108	/* Error happened during instruction exec */
-
+#define resSTEP		109	/* Step command done, no more exex needed */
+  
+  
 #define BIT_MASK(bitaddr) (1 << (bitaddr & 0x07))
 
 //#define IRAM_SIZE 256	  /* Size of Internal RAM */
