@@ -3,7 +3,7 @@
 TARGET=linux
 
 PREFIX="${HOME}/local"
-DD_HOSTS="p4 anb anb1 render mms box mazsola"
+DD_HOSTS="p4 anb anb1 render mms box mazsola v3"
 
 if [ "$#" -ge 1 ]; then
     case "$1" in
