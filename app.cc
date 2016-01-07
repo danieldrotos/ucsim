@@ -167,6 +167,7 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
+	      sim->step();
               //if ((!input_check_skip) && (commander->input_avail()))
 	      if (dnow() - input_last_checked > 0.3)
 		{
@@ -177,11 +178,6 @@ cl_app::run(void)
 		      // run a few steps before checking for more input
 		      ++input_check_skip;
 		    }
-                }
-              else
-                {
-                  sim->step();
-                  //input_check_skip = (input_check_skip + 1) % 50;
                 }
             }
           else
