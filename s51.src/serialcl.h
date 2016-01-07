@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef SERIALCL_HEADER
 #define SERIALCL_HEADER
 
+#include "fiocl.h"
 #include "stypes.h"
 #include "pobjcl.h"
 #include "uccl.h"
@@ -47,8 +48,8 @@ protected:
 #endif
   class cl_optref *serial_in_file_option;
   class cl_optref *serial_out_file_option;
-  FILE *serial_in;	// Serial line input
-  FILE *serial_out;	// Serial line output
+  class cl_f *fin;//FILE *serial_in;	// Serial line input
+  class cl_f *fout;//FILE *serial_out;	// Serial line output
   uchar s_in;		// Serial channel input reg
   uchar s_out;		// Serial channel output reg
   bool  s_sending;	// Transmitter is working

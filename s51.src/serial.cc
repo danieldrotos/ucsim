@@ -55,26 +55,30 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_serial::cl_serial(class cl_uc *auc):
   cl_hw(auc, HW_UART, 0, "uart")
 {
-  serial_in= serial_out= 0;
+  //serial_in= serial_out= 0;
+  fin= 0;
+  fout= 0;
 }
 
 cl_serial::~cl_serial(void)
 {
-  if (serial_out)
+  if (fout/*serial_out*/)
     {
 #ifdef HAVE_TERMIOS_H
-      if (isatty(fileno(serial_out)))
-	tcsetattr(fileno(serial_out), TCSANOW, &saved_attributes_out);
+      if (fout->tty/*isatty(fileno(serial_out))*/)
+	  tcsetattr(fout->file_id/*fileno(serial_out)*/, TCSANOW, &saved_attributes_out);
 #endif
-      fclose(serial_out);
+      //fclose(serial_out);
+      delete fout;
     }
-  if (serial_in)
+  if (fin/*serial_in*/)
     {
 #ifdef HAVE_TERMIOS_H
-      if (isatty(fileno(serial_in)))
-	tcsetattr(fileno(serial_in), TCSANOW, &saved_attributes_in);
+      if (fin->tty/*isatty(fileno(serial_in))*/)
+	tcsetattr(fin->file_id/*fileno(serial_in)*/, TCSANOW, &saved_attributes_in);
 #endif
-      fclose(serial_in);
+      //fclose(serial_in);
+      delete fin;
     }
   delete serial_in_file_option;
   delete serial_out_file_option;
@@ -115,60 +119,62 @@ cl_serial::init(void)
   
   //serial_in = (FILE*)application->args->get_parg(0, "Ser_in");
   //serial_out= (FILE*)application->args->get_parg(0, "Ser_out");
-  serial_in = (FILE*)serial_in_file_option->get_value((void*)0);
-  serial_out= (FILE*)serial_out_file_option->get_value((void*)0);
-  if (serial_in)
+  FILE *f_serial_in = (FILE*)serial_in_file_option->get_value((void*)0);
+  FILE *f_serial_out= (FILE*)serial_out_file_option->get_value((void*)0);
+  if (f_serial_in)
     {
+      fin= cp_io(f_serial_in, cchars("r"));
       // making `serial' unbuffered
-      if (setvbuf(serial_in, NULL, _IONBF, 0))
+      if (setvbuf(f_serial_in, NULL, _IONBF, 0))
 	perror("Unbuffer serial input channel");
 #ifdef _WIN32
-      if (CH_SERIAL != get_handle_type((HANDLE)_get_osfhandle(fileno(serial_in))))
+      if (CH_SERIAL != get_handle_type((HANDLE)_get_osfhandle(fileno(f_serial_in))))
 #elif defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
-      if ((i= fcntl(fileno(serial_in), F_GETFL, 0)) < 0)
+      if ((i= fcntl(fileno(f_serial_in), F_GETFL, 0)) < 0)
 	perror("Get flags of serial input");
       i|= O_NONBLOCK;
-      if (fcntl(fileno(serial_in), F_SETFL, i) < 0)
+      if (fcntl(fileno(f_serial_in), F_SETFL, i) < 0)
 	perror("Set flags of serial input");
       // switching terminal to noncanonical mode
-      if (isatty(fileno(serial_in)))
+      if (isatty(fileno(f_serial_in)))
 	{
-	  tcgetattr(fileno(serial_in), &saved_attributes_in);
-	  tcgetattr(fileno(serial_in), &tattr);
+	  tcgetattr(fileno(f_serial_in), &saved_attributes_in);
+	  tcgetattr(fileno(f_serial_in), &tattr);
 	  tattr.c_lflag&= ~(ICANON|ECHO);
 	  tattr.c_cc[VMIN] = 1;
 	  tattr.c_cc[VTIME]= 0;
-	  tcsetattr(fileno(serial_in), TCSAFLUSH, &tattr);
+	  tcsetattr(fileno(f_serial_in), TCSAFLUSH, &tattr);
 	}
       else
 #endif
 	fprintf(stderr, "Warning: serial input interface connected to a "
 		"non-terminal file.\n");
     }
-  if (serial_out)
+  if (f_serial_out)
     {
+      fout= cp_io(f_serial_out, "w");
       // making `serial' unbuffered
-      if (setvbuf(serial_out, NULL, _IONBF, 0))
+      if (setvbuf(f_serial_out, NULL, _IONBF, 0))
 	perror("Unbuffer serial output channel");
 #ifdef _WIN32
-      if (CH_SERIAL != get_handle_type((HANDLE)_get_osfhandle(fileno(serial_out))))
+      if (CH_SERIAL != get_handle_type((HANDLE)_get_osfhandle(fileno(f_serial_out))))
 #elif defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
-      if ((i= fcntl(fileno(serial_out), F_GETFL, 0)) < 0)
+      if ((i= fcntl(fileno(f_serial_out), F_GETFL, 0)) < 0)
 	perror("Get flags of serial output");
       i|= O_NONBLOCK;
-      if (fcntl(fileno(serial_out), F_SETFL, i) < 0)
+      if (fcntl(fileno(f_serial_out), F_SETFL, i) < 0)
 	perror("Set flags of serial output");
       // switching terminal to noncanonical mode
-      if (isatty(fileno(serial_out)))
+      if (isatty(fileno(f_serial_out)))
 	{
-	  tcgetattr(fileno(serial_out), &saved_attributes_out);
-	  tcgetattr(fileno(serial_out), &tattr);
+	  tcgetattr(fileno(f_serial_out), &saved_attributes_out);
+	  tcgetattr(fileno(f_serial_out), &tattr);
 	  tattr.c_lflag&= ~(ICANON|ECHO);
 	  tattr.c_cc[VMIN] = 1;
 	  tattr.c_cc[VTIME]= 0;
-	  tcsetattr(fileno(serial_out), TCSAFLUSH, &tattr);
+	  tcsetattr(fileno(f_serial_out), TCSAFLUSH, &tattr);
 	}
       else
 #endif
@@ -345,16 +351,16 @@ cl_serial::tick(int cycles)
     {
       s_sending= DD_FALSE;
       scon->set_bit1(bmTI);
-      if (serial_out)
+      if (fout)
 	{
-	  putc(s_out, serial_out);
-	  fflush(serial_out);
+	  putc(s_out, fout->file_f);
+	  fout->flush();
 	}
       s_tr_bit-= _bits;
       //printf("serial out %d bit rems %d\n",s_tr_bit,uc->ticks->ticks);
     }
   if ((/*scn & bmREN*/_bmREN) &&
-      serial_in &&
+      fin &&
       !s_receiving)
     {
       /*
@@ -366,15 +372,16 @@ cl_serial::tick(int cycles)
       	  FD_ISSET(fileno(serial_in), &set))
       */
 #ifdef _WIN32
-      HANDLE handle = (HANDLE)_get_osfhandle(fileno(serial_in));
+      /*
+      HANDLE handle = (HANDLE)_get_osfhandle(fin->file_id);
       assert(INVALID_HANDLE_VALUE != handle);
-
+      */
       //if (input_avail(handle))
-      if (input_avail(fileno(serial_in)))
+      if (fin->input_avail())
 #else
-      if (input_avail(fileno(serial_in)))
+	if (fin->input_avail())
 #endif
-	{
+	  {
 	  s_receiving= DD_TRUE;
 	  s_rec_bit= 0;
 	  s_rec_tick= /*uc51->*/s_rec_t1= 0;
@@ -383,7 +390,7 @@ cl_serial::tick(int cycles)
   if (s_receiving &&
       (s_rec_bit >= _bits))
     {
-      if (::read(fileno(serial_in), &c, 1) == 1)
+      if (::read(fin->file_id, &c, 1) == 1)
 	{
 	  s_in= c;
 	  sbuf->set(s_in);
