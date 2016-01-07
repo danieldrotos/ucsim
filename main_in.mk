@@ -33,7 +33,7 @@ LDFLAGS		= @LDFLAGS@
 EXEEXT		= @EXEEXT@
 
 LIB_LIST	= ucsimutil cmd sim
-UCSIM_LIBS	= -Wl,--start-group $(patsubst %,-l%,$(LIB_LIST)) -Wl,--end-group
+UCSIM_LIBS	= -Wl,--start-group $(patsubst %,-l%,$(LIB_LIST)) @LIBS@ -Wl,--end-group
 UCSIM_LIB_FILES	= $(patsubst %,lib%.a,$(LIB_LIST))
 
 prefix          = @prefix@
