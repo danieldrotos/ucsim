@@ -187,7 +187,7 @@ cl_sim::stop(int reason)
       cmd->frozen_console->dd_printf("F 0x%06x\n", uc->PC); // for sdcdb
       unsigned long dt= uc?(uc->ticks->ticks - start_tick):0;
       if (reason != resSTEP)
-	cmd->frozen_console->dd_printf("Simulated %ul ticks in %f sec, rate=%f\n",
+	cmd->frozen_console->dd_printf("Simulated %lu ticks in %f sec, rate=%f\n",
 				       dt,
 				       dnow() - start_at,
 				       (dt*(1/uc->xtal)) / (dnow() - start_at));
