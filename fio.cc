@@ -130,7 +130,7 @@ cl_f::use_opened(int opened_file_id, char *mode)
 int
 cl_f::close(void)
 {
-  int i;
+  int i= 0;
 
   if (file_f)
     {
