@@ -41,11 +41,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_console: public cl_console_base
 {
 protected:
-  FILE *in/*, *out, *rout*//*redirected output*/;
+  //FILE *in/*, *out, *rout*//*redirected output*/;
   cl_f *fin, *fout, *frout;
   
 public:
-  cl_console(void) { in /*= out = rout*/ = 0; fin= fout= frout= 0; }
+  cl_console(void) { fin= fout= frout= 0; }
   cl_console(const char *_fin, const char *_fout, class cl_app *the_app);
   cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app);
   int cmd_do_print(const char *format, va_list ap);
@@ -55,10 +55,10 @@ public:
 
   virtual void redirect(char *fname, char *mode);
   virtual void un_redirect(void);
-  virtual UCSOCKET_T get_in_fd(void) { return(in ? fileno(in) : -1); }
-  virtual bool is_tty(void) const { return in && isatty(fileno(in)); }
-  virtual bool is_eof(void) const { return in ? feof(in) : true; }
-  virtual bool input_avail(void) { return input_active() ? ::input_avail(fileno(in)) : false; };
+  virtual UCSOCKET_T get_in_fd(void) { return(fin ? (fin->file_id) : -1); }
+  virtual bool is_tty(void) const { return fin && (fin->tty); }
+  virtual bool is_eof(void) const { return fin ? (fin->eof()) : true; }
+  virtual bool input_avail(void) { return input_active() ? (fin->input_avail()) : false; };
   virtual char *read_line(void);
 
 private:

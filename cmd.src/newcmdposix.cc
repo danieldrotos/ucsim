@@ -71,25 +71,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_app)
 {
-  FILE *f;
-
   app= the_app;
-  in= 0;
   fin= 0;
   if (_fin)
     {
-      if (f= fopen(_fin, "r"), in= f, !f)
-	fprintf(stderr, "Can't open `%s': %s\n", _fin, strerror(errno));
       fin= mk_io(_fin, cchars("r"));
     }
-  //out= 0;
   fout= 0;
   if (_fout)
     {
-      /*
-      if (f= fopen(_fout, "w"), out= f, !f)
-	fprintf(stderr, "Can't open `%s': %s\n", _fout, strerror(errno));
-      */
       fout= mk_io(_fout, cchars("w"));
     }
   prompt= 0;
@@ -98,7 +88,6 @@ cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_ap
     flags|= CONS_INTERACTIVE;
   else
     ;//fprintf(stderr, "Warning: non-interactive console\n");
-  //rout= 0;
   frout= 0;
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
@@ -107,9 +96,7 @@ cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_ap
 cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
 {
   app= the_app;
-  in = _fin;
   fin= cp_io(_fin, "r");
-  //out= _fout;
   fout= cp_io(_fout, "w");
   prompt= 0;
   flags= CONS_NONE;
@@ -117,7 +104,6 @@ cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
     flags|= CONS_INTERACTIVE;
   else
     ;//fprintf(stderr, "Warning: non-interactive console\n");
-  //rout= 0;
   frout= 0;
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
@@ -149,18 +135,15 @@ cl_console::clone_for_exec(char *_fin)
 
 cl_console::~cl_console(void)
 {
-  if (in)
-    fclose(in);
   un_redirect();
   if (fout)
     {
       if (flags & CONS_PROMPT)
         fprintf(fout->file_f, "\n");
       fflush(fout->file_f);
-      fclose(fout->file_f);
+      delete fout;
     }
-  delete fin;
-  delete fout;
+  if (fin) delete fin;
   delete prompt_option;
   delete null_prompt_option;
   delete debug_option;
@@ -233,19 +216,19 @@ cl_console::read_line(void)
   char *s= NULL;
 
 #ifdef HAVE_GETLINE
-  if (getline(&s, 0, in) < 0)
+  if (getline(&s, 0, fin->file_f) < 0)
     return(0);
 #elif defined HAVE_GETDELIM
   size_t n= 30;
   s= (char *)malloc(n);
-  if (getdelim(&s, &n, '\n', in) < 0)
+  if (getdelim(&s, &n, '\n', fin->file_f) < 0)
     {
       free(s);
       return(0);
     }
 #elif defined HAVE_FGETS
   s= (char *)malloc(BUF_LEN);
-  if (fgets(s, BUF_LEN, in) == NULL)
+  if (fgets(s, BUF_LEN, fin->file_f) == NULL)
     {
       free(s);
       return(0);
@@ -273,7 +256,6 @@ cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
         fprintf(stderr, "Listen on port %d: %s\n",
                 serverport, strerror(errno));
     }
-  in/*= out= rout*/= 0;
   fout= frout= 0;
 }
 
