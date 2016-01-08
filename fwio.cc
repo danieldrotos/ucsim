@@ -94,7 +94,7 @@ cl_io::input_avail(void)
         /*
          * Peek all pending console events
          */
-	printf("win iput check on console id=%d handle=%p\n", file_id, handle);
+	//printf("win iput check on console id=%d handle=%p\n", file_id, handle);
         if (INVALID_HANDLE_VALUE == handle ||
 	    !GetNumberOfConsoleInputEvents(handle, &NumPending) ||
 	    NumPending == 0 ||
@@ -148,10 +148,10 @@ cl_io::changed(void)
     }
   else
     {
-      printf("win opened file id=%d\n", file_id);
+      //printf("win opened file id=%d\n", file_id);
       handle= (HANDLE)_get_osfhandle(file_id);
       type= get_handle_type();
-      printf("win handle=%p type=%d\n", handle, type);
+      //printf("win handle=%p type=%d\n", handle, type);
     }
 }
 
