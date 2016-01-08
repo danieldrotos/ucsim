@@ -1,5 +1,12 @@
 #include "fwiocl.h"
 
+#ifdef SOCKET_AVAIL
+# include HEADER_SOCKET
+#endif
+
+#include <windows.h>
+#include <io.h>
+
 
 enum e_handle_type
 cl_io::get_handle_type()
@@ -11,14 +18,14 @@ cl_io::get_handle_type()
     case FILE_TYPE_CHAR:
       {
         DWORD err;
-
+	
         if (!ClearCommError(handle, &err, NULL))
           {
             switch (GetLastError())
               {
               case ERROR_INVALID_HANDLE:
                 return CH_CONSOLE;
-
+		
               case ERROR_INVALID_FUNCTION:
                 /*
                  * In case of NUL device return type CH_FILE.
@@ -42,7 +49,7 @@ cl_io::get_handle_type()
   int optlen = sizeof(sockbuf);
 
   if (SOCKET_ERROR != getsockopt((SOCKET)handle, SOL_SOCKET, SO_TYPE, sockbuf, &optlen) ||
-    WSAENOTSOCK != WSAGetLastError())
+      WSAENOTSOCK != WSAGetLastError())
     return CH_SOCKET;
 
   //assert(false);
@@ -52,9 +59,9 @@ cl_io::get_handle_type()
 int
 cl_io::input_avail(void)
 {
-  e_handle_type type= CH_UNDEF;
-  if (CH_UNDEF == type)
-    type = get_handle_type();
+  //e_handle_type type= CH_UNDEF;
+  //if (CH_UNDEF == type)
+  //type = get_handle_type();
 
   switch (type)
     {
@@ -87,6 +94,7 @@ cl_io::input_avail(void)
         /*
          * Peek all pending console events
          */
+	printf("win iput check on console id=%d handle=%p\n", file_id, handle);
         if (INVALID_HANDLE_VALUE == handle ||
 	    !GetNumberOfConsoleInputEvents(handle, &NumPending) ||
 	    NumPending == 0 ||
@@ -130,6 +138,22 @@ cl_io::input_avail(void)
     }
 }
 
+void
+cl_io::changed(void)
+{
+  if (file_id < 0)
+    {
+      handle= INVALID_HANDLE_VALUE;
+      type= CH_UNDEF;
+    }
+  else
+    {
+      printf("win opened file id=%d\n", file_id);
+      handle= (HANDLE)_get_osfhandle(file_id);
+      type= get_handle_type();
+      printf("win handle=%p type=%d\n", handle, type);
+    }
+}
 
 class cl_f *
 mk_io(chars fn, chars mode)

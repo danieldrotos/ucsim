@@ -72,6 +72,7 @@ cl_f::init(void)
 	  file_id= fileno(file_f);
 	  tty= isatty(file_id);
 	  own= true;
+	  changed();
 	}
       else
 	{
@@ -120,11 +121,17 @@ cl_f::use_opened(int opened_file_id, char *mode)
 	{
 	  file_id= opened_file_id;
 	  tty= isatty(file_id);
+	  changed();
 	}
       else
 	file_id= -1;
     }
   return file_id;
+}
+
+void
+cl_f::changed(void)
+{
 }
 
 int
@@ -141,6 +148,7 @@ cl_f::close(void)
   own= false;
   file_name= 0;
   file_mode= 0;
+  changed();
   return i;
 }
 
@@ -152,6 +160,7 @@ cl_f::stop_use(void)
   own= false;
   file_name= 0;
   file_mode= 0;
+  changed();
   return 0;
 }
 

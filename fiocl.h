@@ -52,6 +52,7 @@ class cl_f: public cl_base
   virtual int open(char *fn);
   virtual int open(char *fn, char *mode);
   virtual int use_opened(int opened_file_id, char *mode);
+  virtual void changed(void);
   virtual int close(void);
   virtual int stop_use(void);
   
