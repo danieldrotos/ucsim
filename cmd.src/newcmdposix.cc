@@ -425,8 +425,20 @@ cl_commander::input_avail(void)
 {
   struct timeval tv = {0, 0};
   active_set = read_set;
-
-  int i = select(fd_num, &active_set, NULL, NULL, &tv);
+  int i;
+  
+  for (i= 0; i < cons->count; i++)
+    {
+      class cl_console *c= dynamic_cast<class cl_console*>
+	((class cl_console_base *)(cons->at(i)));
+      if (c->input_active())
+	{
+	  if (c->input_avail())
+	    return true;
+	}
+    }
+  return false;
+  i = select(fd_num, &active_set, NULL, NULL, &tv);
   if (i < 0)
     perror("select");
 
@@ -438,6 +450,9 @@ cl_commander::wait_input(void)
 {
   prompt();
   active_set = read_set;
+  while (!input_avail())
+    ;
+  return 0;
   int i = select(fd_num, &active_set, NULL, NULL, NULL);
   return i;
 }
@@ -454,7 +469,8 @@ cl_commander::proc_input(void)
           UCSOCKET_T fd = c->get_in_fd();
           assert(0 <= fd);
 
-          if (FD_ISSET(fd, &active_set))
+          //if (FD_ISSET(fd, &active_set))
+	  if (c->input_avail())
             {
               actual_console = c;
               int retval = c->proc_input(cmdset);
