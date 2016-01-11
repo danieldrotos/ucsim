@@ -111,14 +111,6 @@ cl_serial::init(void)
   serial_out_file_option->init();
   serial_out_file_option->use("serial_out_file");
 
-  //char *fni, *fno;
-  /*if ((fni= serial_in_file_option->get_value((char*)0)))
-    serial_in= fopen(fni, "r");
-  if ((fno= serial_out_file_option->get_value((char*)0)))
-  serial_out= fopen(fno, "w");*/
-  
-  //serial_in = (FILE*)application->args->get_parg(0, "Ser_in");
-  //serial_out= (FILE*)application->args->get_parg(0, "Ser_out");
   FILE *f_serial_in = (FILE*)serial_in_file_option->get_value((void*)0);
   FILE *f_serial_out= (FILE*)serial_out_file_option->get_value((void*)0);
   if (f_serial_in)
@@ -127,9 +119,7 @@ cl_serial::init(void)
       // making `serial' unbuffered
       if (setvbuf(f_serial_in, NULL, _IONBF, 0))
 	perror("Unbuffer serial input channel");
-#ifdef _WIN32
-      if (CH_SERIAL != get_handle_type((HANDLE)_get_osfhandle(fileno(f_serial_in))))
-#elif defined HAVE_TERMIOS_H
+#if defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
       if ((i= fcntl(fileno(f_serial_in), F_GETFL, 0)) < 0)
 	perror("Get flags of serial input");
@@ -157,9 +147,7 @@ cl_serial::init(void)
       // making `serial' unbuffered
       if (setvbuf(f_serial_out, NULL, _IONBF, 0))
 	perror("Unbuffer serial output channel");
-#ifdef _WIN32
-      if (CH_SERIAL != get_handle_type((HANDLE)_get_osfhandle(fileno(f_serial_out))))
-#elif defined HAVE_TERMIOS_H
+#if defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
       if ((i= fcntl(fileno(f_serial_out), F_GETFL, 0)) < 0)
 	perror("Get flags of serial output");
