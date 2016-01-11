@@ -54,6 +54,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #ifdef SOCKET_AVAIL
 #ifdef _WIN32
+/*
 static void
 init_winsock(void)
 {
@@ -72,7 +73,8 @@ init_winsock(void)
         }
     }
 }
-
+*/
+/*
 SOCKET
 make_server_socket(unsigned short int port)
 {
@@ -80,7 +82,7 @@ make_server_socket(unsigned short int port)
 
   struct sockaddr_in name;
 
-  /* Create the socket. */
+  // Create the socket.
   SOCKET sock = WSASocket(PF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
   if (INVALID_SOCKET == sock)
     {
@@ -99,14 +101,16 @@ make_server_socket(unsigned short int port)
 
   return sock;
 }
+*/
 #else
+/*
 int
 make_server_socket(unsigned short int port)
 {
   int sock, i;
   struct sockaddr_in name;
 
-  /* Create the socket. */
+  // Create the socket.
   sock= socket(PF_INET, SOCK_STREAM, 0);
   if (sock < 0)
     {
@@ -114,7 +118,7 @@ make_server_socket(unsigned short int port)
       return(0);
     }
 
-  /* Give the socket a name. */
+  // Give the socket a name.
   i= 1;
   if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char*)&i, sizeof(i)) < 0)
     {
@@ -131,10 +135,12 @@ make_server_socket(unsigned short int port)
 
   return(sock);
 }
+*/
 #endif
 #endif
 
 #if _WIN32
+/*
 enum e_handle_type
 get_handle_type(HANDLE handle)
 {
@@ -154,10 +160,10 @@ get_handle_type(HANDLE handle)
                 return CH_CONSOLE;
 
               case ERROR_INVALID_FUNCTION:
-                /*
-                 * In case of NUL device return type CH_FILE.
-                 * Is this the correct way to test it?
-                 */
+                //
+		// In case of NUL device return type CH_FILE.
+		// Is this the correct way to test it?
+		//
                 return CH_FILE;
 
               default:
@@ -181,10 +187,11 @@ get_handle_type(HANDLE handle)
   assert(false);
   return CH_UNDEF;
 }
+*/
 
-bool
-input_avail(HANDLE handle/*, e_handle_type type*/)
-{
+//bool
+//input_avail(HANDLE handle/*, e_handle_type type*/)
+/*{
   e_handle_type type= CH_UNDEF;
   if (CH_UNDEF == type)
       type = get_handle_type(handle);
@@ -217,9 +224,9 @@ input_avail(HANDLE handle/*, e_handle_type type*/)
         DWORD NumPending;
         DWORD NumPeeked;
 
-        /*
-         * Peek all pending console events
-         */
+        //
+	// Peek all pending console events
+	//
         if (INVALID_HANDLE_VALUE == handle ||
           !GetNumberOfConsoleInputEvents(handle, &NumPending) ||
           NumPending == 0 ||
@@ -230,10 +237,10 @@ input_avail(HANDLE handle/*, e_handle_type type*/)
           NumPeeked != 0L &&
           NumPeeked <= NumPending)
           {
-            /*
-             * Scan all of the peeked events to determine if any is a key event
-             * which should be recognized.
-             */
+            //
+	    // Scan all of the peeked events to determine if any is a key event
+	    // which should be recognized.
+	    //
             for ( ; NumPeeked > 0 ; NumPeeked--, pIRBuf++ )
               {
                 if (KEY_EVENT == pIRBuf->EventType &&
@@ -262,7 +269,9 @@ input_avail(HANDLE handle/*, e_handle_type type*/)
       return false;
     }
 }
+*/
 #else
+/*
 bool
 input_avail(UCSOCKET_T fd)
 {
@@ -280,6 +289,7 @@ input_avail(UCSOCKET_T fd)
 
   return i > 0;
 }
+*/
 #endif
 
 
