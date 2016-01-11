@@ -377,7 +377,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	{
 	  FILE *Ser_in, *Ser_out;
 	  int  sock;
-	  unsigned short serverport;
+	  int serverport;
 	  int client_sock;
 	  
 	  if (k_done) {
