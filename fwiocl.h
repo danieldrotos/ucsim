@@ -19,10 +19,12 @@ class cl_io: public cl_f
 {
  private:
   HANDLE handle;
+ public:
   enum e_handle_type type;
  public:
  cl_io(): cl_f () {}
  cl_io(chars fn, chars mode): cl_f(fn, mode) {}
+ cl_io(int the_server_port): cl_f(the_server_port) {}
  protected:
   enum e_handle_type get_handle_type();
  public:

@@ -46,6 +46,7 @@ cl_f::cl_f(void)
   tty= false;
   file_name= 0;
   file_mode= 0;
+  server_port= -1;
 }
 
 cl_f::cl_f(chars fn, chars mode):
@@ -57,13 +58,33 @@ cl_f::cl_f(chars fn, chars mode):
   file_mode= mode;
   tty= false;
   own= false;
+  server_port= -1;
 }
 
+cl_f::cl_f(int the_server_port)
+{
+  file_f= NULL;
+  file_id= -1;
+  own= false;
+  tty= false;
+  file_name= 0;
+  file_mode= 0;
+  server_port= the_server_port;
+}
 
 int
 cl_f::init(void)
 {
-  if (!file_name.empty())
+  if (server_port > 0)
+    {
+      file_id= make_server_socket(server_port);
+      //printf("cl_f::init srv_socket=%d\n", file_id);
+      listen(file_id, 50);
+      own= true;
+      tty= false;
+      changed();
+    }
+  else if (!file_name.empty())
     {
       if (file_mode.empty())
 	file_mode= cchars("r+");
@@ -79,6 +100,21 @@ cl_f::init(void)
 	  file_id= -1;
 	  own= false;
 	}
+    }
+  return file_id;
+}
+
+int
+cl_f::init(FILE *f, chars mode)
+{
+  if (f)
+    {
+      file_mode= mode;
+      file_f= f;
+      file_id= fileno(file_f);
+      tty= isatty(file_id);
+      own= true;
+      changed();
     }
   return file_id;
 }
@@ -262,7 +298,7 @@ cl_f::input_avail(void)
   FD_ZERO(&s);
   FD_SET(file_id, &s);
   i= select(FD_SETSIZE, &s, NULL, NULL, &tv);
-  printf("select(%d)=%d: (%d) %s\n",file_id,i,errno,strerror(errno));
+  //printf("select(%d)=%d: (%d) %s\n",file_id,i,errno,strerror(errno));
   if (i >= 0)
     {
       return FD_ISSET(file_id, &s);
@@ -273,23 +309,26 @@ cl_f::input_avail(void)
 
 /* Socket functions */
 
+/*
 int
 cl_f::listen(int on_port)
 {
   return -1;
 }
-
+*/
+/*
 class cl_f *
 cl_f::accept()
 {
   return NULL;
 }
-
+*/
+/*
 int
 cl_f::connect(chars host, int to_port)
 {
   return -1;
 }
-
+*/
 
 /* End of fio.cc */

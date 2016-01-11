@@ -46,8 +46,10 @@ class cl_f: public cl_base
  public:
   cl_f(void);
   cl_f(chars fn, chars mode);
+  cl_f(int the_server_port);
   virtual ~cl_f(void);
   virtual int init(void);
+  virtual int init(FILE *f, chars mode);
   virtual int open(void) { return init(); }
   virtual int open(char *fn);
   virtual int open(char *fn, char *mode);
@@ -70,14 +72,23 @@ class cl_f: public cl_base
   virtual int cooked(void);
   virtual int input_avail(void);
 
-  virtual int listen(int on_port);
-  virtual class cl_f *accept();
-  virtual int connect(chars host, int to_port);
+ public:
+  int server_port;
+
+ public:
+  //virtual int listen(int on_port);
+  //virtual class cl_f *accept();
+  //virtual int connect(chars host, int to_port);
 };
 
 
+extern int make_server_socket(int port);
+
 extern class cl_f *mk_io(chars fn, chars mode);
 extern class cl_f *cp_io(FILE *f, chars mode);
+extern class cl_f *mk_srv(int server_port);
+extern int srv_accept(int server_port, int new_sock,
+		      class cl_f **fin, class cl_f **fout);
 
 
 #endif
