@@ -30,12 +30,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "ddconfig.h"
 
-#define TYPE_BYTE int8_t
-#define TYPE_UBYTE uint8_t
-#define TYPE_WORD int16_t
-#define TYPE_UWORD uint16_t
-#define TYPE_DWORD int32_t
-#define TYPE_UDWORD uint32_t
+//#define TYPE_BYTE int8_t
+typedef int8_t TYPE_BYTE;
+//#define TYPE_UBYTE uint8_t
+typedef uint8_t TYPE_UBYTE;
+//#define TYPE_WORD int16_t
+typedef int16_t TYPE_WORD;
+//#define TYPE_UWORD uint16_t
+typedef uint16_t TYPE_UWORD;
+//#define TYPE_DWORD int32_t
+typedef int32_t TYPE_DWORD;
+//#define TYPE_UDWORD uint32_t
+typedef uint32_t TYPE_UDWORD;
 
 typedef unsigned char	uchar;
 typedef unsigned int	uint;
@@ -81,49 +87,45 @@ struct cpu_entry
   int  technology;
 };
 
-#define CPU_51		0x0001
-#define CPU_31		0x0002
-#define CPU_52		0x0004
-#define CPU_32		0x0008
-#define CPU_51R		0x0010
-#define CPU_89C51R	0x0020
-#define CPU_251		0x0040
-#define CPU_DS390	0x0080
-#define CPU_DS390F	0x0100
-#define CPU_ALL_51	(CPU_51|CPU_31)
-#define CPU_ALL_52	(CPU_52|CPU_32|CPU_51R|CPU_89C51R|CPU_251|CPU_DS390|CPU_DS390F)
+enum cpu_type {
+  CPU_51	= 0x0001,
+  CPU_31	= 0x0002,
+  CPU_52	= 0x0004,
+  CPU_32	= 0x0008,
+  CPU_51R	= 0x0010,
+  CPU_89C51R	= 0x0020,
+  CPU_251	= 0x0040,
+  CPU_DS390	= 0x0080,
+  CPU_DS390F	= 0x0100,
+  CPU_ALL_51	= (CPU_51|CPU_31),
+  CPU_ALL_52	= (CPU_52|CPU_32|CPU_51R|CPU_89C51R|CPU_251|CPU_DS390|CPU_DS390F),
 
-#define CPU_AVR		0x0001
-#define CPU_ALL_AVR	(CPU_AVR)
+  CPU_AVR	= 0x0001,
+  CPU_ALL_AVR	= (CPU_AVR),
 
-#define CPU_Z80		0x0001
-#define CPU_Z180	0x0002
-#define CPU_LR35902     0x0004
-#define CPU_R2K         0x0008
-#define CPU_R3KA        0x0010
-#define CPU_ALL_Z80     (CPU_Z80|CPU_Z180|CPU_R2K|CPU_LR35902|CPU_R3KA)
+  CPU_Z80	= 0x0001,
+  CPU_Z180	= 0x0002,
+  CPU_LR35902   = 0x0004,
+  CPU_R2K       = 0x0008,
+  CPU_R3KA      = 0x0010,
+  CPU_ALL_Z80   = (CPU_Z80|CPU_Z180|CPU_R2K|CPU_LR35902|CPU_R3KA),
 
-#define CPU_XA		0x0001
-#define CPU_ALL_XA	(CPU_XA)
+  CPU_XA	= 0x0001,
+  CPU_ALL_XA	= (CPU_XA),
 
-#define CPU_HC08       0x0001
-#define CPU_HCS08      0x0002
-#define CPU_ALL_HC08   (CPU_HC08|CPU_HCS08)
+  CPU_HC08      = 0x0001,
+  CPU_HCS08     = 0x0002,
+  CPU_ALL_HC08  = (CPU_HC08|CPU_HCS08),
 
-#define CPU_STM8	0x0001
-#define CPU_ALL_STM8	(CPU_STM8)
+  CPU_STM8	= 0x0001,
+  CPU_ALL_STM8	= (CPU_STM8),
 
-#define CPU_ST7       0x0001
-#define CPU_ALL_ST7   (CPU_ST7)
+  CPU_ST7       = 0x0001,
+  CPU_ALL_ST7   = (CPU_ST7),
 
-#define CPU_CMOS	0x0001
-#define CPU_HMOS	0x0002
-
-#define CPU_STM8	0x0001
-#define CPU_ALL_STM8	(CPU_STM8)
-
-#define CPU_ST7		0x0001
-#define CPU_ALL_ST7	(CPU_ST7)
+  CPU_CMOS	= 0x0001,
+  CPU_HMOS	= 0x0002
+};
 
 /* Classes of memories, this is index on the list */
 enum mem_class
@@ -144,30 +146,35 @@ enum mem_class
 #define MEM_IRAM_ID	cchars("iram")
 
 // States of simulator
-#define SIM_NONE	0
-#define SIM_GO		0x01	// Processor is running
-#define SIM_QUIT	0x02	// Program must exit
+enum sim_state {
+  SIM_NONE	= 0,
+  SIM_GO	= 0x01,	// Processor is running
+  SIM_QUIT	= 0x02	// Program must exit
+};
 
 /* States of CPU */
-#define stGO		0	/* Normal state */
-#define stIDLE		1	/* Idle mode is active */
-#define stPD		2	/* Power Down mode is active */
+enum cpu_state {
+  stGO		= 0,	/* Normal state */
+  stIDLE	= 1,	/* Idle mode is active */
+  stPD		= 2	/* Power Down mode is active */
+};
 
 /* Result of instruction simulation */
-#define resGO		0	/* OK, go on */
-#define resWDTRESET	1	/* Reseted by WDT */
-#define resINTERRUPT	2	/* Interrupt accepted */
-#define resSTOP		100	/* Stop if result greather then this */
-#define resHALT		101	/* Serious error, halt CPU */
-#define resINV_ADDR	102	/* Invalid indirect address */
-#define resSTACK_OV	103	/* Stack overflow */
-#define resBREAKPOINT	104	/* Breakpoint */
-#define resUSER		105	/* Stopped by user */
-#define resINV_INST	106	/* Invalid instruction */
-#define resBITADDR	107	/* Bit address is uninterpretable */
-#define resERROR	108	/* Error happened during instruction exec */
-#define resSTEP		109	/* Step command done, no more exex needed */
-  
+enum inst_result {
+  resGO		= 0,	/* OK, go on */
+  resWDTRESET	= 1,	/* Reseted by WDT */
+  resINTERRUPT	= 2,	/* Interrupt accepted */
+  resSTOP	= 100,	/* Stop if result greather then this */
+  resHALT	= 101,	/* Serious error, halt CPU */
+  resINV_ADDR	= 102,	/* Invalid indirect address */
+  resSTACK_OV	= 103,	/* Stack overflow */
+  resBREAKPOINT	= 104,	/* Breakpoint */
+  resUSER	= 105,	/* Stopped by user */
+  resINV_INST	= 106,	/* Invalid instruction */
+  resBITADDR	= 107,	/* Bit address is uninterpretable */
+  resERROR	= 108,	/* Error happened during instruction exec */
+  resSTEP	= 109	/* Step command done, no more exex needed */
+};
   
 #define BIT_MASK(bitaddr) (1 << (bitaddr & 0x07))
 
@@ -244,11 +251,12 @@ enum hw_event {
 };
 
 // flags of hw units
-#define HWF_NONE	0
-#define HWF_INSIDE	0x0001
-#define HWF_OUTSIDE	0x0002
-#define HWF_MISC	0x0004
-
+enum hw_flags {
+  HWF_NONE	= 0,
+  HWF_INSIDE	= 0x0001,
+  HWF_OUTSIDE	= 0x0002,
+  HWF_MISC	= 0x0004
+};
 
 /* Letter cases */
 enum letter_case {

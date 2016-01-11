@@ -40,18 +40,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /* Options */
-
-#define OPT_GENERAL	0x0001
-#define OPT_SIM		0x0002
-#define OPT_UC		0x0004
-#define OPT_PRG_OPT	(OPT_GENERAL|OPT_SIM|OPT_UC)
-#define OPT_51		0x0010
-#define OPT_AVR		0x0020
-#define OPT_Z80		0x0040
-#define OPT_HC08	0x0080
-#define OPT_XA		0x0100
-#define OPT_TARGET	(OPT_51|OPT_AVR|OPT_Z80|OPT_HC08|OPT_XA)
-
+/*
+enum opt_types {
+  OPT_GENERAL	= 0x0001,
+  OPT_SIM	= 0x0002,
+  OPT_UC	= 0x0004,
+  OPT_PRG_OPT	= (OPT_GENERAL|OPT_SIM|OPT_UC),
+  OPT_51	= 0x0010,
+  OPT_AVR	= 0x0020,
+  OPT_Z80	= 0x0040,
+  OPT_HC08	= 0x0080,
+  OPT_XA	= 0x0100,
+  OPT_TARGET	= (OPT_51|OPT_AVR|OPT_Z80|OPT_HC08|OPT_XA)
+};
+*/
 /*class cl_option: public cl_base
 {
 public:
