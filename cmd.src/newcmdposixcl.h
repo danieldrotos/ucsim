@@ -48,6 +48,7 @@ public:
   cl_console(void) { fin= fout= frout= 0; }
   cl_console(const char *_fin, const char *_fout, class cl_app *the_app);
   cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app);
+  cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app);
   int cmd_do_print(const char *format, va_list ap);
 
   virtual ~cl_console(void);
@@ -69,15 +70,12 @@ private:
 #ifdef SOCKET_AVAIL
 class cl_listen_console: public cl_console
 {
-private:
-  int sock;
-
 public:
   cl_listen_console(int serverport, class cl_app *the_app);
 
   virtual void welcome(void) {}
 
-  virtual UCSOCKET_T get_in_fd(void) { return(sock); }
+  //virtual UCSOCKET_T get_in_fd(void) { return(sock); }
   virtual int proc_input(class cl_cmdset *cmdset);
 };
 #endif

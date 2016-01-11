@@ -109,6 +109,23 @@ cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
   lines_printed= new cl_ustrings(100, 100, "console_cache");
 }
 
+cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
+{
+  app= the_app;
+  fin= _fin;
+  fout= _fout;
+  prompt= 0;
+  flags= CONS_NONE;
+  if (is_tty())
+    flags|= CONS_INTERACTIVE;
+  else
+    ;//fprintf(stderr, "Warning: non-interactive console\n");
+  frout= 0;
+  id= 0;
+  lines_printed= new cl_ustrings(100, 100, "console_cache");
+  //printf("console created for fin=%p fout=%p\n", fin, fout);
+}
+
 class cl_console *
 cl_console::clone_for_exec(char *_fin)
 {
@@ -250,12 +267,13 @@ cl_console::read_line(void)
 cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
 {
   app= the_app;
-  if ((sock= make_server_socket(serverport)) >= 0)
+  /*if ((sock= make_server_socket(serverport)) >= 0)
     {
       if (listen(sock, 10) < 0)
         fprintf(stderr, "Listen on port %d: %s\n",
                 serverport, strerror(errno));
-    }
+		}*/
+  fin= mk_srv(serverport);
   fout= frout= 0;
 }
 
@@ -266,20 +284,28 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   ACCEPT_SOCKLEN_T size;
   struct sockaddr_in sock_addr;
   class cl_commander_base *cmd;
-  FILE *in, *out;
+  cl_f *in, *out;
 
+  //printf("input on listen console\n");
   cmd= app->get_commander();
   size= sizeof(struct sockaddr);
-  newsock= accept(sock, (struct sockaddr*)&sock_addr, &size);
+  newsock= accept(fin->file_id, (struct sockaddr*)&sock_addr, &size);
   if (newsock < 0)
     {
       perror("accept");
       return(0);
     }
-  if (!(in= fdopen(newsock, "r")))
+  /*
+  in= new cl_f();
+  if (in->use_opened(newsock, cchars("r")) < 0)
     fprintf(stderr, "cannot open port for input\n");
-  if (!(out= fdopen(newsock, "w")))
+  out= new cl_f();
+  if (out->use_opened(newsock, cchars("w")) < 0)
     fprintf(stderr, "cannot open port for output\n");
+  */
+  srv_accept(fin->server_port, newsock, &in, &out);
+  //printf("listener got in=%p out=%p\n", in, out);
+  
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;
   cmd->add_console(c);
