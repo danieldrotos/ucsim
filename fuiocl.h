@@ -10,6 +10,7 @@ class cl_io: public cl_f
  cl_io(): cl_f () {}
  cl_io(chars fn, chars mode): cl_f(fn, mode) {}
  cl_io(int the_server_port): cl_f(the_server_port) {}
+  virtual int close(void);
 };
 
 

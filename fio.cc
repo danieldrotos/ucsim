@@ -34,6 +34,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include HEADER_FD
 #include <errno.h>
 #include <string.h>
+#if defined HAVE_SYS_SOCKET_H
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+#endif
 
 #include "fiocl.h"
 

@@ -145,10 +145,19 @@ cl_io::changed(void)
   //printf("win_f changed\n");
   if (file_id < 0)
     {
+      // CLOSE
+      if (CH_SOCKET == type)
+	{
+	  shutdown((SOCKET)handle, SD_BOTH);
+	  closesocket((SOCKET)handle);
+	}
       handle= INVALID_HANDLE_VALUE;
       type= CH_UNDEF;
+      return;
     }
-  else if (server_port > 0)
+
+  // OPEN
+  if (server_port > 0)
     {
       //printf("win socket id=%d\n", file_id);
       handle= (void*)file_id;

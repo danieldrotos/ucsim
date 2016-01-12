@@ -1,5 +1,37 @@
+
+#include "ddconfig.h"
+
+#include <stdio.h>
+#if defined HAVE_SYS_SOCKET_H
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+#endif
+
 #include "fuiocl.h"
 
+
+int
+cl_io::close(void)
+{
+  int i= 0;
+
+  if (server_port)
+    {
+      shutdown(file_id, 2/*SHUT_RDWR*/);
+    }
+  if (file_f)
+    {
+      i= fclose(file_f);
+    }
+  file_f= NULL;
+  file_id= -1;
+  own= false;
+  file_name= 0;
+  file_mode= 0;
+  changed();
+  return i;
+}
 
 int
 make_server_socket(int port)
@@ -65,5 +97,12 @@ mk_srv(int server_port)
   return io;
 }
 
+
+int
+srv_accept(int server_port, int new_sock,
+	   class cl_f **fin, class cl_f **fout)
+{
+  return 0;
+}
 
 /* End of fuio.cc */
