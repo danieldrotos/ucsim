@@ -83,7 +83,7 @@ cl_f::init(void)
   if (server_port > 0)
     {
       file_id= make_server_socket(server_port);
-      //printf("cl_f::init srv_socket=%d\n", file_id);
+      printf("cl_f::init srv_port=%d file_id=%d\n", server_port, file_id);
       listen(file_id, 50);
       own= true;
       tty= false;
@@ -110,43 +110,6 @@ cl_f::init(void)
 }
 
 int
-cl_f::init(FILE *f, chars mode)
-{
-  if (f)
-    {
-      file_mode= mode;
-      file_f= f;
-      file_id= fileno(file_f);
-      tty= isatty(file_id);
-      own= true;
-      changed();
-    }
-  return file_id;
-}
-
-
-int
-cl_f::open(char *fn)
-{
-  close();
-  if (fn)
-    file_name= fn;
-  return init();
-}
-
-
-int
-cl_f::open(char *fn, char *mode)
-{
-  close();
-  if (mode)
-    file_mode= mode;
-  if (fn)
-    file_name= fn;
-  return init();
-}
-
-int
 cl_f::use_opened(int opened_file_id, char *mode)
 {
   close();
@@ -168,6 +131,59 @@ cl_f::use_opened(int opened_file_id, char *mode)
 	file_id= -1;
     }
   return file_id;
+}
+
+int
+cl_f::own_opened(int opened_file_id, char *mode)
+{
+  use_opened(opened_file_id, mode);
+  own= true;
+  return file_id;
+}
+
+int
+cl_f::use_opened(FILE *f, chars mode)
+{
+  close();
+  if (f)
+    {
+      file_mode= mode;
+      file_f= f;
+      file_id= fileno(file_f);
+      tty= isatty(file_id);
+      own= false;
+      changed();
+    }
+  return file_id;
+}
+
+int
+cl_f::own_opened(FILE *f, chars mode)
+{
+  use_opened(f, mode);
+  own= true;
+  return file_id;
+}
+
+int
+cl_f::open(char *fn)
+{
+  close();
+  if (fn)
+    file_name= fn;
+  return init();
+}
+
+
+int
+cl_f::open(char *fn, char *mode)
+{
+  close();
+  if (mode)
+    file_mode= mode;
+  if (fn)
+    file_name= fn;
+  return init();
 }
 
 void
@@ -297,7 +313,8 @@ cl_f::input_avail(void)
 
   if (file_id<0)
     return 0;
-  if (!tty)
+  if (!tty &&
+      (server_port < 0))
     return 1;
   
   FD_ZERO(&s);
@@ -306,7 +323,12 @@ cl_f::input_avail(void)
   //printf("select(%d)=%d: (%d) %s\n",file_id,i,errno,strerror(errno));
   if (i >= 0)
     {
-      return FD_ISSET(file_id, &s);
+      int ret= FD_ISSET(file_id, &s);
+      if (ret)
+	{
+	  printf("input_avail on file_id=%d (server_port=%d)\n", file_id, server_port);
+	}
+      return ret;
     }
   return 0;
 }

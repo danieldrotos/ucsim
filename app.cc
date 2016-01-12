@@ -156,18 +156,19 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
-	      sim->step();
               //if ((!input_check_skip) && (commander->input_avail()))
 	      if (dnow() - input_last_checked > 0.3)
 		{
 		  input_last_checked= dnow();
 		  if (commander->input_avail())
 		    {
+		      printf("app::run found input while sim is going\n");
 		      done= commander->proc_input();
 		      // run a few steps before checking for more input
 		      ++input_check_skip;
 		    }
                 }
+	      sim->step();
             }
           else
             {

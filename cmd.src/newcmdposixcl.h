@@ -40,7 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_console: public cl_console_base
 {
-protected:
+public:
   //FILE *in/*, *out, *rout*//*redirected output*/;
   cl_f *fin, *fout, *frout;
   
@@ -59,7 +59,7 @@ public:
   virtual UCSOCKET_T get_in_fd(void) { return(fin ? (fin->file_id) : -1); }
   virtual bool is_tty(void) const { return fin && (fin->tty); }
   virtual bool is_eof(void) const { return fin ? (fin->eof()) : true; }
-  virtual bool input_avail(void) { return input_active() ? (fin->input_avail()) : false; };
+  virtual bool input_avail(void);// { return input_active() ? (fin->input_avail()) : false; };
   virtual char *read_line(void);
 
 private:

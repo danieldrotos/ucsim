@@ -49,11 +49,13 @@ class cl_f: public cl_base
   cl_f(int the_server_port);
   virtual ~cl_f(void);
   virtual int init(void);
-  virtual int init(FILE *f, chars mode);
   virtual int open(void) { return init(); }
   virtual int open(char *fn);
   virtual int open(char *fn, char *mode);
   virtual int use_opened(int opened_file_id, char *mode);
+  virtual int own_opened(int opened_file_id, char *mode);
+  virtual int use_opened(FILE *f, chars mode);
+  virtual int own_opened(FILE *f, chars mode);
   virtual void changed(void);
   virtual int close(void);
   virtual int stop_use(void);

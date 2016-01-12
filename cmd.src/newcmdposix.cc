@@ -225,6 +225,19 @@ cl_console::cmd_do_print(const char *format, va_list ap)
  * Input functions
  */
 
+bool
+cl_console::input_avail(void)
+{
+  bool ret= false;
+  if (input_active())
+    {
+      ret= fin->input_avail();
+      if (ret)
+	printf("input on console cons_id=%d file_id=%d\n", id, fin->file_id);
+    }
+  return ret;
+}
+
 char *
 cl_console::read_line(void)
 {
@@ -274,6 +287,7 @@ cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
                 serverport, strerror(errno));
 		}*/
   fin= mk_srv(serverport);
+  printf("Server listening on cons_id=%d port %d, fileid=%d\n", id, serverport, fin->file_id);
   fout= frout= 0;
 }
 
@@ -285,8 +299,8 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   struct sockaddr_in sock_addr;
   class cl_commander_base *cmd;
   cl_f *in, *out;
-
-  //printf("input on listen console\n");
+  
+  printf("proc_input on listen console cons_id=%d file_id=%d\n", id, fin->file_id);
   cmd= app->get_commander();
   size= sizeof(struct sockaddr);
   newsock= accept(fin->file_id, (struct sockaddr*)&sock_addr, &size);
@@ -295,6 +309,7 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
       perror("accept");
       return(0);
     }
+  printf("Accept new_socket=%d\n", newsock);
   srv_accept(fin->server_port, newsock, &in, &out);
   
   class cl_console_base *c= new cl_console(in, out, app);
@@ -451,7 +466,10 @@ cl_commander::input_avail(void)
       if (c->input_active())
 	{
 	  if (c->input_avail())
-	    return true;
+	    {
+	      printf("commander::input_avail found input on cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
+	      return true;
+	    }
 	}
     }
   return false;
@@ -469,6 +487,7 @@ cl_commander::wait_input(void)
   active_set = read_set;
   while (!input_avail())
     ;
+  printf("commander::wait_input found something\n");
   return 0;
   int i = select(fd_num, &active_set, NULL, NULL, NULL);
   return i;
@@ -490,6 +509,7 @@ cl_commander::proc_input(void)
 	  if (c->input_avail())
             {
               actual_console = c;
+	      printf("commander::proc_input of cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
               int retval = c->proc_input(cmdset);
               if (retval)
                 {

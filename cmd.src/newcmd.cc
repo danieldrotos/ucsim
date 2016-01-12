@@ -119,6 +119,16 @@ cl_debug_option::option_changed(void)
  *____________________________________________________________________________
  */
 
+cl_console_base::cl_console_base(void):
+  cl_base()
+{
+  app= 0;
+  flags= 0;
+  prompt= 0;
+  nl= 0;
+  lbuf= 0;
+}
+
 int
 cl_console_base::init(void)
 {
@@ -283,6 +293,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 {
   int retval = 0;
 
+  printf("processing input of cons_id=%d\n", id);
   un_redirect();
   if (is_eof())
     {

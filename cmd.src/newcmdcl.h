@@ -106,8 +106,11 @@ protected:
   class cl_cmd *last_command;
   class cl_cmdline *last_cmdline;
 
+  char nl;
+  chars lbuf;
+  
 public:
-  cl_console_base(void): cl_base() { app = 0; flags = 0; prompt = 0; }
+  cl_console_base(void);
 
   virtual class cl_console_base *clone_for_exec(char *fin) = 0;
 

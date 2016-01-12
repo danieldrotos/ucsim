@@ -102,6 +102,27 @@ int
 srv_accept(int server_port, int new_sock,
 	   class cl_f **fin, class cl_f **fout)
 {
+  class cl_io *io;
+  if (fin)
+    {
+      io= new cl_io();
+      if (new_sock > 0)
+	{
+	  io->own_opened(new_sock, cchars("r"));
+	}
+      *fin= io;
+    }
+  
+  if (fout)
+    {
+      io= new cl_io();
+      if (new_sock > 0)
+	{
+	  io->use_opened(new_sock, cchars("w"));
+	}
+      *fout= io;
+    }
+
   return 0;
 }
 

@@ -142,7 +142,7 @@ cl_io::input_avail(void)
 void
 cl_io::changed(void)
 {
-  //printf("win_f changed\n");
+  printf("win_f changed\n");
   if (file_id < 0)
     {
       // CLOSE
@@ -159,17 +159,17 @@ cl_io::changed(void)
   // OPEN
   if (server_port > 0)
     {
-      //printf("win socket id=%d\n", file_id);
+      printf("win opened socket id=%d\n", file_id);
       handle= (void*)file_id;
       type= CH_SOCKET;
     }
   else
     {
-      //printf("win opened file id=%d\n", file_id);
       handle= (HANDLE)_get_osfhandle(file_id);
       type= get_handle_type();
-      //printf("win handle=%p type=%d\n", handle, type);
     }
+  printf("win opened file id=%d\n", file_id);
+  printf("win handle=%p type=%d\n", handle, type);
 }
 
 
@@ -259,19 +259,22 @@ int
 srv_accept(int server_port, int new_sock,
 	   class cl_f **fin, class cl_f **fout)
 {
+  class cl_io *io;
   //printf("win srv_accept(port=%d,sock=%d)\n", server_port, new_sock);
+  int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
+  printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
   if (fin)
     {
-      class cl_io *io= new cl_io();
+      io= new cl_io();
       if (new_sock > 0)
 	{
-	  int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
 	  if (fh > 0)
 	    {
 	      FILE *f= fdopen(fh, "r");
 	      //printf("fdopened f=%p for fh=%d as input\n", f, fh);
-	      io->init(f, cchars("r"));
+	      io->own_opened(f, cchars("r"));
 	      io->type= CH_SOCKET;
+	      io->server_port= server_port;
 	    }
 	}
       *fin= io;
@@ -279,16 +282,17 @@ srv_accept(int server_port, int new_sock,
 
   if (fout)
     {
-      class cl_io *io= new cl_io();
+      io= new cl_io();
       if (new_sock > 0)
 	{
-	  int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
+	  //int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
 	  if (fh > 0)
 	    {
 	      FILE *f= fdopen(fh, "w");
 	      //printf("fdopened f=%p for fh=%d as output\n", f, fh);
-	      io->init(f, cchars("w"));
+	      io->use_opened(f, cchars("w"));
 	      io->type= CH_SOCKET;
+	      io->server_port= server_port;
 	    }
 	}
       *fout= io;
