@@ -295,16 +295,7 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
       perror("accept");
       return(0);
     }
-  /*
-  in= new cl_f();
-  if (in->use_opened(newsock, cchars("r")) < 0)
-    fprintf(stderr, "cannot open port for input\n");
-  out= new cl_f();
-  if (out->use_opened(newsock, cchars("w")) < 0)
-    fprintf(stderr, "cannot open port for output\n");
-  */
   srv_accept(fin->server_port, newsock, &in, &out);
-  //printf("listener got in=%p out=%p\n", in, out);
   
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;

@@ -359,17 +359,8 @@ cl_serial::tick(int cycles)
       if (i > 0 &&
       	  FD_ISSET(fileno(serial_in), &set))
       */
-#ifdef _WIN32
-      /*
-      HANDLE handle = (HANDLE)_get_osfhandle(fin->file_id);
-      assert(INVALID_HANDLE_VALUE != handle);
-      */
-      //if (input_avail(handle))
       if (fin->input_avail())
-#else
-	if (fin->input_avail())
-#endif
-	  {
+	{
 	  s_receiving= DD_TRUE;
 	  s_rec_bit= 0;
 	  s_rec_tick= /*uc51->*/s_rec_t1= 0;

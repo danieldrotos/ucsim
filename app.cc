@@ -36,12 +36,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
 #endif
-#ifdef _WIN32
-# include <winsock2.h>
-		  //# define SOCKET_AVAIL
-#elif defined HAVE_SYS_SOCKET_H
-#include <sys/socket.h>
-#endif
 #include <ctype.h>
 #include <errno.h>
 #include "i_string.h"
@@ -62,12 +56,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "showcl.h"
 #include "getcl.h"
 #include "setcl.h"
-#ifdef _WIN32
-		  //#include "newcmdwin32cl.h"
 #include "newcmdposixcl.h"
-#else
-#include "newcmdposixcl.h"
-#endif
 
 
 /*
