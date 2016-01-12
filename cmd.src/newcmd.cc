@@ -300,9 +300,14 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
       dd_printf("End\n");
       return 1;
     }
-  char *cmdstr = read_line();
-  if (!cmdstr)
+  char *cmdstr;
+  if (!read_line())
     return 1;
+  cmdstr= lbuf;
+  printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
+  if ((cmdstr==NULL) ||
+      (strlen(cmdstr) == 0))
+    return 0;
   if (flags & CONS_FROZEN)
     {
       app->get_sim()->stop(resUSER);
@@ -366,7 +371,8 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   un_redirect();
   /*if (!retval)
     print_prompt();*/
-  free(cmdstr);
+  //free(cmdstr);
+  lbuf= 0;
   return(retval);
 }
 

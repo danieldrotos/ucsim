@@ -120,7 +120,7 @@ public:
   virtual bool is_tty(void) const = 0;
   virtual bool is_eof(void) const = 0;
   virtual bool input_avail(void) = 0;
-  virtual char *read_line(void) = 0;
+  virtual bool read_line(void) = 0;
 
   virtual int init(void);
   virtual void welcome(void);

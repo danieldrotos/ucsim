@@ -238,11 +238,48 @@ cl_console::input_avail(void)
   return ret;
 }
 
-char *
+bool
 cl_console::read_line(void)
 {
-#define BUF_LEN 1024
+  int i= 0, n= 0, p= 0;
+  char b[100], c;
 
+  while (input_avail())
+    {
+      i= fin->read(&c, 1);
+      if (i==0)
+	{
+	  if (n==0)
+	    return false;
+	  if (p)
+	    lbuf+= b;
+	  return true;
+	}
+      printf("cons_id=%d read c=%c (n=%d)\n", id, c, n);
+      n++;
+      if ((c == '\n') ||
+	  (c == '\r'))
+	{
+	  if (nl == 0)
+	    nl= c;
+	  else if (c != nl)
+	    continue;
+	  if (p)
+	    lbuf+= b;
+	  return true;
+	}
+      b[p++]= c;
+      b[p]= 0;
+      if (p>98)
+	{
+	  lbuf+= b;
+	  p= 0;
+	}
+    }
+  if (p)
+    lbuf+= b;
+  return true;
+#define BUF_LEN 1024
   char *s= NULL;
 
 #ifdef HAVE_GETLINE

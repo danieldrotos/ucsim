@@ -238,14 +238,18 @@ cl_f::~cl_f(void)
 int
 cl_f::read(char *buf, int max)
 {
-  return ::read(file_id, buf, max);
+  if (file_id >= 0)
+    return ::read(file_id, buf, max);
+  return -1;
 }
 
 
 int
 cl_f::write(char *buf, int count)
 {
-  return ::write(file_id, buf, count);
+  if (file_id >= 0)
+    return ::write(file_id, buf, count);
+  return -1;
 }
 
 
