@@ -193,6 +193,7 @@ cl_sim::stop(int reason)
 				       (dt*(1/uc->xtal)) / (dnow() - start_at));
       //if (cmd->actual_console != cmd->frozen_console)
       cmd->frozen_console->flags&= ~CONS_FROZEN;
+      //cmd->frozen_console->dd_printf("_s_");
       cmd->frozen_console->print_prompt();
       cmd->frozen_console= 0;
     }

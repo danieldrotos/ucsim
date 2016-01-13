@@ -291,7 +291,7 @@ cl_console_base::input_active(void) const
 int
 cl_console_base::proc_input(class cl_cmdset *cmdset)
 {
-  int retval= 0, i;
+  int retval= 0, i, do_print_prompt= 1;
 
   //printf("processing input of cons_id=%d\n", id);
   un_redirect();
@@ -315,6 +315,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
       app->get_sim()->stop(resUSER);
       flags&= ~CONS_FROZEN;
       retval = 0;
+      do_print_prompt= 0;
     }
   else
     {
@@ -372,8 +373,12 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   //retval= sim->do_cmd(cmd, this);
   un_redirect();
   if (!retval &&
-      cmdstr)
-    print_prompt();
+      cmdstr &&
+      do_print_prompt)
+    {
+      //dd_printf("_c_");
+      print_prompt();
+    }
   //free(cmdstr);
   lbuf= 0;
   return(retval);
@@ -422,6 +427,7 @@ void
 cl_commander_base::activate_console(class cl_console_base *console)
 {
   console->flags&= ~CONS_INACTIVE;
+  //console->dd_printf("_a_");
   console->print_prompt();
   set_fd_set();
 }
@@ -454,19 +460,7 @@ cl_commander_base::all_printf(const char *format, ...)
   return(ret);
 }
 
-/*
-void
-cl_commander_base::prompt(void)
-{
-  int i;
 
-  for (i= 0; i < cons->count; i++)
-    {
-      class cl_console_base *c= (class cl_console_base*)(cons->at(i));
-      c->print_prompt();
-    }
-}
-*/
 /*
  * Printing to actual_console
  */
