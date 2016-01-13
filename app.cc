@@ -176,6 +176,8 @@ cl_app::run(void)
                 }
 	      sim->step();
             }
+	  if (sim->state & SIM_QUIT)
+	    done= 1;
 	}
     }
   return(0);

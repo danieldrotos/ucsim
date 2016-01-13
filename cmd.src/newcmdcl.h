@@ -47,14 +47,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 // Flags of consoles
-#define CONS_NONE        0
-#define CONS_DEBUG       0x01   // Print debug messages on this console
-#define CONS_FROZEN      0x02   // Console is frozen (g command issued)
-#define CONS_PROMPT      0x04   // Prompt is out, waiting for input
-#define CONS_INTERACTIVE 0x08   // Interactive console
-#define CONS_NOWELCOME   0x10   // Do not print welcome message
-#define CONS_INACTIVE    0x20   // Do not do any action
-#define CONS_ECHO        0x40   // Echo commands
+enum con_flags {
+  CONS_NONE        = 0,
+  CONS_DEBUG       = 0x01,   // Print debug messages on this console
+  CONS_FROZEN      = 0x02,   // Console is frozen (g command issued)
+  CONS_INTERACTIVE = 0x08,   // Interactive console
+  CONS_NOWELCOME   = 0x10,   // Do not print welcome message
+  CONS_INACTIVE    = 0x20,   // Do not do any action
+  CONS_ECHO        = 0x40    // Echo commands
+};
 
 #define SY_ADDR         'a'
 #define ADDRESS         "a"
@@ -120,7 +121,7 @@ public:
   virtual bool is_tty(void) const = 0;
   virtual bool is_eof(void) const = 0;
   virtual bool input_avail(void) = 0;
-  virtual bool read_line(void) = 0;
+  virtual int read_line(void) = 0;
 
   virtual int init(void);
   virtual void welcome(void);

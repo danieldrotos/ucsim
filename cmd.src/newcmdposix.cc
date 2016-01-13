@@ -155,7 +155,7 @@ cl_console::~cl_console(void)
   un_redirect();
   if (fout)
     {
-      if (flags & CONS_PROMPT)
+      //if (flags & CONS_PROMPT)
         fprintf(fout->file_f, "\n");
       fflush(fout->file_f);
       delete fout;
@@ -238,7 +238,7 @@ cl_console::input_avail(void)
   return ret;
 }
 
-bool
+int
 cl_console::read_line(void)
 {
   int i= 0, n= 0, p= 0;
@@ -251,37 +251,37 @@ cl_console::read_line(void)
 	{
 	  if (n==0)
 	    {
-	      //printf("readline file_id=%d detected eof\n", fin->file_id);
-	      return false;
+	      printf("readline file_id=%d detected eof\n", fin->file_id);
+	      return -1;
 	    }
 	  if (p)
 	    lbuf+= b;
-	  //printf("readline file_id=%d got nothing, return \"%s\"\n", fin->file_id, (char*)lbuf);
-	  return true;
+	  printf("readline file_id=%d got nothing, return \"%s\"\n", fin->file_id, (char*)lbuf);
+	  return 0;
 	}
       if (i < 0)
 	{
-	  //printf("readline file_id=%d error, return nothing\n", fin->file_id);
+	  printf("readline file_id=%d error, return nothing\n", fin->file_id);
 	  lbuf= 0;
-	  return true;
+	  return 0;
 	}
-      //printf("cons_id=%d read c=%c (n=%d)\n", id, c, n);
+      printf("cons_id=%d read c=%c (n=%d)\n", id, c, n);
       n++;
       if ((c == '\n') ||
 	  (c == '\r'))
 	{
-	  //printf("readline file_id=%d got nl=%d (nl=%d)\n", fin->file_id, c, nl);
+	  printf("readline file_id=%d got nl=%d (nl=%d)\n", fin->file_id, c, nl);
 	  if (nl == 0)
 	    nl= c;
 	  else if (c != nl)
 	    {
-	      //printf("readline file_id=%d continue next\n", fin->file_id);
+	      printf("readline file_id=%d continue next\n", fin->file_id);
 	      continue;
 	    }
 	  if (p)
 	    lbuf+= b;
-	  //printf("readline file_id=%d got line end, return \"%s\"\n", fin->file_id, (char*)lbuf);
-	  return true;
+	  printf("readline file_id=%d got line end, return \"%s\"\n", fin->file_id, (char*)lbuf);
+	  return 1;
 	}
       b[p++]= c;
       b[p]= 0;
@@ -293,8 +293,9 @@ cl_console::read_line(void)
     }
   if (p)
     lbuf+= b;
-  //printf("readline file_id=%d no more input, return \"%s\"\n", fin->file_id, (char*)lbuf);
-  return true;
+  printf("readline file_id=%d no more input, return \"%s\"\n", fin->file_id, (char*)lbuf);
+  return 0;
+  /*
 #define BUF_LEN 1024
   char *s= NULL;
 
@@ -320,8 +321,8 @@ cl_console::read_line(void)
   s[strlen(s)-1]= '\0';
   if (s[strlen(s)-1] == '\r')
     s[strlen(s)-1]= '\0';
-  flags&= ~CONS_PROMPT;
-  return(s);
+  //flags&= ~CONS_PROMPT;
+  return(s);*/
 }
 
 

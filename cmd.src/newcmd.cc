@@ -141,8 +141,8 @@ cl_console_base::init(void)
   debug_option= new cl_debug_option(this);
   debug_option->init();
   welcome();
-  flags&= ~CONS_PROMPT;
-  //print_prompt();
+  //flags&= ~CONS_PROMPT;
+  print_prompt();
   last_command= 0;
   last_cmdline= 0;
   return(0);
@@ -165,10 +165,10 @@ cl_console_base::welcome(void)
 void
 cl_console_base::print_prompt(void)
 {
-  if (flags & (CONS_PROMPT | CONS_FROZEN | CONS_INACTIVE))
+  if (flags & (/*CONS_PROMPT |*/ CONS_FROZEN | CONS_INACTIVE))
     return;
 
-  flags |= CONS_PROMPT;
+  //flags |= CONS_PROMPT;
   if (/*app->args->arg_avail('P')*/null_prompt_option->get_value(bool(0)))
     {
       dd_printf("%c", 0);
@@ -291,7 +291,7 @@ cl_console_base::input_active(void) const
 int
 cl_console_base::proc_input(class cl_cmdset *cmdset)
 {
-  int retval = 0;
+  int retval= 0, i;
 
   //printf("processing input of cons_id=%d\n", id);
   un_redirect();
@@ -301,13 +301,15 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
       return 1;
     }
   char *cmdstr;
-  if (!read_line())
+  i= read_line();
+  if (i < 0)
     return 1;
-  cmdstr= lbuf;
-  //printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
-  if ((cmdstr==NULL) ||
-      (strlen(cmdstr) == 0))
+  if (i == 0)
     return 0;
+  cmdstr= lbuf;
+  printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
+  if (cmdstr==NULL)
+    cmdstr= (char*)"";
   if (flags & CONS_FROZEN)
     {
       app->get_sim()->stop(resUSER);
@@ -369,7 +371,8 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
     }
   //retval= sim->do_cmd(cmd, this);
   un_redirect();
-  if (!retval)
+  if (!retval &&
+      cmdstr)
     print_prompt();
   //free(cmdstr);
   lbuf= 0;

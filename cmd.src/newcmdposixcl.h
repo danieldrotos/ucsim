@@ -60,7 +60,7 @@ public:
   virtual bool is_tty(void) const { return fin && (fin->tty); }
   virtual bool is_eof(void) const { return fin ? (fin->eof()) : true; }
   virtual bool input_avail(void);// { return input_active() ? (fin->input_avail()) : false; };
-  virtual bool read_line(void);
+  virtual int read_line(void);
 
 private:
   //FILE *get_out(void) { return rout ? rout : out; }
