@@ -114,7 +114,7 @@ cl_app::cl_app(void)
   sim= 0;
   in_files= new cl_ustrings(2, 2, "input files");
   options= new cl_options();
-  going= 1;
+  //going= 1;
 }
 
 cl_app::~cl_app(void)
@@ -149,10 +149,16 @@ cl_app::run(void)
   unsigned  input_check_skip = 0;
   double input_last_checked= 0;
   
-  while (!done &&
-         going)
+  while (!done/* &&
+		 going*/)
     {
-      if (sim)
+      if (!sim ||
+	  !(sim->state & SIM_GO))
+	{
+	  commander->wait_input();
+	  done= commander->proc_input();
+	}
+      else
         {
           if (sim->state & SIM_GO)
             {
@@ -162,7 +168,7 @@ cl_app::run(void)
 		  input_last_checked= dnow();
 		  if (commander->input_avail())
 		    {
-		      printf("app::run found input while sim is going\n");
+		      //printf("app::run found input while sim is going\n");
 		      done= commander->proc_input();
 		      // run a few steps before checking for more input
 		      ++input_check_skip;
@@ -170,16 +176,6 @@ cl_app::run(void)
                 }
 	      sim->step();
             }
-          else
-            {
-	      commander->wait_input();
-	      done= commander->proc_input();
-	    }
-	}
-      else
-	{
-	  commander->wait_input();
-	  done= commander->proc_input();
 	}
     }
   return(0);

@@ -33,7 +33,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pobjcl.h"
 
 
-/* Regular file */
+enum file_type {
+  F_UNKNOWN,
+  F_FILE,
+  F_CHAR,
+  F_SOCKET,
+  F_CONSOLE, // win only
+  F_SERIAL // win only
+};
+
+
+/* General file */
 
 class cl_f: public cl_base
 {
@@ -43,19 +53,21 @@ class cl_f: public cl_base
   int file_id;
   bool tty;
   bool own;
+  enum file_type type;
  public:
   cl_f(void);
   cl_f(chars fn, chars mode);
   cl_f(int the_server_port);
   virtual ~cl_f(void);
   virtual int init(void);
-  virtual int open(void) { return init(); }
+  //virtual int open(void) { return init(); }
   virtual int open(char *fn);
   virtual int open(char *fn, char *mode);
   virtual int use_opened(int opened_file_id, char *mode);
   virtual int own_opened(int opened_file_id, char *mode);
   virtual int use_opened(FILE *f, chars mode);
   virtual int own_opened(FILE *f, chars mode);
+  virtual enum file_type determine_type(void)= 0;
   virtual void changed(void);
   virtual int close(void);
   virtual int stop_use(void);
@@ -72,7 +84,7 @@ class cl_f: public cl_base
   
   virtual int raw(void);
   virtual int cooked(void);
-  virtual int input_avail(void);
+  virtual int input_avail(void)= 0;
 
  public:
   int server_port;
@@ -91,6 +103,7 @@ extern class cl_f *cp_io(FILE *f, chars mode);
 extern class cl_f *mk_srv(int server_port);
 extern int srv_accept(int server_port, int new_sock,
 		      class cl_f **fin, class cl_f **fout);
+extern void msleep(int msec);
 
 
 #endif

@@ -170,7 +170,7 @@ public:
   void activate_console(class cl_console_base *console);
   void deactivate_console(class cl_console_base *console);
 
-  void prompt(void);
+  //void prompt(void);
   int all_printf(const char *format, ...);        // print to all consoles
   int dd_printf(const char *format, va_list ap);  // print to actual_console
   int dd_printf(const char *format, ...);         // print to actual_console

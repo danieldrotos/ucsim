@@ -70,7 +70,7 @@ all: checkconf libs
 
 libs: libucsimutil.a
 
-main_app: checkconf ucsim_app ftest_app
+main_app: checkconf ucsim_app
 
 # Compiling and installing everything and runing test
 # ---------------------------------------------------

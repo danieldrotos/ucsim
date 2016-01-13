@@ -293,7 +293,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 {
   int retval = 0;
 
-  printf("processing input of cons_id=%d\n", id);
+  //printf("processing input of cons_id=%d\n", id);
   un_redirect();
   if (is_eof())
     {
@@ -304,7 +304,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   if (!read_line())
     return 1;
   cmdstr= lbuf;
-  printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
+  //printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
   if ((cmdstr==NULL) ||
       (strlen(cmdstr) == 0))
     return 0;
@@ -369,8 +369,8 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
     }
   //retval= sim->do_cmd(cmd, this);
   un_redirect();
-  /*if (!retval)
-    print_prompt();*/
+  if (!retval)
+    print_prompt();
   //free(cmdstr);
   lbuf= 0;
   return(retval);
@@ -419,7 +419,7 @@ void
 cl_commander_base::activate_console(class cl_console_base *console)
 {
   console->flags&= ~CONS_INACTIVE;
-  //console->print_prompt();
+  console->print_prompt();
   set_fd_set();
 }
 
@@ -451,6 +451,7 @@ cl_commander_base::all_printf(const char *format, ...)
   return(ret);
 }
 
+/*
 void
 cl_commander_base::prompt(void)
 {
@@ -462,7 +463,7 @@ cl_commander_base::prompt(void)
       c->print_prompt();
     }
 }
-
+*/
 /*
  * Printing to actual_console
  */

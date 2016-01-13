@@ -9,12 +9,24 @@
 #include <fcntl.h>
 
 
-enum e_handle_type
-cl_io::get_handle_type()
+cl_io::cl_io(): cl_f()
 {
-  DWORD file_type = GetFileType(handle);
+}
 
-  switch (file_type)
+cl_io::cl_io(chars fn, chars mode): cl_f(fn, mode)
+{
+}
+
+cl_io::cl_io(int the_server_port): cl_f(the_server_port)
+{
+}
+
+enum file_type
+cl_io::determine_type()
+{
+  DWORD _file_type = GetFileType(handle);
+
+  switch (_file_type)
     {
     case FILE_TYPE_CHAR:
       {
@@ -25,25 +37,25 @@ cl_io::get_handle_type()
             switch (GetLastError())
               {
               case ERROR_INVALID_HANDLE:
-                return CH_CONSOLE;
+                return F_CONSOLE;
 		
               case ERROR_INVALID_FUNCTION:
                 /*
-                 * In case of NUL device return type CH_FILE.
+                 * In case of NUL device return type F_FILE.
                  * Is this the correct way to test it?
                  */
-                return CH_FILE;
+                return F_FILE;
 
               default:
                 //assert(false);
-		return CH_UNDEF;
+		return F_UNKNOWN;
               }
           }
       }
-      return CH_SERIAL;
+      return F_SERIAL;
 
     case FILE_TYPE_DISK:
-      return CH_FILE;
+      return F_FILE;
     }
 
   char sockbuf[256];
@@ -51,22 +63,22 @@ cl_io::get_handle_type()
 
   if (SOCKET_ERROR != getsockopt((SOCKET)handle, SOL_SOCKET, SO_TYPE, sockbuf, &optlen) ||
       WSAENOTSOCK != WSAGetLastError())
-    return CH_SOCKET;
+    return F_SOCKET;
 
   //assert(false);
-  return CH_UNDEF;
+  return F_UNKNOWN;
 }
 
 int
 cl_io::input_avail(void)
 {
-  //e_handle_type type= CH_UNDEF;
-  //if (CH_UNDEF == type)
+  //e_handle_type type= F_UNKNOWN;
+  //if (F_UNKNOWN == type)
   //type = get_handle_type();
 
   switch (type)
     {
-    case CH_SOCKET:
+    case F_SOCKET:
       {
         struct timeval tv = {0, 0};
 	
@@ -83,10 +95,10 @@ cl_io::input_avail(void)
         return ret != SOCKET_ERROR && ret != 0;
       }
 
-    case CH_FILE:
+    case F_FILE:
       return true;
 
-    case CH_CONSOLE:
+    case F_CONSOLE:
       {
         PINPUT_RECORD pIRBuf;
         DWORD NumPending;
@@ -122,7 +134,7 @@ cl_io::input_avail(void)
         return false;
       }
       
-    case CH_SERIAL:
+    case F_SERIAL:
       {
         DWORD err;
         COMSTAT comStat;
@@ -142,34 +154,34 @@ cl_io::input_avail(void)
 void
 cl_io::changed(void)
 {
-  printf("win_f changed\n");
+  //printf("win_f changed\n");
   if (file_id < 0)
     {
       // CLOSE
-      if (CH_SOCKET == type)
+      if (F_SOCKET == type)
 	{
 	  shutdown((SOCKET)handle, SD_BOTH);
 	  closesocket((SOCKET)handle);
 	}
       handle= INVALID_HANDLE_VALUE;
-      type= CH_UNDEF;
+      type= F_UNKNOWN;
       return;
     }
 
   // OPEN
   if (server_port > 0)
     {
-      printf("win opened socket id=%d\n", file_id);
+      //printf("win opened socket id=%d\n", file_id);
       handle= (void*)file_id;
-      type= CH_SOCKET;
+      type= F_SOCKET;
     }
   else
     {
       handle= (HANDLE)_get_osfhandle(file_id);
-      type= get_handle_type();
+      type= determine_type();
     }
-  printf("win opened file id=%d\n", file_id);
-  printf("win handle=%p type=%d\n", handle, type);
+  //printf("win opened file id=%d\n", file_id);
+  //printf("win handle=%p type=%d\n", handle, type);
 }
 
 
@@ -262,7 +274,7 @@ srv_accept(int server_port, int new_sock,
   class cl_io *io;
   //printf("win srv_accept(port=%d,sock=%d)\n", server_port, new_sock);
   int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
-  printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
+  //printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
   if (fin)
     {
       io= new cl_io();
@@ -273,7 +285,7 @@ srv_accept(int server_port, int new_sock,
 	      FILE *f= fdopen(fh, "r");
 	      //printf("fdopened f=%p for fh=%d as input\n", f, fh);
 	      io->own_opened(f, cchars("r"));
-	      io->type= CH_SOCKET;
+	      io->type= F_SOCKET;
 	      io->server_port= server_port;
 	    }
 	}
@@ -291,7 +303,7 @@ srv_accept(int server_port, int new_sock,
 	      FILE *f= fdopen(fh, "w");
 	      //printf("fdopened f=%p for fh=%d as output\n", f, fh);
 	      io->use_opened(f, cchars("w"));
-	      io->type= CH_SOCKET;
+	      io->type= F_SOCKET;
 	      io->server_port= server_port;
 	    }
 	}
@@ -299,6 +311,12 @@ srv_accept(int server_port, int new_sock,
     }
 
   return 0;
+}
+
+void
+msleep(int msec)
+{
+  Sleep(msec);
 }
 
 

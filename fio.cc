@@ -83,7 +83,7 @@ cl_f::init(void)
   if (server_port > 0)
     {
       file_id= make_server_socket(server_port);
-      printf("cl_f::init srv_port=%d file_id=%d\n", server_port, file_id);
+      //printf("cl_f::init srv_port=%d file_id=%d\n", server_port, file_id);
       listen(file_id, 50);
       own= true;
       tty= false;
@@ -174,7 +174,6 @@ cl_f::open(char *fn)
   return init();
 }
 
-
 int
 cl_f::open(char *fn, char *mode)
 {
@@ -189,6 +188,10 @@ cl_f::open(char *fn, char *mode)
 void
 cl_f::changed(void)
 {
+  if (file_id < 0)
+    type= F_UNKNOWN;
+  else
+    type= determine_type();
 }
 
 int
@@ -239,7 +242,12 @@ int
 cl_f::read(char *buf, int max)
 {
   if (file_id >= 0)
-    return ::read(file_id, buf, max);
+    {
+      if (input_avail())
+	return ::read(file_id, buf, max);
+      else
+	return -1;
+    }
   return -1;
 }
 
@@ -304,36 +312,6 @@ cl_f::raw(void)
 int
 cl_f::cooked(void)
 {
-  return 0;
-}
-
-
-int
-cl_f::input_avail(void)
-{
-  struct timeval tv= { 0, 0 };
-  fd_set s;
-  int i;
-
-  if (file_id<0)
-    return 0;
-  if (!tty &&
-      (server_port < 0))
-    return 1;
-  
-  FD_ZERO(&s);
-  FD_SET(file_id, &s);
-  i= select(FD_SETSIZE, &s, NULL, NULL, &tv);
-  //printf("select(%d)=%d: (%d) %s\n",file_id,i,errno,strerror(errno));
-  if (i >= 0)
-    {
-      int ret= FD_ISSET(file_id, &s);
-      if (ret)
-	{
-	  printf("input_avail on file_id=%d (server_port=%d)\n", file_id, server_port);
-	}
-      return ret;
-    }
   return 0;
 }
 

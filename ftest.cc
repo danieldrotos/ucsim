@@ -14,7 +14,7 @@ regular_ftest(char *fn)
 
   printf("Testing regular file access: %s\n", fn);
   printf("Write test\n");
-  f= new cl_f(fn, cchars("w"));
+  f= mk_io(fn, cchars("w"));
   f->init();
   f->write_str("proba\n");
 
@@ -39,7 +39,7 @@ regular_ftest(char *fn)
 void
 stdin_ftest()
 {
-  class cl_f *f= new cl_f();
+  class cl_f *f= mk_io(NULL, chars(""));
   char buf[100];
   int i, p= 0, done= 0;
 

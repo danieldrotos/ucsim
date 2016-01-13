@@ -7,31 +7,122 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 #endif
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <time.h>
 
 #include "fuiocl.h"
 
+
+cl_io::cl_io(): cl_f()
+{
+}
+
+cl_io::cl_io(chars fn, chars mode): cl_f(fn, mode)
+{
+}
+
+cl_io::cl_io(int the_server_port): cl_f(the_server_port)
+{
+}
 
 int
 cl_io::close(void)
 {
   int i= 0;
 
-  if (server_port)
+  if (type == F_SOCKET)
     {
       shutdown(file_id, 2/*SHUT_RDWR*/);
     }
+  
   if (file_f)
     {
       i= fclose(file_f);
     }
+  else if (file_id > 0)
+    i= ::close(file_id);
+
   file_f= NULL;
   file_id= -1;
   own= false;
   file_name= 0;
   file_mode= 0;
+
   changed();
   return i;
 }
+
+enum file_type
+cl_io::determine_type(void)
+{
+  int i;
+  struct stat s;
+  
+  if (file_id < 0)
+    return F_UNKNOWN;
+  i= fstat(file_id, &s);
+  if (i < 0)
+    return F_UNKNOWN;
+
+  if (S_ISDIR(s.st_mode) ||
+      S_ISLNK(s.st_mode))
+    return F_UNKNOWN;
+  if (S_ISCHR(s.st_mode) ||
+      S_ISFIFO(s.st_mode))
+    return F_CHAR;
+  if (S_ISBLK(s.st_mode) ||
+      S_ISREG(s.st_mode))
+    return F_FILE;
+  if (S_ISSOCK(s.st_mode))
+    return F_SOCKET;
+  return F_UNKNOWN;
+}
+
+int
+cl_io::input_avail(void)
+{
+  struct timeval tv= { 0, 0 };
+  fd_set s;
+  int i;
+
+  //printf("fio::input_avail(file_id=%d,server_port=%d)\n", file_id, server_port);
+  if (file_id<0)
+    {
+      //printf("fio::input_avail = no file, false\n");
+      return 0;
+    }
+  switch (type)
+    {
+    case F_UNKNOWN:
+    case F_CONSOLE:
+    case F_SERIAL:
+      return false;
+      break;
+    case F_FILE:
+      return 1;
+      break;
+    case F_CHAR:
+    case F_SOCKET:
+      FD_ZERO(&s);
+      FD_SET(file_id, &s);
+      i= select(/*FD_SETSIZE*/file_id+1, &s, NULL, NULL, &tv);
+      //printf("select(%d)=%d: (%d) %s\n",file_id,i,errno,strerror(errno));
+      if (i >= 0)
+	{
+	  int ret= FD_ISSET(file_id, &s);
+	  if (ret)
+	    {
+	      //printf("fio::input_avail(file_id=%d,server_port=%d) TRUE\n", file_id, server_port);
+	    }
+	  return ret;
+	}
+      break;
+    }
+  return 0;
+}
+
 
 int
 make_server_socket(int port)
@@ -105,7 +196,7 @@ srv_accept(int server_port, int new_sock,
   class cl_io *io;
   if (fin)
     {
-      io= new cl_io();
+      io= new cl_io(server_port);
       if (new_sock > 0)
 	{
 	  io->own_opened(new_sock, cchars("r"));
@@ -115,7 +206,7 @@ srv_accept(int server_port, int new_sock,
   
   if (fout)
     {
-      io= new cl_io();
+      io= new cl_io(server_port);
       if (new_sock > 0)
 	{
 	  io->use_opened(new_sock, cchars("w"));
@@ -125,5 +216,17 @@ srv_accept(int server_port, int new_sock,
 
   return 0;
 }
+
+
+void
+msleep(int msec)
+{
+  struct timespec t;
+
+  t.tv_sec= msec/1000;
+  t.tv_nsec= (msec%1000)*1000000;
+  nanosleep(&t, NULL);
+}
+
 
 /* End of fuio.cc */
