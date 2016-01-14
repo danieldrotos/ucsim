@@ -246,7 +246,9 @@ cl_console::read_line(void)
 
   while (input_avail())
     {
+      printf("readline reading char from file_id=%d\n", fin->file_id);
       i= fin->read(&c, 1);
+      printf("readline got c=%d(%c) i=%d\n", c, (c>31)?c:'.', i);
       if (i==0)
 	{
 	  if (n==0)
@@ -547,7 +549,7 @@ cl_commander::wait_input(void)
   //prompt();
   active_set = read_set;
   while (!input_avail())
-    msleep(100);
+    msleep(1000);
   //printf("commander::wait_input found something\n");
   return 0;
   int i = select(fd_num, &active_set, NULL, NULL, NULL);

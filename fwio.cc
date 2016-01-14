@@ -37,6 +37,7 @@ cl_io::determine_type()
             switch (GetLastError())
               {
               case ERROR_INVALID_HANDLE:
+		printf("wio file_id=%d (handle=%p) type=console\n", file_id, handle);
                 return F_CONSOLE;
 		
               case ERROR_INVALID_FUNCTION:
@@ -44,17 +45,21 @@ cl_io::determine_type()
                  * In case of NUL device return type F_FILE.
                  * Is this the correct way to test it?
                  */
+		printf("wio file_id=%d (handle=%p) type=file\n", file_id, handle);
                 return F_FILE;
 
               default:
                 //assert(false);
+		printf("wio file_id=%d (handle=%p) type=unknown\n", file_id, handle);
 		return F_UNKNOWN;
               }
           }
       }
+      printf("wio file_id=%d (handle=%p) type=serial\n", file_id, handle);
       return F_SERIAL;
 
     case FILE_TYPE_DISK:
+      printf("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
       return F_FILE;
     }
 
@@ -63,9 +68,13 @@ cl_io::determine_type()
 
   if (SOCKET_ERROR != getsockopt((SOCKET)handle, SOL_SOCKET, SO_TYPE, sockbuf, &optlen) ||
       WSAENOTSOCK != WSAGetLastError())
-    return F_SOCKET;
-
+    {
+      printf("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
+      return F_SOCKET;
+    }
+  
   //assert(false);
+  printf("wio file_id=%d (handle=%p) type=unknown2\n", file_id, handle);
   return F_UNKNOWN;
 }
 
@@ -103,34 +112,76 @@ cl_io::input_avail(void)
         PINPUT_RECORD pIRBuf;
         DWORD NumPending;
         DWORD NumPeeked;
-	
+	return true;
         /*
          * Peek all pending console events
          */
 	//printf("win iput check on console id=%d handle=%p\n", file_id, handle);
-        if (INVALID_HANDLE_VALUE == handle ||
-	    !GetNumberOfConsoleInputEvents(handle, &NumPending) ||
-	    NumPending == 0 ||
-	    NULL == (pIRBuf = (PINPUT_RECORD)_alloca(NumPending * sizeof(INPUT_RECORD))))
-          return false;
+        if (INVALID_HANDLE_VALUE == handle)
+	  {
+	    printf("01\n");
+	    return false;
+	  }
+	if (!GetNumberOfConsoleInputEvents(handle, &NumPending))
+	  {
+	    printf("02\n");
+	    return false;
+	  }
+	if (NumPending == 0)
+	  {
+	    printf("03\n");
+	    return false;
+	  }
+	if (NULL == (pIRBuf = (PINPUT_RECORD)_alloca(NumPending * sizeof(INPUT_RECORD))))
+	  {
+	    printf("04\n");
+	    return false;
+	  }
 	
-        if (PeekConsoleInput(handle, pIRBuf, NumPending, &NumPeeked) &&
-	    NumPeeked != 0L &&
-	    NumPeeked <= NumPending)
-          {
-            /*
-             * Scan all of the peeked events to determine if any is a key event
-             * which should be recognized.
-             */
-            for ( ; NumPeeked > 0 ; NumPeeked--, pIRBuf++ )
-              {
-                if (KEY_EVENT == pIRBuf->EventType &&
-		    pIRBuf->Event.KeyEvent.bKeyDown &&
-		    pIRBuf->Event.KeyEvent.uChar.AsciiChar)
-                  return true;
-              }
-          }
-	
+        if (PeekConsoleInput(handle, pIRBuf, NumPending, &NumPeeked) == 0)
+	  {
+	    printf("1\n");
+	    free(pIRBuf);
+	    return false;
+	  }
+	if (NumPeeked == 0L)
+	  {
+	    printf("2\n");
+	    free(pIRBuf);
+	    return false;
+	  }
+	if (NumPeeked > NumPending)
+	  {
+	    printf("3\n");
+	    free(pIRBuf);
+	    return false;
+	  }
+	/*
+	 * Scan all of the peeked events to determine if any is a key event
+	 * which should be recognized.
+	 */
+	printf("3 pending=%ld peeked=%ld\n", NumPending, NumPeeked);
+	int key_presses= 0;
+	for ( ; NumPeeked > 0 ; NumPeeked--, pIRBuf++ )
+	  {
+	    if (KEY_EVENT == pIRBuf->EventType &&
+		pIRBuf->Event.KeyEvent.bKeyDown)
+	      {
+		char c= pIRBuf->Event.KeyEvent.uChar.AsciiChar;
+		key_presses++;
+		if ((c == '\n') ||
+		    (c == '\r'))
+		  {
+		    printf("CR/LF pending=%ld peeked=%ld\n", NumPending, NumPeeked);
+		  }
+		printf("presses=%d found\n", key_presses);
+		free(pIRBuf);
+		return true;
+	      }
+	  }
+      
+	printf("4 pending=%ld presses=%d\n", NumPending, key_presses);
+	free(pIRBuf);
         return false;
       }
       
@@ -179,6 +230,11 @@ cl_io::changed(void)
     {
       handle= (HANDLE)_get_osfhandle(file_id);
       type= determine_type();
+      if (type == F_CONSOLE)
+	{
+	  if (strcmp("r", file_mode) == 0)
+	    ;//SetConsoleMode(handle, 0);
+	}
     }
   //printf("win opened file id=%d\n", file_id);
   //printf("win handle=%p type=%d\n", handle, type);
