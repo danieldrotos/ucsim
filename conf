@@ -19,7 +19,7 @@ if [ -f devel ]; then
 fi
 
 case $TARGET in
-    linux)
+    linux|l)
 	if echo $DD_HOSTS|grep $(hostname) >/dev/null 2>&1 ; then
 	    export PREFIX='/usr/local'
 	fi
@@ -33,17 +33,19 @@ case $TARGET in
 	    --enable-st7 \
 	    "$@"
 	;;
-    mingw|win)
-	export CC=/usr/local/cross-tools/mingw32/bin/gcc
-	export CXX=/usr/local/cross-tools/mingw32/bin/g++
-	if echo $DD_HOSTS|grep $(hostname) >/dev/null 2>&1 ; then
+    mingw|win|w)
+	if [ -d	/usr/local/cross-tools/mingw32 ] ; then
+	    export CC=/usr/local/cross-tools/mingw32/bin/gcc
+	    export CXX=/usr/local/cross-tools/mingw32/bin/g++
+	else
+	#if echo $DD_HOSTS|grep $(hostname) >/dev/null 2>&1; then
 	    export CC=i686-w64-mingw32-gcc
 	    export CXX=i686-w64-mingw32-g++
 	    export HOST_OPT='--host=i686-w64-mingw32'
 	    export LDFLAGS='-static-libgcc -static-libstdc++'
 	    export PREFIX='/usr/local'
 	fi
-#	echo CC=$CC CXX=$CXX HOST=$HOST_OPT
+	echo CC=$CC CXX=$CXX HOST=$HOST_OPT
 	./configure --prefix=${PREFIX} \
 	    --enable-ucsim \
 	    --disable-dlso \
