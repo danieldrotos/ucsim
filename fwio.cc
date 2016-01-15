@@ -11,14 +11,38 @@
 
 cl_io::cl_io(): cl_f()
 {
+  last_used= first_free= 0;
 }
 
 cl_io::cl_io(chars fn, chars mode): cl_f(fn, mode)
 {
+  last_used= first_free= 0;
 }
 
 cl_io::cl_io(int the_server_port): cl_f(the_server_port)
 {
+  last_used= first_free= 0;
+}
+
+int
+cl_io::put(char c)
+{
+  int n= (first_free + 1) % 1024;
+  if (n == last_used)
+    return -1;
+  buffer[first_free]= c;
+  first_free= n;
+  return 0;
+}
+
+int
+cl_io::get(void)
+{
+  if (last_used == first_free)
+    return -1;
+  char c= buffer[last_used];
+  last_used= (last_used + 1) % 1024;
+  return c;
 }
 
 enum file_type
@@ -31,7 +55,8 @@ cl_io::determine_type()
     case FILE_TYPE_CHAR:
       {
         DWORD err;
-	
+	if (file_id > 2)
+	  return F_FILE;
         if (!ClearCommError(handle, &err, NULL))
           {
             switch (GetLastError())
@@ -79,6 +104,24 @@ cl_io::determine_type()
 }
 
 int
+cl_io::read(char *buf, int max)
+{
+  if (type != F_CONSOLE)
+    return cl_f::read(buf, max);
+  int i= 0, c= get();
+  //printf("CONSOLE read(%d) last_used=%d first_free=%d\n", max, last_used, first_free);
+  while (c >= 0)
+    {
+      if (i >= max)
+	return i;
+      buf[i]= c;
+      i++;
+      c= get();
+    }
+  return (i==0)?-1:i;
+}
+
+int
 cl_io::input_avail(void)
 {
   //e_handle_type type= F_UNKNOWN;
@@ -112,55 +155,55 @@ cl_io::input_avail(void)
         PINPUT_RECORD pIRBuf;
         DWORD NumPending;
         DWORD NumPeeked;
-	return true;
+	bool ret= last_used != first_free;
         /*
          * Peek all pending console events
          */
 	//printf("win iput check on console id=%d handle=%p\n", file_id, handle);
         if (INVALID_HANDLE_VALUE == handle)
 	  {
-	    printf("01\n");
-	    return false;
+	    //printf("01\n");
+	    return ret;
 	  }
 	if (!GetNumberOfConsoleInputEvents(handle, &NumPending))
 	  {
-	    printf("02\n");
-	    return false;
+	    //printf("02\n");
+	    return ret;
 	  }
 	if (NumPending == 0)
 	  {
-	    printf("03\n");
-	    return false;
+	    //printf("03\n");
+	    return ret;
 	  }
 	if (NULL == (pIRBuf = (PINPUT_RECORD)_alloca(NumPending * sizeof(INPUT_RECORD))))
 	  {
-	    printf("04\n");
-	    return false;
+	    //printf("04\n");
+	    return ret;
 	  }
 	
-        if (PeekConsoleInput(handle, pIRBuf, NumPending, &NumPeeked) == 0)
+        if (ReadConsoleInput(handle, pIRBuf, NumPending, &NumPeeked) == 0)
 	  {
-	    printf("1\n");
+	    //printf("1\n");
 	    free(pIRBuf);
-	    return false;
+	    return ret;
 	  }
 	if (NumPeeked == 0L)
 	  {
-	    printf("2\n");
+	    //printf("2\n");
 	    free(pIRBuf);
-	    return false;
+	    return ret;
 	  }
 	if (NumPeeked > NumPending)
 	  {
-	    printf("3\n");
+	    //printf("3\n");
 	    free(pIRBuf);
-	    return false;
+	    return ret;
 	  }
 	/*
 	 * Scan all of the peeked events to determine if any is a key event
 	 * which should be recognized.
 	 */
-	printf("3 pending=%ld peeked=%ld\n", NumPending, NumPeeked);
+	//printf("3 pending=%ld peeked=%ld\n", NumPending, NumPeeked);
 	int key_presses= 0;
 	for ( ; NumPeeked > 0 ; NumPeeked--, pIRBuf++ )
 	  {
@@ -172,17 +215,21 @@ cl_io::input_avail(void)
 		if ((c == '\n') ||
 		    (c == '\r'))
 		  {
-		    printf("CR/LF pending=%ld peeked=%ld\n", NumPending, NumPeeked);
+		    //printf("CR/LF pending=%ld peeked=%ld\n", NumPending, NumPeeked);
 		  }
-		printf("presses=%d found\n", key_presses);
-		free(pIRBuf);
-		return true;
+		//printf("presses=%d found (c=%d/%c)\n", key_presses, c, (c>31)?c:'.');
+		/*free(pIRBuf);
+		  return true;*/
+		put(c);
+		printf("%c",c);
+		fflush(stdout);
 	      }
 	  }
       
-	printf("4 pending=%ld presses=%d\n", NumPending, key_presses);
+	//printf("4 pending=%ld presses=%d\n", NumPending, key_presses);
+	//printf("last_used=%d first_free=%d\n", last_used, first_free);
 	free(pIRBuf);
-        return false;
+        return last_used != first_free;
       }
       
     case F_SERIAL:
@@ -233,7 +280,7 @@ cl_io::changed(void)
       if (type == F_CONSOLE)
 	{
 	  if (strcmp("r", file_mode) == 0)
-	    ;//SetConsoleMode(handle, 0);
+	    SetConsoleMode(handle, 0);
 	}
     }
   //printf("win opened file id=%d\n", file_id);

@@ -246,43 +246,43 @@ cl_console::read_line(void)
 
   while (input_avail())
     {
-      printf("readline reading char from file_id=%d\n", fin->file_id);
+      //printf("readline reading char from file_id=%d\n", fin->file_id);
       i= fin->read(&c, 1);
-      printf("readline got c=%d(%c) i=%d\n", c, (c>31)?c:'.', i);
+      //printf("readline got c=%d(%c) i=%d\n", c, (c>31)?c:'.', i);
       if (i==0)
 	{
 	  if (n==0)
 	    {
-	      printf("readline file_id=%d detected eof\n", fin->file_id);
+	      //printf("readline file_id=%d detected eof\n", fin->file_id);
 	      return -1;
 	    }
 	  if (p)
 	    lbuf+= b;
-	  printf("readline file_id=%d got nothing, return \"%s\"\n", fin->file_id, (char*)lbuf);
+	  //printf("readline file_id=%d got nothing, return \"%s\"\n", fin->file_id, (char*)lbuf);
 	  return 0;
 	}
       if (i < 0)
 	{
-	  printf("readline file_id=%d error, return nothing\n", fin->file_id);
+	  //printf("readline file_id=%d error, return nothing\n", fin->file_id);
 	  lbuf= 0;
 	  return 0;
 	}
-      printf("cons_id=%d read c=%c (n=%d)\n", id, c, n);
+      //printf("cons_id=%d read c=%c (n=%d)\n", id, c, n);
       n++;
       if ((c == '\n') ||
 	  (c == '\r'))
 	{
-	  printf("readline file_id=%d got nl=%d (nl=%d)\n", fin->file_id, c, nl);
+	  //printf("readline file_id=%d got nl=%d (nl=%d)\n", fin->file_id, c, nl);
 	  if (nl == 0)
 	    nl= c;
 	  else if (c != nl)
 	    {
-	      printf("readline file_id=%d continue next\n", fin->file_id);
+	      //printf("readline file_id=%d continue next\n", fin->file_id);
 	      continue;
 	    }
 	  if (p)
 	    lbuf+= b;
-	  printf("readline file_id=%d got line end, return \"%s\"\n", fin->file_id, (char*)lbuf);
+	  //printf("readline file_id=%d got line end, return \"%s\"\n", fin->file_id, (char*)lbuf);
 	  return 1;
 	}
       b[p++]= c;
@@ -295,7 +295,7 @@ cl_console::read_line(void)
     }
   if (p)
     lbuf+= b;
-  printf("readline file_id=%d no more input, return \"%s\"\n", fin->file_id, (char*)lbuf);
+  //printf("readline file_id=%d no more input, return \"%s\"\n", fin->file_id, (char*)lbuf);
   return 0;
   /*
 #define BUF_LEN 1024
@@ -523,6 +523,7 @@ cl_commander::input_avail(void)
       //printf("con_id=%d file_id=%d ", c->get_id(), c->fin->file_id);
       if (c->input_active())
 	{
+	  
 	  if (c->input_avail())
 	    {
 	      //printf("avail\n");
@@ -549,7 +550,7 @@ cl_commander::wait_input(void)
   //prompt();
   active_set = read_set;
   while (!input_avail())
-    msleep(1000);
+    msleep(100);
   //printf("commander::wait_input found something\n");
   return 0;
   int i = select(fd_num, &active_set, NULL, NULL, NULL);
@@ -569,10 +570,11 @@ cl_commander::proc_input(void)
           assert(0 <= fd);
 
           //if (FD_ISSET(fd, &active_set))
+	  //printf("commander checks in of cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
 	  if (c->input_avail())
             {
               actual_console = c;
-	      //printf("commander::proc_input of cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
+	      //printf("commander inavail on cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
               int retval = c->proc_input(cmdset);
               if (retval)
                 {
