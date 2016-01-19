@@ -351,9 +351,9 @@ mk_io(chars fn, chars mode)
     }
   else if (strcmp(fn, "-") == 0)
     {
-      if (strchr(mode, "r") == 0)
+      if (strstr(mode, "r") == 0)
 	return cp_io(stdin, mode);
-      else if (strchr(mode, "w") == 0)
+      else if (strcmp(mode, "w") == 0)
 	return cp_io(stdout, mode);
     }
   io= new cl_io(fn, mode);
