@@ -152,8 +152,7 @@ cl_app::run(void)
   while (!done/* &&
 		 going*/)
     {
-      if (!sim ||
-	  !(sim->state & SIM_GO))
+      if (!sim)
 	{
 	  commander->wait_input();
 	  done= commander->proc_input();
@@ -176,6 +175,11 @@ cl_app::run(void)
                 }
 	      sim->step();
             }
+	  else
+	    {
+	      commander->wait_input();
+	      done= commander->proc_input();
+	    }
 	  if (sim->state & SIM_QUIT)
 	    done= 1;
 	}
