@@ -42,6 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // prj
 #include "globals.h"
+#include "utils.h"
 
 // cmd
 #include "cmdutil.h"
@@ -91,7 +92,8 @@ cl_serial::init(void)
   int i;
   struct termios tattr;
 #endif
-
+  char *s;
+  
   set_name("mcs51_uart");
   sfr= uc->address_space(MEM_SFR_ID);
   if (sfr)
@@ -104,13 +106,17 @@ cl_serial::init(void)
       register_cell(sfr, SCON, &scon, wtd_restore_write);
     }
 
+  s= format_string("serial%d_in_file", id);
   serial_in_file_option= new cl_optref(this);
   serial_in_file_option->init();
-  serial_in_file_option->use("serial_in_file");
+  serial_in_file_option->use(s);
+  free(s);
+  s= format_string("serial%d_out_file", id);
   serial_out_file_option= new cl_optref(this);
   serial_out_file_option->init();
-  serial_out_file_option->use("serial_out_file");
-
+  serial_out_file_option->use(s);
+  free(s);
+  
   FILE *f_serial_in = (FILE*)serial_in_file_option->get_value((void*)0);
   FILE *f_serial_out= (FILE*)serial_out_file_option->get_value((void*)0);
   if (f_serial_in)
@@ -341,35 +347,27 @@ cl_serial::tick(int cycles)
       scon->set_bit1(bmTI);
       if (fout)
 	{
-	  putc(s_out, fout->file_f);
+	  fout->write((char*)(&s_out), 1);
 	  fout->flush();
 	}
       s_tr_bit-= _bits;
       //printf("serial out %d bit rems %d\n",s_tr_bit,uc->ticks->ticks);
     }
-  if ((/*scn & bmREN*/_bmREN) &&
+  if ((_bmREN) &&
       fin &&
       !s_receiving)
     {
-      /*
-      fd_set set; static struct timeval timeout= {0,0};
-      FD_ZERO(&set);
-      FD_SET(fileno(serial_in), &set);
-      int i= select(fileno(serial_in)+1, &set, NULL, NULL, &timeout);
-      if (i > 0 &&
-      	  FD_ISSET(fileno(serial_in), &set))
-      */
       if (fin->input_avail())
 	{
 	  s_receiving= DD_TRUE;
 	  s_rec_bit= 0;
-	  s_rec_tick= /*uc51->*/s_rec_t1= 0;
+	  s_rec_tick= s_rec_t1= 0;
 	}
     }
   if (s_receiving &&
       (s_rec_bit >= _bits))
     {
-      if (::read(fin->file_id, &c, 1) == 1)
+      if (fin->read(&c, 1) == 1)
 	{
 	  s_in= c;
 	  sbuf->set(s_in);
