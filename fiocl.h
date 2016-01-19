@@ -107,6 +107,7 @@ extern class cl_f *mk_srv(int server_port);
 extern int srv_accept(class cl_f *listen_io,
 		      class cl_f **fin, class cl_f **fout);
 extern void msleep(int msec);
+extern void pause();
 
 
 #endif

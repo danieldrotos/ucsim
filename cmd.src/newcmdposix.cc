@@ -541,7 +541,7 @@ cl_commander::wait_input(void)
   //prompt();
   active_set = read_set;
   while (!input_avail())
-    msleep(100);
+    pause();
   //printf("commander::wait_input found something\n");
   return 0;
   int i = select(fd_num, &active_set, NULL, NULL, NULL);

@@ -249,5 +249,11 @@ msleep(int msec)
   nanosleep(&t, NULL);
 }
 
+void
+pause()
+{
+  msleep(100);
+}
+
 
 /* End of fuio.cc */

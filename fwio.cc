@@ -351,10 +351,14 @@ mk_io(chars fn, chars mode)
     }
   else if (strcmp(fn, "-") == 0)
     {
-      if (strstr(mode, "r") == 0)
-	return cp_io(stdin, mode);
+      if (strcmp(mode, "r") == 0)
+	{
+	  return cp_io(stdin, mode);
+	}
       else if (strcmp(mode, "w") == 0)
-	return cp_io(stdout, mode);
+	{
+	  return cp_io(stdout, mode);
+	}
     }
   io= new cl_io(fn, mode);
   io->init();
@@ -440,6 +444,12 @@ void
 msleep(int msec)
 {
   Sleep(msec);
+}
+
+void
+pause()
+{
+  msleep(1);
 }
 
 
