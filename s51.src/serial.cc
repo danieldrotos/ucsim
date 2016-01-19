@@ -59,6 +59,7 @@ cl_serial::cl_serial(class cl_uc *auc):
   //serial_in= serial_out= 0;
   fin= 0;
   fout= 0;
+  listener= 0;
 }
 
 cl_serial::~cl_serial(void)
@@ -116,6 +117,19 @@ cl_serial::init(void)
   serial_out_file_option->init();
   serial_out_file_option->use(s);
   free(s);
+  s= format_string("serial%d_port", id);
+  serial_port_option= new cl_optref(this);
+  serial_port_option->init();
+  class cl_option *o= serial_port_option->use(s);
+  free(s);
+  if (o)
+    {
+      int port= serial_port_option->get_value((long)0);
+      if (port > 0)
+	listener= new cl_serial_listener(port, application, this);
+      class cl_commander_base *c= application->get_commander();
+      c->add_console(listener);
+    }
   
   /*FILE*/char *f_serial_in = (/*FILE*/char*)serial_in_file_option->get_value((/*void*/char*)0);
   /*FILE*/char *f_serial_out= (/*FILE*/char*)serial_out_file_option->get_value((/*void*/char*)0);
@@ -445,6 +459,19 @@ cl_serial::happen(class cl_hw *where, enum hw_event he, void *params)
     }
 }
 
+
+void
+cl_serial::new_io(class cl_f *f_in, class cl_f *f_out)
+{
+  if (fin)
+    delete fin;
+  if (fout)
+    delete fout;
+  fin= f_in;
+  fout= f_out;
+}
+
+
 void
 cl_serial::print_info(class cl_console_base *con)
 {
@@ -480,6 +507,24 @@ cl_serial::print_info(class cl_console_base *con)
   con->dd_printf("s_tr_t1=%d s_tr_bit=%d s_tr_tick=%d\n",
 		 s_tr_t1, s_tr_bit, s_tr_tick);
 		 con->dd_printf("divby=%d bits=%d\n", _divby, _bits);*/
+}
+
+
+cl_serial_listener::cl_serial_listener(int serverport, class cl_app *the_app,
+				       class cl_serial *the_serial):
+  cl_listen_console(serverport, the_app)
+{
+  serial_hw= the_serial;
+}
+
+int
+cl_serial_listener::proc_input(class cl_cmdset *cmdset)
+{
+  class cl_f *i, *o;
+
+  srv_accept(fin, &i, &o);
+  serial_hw->new_io(i, o);
+  return 0;
 }
 
 

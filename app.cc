@@ -523,6 +523,18 @@ cl_app::proc_arguments(int argc, char *argv[])
 		}
 	      if (port > 0)
 		{
+		  s= format_string("serial%d_port", uart);
+		  if ((o= options->get_option(s)) == NULL)
+		    {
+		      h= format_string("Use localhost:port for serial line uart%d (-S)", uart);
+		      o= new cl_number_option(this, s, h);
+		      o->init();
+		      o->hide();
+		      options->add(o);
+		      free(h);
+		    }
+		  options->set_value(s, this, (long)port);
+		  free(s);
 		}
 	    }
 	  break;

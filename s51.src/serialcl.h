@@ -32,9 +32,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 #include "pobjcl.h"
 #include "uccl.h"
+#include "newcmdposixcl.h"
 
 //#include "newcmdcl.h"
 
+class cl_serial_listener;
 
 class cl_serial: public cl_hw
 {
@@ -48,8 +50,10 @@ protected:
 #endif
   class cl_optref *serial_in_file_option;
   class cl_optref *serial_out_file_option;
-  class cl_f *fin;//FILE *serial_in;	// Serial line input
-  class cl_f *fout;//FILE *serial_out;	// Serial line output
+  class cl_optref *serial_port_option;
+  class cl_serial_listener *listener;
+  class cl_f *fin;	// Serial line input
+  class cl_f *fout;	// Serial line output
   uchar s_in;		// Serial channel input reg
   uchar s_out;		// Serial channel output reg
   bool  s_sending;	// Transmitter is working
@@ -83,8 +87,19 @@ public:
   virtual int tick(int cycles);
   virtual void reset(void);
   virtual void happen(class cl_hw *where, enum hw_event he, void *params);
-
+  virtual void new_io(class cl_f *f_in, class cl_f *f_out);
+  
   virtual void print_info(class cl_console_base *con);
+};
+
+
+class cl_serial_listener: public cl_listen_console
+{
+ public:
+  class cl_serial *serial_hw;
+  cl_serial_listener(int serverport, class cl_app *the_app,
+		     class cl_serial *the_serial);
+  virtual int proc_input(class cl_cmdset *cmdset);
 };
 
 
