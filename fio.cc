@@ -39,8 +39,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 # include <netinet/in.h>
 # include <arpa/inet.h>
 #endif
+#include <stdlib.h>
 
 #include "fiocl.h"
+
+// prj
+#include "utils.h"
 
 
 cl_f::cl_f(void)
@@ -77,12 +81,20 @@ cl_f::cl_f(int the_server_port)
   server_port= the_server_port;
 }
 
+class cl_f *
+cl_f::copy(chars mode)
+{
+  class cl_f *io= mk_io(chars(""), chars(""));
+  io->use_opened(file_id, mode);
+  return io;
+}
+
 int
 cl_f::init(void)
 {
   if (server_port > 0)
     {
-      file_id= make_server_socket(server_port);
+      file_id= mk_srv_socket(server_port);
       //printf("cl_f::init srv_port=%d file_id=%d\n", server_port, file_id);
       listen(file_id, 50);
       own= true;
@@ -282,6 +294,14 @@ cl_f::write_str(const char *s)
   return ::write(file_id, s, strlen(s));
 }
 
+int
+cl_f::vprintf(char *format, va_list ap)
+{
+  char *s= vformat_string(format, ap);
+  int i= write_str(s);
+  free(s);
+  return i;
+}
 
 bool
 cl_f::eof(void)

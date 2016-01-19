@@ -309,7 +309,7 @@ init_winsock(void)
 
 
 int
-make_server_socket(int port)
+mk_srv_socket(int port)
 {
   init_winsock();
 
@@ -384,10 +384,17 @@ mk_srv(int server_port)
 }
 
 int
-srv_accept(int server_port, int new_sock,
+srv_accept(class cl_f *listen_io,
 	   class cl_f **fin, class cl_f **fout)
 {
   class cl_io *io;
+  //ACCEPT_SOCKLEN_T size;
+  //struct sockaddr_in sock_addr;
+  int new_sock;
+  
+  //size= sizeof(struct sockaddr);
+  new_sock= accept(listen_io->file_id, /*(struct sockaddr *)sock_addr*/NULL, /*&size*/NULL);
+
   //printf("win srv_accept(port=%d,sock=%d)\n", server_port, new_sock);
   int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
   //printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
@@ -402,7 +409,7 @@ srv_accept(int server_port, int new_sock,
 	      //printf("fdopened f=%p for fh=%d as input\n", f, fh);
 	      io->own_opened(f, cchars("r"));
 	      io->type= F_SOCKET;
-	      io->server_port= server_port;
+	      io->server_port= listen_io->server_port;
 	    }
 	}
       *fin= io;
@@ -420,7 +427,7 @@ srv_accept(int server_port, int new_sock,
 	      //printf("fdopened f=%p for fh=%d as output\n", f, fh);
 	      io->use_opened(f, cchars("w"));
 	      io->type= F_SOCKET;
-	      io->server_port= server_port;
+	      io->server_port= listen_io->server_port;
 	    }
 	}
       *fout= io;

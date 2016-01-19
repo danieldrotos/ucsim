@@ -126,7 +126,7 @@ cl_io::input_avail(void)
 
 
 int
-make_server_socket(int port)
+mk_srv_socket(int port)
 {
   int sock, i;
   struct sockaddr_in name;
@@ -204,13 +204,20 @@ mk_srv(int server_port)
 
 
 int
-srv_accept(int server_port, int new_sock,
+srv_accept(class cl_f *listen_io,
 	   class cl_f **fin, class cl_f **fout)
 {
   class cl_io *io;
+  //ACCEPT_SOCKLEN_T size;
+  //struct sockaddr_in sock_addr;
+  int new_sock;
+
+  //size= sizeof(struct sockaddr);
+  new_sock= accept(listen_io->file_id, /*(struct sockaddr *)sock_addr*/NULL, /*&size*/NULL);
+  
   if (fin)
     {
-      io= new cl_io(server_port);
+      io= new cl_io(listen_io->server_port);
       if (new_sock > 0)
 	{
 	  io->own_opened(new_sock, cchars("r"));
@@ -220,7 +227,7 @@ srv_accept(int server_port, int new_sock,
   
   if (fout)
     {
-      io= new cl_io(server_port);
+      io= new cl_io(listen_io->server_port);
       if (new_sock > 0)
 	{
 	  io->use_opened(new_sock, cchars("w"));

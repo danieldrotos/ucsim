@@ -35,14 +35,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <assert.h>
 #include <sys/types.h>
 #include <sys/time.h>
-#ifdef SOCKET_AVAIL
-# include HEADER_SOCKET
-# if defined HAVE_SYS_SOCKET_H
-#  include <netinet/in.h>
-#  include <arpa/inet.h>
-#  include <netdb.h>
-# endif
-#endif
+//#ifdef SOCKET_AVAIL
+//# include HEADER_SOCKET
+//# if defined HAVE_SYS_SOCKET_H
+//#  include <netinet/in.h>
+//#  include <arpa/inet.h>
+//#  include <netdb.h>
+//# endif
+//#endif
 #if FD_HEADER_OK
 # include HEADER_FD
 #endif
@@ -129,19 +129,19 @@ cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
 class cl_console *
 cl_console::clone_for_exec(char *_fin)
 {
-  FILE *fi= 0, *fo= 0;
+  /*FILE*/class cl_f *fi= 0, *fo= 0;
 
   if (!_fin)
     return(0);
-  if (fi= fopen(_fin, "r"), !fi)
+  if (fi= mk_io(_fin, "r"), !fi)
     {
       fprintf(stderr, "Can't open `%s': %s\n", _fin, strerror(errno));
       return(0);
     }
   
-  if ((fo= fdopen(dup(fileno(fout->file_f)), "a")) == 0)
+  if ((fo= /*fdopen(dup(fileno(fout->file_f)), "a")*/fout->copy("a")) == 0)
     {
-      fclose(fi);
+      delete fi;//fclose(fi);
       fprintf(stderr, "Can't re-open output file: %s\n", strerror(errno));
       return(0);
     }
@@ -156,8 +156,8 @@ cl_console::~cl_console(void)
   if (fout)
     {
       //if (flags & CONS_PROMPT)
-        fprintf(fout->file_f, "\n");
-      fflush(fout->file_f);
+        fout->write_str("\n");
+      fout->flush();
       delete fout;
     }
   if (fin) delete fin;
@@ -202,23 +202,6 @@ cl_console::un_redirect(void)
     return;
   delete frout;
   frout= 0;
-}
-
-int
-cl_console::cmd_do_print(const char *format, va_list ap)
-{
-  int ret;
-  //FILE *f = get_out();
-  class cl_f *fo= get_fout();
-  
-  if (fo)
-    {
-      ret= vfprintf(/*f*/fo->file_f, format, ap);
-      fo->flush();
-      return ret;
-    }
-  else
-    return 0;
 }
 
 /*
@@ -331,7 +314,7 @@ cl_console::read_line(void)
 /*
  * This console listen on a socket and can accept connection requests
  */
-#ifdef SOCKET_AVAIL
+//#ifdef SOCKET_AVAIL
 
 cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
 {
@@ -350,23 +333,22 @@ cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
 int
 cl_listen_console::proc_input(class cl_cmdset *cmdset)
 {
-  int newsock;
-  ACCEPT_SOCKLEN_T size;
-  struct sockaddr_in sock_addr;
+  //int newsock;
+  
   class cl_commander_base *cmd;
   cl_f *in, *out;
   
   //printf("proc_input on listen console cons_id=%d file_id=%d\n", id, fin->file_id);
   cmd= app->get_commander();
-  size= sizeof(struct sockaddr);
+  /*size= sizeof(struct sockaddr);
   newsock= accept(fin->file_id, (struct sockaddr*)&sock_addr, &size);
   if (newsock < 0)
     {
       perror("accept");
       return(0);
-    }
+      }*/
   //printf("Accept new_socket=%d\n", newsock);
-  srv_accept(fin->server_port, newsock, &in, &out);
+  srv_accept(fin, &in, &out);
   
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;
@@ -374,7 +356,7 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   return(0);
 }
 
-#endif /* SOCKET_AVAIL */
+//#endif /* SOCKET_AVAIL */
 
 
 /*
@@ -383,6 +365,13 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
 
 cl_sub_console::cl_sub_console(class cl_console_base *the_parent,
                                FILE *fin, FILE *fout, class cl_app *the_app):
+  cl_console(fin, fout, the_app)
+{
+  parent= the_parent;
+}
+
+cl_sub_console::cl_sub_console(class cl_console_base *the_parent,
+                               class cl_f *fin, class cl_f *fout, class cl_app *the_app):
   cl_console(fin, fout, the_app)
 {
   parent= the_parent;

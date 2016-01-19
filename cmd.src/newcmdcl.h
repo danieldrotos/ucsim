@@ -117,29 +117,30 @@ public:
 
   virtual void redirect(char *fname, char *mode) = 0;
   virtual void un_redirect(void) = 0;
-  virtual int cmd_do_print(const char *format, va_list ap) = 0;
   virtual bool is_tty(void) const = 0;
   virtual bool is_eof(void) const = 0;
   virtual bool input_avail(void) = 0;
   virtual int read_line(void) = 0;
-
+  virtual class cl_f *get_fout(void)= 0;
+  
   virtual int init(void);
   virtual void welcome(void);
   virtual int proc_input(class cl_cmdset *cmdset);
 
-  void print_prompt(void);
-  int dd_printf(const char *format, ...);
-  int debug(const char *format, ...);
-  void print_bin(long data, int bits);
-  void print_char_octal(char c);
+  virtual void print_prompt(void);
+  virtual int dd_printf(const char *format, ...);
+  virtual int debug(const char *format, ...);
+  virtual void print_bin(long data, int bits);
+  virtual void print_char_octal(char c);
+  virtual int cmd_do_print(const char *format, va_list ap);
 
-  bool interpret(char *cmd);
-  int get_id(void) const { return(id); }
-  void set_id(int new_id);
-  void set_prompt(char *p);
+  virtual bool interpret(char *cmd);
+  virtual int get_id(void) const { return(id); }
+  virtual void set_id(int new_id);
+  virtual void set_prompt(char *p);
   
-  bool input_active(void) const;
-  bool accept_last(void) { return is_tty() ? DD_TRUE : DD_FALSE; }
+  virtual bool input_active(void) const;
+  virtual bool accept_last(void) { return is_tty() ? DD_TRUE : DD_FALSE; }
 
 public:
   int flags; // See CONS_XXXX

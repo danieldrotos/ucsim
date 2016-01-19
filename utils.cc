@@ -114,7 +114,7 @@ get_string_id(struct id_element *ids, char *str, int def)
 }
 
 
-static char *
+char *
 vformat_string(const char *format, va_list ap)
 {
   char *msg= NULL;

@@ -121,10 +121,12 @@ cl_serial::init(void)
   /*FILE*/char *f_serial_out= (/*FILE*/char*)serial_out_file_option->get_value((/*void*/char*)0);
   if (f_serial_in)
     {
-      fin= mk_io(chars(f_serial_in), cchars("r"));
+      if (f_serial_in[0] == '\001')
+	fin= (class cl_f *)(strtol(&f_serial_in[1], 0, 0));
+      else
+	fin= mk_io(chars(f_serial_in), cchars("r"));
       // making `serial' unbuffered
-      if (setvbuf(fin->file_f, NULL, _IONBF, 0))
-	perror("Unbuffer serial input channel");
+      //if (setvbuf(fin->file_f, NULL, _IONBF, 0)) perror("Unbuffer serial input channel");
 #if defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
       if ((i= fcntl(fin->file_id, F_GETFL, 0)) < 0)
@@ -151,10 +153,12 @@ cl_serial::init(void)
     fin= mk_io(chars(""), chars(""));
   if (f_serial_out)
     {
-      fout= mk_io(chars(f_serial_out), "w");
+      if (f_serial_out[0] == '\001')
+	fout= (class cl_f *)(strtol(&f_serial_out[1], 0, 0));
+      else
+	fout= mk_io(chars(f_serial_out), "w");
       // making `serial' unbuffered
-      if (setvbuf(fout->file_f, NULL, _IONBF, 0))
-	perror("Unbuffer serial output channel");
+      //if (setvbuf(fout->file_f, NULL, _IONBF, 0)) perror("Unbuffer serial output channel");
 #if defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
       if ((i= fcntl(fout->file_id, F_GETFL, 0)) < 0)

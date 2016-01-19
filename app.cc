@@ -374,43 +374,58 @@ cl_app::proc_arguments(int argc, char *argv[])
       // socket serial I/O by Alexandre Frey <Alexandre.Frey@trusted-logic.fr>
       case 'k':
 	{
-	  FILE *Ser_in, *Ser_out;
-	  int  sock;
+	  //FILE *Ser_in, *Ser_out;
+	  //int  sock;
+	  class cl_f *listener, *fin, *fout;
 	  int serverport;
-	  int client_sock;
+	  //int client_sock;
+	  char *s;
 	  
 	  if (k_done) {
 	    fprintf(stderr, "Serial input specified more than once.\n");
 	  }
 	  k_done= DD_TRUE;
 
-	  serverport = atoi(optarg);
-	  sock= make_server_socket(serverport);
+	  serverport = strtol(optarg, 0, 0);
+	  //sock= make_server_socket(serverport);
+	  listener= mk_srv(serverport);
+	  /*
 	  if (listen(sock, 1) < 0) {
 	    fprintf(stderr, "Listen on port %d: %s\n", serverport,
 		    strerror(errno));
 	    return (4);
 	  }
+	  */
 	  fprintf(stderr, "Listening on port %d for a serial connection.\n",
 		  serverport);
-	  if ((client_sock= accept(sock, NULL, NULL)) < 0) {
+	  /*if ((client_sock= accept(sock, NULL, NULL)) < 0) {
 	    fprintf(stderr, "accept: %s\n", strerror(errno));
-	  }
+	    }*/
+	  if (srv_accept(listener, &fin, &fout)!=0)
+	    {
+	      fprintf(stderr, "Error accepting connection on port %d\n", serverport);
+	      return 4;
+	    }
 	  fprintf(stderr, "Serial connection established.\n");
-
+	  /*
 	  if ((Ser_in= fdopen(client_sock, "r")) == NULL) {
 	    fprintf(stderr, "Can't create input stream: %s\n", strerror(errno));
 	    return (4);
 	  }
-	  if (!options->set_value("serial0_in_file", this, (void*)Ser_in))
-	    fprintf(stderr, "Warning: No \"serial_in_file\" option found to "
+	  */
+	  s= format_string("\001%lu", (unsigned long int)(fin));
+	  if (!options->set_value("serial0_in_file", this, /*(void*)Ser_in*/s))
+	    fprintf(stderr, "Warning: No \"serial0_in_file\" option found to "
 		    "set parameter of -s as serial input file\n");
+	  /*
 	  if ((Ser_out= fdopen(client_sock, "w")) == NULL) {
 	    fprintf(stderr, "Can't create output stream: %s\n", strerror(errno));
 	    return (4);
 	  }
-	  if (!options->set_value("serial0_out_file", this, Ser_out))
-	    fprintf(stderr, "Warning: No \"serial_out_file\" option found "
+	  */
+	  s= format_string("\001%lu", (unsigned long int)(fout));
+	  if (!options->set_value("serial0_out_file", this, /*Ser_out*/s))
+	    fprintf(stderr, "Warning: No \"serial0_out_file\" option found "
 		    "to set parameter of -s as serial output file\n");
 	  break;
 	}

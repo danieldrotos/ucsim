@@ -49,16 +49,18 @@ class cl_f: public cl_base
 {
  public:
   chars file_name, file_mode;
-  FILE *file_f;
   int file_id;
   bool tty;
   bool own;
   enum file_type type;
+ protected:
+  FILE *file_f;
  public:
   cl_f(void);
   cl_f(chars fn, chars mode);
   cl_f(int the_server_port);
   virtual ~cl_f(void);
+  virtual class cl_f *copy(chars mode);
   virtual int init(void);
   //virtual int open(void) { return init(); }
   virtual int open(char *fn);
@@ -79,6 +81,7 @@ class cl_f: public cl_base
   virtual int write(char *buf, int count);
   virtual int write_str(char *s);
   virtual int write_str(const char *s);
+  virtual int vprintf(char *format, va_list ap);
   virtual bool eof(void);
   virtual void flush(void);
   
@@ -96,12 +99,12 @@ class cl_f: public cl_base
 };
 
 
-extern int make_server_socket(int port);
+extern int mk_srv_socket(int port);
 
 extern class cl_f *mk_io(chars fn, chars mode);
 extern class cl_f *cp_io(FILE *f, chars mode);
 extern class cl_f *mk_srv(int server_port);
-extern int srv_accept(int server_port, int new_sock,
+extern int srv_accept(class cl_f *listen_io,
 		      class cl_f **fin, class cl_f **fout);
 extern void msleep(int msec);
 

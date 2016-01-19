@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // prj
 #include "globals.h"
 #include "utils.h"
+#include "fiocl.h"
 
 // sim
 #include "simcl.h"
@@ -245,6 +246,23 @@ cl_console_base::print_char_octal(char c)
     dd_printf("%c", c);
   else
     dd_printf("\\%03hho", c);
+}
+
+int
+cl_console_base::cmd_do_print(const char *format, va_list ap)
+{
+  int ret;
+  //FILE *f = get_out();
+  class cl_f *fo= get_fout();
+  
+  if (fo)
+    {
+      ret= fo->vprintf((char*)format, ap);
+      fo->flush();
+      return ret;
+    }
+  else
+    return 0;
 }
 
 bool

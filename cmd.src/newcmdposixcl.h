@@ -49,7 +49,6 @@ public:
   cl_console(const char *_fin, const char *_fout, class cl_app *the_app);
   cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app);
   cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app);
-  int cmd_do_print(const char *format, va_list ap);
 
   virtual ~cl_console(void);
   virtual class cl_console *clone_for_exec(char *_fin);
@@ -67,7 +66,7 @@ private:
   class cl_f *get_fout(void) { return frout ? frout : fout; }
 };
 
-#ifdef SOCKET_AVAIL
+//#ifdef SOCKET_AVAIL
 class cl_listen_console: public cl_console
 {
 public:
@@ -78,7 +77,7 @@ public:
   //virtual UCSOCKET_T get_in_fd(void) { return(sock); }
   virtual int proc_input(class cl_cmdset *cmdset);
 };
-#endif
+//#endif
 
 
 class cl_sub_console: public cl_console
@@ -89,6 +88,8 @@ private:
 public:
   cl_sub_console(class cl_console_base *the_parent,
                  FILE *fin, FILE *fout, class cl_app *the_app);
+  cl_sub_console(class cl_console_base *the_parent,
+                 class cl_f *fin, class cl_f *fout, class cl_app *the_app);
   virtual ~cl_sub_console(void);
   virtual int init(void);
 };
