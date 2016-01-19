@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <string.h>
 
 #include "fuiocl.h"
 
@@ -162,6 +163,19 @@ mk_io(chars fn, chars mode)
 {
   class cl_io *io;
 
+  if (fn.empty())
+    {
+      io= new cl_io();
+      io->init();
+      return io;
+    }
+  else if (strcmp(fn, "-") == 0)
+    {
+      if (strcmp(mode, "r") == 0)
+	return cp_io(stdin, mode);
+      else if (strcmp(mode, "w") == 0)
+	return cp_io(stdout, mode);
+    }
   io= new cl_io(fn, mode);
   io->init();
   return io;

@@ -343,6 +343,19 @@ mk_io(chars fn, chars mode)
 {
   class cl_io *io;
 
+  if (fn.empty())
+    {
+      io= new cl_io();
+      io->init();
+      return io;
+    }
+  else if (strcmp(fn, "-") == 0)
+    {
+      if (strchr(mode, "r") == 0)
+	return cp_io(stdin, mode);
+      else if (strchr(mode, "w") == 0)
+	return cp_io(stdout, mode);
+    }
   io= new cl_io(fn, mode);
   io->init();
   return io;

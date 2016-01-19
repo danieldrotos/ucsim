@@ -463,7 +463,9 @@ cl_commander::init(void)
     }
   if (cons->get_count() == 0)
     {
-      add_console(con= new cl_console(stdin, stdout, app));
+      add_console(con= new cl_console(cp_io(stdin, cchars("r")),
+				      cp_io(stdout, cchars("w")),
+				      app));
       exec_on(con, Config);
       need_config= DD_FALSE;
     }
