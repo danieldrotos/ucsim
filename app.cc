@@ -250,7 +250,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   int i, c;
   char opts[100], *cp, *subopts, *value;
   char *cpu_type= NULL;
-  bool s_done= DD_FALSE, k_done= DD_FALSE;
+  bool /*s_done= DD_FALSE,*/ k_done= DD_FALSE;
   //bool S_i_done= DD_FALSE, S_o_done= DD_FALSE;
 
   strcpy(opts, "c:C:p:PX:vVt:s:S:hH");
@@ -337,29 +337,35 @@ cl_app::proc_arguments(int argc, char *argv[])
 	}
       case 's':
       {
-	FILE *Ser_in, *Ser_out;
+	//FILE *Ser_in, *Ser_out;
+	/*
 	if (s_done)
 	  {
 	    fprintf(stderr, "-s option can not be used more than once.\n");
 	    break;
 	  }
-	s_done= DD_TRUE;
+	*/
+	//s_done= DD_TRUE;
+	/*
 	if ((Ser_in= fopen(optarg, "r")) == NULL)
 	  {
 	    fprintf(stderr,
 		    "Can't open `%s': %s\n", optarg, strerror(errno));
 	    return(4);
 	  }
-	if (!options->set_value("serial0_in_file", this, (void*)Ser_in))
+	*/
+	if (!options->set_value("serial0_in_file", this, /*(void*)Ser_in*/optarg))
 	  fprintf(stderr, "Warning: No \"serial0_in_file\" option found to set "
 		  "parameter of -s as serial input file\n");
+	/*
 	if ((Ser_out= fopen(optarg, "w")) == NULL)
 	  {
 	    fprintf(stderr,
 		    "Can't open `%s': %s\n", optarg, strerror(errno));
 	    return(4);
 	  }
-	if (!options->set_value("serial0_out_file", this, Ser_out))
+	*/
+	if (!options->set_value("serial0_out_file", this, /*Ser_out*/optarg))
 	  fprintf(stderr, "Warning: No \"serial_out0_file\" option found "
 		  "to set parameter of -s as serial output file\n");
 	break;
@@ -411,7 +417,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 #endif
       case 'S':
 	{
-	  FILE *Ser_in, *Ser_out;
+	  // FILE *Ser_in, *Ser_out;
 	  char *iname= NULL, *oname= NULL;
 	  int uart=0, port=0;
 	  subopts= optarg;
@@ -465,14 +471,16 @@ cl_app::proc_arguments(int argc, char *argv[])
 		      o->hide();
 		      options->add(o);
 		      free(h);
-		    }		  
+		    }
+		  /*
 		  if ((Ser_in= fopen(iname, "r")) == NULL)
 		    {
 		      fprintf(stderr,
 			      "Can't open `%s': %s\n", value, strerror(errno));
 		      exit(4);
 		    }
-		  options->set_value(s, this, (void*)Ser_in);
+		  */
+		  options->set_value(s, this, /*(void*)Ser_in*/iname);
 		  free(s);
 		}
 	      if (oname)
@@ -486,14 +494,16 @@ cl_app::proc_arguments(int argc, char *argv[])
 		      o->hide();
 		      options->add(o);
 		      free(h);
-		    }		  
+		    }
+		  /*
 		  if ((Ser_out= fopen(oname, "w")) == NULL)
 		    {
 		      fprintf(stderr,
 			      "Can't open `%s': %s\n", value, strerror(errno));
 		      exit(4);
 		    }
-		  options->set_value(s, this, (void*)Ser_out);
+		  */
+		  options->set_value(s, this, /*(void*)Ser_out*/oname);
 		  free(s);
 		}
 	      if (port > 0)
@@ -739,13 +749,13 @@ cl_app::mk_options(void)
 					    "Use \\0 as prompt (-P)"));
   o->init();
 
-  options->new_option(o= new cl_pointer_option(this, "serial0_in_file",
-					       "Input file for serial line uart0 (-S)"));
+  options->new_option(o= new cl_string_option(this, "serial0_in_file",
+					      "Input file for serial line uart0 (-S)"));
   o->init();
   o->hide();
 
-  options->new_option(o= new cl_pointer_option(this, "serial0_out_file",
-					       "Output file for serial line uart0 (-S)"));
+  options->new_option(o= new cl_string_option(this, "serial0_out_file",
+					      "Output file for serial line uart0 (-S)"));
   o->init();
   o->hide();
 

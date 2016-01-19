@@ -117,65 +117,68 @@ cl_serial::init(void)
   serial_out_file_option->use(s);
   free(s);
   
-  FILE *f_serial_in = (FILE*)serial_in_file_option->get_value((void*)0);
-  FILE *f_serial_out= (FILE*)serial_out_file_option->get_value((void*)0);
+  /*FILE*/char *f_serial_in = (/*FILE*/char*)serial_in_file_option->get_value((/*void*/char*)0);
+  /*FILE*/char *f_serial_out= (/*FILE*/char*)serial_out_file_option->get_value((/*void*/char*)0);
   if (f_serial_in)
     {
-      fin= cp_io(f_serial_in, cchars("r"));
+      fin= mk_io(chars(f_serial_in), cchars("r"));
       // making `serial' unbuffered
-      if (setvbuf(f_serial_in, NULL, _IONBF, 0))
+      if (setvbuf(fin->file_f, NULL, _IONBF, 0))
 	perror("Unbuffer serial input channel");
 #if defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
-      if ((i= fcntl(fileno(f_serial_in), F_GETFL, 0)) < 0)
+      if ((i= fcntl(fin->file_id, F_GETFL, 0)) < 0)
 	perror("Get flags of serial input");
       i|= O_NONBLOCK;
-      if (fcntl(fileno(f_serial_in), F_SETFL, i) < 0)
+      if (fcntl(fin->file_id, F_SETFL, i) < 0)
 	perror("Set flags of serial input");
       // switching terminal to noncanonical mode
-      if (isatty(fileno(f_serial_in)))
+      if (isatty(fin->file_id))
 	{
-	  tcgetattr(fileno(f_serial_in), &saved_attributes_in);
-	  tcgetattr(fileno(f_serial_in), &tattr);
+	  tcgetattr(fin->file_id, &saved_attributes_in);
+	  tcgetattr(fin->file_id, &tattr);
 	  tattr.c_lflag&= ~(ICANON|ECHO);
 	  tattr.c_cc[VMIN] = 1;
 	  tattr.c_cc[VTIME]= 0;
-	  tcsetattr(fileno(f_serial_in), TCSAFLUSH, &tattr);
+	  tcsetattr(fin->file_id, TCSAFLUSH, &tattr);
 	}
       else
 #endif
 	fprintf(stderr, "Warning: serial input interface connected to a "
 		"non-terminal file.\n");
     }
+  else
+    fin= mk_io(chars(""), chars(""));
   if (f_serial_out)
     {
-      fout= cp_io(f_serial_out, "w");
+      fout= mk_io(chars(f_serial_out), "w");
       // making `serial' unbuffered
-      if (setvbuf(f_serial_out, NULL, _IONBF, 0))
+      if (setvbuf(fout->file_f, NULL, _IONBF, 0))
 	perror("Unbuffer serial output channel");
 #if defined HAVE_TERMIOS_H
       // setting O_NONBLOCK
-      if ((i= fcntl(fileno(f_serial_out), F_GETFL, 0)) < 0)
+      if ((i= fcntl(fout->file_id, F_GETFL, 0)) < 0)
 	perror("Get flags of serial output");
       i|= O_NONBLOCK;
-      if (fcntl(fileno(f_serial_out), F_SETFL, i) < 0)
+      if (fcntl(fout->file_id, F_SETFL, i) < 0)
 	perror("Set flags of serial output");
       // switching terminal to noncanonical mode
-      if (isatty(fileno(f_serial_out)))
+      if (isatty(fout->file_id))
 	{
-	  tcgetattr(fileno(f_serial_out), &saved_attributes_out);
-	  tcgetattr(fileno(f_serial_out), &tattr);
+	  tcgetattr(fout->file_id, &saved_attributes_out);
+	  tcgetattr(fout->file_id, &tattr);
 	  tattr.c_lflag&= ~(ICANON|ECHO);
 	  tattr.c_cc[VMIN] = 1;
 	  tattr.c_cc[VTIME]= 0;
-	  tcsetattr(fileno(f_serial_out), TCSAFLUSH, &tattr);
+	  tcsetattr(fout->file_id, TCSAFLUSH, &tattr);
 	}
       else
 #endif
 	fprintf(stderr, "Warning: serial output interface connected to a "
 		"non-terminal file.\n");
     }
-
+  else
+    fout= mk_io(chars(""), chars(""));
   class cl_hw *t2= uc->get_hw(HW_TIMER, 2, 0);
   if ((there_is_t2= t2 != 0))
     {
