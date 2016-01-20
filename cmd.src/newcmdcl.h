@@ -126,7 +126,8 @@ public:
   virtual int init(void);
   virtual void welcome(void);
   virtual int proc_input(class cl_cmdset *cmdset);
-
+  virtual bool need_check(void) { return false; }
+  
   virtual void print_prompt(void);
   virtual int dd_printf(const char *format, ...);
   virtual int debug(const char *format, ...);
@@ -189,6 +190,7 @@ public:
   virtual int proc_input(void) = 0;
   virtual int input_avail(void) = 0;
   virtual int wait_input(void) = 0;
+  virtual void check(void) { return; }
 };
 
 

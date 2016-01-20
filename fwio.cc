@@ -254,6 +254,13 @@ cl_io::input_avail(void)
 }
 
 void
+cl_io::check(void)
+{
+  if (type == F_CONSOLE)
+    input_avail();
+}
+
+void
 cl_io::changed(void)
 {
   //printf("win_f changed\n");
@@ -481,7 +488,7 @@ msleep(int msec)
 void
 pause()
 {
-  msleep(1);
+  msleep(100);
 }
 
 

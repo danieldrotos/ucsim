@@ -27,6 +27,7 @@ class cl_io: public cl_f
   virtual int read(char *buf, int max);
   virtual void changed(void);
   virtual int input_avail(void);
+  virtual void check(void);
 };
 
 

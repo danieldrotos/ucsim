@@ -146,7 +146,7 @@ int
 cl_app::run(void)
 {
   int done= 0;
-  double input_last_checked= 0;
+  double input_last_checked= 0, last_check= 0, now;
   class cl_option *o= options->get_option("go");
   bool g_opt= false;
 
@@ -157,6 +157,7 @@ cl_app::run(void)
   
   while (!done)
     {
+      now= dnow();
       if (!sim)
 	{
 	  commander->wait_input();
@@ -166,9 +167,9 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
-	      if (dnow() - input_last_checked > 0.2)
+	      if (now - input_last_checked > 0.2)
 		{
-		  input_last_checked= dnow();
+		  input_last_checked= now;
 		  if (commander->input_avail())
 		    done= commander->proc_input();
                 }
@@ -182,6 +183,8 @@ cl_app::run(void)
 	  if (sim->state & SIM_QUIT)
 	    done= 1;
 	}
+      if (now - last_check > 0.001)
+	commander->check();
     }
   return(0);
 }

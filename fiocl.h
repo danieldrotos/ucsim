@@ -89,7 +89,8 @@ class cl_f: public cl_base
   virtual int raw(void);
   virtual int cooked(void);
   virtual int input_avail(void)= 0;
-
+  virtual void check(void) { return; }
+  
  public:
   int server_port;
 

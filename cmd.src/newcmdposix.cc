@@ -221,6 +221,13 @@ cl_console::input_avail(void)
   return ret;
 }
 
+bool
+cl_console::need_check(void)
+{
+  return fin && (fin->type == F_CONSOLE);
+}
+
+
 int
 cl_console::read_line(void)
 {
@@ -424,6 +431,7 @@ cl_commander::init(void)
   cl_base::init();
   set_name("Commander");
   active_inputs= new cl_list(10, 5, "active_inputs");
+  check_list= new cl_list(10, 5, "check_list");
   
   bool need_config= DD_TRUE;
 
@@ -480,13 +488,23 @@ void
 cl_commander::update_active(void)
 {
   int i;
+  
   active_inputs->disconn_all();
+  check_list->disconn_all();
+  
   for (i= 0; i < cons->count; i++)
     {
-      class cl_console_base *c=
-	(class cl_console_base *)cons->at(i);
-      if (c->input_active())
-	active_inputs->add(c);
+      class cl_console *c=
+	(class cl_console *)cons->at(i);
+      class cl_f *f= c->fin;
+      if (c->input_active() &&
+	  f)
+	{
+	  active_inputs->add(f);
+	}
+      if (c->need_check() &&
+	  f)
+	check_list->add(f);
     }
 }
 
@@ -581,5 +599,17 @@ cl_commander::proc_input(void)
   return 0;
 }
 
+
+void
+cl_commander::check(void)
+{
+  int i;
+
+  for (i= 0; i < check_list->count; i++)
+    {
+      class cl_f *f= (class cl_f *)check_list->at(i);
+      f->check();
+    }
+}
 
 /* End of cmd.src/newcmdposix.cc */

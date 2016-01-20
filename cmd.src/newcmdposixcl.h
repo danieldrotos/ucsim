@@ -60,6 +60,7 @@ public:
   virtual bool is_eof(void) const { return fin ? (fin->eof()) : true; }
   virtual bool input_avail(void);// { return input_active() ? (fin->input_avail()) : false; };
   virtual int read_line(void);
+  virtual bool need_check(void);
 
 private:
   //FILE *get_out(void) { return rout ? rout : out; }
@@ -105,6 +106,7 @@ private:
   //fd_set read_set, active_set;
   //UCSOCKET_T fd_num;
   class cl_list *active_inputs;
+  class cl_list *check_list;
   
 public:
   cl_commander(class cl_app *the_app, class cl_cmdset *acmdset)
@@ -117,6 +119,7 @@ public:
   virtual int input_avail(void);
   virtual int wait_input(void);
   virtual int proc_input(void);
+  virtual void check(void);
 };
 
 #endif
