@@ -124,7 +124,7 @@ cl_sim::start(class cl_console_base *con, unsigned long steps_to_do)
     {
       con->flags|= CONS_FROZEN;
       app->get_commander()->frozen_console= con;
-      app->get_commander()->set_fd_set();
+      app->get_commander()->update_active();
     }
   start_at= dnow();
   if (uc)
@@ -200,7 +200,7 @@ cl_sim::stop(int reason)
       cmd->frozen_console->print_prompt();
       cmd->frozen_console= 0;
     }
-  cmd->set_fd_set();
+  cmd->update_active();
 }
 
 void

@@ -431,14 +431,14 @@ cl_commander_base::add_console(class cl_console_base *console)
   int i=cons->add(console);
   console->set_id(i);
   console->init();
-  set_fd_set();
+  update_active();
 }
 
 void
 cl_commander_base::del_console(class cl_console_base *console)
 {
   cons->disconn(console);
-  set_fd_set();
+  update_active();
 }
 
 void
@@ -447,14 +447,14 @@ cl_commander_base::activate_console(class cl_console_base *console)
   console->flags&= ~CONS_INACTIVE;
   //console->dd_printf("_a_");
   console->print_prompt();
-  set_fd_set();
+  update_active();
 }
 
 void
 cl_commander_base::deactivate_console(class cl_console_base *console)
 {
   console->flags|= CONS_INACTIVE;
-  set_fd_set();
+  update_active();
 }
 
 int

@@ -185,7 +185,7 @@ public:
   void exec_on(class cl_console_base *cons, char *file_name);
   
   virtual int init(void) = 0;
-  virtual void set_fd_set(void) = 0;
+  virtual void update_active(void) = 0;
   virtual int proc_input(void) = 0;
   virtual int input_avail(void) = 0;
   virtual int wait_input(void) = 0;

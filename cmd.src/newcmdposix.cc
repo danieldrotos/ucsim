@@ -423,7 +423,8 @@ cl_commander::init(void)
 
   cl_base::init();
   set_name("Commander");
-
+  active_inputs= new cl_list(10, 5, "active_inputs");
+  
   bool need_config= DD_TRUE;
 
 #ifdef SOCKET_AVAIL
@@ -476,34 +477,24 @@ cl_commander::init(void)
 }
 
 void
-cl_commander::set_fd_set(void)
+cl_commander::update_active(void)
 {
   int i;
-
-  FD_ZERO(&read_set);
-  fd_num = 0;
-  for (i = 0; i < cons->count; i++)
+  active_inputs->disconn_all();
+  for (i= 0; i < cons->count; i++)
     {
-      class cl_console *c= dynamic_cast<class cl_console*>((class cl_console_base*)(cons->at(i)));
-
+      class cl_console_base *c=
+	(class cl_console_base *)cons->at(i);
       if (c->input_active())
-        {
-          UCSOCKET_T fd = c->get_in_fd();
-          assert(0 <= fd);
-
-          FD_SET(fd, &read_set);
-          if (fd > fd_num)
-            fd_num = fd;
-        }
+	active_inputs->add(c);
     }
-  fd_num++;
 }
 
 int
 cl_commander::input_avail(void)
 {
-  struct timeval tv = {0, 0};
-  active_set = read_set;
+  //struct timeval tv = {0, 0};
+  //active_set = read_set;
   int i;
 
   //printf("commander::input_avail\n");
@@ -528,24 +519,28 @@ cl_commander::input_avail(void)
       //printf("\n");
     }
   return false;
+  /*
   i = select(fd_num, &active_set, NULL, NULL, &tv);
   if (i < 0)
     perror("select");
-
+    
   return i;
+  */
 }
 
 int
 cl_commander::wait_input(void)
 {
   //prompt();
-  active_set = read_set;
+  //active_set = read_set;
   while (!input_avail())
     pause();
   //printf("commander::wait_input found something\n");
   return 0;
-  int i = select(fd_num, &active_set, NULL, NULL, NULL);
-  return i;
+  /*
+    int i = select(fd_num, &active_set, NULL, NULL, NULL);
+    return i;
+  */
 }
 
 int
