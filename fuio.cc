@@ -240,6 +240,30 @@ srv_accept(class cl_f *listen_io,
   return 0;
 }
 
+bool
+check_inputs(class cl_list *active, class cl_list *avail)
+{
+  int i;
+  bool ret= false;
+  
+  if (!active)
+    return false;
+
+  if (avail)
+    avail->disconn_all();
+  
+  for (i= 0; i < active->count; i++)
+    {
+      class cl_f *fio= (class cl_f *)active->at(i);
+      if (fio->input_avail())
+	{
+	  if (avail)
+	    avail->add(fio);
+	  ret= true;
+	}
+    }
+  return ret;
+}
 
 void
 msleep(int msec)

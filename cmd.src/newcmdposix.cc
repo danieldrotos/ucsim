@@ -497,6 +497,12 @@ cl_commander::input_avail(void)
   //active_set = read_set;
   int i;
 
+  class cl_list *avail= new cl_list(10,5,"avail");
+  bool ret= check_inputs(active_inputs, avail);
+  avail->disconn_all();
+  delete avail;
+  return ret;
+  
   //printf("commander::input_avail\n");
   for (i= 0; i < cons->count; i++)
     {
