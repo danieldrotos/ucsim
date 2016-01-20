@@ -120,9 +120,12 @@ void
 cl_sim::start(class cl_console_base *con, unsigned long steps_to_do)
 {
   state|= SIM_GO;
-  con->flags|= CONS_FROZEN;
-  app->get_commander()->frozen_console= con;
-  app->get_commander()->set_fd_set();
+  if (con)
+    {
+      con->flags|= CONS_FROZEN;
+      app->get_commander()->frozen_console= con;
+      app->get_commander()->set_fd_set();
+    }
   start_at= dnow();
   if (uc)
     start_tick= uc->ticks->ticks;

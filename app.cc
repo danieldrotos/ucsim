@@ -148,6 +148,13 @@ cl_app::run(void)
   int done= 0;
   unsigned  input_check_skip = 0;
   double input_last_checked= 0;
+  class cl_option *o= options->get_option("go");
+  bool g_opt= false;
+
+  if (o)
+    o->get_value(&g_opt);
+  if (sim && g_opt)
+    sim->start(0, 0);
   
   while (!done/* &&
 		 going*/)
@@ -227,6 +234,7 @@ print_help(char *name)
      "                  port=nr   Use localhost:nr for serial line\n"
      "  -p prompt    Specify string for prompt\n"
      "  -P           Prompt is a null ('\\0') character\n"
+     "  -g           Go, start simulation\n"
      "  -V           Verbose mode\n"
      "  -v           Print out version number\n"
      "  -H           Print out types of known CPUs\n"
@@ -258,7 +266,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= DD_FALSE;
   //bool S_i_done= DD_FALSE, S_o_done= DD_FALSE;
 
-  strcpy(opts, "c:C:p:PX:vVt:s:S:hH");
+  strcpy(opts, "c:C:p:PX:vVt:s:S:hHg");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
@@ -266,6 +274,11 @@ cl_app::proc_arguments(int argc, char *argv[])
   while((c= getopt(argc, argv, opts)) != -1)
     switch (c)
       {
+      case 'g':
+	if (!options->set_value("go", this, true))
+	  fprintf(stderr, "Warning: No \"go\" option found "
+		  "to set by -g\n");
+	break;
       case 'c':
 	if (!options->set_value("console_on", this, optarg))
 	  fprintf(stderr, "Warning: No \"console_on\" option found "
@@ -816,6 +829,11 @@ cl_app::mk_options(void)
 
   options->new_option(o= new cl_string_option(this, "cpu_type",
 					      "Type of controller (-t)"));
+  o->init();
+  o->hide();
+
+  options->new_option(o= new cl_bool_option(this, "go",
+					    "Go on start (-g)"));
   o->init();
   o->hide();
 }

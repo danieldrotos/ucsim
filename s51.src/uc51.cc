@@ -877,28 +877,6 @@ cl_51core::do_inst(int step)
 	  pre_inst();
 	  result= exec_inst();
 	  post_inst();
-	  /*
-	  {
-	    if (c)
-	      print_regs(c);
-	    else
-	      {
-		if (sim->app->get_commander()==NULL)
-		  printf("no commander PC=0x%x\n",PC);
-		else
-		  if (sim->app->get_commander()->frozen_console==NULL)
-		    printf("no frozen console PC=0x%x\n",PC);
-		  else
-		    c= sim->app->get_commander()->frozen_console;
-		if (c)
-		  print_regs(c);
-		else
-		  printf("no console PC=0x%x\n",PC);
-	      }
-	  }
-	  */
-	  /*if (result == resGO)
-	    result= check_events();*/
 	}
       else
 	{
