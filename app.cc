@@ -146,7 +146,6 @@ int
 cl_app::run(void)
 {
   int done= 0;
-  unsigned  input_check_skip = 0;
   double input_last_checked= 0;
   class cl_option *o= options->get_option("go");
   bool g_opt= false;
@@ -156,8 +155,7 @@ cl_app::run(void)
   if (sim && g_opt)
     sim->start(0, 0);
   
-  while (!done/* &&
-		 going*/)
+  while (!done)
     {
       if (!sim)
 	{
@@ -168,17 +166,11 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
-              //if ((!input_check_skip) && (commander->input_avail()))
-	      if (dnow() - input_last_checked > 0.3)
+	      if (dnow() - input_last_checked > 0.2)
 		{
 		  input_last_checked= dnow();
 		  if (commander->input_avail())
-		    {
-		      //printf("app::run found input while sim is going\n");
-		      done= commander->proc_input();
-		      // run a few steps before checking for more input
-		      ++input_check_skip;
-		    }
+		    done= commander->proc_input();
                 }
 	      sim->step();
             }

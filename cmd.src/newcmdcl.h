@@ -141,7 +141,8 @@ public:
   
   virtual bool input_active(void) const;
   virtual bool accept_last(void) { return is_tty() ? DD_TRUE : DD_FALSE; }
-
+  virtual bool prevent_quit(void) { return true; }
+  
 public:
   int flags; // See CONS_XXXX
 
@@ -167,11 +168,12 @@ public:
   cl_commander_base(class cl_app *the_app, class cl_cmdset *acmdset);
   virtual ~cl_commander_base(void);
 
-  void add_console(class cl_console_base *console);
-  void del_console(class cl_console_base *console);
-  void activate_console(class cl_console_base *console);
-  void deactivate_console(class cl_console_base *console);
-
+  virtual void add_console(class cl_console_base *console);
+  virtual void del_console(class cl_console_base *console);
+  virtual void activate_console(class cl_console_base *console);
+  virtual void deactivate_console(class cl_console_base *console);
+  virtual int consoles_prevent_quit(void);
+  
   //void prompt(void);
   int all_printf(const char *format, ...);        // print to all consoles
   int dd_printf(const char *format, va_list ap);  // print to actual_console
@@ -181,7 +183,7 @@ public:
   int flag_printf(int iflags, const char *format, ...);
   int input_avail_on_frozen(void);
   void exec_on(class cl_console_base *cons, char *file_name);
-
+  
   virtual int init(void) = 0;
   virtual void set_fd_set(void) = 0;
   virtual int proc_input(void) = 0;

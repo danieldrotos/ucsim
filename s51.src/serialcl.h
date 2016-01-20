@@ -100,6 +100,7 @@ class cl_serial_listener: public cl_listen_console
   cl_serial_listener(int serverport, class cl_app *the_app,
 		     class cl_serial *the_serial);
   virtual int proc_input(class cl_cmdset *cmdset);
+  virtual bool prevent_quit(void) { return false; }
 };
 
 

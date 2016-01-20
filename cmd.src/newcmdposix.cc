@@ -557,8 +557,8 @@ cl_commander::proc_input(void)
 
       if (c->input_active())
         {
-          UCSOCKET_T fd = c->get_in_fd();
-          assert(0 <= fd);
+          //UCSOCKET_T fd = c->get_in_fd();
+          //assert(0 <= fd);
 
           //if (FD_ISSET(fd, &active_set))
 	  //printf("commander checks in of cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
@@ -573,7 +573,7 @@ cl_commander::proc_input(void)
                   delete c;
                 }
               actual_console = 0;
-              return(0 == cons->count);
+              return(0 == consoles_prevent_quit());
             }
         }
     }

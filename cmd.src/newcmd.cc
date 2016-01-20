@@ -457,6 +457,21 @@ cl_commander_base::deactivate_console(class cl_console_base *console)
   set_fd_set();
 }
 
+int
+cl_commander_base::consoles_prevent_quit(void)
+{
+  int i, r= 0;
+
+  for (i= 0; i < cons->count; i++)
+    {
+      class cl_console_base *c= (class cl_console_base*)(cons->at(i));
+      if (c->prevent_quit())
+	r++;
+    }
+  return r;
+}
+
+
 /*
  * Printing to all consoles
  */
