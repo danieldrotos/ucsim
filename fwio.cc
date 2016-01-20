@@ -86,21 +86,24 @@ cl_io::determine_type()
     case FILE_TYPE_DISK:
       printf("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
       return F_FILE;
+
     }
 
   char sockbuf[256];
   int optlen = sizeof(sockbuf);
+  int i;
 
-  if (SOCKET_ERROR != getsockopt((SOCKET)handle, SOL_SOCKET, SO_TYPE, sockbuf, &optlen) ||
-      WSAENOTSOCK != WSAGetLastError())
+  i= getsockopt((SOCKET)handle, SOL_SOCKET, SO_TYPE, sockbuf, &optlen);
+  if (/*CKET_ERROR !=  ||
+	WSAENOTSOCK != WSAGetLastError()*/i==0)
     {
       printf("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
       return F_SOCKET;
     }
   
   //assert(false);
-  printf("wio file_id=%d (handle=%p) type=unknown2\n", file_id, handle);
-  return F_UNKNOWN;
+  printf("wio file_id=%d (handle=%p) type=pipe\n", file_id, handle);
+  return F_PIPE;
 }
 
 int
@@ -148,6 +151,7 @@ cl_io::input_avail(void)
       }
 
     case F_FILE:
+    case F_PIPE:
       return true;
 
     case F_CONSOLE:
@@ -280,7 +284,10 @@ cl_io::changed(void)
       if (type == F_CONSOLE)
 	{
 	  if (strcmp("r", file_mode) == 0)
-	    SetConsoleMode(handle, 0);
+	    {
+	      printf("wio: console mode 0\n");
+	      SetConsoleMode(handle, 0);
+	    }
 	}
     }
   //printf("win opened file id=%d\n", file_id);

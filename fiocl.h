@@ -38,6 +38,7 @@ enum file_type {
   F_FILE,
   F_CHAR,
   F_SOCKET,
+  F_PIPE,
   F_CONSOLE, // win only
   F_SERIAL // win only
 };
