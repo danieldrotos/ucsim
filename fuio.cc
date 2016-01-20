@@ -70,9 +70,10 @@ cl_io::determine_type(void)
   if (S_ISDIR(s.st_mode) ||
       S_ISLNK(s.st_mode))
     return F_UNKNOWN;
-  if (S_ISCHR(s.st_mode) ||
-      S_ISFIFO(s.st_mode))
+  if (S_ISCHR(s.st_mode))
     return F_CHAR;
+  if (S_ISFIFO(s.st_mode))
+    return F_PIPE;
   if (S_ISBLK(s.st_mode) ||
       S_ISREG(s.st_mode))
     return F_FILE;
@@ -106,6 +107,7 @@ cl_io::input_avail(void)
       break;
     case F_CHAR:
     case F_SOCKET:
+    case F_PIPE:
       FD_ZERO(&s);
       FD_SET(file_id, &s);
       i= select(/*FD_SETSIZE*/file_id+1, &s, NULL, NULL, &tv);
