@@ -558,7 +558,7 @@ cl_commander::wait_input(void)
   //prompt();
   //active_set = read_set;
   while (!input_avail())
-    pause();
+    loop_delay();
   //printf("commander::wait_input found something\n");
   return 0;
   /*

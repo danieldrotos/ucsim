@@ -276,7 +276,7 @@ msleep(int msec)
 }
 
 void
-pause()
+loop_delay()
 {
   msleep(100);
 }

@@ -112,7 +112,7 @@ extern int srv_accept(class cl_f *listen_io,
 extern bool check_inputs(class cl_list *active, class cl_list *avail);
 
 extern void msleep(int msec);
-extern void pause();
+extern void loop_delay();
 
 
 #endif
