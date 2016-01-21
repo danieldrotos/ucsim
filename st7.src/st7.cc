@@ -370,9 +370,9 @@ cl_st7::disass(t_addr addr, const char *sep)
               ++immed_offset;
               break;
             case 'p': // b    byte index offset
-              sprintf(temp, "0x%04x",
-                 addr+immed_offset+1
-                 +(char)get_mem(MEM_ROM_ID, addr+immed_offset));
+              sprintf(temp, "0x%04lx",
+		      (long int)(addr+immed_offset+1
+				 +(char)get_mem(MEM_ROM_ID, addr+immed_offset)));
               ++immed_offset;
               break;
             default:
@@ -473,7 +473,7 @@ cl_st7::exec_inst(void)
 		break;
   }
 	
-  printf("********************  switch; pc=0x%x, prefix = 0x%x, code = 0x%x\n",PC, cprefix, code);
+  printf("********************  switch; pc=0x%lx, prefix = 0x%x, code = 0x%x\n",(long int)(PC), cprefix, code);
   switch (code & 0xf) {
    int mulres;
    
