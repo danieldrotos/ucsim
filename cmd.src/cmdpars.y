@@ -21,6 +21,17 @@ static void yyerror (const char *msg);
 %token PTOK_GE_OP PTOK_LE_OP
 %token PTOK_LEFT_OP PTOK_RIGHT_OP
 
+%token PTOK_MUL_ASSIGN
+%token PTOK_DIV_ASSIGN
+%token PTOK_MOD_ASSIGN
+%token PTOK_ADD_ASSIGN
+%token PTOK_SUB_ASSIGN
+%token PTOK_LEFT_ASSIGN
+%token PTOK_RIGHT_ASSIGN
+%token PTOK_AND_ASSIGN
+%token PTOK_XOR_ASSIGN
+%token PTOK_OR_ASSIGN
+
 %token PTOK_INT
 
 %token <memory_object> PTOK_MEMORY_OBJECT
@@ -37,7 +48,7 @@ static void yyerror (const char *msg);
 %type <number> logical_and_expr logical_or_expr
 %type <number> conditional_expr assignment_expr
 
-%type <number> type_name
+%type <number> type_name assignment_operator
 
 %type <memory> memory
 %type <bit> bit
@@ -300,9 +311,46 @@ assignment_expr
 : conditional_expr { $$= $1; }
 /*| cast_expr assignment_operator assignment_expr*/
 /*| cast_expr PTOK_EQUAL assignment_expr*/
-| memory PTOK_EQUAL assignment_expr
+| memory assignment_operator assignment_expr
 	{
-	  $1.memory->write($1.address, $3);
+	  t_mem org= $1.memory->read($1.address);
+	  $$= $3;
+	  switch ($2)
+	    {
+	    case PTOK_EQUAL:
+	      $1.memory->write($1.address, $3);
+	      break;
+	    case PTOK_MUL_ASSIGN:
+	      $1.memory->write($1.address, org *= $3);
+	      break;
+	    case PTOK_DIV_ASSIGN:
+	      $1.memory->write($1.address, org /= $3);
+	      break;
+	    case PTOK_MOD_ASSIGN:
+	      $1.memory->write($1.address, org %= $3);
+	      break;
+	    case PTOK_ADD_ASSIGN:
+	      $1.memory->write($1.address, org += $3);
+	      break;
+	    case PTOK_SUB_ASSIGN:
+	      $1.memory->write($1.address, org -= $3);
+	      break;
+	    case PTOK_LEFT_ASSIGN:
+	      $1.memory->write($1.address, org <<= $3);
+	      break;
+	    case PTOK_RIGHT_ASSIGN:
+	      $1.memory->write($1.address, org >>= $3);
+	      break;
+	    case PTOK_AND_ASSIGN:
+	      $1.memory->write($1.address, org &= $3);
+	      break;
+	    case PTOK_XOR_ASSIGN:
+	      $1.memory->write($1.address, org ^= $3);
+	      break;
+	    case PTOK_OR_ASSIGN:
+	      $1.memory->write($1.address, org |= $3);
+	      break;
+	    }
 	  $$= $1.memory->read($1.address);
 	}
 | bit PTOK_EQUAL assignment_expr
@@ -321,11 +369,21 @@ assignment_expr
 	    }
 	}
 ;
-/*
+
 assignment_operator
-: PTOK_EQUAL
+: PTOK_EQUAL { $$= PTOK_EQUAL; }
+| PTOK_MUL_ASSIGN { $$= PTOK_MUL_ASSIGN; }
+| PTOK_DIV_ASSIGN { $$= PTOK_DIV_ASSIGN; }
+| PTOK_MOD_ASSIGN { $$= PTOK_MOD_ASSIGN; }
+| PTOK_ADD_ASSIGN { $$= PTOK_ADD_ASSIGN; }
+| PTOK_SUB_ASSIGN { $$= PTOK_SUB_ASSIGN; }
+| PTOK_LEFT_ASSIGN { $$= PTOK_LEFT_ASSIGN; }
+| PTOK_RIGHT_ASSIGN { $$= PTOK_RIGHT_ASSIGN; }
+| PTOK_AND_ASSIGN { $$= PTOK_AND_ASSIGN; }
+| PTOK_XOR_ASSIGN { $$= PTOK_XOR_ASSIGN; }
+| PTOK_OR_ASSIGN { $$= PTOK_OR_ASSIGN; }
 ;
-*/
+
 expr
 : assignment_expr { $$= $1; }
 | expr PTOK_COMMA assignment_expr { $$= $3; }

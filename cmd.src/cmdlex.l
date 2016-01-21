@@ -15,6 +15,16 @@ static int uc_yy_input(char *buf, int max_size);
 [ \t]*			;
 
 "int"			return(PTOK_INT);
+"*="			return(PTOK_MUL_ASSIGN);
+"/="			return(PTOK_DIV_ASSIGN);
+"%="			return(PTOK_MOD_ASSIGN);
+"+="			return(PTOK_ADD_ASSIGN);
+"-="			return(PTOK_SUB_ASSIGN);
+"<<="			return(PTOK_LEFT_ASSIGN);
+">>="			return(PTOK_RIGHT_ASSIGN);
+"&="			return(PTOK_AND_ASSIGN);
+"^="			return(PTOK_XOR_ASSIGN);
+"|="			return(PTOK_OR_ASSIGN);
 "&&"			return(PTOK_AND_OP);
 "||"			return(PTOK_OR_OP);
 "++"			return(PTOK_INC_OP);
