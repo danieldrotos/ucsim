@@ -199,6 +199,7 @@ cl_uc::init(void)
     xtal= xtal_option->get_value(xtal);
   else
     xtal= 11059200;
+  make_variables();
   make_memories();
   rom= address_space(MEM_ROM_ID);
   ebrk= new brk_coll(2, 2, rom);
@@ -267,7 +268,29 @@ cl_uc::reset(void)
 
 void
 cl_uc::make_memories(void)
-{}
+{
+}
+
+void
+cl_uc::make_variables(void)
+{
+  class cl_address_space *as;
+
+  variables= as= new cl_address_space("variables", 0, 0x100, 32);
+  as->init();
+  address_spaces->add(as);
+
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+
+  chip= new cl_memory_chip("variable_storage", 0x100, 32);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(variables, chip, 0, 0xff, 0);
+  ad->init();
+  variables->decoders->add(ad);
+  ad->activate(0);
+}
 
 /*t_addr
 cl_uc::get_mem_size(char *id)

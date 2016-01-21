@@ -103,7 +103,8 @@ public:
   class cl_address_space_list *address_spaces;
   class cl_address_space *rom;  // Required for almost every uc
   //class cl_list *address_decoders;
-
+  class cl_address_space *variables;
+  
   class cl_irqs *it_sources;	// Sources of interrupts
   class cl_list *it_levels;	// Follow interrupt services
   class cl_list *stack_ops;	// Track stack operations
@@ -124,6 +125,7 @@ public:
   // making objects
   //virtual class cl_m *mk_mem(enum mem_class type, char *class_name);
   virtual void make_memories(void);
+  virtual void make_variables(void);
   //virtual t_addr get_mem_size(char *id);
   //virtual int get_mem_width(char *id);
   virtual void mk_hw_elements(void);

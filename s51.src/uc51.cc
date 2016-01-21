@@ -366,7 +366,7 @@ cl_51core::disass(t_addr addr, const char *sep)
 		    strcat(temp, c);
 		    break;
 		  }
-		sprintf(temp, "%02x.%d", (ba<128)?((ba/8)+32):(ba&0xf8),
+		sprintf(temp, "%02lx.%d", (long int)((ba<128)?((ba/8)+32):(ba&0xf8)),
 			(int)(ba & 0x07));
 		break;
 	      }
