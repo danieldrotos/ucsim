@@ -69,8 +69,12 @@ COMMAND_DO_WORK_UC(cl_memory_createchip_cmd)
   if (!memid ||
       !*memid)
     con->dd_printf("Wrong id\n");
-  else if (size < 1)
+  else if ((size < 1) ||
+	   (size > max_mem_size))
     con->dd_printf("Wrong size\n");
+  else if ((width < 1) ||
+	   (width > 32))
+    con->dd_printf("Wrong width\n");
   else
     {
       class cl_memory *mem= new cl_memory_chip(memid, size, width);
@@ -120,8 +124,12 @@ COMMAND_DO_WORK_UC(cl_memory_createaddressspace_cmd)
   if (!memid ||
       !*memid)
     con->dd_printf("Wrong id\n");
-  else if (size < 1)
+  else if ((size < 1) ||
+	   (size > max_mem_size))
     con->dd_printf("Wrong size\n");
+  else if ((width < 1) ||
+	   (width > 32))
+    con->dd_printf("Wrong width\n");
   else
     {
       class cl_address_space *mem=

@@ -1212,7 +1212,7 @@ cl_uc::symbolic_bit_name(t_addr bit_address,
   if (!sym_name)
     {
       sym_name= (char *)malloc(16);
-      sprintf(sym_name, mem?(mem->addr_format):"0x%06x", mem_addr);
+      sprintf(sym_name, mem?(mem->addr_format):"0x%06lx", (unsigned long)mem_addr);
     }
   sym_name= (char *)realloc(sym_name, strlen(sym_name)+2);
   strcat(sym_name, ".");

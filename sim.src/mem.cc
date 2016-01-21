@@ -57,7 +57,8 @@ static class cl_mem_error_registry mem_error_registry;
 cl_memory::cl_memory(const char *id, t_addr asize, int awidth):
   cl_base()
 {
-  size= asize;
+  if ((size= asize) > max_mem_size)
+    size= max_mem_size;
   set_name(id);
   addr_format= data_format= 0;
   width= awidth;

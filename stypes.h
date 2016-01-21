@@ -50,6 +50,10 @@ typedef /*TYPE_DWORD*/int64_t	t_addr;		/* 64 bit max */
 typedef /*TYPE_UDWORD*/uint32_t	t_mem;		/* 32 bit max */
 typedef /*TYPE_WORD*/int32_t	t_smem;		/* signed 32 bit memory */
 
+enum {
+  max_mem_size= 0x40000000 /* 1 GB */
+};
+
 struct id_element
 {
   int id;
