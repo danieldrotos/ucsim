@@ -14,6 +14,7 @@ static int uc_yy_input(char *buf, int max_size);
 
 [ \t]*			;
 
+"int"			return(PTOK_INT);
 "&&"			return(PTOK_AND_OP);
 "||"			return(PTOK_OR_OP);
 "++"			return(PTOK_INC_OP);

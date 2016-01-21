@@ -46,9 +46,9 @@ typedef uint32_t TYPE_UDWORD;
 typedef unsigned char	uchar;
 typedef unsigned int	uint;
 typedef unsigned long	ulong;
-typedef TYPE_DWORD	t_addr;		/* 32 bit max */
-typedef TYPE_UWORD	t_mem;		/* 16 bit max */
-typedef TYPE_WORD	t_smem;		/* signed 16 bit memory */
+typedef /*TYPE_DWORD*/int64_t	t_addr;		/* 64 bit max */
+typedef /*TYPE_UDWORD*/uint32_t	t_mem;		/* 32 bit max */
+typedef /*TYPE_WORD*/int32_t	t_smem;		/* signed 32 bit memory */
 
 struct id_element
 {

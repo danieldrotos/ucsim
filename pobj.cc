@@ -420,19 +420,21 @@ cl_list::add_at(t_index index, void *item)
   if (count == Limit)
     set_limit(count + Delta);
 
-  { char s[1000];
-  s[0]='\0';
-  sprintf(s, "%s add_at(%d,%p) PC=0x%x (count=%d)", get_name("?"), index, item,
-	  application?
-	  ((application->sim)?
-	   ((application->sim->uc)?(application->sim->uc->PC):
-	    -3):
-	   -1):
-	  -2, count);
-  strcat(s,"\n");}
+  /*{
+    char s[1000];
+    s[0]='\0';
+    sprintf(s, "%s add_at(%d,%p) PC=0x%x (count=%d)", get_name("?"), index, item,
+	    application?
+	    ((application->sim)?
+	     ((application->sim->uc)?(application->sim->uc->PC):
+	      -3):
+	     -1):
+	    -2, count);
+    strcat(s,"\n");
+    }*/
   memmove(&Items[index+1], &Items[index], (count-index)*sizeof(void *));
   count++;
-
+  
   Items[index]= item;
 }
 

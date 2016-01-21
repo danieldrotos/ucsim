@@ -21,6 +21,8 @@ static void yyerror (const char *msg);
 %token PTOK_GE_OP PTOK_LE_OP
 %token PTOK_LEFT_OP PTOK_RIGHT_OP
 
+%token PTOK_INT
+
 %token <memory_object> PTOK_MEMORY_OBJECT
 %token <memory> PTOK_MEMORY
 %token <number> PTOK_NUMBER
@@ -35,11 +37,13 @@ static void yyerror (const char *msg);
 %type <number> logical_and_expr logical_or_expr
 %type <number> conditional_expr assignment_expr
 
+%type <number> type_name
+
 %type <memory> memory
 %type <bit> bit
 
 %union {
-  long number;
+  /*long*/int32_t number;
   class cl_memory *memory_object;
   struct {
     class cl_memory *memory;
@@ -162,15 +166,15 @@ unary_expr
 | PTOK_INC_OP memory
 	{
 	  $$= $2.memory->read($2.address);
-	  $$= $$+1;
-	  $2.memory->write($2.address, $$);
+	  $2.memory->write($2.address, $$+1);
+	  $$= $2.memory->read($2.address);
 	}
 /*| PTOK_DEC_OP unary_expr      */
 | PTOK_DEC_OP memory
 	{
 	  $$= $2.memory->read($2.address);
-	  $$= $$-1;
-	  $2.memory->write($2.address, $$);
+	  $2.memory->write($2.address, $$-1);
+	  $$= $2.memory->read($2.address);
 	}
 /*| unary_operator cast_expr	*/
 /*| PTOK_AMPERSAND unary_expr*/
@@ -185,6 +189,7 @@ unary_expr
 	    }
 	}
 | PTOK_MINUS unary_expr { $$= -$2; }
+| PTOK_PLUS unary_expr { $$= +$2; }
 | PTOK_TILDE unary_expr { $$= ~$2; }
 | PTOK_EXCLAMATION unary_expr { $$= ($2)?0:1; }
   /*   | SIZEOF unary_expr        */
@@ -207,7 +212,25 @@ unary_operator
 
 cast_expr
 : unary_expr { $$= $1; }
-/*   | PTOK_LEFT_PAREN type_name PTOK_RIGHT_PAREN cast_expr */
+| PTOK_LEFT_PAREN type_name PTOK_RIGHT_PAREN /*cast_expr*/ memory
+	{
+	  $$= $4.memory->read($4.address);
+	  if ($2 == PTOK_INT)
+	    {
+	      uint32_t smask;
+	      smask= 1 << ($4.memory->width - 1);
+	      if ($$ & smask)
+		{
+		  uint32_t mask;
+		  mask= -1 & ~($4.memory->data_mask);
+		  $$= $$ | mask;
+		}
+	    }
+	}
+;
+
+type_name
+: PTOK_INT { $$= PTOK_INT; }
 ;
 
 multiplicative_expr
@@ -280,7 +303,7 @@ assignment_expr
 | memory PTOK_EQUAL assignment_expr
 	{
 	  $1.memory->write($1.address, $3);
-	  $$= $3;
+	  $$= $1.memory->read($1.address);
 	}
 | bit PTOK_EQUAL assignment_expr
 	{
