@@ -14,6 +14,16 @@ static int uc_yy_input(char *buf, int max_size);
 
 [ \t]*			;
 
+"&&"			return(PTOK_AND_OP);
+"||"			return(PTOK_OR_OP);
+"++"			return(PTOK_INC_OP);
+"--"			return(PTOK_DEC_OP);
+"=="			return(PTOK_EQ_OP);
+"!="			return(PTOK_NE_OP);
+">="			return(PTOK_GE_OP);
+"<="			return(PTOK_LE_OP);
+">>"			return(PTOK_RIGHT_OP);
+"<<"			return(PTOK_LEFT_OP);
 "+"			return(PTOK_PLUS);
 "-"			return(PTOK_MINUS);
 "*"			return(PTOK_ASTERIX);
@@ -25,6 +35,16 @@ static int uc_yy_input(char *buf, int max_size);
 "="			return(PTOK_EQUAL);
 "."			return(PTOK_DOT);
 "&"			return(PTOK_AMPERSAND);
+"|"			return(PTOK_PIPE);
+"^"			return(PTOK_CIRCUM);
+"%"			return(PTOK_PERCENT);
+"~"			return(PTOK_TILDE);
+"?"			return(PTOK_QUESTION);
+":"			return(PTOK_COLON);
+"<"			return(PTOK_LESS);
+">"			return(PTOK_GREATHER);
+"!"			return(PTOK_EXCLAMATION);
+","			return(PTOK_COMMA);
 
 ([0-9]+)|(0x[0-9a-fA-F]+) {
   //printf("\nlexer found a nr: %s\n",yytext);
@@ -34,7 +54,7 @@ static int uc_yy_input(char *buf, int max_size);
 
 [a-zA-Z_][0-9a-zA-Z_]*	return(uc_yy_check_id(yytext));
 
-.			;
+.			return(yytext[0]);
 
 %%
 

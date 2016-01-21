@@ -6,25 +6,35 @@
 
 static void yyerror (const char *msg);
 %}
-%expect 6
+/*%expect 6*/
 
 %token PTOK_PLUS PTOK_MINUS PTOK_ASTERIX PTOK_SLASH PTOK_EQUAL
 %token PTOK_LEFT_PAREN PTOK_RIGHT_PAREN
 %token PTOK_LEFT_BRACKET PTOK_RIGHT_BRACKET
-%token PTOK_DOT PTOK_AMPERSAND
+%token PTOK_DOT PTOK_AMPERSAND PTOK_PIPE PTOK_CIRCUM
+%token PTOK_PERCENT PTOK_TILDE PTOK_QUESTION PTOK_COLON PTOK_EXCLAMATION
+%token PTOK_LESS PTOK_GREATHER PTOK_COMMA
+
+%token PTOK_AND_OP PTOK_OR_OP
+%token PTOK_INC_OP PTOK_DEC_OP
+%token PTOK_EQ_OP PTOK_NE_OP
+%token PTOK_GE_OP PTOK_LE_OP
+%token PTOK_LEFT_OP PTOK_RIGHT_OP
 
 %token <memory_object> PTOK_MEMORY_OBJECT
 %token <memory> PTOK_MEMORY
 %token <number> PTOK_NUMBER
 %token <bit> PTOK_BIT
 
-%right PTOK_EQUAL
-%left PTOK_MINUS PTOK_PLUS
-%left PTOK_ASTERIX PTOK_SLASH
-%nonassoc UNARYMINUS PTOK_AMPERSAND
-%nonassoc PTOK_LEFT_PAREN PTOK_RIGHT_PAREN
+%type <number> ucsim_grammar expr
+%type <number> primary_expr postfix_expr
+%type <number> unary_expr cast_expr
+%type <number> multiplicative_expr additive_expr shift_expr
+%type <number> relational_expr equality_expr
+%type <number> and_expr exclusive_or_expr inclusive_or_expr
+%type <number> logical_and_expr logical_or_expr
+%type <number> conditional_expr assignment_expr
 
-%type <number> ucsim_grammar assignment expression address_of_expression
 %type <memory> memory
 %type <bit> bit
 
@@ -45,9 +55,9 @@ static void yyerror (const char *msg);
 %%
 
 ucsim_grammar:
-	expression { application->dd_printf("%d\n", $1); }
+	expr { application->dd_printf("%d\n", $1); }
 	;
-
+/*
 assignment:
 	  memory PTOK_EQUAL expression
 	  {
@@ -70,7 +80,8 @@ assignment:
 	      }
 	  }
 	;
-
+*/
+/*
 expression:
 	  assignment { $$= $1; }
 	| expression PTOK_PLUS expression { $$= $1 + $3; }
@@ -90,7 +101,9 @@ expression:
 	| memory { $$= $1.memory->read($1.address); }
 	| bit { $$= ($1.memory->read($1.mem_address) & $1.mask)?1:0; }
 	;
+*/
 
+/*
 address_of_expression:
 	  PTOK_AMPERSAND memory { $$= $2.address; }
 	| PTOK_AMPERSAND bit
@@ -103,10 +116,201 @@ address_of_expression:
 	    }
 	}
 	;
+*/
+
+
+primary_expr
+/*   : identifier      */
+: memory { $$= $1.memory->read($1.address); }
+| bit { $$= ($1.memory->read($1.mem_address) & $1.mask)?1:0; }
+| PTOK_NUMBER { $$= $1; }
+     /*   | string_literal_val*/
+| PTOK_LEFT_PAREN expr PTOK_RIGHT_PAREN { $$= $2; }
+     /*   | generic_selection*/
+   ;
+
+postfix_expr
+: primary_expr { $$= $1; }
+/*   | postfix_expr PTOK_LEFT_BRACKET expr PTOK_RIGHT_BRACKET          */
+/*   | postfix_expr PTOK_LEFT_PAREN PTOK_RIGHT_PAREN               */
+/*   | postfix_expr PTOK_LEFT_PAREN argument_expr_list PTOK_RIGHT_PAREN*/
+/*   | postfix_expr PTOK_DOT  identifier*/
+/*   | postfix_expr PTOK_AMPERSAND  identifier*/
+/*| postfix_expr PTOK_INC_OP*/
+| memory PTOK_INC_OP
+	{
+	  $$= $1.memory->read($1.address);
+	  $1.memory->write($1.address, $$+1);
+	}
+/*| postfix_expr PTOK_DEC_OP*/
+| memory PTOK_DEC_OP
+	{
+	  $$= $1.memory->read($1.address);
+	  $1.memory->write($1.address, $$-1);
+	}
+;
+/*
+argument_expr_list
+   : assignment_expr
+   | assignment_expr PTOK_COLON argument_expr_list 
+   ;
+*/
+
+unary_expr
+: postfix_expr { $$= $1; }
+/*| PTOK_INC_OP unary_expr      */
+| PTOK_INC_OP memory
+	{
+	  $$= $2.memory->read($2.address);
+	  $$= $$+1;
+	  $2.memory->write($2.address, $$);
+	}
+/*| PTOK_DEC_OP unary_expr      */
+| PTOK_DEC_OP memory
+	{
+	  $$= $2.memory->read($2.address);
+	  $$= $$-1;
+	  $2.memory->write($2.address, $$);
+	}
+/*| unary_operator cast_expr	*/
+/*| PTOK_AMPERSAND unary_expr*/
+|PTOK_AMPERSAND memory { $$= $2.address; }
+|PTOK_AMPERSAND bit
+	{
+	  $$= $2.bit_address;
+	  if ($$ < 0)
+	    {
+	      yyerror("Bit has no address.");
+	      $$= 0;
+	    }
+	}
+| PTOK_MINUS unary_expr { $$= -$2; }
+| PTOK_TILDE unary_expr { $$= ~$2; }
+| PTOK_EXCLAMATION unary_expr { $$= ($2)?0:1; }
+  /*   | SIZEOF unary_expr        */
+  /*   | SIZEOF PTOK_LEFT_PAREN type_name PTOK_RIGHT_PAREN */
+  /*   | ALIGNOF PTOK_LEFT_PAREN type_name PTOK_RIGHT_PAREN*/
+  /*   | TYPEOF unary_expr        */
+  /*   | OFFSETOF PTOK_LEFT_PAREN type_name PTOK_COMMA offsetof_member_designator PTOK_RIGHT_PAREN */
+;
+
+/*
+unary_operator
+   : '&'    
+   | '*'    
+   | '+'    
+   | '-'    
+   | '~'    
+   | '!'    
+   ;
+*/
+
+cast_expr
+: unary_expr { $$= $1; }
+/*   | PTOK_LEFT_PAREN type_name PTOK_RIGHT_PAREN cast_expr */
+;
+
+multiplicative_expr
+: cast_expr { $$= $1; }
+| multiplicative_expr PTOK_ASTERIX cast_expr { $$= $1 * $3; }
+| multiplicative_expr PTOK_SLASH cast_expr { $$= $1 / $3; }
+| multiplicative_expr PTOK_PERCENT cast_expr { $$= $1 % $3; }
+;
+
+additive_expr
+: multiplicative_expr { $$= $1; }
+| additive_expr PTOK_PLUS multiplicative_expr { $$= $1 + $3; }
+| additive_expr PTOK_MINUS multiplicative_expr { $$= $1 - $3; }
+;
+
+shift_expr
+: additive_expr { $$= $1; }
+| shift_expr PTOK_LEFT_OP additive_expr { $$= $1 << $3; }
+| shift_expr PTOK_RIGHT_OP additive_expr { $$= $1 >> $3; }
+;
+
+relational_expr
+: shift_expr { $$= $1; }
+| relational_expr PTOK_LESS shift_expr { $$= ($1 < $3)?1:0; }
+| relational_expr PTOK_GREATHER shift_expr { $$= ($1 > $3)?1:0; }
+| relational_expr PTOK_LE_OP shift_expr { $$= ($1 <= $3)?1:0; }
+| relational_expr PTOK_GE_OP shift_expr { $$= ($1 >= $3)?1:0; }
+;
+
+equality_expr
+: relational_expr { $$= $1; }
+| equality_expr PTOK_EQ_OP relational_expr { $$= ($1==$3)?1:0; }
+| equality_expr PTOK_NE_OP relational_expr { $$= ($1!=$3)?1:0; }
+;
+
+and_expr
+: equality_expr { $$= $1; }
+| and_expr PTOK_AMPERSAND equality_expr { $$= $1 & $3; }
+;
+
+exclusive_or_expr
+: and_expr { $$= $1; }
+| exclusive_or_expr PTOK_CIRCUM and_expr { $$= $1 ^ $3; }
+;
+
+inclusive_or_expr
+: exclusive_or_expr { $$= $1; }
+| inclusive_or_expr PTOK_PIPE exclusive_or_expr { $$= $1 | $3; }
+;
+
+logical_and_expr
+: inclusive_or_expr { $$= $1; }
+| logical_and_expr PTOK_AND_OP inclusive_or_expr { $$= ($1 && $3)?1:0; }
+;
+
+logical_or_expr
+: logical_and_expr { $$= $1; }
+| logical_or_expr PTOK_OR_OP logical_and_expr { $$= ($1 || $3)?1:0; }
+;
+
+conditional_expr
+: logical_or_expr { $$= $1; }
+| logical_or_expr PTOK_QUESTION expr PTOK_COLON conditional_expr { $$= ($1)?($3):($5); }
+;
+
+assignment_expr
+: conditional_expr { $$= $1; }
+/*| cast_expr assignment_operator assignment_expr*/
+/*| cast_expr PTOK_EQUAL assignment_expr*/
+| memory PTOK_EQUAL assignment_expr
+	{
+	  $1.memory->write($1.address, $3);
+	  $$= $3;
+	}
+| bit PTOK_EQUAL assignment_expr
+	{
+	  if ($3)
+	    {
+	      $1.memory->write($1.mem_address,
+			       $1.memory->read($1.mem_address) | $1.mask);
+	      $$= 1;
+	    }
+	  else
+	    {
+	      $1.memory->write($1.mem_address,
+			       $1.memory->read($1.mem_address) & ~($1.mask));
+	      $$= 0;
+	    }
+	}
+;
+/*
+assignment_operator
+: PTOK_EQUAL
+;
+*/
+expr
+: assignment_expr { $$= $1; }
+| expr PTOK_COMMA assignment_expr { $$= $3; }
+;
 
 memory:
 	  PTOK_MEMORY
-	| PTOK_MEMORY_OBJECT PTOK_LEFT_BRACKET expression PTOK_RIGHT_BRACKET
+	| PTOK_MEMORY_OBJECT PTOK_LEFT_BRACKET expr PTOK_RIGHT_BRACKET
 	  {
 	    $$.memory= $1;
 	    $$.address= $3;
@@ -114,7 +318,7 @@ memory:
 
 bit:
 	  PTOK_BIT
-	| memory PTOK_DOT expression
+	| memory PTOK_DOT expr
 	  {
 	    $$.memory= $1.memory;
 	    $$.mem_address= $1.address;
