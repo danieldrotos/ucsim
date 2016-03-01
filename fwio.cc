@@ -11,17 +11,14 @@
 
 cl_io::cl_io(): cl_f()
 {
-  last_used= first_free= 0;
 }
 
 cl_io::cl_io(chars fn, chars mode): cl_f(fn, mode)
 {
-  last_used= first_free= 0;
 }
 
 cl_io::cl_io(int the_server_port): cl_f(the_server_port)
 {
-  last_used= first_free= 0;
 }
 
 enum file_type
@@ -120,6 +117,8 @@ cl_io::check_dev(void)
     case F_SOCKET:
       {
         struct timeval tv = {0, 0};
+	char b[100];
+	int i;
 	
         //assert(INVALID_HANDLE_VALUE != handle);
 	
@@ -131,12 +130,17 @@ cl_io::check_dev(void)
         if (SOCKET_ERROR == ret)
           fprintf(stderr, "Can't select: %d\n", WSAGetLastError());
 
-        return ret != SOCKET_ERROR && ret != 0;
+        while (ret != SOCKET_ERROR && ret != 0)
+	  {
+	    pick();
+	  }
+	return last_used != first_free;
       }
 
     case F_FILE:
     case F_PIPE:
-      return true;
+      pick();
+      return last_used != first_free;
 
     case F_CONSOLE:
       {
@@ -208,7 +212,7 @@ cl_io::check_dev(void)
 		//printf("presses=%d found (c=%d/%c)\n", key_presses, c, (c>31)?c:'.');
 		/*free(pIRBuf);
 		  return true;*/
-		if (put(c) != 0)
+		if (pick(c) != 1)
 		  {
 		    //printf("put(%c) failed\n", (c>31)?c:'.');
 		  }
@@ -233,8 +237,14 @@ cl_io::check_dev(void)
 	
         bool res = ClearCommError(handle, &err, &comStat);
         //assert(res);
-	
-        return res ? comStat.cbInQue > 0 : false;
+	if (!res)
+	  return false;
+        while (res && (comStat.cbInQue > 0))
+	  {
+	    pick();
+	    res = ClearCommError(handle, &err, &comStat);
+	  }
+	return last_used != first_free;
       }
       
     default:

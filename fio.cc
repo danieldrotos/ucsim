@@ -56,6 +56,10 @@ cl_f::cl_f(void)
   file_name= 0;
   file_mode= 0;
   server_port= -1;
+  echo_of= NULL;
+  echo_to= NULL;
+  at_end= 0;
+  last_used= first_free= 0;
 }
 
 cl_f::cl_f(chars fn, chars mode):
@@ -68,6 +72,10 @@ cl_f::cl_f(chars fn, chars mode):
   tty= false;
   own= false;
   server_port= -1;
+  echo_of= NULL;
+  echo_to= NULL;
+  at_end= 0;
+  last_used= first_free= 0;
 }
 
 cl_f::cl_f(int the_server_port)
@@ -79,6 +87,10 @@ cl_f::cl_f(int the_server_port)
   file_name= 0;
   file_mode= 0;
   server_port= the_server_port;
+  echo_of= NULL;
+  echo_to= NULL;
+  at_end= 0;
+  last_used= first_free= 0;
 }
 
 class cl_f *
@@ -238,6 +250,8 @@ cl_f::stop_use(void)
 
 cl_f::~cl_f(void)
 {
+  if (echo_of != NULL)
+    echo_of->echo(NULL);
   if (file_f)
     {
       if (own)
@@ -289,7 +303,26 @@ cl_f::get(void)
 int
 cl_f::pick(void)
 {
-  return 0;
+  char b[100];
+  int i= ::read(file_id, b, 99);
+  if (i > 0)
+    {
+      int j;
+      for (j= 0; j < i; j++)
+	{
+	  put(b[j]);
+	}
+    }
+  if (i == 0)
+    at_end= 1;
+  return i;
+}
+
+int
+cl_f::pick(char c)
+{
+  int i= put(c);
+  return i;
 }
 
 int

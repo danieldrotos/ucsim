@@ -55,9 +55,10 @@ class cl_f: public cl_base
   bool own;
   enum file_type type;
   class cl_f *echo_to, *echo_of;
+  int at_end;
+ protected:
   char buffer[1024];
   int last_used, first_free;
- protected:
   FILE *file_f;
  public:
   cl_f(void);
@@ -82,6 +83,7 @@ class cl_f: public cl_base
   virtual int put(char c);
   virtual int get(void);
   virtual int pick(void);
+  virtual int pick(char c);
  public:
   virtual int input_avail(void);
   virtual int read(char *buf, int max);
