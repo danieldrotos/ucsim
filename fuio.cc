@@ -55,6 +55,30 @@ cl_io::close(void)
   return i;
 }
 
+void
+cl_io::changed(void)
+{
+  if (file_id < 0)
+    {
+      restore_attributes();
+      type= F_UNKNOWN;
+    }
+  else
+    {
+      save_attributes();
+      type= determine_type();
+      if (tty)
+	{
+	  struct termios tattr;
+	  tcgetattr(file_id, &tattr);
+	  tattr.c_lflag&= ~(ICANON|ECHO);
+	  tattr.c_cc[VMIN] = 1;
+	  tattr.c_cc[VTIME]= 0;
+	  tcsetattr(file_id, TCSAFLUSH, &tattr);
+	}
+    }
+}
+
 enum file_type
 cl_io::determine_type(void)
 {
@@ -128,6 +152,19 @@ cl_io::check_dev(void)
   return 0;
 }
 
+void
+cl_io::save_attributes()
+{
+  if (tty)
+    tcgetattr(file_id, &saved_attributes);
+}
+
+void
+cl_io::restore_attributes()
+{
+  if (tty)
+    tcsetattr(file_id, TCSAFLUSH, &saved_attributes);
+}
 
 int
 mk_srv_socket(int port)

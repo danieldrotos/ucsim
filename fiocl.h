@@ -43,6 +43,31 @@ enum file_type {
   F_SERIAL // win only
 };
 
+enum tu_special_keys {
+  TU_UP		= -1,
+  TU_DOWN	= -2,
+  TU_LEFT	= -3,
+  TU_RIGHT	= -4,
+  TU_HOME	= -5,
+  TU_END	= -6,
+  TU_PGUP	= -7,
+  TU_PGDOWN	= -8,
+  TU_DEL	= -9,
+  TU_F1		= -10,
+  TU_F2		= -11,
+  TU_F3		= -12,
+  TU_F4		= -13,
+  TU_F5		= -14,
+  TU_F6		= -15,
+  TU_F7		= -16,
+  TU_F8		= -17,
+  TU_F9		= -18,
+  TU_F10	= -19,
+  TU_F11	= -20,
+  TU_F12	= -21,
+  TU_INS	= -22
+};
+
 
 /* General file */
 
@@ -56,6 +81,10 @@ class cl_f: public cl_base
   enum file_type type;
   class cl_f *echo_to, *echo_of;
   int at_end;
+  bool cooking;
+  char line[1024];
+  int cursor;
+  char esc_buffer[100];
  protected:
   char buffer[1024];
   int last_used, first_free;
@@ -82,6 +111,8 @@ class cl_f: public cl_base
  protected:
   virtual int put(char c);
   virtual int get(void);
+  virtual int process_esc(char c);
+  virtual int process(char c);
   virtual int pick(void);
   virtual int pick(char c);
  public:
@@ -100,7 +131,17 @@ class cl_f: public cl_base
   virtual int vprintf(char *format, va_list ap);
   virtual bool eof(void);
   virtual void flush(void);
-  
+
+  virtual void echo_cursor_save();
+  virtual void echo_cursor_restore();
+  virtual void echo_cursor_go_left(int n);
+  virtual void echo_cursor_go_right(int n);
+  virtual void echo_write(char *b, int l);
+  virtual void echo_write_str(char *s);
+  virtual void echo_write_str(const char *s);
+
+  virtual void save_attributes();
+  virtual void restore_attributes();
   virtual int raw(void);
   virtual int cooked(void);
   virtual void check(void) { return; }

@@ -84,8 +84,12 @@ cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_ap
     }
   prompt= 0;
   flags= CONS_NONE;
-  if (is_tty())
-    flags|= CONS_INTERACTIVE;
+  if (/*is_tty()*/(fin && fin->tty) && (fout && fout->tty))
+    {
+      flags|= CONS_INTERACTIVE;
+      fin->echo(fout);
+      fin->cooked();
+    }
   else
     ;//fprintf(stderr, "Warning: non-interactive console\n");
   frout= 0;
@@ -100,8 +104,12 @@ cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
   fout= cp_io(_fout, "w");
   prompt= 0;
   flags= CONS_NONE;
-  if (is_tty())
-    flags|= CONS_INTERACTIVE;
+  if (/*is_tty()*/(fin && fin->tty) && (fout && fout->tty))
+    {
+      flags|= CONS_INTERACTIVE;
+      fin->echo(fout);
+      fin->cooked();
+    }
   else
     ;//fprintf(stderr, "Warning: non-interactive console\n");
   frout= 0;
@@ -116,8 +124,12 @@ cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
   fout= _fout;
   prompt= 0;
   flags= CONS_NONE;
-  if (is_tty())
-    flags|= CONS_INTERACTIVE;
+  if (/*is_tty()*/(fin && fin->tty) && (fout && fout->tty))
+    {
+      flags|= CONS_INTERACTIVE;
+      fin->echo(fout);
+      fin->cooked();
+    }
   else
     ;//fprintf(stderr, "Warning: non-interactive console\n");
   frout= 0;

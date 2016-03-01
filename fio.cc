@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 # include <arpa/inet.h>
 #endif
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "fiocl.h"
 
@@ -60,6 +61,10 @@ cl_f::cl_f(void)
   echo_to= NULL;
   at_end= 0;
   last_used= first_free= 0;
+  cooking= 0;
+  line[0]= 0;
+  cursor= 0;
+  esc_buffer[0]= 0;
 }
 
 cl_f::cl_f(chars fn, chars mode):
@@ -76,6 +81,10 @@ cl_f::cl_f(chars fn, chars mode):
   echo_to= NULL;
   at_end= 0;
   last_used= first_free= 0;
+  cooking= 0;
+  line[0]= 0;
+  cursor= 0;
+  esc_buffer[0]= 0;
 }
 
 cl_f::cl_f(int the_server_port)
@@ -91,6 +100,10 @@ cl_f::cl_f(int the_server_port)
   echo_to= NULL;
   at_end= 0;
   last_used= first_free= 0;
+  cooking= 0;
+  line[0]= 0;
+  cursor= 0;
+  esc_buffer[0]= 0;
 }
 
 class cl_f *
@@ -212,10 +225,6 @@ cl_f::open(char *fn, char *mode)
 void
 cl_f::changed(void)
 {
-  if (file_id < 0)
-    type= F_UNKNOWN;
-  else
-    type= determine_type();
 }
 
 int
@@ -301,6 +310,228 @@ cl_f::get(void)
 }
 
 int
+cl_f::process_esc(char c)
+{
+  if (esc_buffer[0] == '\033')
+    {
+      int l= strlen(esc_buffer);
+      esc_buffer[l]= c;
+      l++;
+      esc_buffer[l]= 0;
+      if (esc_buffer[1] != '[')
+	{
+	  esc_buffer[0]= 0;
+	  return c;
+	}
+      if (isalpha((int)c))
+	{
+	  esc_buffer[0]= 0;
+	  switch (c)
+	    {
+	    case 'A':
+	      return TU_UP;
+	    case 'B':
+	      return TU_DOWN;
+	    case 'C':
+	      return TU_RIGHT;
+	    case 'D':
+	      return TU_LEFT;
+	    }
+	}
+      else if (c == '~')
+	{
+	  int n;
+	  esc_buffer[0]= 0;
+	  n= strtol(&esc_buffer[2], 0, 0);
+	  switch (n)
+	    {
+	    case 1: return TU_HOME;
+	    case 2: return TU_INS;
+	    case 3: return TU_DEL;
+	    case 4: return TU_END;
+	    case 5: return TU_PGUP;
+	    case 6: return TU_PGDOWN;
+	    case 11: return TU_F1;
+	    case 12: return TU_F2;
+	    case 13: return TU_F3;
+	    case 14: return TU_F4;
+	    case 15: return TU_F5;
+	    case 17: return TU_F6;
+	    case 18: return TU_F7;
+	    case 19: return TU_F8;
+	    case 20: return TU_F9;
+	    case 21: return TU_F10;
+	    case 23: return TU_F11;
+	    case 24: return TU_F12;
+	    }
+	}
+      else
+	return 0;
+    }
+  else
+    {
+      if (c == '\033')
+	{
+	  esc_buffer[0]= '\033', esc_buffer[1]= 0;
+	  return 0;
+	}
+    }
+  return c;
+}
+
+int
+cl_f::process(char c)
+{
+  int i;
+  
+  if (!cooking)
+    {
+      echo_write(&c, 1);
+      return put(c);
+    }
+  //return put(c);
+  int l= strlen(line);
+  int k= process_esc(c);
+  int ret= 0;
+  /*if (!k || tu_ready)
+    return;*/
+  if (!k)
+    return 0;
+  // CURSOR MOVEMENT
+  if (k == TU_LEFT)
+    {
+      if (cursor > 0)
+	{
+	  cursor--;
+	  echo_cursor_go_left(1);
+	}
+    }
+  else if (k == TU_RIGHT)
+    {
+      if (line[cursor] != 0)
+	{
+	  cursor++;
+	  echo_cursor_go_right(1);
+	}
+    }
+  else if ((k == TU_HOME) ||
+	   (k == 'A'-'A'+1))
+    {
+      if (cursor > 0)
+	{
+	  echo_cursor_go_left(cursor);
+	  cursor= 0;
+	}
+    }
+  else if ((k == TU_END) ||
+	   (k == 'E'-'A'+1))
+    {
+      if (line[cursor] != 0)
+	{
+	  echo_cursor_go_right(l-cursor);
+	  cursor= l;
+	}
+    }
+  // FINISH EDITING
+  else if ((k == 'C'-'A'+1) ||
+	   (k == 'D'-'A'+1))
+    {
+      //ready= 1;
+      at_end= 1;
+    }
+  else if ((k == '\n') ||
+	   (k == '\r'))
+    {
+      //ready= 1;
+      for (i= 0; i<l; i++)
+	put(line[i]);
+      put('\n');
+      //tu_cooked();
+      line[cursor= 0]= 0;
+      esc_buffer[0]= 0;
+      ret= l+1;
+      echo_write_str("\n");
+    }
+  // DELETING
+  else if (k == 8 /*BS*/)
+    {
+      if (cursor > 0)
+	{
+	  for (i= cursor; line[i]; i++)
+	    line[i-1]= line[i];
+	  l--;
+	  line[l]= 0;
+	  cursor--;
+	  echo_cursor_go_left(1);
+	  echo_cursor_save();
+	  if (line[cursor])
+	    //printf("%s ", &line[cursor]), fflush(stdout);
+	    echo_write_str(&line[cursor]);
+	  else
+	    //write(STDOUT_FILENO, " ", 1);
+	    echo_write_str(" ");
+	  echo_cursor_restore();
+	}
+    }
+  else if ((k == 127) || /*DEL*/
+	   (k == TU_DEL))
+    {
+      if (line[cursor] != 0)
+	{
+	  for (i= cursor+1; line[i]; i++)
+	    line[i-1]= line[i];
+	  l--;
+	  line[l]= 0;
+	  echo_cursor_save();
+	  if (line[cursor])
+	    //printf("%s ", &line[cursor]), fflush(stdout);
+	    echo_write_str(&line[cursor]);
+	  else
+	    //write(STDOUT_FILENO, " ", 1);
+	    echo_write_str(" ");
+	  echo_cursor_restore();
+	}
+    }
+  else if (k == 'K'-'A'+1)
+    {
+      if (cursor > 0)
+	echo_cursor_go_left(cursor);
+      echo_cursor_save();
+      while (l--)
+	//write(STDOUT_FILENO, " ", 1);
+	echo_write_str(" ");
+      echo_cursor_restore();
+      line[cursor= 0]= 0;
+    }
+  else if (k < 0)
+    ;
+  else if (isprint(k))
+    {
+      if (l < /*tu_buf_size*/1023)
+	{
+	  if (line[cursor] == 0)
+	    {
+	      line[cursor++]= k;
+	      line[cursor]= 0;
+	      echo_write(&c, 1);
+	    }
+	  else
+	    {
+	      int j;
+	      for (j= l; j>=cursor; j--)
+		line[j+1]= line[j];
+	      line[cursor++]= k;
+	      echo_cursor_save();
+	      echo_write(&line[cursor-1], l-cursor+2);
+	      echo_cursor_restore();
+	      echo_cursor_go_right(1);
+	    }
+	}
+    }
+  return ret;
+}
+
+int
 cl_f::pick(void)
 {
   char b[100];
@@ -316,7 +547,7 @@ cl_f::pick(void)
 	      at_end= 1;
 	      return 0;
 	    }
-	  put(b[j]);
+	  /*put*/process(b[j]);
 	}
     }
   if (i == 0)
@@ -327,7 +558,7 @@ cl_f::pick(void)
 int
 cl_f::pick(char c)
 {
-  int i= put(c);
+  int i= /*put*/process(c);
   return i;
 }
 
@@ -424,11 +655,99 @@ cl_f::flush(void)
 }
 
 
+/* Echoing */
+
+void
+cl_f::echo_cursor_save()
+{
+  if (echo_to)
+    {
+      echo_to->write(cchars("\033[s"), 3);
+      echo_to->flush();
+    }
+}
+
+void
+cl_f::echo_cursor_restore()
+{
+  if (echo_to)
+    {
+      echo_to->write(cchars("\033[u"), 3);
+      echo_to->flush();
+    }
+}
+
+void
+cl_f::echo_cursor_go_left(int n)
+{
+  char b[100];
+  if (echo_to)
+    {
+      snprintf(b, 99, "\033[%dD", n);
+      echo_to->write_str(b);
+      echo_to->flush();
+    }
+}
+
+void
+cl_f::echo_cursor_go_right(int n)
+{
+  char b[100];
+  if (echo_to)
+    {
+      snprintf(b, 99, "\033[%dC", n);
+      echo_to->write_str(b);
+      echo_to->flush();
+    }
+}
+
+void
+cl_f::echo_write(char *b, int l)
+{
+  if (echo_to)
+    {
+      echo_to->write(b, l);
+      echo_to->flush();
+    }
+}
+
+void
+cl_f::echo_write_str(char *s)
+{
+  if (echo_to)
+    {
+      echo_to->write_str(s);
+      echo_to->flush();
+    }
+}
+
+void
+cl_f::echo_write_str(const char *s)
+{
+  if (echo_to)
+    {
+      echo_to->write_str(s);
+      echo_to->flush();
+    }
+}
+
+  
 /* Device handling */
+
+void
+cl_f::save_attributes()
+{
+}
+
+void
+cl_f::restore_attributes()
+{
+}
 
 int
 cl_f::raw(void)
 {
+  cooking= 0;
   return 0;
 }
 
@@ -436,6 +755,9 @@ cl_f::raw(void)
 int
 cl_f::cooked(void)
 {
+  cooking= 1;
+  line[cursor= 0]= 0;
+  esc_buffer[0]= 0;
   return 0;
 }
 
