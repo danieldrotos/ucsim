@@ -24,42 +24,6 @@ cl_io::cl_io(int the_server_port): cl_f(the_server_port)
   last_used= first_free= 0;
 }
 
-int
-cl_io::put(char c)
-{
-  int n= (first_free + 1) % 1024;
-  if (n == last_used)
-    return -1;
-  buffer[first_free]= c;
-  first_free= n;
-  /*
-  {
-    int p= last_used;
-    printf("\nbuffer:\"");
-    while (p != first_free)
-      {
-	printf("%c", buffer[p]);
-	p= (p+1)%1024;
-      }
-    printf("\"\n");
-  }
-  */
-  return 0;
-}
-
-int
-cl_io::get(void)
-{
-  if (last_used == first_free)
-    return -1;
-  char c= buffer[last_used];
-  if (c == 3 /* ^C */)
-    return -2;
-  last_used= (last_used + 1) % 1024;
-  //printf("get: %d/%c\n", c, (c>31)?c:'.');
-  return c;
-}
-
 enum file_type
 cl_io::determine_type()
 {
@@ -122,7 +86,7 @@ cl_io::determine_type()
 }
 
 int
-cl_io::read(char *buf, int max)
+cl_io::read_dev(char *buf, int max)
 {
   if (type != F_CONSOLE)
     return cl_f::read(buf, max);
@@ -145,7 +109,7 @@ cl_io::read(char *buf, int max)
 }
 
 int
-cl_io::input_avail(void)
+cl_io::check_dev(void)
 {
   //e_handle_type type= F_UNKNOWN;
   //if (F_UNKNOWN == type)

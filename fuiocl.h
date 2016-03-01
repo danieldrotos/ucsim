@@ -13,7 +13,7 @@ class cl_io: public cl_f
  public:
   virtual enum file_type determine_type(void);
   virtual int close(void);
-  virtual int input_avail(void);
+  virtual int check_dev(void);
 };
 
 

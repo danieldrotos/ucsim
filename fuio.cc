@@ -83,7 +83,7 @@ cl_io::determine_type(void)
 }
 
 int
-cl_io::input_avail(void)
+cl_io::check_dev(void)
 {
   struct timeval tv= { 0, 0 };
   fd_set s;
@@ -255,7 +255,7 @@ check_inputs(class cl_list *active, class cl_list *avail)
   for (i= 0; i < active->count; i++)
     {
       class cl_f *fio= (class cl_f *)active->at(i);
-      if (fio->input_avail())
+      if (fio->check_dev())
 	{
 	  if (avail)
 	    avail->add(fio);

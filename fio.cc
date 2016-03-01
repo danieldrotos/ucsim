@@ -248,14 +248,71 @@ cl_f::~cl_f(void)
 }
 
 
-/* IO primitives */
+/* Buffer handling */
+
+int
+cl_f::put(char c)
+{
+  int n= (first_free + 1) % 1024;
+  if (n == last_used)
+    return -1;
+  buffer[first_free]= c;
+  first_free= n;
+  /*
+  {
+    int p= last_used;
+    printf("\nbuffer:\"");
+    while (p != first_free)
+      {
+	printf("%c", buffer[p]);
+	p= (p+1)%1024;
+      }
+    printf("\"\n");
+  }
+  */
+  return 0;
+}
+
+int
+cl_f::get(void)
+{
+  if (last_used == first_free)
+    return -1;
+  char c= buffer[last_used];
+  if (c == 3 /* ^C */)
+    return -2;
+  last_used= (last_used + 1) % 1024;
+  //printf("get: %d/%c\n", c, (c>31)?c:'.');
+  return c;
+}
+
+int
+cl_f::pick(void)
+{
+  return 0;
+}
+
+int
+cl_f::input_avail(void)
+{
+  return check_dev();
+}
 
 int
 cl_f::read(char *buf, int max)
 {
+  return read_dev(buf, max);
+}
+
+
+/* IO primitives */
+
+int
+cl_f::read_dev(char *buf, int max)
+{
   if (file_id >= 0)
     {
-      if (input_avail())
+      if (check_dev())
 	return ::read(file_id, buf, max);
       else
 	return -1;
@@ -332,6 +389,22 @@ cl_f::raw(void)
 int
 cl_f::cooked(void)
 {
+  return 0;
+}
+
+int
+cl_f::echo(class cl_f *out)
+{
+  if (echo_to)
+    {
+      echo_to->echo_of= NULL;
+      echo_to= NULL;
+    }
+  if (out != NULL)
+    {
+      out->echo_of= this;
+      echo_to= out;
+    }
   return 0;
 }
 

@@ -54,6 +54,9 @@ class cl_f: public cl_base
   bool tty;
   bool own;
   enum file_type type;
+  class cl_f *echo_to, *echo_of;
+  char buffer[1024];
+  int last_used, first_free;
  protected:
   FILE *file_f;
  public:
@@ -75,10 +78,20 @@ class cl_f: public cl_base
   virtual int close(void);
   virtual int stop_use(void);
   
+ protected:
+  virtual int put(char c);
+  virtual int get(void);
+  virtual int pick(void);
+ public:
+  virtual int input_avail(void);
+  virtual int read(char *buf, int max);
+
+ public:
   FILE *f(void) { return file_f; };
   int id(void) { return file_id; };
 
-  virtual int read(char *buf, int max);
+  virtual int check_dev(void)= 0;
+  virtual int read_dev(char *buf, int max);
   virtual int write(char *buf, int count);
   virtual int write_str(char *s);
   virtual int write_str(const char *s);
@@ -88,9 +101,8 @@ class cl_f: public cl_base
   
   virtual int raw(void);
   virtual int cooked(void);
-  virtual int input_avail(void)= 0;
   virtual void check(void) { return; }
-  
+  virtual int echo(class cl_f *out);
  public:
   int server_port;
 
