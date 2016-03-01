@@ -83,29 +83,6 @@ cl_io::determine_type()
 }
 
 int
-cl_io::read_dev(char *buf, int max)
-{
-  if (type != F_CONSOLE)
-    return cl_f::read(buf, max);
-  if (max == 0)
-    return -1;
-  //printf("CONSOLE read(%d) last_used=%d first_free=%d\n", max, last_used, first_free);
-  int i= 0, c;
-  while (i < max)
-    {
-      c= get();
-      if (c == -2)
-	return i;
-      if (c < 0)
-	return (i==0)?-1:i;
-      buf[i]= c;
-      //printf("read: %d/%c\n", c, (c>31)?c:'.');
-      i++;
-    }
-  return (i==0)?-1:i;
-}
-
-int
 cl_io::check_dev(void)
 {
   //e_handle_type type= F_UNKNOWN;
@@ -251,18 +228,6 @@ cl_io::check_dev(void)
       //assert(false);
       return false;
     }
-}
-
-bool
-cl_io::eof(void)
-{
-  if (type != F_CONSOLE)
-    return cl_f::eof();
-  if (last_used == first_free)
-    return 0;
-  if (buffer[last_used] == 3 /* ^C */)
-    return 1;
-  return 0;
 }
 
 void

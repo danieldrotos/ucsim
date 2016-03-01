@@ -19,11 +19,9 @@ class cl_io: public cl_f
  public:
   virtual enum file_type determine_type(void);
  public:
-  virtual int read_dev(char *buf, int max);
   virtual void changed(void);
   virtual int check_dev(void);
   virtual void check(void);
-  virtual bool eof(void);
 };
 
 

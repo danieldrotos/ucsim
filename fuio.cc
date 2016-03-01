@@ -103,7 +103,8 @@ cl_io::check_dev(void)
       return false;
       break;
     case F_FILE:
-      return 1;
+      pick();
+      return last_used != first_free;
       break;
     case F_CHAR:
     case F_SOCKET:
@@ -118,8 +119,9 @@ cl_io::check_dev(void)
 	  if (ret)
 	    {
 	      //printf("fio::input_avail(file_id=%d,server_port=%d) TRUE\n", file_id, server_port);
+	      pick();
 	    }
-	  return ret;
+	  return last_used != first_free;
 	}
       break;
     }

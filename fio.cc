@@ -310,6 +310,12 @@ cl_f::pick(void)
       int j;
       for (j= 0; j < i; j++)
 	{
+	  if (b[j] == 3 /* ^C */)
+	    {
+	      buffer[last_used= first_free= 0]= 3; // drop everything
+	      at_end= 1;
+	      return 0;
+	    }
 	  put(b[j]);
 	}
     }
@@ -343,14 +349,22 @@ cl_f::read(char *buf, int max)
 int
 cl_f::read_dev(char *buf, int max)
 {
-  if (file_id >= 0)
+  int i= 0, c;
+  
+  if (max == 0)
+    return -1;
+
+  while (i < max)
     {
-      if (check_dev())
-	return ::read(file_id, buf, max);
-      else
-	return -1;
+      c= get();
+      if (c == -2)
+	return i;
+      if (c < 0)
+	return (i==0)?-1:i;
+      buf[i]= c;
+      i++;
     }
-  return -1;
+  return (i==0)?-1:i;
 }
 
 
@@ -398,7 +412,7 @@ cl_f::eof(void)
 {
   if (file_f == NULL)
     return true;
-  return feof(file_f);
+  return at_end;//feof(file_f);
 }
 
 
