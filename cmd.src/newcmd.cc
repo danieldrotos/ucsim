@@ -325,7 +325,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   if (i == 0)
     return 0;
   cmdstr= lbuf;
-  printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
+  //printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
   if (cmdstr==NULL)
     cmdstr= (char*)"";
   if (flags & CONS_FROZEN)
