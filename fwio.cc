@@ -32,6 +32,18 @@ cl_io::put(char c)
     return -1;
   buffer[first_free]= c;
   first_free= n;
+  /*
+  {
+    int p= last_used;
+    printf("\nbuffer:\"");
+    while (p != first_free)
+      {
+	printf("%c", buffer[p]);
+	p= (p+1)%1024;
+      }
+    printf("\"\n");
+  }
+  */
   return 0;
 }
 
@@ -41,7 +53,10 @@ cl_io::get(void)
   if (last_used == first_free)
     return -1;
   char c= buffer[last_used];
+  if (c == 3 /* ^C */)
+    return -2;
   last_used= (last_used + 1) % 1024;
+  //printf("get: %d/%c\n", c, (c>31)?c:'.');
   return c;
 }
 
@@ -62,7 +77,7 @@ cl_io::determine_type()
             switch (GetLastError())
               {
               case ERROR_INVALID_HANDLE:
-		printf("wio file_id=%d (handle=%p) type=console\n", file_id, handle);
+		//printf("wio file_id=%d (handle=%p) type=console\n", file_id, handle);
                 return F_CONSOLE;
 		
               case ERROR_INVALID_FUNCTION:
@@ -70,21 +85,21 @@ cl_io::determine_type()
                  * In case of NUL device return type F_FILE.
                  * Is this the correct way to test it?
                  */
-		printf("wio file_id=%d (handle=%p) type=file\n", file_id, handle);
+		//printf("wio file_id=%d (handle=%p) type=file\n", file_id, handle);
                 return F_FILE;
 
               default:
                 //assert(false);
-		printf("wio file_id=%d (handle=%p) type=unknown\n", file_id, handle);
+		//printf("wio file_id=%d (handle=%p) type=unknown\n", file_id, handle);
 		return F_UNKNOWN;
               }
           }
       }
-      printf("wio file_id=%d (handle=%p) type=serial\n", file_id, handle);
+      //printf("wio file_id=%d (handle=%p) type=serial\n", file_id, handle);
       return F_SERIAL;
 
     case FILE_TYPE_DISK:
-      printf("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
+      //printf("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
       return F_FILE;
 
     }
@@ -97,12 +112,12 @@ cl_io::determine_type()
   if (/*CKET_ERROR !=  ||
 	WSAENOTSOCK != WSAGetLastError()*/i==0)
     {
-      printf("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
+      //printf("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
       return F_SOCKET;
     }
   
   //assert(false);
-  printf("wio file_id=%d (handle=%p) type=pipe\n", file_id, handle);
+  //printf("wio file_id=%d (handle=%p) type=pipe\n", file_id, handle);
   return F_PIPE;
 }
 
@@ -111,15 +126,20 @@ cl_io::read(char *buf, int max)
 {
   if (type != F_CONSOLE)
     return cl_f::read(buf, max);
-  int i= 0, c= get();
+  if (max == 0)
+    return -1;
   //printf("CONSOLE read(%d) last_used=%d first_free=%d\n", max, last_used, first_free);
-  while (c >= 0)
+  int i= 0, c;
+  while (i < max)
     {
-      if (i >= max)
-	return i;
-      buf[i]= c;
-      i++;
       c= get();
+      if (c == -2)
+	return i;
+      if (c < 0)
+	return (i==0)?-1:i;
+      buf[i]= c;
+      //printf("read: %d/%c\n", c, (c>31)?c:'.');
+      i++;
     }
   return (i==0)?-1:i;
 }
@@ -224,9 +244,15 @@ cl_io::input_avail(void)
 		//printf("presses=%d found (c=%d/%c)\n", key_presses, c, (c>31)?c:'.');
 		/*free(pIRBuf);
 		  return true;*/
-		put(c);
-		printf("%c",c);
-		fflush(stdout);
+		if (put(c) != 0)
+		  {
+		    //printf("put(%c) failed\n", (c>31)?c:'.');
+		  }
+		if (c>31)
+		  {
+		    printf("%c",c);
+		    fflush(stdout);
+		  }
 	      }
 	  }
       
@@ -251,6 +277,18 @@ cl_io::input_avail(void)
       //assert(false);
       return false;
     }
+}
+
+bool
+cl_io::eof(void)
+{
+  if (type != F_CONSOLE)
+    return cl_f::eof();
+  if (last_used == first_free)
+    return 0;
+  if (buffer[last_used] == 3 /* ^C */)
+    return 1;
+  return 0;
 }
 
 void
@@ -292,7 +330,7 @@ cl_io::changed(void)
 	{
 	  if (strcmp("r", file_mode) == 0)
 	    {
-	      printf("wio: console mode 0\n");
+	      //printf("wio: console mode 0\n");
 	      SetConsoleMode(handle, 0);
 	    }
 	}

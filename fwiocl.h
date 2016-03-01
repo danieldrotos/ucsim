@@ -28,6 +28,7 @@ class cl_io: public cl_f
   virtual void changed(void);
   virtual int input_avail(void);
   virtual void check(void);
+  virtual bool eof(void);
 };
 
 
