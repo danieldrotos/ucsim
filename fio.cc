@@ -65,6 +65,7 @@ cl_f::cl_f(void)
   line[0]= 0;
   cursor= 0;
   esc_buffer[0]= 0;
+  attributes_saved= 0;
 }
 
 cl_f::cl_f(chars fn, chars mode):
@@ -85,6 +86,7 @@ cl_f::cl_f(chars fn, chars mode):
   line[0]= 0;
   cursor= 0;
   esc_buffer[0]= 0;
+  attributes_saved= 0;
 }
 
 cl_f::cl_f(int the_server_port)
@@ -104,6 +106,7 @@ cl_f::cl_f(int the_server_port)
   line[0]= 0;
   cursor= 0;
   esc_buffer[0]= 0;
+  attributes_saved= 0;
 }
 
 class cl_f *
@@ -135,6 +138,7 @@ cl_f::init(void)
 	  file_id= fileno(file_f);
 	  tty= isatty(file_id);
 	  own= true;
+	  save_attributes();
 	  changed();
 	}
       else
@@ -234,6 +238,8 @@ cl_f::close(void)
 
   if (file_f)
     {
+      if (own)
+	restore_attributes();
       i= fclose(file_f);
     }
   file_f= NULL;
@@ -253,6 +259,7 @@ cl_f::stop_use(void)
   own= false;
   file_name= 0;
   file_mode= 0;
+  attributes_saved= 0;
   changed();
   return 0;
 }
@@ -386,7 +393,24 @@ cl_f::process(char c)
   
   if (!cooking)
     {
-      echo_write(&c, 1);
+      if ((c<31) &&
+	  (c!='\n') &&
+	  (c!='\r'))
+	{
+	  char s[3]= "^ ";
+	  s[1]= 'A'+c-1;
+	  echo_write_str(s);
+	}
+      else if (c >= 127)
+	{
+	  char s[100];
+	  sprintf(s, "\\%02x", c);
+	  echo_write_str(s);
+	}
+      else
+	{
+	  echo_write(&c, 1);
+	}
       return put(c);
     }
   //return put(c);
@@ -733,6 +757,11 @@ cl_f::echo_write_str(const char *s)
 
   
 /* Device handling */
+
+void
+cl_f::set_attributes()
+{
+}
 
 void
 cl_f::save_attributes()

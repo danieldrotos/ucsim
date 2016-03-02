@@ -22,6 +22,8 @@ class cl_io: public cl_f
   virtual void changed(void);
   virtual int check_dev(void);
   virtual void check(void);
+
+  virtual void set_attributes();
 };
 
 

@@ -33,17 +33,26 @@ cl_io::close(void)
 {
   int i= 0;
 
-  if (type == F_SOCKET)
+  if ((type == F_SOCKET) ||
+      (type == F_LISTENER))
     {
+      if (own)
+	restore_attributes();
       shutdown(file_id, 2/*SHUT_RDWR*/);
     }
   
   if (file_f)
     {
+      if (own)
+	restore_attributes();
       i= fclose(file_f);
     }
   else if (file_id > 0)
-    i= ::close(file_id);
+    {
+      if (own)
+	restore_attributes();
+      i= ::close(file_id);
+    }
 
   file_f= NULL;
   file_id= -1;
@@ -60,22 +69,12 @@ cl_io::changed(void)
 {
   if (file_id < 0)
     {
-      restore_attributes();
       type= F_UNKNOWN;
     }
   else
     {
       save_attributes();
       type= determine_type();
-      if (tty)
-	{
-	  struct termios tattr;
-	  tcgetattr(file_id, &tattr);
-	  tattr.c_lflag&= ~(ICANON|ECHO);
-	  tattr.c_cc[VMIN] = 1;
-	  tattr.c_cc[VTIME]= 0;
-	  tcsetattr(file_id, TCSAFLUSH, &tattr);
-	}
     }
 }
 
@@ -132,6 +131,7 @@ cl_io::check_dev(void)
       break;
     case F_CHAR:
     case F_SOCKET:
+    case F_LISTENER:
     case F_PIPE:
       FD_ZERO(&s);
       FD_SET(file_id, &s);
@@ -140,6 +140,8 @@ cl_io::check_dev(void)
       if (i >= 0)
 	{
 	  int ret= FD_ISSET(file_id, &s);
+	  if (type == F_LISTENER)
+	    return ret;
 	  if (ret)
 	    {
 	      //printf("fio::input_avail(file_id=%d,server_port=%d) TRUE\n", file_id, server_port);
@@ -153,17 +155,36 @@ cl_io::check_dev(void)
 }
 
 void
-cl_io::save_attributes()
+cl_io::set_attributes()
 {
   if (tty)
+    {
+      struct termios tattr;
+      tcgetattr(file_id, &tattr);
+      tattr.c_lflag&= ~(ICANON|ECHO);
+      tattr.c_cc[VMIN] = 1;
+      tattr.c_cc[VTIME]= 0;
+      tcsetattr(file_id, TCSAFLUSH, &tattr);
+    }
+}
+
+void
+cl_io::save_attributes()
+{
+  if (tty &&
+      attributes_saved)
     tcgetattr(file_id, &saved_attributes);
+  attributes_saved= 0;
 }
 
 void
 cl_io::restore_attributes()
 {
   if (tty)
-    tcsetattr(file_id, TCSAFLUSH, &saved_attributes);
+    {
+      tcsetattr(file_id, TCSAFLUSH, &saved_attributes);
+      attributes_saved= 1;
+    }
 }
 
 int
@@ -240,6 +261,7 @@ mk_srv(int server_port)
 
   io= new cl_io(server_port);
   io->init();
+  io->type= F_LISTENER;
   return io;
 }
 

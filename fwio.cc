@@ -92,6 +92,7 @@ cl_io::check_dev(void)
   switch (type)
     {
     case F_SOCKET:
+    case F_LISTENER:
       {
         struct timeval tv = {0, 0};
 	char b[100];
@@ -107,7 +108,11 @@ cl_io::check_dev(void)
         if (SOCKET_ERROR == ret)
           fprintf(stderr, "Can't select: %d\n", WSAGetLastError());
 
-        while (ret != SOCKET_ERROR && ret != 0)
+	if (type == F_LISTENER)
+	  return ret;
+	
+        if ((ret != SOCKET_ERROR) &&
+	    (ret != 0))
 	  {
 	    pick();
 	  }
@@ -245,7 +250,8 @@ cl_io::changed(void)
     {
       // CLOSE
       restore_attributes();
-      if (F_SOCKET == type)
+      if ((F_SOCKET == type) ||
+	  (F_LISTENER == type))
 	{
 	  shutdown((SOCKET)handle, SD_BOTH);
 	  closesocket((SOCKET)handle);
@@ -377,6 +383,7 @@ mk_srv(int server_port)
   //printf("mk_srv(%d)\n", server_port);
   io= new cl_io(server_port);
   io->init();
+  io->type= F_LISTENER;
   return io;
 }
 

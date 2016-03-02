@@ -366,11 +366,14 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
       perror("accept");
       return(0);
       }*/
-  //printf("Accept new_socket=%d\n", newsock);
+
   srv_accept(fin, &in, &out);
+  printf("new conn accepted, fin=%d fout=%d\n", in->file_id, out->file_id);
   
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;
+  in->echo(out);
+  in->cooked();
   cmd->add_console(c);
   return(0);
 }

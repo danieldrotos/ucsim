@@ -38,6 +38,7 @@ enum file_type {
   F_FILE,
   F_CHAR,
   F_SOCKET,
+  F_LISTENER,
   F_PIPE,
   F_CONSOLE, // win only
   F_SERIAL // win only
@@ -89,6 +90,7 @@ class cl_f: public cl_base
   char buffer[1024];
   int last_used, first_free;
   FILE *file_f;
+  bool attributes_saved;
  public:
   cl_f(void);
   cl_f(chars fn, chars mode);
@@ -140,6 +142,7 @@ class cl_f: public cl_base
   virtual void echo_write_str(char *s);
   virtual void echo_write_str(const char *s);
 
+  virtual void set_attributes();
   virtual void save_attributes();
   virtual void restore_attributes();
   virtual int raw(void);
