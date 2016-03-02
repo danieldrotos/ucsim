@@ -236,10 +236,9 @@ cl_f::close(void)
 {
   int i= 0;
 
+  printf("close fid=%d\n", file_id);
   if (file_f)
     {
-      if (own)
-	restore_attributes();
       i= fclose(file_f);
     }
   file_f= NULL;
@@ -254,6 +253,7 @@ cl_f::close(void)
 int
 cl_f::stop_use(void)
 {
+  printf("stop_use fid=%d\n", file_id);
   file_f= NULL;
   file_id= -1;
   own= false;
@@ -771,6 +771,7 @@ cl_f::save_attributes()
 void
 cl_f::restore_attributes()
 {
+  printf("cl_f::restore_attr fid=%d\n", file_id);
 }
 
 int
@@ -784,9 +785,16 @@ cl_f::raw(void)
 int
 cl_f::cooked(void)
 {
-  cooking= 1;
-  line[cursor= 0]= 0;
-  esc_buffer[0]= 0;
+  if (tty)
+    {
+      cooking= 1;
+      line[cursor= 0]= 0;
+      esc_buffer[0]= 0;
+    }
+  else
+    {
+      printf("Can not cook on non-tty %d\n", file_id);
+    }
   return 0;
 }
 

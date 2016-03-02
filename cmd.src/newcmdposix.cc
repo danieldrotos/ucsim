@@ -368,10 +368,13 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
       }*/
 
   srv_accept(fin, &in, &out);
-  printf("new conn accepted, fin=%d fout=%d\n", in->file_id, out->file_id);
+  printf("new conn accepted by listener=%d, fin=%d fout=%d\n", fin->file_id,
+	 in->file_id, out->file_id);
   
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;
+  in->save_attributes();
+  in->set_attributes();
   in->echo(out);
   in->cooked();
   cmd->add_console(c);
@@ -476,9 +479,14 @@ cl_commander::init(void)
     }
   if (cons->get_count() == 0)
     {
-      add_console(con= new cl_console(cp_io(stdin, cchars("r")),
-				      cp_io(stdout, cchars("w")),
-				      app));
+      class cl_f *in, *out;
+      in= cp_io(stdin, cchars("r"));
+      out= cp_io(stdout, cchars("w"));
+      in->save_attributes();
+      in->echo(out);
+      in->cooked();
+      in->set_attributes();
+      add_console(con= new cl_console(in, out, app));
       exec_on(con, Config);
       need_config= DD_FALSE;
     }

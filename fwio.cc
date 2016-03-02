@@ -249,7 +249,6 @@ cl_io::changed(void)
   if (file_id < 0)
     {
       // CLOSE
-      restore_attributes();
       if ((F_SOCKET == type) ||
 	  (F_LISTENER == type))
 	{
@@ -270,7 +269,6 @@ cl_io::changed(void)
     }
   else
     {
-      save_attributes();
       handle= (HANDLE)_get_osfhandle(file_id);
       type= determine_type();
       if (type == F_CONSOLE)

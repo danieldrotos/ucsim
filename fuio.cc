@@ -36,21 +36,18 @@ cl_io::close(void)
   if ((type == F_SOCKET) ||
       (type == F_LISTENER))
     {
-      if (own)
-	restore_attributes();
+      restore_attributes();
       shutdown(file_id, 2/*SHUT_RDWR*/);
     }
   
   if (file_f)
     {
-      if (own)
-	restore_attributes();
+      restore_attributes();
       i= fclose(file_f);
     }
   else if (file_id > 0)
     {
-      if (own)
-	restore_attributes();
+      restore_attributes();
       i= ::close(file_id);
     }
 
@@ -64,6 +61,11 @@ cl_io::close(void)
   return i;
 }
 
+cl_io::~cl_io(void)
+{
+  restore_attributes();
+}
+
 void
 cl_io::changed(void)
 {
@@ -73,7 +75,6 @@ cl_io::changed(void)
     }
   else
     {
-      save_attributes();
       type= determine_type();
     }
 }
@@ -157,9 +158,11 @@ cl_io::check_dev(void)
 void
 cl_io::set_attributes()
 {
-  if (tty)
+  if (tty/* ||
+	    (type == F_SOCKET)*/)
     {
       struct termios tattr;
+      printf("set_attr fid=%d\n", file_id);
       tcgetattr(file_id, &tattr);
       tattr.c_lflag&= ~(ICANON|ECHO);
       tattr.c_cc[VMIN] = 1;
@@ -171,19 +174,28 @@ cl_io::set_attributes()
 void
 cl_io::save_attributes()
 {
-  if (tty &&
-      attributes_saved)
-    tcgetattr(file_id, &saved_attributes);
-  attributes_saved= 0;
+  printf("cl_io::save_attr fid=%d\n", file_id);
+  if ((tty/* ||
+       (type == F_SOCKET)
+	  */) &&
+      !attributes_saved)
+    {
+      printf("do save_attr fid=%d\n", file_id);
+      tcgetattr(file_id, &saved_attributes);
+      attributes_saved= 1;
+    }
 }
 
 void
 cl_io::restore_attributes()
 {
-  if (tty)
+  printf("cl_io::restore_attr fid=%d\n", file_id);
+  if (/*tty &&*/
+      attributes_saved)
     {
+      printf("do restore_attr fid=%d\n", file_id);
       tcsetattr(file_id, TCSAFLUSH, &saved_attributes);
-      attributes_saved= 1;
+      attributes_saved= 0;
     }
 }
 
