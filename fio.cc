@@ -390,21 +390,23 @@ int
 cl_f::process(char c)
 {
   int i;
+  unsigned int ci= c&0xff;
   
   if (!cooking)
     {
-      if ((c<31) &&
-	  (c!='\n') &&
-	  (c!='\r'))
+      printf("non-cooking echo %02x to fid=%d\n", ci, echo_to?(echo_to->file_id):-1);
+      if ((ci<31) &&
+	  (ci!='\n') &&
+	  (ci!='\r'))
 	{
 	  char s[3]= "^ ";
-	  s[1]= 'A'+c-1;
+	  s[1]= 'A'+ci-1;
 	  echo_write_str(s);
 	}
-      else if (c >= 127)
+      else if (ci >= 127)
 	{
 	  char s[100];
-	  sprintf(s, "\\%02x", c);
+	  sprintf(s, "\\%02x", ci);
 	  echo_write_str(s);
 	}
       else
@@ -576,6 +578,8 @@ cl_f::pick(void)
     }
   if (i == 0)
     at_end= 1;
+  if (i < 0)
+    printf("read error %d on fid=%d\n", i, file_id);
   return i;
 }
 
@@ -808,6 +812,7 @@ cl_f::echo(class cl_f *out)
     }
   if (out != NULL)
     {
+      printf("fid=%d echoing to fid=%d\n", file_id, out->file_id);
       out->echo_of= this;
       echo_to= out;
     }
