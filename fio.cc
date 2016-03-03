@@ -64,7 +64,7 @@ void deb(chars format, ...)
 {
   if (dd==NULL)
     {
-      dd= mk_io(cchars("/dev/pts/4"),cchars("w"));
+      dd= mk_io(cchars("/dev/pts/2"),cchars("w"));
       dd->init();
     }
   va_list ap;
@@ -584,6 +584,12 @@ cl_f::process(char c)
   else if ((k == '\n') ||
 	   (k == '\r'))
     {
+      if ((cursor == 0) &&
+	  (k == '\n'))
+	{
+	  deb("Skip \\n at empty line\n");
+	  return 0;
+	}
       deb("Enter \"");deb(line);deb("\"\n");
       //ready= 1;
       for (i= 0; i<l; i++)
@@ -760,8 +766,24 @@ cl_f::read_dev(char *buf, int max)
 int
 cl_f::write(char *buf, int count)
 {
+  int i;
   if (file_id >= 0)
-    return ::write(file_id, buf, count);
+    {
+      if (type != F_SOCKET)
+	return ::write(file_id, buf, count);
+      // on socket, assume telnet
+      for (i= 0; i < count; i++)
+	{
+	  if (buf[i] == '\r')
+	    ;
+	  else if (buf[i] == '\n')
+	    {
+	      ::write(file_id, "\r\n", 2);
+	    }
+	  else
+	    ::write(file_id, &buf[i], 1);
+	}
+    }
   return -1;
 }
 
@@ -773,7 +795,7 @@ cl_f::write_str(char *s)
   if (!s ||
       !*s)
     return 0;
-  return ::write(file_id, s, strlen(s));
+  return write(s, strlen(s));
 }
 
 
@@ -784,7 +806,7 @@ cl_f::write_str(const char *s)
       !*s)
     return 0;
   //return fprintf(file_f, "%s", s);
-  return ::write(file_id, s, strlen(s));
+  return write((char*)s, strlen((char*)s));
 }
 
 int
