@@ -41,6 +41,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #endif
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 #include "fiocl.h"
 
@@ -49,7 +50,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 cl_f *dd= NULL;
 
-void deb(chars c)
+/*void deb(chars c)
 {
   if (dd==NULL)
     {
@@ -57,6 +58,19 @@ void deb(chars c)
       dd->init();
     }
   dd->write_str(c);
+  }*/
+
+void deb(chars format, ...)
+{
+  if (dd==NULL)
+    {
+      dd= mk_io(cchars("/dev/pts/4"),cchars("w"));
+      dd->init();
+    }
+  va_list ap;
+  va_start(ap, format);
+  dd->vprintf(format, ap);
+  va_end(ap);
 }
 
 cl_f::cl_f(void)
@@ -470,7 +484,8 @@ cl_f::process(char c)
   int i;
   unsigned int ci= c&0xff;
   char s[100];
-  
+
+  deb("processing fid=%d c=%02x,%d,%c\n", file_id, c, c, (c>31)?c:'.');
   if (!cooking)
     {
       printf("non-cooking echo %02x to fid=%d\n", ci, echo_to?(echo_to->file_id):-1);
@@ -669,6 +684,7 @@ cl_f::pick(void)
 {
   char b[100];
   int i= ::read(file_id, b, 99);
+  deb("pick fid=%d i=%d\n", file_id, i);
   if (i > 0)
     {
       int j;
@@ -680,7 +696,7 @@ cl_f::pick(void)
 	      deb("pick: drop line on ^C\n");
 	      at_end= 1;
 	      return 0;
-	      }*/
+	      }*/;
 	  /*put*/process(b[j]);
 	}
     }
@@ -704,7 +720,7 @@ cl_f::pick(char c)
 int
 cl_f::input_avail(void)
 {
-  return check_dev();
+  return check_dev() || at_end;
 }
 
 int
@@ -775,6 +791,19 @@ cl_f::vprintf(char *format, va_list ap)
   int i= write_str(s);
   free(s);
   return i;
+}
+
+int
+cl_f::fprintf(char *format, ...)
+{
+  va_list ap;
+  int ret= 0;
+
+  va_start(ap, format);
+  ret= vprintf(format, ap);
+  va_end(ap);
+
+  return ret;
 }
 
 bool
