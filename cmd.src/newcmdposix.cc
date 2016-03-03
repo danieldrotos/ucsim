@@ -84,14 +84,14 @@ cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_ap
     }
   prompt= 0;
   flags= CONS_NONE;
-  if (/*is_tty()*/(fin && fin->tty) && (fout && fout->tty))
+  if ((fin && fin->tty) && (fout && fout->tty))
     {
       flags|= CONS_INTERACTIVE;
       fin->echo(fout);
       fin->cooked();
     }
   else
-    ;//fprintf(stderr, "Warning: non-interactive console\n");
+    ;
   frout= 0;
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
@@ -104,14 +104,14 @@ cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
   fout= cp_io(_fout, "w");
   prompt= 0;
   flags= CONS_NONE;
-  if (/*is_tty()*/(fin && fin->tty) && (fout && fout->tty))
+  if ((fin && fin->tty) && (fout && fout->tty))
     {
       flags|= CONS_INTERACTIVE;
       fin->echo(fout);
       fin->cooked();
     }
   else
-    ;//fprintf(stderr, "Warning: non-interactive console\n");
+    ;
   frout= 0;
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
@@ -124,24 +124,23 @@ cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
   fout= _fout;
   prompt= 0;
   flags= CONS_NONE;
-  if (/*is_tty()*/(fin && fin->tty) && (fout && fout->tty))
+  if ((fin && fin->tty) && (fout && fout->tty))
     {
       flags|= CONS_INTERACTIVE;
       fin->echo(fout);
       fin->cooked();
     }
   else
-    ;//fprintf(stderr, "Warning: non-interactive console\n");
+    ;
   frout= 0;
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
-  //printf("console created for fin=%p fout=%p\n", fin, fout);
 }
 
 class cl_console *
 cl_console::clone_for_exec(char *_fin)
 {
-  /*FILE*/class cl_f *fi= 0, *fo= 0;
+  class cl_f *fi= 0, *fo= 0;
 
   if (!_fin)
     return(0);
@@ -151,9 +150,9 @@ cl_console::clone_for_exec(char *_fin)
       return(0);
     }
   
-  if ((fo= /*fdopen(dup(fileno(fout->file_f)), "a")*/fout->copy("a")) == 0)
+  if ((fo= fout->copy("a")) == 0)
     {
-      delete fi;//fclose(fi);
+      delete fi;
       fprintf(stderr, "Can't re-open output file: %s\n", strerror(errno));
       return(0);
     }
@@ -176,13 +175,6 @@ cl_console::~cl_console(void)
   delete prompt_option;
   delete null_prompt_option;
   delete debug_option;
-#ifdef SOCKET_AVAIL
-  /*  if (sock)
-    {
-      shutdown(sock, 2);
-      close(sock);
-      }*/
-#endif
 }
 
 
@@ -193,23 +185,12 @@ cl_console::~cl_console(void)
 void
 cl_console::redirect(char *fname, char *mode)
 {
-  /*
-  if ((rout= fopen(fname, mode)) == NULL)
-    dd_printf("Unable to open file '%s' for %s: %s\n",
-              fname, (mode[0]=='w')?"write":"append", strerror(errno));
-  */
   frout= mk_io(fname, mode);
 }
 
 void
 cl_console::un_redirect(void)
 {
-  /*
-  if (!rout)
-    return;
-  fclose(rout);
-  rout = NULL;
-  */
   if (!frout)
     return;
   delete frout;
@@ -228,7 +209,7 @@ cl_console::input_avail(void)
     {
       ret= fin->input_avail();
       if (ret)
-	;//printf("input on console cons_id=%d file_id=%d\n", id, fin->file_id);
+	;
     }
   return ret;
 }
@@ -248,43 +229,34 @@ cl_console::read_line(void)
 
   while (input_avail())
     {
-      //printf("readline reading char from file_id=%d\n", fin->file_id);
       i= fin->read(&c, 1);
-      //printf("readline got c=%d(%c) i=%d\n", c, (c>31)?c:'.', i);
       if (i==0)
 	{
 	  if (n==0)
 	    {
-	      //printf("readline file_id=%d detected eof\n", fin->file_id);
 	      return -1;
 	    }
 	  if (p)
 	    lbuf+= b;
-	  //printf("readline file_id=%d got nothing, return \"%s\"\n", fin->file_id, (char*)lbuf);
 	  return 0;
 	}
       if (i < 0)
 	{
-	  //printf("readline file_id=%d error, return nothing\n", fin->file_id);
 	  lbuf= 0;
 	  return 0;
 	}
-      //printf("cons_id=%d read c=%c (n=%d)\n", id, c, n);
       n++;
       if ((c == '\n') ||
 	  (c == '\r'))
 	{
-	  //printf("readline file_id=%d got nl=%d (nl=%d)\n", fin->file_id, c, nl);
 	  if (nl == 0)
 	    nl= c;
 	  else if (c != nl)
 	    {
-	      //printf("readline file_id=%d continue next\n", fin->file_id);
 	      continue;
 	    }
 	  if (p)
 	    lbuf+= b;
-	  //printf("readline file_id=%d got line end, return \"%s\"\n", fin->file_id, (char*)lbuf);
 	  return 1;
 	}
       b[p++]= c;
@@ -297,36 +269,7 @@ cl_console::read_line(void)
     }
   if (p)
     lbuf+= b;
-  //printf("readline file_id=%d no more input, return \"%s\"\n", fin->file_id, (char*)lbuf);
   return 0;
-  /*
-#define BUF_LEN 1024
-  char *s= NULL;
-
-#ifdef HAVE_GETLINE
-  if (getline(&s, 0, fin->file_f) < 0)
-    return(0);
-#elif defined HAVE_GETDELIM
-  size_t n= 30;
-  s= (char *)malloc(n);
-  if (getdelim(&s, &n, '\n', fin->file_f) < 0)
-    {
-      free(s);
-      return(0);
-    }
-#elif defined HAVE_FGETS
-  s= (char *)malloc(BUF_LEN);
-  if (fgets(s, BUF_LEN, fin->file_f) == NULL)
-    {
-      free(s);
-      return(0);
-    }
-#endif
-  s[strlen(s)-1]= '\0';
-  if (s[strlen(s)-1] == '\r')
-    s[strlen(s)-1]= '\0';
-  //flags&= ~CONS_PROMPT;
-  return(s);*/
 }
 
 
@@ -338,14 +281,7 @@ cl_console::read_line(void)
 cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
 {
   app= the_app;
-  /*if ((sock= make_server_socket(serverport)) >= 0)
-    {
-      if (listen(sock, 10) < 0)
-        fprintf(stderr, "Listen on port %d: %s\n",
-                serverport, strerror(errno));
-		}*/
   fin= mk_srv(serverport);
-  //printf("Server listening on cons_id=%d port %d, fileid=%d\n", id, serverport, fin->file_id);
   fout= frout= 0;
 }
 
@@ -357,19 +293,9 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   class cl_commander_base *cmd;
   cl_f *in, *out;
   
-  //printf("proc_input on listen console cons_id=%d file_id=%d\n", id, fin->file_id);
   cmd= app->get_commander();
-  /*size= sizeof(struct sockaddr);
-  newsock= accept(fin->file_id, (struct sockaddr*)&sock_addr, &size);
-  if (newsock < 0)
-    {
-      perror("accept");
-      return(0);
-      }*/
 
   srv_accept(fin, &in, &out);
-  printf("new conn accepted by listener=%d, fin=%d fout=%d\n", fin->file_id,
-	 in->file_id, out->file_id);
   
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;

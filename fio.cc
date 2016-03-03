@@ -148,7 +148,6 @@ cl_f::init(void)
   if (server_port > 0)
     {
       file_id= mk_srv_socket(server_port);
-      //printf("cl_f::init srv_port=%d file_id=%d\n", server_port, file_id);
       listen(file_id, 50);
       own= true;
       tty= false;
@@ -261,7 +260,7 @@ cl_f::close(void)
 {
   int i= 0;
 
-  printf("close fid=%d\n", file_id);
+  //printf("close fid=%d\n", file_id);
   if (file_f)
     {
       i= fclose(file_f);
@@ -278,7 +277,7 @@ cl_f::close(void)
 int
 cl_f::stop_use(void)
 {
-  printf("stop_use fid=%d\n", file_id);
+  //printf("stop_use fid=%d\n", file_id);
   file_f= NULL;
   file_id= -1;
   own= false;
@@ -313,18 +312,6 @@ cl_f::put(char c)
     return -1;
   buffer[first_free]= c;
   first_free= n;
-  /*
-  {
-    int p= last_used;
-    printf("\nbuffer:\"");
-    while (p != first_free)
-      {
-	printf("%c", buffer[p]);
-	p= (p+1)%1024;
-      }
-    printf("\"\n");
-  }
-  */
   return 0;
 }
 
@@ -337,7 +324,6 @@ cl_f::get(void)
   if (c == 3 /* ^C */)
     return -2;
   last_used= (last_used + 1) % 1024;
-  //printf("get: %d/%c\n", c, (c>31)?c:'.');
   return c;
 }
 
@@ -491,7 +477,6 @@ cl_f::process(char c)
   deb("processing fid=%d c=%02x,%d,%c\n", file_id, c, c, (c>31)?c:'.');
   if (!cooking)
     {
-      printf("non-cooking echo %02x to fid=%d\n", ci, echo_to?(echo_to->file_id):-1);
       if (ci == 3)
 	{
 	  deb("non-coocking ^C, finish\n");
@@ -616,11 +601,8 @@ cl_f::process(char c)
 	  echo_cursor_go_left(1);
 	  echo_cursor_save();
 	  if (line[cursor])
-	    //printf("%s ", &line[cursor]), fflush(stdout);
 	    echo_write_str(&line[cursor]);
-	  //else
-	    //write(STDOUT_FILENO, " ", 1);
-	    echo_write_str(" ");
+	  echo_write_str(" ");
 	  echo_cursor_restore();
 	}
     }
@@ -636,11 +618,8 @@ cl_f::process(char c)
 	  line[l]= 0;
 	  echo_cursor_save();
 	  if (line[cursor])
-	    //printf("%s ", &line[cursor]), fflush(stdout);
-	      echo_write_str(&line[cursor]);
-	  //else
-	    //write(STDOUT_FILENO, " ", 1);
-	    echo_write_str(" ");
+	    echo_write_str(&line[cursor]);
+	  echo_write_str(" ");
 	  echo_cursor_restore();
 	}
     }
@@ -715,7 +694,7 @@ cl_f::pick(void)
       at_end= 1;
     }
   if (i < 0)
-    printf("read error %d on fid=%d\n", i, file_id);
+    ;//printf("read error %d on fid=%d\n", i, file_id);
   return i;
 }
 
@@ -791,7 +770,6 @@ cl_f::write(char *buf, int count)
 int
 cl_f::write_str(char *s)
 {
-  //return fprintf(file_f, "%s", s);
   if (!s ||
       !*s)
     return 0;
@@ -805,7 +783,6 @@ cl_f::write_str(const char *s)
   if (!s ||
       !*s)
     return 0;
-  //return fprintf(file_f, "%s", s);
   return write((char*)s, strlen((char*)s));
 }
 
@@ -940,7 +917,6 @@ cl_f::save_attributes()
 void
 cl_f::restore_attributes()
 {
-  printf("cl_f::restore_attr fid=%d\n", file_id);
 }
 
 int
@@ -965,11 +941,9 @@ cl_f::cooked(void)
       cooking= 1;
       line[cursor= 0]= 0;
       esc_buffer[0]= 0;
-      printf("assume cooking on telnet fid=%d\n", file_id);
     }
   else
     {
-      printf("Can not cook on non-tty %d\n", file_id);
     }
   return 0;
 }
@@ -984,7 +958,6 @@ cl_f::echo(class cl_f *out)
     }
   if (out != NULL)
     {
-      printf("fid=%d echoing to fid=%d\n", file_id, out->file_id);
       out->echo_of= this;
       echo_to= out;
     }

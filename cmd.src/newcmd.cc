@@ -68,10 +68,8 @@ cl_prompt_option::init(void)
   char *help;
   help= format_string("Prompt string of console%d", con->get_id());
   create(con, string_opt, "prompt", help);
-  //fprintf(stderr," **new prompt option %p\"%s\", value=%p str=%p\n",option,object_name(option),option->get_value(),option->get_value()->sval);
   free(help);
   default_option("prompt");
-  //fprintf(stderr,"opt=%p\"%s\" value after default set=%p str=%p\n",option,object_name(option),option->get_value(),option->get_value()->sval);
   return(0);
 }
 
@@ -170,14 +168,13 @@ cl_console_base::print_prompt(void)
     return;
 
   //flags |= CONS_PROMPT;
-  if (/*app->args->arg_avail('P')*/null_prompt_option->get_value(bool(0)))
+  if (null_prompt_option->get_value(bool(0)))
     {
       dd_printf("%c", 0);
     }
   else
     {
       dd_printf("%d%s", id, (prompt && prompt[0]) ? prompt : "> ");
-      //              ((p= app->args->get_sarg(0, "prompt"))?p:"> "));
     }
 }
 
@@ -252,7 +249,6 @@ int
 cl_console_base::cmd_do_print(const char *format, va_list ap)
 {
   int ret;
-  //FILE *f = get_out();
   class cl_f *fo= get_fout();
   
   if (fo)
@@ -311,7 +307,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 {
   int retval= 0, i, do_print_prompt= 1;
 
-  //printf("processing input of cons_id=%d\n", id);
   un_redirect();
   if (is_eof())
     {
@@ -325,7 +320,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   if (i == 0)
     return 0;
   cmdstr= lbuf;
-  //printf("proc: lbuf=\"%s\" cmdstr=\"%s\"\n", (char*)lbuf, cmdstr);
   if (cmdstr==NULL)
     cmdstr= (char*)"";
   if (flags & CONS_FROZEN)
@@ -396,7 +390,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
       cmdstr &&
       do_print_prompt)
     {
-      //dd_printf("_c_");
       print_prompt();
     }
   //free(cmdstr);
@@ -447,7 +440,6 @@ void
 cl_commander_base::activate_console(class cl_console_base *console)
 {
   console->flags&= ~CONS_INACTIVE;
-  //console->dd_printf("_a_");
   console->print_prompt();
   update_active();
 }

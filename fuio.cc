@@ -113,10 +113,8 @@ cl_io::check_dev(void)
   fd_set s;
   int i;
 
-  //printf("fio::input_avail(file_id=%d,server_port=%d)\n", file_id, server_port);
   if (file_id<0)
     {
-      //printf("fio::input_avail = no file, false\n");
       return 0;
     }
   switch (type)
@@ -136,8 +134,7 @@ cl_io::check_dev(void)
     case F_PIPE:
       FD_ZERO(&s);
       FD_SET(file_id, &s);
-      i= select(/*FD_SETSIZE*/file_id+1, &s, NULL, NULL, &tv);
-      //printf("select(%d)=%d: (%d) %s\n",file_id,i,errno,strerror(errno));
+      i= select(file_id+1, &s, NULL, NULL, &tv);
       if (i >= 0)
 	{
 	  int ret= FD_ISSET(file_id, &s);
@@ -145,7 +142,6 @@ cl_io::check_dev(void)
 	    return ret;
 	  if (ret)
 	    {
-	      //printf("fio::input_avail(file_id=%d,server_port=%d) TRUE\n", file_id, server_port);
 	      pick();
 	    }
 	  return last_used != first_free;
@@ -158,11 +154,9 @@ cl_io::check_dev(void)
 void
 cl_io::set_attributes()
 {
-  if (tty/* ||
-	    (type == F_SOCKET)*/)
+  if (tty)
     {
       struct termios tattr;
-      printf("set_attr fid=%d\n", file_id);
       tcgetattr(file_id, &tattr);
       tattr.c_lflag&= ~(ICANON|ECHO);
       tattr.c_cc[VMIN] = 1;
@@ -174,7 +168,6 @@ cl_io::set_attributes()
       // assume telnet client
       char s[7];
       sprintf(s, "%c%c%c%c%c%c", 0xff, 0xfb, 1, 0xff, 0xfb, 3 );
-      printf("set_attr fid=%d assuming telnet\n", file_id);
       write(s, 7);
     }
 }
@@ -182,13 +175,9 @@ cl_io::set_attributes()
 void
 cl_io::save_attributes()
 {
-  printf("cl_io::save_attr fid=%d\n", file_id);
-  if ((tty/* ||
-       (type == F_SOCKET)
-	  */) &&
+  if ((tty) &&
       !attributes_saved)
     {
-      printf("do save_attr fid=%d\n", file_id);
       tcgetattr(file_id, &saved_attributes);
       attributes_saved= 1;
     }
@@ -197,11 +186,8 @@ cl_io::save_attributes()
 void
 cl_io::restore_attributes()
 {
-  printf("cl_io::restore_attr fid=%d\n", file_id);
-  if (/*tty &&*/
-      attributes_saved)
+  if (attributes_saved)
     {
-      printf("do restore_attr fid=%d\n", file_id);
       tcsetattr(file_id, TCSAFLUSH, &saved_attributes);
       attributes_saved= 0;
     }
