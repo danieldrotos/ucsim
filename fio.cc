@@ -47,6 +47,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // prj
 #include "utils.h"
 
+cl_f *dd= NULL;
+
+void deb(chars c)
+{
+  if (dd==NULL)
+    {
+      dd= mk_io(cchars("/dev/pts/4"),cchars("w"));
+      dd->init();
+    }
+  dd->write_str(c);
+}
 
 cl_f::cl_f(void)
 {
@@ -317,6 +328,13 @@ cl_f::get(void)
 }
 
 int
+cl_f::finish_esc(int k)
+{
+  esc_buffer[0]= 0;
+  return k;
+}
+
+int
 cl_f::process_esc(char c)
 {
   if (esc_buffer[0] == '\033')
@@ -325,55 +343,68 @@ cl_f::process_esc(char c)
       esc_buffer[l]= c;
       l++;
       esc_buffer[l]= 0;
-      if (esc_buffer[1] != '[')
+      switch (esc_buffer[1])
 	{
-	  esc_buffer[0]= 0;
-	  return c;
-	}
-      if (isalpha((int)c))
-	{
-	  esc_buffer[0]= 0;
+	case 'O':
+	  deb("ESC");deb(&esc_buffer[1]);deb("\n");
 	  switch (c)
 	    {
-	    case 'A':
-	      return TU_UP;
-	    case 'B':
-	      return TU_DOWN;
-	    case 'C':
-	      return TU_RIGHT;
-	    case 'D':
-	      return TU_LEFT;
+	    case 'P': return finish_esc(TU_F1);
+	    case 'Q': return finish_esc(TU_F2);
+	    case 'R': return finish_esc(TU_F3);
+	    case 'S': return finish_esc(TU_F4);
+	    case 'H': return finish_esc(TU_HOME);
+	    case 'F': return finish_esc(TU_END);
 	    }
-	}
-      else if (c == '~')
-	{
-	  int n;
-	  esc_buffer[0]= 0;
-	  n= strtol(&esc_buffer[2], 0, 0);
-	  switch (n)
+	  break;
+	case '[':
+	  if (isalpha((int)c))
 	    {
-	    case 1: return TU_HOME;
-	    case 2: return TU_INS;
-	    case 3: return TU_DEL;
-	    case 4: return TU_END;
-	    case 5: return TU_PGUP;
-	    case 6: return TU_PGDOWN;
-	    case 11: return TU_F1;
-	    case 12: return TU_F2;
-	    case 13: return TU_F3;
-	    case 14: return TU_F4;
-	    case 15: return TU_F5;
-	    case 17: return TU_F6;
-	    case 18: return TU_F7;
-	    case 19: return TU_F8;
-	    case 20: return TU_F9;
-	    case 21: return TU_F10;
-	    case 23: return TU_F11;
-	    case 24: return TU_F12;
+	      deb("ESC");deb(&esc_buffer[1]);deb("\n");
+	      switch (c)
+		{
+		case 'A': return finish_esc(TU_UP);
+		case 'B': return finish_esc(TU_DOWN);
+		case 'C': return finish_esc(TU_RIGHT);
+		case 'D': return finish_esc(TU_LEFT);
+		case 'H': return finish_esc(TU_HOME);
+		case 'F': return finish_esc(TU_END);
+		default: return finish_esc(c);
+		}
 	    }
+	  else if (c == '~')
+	    {
+	      int n;
+	      deb("ESC");deb(&esc_buffer[1]);deb("\n");
+	      n= strtol(&esc_buffer[2], 0, 0);
+	      switch (n)
+		{
+		case 1: return finish_esc(TU_HOME);
+		case 2: return finish_esc(TU_INS);
+		case 3: return finish_esc(TU_DEL);
+		case 4: return finish_esc(TU_END);
+		case 5: return finish_esc(TU_PGUP);
+		case 6: return finish_esc(TU_PGDOWN);
+		case 11: return finish_esc(TU_F1);
+		case 12: return finish_esc(TU_F2);
+		case 13: return finish_esc(TU_F3);
+		case 14: return finish_esc(TU_F4);
+		case 15: return finish_esc(TU_F5);
+		case 17: return finish_esc(TU_F6);
+		case 18: return finish_esc(TU_F7);
+		case 19: return finish_esc(TU_F8);
+		case 20: return finish_esc(TU_F9);
+		case 21: return finish_esc(TU_F10);
+		case 23: return finish_esc(TU_F11);
+		case 24: return finish_esc(TU_F12);
+		default: return finish_esc(c);
+		}
+	    }
+	  break;
+	default:
+	  deb("ESC");deb(&esc_buffer[1]);deb("\n");
+	  return finish_esc(c);
 	}
-      else
-	return 0;
     }
   else
     {
@@ -424,8 +455,14 @@ cl_f::process(char c)
   if (!k)
     return 0;
   // CURSOR MOVEMENT
+  {
+    char s[100];
+    sprintf(s, "k=%d\n",k);
+    deb(s);
+  }
   if (k == TU_LEFT)
     {
+      deb("Left\n");
       if (cursor > 0)
 	{
 	  cursor--;
@@ -434,6 +471,7 @@ cl_f::process(char c)
     }
   else if (k == TU_RIGHT)
     {
+      deb("Right\n");
       if (line[cursor] != 0)
 	{
 	  cursor++;
@@ -443,6 +481,7 @@ cl_f::process(char c)
   else if ((k == TU_HOME) ||
 	   (k == 'A'-'A'+1))
     {
+      deb("Home\n");
       if (cursor > 0)
 	{
 	  echo_cursor_go_left(cursor);
@@ -452,6 +491,7 @@ cl_f::process(char c)
   else if ((k == TU_END) ||
 	   (k == 'E'-'A'+1))
     {
+      deb("End\n");
       if (line[cursor] != 0)
 	{
 	  echo_cursor_go_right(l-cursor);
@@ -468,6 +508,7 @@ cl_f::process(char c)
   else if ((k == '\n') ||
 	   (k == '\r'))
     {
+      deb("Enter\n");
       //ready= 1;
       for (i= 0; i<l; i++)
 	put(line[i]);
@@ -479,8 +520,10 @@ cl_f::process(char c)
       echo_write_str("\n");
     }
   // DELETING
-  else if (k == 8 /*BS*/)
+  else if ((k == 127) || /*DEL*/
+	   (k == 8 /*BS*/))
     {
+      deb("BS\n");
       if (cursor > 0)
 	{
 	  for (i= cursor; line[i]; i++)
@@ -493,15 +536,16 @@ cl_f::process(char c)
 	  if (line[cursor])
 	    //printf("%s ", &line[cursor]), fflush(stdout);
 	    echo_write_str(&line[cursor]);
-	  else
+	  //else
 	    //write(STDOUT_FILENO, " ", 1);
 	    echo_write_str(" ");
 	  echo_cursor_restore();
 	}
     }
-  else if ((k == 127) || /*DEL*/
+  else if (//(k == 127) || /*DEL*/
 	   (k == TU_DEL))
     {
+      deb("Del\n");
       if (line[cursor] != 0)
 	{
 	  for (i= cursor+1; line[i]; i++)
@@ -511,8 +555,8 @@ cl_f::process(char c)
 	  echo_cursor_save();
 	  if (line[cursor])
 	    //printf("%s ", &line[cursor]), fflush(stdout);
-	    echo_write_str(&line[cursor]);
-	  else
+	      echo_write_str(&line[cursor]);
+	  //else
 	    //write(STDOUT_FILENO, " ", 1);
 	    echo_write_str(" ");
 	  echo_cursor_restore();
@@ -520,6 +564,7 @@ cl_f::process(char c)
     }
   else if (k == 'K'-'A'+1)
     {
+      deb("^K\n");
       if (cursor > 0)
 	echo_cursor_go_left(cursor);
       echo_cursor_save();
@@ -530,9 +575,10 @@ cl_f::process(char c)
       line[cursor= 0]= 0;
     }
   else if (k < 0)
-    ;
+    deb("k<0\n");
   else if (isprint(k))
     {
+      deb("Insert\n");
       if (l < /*tu_buf_size*/1023)
 	{
 	  if (line[cursor] == 0)

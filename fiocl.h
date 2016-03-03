@@ -113,6 +113,7 @@ class cl_f: public cl_base
  protected:
   virtual int put(char c);
   virtual int get(void);
+  virtual int finish_esc(int k);
   virtual int process_esc(char c);
   virtual int process(char c);
   virtual int pick(void);
