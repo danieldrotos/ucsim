@@ -448,6 +448,9 @@ cl_f::process_esc(char c)
       esc_buffer[l]= ci;
       l++;
       esc_buffer[l]= 0;
+      if ((ci == 0xff) &&
+	  (l == 2))
+	return finish_esc(0xff);
       if (l == 3)
 	{
 	  sprintf(s, "IAC %02x %02x\n", esc_buffer[1], esc_buffer[2]);
