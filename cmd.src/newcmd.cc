@@ -144,8 +144,8 @@ cl_console_base::init(void)
   welcome();
   //flags&= ~CONS_PROMPT;
   print_prompt();
-  last_command= 0;
-  last_cmdline= 0;
+  //last_command= 0;
+  //last_cmdline= 0;
   return(0);
 }
 
@@ -355,7 +355,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
               delete cmdline;
               cmdline = last_cmdline;
             }
-          else
+	  else
             {
               cm= cmdset->get_cmd(cmdline, accept_last());
               if (last_cmdline)
@@ -363,7 +363,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
                   delete last_cmdline;
                   last_cmdline = 0;
                 }
-              last_command = 0;
+	      last_command = 0;
             }
           if (cm)
             {
@@ -378,10 +378,12 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
             }
           else
             {
-
-              uc_yy_set_string_to_parse(cmdstr);
-              yyparse();
-              uc_yy_free_string_to_parse();
+	      if (strlen(cmdstr) > 0)
+		{
+		  uc_yy_set_string_to_parse(cmdstr);
+		  yyparse();
+		  uc_yy_free_string_to_parse();
+		}
               delete cmdline;
             }
           /*if (!cm)
