@@ -337,30 +337,50 @@ cl_f::finish_esc(int k)
 int
 cl_f::process_esc(char c)
 {
-  if (esc_buffer[0] == '\033')
+  int l;
+  char s[100];
+  unsigned int ci= c&0xff, b0= esc_buffer[0]&0xff;
+  
+  if (b0 == '\033')
     {
-      int l= strlen(esc_buffer);
+      l= strlen(esc_buffer);
       esc_buffer[l]= c;
       l++;
       esc_buffer[l]= 0;
       switch (esc_buffer[1])
 	{
 	case 'O':
-	  deb("ESC");deb(&esc_buffer[1]);deb("\n");
-	  switch (c)
+	  if (l==3)
 	    {
-	    case 'P': return finish_esc(TU_F1);
-	    case 'Q': return finish_esc(TU_F2);
-	    case 'R': return finish_esc(TU_F3);
-	    case 'S': return finish_esc(TU_F4);
-	    case 'H': return finish_esc(TU_HOME);
-	    case 'F': return finish_esc(TU_END);
+	      deb("ESC_O ");deb(&esc_buffer[1]);deb("\n");
+	      switch (c)
+		{
+		case 'P': return finish_esc(TU_F1);
+		case 'Q': return finish_esc(TU_F2);
+		case 'R': return finish_esc(TU_F3);
+		case 'S': return finish_esc(TU_F4);
+		case 'H': return finish_esc(TU_HOME);
+		case 'F': return finish_esc(TU_END);
+		default: return finish_esc(c);
+		}
 	    }
+	  return 0;
+	  break;
+	case 'N':
+	  if (l==3)
+	    {
+	      deb("ESC_N ");deb(&esc_buffer[1]);deb("\n");
+	      switch (c)
+		{
+		default: return finish_esc(c);
+		}
+	    }
+	  return 0;
 	  break;
 	case '[':
 	  if (isalpha((int)c))
 	    {
-	      deb("ESC");deb(&esc_buffer[1]);deb("\n");
+	      deb("ESC_[x ");deb(&esc_buffer[1]);deb("\n");
 	      switch (c)
 		{
 		case 'A': return finish_esc(TU_UP);
@@ -369,13 +389,14 @@ cl_f::process_esc(char c)
 		case 'D': return finish_esc(TU_LEFT);
 		case 'H': return finish_esc(TU_HOME);
 		case 'F': return finish_esc(TU_END);
+		case 'E': return finish_esc(0); // NumPad 5
 		default: return finish_esc(c);
 		}
 	    }
 	  else if (c == '~')
 	    {
 	      int n;
-	      deb("ESC");deb(&esc_buffer[1]);deb("\n");
+	      deb("ESC_[~ ");deb(&esc_buffer[1]);deb("\n");
 	      n= strtol(&esc_buffer[2], 0, 0);
 	      switch (n)
 		{
@@ -400,33 +421,65 @@ cl_f::process_esc(char c)
 		default: return finish_esc(c);
 		}
 	    }
+	  return 0;
 	  break;
 	default:
-	  deb("ESC");deb(&esc_buffer[1]);deb("\n");
+	  deb("ESC_? ");deb(&esc_buffer[1]);deb("\n");
 	  return finish_esc(c);
 	}
     }
+  else if (b0 == 0xff)
+    {
+      l= strlen(esc_buffer);
+      esc_buffer[l]= ci;
+      l++;
+      esc_buffer[l]= 0;
+      if (l == 3)
+	{
+	  sprintf(s, "IAC %02x %02x\n", esc_buffer[1], esc_buffer[2]);
+	  deb(s);
+	  //esc_buffer[1]= 0xfc;
+	  //write(esc_buffer, 3);
+	  return finish_esc(0);
+	}
+      return 0;
+    }
   else
     {
-      if (c == '\033')
+      if (ci == '\033')
 	{
 	  esc_buffer[0]= '\033', esc_buffer[1]= 0;
+	  deb("Start ESC\n");
+	  return 0;
+	}
+      if (ci == 0xff)
+	{
+	  esc_buffer[0]= 0xff, esc_buffer[1]= 0;
+	  deb("Start IAC\n");
 	  return 0;
 	}
     }
   return c;
 }
 
+int j= 0;
+
 int
 cl_f::process(char c)
 {
   int i;
   unsigned int ci= c&0xff;
+  char s[100];
   
   if (!cooking)
     {
       printf("non-cooking echo %02x to fid=%d\n", ci, echo_to?(echo_to->file_id):-1);
-      if ((ci<31) &&
+      if (ci == 3)
+	{
+	  deb("non-coocking ^C, finish\n");
+	  at_end= 1;
+	}
+      else if ((ci<31) &&
 	  (ci!='\n') &&
 	  (ci!='\r'))
 	{
@@ -448,18 +501,22 @@ cl_f::process(char c)
     }
   //return put(c);
   int l= strlen(line);
+  {
+    sprintf(s, "\n%d.\n",j++);
+    deb(s);
+  }
   int k= process_esc(c);
   int ret= 0;
   /*if (!k || tu_ready)
     return;*/
+  {
+    char s[100];
+    sprintf(s, "c=%d k=%d\n", c, k);
+    deb(s);
+  }
   if (!k)
     return 0;
   // CURSOR MOVEMENT
-  {
-    char s[100];
-    sprintf(s, "k=%d\n",k);
-    deb(s);
-  }
   if (k == TU_LEFT)
     {
       deb("Left\n");
@@ -503,12 +560,13 @@ cl_f::process(char c)
 	   (k == 'D'-'A'+1))
     {
       //ready= 1;
+      deb("Cooking close on ^C/^D\n");
       at_end= 1;
     }
   else if ((k == '\n') ||
 	   (k == '\r'))
     {
-      deb("Enter\n");
+      deb("Enter \"");deb(line);deb("\"\n");
       //ready= 1;
       for (i= 0; i<l; i++)
 	put(line[i]);
@@ -578,7 +636,10 @@ cl_f::process(char c)
     deb("k<0\n");
   else if (isprint(k))
     {
-      deb("Insert\n");
+      char s[100];
+      deb("Insert ");
+      sprintf(s,"%d,%02x,%c\n",k,k,(k>31)?k:'.');
+      deb(s);
       if (l < /*tu_buf_size*/1023)
 	{
 	  if (line[cursor] == 0)
@@ -614,16 +675,20 @@ cl_f::pick(void)
       for (j= 0; j < i; j++)
 	{
 	  if (b[j] == 3 /* ^C */)
-	    {
+	    /*{
 	      buffer[last_used= first_free= 0]= 3; // drop everything
+	      deb("pick: drop line on ^C\n");
 	      at_end= 1;
 	      return 0;
-	    }
+	      }*/
 	  /*put*/process(b[j]);
 	}
     }
   if (i == 0)
-    at_end= 1;
+    {
+      deb("pick: read=0, finish\n");
+      at_end= 1;
+    }
   if (i < 0)
     printf("read error %d on fid=%d\n", i, file_id);
   return i;
@@ -715,7 +780,7 @@ cl_f::vprintf(char *format, va_list ap)
 bool
 cl_f::eof(void)
 {
-  if (file_f == NULL)
+  if (/*file_f == NULL*/file_id < 0)
     return true;
   return at_end;//feof(file_f);
 }
@@ -840,6 +905,13 @@ cl_f::cooked(void)
       cooking= 1;
       line[cursor= 0]= 0;
       esc_buffer[0]= 0;
+    }
+  else if (type == F_SOCKET)
+    {
+      cooking= 1;
+      line[cursor= 0]= 0;
+      esc_buffer[0]= 0;
+      printf("assume cooking on telnet fid=%d\n", file_id);
     }
   else
     {

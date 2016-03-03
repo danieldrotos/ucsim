@@ -169,6 +169,14 @@ cl_io::set_attributes()
       tattr.c_cc[VTIME]= 0;
       tcsetattr(file_id, TCSAFLUSH, &tattr);
     }
+  else if (type == F_SOCKET)
+    {
+      // assume telnet client
+      char s[7];
+      sprintf(s, "%c%c%c%c%c%c", 0xff, 0xfb, 1, 0xff, 0xfb, 3 );
+      printf("set_attr fid=%d assuming telnet\n", file_id);
+      write(s, 7);
+    }
 }
 
 void
