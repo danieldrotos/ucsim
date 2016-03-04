@@ -439,7 +439,7 @@ cl_f::process_esc(char c)
 	return finish_esc(0xff);
       if (l == 3)
 	{
-	  sprintf(s, "IAC %02x %02x\n", esc_buffer[1], esc_buffer[2]);
+	  sprintf(s, "IAC %02x %02x\n", esc_buffer[1]&0xff, esc_buffer[2]&0xff);
 	  deb(s);
 	  //esc_buffer[1]= 0xfc;
 	  //write(esc_buffer, 3);
@@ -472,9 +472,8 @@ cl_f::process(char c)
 {
   int i;
   unsigned int ci= c&0xff;
-  char s[100];
 
-  deb("processing fid=%d c=%02x,%d,%c\n", file_id, c, c, (c>31)?c:'.');
+  deb("\n%d. processing fid=%d c=%02x,%d,%c cooked=%d\n", j++, file_id, ci, ci, (ci>31)?ci:'.', cooking);
   if (!cooking)
     {
       if (ci == 3)
@@ -504,10 +503,6 @@ cl_f::process(char c)
     }
   //return put(c);
   int l= strlen(line);
-  {
-    sprintf(s, "\n%d.\n",j++);
-    deb(s);
-  }
   int k= process_esc(c);
   int ret= 0;
   /*if (!k || tu_ready)
@@ -518,7 +513,7 @@ cl_f::process(char c)
     deb(s);
   }
   if (!k)
-    return 0;
+    return last_ln= 0;
   // CURSOR MOVEMENT
   if (k == TU_LEFT)
     {
@@ -569,12 +564,14 @@ cl_f::process(char c)
   else if ((k == '\n') ||
 	   (k == '\r'))
     {
-      if ((cursor == 0) &&
-	  (k == '\n'))
+      if (last_ln &&
+	  (last_ln != k))
 	{
-	  deb("Skip \\n at empty line\n");
+	  deb("Skip %d after %d\n", k, last_ln);
+	  last_ln= 0;
 	  return 0;
 	}
+      last_ln= k;
       deb("Enter \"");deb(line);deb("\"\n");
       //ready= 1;
       for (i= 0; i<l; i++)
@@ -678,14 +675,8 @@ cl_f::pick(void)
       int j;
       for (j= 0; j < i; j++)
 	{
-	  if (b[j] == 3 /* ^C */)
-	    /*{
-	      buffer[last_used= first_free= 0]= 3; // drop everything
-	      deb("pick: drop line on ^C\n");
-	      at_end= 1;
-	      return 0;
-	      }*/;
-	  /*put*/process(b[j]);
+	  //if (b[j] == 3 /* ^C */)
+	    process(b[j]);
 	}
     }
   if (i == 0)
@@ -694,7 +685,7 @@ cl_f::pick(void)
       at_end= 1;
     }
   if (i < 0)
-    ;//printf("read error %d on fid=%d\n", i, file_id);
+    ;
   return i;
 }
 
@@ -708,7 +699,12 @@ cl_f::pick(char c)
 int
 cl_f::input_avail(void)
 {
-  return check_dev() || at_end;
+  int ret= check_dev();
+  if (ret)
+    return ret;
+  if (at_end)
+    deb("fid=%d no dev input, but at end\n", file_id);
+  return at_end;
 }
 
 int
@@ -930,17 +926,16 @@ cl_f::raw(void)
 int
 cl_f::cooked(void)
 {
+  line[cursor= 0]= 0;
+  esc_buffer[0]= 0;
+  last_ln= 0;
   if (tty)
     {
       cooking= 1;
-      line[cursor= 0]= 0;
-      esc_buffer[0]= 0;
     }
   else if (type == F_SOCKET)
     {
       cooking= 1;
-      line[cursor= 0]= 0;
-      esc_buffer[0]= 0;
     }
   else
     {

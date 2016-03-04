@@ -122,6 +122,7 @@ public:
   virtual bool input_avail(void) = 0;
   virtual int read_line(void) = 0;
   virtual class cl_f *get_fout(void)= 0;
+  virtual class cl_f *get_fin(void)= 0;
   
   virtual int init(void);
   virtual void welcome(void);

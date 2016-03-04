@@ -229,6 +229,8 @@ cl_console::read_line(void)
 
   while (input_avail())
     {
+      if (fin->eof())
+	return -2;
       i= fin->read(&c, 1);
       if (i==0)
 	{
@@ -462,58 +464,45 @@ cl_commander::input_avail(void)
 {
   //struct timeval tv = {0, 0};
   //active_set = read_set;
-  int i;
+  //int i;
 
   class cl_list *avail= new cl_list(10,5,"avail");
   bool ret= check_inputs(active_inputs, avail);
   avail->disconn_all();
   delete avail;
   return ret;
-  
-  //printf("commander::input_avail\n");
+  /*
+  deb("commander::input_avail\n");
   for (i= 0; i < cons->count; i++)
     {
       class cl_console *c= dynamic_cast<class cl_console*>
 	((class cl_console_base *)(cons->at(i)));
-      //printf("con_id=%d file_id=%d ", c->get_id(), c->fin->file_id);
+      deb("con_id=%d file_id=%d ", c->get_id(), c->fin->file_id);
       if (c->input_active())
 	{
 	  
 	  if (c->input_avail())
 	    {
-	      //printf("avail\n");
+	      deb("avail\n");
 	      return true;
 	    }
 	  else
-	    ;//printf("no-avail");
+	    deb("no-avail");
 	}
       else
-	;//printf("non-active");
-      //printf("\n");
+	deb("non-active");
+      deb("\n");
     }
   return false;
-  /*
-  i = select(fd_num, &active_set, NULL, NULL, &tv);
-  if (i < 0)
-    perror("select");
-    
-  return i;
   */
 }
 
 int
 cl_commander::wait_input(void)
 {
-  //prompt();
-  //active_set = read_set;
   while (!input_avail())
     loop_delay();
-  //printf("commander::wait_input found something\n");
   return 0;
-  /*
-    int i = select(fd_num, &active_set, NULL, NULL, NULL);
-    return i;
-  */
 }
 
 int
@@ -525,24 +514,25 @@ cl_commander::proc_input(void)
 
       if (c->input_active())
         {
-          //UCSOCKET_T fd = c->get_in_fd();
-          //assert(0 <= fd);
-
-          //if (FD_ISSET(fd, &active_set))
-	  //printf("commander checks in of cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
+	  deb("check input on fid=%d\n", c->fin->file_id);
 	  if (c->input_avail())
             {
               actual_console = c;
-	      //printf("commander inavail on cons_id=%d file_id=%d\n", c->get_id(), c->fin->file_id);
               int retval = c->proc_input(cmdset);
               if (retval)
                 {
+		  deb("closing console fin-fid=%d\n", c->fin->file_id);
                   del_console(c);
-                  delete c;
+                  //delete c;
                 }
               actual_console = 0;
-              return(0 == consoles_prevent_quit());
+	      int i= consoles_prevent_quit();
+	      if (!i)
+		deb("no more consoles left\n");
+              return(i == 0);
             }
+	  else
+	    deb("no input on fid=%d\n", c->fin->file_id);
         }
     }
   return 0;

@@ -322,12 +322,17 @@ check_inputs(class cl_list *active, class cl_list *avail)
   for (i= 0; i < active->count; i++)
     {
       class cl_f *fio= (class cl_f *)active->at(i);
-      if (fio->check_dev())
+      deb("checking fid=%d\n", fio->file_id);
+      if (fio->check_dev() ||
+	  fio->at_end)
 	{
+	  deb("found dev input on fid=%d\n", fio->file_id);
 	  if (avail)
 	    avail->add(fio);
 	  ret= true;
 	}
+      else
+	deb("no dev input on fid=%d\n", fio->file_id);
     }
   return ret;
 }
@@ -345,7 +350,7 @@ msleep(int msec)
 void
 loop_delay()
 {
-  msleep(100);
+  msleep(1000);
 }
 
 

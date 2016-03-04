@@ -83,10 +83,11 @@ class cl_f: public cl_base
   class cl_f *echo_to, *echo_of;
   int at_end;
   bool cooking;
+ protected:
   char line[1024];
   int cursor;
   char esc_buffer[100];
- protected:
+  char last_ln;
   char buffer[1024];
   int last_used, first_free;
   FILE *file_f;
@@ -160,6 +161,7 @@ class cl_f: public cl_base
   //virtual int connect(chars host, int to_port);
 };
 
+extern void deb(chars format, ...);
 
 extern int mk_srv_socket(int port);
 

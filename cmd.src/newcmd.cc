@@ -249,10 +249,16 @@ int
 cl_console_base::cmd_do_print(const char *format, va_list ap)
 {
   int ret;
-  class cl_f *fo= get_fout();
+  class cl_f *fo= get_fout(), *fi= get_fin();
   
   if (fo)
     {
+      if (fi &&
+	  fi->eof())
+	{
+	  deb("do not attempt to write on console, where input is at file_end\n");
+	  return 0;
+	}
       ret= fo->vprintf((char*)format, ap);
       fo->flush();
       return ret;
@@ -434,6 +440,7 @@ cl_commander_base::del_console(class cl_console_base *console)
 {
   cons->disconn(console);
   update_active();
+  delete console;
 }
 
 void

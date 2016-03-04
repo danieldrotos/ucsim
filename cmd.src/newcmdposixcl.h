@@ -65,6 +65,7 @@ public:
 private:
   //FILE *get_out(void) { return rout ? rout : out; }
   class cl_f *get_fout(void) { return frout ? frout : fout; }
+  class cl_f *get_fin(void) { return fin; }
 };
 
 //#ifdef SOCKET_AVAIL
