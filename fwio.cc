@@ -95,8 +95,6 @@ cl_io::check_dev(void)
     case F_LISTENER:
       {
         struct timeval tv = {0, 0};
-	char b[100];
-	int i;
 	
         //assert(INVALID_HANDLE_VALUE != handle);
 	
@@ -284,7 +282,11 @@ cl_io::changed(void)
   //printf("win handle=%p type=%d\n", handle, type);
 }
 
-
+void
+cl_io::set_attributes()
+{
+}
+ 
 static void
 init_winsock(void)
 {

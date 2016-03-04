@@ -133,7 +133,7 @@ class cl_f: public cl_base
   virtual int write_str(char *s);
   virtual int write_str(const char *s);
   virtual int vprintf(char *format, va_list ap);
-  virtual int fprintf(char *format, ...);
+  virtual int prntf(char *format, ...);
   virtual bool eof(void);
   virtual void flush(void);
 

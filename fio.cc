@@ -792,7 +792,7 @@ cl_f::vprintf(char *format, va_list ap)
 }
 
 int
-cl_f::fprintf(char *format, ...)
+cl_f::prntf(char *format, ...)
 {
   va_list ap;
   int ret= 0;

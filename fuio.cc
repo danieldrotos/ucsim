@@ -350,7 +350,7 @@ msleep(int msec)
 void
 loop_delay()
 {
-  msleep(1000);
+  msleep(100);
 }
 
 
