@@ -269,14 +269,14 @@ cl_io::changed(void)
     {
       handle= (HANDLE)_get_osfhandle(file_id);
       type= determine_type();
-      if (type == F_CONSOLE)
+      /*if (type == F_CONSOLE)
 	{
 	  if (strcmp("r", file_mode) == 0)
 	    {
-	      //printf("wio: console mode 0\n");
+	      printf("wio: console mode 0\n");
 	      SetConsoleMode(handle, 0);
 	    }
-	}
+	    }*/
     }
   //printf("win opened file id=%d\n", file_id);
   //printf("win handle=%p type=%d\n", handle, type);
@@ -285,6 +285,17 @@ cl_io::changed(void)
 void
 cl_io::set_attributes()
 {
+  if (type == F_CONSOLE)
+    {
+      printf("wio: console mode 0\n");
+      SetConsoleMode(handle, 0);
+    }
+  else if (type == F_SOCKET)
+    {
+      char s[7];
+      sprintf(s, "%c%c%c%c%c%c", 0xff, 0xfb, 1, 0xff, 0xfb, 3 );
+      write(s, 7);
+    }
 }
  
 static void
