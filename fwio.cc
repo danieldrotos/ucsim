@@ -26,6 +26,7 @@ cl_io::determine_type()
 {
   DWORD _file_type = GetFileType(handle);
 
+  printf("wio determine type fid=%d\n", file_id);
   switch (_file_type)
     {
     case FILE_TYPE_CHAR:
@@ -38,7 +39,7 @@ cl_io::determine_type()
             switch (GetLastError())
               {
               case ERROR_INVALID_HANDLE:
-		//printf("wio file_id=%d (handle=%p) type=console\n", file_id, handle);
+		printf("wio file_id=%d (handle=%p) type=console\n", file_id, handle);
                 return F_CONSOLE;
 		
               case ERROR_INVALID_FUNCTION:
@@ -46,21 +47,21 @@ cl_io::determine_type()
                  * In case of NUL device return type F_FILE.
                  * Is this the correct way to test it?
                  */
-		//printf("wio file_id=%d (handle=%p) type=file\n", file_id, handle);
+		printf("wio file_id=%d (handle=%p) type=file\n", file_id, handle);
                 return F_FILE;
 
               default:
                 //assert(false);
-		//printf("wio file_id=%d (handle=%p) type=unknown\n", file_id, handle);
+		printf("wio file_id=%d (handle=%p) type=unknown\n", file_id, handle);
 		return F_UNKNOWN;
               }
           }
       }
-      //printf("wio file_id=%d (handle=%p) type=serial\n", file_id, handle);
+      printf("wio file_id=%d (handle=%p) type=serial\n", file_id, handle);
       return F_SERIAL;
 
     case FILE_TYPE_DISK:
-      //printf("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
+      printf("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
       return F_FILE;
 
     }
@@ -73,12 +74,12 @@ cl_io::determine_type()
   if (/*CKET_ERROR !=  ||
 	WSAENOTSOCK != WSAGetLastError()*/i==0)
     {
-      //printf("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
+      printf("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
       return F_SOCKET;
     }
   
   //assert(false);
-  //printf("wio file_id=%d (handle=%p) type=pipe\n", file_id, handle);
+  printf("wio file_id=%d (handle=%p) type=pipe\n", file_id, handle);
   return F_PIPE;
 }
 
@@ -196,11 +197,11 @@ cl_io::check_dev(void)
 		  {
 		    //printf("put(%c) failed\n", (c>31)?c:'.');
 		  }
-		if (c>31)
+		/*if (c>31)
 		  {
 		    printf("%c",c);
 		    fflush(stdout);
-		  }
+		    }*/
 	      }
 	  }
       
@@ -243,7 +244,7 @@ cl_io::check(void)
 void
 cl_io::changed(void)
 {
-  //printf("win_f changed\n");
+  printf("win_f changed fid=%d\n", file_id);
   if (file_id < 0)
     {
       // CLOSE
@@ -285,6 +286,7 @@ cl_io::changed(void)
 void
 cl_io::set_attributes()
 {
+  printf("wio set_attr fid=%d type=%d\n",file_id,type);
   if (type == F_CONSOLE)
     {
       printf("wio: console mode 0\n");
