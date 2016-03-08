@@ -426,7 +426,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	    return (4);
 	  }
 	  */
-	  s= format_string("\001%lu", (unsigned long int)(fin));
+	  s= format_string("\0010x%llx", (unsigned long long int)(fin));
 	  if (!options->set_value("serial0_in_file", this, /*(void*)Ser_in*/s))
 	    fprintf(stderr, "Warning: No \"serial0_in_file\" option found to "
 		    "set parameter of -s as serial input file\n");
@@ -436,7 +436,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	    return (4);
 	  }
 	  */
-	  s= format_string("\001%lu", (unsigned long int)(fout));
+	  s= format_string("\0010x%llx", (unsigned long long int)(fout));
 	  if (!options->set_value("serial0_out_file", this, /*Ser_out*/s))
 	    fprintf(stderr, "Warning: No \"serial0_out_file\" option found "
 		    "to set parameter of -s as serial output file\n");

@@ -430,6 +430,7 @@ cl_commander::init(void)
       else
         {
           con= new cl_console(fc, stderr, app);
+	  printf("6\n");
           con->flags|= CONS_NOWELCOME|CONS_ECHO;
           add_console(con);
         }

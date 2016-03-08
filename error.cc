@@ -127,7 +127,7 @@ cl_error_class::get_type_name()
 cl_error::cl_error(void):
   cl_base()
 {
-  classification= error_registry.find(cchars("non-classified"));
+  classification= error_registry.find(/*cchars*/("non-classified"));
 
 }
 
@@ -175,13 +175,13 @@ char *
 cl_error::get_type_name()
 {
   enum error_type type= get_type();
-  return(get_id_string(error_type_names, type, cchars("untyped")));
+  return(get_id_string(error_type_names, type, /*cchars*/((char*)"untyped")));
 }
 
 cl_error_registry::cl_error_registry(void)
 {
-  if (NULL == error_registry.find(cchars("non-classified")))
-    register_error(new cl_error_class(err_error, cchars("non-classified"), ERROR_ON));
+  if (NULL == error_registry.find(/*cchars*/("non-classified")))
+    register_error(new cl_error_class(err_error, /*cchars*/("non-classified"), ERROR_ON));
 }
 
 /* End of sim.src/error.cc */

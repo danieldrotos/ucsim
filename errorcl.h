@@ -84,7 +84,7 @@ protected:
   class cl_error_class *register_error(class cl_error_class *error_class)
   {
     if (!registered_errors)
-      registered_errors= new cl_list(2, 2, cchars("registered errors"));
+      registered_errors= new cl_list(2, 2, /*cchars*/("registered errors"));
     registered_errors->add(error_class);
     return error_class;
   }

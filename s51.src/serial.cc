@@ -136,7 +136,7 @@ cl_serial::init(void)
   if (f_serial_in)
     {
       if (f_serial_in[0] == '\001')
-	fin= (class cl_f *)(strtol(&f_serial_in[1], 0, 0));
+	fin= (class cl_f *)(strtoll(&f_serial_in[1], 0, 0));
       else
 	fin= mk_io(chars(f_serial_in), cchars("r"));
       // making `serial' unbuffered
@@ -168,7 +168,7 @@ cl_serial::init(void)
   if (f_serial_out)
     {
       if (f_serial_out[0] == '\001')
-	fout= (class cl_f *)(strtol(&f_serial_out[1], 0, 0));
+	fout= (class cl_f *)(strtoll(&f_serial_out[1], 0, 0));
       else
 	fout= mk_io(chars(f_serial_out), "w");
       // making `serial' unbuffered

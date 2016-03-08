@@ -8,6 +8,7 @@ DD_HOSTS="p4 anb anb1 render mms box mazsola v3"
 if [ "$#" -ge 1 ]; then
     case "$1" in
 	[lLxX]*) TARGET=linux;shift;;
+	[mMwW]6*) TARGET=w64;shift;;
 	[mMwW]*) TARGET=mingw;shift;;
 	*) echo "Unknown target \"${1}\"" >&2; exit 1;;
     esac
@@ -45,6 +46,23 @@ case $TARGET in
 	    export LDFLAGS='-static-libgcc -static-libstdc++'
 	    export PREFIX='/usr/local'
 	fi
+	echo CC=$CC CXX=$CXX HOST=$HOST_OPT
+	./configure --prefix=${PREFIX} \
+	    --enable-ucsim \
+	    --disable-dlso \
+	    --disable-serio \
+	    --enable-z80 \
+	    --enable-xa \
+	    --enable-stm8 \
+	    --enable-st7 \
+	    $HOST_OPT "$@"
+	;;
+    w64)
+	export CC=x86_64-w64-mingw32-gcc
+	export CXX=x86_64-w64-mingw32-g++
+	export HOST_OPT='--host=x86_64-w64-mingw32'
+	export LDFLAGS='-static-libgcc -static-libstdc++'
+	export PREFIX='/usr/local'
 	echo CC=$CC CXX=$CXX HOST=$HOST_OPT
 	./configure --prefix=${PREFIX} \
 	    --enable-ucsim \

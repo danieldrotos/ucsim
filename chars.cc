@@ -26,6 +26,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "charscl.h"
 
@@ -70,7 +71,7 @@ chars::allocate_string(char *s)
   if (s)
     {
       chars_length= strlen(s);
-      chars_string= new char[chars_length+1];
+      chars_string= (char*)malloc(chars_length+1);//new char[chars_length+1];
       strcpy(chars_string, s);
     }
 }
@@ -79,7 +80,7 @@ void
 chars::deallocate_string(void)
 {
   if (chars_string)
-    delete [] chars_string;
+    free(chars_string);//delete [] chars_string;
   chars_string= 0;
   chars_length= 0;
 }

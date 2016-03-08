@@ -17,7 +17,7 @@ cl_f *dd= NULL;
 
 void deb(chars format, ...)
 {
-  return;
+  //return;
   if (dd==NULL)
     {
       dd= cp_io(stdout,cchars("w"));
@@ -47,7 +47,7 @@ cl_io::determine_type()
 {
   DWORD _file_type = GetFileType(handle);
 
-  printf("wio determine type fid=%d\n", file_id);
+  deb("wio determine type fid=%d\n", file_id);
   switch (_file_type)
     {
     case FILE_TYPE_CHAR:
@@ -57,24 +57,24 @@ cl_io::determine_type()
 	  return F_FILE;
 	if ((err= GetNumberOfConsoleInputEvents(handle, &NumPending)) == 0)
 	  {
-	    printf("wio file_id=%d (handle=%p) type=console1\n", file_id, handle);
+	    deb("wio file_id=%d (handle=%p) type=console1\n", file_id, handle);
 	    return F_CONSOLE;
 	  }
 	else
-	  printf("wio file_id=%d (handle=%p) cons_det1 err=%d\n", file_id, handle, (int)err);
+	  deb("wio file_id=%d (handle=%p) cons_det1 err=%d\n", file_id, handle, (int)err);
 	if (GetConsoleWindow() != NULL)
 	  {
-	    printf("wio file_id=%d (handle=%p) type=console2\n", file_id, handle);
+	    deb("wio file_id=%d (handle=%p) type=console2\n", file_id, handle);
 	    return F_CONSOLE;
 	  }
 	else
-	  printf("wio file_id=%d (handle=%p) cons_det2 NULL\n", file_id, handle);
+	  deb("wio file_id=%d (handle=%p) cons_det2 NULL\n", file_id, handle);
         if (!ClearCommError(handle, &err, NULL))
           {
             switch (GetLastError())
               {
               case ERROR_INVALID_HANDLE:
-		printf("wio file_id=%d (handle=%p) type=console3\n", file_id, handle);
+		deb("wio file_id=%d (handle=%p) type=console3\n", file_id, handle);
                 return F_CONSOLE;
 		
               case ERROR_INVALID_FUNCTION:
@@ -82,21 +82,21 @@ cl_io::determine_type()
                  * In case of NUL device return type F_FILE.
                  * Is this the correct way to test it?
                  */
-		printf("wio file_id=%d (handle=%p) type=file\n", file_id, handle);
+		deb("wio file_id=%d (handle=%p) type=file\n", file_id, handle);
                 return F_FILE;
 
               default:
                 //assert(false);
-		printf("wio file_id=%d (handle=%p) type=unknown\n", file_id, handle);
+		deb("wio file_id=%d (handle=%p) type=unknown\n", file_id, handle);
 		return F_UNKNOWN;
               }
           }
       }
-      printf("wio file_id=%d (handle=%p) type=serial\n", file_id, handle);
+      deb("wio file_id=%d (handle=%p) type=serial\n", file_id, handle);
       return F_SERIAL;
 
     case FILE_TYPE_DISK:
-      printf("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
+      deb("wio file_id=%d (handle=%p) type=file2\n", file_id, handle);
       return F_FILE;
 
     }
@@ -109,12 +109,12 @@ cl_io::determine_type()
   if (/*CKET_ERROR !=  ||
 	WSAENOTSOCK != WSAGetLastError()*/i==0)
     {
-      printf("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
+      deb("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
       return F_SOCKET;
     }
   
   //assert(false);
-  printf("wio file_id=%d (handle=%p) type=pipe\n", file_id, handle);
+  deb("wio file_id=%d (handle=%p) type=pipe\n", file_id, handle);
   return F_PIPE;
 }
 
@@ -140,8 +140,11 @@ cl_io::check_dev(void)
 
         int ret = select(0, &s, NULL, NULL, &tv);
         if (SOCKET_ERROR == ret)
-          fprintf(stderr, "Can't select: %d\n", WSAGetLastError());
-
+	  {
+	    fprintf(stderr, "Can't select: %d fid=%d handle=%p type=%d\n",
+		    WSAGetLastError(), file_id, handle, type);
+	    return 0;
+	  }
 	if (type == F_LISTENER)
 	  return ret;
 	
@@ -334,7 +337,7 @@ cl_io::check(void)
 void
 cl_io::changed(void)
 {
-  printf("win_f changed fid=%d\n", file_id);
+  deb("win_f changed fid=%d\n", file_id);
   if (file_id < 0)
     {
       // CLOSE
@@ -376,11 +379,12 @@ cl_io::changed(void)
 void
 cl_io::set_attributes()
 {
-  printf("wio set_attr fid=%d type=%d\n",file_id,type);
+  deb("wio set_attr fid=%d type=%d\n",file_id,type);
   if (type == F_CONSOLE)
     {
-      printf("wio: console mode 0 fid=%d handle=%p\n", file_id, handle);
-      //SetConsoleMode(handle, ENABLE_PROCESSED_OUTPUT|4/*ENABLE_VIRTUAL_TERMINAL_PROCESSING*/);
+      deb("wio: console mode 0 fid=%d handle=%p\n", file_id, handle);
+      SetConsoleMode(handle,0);
+		     //ENABLE_PROCESSED_OUTPUT|4/*ENABLE_VIRTUAL_TERMINAL_PROCESSING*/);
     }
   else if (type == F_SOCKET)
     {
