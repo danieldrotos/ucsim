@@ -303,6 +303,7 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   c->flags|= CONS_INTERACTIVE;
   in->save_attributes();
   in->set_attributes();
+  //out->set_attributes();
   in->echo(out);
   in->cooked();
   cmd->add_console(c);
@@ -414,6 +415,7 @@ cl_commander::init(void)
       in->echo(out);
       in->cooked();
       in->set_attributes();
+      //out->set_attributes();
       add_console(con= new cl_console(in, out, app));
       exec_on(con, Config);
       need_config= DD_FALSE;

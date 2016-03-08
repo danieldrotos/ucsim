@@ -12,8 +12,25 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "fuiocl.h"
+
+
+cl_f *dd= NULL;
+
+void deb(chars format, ...)
+{
+  if (dd==NULL)
+    {
+      dd= mk_io(cchars("/dev/pts/2"),cchars("w"));
+      dd->init();
+    }
+  va_list ap;
+  va_start(ap, format);
+  dd->vprintf(format, ap);
+  va_end(ap);
+}
 
 
 cl_io::cl_io(): cl_f()

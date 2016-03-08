@@ -1,4 +1,5 @@
-#include "fwiocl.h"
+
+#include "ddconfig.h"
 
 #ifdef SOCKET_AVAIL
 # include HEADER_SOCKET
@@ -7,6 +8,26 @@
 #include <windows.h>
 #include <io.h>
 #include <fcntl.h>
+#include <stdarg.h>
+
+#include "fwiocl.h"
+
+
+cl_f *dd= NULL;
+
+void deb(chars format, ...)
+{
+  return;
+  if (dd==NULL)
+    {
+      dd= cp_io(stdout,cchars("w"));
+      dd->init();
+    }
+  va_list ap;
+  va_start(ap, format);
+  dd->vprintf(format, ap);
+  va_end(ap);
+}
 
 
 cl_io::cl_io(): cl_f()
@@ -197,25 +218,80 @@ cl_io::check_dev(void)
 	    if (KEY_EVENT == pIRBuf->EventType &&
 		pIRBuf->Event.KeyEvent.bKeyDown)
 	      {
+		int vk= pIRBuf->Event.KeyEvent.wVirtualKeyCode;
 		char c= pIRBuf->Event.KeyEvent.uChar.AsciiChar;
+		unsigned long int ctrl= pIRBuf->Event.KeyEvent.dwControlKeyState;
 		key_presses++;
-		if ((c == '\n') ||
-		    (c == '\r'))
+		if (vk == VK_BACK)
+		  pick(8);
+		else if (vk == VK_TAB)
+		  pick(9);
+		else if (vk == VK_RETURN)
+		  pick('\n');
+		else if (vk == VK_ESCAPE)
+		  pick(0x1b);
+		else if (vk == VK_SPACE)
+		  pick(' ');
+		else if (vk == VK_PRIOR)
+		  pick(0x1b), pick('['), pick('5'), pick('~');
+		else if (vk == VK_NEXT)
+		  pick(0x1b), pick('['), pick('6'), pick('~');
+		else if (vk == VK_END)
+		  pick(0x1b), pick('['), pick('4'), pick('~');
+		else if (vk == VK_HOME)
+		  pick(0x1b), pick('['), pick('1'), pick('~');
+		else if (vk == VK_LEFT)
+		  pick(0x1b), pick('['), pick('D');
+		else if (vk == VK_RIGHT)
+		  pick(0x1b), pick('['), pick('C');
+		else if (vk == VK_INSERT)
+		  pick(0x1b), pick('['), pick('2'), pick('~');
+		else if (vk == VK_DELETE)
+		  pick(0x1b), pick('['), pick('3'), pick('~');
+		else if ((vk >= 0x30) && (vk <= 0x39))
+		  pick(c);
+		else if ((vk >= 0x41) && (vk <= 0x5a))
+		  pick(c);
+		else if ((vk >= VK_NUMPAD0) && (vk <= VK_NUMPAD9))
 		  {
-		    //printf("CR/LF pending=%ld peeked=%ld\n", NumPending, NumPeeked);
+		    if (ctrl & NUMLOCK_ON)
+		      pick(vk-VK_NUMPAD0+'0');
+		    else
+		      switch (vk) {
+		      case VK_NUMPAD0: pick(0x1b), pick('['), pick('2'), pick('~'); break;
+		      case VK_NUMPAD1: pick(0x1b), pick('['), pick('4'), pick('~'); break;
+		      case VK_NUMPAD2: pick(0x1b), pick('['), pick('B'); break;
+		      case VK_NUMPAD3: pick(0x1b), pick('['), pick('6'), pick('~'); break;
+		      case VK_NUMPAD4: pick(0x1b), pick('['), pick('D'); break;
+		      case VK_NUMPAD5: break;
+		      case VK_NUMPAD6: pick(0x1b), pick('['), pick('C'); break;
+		      case VK_NUMPAD7: pick(0x1b), pick('['), pick('1'), pick('~'); break;
+		      case VK_NUMPAD8: pick(0x1b), pick('['), pick('A'); break;
+		      case VK_NUMPAD9: pick(0x1b), pick('['), pick('5'), pick('~'); break;
+		      };
 		  }
-		//printf("presses=%d found (c=%d/%c)\n", key_presses, c, (c>31)?c:'.');
-		/*free(pIRBuf);
-		  return true;*/
-		if (pick(c) != 1)
+		if (vk == VK_MULTIPLY)
+		  pick('*');
+		if (vk == VK_ADD)
+		  pick('+');
+		if (vk == VK_SEPARATOR)
+		  ;//return last_used != first_free;;
+		if (vk == VK_SUBTRACT)
+		  pick('-');
+		if (vk == VK_DECIMAL)
+		  pick('.');
+		else if (vk == VK_DIVIDE)
+		  pick('/');
+		else if ((vk >= VK_F1) && (vk <= VK_F12))
 		  {
-		    //printf("put(%c) failed\n", (c>31)?c:'.');
+		    char s[3];
+		    sprintf(s, "%d", vk-VK_F1+11);
+		    pick(0x1b), pick('['),pick(s[0]),pick(s[1]),pick('~');
 		  }
-		/*if (c>31)
-		  {
-		    printf("%c",c);
-		    fflush(stdout);
-		    }*/
+		else if ((vk >= VK_F13) && (vk <= VK_F24))
+		  ;//return last_used != first_free;;
+		
+		//pick(c);
 	      }
 	  }
       
@@ -303,8 +379,8 @@ cl_io::set_attributes()
   printf("wio set_attr fid=%d type=%d\n",file_id,type);
   if (type == F_CONSOLE)
     {
-      printf("wio: console mode 0\n");
-      SetConsoleMode(handle, 0);
+      printf("wio: console mode 0 fid=%d handle=%p\n", file_id, handle);
+      //SetConsoleMode(handle, ENABLE_PROCESSED_OUTPUT|4/*ENABLE_VIRTUAL_TERMINAL_PROCESSING*/);
     }
   else if (type == F_SOCKET)
     {

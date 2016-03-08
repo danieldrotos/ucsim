@@ -48,8 +48,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // prj
 #include "utils.h"
 
-cl_f *dd= NULL;
-
 /*void deb(chars c)
 {
   if (dd==NULL)
@@ -59,19 +57,6 @@ cl_f *dd= NULL;
     }
   dd->write_str(c);
   }*/
-
-void deb(chars format, ...)
-{
-  if (dd==NULL)
-    {
-      dd= mk_io(cchars("/dev/pts/2"),cchars("w"));
-      dd->init();
-    }
-  va_list ap;
-  va_start(ap, format);
-  dd->vprintf(format, ap);
-  va_end(ap);
-}
 
 cl_f::cl_f(void)
 {
@@ -661,6 +646,7 @@ cl_f::process(char c)
 	    }
 	}
     }
+  deb("Line=\"%s\" curs=%d\n",line,cursor);
   return ret;
 }
 
@@ -758,6 +744,7 @@ cl_f::write(char *buf, int count)
 	  else
 	    ::write(file_id, &buf[i], 1);
 	}
+      return i;
     }
   return -1;
 }
