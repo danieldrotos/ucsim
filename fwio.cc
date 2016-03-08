@@ -31,15 +31,29 @@ cl_io::determine_type()
     {
     case FILE_TYPE_CHAR:
       {
-        DWORD err;
+        DWORD err, NumPending;
 	if (file_id > 2)
 	  return F_FILE;
+	if ((err= GetNumberOfConsoleInputEvents(handle, &NumPending)) == 0)
+	  {
+	    printf("wio file_id=%d (handle=%p) type=console1\n", file_id, handle);
+	    return F_CONSOLE;
+	  }
+	else
+	  printf("wio file_id=%d (handle=%p) cons_det1 err=%d\n", file_id, handle, (int)err);
+	if (GetConsoleWindow() != NULL)
+	  {
+	    printf("wio file_id=%d (handle=%p) type=console2\n", file_id, handle);
+	    return F_CONSOLE;
+	  }
+	else
+	  printf("wio file_id=%d (handle=%p) cons_det2 NULL\n", file_id, handle);
         if (!ClearCommError(handle, &err, NULL))
           {
             switch (GetLastError())
               {
               case ERROR_INVALID_HANDLE:
-		printf("wio file_id=%d (handle=%p) type=console\n", file_id, handle);
+		printf("wio file_id=%d (handle=%p) type=console3\n", file_id, handle);
                 return F_CONSOLE;
 		
               case ERROR_INVALID_FUNCTION:
