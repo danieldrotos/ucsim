@@ -18,14 +18,15 @@ cl_f *dd= NULL;
 void deb(chars format, ...)
 {
   return;
-  if (dd==NULL)
+  /*if (dd==NULL)
     {
       dd= cp_io(stdout,cchars("w"));
       dd->init();
-    }
+      }*/
   va_list ap;
   va_start(ap, format);
-  dd->vprintf(format, ap);
+  //dd->vprintf(format, ap);
+  vprintf(format, ap);
   va_end(ap);
 }
 
@@ -40,6 +41,19 @@ cl_io::cl_io(chars fn, chars mode): cl_f(fn, mode)
 
 cl_io::cl_io(int the_server_port): cl_f(the_server_port)
 {
+}
+
+cl_io::~cl_io(void)
+{
+  if (echo_of != NULL)
+    echo_of->echo(NULL);
+  if (file_f)
+    {
+      if (own)
+	close();
+      else
+	stop_use();
+    }
 }
 
 enum file_type
@@ -106,8 +120,10 @@ cl_io::determine_type()
   int i;
 
   i= getsockopt((SOCKET)handle, SOL_SOCKET, SO_TYPE, sockbuf, &optlen);
-  if (/*CKET_ERROR !=  ||
-	WSAENOTSOCK != WSAGetLastError()*/i==0)
+  int e= WSAGetLastError();
+  deb("Checking if fid=%d handle=%p is a socket, i=%d e=%d\n", file_id, handle, i, e);
+  if ((i == 0) ||
+      (WSAENOTSOCK != e))
     {
       deb("wio file_id=%d (handle=%p) type=socket\n", file_id, handle);
       return F_SOCKET;
@@ -337,13 +353,15 @@ cl_io::check(void)
 void
 cl_io::changed(void)
 {
-  //printf("win_f changed fid=%d\n", file_id);
+  printf("win_f changed fid=%d\n", file_id);
   if (file_id < 0)
     {
       // CLOSE
+      printf("Closing fid=%d\n", file_id);
       if ((F_SOCKET == type) ||
 	  (F_LISTENER == type))
 	{
+	  printf("Closing sock, handle=%p\n", handle);
 	  shutdown((SOCKET)handle, SD_BOTH);
 	  closesocket((SOCKET)handle);
 	}
@@ -505,10 +523,10 @@ srv_accept(class cl_f *listen_io,
   
   //size= sizeof(struct sockaddr);
   new_sock= accept(listen_io->file_id, /*(struct sockaddr *)sock_addr*/NULL, /*&size*/NULL);
-
-  //printf("win srv_accept(port=%d,sock=%d)\n", server_port, new_sock);
+  printf("win srv_accept(port=%d,new_sock=%d)\n", listen_io->server_port, new_sock);
   int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
-  //printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
+  printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
+
   if (fin)
     {
       io= new cl_io();

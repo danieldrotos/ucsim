@@ -169,9 +169,14 @@ cl_console::~cl_console(void)
       //if (flags & CONS_PROMPT)
         fout->write_str("\n");
       fout->flush();
+      deb("deleting fout:%d of console %d\n", fout->file_id, id);
       delete fout;
     }
-  if (fin) delete fin;
+  if (fin)
+    {
+      deb("deleting fin:%d of console %d\n", fin->file_id, id);
+      delete fin;
+    }
   delete prompt_option;
   delete null_prompt_option;
   delete debug_option;
@@ -298,7 +303,7 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   cmd= app->get_commander();
 
   srv_accept(fin, &in, &out);
-  
+  deb("Listener %d created in:%d out:%d\n", fin->file_id,in->file_id,out->file_id);
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;
   in->save_attributes();

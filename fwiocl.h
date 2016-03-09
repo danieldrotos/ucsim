@@ -16,6 +16,7 @@ class cl_io: public cl_f
   cl_io();
   cl_io(chars fn, chars mode);
   cl_io(int the_server_port);
+  virtual ~cl_io(void);
  public:
   virtual enum file_type determine_type(void);
  public:

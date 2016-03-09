@@ -238,6 +238,7 @@ cl_f::open(char *fn, char *mode)
 void
 cl_f::changed(void)
 {
+  deb("cl_f changed fid=%d\n", file_id);
 }
 
 int
@@ -245,7 +246,7 @@ cl_f::close(void)
 {
   int i= 0;
 
-  //printf("close fid=%d\n", file_id);
+  deb("cl_f close fid=%d\n", file_id);
   if (file_f)
     {
       i= fclose(file_f);
@@ -262,7 +263,7 @@ cl_f::close(void)
 int
 cl_f::stop_use(void)
 {
-  //printf("stop_use fid=%d\n", file_id);
+  printf("cl_f stop_use fid=%d\n", file_id);
   file_f= NULL;
   file_id= -1;
   own= false;

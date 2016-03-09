@@ -23,7 +23,7 @@ void deb(chars format, ...)
 {
   if (dd==NULL)
     {
-      dd= mk_io(cchars("/dev/pts/2"),cchars("w"));
+      dd= mk_io(cchars("/dev/pts/1"),cchars("w"));
       dd->init();
     }
   va_list ap;
@@ -339,7 +339,7 @@ check_inputs(class cl_list *active, class cl_list *avail)
   for (i= 0; i < active->count; i++)
     {
       class cl_f *fio= (class cl_f *)active->at(i);
-      deb("checking fid=%d\n", fio->file_id);
+      //deb("checking fid=%d\n", fio->file_id);
       if (fio->check_dev() ||
 	  fio->at_end)
 	{
@@ -349,7 +349,7 @@ check_inputs(class cl_list *active, class cl_list *avail)
 	  ret= true;
 	}
       else
-	deb("no dev input on fid=%d\n", fio->file_id);
+	;//deb("no dev input on fid=%d\n", fio->file_id);
     }
   return ret;
 }
