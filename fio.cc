@@ -263,7 +263,7 @@ cl_f::close(void)
 int
 cl_f::stop_use(void)
 {
-  printf("cl_f stop_use fid=%d\n", file_id);
+  //printf("cl_f stop_use fid=%d\n", file_id);
   file_f= NULL;
   file_id= -1;
   own= false;
@@ -276,6 +276,8 @@ cl_f::stop_use(void)
 
 cl_f::~cl_f(void)
 {
+  deb("~cl_f fid=%d\n", file_id);
+  /*
   if (echo_of != NULL)
     echo_of->echo(NULL);
   if (file_f)
@@ -285,6 +287,7 @@ cl_f::~cl_f(void)
       else
 	stop_use();
     }
+  */
 }
 
 

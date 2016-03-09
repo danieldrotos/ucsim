@@ -23,7 +23,7 @@ void deb(chars format, ...)
 {
   if (dd==NULL)
     {
-      dd= mk_io(cchars("/dev/pts/1"),cchars("w"));
+      dd= mk_io(cchars("/dev/pts/2"),cchars("w"));
       dd->init();
     }
   va_list ap;
@@ -50,6 +50,7 @@ cl_io::close(void)
 {
   int i= 0;
 
+  deb("fuio close fid=%d\n", file_id);
   if ((type == F_SOCKET) ||
       (type == F_LISTENER))
     {
@@ -80,12 +81,23 @@ cl_io::close(void)
 
 cl_io::~cl_io(void)
 {
+  deb("~cl_uio fid=%d\n", file_id);
   restore_attributes();
+  if (echo_of != NULL)
+    echo_of->echo(NULL);
+  if (file_f)
+    {
+      if (own)
+	close();
+      else
+	stop_use();
+    }
 }
 
 void
 cl_io::changed(void)
 {
+  //printf("fuio changed fid=%d\n", file_id);
   if (file_id < 0)
     {
       type= F_UNKNOWN;

@@ -353,15 +353,15 @@ cl_io::check(void)
 void
 cl_io::changed(void)
 {
-  printf("win_f changed fid=%d\n", file_id);
+  //printf("win_f changed fid=%d\n", file_id);
   if (file_id < 0)
     {
       // CLOSE
-      printf("Closing fid=%d\n", file_id);
+      //printf("Closing fid=%d\n", file_id);
       if ((F_SOCKET == type) ||
 	  (F_LISTENER == type))
 	{
-	  printf("Closing sock, handle=%p\n", handle);
+	  //printf("Closing sock, handle=%p\n", handle);
 	  shutdown((SOCKET)handle, SD_BOTH);
 	  closesocket((SOCKET)handle);
 	}
