@@ -121,8 +121,8 @@ include $(srcdir)/clean.mk
 # My rules
 # --------
 libucsimutil.a: $(OBJECTS)
-	ar -rcu $*.a $(OBJECTS)
-	$(RANLIB) $*.a
+	ar -rcD $@ $(OBJECTS)
+	$(RANLIB) $@
 
 
 ifeq ($(enable_ucsim),yes)

@@ -109,8 +109,8 @@ cmdlex.cc: cmdlex.l cmdpars.hh
 cmdlib: $(top_builddir)/libcmd.a
 
 $(top_builddir)/libcmd.a: $(OBJECTS) $(LOCAL_OBJECTS)
-	ar -rcu $*.a $(OBJECTS) $(LOCAL_OBJECTS)
-	$(RANLIB) $*.a
+	ar -rcD $@ $(OBJECTS) $(LOCAL_OBJECTS)
+	$(RANLIB) $@
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
