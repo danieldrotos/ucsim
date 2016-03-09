@@ -110,7 +110,7 @@ cl_error_class::get_name(void)
 char *
 cl_error_class::get_type_name()
 {
-  return(get_id_string(error_type_names, type, cchars("untyped")));
+  return(get_id_string(error_type_names, type, /*cchars*/((char*)"untyped")));
   /*switch (type)
     {
     case err_unknown: return("unclassified"); break;

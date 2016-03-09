@@ -17,7 +17,7 @@ cl_f *dd= NULL;
 
 void deb(chars format, ...)
 {
-  //return;
+  return;
   if (dd==NULL)
     {
       dd= cp_io(stdout,cchars("w"));
@@ -337,7 +337,7 @@ cl_io::check(void)
 void
 cl_io::changed(void)
 {
-  deb("win_f changed fid=%d\n", file_id);
+  //printf("win_f changed fid=%d\n", file_id);
   if (file_id < 0)
     {
       // CLOSE
