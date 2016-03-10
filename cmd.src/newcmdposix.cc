@@ -96,27 +96,7 @@ cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_ap
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
 }
-/*
-cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
-{
-  app= the_app;
-  fin= cp_io(fileno(_fin), "r");
-  fout= cp_io(fileno(_fout), "w");
-  prompt= 0;
-  flags= CONS_NONE;
-  if ((fin && fin->tty) && (fout && fout->tty))
-    {
-      flags|= CONS_INTERACTIVE;
-      fin->echo(fout);
-      fin->cooked();
-    }
-  else
-    ;
-  frout= 0;
-  id= 0;
-  lines_printed= new cl_ustrings(100, 100, "console_cache");
-}
-*/
+
 cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
 {
   app= the_app;
@@ -313,11 +293,7 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   deb("Listener %d created in:%d out:%d\n", fin->file_id,in->file_id,out->file_id);
   class cl_console_base *c= new cl_console(in, out, app);
   c->flags|= CONS_INTERACTIVE;
-  in->save_attributes();
-  in->set_attributes();
-  //out->set_attributes();
-  in->echo(out);
-  in->cooked();
+  in->interactive(out);
   cmd->add_console(c);
   return(0);
 }
@@ -394,61 +370,53 @@ cl_commander::init(void)
   
   bool need_config= DD_TRUE;
 
-#ifdef SOCKET_AVAIL
   if (port_number_option.use("port_number"))
     add_console(new cl_listen_console(port_number_option.get_value((long)0), app));
-#endif
 
-  /* The following code is commented out because it produces gcc warnings
-   * newcmd.cc: In member function `virtual int cl_commander::init()':
-   * newcmd.cc:785: warning: 'Config' might be used uninitialized in this function
-   * newcmd.cc:786: warning: 'cn' might be used uninitialized in this function
-   */
-  /*
-  char *Config= config_file_option.get_value(Config);
-  char *cn= console_on_option.get_value(cn);
-   */
-  /* Here shoud probably be something else, but is still better then the former code... */
   char *Config= config_file_option.get_value("");
   char *cn= console_on_option.get_value("");
 
   if (cn)
     {
-      add_console(con= new cl_console(cn, cn, app));
-      exec_on(con, Config);
-      need_config= DD_FALSE;
+      if (strcmp(cn, "-") == 0)
+	{
+	  class cl_f *in, *out;
+	  in= cp_io(fileno(stdin), cchars("r"));
+	  out= cp_io(fileno(stdout), cchars("w"));
+	  in->interactive(out);
+	  add_console(con= new cl_console(in, out, app));
+	  exec_on(con, Config);
+	  need_config= DD_FALSE;
+	  con->flags|= CONS_INTERACTIVE;
+	}
+      else
+	{
+	  add_console(con= new cl_console(cn, cn, app));
+	  exec_on(con, Config);
+	  need_config= DD_FALSE;
+	}
     }
   if (cons->get_count() == 0)
     {
       class cl_f *in, *out;
       in= cp_io(fileno(stdin), cchars("r"));
       out= cp_io(fileno(stdout), cchars("w"));
-      in->save_attributes();
-      in->echo(out);
-      in->cooked();
-      in->set_attributes();
-      //out->set_attributes();
+      in->interactive(out);
       add_console(con= new cl_console(in, out, app));
       exec_on(con, Config);
       need_config= DD_FALSE;
+      con->flags|= CONS_INTERACTIVE;
     }
   if (need_config &&
       Config &&
       *Config)
     {
-      //FILE *fc= fopen(Config, "r");
       class cl_f *i, *o;
       i= mk_io(Config, "r");
       o= cp_io(fileno(stderr), "w");
-      /*if (!fc)
-        fprintf(stderr, "Can't open `%s': %s\n", Config, strerror(errno));
-	else*/
-        {
-          con= new cl_console(/*fc*/i, /*stderr*/o, app);
-	  printf("6\n");
-          con->flags|= CONS_NOWELCOME|CONS_ECHO;
-          add_console(con);
-        }
+      con= new cl_console(/*fc*/i, /*stderr*/o, app);
+      con->flags|= CONS_NOWELCOME|CONS_ECHO;
+      add_console(con);
     }
   return(0);
 }

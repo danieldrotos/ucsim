@@ -192,6 +192,7 @@ cl_app::run(void)
 void
 cl_app::done(void)
 {
+  delete commander;
 }
 
 
@@ -215,11 +216,10 @@ print_help(char *name)
      "Options:\n"
      "  -t CPU       Type of CPU: 51, C52, 251, etc.\n"
      "  -X freq[k|M] XTAL frequency\n"
-     "  -c file      Open command console on `file'\n"
-     //#ifdef SOCKET_AVAIL
+     "  -C cfg_file  Read initial commands from `cfg_file' and execute them\n"
+     "  -c file      Open command console on `file' (use `-' for std in/out)\n"
      "  -Z portnum   Use localhost:portnum for command console\n"
      "  -k portnum   Use localhost:portnum for serial I/O\n"
-     //#endif
      "  -s file      Connect serial interface uart0 to `file'\n"
      "  -S options   `options' is a comma separated list of options according to\n"
      "               serial interface. Know options are:\n"

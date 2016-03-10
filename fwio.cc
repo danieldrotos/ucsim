@@ -395,7 +395,7 @@ cl_io::changed(void)
 }
 
 void
-cl_io::set_attributes()
+cl_io::set_terminal()
 {
   deb("wio set_attr fid=%d type=%d\n",file_id,type);
   if (type == F_CONSOLE)

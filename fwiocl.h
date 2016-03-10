@@ -24,7 +24,7 @@ class cl_io: public cl_f
   virtual int check_dev(void);
   virtual void check(void);
 
-  virtual void set_attributes();
+  virtual void set_terminal();
 };
 
 

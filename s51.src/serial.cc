@@ -117,8 +117,8 @@ cl_serial::init(void)
 	fin= (class cl_f *)(strtoll(&f_serial_in[1], 0, 0));
       else
 	fin= mk_io(chars(f_serial_in), cchars("r"));
-      fin->save_attributes();
-      fout->set_attributes();
+      //fin->save_attributes();
+      fin->set_terminal();
       if (!fin->tty)
 	fprintf(stderr, "Warning: serial input interface connected to a "
 		"non-terminal file.\n");
@@ -131,8 +131,8 @@ cl_serial::init(void)
 	fout= (class cl_f *)(strtoll(&f_serial_out[1], 0, 0));
       else
 	fout= mk_io(chars(f_serial_out), "w");
-      fout->save_attributes();
-      fout->set_attributes();
+      //fout->save_attributes();
+      fout->set_terminal();
       if (!fout->tty)
 	fprintf(stderr, "Warning: serial output interface connected to a "
 		"non-terminal file.\n");

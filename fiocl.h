@@ -144,13 +144,14 @@ class cl_f: public cl_base
   virtual void echo_write_str(char *s);
   virtual void echo_write_str(const char *s);
 
-  virtual void set_attributes();
+  virtual void set_terminal();
   virtual void save_attributes();
   virtual void restore_attributes();
   virtual int raw(void);
   virtual int cooked(void);
   virtual void check(void) { return; }
   virtual int echo(class cl_f *out);
+  virtual void interactive(class cl_f *echo_out);
  public:
   int server_port;
 

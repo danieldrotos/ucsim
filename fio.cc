@@ -931,7 +931,7 @@ cl_f::echo_write_str(const char *s)
 /* Device handling */
 
 void
-cl_f::set_attributes()
+cl_f::set_terminal()
 {
 }
 
@@ -987,6 +987,16 @@ cl_f::echo(class cl_f *out)
       echo_to= out;
     }
   return 0;
+}
+
+
+void
+cl_f::interactive(class cl_f *echo_out)
+{
+  save_attributes();
+  echo(echo_out);
+  cooked();
+  set_terminal();
 }
 
 

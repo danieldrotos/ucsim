@@ -181,7 +181,7 @@ cl_io::check_dev(void)
 }
 
 void
-cl_io::set_attributes()
+cl_io::set_terminal()
 {
   if (tty)
     {
