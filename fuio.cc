@@ -21,6 +21,7 @@ cl_f *dd= NULL;
 
 void deb(chars format, ...)
 {
+  return;
   if (dd==NULL)
     {
       dd= mk_io(cchars("/dev/pts/2"),cchars("w"));

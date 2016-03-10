@@ -421,6 +421,7 @@ cl_commander_base::cl_commander_base(class cl_app *the_app, class cl_cmdset *acm
 
 cl_commander_base::~cl_commander_base(void)
 {
+  cons->free_all();
   delete cons;
   delete cmdset;
 }

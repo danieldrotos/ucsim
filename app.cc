@@ -192,7 +192,7 @@ cl_app::run(void)
 void
 cl_app::done(void)
 {
-  delete commander;
+  //delete commander;
 }
 
 

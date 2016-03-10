@@ -523,9 +523,9 @@ srv_accept(class cl_f *listen_io,
   
   //size= sizeof(struct sockaddr);
   new_sock= accept(listen_io->file_id, /*(struct sockaddr *)sock_addr*/NULL, /*&size*/NULL);
-  printf("win srv_accept(port=%d,new_sock=%d)\n", listen_io->server_port, new_sock);
+  //printf("win srv_accept(port=%d,new_sock=%d)\n", listen_io->server_port, new_sock);
   int fh= _open_osfhandle((intptr_t)new_sock, _O_TEXT);
-  printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
+  //printf("Accept, got fh=%d for new_socket %p\n", fh, (void*)new_sock);
 
   if (fin)
     {
