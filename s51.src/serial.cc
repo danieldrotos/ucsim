@@ -56,7 +56,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_serial::cl_serial(class cl_uc *auc):
   cl_hw(auc, HW_UART, 0, "uart")
 {
-  //serial_in= serial_out= 0;
   fin= 0;
   fout= 0;
   listener= 0;
@@ -64,24 +63,10 @@ cl_serial::cl_serial(class cl_uc *auc):
 
 cl_serial::~cl_serial(void)
 {
-  if (fout/*serial_out*/)
-    {
-#ifdef HAVE_TERMIOS_H
-      if (fout->tty/*isatty(fileno(serial_out))*/)
-	  tcsetattr(fout->file_id/*fileno(serial_out)*/, TCSANOW, &saved_attributes_out);
-#endif
-      //fclose(serial_out);
-      delete fout;
-    }
-  if (fin/*serial_in*/)
-    {
-#ifdef HAVE_TERMIOS_H
-      if (fin->tty/*isatty(fileno(serial_in))*/)
-	tcsetattr(fin->file_id/*fileno(serial_in)*/, TCSANOW, &saved_attributes_in);
-#endif
-      //fclose(serial_in);
-      delete fin;
-    }
+  if (fout)
+    delete fout;
+  if (fin)
+    delete fin;
   delete serial_in_file_option;
   delete serial_out_file_option;
 }
@@ -89,19 +74,12 @@ cl_serial::~cl_serial(void)
 int
 cl_serial::init(void)
 {
-#ifdef HAVE_TERMIOS_H
-  int i;
-  struct termios tattr;
-#endif
   char *s;
   
   set_name("mcs51_uart");
   sfr= uc->address_space(MEM_SFR_ID);
   if (sfr)
     {
-      //sbuf= sfr->register_hw(SBUF, this, 0);
-      //pcon= sfr->register_hw(PCON, this, 0);
-      //scon= sfr->register_hw(SCON, this, 0);
       register_cell(sfr, SBUF, &sbuf, wtd_restore_write);
       register_cell(sfr, PCON, &pcon, wtd_restore_write);
       register_cell(sfr, SCON, &scon, wtd_restore_write);
@@ -131,35 +109,17 @@ cl_serial::init(void)
       c->add_console(listener);
     }
   
-  /*FILE*/char *f_serial_in = (/*FILE*/char*)serial_in_file_option->get_value((/*void*/char*)0);
-  /*FILE*/char *f_serial_out= (/*FILE*/char*)serial_out_file_option->get_value((/*void*/char*)0);
+  char *f_serial_in = (char*)serial_in_file_option->get_value((char*)0);
+  char *f_serial_out= (char*)serial_out_file_option->get_value((char*)0);
   if (f_serial_in)
     {
       if (f_serial_in[0] == '\001')
 	fin= (class cl_f *)(strtoll(&f_serial_in[1], 0, 0));
       else
 	fin= mk_io(chars(f_serial_in), cchars("r"));
-      // making `serial' unbuffered
-      //if (setvbuf(fin->file_f, NULL, _IONBF, 0)) perror("Unbuffer serial input channel");
-#if defined HAVE_TERMIOS_H
-      // setting O_NONBLOCK
-      if ((i= fcntl(fin->file_id, F_GETFL, 0)) < 0)
-	perror("Get flags of serial input");
-      i|= O_NONBLOCK;
-      if (fcntl(fin->file_id, F_SETFL, i) < 0)
-	perror("Set flags of serial input");
-      // switching terminal to noncanonical mode
-      if (isatty(fin->file_id))
-	{
-	  tcgetattr(fin->file_id, &saved_attributes_in);
-	  tcgetattr(fin->file_id, &tattr);
-	  tattr.c_lflag&= ~(ICANON|ECHO);
-	  tattr.c_cc[VMIN] = 1;
-	  tattr.c_cc[VTIME]= 0;
-	  tcsetattr(fin->file_id, TCSAFLUSH, &tattr);
-	}
-      else
-#endif
+      fin->save_attributes();
+      fout->set_attributes();
+      if (!fin->tty)
 	fprintf(stderr, "Warning: serial input interface connected to a "
 		"non-terminal file.\n");
     }
@@ -171,27 +131,9 @@ cl_serial::init(void)
 	fout= (class cl_f *)(strtoll(&f_serial_out[1], 0, 0));
       else
 	fout= mk_io(chars(f_serial_out), "w");
-      // making `serial' unbuffered
-      //if (setvbuf(fout->file_f, NULL, _IONBF, 0)) perror("Unbuffer serial output channel");
-#if defined HAVE_TERMIOS_H
-      // setting O_NONBLOCK
-      if ((i= fcntl(fout->file_id, F_GETFL, 0)) < 0)
-	perror("Get flags of serial output");
-      i|= O_NONBLOCK;
-      if (fcntl(fout->file_id, F_SETFL, i) < 0)
-	perror("Set flags of serial output");
-      // switching terminal to noncanonical mode
-      if (isatty(fout->file_id))
-	{
-	  tcgetattr(fout->file_id, &saved_attributes_out);
-	  tcgetattr(fout->file_id, &tattr);
-	  tattr.c_lflag&= ~(ICANON|ECHO);
-	  tattr.c_cc[VMIN] = 1;
-	  tattr.c_cc[VTIME]= 0;
-	  tcsetattr(fout->file_id, TCSAFLUSH, &tattr);
-	}
-      else
-#endif
+      fout->save_attributes();
+      fout->set_attributes();
+      if (!fout->tty)
 	fprintf(stderr, "Warning: serial output interface connected to a "
 		"non-terminal file.\n");
     }
@@ -295,19 +237,6 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
     }
 }
 
-/*void
-cl_serial::mem_cell_changed(class cl_m *mem, t_addr addr)
-{
-  t_mem d;
-
-  d= sbuf->get();
-  write(sbuf, &d);
-  d= pcon->get();
-  write(pcon, &d);
-  d= scon->get();
-  write(scon, &d);
-}*/
-
 int
 cl_serial::serial_bit_cnt(void)
 {
@@ -341,7 +270,6 @@ cl_serial::serial_bit_cnt(void)
 	{
 	  (*tr_src)-= _divby;
 	  s_tr_bit++;
-	  //printf("serial bit sent %d\n",uc->ticks->ticks);
 	}
     }
   if (s_receiving)
@@ -369,10 +297,8 @@ cl_serial::tick(int cycles)
       if (fout)
 	{
 	  fout->write((char*)(&s_out), 1);
-	  //fout->flush();
 	}
       s_tr_bit-= _bits;
-      //printf("serial out %d bit rems %d\n",s_tr_bit,uc->ticks->ticks);
     }
   if ((_bmREN) &&
       fin &&
@@ -432,7 +358,6 @@ cl_serial::happen(class cl_hw *where, enum hw_event he, void *params)
     {
       if (where->id == 1)
 	{
-	  //printf("serial: timer overflowed %ld\n", uc->ticks->ticks);
 	  s_rec_t1++;
 	  s_tr_t1++;
 	}
@@ -449,7 +374,6 @@ cl_serial::happen(class cl_hw *where, enum hw_event he, void *params)
 		break;
 	      }
 	    case EV_OVERFLOW:
-	      //printf("T2 baud ov r%d t%d\n",s_rec_t1,s_tr_t1);
 	      s_rec_t1++;
 	      s_tr_t1++;
 	      break;
