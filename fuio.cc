@@ -353,7 +353,7 @@ check_inputs(class cl_list *active, class cl_list *avail)
       class cl_f *fio= (class cl_f *)active->at(i);
       //deb("checking fid=%d\n", fio->file_id);
       if (fio->check_dev() ||
-	  fio->at_end)
+	  fio->eof())
 	{
 	  deb("found dev input on fid=%d\n", fio->file_id);
 	  if (avail)

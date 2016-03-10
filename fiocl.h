@@ -75,22 +75,21 @@ enum tu_special_keys {
 class cl_f: public cl_base
 {
  public:
-  chars file_name, file_mode;
   int file_id;
   bool tty;
-  bool own;
   enum file_type type;
-  class cl_f *echo_to, *echo_of;
-  int at_end;
-  bool cooking;
  protected:
+  chars file_name, file_mode;
+  bool cooking;
+  class cl_f *echo_to, *echo_of;
+  bool own;
+  int at_end;
   char line[1024];
   int cursor;
   char esc_buffer[100];
   char last_ln;
   char buffer[1024];
   int last_used, first_free;
-  //FILE *file_f;
   bool attributes_saved;
  public:
   cl_f(void);
