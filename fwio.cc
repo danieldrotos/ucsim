@@ -179,7 +179,8 @@ cl_io::check_dev(void)
 
     case F_CONSOLE:
       {
-        PINPUT_RECORD pIRBuf;
+        INPUT_RECORD *pIRBuf;
+	INPUT_RECORD *p;
         DWORD NumPending;
         DWORD NumPeeked;
 	bool ret= last_used != first_free;
@@ -188,93 +189,56 @@ cl_io::check_dev(void)
          */
 	//printf("win iput check on console id=%d handle=%p\n", file_id, handle);
         if (INVALID_HANDLE_VALUE == handle)
-	  {
-	    //printf("01\n");
-	    return ret;
-	  }
+	  return ret;
 	if (!GetNumberOfConsoleInputEvents(handle, &NumPending))
-	  {
-	    //printf("02\n");
-	    return ret;
-	  }
-	if (NumPending == 0)
-	  {
-	    //printf("03\n");
-	    return ret;
-	  }
-	if (NULL == (pIRBuf = (PINPUT_RECORD)_alloca(NumPending * sizeof(INPUT_RECORD))))
-	  {
-	    //printf("04\n");
-	    return ret;
-	  }
-	
+	  return ret;
+	if (NumPending <= 0)
+	  return ret;
+	if (NULL == (pIRBuf = (PINPUT_RECORD)/*_*/malloc/*a*/(NumPending * sizeof(INPUT_RECORD))))
+	  return ret;
+
         if (ReadConsoleInput(handle, pIRBuf, NumPending, &NumPeeked) == 0)
-	  {
-	    //printf("1\n");
-	    free(pIRBuf);
-	    return ret;
-	  }
+	  return free(pIRBuf), ret;
 	if (NumPeeked == 0L)
-	  {
-	    //printf("2\n");
-	    free(pIRBuf);
-	    return ret;
-	  }
+	  return free(pIRBuf), ret;
 	if (NumPeeked > NumPending)
-	  {
-	    //printf("3\n");
-	    free(pIRBuf);
-	    return ret;
-	  }
+	  return free(pIRBuf), ret;
+
 	/*
 	 * Scan all of the peeked events to determine if any is a key event
 	 * which should be recognized.
 	 */
-	//printf("3 pending=%ld peeked=%ld\n", NumPending, NumPeeked);
 	int key_presses= 0;
-	for ( ; NumPeeked > 0 ; NumPeeked--, pIRBuf++ )
+	for (p= pIRBuf ; NumPeeked > 0 ; NumPeeked--, p++ )
 	  {
-	    if (KEY_EVENT == pIRBuf->EventType &&
-		pIRBuf->Event.KeyEvent.bKeyDown)
+	    if (KEY_EVENT == p->EventType &&
+		p->Event.KeyEvent.bKeyDown)
 	      {
-		int vk= pIRBuf->Event.KeyEvent.wVirtualKeyCode;
-		char c= pIRBuf->Event.KeyEvent.uChar.AsciiChar;
-		unsigned long int ctrl= pIRBuf->Event.KeyEvent.dwControlKeyState;
+		int vk= p->Event.KeyEvent.wVirtualKeyCode;
+		char c= p->Event.KeyEvent.uChar.AsciiChar;
+		unsigned long int ctrl= p->Event.KeyEvent.dwControlKeyState;
 		key_presses++;
-		if (vk == VK_BACK)
-		  pick(8);
-		else if (vk == VK_TAB)
-		  pick(9);
-		else if (vk == VK_RETURN)
-		  pick('\n');
-		else if (vk == VK_ESCAPE)
-		  pick(0x1b);
-		else if (vk == VK_SPACE)
-		  pick(' ');
-		else if (vk == VK_PRIOR)
-		  pick(0x1b), pick('['), pick('5'), pick('~');
-		else if (vk == VK_NEXT)
-		  pick(0x1b), pick('['), pick('6'), pick('~');
-		else if (vk == VK_END)
-		  pick(0x1b), pick('['), pick('4'), pick('~');
-		else if (vk == VK_HOME)
-		  pick(0x1b), pick('['), pick('1'), pick('~');
-		else if (vk == VK_LEFT)
-		  pick(0x1b), pick('['), pick('D');
-		else if (vk == VK_RIGHT)
-		  pick(0x1b), pick('['), pick('C');
-		else if (vk == VK_INSERT)
-		  pick(0x1b), pick('['), pick('2'), pick('~');
-		else if (vk == VK_DELETE)
-		  pick(0x1b), pick('['), pick('3'), pick('~');
-		else if ((vk >= 0x30) && (vk <= 0x39))
-		  pick(c);
-		else if ((vk >= 0x41) && (vk <= 0x5a))
-		  pick(c);
-		else if ((vk >= VK_NUMPAD0) && (vk <= VK_NUMPAD9))
+		if (vk == VK_BACK) 		pick(8);
+		else if (vk == VK_TAB)		pick(9);
+		else if (vk == VK_RETURN)	pick('\n');
+		else if (vk == VK_ESCAPE)	pick(0x1b);
+		else if (vk == VK_SPACE)	pick(' ');
+		else if (vk == VK_PRIOR)	pick(0x1b), pick('['), pick('5'), pick('~');
+		else if (vk == VK_NEXT)		pick(0x1b), pick('['), pick('6'), pick('~');
+		else if (vk == VK_END)		pick(0x1b), pick('['), pick('4'), pick('~');
+		else if (vk == VK_HOME)		pick(0x1b), pick('['), pick('1'), pick('~');
+		else if (vk == VK_LEFT)		pick(0x1b), pick('['), pick('D');
+		else if (vk == VK_RIGHT)	pick(0x1b), pick('['), pick('C');
+		else if (vk == VK_INSERT)	pick(0x1b), pick('['), pick('2'), pick('~');
+		else if (vk == VK_DELETE)	pick(0x1b), pick('['), pick('3'), pick('~');
+		else if ((vk >= 0x30) &&
+			 (vk <= 0x39))		pick(c);
+		else if ((vk >= 0x41) &&
+			 (vk <= 0x5a))		pick(c);
+		else if ((vk >= VK_NUMPAD0) &&
+			 (vk <= VK_NUMPAD9))
 		  {
-		    if (ctrl & NUMLOCK_ON)
-		      pick(vk-VK_NUMPAD0+'0');
+		    if (ctrl & NUMLOCK_ON)	pick(vk-VK_NUMPAD0+'0');
 		    else
 		      switch (vk) {
 		      case VK_NUMPAD0: pick(0x1b), pick('['), pick('2'), pick('~'); break;
@@ -289,33 +253,24 @@ cl_io::check_dev(void)
 		      case VK_NUMPAD9: pick(0x1b), pick('['), pick('5'), pick('~'); break;
 		      };
 		  }
-		if (vk == VK_MULTIPLY)
-		  pick('*');
-		if (vk == VK_ADD)
-		  pick('+');
-		if (vk == VK_SEPARATOR)
-		  ;//return last_used != first_free;;
-		if (vk == VK_SUBTRACT)
-		  pick('-');
-		if (vk == VK_DECIMAL)
-		  pick('.');
-		else if (vk == VK_DIVIDE)
-		  pick('/');
-		else if ((vk >= VK_F1) && (vk <= VK_F12))
+		if (vk == VK_MULTIPLY)		pick('*');
+		if (vk == VK_ADD)		pick('+');
+		if (vk == VK_SEPARATOR)		;
+		if (vk == VK_SUBTRACT)		pick('-');
+		if (vk == VK_DECIMAL)		pick('.');
+		else if (vk == VK_DIVIDE)	pick('/');
+		else if ((vk >= VK_F1) &&
+			 (vk <= VK_F12))
 		  {
 		    char s[3];
 		    sprintf(s, "%d", vk-VK_F1+11);
 		    pick(0x1b), pick('['),pick(s[0]),pick(s[1]),pick('~');
 		  }
-		else if ((vk >= VK_F13) && (vk <= VK_F24))
-		  ;//return last_used != first_free;;
-		
-		//pick(c);
+		else if ((vk >= VK_F13) &&
+			 (vk <= VK_F24))	;
 	      }
 	  }
       
-	//printf("4 pending=%ld presses=%d\n", NumPending, key_presses);
-	//printf("last_used=%d first_free=%d\n", last_used, first_free);
 	free(pIRBuf);
         return last_used != first_free;
       }
