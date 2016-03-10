@@ -151,12 +151,15 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
     {
       class cl_memory_chip *m= (class cl_memory_chip *)(uc->memchips->at(i));
       if (m)
-	con->dd_printf("  0x%06x-0x%06x %8d %s (%d,%s,%s)\n",
-		       m->get_start_address(),
-		       m->highest_valid_address(),
-		       m->get_size(),
-		       m->get_name(),
-		       m->width, m->data_format, m->addr_format);
+	{
+	  char *n= (char*)(m->get_name());
+	  con->dd_printf("  0x%06x-0x%06x %8d %s (%d,%s,%s)\n",
+			 (unsigned int)(m->get_start_address()),
+			 (unsigned int)(m->highest_valid_address()),
+			 (unsigned int)(m->get_size()),
+			 n,
+			 m->width, m->data_format, m->addr_format);
+	}
     }
   con->dd_printf("Address spaces:\n");
   for (i= 0; i < uc->address_spaces->count; i++)
@@ -164,12 +167,15 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
       class cl_address_space *m=
 	(class cl_address_space *)(uc->address_spaces->at(i));
       if (m)
-	con->dd_printf("  0x%06x-0x%06x %8d %s (%d,%s,%s)\n",
-		       m->get_start_address(),
-		       m->highest_valid_address(),
-		       m->get_size(),
-		       m->get_name(),
-		       m->width, m->data_format, m->addr_format);
+	{
+	  char *n= (char*)(m->get_name());
+	  con->dd_printf("  0x%06x-0x%06x %8d %s (%d,%s,%s)\n",
+			 (unsigned int)(m->get_start_address()),
+			 (unsigned int)(m->highest_valid_address()),
+			 (unsigned int)(m->get_size()),
+			 n,
+			 m->width, m->data_format, m->addr_format);
+	}
     }
   con->dd_printf("Address decoders:\n");
   for (i= 0; i < uc->address_spaces->count; i++)
