@@ -1110,7 +1110,7 @@ cl_uc390::disass (t_addr addr, const char *sep)
               //          (((code >> 5) & 0x07) * 256 +
               //          rom->get (addr + 1)));
 
-              sprintf (temp, "%06lx",
+              sprintf (temp, /*"%06lx"*/rom->addr_format,
                        (addr & 0xf80000L) |
                        (((code >> 5) & 0x07) * (256 * 256) +
                        (rom->get (addr + 1) * 256) +
