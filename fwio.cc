@@ -47,7 +47,7 @@ cl_io::~cl_io(void)
 {
   if (echo_of != NULL)
     echo_of->echo(NULL);
-  if (file_f)
+  if (/*file_f*/file_id>=0)
     {
       if (own)
 	close();
@@ -477,11 +477,11 @@ mk_io(chars fn, chars mode)
     {
       if (strcmp(mode, "r") == 0)
 	{
-	  return cp_io(stdin, mode);
+	  return cp_io(fileno(stdin), mode);
 	}
       else if (strcmp(mode, "w") == 0)
 	{
-	  return cp_io(stdout, mode);
+	  return cp_io(fileno(stdout), mode);
 	}
     }
   io= new cl_io(fn, mode);
@@ -490,13 +490,13 @@ mk_io(chars fn, chars mode)
 }
 
 class cl_f *
-cp_io(FILE *f, chars mode)
+cp_io(/*FILE *f*/int file_id, chars mode)
 {
   class cl_io *io;
 
   io= new cl_io();
-  if (f)
-    io->use_opened(fileno(f), mode);
+  if (/*f*/file_id>=0)
+    io->use_opened(/*fileno(f)*/file_id, mode);
   return io;
 }
 

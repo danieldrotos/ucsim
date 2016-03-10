@@ -96,12 +96,12 @@ cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_ap
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
 }
-
+/*
 cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
 {
   app= the_app;
-  fin= cp_io(_fin, "r");
-  fout= cp_io(_fout, "w");
+  fin= cp_io(fileno(_fin), "r");
+  fout= cp_io(fileno(_fout), "w");
   prompt= 0;
   flags= CONS_NONE;
   if ((fin && fin->tty) && (fout && fout->tty))
@@ -116,7 +116,7 @@ cl_console::cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app)
   id= 0;
   lines_printed= new cl_ustrings(100, 100, "console_cache");
 }
-
+*/
 cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
 {
   app= the_app;
@@ -321,14 +321,14 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
 /*
  * Sub-console
  */
-
+/*
 cl_sub_console::cl_sub_console(class cl_console_base *the_parent,
                                FILE *fin, FILE *fout, class cl_app *the_app):
   cl_console(fin, fout, the_app)
 {
   parent= the_parent;
 }
-
+*/
 cl_sub_console::cl_sub_console(class cl_console_base *the_parent,
                                class cl_f *fin, class cl_f *fout, class cl_app *the_app):
   cl_console(fin, fout, the_app)
@@ -414,8 +414,8 @@ cl_commander::init(void)
   if (cons->get_count() == 0)
     {
       class cl_f *in, *out;
-      in= cp_io(stdin, cchars("r"));
-      out= cp_io(stdout, cchars("w"));
+      in= cp_io(fileno(stdin), cchars("r"));
+      out= cp_io(fileno(stdout), cchars("w"));
       in->save_attributes();
       in->echo(out);
       in->cooked();
@@ -429,12 +429,15 @@ cl_commander::init(void)
       Config &&
       *Config)
     {
-      FILE *fc= fopen(Config, "r");
-      if (!fc)
+      //FILE *fc= fopen(Config, "r");
+      class cl_f *i, *o;
+      i= mk_io(Config, "r");
+      o= cp_io(fileno(stderr), "w");
+      /*if (!fc)
         fprintf(stderr, "Can't open `%s': %s\n", Config, strerror(errno));
-      else
+	else*/
         {
-          con= new cl_console(fc, stderr, app);
+          con= new cl_console(/*fc*/i, /*stderr*/o, app);
 	  printf("6\n");
           con->flags|= CONS_NOWELCOME|CONS_ECHO;
           add_console(con);

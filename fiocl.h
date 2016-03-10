@@ -90,7 +90,7 @@ class cl_f: public cl_base
   char last_ln;
   char buffer[1024];
   int last_used, first_free;
-  FILE *file_f;
+  //FILE *file_f;
   bool attributes_saved;
  public:
   cl_f(void);
@@ -124,7 +124,7 @@ class cl_f: public cl_base
   virtual int read(char *buf, int max);
 
  public:
-  FILE *f(void) { return file_f; };
+  //FILE *f(void) { return file_f; };
   int id(void) { return file_id; };
 
   virtual int check_dev(void)= 0;
@@ -166,7 +166,7 @@ extern void deb(chars format, ...);
 extern int mk_srv_socket(int port);
 
 extern class cl_f *mk_io(chars fn, chars mode);
-extern class cl_f *cp_io(FILE *f, chars mode);
+extern class cl_f *cp_io(/*FILE *f*/int file_id, chars mode);
 extern class cl_f *mk_srv(int server_port);
 extern int srv_accept(class cl_f *listen_io,
 		      class cl_f **fin, class cl_f **fout);

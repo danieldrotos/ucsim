@@ -42,6 +42,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #include "fiocl.h"
 
@@ -60,7 +62,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 cl_f::cl_f(void)
 {
-  file_f= NULL;
+  //file_f= NULL;
   file_id= -1;
   own= false;
   tty= false;
@@ -81,7 +83,7 @@ cl_f::cl_f(void)
 cl_f::cl_f(chars fn, chars mode):
   cl_base()
 {
-  file_f= NULL;
+  //file_f= NULL;
   file_id= -1;
   file_name= fn;
   file_mode= mode;
@@ -101,7 +103,7 @@ cl_f::cl_f(chars fn, chars mode):
 
 cl_f::cl_f(int the_server_port)
 {
-  file_f= NULL;
+  //file_f= NULL;
   file_id= -1;
   own= false;
   tty= false;
@@ -127,6 +129,24 @@ cl_f::copy(chars mode)
   return io;
 }
 
+static int
+open_flags(char *m)
+{
+  if (strcmp(m, "r") == 0)
+    return O_RDONLY;
+  else if (strcmp(m, "r+") == 0)
+    return O_RDWR;
+  else if (strcmp(m, "w") == 0)
+    return O_WRONLY | O_TRUNC;
+  else if (strcmp(m, "w+") == 0)
+    return O_RDWR | O_CREAT;
+  else if (strcmp(m, "a") == 0)
+    return O_APPEND | O_WRONLY | O_CREAT;
+  else if (strcmp(m, "a+") == 0)
+    return O_APPEND | O_RDWR | O_CREAT;
+  return O_RDWR;
+}
+
 int
 cl_f::init(void)
 {
@@ -142,9 +162,10 @@ cl_f::init(void)
     {
       if (file_mode.empty())
 	file_mode= cchars("r+");
-      if ((file_f= fopen(file_name, file_mode)) != NULL)
+      //if ((file_f= fopen(file_name, file_mode)) != NULL)
+      if ((file_id= ::open(file_name, open_flags(file_mode))) >= 0)
 	{
-	  file_id= fileno(file_f);
+	  //file_id= fileno(file_f);
 	  tty= isatty(file_id);
 	  own= true;
 	  save_attributes();
@@ -170,15 +191,15 @@ cl_f::use_opened(int opened_file_id, char *mode)
   own= false;
   if (opened_file_id >= 0)
     {
-      file_f= fdopen(opened_file_id, file_mode);
-      if (file_f != NULL)
+      //file_f= fdopen(opened_file_id, file_mode);
+      //if (file_f != NULL)
 	{
 	  file_id= opened_file_id;
 	  tty= isatty(file_id);
 	  changed();
 	}
-      else
-	file_id= -1;
+	//else
+	//file_id= -1;
     }
   return file_id;
 }
@@ -198,11 +219,15 @@ cl_f::use_opened(FILE *f, chars mode)
   if (f)
     {
       file_mode= mode;
-      file_f= f;
-      file_id= fileno(file_f);
-      tty= isatty(file_id);
-      own= false;
-      changed();
+      //file_f= f;
+      if ((file_id= fileno(/*file_*/f)) >= 0)
+	{
+	  tty= isatty(file_id);
+	  own= false;
+	  changed();
+	}
+      else
+	file_id= -1;
     }
   return file_id;
 }
@@ -247,11 +272,13 @@ cl_f::close(void)
   int i= 0;
 
   deb("cl_f close fid=%d\n", file_id);
-  if (file_f)
+  /*if (file_f)
     {
       i= fclose(file_f);
-    }
-  file_f= NULL;
+      }*/
+  if (file_id >= 0)
+    ::close(file_id);
+  //file_f= NULL;
   file_id= -1;
   own= false;
   file_name= 0;
@@ -264,7 +291,7 @@ int
 cl_f::stop_use(void)
 {
   //printf("cl_f stop_use fid=%d\n", file_id);
-  file_f= NULL;
+  //file_f= NULL;
   file_id= -1;
   own= false;
   file_name= 0;
@@ -807,8 +834,8 @@ cl_f::eof(void)
 void
 cl_f::flush(void)
 {
-  if (file_f)
-    fflush(file_f);
+  /*if (file_f)
+    fflush(file_f);*/
 }
 
 

@@ -57,19 +57,19 @@ cl_io::close(void)
       restore_attributes();
       shutdown(file_id, 2/*SHUT_RDWR*/);
     }
-  
+  /*
   if (file_f)
     {
       restore_attributes();
       i= fclose(file_f);
     }
-  else if (file_id > 0)
+    else*/ if (file_id >= 0)
     {
       restore_attributes();
       i= ::close(file_id);
     }
 
-  file_f= NULL;
+  //file_f= NULL;
   file_id= -1;
   own= false;
   file_name= 0;
@@ -85,7 +85,7 @@ cl_io::~cl_io(void)
   restore_attributes();
   if (echo_of != NULL)
     echo_of->echo(NULL);
-  if (file_f)
+  if (/*file_f*/file_id>=0)
     {
       if (own)
 	close();
@@ -269,9 +269,9 @@ mk_io(chars fn, chars mode)
   else if (strcmp(fn, "-") == 0)
     {
       if (strcmp(mode, "r") == 0)
-	return cp_io(stdin, mode);
+	return cp_io(fileno(stdin), mode);
       else if (strcmp(mode, "w") == 0)
-	return cp_io(stdout, mode);
+	return cp_io(fileno(stdout), mode);
     }
   io= new cl_io(fn, mode);
   io->init();
@@ -279,13 +279,13 @@ mk_io(chars fn, chars mode)
 }
 
 class cl_f *
-cp_io(FILE *f, chars mode)
+cp_io(/*FILE *f*/int file_id, chars mode)
 {
   class cl_io *io;
 
   io= new cl_io();
-  if (f)
-    io->use_opened(fileno(f), mode);
+  if (/*f*/file_id>=0)
+    io->use_opened(/*fileno(f)*/file_id, mode);
   return io;
 }
 

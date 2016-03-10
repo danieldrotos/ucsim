@@ -47,7 +47,7 @@ public:
 public:
   cl_console(void) { fin= fout= frout= 0; }
   cl_console(const char *_fin, const char *_fout, class cl_app *the_app);
-  cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app);
+  //cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app);
   cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app);
 
   virtual ~cl_console(void);
@@ -88,8 +88,7 @@ private:
   class cl_console_base *parent;
 
 public:
-  cl_sub_console(class cl_console_base *the_parent,
-                 FILE *fin, FILE *fout, class cl_app *the_app);
+  //cl_sub_console(class cl_console_base *the_parent, FILE *fin, FILE *fout, class cl_app *the_app);
   cl_sub_console(class cl_console_base *the_parent,
                  class cl_f *fin, class cl_f *fout, class cl_app *the_app);
   virtual ~cl_sub_console(void);
