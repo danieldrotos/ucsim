@@ -369,7 +369,7 @@ cl_serial::tick(int cycles)
       if (fout)
 	{
 	  fout->write((char*)(&s_out), 1);
-	  fout->flush();
+	  //fout->flush();
 	}
       s_tr_bit-= _bits;
       //printf("serial out %d bit rems %d\n",s_tr_bit,uc->ticks->ticks);

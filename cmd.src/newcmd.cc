@@ -142,8 +142,8 @@ cl_console_base::init(void)
   welcome();
   //flags&= ~CONS_PROMPT;
   print_prompt();
-  //last_command= 0;
-  //last_cmdline= 0;
+  last_command= 0;
+  last_cmdline= 0;
   return(0);
 }
 
@@ -152,7 +152,7 @@ cl_console_base::welcome(void)
 {
   if (!(flags & CONS_NOWELCOME))
     {
-      dd_printf("uCsim %s, Copyright (C) 1997 Daniel Drotos, Talker Bt.\n"
+      dd_printf("uCsim %s, Copyright (C) 1997 Daniel Drotos.\n"
         "uCsim comes with ABSOLUTELY NO WARRANTY; for details type "
         "`show w'.\n"
         "This is free software, and you are welcome to redistribute it\n"
@@ -254,13 +254,14 @@ cl_console_base::cmd_do_print(const char *format, va_list ap)
   if (fo)
     {
       if (fi &&
-	  fi->eof())
+	  fi->eof() &&
+	  (fi->id() == fo->id()))
 	{
 	  deb("do not attempt to write on console, where input is at file_end\n");
 	  return 0;
 	}
       ret= fo->vprintf((char*)format, ap);
-      fo->flush();
+      //fo->flush();
       return ret;
     }
   else
@@ -314,11 +315,11 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   int retval= 0, i, do_print_prompt= 1;
 
   un_redirect();
-  if (is_eof())
+  /*if (is_eof())
     {
       dd_printf("End\n");
       return 1;
-    }
+      }*/
   char *cmdstr;
   i= read_line();
   if (i < 0)

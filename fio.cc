@@ -337,8 +337,8 @@ cl_f::get(void)
   if (last_used == first_free)
     return -1;
   char c= buffer[last_used];
-  if (c == 3 /* ^C */)
-    return -2;
+  //if (c == 3 /* ^C */)
+  //return -2;
   last_used= (last_used + 1) % 1024;
   return c;
 }
@@ -492,12 +492,13 @@ cl_f::process(char c)
   deb("\n%d. processing fid=%d c=%02x,%d,%c cooked=%d\n", j++, file_id, ci, ci, (ci>31)?ci:'.', cooking);
   if (!cooking)
     {
-      if (ci == 3)
+      /*if (ci == 3)
 	{
 	  deb("non-coocking ^C, finish\n");
 	  at_end= 1;
 	}
-      else if ((ci<31) &&
+	else*/
+      if ((ci<31) &&
 	  (ci!='\n') &&
 	  (ci!='\r'))
 	{
@@ -744,14 +745,27 @@ cl_f::read_dev(char *buf, int max)
   while (i < max)
     {
       c= get();
-      if (c == -2)
-	return i;
+      //if (c == -2) // ^C
+	  //return i;
       if (c < 0)
-	return (i==0)?-1:i;
+	{
+	  if (i>0)
+	    // got something
+	    return i;
+	  if (at_end)
+	    // no more data, and we are at the end
+	    return 0;
+	  // buffer is empty now, but no eof detected yet
+	  return -1;
+	}
       buf[i]= c;
       i++;
     }
-  return (i==0)?-1:i;
+  if (i>0)
+    return i;
+  if (at_end)
+    return 0;
+  return -1;
 }
 
 
@@ -831,12 +845,10 @@ cl_f::eof(void)
 }
 
 
-void
+/*void
 cl_f::flush(void)
 {
-  /*if (file_f)
-    fflush(file_f);*/
-}
+}*/
 
 
 /* Echoing */
@@ -847,7 +859,7 @@ cl_f::echo_cursor_save()
   if (echo_to)
     {
       echo_to->write(cchars("\033[s"), 3);
-      echo_to->flush();
+      //echo_to->flush();
     }
 }
 
@@ -857,7 +869,7 @@ cl_f::echo_cursor_restore()
   if (echo_to)
     {
       echo_to->write(cchars("\033[u"), 3);
-      echo_to->flush();
+      //echo_to->flush();
     }
 }
 
@@ -869,7 +881,7 @@ cl_f::echo_cursor_go_left(int n)
     {
       snprintf(b, 99, "\033[%dD", n);
       echo_to->write_str(b);
-      echo_to->flush();
+      //echo_to->flush();
     }
 }
 
@@ -881,7 +893,7 @@ cl_f::echo_cursor_go_right(int n)
     {
       snprintf(b, 99, "\033[%dC", n);
       echo_to->write_str(b);
-      echo_to->flush();
+      //echo_to->flush();
     }
 }
 
@@ -891,7 +903,7 @@ cl_f::echo_write(char *b, int l)
   if (echo_to)
     {
       echo_to->write(b, l);
-      echo_to->flush();
+      //echo_to->flush();
     }
 }
 
@@ -901,7 +913,7 @@ cl_f::echo_write_str(char *s)
   if (echo_to)
     {
       echo_to->write_str(s);
-      echo_to->flush();
+      //echo_to->flush();
     }
 }
 
@@ -911,7 +923,7 @@ cl_f::echo_write_str(const char *s)
   if (echo_to)
     {
       echo_to->write_str(s);
-      echo_to->flush();
+      //echo_to->flush();
     }
 }
 

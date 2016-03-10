@@ -168,7 +168,7 @@ cl_console::~cl_console(void)
     {
       //if (flags & CONS_PROMPT)
         fout->write_str("\n");
-      fout->flush();
+	//fout->flush();
       deb("deleting fout:%d of console %d\n", fout->file_id, id);
       delete fout;
     }
@@ -226,56 +226,63 @@ cl_console::need_check(void)
 }
 
 
+/* Return
+   -1 if EOF (and buffer is empty) or ^C found
+   0  buffer is not ready yet
+   1  buffer filled (EOL detected)
+*/
+
 int
 cl_console::read_line(void)
 {
-  int i= 0, n= 0, p= 0;
-  char b[100], c;
+  int i= 0;
+  char b[2]= { 0, 0 };
 
-  while (input_avail())
-    {
-      if (fin->eof())
-	return -2;
-      i= fin->read(&c, 1);
-      if (i==0)
-	{
-	  if (n==0)
-	    {
-	      return -1;
-	    }
-	  if (p)
-	    lbuf+= b;
-	  return 0;
-	}
-      if (i < 0)
-	{
-	  lbuf= 0;
-	  return 0;
-	}
-      n++;
-      if ((c == '\n') ||
-	  (c == '\r'))
-	{
-	  if (nl == 0)
-	    nl= c;
-	  else if (c != nl)
-	    {
-	      continue;
-	    }
-	  if (p)
-	    lbuf+= b;
-	  return 1;
-	}
-      b[p++]= c;
-      b[p]= 0;
-      if (p>98)
-	{
-	  lbuf+= b;
-	  p= 0;
-	}
-    }
-  if (p)
-    lbuf+= b;
+  do {
+    i= fin->read(b, 1);
+    if (i < 0)
+      {
+	// no more char
+	return -1;
+      }
+    if (i == 0)
+      {
+	// EOF
+	if (lbuf.len() == 0)
+	  return -1;
+	// execute last line, assuming \n
+	return 1;
+      }
+    if (i > 0)
+      {
+	// Got a char
+	if (b[0] == 3)
+	  // ^C, drop and close
+	  return -1;
+	if ((b[0] == '\n') ||
+	    (b[0] == '\r'))
+	  {
+	    if (nl &&
+		(nl != b[0]))
+	      {
+		deb("readline: skip %d after %d\n", b[0], nl);
+		nl= 0;
+		continue;
+	      }
+	    nl= b[0];
+	    /*
+	    if (lbuf.len() != 0)
+	      {
+		b[0]= '\n';
+		lbuf+= b;
+	      }
+	    */
+	    return 1;
+	  }
+	lbuf+= b;
+      }
+  }
+  while (i > 0);
   return 0;
 }
 

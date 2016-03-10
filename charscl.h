@@ -47,6 +47,7 @@ private:
 public:
   virtual chars &append(char *s);
   virtual bool empty();
+  virtual int len() { return chars_length; }
   
 public:
   // Operators

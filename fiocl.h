@@ -134,7 +134,7 @@ class cl_f: public cl_base
   virtual int vprintf(char *format, va_list ap);
   virtual int prntf(char *format, ...);
   virtual bool eof(void);
-  virtual void flush(void);
+  //virtual void flush(void);
 
   virtual void echo_cursor_save();
   virtual void echo_cursor_restore();
