@@ -118,6 +118,7 @@ class cl_f: public cl_base
   virtual int process(char c);
   virtual int pick(void);
   virtual int pick(char c);
+  virtual int pick(const char *s);
  public:
   virtual int input_avail(void);
   virtual int read(char *buf, int max);

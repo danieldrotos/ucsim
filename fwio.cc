@@ -223,14 +223,14 @@ cl_io::check_dev(void)
 		else if (vk == VK_RETURN)	pick('\n');
 		else if (vk == VK_ESCAPE)	pick(0x1b);
 		else if (vk == VK_SPACE)	pick(' ');
-		else if (vk == VK_PRIOR)	pick(0x1b), pick('['), pick('5'), pick('~');
-		else if (vk == VK_NEXT)		pick(0x1b), pick('['), pick('6'), pick('~');
-		else if (vk == VK_END)		pick(0x1b), pick('['), pick('4'), pick('~');
-		else if (vk == VK_HOME)		pick(0x1b), pick('['), pick('1'), pick('~');
-		else if (vk == VK_LEFT)		pick(0x1b), pick('['), pick('D');
-		else if (vk == VK_RIGHT)	pick(0x1b), pick('['), pick('C');
-		else if (vk == VK_INSERT)	pick(0x1b), pick('['), pick('2'), pick('~');
-		else if (vk == VK_DELETE)	pick(0x1b), pick('['), pick('3'), pick('~');
+		else if (vk == VK_PRIOR)	pick("\033[5~");
+		else if (vk == VK_NEXT)		pick("\033[6~");
+		else if (vk == VK_END)		pick("\033[4~");
+		else if (vk == VK_HOME)		pick("\033[1~");
+		else if (vk == VK_LEFT)		pick("\033[D");
+		else if (vk == VK_RIGHT)	pick("\033[C");
+		else if (vk == VK_INSERT)	pick("\033[2~");
+		else if (vk == VK_DELETE)	pick("\033[3~");
 		else if ((vk >= 0x30) &&
 			 (vk <= 0x39))		pick(c);
 		else if ((vk >= 0x41) &&
@@ -241,16 +241,16 @@ cl_io::check_dev(void)
 		    if (ctrl & NUMLOCK_ON)	pick(vk-VK_NUMPAD0+'0');
 		    else
 		      switch (vk) {
-		      case VK_NUMPAD0: pick(0x1b), pick('['), pick('2'), pick('~'); break;
-		      case VK_NUMPAD1: pick(0x1b), pick('['), pick('4'), pick('~'); break;
-		      case VK_NUMPAD2: pick(0x1b), pick('['), pick('B'); break;
-		      case VK_NUMPAD3: pick(0x1b), pick('['), pick('6'), pick('~'); break;
-		      case VK_NUMPAD4: pick(0x1b), pick('['), pick('D'); break;
+		      case VK_NUMPAD0: pick("\033[2~"); break;
+		      case VK_NUMPAD1: pick("\033[4~"); break;
+		      case VK_NUMPAD2: pick("\033[B"); break;
+		      case VK_NUMPAD3: pick("\033[6~"); break;
+		      case VK_NUMPAD4: pick("\033[D"); break;
 		      case VK_NUMPAD5: break;
-		      case VK_NUMPAD6: pick(0x1b), pick('['), pick('C'); break;
-		      case VK_NUMPAD7: pick(0x1b), pick('['), pick('1'), pick('~'); break;
-		      case VK_NUMPAD8: pick(0x1b), pick('['), pick('A'); break;
-		      case VK_NUMPAD9: pick(0x1b), pick('['), pick('5'), pick('~'); break;
+		      case VK_NUMPAD6: pick("\033[C"); break;
+		      case VK_NUMPAD7: pick("\033[1~"); break;
+		      case VK_NUMPAD8: pick("\033[A"); break;
+		      case VK_NUMPAD9: pick("\033[5~"); break;
 		      };
 		  }
 		if (vk == VK_MULTIPLY)		pick('*');
@@ -264,7 +264,9 @@ cl_io::check_dev(void)
 		  {
 		    char s[3];
 		    sprintf(s, "%d", vk-VK_F1+11);
-		    pick(0x1b), pick('['),pick(s[0]),pick(s[1]),pick('~');
+		    pick("\033["),pick(s[0]);
+		    if (s[1]) pick(s[1]);
+		    pick('~');
 		  }
 		else if ((vk >= VK_F13) &&
 			 (vk <= VK_F24))	;

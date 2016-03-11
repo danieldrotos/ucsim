@@ -715,6 +715,17 @@ cl_f::pick(char c)
 }
 
 int
+cl_f::pick(const char *s)
+{
+  int i, ret= 0;
+
+  if (s)
+    for (i= 0; s[i]; i++)
+      ret= pick(s[i]);
+  return ret;
+}
+
+int
 cl_f::input_avail(void)
 {
   int ret= check_dev();
