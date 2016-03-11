@@ -60,6 +60,78 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   dd->write_str(c);
   }*/
 
+
+cl_history::cl_history(char *aname):
+  cl_ustrings(100, 10, aname)
+{
+  nr= 0;
+  //actual_line= "";
+}
+
+cl_history::cl_history(const char *aname):
+cl_ustrings(100, 10, aname)
+{
+  nr= 0;
+  //actual_line= "";
+}
+
+cl_history::~cl_history(void)
+{
+}
+
+char *
+cl_history::up(chars line)
+{
+  replace(line);
+  if (nr > 0)
+    nr--;
+  return (char*)(Items[nr]);
+}
+
+char *
+cl_history::down(chars line)
+{
+  replace(line);
+  if (nr < count)
+    nr++;
+  if (nr < count)
+    return (char*)(Items[nr]);
+  return NULL;
+}
+
+char *
+cl_history::enter(chars line)
+{
+  if (count > 1000)
+    {
+      free_at(0);
+      /*if (nr > count)
+	nr= count;*/
+    }
+  if (!line.empty())
+    {
+      add(strdup(line));
+      nr= count;
+    }
+  return NULL;
+}
+
+void
+cl_history::replace(chars line)
+{
+  if (nr < count)
+    {
+      free(Items[nr]);
+      if (line.empty())
+	Items[nr]= strdup("");
+      else
+	Items[nr]= strdup(line);
+    }
+}
+
+
+/****************************************************************************/
+
 cl_f::cl_f(void)
 {
   //file_f= NULL;
@@ -78,6 +150,7 @@ cl_f::cl_f(void)
   cursor= 0;
   esc_buffer[0]= 0;
   attributes_saved= 0;
+  hist= new cl_history("history");
 }
 
 cl_f::cl_f(chars fn, chars mode):
@@ -99,6 +172,7 @@ cl_f::cl_f(chars fn, chars mode):
   cursor= 0;
   esc_buffer[0]= 0;
   attributes_saved= 0;
+  hist= new cl_history("history");
 }
 
 cl_f::cl_f(int the_server_port)
@@ -119,6 +193,7 @@ cl_f::cl_f(int the_server_port)
   cursor= 0;
   esc_buffer[0]= 0;
   attributes_saved= 0;
+  hist= new cl_history("history");
 }
 
 class cl_f *
@@ -304,6 +379,7 @@ cl_f::stop_use(void)
 cl_f::~cl_f(void)
 {
   deb("~cl_f fid=%d\n", file_id);
+  delete hist;
   /*
   if (echo_of != NULL)
     echo_of->echo(NULL);
@@ -570,14 +646,49 @@ cl_f::process(char c)
 	  cursor= l;
 	}
     }
+  // HISTORY
+  else if (k == TU_UP)
+    {
+      char *s= hist->up(line);
+      if (cursor > 0)
+	echo_cursor_go_left(cursor);
+      echo_cursor_save();
+      while (l--)
+	echo_write_str(" ");
+      echo_cursor_restore();
+      line[cursor= 0]= 0;
+      if (s != NULL)
+	{
+	  strcpy(line, s);
+	  echo_write_str(s);
+	  cursor= strlen(s);
+	}
+    }
+  else if (k == TU_DOWN)
+    {
+      char *s= hist->down(line);
+      if (cursor > 0)
+	echo_cursor_go_left(cursor);
+      echo_cursor_save();
+      while (l--)
+	echo_write_str(" ");
+      echo_cursor_restore();
+      line[cursor= 0]= 0;
+      if (s != NULL)
+	{
+	  strcpy(line, s);
+	  echo_write_str(s);
+	  cursor= strlen(s);
+	}
+    }
   // FINISH EDITING
-  else if ((k == 'C'-'A'+1) ||
+  /*else if ((k == 'C'-'A'+1) ||
 	   (k == 'D'-'A'+1))
     {
       //ready= 1;
       deb("Cooking close on ^C/^D\n");
       at_end= 1;
-    }
+      }*/
   else if ((k == '\n') ||
 	   (k == '\r'))
     {
@@ -594,6 +705,7 @@ cl_f::process(char c)
       for (i= 0; i<l; i++)
 	put(line[i]);
       put('\n');
+      hist->enter(line);
       //tu_cooked();
       line[cursor= 0]= 0;
       esc_buffer[0]= 0;

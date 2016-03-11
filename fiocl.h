@@ -70,6 +70,26 @@ enum tu_special_keys {
 };
 
 
+/* History */
+
+class cl_history: public cl_ustrings
+{
+ protected:
+  int nr;
+  //chars actual_line;
+ public:
+  cl_history(char *aname);
+  cl_history(const char *aname);
+  virtual ~cl_history(void);
+
+ public:
+  char *up(chars line);
+  char *down(chars line);
+  char *enter(chars line);
+  void replace(chars line);
+};
+
+
 /* General file */
 
 class cl_f: public cl_base
@@ -91,6 +111,7 @@ class cl_f: public cl_base
   char buffer[1024];
   int last_used, first_free;
   bool attributes_saved;
+  class cl_history *hist;
  public:
   cl_f(void);
   cl_f(chars fn, chars mode);
