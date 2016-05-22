@@ -72,14 +72,14 @@ tests: $(TEST_OBJ)
 # Compiling and installing everything and runing test
 # ---------------------------------------------------
 install: all installdirs
-	$(INSTALL) sstm8$(EXEEXT) $(DESTDIR)$(bindir)/sstm8$(EXEEXT)
-	$(STRIP) $(DESTDIR)$(bindir)/sstm8$(EXEEXT)
+	$(INSTALL) sstm8$(EXEEXT) $(DESTDIR)$(bindir)/`echo sstm8|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo sstm8|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/sstm8$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo sstm8|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test
