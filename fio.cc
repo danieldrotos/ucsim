@@ -210,9 +210,9 @@ open_flags(char *m)
   if (strcmp(m, "r") == 0)
     return O_RDONLY;
   else if (strcmp(m, "r+") == 0)
-    return O_RDWR;
+    return O_RDWR | O_CREAT;
   else if (strcmp(m, "w") == 0)
-    return O_WRONLY | O_TRUNC;
+    return O_WRONLY | O_TRUNC | O_CREAT;
   else if (strcmp(m, "w+") == 0)
     return O_RDWR | O_CREAT;
   else if (strcmp(m, "a") == 0)
@@ -238,7 +238,7 @@ cl_f::init(void)
       if (file_mode.empty())
 	file_mode= cchars("r+");
       //if ((file_f= fopen(file_name, file_mode)) != NULL)
-      if ((file_id= ::open(file_name, open_flags(file_mode))) >= 0)
+      if ((file_id= ::open(file_name, open_flags(file_mode), (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH))) >= 0)
 	{
 	  //file_id= fileno(file_f);
 	  tty= isatty(file_id);
