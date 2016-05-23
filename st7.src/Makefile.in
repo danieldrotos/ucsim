@@ -15,14 +15,14 @@ INSTALL		= @INSTALL@
 STRIP		= @STRIP@
 MAKEDEP         = @MAKEDEP@
 
-top_builddir	= @top_builddir@
-top_srcdir	= @top_srcdir@
-
-transform	= @program_transform_name@
-
-DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
-CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) -I$(top_srcdir) -I$(top_builddir) \
-		  -I$(top_srcdir)/cmd.src -I$(top_srcdir)/sim.src \
+top_builddir	= @top_builddir@
+top_srcdir	= @top_srcdir@
+
+transform	= @program_transform_name@
+
+DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
+CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) -I$(top_srcdir) -I$(top_builddir) \
+		  -I$(top_srcdir)/cmd.src -I$(top_srcdir)/sim.src \
 		  -I$(top_srcdir)/gui.src
 CFLAGS          = @CFLAGS@ @WALL_FLAG@
 CXXFLAGS        = @CXXFLAGS@ @WALL_FLAG@
@@ -71,20 +71,20 @@ all: checkconf otherlibs st7.src tests
 tests: $(TEST_OBJ)
 
 
-# Compiling and installing everything and runing test
-# ---------------------------------------------------
-install: all installdirs
-	$(INSTALL) sst7$(EXEEXT) $(DESTDIR)$(bindir)/`echo sst7|sed '$(transform)'`$(EXEEXT)
-	$(STRIP) $(DESTDIR)$(bindir)/`echo sst7|sed '$(transform)'`$(EXEEXT)
-
-
-# Deleting all the installed files
-# --------------------------------
-uninstall:
-	rm -f $(DESTDIR)$(bindir)/`echo sst7|sed '$(transform)'`$(EXEEXT)
-
-
-# Performing self-test
+# Compiling and installing everything and runing test
+# ---------------------------------------------------
+install: all installdirs
+	$(INSTALL) sst7$(EXEEXT) $(DESTDIR)$(bindir)/`echo sst7|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo sst7|sed '$(transform)'`$(EXEEXT)
+
+
+# Deleting all the installed files
+# --------------------------------
+uninstall:
+	rm -f $(DESTDIR)$(bindir)/`echo sst7|sed '$(transform)'`$(EXEEXT)
+
+
+# Performing self-test
 # --------------------
 check: test
 
