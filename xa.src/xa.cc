@@ -579,7 +579,7 @@ cl_xa::disass(t_addr addr, const char *sep)
 	      get_bit_name(((code&0x0003)<<8) + get_mem(MEM_ROM_ID, addr+2)));
     break;
     case BIT_REL8 :
-      sprintf(parm_str, "%s,0x%04x",
+      sprintf(parm_str, "%s,0x%04lx",
 	      get_bit_name((code&0x0003)<<8) + get_mem(MEM_ROM_ID, addr+2),
 	      ((signed char)get_mem(MEM_ROM_ID, addr+3)*2+addr+len)&0xfffe);
     break;
@@ -594,12 +594,12 @@ cl_xa::disass(t_addr addr, const char *sep)
       break;
     break;
     case REG_REL8 :
-      sprintf(parm_str, "%s,0x%04x",
+      sprintf(parm_str, "%s,0x%04lx",
 	      reg_strs[(code>>4) & 0xf],
 	      ((signed char)get_mem(MEM_ROM_ID, addr+2)*2+addr+len)&0xfffe);
     break;
     case DIRECT_REL8 :
-      sprintf(parm_str, "%s,0x%04x",
+      sprintf(parm_str, "%s,0x%04lx",
 	      get_dir_name(((code&0x07)<<8) +
 			   get_mem(MEM_ROM_ID, addr+2)),
 	      ((signed char)get_mem(MEM_ROM_ID, addr+2)*2+addr+len)&0xfffe);
@@ -611,11 +611,11 @@ cl_xa::disass(t_addr addr, const char *sep)
       sprintf(parm_str, "USP_REG");
     break;
     case REL8 :
-      sprintf(parm_str, "0x%04x",
+      sprintf(parm_str, "0x%04lx",
 	      ((signed char)get_mem(MEM_ROM_ID, addr+1)*2+addr+len)&0xfffe);
     break;
     case REL16 :
-      sprintf(parm_str, "0x%04x",
+      sprintf(parm_str, "0x%04lx",
 	      ((signed short)((get_mem(MEM_ROM_ID, addr+1)<<8) + get_mem(MEM_ROM_ID, addr+2))*2+addr+len)&0xfffe);
     break;
 
