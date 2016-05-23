@@ -451,39 +451,11 @@ cl_commander::update_active(void)
 int
 cl_commander::input_avail(void)
 {
-  //struct timeval tv = {0, 0};
-  //active_set = read_set;
-  //int i;
-
   class cl_list *avail= new cl_list(10,5,"avail");
   bool ret= check_inputs(active_inputs, avail);
   avail->disconn_all();
   delete avail;
   return ret;
-  /*
-  deb("commander::input_avail\n");
-  for (i= 0; i < cons->count; i++)
-    {
-      class cl_console *c= dynamic_cast<class cl_console*>
-	((class cl_console_base *)(cons->at(i)));
-      deb("con_id=%d file_id=%d ", c->get_id(), c->fin->file_id);
-      if (c->input_active())
-	{
-	  
-	  if (c->input_avail())
-	    {
-	      deb("avail\n");
-	      return true;
-	    }
-	  else
-	    deb("no-avail");
-	}
-      else
-	deb("non-active");
-      deb("\n");
-    }
-  return false;
-  */
 }
 
 int
