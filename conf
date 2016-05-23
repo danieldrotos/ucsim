@@ -30,10 +30,11 @@ case $TARGET in
 	    --enable-ucsim \
 	    --disable-dlso \
 	    --enable-serio \
-	    --enable-z80 \
-	    --enable-xa \
-	    --enable-stm8 \
-	    --enable-st7 \
+	    --enable-avr-port \
+	    --enable-z80-port \
+	    --enable-xa-port \
+	    --enable-stm8-port \
+	    --enable-st7-port \
 	    "$@"
 	;;
     mingw|win|w)
@@ -53,10 +54,11 @@ case $TARGET in
 	    --enable-ucsim \
 	    --disable-dlso \
 	    --disable-serio \
-	    --enable-z80 \
-	    --enable-xa \
-	    --enable-stm8 \
-	    --enable-st7 \
+	    --enable-avr-port \
+	    --enable-z80-port \
+	    --enable-xa-port \
+	    --enable-stm8-port \
+	    --enable-st7-port \
 	    $HOST_OPT "$@"
 	;;
     w64)
@@ -70,10 +72,11 @@ case $TARGET in
 	    --enable-ucsim \
 	    --disable-dlso \
 	    --disable-serio \
-	    --enable-z80 \
-	    --enable-xa \
-	    --enable-stm8 \
-	    --enable-st7 \
+	    --enable-avr-port \
+	    --enable-z80-port \
+	    --enable-xa-port \
+	    --enable-stm8-port \
+	    --enable-st7-port \
 	    $HOST_OPT "$@"
 	;;
     *)

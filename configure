@@ -693,14 +693,20 @@ CPPFLAGS
 LDFLAGS
 CXXFLAGS
 CXX
-enable_st7
-enable_stm8
 enable_serio
-enable_xa
-enable_hc08
-enable_z80
-enable_avr
-enable_51
+enable_st7_port
+enable_stm8_port
+enable_xa_port
+enable_s08_port
+enable_hc08_port
+enable_r3ka_port
+enable_r2k_port
+enable_gbz80_port
+enable_z180_port
+enable_z80_port
+enable_avr_port
+enable_ds390_port
+enable_mcs51_port
 enable_dlso
 enable_ucsim
 VERSIONP
@@ -752,13 +758,19 @@ ac_user_opts='
 enable_option_checking
 enable_ucsim
 enable_dlso
-enable_51
-enable_avr
-enable_z80
-enable_hc08
-enable_xa
-enable_stm8
-enable_st7
+enable_mcs51_port
+enable_ds390_port
+enable_avr_port
+enable_z80_port
+enable_z180_port
+enable_gbz80_port
+enable_r2k_port
+enable_r3ka_port
+enable_hc08_port
+enable_s08_port
+enable_xa_port
+enable_stm8_port
+enable_st7_port
 enable_serio
 enable_statistic
 enable_shared
@@ -1393,6 +1405,11 @@ _ACEOF
 
   cat <<\_ACEOF
 
+Program names:
+  --program-prefix=PREFIX            prepend PREFIX to installed program names
+  --program-suffix=SUFFIX            append SUFFIX to installed program names
+  --program-transform-name=PROGRAM   run sed PROGRAM on installed program names
+
 System types:
   --build=BUILD     configure for building on BUILD [guessed]
   --host=HOST       cross-compile to build programs to run on HOST [BUILD]
@@ -1409,13 +1426,19 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-ucsim          compile ucsim frontend
   --enable-dlso           compile dynamically loadable shared libraries
-  --disable-51            do not compile simulator for MCS51
-  --disable-avr           do not compile simulator for AVR
-  --disable-z80           do not compile simulator for Z80
-  --disable-hc08          do not compile simulator for hc08
-  --enable-xa             compile simulator for XA
-  --disable-stm8           do not compile simulator for STM8
-  --disable-st7            do not compile simulator for ST7
+  --disable-mcs51-port    do not compile simulator for mcs51
+  --disable-ds390-port    do not compile simulator for ds390
+  --enable-avr-port       compile simulator for AVR
+  --disable-z80-port      do not compile simulator for z80
+  --disable-z180-port     do not compile simulator for z180
+  --disable-gbz80-port    do not compile simulator for gbz80
+  --disable-r2k-port      do not compile simulator for r2k
+  --disable-r3ka-port     do not compile simulator for r3ka
+  --disable-hc08-port     do not compile simulator for hc08
+  --disable-s08-port      do not compile simulator for s08
+  --enable-xa-port        compile simulator for xa
+  --disable-stm8-port     do not compile simulator for stm8
+  --enable-st7-port       compile simulator for st7
   --enable-serio          compile serio GUI tool (needs curses)
   --enable-statistic      compile statistical features (slower simulation)
   --enable-shared[=PKGS]  build shared libraries [default=yes]
@@ -2730,6 +2753,15 @@ cat >>confdefs.h <<_ACEOF
 #define VERSIONP $VERSIONP
 _ACEOF
 
+test "$program_prefix" != NONE &&
+  program_transform_name="s&^&$program_prefix&;$program_transform_name"
+# Use a double $ so make ignores it.
+test "$program_suffix" != NONE &&
+  program_transform_name="s&\$&$program_suffix&;$program_transform_name"
+# Double any \ or $.
+# By default was `s,x,x', remove it if useless.
+ac_script='s/[\\$]/&&/g;s/;s,x,x,$//'
+program_transform_name=`$as_echo "$program_transform_name" | sed "$ac_script"`
 
 # Some options
 #==============
@@ -2759,72 +2791,122 @@ else
   enable_dlso="no"
 fi
 
-# Check whether --enable-51 was given.
-if test "${enable_51+set}" = set; then :
-  enableval=$enable_51; if test $enable_51 != "no"; then
-    enable_51="yes"
+# Check whether --enable-mcs51-port was given.
+if test "${enable_mcs51_port+set}" = set; then :
+  enableval=$enable_mcs51_port; if test $enable_mcs51_port != "no"; then
+    enable_mcs51_port="yes"
 fi
 else
-  enable_51="yes"
+  enable_mcs51_port="yes"
 fi
 
-# Check whether --enable-avr was given.
-if test "${enable_avr+set}" = set; then :
-  enableval=$enable_avr; if test $enable_avr != "no"; then
-    enable_avr="yes"
+# Check whether --enable-ds390-port was given.
+if test "${enable_ds390_port+set}" = set; then :
+  enableval=$enable_ds390_port; if test $enable_ds390_port != "no"; then
+    enable_ds390_port="yes"
 fi
 else
-  enable_avr="yes"
+  enable_ds390_port="yes"
 fi
 
-# Check whether --enable-z80 was given.
-if test "${enable_z80+set}" = set; then :
-  enableval=$enable_z80; if test $enable_z80 != "no"; then
-    enable_z80="yes"
+# Check whether --enable-avr-port was given.
+if test "${enable_avr_port+set}" = set; then :
+  enableval=$enable_avr_port; if test $enable_avr_port != "no"; then
+    enable_avr_port="yes"
 fi
 else
-  enable_z80="yes"
+  enable_avr_port="no"
 fi
 
-# Check whether --enable-hc08 was given.
-if test "${enable_hc08+set}" = set; then :
-  enableval=$enable_hc08; if test $enable_hc08 != "no"; then
-    enable_hc08="yes"
+# Check whether --enable-z80-port was given.
+if test "${enable_z80_port+set}" = set; then :
+  enableval=$enable_z80_port; if test $enable_z80_port != "no"; then
+    enable_z80_port="yes"
 fi
 else
-  enable_hc08="yes"
+  enable_z80_port="yes"
 fi
 
-
-# Check whether --enable-xa was given.
-if test "${enable_xa+set}" = set; then :
-  enableval=$enable_xa; if test $enable_xa != "no"; then
-    enable_xa="yes"
-fi
-else
-  enable_xa="no"
-fi
-
-
-# Check whether --enable-stm8 was given.
-if test "${enable_stm8+set}" = set; then :
-  enableval=$enable_stm8; if test $enable_stm8 != "no"; then
-    enable_stm8="yes"
+# Check whether --enable-z180-port was given.
+if test "${enable_z180_port+set}" = set; then :
+  enableval=$enable_z180_port; if test $enable_z180_port != "no"; then
+    enable_z180_port="yes"
 fi
 else
-  enable_stm8="yes"
+  enable_z180_port="yes"
 fi
 
-
-# Check whether --enable-st7 was given.
-if test "${enable_st7+set}" = set; then :
-  enableval=$enable_st7; if test $enable_st7 != "no"; then
-    enable_st7="yes"
+# Check whether --enable-gbz80-port was given.
+if test "${enable_gbz80_port+set}" = set; then :
+  enableval=$enable_gbz80_port; if test $enable_gbz80_port != "no"; then
+    enable_gbz80_port="yes"
 fi
 else
-  enable_st7="yes"
+  enable_gbz80_port="yes"
 fi
 
+# Check whether --enable-r2k-port was given.
+if test "${enable_r2k_port+set}" = set; then :
+  enableval=$enable_r2k_port; if test $enable_r2k_port != "no"; then
+    enable_r2k_port="yes"
+fi
+else
+  enable_r2k_port="yes"
+fi
+
+# Check whether --enable-r3ka-port was given.
+if test "${enable_r3ka_port+set}" = set; then :
+  enableval=$enable_r3ka_port; if test $enable_r3ka_port != "no"; then
+    enable_r3ka_port="yes"
+fi
+else
+  enable_r3ka_port="yes"
+fi
+
+# Check whether --enable-hc08-port was given.
+if test "${enable_hc08_port+set}" = set; then :
+  enableval=$enable_hc08_port; if test $enable_hc08_port != "no"; then
+    enable_hc08_port="yes"
+fi
+else
+  enable_hc08_port="yes"
+fi
+
+# Check whether --enable-s08-port was given.
+if test "${enable_s08_port+set}" = set; then :
+  enableval=$enable_s08_port; if test $enable_s08_port != "no"; then
+    enable_s08_port="yes"
+fi
+else
+  enable_s08_port="yes"
+fi
+
+# Check whether --enable-xa-port was given.
+if test "${enable_xa_port+set}" = set; then :
+  enableval=$enable_xa_port; if test $enable_xa_port != "no"; then
+    enable_xa_port="yes"
+fi
+else
+  enable_xa_port="no"
+fi
+
+# Check whether --enable-stm8-port was given.
+if test "${enable_stm8_port+set}" = set; then :
+  enableval=$enable_stm8_port; if test $enable_stm8_port != "no"; then
+    enable_stm8_port="yes"
+fi
+else
+  enable_stm8_port="yes"
+fi
+
+# Check whether --enable-st7-port was given.
+if test "${enable_st7_port+set}" = set; then :
+  enableval=$enable_st7_port; if test $enable_st7_port  != "no"; then
+    enable_st7_port="yes"
+fi
+else
+  enable_st7_port="no"
+fi
 
 # Check whether --enable-serio was given.
 if test "${enable_serio+set}" = set; then :
@@ -2834,6 +2916,12 @@ fi
 else
   enable_serio="no"
 fi
+
+
+
+
+
+
 
 
 
