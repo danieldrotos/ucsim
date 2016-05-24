@@ -891,6 +891,7 @@ cl_51core::do_inst(int step)
 	  else
 	    result= idle_pd();
 	}
+      /*
       if ((step < 0) &&
 	  ((ticks->ticks % 100000) < 50))
 	{
@@ -902,6 +903,7 @@ cl_51core::do_inst(int step)
 	    if (sim->app->get_commander()->input_avail())
 	      break;
 	}
+      */
       if (((result == resINTERRUPT) &&
 	   stop_at_it) ||
 	  result >= resSTOP)
@@ -913,12 +915,14 @@ cl_51core::do_inst(int step)
   if (state == stPD)
     {
       //FIXME: tick outsiders eg. watchdog
+      /*
       if (sim->app->get_commander()->input_avail_on_frozen())
         {
           //fprintf(stderr,"uc: inp avail in PD mode, user stop\n");
           result= resUSER;
           sim->stop(result);
         }
+      */
     }
   return(result);
 }

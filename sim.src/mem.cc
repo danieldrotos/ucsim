@@ -809,7 +809,7 @@ cl_address_space::get(t_addr addr)
       err_inv_addr(addr);
       return(dummy->get());
     }
-  return(cells[idx]->get());
+  return/*(cells[idx]->get())*/ *(cells[idx]->data);
 }
 
 t_mem
@@ -836,7 +836,8 @@ cl_address_space::set(t_addr addr, t_mem val)
       dummy->set(val);
       return;
     }
-  cells[idx]->set(val);
+  //cells[idx]->set(val);
+  *(cells[idx]->data)= val&(cells[idx]->mask);
 }
 
 t_mem

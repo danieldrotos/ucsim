@@ -213,9 +213,10 @@ class cl_memory_cell: public cl_base
 public:
   unsigned long nuof_writes, nuof_reads;
 #endif
-protected:
+ public:
   t_mem *data;
   t_mem mask;
+protected:
   uchar width;
   TYPE_UBYTE flags;
   class cl_memory_operator *operators;
