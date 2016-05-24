@@ -9,6 +9,10 @@ DD_HOSTS="p4 anb anb1 render mms box mazsola v3"
 
 if [ "$#" -ge 1 ]; then
     case "$1" in
+	-p)
+	    PERF_FLAG="-pg"
+	    shift
+	    ;;
 	[lLxX]*) TARGET=linux;shift;;
 	[mMwW]6*) TARGET=w64;shift;;
 	[mMwW]*) TARGET=mingw;shift;;
@@ -19,6 +23,11 @@ fi
 if [ -f devel ]; then
     export CXXFLAGS="-O0"
     export CFLAGS="-g -O0"
+fi
+
+if [ -n "$PERF_FLAG" ]; then
+    CXXFLAGS="${CXXFLAGS} ${PERF_FLAG}"
+    CFLAGS="${CFLAGS} ${PERF_FLAG}"
 fi
 
 case $TARGET in
