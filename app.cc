@@ -157,7 +157,7 @@ cl_app::run(void)
   
   while (!done)
     {
-      now= dnow();
+      now= 0;//dnow();
       if (!sim)
 	{
 	  commander->wait_input();
@@ -183,8 +183,8 @@ cl_app::run(void)
 	  if (sim->state & SIM_QUIT)
 	    done= 1;
 	}
-      if (now - last_check > 0.001)
-	commander->check();
+      /*if (now - last_check > 0.001)
+	commander->check();*/
     }
   return(0);
 }
