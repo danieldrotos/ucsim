@@ -30,9 +30,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
 #endif
@@ -146,10 +143,11 @@ int
 cl_app::run(void)
 {
   int done= 0;
-  double input_last_checked= 0, last_check= 0, now;
+  double input_last_checked= 0, last_check= 0, now= 0;
   class cl_option *o= options->get_option("go");
   bool g_opt= false;
-
+  unsigned int cyc= 0;
+  
   if (o)
     o->get_value(&g_opt);
   if (sim && g_opt)
@@ -157,7 +155,8 @@ cl_app::run(void)
   
   while (!done)
     {
-      now= 0;//dnow();
+      if ((++cyc % 1000000) == 0)
+	dnow();
       if (!sim)
 	{
 	  commander->wait_input();
@@ -183,8 +182,8 @@ cl_app::run(void)
 	  if (sim->state & SIM_QUIT)
 	    done= 1;
 	}
-      /*if (now - last_check > 0.001)
-	commander->check();*/
+      if (now - last_check > 0.001)
+	commander->check();
     }
   return(0);
 }

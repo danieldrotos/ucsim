@@ -30,15 +30,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#ifdef HAVE_TERMIOS_H
-#include <termios.h>
-#endif
-#include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/time.h>
 #include <strings.h>
-#include <assert.h>
 
 // prj
 #include "globals.h"

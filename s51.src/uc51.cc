@@ -30,17 +30,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-		  //#include <termios.h>
 #include <fcntl.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/time.h>
-#if FD_HEADER_OK
-# include HEADER_FD
-#endif
+//#if FD_HEADER_OK
+//# include HEADER_FD
+//#endif
 #include "i_string.h"
 
 // prj
@@ -197,18 +193,6 @@ cl_51core::build_cmdset(class cl_cmdset *cmdset)
   cmd->init();
 }
 
-/*
-class cl_m *
-cl_51core::mk_mem(enum mem_class type, char *class_name)
-{
-  class cl_address_space *m= cl_uc::mk_mem(type, class_name);
-  if (type == MEM_SFR)
-    sfr= m;
-  if (type == MEM_IRAM)
-    iram= m;
-  return(m);
-}
-*/
 
 void
 cl_51core::make_memories(void)
@@ -278,20 +262,6 @@ cl_51core::make_memories(void)
 
 cl_51core::~cl_51core(void)
 {
-  /*
-  if (serial_out)
-    {
-      if (isatty(fileno(serial_out)))
-	tcsetattr(fileno(serial_out), TCSANOW, &saved_attributes_out);
-      fclose(serial_out);
-    }
-  if (serial_in)
-    {
-      if (isatty(fileno(serial_in)))
-	tcsetattr(fileno(serial_in), TCSANOW, &saved_attributes_in);
-      fclose(serial_in);
-    }
-  */
   delete irq_stop_option;
 }
 
@@ -459,6 +429,8 @@ cl_51core::print_regs(class cl_console_base *con)
 
   print_disass(PC, con);
 }
+
+
 /*
  * Converting bit address into real memory
  */
@@ -891,19 +863,6 @@ cl_51core::do_inst(int step)
 	  else
 	    result= idle_pd();
 	}
-      /*
-      if ((step < 0) &&
-	  ((ticks->ticks % 100000) < 50))
-	{
-	  if (sim->app->get_commander()->input_avail_on_frozen())
-	    {
-	      result= resUSER;
-	    }
-	  else
-	    if (sim->app->get_commander()->input_avail())
-	      break;
-	}
-      */
       if (((result == resINTERRUPT) &&
 	   stop_at_it) ||
 	  result >= resSTOP)
@@ -915,71 +874,9 @@ cl_51core::do_inst(int step)
   if (state == stPD)
     {
       //FIXME: tick outsiders eg. watchdog
-      /*
-      if (sim->app->get_commander()->input_avail_on_frozen())
-        {
-          //fprintf(stderr,"uc: inp avail in PD mode, user stop\n");
-          result= resUSER;
-          sim->stop(result);
-        }
-      */
     }
   return(result);
 }
-
-/*void
-cl_51core::post_inst(void)
-{*/
-  //uint tcon= sfr->get(TCON);
-  //uint p3= sfr->read(P3);
-
-  //cl_uc::post_inst();
-  //set_p_flag();
-
-  // Setting up external interrupt request bits (IEx)
-  /*if ((tcon & bmIT0))
-    {
-      // IE0 edge triggered
-      if (p3_int0_edge)
-	{
-	  // falling edge on INT0
-	  sim->app->get_commander()->
-	    debug("%g sec (%d clks): Falling edge detected on INT0 (P3.2)\n",
-			  get_rtime(), ticks->ticks);
-	  sfr->set_bit1(TCON, bmIE0);
-	  p3_int0_edge= 0;
-	}
-    }
-  else
-    {
-      // IE0 level triggered
-      if (p3 & bm_INT0)
-	sfr->set_bit0(TCON, bmIE0);
-      else
-	sfr->set_bit1(TCON, bmIE0);
-    }
-  if ((tcon & bmIT1))
-    {
-      // IE1 edge triggered
-      if (p3_int1_edge)
-	{
-	  // falling edge on INT1
-	  sfr->set_bit1(TCON, bmIE1);
-	  p3_int1_edge= 0;
-	}
-    }
-  else
-    {
-      // IE1 level triggered
-      if (p3 & bm_INT1)
-	sfr->set_bit0(TCON, bmIE1);
-      else
-	sfr->set_bit1(TCON, bmIE1);
-	}*/
-  //prev_p3= p3 & port_pins[3];
-  //prev_p1= p3 & port_pins[1];
-//}
-
 
 /*
  * Abstract method to handle WDT
@@ -1100,46 +997,6 @@ cl_51core::idle_pd(void)
 
 
 /*
- * Checking if EVENT break happened
- */
-
-/*int
-cl_51core::check_events(void)
-{
-  int i;
-  class cl_ev_brk *eb;
-
-  if (!ebrk->count)
-    return(resGO);
-  for (i= 0; i < ebrk->count; i++)
-    {
-      eb= (class cl_ev_brk *)(ebrk->at(i));
-      if (eb->match(&event_at))
-	return(resBREAKPOINT);
-    }
-  return(resGO);
-}*/
-
-
-/*
- */
-
-/*
-void
-cl_51core::mem_cell_changed(class cl_m *mem, t_addr addr)
-{
-  if (mem == sfr)
-    switch (addr)
-      {
-      case ACC: acc= mem->get_cell(ACC); break;
-      case PSW: psw= mem->get_cell(PSW); break;
-      }
-  cl_uc::mem_cell_changed(mem, addr);
-}
-*/
-
-
-/*
  * Simulating an unknown instruction
  *
  * Normally this function is called for unimplemented instructions, because
@@ -1211,8 +1068,6 @@ cl_uc51_dummy_hw::init(void)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
     }
-  //acc= sfr->register_hw(ACC, this, 0);
-  //sp = sfr->register_hw(SP , this, 0);
   use_cell(sfr, PSW, &cell_psw, wtd_restore);
   register_cell(sfr, ACC, &cell_acc, wtd_restore_write);
   register_cell(sfr, SP , &cell_sp , wtd_restore);
@@ -1254,26 +1109,6 @@ cl_uc51_dummy_hw::write(class cl_memory_cell *cell, t_mem *val)
       uc->sim->stop(0);
       }*/
 }
-
-/*void
-cl_uc51_dummy_hw::happen(class cl_hw *where, enum hw_event he, void *params)
-{
-  struct ev_port_changed *ep= (struct ev_port_changed *)params;
-
-  if (where->cathegory == HW_PORT &&
-      he == EV_PORT_CHANGED &&
-      ep->id == 3)
-    {
-      t_mem p3o= ep->pins & ep->prev_value;
-      t_mem p3n= ep->new_pins & ep->new_value;
-      if ((p3o & bm_INT0) &&
-	  !(p3n & bm_INT0))
-	uc51->p3_int0_edge++;
-      if ((p3o & bm_INT1) &&
-	  !(p3n & bm_INT1))
-	uc51->p3_int1_edge++;
-    }
-}*/
 
 
 /* End of s51.src/uc51.cc */

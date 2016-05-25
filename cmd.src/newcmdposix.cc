@@ -32,23 +32,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <errno.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <sys/types.h>
 #include <sys/time.h>
-//#ifdef SOCKET_AVAIL
-//# include HEADER_SOCKET
-//# if defined HAVE_SYS_SOCKET_H
-//#  include <netinet/in.h>
-//#  include <arpa/inet.h>
-//#  include <netdb.h>
-//# endif
-//#endif
-#if FD_HEADER_OK
-# include HEADER_FD
-#endif
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
 #include "i_string.h"
 
 // prj
