@@ -192,7 +192,9 @@ fi
 
 AC_HEADER_STDC
 AC_CHECK_HEADERS(endian.h sys/endian.h machine/endian.h sys/isa_defs.h)
-AC_CHECK_HEADERS(getopt.h unistd.h termios.h)
+AC_CHECK_HEADERS(getopt.h)
+AC_CHECK_HEADERS(unistd.h)
+AC_CHECK_HEADERS(termios.h)
 
 AC_CHECK_HEADER(curses.h,
   AC_DEFINE(HAVE_CURSES_H, 1, [XXX])
@@ -657,4 +659,4 @@ doc/Makefile
 #gui.src/portmon.src/Makefile
 
 
-# End of configure/configure.in
+# End of configure.ac

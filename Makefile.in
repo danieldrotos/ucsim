@@ -163,9 +163,9 @@ lines:
 
 # Remaking configuration
 # ----------------------
-configure: configure.in
+configure: configure.ac
 	@$(top_srcdir)/mkecho $(top_builddir) "RE-CREATING CONFIGURE"
-	autoconf configure.in >configure
+	autoconf configure.ac >configure
 	chmod 755 configure
 
 config.status: configure
