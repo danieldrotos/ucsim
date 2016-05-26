@@ -394,7 +394,7 @@ cl_commander::init(void)
       if (in->tty)
 	con->flags|= CONS_INTERACTIVE;
     }
-  if (need_config &&
+  if (/*need_config &&*/
       Config &&
       *Config)
     {
