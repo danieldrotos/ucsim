@@ -193,7 +193,7 @@ cl_sif_command::set_answer(const char *ans)
     {
       answer= (t_mem *)calloc(strlen(ans)+2, sizeof(t_mem));
       int i= 0;
-      answer[0]= strlen(ans);
+      answer[0]= strlen(ans)+1;
       while (ans[i])
 	{
 	  answer[i+1]= ans[i];

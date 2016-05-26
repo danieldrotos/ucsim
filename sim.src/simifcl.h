@@ -10,12 +10,24 @@
 
 enum sif_command {
   DETECT_SIGN	        = '!',	// answer to detect command
-  SIFCM_DETECT		= '_',	// command used to detect the interface
+  
+  SIFCM_DETECT		= '_',	// detect the interface
+  // -> _
+  // <- !
   SIFCM_COMMANDS	= 'i',	// get info about commands
+  // -> i
+  // <- nr list of command chars
   SIFCM_IFVER		= 'v',	// interface version
+  // -> v
+  // <- 1 SIMIF_VERSION
   SIFCM_SIMVER		= 'V',	// simulator version
+  // -> V
+  // <- len VERSIONSTR
   SIFCM_IFRESET		= '@',	// reset the interface
+  // ?
   SIFCM_CMDINFO		= 'I'	// info about a command
+  // -> I cmdchar
+  // <- 2 params_needed answer_type
 };
 
 enum sif_answer_type {
