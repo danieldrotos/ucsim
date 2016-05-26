@@ -311,7 +311,7 @@ cl_uc::mk_hw_elements(void)
 {
   class cl_hw *h;
 
-  hws->add(h= new cl_simulator_interface(this, chars("rom"), -1));
+  hws->add(h= new cl_simulator_interface(this));
   h->init();
 }
 

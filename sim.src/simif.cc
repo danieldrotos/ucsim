@@ -279,14 +279,14 @@ cl_sif_cmdinfo::produce_answer(void)
  * Virtual HW: simulator interface
  */
 
-cl_simulator_interface::cl_simulator_interface(class cl_uc *auc,
+cl_simulator_interface::cl_simulator_interface(class cl_uc *auc/*,
 					       const char *the_as_name,
-					       t_addr the_addr):
+					       t_addr the_addr*/):
   cl_hw(auc, HW_SIMIF, 0, "simif")
 {
   version= 1;
-  as_name= strdup(the_as_name);
-  addr= the_addr;
+  as_name= NULL;//strdup(the_as_name);
+  addr= 0;//the_addr;
   commands= new cl_list(2, 2, "sif_commands");
   active_command= 0;
 }
@@ -301,13 +301,21 @@ cl_simulator_interface::~cl_simulator_interface(void)
 int
 cl_simulator_interface::init(void)
 {
-  as= uc->address_space(as_name);
-  if (as)
+  if (as_name)
     {
-      address= addr;
-      if (addr < 0)
-	address= as->highest_valid_address();
-      register_cell(as, address, &cell, wtd_restore_write);
+      as= uc->address_space(as_name);
+      if (as)
+	{
+	  address= addr;
+	  if (addr < 0)
+	    address= as->highest_valid_address();
+	  register_cell(as, address, &cell, wtd_restore_write);
+	}
+    }
+  else
+    {
+      as= NULL;
+      cell= NULL;
     }
   class cl_sif_command *c;
   commands->add(c= new cl_sif_commands(this));
@@ -356,6 +364,8 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 	  address= addr;
 	  if (addr < 0)
 	    address= as->highest_valid_address();
+	  if (cell)
+	    unregister_cell(cell);
 	  register_cell(as, address, &cell, wtd_restore_write);
 	}
     }

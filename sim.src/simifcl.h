@@ -9,11 +9,11 @@
 #define SIMIF_VERSION	1
 
 enum sif_command {
-  SIFCM_COMMANDS	= 0x01,	// get info about commands
-  SIFCM_IFVER		= 0x02,	// interface version
-  SIFCM_SIMVER		= 0x03, // simulator version
-  SIFCM_IFRESET		= 0x04,	// reset the interface
-  SIFCM_CMDINFO		= 0x05	// info about a command
+  SIFCM_COMMANDS	= 'i',	// get info about commands
+  SIFCM_IFVER		= 'v',	// interface version
+  SIFCM_SIMVER		= 'V',	// simulator version
+  SIFCM_IFRESET		= '@',	// reset the interface
+  SIFCM_CMDINFO		= 'I'	// info about a command
 };
 
 enum sif_answer_type {
@@ -156,7 +156,7 @@ private:
 public:
   class cl_list *commands;
 public:
-  cl_simulator_interface(class cl_uc *auc, const char *the_as_name, t_addr the_addr);
+  cl_simulator_interface(class cl_uc *auc);
   virtual ~cl_simulator_interface(void);
   virtual int init(void);
 
