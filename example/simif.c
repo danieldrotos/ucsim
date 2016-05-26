@@ -1,6 +1,18 @@
 #include <mcs51reg.h>
 #include <stdio.h>
 
+
+enum sif_command {
+  DETECT_SIGN	        = '!',	// answer to detect command
+  SIFCM_DETECT		= '_',	// command used to detect the interface
+  SIFCM_COMMANDS	= 'i',	// get info about commands
+  SIFCM_IFVER		= 'v',	// interface version
+  SIFCM_SIMVER		= 'V',	// simulator version
+  SIFCM_IFRESET		= '@',	// reset the interface
+  SIFCM_CMDINFO		= 'I'	// info about a command
+};
+
+
 unsigned char
 _sdcc_external_startup (void)
 {
@@ -27,7 +39,7 @@ putchar (char c)
 }
 
 #define SIF_ADDRESS_SPACE_NAME	"xram"
-#define SIF_ADDRESS_SPACE	xdata
+#define SIF_ADDRESS_SPACE	__xdata
 #define SIF_ADDRESS		0xffff
 
 unsigned char SIF_ADDRESS_SPACE *sif;
@@ -46,6 +58,13 @@ simulated(void)
   return(1);
 }
 
+char
+detect(void)
+{
+  *sif= SIFCM_DETECT;
+  return *sif == DETECT_SIGN;
+}
+
 int nuof_commands;
 unsigned char commands[100];
 
@@ -53,7 +72,7 @@ void
 get_commands(void)
 {
   int i;
-  *sif= 1;
+  *sif= SIFCM_COMMANDS;
   nuof_commands= *sif;
   for (i= 0; i < nuof_commands; i++)
     commands[i]= *sif;
@@ -62,7 +81,7 @@ get_commands(void)
 int
 get_ifversion(void)
 {
-  *sif= 2;
+  *sif= SIFCM_IFVER;
   return(*sif);
 }
 
@@ -74,7 +93,7 @@ print_cmd_infos(void)
   for (i= 0; i < nuof_commands; i++)
     {
       printf("Command 0x%02x info:\n", commands[i]);
-      *sif= 5;
+      *sif= SIFCM_CMDINFO;
       *sif= commands[i];
       inf[0]= *sif;
       for (j= 0; j < inf[0]; j++)
@@ -93,8 +112,8 @@ main(void)
   sif= (unsigned char SIF_ADDRESS_SPACE *)0xffff;
   printf("Testing simulator interface at %s[0x%x]\n",
 	 SIF_ADDRESS_SPACE_NAME, SIF_ADDRESS);
-  printf("%s", simulated()?"Interface found.":"Interface not found");
-  if (simulated())
+  printf("%s", detect()?"Interface found.":"Interface not found");
+  if (detect())
     {
       int i;
       i= get_ifversion();

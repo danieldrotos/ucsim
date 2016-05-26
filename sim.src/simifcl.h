@@ -9,6 +9,8 @@
 #define SIMIF_VERSION	1
 
 enum sif_command {
+  DETECT_SIGN	        = '!',	// answer to detect command
+  SIFCM_DETECT		= '_',	// command used to detect the interface
   SIFCM_COMMANDS	= 'i',	// get info about commands
   SIFCM_IFVER		= 'v',	// interface version
   SIFCM_SIMVER		= 'V',	// simulator version
@@ -77,6 +79,18 @@ public:
   virtual void set_answer(int nr, t_mem ans[]);
   virtual void set_answer(const char *ans);
   virtual void start_answer(void);
+};
+
+/* Command: detect */
+class cl_sif_detect: public cl_sif_command
+{
+public:
+  cl_sif_detect(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_DETECT, "if_detect",
+		   "Detect existance of interface",
+		   SIFAT_BYTE, 0, the_sif)
+  {}
+  virtual void produce_answer(void) { set_answer(t_mem(DETECT_SIGN)); }
 };
 
 /* Command: interface version */

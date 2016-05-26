@@ -62,6 +62,7 @@ cl_sif_command::clear_answer(void)
   answered_bytes= 0;
   if (answer)
     free(answer);
+  answer= 0;
 }
 
 void
@@ -190,7 +191,7 @@ cl_sif_command::set_answer(const char *ans)
   if (ans &&
       *ans)
     {
-      answer= (t_mem *)calloc(strlen(ans)+2, sizeof(char));
+      answer= (t_mem *)calloc(strlen(ans)+2, sizeof(t_mem));
       int i= 0;
       answer[0]= strlen(ans);
       while (ans[i])
@@ -318,6 +319,8 @@ cl_simulator_interface::init(void)
       cell= NULL;
     }
   class cl_sif_command *c;
+  commands->add(c= new cl_sif_detect(this));
+  c->init();
   commands->add(c= new cl_sif_commands(this));
   c->init();
   commands->add(c= new cl_sif_ifver(this));
@@ -364,7 +367,7 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 	  address= addr;
 	  if (addr < 0)
 	    address= as->highest_valid_address();
-	  if (cell)
+	  if (cell != NULL)
 	    unregister_cell(cell);
 	  register_cell(as, address, &cell, wtd_restore_write);
 	}
@@ -390,8 +393,8 @@ cl_simulator_interface::read(class cl_memory_cell *cel)
     {
       printf("active=%s\n",active_command->get_name());
       t_mem ret= active_command->read(cel);
-      if (active_command)
-	printf("active got 0x%02x (cel=0x%02x)\n", ret, cel->get());
+      //if (active_command)
+      printf("active got 0x%02x (cel=0x%02x)\n", ret, cel->get());
       return(ret);
     }
   return(cel->get());
