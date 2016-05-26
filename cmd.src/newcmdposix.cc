@@ -370,7 +370,7 @@ cl_commander::init(void)
 	  out= cp_io(fileno(stdout), cchars("w"));
 	  in->interactive(out);
 	  add_console(con= new cl_console(in, out, app));
-	  //exec_on(con, Config);
+	  exec_on(con, Config);
 	  need_config= DD_FALSE;
 	  if (in->tty)
 	    con->flags|= CONS_INTERACTIVE;
@@ -378,7 +378,7 @@ cl_commander::init(void)
       else
 	{
 	  add_console(con= new cl_console(cn, cn, app));
-	  //exec_on(con, Config);
+	  exec_on(con, Config);
 	  need_config= DD_FALSE;
 	}
     }
@@ -389,12 +389,12 @@ cl_commander::init(void)
       out= cp_io(fileno(stdout), cchars("w"));
       in->interactive(out);
       add_console(con= new cl_console(in, out, app));
-      //exec_on(con, Config);
+      exec_on(con, Config);
       need_config= DD_FALSE;
       if (in->tty)
 	con->flags|= CONS_INTERACTIVE;
     }
-  if (/*need_config &&*/
+  if (need_config &&
       Config &&
       *Config)
     {
@@ -403,7 +403,7 @@ cl_commander::init(void)
       o= cp_io(fileno(stderr), "w");
       con= new cl_console(/*fc*/i, /*stderr*/o, app);
       con->flags|= CONS_NOWELCOME|CONS_ECHO;
-      exec_on(con, Config);
+      //exec_on(con, Config);
       add_console(con);
     }
   return(0);
