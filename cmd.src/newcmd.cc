@@ -167,6 +167,9 @@ cl_console_base::print_prompt(void)
   if (flags & (/*CONS_PROMPT |*/ CONS_FROZEN | CONS_INACTIVE))
     return;
 
+  if (!(flags & CONS_INTERACTIVE))
+    return;
+  
   //flags |= CONS_PROMPT;
   if (null_prompt_option->get_value(bool(0)))
     {
@@ -415,7 +418,7 @@ cl_commander_base::cl_commander_base(class cl_app *the_app, class cl_cmdset *acm
 {
   app= the_app;
   cons= new cl_list(1, 1, "consoles");
-  actual_console= frozen_console= 0;
+  actual_console= frozen_console= config_console= 0;
   cmdset= acmdset;
 }
 
@@ -605,15 +608,17 @@ cl_commander_base::input_avail_on_frozen(void)
   return(frozen_console->input_avail());
 }
 
-void
+class cl_console_base *
 cl_commander_base::exec_on(class cl_console_base *cons, char *file_name)
 {
   if (!cons || !file_name || !fopen(file_name, "r"))
-    return;
+    return 0;
 
   class cl_console_base *subcon = cons->clone_for_exec(file_name);
   subcon->flags |= CONS_NOWELCOME;
+  subcon->flags &= ~CONS_INTERACTIVE;
   add_console(subcon);
+  return subcon;
 }
 
 

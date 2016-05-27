@@ -132,8 +132,8 @@ cl_console::~cl_console(void)
   if (fout)
     {
       //if (flags & CONS_PROMPT)
-        fout->write_str("\n");
-	//fout->flush();
+      //fout->write_str("\n");
+      //fout->flush();
       deb("deleting fout:%d of console %d\n", fout->file_id, id);
       delete fout;
     }
@@ -370,7 +370,7 @@ cl_commander::init(void)
 	  out= cp_io(fileno(stdout), cchars("w"));
 	  in->interactive(out);
 	  add_console(con= new cl_console(in, out, app));
-	  exec_on(con, Config);
+	  config_console= exec_on(con, Config);
 	  need_config= DD_FALSE;
 	  if (in->tty)
 	    con->flags|= CONS_INTERACTIVE;
@@ -378,7 +378,7 @@ cl_commander::init(void)
       else
 	{
 	  add_console(con= new cl_console(cn, cn, app));
-	  exec_on(con, Config);
+	  config_console= exec_on(con, Config);
 	  need_config= DD_FALSE;
 	}
     }
@@ -389,7 +389,7 @@ cl_commander::init(void)
       out= cp_io(fileno(stdout), cchars("w"));
       in->interactive(out);
       add_console(con= new cl_console(in, out, app));
-      exec_on(con, Config);
+      config_console= exec_on(con, Config);
       need_config= DD_FALSE;
       if (in->tty)
 	con->flags|= CONS_INTERACTIVE;
@@ -404,6 +404,7 @@ cl_commander::init(void)
       con= new cl_console(/*fc*/i, /*stderr*/o, app);
       con->flags|= CONS_NOWELCOME|CONS_ECHO;
       //exec_on(con, Config);
+      config_console= con;
       add_console(con);
     }
   return(0);
@@ -416,12 +417,23 @@ cl_commander::update_active(void)
   
   active_inputs->disconn_all();
   check_list->disconn_all();
+
+  if (config_console)
+    {
+      if (!cons->index_of(config_console, NULL))
+	config_console= 0;
+    }
   
   for (i= 0; i < cons->count; i++)
     {
       class cl_console *c=
 	(class cl_console *)cons->at(i);
       class cl_f *f= c->fin;
+
+      if (config_console &&
+	  (config_console != c))
+	continue;
+      
       if (c->input_active() &&
 	  f)
 	{
@@ -454,10 +466,20 @@ cl_commander::wait_input(void)
 int
 cl_commander::proc_input(void)
 {
+  if (config_console)
+    {
+      if (!cons->index_of(config_console, NULL))
+	config_console= 0;
+    }
+  
   for (int j = 0; j < cons->count; j++)
     {
       class cl_console *c = dynamic_cast<class cl_console*>((class cl_console_base*)(cons->at(j)));
 
+      if (config_console &&
+	  (config_console != c))
+	continue;
+      
       if (c->input_active())
         {
 	  deb("check input on fid=%d\n", c->fin->file_id);

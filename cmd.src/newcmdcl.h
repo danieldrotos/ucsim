@@ -163,7 +163,7 @@ class cl_commander_base: public cl_base
 public:
   class cl_app *app;
   class cl_list *cons;
-  class cl_console_base *actual_console, *frozen_console;
+  class cl_console_base *actual_console, *frozen_console, *config_console;
   class cl_cmdset *cmdset;
 
 public:
@@ -184,7 +184,7 @@ public:
   int debug(const char *format, va_list ap);      // print consoles with debug flag set
   int flag_printf(int iflags, const char *format, ...);
   int input_avail_on_frozen(void);
-  void exec_on(class cl_console_base *cons, char *file_name);
+  class cl_console_base *exec_on(class cl_console_base *cons, char *file_name);
   
   virtual int init(void) = 0;
   virtual void update_active(void) = 0;
