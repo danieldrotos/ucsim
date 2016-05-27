@@ -127,4 +127,5 @@ main(void)
     }
   else
     printf("\n");
+  * (char __idata *) 0 = * (char __xdata *) 0x7654;
 }
