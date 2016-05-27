@@ -90,20 +90,20 @@ cl_sif_command::read(class cl_memory_cell *cel)
 {
   t_mem ret= cel->get();
 
-  printf("%s read: (%x)\n", get_name(), ret);
+  //printf("%s read: (%x)\n", get_name(), ret);
   if (answering &&
       answer)
     {
-      printf("answering...\n");
+      //printf("answering...\n");
       if (answered_bytes < answer_length)
 	{
 	  ret= answer[answered_bytes];
 	  answered_bytes++;
-	  printf("answer=%x\n", ret);
+	  //printf("answer=%x\n", ret);
 	}
       if (answered_bytes >= answer_length)
 	{
-	  printf("finishing command...\n");
+	  //printf("finishing command...\n");
 	  sif->finish_command();
 	}
     }
@@ -113,32 +113,32 @@ cl_sif_command::read(class cl_memory_cell *cel)
 void
 cl_sif_command::write(class cl_memory_cell *cel, t_mem *val)
 {
-  printf("%s write: 0x%x %d of %d at %p\n", get_name(), *val,
-	 params_received, nuof_params, parameters);
+  //printf("%s write: 0x%x %d of %d at %p\n", get_name(), *val,
+  //params_received, nuof_params, parameters);
   if (nuof_params &&
       params_received < nuof_params &&
       parameters)
     {
-      printf("storing param 0x%x at %d\n",*val,params_received);
+      //printf("storing param 0x%x at %d\n",*val,params_received);
       parameters[params_received]= *val;
       params_received++;
       if (params_received >= nuof_params)
 	{
-	  printf("got all params, prod ans\n");
+	  //printf("got all params, prod ans\n");
 	  produce_answer();
-	  printf("ans produced, start answering\n");
+	  //printf("ans produced, start answering\n");
 	  start_answer();
 	}
     }
   else
-    printf("%s write: do nothing\n", get_name());
+    ;//printf("%s write: do nothing\n", get_name());
 }
 
 
 void
 cl_sif_command::start(void)
 {
-  printf("Command %d (%s) started\n", command, get_name());
+  //printf("Command %d (%s) started\n", command, get_name());
   need_params(params_needed);
 }
 
@@ -382,19 +382,19 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 t_mem
 cl_simulator_interface::read(class cl_memory_cell *cel)
 {
-  printf("simif read: ");
+  //printf("simif read: ");
   if (!active_command)
     {
       t_mem d= cel->get();
-      printf("no-active, cel=0x%02x\n", d);
+      //printf("no-active, cel=0x%02x\n", d);
       return(~d & cel->get_mask());
     }
   else
     {
-      printf("active=%s\n",active_command->get_name());
+      //printf("active=%s\n",active_command->get_name());
       t_mem ret= active_command->read(cel);
       //if (active_command)
-      printf("active got 0x%02x (cel=0x%02x)\n", ret, cel->get());
+      //printf("active got 0x%02x (cel=0x%02x)\n", ret, cel->get());
       return(ret);
     }
   return(cel->get());
@@ -403,10 +403,10 @@ cl_simulator_interface::read(class cl_memory_cell *cel)
 void
 cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
 {
-  printf("simif write %d 0x%x\n",*val,*val);
+  //printf("simif write %d 0x%x\n",*val,*val);
   if (!active_command)
     {
-      printf("No active command, look for %d\n", *val);
+      //printf("No active command, look for %d\n", *val);
       int i;
       for (i= 0; i < commands->count; i++)
 	{
@@ -418,18 +418,18 @@ cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
 	  //printf("Checking %s %d<->%d\n", c->get_name(), cm, *val);
 	  if (*val == cm)
 	    {
-	      printf("Command %s activated\n", c->get_name());
+	      //printf("Command %s activated\n", c->get_name());
 	      active_command= c;
 	      c->start();
-	      printf("needs %d params\n", c->get_nuof_params());
+	      //printf("needs %d params\n", c->get_nuof_params());
 	      return;
 	    }
 	}
-      printf("command 0x%x not found, just store\n", *val);
+      //printf("command 0x%x not found, just store\n", *val);
     }
   else
     {
-      printf("write passing to %s\n",active_command->get_name());
+      //printf("write passing to %s\n",active_command->get_name());
       active_command->write(cel, val);
     }
 }
@@ -440,11 +440,11 @@ cl_simulator_interface::finish_command(void)
 {
   if (active_command)
     {
-      printf("Command %s finished\n", active_command->get_name());
+      //printf("Command %s finished\n", active_command->get_name());
       active_command->clear_answer();
     }
   else
-    printf("Command (non-active) finished\n");
+    ;//printf("Command (non-active) finished\n");
   active_command= 0;
 }
 
