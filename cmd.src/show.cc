@@ -186,5 +186,22 @@ COMMAND_DO_WORK_APP(cl_show_error_cmd)
   return(DD_FALSE);
 }
 
+#include "newcmdposixcl.h"
+
+COMMAND_DO_WORK_APP(cl_show_console)
+{
+  class cl_commander_base *cm= app->get_commander();
+  class cl_console *cn;
+  int i;
+
+  for (i= 0; i < cm->cons->count; i++)
+    {
+      cn= (class cl_console *)(cm->cons->at(i));
+      con->dd_printf("%d %s ", cn->get_id(), cn->get_name());
+
+      con->dd_printf("\n");
+    }
+  return false;
+}
 
 /* End of cmd.src/show.cc */

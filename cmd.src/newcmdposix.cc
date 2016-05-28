@@ -126,6 +126,21 @@ cl_console::clone_for_exec(char *_fin)
   return(con);
 }
 
+void
+cl_console::set_id(int new_id)
+{
+  char *s;
+
+  id= new_id;
+  set_name(s= format_string("console%d fin=%s,%d fout=%s,%d",
+			    id,
+			    fin?fin->get_file_name():"",
+			    fin?fin->file_id:-1,
+			    fout?fout->get_file_name():"",
+			    fout?fout->file_id:-1));
+  free(s);
+}
+
 cl_console::~cl_console(void)
 {
   un_redirect();
@@ -264,6 +279,18 @@ cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
   fout= frout= 0;
 }
 
+void
+cl_listen_console::set_id(int new_id)
+{
+  char *s;
+
+  id= new_id;
+  set_name(s= format_string("listen_console%d port=%d",
+			    id,
+			    fin?fin->server_port:-1));
+  free(s);
+}
+
 int
 cl_listen_console::proc_input(class cl_cmdset *cmdset)
 {
@@ -326,6 +353,22 @@ cl_sub_console::init(void)
   cl_console::init();
   flags|= CONS_ECHO;
   return(0);
+}
+
+void
+cl_sub_console::set_id(int new_id)
+{
+  char *s;
+
+  id= new_id;
+  set_name(s= format_string("sub_console%d (of %d) fin=%s,%d fout=%s,%d",
+			    id,
+			    parent?parent->get_id():-1,
+			    fin?fin->get_file_name():"",
+			    fin?fin->file_id:-1,
+			    fout?fout->get_file_name():"",
+			    fout?fout->file_id:-1));
+  free(s);
 }
 
 
@@ -423,7 +466,8 @@ cl_commander::update_active(void)
       if (!cons->index_of(config_console, NULL))
 	config_console= 0;
     }
-  
+
+  printf("List of active cons: ");
   for (i= 0; i < cons->count; i++)
     {
       class cl_console *c=
@@ -438,11 +482,21 @@ cl_commander::update_active(void)
 	  f)
 	{
 	  active_inputs->add(f);
+	  printf("%d,",c->get_id());
 	}
       if (c->need_check() &&
 	  f)
 	check_list->add(f);
     }
+  printf("\n");
+  printf("List of check cons: ");
+  for (i= 0; i < check_list->count; i++)
+    {
+      class cl_console *c=
+	(class cl_console *)cons->at(i);
+      printf("%d,", c->get_id());
+    }
+  printf("\n");
 }
 
 int

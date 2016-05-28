@@ -717,6 +717,10 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
 "show error         Show class of errors",
 "long help of show error"));
     cmd->init();
+    cset->add(cmd= new cl_show_console("console", 0,
+				       "",
+				       ""));
+    cmd->init();
   }
   if (!super_cmd)
     {

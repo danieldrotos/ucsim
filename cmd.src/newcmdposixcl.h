@@ -51,6 +51,7 @@ public:
   cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app);
 
   virtual ~cl_console(void);
+  virtual void set_id(int new_id);
   virtual class cl_console *clone_for_exec(char *_fin);
 
   virtual void redirect(char *fname, char *mode);
@@ -74,6 +75,7 @@ class cl_listen_console: public cl_console
 public:
   cl_listen_console(int serverport, class cl_app *the_app);
 
+  virtual void set_id(int new_id);
   virtual void welcome(void) {}
 
   //virtual UCSOCKET_T get_in_fd(void) { return(sock); }
@@ -93,6 +95,7 @@ public:
                  class cl_f *fin, class cl_f *fout, class cl_app *the_app);
   virtual ~cl_sub_console(void);
   virtual int init(void);
+  virtual void set_id(int new_id);
 };
 
 

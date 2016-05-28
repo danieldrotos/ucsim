@@ -43,6 +43,9 @@ COMMAND_ON(app,cl_show_option_cmd);
 // SHOW ERROR
 COMMAND_ON(app,cl_show_error_cmd);
 
+// SHOW CONSOLE
+COMMAND_ON(app,cl_show_console);
+
 
 #endif
 

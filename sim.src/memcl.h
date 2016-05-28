@@ -221,7 +221,7 @@ protected:
   TYPE_UBYTE flags;
   class cl_memory_operator *operators;
 public:
-  cl_memory_cell(void);
+  cl_memory_cell(uchar awidth);
   virtual ~cl_memory_cell(void);
   virtual int init(void);
 
@@ -261,7 +261,7 @@ public:
 class cl_dummy_cell: public cl_memory_cell
 {
 public:
-  cl_dummy_cell(void): cl_memory_cell() {}
+  cl_dummy_cell(uchar awidth): cl_memory_cell(awidth) {}
 
   virtual t_mem write(t_mem val);
   virtual t_mem set(t_mem val);
@@ -278,6 +278,7 @@ class cl_address_space: public cl_memory
 {
 protected:
   class cl_memory_cell **cells, *dummy;
+  //class cl_memory_cell *cella;
 public:
   class cl_decoder_list *decoders;
 public:

@@ -130,6 +130,8 @@ class cl_f: public cl_base
   virtual void changed(void);
   virtual int close(void);
   virtual int stop_use(void);
+
+  virtual char *get_file_name() { return file_name; };
   
  protected:
   virtual int put(char c);

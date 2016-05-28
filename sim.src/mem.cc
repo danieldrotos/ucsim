@@ -445,12 +445,12 @@ cl_read_operator::read(void)
  *                                                                  Memory cell
  */
 
-cl_memory_cell::cl_memory_cell(void):
+cl_memory_cell::cl_memory_cell(uchar awidth):
   cl_base()
 {
   data= (t_mem *)malloc(sizeof(t_mem));
   flags= CELL_NON_DECODED;
-  width= 8;
+  width= awidth;
   *data= 0;
   operators= NULL;
 
@@ -753,13 +753,16 @@ cl_address_space::cl_address_space(const char *id,
   start_address= astart;
   decoders= new cl_decoder_list(2, 2, DD_FALSE);
   cells= (class cl_memory_cell **)malloc(size * sizeof(class cl_memory_cell*));
+  //cella= (class cl_memory_cell *)malloc(size * sizeof(class cl_memory_cell));
   int i;
   for (i= 0; i < size; i++)
     {
-      cells[i]= new cl_memory_cell();
+      cells[i]= new cl_memory_cell(awidth);
       cells[i]->init();
+      //cella[i]= cl_memory_cell();
+      //cella[i].init();
     }
-  dummy= new cl_dummy_cell();
+  dummy= new cl_dummy_cell(awidth);
 }
 
 cl_address_space::~cl_address_space(void)
@@ -767,8 +770,12 @@ cl_address_space::~cl_address_space(void)
   delete decoders;
   int i;
   for (i= 0; i < size; i++)
-    if (cells[i])
-      delete cells[i];
+    {
+      if (cells[i])
+	delete cells[i];
+      //cella[i].~cl_memory_cell();
+    }
+  //free(cella);
   delete dummy;
 }
 
