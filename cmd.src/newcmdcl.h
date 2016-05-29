@@ -147,7 +147,9 @@ public:
   
 public:
   int flags; // See CONS_XXXX
-
+  int set_flag(int flag, bool value);
+  bool get_flag(int flag);
+  
 protected:
   class cl_app *app;
   char *prompt;

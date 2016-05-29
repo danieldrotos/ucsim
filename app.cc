@@ -156,7 +156,7 @@ cl_app::run(void)
   while (!done)
     {
       if ((++cyc % 1000000) == 0)
-	dnow();
+	now= dnow();
       if (!sim)
 	{
 	  commander->wait_input();

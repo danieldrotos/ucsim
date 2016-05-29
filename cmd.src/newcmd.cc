@@ -407,6 +407,22 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   return(retval);
 }
 
+int
+cl_console_base::set_flag(int flag, bool value)
+{
+  if (value)
+    flags|= flag;
+  else
+    flags&= ~flag;
+  return flags;
+}
+
+bool
+cl_console_base::get_flag(int flag)
+{
+  return flags & flag;
+}
+
 
 /*
  * Command interpreter

@@ -198,7 +198,13 @@ COMMAND_DO_WORK_APP(cl_show_console)
     {
       cn= (class cl_console *)(cm->cons->at(i));
       con->dd_printf("%d %s ", cn->get_id(), cn->get_name());
-
+      int f= cn->flags;
+      con->dd_printf("%c", 'D'|((f&CONS_DEBUG)?0:0x20));
+      con->dd_printf("%c", 'F'|((f&CONS_FROZEN)?0:0x20));
+      con->dd_printf("%c", 'A'|((!(f&CONS_INACTIVE))?0:0x20));
+      con->dd_printf("%c", 'W'|((!(f&CONS_NOWELCOME))?0:0x20));
+      con->dd_printf("%c", 'I'|((f&CONS_INTERACTIVE)?0:0x20));
+      con->dd_printf("%c", 'E'|((f&CONS_ECHO)?0:0x20));
       con->dd_printf("\n");
     }
   return false;
