@@ -137,7 +137,6 @@ cl_console_base::init(void)
   debug_option= new cl_debug_option(this);
   debug_option->init();
   welcome();
-  //flags&= ~CONS_PROMPT;
   print_prompt();
   last_command= 0;
   last_cmdline= 0;
@@ -161,16 +160,21 @@ cl_console_base::welcome(void)
 void
 cl_console_base::print_prompt(void)
 {
-  if (flags & (/*CONS_PROMPT |*/ CONS_FROZEN | CONS_INACTIVE))
+  if (flags & (CONS_FROZEN | CONS_INACTIVE))
     return;
 
   if (!(flags & CONS_INTERACTIVE))
     return;
   
-  //flags |= CONS_PROMPT;
   if (null_prompt_option->get_value(bool(0)))
     {
-      dd_printf("%c", 0);
+      class cl_f *fo= get_fout(), *fi= get_fin();
+      char c= 0;
+      if (fi &&
+	  fi->eof() &&
+	  (fi->id() == fo->id()))
+	return;
+      fo->write(&c, 1);
     }
   else
     {
@@ -299,9 +303,13 @@ cl_console_base::set_prompt(char *p)
 bool
 cl_console_base::input_active(void) const
 {
-  if (((flags & CONS_FROZEN) == 0 ||
-    (flags & CONS_INTERACTIVE) != 0) &&
-    (flags & CONS_INACTIVE) == 0)
+  if ((
+       (flags & CONS_FROZEN) == 0 ||
+       (flags & CONS_INTERACTIVE) != 0
+       )
+      &&
+      (flags & CONS_INACTIVE) == 0
+      )
     {
       return true;
     }
@@ -315,11 +323,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   int retval= 0, i, do_print_prompt= 1;
 
   un_redirect();
-  /*if (is_eof())
-    {
-      dd_printf("End\n");
-      return 1;
-      }*/
   char *cmdstr;
   i= read_line();
   if (i < 0)
@@ -329,10 +332,10 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   cmdstr= lbuf;
   if (cmdstr==NULL)
     cmdstr= (char*)"";
-  if (flags & CONS_FROZEN)
+  if (is_frozen())
     {
       app->get_sim()->stop(resUSER);
-      flags&= ~CONS_FROZEN;
+      set_flag(CONS_FROZEN, false);
       retval = 0;
       do_print_prompt= 0;
     }
@@ -344,12 +347,12 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
         {
           class cl_cmdline *cmdline= 0;
           class cl_cmd *cm = 0;
-          if (flags & CONS_ECHO)
+          if (get_flag(CONS_ECHO))
             dd_printf("%s\n", cmdstr);
           cmdline= new cl_cmdline(app, cmdstr, this);
           cmdline->init();
           if (cmdline->repeat() &&
-              accept_last() &&
+              is_interactive() &&
               last_command)
             {
               cm = last_command;
@@ -358,7 +361,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
             }
 	  else
             {
-              cm= cmdset->get_cmd(cmdline, accept_last());
+              cm= cmdset->get_cmd(cmdline, is_interactive());
               if (last_cmdline)
                 {
                   delete last_cmdline;
@@ -387,11 +390,8 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 		}
               delete cmdline;
             }
-          /*if (!cm)
-            retval= interpret(cmdstr);*/
         }
     }
-  //retval= sim->do_cmd(cmd, this);
   un_redirect();
   if (!retval &&
       cmdstr &&
@@ -399,7 +399,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
     {
       print_prompt();
     }
-  //free(cmdstr);
   lbuf= 0;
   return(retval);
 }
@@ -412,6 +411,12 @@ cl_console_base::set_flag(int flag, bool value)
   else
     flags&= ~flag;
   return flags;
+}
+
+void
+cl_console_base::set_interactive(bool new_value)
+{
+  set_flag(CONS_INTERACTIVE, new_value);
 }
 
 bool

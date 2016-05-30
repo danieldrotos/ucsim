@@ -806,7 +806,7 @@ cl_super_cmd::work(class cl_app *app,
 	}
       return(0);
     }
-  if ((cmd= commands->get_cmd(cmdline, con->accept_last())) == NULL)
+  if ((cmd= commands->get_cmd(cmdline, con->is_interactive())) == NULL)
     {
       con->dd_printf("Undefined subcommand: \"%s\". Try \"help %s\".\n",
 		     cmdline->get_name(), (char*)(names->at(0)));

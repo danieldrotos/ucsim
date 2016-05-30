@@ -68,10 +68,10 @@ cl_console::cl_console(const char *_fin, const char *_fout, class cl_app *the_ap
       fout= mk_io(_fout, cchars("w"));
     }
   prompt= 0;
-  flags= CONS_NONE;
+  set_flag(~CONS_NONE, false);
   if ((fin && fin->tty) && (fout && fout->tty))
     {
-      flags|= CONS_INTERACTIVE;
+      set_interactive(true);
       fin->echo(fout);
       fin->cooked();
     }
@@ -88,10 +88,10 @@ cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
   fin= _fin;
   fout= _fout;
   prompt= 0;
-  flags= CONS_NONE;
+  set_flag(~CONS_NONE, false);
   if ((fin && fin->tty) && (fout && fout->tty))
     {
-      flags|= CONS_INTERACTIVE;
+      set_interactive(true);
       fin->echo(fout);
       fin->cooked();
     }
@@ -126,6 +126,7 @@ cl_console::clone_for_exec(char *_fin)
   return(con);
 }
 
+/*
 void
 cl_console::set_id(int new_id)
 {
@@ -140,6 +141,7 @@ cl_console::set_id(int new_id)
 			    fout?fout->file_id:-1));
   free(s);
 }
+*/
 
 cl_console::~cl_console(void)
 {
@@ -279,6 +281,7 @@ cl_listen_console::cl_listen_console(int serverport, class cl_app *the_app)
   fout= frout= 0;
 }
 
+/*
 void
 cl_listen_console::set_id(int new_id)
 {
@@ -290,6 +293,7 @@ cl_listen_console::set_id(int new_id)
 			    fin?fin->server_port:-1));
   free(s);
 }
+*/
 
 int
 cl_listen_console::proc_input(class cl_cmdset *cmdset)
@@ -351,10 +355,11 @@ cl_sub_console::init(void)
       c->deactivate_console(parent);
     }
   cl_console::init();
-  flags|= CONS_ECHO;
+  set_flag(CONS_ECHO, true);
   return(0);
 }
 
+/*
 void
 cl_sub_console::set_id(int new_id)
 {
@@ -370,7 +375,7 @@ cl_sub_console::set_id(int new_id)
 			    fout?fout->file_id:-1));
   free(s);
 }
-
+*/
 
 /*
  * Command interpreter
@@ -467,7 +472,7 @@ cl_commander::update_active(void)
 	config_console= 0;
     }
 
-  printf("List of active cons: ");
+  //printf("List of active cons: ");
   for (i= 0; i < cons->count; i++)
     {
       class cl_console *c=
@@ -482,21 +487,21 @@ cl_commander::update_active(void)
 	  f)
 	{
 	  active_inputs->add(f);
-	  printf("%d,",c->get_id());
+	  //printf("%d,",c->get_id());
 	}
       if (c->need_check() &&
 	  f)
 	check_list->add(f);
     }
-  printf("\n");
-  printf("List of check cons: ");
-  for (i= 0; i < check_list->count; i++)
+  //printf("\n");
+  //printf("List of check cons: ");
+  /*for (i= 0; i < check_list->count; i++)
     {
       class cl_console *c=
 	(class cl_console *)cons->at(i);
       printf("%d,", c->get_id());
-    }
-  printf("\n");
+      }*/
+  //printf("\n");
 }
 
 int

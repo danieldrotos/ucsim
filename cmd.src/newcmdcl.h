@@ -99,7 +99,7 @@ public:
 
 class cl_console_base: public cl_base
 {
-protected:
+ protected:
   class cl_prompt_option *prompt_option;
   class cl_optref *null_prompt_option;
   class cl_debug_option *debug_option;
@@ -110,7 +110,7 @@ protected:
   char nl;
   chars lbuf;
   
-public:
+ public:
   cl_console_base(void);
 
   virtual class cl_console_base *clone_for_exec(char *fin) = 0;
@@ -142,17 +142,20 @@ public:
   virtual void set_prompt(char *p);
   
   virtual bool input_active(void) const;
-  virtual bool accept_last(void) { return /*is_tty() ? DD_TRUE : DD_FALSE;*/flags&CONS_INTERACTIVE; }
+  //virtual bool accept_last(void) { return /*is_tty() ? DD_TRUE : DD_FALSE;*/flags&CONS_INTERACTIVE; }
   virtual bool prevent_quit(void) { return true; }
   
- protected:
+ private:
   int flags; // See CONS_XXXX
-public:
-  int set_flag(int flag, bool value);
-  bool get_flag(int flag);
-  int get_flags() { return flags; };
-  
-protected:
+ public:
+  virtual int set_flag(int flag, bool value);
+  virtual void set_interactive(bool new_val);
+  virtual bool get_flag(int flag);
+  virtual int get_flags() { return flags; };
+  virtual bool is_interactive() { return get_flag(CONS_INTERACTIVE); }
+  virtual bool is_frozen() { return get_flag(CONS_FROZEN); }
+
+ protected:
   class cl_app *app;
   char *prompt;
   int id;

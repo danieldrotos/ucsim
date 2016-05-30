@@ -421,18 +421,26 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
   char *fn= 0;
 
   if (cmdline->syntax_match(0, STRING)) {
-    fn= parm->value.string.string; 
+    fn= parm->value.string.string;
   }
-  else
-    con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
+  /*  if ((parm!=NULL) &&
+      parm->as_string())
+    fn= parm->value.string.string;
+  */
+  if (!fn || !*fn)
+    {
+      con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
+      return (false);
+    }
 
   class cl_commander_base *c= app->get_commander();
-  class cl_console_base *cons= con->clone_for_exec(fn);
+  /*class cl_console_base *cons= con->clone_for_exec(fn);
   if (cons)
     {
       cons->set_flag(CONS_NOWELCOME, true);
       c->add_console(cons);
-    }
+      }*/
+  c->exec_on(con, fn);
 
   return(DD_FALSE);
 }
