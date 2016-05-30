@@ -106,10 +106,7 @@ cl_debug_option::option_changed(void)
     return;
   bool b;
   option->get_value(&b);
-  if (b)
-    con->flags|= CONS_DEBUG;
-  else
-    con->flags&= ~CONS_DEBUG;
+  con->set_flag(CONS_DEBUG, b);
 }
 
 
@@ -467,7 +464,7 @@ cl_commander_base::del_console(class cl_console_base *console)
 void
 cl_commander_base::activate_console(class cl_console_base *console)
 {
-  console->flags&= ~CONS_INACTIVE;
+  console->set_flag(CONS_INACTIVE, false);
   console->print_prompt();
   update_active();
 }
@@ -475,7 +472,7 @@ cl_commander_base::activate_console(class cl_console_base *console)
 void
 cl_commander_base::deactivate_console(class cl_console_base *console)
 {
-  console->flags|= CONS_INACTIVE;
+  console->set_flag(CONS_INACTIVE, true);
   update_active();
 }
 
@@ -571,7 +568,7 @@ cl_commander_base::debug(const char *format, ...)
   for (i= 0; i < cons->count; i++)
     {
       class cl_console_base *c= (class cl_console_base*)(cons->at(i));
-      if (c->flags & CONS_DEBUG)
+      if (c->get_flag(CONS_DEBUG))
         {
           va_start(ap, format);
           ret= c->cmd_do_print(format, ap);
@@ -589,7 +586,7 @@ cl_commander_base::debug(const char *format, va_list ap)
   for (i= 0; i < cons->count; i++)
     {
       class cl_console_base *c= (class cl_console_base*)(cons->at(i));
-      if (c->flags & CONS_DEBUG)
+      if (c->get_flag(CONS_DEBUG))
         {
           ret= c->cmd_do_print(format, ap);
         }
@@ -606,7 +603,7 @@ cl_commander_base::flag_printf(int iflags, const char *format, ...)
   for (i= 0; i < cons->count; i++)
     {
       class cl_console_base *c= (class cl_console_base*)(cons->at(i));
-      if ((c->flags & iflags) == iflags)
+      if ((c->get_flag(iflags)) == iflags)
         {
           va_start(ap, format);
           ret= c->cmd_do_print(format, ap);
@@ -631,8 +628,8 @@ cl_commander_base::exec_on(class cl_console_base *cons, char *file_name)
     return 0;
 
   class cl_console_base *subcon = cons->clone_for_exec(file_name);
-  subcon->flags |= CONS_NOWELCOME;
-  subcon->flags &= ~CONS_INTERACTIVE;
+  subcon->set_flag(CONS_NOWELCOME, true);
+  subcon->set_flag(CONS_INTERACTIVE, false);
   add_console(subcon);
   return subcon;
 }

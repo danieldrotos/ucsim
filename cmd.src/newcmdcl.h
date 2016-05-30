@@ -145,10 +145,12 @@ public:
   virtual bool accept_last(void) { return /*is_tty() ? DD_TRUE : DD_FALSE;*/flags&CONS_INTERACTIVE; }
   virtual bool prevent_quit(void) { return true; }
   
-public:
+ protected:
   int flags; // See CONS_XXXX
+public:
   int set_flag(int flag, bool value);
   bool get_flag(int flag);
+  int get_flags() { return flags; };
   
 protected:
   class cl_app *app;

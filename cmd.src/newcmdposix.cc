@@ -304,7 +304,7 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   srv_accept(fin, &in, &out);
   deb("Listener %d created in:%d out:%d\n", fin->file_id,in->file_id,out->file_id);
   class cl_console_base *c= new cl_console(in, out, app);
-  c->flags|= CONS_INTERACTIVE;
+  c->set_flag(CONS_INTERACTIVE, true);
   in->interactive(out);
   cmd->add_console(c);
   return(0);
@@ -416,7 +416,7 @@ cl_commander::init(void)
 	  config_console= exec_on(con, Config);
 	  need_config= DD_FALSE;
 	  if (in->tty)
-	    con->flags|= CONS_INTERACTIVE;
+	    con->set_flag(CONS_INTERACTIVE, true);
 	}
       else
 	{
@@ -435,7 +435,7 @@ cl_commander::init(void)
       config_console= exec_on(con, Config);
       need_config= DD_FALSE;
       if (in->tty)
-	con->flags|= CONS_INTERACTIVE;
+	con->set_flag(CONS_INTERACTIVE, true);
     }
   if (need_config &&
       Config &&
@@ -445,7 +445,7 @@ cl_commander::init(void)
       i= mk_io(Config, "r");
       o= cp_io(fileno(stderr), "w");
       con= new cl_console(/*fc*/i, /*stderr*/o, app);
-      con->flags|= CONS_NOWELCOME|CONS_ECHO;
+      con->set_flag(CONS_NOWELCOME|CONS_ECHO, true);
       //exec_on(con, Config);
       config_console= con;
       add_console(con);

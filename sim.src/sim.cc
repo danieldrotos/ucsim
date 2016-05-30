@@ -122,7 +122,7 @@ cl_sim::start(class cl_console_base *con, unsigned long steps_to_do)
   state|= SIM_GO;
   if (con)
     {
-      con->flags|= CONS_FROZEN;
+      con->set_flag(CONS_FROZEN, true);
       app->get_commander()->frozen_console= con;
       app->get_commander()->update_active();
     }
@@ -195,7 +195,7 @@ cl_sim::stop(int reason)
 				       dnow() - start_at,
 				       (dt*(1/uc->xtal)) / (dnow() - start_at));
       //if (cmd->actual_console != cmd->frozen_console)
-      cmd->frozen_console->flags&= ~CONS_FROZEN;
+      cmd->frozen_console->set_flag(CONS_FROZEN, false);
       //cmd->frozen_console->dd_printf("_s_");
       cmd->frozen_console->print_prompt();
       cmd->frozen_console= 0;

@@ -430,7 +430,7 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
   class cl_console_base *cons= con->clone_for_exec(fn);
   if (cons)
     {
-      cons->flags|= CONS_NOWELCOME;
+      cons->set_flag(CONS_NOWELCOME, true);
       c->add_console(cons);
     }
 
