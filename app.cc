@@ -225,10 +225,11 @@ print_help(char *name)
      "                  uart=nr   number of uart (default=0)\n"
      "                  in=file   serial input will be read from file named `file'\n"
      "                  out=file  serial output will be written to `file'\n"
-     "                  port=nr   Use localhost:nr for serial line\n"
+     "                  port=nr   Use localhost:nr as server for serial line\n"
      "  -p prompt    Specify string for prompt\n"
      "  -P           Prompt is a null ('\\0') character\n"
      "  -g           Go, start simulation\n"
+     "  -a nr        Specify size of variable space (default=256)\n"
      "  -V           Verbose mode\n"
      "  -v           Print out version number\n"
      "  -H           Print out types of known CPUs\n"
@@ -260,7 +261,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= DD_FALSE;
   //bool S_i_done= DD_FALSE, S_o_done= DD_FALSE;
 
-  strcpy(opts, "c:C:p:PX:vVt:s:S:hHg");
+  strcpy(opts, "c:C:p:PX:vVt:s:S:a:hHg");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
@@ -328,6 +329,11 @@ cl_app::proc_arguments(int argc, char *argv[])
 		    "parameter of -X as XTAL frequency\n");
 	  break;
 	}
+      case 'a':
+	if (!options->set_value("var_size", this, strtol(optarg, 0, 0)))
+	  fprintf(stderr, "Warning: No \"var_size\" option found to set "
+		  "by parameter of -a as variable space size\n");
+	break;
       case 'v':
 	printf("%s: %s\n", argv[0], VERSIONSTR);
         exit(0);
@@ -838,6 +844,12 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_bool_option(this, "go",
 					    "Go on start (-g)"));
   o->init();
+  o->hide();
+
+  options->new_option(o= new cl_number_option(this, "var_size",
+					      "Size of variable space (-a)"));
+  o->init();
+  o->set_value((long)0x100);
   o->hide();
 }
 
