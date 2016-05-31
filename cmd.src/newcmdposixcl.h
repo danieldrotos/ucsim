@@ -62,7 +62,8 @@ public:
   virtual bool input_avail(void);// { return input_active() ? (fin->input_avail()) : false; };
   virtual int read_line(void);
   virtual bool need_check(void);
-
+  virtual bool set_cooked(bool new_val);
+  
 private:
   //FILE *get_out(void) { return rout ? rout : out; }
   class cl_f *get_fout(void) { return frout ? frout : fout; }
@@ -80,6 +81,7 @@ public:
 
   //virtual UCSOCKET_T get_in_fd(void) { return(sock); }
   virtual int proc_input(class cl_cmdset *cmdset);
+  virtual bool set_cooked(bool new_val) { return false; }
 };
 //#endif
 

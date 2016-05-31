@@ -16,7 +16,7 @@ the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
 
 UCSIM is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
+but WITHOUT ANY RANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
@@ -326,7 +326,10 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   char *cmdstr;
   i= read_line();
   if (i < 0)
-    return 1;
+    {
+      deb("colsing, bacause read_line on con=%d returned %d\n", id, i);
+      return 1;
+    }
   if (i == 0)
     return 0;
   cmdstr= lbuf;
@@ -423,6 +426,12 @@ bool
 cl_console_base::get_flag(int flag)
 {
   return flags & flag;
+}
+
+bool
+cl_console_base::set_cooked(bool new_val)
+{
+  return false;
 }
 
 

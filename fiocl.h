@@ -176,6 +176,7 @@ class cl_f: public cl_base
   virtual void check(void) { return; }
   virtual int echo(class cl_f *out);
   virtual void interactive(class cl_f *echo_out);
+  virtual int get_cooking() { return cooking; }
  public:
   int server_port;
 

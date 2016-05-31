@@ -403,6 +403,7 @@ cl_f::put(char c)
   if (n == last_used)
     return -1;
   buffer[first_free]= c;
+  deb("fid=%d put[%d]=%c\n",file_id,first_free,c);
   first_free= n;
   return 0;
 }
@@ -411,10 +412,14 @@ int
 cl_f::get(void)
 {
   if (last_used == first_free)
-    return -1;
+    {
+      deb("fid=%d get: empty\n",file_id);
+      return -1;
+    }
   char c= buffer[last_used];
   //if (c == 3 /* ^C */)
   //return -2;
+  deb("fid=%d get[%d]=%c\n",file_id,last_used,c);
   last_used= (last_used + 1) % 1024;
   return c;
 }
@@ -888,7 +893,7 @@ cl_f::read_dev(char *buf, int max)
     return i;
   if (at_end)
     return 0;
-  return -1;
+  return -2;
 }
 
 
@@ -1071,6 +1076,12 @@ cl_f::restore_attributes()
 int
 cl_f::raw(void)
 {
+  if (cooking)
+    {
+      int l= strlen(line), i;
+      for (i= 0; i<l; i++)
+	put(line[i]);
+    }
   cooking= 0;
   return 0;
 }

@@ -207,6 +207,24 @@ cl_console::need_check(void)
   return fin && (fin->type == F_CONSOLE);
 }
 
+bool
+cl_console::set_cooked(bool new_val)
+{
+  if (!fin)
+    return false;
+  if (new_val)
+    {
+      if (!fin->get_cooking())
+	fin->interactive(fout);
+    }
+  else
+    {
+      // raw
+      fin->raw();
+    }
+  return fin->get_cooking();
+}
+
 
 /* Return
    -1 if EOF (and buffer is empty) or ^C found
@@ -222,9 +240,9 @@ cl_console::read_line(void)
 
   do {
     i= fin->read(b, 1);
-    if (i < 0)
+    if (i < -1)
       {
-	// no more char
+	deb("read_line(con=%d,fid=%d) error\n", id, fin->file_id);
 	return -1;
       }
     if (i == 0)

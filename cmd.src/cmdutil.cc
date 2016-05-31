@@ -210,7 +210,7 @@ bool_name(char *s, int *val)
       if (toupper(s[1]) == 'N')
 	v= 1;
       else if (toupper(s[1]) == 'F')
-	v= 1;
+	v= 0;
       else
 	return 0;
       if (val)

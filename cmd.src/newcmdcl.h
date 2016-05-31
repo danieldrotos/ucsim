@@ -154,7 +154,8 @@ class cl_console_base: public cl_base
   virtual int get_flags() { return flags; };
   virtual bool is_interactive() { return get_flag(CONS_INTERACTIVE); }
   virtual bool is_frozen() { return get_flag(CONS_FROZEN); }
-
+  virtual bool set_cooked(bool new_val);
+  
  protected:
   class cl_app *app;
   char *prompt;

@@ -310,7 +310,6 @@ COMMAND_DO_WORK_APP(cl_set_console_cmd)
 				 cmdline->param(2),
 				 cmdline->param(3) };
   char *s1= 0, *s2= 0;
-  int e= 0;
   
   if (cmdline->syntax_match(0, STRING))
     s1= params[0]->value.string.string;
@@ -327,27 +326,26 @@ COMMAND_DO_WORK_APP(cl_set_console_cmd)
       if (!bool_name(s2, &val))
 	val= 1;
       con->set_interactive(val);
-      e= 1;
     }
   else if (strstr(s1, "n") == s1)
     {
       // non-interactive
-      e= 2;
+      con->set_interactive(false);
     }
   else if (strstr(s1, "r") == s1)
     {
       // raw
-      e= 3;
-      
+      con->set_cooked(false);
     }
   else if ((strstr(s1, "c") == s1) ||
 	   (strstr(s1, "e") == s1))
     {
       // coocked, edited
-      e= 4;
+      con->set_cooked(true);
     }
-  con->dd_printf("e=%d s1=%s s2=%s\n", e, s1, s2);
-    
+  else
+    con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
+  
   return false;
 }
 
