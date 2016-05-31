@@ -9,9 +9,18 @@ enum sif_command {
   SIFCM_IFVER		= 'v',	// interface version
   SIFCM_SIMVER		= 'V',	// simulator version
   SIFCM_IFRESET		= '@',	// reset the interface
-  SIFCM_CMDINFO		= 'I'	// info about a command
+  SIFCM_CMDINFO		= 'I',	// info about a command
+  SIFCM_CMDHELP		= 'h',	// help about a command
+  SIFCM_STOP		= 's',	// stop simulation
 };
 
+enum sif_answer_type {
+  SIFAT_UNKNOWN		= 0x00,	// we don't know...
+  SIFAT_BYTE		= 0x01,	// just a byte
+  SIFAT_ARRAY		= 0x02,	// array of some bytes
+  SIFAT_STRING		= 0x03,	// a string
+  SIFAT_NONE		= 0x04	// no answer at all
+};
 
 unsigned char
 _sdcc_external_startup (void)
@@ -42,7 +51,7 @@ putchar (char c)
 #define SIF_ADDRESS_SPACE	__xdata
 #define SIF_ADDRESS		0xffff
 
-unsigned char SIF_ADDRESS_SPACE *sif;
+unsigned char SIF_ADDRESS_SPACE * volatile sif;
 
 char
 simulated(void)
@@ -85,6 +94,38 @@ get_ifversion(void)
   return(*sif);
 }
 
+unsigned char sim_version[15];
+
+void
+get_sim_version()
+{
+  unsigned char c;
+  unsigned char i;
+  
+  *sif= SIFCM_SIMVER;
+  sim_version[0]= 0;
+  i= *sif;
+  //printf("read answer of len=%d\n", i);
+  if (i)
+    {
+      i= 0;
+      c= *sif;
+      //printf("  ans[%d]= %02x,%c\n", i, c, c);
+      while (c && (i<14))
+	{
+	  sim_version[i++]= c;
+	  c= *sif;
+	  //printf("  ans[%d]= %02x,%c\n", i, c, c);
+	}
+      while (c)
+	{
+	  c= *sif;
+	  //printf("  ans[]= %02x,%c\n", c, c);
+	}
+      sim_version[i]= 0;
+    }
+}
+
 void
 print_cmd_infos(void)
 {
@@ -92,14 +133,35 @@ print_cmd_infos(void)
   unsigned char inf[5];
   for (i= 0; i < nuof_commands; i++)
     {
-      printf("Command 0x%02x info:\n", commands[i]);
+      printf("Command '%c' info:\n", commands[i]);
       *sif= SIFCM_CMDINFO;
       *sif= commands[i];
       inf[0]= *sif;
       for (j= 0; j < inf[0]; j++)
 	{
 	  inf[j+1]= *sif;
-	  printf(" 0x%02x", inf[j+1]);
+	  //printf(" 0x%02x", inf[j+1]);
+	}
+      printf("  need %d params, answers as ", inf[1]);
+      switch (inf[2])
+	{
+	case SIFAT_UNKNOWN	: printf("unknown"); break;
+	case SIFAT_BYTE		: printf("byte"); break;
+	case SIFAT_ARRAY	: printf("array"); break;
+	case SIFAT_STRING	: printf("string"); break;
+	case SIFAT_NONE		: printf("none"); break;
+	}
+      printf(": ");
+      *sif= SIFCM_CMDHELP;
+      *sif= commands[i];
+      if (*sif)
+	{
+	  j= *sif;
+	  while (j)
+	    {
+	      putchar(j);
+	      j= *sif;
+	    }
 	}
       printf("\n");
     }
@@ -117,15 +179,17 @@ main(void)
     {
       int i;
       i= get_ifversion();
-      printf(" Version %d.\n", i);
+      get_sim_version();
+      printf(" Version %d (of simulator %s)\n", i, sim_version);
       get_commands();
       printf("Interface knows about %d commands:\n", nuof_commands);
       for (i= 0; i < nuof_commands; i++)
-	printf(" 0x%02x", commands[i]);
+	printf("%c", commands[i]);
       printf("\n");
       print_cmd_infos();
     }
   else
     printf("\n");
-  * (char __idata *) 0 = * (char __xdata *) 0x7654;
+  //* (char __idata *) 0 = * (char __xdata *) 0x7654;
+  *sif= SIFCM_STOP;
 }

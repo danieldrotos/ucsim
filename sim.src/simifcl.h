@@ -25,9 +25,16 @@ enum sif_command {
   // <- len VERSIONSTR
   SIFCM_IFRESET		= '@',	// reset the interface
   // ?
-  SIFCM_CMDINFO		= 'I'	// info about a command
+  // ?
+  SIFCM_CMDINFO		= 'I',	// info about a command
   // -> I cmdchar
   // <- 2 params_needed answer_type
+  SIFCM_CMDHELP		= 'h',	// help about a command
+  // -> h cmdchar
+  // <- string_length+1 string_of_help 0
+  SIFCM_STOP		= 's',	// stop simulation
+  // -> s
+  // -> s
 };
 
 enum sif_answer_type {
@@ -160,6 +167,30 @@ public:
     cl_sif_command(SIFCM_CMDINFO, "cmdinfo",
 		   "Get information about a command",
 		   SIFAT_ARRAY, 1, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+/* Command: get info about a command */
+class cl_sif_cmdhelp: public cl_sif_command
+{
+public:
+  cl_sif_cmdhelp(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_CMDHELP, "cmdhelp",
+		   "Get help about a command",
+		   SIFAT_STRING, 1, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+/* Command: stop simulation */
+class cl_sif_stop: public cl_sif_command
+{
+public:
+  cl_sif_stop(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_STOP, "stop",
+		   "Stop simulation",
+		   SIFAT_BYTE, 0, the_sif)
   {}
   virtual void produce_answer(void);
 };

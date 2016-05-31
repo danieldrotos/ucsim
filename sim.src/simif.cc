@@ -90,20 +90,20 @@ cl_sif_command::read(class cl_memory_cell *cel)
 {
   t_mem ret= cel->get();
 
-  //printf("%s read: (%x)\n", get_name(), ret);
+  printf("%s read: (%x)\n", get_name(), ret);
   if (answering &&
       answer)
     {
-      //printf("answering...\n");
+      printf("answering...\n");
       if (answered_bytes < answer_length)
 	{
 	  ret= answer[answered_bytes];
 	  answered_bytes++;
-	  //printf("answer=%x\n", ret);
+	  printf("answer=%x\n", ret);
 	}
       if (answered_bytes >= answer_length)
 	{
-	  //printf("finishing command...\n");
+	  printf("finishing command...\n");
 	  sif->finish_command();
 	}
     }
@@ -276,6 +276,50 @@ cl_sif_cmdinfo::produce_answer(void)
 }
 
 
+/* Command: get help about a command */
+
+void
+cl_sif_cmdhelp::produce_answer(void)
+{
+  int i;
+  if (!sif)
+    return;
+  t_mem cm;
+  if (!get_parameter(0, &cm))
+    return;
+  class cl_sif_command *about= 0;
+  for (i= 0; i < sif->commands->count; i++)
+    {
+      class cl_sif_command *sc=
+	dynamic_cast<class cl_sif_command *>(sif->commands->object_at(i));
+      if (sc->get_command() == cm)
+	{
+	  about= sc;
+	  break;
+	}
+    }
+  if (about)
+    set_answer(about->get_description());
+  else
+    set_answer((t_mem)0);
+}
+
+
+/* Command: stop simulation */
+
+void
+cl_sif_stop::produce_answer(void)
+{
+  class cl_sim *sim= 0;
+  if (sif)
+    if (sif->uc)
+      sim= sif->uc->sim;
+  set_answer(SIFCM_STOP);
+  if (sim)
+    sim->stop(resSIMIF);
+}
+
+
 /*
  * Virtual HW: simulator interface
  */
@@ -330,6 +374,10 @@ cl_simulator_interface::init(void)
   commands->add(c= new cl_sif_ifreset(this));
   c->init();
   commands->add(c= new cl_sif_cmdinfo(this));
+  c->init();
+  commands->add(c= new cl_sif_cmdhelp(this));
+  c->init();
+  commands->add(c= new cl_sif_stop(this));
   c->init();
   return(0);
 }

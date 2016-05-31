@@ -177,7 +177,8 @@ enum inst_result {
   resINV_INST	= 106,	/* Invalid instruction */
   resBITADDR	= 107,	/* Bit address is uninterpretable */
   resERROR	= 108,	/* Error happened during instruction exec */
-  resSTEP	= 109	/* Step command done, no more exex needed */
+  resSTEP	= 109,	/* Step command done, no more exex needed */
+  resSIMIF	= 110,	/* Stopped by simulated prog itself through sim interface */
 };
   
 #define BIT_MASK(bitaddr) (1 << (bitaddr & 0x07))

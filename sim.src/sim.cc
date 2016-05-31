@@ -183,6 +183,9 @@ cl_sim::stop(int reason)
 	case resERROR:
 	  // uc::check_error prints error messages...
 	  break;
+	case resSIMIF:
+	  cmd->frozen_console->dd_printf("Program stopped itself");
+	  break;
 	default:
 	  cmd->frozen_console->dd_printf("Unknown reason\n");
 	  break;
