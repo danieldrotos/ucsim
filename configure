@@ -699,6 +699,7 @@ enable_stm8_port
 enable_xa_port
 enable_s08_port
 enable_hc08_port
+enable_tlcs_port
 enable_r3ka_port
 enable_r2k_port
 enable_gbz80_port
@@ -766,6 +767,7 @@ enable_z180_port
 enable_gbz80_port
 enable_r2k_port
 enable_r3ka_port
+enable_tlcs_port
 enable_hc08_port
 enable_s08_port
 enable_xa_port
@@ -1434,6 +1436,7 @@ Optional Features:
   --disable-gbz80-port    do not compile simulator for gbz80
   --disable-r2k-port      do not compile simulator for r2k
   --disable-r3ka-port     do not compile simulator for r3ka
+  --disable-tlcs-port    do not compile simulator for TLCS
   --disable-hc08-port     do not compile simulator for hc08
   --disable-s08-port      do not compile simulator for s08
   --enable-xa-port        compile simulator for xa
@@ -2863,6 +2866,15 @@ else
   enable_r3ka_port="yes"
 fi
 
+# Check whether --enable-tlcs-port was given.
+if test "${enable_tlcs_port+set}" = set; then :
+  enableval=$enable_tlcs_port; if test $enable_tlcs_port != "no"; then
+    enable_tlcs_port="yes"
+fi
+else
+  enable_tlcs_port="yes"
+fi
+
 # Check whether --enable-hc08-port was given.
 if test "${enable_hc08_port+set}" = set; then :
   enableval=$enable_hc08_port; if test $enable_hc08_port != "no"; then
@@ -2916,6 +2928,7 @@ fi
 else
   enable_serio="no"
 fi
+
 
 
 
@@ -17245,7 +17258,7 @@ _ACEOF
 # Generating output files
 # ===========================================================================
 
-ac_config_files="$ac_config_files Makefile main.mk:main_in.mk packages.mk:packages_in.mk sim.src/Makefile cmd.src/Makefile s51.src/Makefile avr.src/Makefile z80.src/Makefile hc08.src/Makefile xa.src/Makefile stm8.src/Makefile st7.src/Makefile gui.src/Makefile gui.src/serio.src/Makefile doc/Makefile"
+ac_config_files="$ac_config_files Makefile main.mk:main_in.mk packages.mk:packages_in.mk sim.src/Makefile cmd.src/Makefile s51.src/Makefile avr.src/Makefile z80.src/Makefile tlcs.src/Makefile hc08.src/Makefile xa.src/Makefile stm8.src/Makefile st7.src/Makefile gui.src/Makefile gui.src/serio.src/Makefile doc/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -18332,6 +18345,7 @@ do
     "s51.src/Makefile") CONFIG_FILES="$CONFIG_FILES s51.src/Makefile" ;;
     "avr.src/Makefile") CONFIG_FILES="$CONFIG_FILES avr.src/Makefile" ;;
     "z80.src/Makefile") CONFIG_FILES="$CONFIG_FILES z80.src/Makefile" ;;
+    "tlcs.src/Makefile") CONFIG_FILES="$CONFIG_FILES tlcs.src/Makefile" ;;
     "hc08.src/Makefile") CONFIG_FILES="$CONFIG_FILES hc08.src/Makefile" ;;
     "xa.src/Makefile") CONFIG_FILES="$CONFIG_FILES xa.src/Makefile" ;;
     "stm8.src/Makefile") CONFIG_FILES="$CONFIG_FILES stm8.src/Makefile" ;;
