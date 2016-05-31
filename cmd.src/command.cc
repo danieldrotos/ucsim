@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i_string.h"
 
 // prj
+#include "fiocl.h"
+#include "utils.h"
 
 // local, cmd
 #include "commandcl.h"
@@ -83,36 +85,49 @@ cl_cmdline::split(void)
 {
   //class cl_sim *sim;
   char *start= cmd;
-  int i;
+  int i, j;
   class cl_cmd_arg *arg;
 
-  //sim= app->get_sim();
+  deb("cmdline 1 name=ENTER\n");
   set_name("\n");
   if (!cmd ||
       !*cmd)
     return(0);
   start+= strspn(start, " \t\v\r,");
-  if (start &&
-      *start == '\n')
+  if (!start)
+    return 0;
+  deb("cmdline 2 name=NULL\n");
+  set_name(0);
+  if (*start == '\n')
     {
-      char *n= (char*)malloc(2);
-      strcpy(n, "\n");
-      set_name(n);
+      // never, as \n stripped by readline
+      deb("cmdline 3 name=ENTER\n");
+      set_name("\n");
       return(0);
     }
+  else if (*start == '#')
+    return *start= 0;
   if (!*start)
     return(0);
   i= strcspn(start, " \t\v\r,");
   if (i)
     {
+      if (*start == '#')
+	return deb("cmdline 4 name=ENTER"), set_name("\n"), *start= 0;
       char *n= (char*)malloc(i+1);
       strncpy(n, start, i);
       n[i]= '\0';
+      j= strispn(start, '#');
+      if (j>0)
+	n[j]= '\0';
+      deb("cmdline 5 name=%s\n",n);
       set_name(n);
+      free(n);
+      if (j>0)
+	return start[j]= 0;
     }
   start+= i;
   start= skip_delims(start);
-  // skip delimiters
   while (*start)
     {
       char *end= start, *param_str;
@@ -125,9 +140,15 @@ cl_cmdline::split(void)
 	  char *dot;
           i= strcspn(start, " \t\v\r,");
           end= start+i;
+	  if (*start == '#')
+	    return *start= 0;
           param_str= (char *)malloc(i+1);
           strncpy(param_str, start, i);
 	  param_str[i]= '\0';
+	  j= strispn(start, '#');
+	  if (j>0)
+	    end= start+j, param_str[j]= start[j]= '\0';
+	  deb("cmdline token=%s\n",param_str);
 	  tokens->add(strdup(param_str));
 	  if ((dot= strchr(param_str, '.')) != NULL)
 	    split_out_bit(dot, param_str);
@@ -147,6 +168,8 @@ cl_cmdline::split(void)
 	      arg->init();
 	    }
 	  free(param_str);
+	  if (j>0)
+	    return 0;
 	}
       start= end;
       start= skip_delims(start);

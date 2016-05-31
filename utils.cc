@@ -236,5 +236,15 @@ dnow(void)
   return (double)tv.tv_sec + ((double)tv.tv_usec/1000000.0);
 }
 
+int
+strispn(char *s, char c)
+{
+  if (!s || !*s)
+    return 0;
+  char *p= strchr(s, c);
+  if (!p)
+    return -1;
+  return p-s;
+}
 
 /* End of utils.cc */

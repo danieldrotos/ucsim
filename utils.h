@@ -53,7 +53,9 @@ extern char *case_string(enum letter_case lcase, char *str);
 
 extern double dnow(void);
 
+extern int strispn(char *s, char c);
 
+  
 #endif
 
 /* End of utils.h */

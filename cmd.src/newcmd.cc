@@ -383,7 +383,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
               else
                 delete cmdline;
             }
-          else
+          else if (cmdline->get_name() != 0)
             {
 	      if (strlen(cmdstr) > 0)
 		{
