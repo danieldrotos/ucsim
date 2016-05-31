@@ -129,7 +129,7 @@ dep:
 # My rules
 # --------
 putcopyright:
-	'put(c)' -s $(STARTYEAR) *.cc *.h *.y *.l
+	'./put(c)' -s $(STARTYEAR) *.cc *.h *.y *.l
 
 start:
 	date '+%Y.%m.%d-%H:%M' >.start

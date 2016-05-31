@@ -5,7 +5,7 @@
 clean:
 	rm -f *core *[%~] *.[oa] *.map
 	rm -f .[a-z]*~
-	rm -f savr$(EXEEXT)
+	rm -f stlcs$(EXEEXT)
 
 
 # Deleting all files created by configuring or building the program
