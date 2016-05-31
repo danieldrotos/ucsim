@@ -299,4 +299,57 @@ COMMAND_DO_WORK_APP(cl_set_error_cmd)
 }
 
 
+/*
+ * Command: set console
+ *----------------------------------------------------------------------------
+ */
+COMMAND_DO_WORK_APP(cl_set_console_cmd)
+{
+  class cl_cmd_arg *params[4]= { cmdline->param(0),
+				 cmdline->param(1),
+				 cmdline->param(2),
+				 cmdline->param(3) };
+  char *s1= 0, *s2= 0;
+  int e= 0;
+  
+  if (cmdline->syntax_match(0, STRING))
+    s1= params[0]->value.string.string;
+  else if (cmdline->syntax_match(0, STRING STRING))
+    {
+      s1= params[0]->value.string.string;
+      s2= params[1]->value.string.string;
+    }
+
+  if (strstr(s1, "i") == s1)
+    {
+      // interactive
+      int val;
+      if (!bool_name(s2, &val))
+	val= 1;
+      con->set_interactive(val);
+      e= 1;
+    }
+  else if (strstr(s1, "n") == s1)
+    {
+      // non-interactive
+      e= 2;
+    }
+  else if (strstr(s1, "r") == s1)
+    {
+      // raw
+      e= 3;
+      
+    }
+  else if ((strstr(s1, "c") == s1) ||
+	   (strstr(s1, "e") == s1))
+    {
+      // coocked, edited
+      e= 4;
+    }
+  con->dd_printf("e=%d s1=%s s2=%s\n", e, s1, s2);
+    
+  return false;
+}
+
+
 /* End of cmd.src/set.cc */

@@ -46,6 +46,9 @@ COMMAND_ON(app,cl_set_option_cmd);
 // SET ERROR
 COMMAND_ON(app,cl_set_error_cmd);
 
+// SET CONSOLE
+COMMAND_ON(app,cl_set_console_cmd);
+
 
 #endif
 

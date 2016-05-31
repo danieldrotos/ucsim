@@ -773,6 +773,11 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
 "                   Set value of an error",
 "long help of set error"));
     cmd->init();
+    cset->add(cmd= new cl_set_console_cmd("console", 0,
+"set console interactive [on|off]|noninteractive|raw|edited\n"
+"                   Set console parameters",
+"long help of set console"));
+    cmd->init();
   }
   if (!super_cmd)
     {

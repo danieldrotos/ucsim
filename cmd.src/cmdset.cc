@@ -423,10 +423,6 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
   if (cmdline->syntax_match(0, STRING)) {
     fn= parm->value.string.string;
   }
-  /*  if ((parm!=NULL) &&
-      parm->as_string())
-    fn= parm->value.string.string;
-  */
   if (!fn || !*fn)
     {
       con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
@@ -434,12 +430,6 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
     }
 
   class cl_commander_base *c= app->get_commander();
-  /*class cl_console_base *cons= con->clone_for_exec(fn);
-  if (cons)
-    {
-      cons->set_flag(CONS_NOWELCOME, true);
-      c->add_console(cons);
-      }*/
   c->exec_on(con, fn);
 
   return(DD_FALSE);
@@ -452,14 +442,12 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
 
 COMMAND_DO_WORK_APP(cl_expression_cmd)
 {
-  //con->dd_printf("\"%s\"\n", cmdline->cmd);
   char *s= cmdline->cmd;
   if (!s ||
       !*s)
     return(DD_FALSE);
   int i= strspn(s, " \t\v\n");
   s+= i;
-  //con->dd_printf("\"%s\"\n", s);
   i= strspn(s, "abcdefghijklmnopqrstuvwxyz");
   s+= i;
   uc_yy_set_string_to_parse(s);

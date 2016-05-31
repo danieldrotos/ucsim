@@ -186,5 +186,38 @@ cmd_fprintf(FILE *f, char *format, ...)
   return(ret);
 }
 
+int
+bool_name(char *s, int *val)
+{
+  int v= 0;
+  
+  if (!s || !*s)
+    return 0;
+  if (strspn(s, "0nNfF") > 0)
+    {
+      if (val)
+	*val= 0;
+      return 1;
+    }
+  if (strspn(s, "1yYtT") > 0)
+    {
+      if (val)
+	*val= 1;
+      return 1;
+    }
+  if (strspn(s, "oO") == 1)
+    {
+      if (toupper(s[1]) == 'N')
+	v= 1;
+      else if (toupper(s[1]) == 'F')
+	v= 1;
+      else
+	return 0;
+      if (val)
+	*val= v;
+      return 1;
+    }
+  return 0;
+}
 
 /* End of cmd.src/cmdutil.cc */
