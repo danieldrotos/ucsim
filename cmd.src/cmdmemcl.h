@@ -40,6 +40,9 @@ COMMAND_ON(uc,cl_memory_createaddressspace_cmd);
 // MEMORY CREATEADDRESSDECODER
 COMMAND_ON(uc,cl_memory_createaddressdecoder_cmd);
 
+// MEMORY CREATEBANKER
+COMMAND_ON(uc,cl_memory_createbanker_cmd);
+
 
 #endif
 
