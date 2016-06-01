@@ -154,7 +154,8 @@ public:
   virtual class cl_hw *get_hw(char *id_string, int *idx);
   virtual class cl_hw *get_hw(enum hw_cath cath, int hwid, int *idx);
   virtual class cl_hw *get_hw(char *id_string, int hwid, int *idx);
-
+  virtual int get_max_hw_id(enum hw_cath cath);
+  
   // "virtual" timers
   virtual int tick_hw(int cycles);
   virtual void do_extra_hw(int cycles);

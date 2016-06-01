@@ -617,6 +617,13 @@ cmd->init();*/
     cmd->add_name("caddressdecoder");
     cmd->add_name("caddrdecoder");
     cmd->add_name("cadecoder");
+    cset->add(cmd= new cl_memory_createbanker_cmd("createbanker", 0,
+"memory createbanker addressspace begin end chip begin\n"
+"                   Create bank switcher\n",
+"long help of memory createbanker"));
+    cmd->init();
+    cmd->add_name("createbankswitcher");
+    cmd->add_name("createbs");
     cset->add(cmd= new cl_info_memory_cmd("info", 0,
 "memory info        Information about memory system",
 "long help of memory info"));
@@ -1045,6 +1052,20 @@ cl_uc::get_hw(char *id_string, int hwid, int *idx)
   return(hw);
 }
 
+int
+cl_uc::get_max_hw_id(enum hw_cath cath)
+{
+  class cl_hw *hw;
+  int i, max= -1;
+
+  for (i= 0; i < hws->count; i++)
+    {
+      hw= (class cl_hw *)(hws->at(i));
+      if (hw->id > max)
+	max= hw->id;
+    }
+  return max;
+}
 
 /*
  * Help of the command interpreter
