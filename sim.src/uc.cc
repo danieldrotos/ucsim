@@ -578,6 +578,8 @@ cmd->init();*/
   }
 
   {
+    class cl_super_cmd *mem_create;
+    class cl_cmdset *mem_create_cset;
     super_cmd= (class cl_super_cmd *)(cmdset->get_cmd("memory"));
     if (super_cmd)
       cset= super_cmd->get_subcommands();
@@ -591,39 +593,60 @@ cmd->init();*/
 "long help of memory"));
     cmd->init();
     */
-    cset->add(cmd= new cl_memory_createchip_cmd("createchip", 0,
-"memory createchip id size cellsize\n"
+    mem_create= (class cl_super_cmd *)cset->get_cmd("create");
+    if (mem_create)
+      mem_create_cset= mem_create->get_subcommands();
+    else {
+      mem_create_cset= new cl_cmdset();
+      mem_create_cset->init();
+    }
+    
+    mem_create_cset->add(cmd= new cl_memory_createchip_cmd("chip", 0,
+"memory create chip id size cellsize\n"
 "                   Create a new memory chip",
-"long help of memory createchip"));
+"long help of memory create chip"));
     cmd->init();
-    cmd->add_name("cchip");
-    cset->add(cmd= new cl_memory_createaddressspace_cmd("createaddressspace", 0,
-"memory createaddressspace id startaddr size\n"
-"                   Create address space",
-"long help of memory createaddressspace"));
+
+    mem_create_cset->add(cmd= new cl_memory_createaddressspace_cmd("addressspace", 0,
+"memory create addressspace id startaddr size\n"
+"                   Create a new address space",
+"long help of memory create addressspace"));
     cmd->init();
-    cmd->add_name("createaddrspace");
-    cmd->add_name("createaspace");
-    cmd->add_name("caddressspace");
-    cmd->add_name("caddrspace");
-    cmd->add_name("caspace");
-    cset->add(cmd= new cl_memory_createaddressdecoder_cmd("createaddressdecoder", 0,
-"memory createaddressdecoder addressspace begin end chip begin\n"
-"                   Create address decoder",
-"long help of memory createaddressdecoder"));
+    cmd->add_name("addrspace");
+    cmd->add_name("aspace");
+    cmd->add_name("as");
+    cmd->add_name("addrs");
+    cmd->add_name("addr");
+
+    mem_create_cset->add(cmd= new cl_memory_createaddressdecoder_cmd("addressdecoder", 0,
+"memory create addressdecoder addressspace begin end chip begin\n"
+"                   Create a new address decoder",
+"long help of memory create addressdecoder"));
     cmd->init();
-    cmd->add_name("createaddrdecoder");
-    cmd->add_name("createadecoder");
-    cmd->add_name("caddressdecoder");
-    cmd->add_name("caddrdecoder");
-    cmd->add_name("cadecoder");
-    cset->add(cmd= new cl_memory_createbanker_cmd("createbanker", 0,
-"memory createbanker addressspace begin end chip begin\n"
-"                   Create bank switcher\n",
-"long help of memory createbanker"));
+    cmd->add_name("addrdecoder");
+    cmd->add_name("adecoder");
+    cmd->add_name("addressdec");
+    cmd->add_name("addrdec");
+    cmd->add_name("adec");
+    cmd->add_name("ad");
+
+    mem_create_cset->add(cmd= new cl_memory_createbanker_cmd("banker", 0,
+"memory create banker addressspace begin end chip begin\n"
+"                   Create a new bank switcher",
+"long help of memory create banker"));
     cmd->init();
-    cmd->add_name("createbankswitcher");
-    cmd->add_name("createbs");
+    cmd->add_name("bankswitcher");
+    cmd->add_name("banksw");
+    cmd->add_name("bsw");
+    cmd->add_name("bs");
+
+    if (!mem_create)
+      cset->add(mem_create= new cl_super_cmd("create", 0,
+"memory create      Set of commands to create memory objects",
+"long help of memory create", mem_create_cset));
+    mem_create->init();
+    mem_create->add_name("add");
+
     cset->add(cmd= new cl_info_memory_cmd("info", 0,
 "memory info        Information about memory system",
 "long help of memory info"));
