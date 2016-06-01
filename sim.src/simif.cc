@@ -90,20 +90,20 @@ cl_sif_command::read(class cl_memory_cell *cel)
 {
   t_mem ret= cel->get();
 
-  printf("%s read: (%x)\n", get_name(), ret);
+  //printf("%s read: (%x)\n", get_name(), ret);
   if (answering &&
       answer)
     {
-      printf("answering...\n");
+      //printf("answering...\n");
       if (answered_bytes < answer_length)
 	{
 	  ret= answer[answered_bytes];
 	  answered_bytes++;
-	  printf("answer=%x\n", ret);
+	  //printf("answer=%x\n", ret);
 	}
       if (answered_bytes >= answer_length)
 	{
-	  printf("finishing command...\n");
+	  //printf("finishing command...\n");
 	  sif->finish_command();
 	}
     }
@@ -324,14 +324,12 @@ cl_sif_stop::produce_answer(void)
  * Virtual HW: simulator interface
  */
 
-cl_simulator_interface::cl_simulator_interface(class cl_uc *auc/*,
-					       const char *the_as_name,
-					       t_addr the_addr*/):
+cl_simulator_interface::cl_simulator_interface(class cl_uc *auc):
   cl_hw(auc, HW_SIMIF, 0, "simif")
 {
   version= 1;
-  as_name= NULL;//strdup(the_as_name);
-  addr= 0;//the_addr;
+  as_name= NULL;
+  addr= 0;
   commands= new cl_list(2, 2, "sif_commands");
   active_command= 0;
 }
