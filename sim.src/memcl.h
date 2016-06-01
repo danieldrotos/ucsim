@@ -210,17 +210,20 @@ public:
 class cl_memory_cell: public cl_base
 {
 #ifdef STATISTIC
-public:
+ public:
   unsigned long nuof_writes, nuof_reads;
 #endif
  public:
   t_mem *data;
   t_mem mask;
-protected:
+  t_mem def_data;
+ protected:
   uchar width;
   TYPE_UBYTE flags;
   class cl_memory_operator *operators;
-public:
+  uint8_t bank;
+  t_mem **banked_data_ptrs;
+ public:
   cl_memory_cell(uchar awidth);
   virtual ~cl_memory_cell(void);
   virtual int init(void);
@@ -277,8 +280,8 @@ class cl_memory_chip;
 class cl_address_space: public cl_memory
 {
 protected:
-  class cl_memory_cell **cells, *dummy;
-  //class cl_memory_cell *cella;
+  class cl_memory_cell /* **cells,*/ *dummy;
+  class cl_memory_cell *cella;
 public:
   class cl_decoder_list *decoders;
 public:
@@ -388,6 +391,23 @@ public:
   virtual bool shrink_out_of(t_addr begin, t_addr end);
   virtual class cl_address_decoder *split(t_addr begin, t_addr end);
 };
+
+
+/*
+ * Address decoder with bank switching supprt
+ */
+
+class cl_banker: public cl_address_decoder
+{
+ protected:
+  class cl_address_space *banker_as;
+  t_addr banker_addr;
+  t_mem banker_mask;
+ public:
+  cl_banker(class cl_memory *as, class cl_memory *chip,
+	    t_addr asb, t_addr ase, t_addr cb);
+};
+
 
 /* List of address decoders */
 
