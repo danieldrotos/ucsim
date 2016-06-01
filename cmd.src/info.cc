@@ -138,7 +138,7 @@ COMMAND_DO_WORK_UC(cl_info_stack_cmd)
 
 
 /*
- * INFO MMEORY command
+ * INFO MEMORY command
  *----------------------------------------------------------------------------
  */
 
