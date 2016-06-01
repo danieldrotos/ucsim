@@ -70,6 +70,7 @@ cl_watched_cell::match(class cl_memory_cell *the_cell)
   return(DD_FALSE);
 }
 
+/*
 void
 cl_watched_cell::mem_cell_changed(class cl_address_space *amem, t_addr aaddr,
 				  class cl_hw *hw)
@@ -89,6 +90,7 @@ cl_watched_cell::mem_cell_changed(class cl_address_space *amem, t_addr aaddr,
 	}
     }
 }
+*/
 
 void
 cl_watched_cell::address_space_added(class cl_address_space *amem,
@@ -102,6 +104,7 @@ cl_watched_cell::get_cell()
   return cell;
 }
 
+/*
 void
 cl_used_cell::mem_cell_changed(class cl_address_space *amem, t_addr aaddr, 
 class cl_hw *hw)
@@ -121,6 +124,7 @@ class cl_hw *hw)
 	}
     }
 }
+*/
 
 void
 cl_used_cell::address_space_added(class cl_address_space *amem,
@@ -278,6 +282,7 @@ cl_hw::unuse_cell(class cl_memory_cell *the_cell)
     }
 }
 
+/*
 void
 cl_hw::mem_cell_changed(class cl_address_space *mem, t_addr addr)
 {
@@ -290,6 +295,7 @@ cl_hw::mem_cell_changed(class cl_address_space *mem, t_addr addr)
       wc->mem_cell_changed(mem, addr, this);
     }
 }
+*/
 
 void
 cl_hw::address_space_added(class cl_address_space *as)
@@ -359,7 +365,7 @@ cl_hws::add(void *item)
   return(res);
 }
 
-
+/*
 void
 cl_hws::mem_cell_changed(class cl_address_space *mem, t_addr addr)
 {
@@ -371,6 +377,7 @@ cl_hws::mem_cell_changed(class cl_address_space *mem, t_addr addr)
       hw->mem_cell_changed(mem, addr);
     }
 }
+*/
 
 void
 cl_hws::address_space_added(class cl_address_space *mem)

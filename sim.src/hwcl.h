@@ -56,22 +56,22 @@ class cl_hw; // forward
 
 class cl_watched_cell: public cl_base
 {
-protected:
+ protected:
   class cl_address_space *mem;
   t_addr addr;
   class cl_memory_cell *cell;
   class cl_memory_cell **store;
-public:
+ public:
   enum what_to_do_on_cell_change wtd;
-public:
+ public:
   cl_watched_cell(class cl_address_space *amem, t_addr aaddr,
 		  class cl_memory_cell **astore,
 		  enum what_to_do_on_cell_change awtd);
   virtual ~cl_watched_cell(void);
 
   virtual bool match(class cl_memory_cell *the_cell);
-  virtual void mem_cell_changed(class cl_address_space *amem, t_addr aaddr,
-				class cl_hw *hw);
+  //virtual void mem_cell_changed(class cl_address_space *amem, t_addr aaddr,
+  //				class cl_hw *hw);
   virtual void address_space_added(class cl_address_space *amem,
 				   class cl_hw *hw);
   virtual class cl_memory_cell *get_cell();
@@ -79,30 +79,30 @@ public:
 
 class cl_used_cell: public cl_watched_cell
 {
-public:
-  cl_used_cell(class cl_address_space *amem, t_addr aaddr,
-	       class cl_memory_cell **astore,
-	       enum what_to_do_on_cell_change awtd):
-    cl_watched_cell(amem, aaddr, astore, awtd) {}
+ public:
+ cl_used_cell(class cl_address_space *amem, t_addr aaddr,
+	      class cl_memory_cell **astore,
+	      enum what_to_do_on_cell_change awtd):
+  cl_watched_cell(amem, aaddr, astore, awtd) {}
 
-  virtual void mem_cell_changed(class cl_address_space *amem, t_addr aaddr,
-				class cl_hw *hw);
+  //virtual void mem_cell_changed(class cl_address_space *amem, t_addr aaddr,
+  //				class cl_hw *hw);
   virtual void address_space_added(class cl_address_space *amem,
 				   class cl_hw *hw);
 };
 
 class cl_hw: public cl_guiobj
 {
-public:
+ public:
   int flags;
   class cl_uc *uc;
   enum hw_cath cathegory;
   int id;
   const char *id_string;
-protected:
+ protected:
   class cl_list *partners;
   class cl_list *watched_cells;
-public:
+ public:
   cl_hw(class cl_uc *auc, enum hw_cath cath, int aid, const char *aid_string);
   virtual ~cl_hw(void);
 
@@ -126,7 +126,7 @@ public:
 					 class cl_memory_cell **store,
 					 enum what_to_do_on_cell_change awtd);
   virtual void unuse_cell(class cl_memory_cell *cell);
-  virtual void mem_cell_changed(class cl_address_space *mem, t_addr addr);
+  //virtual void mem_cell_changed(class cl_address_space *mem, t_addr addr);
   virtual void address_space_added(class cl_address_space *as);
 
   virtual int tick(int cycles);
@@ -140,22 +140,22 @@ public:
 
 class cl_hws: public cl_list
 {
-public:
+ public:
  cl_hws(void): cl_list(2, 2, cchars("hws")) {}
   virtual t_index add(void *item);
-  virtual void mem_cell_changed(class cl_address_space *mem, t_addr addr);
+  //virtual void mem_cell_changed(class cl_address_space *mem, t_addr addr);
   virtual void address_space_added(class cl_address_space *as);
 };
 
 
 class cl_partner_hw: public cl_base
 {
-protected:
+ protected:
   class cl_uc *uc;
   enum hw_cath cathegory;
   int id;
   class cl_hw *partner;
-public:
+ public:
   cl_partner_hw(class cl_uc *auc, enum hw_cath cath, int aid);
 
   virtual class cl_hw *get_partner(void);
