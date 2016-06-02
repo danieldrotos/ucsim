@@ -403,9 +403,14 @@ class cl_banker: public cl_address_decoder
   class cl_address_space *banker_as;
   t_addr banker_addr;
   t_mem banker_mask;
+  int nuof_banks;
+  class cl_address_decoder **banks;
  public:
-  cl_banker(class cl_memory *as, class cl_memory *chip,
-	    t_addr asb, t_addr ase, t_addr cb);
+  cl_banker(class cl_address_space *as,
+	    t_addr addr,
+	    t_mem mask);
+  virtual ~cl_banker();
+  virtual int init();
 };
 
 

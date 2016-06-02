@@ -1412,10 +1412,61 @@ cl_address_decoder::split(t_addr begin, t_addr end)
  * Bank switcher
  */
 
-cl_banker::cl_banker(class cl_memory *as, class cl_memory *chip,
-		     t_addr asb, t_addr ase, t_addr cb):
-  cl_address_decoder(as, chip, asb, ase, cb)
+cl_banker::cl_banker(class cl_address_space *as,
+		     t_addr addr,
+		     t_mem mask):
+  cl_address_decoder(NULL, NULL, -1, -1, -1)
 {
+  banker_as= as;
+  banker_addr= addr;
+  banker_mask= mask;
+  nuof_banks= 0;
+  banks= 0;
+}
+
+int
+cl_banker::init()
+{
+  int m= banker_mask;
+  int b;
+  
+  if (m == 0)
+    nuof_banks= 0;
+  else
+    {
+      while ((m&1) == 0)
+	m>>= 1;
+      b= 1;
+      m>>= 1;
+      while ((m&1) != 0)
+	{
+	  m>>= 1;
+	  b++;
+	}
+      nuof_banks= b+1;
+    }
+  if (nuof_banks > 0)
+    {
+      banks= (class cl_address_decoder **)malloc(nuof_banks * sizeof(class cl_address_decoder *));
+      for (b= 0; b < nuof_banks; b++)
+	{
+	  banks[b]= NULL;
+	}
+    }
+}
+
+cl_banker::~cl_banker()
+{
+  int i;
+  if (banks)
+    {
+      for (i= 0; i < nuof_banks; i++)
+	{
+	  if (banks[i])
+	    delete banks[i];
+	}
+      free(banks);
+    }
 }
 
 
