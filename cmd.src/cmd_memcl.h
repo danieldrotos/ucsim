@@ -31,17 +31,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "newcmdcl.h"
 
 
-// MEMORY CREATECHIP
-COMMAND_ON(uc,cl_memory_createchip_cmd);
+// MEMORY CREATE CHIP
+COMMAND_ON(uc,cl_memory_create_chip_cmd);
 
-// MEMORY CREATEADDRESSSPACE
-COMMAND_ON(uc,cl_memory_createaddressspace_cmd);
+// MEMORY CREATE ADDRESSSPACE
+COMMAND_ON(uc,cl_memory_create_addressspace_cmd);
 
-// MEMORY CREATEADDRESSDECODER
-COMMAND_ON(uc,cl_memory_createaddressdecoder_cmd);
+// MEMORY CREATE ADDRESSDECODER
+COMMAND_ON(uc,cl_memory_create_addressdecoder_cmd);
 
-// MEMORY CREATEBANKER
-COMMAND_ON(uc,cl_memory_createbanker_cmd);
+// MEMORY CREATE BANKER
+COMMAND_ON(uc,cl_memory_create_banker_cmd);
+
+// MEMORY CREATE BANK
+COMMAND_ON(uc,cl_memory_create_bank_cmd);
 
 
 #endif
