@@ -33,7 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uccl.h"
 
 // local, cmd.src
-#include "cmduccl.h"
+#include "cmd_uccl.h"
 
 
 /*
@@ -537,4 +537,4 @@ COMMAND_DO_WORK_UC(cl_Where_cmd)
 }
 
 
-/* End of cmd.src/cmduc.cc */
+/* End of cmd.src/cmd_uc.cc */

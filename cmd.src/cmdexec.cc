@@ -38,7 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local, cmd.src
-#include "cmdsetcl.h"
+#include "cmdexeccl.h"
 #include "cmdutil.h"
 
 
@@ -457,4 +457,4 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
 }
 
 
-/* End of cmd.src/cmdset.cc */
+/* End of cmd.src/cmdexec.cc */

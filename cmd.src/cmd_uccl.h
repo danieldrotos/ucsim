@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_CMDUCCL_HEADER
-#define CMD_CMDUCCL_HEADER
+#ifndef CMD_CMD_UCCL_HEADER
+#define CMD_CMD_UCCL_HEADER
 
 #include "newcmdcl.h"
 
@@ -54,4 +54,4 @@ COMMAND_DATA_ANCESTOR_ON(uc,cl_Where_cmd,cl_where_cmd,int last);
 
 #endif
 
-/* End of cmd.src/cmduccl.h */
+/* End of cmd.src/cmd_uccl.h */

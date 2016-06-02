@@ -41,9 +41,9 @@ infodir         = @infodir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-OBJECTS         = cmdset.o command.o cmdutil.o syntax.o \
-		  get.o set.o timer.o bp.o info.o show.o cmdgui.o cmdconf.o \
-		  cmduc.o cmdstat.o cmdmem.o newcmd.o newcmdposix.o
+OBJECTS         = command.o cmdutil.o syntax.o \
+		  cmdexec.o get.o set.o timer.o bp.o info.o show.o cmdgui.o cmdconf.o \
+		  cmd_uc.o cmdstat.o cmdmem.o newcmd.o newcmdposix.o
 
 #ifeq ($(WINSOCK_AVAIL), 1)
 #OBJECTS += newcmdwin32.o

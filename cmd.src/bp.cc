@@ -35,7 +35,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // cmd
-#include "cmdsetcl.h"
 #include "bpcl.h"
 
 

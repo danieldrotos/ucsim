@@ -47,7 +47,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // cmd.src
-#include "cmdsetcl.h"
+#include "cmdexeccl.h"
 #include "cmdutil.h"
 #include "cmdconfcl.h"
 #include "showcl.h"

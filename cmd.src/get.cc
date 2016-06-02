@@ -38,7 +38,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "optioncl.h"
 
 // local
-#include "cmdsetcl.h"
 #include "getcl.h"
 #include "cmdutil.h"
 

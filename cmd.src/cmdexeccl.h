@@ -25,15 +25,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_CMDSETCL_HEADER
-#define CMD_CMDSETCL_HEADER
+#ifndef CMD_CMDEXECCL_HEADER
+#define CMD_CMDEXECCL_HEADER
 
 // local, cmd
 #include "commandcl.h"
 #include "newcmdcl.h"
 
 
-// STATE
+// Execution
 COMMAND_ON(sim,cl_run_cmd);
 COMMAND_ON(sim,cl_stop_cmd);
 COMMAND_ON(sim,cl_step_cmd);
@@ -57,4 +57,4 @@ COMMAND_ON(app,cl_expression_cmd);
 
 #endif
 
-/* End of cmd.src/cmdsetcl.h */
+/* End of cmd.src/cmdexeccl.h */

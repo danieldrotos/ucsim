@@ -47,7 +47,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "optioncl.h"
 
 //cmd.src
-#include "cmduccl.h"
+#include "cmd_uccl.h"
 
 // local
 #include "uc51cl.h"

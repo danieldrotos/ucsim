@@ -37,7 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 // cmd
-#include "cmdsetcl.h"
+#include "cmdexeccl.h"
 #include "cmdguicl.h"
 
 // local, sim.src

@@ -39,7 +39,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // cmd.src
 #include "newcmdcl.h"
-#include "cmduccl.h"
+#include "cmd_uccl.h"
 #include "bpcl.h"
 #include "getcl.h"
 #include "setcl.h"
