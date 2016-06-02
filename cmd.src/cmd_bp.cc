@@ -35,7 +35,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // cmd
-#include "bpcl.h"
+#include "cmd_bpcl.h"
 
 
 /*
@@ -201,4 +201,4 @@ COMMAND_DO_WORK_UC(cl_delete_cmd)
 }
 
 
-/* End of cmd.src/bp.cc */
+/* End of cmd.src/cmd_bp.cc */

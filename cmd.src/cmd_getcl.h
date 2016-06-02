@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (cmd.src/infocl.h)
+ * Simulator of microcontrollers (cmd.src/getcl.h)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -25,28 +25,42 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_INFOCL_HEADER
-#define CMD_INFOCL_HEADER
+#ifndef CMD_CMD_GETCL_HEADER
+#define CMD_CMD_GETCL_HEADER
 
 #include "newcmdcl.h"
 
 
-// INFO BP
-COMMAND_ON(uc,cl_info_bp_cmd);
+// GET SFR
+/*class cl_get_sfr_cmd: public cl_cmd
+{
+public:
+  cl_get_sfr_cmd(//class cl_sim *asim,
+		 char *aname,
+		 int  can_rep,
+		 char *short_hlp,
+		 char *long_hlp):
+    cl_cmd(aname, can_rep, short_hlp, long_hlp) {}
+  virtual int do_work(class cl_sim *sim,
+		      class cl_cmdline *cmdline, class cl_console *con);
+};*/
+COMMAND_ON(uc,cl_get_sfr_cmd);
 
-// INFO REG
-COMMAND_ON(uc,cl_info_reg_cmd);
-
-// INFO HW
-COMMAND_ON(uc,cl_info_hw_cmd);
-
-// INFO STACK
-COMMAND_ON(uc,cl_info_stack_cmd);
-
-// INFO MEMORY
-COMMAND_ON(uc,cl_info_memory_cmd);
-
+// GET OPTION
+/*class cl_get_option_cmd: public cl_cmd
+{
+public:
+  cl_get_option_cmd(//class cl_sim *asim,
+		    char *aname,
+		    int  can_rep,
+		    char *short_hlp,
+		    char *long_hlp):
+    cl_cmd(aname, can_rep, short_hlp, long_hlp) {}
+  virtual int do_work(class cl_sim *sim,
+		      class cl_cmdline *cmdline, class cl_console *con);
+};*/
+COMMAND_ON(app,cl_get_option_cmd);
 
 #endif
 
-/* End of cmd.src/infocl.h */
+/* End of cmd.src/cmd_getcl.h */

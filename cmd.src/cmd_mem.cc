@@ -33,7 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local
-#include "cmdmemcl.h"
+#include "cmd_memcl.h"
 
 
 /*
@@ -304,4 +304,4 @@ COMMAND_DO_WORK_UC(cl_memory_createbanker_cmd)
 }
 
 
-/* End of cmd.src/cmdmem.cc */
+/* End of cmd.src/cmd_mem.cc */

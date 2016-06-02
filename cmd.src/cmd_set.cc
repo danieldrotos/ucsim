@@ -40,7 +40,7 @@
 #include "optioncl.h"
 
 // local
-#include "setcl.h"
+#include "cmd_setcl.h"
 #include "cmdutil.h"
 
 
@@ -350,4 +350,4 @@ COMMAND_DO_WORK_APP(cl_set_console_cmd)
 }
 
 
-/* End of cmd.src/set.cc */
+/* End of cmd.src/cmd_set.cc */

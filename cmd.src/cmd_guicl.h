@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_CMDGUICL_HEADER
-#define CMD_CMDGUICL_HEADER
+#ifndef CMD_CMD_GUICL_HEADER
+#define CMD_CMD_GUICL_HEADER
 
 #include "newcmdcl.h"
 
@@ -40,4 +40,4 @@ COMMAND_ON(uc,cl_gui_stop_cmd);
 
 #endif
 
-/* End of cmd.src/cmdguicl.h */
+/* End of cmd.src/cmd_guicl.h */

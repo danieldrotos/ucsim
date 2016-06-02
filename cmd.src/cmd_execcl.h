@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (cmd.src/cmdmemcl.h)
+ * Simulator of microcontrollers (cmd.src/cmdsetcl.h)
  *
- * Copyright (C) 2001,01 Drotos Daniel, Talker Bt.
+ * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,25 +25,36 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_CMDMEM_HEADER
-#define CMD_CMDMEM_HEADER
+#ifndef CMD_CMD_EXECCL_HEADER
+#define CMD_CMD_EXECCL_HEADER
 
+// local, cmd
+#include "commandcl.h"
 #include "newcmdcl.h"
 
 
-// MEMORY CREATECHIP
-COMMAND_ON(uc,cl_memory_createchip_cmd);
+// Execution
+COMMAND_ON(sim,cl_run_cmd);
+COMMAND_ON(sim,cl_stop_cmd);
+COMMAND_ON(sim,cl_step_cmd);
+COMMAND_ON(sim,cl_next_cmd);
 
-// MEMORY CREATEADDRESSSPACE
-COMMAND_ON(uc,cl_memory_createaddressspace_cmd);
+//COMMAND_ON(app,cl_help_cmd);
+COMMAND_HEAD(cl_help_cmd)
+COMMAND_METHODS_ON(app,cl_help_cmd)
+  private:
+int matches;
+class cl_cmd *cmd_found;
+bool do_set(class cl_cmdline *cmdline, int pari, class cl_cmdset *cmdset,
+	    class cl_console_base *con);
+COMMAND_TAIL;
 
-// MEMORY CREATEADDRESSDECODER
-COMMAND_ON(uc,cl_memory_createaddressdecoder_cmd);
-
-// MEMORY CREATEBANKER
-COMMAND_ON(uc,cl_memory_createbanker_cmd);
+COMMAND(cl_quit_cmd);
+COMMAND_ON(app,cl_kill_cmd);
+COMMAND_ON(app,cl_exec_cmd);
+COMMAND_ON(app,cl_expression_cmd);
 
 
 #endif
 
-/* End of cmd.src/cmdmemcl.h */
+/* End of cmd.src/cmd_execcl.h */

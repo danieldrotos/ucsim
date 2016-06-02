@@ -39,7 +39,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local
-#include "showcl.h"
+#include "cmd_showcl.h"
 
 
 /*
@@ -210,4 +210,4 @@ COMMAND_DO_WORK_APP(cl_show_console)
   return false;
 }
 
-/* End of cmd.src/show.cc */
+/* End of cmd.src/cmd_show.cc */

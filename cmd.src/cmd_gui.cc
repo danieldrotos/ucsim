@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local
-#include "cmdguicl.h"
+#include "cmd_guicl.h"
 
 
 /*
@@ -75,4 +75,4 @@ COMMAND_DO_WORK_UC(cl_gui_stop_cmd)
 }
 
 
-/* End of cmd.src/cmdgui.cc */
+/* End of cmd.src/cmd_gui.cc */

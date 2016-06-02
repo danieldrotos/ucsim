@@ -39,15 +39,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // cmd.src
 #include "newcmdcl.h"
-#include "cmd_uccl.h"
-#include "bpcl.h"
-#include "getcl.h"
-#include "setcl.h"
-#include "infocl.h"
-#include "timercl.h"
-#include "cmdstatcl.h"
-#include "cmdmemcl.h"
 #include "cmdutil.h"
+#include "cmd_uccl.h"
+#include "cmd_bpcl.h"
+#include "cmd_getcl.h"
+#include "cmd_setcl.h"
+#include "cmd_infocl.h"
+#include "cmd_timercl.h"
+#include "cmd_statcl.h"
+#include "cmd_memcl.h"
 
 // local, sim.src
 #include "uccl.h"

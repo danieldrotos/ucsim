@@ -33,7 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local
-#include "cmdconfcl.h"
+#include "cmd_confcl.h"
 
 
 /*
@@ -101,4 +101,4 @@ COMMAND_DO_WORK_APP(cl_conf_objects_cmd)
 }
 
 
-/* End of cmd.src/cmdconf.cc */
+/* End of cmd.src/cmd_conf.cc */

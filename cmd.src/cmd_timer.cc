@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local
-#include "timercl.h"
+#include "cmd_timercl.h"
 
 
 /*
@@ -283,4 +283,4 @@ COMMAND_DO_WORK_UC(cl_timer_value_cmd)
 }
 
 
-/* End of cmd.src/timer.cc */
+/* End of cmd.src/cmd_timer.cc */

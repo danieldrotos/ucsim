@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (cmd.src/showcl.h)
+ * Simulator of microcontrollers (cmd.src/cmdmemcl.h)
  *
- * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2001,01 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,28 +25,25 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_SHOWCL_HEADER
-#define CMD_SHOWCL_HEADER
+#ifndef CMD_CMD_MEM_HEADER
+#define CMD_CMD_MEM_HEADER
 
 #include "newcmdcl.h"
 
 
-// SHOW COPYING
-COMMAND(cl_show_copying_cmd);
+// MEMORY CREATECHIP
+COMMAND_ON(uc,cl_memory_createchip_cmd);
 
-// SHOW WARRANTY
-COMMAND(cl_show_warranty_cmd);
+// MEMORY CREATEADDRESSSPACE
+COMMAND_ON(uc,cl_memory_createaddressspace_cmd);
 
-// SHOW OPTION
-COMMAND_ON(app,cl_show_option_cmd);
+// MEMORY CREATEADDRESSDECODER
+COMMAND_ON(uc,cl_memory_createaddressdecoder_cmd);
 
-// SHOW ERROR
-COMMAND_ON(app,cl_show_error_cmd);
-
-// SHOW CONSOLE
-COMMAND_ON(app,cl_show_console);
+// MEMORY CREATEBANKER
+COMMAND_ON(uc,cl_memory_createbanker_cmd);
 
 
 #endif
 
-/* End of cmd.src/showcl.h */
+/* End of cmd.src/cmd_memcl.h */

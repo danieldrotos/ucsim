@@ -38,7 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "optioncl.h"
 
 // local
-#include "getcl.h"
+#include "cmd_getcl.h"
 #include "cmdutil.h"
 
 
@@ -126,4 +126,4 @@ COMMAND_DO_WORK_APP(cl_get_option_cmd)
 }
 
 
-/* End of cmd.src/get.cc */
+/* End of cmd.src/cmd_get.cc */

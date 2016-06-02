@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (cmd.src/setcl.h)
+ * Simulator of microcontrollers (cmd.src/bpcl.h)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -25,31 +25,43 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_SETCL_HEADER
-#define CMD_SETCL_HEADER
+#ifndef CMD_CMD_BPCL_HEADER
+#define CMD_CMD_BPCL_HEADER
 
 #include "newcmdcl.h"
 
 
-// SET MEMORY
-COMMAND_ON(uc,cl_set_mem_cmd);
+// BREAK
+COMMAND_HEAD(cl_break_cmd)
+public:
+  enum brk_perm perm;
+COMMAND_METHODS_ON(uc,cl_break_cmd)
+  virtual void do_fetch(class cl_uc *uc,
+			t_addr addr, int hit, class cl_console_base *con);
+  virtual void do_event(class cl_uc *uc,
+			class cl_address_space *mem,
+			char op, t_addr addr, int hit,
+			class cl_console_base *con);
+COMMAND_TAIL;
 
-// SET BIT
-COMMAND_ON(uc,cl_set_bit_cmd);
+// TBREAK
+class cl_tbreak_cmd: public cl_break_cmd
+{
+public:
+  cl_tbreak_cmd(const char *aname,
+		int  can_rep,
+		const char *short_hlp,
+		const char *long_hlp):
+    cl_break_cmd(aname, can_rep, short_hlp, long_hlp) {perm=brkDYNAMIC;}
+};
 
-// SET HW
-COMMAND_ON(uc,cl_set_hw_cmd);
+// CLEAR
+COMMAND_ON(uc,cl_clear_cmd);
 
-// SET OPTION
-COMMAND_ON(app,cl_set_option_cmd);
-
-// SET ERROR
-COMMAND_ON(app,cl_set_error_cmd);
-
-// SET CONSOLE
-COMMAND_ON(app,cl_set_console_cmd);
+// DELETE
+COMMAND_ON(uc,cl_delete_cmd);
 
 
 #endif
 
-/* End of cmd.src/setcl.h */
+/* End of cmd.src/cmd_bpcl.h */

@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (cmd.src/cmdstatcl.h)
+ * Simulator of microcontrollers (cmd.src/showcl.h)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -25,20 +25,28 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_CMDSTATCL_HEADER
-#define CMD_CMDSTATCL_HEADER
-
-#include "ddconfig.h"
+#ifndef CMD_CMD_SHOWCL_HEADER
+#define CMD_CMD_SHOWCL_HEADER
 
 #include "newcmdcl.h"
 
 
-#ifdef STATISTIC
-// STATISTIC
-COMMAND_ON(uc,cl_statistic_cmd);
-#endif
+// SHOW COPYING
+COMMAND(cl_show_copying_cmd);
+
+// SHOW WARRANTY
+COMMAND(cl_show_warranty_cmd);
+
+// SHOW OPTION
+COMMAND_ON(app,cl_show_option_cmd);
+
+// SHOW ERROR
+COMMAND_ON(app,cl_show_error_cmd);
+
+// SHOW CONSOLE
+COMMAND_ON(app,cl_show_console);
 
 
 #endif
 
-/* End of cmd.src/cmdstatcl.h */
+/* End of cmd.src/cmd_showcl.h */

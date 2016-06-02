@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local
-#include "infocl.h"
+#include "cmd_infocl.h"
 
 
 /*
@@ -212,4 +212,4 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
 }
 
 
-/* End of cmd.src/info.cc */
+/* End of cmd.src/cmd_info.cc */

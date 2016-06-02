@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (cmd.src/bpcl.h)
+ * Simulator of microcontrollers (cmd.src/timercl.h)
  *
- * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2001,01 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,43 +25,33 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_BPCL_HEADER
-#define CMD_BPCL_HEADER
+#ifndef CMD_CMD_TIMERCL_HEADER
+#define CMD_CMD_TIMERCL_HEADER
 
 #include "newcmdcl.h"
 
 
-// BREAK
-COMMAND_HEAD(cl_break_cmd)
+
+COMMAND_HEAD(cl_timer_cmd)
 public:
-  enum brk_perm perm;
-COMMAND_METHODS_ON(uc,cl_break_cmd)
-  virtual void do_fetch(class cl_uc *uc,
-			t_addr addr, int hit, class cl_console_base *con);
-  virtual void do_event(class cl_uc *uc,
-			class cl_address_space *mem,
-			char op, t_addr addr, int hit,
-			class cl_console_base *con);
+  class cl_ticker *ticker;
+  bool as_nr;
+  int id_nr;
+  const char *id_str;
+COMMAND_METHODS_ON(uc,cl_timer_cmd)
+  void set_ticker(class cl_uc *uc,
+		  class cl_cmd_arg *param);
 COMMAND_TAIL;
 
-// TBREAK
-class cl_tbreak_cmd: public cl_break_cmd
-{
-public:
-  cl_tbreak_cmd(const char *aname,
-		int  can_rep,
-		const char *short_hlp,
-		const char *long_hlp):
-    cl_break_cmd(aname, can_rep, short_hlp, long_hlp) {perm=brkDYNAMIC;}
-};
 
-// CLEAR
-COMMAND_ON(uc,cl_clear_cmd);
-
-// DELETE
-COMMAND_ON(uc,cl_delete_cmd);
+COMMAND_ANCESTOR_ON(uc,cl_timer_add_cmd,cl_timer_cmd);
+COMMAND_ANCESTOR_ON(uc,cl_timer_delete_cmd,cl_timer_cmd);
+COMMAND_ANCESTOR_ON(uc,cl_timer_get_cmd,cl_timer_cmd);
+COMMAND_ANCESTOR_ON(uc,cl_timer_run_cmd,cl_timer_cmd);
+COMMAND_ANCESTOR_ON(uc,cl_timer_stop_cmd,cl_timer_cmd);
+COMMAND_ANCESTOR_ON(uc,cl_timer_value_cmd,cl_timer_cmd);
 
 
 #endif
 
-/* End of cmd.src/bpcl.h */
+/* End of cmd.src/cmd_timercl.h */

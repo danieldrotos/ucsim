@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (cmd.src/getcl.h)
+ * Simulator of microcontrollers (cmd.src/setcl.h)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -25,42 +25,31 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CMD_GETCL_HEADER
-#define CMD_GETCL_HEADER
+#ifndef CMD_CMD_SETCL_HEADER
+#define CMD_CMD_SETCL_HEADER
 
 #include "newcmdcl.h"
 
 
-// GET SFR
-/*class cl_get_sfr_cmd: public cl_cmd
-{
-public:
-  cl_get_sfr_cmd(//class cl_sim *asim,
-		 char *aname,
-		 int  can_rep,
-		 char *short_hlp,
-		 char *long_hlp):
-    cl_cmd(aname, can_rep, short_hlp, long_hlp) {}
-  virtual int do_work(class cl_sim *sim,
-		      class cl_cmdline *cmdline, class cl_console *con);
-};*/
-COMMAND_ON(uc,cl_get_sfr_cmd);
+// SET MEMORY
+COMMAND_ON(uc,cl_set_mem_cmd);
 
-// GET OPTION
-/*class cl_get_option_cmd: public cl_cmd
-{
-public:
-  cl_get_option_cmd(//class cl_sim *asim,
-		    char *aname,
-		    int  can_rep,
-		    char *short_hlp,
-		    char *long_hlp):
-    cl_cmd(aname, can_rep, short_hlp, long_hlp) {}
-  virtual int do_work(class cl_sim *sim,
-		      class cl_cmdline *cmdline, class cl_console *con);
-};*/
-COMMAND_ON(app,cl_get_option_cmd);
+// SET BIT
+COMMAND_ON(uc,cl_set_bit_cmd);
+
+// SET HW
+COMMAND_ON(uc,cl_set_hw_cmd);
+
+// SET OPTION
+COMMAND_ON(app,cl_set_option_cmd);
+
+// SET ERROR
+COMMAND_ON(app,cl_set_error_cmd);
+
+// SET CONSOLE
+COMMAND_ON(app,cl_set_console_cmd);
+
 
 #endif
 
-/* End of cmd.src/getcl.h */
+/* End of cmd.src/cmd_setcl.h */

@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 // local
-#include "cmdstatcl.h"
+#include "cmd_statcl.h"
 
 
 #ifdef STATISTIC
@@ -116,4 +116,4 @@ COMMAND_DO_WORK_UC(cl_statistic_cmd)
 #endif
 
 
-/* End of cmd.src/cmdstat.cc */
+/* End of cmd.src/cmd_stat.cc */
