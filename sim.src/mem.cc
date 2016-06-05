@@ -765,6 +765,7 @@ cl_address_space::cl_address_space(const char *id,
       cella[i].init();
     }
   dummy= new cl_dummy_cell(awidth);
+  dummy->init();
 }
 
 cl_address_space::~cl_address_space(void)
