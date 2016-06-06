@@ -1445,7 +1445,8 @@ cl_banker::cl_banker(class cl_address_space *the_banker_as,
   banker_mask= the_banker_mask;
   nuof_banks= 0;
   banks= 0;
-  bank_ptrs= 0;
+  //bank_ptrs= 0;
+  bank= -1;
 }
 
 int
@@ -1453,13 +1454,15 @@ cl_banker::init()
 {
   int m= banker_mask;
   int b;
-  
+
+  shift_by= 0;
   if (m == 0)
     nuof_banks= 0;
   else
     {
+      shift_by= 0;
       while ((m&1) == 0)
-	m>>= 1;
+	m>>= 1, shift_by++;
       b= 1;
       m>>= 1;
       while ((m&1) != 0)
@@ -1467,12 +1470,12 @@ cl_banker::init()
 	  m>>= 1;
 	  b++;
 	}
-      nuof_banks= b+1;
+      nuof_banks= 1 << b;
     }
   if (nuof_banks > 0)
     {
       banks= (class cl_address_decoder **)malloc(nuof_banks * sizeof(class cl_address_decoder *));
-      bank_ptrs= (t_mem **)calloc(nuof_banks*(as_end-as_begin+1), sizeof(t_mem *));
+      //bank_ptrs= (t_mem **)calloc(nuof_banks*(as_end-as_begin+1), sizeof(t_mem *));
       for (b= 0; b < nuof_banks; b++)
 	{
 	  banks[b]= NULL;
@@ -1493,17 +1496,74 @@ cl_banker::~cl_banker()
 	}
       free(banks);
     }
+  //if (bank_ptrs) free(bank_ptrs);
 }
 
 void
 cl_banker::add_bank(int bank_nr, class cl_memory *chip, t_addr chip_start)
 {
+  if (!chip)
+    return;
+  if (!address_space)
+    return;
+  if (!chip->is_chip())
+    return;
+
+  if (bank_nr >= nuof_banks)
+    return;
+  
+  class cl_address_decoder *ad= new cl_address_decoder(address_space,
+						       chip,
+						       as_begin, as_end,
+						       chip_start);
+  ad->init();
+  if (banks[bank_nr])
+    {
+      delete banks[bank_nr];
+      banks[bank_nr]= 0;
+    }
+  banks[bank_nr]= ad;
+  /*
+  t_addr a, s, i;
+  s= as_end - as_begin + 1;
+  for (i= 0; i < s; i++)
+    {
+      a= chip_start + i;
+      //bank_ptrs[bank_nr*s + i]= ad->memchip->get_slot(a);
+    }
+  */
+  activate(0);
+}
+
+t_mem
+cl_banker::actual_bank()
+{
+  //t_mem m= banker_mask;
+  t_mem v= banker_as->read(banker_addr) & banker_mask;
+
+  return v >> shift_by;
 }
 
 bool
 cl_banker::activate(class cl_console_base *con)
 {
-  return false;
+  int b= actual_bank();
+  t_addr i, s;
+  t_mem *data;
+  class cl_memory_cell *c;
+
+  if (b == bank)
+    return true;
+  s= as_end - as_begin + 1;
+  for (i= 0; i < s; i++)
+    {
+      t_addr ca= banks[b]->chip_begin + i;
+      data= banks[b]->memchip->get_slot(ca);
+      c= address_space->get_cell(as_begin+i);
+      c->decode(data);
+    }
+  bank= b;
+  return true;
 }
 
   

@@ -383,7 +383,8 @@ public:
 		     t_addr asb, t_addr ase, t_addr cb);
   virtual ~cl_address_decoder(void);
   virtual int init(void);
-
+  virtual bool is_banker() { return false; }
+  
   virtual bool activate(class cl_console_base *con);
 
   virtual bool fully_covered_by(t_addr begin, t_addr end);
@@ -406,8 +407,10 @@ class cl_banker: public cl_address_decoder
   t_addr banker_addr;
   t_mem banker_mask;
   int nuof_banks;
+  int bank;
   class cl_address_decoder **banks;
-  t_mem **bank_ptrs;
+  //t_mem **bank_ptrs;
+  int shift_by;
  public:
   cl_banker(class cl_address_space *the_banker_as,
 	    t_addr the_banker_addr,
@@ -417,9 +420,11 @@ class cl_banker: public cl_address_decoder
 	    t_addr the_ase);
   virtual ~cl_banker();
   virtual int init();
+  virtual bool is_banker() { return false; }
 
   virtual void add_bank(int bank_nr, class cl_memory *chip, t_addr chip_start);
 
+  virtual t_mem actual_bank();
   virtual bool activate(class cl_console_base *con);
 };
 

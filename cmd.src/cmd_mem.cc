@@ -325,6 +325,8 @@ COMMAND_DO_WORK_UC(cl_memory_create_bank_cmd)
 	(class cl_banker *)((class cl_address_space *)as)->get_decoder_of(as_begin);
       if (!d)
 	con->dd_printf("Specified address is not decoded, create a banker first\n");
+      else if (!d->is_banker())
+	con->dd_printf("Specified area is not decoded by banker\n");
       else
 	{
 	  d->add_bank(bank, chip, chip_begin);
