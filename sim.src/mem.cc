@@ -455,8 +455,8 @@ cl_memory_cell::cl_memory_cell(uchar awidth):
   //*data= 0;
   def_data= 0;
   operators= NULL;
-  bank= 0;
-  banked_data_ptrs= 0;
+  //bank= 0;
+  //banked_data_ptrs= 0;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
 #endif
@@ -540,6 +540,20 @@ cl_memory_cell::decode(class cl_memory_chip *chip, t_addr addr)
     flags&= ~(CELL_NON_DECODED);
 }
 
+void
+cl_memory_cell::decode(t_mem *data_ptr)
+{
+  if (data_ptr == NULL)
+    {
+      data= &def_data;
+      flags|= CELL_NON_DECODED;
+    }
+  else
+    {
+      data= data_ptr;
+      flags&= ~CELL_NON_DECODED;
+    }
+}
 
 t_mem
 cl_memory_cell::read(void)
@@ -938,7 +952,12 @@ cl_address_space::set_cell_flag(t_addr addr, bool set_to, enum cell_flag flag)
   cell->set_flag(flag, set_to);
 }
 
-
+class cl_address_decoder *
+cl_address_space::get_decoder_of(t_addr addr)
+{
+  return NULL;
+}
+  
 bool
 cl_address_space::decode_cell(t_addr addr,
 			      class cl_memory_chip *chip, t_addr chipaddr)
@@ -1413,16 +1432,20 @@ cl_address_decoder::split(t_addr begin, t_addr end)
  * Bank switcher
  */
 
-cl_banker::cl_banker(class cl_address_space *as,
-		     t_addr addr,
-		     t_mem mask):
-  cl_address_decoder(NULL, NULL, -1, -1, -1)
+cl_banker::cl_banker(class cl_address_space *the_banker_as,
+		     t_addr the_banker_addr,
+		     t_mem the_banker_mask,
+		     class cl_address_space *the_as,
+		     t_addr the_asb,
+		     t_addr the_ase):
+  cl_address_decoder(the_as, NULL, the_asb, the_ase, -1)
 {
-  banker_as= as;
-  banker_addr= addr;
-  banker_mask= mask;
+  banker_as= the_banker_as;
+  banker_addr= the_banker_addr;
+  banker_mask= the_banker_mask;
   nuof_banks= 0;
   banks= 0;
+  bank_ptrs= 0;
 }
 
 int
@@ -1449,11 +1472,13 @@ cl_banker::init()
   if (nuof_banks > 0)
     {
       banks= (class cl_address_decoder **)malloc(nuof_banks * sizeof(class cl_address_decoder *));
+      bank_ptrs= (t_mem **)calloc(nuof_banks*(as_end-as_begin+1), sizeof(t_mem *));
       for (b= 0; b < nuof_banks; b++)
 	{
 	  banks[b]= NULL;
 	}
     }
+  return 0;
 }
 
 cl_banker::~cl_banker()
@@ -1470,7 +1495,18 @@ cl_banker::~cl_banker()
     }
 }
 
+void
+cl_banker::add_bank(int bank_nr, class cl_memory *chip, t_addr chip_start)
+{
+}
 
+bool
+cl_banker::activate(class cl_console_base *con)
+{
+  return false;
+}
+
+  
 /*
  * List of address decoders
  */

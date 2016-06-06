@@ -221,8 +221,8 @@ class cl_memory_cell: public cl_base
   uchar width;
   TYPE_UBYTE flags;
   class cl_memory_operator *operators;
-  uint8_t bank;
-  t_mem **banked_data_ptrs;
+  //uint8_t bank;
+  //t_mem **banked_data_ptrs;
  public:
   cl_memory_cell(uchar awidth);
   virtual ~cl_memory_cell(void);
@@ -237,7 +237,8 @@ class cl_memory_cell: public cl_base
 
   virtual void un_decode(void);
   virtual void decode(class cl_memory_chip *chip, t_addr addr);
-
+  virtual void decode(t_mem *data_ptr);
+  
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip);
   virtual /*t_mem*/int get(void);
@@ -304,6 +305,7 @@ public:
   virtual bool get_cell_flag(t_addr addr, enum cell_flag flag);
   virtual void set_cell_flag(t_addr addr, bool set_to, enum cell_flag flag);
 
+  virtual class cl_address_decoder *get_decoder_of(t_addr addr);
   virtual bool decode_cell(t_addr addr,
 			   class cl_memory_chip *chip, t_addr chipaddr);
   virtual void undecode_cell(t_addr addr);
@@ -405,12 +407,20 @@ class cl_banker: public cl_address_decoder
   t_mem banker_mask;
   int nuof_banks;
   class cl_address_decoder **banks;
+  t_mem **bank_ptrs;
  public:
-  cl_banker(class cl_address_space *as,
-	    t_addr addr,
-	    t_mem mask);
+  cl_banker(class cl_address_space *the_banker_as,
+	    t_addr the_banker_addr,
+	    t_mem the_banker_mask,
+	    class cl_address_space *the_as,
+	    t_addr the_asb,
+	    t_addr the_ase);
   virtual ~cl_banker();
   virtual int init();
+
+  virtual void add_bank(int bank_nr, class cl_memory *chip, t_addr chip_start);
+
+  virtual bool activate(class cl_console_base *con);
 };
 
 

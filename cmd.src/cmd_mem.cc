@@ -232,33 +232,46 @@ COMMAND_DO_WORK_UC(cl_memory_create_addressdecoder_cmd)
 
 COMMAND_DO_WORK_UC(cl_memory_create_banker_cmd)
 {
-  class cl_cmd_arg *params[5]= { cmdline->param(0),
+  class cl_cmd_arg *params[6]= { cmdline->param(0),
 				 cmdline->param(1),
 				 cmdline->param(2),
 				 cmdline->param(3),
-				 cmdline->param(4) };
-  class cl_memory *as= 0;
-  t_addr addr= 0;
+				 cmdline->param(4),
+				 cmdline->param(5) };
+  class cl_memory *banker_as= 0, *banked_as= 0;
+  t_addr addr= 0, asb= 0, ase= 0;
   t_mem mask= 0;
 
-  if (cmdline->syntax_match(uc, MEMORY NUMBER NUMBER)) {
-    as= params[0]->value.memory.memory;
+  if (cmdline->syntax_match(uc, MEMORY NUMBER NUMBER MEMORY NUMBER NUMBER)) {
+    banker_as= params[0]->value.memory.memory;
     addr= params[1]->value.number;
     mask= params[2]->value.number;
+    banked_as= params[3]->value.memory.memory;
+    asb= params[4]->value.number;
+    ase= params[5]->value.number;
   }
   else
     con->dd_printf("Syntax error.\n");
 
-  if (!as->is_address_space())
-    con->dd_printf("%s is not an address space\n", as->get_name("unknown"));
-  else if (addr < as->start_address ||
-           addr > as->highest_valid_address())
-    con->dd_printf("Specified address is out of address space\n");
+  if (!banker_as->is_address_space())
+    con->dd_printf("%s is not an address space\n", banker_as->get_name("unknown"));
+  else if (!banked_as->is_address_space())
+    con->dd_printf("%s is not an address space\n", banked_as->get_name("unknown"));
+  else if (addr < banker_as->start_address ||
+           addr > banker_as->highest_valid_address())
+    con->dd_printf("Specified banker address is out of address space\n");
+  else if (asb < banked_as->start_address ||
+           asb > banked_as->highest_valid_address())
+    con->dd_printf("Specified banked start address is out of address space\n");
+  else if (ase < banked_as->start_address ||
+           ase > banked_as->highest_valid_address())
+    con->dd_printf("Specified banked end address is out of address space\n");
   else
     {
       class cl_banker *d=
-	new cl_banker((class cl_address_space *)as, addr, mask);
-      ((class cl_address_space *)as)->decoders->add(d);
+	new cl_banker((class cl_address_space *)banker_as, addr, mask,
+		      (class cl_address_space *)banked_as, asb, ase);
+      ((class cl_address_space *)banked_as)->decoders->add(d);
       d->activate(con);
     }
   return(DD_FALSE);
@@ -272,58 +285,27 @@ COMMAND_DO_WORK_UC(cl_memory_create_banker_cmd)
 
 COMMAND_DO_WORK_UC(cl_memory_create_bank_cmd)
 {
-  class cl_cmd_arg *params[6]= { cmdline->param(0),
+  class cl_cmd_arg *params[5]= { cmdline->param(0),
 				 cmdline->param(1),
 				 cmdline->param(2),
 				 cmdline->param(3),
-				 cmdline->param(4),
-				 cmdline->param(5) };
+				 cmdline->param(4) };
   class cl_memory *as= 0, *chip= 0;
-  t_addr as_begin= 0, as_end= 0, chip_begin= 0;
+  t_addr as_begin= 0, chip_begin= 0;
   int bank= -1;
   
-  if (cmdline->syntax_match(uc, NUMBER MEMORY MEMORY)) {
-    bank= params[0]->value.number;
-    as= params[1]->value.memory.memory;
-    as_end= as->highest_valid_address();
-    chip= params[2]->value.memory.memory;
-  }
-  else if (cmdline->syntax_match(uc, NUMBER MEMORY MEMORY NUMBER)) {
-    bank= params[0]->value.number;
-    as= params[1]->value.memory.memory;
-    as_end= as->highest_valid_address();
-    chip= params[2]->value.memory.memory;
-    chip_begin= params[3]->value.number;
-  }
-  else if (cmdline->syntax_match(uc, NUMBER MEMORY NUMBER MEMORY)) {
-    bank= params[0]->value.number;
-    as= params[1]->value.memory.memory;
-    as_begin= params[2]->value.number;
-    as_end= as->highest_valid_address();
-    chip= params[3]->value.memory.memory;
-  }
-  else if (cmdline->syntax_match(uc, NUMBER MEMORY NUMBER MEMORY NUMBER)) {
-    bank= params[0]->value.number;
-    as= params[1]->value.memory.memory;
-    as_begin= params[2]->value.number;
-    as_end= as->highest_valid_address();
+  if (cmdline->syntax_match(uc, MEMORY NUMBER NUMBER MEMORY NUMBER)) {
+    as= params[0]->value.memory.memory;
+    as_begin= params[1]->value.number;
+    bank= params[2]->value.number;
     chip= params[3]->value.memory.memory;
     chip_begin= params[4]->value.number;
   }
-  else if (cmdline->syntax_match(uc, NUMBER MEMORY NUMBER NUMBER MEMORY)) {
-    bank= params[0]->value.number;
-    as= params[1]->value.memory.memory;
-    as_begin= params[2]->value.number;
-    as_end= params[3]->value.number;
-    chip= params[4]->value.memory.memory;
-  }
-  else if (cmdline->syntax_match(uc, NUMBER MEMORY NUMBER NUMBER MEMORY NUMBER)) {
-    bank= params[0]->value.number;
-    as= params[1]->value.memory.memory;
-    as_begin= params[2]->value.number;
-    as_end= params[3]->value.number;
-    chip= params[4]->value.memory.memory;
-    chip_begin= params[5]->value.number;
+  else if (cmdline->syntax_match(uc, MEMORY NUMBER NUMBER MEMORY)) {
+    as= params[0]->value.memory.memory;
+    as_begin= params[1]->value.number;
+    bank= params[2]->value.number;
+    chip= params[3]->value.memory.memory;
   }
   else
     con->dd_printf("Syntax error.\n");
@@ -332,23 +314,21 @@ COMMAND_DO_WORK_UC(cl_memory_create_bank_cmd)
     con->dd_printf("%s is not an address space\n", as->get_name("unknown"));
   else if (!chip->is_chip())
     con->dd_printf("%s is not a memory chip\n", chip->get_name("unknown"));
-  else if (as_begin > as_end)
-    con->dd_printf("Wrong address area specification\n");
   else if (chip_begin >= chip->get_size())
     con->dd_printf("Wrong chip area specification\n");
   else if (as_begin < as->start_address ||
-           as_end > as->highest_valid_address())
+           as_begin > as->highest_valid_address())
     con->dd_printf("Specified area is out of address space\n");
-  else if (as_end-as_begin > chip->get_size()-chip_begin)
-    con->dd_printf("Specified area is out of chip size\n");
   else
     {
-      /*
       class cl_banker *d=
-	new cl_banker(as, chip, as_begin, as_end, chip_begin);
-      ((class cl_address_space *)as)->decoders->add(d);
-      d->activate(con);
-      */
+	(class cl_banker *)((class cl_address_space *)as)->get_decoder_of(as_begin);
+      if (!d)
+	con->dd_printf("Specified address is not decoded, create a banker first\n");
+      else
+	{
+	  d->add_bank(bank, chip, chip_begin);
+	}
     }
   return(DD_FALSE);
 }
