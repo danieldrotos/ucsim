@@ -34,8 +34,12 @@ int
 cl_tlcs::init(void)
 {
   cl_uc::init(); /* Memories now exist */
-  ram= address_space(MEM_IRAM_ID);
-  rom= address_space(MEM_ROM_ID);
+  //ram= address_space(MEM_IRAM_ID);
+  //rom= address_space(MEM_ROM_ID);
+
+  reg.bc= 0;
+  reg.d= 0;
+  reg.e= 0;
   return(0);
 }
 
@@ -60,34 +64,79 @@ cl_tlcs::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= as= new cl_address_space(MEM_ROM_ID, 0, 0x10000, 8);
+  rom= nas= as= new cl_address_space(cchars("nas"), 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
-  ram= as= new cl_address_space(MEM_IRAM_ID, 0, 0x10000, 8);
+  das= as= new cl_address_space(cchars("das"), 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_memory_chip("rom_chip", 0x10000, 8);
+  chip= new cl_memory_chip("nas_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as= rom/*address_space(MEM_ROM_ID)*/,
+  ad= new cl_address_decoder(as= nas,
 			     chip, 0, 0xffff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
 
-  chip= new cl_memory_chip("iram_chip", 0x10000, 8);
-  chip->init();
-  memchips->add(chip);
-  ad= new cl_address_decoder(as= ram/*address_space(MEM_IRAM_ID)*/,
+  //chip= new cl_memory_chip("das_chip", 0x10000, 8);
+  //chip->init();
+  //memchips->add(chip);
+  ad= new cl_address_decoder(as= das,
 			     chip, 0, 0xffff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
 }
+
+
+//virtual struct dis_entry *dis_tbl(void);
+//virtual struct name_entry *sfr_tbl(void);
+//virtual struct name_entry *bit_tbl(void);
+//virtual const char *disass(t_addr addr, const char *sep);
+void
+cl_tlcs::print_regs(class cl_console_base *con)
+{
+  con->dd_printf("SZIHXVNC  Flags= 0x%02x %3d %c  ",
+                 reg.f, reg.f, isprint(reg.f)?reg.f:'.');
+  con->dd_printf("A= 0x%02x %3d %c\n",
+                 reg.a, reg.a, isprint(reg.a)?reg.a:'.');
+  con->dd_printf("%c%c%c%c%c%c%c%c\n",
+                 (reg.f&FLAG_S)?'1':'0',
+                 (reg.f&FLAG_Z)?'1':'0',
+		 (reg.f&FLAG_I)?'1':'0',
+                 (reg.f&FLAG_H)?'1':'0',
+                 (reg.f&FLAG_X)?'1':'0',
+                 (reg.f&FLAG_V)?'1':'0',
+                 (reg.f&FLAG_N)?'1':'0',
+                 (reg.f&FLAG_C)?'1':'0');
+  con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
+                 reg.bc, nas->get(reg.bc), nas->get(reg.bc),
+                 isprint(nas->get(reg.bc))?nas->get(reg.bc):'.');
+  con->dd_printf("DE= 0x%04x [DE]= %02x %3d %c  ",
+                 reg.de, nas->get(reg.de), nas->get(reg.de),
+                 isprint(nas->get(reg.de))?nas->get(reg.de):'.');
+  con->dd_printf("HL= 0x%04x [HL]= %02x %3d %c\n",
+                 reg.hl, nas->get(reg.hl), nas->get(reg.hl),
+                 isprint(nas->get(reg.hl))?nas->get(reg.hl):'.');
+  con->dd_printf("IX= 0x%04x [IX]= %02x %3d %c  ",
+                 reg.ix, das->get(reg.ix), das->get(reg.ix),
+                 isprint(das->get(reg.ix))?das->get(reg.ix):'.');
+  con->dd_printf("IY= 0x%04x [IY]= %02x %3d %c  ",
+                 reg.iy, das->get(reg.iy), das->get(reg.iy),
+                 isprint(das->get(reg.iy))?das->get(reg.iy):'.');
+  con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
+                 reg.sp, nas->get(reg.sp), nas->get(reg.sp),
+                 isprint(nas->get(reg.sp))?nas->get(reg.sp):'.');
+
+  //print_disass(PC, con);
+}
+
+//virtual int exec_inst(void);
 
 
 /* End of tlcs.src/tlcs.cc */
