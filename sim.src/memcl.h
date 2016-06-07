@@ -149,6 +149,19 @@ public:
   virtual t_mem write(t_mem val);
 };
 
+class cl_banker;
+
+class cl_bank_switcher_operator: public cl_memory_operator
+{
+ protected:
+  class cl_banker *banker;
+ public:
+  cl_bank_switcher_operator(class cl_memory_cell *acell, t_addr addr,
+			    class cl_banker *the_banker);
+  
+  virtual t_mem write(t_mem val);
+};
+
 class cl_hw_operator: public cl_memory_operator
 {
 protected:
@@ -393,11 +406,13 @@ public:
 
   virtual bool shrink_out_of(t_addr begin, t_addr end);
   virtual class cl_address_decoder *split(t_addr begin, t_addr end);
+
+  virtual void print_info(chars pre, class cl_console_base *con);
 };
 
 
 /*
- * Address decoder with bank switching supprt
+ * Address decoder with bank switching support
  */
 
 class cl_banker: public cl_address_decoder
@@ -420,12 +435,14 @@ class cl_banker: public cl_address_decoder
 	    t_addr the_ase);
   virtual ~cl_banker();
   virtual int init();
-  virtual bool is_banker() { return false; }
+  virtual bool is_banker() { return true; }
 
   virtual void add_bank(int bank_nr, class cl_memory *chip, t_addr chip_start);
 
   virtual t_mem actual_bank();
   virtual bool activate(class cl_console_base *con);
+
+  virtual void print_info(chars pre, class cl_console_base *con);
 };
 
 

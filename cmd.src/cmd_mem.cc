@@ -217,6 +217,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_addressdecoder_cmd)
     {
       class cl_address_decoder *d=
 	new cl_address_decoder(as, chip, as_begin, as_end, chip_begin);
+      d->init();
       ((class cl_address_space *)as)->decoders->add(d);
       d->activate(con);
     }
@@ -251,7 +252,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_banker_cmd)
     ase= params[5]->value.number;
   }
   else
-    con->dd_printf("Syntax error.\n");
+    return con->dd_printf("Syntax error.\n"), false;
 
   if (!banker_as->is_address_space())
     con->dd_printf("%s is not an address space\n", banker_as->get_name("unknown"));
@@ -271,6 +272,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_banker_cmd)
       class cl_banker *d=
 	new cl_banker((class cl_address_space *)banker_as, addr, mask,
 		      (class cl_address_space *)banked_as, asb, ase);
+      d->init();
       ((class cl_address_space *)banked_as)->decoders->add(d);
       d->activate(con);
     }
@@ -308,7 +310,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_bank_cmd)
     chip= params[3]->value.memory.memory;
   }
   else
-    con->dd_printf("Syntax error.\n");
+    return con->dd_printf("Syntax error.\n"), false;
 
   if (!as->is_address_space())
     con->dd_printf("%s is not an address space\n", as->get_name("unknown"));

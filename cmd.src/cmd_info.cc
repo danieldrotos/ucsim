@@ -187,7 +187,9 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
 	{
 	  class cl_address_decoder *d=
 	    (class cl_address_decoder *)(m->decoders->at(j));
-	  con->dd_printf("%2d ", j);
+	  //con->dd_printf("%2d ", j);
+	  d->print_info(chars("  "), con);
+	  /*
 	  if (d->address_space)
 	    {
 	      con->dd_printf("%s ", d->address_space->get_name("unknown"));
@@ -206,6 +208,7 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
 	  else
 	    con->dd_printf("x");
 	  con->dd_printf(" %s\n", (d->activated)?"activated":"inactive");
+	  */
 	}
     }
   return(0);
