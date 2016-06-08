@@ -174,6 +174,21 @@ cl_tlcs::exec_inst(void)
     case 0xa7: reg.a= srl(reg.a, false); break; // SRLA
     case 0x1e: res= ret(); break;
     case 0x1f: res= reti(); break;
+    default:
+      {
+	switch (c1 & 0xf8)
+	  {
+	    // r, g, etc coded in single byte instruction
+	  case 0x20: reg.a= *aof_reg8(c1); break; // LD A,r
+	  case 0x28: *aof_reg8(c1)= reg.a; break; // LD r,A
+	  case 0x40: reg.hl= *aof_reg16_rr(c1); break; // LD HL,rr
+	  case 0x48: *aof_reg16_rr(c1)= reg.hl; break; // LD rr,HL
+	  case 0x50: exec_push(PC-1, *aof_reg16_qq(c1)); break; // PUSH qq
+	  case 0x58: res= pop(c1); break; // POP qq
+	  case 0x80: *aof_reg8(c1)= inc(*aof_reg8(c1)); break; // INC r
+	  case 0x88: *aof_reg8(c1)= dec(*aof_reg8(c1)); break; // DEC r
+	  }
+      }
     }
   return res;
 }
@@ -280,6 +295,52 @@ cl_tlcs::set_p(uint8_t data)
   else
     // EVEN, P <- 1
     reg.f|= FLAG_V;
+}
+
+uint8_t *
+cl_tlcs::aof_reg8(uint8_t data_r)
+{
+  switch (data_r & 0x07)
+    {
+    case 0: return &reg.b;
+    case 1: return &reg.c;
+    case 2: return &reg.d;
+    case 3: return &reg.e;
+    case 4: return &reg.h;
+    case 5: return &reg.l;
+    case 6: return &reg.a;
+    default: return &reg.dummy;
+    }
+}
+
+uint16_t *
+cl_tlcs::aof_reg16_rr(uint8_t data_rr)
+{
+  switch (data_rr & 0x07)
+    {
+    case 0: return &reg.bc;
+    case 1: return &reg.de;
+    case 2: return &reg.hl;
+    case 4: return &reg.ix;
+    case 5: return &reg.iy;
+    case 6: return &reg.sp;
+    default: return &reg.dummy16;
+    }
+}
+
+uint16_t *
+cl_tlcs::aof_reg16_qq(uint8_t data_qq)
+{
+  switch (data_qq & 0x07)
+    {
+    case 0: return &reg.bc;
+    case 1: return &reg.de;
+    case 2: return &reg.hl;
+    case 4: return &reg.ix;
+    case 5: return &reg.iy;
+    case 6: return &reg.af;
+    default: return &reg.dummy16;
+    }
 }
 
 

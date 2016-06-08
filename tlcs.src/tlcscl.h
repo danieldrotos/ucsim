@@ -78,6 +78,8 @@ class cl_tlcs: public cl_uc
     uint16_t ix;
     uint16_t iy;
     uint16_t sp;
+    uint8_t dummy;
+    uint16_t dummy16;
     union {
       uint16_t alt_af;
       struct {
@@ -156,6 +158,9 @@ class cl_tlcs: public cl_uc
   virtual int exec_pop(t_addr PC_of_inst, t_mem *data);
   virtual int exec_intr(t_addr PC_of_inst, t_addr called, t_mem data);
   virtual void set_p(uint8_t data);
+  virtual uint8_t *aof_reg8(uint8_t data_r);
+  virtual uint16_t *aof_reg16_rr(uint8_t data_rr);
+  virtual uint16_t *aof_reg16_qq(uint8_t data_qq);
   
   // block
   virtual int ex_de_hl();		// 08
@@ -183,6 +188,10 @@ class cl_tlcs: public cl_uc
   virtual uint8_t srl(uint8_t data, bool set_sz);	// SRL
   virtual int ret();			// 1e
   virtual int reti();			// 1f
+  virtual uint8_t inc(uint8_t data);			// INC
+  virtual uint8_t dec(uint8_t data);			// DEC
+
+  virtual int pop(t_mem c1);		// 58+qq
 };
 
 
