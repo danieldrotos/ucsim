@@ -147,7 +147,42 @@ class cl_tlcs: public cl_uc
   //virtual const char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
 
-  //virtual int exec_inst(void);
+  virtual int exec_inst(void);
+  virtual t_addr do_push(t_mem data);
+  virtual t_addr do_pop(t_mem *data);
+  virtual int exec_push(t_addr PC_of_inst, t_mem data);
+  virtual int exec_ret(t_addr PC_of_inst, t_mem *data);
+  virtual int exec_reti(t_addr PC_of_inst, t_mem *data);
+  virtual int exec_pop(t_addr PC_of_inst, t_mem *data);
+  virtual int exec_intr(t_addr PC_of_inst, t_addr called, t_mem data);
+  virtual void set_p(uint8_t data);
+  
+  // block
+  virtual int ex_de_hl();		// 08
+  virtual int ex_af_alt_af();		// 09
+  virtual int exx();			// 0a
+
+  // cpu control and others
+  virtual int daa_a();			// 0b
+  virtual int cpl_a();			// 10
+  virtual int neg_a();			// 11
+  virtual int ccf();			// 0e
+  virtual int scf();			// 0d
+  virtual int rcf();			// 0c
+  //virtual int nop();			// 00
+  //virtual int halt();			// 01
+  //virtual int di();			// 02
+  //virtual int ei();			// 03
+  virtual int swi();			// ff
+  virtual uint8_t rlc(uint8_t data, bool set_sz);	// RLC
+  virtual uint8_t rrc(uint8_t data, bool set_sz);	// RRC
+  virtual uint8_t rl(uint8_t data, bool set_sz);	// RL
+  virtual uint8_t rr(uint8_t data, bool set_sz);	// RL
+  virtual uint8_t sla(uint8_t data, bool set_sz);	// SLA
+  virtual uint8_t sra(uint8_t data, bool set_sz);	// SRA
+  virtual uint8_t srl(uint8_t data, bool set_sz);	// SRL
+  virtual int ret();			// 1e
+  virtual int reti();			// 1f
 };
 
 

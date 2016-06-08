@@ -13,6 +13,7 @@
 // sim
 #include "simcl.h"
 #include "memcl.h"
+#include "stackcl.h"
 
 // local
 #include "tlcscl.h"
@@ -136,7 +137,150 @@ cl_tlcs::print_regs(class cl_console_base *con)
   //print_disass(PC, con);
 }
 
-//virtual int exec_inst(void);
+int
+cl_tlcs::exec_inst(void)
+{
+  t_mem c1;//, c2, c3, c4, c5, c6;
+  //t_addr instPC= PC;
+  int res= resGO;
+  
+  if (fetch(&c1))
+    return resBREAKPOINT;
+  tick(1);
+
+  switch (c1)
+    {
+    case 0x08: res= ex_de_hl(); break;
+    case 0x09: res= ex_af_alt_af(); break;
+    case 0x0a: res= exx(); break;
+    case 0x0b: res= daa_a(); break;
+    case 0x10: res= cpl_a(); break;
+    case 0x11: res= neg_a(); break;
+    case 0x0e: res= ccf(); break;
+    case 0x0d: res= scf(); break;
+    case 0x0c: res= rcf(); break;
+    case 0x00: break; // NOP //res= resGO;
+    case 0x01: res= resHALT; break; // HALT
+    case 0x02: reg.f&= ~FLAG_I; break; // DI
+    case 0x03: reg.f|= FLAG_I; break; // EI
+    case 0xff: res= swi(); break;
+    case 0xa0: reg.a= rlc(reg.a, false); break; // RLCA
+    case 0xa1: reg.a= rrc(reg.a, false); break; // RRCA
+    case 0xa2: reg.a= rl(reg.a, false); break; // RLA
+    case 0xa3: reg.a= rl(reg.a, false); break; // RRA
+    case 0xa4: reg.a= sla(reg.a, false); break; // SLAA
+    case 0xa5: reg.a= sra(reg.a, false); break; // SRAA
+    case 0xa6: reg.a= sla(reg.a, false); break; // SLLA (=SLAA)
+    case 0xa7: reg.a= srl(reg.a, false); break; // SRLA
+    case 0x1e: res= ret(); break;
+    case 0x1f: res= reti(); break;
+    }
+  return res;
+}
+
+t_addr
+cl_tlcs::do_push(t_mem data)
+{
+  t_addr sp_before= reg.sp;
+  reg.sp-= 1;
+  nas->write(reg.sp, (data>>8)&0xff);
+  reg.sp-= 1;
+  nas->write(reg.sp, (data&0xff));
+  return sp_before;
+}
+
+t_addr
+cl_tlcs::do_pop(t_mem *data)
+{
+  t_addr sp_before= reg.sp;
+  t_mem val;
+  val= nas->read(reg.sp);
+  reg.sp+= 1;
+  val= (nas->read(reg.sp) * 256) + val;
+  reg.sp+= 1;
+  if (data)
+    *data= val;
+  return sp_before;
+}
+
+int
+cl_tlcs::exec_push(t_addr PC_of_inst, t_mem data)
+{
+  t_addr sp_before= do_push(data);
+  class cl_stack_push *o= new cl_stack_push(PC_of_inst, data, sp_before, reg.sp);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
+cl_tlcs::exec_ret(t_addr PC_of_inst, t_mem *data)
+{
+  t_addr sp_before= do_pop(data);
+  t_mem val= 0;
+  if (data)
+    val= *data;
+  class cl_stack_ret *o= new cl_stack_ret(PC_of_inst, val, sp_before, reg.sp);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
+cl_tlcs::exec_reti(t_addr PC_of_inst, t_mem *data)
+{
+  t_addr sp_before= do_pop(data);
+  t_mem val= 0;
+  if (data)
+    val= *data;
+  class cl_stack_iret *o= new cl_stack_iret(PC_of_inst, val, sp_before, reg.sp);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
+cl_tlcs::exec_pop(t_addr PC_of_inst, t_mem *data)
+{
+  t_addr sp_before= do_pop(data);
+  t_mem val= 0;
+  if (data)
+    val= *data;
+  class cl_stack_pop *o= new cl_stack_pop(PC_of_inst, val, sp_before, reg.sp);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
+cl_tlcs::exec_intr(t_addr PC_of_inst, t_addr called, t_mem data)
+{
+  t_addr sp_before= do_push(data);
+  class cl_stack_intr *o= new cl_stack_intr(PC_of_inst, called, data, sp_before, reg.sp);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+void
+cl_tlcs::set_p(uint8_t data)
+{
+  // P=1 means EVEN
+  int b= 0, i;
+
+  for (i= 0; i < 8; i++)
+    {
+      if (data & 1)
+	b++;
+      data>>= 1;
+    }
+  if (b&1)
+    // ODD, P <- 0
+    reg.f&= ~FLAG_V;
+  else
+    // EVEN, P <- 1
+    reg.f|= FLAG_V;
+}
 
 
 /* End of tlcs.src/tlcs.cc */

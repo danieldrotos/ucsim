@@ -50,7 +50,8 @@ srcdir          = @srcdir@
 VPATH           = @srcdir@
 
 OBJECTS_SHARED	= glob.o \
-		  simtlcs.o tlcs.o
+		  simtlcs.o tlcs.o \
+		  block.o cpu_others.o rot_sh.o jmp.o
 		  #inst.o bit_inst.o jump_inst.o move_inst.o logic_inst.o \
 		  #arith_inst.o
 OBJECTS_EXE	= stlcs.o
