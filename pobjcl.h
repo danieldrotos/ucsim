@@ -43,10 +43,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 									    #
 */
 
+class cl_abs_base
+{
+};
+
 class cl_list;
 class cl_event;
 
-class cl_base
+class cl_base: public cl_abs_base
 {
 private:
   const char *name;

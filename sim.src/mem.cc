@@ -486,8 +486,7 @@ cl_read_operator::read(void)
  *                                                                  Memory cell
  */
 
-cl_memory_cell::cl_memory_cell(uchar awidth):
-  cl_base()
+cl_memory_cell::cl_memory_cell(uchar awidth)//: cl_base()
 {
   data= 0;
   flags= 0;
@@ -512,7 +511,7 @@ cl_memory_cell::~cl_memory_cell(void)
 int
 cl_memory_cell::init(void)
 {
-  cl_base::init();
+  //cl_base::init();
   data= &def_data;
   flags= CELL_NON_DECODED;
   mask= 1;

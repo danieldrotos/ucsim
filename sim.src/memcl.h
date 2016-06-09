@@ -219,7 +219,7 @@ public:
  * version 3 of cell
  */
 
-class cl_memory_cell: public cl_base
+class cl_memory_cell: public cl_abs_base
 {
 #ifdef STATISTIC
  public:
