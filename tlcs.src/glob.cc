@@ -1,3 +1,47 @@
 /*@1@*/
 
+#include <stdio.h>
+
+#include "glob.h"
+
+struct dis_entry disass_tlcs[]= {
+  { 0x08, 0xff, ' ', 1, "EX DE,HL" },
+  { 0x09, 0xff, ' ', 1, "EX AF,AF'" },
+  { 0x0a, 0xff, ' ', 1, "EXX" },
+  { 0x0b, 0xff, ' ', 1, "DAA A" },
+  { 0x10, 0xff, ' ', 1, "CPL A" },
+  { 0x11, 0xff, ' ', 1, "NEG A" },
+  { 0x0e, 0xff, ' ', 1, "CCF" },
+  { 0x0d, 0xff, ' ', 1, "SCF" },
+  { 0x0c, 0xff, ' ', 1, "RCF" },
+  { 0x00, 0xff, ' ', 1, "NOP" },
+  { 0x01, 0xff, ' ', 1, "HALT" },
+  { 0x02, 0xff, ' ', 1, "DI" },
+  { 0x03, 0xff, ' ', 1, "EI" },
+  { 0xff, 0xff, ' ', 1, "SWI" },
+  { 0xa0, 0xff, ' ', 1, "RLCA" },
+  { 0xa1, 0xff, ' ', 1, "RRCA" },
+  { 0xa2, 0xff, ' ', 1, "RLA" },
+  { 0xa3, 0xff, ' ', 1, "RRA" },
+  { 0xa4, 0xff, ' ', 1, "SLAA" },
+  { 0xa5, 0xff, ' ', 1, "SRAA" },
+  { 0xa6, 0xff, ' ', 1, "SLLA" },
+  { 0xa7, 0xff, ' ', 1, "SRLA" },
+  { 0x1e, 0xff, ' ', 1, "RET" },
+  { 0x1f, 0xff, ' ', 1, "RETI" },
+
+  { 0x20, 0xf8, 'r', 1, "LD A,%r" },
+  { 0x28, 0xf8, 'r', 1, "LD %r,A" },
+  { 0x40, 0xf8, 'R', 1, "LD HL,%R" },
+  { 0x48, 0xf8, 'R', 1, "LD %R,HL" },
+  { 0x50, 0xf8, 'Q', 1, "PUSH %Q" },
+  { 0x58, 0xf8, 'Q', 1, "POP %Q" },
+  { 0x80, 0xf8, 'r', 1, "INC %r" },
+  { 0x88, 0xf8, 'r', 1, "DEC %r" },
+  { 0x90, 0xf8, 'R', 1, "INC %R" },
+  { 0x98, 0xf8, 'R', 1, "DEC %R" },
+  
+  { 0, 0, ' ', 0, NULL }
+};
+
 /* End of tlcs.src/glob.cc */

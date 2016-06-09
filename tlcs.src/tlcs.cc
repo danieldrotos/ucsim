@@ -95,10 +95,109 @@ cl_tlcs::make_memories(void)
 }
 
 
-//virtual struct dis_entry *dis_tbl(void);
+struct dis_entry *
+cl_tlcs::dis_tbl(void)
+{
+  return disass_tlcs;
+}
+
 //virtual struct name_entry *sfr_tbl(void);
 //virtual struct name_entry *bit_tbl(void);
-//virtual const char *disass(t_addr addr, const char *sep);
+
+const char *
+cl_tlcs::regname_r(uint8_t r)
+{
+  switch (r & 7)
+    {
+    case 0: return "B";
+    case 1: return "C";
+    case 2: return "D";
+    case 3: return "E";
+    case 4: return "H";
+    case 5: return "L";
+    case 6: return "A";
+    default: return "?";
+    }
+}
+
+const char *
+cl_tlcs::regname_R(uint8_t R)
+{
+  switch (R & 7)
+    {
+    case 0: return "BC";
+    case 1: return "DE";
+    case 2: return "HL";
+    case 4: return "IX";
+    case 5: return "IY";
+    case 6: return "SP";
+    default: return "?";
+    }
+}
+
+const char *
+cl_tlcs::regname_Q(uint8_t Q)
+{
+  switch (Q & 7)
+    {
+    case 0: return "BC";
+    case 1: return "DE";
+    case 2: return "HL";
+    case 4: return "IX";
+    case 5: return "IY";
+    case 6: return "AF";
+    default: return "?";
+    }
+}
+
+const char *
+cl_tlcs::disass(t_addr addr, const char *sep)
+{
+  struct dis_entry *de;
+  uint64_t c;
+  int i;
+  chars s("");
+  char *buf, *t;
+  
+  c= 0;
+  for (i= 0; i<7; i++)
+    {
+      uint8_t cb= rom->get(addr+i);
+      c<<= 8;
+      c|= cb;
+    }
+
+  de= dis_tbl();
+  while (de->mnemonic != NULL)
+    {
+      if ((c & de->mask) == de->code)
+	break;
+      de++;
+    }
+  if (de->mnemonic == NULL)
+    return strdup("?");
+
+  for (t= (char*)de->mnemonic; *t; t++)
+    {
+      if (*t == '%')
+	{
+	  t++;
+	  switch (*t)
+	    {
+	    case 'r': s+= regname_r(c); break;
+	    case 'R': s+= regname_R(c); break;
+	    case 'Q': s+= regname_Q(c); break;
+	    default: s+= '?'; break;
+	    }
+	}
+      else
+	s+= *t;
+    }
+  
+  buf= strdup(s);
+  return buf;
+}
+
 void
 cl_tlcs::print_regs(class cl_console_base *con)
 {
@@ -187,6 +286,8 @@ cl_tlcs::exec_inst(void)
 	  case 0x58: res= pop(c1); break; // POP qq
 	  case 0x80: *aof_reg8(c1)= inc(*aof_reg8(c1)); break; // INC r
 	  case 0x88: *aof_reg8(c1)= dec(*aof_reg8(c1)); break; // DEC r
+	  case 0x90: *aof_reg16_rr(c1)= inc16(*aof_reg16_rr(c1)); break; // INC rr
+	  case 0x98: *aof_reg16_rr(c1)= dec16(*aof_reg16_rr(c1)); break; // DEC rr
 	  }
       }
     }

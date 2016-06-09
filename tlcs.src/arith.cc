@@ -6,7 +6,7 @@
 uint8_t
 cl_tlcs::inc(uint8_t data)
 {
-  uint8_t n= data+1;
+  uint16_t n= data+1;
   reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X);
 
   if (n > 255)
@@ -27,7 +27,7 @@ cl_tlcs::inc(uint8_t data)
 uint8_t
 cl_tlcs::dec(uint8_t data)
 {
-  uint8_t n= data-1;
+  uint16_t n= data-1;
   reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X);
   reg.f|= FLAG_N;
   
@@ -43,6 +43,32 @@ cl_tlcs::dec(uint8_t data)
     reg.f|= FLAG_H;
 
   return n & 0xff;
+}
+
+
+uint16_t
+cl_tlcs::inc16(uint16_t data)
+{
+  uint16_t n= data+1;
+  reg.f&= ~(FLAG_X);
+
+  if (n == 0)
+    reg.f|= FLAG_X;
+
+  return n;
+}
+
+
+uint16_t
+cl_tlcs::dec16(uint16_t data)
+{
+  uint16_t n= data-1;
+  reg.f&= ~(FLAG_X);
+
+  if (n == 0xffff)
+    reg.f|= FLAG_X;
+
+  return n;
 }
 
 

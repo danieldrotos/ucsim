@@ -143,10 +143,13 @@ class cl_tlcs: public cl_uc
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
 
-  //virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *dis_tbl(void);
   //virtual struct name_entry *sfr_tbl(void);
   //virtual struct name_entry *bit_tbl(void);
-  //virtual const char *disass(t_addr addr, const char *sep);
+  virtual const char *regname_r(uint8_t r);
+  virtual const char *regname_Q(uint8_t Q);
+  virtual const char *regname_R(uint8_t R);
+  virtual const char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_inst(void);
@@ -188,8 +191,10 @@ class cl_tlcs: public cl_uc
   virtual uint8_t srl(uint8_t data, bool set_sz);	// SRL
   virtual int ret();			// 1e
   virtual int reti();			// 1f
-  virtual uint8_t inc(uint8_t data);			// INC
-  virtual uint8_t dec(uint8_t data);			// DEC
+  virtual uint8_t inc(uint8_t data);			// INC 8 bit
+  virtual uint8_t dec(uint8_t data);			// DEC 8 bit
+  virtual uint16_t inc16(uint16_t data);		// INC 16 bit
+  virtual uint16_t dec16(uint16_t data);		// DEC 16 bit
 
   virtual int pop(t_mem c1);		// 58+qq
 };
