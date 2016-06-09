@@ -178,13 +178,14 @@ cl_sim::stop(int reason)
 	  }
          break;
 	case resSTEP:
+	  cmd->frozen_console->dd_printf("\n");
 	  uc->print_regs(cmd->frozen_console);
 	  break;
 	case resERROR:
 	  // uc::check_error prints error messages...
 	  break;
 	case resSIMIF:
-	  cmd->frozen_console->dd_printf("Program stopped itself");
+	  cmd->frozen_console->dd_printf("Program stopped itself\n");
 	  break;
 	default:
 	  cmd->frozen_console->dd_printf("Unknown reason\n");
