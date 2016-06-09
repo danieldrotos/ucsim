@@ -64,8 +64,10 @@ public:
   virtual const char * get_disasm_info(t_addr addr,
 				       int *ret_len,
 				       int *ret_branch,
-				       int *immed_offset);
-
+				       int *immed_offset,
+				       struct dis_entry **dentry);
+  virtual bool is_call(t_addr addr);
+  
   virtual void reset(void);
 #include "instcl.h"
 };

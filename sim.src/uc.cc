@@ -201,7 +201,8 @@ cl_uc::init(void)
     xtal= 11059200;
   make_variables();
   make_memories();
-  rom= address_space(MEM_ROM_ID);
+  if (rom == NULL)
+    rom= address_space(MEM_ROM_ID);
   ebrk= new brk_coll(2, 2, rom);
   fbrk= new brk_coll(2, 2, rom);
   fbrk->Duplicates= DD_FALSE;
@@ -1204,6 +1205,22 @@ cl_uc::inst_branch(t_addr addr)
   for (i= 0; tabl[i].mnemonic && (code & tabl[i].mask) != tabl[i].code; i++)
     ;
   return tabl[i].branch;
+}
+
+bool
+cl_uc::is_call(t_addr addr)
+{
+  struct dis_entry *tabl= dis_tbl();
+  int i;
+  t_mem code;
+
+  if (!rom)
+    return(0);
+
+  code = rom->get(addr);
+  for (i= 0; tabl[i].mnemonic && (code & tabl[i].mask) != tabl[i].code; i++)
+    ;
+  return tabl[i].is_call;
 }
 
 int

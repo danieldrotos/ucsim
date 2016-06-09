@@ -247,15 +247,13 @@ cl_hw::unregister_cell(class cl_memory_cell *the_cell)
     the_cell->remove_hw(this);
   unuse_cell(the_cell);
 }
-
 class cl_memory_cell *
 cl_hw::use_cell(class cl_address_space *mem, t_addr addr,
-		class cl_memory_cell **store,
-		enum what_to_do_on_cell_change awtd)
+                class cl_memory_cell **store,
+                enum what_to_do_on_cell_change awtd)
 {
   class cl_watched_cell *wc;
   //class cl_memory_cell *cell;
-
   wc= new cl_used_cell(mem, addr, store/*&cell*/, awtd);
   //if (store)
     //*store= cell;

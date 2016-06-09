@@ -176,39 +176,50 @@ cl_stm8::bit_tbl(void)
 
 int
 cl_stm8::inst_length(t_addr addr)
-{
-  int len = 0;
-
-  get_disasm_info(addr, &len, NULL, NULL);
-
-  return len;
-}
-
+{
+  int len = 0;
+
+  get_disasm_info(addr, &len, NULL, NULL, NULL);
+
+  return len;
+}
 int
 cl_stm8::inst_branch(t_addr addr)
-{
-  int b;
-
-  get_disasm_info(addr, NULL, &b, NULL);
-
-  return b;
-}
-
-int
-cl_stm8::longest_inst(void)
-{
+{
+  int b;
+
+  get_disasm_info(addr, NULL, &b, NULL, NULL);
+
+  return b;
+}
+
+bool
+cl_stm8::is_call(t_addr addr)
+{
+  struct dis_entry *e;
+
+  get_disasm_info(addr, NULL, NULL, NULL, &e);
+
+  return e?(e->is_call):false;
+}
+
+int
+cl_stm8::longest_inst(void)
+{
   return 5;
 }
 
 
-const char *
-cl_stm8::get_disasm_info(t_addr addr,
-                        int *ret_len,
-                        int *ret_branch,
-                        int *immed_offset)
-{
-  const char *b = NULL;
-  uint code;
+
+const char *
+cl_stm8::get_disasm_info(t_addr addr,
+			 int *ret_len,
+			 int *ret_branch,
+			 int *immed_offset,
+			 struct dis_entry **dentry)
+{
+  const char *b = NULL;
+  uint code;
   int len = 0;
   int immed_n = 0;
   int i;
@@ -294,12 +305,15 @@ cl_stm8::get_disasm_info(t_addr addr,
   if (len == 0)
     len = 1;
 
-  if (ret_len)
-    *ret_len = len;
-
-  return b;
-}
-
+  if (ret_len)
+    *ret_len = len;
+
+  if (dentry)
+    *dentry= dis_e;
+  
+  return b;
+}
+
 const char *
 cl_stm8::disass(t_addr addr, const char *sep)
 {
@@ -309,12 +323,13 @@ cl_stm8::disass(t_addr addr, const char *sep)
   int len = 0;
   int immed_offset = 0;
 
-  p= work;
-
-  b = get_disasm_info(addr, &len, NULL, &immed_offset);
-
-  if (b == NULL) {
-    buf= (char*)malloc(30);
+
+  p= work;
+
+  b = get_disasm_info(addr, &len, NULL, &immed_offset, NULL);
+
+  if (b == NULL) {
+    buf= (char*)malloc(30);
     strcpy(buf, "UNKNOWN/INVALID");
     return(buf);
   }

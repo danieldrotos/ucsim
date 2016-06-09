@@ -72,7 +72,8 @@ struct dis_entry
   uint  code, mask;
   char  branch;
   uchar length;
-  const char  *mnemonic;
+  const char *mnemonic;
+  bool is_call;
 };
 
 // table entry of SFR and BIT names
