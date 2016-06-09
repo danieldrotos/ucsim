@@ -112,7 +112,7 @@ public:
 
   virtual t_mem read(t_addr addr)=0;
   virtual t_mem read(t_addr addr, enum hw_cath skip)=0;
-  virtual /*t_mem*/int get(t_addr addr)=0;
+  virtual t_mem get(t_addr addr)=0;
   virtual t_mem write(t_addr addr, t_mem val)=0;
   virtual void set(t_addr addr, t_mem val)=0;
   virtual void set_bit1(t_addr addr, t_mem bits)=0;
@@ -128,16 +128,15 @@ class cl_memory_operator: public cl_base
 {
 protected:
   t_addr address;
-  t_mem *data;
+  //t_mem *data;
   t_mem mask;
   class cl_memory_operator *next_operator;
   class cl_memory_cell *cell;
 public:
   cl_memory_operator(class cl_memory_cell *acell, t_addr addr);
-  cl_memory_operator(class cl_memory_cell *acell, t_addr addr,
-		     t_mem *data_place, t_mem the_mask);
+  //cl_memory_operator(class cl_memory_cell *acell, t_addr addr, t_mem *data_place, t_mem the_mask);
 
-  virtual void set_data(t_mem *data_place, t_mem the_mask);
+  //virtual void set_data(t_mem *data_place, t_mem the_mask);
   virtual class cl_memory_operator *get_next(void) { return(next_operator); }
   virtual void set_next(class cl_memory_operator *next) { next_operator= next;}
 
@@ -168,7 +167,7 @@ protected:
   class cl_hw *hw;
 public:
   cl_hw_operator(class cl_memory_cell *acell, t_addr addr,
-		 t_mem *data_place, t_mem the_mask, class cl_hw *ahw);
+		 /*t_mem *data_place, t_mem the_mask,*/ class cl_hw *ahw);
 
   virtual bool match(class cl_hw *the_hw) { return(hw == the_hw); }
 
@@ -184,9 +183,9 @@ protected:
   class cl_brk *bp;
 public:
   cl_event_break_operator(class cl_memory_cell *acell, t_addr addr,
-			  t_mem *data_place, t_mem the_mask,
+			  //t_mem *data_place, t_mem the_mask,
 			  class cl_uc *auc, class cl_brk *the_bp):
-    cl_memory_operator(acell, addr, data_place, the_mask)
+  cl_memory_operator(acell, addr/*, data_place, the_mask*/)
   {
     uc= auc;
     bp= the_bp;
@@ -199,7 +198,7 @@ class cl_write_operator: public cl_event_break_operator
 {
 public:
   cl_write_operator(class cl_memory_cell *acell, t_addr addr,
-		    t_mem *data_place, t_mem the_mask,
+		    //t_mem *data_place, t_mem the_mask,
 		    class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem write(t_mem val);
@@ -209,7 +208,7 @@ class cl_read_operator: public cl_event_break_operator
 {
 public:
   cl_read_operator(class cl_memory_cell *acell, t_addr addr,
-		   t_mem *data_place, t_mem the_mask,
+		   //t_mem *data_place, t_mem the_mask,
 		   class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem read(void);
@@ -254,7 +253,7 @@ class cl_memory_cell: public cl_base
   
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip);
-  virtual /*t_mem*/int get(void);
+  virtual t_mem get(void);
   virtual t_mem write(t_mem val);
   virtual t_mem set(t_mem val);
 
@@ -306,7 +305,7 @@ public:
 
   virtual t_mem read(t_addr addr);
   virtual t_mem read(t_addr addr, enum hw_cath skip);
-  virtual /*t_mem*/int get(t_addr addr);
+  virtual t_mem get(t_addr addr);
   virtual t_mem write(t_addr addr, t_mem val);
   virtual void set(t_addr addr, t_mem val);
   virtual t_mem wadd(t_addr addr, long what);
@@ -371,7 +370,7 @@ public:
 
   virtual t_mem read(t_addr addr) { return(get(addr)); }
   virtual t_mem read(t_addr addr, enum hw_cath skip) { return(get(addr)); }
-  virtual /*t_mem*/int get(t_addr addr);
+  virtual t_mem get(t_addr addr);
   virtual t_mem write(t_addr addr, t_mem val) { set(addr, val); return(val); }
   virtual void set(t_addr addr, t_mem val);
   virtual void set_bit1(t_addr addr, t_mem bits);
