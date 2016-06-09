@@ -135,7 +135,7 @@ COMMAND_DO_WORK_UC(cl_pc_cmd)
 	  con->dd_printf("Error: wrong parameter\n");
 	  return(DD_FALSE);
 	}
-      class cl_address_space *rom= uc->address_space(MEM_ROM_ID);
+      class cl_address_space *rom= uc->rom;
       if (rom)
 	{
 	  if (addr > rom->highest_valid_address())
@@ -291,7 +291,7 @@ COMMAND_DO_WORK_UC(cl_dx_cmd)
 //		    class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_dch_cmd)
 {
-  cmdline->insert_param(0, new cl_cmd_sym_arg("rom"));
+  cmdline->insert_param(0, new cl_cmd_sym_arg(/*"rom"*/uc->rom->get_name("rom")));
   cl_dump_cmd::do_work(uc, cmdline, con);
   return(0);
 }
@@ -407,7 +407,7 @@ COMMAND_DO_WORK_UC(cl_disassemble_cmd)
   if (!uc->there_is_inst())
     return(DD_FALSE);
   realstart= start;
-  class cl_address_space *rom= uc->address_space(MEM_ROM_ID);
+  class cl_address_space *rom= uc->rom;
   if (!rom)
     return(DD_FALSE);
   while (realstart <= rom->highest_valid_address() &&
