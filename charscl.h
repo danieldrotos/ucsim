@@ -46,6 +46,7 @@ private:
 
 public:
   virtual chars &append(char *s);
+  virtual chars &append(char c);
   virtual bool empty();
   virtual int len() { return chars_length; }
   
@@ -59,8 +60,10 @@ public:
   chars &operator=(char *s);
   chars &operator=(const chars &cs);
   // Arithmetic
+  chars operator+(char c);
   chars operator+(char *s);
   chars operator+(const chars &cs);
+  chars &operator+=(char c) { return(append(c)); }
   chars &operator+=(char *s) { return(append(s)); }
   chars &operator+=(const chars &cs) { return(append((char*)cs)); }
   // Boolean
@@ -73,6 +76,7 @@ public:
   bool operator!=(chars &cs);
 };
 
+extern chars operator+(char s, const chars &cs);
 extern chars operator+(char *s, const chars &cs);
 extern bool operator==(char *s, const chars &cs);
 extern bool operator==(const char *s, const chars &cs);

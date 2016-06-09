@@ -106,6 +106,29 @@ chars::append(char *s)
   return *this;
 }
 
+chars &
+chars::append(char c)
+{
+  if (!c)
+    return(*this);
+
+  char *temp= new char[chars_length + 1 + 1];
+  if (chars_string)
+    strcpy(temp, chars_string);
+  else
+    temp[0]= '\0';
+  char b[2];
+  b[0]= c;
+  b[1]= 0;
+  strcat(temp, b);
+  //allocate_string(temp);
+  chars_string= temp;
+  chars_length+= 1;
+  //delete [] temp;
+
+  return *this;
+}
+
 bool
 chars::empty()
 {
@@ -129,6 +152,17 @@ chars::operator=(const chars &cs)
 
 
 // Arithmetic operators
+
+chars
+chars::operator+(char c)
+{
+  char b[2];
+  b[0]= c;
+  b[1]= 0;
+  chars temp(chars_string);
+  return temp.append(b);
+}
+
 chars
 chars::operator+(char *s)
 {
@@ -142,6 +176,16 @@ chars::operator+(const chars &cs)
   chars temp(chars_string);
   return(temp.append(cs));
 }
+
+chars
+operator+(char c, const chars &cs)
+{
+  char b[2];
+  b[0]= c;
+  b[1]= 0;
+  chars temp(b);
+  return(temp.append((char*)cs));
+};
 
 chars
 operator+(char *s, const chars &cs)
