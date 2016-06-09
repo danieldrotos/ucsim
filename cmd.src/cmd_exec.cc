@@ -89,7 +89,7 @@ COMMAND_DO_WORK_SIM(cl_run_cmd)
 	    }
 	  else
 	    {
-	      b= new cl_fetch_brk(sim->uc->address_space(MEM_ROM_ID),
+	      b= new cl_fetch_brk(sim->uc->rom,
 				  sim->uc->make_new_brknr(), end,
 				  brkDYNAMIC, 1);
 	      sim->uc->fbrk->add_bp(b);
@@ -161,7 +161,7 @@ COMMAND_DO_WORK_SIM(cl_next_cmd)
   
 #if 0
   struct dis_entry *de;
-  t_mem code= sim->uc->get_mem(MEM_ROM, sim->uc->PC);
+  t_mem code= sim->uc->rom->get(sim->uc->PC);
   int i= 0;
   de= &(sim->uc->dis_tbl()[i]);
   while ((code & de->mask) != de->code &&
@@ -181,7 +181,7 @@ COMMAND_DO_WORK_SIM(cl_next_cmd)
       next= sim->uc->PC + inst_len;
       if (!sim->uc->fbrk_at(next))
 	{
-	  b= new cl_fetch_brk(sim->uc->address_space(MEM_ROM_ID),
+	  b= new cl_fetch_brk(sim->uc->rom,
 			      sim->uc->make_new_brknr(),
 			      next, brkDYNAMIC, 1);
 
