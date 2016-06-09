@@ -160,7 +160,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
   char *buf, *t;
   
   c= 0;
-  for (i= 0; i<7; i++)
+  for (i= 7; i>=0; i--)
     {
       uint8_t cb= rom->get(addr+i);
       c<<= 8;
@@ -233,7 +233,7 @@ cl_tlcs::print_regs(class cl_console_base *con)
                  reg.sp, nas->get(reg.sp), nas->get(reg.sp),
                  isprint(nas->get(reg.sp))?nas->get(reg.sp):'.');
 
-  //print_disass(PC, con);
+  print_disass(PC, con);
 }
 
 int
