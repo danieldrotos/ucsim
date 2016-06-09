@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (stlcs.cc)
+ * Simulator of microcontrollers (tlcs.src/stlcs.cc)
  *
  * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
  * 

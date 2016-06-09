@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.cc)
+ * Simulator of microcontrollers (tlcs.src/glob.cc)
  *
  * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
  * 

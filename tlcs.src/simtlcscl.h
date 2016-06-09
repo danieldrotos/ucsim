@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (simtlcscl.h)
+ * Simulator of microcontrollers (tlcs.src/simtlcscl.h)
  *
  * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
  * 

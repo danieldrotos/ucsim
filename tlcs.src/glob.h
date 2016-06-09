@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.h)
+ * Simulator of microcontrollers (tlcs.src/glob.h)
  *
  * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
  * 
