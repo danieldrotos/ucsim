@@ -30,28 +30,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "ddconfig.h"
 
-//#define TYPE_BYTE int8_t
 typedef int8_t TYPE_BYTE;
-//#define TYPE_UBYTE uint8_t
 typedef uint8_t TYPE_UBYTE;
-//#define TYPE_WORD int16_t
 typedef int16_t TYPE_WORD;
-//#define TYPE_UWORD uint16_t
 typedef uint16_t TYPE_UWORD;
-//#define TYPE_DWORD int32_t
 typedef int32_t TYPE_DWORD;
-//#define TYPE_UDWORD uint32_t
 typedef uint32_t TYPE_UDWORD;
 
 typedef unsigned char	uchar;
 typedef unsigned int	uint;
 typedef unsigned long	ulong;
-typedef /*TYPE_DWORD*/int64_t	t_addr;		/* 64 bit max */
-typedef /*TYPE_UDWORD*/uint32_t	t_mem;		/* 32 bit max */
-typedef /*TYPE_WORD*/int32_t	t_smem;		/* signed 32 bit memory */
+typedef int64_t		t_addr;		/* 64 bit max */
+typedef uint32_t	t_mem;		/* 32 bit max */
+typedef int32_t		t_smem;		/* signed 32 bit memory */
 
 enum {
-  max_mem_size= 0x40000000 /* 1 GB */
+  max_mem_size= 0x40000000		/* 1 GB */
 };
 
 struct id_element
@@ -69,7 +63,7 @@ enum error_type {
 // table of dissassembled instructions
 struct dis_entry
 {
-  uint  code, mask;
+  uint64_t code, mask; // max 8 byte of code
   char  branch;
   uchar length;
   const char *mnemonic;
@@ -221,21 +215,12 @@ enum brk_event
   brkACCESS
 };
 
-//struct event_rec
-//{
-//  t_addr wx; /* write to XRAM at this address, else -1 */
-//  t_addr rx; /* read from XRAM at this address, else -1 */
-//  t_addr wi; /* write to IRAM at this address, else -1 */
-//  t_addr ri; /* read from IRAM at this address, else -1 */
-//  t_addr ws; /* write to SFR at this address, else -1 */
-//  t_addr rs; /* read from SFR at this address, else -1 */
-//  t_addr rc; /* read from ROM at this address, else -1 */
-//};
-
 /* Interrupt levels */
-//#define IT_NO		-1 /* not in interroupt service */
-#define IT_LOW		1 /* low level interrupt service */
-#define IT_HIGH		2 /* service of high priority interrupt */
+enum intr_levels {
+//IT_NO		= -1, /* not in interroupt service */
+  IT_LOW	= 1, /* low level interrupt service */
+  IT_HIGH	= 2 /* service of high priority interrupt */
+};
 
 /* cathegories of hw elements (peripherials) */
 enum hw_cath {
