@@ -74,9 +74,13 @@ int
 cl_tlcs::ccf()
 {
   if (reg.f & FLAG_C)
-    reg.f&= ~(FLAG_C|FLAG_X);
+    reg.f&= ~(FLAG_C);
   else
-    reg.f|= FLAG_C|FLAG_X;
+    reg.f|= FLAG_C;
+  if (reg.f & FLAG_X)
+    reg.f&= ~(FLAG_X);
+  else
+    reg.f|= FLAG_X;
   reg.f&= ~FLAG_N;
   return resGO;
 }
