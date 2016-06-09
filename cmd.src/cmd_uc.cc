@@ -326,7 +326,7 @@ COMMAND_DO_WORK_UC(cl_dc_cmd)
   t_addr start= last, end= last+20;
   class cl_cmd_arg *params[2]= { cmdline->param(0),
 				 cmdline->param(1) };
-  class cl_address_space *rom= uc->address_space(MEM_ROM_ID);
+  class cl_address_space *rom= uc->rom;
 
   if (!rom)
     return(DD_FALSE);
