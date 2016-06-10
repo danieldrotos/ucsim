@@ -55,6 +55,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_setcl.h"
 #include "newcmdposixcl.h"
 
+bool jaj= false;
 
 /*
  * Program options
@@ -173,6 +174,7 @@ cl_app::run(void)
 		    done= commander->proc_input();
                 }
 	      sim->step();
+	      if (jaj && commander->frozen_console) sim->uc->print_disass(sim->uc->PC, commander->frozen_console);
             }
 	  else
 	    {
@@ -261,7 +263,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= DD_FALSE;
   //bool S_i_done= DD_FALSE, S_o_done= DD_FALSE;
 
-  strcpy(opts, "c:C:p:PX:vVt:s:S:a:hHg");
+  strcpy(opts, "c:C:p:PX:vVt:s:S:a:hHgJ");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
@@ -269,6 +271,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   while((c= getopt(argc, argv, opts)) != -1)
     switch (c)
       {
+      case 'J': jaj= true; break;
       case 'g':
 	if (!options->set_value("go", this, true))
 	  fprintf(stderr, "Warning: No \"go\" option found "
