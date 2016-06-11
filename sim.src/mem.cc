@@ -883,6 +883,7 @@ cl_address_space::write(t_addr addr, t_mem val)
       err_inv_addr(addr);
       return(dummy->write(val));
     }
+  if (cella[idx].get_flag(CELL_NON_DECODED)) printf("%s[%d] nondec write=%x\n",get_name(),addr,val);
   return(cella[idx].write(val));
 }
 
@@ -1239,7 +1240,8 @@ cl_memory_chip::init(void)
   int i;
   for (i= 0; i < size; i++)
     set(i,
-	(init_value<0)?rand():(init_value));
+	0//(init_value<0)?rand():(init_value)
+	);
   return(0);
 }
 
