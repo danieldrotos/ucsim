@@ -1086,7 +1086,7 @@ const char *
 cl_uc390::disass (t_addr addr, const char *sep)
 {
   char work[256], temp[20], c[2];
-  char *buf, *p, *b, *t;
+  char *buf, *p, *b, *t, *org_b;
   t_mem code;
   uchar dps;
 
@@ -1095,7 +1095,7 @@ cl_uc390::disass (t_addr addr, const char *sep)
   code = rom->get(addr);
 
   p = work;
-  b = strdup(dis_tbl()[code].mnemonic);
+  b = org_b = strdup(dis_tbl()[code].mnemonic);
   while (*b)
     {
       if (*b == '%')
@@ -1198,7 +1198,7 @@ cl_uc390::disass (t_addr addr, const char *sep)
   else
     strcat (buf, sep);
   strcat (buf, p);
-  free(b);
+  free(org_b);
   return buf;
 }
 
