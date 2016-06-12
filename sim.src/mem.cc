@@ -409,14 +409,16 @@ cl_hw_operator::read(enum hw_cath skip)
   t_mem d1= 0/* *data*/, d2= d1;
   bool use= false;
 
-  if (cell)
-    d1= cell->get();
   if (hw &&
       hw->cathegory != skip)
     use= true, d1= hw->read(cell);
 
   if (next_operator)
     d2= next_operator->read();
+  else if (cell)
+    d2= cell->get();
+  else
+    return use= true;
 
   return(use?d1:d2);
 }
@@ -428,8 +430,7 @@ cl_hw_operator::write(t_mem val)
     hw->write(cell, &val);
   if (next_operator)
     val= next_operator->write(val);
-  if (cell)
-    return(/* *data=*/cell->set(val & mask));
+  //if (cell) return(/* *data=*//*cell->set(val & mask)*/val);
   return val;
 }
 
@@ -629,7 +630,7 @@ cl_memory_cell::write(t_mem val)
   nuof_writes++;
 #endif
   if (operators)
-    return(operators->write(val));
+    val= operators->write(val);
   *data= val & mask;
   return(*data);
 }
@@ -883,7 +884,7 @@ cl_address_space::write(t_addr addr, t_mem val)
       err_inv_addr(addr);
       return(dummy->write(val));
     }
-  if (cella[idx].get_flag(CELL_NON_DECODED)) printf("%s[%d] nondec write=%x\n",get_name(),addr,val);
+  //if (cella[idx].get_flag(CELL_NON_DECODED)) printf("%s[%d] nondec write=%x\n",get_name(),addr,val);
   return(cella[idx].write(val));
 }
 
