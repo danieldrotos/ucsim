@@ -509,7 +509,6 @@ cl_51core::inst_movx_Sri_a(uchar code)
   a= sfr->read(P2)*256 + d;
   v= acc->read();
   xram->write(a, v);
-  printf("AAA %04x A=%04x V=%02x\n", PC, (unsigned)a, (unsigned)v);
   tick(1);
   return(resGO);
 }
