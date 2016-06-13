@@ -46,6 +46,9 @@ COMMAND_ON(uc,cl_info_stack_cmd);
 // INFO MEMORY
 COMMAND_ON(uc,cl_info_memory_cmd);
 
+// INFO VARIABLES
+COMMAND_ON(uc,cl_info_var_cmd);
+
 
 #endif
 

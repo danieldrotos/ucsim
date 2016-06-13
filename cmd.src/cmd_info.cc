@@ -215,4 +215,23 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
 }
 
 
+/*
+ * INFO VARIABLES command
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_UC(cl_info_var_cmd)
+{
+  class cl_var *v;
+  int i;
+  
+  for (i= 0; i < uc->vars->count; i++)
+    {
+      v= (class cl_var *)(uc->vars->at(i));
+      v->print_info(con);
+    }
+  return 0;
+}
+
+
 /* End of cmd.src/cmd_info.cc */
