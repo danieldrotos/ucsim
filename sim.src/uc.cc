@@ -199,6 +199,7 @@ cl_uc::init(void)
     xtal= xtal_option->get_value(xtal);
   else
     xtal= 11059200;
+  vars= new cl_var_list();
   make_variables();
   make_memories();
   if (rom == NULL)
@@ -522,6 +523,10 @@ cmd->init();*/
     cset->add(cmd= new cl_info_memory_cmd("memory", 0,
 "info memory        Information about memory system",
 "long help of info memory"));
+    cmd->init();
+    cset->add(cmd= new cl_info_var_cmd("variables", 0,
+"info variables     Information about variables",
+"long help of info variables"));
     cmd->init();
   }
   if (!super_cmd) {

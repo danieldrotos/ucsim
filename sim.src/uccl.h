@@ -37,6 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "memcl.h"
 #include "brkcl.h"
 #include "stackcl.h"
+#include "varcl.h"
 
 
 /* Counter to count clock ticks */
@@ -104,6 +105,7 @@ public:
   class cl_address_space *rom;  // Required for almost every uc
   //class cl_list *address_decoders;
   class cl_address_space *variables;
+  class cl_var_list *vars;
   
   class cl_irqs *it_sources;	// Sources of interrupts
   class cl_list *it_levels;	// Follow interrupt services
