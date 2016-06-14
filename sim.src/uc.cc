@@ -528,6 +528,7 @@ cmd->init();*/
 "info variables     Information about variables",
 "long help of info variables"));
     cmd->init();
+    cmd->add_name("vars");
   }
   if (!super_cmd) {
     cmdset->add(cmd= new cl_super_cmd("info", 0,
