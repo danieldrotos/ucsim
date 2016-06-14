@@ -68,7 +68,7 @@ public:
   bool stop_at_it;
 
   // memories and cells for faster access
-  class cl_address_space *sfr, *iram, *xram;
+  class cl_address_space *sfr, *iram, *xram, *regs;
   class cl_memory_cell *acc, *psw;
 
 public:
