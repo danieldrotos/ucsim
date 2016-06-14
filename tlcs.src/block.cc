@@ -67,4 +67,56 @@ cl_tlcs::exx()
 }
 
 
+// FE 58
+int
+cl_tlcs::ldi()
+{
+  nas->write(reg.de, nas->read(reg.hl));
+  reg.de++;
+  reg.hl++;
+  reg.bc--;
+  reg.f&= ~(FLAG_H|FLAG_N|FLAG_V);
+  if (reg.bc)
+    reg.f|= FLAG_V;
+  return resGO;
+}
+
+
+// FE 59
+int
+cl_tlcs::ldir()
+{
+  ldi();
+  if (reg.bc)
+    PC-= 2;
+  return resGO;
+}
+
+
+// FE 5a
+int
+cl_tlcs::ldd()
+{
+  nas->write(reg.de, nas->read(reg.hl));
+  reg.de--;
+  reg.hl--;
+  reg.bc--;
+  reg.f&= ~(FLAG_H|FLAG_N|FLAG_V);
+  if (reg.bc)
+    reg.f|= FLAG_V;
+  return resGO;
+}
+
+
+// FE 5a
+int
+cl_tlcs::lddr()
+{
+  ldd();
+  if (reg.bc)
+    PC-= 2;
+  return resGO;
+}
+
+
 /* End of tlcs.src/block.cc */

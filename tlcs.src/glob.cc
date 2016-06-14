@@ -90,6 +90,23 @@ struct dis_entry disass_tlcs[]= {
   { 0x8ff3, 0xffff, ' ', 2, "DEC (HL+A)" },
   { 0x97f3, 0xffff, ' ', 2, "INCW (HL+A)" },
   { 0x9ff3, 0xffff, ' ', 2, "DECW (HL+A)" },
+  { 0xa0f3, 0xffff, ' ', 2, "RLC (HL+A)" },
+  { 0xa1f3, 0xffff, ' ', 2, "RRC (HL+A)" },
+  { 0xa2f3, 0xffff, ' ', 2, "RL (HL+A)" },
+  { 0xa3f3, 0xffff, ' ', 2, "RR (HL+A)" },
+  { 0xa4f3, 0xffff, ' ', 2, "SLA (HL+A)" },
+  { 0xa5f3, 0xffff, ' ', 2, "SRA (HL+A)" },
+  { 0xa6f3, 0xffff, ' ', 2, "SLL (HL+A)" },
+  { 0xa7f3, 0xffff, ' ', 2, "SRL (HL+A)" },
+
+  { 0x58fe, 0xffff, ' ', 2, "LDI" },
+  { 0x59fe, 0xffff, ' ', 2, "LDIR" },
+  { 0x5afe, 0xffff, ' ', 2, "LDD" },
+  { 0x5bfe, 0xffff, ' ', 2, "LDDR" },
+  { 0x5cfe, 0xffff, ' ', 2, "CPI" },
+  { 0x5dfe, 0xffff, ' ', 2, "CPIR" },
+  { 0x5efe, 0xffff, ' ', 2, "CPD" },
+  { 0x5ffe, 0xffff, ' ', 2, "CPDR" },
   
   { 0, 0, ' ', 0, NULL }
 };

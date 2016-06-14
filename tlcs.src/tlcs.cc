@@ -441,8 +441,30 @@ cl_tlcs::exec_inst(void)
 		      case 0x8f: dec(cell_hl_a()); break;
 		      case 0x97: inc16((t_addr)(reg.hl+reg.a)); break;
 		      case 0x9f: dec16((t_addr)(reg.hl+reg.a)); break;
+		      case 0xa0: rlc(cell_hl_a()); break;
+		      case 0xa1: rrc(cell_hl_a()); break;
+		      case 0xa2: rl(cell_hl_a()); break;
+		      case 0xa3: rr(cell_hl_a()); break;
+		      case 0xa4: sla(cell_hl_a()); break;
+		      case 0xa5: sra(cell_hl_a()); break;
+		      case 0xa6: sla(cell_hl_a()); break;
+		      case 0xa7: srl(cell_hl_a()); break;
 		      }
 		    break;
+		  }
+		case 0xfe:
+		  {
+		    switch (c2)
+		      {
+		      case 0x58: ldi(); break;
+		      case 0x59: ldir(); break;
+		      case 0x5a: ldd(); break;
+		      case 0x5b: lddr(); break;
+		      case 0x5c: break;
+		      case 0x5d: break;
+		      case 0x5e: break;
+		      case 0x5f: break;
+		      }
 		  }
 		}
 	    }
