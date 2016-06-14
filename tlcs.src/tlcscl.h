@@ -204,8 +204,10 @@ class cl_tlcs: public cl_uc
 
   // (4) 8-bit arithmetic and logic operation
   virtual uint8_t inc(uint8_t data);			// INC 8 bit
+  virtual void inc(cl_memory_cell *cell);		// INC mem
   virtual uint8_t dec(uint8_t data);			// DEC 8 bit
-  virtual int add_a(uint8_t d);				// ADD A,8-bit
+  virtual void dec(cl_memory_cell *cell);		// DEC mem
+  virtual uint8_t add_a(uint8_t d);			// ADD A,8-bit
   virtual int add_a(class cl_memory_cell *cell);	// ADD A,mem
   virtual int adc_a(uint8_t d);				// ADC A,8-bit
   virtual int adc_a(class cl_memory_cell *cell);	// ADC A,mem
@@ -215,10 +217,29 @@ class cl_tlcs: public cl_uc
   virtual int sbc_a(class cl_memory_cell *cell);	// SBC A,mem
   virtual int and_a(uint8_t d);				// AND A,8-bit
   virtual int and_a(class cl_memory_cell *cell);	// AND A,mem
+  virtual int xor_a(uint8_t d);				// XOR A,8-bit
+  virtual int xor_a(class cl_memory_cell *cell);	// XOR A,mem
+  virtual int or_a(uint8_t d);				// OR A,8-bit
+  virtual int or_a(class cl_memory_cell *cell);		// OR A,mem
+  virtual int cp_a(uint8_t d);				// CP A,8-bit
+  virtual int cp_a(class cl_memory_cell *cell);		// CP A,mem
 
   // (5) 16-bit arithmetic and logic operation
   virtual uint16_t inc16(uint16_t data);		// INC 16 bit
+  virtual uint16_t inc16(t_addr addr);			// INCW mem
   virtual uint16_t dec16(uint16_t data);		// DEC 16 bit
+  virtual uint16_t dec16(t_addr addr);			// DECW mem
+  virtual uint16_t add_hl(t_mem val);			// ADD HL,16-bit
+  virtual uint16_t add_hl(t_addr addr);			// ADD HL,mem
+  virtual uint16_t adc_hl(t_addr addr);			// ADC HL,mem
+  virtual uint16_t sub_hl(t_addr addr);			// SUB HL,mem
+  virtual uint16_t sbc_hl(t_addr addr);			// SBC HL,mem
+  virtual uint16_t and_hl(t_mem val);			// AND HL,16-bit
+  virtual uint16_t and_hl(t_addr addr);			// AND HL,mem
+  virtual uint16_t xor_hl(t_mem val);			// XOR HL,16-bit
+  virtual uint16_t xor_hl(t_addr addr);			// XOR HL,mem
+  virtual uint16_t or_hl(t_mem val);			// OR HL,16-bit
+  virtual uint16_t or_hl(t_addr addr);			// OR HL,mem
   
   // (6) cpu control and others
   virtual int daa_a();			// 0b

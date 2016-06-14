@@ -75,6 +75,21 @@ struct dis_entry disass_tlcs[]= {
   { 0x62f3, 0xffff, ' ', 2, "SUB A,(HL+A)" },
   { 0x63f3, 0xffff, ' ', 2, "SBC A,(HL+A)" },
   { 0x64f3, 0xffff, ' ', 2, "AND A,(HL+A)" },
+  { 0x65f3, 0xffff, ' ', 2, "XOR A,(HL+A)" },
+  { 0x66f3, 0xffff, ' ', 2, "OR A,(HL+A)" },
+  { 0x67f3, 0xffff, ' ', 2, "CP A,(HL+A)" },
+  { 0x70f3, 0xffff, ' ', 2, "ADD HL,(HL+A)" },
+  { 0x71f3, 0xffff, ' ', 2, "ADC HL,(HL+A)" },
+  { 0x72f3, 0xffff, ' ', 2, "SUB HL,(HL+A)" },
+  { 0x73f3, 0xffff, ' ', 2, "SBC HL,(HL+A)" },
+  { 0x74f3, 0xffff, ' ', 2, "AND HL,(HL+A)" },
+  { 0x75f3, 0xffff, ' ', 2, "XOR HL,(HL+A)" },
+  { 0x76f3, 0xffff, ' ', 2, "OR HL,(HL+A)" },
+  { 0x77f3, 0xffff, ' ', 2, "CP HL,(HL+A)" },
+  { 0x87f3, 0xffff, ' ', 2, "INC (HL+A)" },
+  { 0x8ff3, 0xffff, ' ', 2, "DEC (HL+A)" },
+  { 0x97f3, 0xffff, ' ', 2, "INCW (HL+A)" },
+  { 0x9ff3, 0xffff, ' ', 2, "DECW (HL+A)" },
   
   { 0, 0, ' ', 0, NULL }
 };

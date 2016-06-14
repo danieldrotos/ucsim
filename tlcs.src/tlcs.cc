@@ -426,6 +426,21 @@ cl_tlcs::exec_inst(void)
 		      case 0x62: res= sub_a(cell_hl_a()); break;
 		      case 0x63: res= sbc_a(cell_hl_a()); break;
 		      case 0x64: res= and_a(cell_hl_a()); break;
+		      case 0x65: res= xor_a(cell_hl_a()); break;
+		      case 0x66: res= or_a(cell_hl_a()); break;
+		      case 0x67: res= cp_a(cell_hl_a()); break;
+		      case 0x70: reg.hl= add_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x71: reg.hl= adc_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x72: reg.hl= sub_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x73: reg.hl= sbc_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x74: reg.hl= and_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x75: reg.hl= xor_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x76: reg.hl= or_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x77: sub_hl((t_addr)(reg.hl+reg.a)); break;
+		      case 0x87: inc(cell_hl_a()); break;
+		      case 0x8f: dec(cell_hl_a()); break;
+		      case 0x97: inc16((t_addr)(reg.hl+reg.a)); break;
+		      case 0x9f: dec16((t_addr)(reg.hl+reg.a)); break;
 		      }
 		    break;
 		  }

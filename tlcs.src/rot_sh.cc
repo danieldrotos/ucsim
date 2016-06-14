@@ -46,6 +46,7 @@ cl_tlcs::rlc(uint8_t data, bool set_sz)
 	reg.f|= FLAG_Z;
       if (data&0x80)
 	reg.f|= FLAG_S;
+      set_p(data);
     }
   
   return data;
@@ -70,6 +71,7 @@ cl_tlcs::rrc(uint8_t data, bool set_sz)
 	reg.f|= FLAG_Z;
       if (data&0x80)
 	reg.f|= FLAG_S;
+      set_p(data);
     }
   
   return data;
@@ -93,6 +95,7 @@ cl_tlcs::rl(uint8_t data, bool set_sz)
 	reg.f|= FLAG_Z;
       if (data&0x80)
 	reg.f|= FLAG_S;
+      set_p(data);
     }
   
   return data;
@@ -116,6 +119,7 @@ cl_tlcs::rr(uint8_t data, bool set_sz)
 	reg.f|= FLAG_Z;
       if (data&0x80)
 	reg.f|= FLAG_S;
+      set_p(data);
     }
   
   return data;
@@ -137,6 +141,7 @@ cl_tlcs::sla(uint8_t data, bool set_sz)
 	reg.f|= FLAG_Z;
       if (data&0x80)
 	reg.f|= FLAG_S;
+      set_p(data);
     }
   
   return data;
@@ -160,6 +165,7 @@ cl_tlcs::sra(uint8_t data, bool set_sz)
 	reg.f|= FLAG_Z;
       if (data&0x80)
 	reg.f|= FLAG_S;
+      set_p(data);
     }
   
   return data;
@@ -181,6 +187,7 @@ cl_tlcs::srl(uint8_t data, bool set_sz)
 	reg.f|= FLAG_Z;
       if (data&0x80)
 	reg.f|= FLAG_S;
+      set_p(data);
     }
   
   return data;
