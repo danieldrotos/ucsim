@@ -1282,6 +1282,28 @@ cl_uc::symbol2address(char *sym, struct name_entry tab[],
   return(DD_FALSE);
 }
 
+bool
+cl_uc::symbol2address(char *sym,
+		      class cl_address_space **as,
+		      t_addr *addr)
+{
+  class cl_var *v;
+  t_index i;
+
+  if (vars->search(sym, i))
+    {
+      v= (class cl_var *)(vars->at(i));
+      if (v->bit >= 0)
+	return false;
+      if (as)
+	*as= v->as;
+      if (addr)
+	*addr= v->addr;
+      return true;
+    }
+  return false;
+}
+  
 char *
 cl_uc::symbolic_bit_name(t_addr bit_address,
 			 class cl_memory *mem,

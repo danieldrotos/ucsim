@@ -214,6 +214,9 @@ public:
   virtual bool get_name(t_addr addr, struct name_entry tab[], char *buf);
   virtual bool symbol2address(char *sym, struct name_entry tab[],
 			      t_addr *addr);
+  virtual bool symbol2address(char *sym,
+			      class cl_address_space **as,
+			      t_addr *addr);
   virtual char *symbolic_bit_name(t_addr bit_address,
 				  class cl_memory *mem,
 				  t_addr mem_addr,
