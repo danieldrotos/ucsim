@@ -96,9 +96,69 @@ cl_tlcs::cl_tlcs(class cl_sim *asim):
 int
 cl_tlcs::init(void)
 {
+  class cl_var *v;
+
   cl_uc::init(); /* Memories now exist */
   //ram= address_space(MEM_IRAM_ID);
   //rom= address_space(MEM_ROM_ID);
+
+  vars->add(v= new cl_var(cchars("a"), regs8, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("f"), regs8, 1));
+  v->init();
+  vars->add(v= new cl_var(cchars("b"), regs8, 2));
+  v->init();
+  vars->add(v= new cl_var(cchars("c"), regs8, 3));
+  v->init();
+  vars->add(v= new cl_var(cchars("d"), regs8, 4));
+  v->init();
+  vars->add(v= new cl_var(cchars("e"), regs8, 5));
+  v->init();
+  vars->add(v= new cl_var(cchars("h"), regs8, 6));
+  v->init();
+  vars->add(v= new cl_var(cchars("l"), regs8, 7));
+  v->init();
+
+  vars->add(v= new cl_var(cchars("alt_a"), regs8, 8));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_f"), regs8, 9));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_b"), regs8, 10));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_c"), regs8, 11));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_d"), regs8, 12));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_e"), regs8, 13));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_h"), regs8, 14));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_l"), regs8, 15));
+  v->init();
+
+  vars->add(v= new cl_var(cchars("af"), regs16, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("bc"), regs16, 1));
+  v->init();
+  vars->add(v= new cl_var(cchars("de"), regs16, 2));
+  v->init();
+  vars->add(v= new cl_var(cchars("hl"), regs16, 3));
+  v->init();
+  vars->add(v= new cl_var(cchars("ix"), regs16, 4));
+  v->init();
+  vars->add(v= new cl_var(cchars("iy"), regs16, 5));
+  v->init();
+  vars->add(v= new cl_var(cchars("sp"), regs16, 6));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_af"), regs16, 7));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_af"), regs16, 8));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_af"), regs16, 9));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_af"), regs16, 11));
+  v->init();
+
   return(0);
 }
 
