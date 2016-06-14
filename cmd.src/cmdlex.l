@@ -140,8 +140,15 @@ uc_yy_check_id(char *token)
 	}
       
       t_addr addr;
-      bool found= uc->symbol2address(yytext, uc->sfr_tbl(), &addr);
-      if (found)
+      class cl_address_space *as;
+      bool found;
+      if ((found= uc->symbol2address(yytext, &as, &addr)))
+	  {
+	      yylval.memory.memory= as;
+	      yylval.memory.address= addr;
+	      return PTOK_MEMORY;
+	  }
+      else if ((found= uc->symbol2address(yytext, uc->sfr_tbl(), &addr)))
 	{
 	  /*yylval.number= addr;
 	    return PTOK_NUMBER;*/
