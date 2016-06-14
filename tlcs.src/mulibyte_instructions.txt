@@ -185,6 +185,7 @@ F3	12					MUL HL,(HL+A)
 F3	13					DIV HL,(HL+A)
 F3	14+ix					ADD ix,(HL+A)
 F3	18+b					TSET b,(HL+A)
+F3	28+r					LD r,(HL+A)
 F3	48+rr					LD rr,(HL+A)
 F3	50+rr					EX (HL+A),rr
 F3	60					ADD A,(HL+A)
