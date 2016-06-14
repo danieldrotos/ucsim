@@ -537,4 +537,60 @@ COMMAND_DO_WORK_UC(cl_Where_cmd)
 }
 
 
+COMMAND_DO_WORK_UC(cl_var_cmd)
+{
+  class cl_cmd_arg *params[4]= { cmdline->param(0),
+				 cmdline->param(1),
+				 cmdline->param(2),
+				 cmdline->param(3) };
+  class cl_memory *m= NULL;
+  t_addr addr= -1;
+  int bit= -1;
+  class cl_var *v;
+  
+  if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS NUMBER))
+    {
+      m= params[1]->value.memory.memory;
+      addr= params[2]->value.address;
+      bit= params[3]->value.number;
+    }
+  else if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS))
+    {
+      m= params[1]->value.memory.memory;
+      addr= params[2]->value.address;
+    }
+  else if (cmdline->syntax_match(uc, STRING))
+    {
+    }
+  else
+    return con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n"),
+      false;
+
+  if (m)
+    if (!m->is_address_space())
+      return con->dd_printf("%s is not address space\n", m->get_name()),
+	false;
+  if (addr > 0)
+    if (!m->valid_address(addr))
+      return con->dd_printf("invalid address\n"),
+	false;
+  if (bit >= 0)
+    if (bit >= 32)
+      return con->dd_printf("invalid bit number\n"),
+	false;
+
+  if (m)
+    {
+      v= new cl_var(params[0]->value.string.string,
+		    (cl_address_space*)m, addr, bit);
+      v->init();
+      uc->vars->add(v);
+    }
+  else
+    {
+    }
+  
+  return false;
+}
+
 /* End of cmd.src/cmd_uc.cc */

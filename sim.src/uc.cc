@@ -670,6 +670,13 @@ cmd->init();*/
 "long help of memory", cset));
     cmd->init();
   }
+
+  cmdset->add(cmd= new cl_var_cmd("var", 0,
+"var name [memory addr [bit_nr]]\n"
+"                    Create new variable",
+"long help of var"));
+  cmd->init();
+  cmd->add_name("variable");
 }
 
 
