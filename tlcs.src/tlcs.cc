@@ -54,6 +54,43 @@ cl_tlcs::cl_tlcs(class cl_sim *asim):
 {
   //type= CPU_TLCS;
   //sleep_executed= 0;
+  regs8= new cl_address_space("regs8", 0, 16, 8);
+  regs8->init();
+  regs8->get_cell(0)->decode((t_mem*)&reg.a);
+  regs8->get_cell(1)->decode((t_mem*)&reg.f);
+  regs8->get_cell(2)->decode((t_mem*)&reg.b);
+  regs8->get_cell(3)->decode((t_mem*)&reg.c);
+  regs8->get_cell(4)->decode((t_mem*)&reg.d);
+  regs8->get_cell(5)->decode((t_mem*)&reg.e);
+  regs8->get_cell(6)->decode((t_mem*)&reg.h);
+  regs8->get_cell(7)->decode((t_mem*)&reg.l);
+
+  regs8->get_cell(8)->decode((t_mem*)&reg.alt_a);
+  regs8->get_cell(9)->decode((t_mem*)&reg.alt_f);
+  regs8->get_cell(10)->decode((t_mem*)&reg.alt_b);
+  regs8->get_cell(11)->decode((t_mem*)&reg.alt_c);
+  regs8->get_cell(12)->decode((t_mem*)&reg.alt_d);
+  regs8->get_cell(13)->decode((t_mem*)&reg.alt_e);
+  regs8->get_cell(14)->decode((t_mem*)&reg.alt_h);
+  regs8->get_cell(15)->decode((t_mem*)&reg.alt_l);
+
+  regs16= new cl_address_space("regs16", 0, 11, 16);
+  regs16->init();
+
+  regs16->get_cell(0)->decode((t_mem*)&reg.af);
+  regs16->get_cell(1)->decode((t_mem*)&reg.bc);
+  regs16->get_cell(2)->decode((t_mem*)&reg.de);
+  regs16->get_cell(3)->decode((t_mem*)&reg.hl);
+  regs16->get_cell(4)->decode((t_mem*)&reg.ix);
+  regs16->get_cell(5)->decode((t_mem*)&reg.iy);
+  regs16->get_cell(6)->decode((t_mem*)&reg.sp);
+  regs16->get_cell(7)->decode((t_mem*)&reg.alt_af);
+  regs16->get_cell(8)->decode((t_mem*)&reg.alt_bc);
+  regs16->get_cell(9)->decode((t_mem*)&reg.alt_de);
+  regs16->get_cell(10)->decode((t_mem*)&reg.alt_hl);
+
+  address_spaces->add(regs8);
+  address_spaces->add(regs16);
 }
 
 int
@@ -62,10 +99,6 @@ cl_tlcs::init(void)
   cl_uc::init(); /* Memories now exist */
   //ram= address_space(MEM_IRAM_ID);
   //rom= address_space(MEM_ROM_ID);
-
-  reg.bc= 0;
-  reg.d= 0;
-  reg.e= 0;
   return(0);
 }
 

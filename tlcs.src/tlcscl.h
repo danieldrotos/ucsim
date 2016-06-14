@@ -158,6 +158,8 @@ class cl_tlcs: public cl_uc
  public:
   class cl_address_space *nas;
   class cl_address_space *das;
+  class cl_address_space *regs8;
+  class cl_address_space *regs16;
  public:
   cl_tlcs(class cl_sim *asim);
   virtual int init(void);
