@@ -42,6 +42,7 @@ cl_var::print_info(cl_console_base *con)
       if (bit >= 0)
 	con->dd_printf(".%d", bit);
     }
+  con->dd_printf("\n");
 }
 
 

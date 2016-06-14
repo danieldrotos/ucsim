@@ -13,14 +13,14 @@
 
 class cl_var: public cl_base
 {
- protected:
+ public:
   class cl_address_space *as; // reference
   t_addr addr;
   int bit;
  protected:
   class cl_memory_cell *cell;
  public:
-  cl_var(char *iname, class cl_address_space *ias, t_addr iaddr, int ibit);
+  cl_var(char *iname, class cl_address_space *ias, t_addr iaddr, int ibit= -1);
   virtual int init(void);
 
   virtual void print_info(cl_console_base *con);
