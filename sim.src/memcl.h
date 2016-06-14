@@ -220,14 +220,21 @@ public:
  * version 3 of cell
  */
 
-class cl_memory_cell: public cl_abs_base
+class cl_cell_data: public cl_abs_base
+{
+ protected:
+  t_mem *data;
+  virtual t_mem d();
+  virtual void d(t_mem v);
+};
+
+class cl_memory_cell: public cl_cell_data
 {
 #ifdef STATISTIC
  public:
   unsigned long nuof_writes, nuof_reads;
 #endif
  public:
-  t_mem *data;
   t_mem mask;
   t_mem def_data;
  protected:
@@ -274,6 +281,23 @@ class cl_memory_cell: public cl_abs_base
   //virtual class cl_hw *get_hw(int ith);
   virtual class cl_event_handler *get_event_handler(void);
 };
+
+class cl_cell8: public cl_memory_cell
+{
+ public:
+ cl_cell8(uchar awidth): cl_memory_cell(awidth) {}
+  virtual t_mem d();
+  virtual void d(t_mem v);
+};
+
+class cl_cell16: public cl_memory_cell
+{
+ public:
+ cl_cell16(uchar awidth): cl_memory_cell(awidth) {}
+  virtual t_mem d();
+  virtual void d(t_mem v);
+};
+
 
 class cl_dummy_cell: public cl_memory_cell
 {

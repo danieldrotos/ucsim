@@ -224,7 +224,7 @@ cl_51core::make_memories(void)
   as->decoders->add(ad);
   ad->activate(0);
 
-  chip= new cl_memory_chip("iram_chip", 0x80, 8, 0);
+  chip= new cl_memory_chip("iram_chip", 0x80, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= iram/*address_space(MEM_IRAM_ID)*/,
@@ -233,7 +233,7 @@ cl_51core::make_memories(void)
   as->decoders->add(ad);
   ad->activate(0);
 
-  chip= new cl_memory_chip("xram_chip", 0x10000, 8, 0);
+  chip= new cl_memory_chip("xram_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= xram/*address_space(MEM_XRAM_ID)*/,
@@ -242,7 +242,7 @@ cl_51core::make_memories(void)
   as->decoders->add(ad);
   ad->activate(0);
 
-  chip= new cl_memory_chip("sfr_chip", 0x80, 8, 0);
+  chip= new cl_memory_chip("sfr_chip", 0x80, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= sfr/*address_space(MEM_SFR_ID)*/,

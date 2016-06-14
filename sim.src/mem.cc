@@ -484,6 +484,51 @@ cl_read_operator::read(void)
 
 
 /*
+ *                                                                  Cell data
+ */
+
+t_mem
+cl_cell_data::d()
+{
+  return data?(*data):0;
+}
+
+void
+cl_cell_data::d(t_mem v)
+{
+  data?(*data=v):0;
+}
+
+// 8 bit cell;
+
+t_mem
+cl_cell8::d()
+{
+  return data?(*((uint8_t*)data)):0;
+}
+
+void
+cl_cell8::d(t_mem v)
+{
+  data?(*((uint8_t*)data)=v):0;
+}
+
+// 16 bit cell;
+
+t_mem
+cl_cell16::d()
+{
+  return data?(*((uint16_t*)data)):0;
+}
+
+void
+cl_cell16::d(t_mem v)
+{
+  data?(*((uint16_t*)data)=v):0;
+}
+
+
+/*
  *                                                                  Memory cell
  */
 
@@ -603,7 +648,7 @@ cl_memory_cell::read(void)
 #endif
   if (operators)
     return(operators->read());
-  return(*data);
+  return /* *data*/d();
 }
 
 t_mem
@@ -614,13 +659,13 @@ cl_memory_cell::read(enum hw_cath skip)
 #endif
   if (operators)
     return(operators->read(skip));
-  return(*data);
+  return /* *data*/d();
 }
 
 t_mem
 cl_memory_cell::get(void)
 {
-  return(*data);
+  return /* *data*/d();
 }
 
 t_mem
@@ -631,15 +676,15 @@ cl_memory_cell::write(t_mem val)
 #endif
   if (operators)
     val= operators->write(val);
-  *data= val & mask;
-  return(*data);
+  /* *data=*/d( val & mask);
+  return d();
 }
 
 t_mem
 cl_memory_cell::set(t_mem val)
 {
-  *data= val & mask;
-  return(*data);
+  /* *data=*/d( val & mask);
+  return /* *data*/d();
 }
 
 
@@ -647,8 +692,8 @@ cl_memory_cell::set(t_mem val)
 t_mem
 cl_memory_cell::add(long what)
 {
-  *data= (*data + what) & mask;
-  return(*data);
+  /* *data=*/ d( (*data + what) & mask);
+  return(/* *data*/d());
 }
 
 t_mem
@@ -662,14 +707,14 @@ void
 cl_memory_cell::set_bit1(t_mem bits)
 {
   bits&= mask;
-  (*data)|= bits;
+  /*(*data)|=*/d(d()| bits);
 }
 
 void
 cl_memory_cell::set_bit0(t_mem bits)
 {
   bits&= mask;
-  (*data)&= ~bits;
+  /*(*data)&=*/d(d()& ~bits);
 }
 
 
@@ -808,14 +853,21 @@ cl_address_space::cl_address_space(const char *id,
 				   t_addr astart, t_addr asize, int awidth):
   cl_memory(id, asize, awidth)
 {
-  cl_memory_cell c(awidth);
+  class cl_memory_cell c(awidth);
+  class cl_cell8 c8(awidth);
+  class cl_cell16 c16(awidth);
+  class cl_memory_cell *cell= &c;
   start_address= astart;
   decoders= new cl_decoder_list(2, 2, DD_FALSE);
   cella= (class cl_memory_cell *)malloc(size * sizeof(class cl_memory_cell));
+  if (awidth <= 8)
+    cell= &c8;
+  else if (awidth <= 16)
+    cell= &c16;
   int i;
   for (i= 0; i < size; i++)
     {
-      memcpy(&(cella[i]), &c, sizeof(c));
+      memcpy(&(cella[i]), cell, sizeof(c));
       cella[i].init();
     }
   dummy= new cl_dummy_cell(awidth);
@@ -871,7 +923,7 @@ cl_address_space::get(t_addr addr)
       err_inv_addr(addr);
       return(dummy->get());
     }
-  return *(cella[idx].data);
+  return cella[idx].get();//*(cella[idx].data);
 }
 
 t_mem
@@ -899,7 +951,7 @@ cl_address_space::set(t_addr addr, t_mem val)
       dummy->set(val);
       return;
     }
-  *(cella[idx].data)= val&(data_mask);
+  /* *(cella[idx].data)=*/cella[idx].set( val/*&(data_mask)*/);
 }
 
 t_mem
@@ -1241,7 +1293,7 @@ cl_memory_chip::init(void)
   int i;
   for (i= 0; i < size; i++)
     set(i,
-	0//(init_value<0)?rand():(init_value)
+	(init_value<0)?rand():(init_value)
 	);
   return(0);
 }
