@@ -65,6 +65,16 @@ struct dis_entry disass_tlcs[]= {
   { 0x88, 0xf8, 'r', 1, "DEC %r" },
   { 0x90, 0xf8, 'R', 1, "INC %R" },
   { 0x98, 0xf8, 'R', 1, "DEC %R" },
+
+  { 0x10f3, 0xffff, ' ', 2, "RLD (HL+A)" },
+  { 0x11f3, 0xffff, ' ', 2, "RRD (HL+A)" },
+  { 0x12f3, 0xffff, ' ', 2, "MUL HL,(HL+A)" },
+  { 0x13f3, 0xffff, ' ', 2, "DIV HL,(HL+A)" },
+  { 0x60f3, 0xffff, ' ', 2, "ADD A,(HL+A)" },
+  { 0x61f3, 0xffff, ' ', 2, "ADC A,(HL+A)" },
+  { 0x62f3, 0xffff, ' ', 2, "SUB A,(HL+A)" },
+  { 0x63f3, 0xffff, ' ', 2, "SBC A,(HL+A)" },
+  { 0x64f3, 0xffff, ' ', 2, "AND A,(HL+A)" },
   
   { 0, 0, ' ', 0, NULL }
 };

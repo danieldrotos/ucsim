@@ -187,4 +187,32 @@ cl_tlcs::srl(uint8_t data, bool set_sz)
 }
 
 
+int
+cl_tlcs::rld(class cl_memory_cell *cell)
+{
+  reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
+
+  uint8_t c= cell->read();
+  uint8_t temp= reg.a & 0x0f;
+  reg.a= (reg.a & 0xf0) + (c >> 4);
+  cell->write((c << 4) + temp);
+  set_p(reg.a);
+  return resGO;
+}
+
+
+int
+cl_tlcs::rrd(class cl_memory_cell *cell)
+{
+  reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
+
+  uint8_t c= cell->read();
+  uint8_t temp= reg.a & 0x0f;
+  reg.a= (reg.a & 0xf0) + (c & 0x0f);
+  cell->write((temp << 4) + (c >> 4));
+  set_p(reg.a);
+  return resGO;
+}
+
+
 /* End of tlcs.src/rot_sh.cc */

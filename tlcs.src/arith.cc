@@ -97,4 +97,147 @@ cl_tlcs::dec16(uint16_t data)
 }
 
 
+// ADD A,8-bit
+int
+cl_tlcs::add_a(uint8_t d)
+{
+  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
+
+  uint8_t m= d;
+  int r= reg.a + m;
+  bool new_c= false, new_c6;
+  
+  if (((reg.a & 0xf) + (m & 0xf)) > 0xf)
+    reg.f|= FLAG_H;
+  new_c6= ((reg.a&0x7f) + (m&0x7f)) > 0x7f;
+  
+  reg.a= r;
+
+  if (m & 0x80)
+    reg.f|= FLAG_S;
+  if (reg.a == 0)
+    reg.f|= FLAG_Z;
+  if (m > 255)
+    {
+      reg.f|= FLAG_X|FLAG_C;
+      new_c= true;
+    }
+  if (new_c ^ new_c6)
+    reg.f|= FLAG_V;
+
+  return resGO;
+}
+
+
+// ADC A,8-bit
+int
+cl_tlcs::adc_a(uint8_t d)
+{
+  int oldc= (reg.f&FLAG_C)?1:0;
+  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
+
+  uint8_t m= d;
+  int r= reg.a + m + oldc;
+  bool new_c= false, new_c6;
+  
+  if (((reg.a & 0xf) + (m & 0xf) + oldc) > 0xf)
+    reg.f|= FLAG_H;
+  new_c6= ((reg.a&0x7f) + (m&0x7f) + oldc) > 0x7f;
+  
+  reg.a= r;
+
+  if (m & 0x80)
+    reg.f|= FLAG_S;
+  if (reg.a == 0)
+    reg.f|= FLAG_Z;
+  if (m > 255)
+    {
+      reg.f|= FLAG_X|FLAG_C;
+      new_c= true;
+    }
+  if (new_c ^ new_c6)
+    reg.f|= FLAG_V;
+
+  return resGO;
+}
+
+
+// SUB A,8-bit
+int
+cl_tlcs::sub_a(uint8_t d)
+{
+  add_a(~d + 1);
+  reg.f|= FLAG_N;
+  return resGO;
+}
+
+
+// SBC A,8-bit
+int
+cl_tlcs::sbc_a(uint8_t d)
+{
+  adc_a(~d + 1);
+  reg.f|= FLAG_N;
+  return resGO;
+}
+
+
+// AND A,8-bit
+int
+cl_tlcs::and_a(uint8_t d)
+{
+  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
+  reg.f|= FLAG_H;
+
+  reg.a&= d;
+  set_p(reg.a);
+  if (reg.a & 0x80)
+    reg.f|= FLAG_S;
+  if (reg.a == 0)
+    reg.f|= FLAG_Z;
+
+  return resGO;
+}
+
+
+// ADD A,mem
+int
+cl_tlcs::add_a(class cl_memory_cell *cell)
+{
+  return add_a((uint8_t)(cell->read()));
+}
+
+
+// ADC A,mem
+int
+cl_tlcs::adc_a(class cl_memory_cell *cell)
+{
+  return adc_a((uint8_t)(cell->read()));
+}
+
+
+// SUB A,mem
+int
+cl_tlcs::sub_a(class cl_memory_cell *cell)
+{
+  return sub_a((uint8_t)(cell->read()));
+}
+
+
+// SBC A,mem
+int
+cl_tlcs::sbc_a(class cl_memory_cell *cell)
+{
+  return sbc_a((uint8_t)(cell->read()));
+}
+
+
+// AND A,mem
+int
+cl_tlcs::and_a(class cl_memory_cell *cell)
+{
+  return and_a((uint8_t)(cell->read()));
+}
+
+
 /* End of tlcs/arith.cc */

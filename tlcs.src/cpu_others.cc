@@ -143,4 +143,29 @@ cl_tlcs::swi()
 }
 
 
+// MUL HL,mem
+int
+cl_tlcs::mul_hl(class cl_memory_cell *cell)
+{
+  reg.hl= reg.l * cell->read();
+  return resGO;
+}
+
+
+// DIV HL,mem
+int
+cl_tlcs::div_hl(class cl_memory_cell *cell)
+{
+  uint8_t m= cell->read();
+  reg.f&= ~FLAG_V;
+  if ((m == 0) ||
+      ((reg.hl / m) > 255))
+    reg.f|= FLAG_V;
+  else
+    reg.l= reg.hl / m;
+  reg.h= reg.hl % m;
+  return resGO;
+}
+
+
 /* End of tlcs.src/cpu_others.cc */

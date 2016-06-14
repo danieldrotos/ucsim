@@ -191,13 +191,36 @@ class cl_tlcs: public cl_uc
   virtual uint8_t *aof_reg8(uint8_t data_r);
   virtual uint16_t *aof_reg16_rr(uint8_t data_rr);
   virtual uint16_t *aof_reg16_qq(uint8_t data_qq);
+  virtual class cl_memory_cell *cell_hl_a();
+
+  // (1) 8-bit data transfer
+
+  // (2) 16-bit data transfer
   
-  // block
+  // (3) exchange, block transfer and search
   virtual int ex_de_hl();		// 08
   virtual int ex_af_alt_af();		// 09
   virtual int exx();			// 0a
 
-  // cpu control and others
+  // (4) 8-bit arithmetic and logic operation
+  virtual uint8_t inc(uint8_t data);			// INC 8 bit
+  virtual uint8_t dec(uint8_t data);			// DEC 8 bit
+  virtual int add_a(uint8_t d);				// ADD A,8-bit
+  virtual int add_a(class cl_memory_cell *cell);	// ADD A,mem
+  virtual int adc_a(uint8_t d);				// ADC A,8-bit
+  virtual int adc_a(class cl_memory_cell *cell);	// ADC A,mem
+  virtual int sub_a(uint8_t d);				// SUB A,8-bit
+  virtual int sub_a(class cl_memory_cell *cell);	// SUB A,mem
+  virtual int sbc_a(uint8_t d);				// SBC A,8-bit
+  virtual int sbc_a(class cl_memory_cell *cell);	// SBC A,mem
+  virtual int and_a(uint8_t d);				// AND A,8-bit
+  virtual int and_a(class cl_memory_cell *cell);	// AND A,mem
+
+  // (5) 16-bit arithmetic and logic operation
+  virtual uint16_t inc16(uint16_t data);		// INC 16 bit
+  virtual uint16_t dec16(uint16_t data);		// DEC 16 bit
+  
+  // (6) cpu control and others
   virtual int daa_a();			// 0b
   virtual int cpl_a();			// 10
   virtual int neg_a();			// 11
@@ -209,6 +232,13 @@ class cl_tlcs: public cl_uc
   //virtual int di();			// 02
   //virtual int ei();			// 03
   virtual int swi();			// ff
+  virtual int mul_hl(class cl_memory_cell *cell);
+  virtual int div_hl(class cl_memory_cell *cell);
+  
+  virtual int ret();			// 1e
+  virtual int reti();			// 1f
+
+  // rotate and shift
   virtual uint8_t rlc(uint8_t data, bool set_sz);	// RLC
   virtual uint8_t rrc(uint8_t data, bool set_sz);	// RRC
   virtual uint8_t rl(uint8_t data, bool set_sz);	// RL
@@ -216,13 +246,9 @@ class cl_tlcs: public cl_uc
   virtual uint8_t sla(uint8_t data, bool set_sz);	// SLA
   virtual uint8_t sra(uint8_t data, bool set_sz);	// SRA
   virtual uint8_t srl(uint8_t data, bool set_sz);	// SRL
-  virtual int ret();			// 1e
-  virtual int reti();			// 1f
-  virtual uint8_t inc(uint8_t data);			// INC 8 bit
-  virtual uint8_t dec(uint8_t data);			// DEC 8 bit
-  virtual uint16_t inc16(uint16_t data);		// INC 16 bit
-  virtual uint16_t dec16(uint16_t data);		// DEC 16 bit
-
+  virtual int rld(class cl_memory_cell *cell);		// RLD
+  virtual int rrd(class cl_memory_cell *cell);		// RLD
+  
   virtual int pop(t_mem c1);		// 58+qq
 };
 

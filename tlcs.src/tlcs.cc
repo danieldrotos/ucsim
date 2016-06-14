@@ -406,6 +406,31 @@ cl_tlcs::exec_inst(void)
 	  case 0x88: *aof_reg8(c1)= dec(*aof_reg8(c1)); break; // DEC r
 	  case 0x90: *aof_reg16_rr(c1)= inc16(*aof_reg16_rr(c1)); break; // INC rr
 	  case 0x98: *aof_reg16_rr(c1)= dec16(*aof_reg16_rr(c1)); break; // DEC rr
+	  default:
+	    {
+	      // 2 byte instructions
+	      t_mem c2= fetch();
+	      // first, handle cases where first byte is fix
+	      switch (c1)
+		{
+		case 0xf3:
+		  {
+		    switch (c2)
+		      {
+		      case 0x10: res= rld(cell_hl_a()); break;
+		      case 0x11: res= rrd(cell_hl_a()); break;
+		      case 0x12: res= mul_hl(cell_hl_a()); break;
+		      case 0x13: res= div_hl(cell_hl_a()); break;
+		      case 0x60: res= add_a(cell_hl_a()); break;
+		      case 0x61: res= adc_a(cell_hl_a()); break;
+		      case 0x62: res= sub_a(cell_hl_a()); break;
+		      case 0x63: res= sbc_a(cell_hl_a()); break;
+		      case 0x64: res= and_a(cell_hl_a()); break;
+		      }
+		    break;
+		  }
+		}
+	    }
 	  }
       }
     }
@@ -560,6 +585,12 @@ cl_tlcs::aof_reg16_qq(uint8_t data_qq)
     case 6: return &reg.af;
     default: return &reg.dummy16;
     }
+}
+
+class cl_memory_cell *
+cl_tlcs::cell_hl_a()
+{
+  return nas->get_cell(reg.hl + reg.a);
 }
 
 
