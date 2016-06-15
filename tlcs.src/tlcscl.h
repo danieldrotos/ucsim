@@ -180,6 +180,11 @@ class cl_tlcs: public cl_uc
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_inst(void);
+  virtual int exec_inst2(uint8_t c1);
+  virtual int exec_inst2_f3(uint8_t c1);
+  virtual int exec_inst2_fe(uint8_t c1);
+  virtual int exec_inst2_f7(uint8_t c1);
+  
   virtual t_addr do_push(t_mem data);
   virtual t_addr do_pop(t_mem *data);
   virtual int exec_push(t_addr PC_of_inst, t_mem data);

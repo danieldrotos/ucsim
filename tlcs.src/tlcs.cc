@@ -407,107 +407,160 @@ cl_tlcs::exec_inst(void)
 	  case 0x90: *aof_reg16_rr(c1)= inc16(*aof_reg16_rr(c1)); break; // INC rr
 	  case 0x98: *aof_reg16_rr(c1)= dec16(*aof_reg16_rr(c1)); break; // DEC rr
 	  default:
-	    {
-	      // 2 byte instructions
-	      t_mem c2= fetch();
-	      // first, handle cases where first byte is fix
-	      switch (c1)
-		{
-		case 0xf3: // c1
-		  {
-		    switch (c2)
-		      {
-		      case 0x10: res= rld(cell_hl_a()); break;
-		      case 0x11: res= rrd(cell_hl_a()); break;
-		      case 0x12: res= mul_hl(cell_hl_a()); break;
-		      case 0x13: res= div_hl(cell_hl_a()); break;
-		      case 0x60: res= add_a(cell_hl_a()); break;
-		      case 0x61: res= adc_a(cell_hl_a()); break;
-		      case 0x62: res= sub_a(cell_hl_a()); break;
-		      case 0x63: res= sbc_a(cell_hl_a()); break;
-		      case 0x64: res= and_a(cell_hl_a()); break;
-		      case 0x65: res= xor_a(cell_hl_a()); break;
-		      case 0x66: res= or_a(cell_hl_a()); break;
-		      case 0x67: res= cp_a(cell_hl_a()); break;
-		      case 0x70: reg.hl= add_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x71: reg.hl= adc_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x72: reg.hl= sub_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x73: reg.hl= sbc_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x74: reg.hl= and_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x75: reg.hl= xor_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x76: reg.hl= or_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x77: sub_hl((t_addr)(reg.hl+reg.a)); break;
-		      case 0x87: inc(cell_hl_a()); break;
-		      case 0x8f: dec(cell_hl_a()); break;
-		      case 0x97: inc16((t_addr)(reg.hl+reg.a)); break;
-		      case 0x9f: dec16((t_addr)(reg.hl+reg.a)); break;
-		      case 0xa0: rlc(cell_hl_a()); break;
-		      case 0xa1: rrc(cell_hl_a()); break;
-		      case 0xa2: rl(cell_hl_a()); break;
-		      case 0xa3: rr(cell_hl_a()); break;
-		      case 0xa4: sla(cell_hl_a()); break;
-		      case 0xa5: sra(cell_hl_a()); break;
-		      case 0xa6: sla(cell_hl_a()); break;
-		      case 0xa7: srl(cell_hl_a()); break;
-		      default:
-			switch (c2 & 0xf8)
-			  {
-			  case 0x18: break; // TSET b,(HL+A)
-			  case 0x28: break; // LD r,(HL+A)
-			  case 0x48: break; // LD rr,(HL+A)
-			  case 0x50: break; // EX (HL+A),rr
-			  case 0xa8: break; // BIT b,(HL+A)
-			  case 0xb0: break; // RES b,(HL+A)
-			  case 0xb8: break; // SET b,(HL+A)
-			  default:
-			    if ((c2 & 0xfc0) == 0x14) // ADD ix,(HL+A)
-			      ;
-		      }
-		    break;
-		  }
-		  case 0xfe: // c1
-		    {
-		      if ((c2 & 0xf0) == 0xd0) // RET cc
-			;
-		      else
-			switch (c2)
-			  {
-			  case 0x58: ldi(); break;
-			  case 0x59: ldir(); break;
-			  case 0x5a: ldd(); break;
-			  case 0x5b: lddr(); break;
-			  case 0x5c: cpi(); break;
-			  case 0x5d: cpir(); break;
-			  case 0x5e: cpd(); break;
-			  case 0x5f: cpdr(); break;
-			  }
-		    }
-		  case 0xf7: // c1
-		    {
-		      if (c2 == 0x37) // LD (HL+A),n
-			;
-		      else
-			switch (c2 & 0xf0)
-			  {
-			  case 0xc0: break; // JP [cc,]HL+A
-			  case 0xd0: break; // CALL [cc,]HL+A
-			  default:
-			    switch (c2 & 0xf8)
-			      {
-			      case 0x20: break; // LD (HL+A),r
-			      case 0x38: break; // LDA rr,HL+A
-			      case 0x40: break; // LD (HL+A),rr
-			      }
-			  }
-		    }
-		  }
-		}
-	    }
+	    // no more left, check for two byte instructions
+	    res= exec_inst2(c1);
+	    break;
 	  }
+	break;
       }
+    }
+
+  return res;
+}
+
+/*
+ *                                                       Decode two byte instructions
+ ************************************************************************************
+ */
+
+int
+cl_tlcs::exec_inst2(uint8_t c1)
+{
+  uint8_t c2= fetch();
+  int res= resGO;
+  
+  // first, handle cases where first byte is fix
+  switch (c1)
+    {
+    case 0xf3: // c1
+      res= exec_inst2_f3(c2);
+      break;
+    case 0xfe: // c1
+      res= exec_inst2_fe(c2);
+      break;
+    case 0xf7: // c1
+      res= exec_inst2_f7(c2);
+      break;
+    default: ;
+    }
+  
+  return res;
+}
+
+
+/*                                                                                F3 XX
+ */
+
+int
+cl_tlcs::exec_inst2_f3(uint8_t c2)
+{
+  int res= resGO;
+  
+  switch (c2)
+    {
+      // handle c1==f3 cases where second byte is fix
+    case 0x10: res= rld(cell_hl_a()); break;
+    case 0x11: res= rrd(cell_hl_a()); break;
+    case 0x12: res= mul_hl(cell_hl_a()); break;
+    case 0x13: res= div_hl(cell_hl_a()); break;
+    case 0x60: res= add_a(cell_hl_a()); break;
+    case 0x61: res= adc_a(cell_hl_a()); break;
+    case 0x62: res= sub_a(cell_hl_a()); break;
+    case 0x63: res= sbc_a(cell_hl_a()); break;
+    case 0x64: res= and_a(cell_hl_a()); break;
+    case 0x65: res= xor_a(cell_hl_a()); break;
+    case 0x66: res= or_a(cell_hl_a()); break;
+    case 0x67: res= cp_a(cell_hl_a()); break;
+    case 0x70: reg.hl= add_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x71: reg.hl= adc_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x72: reg.hl= sub_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x73: reg.hl= sbc_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x74: reg.hl= and_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x75: reg.hl= xor_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x76: reg.hl= or_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x77: sub_hl((t_addr)(reg.hl+reg.a)); break;
+    case 0x87: inc(cell_hl_a()); break;
+    case 0x8f: dec(cell_hl_a()); break;
+    case 0x97: inc16((t_addr)(reg.hl+reg.a)); break;
+    case 0x9f: dec16((t_addr)(reg.hl+reg.a)); break;
+    case 0xa0: rlc(cell_hl_a()); break;
+    case 0xa1: rrc(cell_hl_a()); break;
+    case 0xa2: rl(cell_hl_a()); break;
+    case 0xa3: rr(cell_hl_a()); break;
+    case 0xa4: sla(cell_hl_a()); break;
+    case 0xa5: sra(cell_hl_a()); break;
+    case 0xa6: sla(cell_hl_a()); break;
+    case 0xa7: srl(cell_hl_a()); break;
+    default:
+      // handle c1==f3 cases where second byte is not fix
+      if ((c2 & 0xfc0) == 0x14) // ADD ix,(HL+A)
+	;
+      else
+	switch (c2 & 0xf8)
+	  {
+	  case 0x18: break; // TSET b,(HL+A)
+	  case 0x28: break; // LD r,(HL+A)
+	  case 0x48: break; // LD rr,(HL+A)
+	  case 0x50: break; // EX (HL+A),rr
+	  case 0xa8: break; // BIT b,(HL+A)
+	  case 0xb0: break; // RES b,(HL+A)
+	  case 0xb8: break; // SET b,(HL+A)
+	  default:
+	    break;
+	  }
+      break;
     }
   return res;
 }
+
+/*                                                                                 F7 XX
+ */
+
+int
+cl_tlcs::exec_inst2_f7(uint8_t c2)
+{
+  int res= resGO;
+  
+  switch (c2 & 0xf0)
+    {
+    case 0xc0: break; // JP [cc,]HL+A
+    case 0xd0: break; // CALL [cc,]HL+A
+    default:
+      switch (c2 & 0xf8)
+	{
+	case 0x20: break; // LD (HL+A),r
+	case 0x38: break; // LDA rr,HL+A
+	case 0x40: break; // LD (HL+A),rr
+	}
+    }
+  return res;
+}
+
+/*                                                                                FE XX
+ */
+
+int
+cl_tlcs::exec_inst2_fe(uint8_t c2)
+{
+  int res= resGO;
+  
+  if ((c2 & 0xf0) == 0xd0) // RET cc
+    ;
+  else
+    switch (c2)
+      {
+      case 0x58: ldi(); break;
+      case 0x59: ldir(); break;
+      case 0x5a: ldd(); break;
+      case 0x5b: lddr(); break;
+      case 0x5c: cpi(); break;
+      case 0x5d: cpir(); break;
+      case 0x5e: cpd(); break;
+      case 0x5f: cpdr(); break;
+      }
+  return res;
+}
+
 
 t_addr
 cl_tlcs::do_push(t_mem data)
