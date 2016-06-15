@@ -413,7 +413,7 @@ cl_tlcs::exec_inst(void)
 	      // first, handle cases where first byte is fix
 	      switch (c1)
 		{
-		case 0xf3:
+		case 0xf3: // c1
 		  {
 		    switch (c2)
 		      {
@@ -449,22 +449,57 @@ cl_tlcs::exec_inst(void)
 		      case 0xa5: sra(cell_hl_a()); break;
 		      case 0xa6: sla(cell_hl_a()); break;
 		      case 0xa7: srl(cell_hl_a()); break;
+		      default:
+			switch (c2 & 0xf8)
+			  {
+			  case 0x18: break; // TSET b,(HL+A)
+			  case 0x28: break; // LD r,(HL+A)
+			  case 0x48: break; // LD rr,(HL+A)
+			  case 0x50: break; // EX (HL+A),rr
+			  case 0xa8: break; // BIT b,(HL+A)
+			  case 0xb0: break; // RES b,(HL+A)
+			  case 0xb8: break; // SET b,(HL+A)
+			  default:
+			    if ((c2 & 0xfc0) == 0x14) // ADD ix,(HL+A)
+			      ;
 		      }
 		    break;
 		  }
-		case 0xfe:
-		  {
-		    switch (c2)
-		      {
-		      case 0x58: ldi(); break;
-		      case 0x59: ldir(); break;
-		      case 0x5a: ldd(); break;
-		      case 0x5b: lddr(); break;
-		      case 0x5c: break;
-		      case 0x5d: break;
-		      case 0x5e: break;
-		      case 0x5f: break;
-		      }
+		  case 0xfe: // c1
+		    {
+		      if ((c2 & 0xf0) == 0xd0) // RET cc
+			;
+		      else
+			switch (c2)
+			  {
+			  case 0x58: ldi(); break;
+			  case 0x59: ldir(); break;
+			  case 0x5a: ldd(); break;
+			  case 0x5b: lddr(); break;
+			  case 0x5c: cpi(); break;
+			  case 0x5d: cpir(); break;
+			  case 0x5e: cpd(); break;
+			  case 0x5f: cpdr(); break;
+			  }
+		    }
+		  case 0xf7: // c1
+		    {
+		      if (c2 == 0x37) // LD (HL+A),n
+			;
+		      else
+			switch (c2 & 0xf0)
+			  {
+			  case 0xc0: break; // JP [cc,]HL+A
+			  case 0xd0: break; // CALL [cc,]HL+A
+			  default:
+			    switch (c2 & 0xf8)
+			      {
+			      case 0x20: break; // LD (HL+A),r
+			      case 0x38: break; // LDA rr,HL+A
+			      case 0x40: break; // LD (HL+A),rr
+			      }
+			  }
+		    }
 		  }
 		}
 	    }

@@ -205,6 +205,10 @@ class cl_tlcs: public cl_uc
   virtual int ldir();			// Fe 59
   virtual int ldd();			// Fe 5a
   virtual int lddr();			// Fe 5b
+  virtual int cpi();			// Fe 5c
+  virtual int cpir();		       	// Fe 5d
+  virtual int cpd();			// Fe 5e
+  virtual int cpdr();			// Fe 5f
   
   // (4) 8-bit arithmetic and logic operation
   virtual uint8_t inc(uint8_t data);			// INC 8 bit
