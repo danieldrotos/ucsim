@@ -54,6 +54,7 @@ extern char *case_string(enum letter_case lcase, char *str);
 extern double dnow(void);
 
 extern int strispn(char *s, char c);
+extern bool valid_sym_name(char *s);
 
   
 #endif

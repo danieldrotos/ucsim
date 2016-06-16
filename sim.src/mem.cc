@@ -1045,6 +1045,25 @@ cl_address_space::set_cell_flag(t_addr addr, bool set_to, enum cell_flag flag)
   cell->set_flag(flag, set_to);
 }
 
+class cl_memory_cell *
+cl_address_space::search_cell(enum cell_flag flag, bool value, t_addr *addr)
+{
+  int i;
+
+  for (i= 0; i < size; i++)
+    {
+      bool f= cella[i].get_flag(flag);
+      if ((f && value) ||
+	  (!f && !value))
+	{
+	  if (addr)
+	    *addr= i;
+	  return &cella[i];
+	}
+    }
+  return NULL;
+}
+
 class cl_address_decoder *
 cl_address_space::get_decoder_of(t_addr addr)
 {

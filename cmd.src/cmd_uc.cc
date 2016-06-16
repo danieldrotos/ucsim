@@ -566,6 +566,14 @@ COMMAND_DO_WORK_UC(cl_var_cmd)
     return con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n"),
       false;
 
+  if (!valid_sym_name(params[0]->value.string.string))
+    return con->dd_printf("name is invalid\n"),
+      false;
+  if ((bit >= 0) &&
+      (bit >= (int)sizeof(t_mem)*8))
+    return con->dd_printf("max bit number is %d\n", (int)sizeof(t_mem)*8),
+      false;
+  
   if (m)
     if (!m->is_address_space())
       return con->dd_printf("%s is not address space\n", m->get_name()),
@@ -579,6 +587,12 @@ COMMAND_DO_WORK_UC(cl_var_cmd)
       return con->dd_printf("invalid bit number\n"),
 	false;
 
+  if (uc->symbol2address(params[0]->value.string.string,
+			 (class cl_address_space **)NULL,
+			 (t_addr*)NULL))
+    return con->dd_printf("already exists\n"),
+      false;
+  
   if (m)
     {
       v= new cl_var(params[0]->value.string.string,
@@ -588,6 +602,25 @@ COMMAND_DO_WORK_UC(cl_var_cmd)
     }
   else
     {
+      if (bit < 0)
+	{
+	  if (addr < 0)
+	    {
+	      if (!uc->variables->search_cell(CELL_VAR, false, &addr))
+		return con->dd_printf("no space\n"),
+		  false;
+	    }
+	  if (!uc->variables->valid_address(addr))
+	    return con->dd_printf("out of range\n"),
+	      false;
+	  v= new cl_var(params[0]->value.string.string,
+			uc->variables, addr, bit);
+	  v->init();
+	  uc->vars->add(v);
+	}
+      else
+	{
+	}
     }
   
   return false;

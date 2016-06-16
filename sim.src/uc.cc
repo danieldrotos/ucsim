@@ -278,7 +278,7 @@ cl_uc::make_variables(void)
 {
   class cl_address_space *as;
   class cl_option *o= sim->app->options->get_option("var_size");
-  long l;
+  long l, i;
   
   if (o)
     o->get_value(&l);
@@ -301,6 +301,9 @@ cl_uc::make_variables(void)
       ad->init();
       variables->decoders->add(ad);
       ad->activate(0);
+
+      for (i= 0; i < l; i++)
+	variables->set(i, 0);
     }
 }
 

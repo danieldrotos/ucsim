@@ -341,7 +341,9 @@ public:
   virtual int get_cell_flag(t_addr addr);
   virtual bool get_cell_flag(t_addr addr, enum cell_flag flag);
   virtual void set_cell_flag(t_addr addr, bool set_to, enum cell_flag flag);
-
+  virtual class cl_memory_cell *search_cell(enum cell_flag flag, bool value,
+					    t_addr *addr);
+  
   virtual class cl_address_decoder *get_decoder_of(t_addr addr);
   virtual bool decode_cell(t_addr addr,
 			   class cl_memory_chip *chip, t_addr chipaddr);
