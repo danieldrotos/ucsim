@@ -243,7 +243,10 @@ cl_51core::make_memories(void)
   xram= as= new cl_address_space(MEM_XRAM_ID/*"xram"*/, 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
-
+  bits= as= new cl_address_space("bits", 0, 0x100, 1);
+  as->init();
+  address_spaces->add(as);
+  
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 

@@ -499,6 +499,28 @@ cl_cell_data::d(t_mem v)
   data?(*data=v):0;
 }
 
+// bit cell for bit spaces
+
+t_mem
+cl_bit_cell::d()
+{
+  if (!data)
+    return 0;
+  return (*data&mask)?1:0;
+}
+
+void
+cl_bit_cell::d(t_mem v)
+{
+  if (!data)
+    return;
+  if (v)
+    *data|= mask;
+  else
+    *data&= ~mask;
+}
+
+
 // 8 bit cell;
 
 t_mem
@@ -513,6 +535,27 @@ cl_cell8::d(t_mem v)
   data?(*((uint8_t*)data)=v):0;
 }
 
+// 8 bit cell for bit spaces
+
+t_mem
+cl_bit_cell8::d()
+{
+  if (!data)
+    return 0;
+  return ((*((uint8_t*)data))&((uint8_t)mask))?1:0;
+}
+
+void
+cl_bit_cell8::d(t_mem v)
+{
+  if (!data)
+    return;
+  if (v)
+    (*((uint8_t*)data))|= mask;
+  else
+    (*((uint8_t*)data))&= ~mask;
+}
+
 // 16 bit cell;
 
 t_mem
@@ -525,6 +568,27 @@ void
 cl_cell16::d(t_mem v)
 {
   data?(*((uint16_t*)data)=v):0;
+}
+
+// 16 bit cell for bit spaces
+
+t_mem
+cl_bit_cell16::d()
+{
+  if (!data)
+    return 0;
+  return ((*((uint16_t*)data))&((uint16_t)mask))?1:0;
+}
+
+void
+cl_bit_cell16::d(t_mem v)
+{
+  if (!data)
+    return;
+  if (v)
+    (*((uint16_t*)data))|= mask;
+  else
+    (*((uint16_t*)data))&= ~mask;
 }
 
 
@@ -854,13 +918,16 @@ cl_address_space::cl_address_space(const char *id,
   cl_memory(id, asize, awidth)
 {
   class cl_memory_cell c(awidth);
+  class cl_bit_cell8 bc8(awidth);
   class cl_cell8 c8(awidth);
   class cl_cell16 c16(awidth);
   class cl_memory_cell *cell= &c;
   start_address= astart;
   decoders= new cl_decoder_list(2, 2, DD_FALSE);
   cella= (class cl_memory_cell *)malloc(size * sizeof(class cl_memory_cell));
-  if (awidth <= 8)
+  if (awidth == 1)
+    cell= &bc8;
+  else if (awidth <= 8)
     cell= &c8;
   else if (awidth <= 16)
     cell= &c16;

@@ -282,6 +282,14 @@ class cl_memory_cell: public cl_cell_data
   virtual class cl_event_handler *get_event_handler(void);
 };
 
+class cl_bit_cell: public cl_memory_cell
+{
+ public:
+ cl_bit_cell(uchar awidth): cl_memory_cell(awidth) {}
+  virtual t_mem d();
+  virtual void d(t_mem v);
+};
+
 class cl_cell8: public cl_memory_cell
 {
  public:
@@ -290,10 +298,26 @@ class cl_cell8: public cl_memory_cell
   virtual void d(t_mem v);
 };
 
+class cl_bit_cell8: public cl_memory_cell
+{
+ public:
+ cl_bit_cell8(uchar awidth): cl_memory_cell(awidth) {}
+  virtual t_mem d();
+  virtual void d(t_mem v);
+};
+
 class cl_cell16: public cl_memory_cell
 {
  public:
  cl_cell16(uchar awidth): cl_memory_cell(awidth) {}
+  virtual t_mem d();
+  virtual void d(t_mem v);
+};
+
+class cl_bit_cell16: public cl_memory_cell
+{
+ public:
+ cl_bit_cell16(uchar awidth): cl_memory_cell(awidth) {}
   virtual t_mem d();
   virtual void d(t_mem v);
 };
