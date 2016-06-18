@@ -109,7 +109,9 @@ struct dis_entry disass_tlcs[]= {
   { 0x5dfe, 0xffff, ' ', 2, "CPIR" },
   { 0x5efe, 0xffff, ' ', 2, "CPD" },
   { 0x5ffe, 0xffff, ' ', 2, "CPDR" },
-  
+
+  { 0x14f3, 0xfcff, 'i', 2, "ADD %i,(HL+A)" },
+
   { 0, 0, ' ', 0, NULL }
 };
 

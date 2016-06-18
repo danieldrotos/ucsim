@@ -178,6 +178,7 @@ class cl_tlcs: public cl_uc
   virtual const char *regname_r(uint8_t r);
   virtual const char *regname_Q(uint8_t Q);
   virtual const char *regname_R(uint8_t R);
+  virtual const char *regname_i(uint8_t i);
   virtual const char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
 
@@ -198,8 +199,13 @@ class cl_tlcs: public cl_uc
   virtual uint8_t *aof_reg8(uint8_t data_r);
   virtual uint16_t *aof_reg16_rr(uint8_t data_rr);
   virtual uint16_t *aof_reg16_qq(uint8_t data_qq);
+  virtual uint16_t *aof_reg16_ix(uint8_t data_ix);
   virtual class cl_memory_cell *cell_hl_a();
-
+  virtual uint16_t mem16(t_addr addr);
+  virtual void write16(t_addr addr, uint16_t val);
+  virtual uint16_t xmem16(t_addr addr);
+  virtual void xwrite16(t_addr addr, uint16_t val);
+  
   // (1) 8-bit data transfer
 
   // (2) 16-bit data transfer
@@ -255,7 +261,8 @@ class cl_tlcs: public cl_uc
   virtual uint16_t xor_hl(t_addr addr);			// XOR HL,mem
   virtual uint16_t or_hl(t_mem val);			// OR HL,16-bit
   virtual uint16_t or_hl(t_addr addr);			// OR HL,mem
-  
+  virtual uint16_t add16(t_mem op1, t_mem op2);		// ADD 16-bit
+
   // (6) cpu control and others
   virtual int daa_a();			// 0b
   virtual int cpl_a();			// 10

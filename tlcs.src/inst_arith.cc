@@ -442,6 +442,34 @@ cl_tlcs::add_hl(t_mem val)
 }
 
 
+// ADD 16-bit
+uint16_t
+cl_tlcs::add16(t_mem op1, t_mem op2)
+{
+  uint16_t d1, d;
+  int r, newc15;
+  
+  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
+
+  d1= op1;
+  d= op2;
+
+  r= d1 + d;
+  newc15= (((d1&0x7fff)+(d&0x7fff)) > 0x7fff)?0x10000:0;
+  
+  if (r & 0x8000)
+    reg.f|= FLAG_S;
+  if ((r & 0xffff) == 0)
+    reg.f|= FLAG_Z;
+  if (r > 0xffff)
+    reg.f|= FLAG_C|FLAG_X;
+  if (newc15 ^ (r&0x10000))
+    reg.f|= FLAG_V;
+  
+  return r & 0xffff;
+}
+
+
 // ADC HL,mem
 uint16_t
 cl_tlcs::adc_hl(t_addr addr)

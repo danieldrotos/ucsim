@@ -154,11 +154,11 @@ cl_tlcs::init(void)
   v->init();
   vars->add(v= new cl_var(cchars("alt_af"), regs16, 7));
   v->init();
-  vars->add(v= new cl_var(cchars("alt_af"), regs16, 8));
+  vars->add(v= new cl_var(cchars("alt_bc"), regs16, 8));
   v->init();
-  vars->add(v= new cl_var(cchars("alt_af"), regs16, 9));
+  vars->add(v= new cl_var(cchars("alt_de"), regs16, 9));
   v->init();
-  vars->add(v= new cl_var(cchars("alt_af"), regs16, 11));
+  vars->add(v= new cl_var(cchars("alt_hl"), regs16, 11));
   v->init();
 
   return(0);
@@ -271,6 +271,18 @@ cl_tlcs::regname_Q(uint8_t Q)
 }
 
 const char *
+cl_tlcs::regname_i(uint8_t i)
+{
+  switch (i & 3)
+    {
+    case 0: return "IX";
+    case 1: return "IY";
+    case 2: return "SP";
+    default: return "?";
+    }
+}
+
+const char *
 cl_tlcs::disass(t_addr addr, const char *sep)
 {
   struct dis_entry *de;
@@ -307,6 +319,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'r': s+= regname_r(c); break;
 	    case 'R': s+= regname_R(c); break;
 	    case 'Q': s+= regname_Q(c); break;
+	    case 'i': s+= regname_i(c>>8); break;
 	    default: s+= '?'; break;
 	    }
 	}
@@ -450,7 +463,7 @@ cl_tlcs::exec_inst2(uint8_t c1)
 }
 
 
-/*                                                                                F3 XX
+/*                                                                              F3 XX
  */
 
 int
@@ -496,7 +509,11 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
     default:
       // handle c1==f3 cases where second byte is not fix
       if ((c2 & 0xfc0) == 0x14) // ADD ix,(HL+A)
-	;
+	{
+	  uint16_t *op1= aof_reg16_ix(c2);
+	  uint16_t op2= mem16(reg.hl+reg.a);
+	  *op1= add16(*op1, op2);
+	}
       else
 	switch (c2 & 0xf8)
 	  {
@@ -515,7 +532,7 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
   return res;
 }
 
-/*                                                                                 F7 XX
+/*                                                                              F7 XX
  */
 
 int
@@ -538,7 +555,7 @@ cl_tlcs::exec_inst2_f7(uint8_t c2)
   return res;
 }
 
-/*                                                                                FE XX
+/*                                                                              FE XX
  */
 
 int
@@ -714,10 +731,59 @@ cl_tlcs::aof_reg16_qq(uint8_t data_qq)
     }
 }
 
+uint16_t *
+cl_tlcs::aof_reg16_ix(uint8_t data_ix)
+{
+  switch (data_ix & 0x03)
+    {
+    case 0: return &reg.ix;
+    case 1: return &reg.iy;
+    case 2: return &reg.sp;
+    default: return &reg.dummy16;
+    }
+}
+
 class cl_memory_cell *
 cl_tlcs::cell_hl_a()
 {
   return nas->get_cell(reg.hl + reg.a);
+}
+
+uint16_t
+cl_tlcs::mem16(t_addr addr)
+{
+  uint8_t l, h;
+
+  l= nas->read(addr);
+  h= nas->read(addr+1);
+
+  return h*256 + l;
+}
+
+void
+cl_tlcs::write16(t_addr addr, uint16_t val)
+{
+  nas->write(addr, val & 0xff);
+  nas->write(addr|1, val / 256);
+}
+
+
+uint16_t
+cl_tlcs::xmem16(t_addr addr)
+{
+  uint8_t l, h;
+
+  l= das->read(addr);
+  h= das->read(addr+1);
+
+  return h*256 + l;
+}
+
+void
+cl_tlcs::xwrite16(t_addr addr, uint16_t val)
+{
+  das->write(addr, val & 0xff);
+  das->write(addr|1, val / 256);
 }
 
 
