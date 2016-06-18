@@ -3,6 +3,8 @@
 #
 # (c) Drotos Daniel, Talker Bt. 1997
 #
+# $Id:$
+#
 
 STARTYEAR	= 2016
 
@@ -51,9 +53,8 @@ VPATH           = @srcdir@
 
 OBJECTS_SHARED	= glob.o \
 		  simtlcs.o tlcs.o \
-		  block.o cpu_others.o rot_sh.o jmp.o move.o arith.o
-		  #inst.o bit_inst.o jump_inst.o move_inst.o logic_inst.o \
-		  #arith_inst.o
+		  inst_block.o inst_cpu_others.o inst_rot_sh.o \
+		  inst_jump.o inst_move.o inst_arith.o
 OBJECTS_EXE	= stlcs.o
 OBJECTS		= $(OBJECTS_SHARED) $(OBJECTS_EXE)
 

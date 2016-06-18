@@ -2,6 +2,7 @@
 #
 # Makefile targets to remake configuration
 #
+# $Id$
 
 freshconf: Makefile
 

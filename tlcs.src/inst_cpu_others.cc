@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (tlcs.src/cpu_others.cc)
+ * Simulator of microcontrollers (tlcs.src/inst_cpu_others.cc)
  *
  * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
  * 
@@ -24,6 +24,8 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
+
+/* $Id$ */
 
 #include "tlcscl.h"
 
@@ -168,4 +170,4 @@ cl_tlcs::div_hl(class cl_memory_cell *cell)
 }
 
 
-/* End of tlcs.src/cpu_others.cc */
+/* End of tlcs.src/inst_cpu_others.cc */

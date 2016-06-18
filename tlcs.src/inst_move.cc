@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (tlcs.src/jmp.cc)
+ * Simulator of microcontrollers (tlcs.src/inst_move.cc)
  *
  * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
  * 
@@ -25,33 +25,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+/* $Id$ */
+
 #include "tlcscl.h"
 
 
-// 1e
+// 58+qq
 int
-cl_tlcs::ret()
+cl_tlcs::pop(t_mem c1)
 {
-  t_mem pushed_pc;
-
-  exec_ret(PC-1, &pushed_pc);
-  PC= pushed_pc;
+  t_mem data;
+  exec_pop(PC-1, &data);
+  *aof_reg16_qq(c1)= data;
   return resGO;
 }
 
-
-// 1f
-int
-cl_tlcs::reti()
-{
-  t_mem pushed_pc, pushed_af;
-  
-  exec_pop(PC-1, &pushed_af);
-  exec_reti(PC-1, &pushed_pc);
-  reg.af= pushed_af;
-  PC= pushed_pc;
-  return resGO;
-}
-
-
-/* End of tlcs.src/jmp.cc */
+/* End of tlcs/inst_move.cc */
