@@ -35,7 +35,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "memcl.h"
 
 
-enum {
+enum tlcs_flags {
   FLAG_S= 0x80,
   FLAG_Z= 0x40,
   FLAG_I= 0x20,
@@ -180,6 +180,8 @@ class cl_tlcs: public cl_uc
   virtual const char *regname_R(uint8_t R);
   virtual const char *regname_i(uint8_t i);
   virtual const char *bitname(uint8_t b);
+  virtual const char *condname_cc(uint8_t cc);
+  virtual const char *condname_C(uint8_t cc);
   virtual const char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
 
@@ -196,6 +198,7 @@ class cl_tlcs: public cl_uc
   virtual int exec_reti(t_addr PC_of_inst, t_mem *data);
   virtual int exec_pop(t_addr PC_of_inst, t_mem *data);
   virtual int exec_intr(t_addr PC_of_inst, t_addr called, t_mem data);
+  virtual int exec_call(t_addr PC_of_inst, t_addr called, t_mem data);
   virtual void set_p(uint8_t data);
   virtual uint8_t *aof_reg8(uint8_t data_r);
   virtual uint16_t *aof_reg16_rr(uint8_t data_rr);
@@ -206,10 +209,13 @@ class cl_tlcs: public cl_uc
   virtual void write16(t_addr addr, uint16_t val);
   virtual uint16_t xmem16(t_addr addr);
   virtual void xwrite16(t_addr addr, uint16_t val);
+  virtual bool flag(enum tlcs_flags f);
+  virtual bool cc(uint8_t cc);
   
   // (1) 8-bit data transfer
 
   // (2) 16-bit data transfer
+  virtual int pop(t_mem c1);		// 58+qq
   
   // (3) exchange, block transfer and search
   virtual int ex_de_hl();		// 08
@@ -279,9 +285,6 @@ class cl_tlcs: public cl_uc
   virtual int mul_hl(class cl_memory_cell *cell);
   virtual int div_hl(class cl_memory_cell *cell);
   
-  virtual int ret();			// 1e
-  virtual int reti();			// 1f
-
   // (7) rotate and shift
   virtual uint8_t rlc(uint8_t data, bool set_sz);	// RLC 8-bit
   virtual uint8_t rlc(cl_memory_cell *cell);		// RLC mem
@@ -302,8 +305,16 @@ class cl_tlcs: public cl_uc
 
   // (8) bit manipulation
   virtual uint8_t tset(uint8_t val, uint8_t bitnr);	// TSET 8-bit
+  virtual uint8_t bit(uint8_t val, uint8_t bitnr);	// BIT 8-bit
+  virtual uint8_t inst_res(uint8_t val, uint8_t bitnr);	// RES 8-bit
+  virtual uint8_t inst_set(uint8_t val, uint8_t bitnr);	// SET 8-bit
+
+  // (9) jump, call and return
+  virtual int ret();			// 1e
+  virtual int reti();			// 1f
+  virtual int call(t_addr PC_of_inst, uint16_t addr);	// CALL addr
   
-  virtual int pop(t_mem c1);		// 58+qq
+  // ?
 };
 
 

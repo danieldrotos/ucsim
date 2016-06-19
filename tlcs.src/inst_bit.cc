@@ -38,9 +38,50 @@ cl_tlcs::tset(uint8_t val, uint8_t bitnr)
   reg.f|= FLAG_H;
   
   bitnr&= 0x07;
-  if ((val & (1 << bitnr)) != 0)
+  if ((val & (1 << bitnr)) == 0)
     reg.f|= FLAG_Z;
   val|= (1 << bitnr);
+  return val;
+}
+
+
+// BIT 8-bit
+uint8_t
+cl_tlcs::bit(uint8_t val, uint8_t bitnr)
+{
+  reg.f&= ~(FLAG_Z|FLAG_N);
+  reg.f|= FLAG_H;
+
+  bitnr&= 7;
+
+  if ((val & (1 << bitnr)) == 0)
+    reg.f|= FLAG_Z;
+
+  return val;
+}
+
+
+// RES 8-bit
+uint8_t
+cl_tlcs::inst_res(uint8_t val, uint8_t bitnr)
+{
+  bitnr&= 7;
+
+  val&= ~(1 << bitnr);
+
+  return val;
+}
+
+
+// SET 8-bit
+uint8_t
+cl_tlcs::inst_set(uint8_t val, uint8_t bitnr)
+{
+  bitnr&= 7;
+
+  val|= (1 << bitnr);
+
+  return val;
 }
 
 

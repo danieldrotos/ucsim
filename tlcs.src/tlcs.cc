@@ -300,6 +300,56 @@ cl_tlcs::bitname(uint8_t b)
 }
 
 const char *
+cl_tlcs::condname_cc(uint8_t cc)
+{
+  switch (cc & 0xf)
+    {
+    case 0: return "F,";
+    case 1: return "LT,";
+    case 2: return "LE,";
+    case 3: return "ULE,";
+    case 4: return "OV,";
+    case 5: return "M,";
+    case 6: return "Z,";
+    case 7: return "C,";
+    case 8: return "";
+    case 9: return "GE,";
+    case 10: return "GT,";
+    case 11: return "UGT,";
+    case 12: return "NOV,";
+    case 13: return "P,";
+    case 14: return "NZ,";
+    case 15: return "NC,";
+    }
+  return "?";
+}
+
+const char *
+cl_tlcs::condname_C(uint8_t cc)
+{
+  switch (cc & 0xf)
+    {
+    case 0: return "F";
+    case 1: return "LT";
+    case 2: return "LE";
+    case 3: return "ULE";
+    case 4: return "OV";
+    case 5: return "M";
+    case 6: return "Z";
+    case 7: return "C";
+    case 8: return "";
+    case 9: return "GE";
+    case 10: return "GT";
+    case 11: return "UGT";
+    case 12: return "NOV";
+    case 13: return "P";
+    case 14: return "NZ";
+    case 15: return "NC";
+    }
+  return "?";
+}
+
+const char *
 cl_tlcs::disass(t_addr addr, const char *sep)
 {
   struct dis_entry *de;
@@ -340,6 +390,8 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'Q': /* qq in 1st byte */ s+= regname_Q(c); break;
 	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
 	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
+	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
+	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 	    default: s+= '?'; break;
 	    }
 	}
@@ -544,12 +596,31 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
 	      c->write(tset(v, c2));
 	      break;
 	    }
-	  case 0x28: break; // LD r,(HL+A)
-	  case 0x48: break; // LD rr,(HL+A)
-	  case 0x50: break; // EX (HL+A),rr
-	  case 0xa8: break; // BIT b,(HL+A)
-	  case 0xb0: break; // RES b,(HL+A)
-	  case 0xb8: break; // SET b,(HL+A)
+	  case 0x28: *aof_reg8(c2)= cell_hl_a()->read(); break; // LD r,(HL+A)
+	  case 0x48: *aof_reg16_rr(c2)= mem16(reg.hl+reg.a); break; // LD rr,(HL+A)
+	  case 0x50: // EX (HL+A),rr
+	    {
+	      cl_memory_cell *c= cell_hl_a();
+	      uint16_t t= c->read(), *r= aof_reg16_rr(c2);
+	      c->write(*r);
+	      *r= t;
+	      break;
+	    }
+	  case 0xa8: bit(cell_hl_a()->read(), c2); break; // BIT b,(HL+A)
+	  case 0xb0: // RES b,(HL+A)
+	    {
+	      cl_memory_cell *c= cell_hl_a();
+	      uint8_t v= inst_res(c->read(), c2);
+	      c->write(v);
+	      break;
+	    }
+	  case 0xb8: // SET b,(HL+A)
+	    {
+	      cl_memory_cell *c= cell_hl_a();
+	      uint8_t v= inst_set(c->read(), c2);
+	      c->write(v);
+	      break;
+	    }
 	  default:
 	    break;
 	  }
@@ -568,8 +639,8 @@ cl_tlcs::exec_inst2_f7(uint8_t c2)
   
   switch (c2 & 0xf0)
     {
-    case 0xc0: break; // JP [cc,]HL+A
-    case 0xd0: break; // CALL [cc,]HL+A
+    case 0xc0: if (cc(c2)) PC= reg.hl|reg.a; break; // JP [cc,]HL+A
+    case 0xd0: if (cc(c2)) call(PC-2, reg.hl+reg.a); break; // CALL [cc,]HL+A
     default:
       switch (c2 & 0xf8)
 	{
@@ -590,7 +661,9 @@ cl_tlcs::exec_inst2_fe(uint8_t c2)
   int res= resGO;
   
   if ((c2 & 0xf0) == 0xd0) // RET cc
-    ;
+    {
+      if (cc(c2)) ret();
+    }
   else
     switch (c2)
       {
@@ -686,6 +759,16 @@ cl_tlcs::exec_intr(t_addr PC_of_inst, t_addr called, t_mem data)
 {
   t_addr sp_before= do_push(data);
   class cl_stack_intr *o= new cl_stack_intr(PC_of_inst, called, data, sp_before, reg.sp);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
+cl_tlcs::exec_call(t_addr PC_of_inst, t_addr called, t_mem data)
+{
+  t_addr sp_before= do_push(data);
+  class cl_stack_call *o= new cl_stack_call(PC_of_inst, called, data, sp_before, reg.sp);
   o->init();
   stack_write(o);
   return resGO;
@@ -810,6 +893,39 @@ cl_tlcs::xwrite16(t_addr addr, uint16_t val)
 {
   das->write(addr, val & 0xff);
   das->write(addr|1, val / 256);
+}
+
+bool
+cl_tlcs::flag(enum tlcs_flags f)
+{
+  return (reg.f & f)?true:false;
+}
+
+bool
+cl_tlcs::cc(uint8_t cc)
+{
+  bool s= flag(FLAG_S);
+  bool v= flag(FLAG_V);
+  switch (cc & 0x0f)
+    {
+    case 0: return false;
+    case 1: return (s && !v) || (!s && v);
+    case 2: return flag(FLAG_Z) || ((s && !v) || (!s && v));
+    case 3: return flag(FLAG_C) || flag(FLAG_Z);
+    case 4: return v;
+    case 5: return s;
+    case 6: return reg.f & FLAG_Z;
+    case 7: return reg.f & FLAG_C;
+    case 8: return true;
+    case 9: return !((s && !v) || (!s && v));
+    case 10: return !(flag(FLAG_Z) || ((s && !v) || (!s && v)));
+    case 11: return !(flag(FLAG_C) || flag(FLAG_Z));
+    case 12: return !v;
+    case 13: return !s;
+    case 14: return !(reg.f & FLAG_Z);
+    case 15: return !(reg.f & FLAG_C);
+    }
+  return false;
 }
 
 

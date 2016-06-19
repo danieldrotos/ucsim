@@ -56,4 +56,14 @@ cl_tlcs::reti()
 }
 
 
+// CALL
+int
+cl_tlcs::call(t_addr PC_of_inst, uint16_t addr)
+{
+  exec_call(PC_of_inst, addr, PC);
+  PC= addr;
+  return resGO;
+}
+
+
 /* End of tlcs.src/inst_jmp.cc */

@@ -102,7 +102,13 @@ struct dis_entry disass_tlcs[]= {
   { 0xa7f3, 0xffff, ' ', 2, "SRL (HL+A)" },
 
   { 0x14f3, 0xfcff, 'i', 2, "ADD %i,(HL+A)" },
-  { 0x18f2, 0xf8ff, 'b', 2, "TSET %b,(HL+A)" },
+  { 0x18f3, 0xf8ff, 'b', 2, "TSET %b,(HL+A)" },
+  { 0x28f3, 0xf8ff, 'p', 2, "LD %p,(HL+A)" },
+  { 0x48f3, 0xf8ff, 's', 2, "LD %s,(HL+A)" },
+  { 0x50f3, 0xf8ff, 's', 2, "EX (HL+A),%s" },
+  { 0xa8f3, 0xf8ff, 'b', 2, "BIT %b,(HL+A)" },
+  { 0xb0f3, 0xf8ff, 'b', 2, "RES %b,(HL+A)" },
+  { 0xb8f3, 0xf8ff, 'b', 2, "SET %b,(HL+A)" },
   
   { 0x58fe, 0xffff, ' ', 2, "LDI" },
   { 0x59fe, 0xffff, ' ', 2, "LDIR" },
@@ -112,10 +118,13 @@ struct dis_entry disass_tlcs[]= {
   { 0x5dfe, 0xffff, ' ', 2, "CPIR" },
   { 0x5efe, 0xffff, ' ', 2, "CPD" },
   { 0x5ffe, 0xffff, ' ', 2, "CPDR" },
-
+  { 0xf0fe, 0xf0ff, 'C', 2, "RET %C" },
+  
   { 0x20f7, 0xf8ff, 'p', 2, "LD (HL+A),%p" },
   { 0x38f7, 0xf8ff, 's', 2, "LDA %s,HL+A" },
   { 0x40f7, 0xf8ff, 's', 2, "LD (HL+A),%s" },
+  { 0xc0f7, 0xf0ff, 'c', 2, "JP %cHL+A" },
+  { 0xd0f7, 0xf0ff, 'c', 2, "CALL %cHL+A" },
   
   { 0, 0, ' ', 0, NULL }
 };
