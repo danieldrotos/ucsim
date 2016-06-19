@@ -283,6 +283,23 @@ cl_tlcs::regname_i(uint8_t i)
 }
 
 const char *
+cl_tlcs::bitname(uint8_t b)
+{
+  switch (b & 0x07)
+    {
+    case 0: return "0";
+    case 1: return "1";
+    case 2: return "2";
+    case 3: return "3";
+    case 4: return "4";
+    case 5: return "5";
+    case 6: return "6";
+    case 7: return "7";
+    }
+  return "?";
+}
+
+const char *
 cl_tlcs::disass(t_addr addr, const char *sep)
 {
   struct dis_entry *de;
@@ -316,10 +333,13 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	  t++;
 	  switch (*t)
 	    {
-	    case 'r': s+= regname_r(c); break;
-	    case 'R': s+= regname_R(c); break;
-	    case 'Q': s+= regname_Q(c); break;
-	    case 'i': s+= regname_i(c>>8); break;
+	    case 'r': /*  r in 1st byte */ s+= regname_r(c); break;
+	    case 'p': /*  r in 2nd byte */ s+= regname_r(c>>8); break;
+	    case 'R': /* rr in 1st byte */ s+= regname_R(c); break;
+	    case 's': /* rr in 2nd byte */ s+= regname_R(c>>8); break;
+	    case 'Q': /* qq in 1st byte */ s+= regname_Q(c); break;
+	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
+	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
 	    default: s+= '?'; break;
 	    }
 	}
@@ -517,7 +537,13 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
       else
 	switch (c2 & 0xf8)
 	  {
-	  case 0x18: break; // TSET b,(HL+A)
+	  case 0x18: // TSET b,(HL+A)
+	    {
+	      cl_memory_cell *c= cell_hl_a();
+	      uint8_t v= c->read();
+	      c->write(tset(v, c2));
+	      break;
+	    }
 	  case 0x28: break; // LD r,(HL+A)
 	  case 0x48: break; // LD rr,(HL+A)
 	  case 0x50: break; // EX (HL+A),rr
@@ -547,9 +573,9 @@ cl_tlcs::exec_inst2_f7(uint8_t c2)
     default:
       switch (c2 & 0xf8)
 	{
-	case 0x20: break; // LD (HL+A),r
-	case 0x38: break; // LDA rr,HL+A
-	case 0x40: break; // LD (HL+A),rr
+	case 0x20: cell_hl_a()->write(*aof_reg8(c2)); break; // LD (HL+A),r
+	case 0x38: *aof_reg16_rr(c2)= reg.hl+reg.a; break; // LDA rr,HL+A
+	case 0x40: write16(reg.hl+reg.a, *aof_reg16_rr(c2)); break; // LD (HL+A),rr
 	}
     }
   return res;

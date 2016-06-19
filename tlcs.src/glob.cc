@@ -45,7 +45,7 @@ struct dis_entry disass_tlcs[]= {
   { 0x01, 0xff, ' ', 1, "HALT" },
   { 0x02, 0xff, ' ', 1, "DI" },
   { 0x03, 0xff, ' ', 1, "EI" },
-  { 0xff, 0xff, ' ', 1, "SWI" },
+  { 0xff, 0xff, ' ', 1, "SWI", true },
   { 0xa0, 0xff, ' ', 1, "RLCA" },
   { 0xa1, 0xff, ' ', 1, "RRCA" },
   { 0xa2, 0xff, ' ', 1, "RLA" },
@@ -101,6 +101,9 @@ struct dis_entry disass_tlcs[]= {
   { 0xa6f3, 0xffff, ' ', 2, "SLL (HL+A)" },
   { 0xa7f3, 0xffff, ' ', 2, "SRL (HL+A)" },
 
+  { 0x14f3, 0xfcff, 'i', 2, "ADD %i,(HL+A)" },
+  { 0x18f2, 0xf8ff, 'b', 2, "TSET %b,(HL+A)" },
+  
   { 0x58fe, 0xffff, ' ', 2, "LDI" },
   { 0x59fe, 0xffff, ' ', 2, "LDIR" },
   { 0x5afe, 0xffff, ' ', 2, "LDD" },
@@ -110,8 +113,10 @@ struct dis_entry disass_tlcs[]= {
   { 0x5efe, 0xffff, ' ', 2, "CPD" },
   { 0x5ffe, 0xffff, ' ', 2, "CPDR" },
 
-  { 0x14f3, 0xfcff, 'i', 2, "ADD %i,(HL+A)" },
-
+  { 0x20f7, 0xf8ff, 'p', 2, "LD (HL+A),%p" },
+  { 0x38f7, 0xf8ff, 's', 2, "LDA %s,HL+A" },
+  { 0x40f7, 0xf8ff, 's', 2, "LD (HL+A),%s" },
+  
   { 0, 0, ' ', 0, NULL }
 };
 

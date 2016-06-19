@@ -179,6 +179,7 @@ class cl_tlcs: public cl_uc
   virtual const char *regname_Q(uint8_t Q);
   virtual const char *regname_R(uint8_t R);
   virtual const char *regname_i(uint8_t i);
+  virtual const char *bitname(uint8_t b);
   virtual const char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
 
@@ -281,7 +282,7 @@ class cl_tlcs: public cl_uc
   virtual int ret();			// 1e
   virtual int reti();			// 1f
 
-  // rotate and shift
+  // (7) rotate and shift
   virtual uint8_t rlc(uint8_t data, bool set_sz);	// RLC 8-bit
   virtual uint8_t rlc(cl_memory_cell *cell);		// RLC mem
   virtual uint8_t rrc(uint8_t data, bool set_sz);	// RRC 8-bit
@@ -298,6 +299,9 @@ class cl_tlcs: public cl_uc
   virtual uint8_t srl(cl_memory_cell *cell);		// SRL mem
   virtual int rld(class cl_memory_cell *cell);		// RLD
   virtual int rrd(class cl_memory_cell *cell);		// RLD
+
+  // (8) bit manipulation
+  virtual uint8_t tset(uint8_t val, uint8_t bitnr);	// TSET 8-bit
   
   virtual int pop(t_mem c1);		// 58+qq
 };
