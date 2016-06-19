@@ -1153,7 +1153,7 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con)
 {
   const char *dis;
   class cl_brk *b;
-  int i;
+  int i, l;
 
   if (!rom)
     return;
@@ -1168,7 +1168,8 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con)
   con->dd_printf("%c ", inst_at(addr)?' ':'?');
   con->dd_printf(rom->addr_format, addr); con->dd_printf(" ");
   con->dd_printf(rom->data_format, code);
-  for (i= 1; i < inst_length(addr); i++)
+  l= inst_length(addr);
+  for (i= 1; i < l; i++)
     {
       con->dd_printf(" ");
       con->dd_printf(rom->data_format, rom->get(addr+i));

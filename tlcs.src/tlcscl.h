@@ -184,6 +184,7 @@ class cl_tlcs: public cl_uc
   virtual const char *condname_C(uint8_t cc);
   virtual const char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
+  virtual int inst_length(t_addr addr);
 
   virtual int exec_inst(void);
   virtual int exec_inst2(uint8_t c1);

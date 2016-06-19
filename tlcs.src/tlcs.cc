@@ -403,6 +403,36 @@ cl_tlcs::disass(t_addr addr, const char *sep)
   return buf;
 }
 
+int
+cl_tlcs::inst_length(t_addr addr)
+{
+  struct dis_entry *de;
+  uint64_t c;
+  int i;
+  
+  c= 0;
+  for (i= 7; i>=0; i--)
+    {
+      uint8_t cb= rom->get(addr+i);
+      c<<= 8;
+      c|= cb;
+    }
+
+  de= dis_tbl();
+  while (de->mnemonic != NULL)
+    {
+      if ((c & de->mask) == de->code)
+	break;
+      de++;
+    }
+  if (de->mnemonic == NULL)
+    return 1;
+  if (de->length == 1)
+    return 1;
+  else
+    return de->length;
+}
+
 void
 cl_tlcs::print_regs(class cl_console_base *con)
 {
