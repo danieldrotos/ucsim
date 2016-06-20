@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // 0B
 int
-cl_tlcs::daa_a()
+cl_tlcs::inst_daa_a()
 {
   if (((reg.a & 0x0f) > 9) ||
       (reg.f & FLAG_H))
@@ -63,7 +63,7 @@ cl_tlcs::daa_a()
 
 // 10
 int
-cl_tlcs::cpl_a()
+cl_tlcs::inst_cpl_a()
 {
   reg.a= ~reg.a;
   reg.f|= FLAG_H|FLAG_N;
@@ -73,7 +73,7 @@ cl_tlcs::cpl_a()
 
 // 11
 int
-cl_tlcs::neg_a()
+cl_tlcs::inst_neg_a()
 {
   reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H/*|FLAG_X*/|FLAG_V|FLAG_C);
   reg.f|= FLAG_N;
@@ -98,7 +98,7 @@ cl_tlcs::neg_a()
 
 // 0e
 int
-cl_tlcs::ccf()
+cl_tlcs::inst_ccf()
 {
   if (reg.f & FLAG_C)
     reg.f&= ~(FLAG_C);
@@ -115,7 +115,7 @@ cl_tlcs::ccf()
 
 // 0d
 int
-cl_tlcs::scf()
+cl_tlcs::inst_scf()
 {
   reg.f|= FLAG_C|FLAG_X;
   reg.f&= ~(FLAG_N|FLAG_H);
@@ -125,7 +125,7 @@ cl_tlcs::scf()
 
 // 0c
 int
-cl_tlcs::rcf()
+cl_tlcs::inst_rcf()
 {
   reg.f&= ~(FLAG_C|FLAG_X|FLAG_N|FLAG_H);
   return resGO;
@@ -134,7 +134,7 @@ cl_tlcs::rcf()
 
 // ff
 int
-cl_tlcs::swi()
+cl_tlcs::inst_swi()
 {
   t_addr iPC= PC-1;
   reg.f&= ~FLAG_I;
@@ -147,7 +147,7 @@ cl_tlcs::swi()
 
 // MUL HL,mem
 int
-cl_tlcs::mul_hl(class cl_memory_cell *cell)
+cl_tlcs::inst_mul_hl(class cl_memory_cell *cell)
 {
   reg.hl= reg.l * cell->read();
   return resGO;
@@ -156,7 +156,7 @@ cl_tlcs::mul_hl(class cl_memory_cell *cell)
 
 // DIV HL,mem
 int
-cl_tlcs::div_hl(class cl_memory_cell *cell)
+cl_tlcs::inst_div_hl(class cl_memory_cell *cell)
 {
   uint8_t m= cell->read();
   reg.f&= ~FLAG_V;

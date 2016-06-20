@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // 1e
 int
-cl_tlcs::ret()
+cl_tlcs::inst_ret()
 {
   t_mem pushed_pc;
 
@@ -44,7 +44,7 @@ cl_tlcs::ret()
 
 // 1f
 int
-cl_tlcs::reti()
+cl_tlcs::inst_reti()
 {
   t_mem pushed_pc, pushed_af;
   
@@ -58,7 +58,7 @@ cl_tlcs::reti()
 
 // CALL
 int
-cl_tlcs::call(t_addr PC_of_inst, uint16_t addr)
+cl_tlcs::inst_call(t_addr PC_of_inst, uint16_t addr)
 {
   exec_call(PC_of_inst, addr, PC);
   PC= addr;

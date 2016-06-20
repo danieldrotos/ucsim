@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // TSET 8-bit
 uint8_t
-cl_tlcs::tset(uint8_t val, uint8_t bitnr)
+cl_tlcs::op_tset(uint8_t val, uint8_t bitnr)
 {
   reg.f&= ~(FLAG_Z|FLAG_N);
   reg.f|= FLAG_H;
@@ -45,9 +45,20 @@ cl_tlcs::tset(uint8_t val, uint8_t bitnr)
 }
 
 
+// TSET mem
+uint8_t
+cl_tlcs::inst_tset(cl_memory_cell *cell, uint8_t bitnr)
+{
+  uint8_t v= cell->read();
+  v= op_tset(v, bitnr);
+  cell->write(v);
+  return v;
+}
+
+
 // BIT 8-bit
 uint8_t
-cl_tlcs::bit(uint8_t val, uint8_t bitnr)
+cl_tlcs::op_bit(uint8_t val, uint8_t bitnr)
 {
   reg.f&= ~(FLAG_Z|FLAG_N);
   reg.f|= FLAG_H;
@@ -61,9 +72,20 @@ cl_tlcs::bit(uint8_t val, uint8_t bitnr)
 }
 
 
+// BIT mem
+uint8_t
+cl_tlcs::inst_bit(cl_memory_cell *cell, uint8_t bitnr)
+{
+  uint8_t v= cell->read();
+  v= op_bit(v, bitnr);
+  cell->write(v);
+  return v;
+}
+
+
 // RES 8-bit
 uint8_t
-cl_tlcs::inst_res(uint8_t val, uint8_t bitnr)
+cl_tlcs::op_res(uint8_t val, uint8_t bitnr)
 {
   bitnr&= 7;
 
@@ -73,15 +95,37 @@ cl_tlcs::inst_res(uint8_t val, uint8_t bitnr)
 }
 
 
+// RES mem
+uint8_t
+cl_tlcs::inst_res(cl_memory_cell *cell, uint8_t bitnr)
+{
+  uint8_t v= cell->read();
+  v= op_res(v, bitnr);
+  cell->write(v);
+  return v;
+}
+
+
 // SET 8-bit
 uint8_t
-cl_tlcs::inst_set(uint8_t val, uint8_t bitnr)
+cl_tlcs::op_set(uint8_t val, uint8_t bitnr)
 {
   bitnr&= 7;
 
   val|= (1 << bitnr);
 
   return val;
+}
+
+
+// SET mem
+uint8_t
+cl_tlcs::inst_set(cl_memory_cell *cell, uint8_t bitnr)
+{
+  uint8_t v= cell->read();
+  v= op_set(v, bitnr);
+  cell->write(v);
+  return v;
 }
 
 

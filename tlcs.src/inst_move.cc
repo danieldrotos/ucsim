@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // 58+qq
 int
-cl_tlcs::pop(t_mem c1)
+cl_tlcs::inst_pop(t_mem c1)
 {
   t_mem data;
   exec_pop(PC-1, &data);

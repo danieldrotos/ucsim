@@ -219,7 +219,7 @@ class cl_tlcs: public cl_uc
   // (1) 8-bit data transfer
 
   // (2) 16-bit data transfer
-  virtual int pop(t_mem c1);		// 58+qq
+  virtual int inst_pop(t_mem c1);	// 58+qq
   
   // (3) exchange, block transfer and search
   virtual int ex_de_hl();		// 08
@@ -276,19 +276,19 @@ class cl_tlcs: public cl_uc
   virtual uint16_t sub16(t_mem op1, t_mem op2);		// SUB 16-bit
 
   // (6) cpu control and others
-  virtual int daa_a();			// 0b
-  virtual int cpl_a();			// 10
-  virtual int neg_a();			// 11
-  virtual int ccf();			// 0e
-  virtual int scf();			// 0d
-  virtual int rcf();			// 0c
+  virtual int inst_daa_a();		// 0b
+  virtual int inst_cpl_a();		// 10
+  virtual int inst_neg_a();		// 11
+  virtual int inst_ccf();		// 0e
+  virtual int inst_scf();		// 0d
+  virtual int inst_rcf();		// 0c
   //virtual int nop();			// 00
   //virtual int halt();			// 01
   //virtual int di();			// 02
   //virtual int ei();			// 03
-  virtual int swi();			// ff
-  virtual int mul_hl(class cl_memory_cell *cell);
-  virtual int div_hl(class cl_memory_cell *cell);
+  virtual int inst_swi();		// ff
+  virtual int inst_mul_hl(class cl_memory_cell *cell);
+  virtual int inst_div_hl(class cl_memory_cell *cell);
   
   // (7) rotate and shift
   virtual uint8_t rlc(uint8_t data, bool set_sz);	// RLC 8-bit
@@ -309,15 +309,19 @@ class cl_tlcs: public cl_uc
   virtual int rrd(class cl_memory_cell *cell);		// RLD
 
   // (8) bit manipulation
-  virtual uint8_t tset(uint8_t val, uint8_t bitnr);	// TSET 8-bit
-  virtual uint8_t bit(uint8_t val, uint8_t bitnr);	// BIT 8-bit
-  virtual uint8_t inst_res(uint8_t val, uint8_t bitnr);	// RES 8-bit
-  virtual uint8_t inst_set(uint8_t val, uint8_t bitnr);	// SET 8-bit
+  virtual uint8_t op_tset(uint8_t val, uint8_t bitnr);	// TSET 8-bit
+  virtual uint8_t inst_tset(cl_memory_cell *cell, uint8_t bitnr);
+  virtual uint8_t op_bit(uint8_t val, uint8_t bitnr);	// BIT 8-bit
+  virtual uint8_t inst_bit(cl_memory_cell *cell, uint8_t bitnr);
+  virtual uint8_t op_res(uint8_t val, uint8_t bitnr);	// RES 8-bit
+  virtual uint8_t inst_res(cl_memory_cell *cell, uint8_t bitnr);
+  virtual uint8_t op_set(uint8_t val, uint8_t bitnr);	// SET 8-bit
+  virtual uint8_t inst_set(cl_memory_cell *cell, uint8_t bitnr);
 
   // (9) jump, call and return
-  virtual int ret();			// 1e
-  virtual int reti();			// 1f
-  virtual int call(t_addr PC_of_inst, uint16_t addr);	// CALL addr
+  virtual int inst_ret();			// 1e
+  virtual int inst_reti();			// 1f
+  virtual int inst_call(t_addr PC_of_inst, uint16_t addr);	// CALL addr
   
   // ?
 };
