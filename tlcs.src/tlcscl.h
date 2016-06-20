@@ -235,45 +235,45 @@ class cl_tlcs: public cl_uc
   virtual int cpdr();			// Fe 5f
   
   // (4) 8-bit arithmetic and logic operation
-  virtual uint8_t inc(uint8_t data);			// INC 8 bit
-  virtual void inc(cl_memory_cell *cell);		// INC mem
-  virtual uint8_t dec(uint8_t data);			// DEC 8 bit
-  virtual void dec(cl_memory_cell *cell);		// DEC mem
-  virtual uint8_t add_a(uint8_t d);			// ADD A,8-bit
-  virtual int add_a(class cl_memory_cell *cell);	// ADD A,mem
-  virtual int adc_a(uint8_t d);				// ADC A,8-bit
-  virtual int adc_a(class cl_memory_cell *cell);	// ADC A,mem
-  virtual int sub_a(uint8_t d);				// SUB A,8-bit
-  virtual int sub_a(class cl_memory_cell *cell);	// SUB A,mem
-  virtual int sbc_a(uint8_t d);				// SBC A,8-bit
-  virtual int sbc_a(class cl_memory_cell *cell);	// SBC A,mem
-  virtual int and_a(uint8_t d);				// AND A,8-bit
-  virtual int and_a(class cl_memory_cell *cell);	// AND A,mem
-  virtual int xor_a(uint8_t d);				// XOR A,8-bit
-  virtual int xor_a(class cl_memory_cell *cell);	// XOR A,mem
-  virtual int or_a(uint8_t d);				// OR A,8-bit
-  virtual int or_a(class cl_memory_cell *cell);		// OR A,mem
-  virtual int cp_a(uint8_t d);				// CP A,8-bit
-  virtual int cp_a(class cl_memory_cell *cell);		// CP A,mem
+  virtual uint8_t op_inc(uint8_t data);			// INC 8 bit
+  virtual void inst_inc(cl_memory_cell *cell);		// INC mem
+  virtual uint8_t op_dec(uint8_t data);			// DEC 8 bit
+  virtual void inst_dec(cl_memory_cell *cell);		// DEC mem
+  virtual uint8_t op_add_a(uint8_t d);			// ADD A,8-bit
+  virtual int inst_add_a(class cl_memory_cell *cell);	// ADD A,mem
+  virtual int inst_adc_a(uint8_t d);			// ADC A,8-bit
+  virtual int inst_adc_a(class cl_memory_cell *cell);	// ADC A,mem
+  virtual int inst_sub_a(uint8_t d);			// SUB A,8-bit
+  virtual int inst_sub_a(class cl_memory_cell *cell);	// SUB A,mem
+  virtual int inst_sbc_a(uint8_t d);			// SBC A,8-bit
+  virtual int inst_sbc_a(class cl_memory_cell *cell);	// SBC A,mem
+  virtual int inst_and_a(uint8_t d);			// AND A,8-bit
+  virtual int inst_and_a(class cl_memory_cell *cell);	// AND A,mem
+  virtual int inst_xor_a(uint8_t d);			// XOR A,8-bit
+  virtual int inst_xor_a(class cl_memory_cell *cell);	// XOR A,mem
+  virtual int inst_or_a(uint8_t d);			// OR A,8-bit
+  virtual int inst_or_a(class cl_memory_cell *cell);	// OR A,mem
+  virtual int op_cp_a(uint8_t d);			// CP A,8-bit
+  virtual int op_cp_a(class cl_memory_cell *cell);	// CP A,mem
 
   // (5) 16-bit arithmetic and logic operation
-  virtual uint16_t inc16(uint16_t data);		// INC 16 bit
-  virtual uint16_t inc16(t_addr addr);			// INCW mem
-  virtual uint16_t dec16(uint16_t data);		// DEC 16 bit
-  virtual uint16_t dec16(t_addr addr);			// DECW mem
-  virtual uint16_t add_hl(t_mem val);			// ADD HL,16-bit
-  virtual uint16_t add_hl(t_addr addr);			// ADD HL,mem
-  virtual uint16_t adc_hl(t_addr addr);			// ADC HL,mem
-  virtual uint16_t sub16(t_mem op1, t_mem op2);		// SUB 16-bit
-  virtual uint16_t sub_hl(t_addr addr);			// SUB HL,mem
-  virtual uint16_t sbc_hl(t_addr addr);			// SBC HL,mem
-  virtual uint16_t and_hl(t_mem val);			// AND HL,16-bit
-  virtual uint16_t and_hl(t_addr addr);			// AND HL,mem
-  virtual uint16_t xor_hl(t_mem val);			// XOR HL,16-bit
-  virtual uint16_t xor_hl(t_addr addr);			// XOR HL,mem
-  virtual uint16_t or_hl(t_mem val);			// OR HL,16-bit
-  virtual uint16_t or_hl(t_addr addr);			// OR HL,mem
+  virtual uint16_t op_inc16(uint16_t data);		// INC 16 bit
+  virtual uint16_t inst_inc16(t_addr addr);		// INCW mem
+  virtual uint16_t op_dec16(t_mem data);		// DEC 16 bit
+  virtual uint16_t inst_dec16(t_addr addr);		// DECW mem
+  virtual uint16_t op_add_hl(t_mem val);		// ADD HL,16-bit
+  virtual uint16_t op_add_hl(t_addr addr);		// ADD HL,mem
+  virtual uint16_t op_adc_hl(t_addr addr);		// ADC HL,mem
+  virtual uint16_t op_sub_hl(t_addr addr);		// SUB HL,mem
+  virtual uint16_t op_sbc_hl(t_addr addr);		// SBC HL,mem
+  virtual uint16_t op_and_hl(t_mem val);		// AND HL,16-bit
+  virtual uint16_t op_and_hl(t_addr addr);		// AND HL,mem
+  virtual uint16_t op_xor_hl(t_mem val);		// XOR HL,16-bit
+  virtual uint16_t op_xor_hl(t_addr addr);		// XOR HL,mem
+  virtual uint16_t op_or_hl(t_mem val);			// OR HL,16-bit
+  virtual uint16_t op_or_hl(t_addr addr);		// OR HL,mem
   virtual uint16_t add16(t_mem op1, t_mem op2);		// ADD 16-bit
+  virtual uint16_t sub16(t_mem op1, t_mem op2);		// SUB 16-bit
 
   // (6) cpu control and others
   virtual int daa_a();			// 0b
