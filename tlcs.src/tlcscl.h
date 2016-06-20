@@ -191,6 +191,7 @@ class cl_tlcs: public cl_uc
   virtual int exec_inst2_f3(uint8_t c1);
   virtual int exec_inst2_fe(uint8_t c1);
   virtual int exec_inst2_f7(uint8_t c1);
+  virtual int exec_inst2_e0gg(uint8_t c1, uint8_t c2);
   
   virtual t_addr do_push(t_mem data);
   virtual t_addr do_pop(t_mem *data);
@@ -205,7 +206,9 @@ class cl_tlcs: public cl_uc
   virtual uint16_t *aof_reg16_rr(uint8_t data_rr);
   virtual uint16_t *aof_reg16_qq(uint8_t data_qq);
   virtual uint16_t *aof_reg16_ix(uint8_t data_ix);
+  virtual uint16_t *aof_reg16_gg(uint8_t data_gg);
   virtual class cl_memory_cell *cell_hl_a();
+  virtual class cl_memory_cell *cell_gg(uint8_t gg);
   virtual uint16_t mem16(t_addr addr);
   virtual void write16(t_addr addr, uint16_t val);
   virtual uint16_t xmem16(t_addr addr);
@@ -261,6 +264,7 @@ class cl_tlcs: public cl_uc
   virtual uint16_t add_hl(t_mem val);			// ADD HL,16-bit
   virtual uint16_t add_hl(t_addr addr);			// ADD HL,mem
   virtual uint16_t adc_hl(t_addr addr);			// ADC HL,mem
+  virtual uint16_t sub16(t_mem op1, t_mem op2);		// SUB 16-bit
   virtual uint16_t sub_hl(t_addr addr);			// SUB HL,mem
   virtual uint16_t sbc_hl(t_addr addr);			// SBC HL,mem
   virtual uint16_t and_hl(t_mem val);			// AND HL,16-bit

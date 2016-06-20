@@ -388,6 +388,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'R': /* rr in 1st byte */ s+= regname_R(c); break;
 	    case 's': /* rr in 2nd byte */ s+= regname_R(c>>8); break;
 	    case 'Q': /* qq in 1st byte */ s+= regname_Q(c); break;
+	    case 'I': /* ix in 1st byte */ s+= regname_i(c); break;
 	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
 	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
 	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
@@ -558,7 +559,15 @@ cl_tlcs::exec_inst2(uint8_t c1)
     case 0xf7: // c1
       res= exec_inst2_f7(c2);
       break;
-    default: ;
+    default:
+      // now handle cases where first byte is not fix
+      switch (c1 & 0x07)
+	{
+	case 0xe0: // e0+gg
+	  res= exec_inst2_e0gg(c1, c2);
+	  break;
+	}
+      break;
     }
   
   return res;
@@ -610,7 +619,7 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
     case 0xa7: srl(cell_hl_a()); break;
     default:
       // handle c1==f3 cases where second byte is not fix
-      if ((c2 & 0xfc0) == 0x14) // ADD ix,(HL+A)
+      if ((c2 & 0xfc) == 0x14) // ADD ix,(HL+A)
 	{
 	  uint16_t *op1= aof_reg16_ix(c2);
 	  uint16_t op2= mem16(reg.hl+reg.a);
@@ -709,6 +718,67 @@ cl_tlcs::exec_inst2_fe(uint8_t c2)
   return res;
 }
 
+int
+cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
+{
+  int res= resGO;
+  cl_memory_cell *gg= cell_gg(c1);
+  
+  switch (c2)
+    {
+    case 0x10: rld(gg); break; // RLD (gg)
+    case 0x11: rrd(gg); break; // RRD (gg)
+    case 0x12: mul_hl(gg); break; // MUL HL,(gg)
+    case 0x13: div_hl(gg); break; // DIV HL,(gg)
+    case 0x60: add_a(gg); break; // ADD A,(gg)
+    case 0x61: adc_a(gg); break; // ADC A,(gg)
+    case 0x62: sub_a(gg); break; // SUB,A(gg)
+    case 0x63: sbc_a(gg); break; // SBC A,(gg)
+    case 0x64: and_a(gg); break; // AND A(gg)
+    case 0x65: xor_a(gg); break; // XOR A(gg)
+    case 0x66: or_a(gg); break; // OR A,(gg)
+    case 0x67: cp_a(gg); break; // CP A,(gg)
+    case 0x70: reg.hl= add_hl((t_addr)*aof_reg16_gg(c1)); break; // ADD HL,(gg)
+    case 0x71: reg.hl= adc_hl((t_addr)*aof_reg16_gg(c1)); break; // ADC HL,(gg)
+    case 0x72: reg.hl= sub_hl((t_addr)*aof_reg16_gg(c1)); break; // SUB HL,(gg)
+    case 0x73: reg.hl= sbc_hl((t_addr)*aof_reg16_gg(c1)); break; // SBC HL,(gg)
+    case 0x74: reg.hl= and_hl((t_addr)*aof_reg16_gg(c1)); break; // AND HL,(gg)
+    case 0x75: reg.hl= xor_hl((t_addr)*aof_reg16_gg(c1)); break; // XOR HL,(gg)
+    case 0x76: reg.hl= or_hl((t_addr)*aof_reg16_gg(c1)); break; // OR HL,(gg)
+    case 0x77: sub_hl((t_addr)*aof_reg16_gg(c1)); break; // CP HL,(gg)
+    case 0x87: inc(gg); break; // INC (gg)
+    case 0x8f: dec(gg); break; // DEC (gg)
+    case 0x97: inc16(*aof_reg16_gg(c1)); break; // INCW (gg)
+    case 0x9f: dec16(*aof_reg16_gg(c1)); break; // DECW (gg)
+    case 0xa0: rlc(gg); break; // RLC (gg)
+    case 0xa1: rrc(gg); break; // RRC (gg)
+    case 0xa2: rl(gg); break; // RL (gg)
+    case 0xa3: rr(gg); break; // RR (gg)
+    case 0xa4: sla(gg); break; // SLA (gg)
+    case 0xa5: sra(gg); break; // SRA (gg)
+    case 0xa6: sla(gg); break; // SLL (gg)
+    case 0xa7: srl(gg); break; // SRL (gg)
+    default:
+      if ((c2 & 0xfc) == 0x14) // ADD ix,(gg)
+	{
+	  uint16_t *ix= aof_reg16_ix(c2);
+	  *ix= add16(*ix, mem16(*aof_reg16_gg(c1)));
+	}
+      else
+	switch (c2 & 0xf8)
+	  {
+	  case 0x18: break; // TSET b,(gg)
+	  case 0x28: break; // LD r,(gg)
+	  case 0x48: break; // LD rr,(gg)
+	  case 0x50: break; // EX (gg),rr
+	  case 0xa8: break; // BIT b,(gg)
+	  case 0xb0: break; // RES b,(gg)
+	  case 0xb8: break; // SET b,(gg)
+	  }
+    }
+  
+  return res;
+}
 
 t_addr
 cl_tlcs::do_push(t_mem data)
@@ -882,10 +952,22 @@ cl_tlcs::aof_reg16_ix(uint8_t data_ix)
     }
 }
 
+uint16_t *
+cl_tlcs::aof_reg16_gg(uint8_t data_gg)
+{
+  return aof_reg16_rr(data_gg);
+}
+
 class cl_memory_cell *
 cl_tlcs::cell_hl_a()
 {
   return nas->get_cell(reg.hl + reg.a);
+}
+
+class cl_memory_cell *
+cl_tlcs::cell_gg(uint8_t gg)
+{
+  return nas->get_cell(*aof_reg16_gg(gg));
 }
 
 uint16_t

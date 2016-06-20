@@ -499,6 +499,20 @@ cl_tlcs::sub_hl(t_addr addr)
 }
 
 
+// SUB 16-bit
+uint16_t
+cl_tlcs::sub16(t_mem op1, t_mem op2)
+{
+  uint16_t d= op2;
+  uint16_t r;
+
+  r= add16(op1, (t_mem)(~d + 1));
+  reg.f|= FLAG_N;
+
+  return r;
+}
+
+
 // SBC HL,mem
 uint16_t
 cl_tlcs::sbc_hl(t_addr addr)
