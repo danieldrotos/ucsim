@@ -566,6 +566,12 @@ cl_tlcs::exec_inst2(uint8_t c1)
 	case 0xe0: // e0+gg
 	  res= exec_inst2_e0gg(c1, c2);
 	  break;
+	case 0xe8: // e8+gg
+	  res= exec_inst2_e8gg(c1, c2);
+	  break;
+	case 0xf8: // f8+g, f8+gg
+	  res= exec_inst2_f8gg(c1, c2);
+	  break;
 	}
       break;
     }
@@ -718,6 +724,9 @@ cl_tlcs::exec_inst2_fe(uint8_t c2)
   return res;
 }
 
+/*                                                                           E0+gg XX
+ */
+
 int
 cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
 {
@@ -783,6 +792,88 @@ cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
 	  case 0xb0: inst_res(cell_gg(c1), c2); break; // RES b,(gg)
 	  case 0xb8: inst_set(cell_gg(c1), c2); break; // SET b,(gg)
 	  }
+    }
+  
+  return res;
+}
+
+/*                                                                           E8+gg XX
+ */
+
+int
+cl_tlcs::exec_inst2_e8gg(uint8_t c1, uint8_t c2)
+{
+  int res= resGO;
+  class cl_memory_cell *gg= cell_gg(c1);
+  t_addr gv= *aof_reg16_gg(c1);
+  
+  switch (c2 & 0xf0)
+    {
+    case 0xc0: if (cc(c2)) PC= gv; break; // JP [cc,]gg
+    case 0xd0: if (cc(c2)) inst_call(PC-2, gv); break; // CALL [cc,]gg
+    default:
+      switch (c2 & 0xf8)
+	{
+	case 0x20: gg->write(*aof_reg8(c2)); break; // LD (gg),r
+	case 0x40: write16(gv, *aof_reg16_rr(c2)); break; // LD (gg),rr
+	}
+      break;
+    }
+  return res;
+}
+
+/*                                                                    F8+g XX, F8+gg XX
+ */
+
+int
+cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
+{
+  int res= resGO;
+  uint8_t *ga= aof_reg8(c1);
+  uint16_t *gga= aof_reg16_gg(c1);
+
+  switch (c2)
+    {
+    case 0x12: break; // MUL HL,g
+    case 0x13: break; // DIV HL,g
+    case 0x60: break; // ADD A,g
+    case 0x61: break; // ADC A,g
+    case 0x62: break; // SUB A,g
+    case 0x63: break; // SBC A,g
+    case 0x64: break; // AND A,g
+    case 0x65: break; // XOR A,g
+    case 0x66: break; // OR A,g
+    case 0x67: break; // CP A,g
+    case 0x70: break; // ADD HL,gg
+    case 0x71: break; // ADC HL,gg
+    case 0x72: break; // SUB HL,gg
+    case 0x73: break; // SBC HL,gg
+    case 0x74: break; // AND HL,gg
+    case 0x75: break; // XOR HL,gg
+    case 0x76: break; // OR HL,gg
+    case 0x77: break; // CP HL,gg
+    case 0xA0: break; // RLC g
+    case 0xA1: break; // RRC g
+    case 0xA2: break; // RL g
+    case 0xA3: break; // RR g
+    case 0xA4: break; // SLA g
+    case 0xA5: break; // SRA g
+    case 0xA6: break; // SLL g
+    case 0xA7: break; // SRL g
+    default:
+      if ((c2 & 0xfc) == 0x14) // ADD ix,gg
+	;
+      else
+	switch (c2 & 0xf8)
+	  {
+	  case 0x18: break; // TSET b,g
+	  case 0x30: break; // LD r,g
+	  case 0x38: break; // LD rr,gg
+	  case 0xa8: break; // BIT b,g
+	  case 0xb0: break; // RES b,g
+	  case 0xb8: break; // SET b,g
+	  }
+      break;
     }
   
   return res;

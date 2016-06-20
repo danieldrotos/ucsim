@@ -274,7 +274,7 @@ F8+g	6C	n				AND g,n
 F8+g	6D	n				XOR g,n
 F8+g	6E	n				OR g,n
 F8+g	6F	n				CP g,n
-F8+gg	70	n				ADD HL,gg
+F8+gg	70					ADD HL,gg
 F8+gg	71					ADC HL,gg
 F8+gg	72					SUB HL,gg
 F8+gg	73					SBC HL,gg

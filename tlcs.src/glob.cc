@@ -166,6 +166,12 @@ struct dis_entry disass_tlcs[]= {
   { 0xa5e0, 0xfff8, 'R', 2, "SRA (%R)" },
   { 0xa6e0, 0xfff8, 'R', 2, "SLL (%R)" },
   { 0xa7e0, 0xfff8, 'R', 2, "SRL (%R)" },
+
+  { 0x20e8, 0xf8f8, 'R', 2, "LD (%R),%p" },
+  { 0x40e8, 0xf8f8, 'R', 2, "LD (%R),%s" },
+  
+  { 0xc0e8, 0xf0f8, 'R', 2, "JP %c$R" },
+  { 0xd0e8, 0xf0f8, 'R', 2, "CALL %c%R" },
   
   { 0, 0, ' ', 0, NULL }
 };
