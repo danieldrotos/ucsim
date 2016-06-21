@@ -175,6 +175,10 @@ struct dis_entry disass_tlcs[]= {
 
   { 0x12f8, 0xfff8, 'g', 2, "MUL HL,%r" },
   { 0x13f8, 0xfff8, 'g', 2, "DIV HL,%r" },
+  { 0x14f8, 0xf8f8, 'g', 2, "ADD %i,%R" },
+  { 0x18f8, 0xf8f8, 'g', 2, "TSET %b,%r" },
+  { 0x30f8, 0xf8f8, 'g', 2, "LD %p,%r" },
+  { 0x38f8, 0xf8f8, 'g', 2, "LD %s,%R" },
   { 0x60f8, 0xfff8, 'g', 2, "ADD A,%r" },
   { 0x61f8, 0xfff8, 'g', 2, "ADC A,%r" },
   { 0x62f8, 0xfff8, 'g', 2, "SUB A,%r" },
@@ -183,7 +187,14 @@ struct dis_entry disass_tlcs[]= {
   { 0x65f8, 0xfff8, 'g', 2, "XOR A,%r" },
   { 0x66f8, 0xfff8, 'g', 2, "OR A,%r" },
   { 0x67f8, 0xfff8, 'g', 2, "CP A,%r" },
-
+  { 0x70f8, 0xfff8, 'g', 2, "ADD HL,%R" },
+  { 0x71f8, 0xfff8, 'g', 2, "ADC HL,%R" },
+  { 0x72f8, 0xfff8, 'g', 2, "SUB HL,%R" },
+  { 0x73f8, 0xfff8, 'g', 2, "SBC HL,%R" },
+  { 0x74f8, 0xfff8, 'g', 2, "AND HL,%R" },
+  { 0x75f8, 0xfff8, 'g', 2, "XOR HL,%R" },
+  { 0x76f8, 0xfff8, 'g', 2, "OR HL,%R" },
+  { 0x77f8, 0xfff8, 'g', 2, "CP HL,%R" },
   { 0xA0f8, 0xfff8, 'g', 2, "RLC %r" },
   { 0xA1f8, 0xfff8, 'g', 2, "RRC %r" },
   { 0xA2f8, 0xfff8, 'g', 2, "RL %r" },
@@ -192,8 +203,22 @@ struct dis_entry disass_tlcs[]= {
   { 0xA5f8, 0xfff8, 'g', 2, "SRA %r" },
   { 0xA6f8, 0xfff8, 'g', 2, "SLL %r" },
   { 0xA7f8, 0xfff8, 'g', 2, "SRL %r" },
+  { 0xA8f8, 0xf8f8, 'g', 2, "BIT %b,%r" },
+  { 0xB0f8, 0xf8f8, 'g', 2, "RES %b,%r" },
+  { 0xB8f8, 0xf8f8, 'g', 2, "SET %b,%r" },
 
   { 0, 0, ' ', 0, NULL }
 };
+
+//	    case 'r': /*  r in 1st byte */ s+= regname_r(c); break;
+//	    case 'p': /*  r in 2nd byte */ s+= regname_r(c>>8); break;
+//	    case 'R': /* rr in 1st byte */ s+= regname_R(c); break;
+//	    case 's': /* rr in 2nd byte */ s+= regname_R(c>>8); break;
+//	    case 'Q': /* qq in 1st byte */ s+= regname_Q(c); break;
+//	    case 'I': /* ix in 1st byte */ s+= regname_i(c); break;
+//	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
+//	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
+//	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
+//	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 
 /* End of tlcs.src/glob.cc */

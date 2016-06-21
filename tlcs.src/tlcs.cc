@@ -862,16 +862,16 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
     case 0xA7: *ga= op_srl(*ga, true); break; // SRL g
     default:
       if ((c2 & 0xfc) == 0x14) // ADD ix,gg
-	;
+	*aof_reg16_ix(c2)= add16(*aof_reg16_ix(c2), *gga);
       else
 	switch (c2 & 0xf8)
 	  {
-	  case 0x18: break; // TSET b,g
-	  case 0x30: break; // LD r,g
-	  case 0x38: break; // LD rr,gg
-	  case 0xa8: break; // BIT b,g
-	  case 0xb0: break; // RES b,g
-	  case 0xb8: break; // SET b,g
+	  case 0x18: *ga= op_tset(*ga, c2); break; // TSET b,g
+	  case 0x30: *aof_reg8(c2)= *ga; break; // LD r,g
+	  case 0x38: *aof_reg16_rr(c2)= *gga; break; // LD rr,gg
+	  case 0xa8: *ga= op_bit(*ga, c2); break; // BIT b,g
+	  case 0xb0: *ga= op_res(*ga, c2); break; // RES b,g
+	  case 0xb8: *ga= op_set(*ga, c2); break; // SET b,g
 	  }
       break;
     }
