@@ -848,10 +848,10 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
     case 0x71: reg.hl= op_adc_hl((t_mem)*gga); break; // ADC HL,gg
     case 0x72: reg.hl= op_sub_hl((t_mem)*gga); break; // SUB HL,gg
     case 0x73: reg.hl= op_sbc_hl((t_mem)*gga); break; // SBC HL,gg
-    case 0x74: break; // AND HL,gg
-    case 0x75: break; // XOR HL,gg
-    case 0x76: break; // OR HL,gg
-    case 0x77: break; // CP HL,gg
+    case 0x74: reg.hl= op_and_hl((t_mem)*gga); break; // AND HL,gg
+    case 0x75: reg.hl= op_xor_hl((t_mem)*gga); break; // XOR HL,gg
+    case 0x76: reg.hl= op_or_hl((t_mem)*gga); break; // OR HL,gg
+    case 0x77: op_sub_hl((t_mem)*gga); break; // CP HL,gg
     case 0xA0: break; // RLC g
     case 0xA1: break; // RRC g
     case 0xA2: break; // RL g
