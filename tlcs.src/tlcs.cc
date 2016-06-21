@@ -397,7 +397,8 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'B': /*  b in 3rd byte */ s+= bitname(c>>16); break;
 	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
-	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
+	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)((c>>8)&0xff));s+= l; break;
+	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x", (int)(addr+2+((c>>8)&0xff))); s+= l; break;
 	    default: s+= '?'; break;
 	    }
 	}
@@ -552,16 +553,17 @@ cl_tlcs::exec_inst2(uint8_t c1)
 {
   uint8_t c2= fetch();
   int res= resGO;
+  class cl_memory_cell *n= cell_n(c2);
   
   // first, handle cases where first byte is fix
   switch (c1)
     {
-    case 0x07: break; //@ INCX (0ffn)
-    case 0x0F: break; //@ DECX (0ffn)
-    case 0x12: break; //@ MUL HL,n
-    case 0x13: break; //@ DIV HL,n
-    case 0x18: break; //@ DJNZ $+2+d
-    case 0x19: break; //@ DJNZ BC,$+2+d
+    case 0x07: inst_incx(n); break; // INCX (0ffn)
+    case 0x0F: inst_decx(n); break; // DECX (0ffn)
+    case 0x12: reg.hl= reg.l * c2; break; // MUL HL,n
+    case 0x13: inst_div_hl(c2); break; // DIV HL,n
+    case 0x18: inst_djnz_b(c2); break; // DJNZ $+2+d
+    case 0x19: inst_djnz_bc(c2); break; // DJNZ BC,$+2+d
     case 0x27: break; //@ LD A,(0ffn)
     case 0x2F: break; //@ LD (0ffn),A
     case 0x47: break; //@ LD HL,(0ffn)

@@ -62,6 +62,19 @@ cl_tlcs::inst_inc(cl_memory_cell *cell)
 }
 
 
+// INCX mem
+void
+cl_tlcs::inst_incx(cl_memory_cell *cell)
+{
+  if (reg.f & FLAG_X)
+    {
+      uint8_t d= cell->read();
+      d= op_inc(d);
+      cell->write(d);
+    }
+}
+
+
 // INC 8-bit
 uint8_t
 cl_tlcs::op_dec(uint8_t data)
@@ -92,6 +105,19 @@ cl_tlcs::inst_dec(cl_memory_cell *cell)
   uint8_t d= cell->read();
   d= op_dec(d);
   cell->write(d);
+}
+
+
+// DECX mem
+void
+cl_tlcs::inst_decx(cl_memory_cell *cell)
+{
+  if (reg.f & FLAG_X)
+    {
+      uint8_t d= cell->read();
+      d= op_dec(d);
+      cell->write(d);
+    }
 }
 
 

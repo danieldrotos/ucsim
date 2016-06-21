@@ -241,8 +241,10 @@ class cl_tlcs: public cl_uc
   // (4) 8-bit arithmetic and logic operation
   virtual uint8_t op_inc(uint8_t data);			// INC 8 bit
   virtual void inst_inc(cl_memory_cell *cell);		// INC mem
+  virtual void inst_incx(cl_memory_cell *cell);		// INCX mem
   virtual uint8_t op_dec(uint8_t data);			// DEC 8 bit
   virtual void inst_dec(cl_memory_cell *cell);		// DEC mem
+  virtual void inst_decx(cl_memory_cell *cell);		// DECX mem
   virtual uint8_t op_add_a(uint8_t d);			// ADD A,8-bit
   virtual int inst_add_a(class cl_memory_cell *cell);	// ADD A,mem
   virtual int inst_adc_a(uint8_t d);			// ADC A,8-bit
@@ -330,6 +332,8 @@ class cl_tlcs: public cl_uc
   virtual int inst_ret();			// 1e
   virtual int inst_reti();			// 1f
   virtual int inst_call(t_addr PC_of_inst, uint16_t addr);	// CALL addr
+  virtual int inst_djnz_b(uint8_t d);
+  virtual int inst_djnz_bc(uint8_t d);
   
   // ?
 };
