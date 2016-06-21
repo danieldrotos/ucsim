@@ -853,13 +853,13 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
     case 0x76: reg.hl= op_or_hl((t_mem)*gga); break; // OR HL,gg
     case 0x77: op_sub_hl((t_mem)*gga); break; // CP HL,gg
     case 0xA0: *ga= op_rlc(*ga, true); break; // RLC g
-    case 0xA1: break; // RRC g
-    case 0xA2: break; // RL g
-    case 0xA3: break; // RR g
-    case 0xA4: break; // SLA g
-    case 0xA5: break; // SRA g
-    case 0xA6: break; // SLL g
-    case 0xA7: break; // SRL g
+    case 0xA1: *ga= op_rrc(*ga, true); break; // RRC g
+    case 0xA2: *ga= op_rl(*ga, true); break; // RL g
+    case 0xA3: *ga= op_rr(*ga, true); break; // RR g
+    case 0xA4: *ga= op_sla(*ga, true); break; // SLA g
+    case 0xA5: *ga= op_sra(*ga, true); break; // SRA g
+    case 0xA6: *ga= op_sla(*ga, true); break; // SLL g
+    case 0xA7: *ga= op_srl(*ga, true); break; // SRL g
     default:
       if ((c2 & 0xfc) == 0x14) // ADD ix,gg
 	;
