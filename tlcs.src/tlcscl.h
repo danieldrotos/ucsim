@@ -265,8 +265,11 @@ class cl_tlcs: public cl_uc
   virtual uint16_t inst_dec16(t_addr addr);		// DECW mem
   virtual uint16_t op_add_hl(t_mem val);		// ADD HL,16-bit
   virtual uint16_t op_add_hl(t_addr addr);		// ADD HL,mem
+  virtual uint16_t op_adc_hl(t_mem val);		// ADC HL,16-bit
   virtual uint16_t op_adc_hl(t_addr addr);		// ADC HL,mem
+  virtual uint16_t op_sub_hl(t_mem val);		// SUB HL,16-bit
   virtual uint16_t op_sub_hl(t_addr addr);		// SUB HL,mem
+  virtual uint16_t op_sbc_hl(t_mem val);		// SBC HL,16-bit
   virtual uint16_t op_sbc_hl(t_addr addr);		// SBC HL,mem
   virtual uint16_t op_and_hl(t_mem val);		// AND HL,16-bit
   virtual uint16_t op_and_hl(t_addr addr);		// AND HL,mem
@@ -291,6 +294,7 @@ class cl_tlcs: public cl_uc
   virtual int inst_swi();		// ff
   virtual int inst_mul_hl(class cl_memory_cell *cell);
   virtual int inst_div_hl(class cl_memory_cell *cell);
+  virtual int inst_div_hl(uint8_t d);
   
   // (7) rotate and shift
   virtual uint8_t rlc(uint8_t data, bool set_sz);	// RLC 8-bit

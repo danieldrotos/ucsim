@@ -159,6 +159,15 @@ int
 cl_tlcs::inst_div_hl(class cl_memory_cell *cell)
 {
   uint8_t m= cell->read();
+  return inst_div_hl(m);
+}
+
+
+// DIV HL,val
+int
+cl_tlcs::inst_div_hl(uint8_t d)
+{
+  uint8_t m= d;
   reg.f&= ~FLAG_V;
   if ((m == 0) ||
       ((reg.hl / m) > 255))

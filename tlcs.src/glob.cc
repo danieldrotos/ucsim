@@ -172,7 +172,27 @@ struct dis_entry disass_tlcs[]= {
   
   { 0xc0e8, 0xf0f8, 'R', 2, "JP %c$R" },
   { 0xd0e8, 0xf0f8, 'R', 2, "CALL %c%R" },
-  
+
+  { 0x12f8, 0xfff8, 'g', 2, "MUL HL,%r" },
+  { 0x13f8, 0xfff8, 'g', 2, "DIV HL,%r" },
+  { 0x60f8, 0xfff8, 'g', 2, "ADD A,%r" },
+  { 0x61f8, 0xfff8, 'g', 2, "ADC A,%r" },
+  { 0x62f8, 0xfff8, 'g', 2, "SUB A,%r" },
+  { 0x63f8, 0xfff8, 'g', 2, "SBC A,%r" },
+  { 0x64f8, 0xfff8, 'g', 2, "AND A,%r" },
+  { 0x65f8, 0xfff8, 'g', 2, "XOR A,%r" },
+  { 0x66f8, 0xfff8, 'g', 2, "OR A,%r" },
+  { 0x67f8, 0xfff8, 'g', 2, "CP A,%r" },
+
+  { 0xA0f8, 0xfff8, 'g', 2, "RLC %r" },
+  { 0xA1f8, 0xfff8, 'g', 2, "RRC %r" },
+  { 0xA2f8, 0xfff8, 'g', 2, "RL %r" },
+  { 0xA3f8, 0xfff8, 'g', 2, "RR %r" },
+  { 0xA4f8, 0xfff8, 'g', 2, "SLA %r" },
+  { 0xA5f8, 0xfff8, 'g', 2, "SRA %r" },
+  { 0xA6f8, 0xfff8, 'g', 2, "SLL %r" },
+  { 0xA7f8, 0xfff8, 'g', 2, "SRL %r" },
+
   { 0, 0, ' ', 0, NULL }
 };
 

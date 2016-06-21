@@ -472,6 +472,19 @@ cl_tlcs::add16(t_mem op1, t_mem op2)
 
 // ADC HL,mem
 uint16_t
+cl_tlcs::op_adc_hl(t_mem val)
+{
+  uint8_t dl= val & 0xff;
+  uint8_t dh= val / 256;
+  uint16_t d= dh*256 + dl;
+  int oldc= (reg.f & FLAG_C)?1:0;
+  
+  return op_add_hl((t_mem)d + oldc);
+}
+
+
+// ADC HL,mem
+uint16_t
 cl_tlcs::op_adc_hl(t_addr addr)
 {
   uint8_t dl= nas->read(addr);
@@ -480,6 +493,22 @@ cl_tlcs::op_adc_hl(t_addr addr)
   int oldc= (reg.f & FLAG_C)?1:0;
   
   return op_add_hl((t_mem)d + oldc);
+}
+
+
+// SUB HL,16-bit
+uint16_t
+cl_tlcs::op_sub_hl(t_mem val)
+{
+  uint8_t dl= val & 0xff;
+  uint8_t dh= val / 256;
+  uint16_t d= dh*256 + dl;
+  uint16_t r;
+
+  r= op_add_hl((t_mem)(~d + 1));
+  reg.f|= FLAG_N;
+
+  return r;
 }
 
 
@@ -507,6 +536,23 @@ cl_tlcs::sub16(t_mem op1, t_mem op2)
   uint16_t r;
 
   r= add16(op1, (t_mem)(~d + 1));
+  reg.f|= FLAG_N;
+
+  return r;
+}
+
+
+// SBC HL,16-bit
+uint16_t
+cl_tlcs::op_sbc_hl(t_mem val)
+{
+  uint8_t dl= val & 0xff;
+  uint8_t dh= val / 256;
+  uint16_t d= dh*256 + dl;
+  uint16_t r;
+  int oldc= (reg.f & FLAG_C)?1:0;
+  
+  r= op_add_hl((t_mem)(~d + 1 + oldc));
   reg.f|= FLAG_N;
 
   return r;

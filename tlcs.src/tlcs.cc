@@ -834,20 +834,20 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
 
   switch (c2)
     {
-    case 0x12: break; // MUL HL,g
-    case 0x13: break; // DIV HL,g
-    case 0x60: break; // ADD A,g
-    case 0x61: break; // ADC A,g
-    case 0x62: break; // SUB A,g
-    case 0x63: break; // SBC A,g
-    case 0x64: break; // AND A,g
-    case 0x65: break; // XOR A,g
-    case 0x66: break; // OR A,g
-    case 0x67: break; // CP A,g
-    case 0x70: break; // ADD HL,gg
-    case 0x71: break; // ADC HL,gg
-    case 0x72: break; // SUB HL,gg
-    case 0x73: break; // SBC HL,gg
+    case 0x12: reg.hl= reg.l * (*ga); break; // MUL HL,g
+    case 0x13: inst_div_hl(*ga); break; // DIV HL,g
+    case 0x60: reg.a= op_add_a(*ga); break; // ADD A,g
+    case 0x61: inst_adc_a(*ga); break; // ADC A,g
+    case 0x62: inst_sub_a(*ga); break; // SUB A,g
+    case 0x63: inst_sbc_a(*ga); break; // SBC A,g
+    case 0x64: inst_and_a(*ga); break; // AND A,g
+    case 0x65: inst_xor_a(*ga); break; // XOR A,g
+    case 0x66: inst_or_a(*ga); break; // OR A,g
+    case 0x67: op_cp_a(*ga); break; // CP A,g
+    case 0x70: reg.hl= op_add_hl((t_mem)*gga); break; // ADD HL,gg
+    case 0x71: reg.hl= op_adc_hl((t_mem)*gga); break; // ADC HL,gg
+    case 0x72: reg.hl= op_sub_hl((t_mem)*gga); break; // SUB HL,gg
+    case 0x73: reg.hl= op_sbc_hl((t_mem)*gga); break; // SBC HL,gg
     case 0x74: break; // AND HL,gg
     case 0x75: break; // XOR HL,gg
     case 0x76: break; // OR HL,gg
