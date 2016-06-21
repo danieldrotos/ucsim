@@ -297,22 +297,22 @@ class cl_tlcs: public cl_uc
   virtual int inst_div_hl(uint8_t d);
   
   // (7) rotate and shift
-  virtual uint8_t rlc(uint8_t data, bool set_sz);	// RLC 8-bit
-  virtual uint8_t rlc(cl_memory_cell *cell);		// RLC mem
-  virtual uint8_t rrc(uint8_t data, bool set_sz);	// RRC 8-bit
-  virtual uint8_t rrc(cl_memory_cell *cell);		// RRC mem
-  virtual uint8_t rl(uint8_t data, bool set_sz);	// RL 8-bit
-  virtual uint8_t rl(cl_memory_cell *cell);		// RL mem
-  virtual uint8_t rr(uint8_t data, bool set_sz);	// RR 8-bit
-  virtual uint8_t rr(cl_memory_cell *cell);		// RR mem
-  virtual uint8_t sla(uint8_t data, bool set_sz);	// SLA 8-bit
-  virtual uint8_t sla(cl_memory_cell *cell);		// SLA mem
-  virtual uint8_t sra(uint8_t data, bool set_sz);	// SRA 8-bit
-  virtual uint8_t sra(cl_memory_cell *cell);		// SRA mem
-  virtual uint8_t srl(uint8_t data, bool set_sz);	// SRL 8-bit
-  virtual uint8_t srl(cl_memory_cell *cell);		// SRL mem
-  virtual int rld(class cl_memory_cell *cell);		// RLD
-  virtual int rrd(class cl_memory_cell *cell);		// RLD
+  virtual uint8_t op_rlc(uint8_t data, bool set_sz);	// RLC 8-bit
+  virtual uint8_t inst_rlc(cl_memory_cell *cell);	// RLC mem
+  virtual uint8_t op_rrc(uint8_t data, bool set_sz);	// RRC 8-bit
+  virtual uint8_t inst_rrc(cl_memory_cell *cell);	// RRC mem
+  virtual uint8_t op_rl(uint8_t data, bool set_sz);	// RL 8-bit
+  virtual uint8_t inst_rl(cl_memory_cell *cell);	// RL mem
+  virtual uint8_t op_rr(uint8_t data, bool set_sz);	// RR 8-bit
+  virtual uint8_t inst_rr(cl_memory_cell *cell);	// RR mem
+  virtual uint8_t op_sla(uint8_t data, bool set_sz);	// SLA 8-bit
+  virtual uint8_t inst_sla(cl_memory_cell *cell);	// SLA mem
+  virtual uint8_t op_sra(uint8_t data, bool set_sz);	// SRA 8-bit
+  virtual uint8_t inst_sra(cl_memory_cell *cell);	// SRA mem
+  virtual uint8_t op_srl(uint8_t data, bool set_sz);	// SRL 8-bit
+  virtual uint8_t inst_srl(cl_memory_cell *cell);	// SRL mem
+  virtual int inst_rld(class cl_memory_cell *cell);	// RLD
+  virtual int inst_rrd(class cl_memory_cell *cell);	// RLD
 
   // (8) bit manipulation
   virtual uint8_t op_tset(uint8_t val, uint8_t bitnr);	// TSET 8-bit

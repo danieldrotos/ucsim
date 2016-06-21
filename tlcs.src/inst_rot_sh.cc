@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // RLC 8-bit
 uint8_t
-cl_tlcs::rlc(uint8_t data, bool set_sz)
+cl_tlcs::op_rlc(uint8_t data, bool set_sz)
 {
   uint8_t c= data & 0x80;
   reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
@@ -58,9 +58,9 @@ cl_tlcs::rlc(uint8_t data, bool set_sz)
 
 // RLC mem
 uint8_t
-cl_tlcs::rlc(cl_memory_cell *cell)
+cl_tlcs::inst_rlc(cl_memory_cell *cell)
 {
-  uint8_t d= rlc(cell->read(), true);
+  uint8_t d= op_rlc(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -68,7 +68,7 @@ cl_tlcs::rlc(cl_memory_cell *cell)
 
 // RRC 8-bit
 uint8_t
-cl_tlcs::rrc(uint8_t data, bool set_sz)
+cl_tlcs::op_rrc(uint8_t data, bool set_sz)
 {
   uint8_t c= data & 0x01;
   reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
@@ -94,9 +94,9 @@ cl_tlcs::rrc(uint8_t data, bool set_sz)
 
 // RRC mem
 uint8_t
-cl_tlcs::rrc(cl_memory_cell *cell)
+cl_tlcs::inst_rrc(cl_memory_cell *cell)
 {
-  uint8_t d= rrc(cell->read(), true);
+  uint8_t d= op_rrc(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -104,7 +104,7 @@ cl_tlcs::rrc(cl_memory_cell *cell)
 
 // RL 8-bit
 uint8_t
-cl_tlcs::rl(uint8_t data, bool set_sz)
+cl_tlcs::op_rl(uint8_t data, bool set_sz)
 {
   uint8_t c= data & 0x80;
   data<<= 1;
@@ -129,9 +129,9 @@ cl_tlcs::rl(uint8_t data, bool set_sz)
 
 // RL mem
 uint8_t
-cl_tlcs::rl(cl_memory_cell *cell)
+cl_tlcs::inst_rl(cl_memory_cell *cell)
 {
-  uint8_t d= rl(cell->read(), true);
+  uint8_t d= op_rl(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -139,7 +139,7 @@ cl_tlcs::rl(cl_memory_cell *cell)
 
 // RR 8-bit
 uint8_t
-cl_tlcs::rr(uint8_t data, bool set_sz)
+cl_tlcs::op_rr(uint8_t data, bool set_sz)
 {
   uint8_t c= data & 0x01;
   data>>= 1;
@@ -164,9 +164,9 @@ cl_tlcs::rr(uint8_t data, bool set_sz)
 
 // RR mem
 uint8_t
-cl_tlcs::rr(cl_memory_cell *cell)
+cl_tlcs::inst_rr(cl_memory_cell *cell)
 {
-  uint8_t d= rr(cell->read(), true);
+  uint8_t d= op_rr(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -174,7 +174,7 @@ cl_tlcs::rr(cl_memory_cell *cell)
 
 // SLA 8-bit
 uint8_t
-cl_tlcs::sla(uint8_t data, bool set_sz)
+cl_tlcs::op_sla(uint8_t data, bool set_sz)
 {
   uint8_t c= data & 0x80;
   data<<= 1;
@@ -197,9 +197,9 @@ cl_tlcs::sla(uint8_t data, bool set_sz)
 
 // SLA mem
 uint8_t
-cl_tlcs::sla(cl_memory_cell *cell)
+cl_tlcs::inst_sla(cl_memory_cell *cell)
 {
-  uint8_t d= sla(cell->read(), true);
+  uint8_t d= op_sla(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -207,7 +207,7 @@ cl_tlcs::sla(cl_memory_cell *cell)
 
 // SRA 8-bit
 uint8_t
-cl_tlcs::sra(uint8_t data, bool set_sz)
+cl_tlcs::op_sra(uint8_t data, bool set_sz)
 {
   uint8_t c7= data & 0x80;
   uint8_t c0= data & 0x01;
@@ -232,9 +232,9 @@ cl_tlcs::sra(uint8_t data, bool set_sz)
 
 // SRA mem
 uint8_t
-cl_tlcs::sra(cl_memory_cell *cell)
+cl_tlcs::inst_sra(cl_memory_cell *cell)
 {
-  uint8_t d= sra(cell->read(), true);
+  uint8_t d= op_sra(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -242,7 +242,7 @@ cl_tlcs::sra(cl_memory_cell *cell)
 
 // SRL 8-bit
 uint8_t
-cl_tlcs::srl(uint8_t data, bool set_sz)
+cl_tlcs::op_srl(uint8_t data, bool set_sz)
 {
   uint8_t c0= data & 0x01;
   data>>= 1;
@@ -265,9 +265,9 @@ cl_tlcs::srl(uint8_t data, bool set_sz)
 
 // SRL mem
 uint8_t
-cl_tlcs::srl(cl_memory_cell *cell)
+cl_tlcs::inst_srl(cl_memory_cell *cell)
 {
-  uint8_t d= srl(cell->read(), true);
+  uint8_t d= op_srl(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -275,7 +275,7 @@ cl_tlcs::srl(cl_memory_cell *cell)
 
 // RLD mem
 int
-cl_tlcs::rld(class cl_memory_cell *cell)
+cl_tlcs::inst_rld(class cl_memory_cell *cell)
 {
   reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
 
@@ -290,7 +290,7 @@ cl_tlcs::rld(class cl_memory_cell *cell)
 
 // RRD mem
 int
-cl_tlcs::rrd(class cl_memory_cell *cell)
+cl_tlcs::inst_rrd(class cl_memory_cell *cell)
 {
   reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
 

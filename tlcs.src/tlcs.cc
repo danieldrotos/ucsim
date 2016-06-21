@@ -499,14 +499,14 @@ cl_tlcs::exec_inst(void)
     case 0x02: reg.f&= ~FLAG_I; break; // DI
     case 0x03: reg.f|= FLAG_I; break; // EI
     case 0xff: res= inst_swi(); break;
-    case 0xa0: reg.a= rlc(reg.a, false); break; // RLCA
-    case 0xa1: reg.a= rrc(reg.a, false); break; // RRCA
-    case 0xa2: reg.a= rl(reg.a, false); break; // RLA
-    case 0xa3: reg.a= rl(reg.a, false); break; // RRA
-    case 0xa4: reg.a= sla(reg.a, false); break; // SLAA
-    case 0xa5: reg.a= sra(reg.a, false); break; // SRAA
-    case 0xa6: reg.a= sla(reg.a, false); break; // SLLA (=SLAA)
-    case 0xa7: reg.a= srl(reg.a, false); break; // SRLA
+    case 0xa0: reg.a= op_rlc(reg.a, false); break; // RLCA
+    case 0xa1: reg.a= op_rrc(reg.a, false); break; // RRCA
+    case 0xa2: reg.a= op_rl(reg.a, false); break; // RLA
+    case 0xa3: reg.a= op_rl(reg.a, false); break; // RRA
+    case 0xa4: reg.a= op_sla(reg.a, false); break; // SLAA
+    case 0xa5: reg.a= op_sra(reg.a, false); break; // SRAA
+    case 0xa6: reg.a= op_sla(reg.a, false); break; // SLLA (=SLAA)
+    case 0xa7: reg.a= op_srl(reg.a, false); break; // SRLA
     case 0x1e: res= inst_ret(); break;
     case 0x1f: res= inst_reti(); break;
     default:
@@ -591,38 +591,38 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
   switch (c2)
     {
       // handle c1==f3 cases where second byte is fix
-    case 0x10: res= rld(cell_hl_a()); break;
-    case 0x11: res= rrd(cell_hl_a()); break;
-    case 0x12: res= inst_mul_hl(cell_hl_a()); break;
-    case 0x13: res= inst_div_hl(cell_hl_a()); break;
-    case 0x60: res= inst_add_a(cell_hl_a()); break;
-    case 0x61: res= inst_adc_a(cell_hl_a()); break;
-    case 0x62: res= inst_sub_a(cell_hl_a()); break;
-    case 0x63: res= inst_sbc_a(cell_hl_a()); break;
-    case 0x64: res= inst_and_a(cell_hl_a()); break;
-    case 0x65: res= inst_xor_a(cell_hl_a()); break;
-    case 0x66: res= inst_or_a(cell_hl_a()); break;
-    case 0x67: res= op_cp_a(cell_hl_a()); break;
-    case 0x70: reg.hl= op_add_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x71: reg.hl= op_adc_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x72: reg.hl= op_sub_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x73: reg.hl= op_sbc_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x74: reg.hl= op_and_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x75: reg.hl= op_xor_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x76: reg.hl= op_or_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x77: reg.hl= op_sub_hl((t_addr)(reg.hl+reg.a)); break;
-    case 0x87: inst_inc(cell_hl_a()); break;
-    case 0x8f: inst_dec(cell_hl_a()); break;
-    case 0x97: inst_inc16((t_addr)(reg.hl+reg.a)); break;
-    case 0x9f: inst_dec16((t_addr)(reg.hl+reg.a)); break;
-    case 0xa0: rlc(cell_hl_a()); break;
-    case 0xa1: rrc(cell_hl_a()); break;
-    case 0xa2: rl(cell_hl_a()); break;
-    case 0xa3: rr(cell_hl_a()); break;
-    case 0xa4: sla(cell_hl_a()); break;
-    case 0xa5: sra(cell_hl_a()); break;
-    case 0xa6: sla(cell_hl_a()); break;
-    case 0xa7: srl(cell_hl_a()); break;
+    case 0x10: res= inst_rld(cell_hl_a()); break; // RLD (HL+A)
+    case 0x11: res= inst_rrd(cell_hl_a()); break; // SLL (HL+A)
+    case 0x12: res= inst_mul_hl(cell_hl_a()); break; // MUL HL,(HL+A)
+    case 0x13: res= inst_div_hl(cell_hl_a()); break; // DIV HL,(HL+A)
+    case 0x60: res= inst_add_a(cell_hl_a()); break; // ADD A,(HL+A)
+    case 0x61: res= inst_adc_a(cell_hl_a()); break; // ADC A,(HL+A)
+    case 0x62: res= inst_sub_a(cell_hl_a()); break; // SUB A,(HL+A)
+    case 0x63: res= inst_sbc_a(cell_hl_a()); break; // SBC A,(HL+A)
+    case 0x64: res= inst_and_a(cell_hl_a()); break; // AND A,(HL+A)
+    case 0x65: res= inst_xor_a(cell_hl_a()); break; // XOR A,(HL+A)
+    case 0x66: res= inst_or_a(cell_hl_a()); break; // OR A,(HL+A)
+    case 0x67: res= op_cp_a(cell_hl_a()); break; // CP A,(HL+A)
+    case 0x70: reg.hl= op_add_hl((t_addr)(reg.hl+reg.a)); break; // ADD HL,(HL+A)
+    case 0x71: reg.hl= op_adc_hl((t_addr)(reg.hl+reg.a)); break; // ADC HL,(HL+A)
+    case 0x72: reg.hl= op_sub_hl((t_addr)(reg.hl+reg.a)); break; // SUB HL,(HL+A)
+    case 0x73: reg.hl= op_sbc_hl((t_addr)(reg.hl+reg.a)); break; // SBC HL,(HL+A)
+    case 0x74: reg.hl= op_and_hl((t_addr)(reg.hl+reg.a)); break; // AND HL,(HL+A)
+    case 0x75: reg.hl= op_xor_hl((t_addr)(reg.hl+reg.a)); break; // XOR HL,(HL+A)
+    case 0x76: reg.hl= op_or_hl((t_addr)(reg.hl+reg.a)); break; // OR HL,(HL+A)
+    case 0x77: reg.hl= op_sub_hl((t_addr)(reg.hl+reg.a)); break; // CP HL,(HL+A)
+    case 0x87: inst_inc(cell_hl_a()); break; // INC (HL+A)
+    case 0x8f: inst_dec(cell_hl_a()); break; // DEC (HL+A)
+    case 0x97: inst_inc16((t_addr)(reg.hl+reg.a)); break; // INCW (HL+A)
+    case 0x9f: inst_dec16((t_addr)(reg.hl+reg.a)); break; // DECW (HL+A)
+    case 0xa0: inst_rlc(cell_hl_a()); break; // RLC (HL+A)
+    case 0xa1: inst_rrc(cell_hl_a()); break; // RRC (HL+A)
+    case 0xa2: inst_rl(cell_hl_a()); break; // RL (HL+A)
+    case 0xa3: inst_rr(cell_hl_a()); break; // RR (HL+A)
+    case 0xa4: inst_sla(cell_hl_a()); break; // SLA (HL+A)
+    case 0xa5: inst_sra(cell_hl_a()); break; // SRA (HL+A)
+    case 0xa6: inst_sla(cell_hl_a()); break; // SLL (HL+A)
+    case 0xa7: inst_srl(cell_hl_a()); break; // SRL (HL+A)
     default:
       // handle c1==f3 cases where second byte is not fix
       if ((c2 & 0xfc) == 0x14) // ADD ix,(HL+A)
@@ -735,8 +735,8 @@ cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
   
   switch (c2)
     {
-    case 0x10: rld(gg); break; // RLD (gg)
-    case 0x11: rrd(gg); break; // RRD (gg)
+    case 0x10: inst_rld(gg); break; // RLD (gg)
+    case 0x11: inst_rrd(gg); break; // RRD (gg)
     case 0x12: inst_mul_hl(gg); break; // MUL HL,(gg)
     case 0x13: inst_div_hl(gg); break; // DIV HL,(gg)
     case 0x60: inst_add_a(gg); break; // ADD A,(gg)
@@ -759,14 +759,14 @@ cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
     case 0x8f: inst_dec(gg); break; // DEC (gg)
     case 0x97: inst_inc16(*aof_reg16_gg(c1)); break; // INCW (gg)
     case 0x9f: inst_dec16(*aof_reg16_gg(c1)); break; // DECW (gg)
-    case 0xa0: rlc(gg); break; // RLC (gg)
-    case 0xa1: rrc(gg); break; // RRC (gg)
-    case 0xa2: rl(gg); break; // RL (gg)
-    case 0xa3: rr(gg); break; // RR (gg)
-    case 0xa4: sla(gg); break; // SLA (gg)
-    case 0xa5: sra(gg); break; // SRA (gg)
-    case 0xa6: sla(gg); break; // SLL (gg)
-    case 0xa7: srl(gg); break; // SRL (gg)
+    case 0xa0: inst_rlc(gg); break; // RLC (gg)
+    case 0xa1: inst_rrc(gg); break; // RRC (gg)
+    case 0xa2: inst_rl(gg); break; // RL (gg)
+    case 0xa3: inst_rr(gg); break; // RR (gg)
+    case 0xa4: inst_sla(gg); break; // SLA (gg)
+    case 0xa5: inst_sra(gg); break; // SRA (gg)
+    case 0xa6: inst_sla(gg); break; // SLL (gg)
+    case 0xa7: inst_srl(gg); break; // SRL (gg)
     default:
       if ((c2 & 0xfc) == 0x14) // ADD ix,(gg)
 	{
@@ -822,7 +822,7 @@ cl_tlcs::exec_inst2_e8gg(uint8_t c1, uint8_t c2)
   return res;
 }
 
-/*                                                                    F8+g XX, F8+gg XX
+/*                                                                  F8+g XX, F8+gg XX
  */
 
 int
@@ -852,7 +852,7 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
     case 0x75: reg.hl= op_xor_hl((t_mem)*gga); break; // XOR HL,gg
     case 0x76: reg.hl= op_or_hl((t_mem)*gga); break; // OR HL,gg
     case 0x77: op_sub_hl((t_mem)*gga); break; // CP HL,gg
-    case 0xA0: break; // RLC g
+    case 0xA0: *ga= op_rlc(*ga, true); break; // RLC g
     case 0xA1: break; // RRC g
     case 0xA2: break; // RL g
     case 0xA3: break; // RR g
