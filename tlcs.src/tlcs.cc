@@ -564,37 +564,37 @@ cl_tlcs::exec_inst2(uint8_t c1)
     case 0x13: inst_div_hl(c2); break; // DIV HL,n
     case 0x18: inst_djnz_b(c2); break; // DJNZ $+2+d
     case 0x19: inst_djnz_bc(c2); break; // DJNZ BC,$+2+d
-    case 0x27: break; //@ LD A,(0ffn)
-    case 0x2F: break; //@ LD (0ffn),A
-    case 0x47: break; //@ LD HL,(0ffn)
-    case 0x60: break; //@ ADD A,(0ffn)
-    case 0x61: break; //@ ADC A,(0ffn)
-    case 0x62: break; //@ SUB A,(0ffn)
-    case 0x63: break; //@ SBC A,(0ffn)
-    case 0x64: break; //@ AND A,(0ffn)
-    case 0x65: break; //@ XOR A,(0ffn)
-    case 0x66: break; //@ OR A,(0ffn)
-    case 0x67: break; //@ CP A,(0ffn)
-    case 0x68: break; //@ ADD A,n
-    case 0x69: break; //@ ADC A,n
-    case 0x6A: break; //@ SUB A,n
-    case 0x6B: break; //@ SBC A,n
-    case 0x6C: break; //@ AND A,n
-    case 0x6D: break; //@ XOR A,n
-    case 0x6E: break; //@ OR A,n
-    case 0x6F: break; //@ CP A,n
-    case 0x70: break; //@ ADD HL,(0ffn)
-    case 0x71: break; //@ ADC HL,(0ffn)
-    case 0x72: break; //@ SUB HL,(0ffn)
-    case 0x73: break; //@ SBC HL,(0ffn)
-    case 0x74: break; //@ AND HL,(0ffn)
-    case 0x75: break; //@ XOR HL,(0ffn)
-    case 0x76: break; //@ OR HL,(0ffn)
-    case 0x77: break; //@ CP HL,(0ffn)
-    case 0x87: break; //@ INC (0ffn)
-    case 0x8F: break; //@ DEC (0ffn)
-    case 0x97: break; //@ INCW (0ffn)
-    case 0x9F: break; //@ DECW (0ffn)
+    case 0x27: reg.a= n->read(); break; // LD A,(0ffn)
+    case 0x2F: n->write(reg.a); break; // LD (0ffn),A
+    case 0x47: reg.hl= mem16(0xff00 + c2); break; // LD HL,(0ffn)
+    case 0x60: inst_add_a(n); break; // ADD A,(0ffn)
+    case 0x61: inst_adc_a(n); break; // ADC A,(0ffn)
+    case 0x62: inst_sub_a(n); break; // SUB A,(0ffn)
+    case 0x63: inst_sbc_a(n); break; // SBC A,(0ffn)
+    case 0x64: inst_and_a(n); break; // AND A,(0ffn)
+    case 0x65: inst_xor_a(n); break; // XOR A,(0ffn)
+    case 0x66: inst_or_a(n); break; // OR A,(0ffn)
+    case 0x67: op_cp_a(n); break; // CP A,(0ffn)
+    case 0x68: reg.a= op_add_a(c2); break; // ADD A,n
+    case 0x69: inst_adc_a(c2); break; // ADC A,n
+    case 0x6A: inst_sub_a(c2); break; // SUB A,n
+    case 0x6B: inst_sbc_a(c2); break; // SBC A,n
+    case 0x6C: inst_and_a(c2); break; // AND A,n
+    case 0x6D: inst_xor_a(c2); break; // XOR A,n
+    case 0x6E: inst_or_a(c2); break; // OR A,n
+    case 0x6F: op_cp_a(c2); break; // CP A,n
+    case 0x70: reg.hl= op_add_hl(t_addr(0xff00+c2)); break; // ADD HL,(0ffn)
+    case 0x71: reg.hl= op_adc_hl(t_addr(0xff00+c2)); break; // ADC HL,(0ffn)
+    case 0x72: reg.hl= op_sub_hl(t_addr(0xff00+c2)); break; // SUB HL,(0ffn)
+    case 0x73: reg.hl= op_sbc_hl(t_addr(0xff00+c2)); break; // SBC HL,(0ffn)
+    case 0x74: reg.hl= op_and_hl(t_addr(0xff00+c2)); break; // AND HL,(0ffn)
+    case 0x75: reg.hl= op_xor_hl(t_addr(0xff00+c2)); break; // XOR HL,(0ffn)
+    case 0x76: reg.hl= op_or_hl(t_addr(0xff00+c2)); break; // OR HL,(0ffn)
+    case 0x77: op_sub_hl(t_addr(0xff00+c2)); break; // CP HL,(0ffn)
+    case 0x87: inst_inc(n); break; // INC (0ffn)
+    case 0x8F: inst_dec(n); break; // DEC (0ffn)
+    case 0x97: inst_inc16(t_addr(0xff00+c2)); break; // INCW (0ffn)
+    case 0x9F: inst_dec16(t_addr(0xff00+c2)); break; // DECW (0ffn)
     case 0xf3: // c1
       res= exec_inst2_f3(c2);
       break;
