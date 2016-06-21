@@ -356,7 +356,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
   uint64_t c;
   int i;
   chars s("");
-  char *buf, *t;
+  char *buf, *t, l[20];
   
   c= 0;
   for (i= 7; i>=0; i--)
@@ -385,14 +385,19 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    {
 	    case 'r': /*  r in 1st byte */ s+= regname_r(c); break;
 	    case 'p': /*  r in 2nd byte */ s+= regname_r(c>>8); break;
+	    case 't': /*  r in 3rd byte */ s+= regname_r(c>>16); break;
 	    case 'R': /* rr in 1st byte */ s+= regname_R(c); break;
 	    case 's': /* rr in 2nd byte */ s+= regname_R(c>>8); break;
+	    case 'u': /* rr in 3rd byte */ s+= regname_R(c>>16); break;
 	    case 'Q': /* qq in 1st byte */ s+= regname_Q(c); break;
 	    case 'I': /* ix in 1st byte */ s+= regname_i(c); break;
 	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
+	    case 'j': /* ix in 3rd byte */ s+= regname_i(c>>16); break;
 	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
+	    case 'B': /*  b in 3rd byte */ s+= bitname(c>>16); break;
 	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
+	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
 	    default: s+= '?'; break;
 	    }
 	}
@@ -509,6 +514,7 @@ cl_tlcs::exec_inst(void)
     case 0xa7: reg.a= op_srl(reg.a, false); break; // SRLA
     case 0x1e: res= inst_ret(); break;
     case 0x1f: res= inst_reti(); break;
+    case 0xe7: res= exec_inst3_e7(c1, fetch(), fetch()); break;
     default:
       {
 	switch (c1 & 0xf8)
@@ -550,6 +556,43 @@ cl_tlcs::exec_inst2(uint8_t c1)
   // first, handle cases where first byte is fix
   switch (c1)
     {
+    case 0x07: break; //@ INCX (0ffn)
+    case 0x0F: break; //@ DECX (0ffn)
+    case 0x12: break; //@ MUL HL,n
+    case 0x13: break; //@ DIV HL,n
+    case 0x18: break; //@ DJNZ $+2+d
+    case 0x19: break; //@ DJNZ BC,$+2+d
+    case 0x27: break; //@ LD A,(0ffn)
+    case 0x2F: break; //@ LD (0ffn),A
+    case 0x47: break; //@ LD HL,(0ffn)
+    case 0x60: break; //@ ADD A,(0ffn)
+    case 0x61: break; //@ ADC A,(0ffn)
+    case 0x62: break; //@ SUB A,(0ffn)
+    case 0x63: break; //@ SBC A,(0ffn)
+    case 0x64: break; //@ AND A,(0ffn)
+    case 0x65: break; //@ XOR A,(0ffn)
+    case 0x66: break; //@ OR A,(0ffn)
+    case 0x67: break; //@ CP A,(0ffn)
+    case 0x68: break; //@ ADD A,n
+    case 0x69: break; //@ ADC A,n
+    case 0x6A: break; //@ SUB A,n
+    case 0x6B: break; //@ SBC A,n
+    case 0x6C: break; //@ AND A,n
+    case 0x6D: break; //@ XOR A,n
+    case 0x6E: break; //@ OR A,n
+    case 0x6F: break; //@ CP A,n
+    case 0x70: break; //@ ADD HL,(0ffn)
+    case 0x71: break; //@ ADC HL,(0ffn)
+    case 0x72: break; //@ SUB HL,(0ffn)
+    case 0x73: break; //@ SBC HL,(0ffn)
+    case 0x74: break; //@ AND HL,(0ffn)
+    case 0x75: break; //@ XOR HL,(0ffn)
+    case 0x76: break; //@ OR HL,(0ffn)
+    case 0x77: break; //@ CP HL,(0ffn)
+    case 0x87: break; //@ INC (0ffn)
+    case 0x8F: break; //@ DEC (0ffn)
+    case 0x97: break; //@ INCW (0ffn)
+    case 0x9F: break; //@ DECW (0ffn)
     case 0xf3: // c1
       res= exec_inst2_f3(c2);
       break;
@@ -563,6 +606,7 @@ cl_tlcs::exec_inst2(uint8_t c1)
       // now handle cases where first byte is not fix
       switch (c1 & 0x07)
 	{
+	case 0x30: break; //@ LD r,n
 	case 0xe0: // e0+gg
 	  res= exec_inst2_e0gg(c1, c2);
 	  break;
@@ -879,6 +923,49 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
   return res;
 }
 
+/*
+ */
+
+int
+cl_tlcs::exec_inst3_e7(uint8_t c1, uint8_t c2, uint8_t c3)
+{
+  int res= resGO;
+  cl_memory_cell *n= cell_n(c2);
+  
+  switch (c3)
+    {
+    case 0x10: inst_rld(n); break; // RLD (0ffn)
+    case 0x11: inst_rrd(n); break; // RRD (0ffn)
+    case 0x12: inst_mul_hl(n); break; // MUL HL,(0ffn)
+    case 0x13: inst_div_hl(n); break; // DIV HL,(0ffn)
+    case 0xa0: inst_rlc(n); break; // RLC (0ffn)
+    case 0xa1: inst_rrc(n); break; // RRC (0ffn)
+    case 0xa2: inst_rl(n); break; // RL (0ffn)
+    case 0xa3: inst_rr(n); break; // RR (0ffn)
+    case 0xa4: inst_sla(n); break; // SLA (0ffn)
+    case 0xa5: inst_sra(n); break; // SRA (0ffn)
+    case 0xa6: inst_sla(n); break; // SLL (0ffn)
+    case 0xa7: inst_srl(n); break; // SRL (0ffn)
+    default:
+      if ((c3 & 0xfc) == 0x14) // ADD ix,(0ffn)
+	{
+	  uint16_t *aix= aof_reg16_ix(c3);
+	  *aix= add16(*aix, mem16(0xff00 + c2));
+	}
+      else
+	switch (c3 & 0xf8)
+	  {
+	  case 0x18: inst_tset(n, c3); break; // TSET b,(0ffn)
+	  case 0x28: *aof_reg8(c3)= n->read(); break; // LD r,(0ffn)
+	  case 0x48: *aof_reg16_rr(c3)= mem16(0xff00 + c2); break; // LD rr,(0ffn);
+	  }
+      break;
+    }
+  
+  return res;
+}
+
+
 t_addr
 cl_tlcs::do_push(t_mem data)
 {
@@ -1067,6 +1154,12 @@ class cl_memory_cell *
 cl_tlcs::cell_gg(uint8_t gg)
 {
   return nas->get_cell(*aof_reg16_gg(gg));
+}
+
+class cl_memory_cell *
+cl_tlcs::cell_n(uint8_t n)
+{
+  return nas->get_cell(0xff00 + n);
 }
 
 uint16_t

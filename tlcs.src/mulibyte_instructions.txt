@@ -1,3 +1,69 @@
+07	n					INCX (0ffn)
+0F	n					DECX (0ffn)
+
+12	n					MUL HL,n
+13	n					DIV HL,n
+14+ix	n	m				ADD ix,mn
+17	d	c				LDAR HL,$+2+cd
+18	d					DJNZ $+2+d
+19	d					DJNZ BC,$+2+d
+1A	n	m				JP mn
+1B	d	c				JRL $+2+cd
+1C	n	m				CALL mn
+1D	d	c				CALL $+2+cd
+
+27	n					LD A,(0ffn)
+2F	n					LD (0ffn),A
+
+30+r	n					LD r,n
+37	w	n				LD (0ffw),n
+38+rr	n	m				LD rr,mn
+3F	w	n	m			LDW (0ffn),mn
+
+47	n					LD HL,(0ffn)
+
+60	n					ADD A,(0ffn)
+61	n					ADC A,(0ffn)
+62	n					SUB A,(0ffn)
+63	n					SBC A,(0ffn)
+64	n					AND A,(0ffn)
+65	n					XOR A,(0ffn)
+66	n					OR A,(0ffn)
+67	n					CP A,(0ffn)
+68	n					ADD A,n
+69	n					ADC A,n
+6A	n					SUB A,n
+6B	n					SBC A,n
+6C	n					AND A,n
+6D	n					XOR A,n
+6E	n					OR A,n
+6F	n					CP A,n
+
+70	n					ADD HL,(0ffn)
+71	n					ADC HL,(0ffn)
+72	n					SUB HL,(0ffn)
+73	n					SBC HL,(0ffn)
+74	n					AND HL,(0ffn)
+75	n					XOR HL,(0ffn)
+76	n					OR HL,(0ffn)
+77	n					CP HL,(0ffn)
+78	n	m				ADD HL,mn
+79	n	m				ADC HL,mn
+7A	n	m				SUB HL,mn
+7B	n	m				SBC HL,mn
+7C	n	m				AND HL,mn
+7D	n	m				XOR HL,mn
+7E	n	m				OR HL,mn
+7F	n	m				CP HL,mn
+
+87	n					INC (0ffn)
+8F	n					DEC (0ffn)
+
+90+rr						INC rr
+97	n					INCW (0ffn)
+98+rr						DEC rr
+9F	n					DECW (0ffn)
+
 E0+gg	10					RLD (gg)
 E0+gg	11					RRD (gg)
 E0+gg	12					MUL HL,(gg)

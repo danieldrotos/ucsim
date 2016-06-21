@@ -207,18 +207,40 @@ struct dis_entry disass_tlcs[]= {
   { 0xB0f8, 0xf8f8, 'g', 2, "RES %b,%r" },
   { 0xB8f8, 0xf8f8, 'g', 2, "SET %b,%r" },
 
+  { 0x1000e7, 0xff00ff, 'n', 3, "RLD (0xff%n)" },
+  { 0x1100e7, 0xff00ff, 'n', 3, "RRD (0xff%n)" },
+  { 0x1200e7, 0xff00ff, 'n', 3, "MUL HL,(0xff%n)" },
+  { 0x1300e7, 0xff00ff, 'n', 3, "DIV HL,(0xff%n)" },
+  { 0x1400e7, 0xfc00ff, 'n', 3, "ADD %j,(0xff%n)" },
+  { 0x1800e7, 0xf800ff, 'n', 3, "TSET %B,(0xff%n)" },
+  { 0x2800e7, 0xf800ff, 'n', 3, "LD %t,(0xff%n)" },
+  { 0x4800e7, 0xf800ff, 'n', 3, "LD %u,(0xff%n)" },
+  { 0xA000e7, 0xff00ff, 'n', 3, "RLC (0xff%n)" },
+  { 0xA100e7, 0xff00ff, 'n', 3, "RRC (0xff%n)" },
+  { 0xA200e7, 0xff00ff, 'n', 3, "RL (0xff%n)" },
+  { 0xA300e7, 0xff00ff, 'n', 3, "RR (0xff%n)" },
+  { 0xA400e7, 0xff00ff, 'n', 3, "SLA (0xff%n)" },
+  { 0xA500e7, 0xff00ff, 'n', 3, "SRA (0xff%n)" },
+  { 0xA600e7, 0xff00ff, 'n', 3, "SLL (0xff%n)" },
+  { 0xA700e7, 0xff00ff, 'n', 3, "SRL (0xff%n)" },
+
   { 0, 0, ' ', 0, NULL }
 };
 
 //	    case 'r': /*  r in 1st byte */ s+= regname_r(c); break;
 //	    case 'p': /*  r in 2nd byte */ s+= regname_r(c>>8); break;
+//	    case 't': /*  r in 3rd byte */ s+= regname_r(c>>16); break;
 //	    case 'R': /* rr in 1st byte */ s+= regname_R(c); break;
 //	    case 's': /* rr in 2nd byte */ s+= regname_R(c>>8); break;
+//	    case 'u': /* rr in 3rd byte */ s+= regname_R(c>>16); break;
 //	    case 'Q': /* qq in 1st byte */ s+= regname_Q(c); break;
 //	    case 'I': /* ix in 1st byte */ s+= regname_i(c); break;
 //	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
+//	    case 'j': /* ix in 3rd byte */ s+= regname_i(c>>16); break;
 //	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
+//	    case 'B': /*  b in 3rd byte */ s+= bitname(c>>16); break;
 //	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 //	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
+//	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
 
 /* End of tlcs.src/glob.cc */
