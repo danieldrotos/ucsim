@@ -245,6 +245,18 @@ struct dis_entry disass_tlcs[]= {
   { 0xB0f8, 0xf8f8, 'g', 2, "RES %b,%r" },
   { 0xB8f8, 0xf8f8, 'g', 2, "SET %b,%r" },
 
+  { 0x0037f7, 0x00ffff, 'n', 3, "LD (HL+A),%N" },
+  { 0x0068f7, 0x00ffff, 'n', 3, "ADD (HL+A),%N" },
+  { 0x0069f7, 0x00ffff, 'n', 3, "ADC (HL+A),%N" },
+  { 0x006Af7, 0x00ffff, 'n', 3, "SUB (HL+A),%N" },
+  { 0x006Bf7, 0x00ffff, 'n', 3, "SBC (HL+A),%N" },
+  { 0x006Cf7, 0x00ffff, 'n', 3, "AND (HL+A),%N" },
+  { 0x006Df7, 0x00ffff, 'n', 3, "XOR (HL+A),%N" },
+  { 0x006Ef7, 0x00ffff, 'n', 3, "OR (HL+A),%N" },
+  { 0x006Ff7, 0x00ffff, 'n', 3, "CP (HL+A),%N" },
+
+  { 0x00003Ff7, 0x0000ffff, 'm', 4, "LDW (HL+A),%m" },
+
   { 0x1000e7, 0xff00ff, 'n', 3, "RLD (0xff%n)" },
   { 0x1100e7, 0xff00ff, 'n', 3, "RRD (0xff%n)" },
   { 0x1200e7, 0xff00ff, 'n', 3, "MUL HL,(0xff%n)" },
@@ -280,6 +292,8 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 //	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 //	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
+//	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 //	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xff)); s+= l; break;
+//	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x04x",(int)((c>>16)&0xffff)); s+= l; break;
 
 /* End of tlcs.src/glob.cc */

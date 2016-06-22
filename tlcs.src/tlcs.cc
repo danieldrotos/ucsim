@@ -398,7 +398,9 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)((c>>8)&0xff));s+= l; break;
-	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x", (int)(addr+2+((c>>8)&0xff))); s+= l; break;
+	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
+	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+((c>>8)&0xff))); s+= l; break;
+	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x04x",(int)((c>>16)&0xffff)); s+= l; break;
 	    default: s+= '?'; break;
 	    }
 	}
@@ -608,7 +610,7 @@ cl_tlcs::exec_inst2(uint8_t c1)
       // now handle cases where first byte is not fix
       switch (c1 & 0x07)
 	{
-	case 0x30: break; //@ LD r,n
+	case 0x30: *aof_reg8(c1)= c2; break; // LD r,n
 	case 0xe0: // e0+gg
 	  res= exec_inst2_e0gg(c1, c2);
 	  break;
@@ -727,17 +729,32 @@ int
 cl_tlcs::exec_inst2_f7(uint8_t c2)
 {
   int res= resGO;
+  uint8_t n, m;
   
-  switch (c2 & 0xf0)
+  switch (c2)
     {
-    case 0xc0: if (cc(c2)) PC= reg.hl|reg.a; break; // JP [cc,]HL+A
-    case 0xd0: if (cc(c2)) inst_call(PC-2, reg.hl+reg.a); break; // CALL [cc,]HL+A
+    case 0x37: n= fetch(); cell_hl_a()->write(n); break; // LD (HL+A),n
+    case 0x3f: n= fetch(); m= fetch(); write16(reg.hl+reg.a, m*256+n); break; // LDW (HL+A),mn
+    case 0x68: n= fetch(); cell_hl_a()->write(op_add8(cell_hl_a()->read(), n)); break; // ADD (HL+A),n
+    case 0x69: n= fetch(); cell_hl_a()->write(op_adc8(cell_hl_a()->read(), n)); break; // ADC (HL+A),n
+    case 0x6a: n= fetch(); cell_hl_a()->write(op_sub8(cell_hl_a()->read(), n)); break; // SUB (HL+A),n
+    case 0x6b: n= fetch(); cell_hl_a()->write(op_sbc8(cell_hl_a()->read(), n)); break; // SBC (HL+A),n
+    case 0x6c: n= fetch(); cell_hl_a()->write(op_and8(cell_hl_a()->read(), n)); break; // AND (HL+A),n
+    case 0x6d: n= fetch(); cell_hl_a()->write(op_xor8(cell_hl_a()->read(), n)); break; // XOR (HL+A),n
+    case 0x6e: n= fetch(); cell_hl_a()->write(op_or8(cell_hl_a()->read(), n)); break; // OR (HL+A),n
+    case 0x6f: n= fetch(); op_cp8(cell_hl_a()->read(), n); break; // CP (HL+A),n
     default:
-      switch (c2 & 0xf8)
+      switch (c2 & 0xf0)
 	{
-	case 0x20: cell_hl_a()->write(*aof_reg8(c2)); break; // LD (HL+A),r
-	case 0x38: *aof_reg16_rr(c2)= reg.hl+reg.a; break; // LDA rr,HL+A
-	case 0x40: write16(reg.hl+reg.a, *aof_reg16_rr(c2)); break; // LD (HL+A),rr
+	case 0xc0: if (cc(c2)) PC= reg.hl|reg.a; break; // JP [cc,]HL+A
+	case 0xd0: if (cc(c2)) inst_call(PC-2, reg.hl+reg.a); break; // CALL [cc,]HL+A
+	default:
+	  switch (c2 & 0xf8)
+	    {
+	    case 0x20: cell_hl_a()->write(*aof_reg8(c2)); break; // LD (HL+A),r
+	    case 0x38: *aof_reg16_rr(c2)= reg.hl+reg.a; break; // LDA rr,HL+A
+	    case 0x40: write16(reg.hl+reg.a, *aof_reg16_rr(c2)); break; // LD (HL+A),rr
+	    }
 	}
     }
   return res;

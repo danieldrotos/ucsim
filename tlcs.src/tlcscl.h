@@ -245,20 +245,28 @@ class cl_tlcs: public cl_uc
   virtual uint8_t op_dec(uint8_t data);			// DEC 8 bit
   virtual void inst_dec(cl_memory_cell *cell);		// DEC mem
   virtual void inst_decx(cl_memory_cell *cell);		// DECX mem
+  virtual uint8_t op_add8(uint8_t d1, uint8_t d2);	// ADD 8-bit
   virtual uint8_t op_add_a(uint8_t d);			// ADD A,8-bit
   virtual int inst_add_a(class cl_memory_cell *cell);	// ADD A,mem
+  virtual uint8_t op_adc8(uint8_t d1, uint8_t d2);	// ADC 8-bit
   virtual int inst_adc_a(uint8_t d);			// ADC A,8-bit
   virtual int inst_adc_a(class cl_memory_cell *cell);	// ADC A,mem
+  virtual uint8_t op_sub8(uint8_t d1, uint8_t d2);	// SUB 8-bit
   virtual int inst_sub_a(uint8_t d);			// SUB A,8-bit
   virtual int inst_sub_a(class cl_memory_cell *cell);	// SUB A,mem
+  virtual uint8_t op_sbc8(uint8_t d1, uint8_t d2);	// SBC 8-bit
   virtual int inst_sbc_a(uint8_t d);			// SBC A,8-bit
   virtual int inst_sbc_a(class cl_memory_cell *cell);	// SBC A,mem
+  virtual uint8_t op_and8(uint8_t d1, uint8_t d2);	// AND 8-bit
   virtual int inst_and_a(uint8_t d);			// AND A,8-bit
   virtual int inst_and_a(class cl_memory_cell *cell);	// AND A,mem
+  virtual uint8_t op_xor8(uint8_t d1, uint8_t d2);	// XOR 8-bit
   virtual int inst_xor_a(uint8_t d);			// XOR A,8-bit
   virtual int inst_xor_a(class cl_memory_cell *cell);	// XOR A,mem
+  virtual uint8_t op_or8(uint8_t d1, uint8_t d2);	// OR 8-bit
   virtual int inst_or_a(uint8_t d);			// OR A,8-bit
   virtual int inst_or_a(class cl_memory_cell *cell);	// OR A,mem
+  virtual uint8_t op_cp8(uint8_t d1, uint8_t d2);		// CP 8-bit
   virtual int op_cp_a(uint8_t d);			// CP A,8-bit
   virtual int op_cp_a(class cl_memory_cell *cell);	// CP A,mem
 

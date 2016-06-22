@@ -199,27 +199,24 @@ cl_tlcs::inst_dec16(t_addr addr)
 }
 
 
-// ADD A,8-bit
+// ADD 8-bit
 uint8_t
-cl_tlcs::op_add_a(uint8_t d)
+cl_tlcs::op_add8(uint8_t d1, uint8_t d2)
 {
   reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
 
-  uint8_t m= d;
-  int r= reg.a + m;
+  int r= d1 + d2;
   int new_c= 0, new_c6;
   
-  if (((reg.a & 0xf) + (m & 0xf)) > 0xf)
+  if (((d1 & 0xf) + (d2 & 0xf)) > 0xf)
     reg.f|= FLAG_H;
-  new_c6= (((reg.a&0x7f) + (m&0x7f)) > 0x7f)?1:0;
+  new_c6= (((d1&0x7f) + (d2&0x7f)) > 0x7f)?1:0;
   
-  //reg.a= r;
-
-  if (m & 0x80)
+  if (r & 0x80)
     reg.f|= FLAG_S;
   if ((r&0xff) == 0)
     reg.f|= FLAG_Z;
-  if (m > 255)
+  if (r > 255)
     {
       reg.f|= FLAG_X|FLAG_C;
       new_c= 1;
@@ -231,28 +228,42 @@ cl_tlcs::op_add_a(uint8_t d)
 }
 
 
-// ADC A,8-bit
+// ADD A,8-bit
+uint8_t
+cl_tlcs::op_add_a(uint8_t d)
+{
+  return op_add8(reg.a, d);
+}
+
+
+// ADD A,mem
 int
-cl_tlcs::inst_adc_a(uint8_t d)
+cl_tlcs::inst_add_a(class cl_memory_cell *cell)
+{
+  reg.a= op_add_a((uint8_t)(cell->read()));
+  return resGO;
+}
+
+
+// ADC 8-bit
+uint8_t
+cl_tlcs::op_adc8(uint8_t d1, uint8_t d2)
 {
   int oldc= (reg.f&FLAG_C)?1:0;
   reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
 
-  uint8_t m= d;
-  int r= reg.a + m + oldc;
+  int r= d1 + d2 + oldc;
   int new_c= 0, new_c6;
   
-  if (((reg.a & 0xf) + (m & 0xf) + oldc) > 0xf)
+  if (((d1 & 0xf) + (d2 & 0xf) + oldc) > 0xf)
     reg.f|= FLAG_H;
-  new_c6= (((reg.a&0x7f) + (m&0x7f) + oldc) > 0x7f)?1:0;
+  new_c6= (((d1&0x7f) + (d2&0x7f) + oldc) > 0x7f)?1:0;
   
-  reg.a= r;
-
-  if (m & 0x80)
+  if (r & 0x80)
     reg.f|= FLAG_S;
-  if (reg.a == 0)
+  if ((r & 0xff) == 0)
     reg.f|= FLAG_Z;
-  if (m > 255)
+  if (r > 255)
     {
       reg.f|= FLAG_X|FLAG_C;
       new_c= 1;
@@ -260,7 +271,34 @@ cl_tlcs::inst_adc_a(uint8_t d)
   if (new_c ^ new_c6)
     reg.f|= FLAG_V;
 
+  return r;
+}
+
+
+// ADC A,8-bit
+int
+cl_tlcs::inst_adc_a(uint8_t d)
+{
+  reg.a= op_adc8(reg.a, d);
   return resGO;
+}
+
+
+// ADC A,mem
+int
+cl_tlcs::inst_adc_a(class cl_memory_cell *cell)
+{
+  return inst_adc_a((uint8_t)(cell->read()));
+}
+
+
+// SUB 8-bit
+uint8_t
+cl_tlcs::op_sub8(uint8_t d1, uint8_t d2)
+{
+  uint8_t r= op_add8(d1, ~d2 + 1);
+  reg.f|= FLAG_N;
+  return r;
 }
 
 
@@ -268,9 +306,26 @@ cl_tlcs::inst_adc_a(uint8_t d)
 int
 cl_tlcs::inst_sub_a(uint8_t d)
 {
-  reg.a= op_add_a(~d + 1);
-  reg.f|= FLAG_N;
+  reg.a= op_sub8(reg.a, ~d + 1);
   return resGO;
+}
+
+
+// SUB A,mem
+int
+cl_tlcs::inst_sub_a(class cl_memory_cell *cell)
+{
+  return inst_sub_a((uint8_t)(cell->read()));
+}
+
+
+// SBC 8-bit
+uint8_t
+cl_tlcs::op_sbc8(uint8_t d1, uint8_t d2)
+{
+  uint8_t r= op_adc8(d1, ~d2 + 1);
+  reg.f|= FLAG_N;
+  return r;
 }
 
 
@@ -284,98 +339,38 @@ cl_tlcs::inst_sbc_a(uint8_t d)
 }
 
 
-// AND A,8-bit
-int
-cl_tlcs::inst_and_a(uint8_t d)
-{
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
-  reg.f|= FLAG_H;
-
-  reg.a&= d;
-  set_p(reg.a);
-  if (reg.a & 0x80)
-    reg.f|= FLAG_S;
-  if (reg.a == 0)
-    reg.f|= FLAG_Z;
-
-  return resGO;
-}
-
-
-// XOR A,8-bit
-int
-cl_tlcs::inst_xor_a(uint8_t d)
-{
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
-
-  reg.a^= d;
-  set_p(reg.a);
-  if (reg.a & 0x80)
-    reg.f|= FLAG_S;
-  if (reg.a == 0)
-    reg.f|= FLAG_Z;
-
-  return resGO;
-}
-
-
-// OR A,8-bit
-int
-cl_tlcs::inst_or_a(uint8_t d)
-{
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
-
-  reg.a|= d;
-  set_p(reg.a);
-  if (reg.a & 0x80)
-    reg.f|= FLAG_S;
-  if (reg.a == 0)
-    reg.f|= FLAG_Z;
-
-  return resGO;
-}
-
-
-// CP A,8-bit
-int
-cl_tlcs::op_cp_a(uint8_t d)
-{
-  op_add_a(~d + 1);
-  reg.f|= FLAG_N;
-  return resGO;
-}
-
-
-// ADD A,mem
-int
-cl_tlcs::inst_add_a(class cl_memory_cell *cell)
-{
-  reg.a= op_add_a((uint8_t)(cell->read()));
-  return resGO;
-}
-
-
-// ADC A,mem
-int
-cl_tlcs::inst_adc_a(class cl_memory_cell *cell)
-{
-  return inst_adc_a((uint8_t)(cell->read()));
-}
-
-
-// SUB A,mem
-int
-cl_tlcs::inst_sub_a(class cl_memory_cell *cell)
-{
-  return inst_sub_a((uint8_t)(cell->read()));
-}
-
-
 // SBC A,mem
 int
 cl_tlcs::inst_sbc_a(class cl_memory_cell *cell)
 {
   return inst_sbc_a((uint8_t)(cell->read()));
+}
+
+
+// AND 8-bit
+uint8_t
+cl_tlcs::op_and8(uint8_t d1, uint8_t d2)
+{
+  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
+  reg.f|= FLAG_H;
+
+  uint8_t r= d1 & d2;
+  set_p(r);
+  if (r & 0x80)
+    reg.f|= FLAG_S;
+  if (r == 0)
+    reg.f|= FLAG_Z;
+
+  return r;
+}
+
+
+// AND A,8-bit
+int
+cl_tlcs::inst_and_a(uint8_t d)
+{
+  reg.a= op_and8(reg.a, d);
+  return resGO;
 }
 
 
@@ -387,6 +382,32 @@ cl_tlcs::inst_and_a(class cl_memory_cell *cell)
 }
 
 
+// XOR 8-bit
+uint8_t
+cl_tlcs::op_xor8(uint8_t d1, uint8_t d2)
+{
+  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
+
+  uint8_t r= d1 ^ d2;
+  set_p(r);
+  if (r & 0x80)
+    reg.f|= FLAG_S;
+  if (r == 0)
+    reg.f|= FLAG_Z;
+
+  return r;
+}
+
+
+// XOR A,8-bit
+int
+cl_tlcs::inst_xor_a(uint8_t d)
+{
+  reg.a= op_xor8(reg.a, d);
+  return resGO;
+}
+
+
 // XOR A,mem
 int
 cl_tlcs::inst_xor_a(class cl_memory_cell *cell)
@@ -395,11 +416,56 @@ cl_tlcs::inst_xor_a(class cl_memory_cell *cell)
 }
 
 
+// OR 8-bit
+uint8_t
+cl_tlcs::op_or8(uint8_t d1, uint8_t d2)
+{
+  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
+
+  uint8_t r= d1 | d2;
+  set_p(r);
+  if (r & 0x80)
+    reg.f|= FLAG_S;
+  if (r == 0)
+    reg.f|= FLAG_Z;
+
+  return r;
+}
+
+
+// OR A,8-bit
+int
+cl_tlcs::inst_or_a(uint8_t d)
+{
+  reg.a= op_or8(reg.a, d);
+  return resGO;
+}
+
+
 // OR A,mem
 int
 cl_tlcs::inst_or_a(class cl_memory_cell *cell)
 {
   return inst_or_a((uint8_t)(cell->read()));
+}
+
+
+// CP 8-bit
+uint8_t
+cl_tlcs::op_cp8(uint8_t d1, uint8_t d2)
+{
+  uint8_t r= op_add8(d1, ~d2 + 1);
+  reg.f|= FLAG_N;
+  return r;
+}
+
+
+// CP A,8-bit
+int
+cl_tlcs::op_cp_a(uint8_t d)
+{
+  op_cp8(reg.a, d);
+  return resGO;
 }
 
 
