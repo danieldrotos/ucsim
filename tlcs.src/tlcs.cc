@@ -400,7 +400,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)((c>>8)&0xff));s+= l; break;
 	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+((c>>8)&0xff))); s+= l; break;
-	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x04x",(int)((c>>16)&0xffff)); s+= l; break;
+	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
 	    default: s+= '?'; break;
 	    }
 	}
@@ -892,7 +892,7 @@ int
 cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
 {
   int res= resGO;
-  uint8_t *ga= aof_reg8(c1);
+  uint8_t *ga= aof_reg8(c1), n;
   uint16_t *gga= aof_reg16_gg(c1);
 
   switch (c2)
@@ -923,6 +923,16 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
     case 0xA5: *ga= op_sra(*ga, true); break; // SRA g
     case 0xA6: *ga= op_sla(*ga, true); break; // SLL g
     case 0xA7: *ga= op_srl(*ga, true); break; // SRL g
+      // some 3 byte cases
+    case 0x68: n= fetch(); *ga= op_add8(*ga, n); break; // ADD g,n
+    case 0x69: n= fetch(); *ga= op_adc8(*ga, n); break; // ADC g,n
+    case 0x6a: n= fetch(); *ga= op_sub8(*ga, n); break; // SUB g,n
+    case 0x6b: n= fetch(); *ga= op_sbc8(*ga, n); break; // SBC g,n
+    case 0x6c: n= fetch(); *ga= op_and8(*ga, n); break; // AND g,n
+    case 0x6d: n= fetch(); *ga= op_xor8(*ga, n); break; // XOR g,n
+    case 0x6e: n= fetch(); *ga= op_or8(*ga, n); break; // OR g,n
+    case 0x6f: n= fetch(); *ga= op_cp8(*ga, n); break; // CP g,n
+      // non-fix 2nd byte cases
     default:
       if ((c2 & 0xfc) == 0x14) // ADD ix,gg
 	*aof_reg16_ix(c2)= add16(*aof_reg16_ix(c2), *gga);
