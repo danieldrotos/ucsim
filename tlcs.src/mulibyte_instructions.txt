@@ -59,9 +59,7 @@
 -87	n					INC (0ffn)
 -8F	n					DEC (0ffn)
 
-90+rr						INC rr
 -97	n					INCW (0ffn)
-98+rr						DEC rr
 -9F	n					DECW (0ffn)
 
 -E0+gg	10					RLD (gg)
