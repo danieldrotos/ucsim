@@ -216,10 +216,11 @@ class cl_tlcs: public cl_uc
   virtual class cl_memory_cell *cell_hl_a();
   virtual class cl_memory_cell *cell_gg(uint8_t gg);
   virtual class cl_memory_cell *cell_n(uint8_t n);
-  virtual class cl_memory_cell *cell_ixd(uint8_t ix, uint8_t d);
+  virtual class cl_memory_cell *cell_ixd(uint8_t ix, int8_t d);
   
   virtual uint16_t mem16(t_addr addr);
   virtual uint16_t mem16gg(uint8_t gg);
+  virtual uint16_t mem16ixd(uint8_t ix, int8_t d);
   virtual void write16(t_addr addr, uint16_t val);
   virtual void write16gg(uint8_t gg, uint16_t val);
   virtual bool flag(enum tlcs_flags f);

@@ -539,14 +539,14 @@ cl_tlcs::exec_inst(void)
 	      *ra= op_add16(*ra, c3*256 + c2);
 	      break;
 	    }
-	  case 0xf0: res= exec_inst3_f0ix(c1); break; //@ F0+ix d XX
+	  case 0xf0: res= exec_inst3_f0ix(c1); break; // F0+ix d XX
 	  default:
 	    switch (c1 & 0xf8) // c1= XX+r,rr,...
 	      {
 		// r, g, etc coded in single byte instruction
 	      case 0x20: reg.a= *aof_reg8(c1); break; // LD A,r
 	      case 0x28: *aof_reg8(c1)= reg.a; break; // LD r,A
-	      case 0x38: break; //@ LD rr,mn
+	      case 0x38: *aof_reg16_rr(c1)= fetch() + fetch()*256; break; // LD rr,mn
 	      case 0x40: reg.hl= *aof_reg16_rr(c1); break; // LD HL,rr
 	      case 0x48: *aof_reg16_rr(c1)= reg.hl; break; // LD rr,HL
 	      case 0x50: exec_push(PC-1, *aof_reg16_qq(c1)); break; // PUSH qq
@@ -1092,7 +1092,8 @@ cl_tlcs::exec_inst3_e7(uint8_t c1, uint8_t c2, uint8_t c3)
 int
 cl_tlcs::exec_inst3_f0ix(uint8_t c1)
 {
-  uint8_t d= fetch(), c3= fetch();
+  int8_t d= fetch();
+  uint8_t c3= fetch();
   int res= resGO;
   cl_memory_cell *c= cell_ixd(c1, d);
   
@@ -1100,8 +1101,8 @@ cl_tlcs::exec_inst3_f0ix(uint8_t c1)
     {
     case 0x10: inst_rld(c); break; // RLD (ix+d)
     case 0x11: inst_rrd(c); break; // RRD (ix+d)
-    case 0x12: break; //@ MUL HL,(ix+d)
-    case 0x13: break; //@ DIV HL,(ix+d)
+    case 0x12: inst_mul_hl(c); break; // MUL HL,(ix+d)
+    case 0x13: inst_div_hl(c); break; // DIV HL,(ix+d)
     case 0x60: inst_add_a(c); break; // ADD A,(ix+d)
     case 0x61: inst_adc_a(c); break; // ADC A,(ix+d)
     case 0x62: inst_sub_a(c); break; // SUB A,(ix+d)
@@ -1110,7 +1111,7 @@ cl_tlcs::exec_inst3_f0ix(uint8_t c1)
     case 0x65: inst_xor_a(c); break; // XOR A,(ix+d)
     case 0x66: inst_or_a(c); break; // OR A,(ix+d)
     case 0x67: op_cp_a(c); break; // CP A,(ix+d)
-    case 0x70: break; //@ ADD HL,(ix+d)
+    case 0x70: op_add_hl((t_mem)mem16ixd(c1,d)); break; // ADD HL,(ix+d)
     case 0x71: break; //@ ADC HL,(ix+d)
     case 0x72: break; //@ SUB HL,(ix+d)
     case 0x73: break; //@ SBC HL,(ix+d)
@@ -1339,7 +1340,7 @@ cl_tlcs::cell_n(uint8_t n)
 }
 
 class cl_memory_cell *
-cl_tlcs::cell_ixd(uint8_t ix, uint8_t d)
+cl_tlcs::cell_ixd(uint8_t ix, int8_t d)
 {
   switch (ix & 0xfc)
     {
@@ -1371,6 +1372,24 @@ cl_tlcs::mem16gg(uint8_t gg)
   if ((gg & 7) == 4)
     as= xas;
   if ((gg & 7) == 5)
+    as= yas;
+  
+  l= as->read(addr);
+  h= as->read(addr+1);
+
+  return h*256 + l;
+}
+
+uint16_t
+cl_tlcs::mem16ixd(uint8_t ix, int8_t d)
+{
+  uint8_t l, h;
+  cl_address_space *as= nas;
+  uint16_t addr= *aof_reg16_ix(ix) + d;
+  
+  if ((ix&3) == 0)
+    as= xas;
+  if ((ix&3) == 1)
     as= yas;
   
   l= as->read(addr);
