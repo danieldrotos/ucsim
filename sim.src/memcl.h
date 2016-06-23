@@ -341,12 +341,13 @@ class cl_memory_chip;
 
 class cl_address_space: public cl_memory
 {
-protected:
+ public:
   class cl_memory_cell /* **cells,*/ *dummy;
+ protected:
   class cl_memory_cell *cella;
-public:
+ public:
   class cl_decoder_list *decoders;
-public:
+ public:
   cl_address_space(const char *id, t_addr astart, t_addr asize, int awidth);
   virtual ~cl_address_space(void);
 
