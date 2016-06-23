@@ -159,7 +159,8 @@ class cl_tlcs: public cl_uc
 
  public:
   class cl_address_space *nas;
-  class cl_address_space *das;
+  class cl_address_space *xas;
+  class cl_address_space *yas;
   class cl_address_space *regs8;
   class cl_address_space *regs16;
  public:
@@ -221,8 +222,6 @@ class cl_tlcs: public cl_uc
   virtual uint16_t mem16gg(uint8_t gg);
   virtual void write16(t_addr addr, uint16_t val);
   virtual void write16gg(uint8_t gg, uint16_t val);
-  virtual uint16_t xmem16(t_addr addr);
-  virtual void xwrite16(t_addr addr, uint16_t val);
   virtual bool flag(enum tlcs_flags f);
   virtual bool cc(uint8_t cc);
   

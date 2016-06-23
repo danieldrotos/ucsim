@@ -188,7 +188,10 @@ cl_tlcs::make_memories(void)
   rom= nas= as= new cl_address_space(cchars("nas"), 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
-  das= as= new cl_address_space(cchars("das"), 0, 0x10000, 8);
+  xas= as= new cl_address_space(cchars("das"), 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+  yas= as= new cl_address_space(cchars("das"), 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
@@ -207,7 +210,13 @@ cl_tlcs::make_memories(void)
   //chip= new cl_memory_chip("das_chip", 0x10000, 8);
   //chip->init();
   //memchips->add(chip);
-  ad= new cl_address_decoder(as= das,
+  ad= new cl_address_decoder(as= xas,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ad= new cl_address_decoder(as= yas,
 			     chip, 0, 0xffff, 0);
   ad->init();
   as->decoders->add(ad);
@@ -469,11 +478,11 @@ cl_tlcs::print_regs(class cl_console_base *con)
                  reg.hl, nas->get(reg.hl), nas->get(reg.hl),
                  isprint(nas->get(reg.hl))?nas->get(reg.hl):'.');
   con->dd_printf("IX= 0x%04x [IX]= %02x %3d %c  ",
-                 reg.ix, das->get(reg.ix), das->get(reg.ix),
-                 isprint(das->get(reg.ix))?das->get(reg.ix):'.');
+                 reg.ix, xas->get(reg.ix), xas->get(reg.ix),
+                 isprint(xas->get(reg.ix))?xas->get(reg.ix):'.');
   con->dd_printf("IY= 0x%04x [IY]= %02x %3d %c  ",
-                 reg.iy, das->get(reg.iy), das->get(reg.iy),
-                 isprint(das->get(reg.iy))?das->get(reg.iy):'.');
+                 reg.iy, yas->get(reg.iy), yas->get(reg.iy),
+                 isprint(yas->get(reg.iy))?yas->get(reg.iy):'.');
   con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
                  reg.sp, nas->get(reg.sp), nas->get(reg.sp),
                  isprint(nas->get(reg.sp))?nas->get(reg.sp):'.');
@@ -1316,9 +1325,10 @@ cl_tlcs::cell_hl_a()
 class cl_memory_cell *
 cl_tlcs::cell_gg(uint8_t gg)
 {
-  if (((gg & 0x7) == 4) ||
-      ((gg & 0x7) == 5))
-    return das->get_cell(*aof_reg16_gg(gg));
+  if ((gg & 0x7) == 4)
+    return xas->get_cell(*aof_reg16_gg(gg));
+  if ((gg & 0x7) == 5)
+    return yas->get_cell(*aof_reg16_gg(gg));
   return nas->get_cell(*aof_reg16_gg(gg));
 }
 
@@ -1333,8 +1343,8 @@ cl_tlcs::cell_ixd(uint8_t ix, uint8_t d)
 {
   switch (ix & 0xfc)
     {
-    case 0: return das->get_cell(reg.ix + d); break;
-    case 1: return das->get_cell(reg.iy + d); break;
+    case 0: return xas->get_cell(reg.ix + d); break;
+    case 1: return yas->get_cell(reg.iy + d); break;
     case 2: return nas->get_cell(reg.sp + d); break;
     }
   return nas->dummy;
@@ -1358,9 +1368,10 @@ cl_tlcs::mem16gg(uint8_t gg)
   cl_address_space *as= nas;
   uint16_t addr= *aof_reg16_gg(gg);
   
-  if (((gg & 7) == 4) ||
-      ((gg & 7) == 5))
-    as= das;
+  if ((gg & 7) == 4)
+    as= xas;
+  if ((gg & 7) == 5)
+    as= yas;
   
   l= as->read(addr);
   h= as->read(addr+1);
@@ -1382,31 +1393,14 @@ cl_tlcs::write16gg(uint8_t gg, uint16_t val)
   cl_address_space *as= nas;
   uint16_t addr= *aof_reg16_gg(gg);
   
-  if (((gg&7) == 4) ||
-      ((gg&7) == 5))
-    as= das;
+  if ((gg&7) == 4)
+    as = xas;
+  if ((gg&7) == 5)
+    as= yas;
   as->write(addr, val & 0xff);
   as->write(addr+1, val / 256);
 }
 
-
-uint16_t
-cl_tlcs::xmem16(t_addr addr)
-{
-  uint8_t l, h;
-
-  l= das->read(addr);
-  h= das->read(addr+1);
-
-  return h*256 + l;
-}
-
-void
-cl_tlcs::xwrite16(t_addr addr, uint16_t val)
-{
-  das->write(addr, val & 0xff);
-  das->write(addr+1, val / 256);
-}
 
 bool
 cl_tlcs::flag(enum tlcs_flags f)
