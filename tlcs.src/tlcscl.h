@@ -195,6 +195,7 @@ class cl_tlcs: public cl_uc
   virtual int exec_inst2_e8gg(uint8_t c1, uint8_t c2);
   virtual int exec_inst2_f8gg(uint8_t c1, uint8_t c2);
   virtual int exec_inst3_e7(uint8_t c1, uint8_t c2, uint8_t c3);
+  virtual int exec_inst3(uint8_t c1, uint8_t c2);
   
   virtual t_addr do_push(t_mem data);
   virtual t_addr do_pop(t_mem *data);

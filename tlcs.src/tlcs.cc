@@ -620,6 +620,9 @@ cl_tlcs::exec_inst2(uint8_t c1)
 	case 0xf8: // f8+g, f8+gg
 	  res= exec_inst2_f8gg(c1, c2);
 	  break;
+	default: // pass others to 3 byte decoder
+	  res= exec_inst3(c1, c2);
+	  break;
 	}
       break;
     }
@@ -870,15 +873,30 @@ cl_tlcs::exec_inst2_e8gg(uint8_t c1, uint8_t c2)
   class cl_memory_cell *gg= cell_gg(c1);
   t_addr gv= *aof_reg16_gg(c1);
   
-  switch (c2 & 0xf0)
+  switch (c2)
     {
-    case 0xc0: if (cc(c2)) PC= gv; break; // JP [cc,]gg
-    case 0xd0: if (cc(c2)) inst_call(PC-2, gv); break; // CALL [cc,]gg
+    case 0x37: break; //@ LD (gg),n
+    case 0x3F: break; //@ LDW (gg),mn
+    case 0x68: break; //@ ADD (gg)n
+    case 0x69: break; //@ ADC (gg)n
+    case 0x6a: break; //@ SUB (gg)n
+    case 0x6b: break; //@ SBC (gg)n
+    case 0x6c: break; //@ AND (gg)n
+    case 0x6d: break; //@ XOR (gg)n
+    case 0x6e: break; //@ OR (gg)n
+    case 0x6f: break; //@ CP (gg)n
     default:
-      switch (c2 & 0xf8)
+      switch (c2 & 0xf0)
 	{
-	case 0x20: gg->write(*aof_reg8(c2)); break; // LD (gg),r
-	case 0x40: write16(gv, *aof_reg16_rr(c2)); break; // LD (gg),rr
+	case 0xc0: if (cc(c2)) PC= gv; break; // JP [cc,]gg
+	case 0xd0: if (cc(c2)) inst_call(PC-2, gv); break; // CALL [cc,]gg
+	default:
+	  switch (c2 & 0xf8)
+	    {
+	    case 0x20: gg->write(*aof_reg8(c2)); break; // LD (gg),r
+	    case 0x40: write16(gv, *aof_reg16_rr(c2)); break; // LD (gg),rr
+	    }
+	  break;
 	}
       break;
     }
@@ -953,6 +971,34 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
 }
 
 /*
+ */
+int
+cl_tlcs::exec_inst3(uint8_t c1, uint8_t c2)
+{
+  int res= resGO;
+
+  switch (c1)
+    {
+    case 0x1a: break; //@ JP mn
+    case 0x1b: break; //@ JRL $+2+cd
+    case 0x1c: break; //@ CALL mn
+    case 0x1d: break; //@ CALL $+2+cd
+    case 0x37: break; //@ LD (0ffw),n
+    case 0x3F: break; //@ LDW (0ffw),mn
+    case 0x78: break; //@ ADD HL,mn
+    case 0x79: break; //@ ADC HL,mn
+    case 0x7a: break; //@ SUB HL,mn
+    case 0x7b: break; //@ SBC HL,mn
+    case 0x7c: break; //@ AND HL,mn
+    case 0x7d: break; //@ XOR HL,mn
+    case 0x7e: break; //@ OR HL,mn
+    case 0x7f: break; //@ CP HL,mn
+    }
+
+  return res;
+}
+
+/* E7
  */
 
 int

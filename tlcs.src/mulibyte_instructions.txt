@@ -18,7 +18,7 @@
 -30+r	n					LD r,n
 37	w	n				LD (0ffw),n
 38+rr	n	m				LD rr,mn
-3F	w	n	m			LDW (0ffn),mn
+3F	w	n	m			LDW (0ffw),mn
 
 -47	n					LD HL,(0ffn)
 
