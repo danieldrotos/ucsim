@@ -68,6 +68,22 @@ struct dis_entry disass_tlcs[]= {
   { 0x90, 0xf8, 'R', 1, "INC %R" },
   { 0x98, 0xf8, 'R', 1, "DEC %R" },
 
+  { 0x000017, 0x0000ff, 'D', 3, "LDAR HL,%D" },
+  { 0x00001a, 0x0000ff, 'm', 3, "JP %M" },
+  { 0x00001b, 0x0000ff, 'D', 3, "JRL %D" },
+  { 0x00001c, 0x0000ff, 'M', 3, "CALL %M" },
+  { 0x00001d, 0x0000ff, 'D', 3, "CALR %D" },
+  { 0x000037, 0x0000ff, 'n', 3, "LD (0xff%n),%N" },
+  { 0x00003f, 0x0000ff, 'm', 3, "LDW (0xff%n),%m" },
+  { 0x000078, 0x0000ff, 'm', 3, "ADD HL,%M" },
+  { 0x000079, 0x0000ff, 'm', 3, "ADC HL,%M" },
+  { 0x00007a, 0x0000ff, 'm', 3, "SUB HL,%M" },
+  { 0x00007b, 0x0000ff, 'm', 3, "SBC HL,%M" },
+  { 0x00007c, 0x0000ff, 'm', 3, "AND HL,%M" },
+  { 0x00007d, 0x0000ff, 'm', 3, "XOR HL,%M" },
+  { 0x00007e, 0x0000ff, 'm', 3, "OR HL,%M" },
+  { 0x00007f, 0x0000ff, 'm', 3, "CP HL,%M" },
+  
   { 0x10f3, 0xffff, ' ', 2, "RLD (HL+A)" },
   { 0x11f3, 0xffff, ' ', 2, "RRD (HL+A)" },
   { 0x12f3, 0xffff, ' ', 2, "MUL HL,(HL+A)" },
@@ -172,7 +188,7 @@ struct dis_entry disass_tlcs[]= {
   { 0x18e0, 0xf8f8, 'R', 2, "TSET %b,(%R)" },
   { 0x28e0, 0xf8f8, 'R', 2, "LD %p,(%R)" },
   { 0x48e0, 0xf8f8, 'R', 2, "LD %s,(%R)" },
-  { 0x50e0, 0xf8f8, 'R', 2, "EX (%R),$s" },
+  { 0x50e0, 0xf8f8, 'R', 2, "EX (%R),%s" },
   { 0xa8e0, 0xf8f8, 'R', 2, "BIT %b,(%R)" },
   { 0xb0e0, 0xf8f8, 'R', 2, "RES %b,(%R)" },
   { 0xb8e0, 0xf8f8, 'R', 2, "SET %b,(%R)" },
@@ -219,7 +235,7 @@ struct dis_entry disass_tlcs[]= {
   { 0x20e8, 0xf8f8, 'R', 2, "LD (%R),%p" },
   { 0x40e8, 0xf8f8, 'R', 2, "LD (%R),%s" },
   
-  { 0xc0e8, 0xf0f8, 'R', 2, "JP %c$R" },
+  { 0xc0e8, 0xf0f8, 'R', 2, "JP %c%R" },
   { 0xd0e8, 0xf0f8, 'R', 2, "CALL %c%R" },
 
   { 0x12f8, 0xfff8, 'g', 2, "MUL HL,%r" },
@@ -314,6 +330,8 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
 //	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 //	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xff)); s+= l; break;
+//	    case 'D': /* cd in 2,3 byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xffff)); s+= l; break;
+//	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 //	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x04x",(int)((c>>16)&0xffff)); s+= l; break;
 
 /* End of tlcs.src/glob.cc */

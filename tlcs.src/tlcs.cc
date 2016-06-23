@@ -400,6 +400,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)((c>>8)&0xff));s+= l; break;
 	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+((c>>8)&0xff))); s+= l; break;
+	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
 	    default: s+= '?'; break;
 	    }
@@ -988,23 +989,25 @@ int
 cl_tlcs::exec_inst3(uint8_t c1, uint8_t c2)
 {
   int res= resGO;
-
+  uint8_t c3= fetch(), c4;
+  
   switch (c1)
     {
-    case 0x1a: break; //@ JP mn
-    case 0x1b: break; //@ JRL $+2+cd
-    case 0x1c: break; //@ CALL mn
-    case 0x1d: break; //@ CALL $+2+cd
-    case 0x37: break; //@ LD (0ffw),n
-    case 0x3F: break; //@ LDW (0ffw),mn
-    case 0x78: break; //@ ADD HL,mn
-    case 0x79: break; //@ ADC HL,mn
-    case 0x7a: break; //@ SUB HL,mn
-    case 0x7b: break; //@ SBC HL,mn
-    case 0x7c: break; //@ AND HL,mn
-    case 0x7d: break; //@ XOR HL,mn
-    case 0x7e: break; //@ OR HL,mn
-    case 0x7f: break; //@ CP HL,mn
+    case 0x17: reg.hl= PC + c3*256 + c2; break; // LDAR HL,$+2+cd
+    case 0x1a: PC= c3*256 + c2; break; // JP mn
+    case 0x1b: PC+= c3*256 + c2; break; // JRL $+2+cd
+    case 0x1c: inst_call(PC-3, c3*256 + c2); break; // CALL mn
+    case 0x1d: inst_call(PC-3, PC + c3*256 + c2); break; // CALR $+2+cd
+    case 0x37: cell_n(c2)->write(c3); break; // LD (0ffw),n
+    case 0x3F: c4= fetch(); write16(0xff00+c2, c4*256 + c3); break; // LDW (0ffw),mn
+    case 0x78: reg.hl= op_add_hl((t_mem)(c3*256+c2)); break; // ADD HL,mn
+    case 0x79: reg.hl= op_adc_hl((t_mem)(c3*256+c2)); break; // ADC HL,mn
+    case 0x7a: reg.hl= op_sub_hl((t_mem)(c3*256+c2)); break; // SUB HL,mn
+    case 0x7b: reg.hl= op_sbc_hl((t_mem)(c3*256+c2)); break; // SBC HL,mn
+    case 0x7c: reg.hl= op_and_hl((t_mem)(c3*256+c2)); break; // AND HL,mn
+    case 0x7d: reg.hl= op_xor_hl((t_mem)(c3*256+c2)); break; // XOR HL,mn
+    case 0x7e: reg.hl= op_or_hl((t_mem)(c3*256+c2)); break; // OR HL,mn
+    case 0x7f: op_sub_hl((t_mem)(c3*256+c2)); break; // CP HL,mn
     }
 
   return res;
