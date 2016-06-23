@@ -272,15 +272,19 @@ class cl_tlcs: public cl_uc
   virtual uint8_t op_or8(uint8_t d1, uint8_t d2);	// OR 8-bit
   virtual int inst_or_a(uint8_t d);			// OR A,8-bit
   virtual int inst_or_a(class cl_memory_cell *cell);	// OR A,mem
-  virtual uint8_t op_cp8(uint8_t d1, uint8_t d2);		// CP 8-bit
+  virtual uint8_t op_cp8(uint8_t d1, uint8_t d2);	// CP 8-bit
   virtual int op_cp_a(uint8_t d);			// CP A,8-bit
   virtual int op_cp_a(class cl_memory_cell *cell);	// CP A,mem
 
   // (5) 16-bit arithmetic and logic operation
   virtual uint16_t op_inc16(uint16_t data);		// INC 16 bit
   virtual uint16_t inst_inc16(t_addr addr);		// INCW mem
+  virtual uint16_t inst_inc16gg(uint8_t gg,t_addr addr);// INCW mem
+  virtual uint16_t inst_inc16ix(uint8_t ix,t_addr addr);// INCW mem
   virtual uint16_t op_dec16(t_mem data);		// DEC 16 bit
   virtual uint16_t inst_dec16(t_addr addr);		// DECW mem
+  virtual uint16_t inst_dec16gg(uint8_t gg,t_addr addr);// DECW mem
+  virtual uint16_t inst_dec16ix(uint8_t ix,t_addr addr);// DECW mem
   virtual uint16_t op_add_hl(t_mem val);		// ADD HL,16-bit
   virtual uint16_t op_add_hl(t_addr addr);		// ADD HL,mem
   virtual uint16_t op_adc_hl(t_mem val);		// ADC HL,16-bit

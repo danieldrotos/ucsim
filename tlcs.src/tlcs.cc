@@ -852,8 +852,8 @@ cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
     case 0x77: reg.hl= op_sub_hl((t_addr)*aof_reg16_gg(c1)); break; // CP HL,(gg)
     case 0x87: inst_inc(gg); break; // INC (gg)
     case 0x8f: inst_dec(gg); break; // DEC (gg)
-    case 0x97: inst_inc16(*aof_reg16_gg(c1)); break; // INCW (gg)
-    case 0x9f: inst_dec16(*aof_reg16_gg(c1)); break; // DECW (gg)
+    case 0x97: inst_inc16gg(c1, *aof_reg16_gg(c1)); break; // INCW (gg)
+    case 0x9f: inst_dec16gg(c1, *aof_reg16_gg(c1)); break; // DECW (gg)
     case 0xa0: inst_rlc(gg); break; // RLC (gg)
     case 0xa1: inst_rrc(gg); break; // RRC (gg)
     case 0xa2: inst_rl(gg); break; // RL (gg)
@@ -1096,6 +1096,7 @@ cl_tlcs::exec_inst3_f0ix(uint8_t c1)
   uint8_t c3= fetch();
   int res= resGO;
   cl_memory_cell *c= cell_ixd(c1, d);
+  uint16_t a= *aof_reg16_ix(c1)+d;
   
   switch (c3)
     {
@@ -1118,20 +1119,33 @@ cl_tlcs::exec_inst3_f0ix(uint8_t c1)
     case 0x74: reg.hl= op_and_hl((t_mem)mem16ixd(c1,d)); break; // AND HL,(ix+d)
     case 0x75: reg.hl= op_xor_hl((t_mem)mem16ixd(c1,d)); break; // XOR HL,(ix+d)
     case 0x76: reg.hl= op_or_hl((t_mem)mem16ixd(c1,d)); break; // OR HL,(ix+d)
-    case 0x77: op_cp_hl((t_mem)mem16ixd(c1,d)); break; // CP HL,(ix+d)
-    case 0x87: break; //@ INC (ix+d)
-    case 0x8F: break; //@ DEC (ix+d)
-    case 0x97: break; //@ INCW (ix+d)
-    case 0x9F: break; //@ DECW (ix+d)
-    case 0xA0: break; //@ RLC (ix+d)
-    case 0xA1: break; //@ RRC (ix+d)
-    case 0xA2: break; //@ RL (ix+d)
-    case 0xA3: break; //@ RR (ix+d)
-    case 0xA4: break; //@ SLA (ix+d)
-    case 0xA5: break; //@ SRA (ix+d)
-    case 0xA6: break; //@ SLL (ix+d)
-    case 0xA7: break; //@ SRL (ix+d)
+    case 0x77: op_sub_hl((t_mem)mem16ixd(c1,d)); break; // CP HL,(ix+d)
+    case 0x87: inst_inc(c); break; // INC (ix+d)
+    case 0x8F: inst_dec(c); break; // DEC (ix+d)
+    case 0x97: inst_inc16ix(c1, a); break; // INCW (ix+d)
+    case 0x9F: inst_dec16ix(c1, a); break; // DECW (ix+d)
+    case 0xA0: inst_rlc(c); break; // RLC (ix+d)
+    case 0xA1: inst_rrc(c); break; // RRC (ix+d)
+    case 0xA2: inst_rl(c); break; // RL (ix+d)
+    case 0xA3: inst_rr(c); break; // RR (ix+d)
+    case 0xA4: inst_sla(c); break; // SLA (ix+d)
+    case 0xA5: inst_sra(c); break; // SRA (ix+d)
+    case 0xA6: inst_sla(c); break; // SLL (ix+d)
+    case 0xA7: inst_srl(c); break; // SRL (ix+d)
     default:
+      if ((c3 & 0xfc) == 0x14) //@ ADD ix,(jx+d)
+	;
+      else
+	switch (c3 & 0xf8)
+	  {
+	  case 0x18: break; //@ TSET b,(ix+d)
+	  case 0x28: break; //@ LD r,(ix+d)
+	  case 0x48: break; //@ LD rr,(ix+d)
+	  case 0x50: break; //@ EX (ix+d),rr
+	  case 0xa8: break; //@ BIT b,(ix+d)
+	  case 0xb0: break; //@ RES b,(ix+d)
+	  case 0xb8: break; //@ SET b,(ix+d)
+	  }
       break;
     }
   

@@ -137,10 +137,16 @@ cl_tlcs::op_inc16(uint16_t data)
 
 // INCW mem
 uint16_t
-cl_tlcs::inst_inc16(t_addr addr)
+cl_tlcs::inst_inc16gg(uint8_t gg, t_addr addr)
 {
-  uint8_t l= nas->read(addr);
-  uint8_t h= nas->read(addr+1);
+  cl_address_space *as= nas;
+
+  if ((gg&7)==4)
+    as= xas;
+  else if ((gg&7)==5)
+    as= yas;
+  uint8_t l= as->read(addr);
+  uint8_t h= as->read(addr+1);
   uint16_t d= h*256 + l;
 
   if (((int)d + 1) > 0xffff)
@@ -153,10 +159,30 @@ cl_tlcs::inst_inc16(t_addr addr)
   if (d == 0)
     reg.f|= FLAG_Z;
 
-  nas->write(addr, d & 0xff);
-  nas->write(addr+1, d >> 8);
+  as->write(addr, d & 0xff);
+  as->write(addr+1, d >> 8);
   
   return d;
+}
+
+
+// INCW mem
+uint16_t
+cl_tlcs::inst_inc16(t_addr addr)
+{
+  return inst_inc16gg(0, addr);
+}
+
+
+// INCW mem
+uint16_t
+cl_tlcs::inst_inc16ix(uint8_t ix, t_addr addr)
+{
+  if ((ix&3) == 0)
+    return inst_inc16gg(4, addr);
+  else if ((ix&3) == 1)
+    return inst_inc16gg(5, addr);
+  return inst_inc16gg(0, addr);
 }
 
 
@@ -176,10 +202,16 @@ cl_tlcs::op_dec16(t_mem data)
 
 // DECW mem
 uint16_t
-cl_tlcs::inst_dec16(t_addr addr)
+cl_tlcs::inst_dec16gg(uint8_t gg, t_addr addr)
 {
-  uint8_t l= nas->read(addr);
-  uint8_t h= nas->read(addr+1);
+  class cl_address_space *as= nas;
+
+  if ((gg&7)==4)
+    as= xas;
+  else if ((gg&7)==5)
+    as= yas;
+  uint8_t l= as->read(addr);
+  uint8_t h= as->read(addr+1);
   uint16_t d= h*256 + l;
 
   if (((int)d - 1) < 0)
@@ -192,10 +224,30 @@ cl_tlcs::inst_dec16(t_addr addr)
   if (d == 0)
     reg.f|= FLAG_Z;
 
-  nas->write(addr, d & 0xff);
-  nas->write(addr+1, d >> 8);
+  as->write(addr, d & 0xff);
+  as->write(addr+1, d >> 8);
   
   return d;
+}
+
+
+// DECW mem
+uint16_t
+cl_tlcs::inst_dec16(t_addr addr)
+{
+  return inst_dec16gg(0, addr);
+}
+
+
+// DECW mem
+uint16_t
+cl_tlcs::inst_dec16ix(uint8_t ix, t_addr addr)
+{
+  if ((ix&3)==0)
+    return inst_dec16gg(4, addr);
+  else if ((ix&3)==1)
+    return inst_dec16gg(5, addr);
+  return inst_dec16gg(0, addr);
 }
 
 
