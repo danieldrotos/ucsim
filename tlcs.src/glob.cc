@@ -205,6 +205,17 @@ struct dis_entry disass_tlcs[]= {
   { 0xa6e0, 0xfff8, 'R', 2, "SLL (%R)" },
   { 0xa7e0, 0xfff8, 'R', 2, "SRL (%R)" },
 
+  { 0x0037e8, 0x00fff8, 'n', 3,	"LD (%R),%N" },
+  { 0x00003Fe8, 0x0000fff8, 'n', 4, "LDW (%R),%m" },
+  { 0x0068e8, 0x00fff8, 'n', 3,	"ADD (%R),%N" },
+  { 0x0069e8, 0x00fff8, 'n', 3,	"ADC (%R),%N" },
+  { 0x006Ae8, 0x00fff8, 'n', 3,	"SUB (%R),%N" },
+  { 0x006Be8, 0x00fff8, 'n', 3,	"SBC (%R),%N" },
+  { 0x006Ce8, 0x00fff8, 'n', 3,	"AND (%R),%N" },
+  { 0x006De8, 0x00fff8, 'n', 3,	"XOR (%R),%N" },
+  { 0x006Ee8, 0x00fff8, 'n', 3,	"OR (%R),%N" },
+  { 0x006Fe8, 0x00fff8, 'n', 3,	"CP (%R),%N" },
+  
   { 0x20e8, 0xf8f8, 'R', 2, "LD (%R),%p" },
   { 0x40e8, 0xf8f8, 'R', 2, "LD (%R),%s" },
   

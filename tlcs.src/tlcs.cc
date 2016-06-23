@@ -718,6 +718,7 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
 	      break;
 	    }
 	  default:
+	    res= resINV_INST;
 	    break;
 	  }
       break;
@@ -757,6 +758,8 @@ cl_tlcs::exec_inst2_f7(uint8_t c2)
 	    case 0x20: cell_hl_a()->write(*aof_reg8(c2)); break; // LD (HL+A),r
 	    case 0x38: *aof_reg16_rr(c2)= reg.hl+reg.a; break; // LDA rr,HL+A
 	    case 0x40: write16(reg.hl+reg.a, *aof_reg16_rr(c2)); break; // LD (HL+A),rr
+	    default:
+	      res= resINV_INST;
 	    }
 	}
     }
@@ -786,6 +789,8 @@ cl_tlcs::exec_inst2_fe(uint8_t c2)
       case 0x5d: cpir(); break;
       case 0x5e: cpd(); break;
       case 0x5f: cpdr(); break;
+      default:
+	res= resINV_INST;
       }
   return res;
 }
@@ -857,6 +862,8 @@ cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
 	  case 0xa8: inst_bit(cell_gg(c1), c2); break; // BIT b,(gg)
 	  case 0xb0: inst_res(cell_gg(c1), c2); break; // RES b,(gg)
 	  case 0xb8: inst_set(cell_gg(c1), c2); break; // SET b,(gg)
+	  default:
+	    res= resINV_INST;
 	  }
     }
   
@@ -872,19 +879,20 @@ cl_tlcs::exec_inst2_e8gg(uint8_t c1, uint8_t c2)
   int res= resGO;
   class cl_memory_cell *gg= cell_gg(c1);
   t_addr gv= *aof_reg16_gg(c1);
+  uint8_t n, m;
   
   switch (c2)
     {
-    case 0x37: break; //@ LD (gg),n
-    case 0x3F: break; //@ LDW (gg),mn
-    case 0x68: break; //@ ADD (gg)n
-    case 0x69: break; //@ ADC (gg)n
-    case 0x6a: break; //@ SUB (gg)n
-    case 0x6b: break; //@ SBC (gg)n
-    case 0x6c: break; //@ AND (gg)n
-    case 0x6d: break; //@ XOR (gg)n
-    case 0x6e: break; //@ OR (gg)n
-    case 0x6f: break; //@ CP (gg)n
+    case 0x37: n= fetch(); gg->write(n); break; // LD (gg),n
+    case 0x3F: n= fetch(); m= fetch(); write16(*aof_reg16_gg(c1), m*256+n); break; // LDW (gg),mn
+    case 0x68: n= fetch(); gg->write(op_add8(gg->read(), n)); break; // ADD (gg),n
+    case 0x69: n= fetch(); gg->write(op_adc8(gg->read(), n)); break; // ADC (gg),n
+    case 0x6a: n= fetch(); gg->write(op_sub8(gg->read(), n)); break; // SUB (gg),n
+    case 0x6b: n= fetch(); gg->write(op_sbc8(gg->read(), n)); break; // SBC (gg),n
+    case 0x6c: n= fetch(); gg->write(op_and8(gg->read(), n)); break; // AND (gg),n
+    case 0x6d: n= fetch(); gg->write(op_xor8(gg->read(), n)); break; // XOR (gg),n
+    case 0x6e: n= fetch(); gg->write(op_or8(gg->read(), n)); break; // OR (gg),n
+    case 0x6f: n= fetch(); op_cp8(gg->read(), n); break; // CP (gg),n
     default:
       switch (c2 & 0xf0)
 	{
@@ -895,6 +903,8 @@ cl_tlcs::exec_inst2_e8gg(uint8_t c1, uint8_t c2)
 	    {
 	    case 0x20: gg->write(*aof_reg8(c2)); break; // LD (gg),r
 	    case 0x40: write16(gv, *aof_reg16_rr(c2)); break; // LD (gg),rr
+	    default:
+	      res= resINV_INST;
 	    }
 	  break;
 	}
@@ -963,6 +973,8 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
 	  case 0xa8: *ga= op_bit(*ga, c2); break; // BIT b,g
 	  case 0xb0: *ga= op_res(*ga, c2); break; // RES b,g
 	  case 0xb8: *ga= op_set(*ga, c2); break; // SET b,g
+	  default:
+	    res= resINV_INST;
 	  }
       break;
     }
@@ -1033,6 +1045,8 @@ cl_tlcs::exec_inst3_e7(uint8_t c1, uint8_t c2, uint8_t c3)
 	  case 0x18: inst_tset(n, c3); break; // TSET b,(0ffn)
 	  case 0x28: *aof_reg8(c3)= n->read(); break; // LD r,(0ffn)
 	  case 0x48: *aof_reg16_rr(c3)= mem16(0xff00 + c2); break; // LD rr,(0ffn);
+	  default:
+	    res= resINV_INST;
 	  }
       break;
     }

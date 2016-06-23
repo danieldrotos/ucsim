@@ -162,17 +162,17 @@ E3	n	m	B8+b			SET b,(mn)
 -E7	n	A7				SRL (0ffn)
 
 -E8+gg	20+r					LD (gg),r
-E8+gg	37	n				LD (gg),n
-E8+gg	3F	n	m			LDW (gg),mn
+-E8+gg	37	n				LD (gg),n
+-E8+gg	3F	n	m			LDW (gg),mn
 -E8+gg	40+rr					LD (gg),rr
-E8+gg	68	n				ADD (gg),n
-E8+gg	69	n				ADC (gg),n
-E8+gg	6A	n				SUB (gg),n
-E8+gg	6B	n				SBC (gg),n
-E8+gg	6C	n				AND (gg),n
-E8+gg	6D	n				XOR (gg),n
-E8+gg	6E	n				OR (gg),n
-E8+gg	6F	n				CP (gg),n
+-E8+gg	68	n				ADD (gg),n
+-E8+gg	69	n				ADC (gg),n
+-E8+gg	6A	n				SUB (gg),n
+-E8+gg	6B	n				SBC (gg),n
+-E8+gg	6C	n				AND (gg),n
+-E8+gg	6D	n				XOR (gg),n
+-E8+gg	6E	n				OR (gg),n
+-E8+gg	6F	n				CP (gg),n
 -E8+gg	C0+cc					JP [cc,]gg
 -E8+gg	D0+cc					CALL [cc,]gg
 
