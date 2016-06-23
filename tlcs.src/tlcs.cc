@@ -521,22 +521,36 @@ cl_tlcs::exec_inst(void)
     case 0xe7: res= exec_inst3_e7(c1, fetch(), fetch()); break;
     default:
       {
-	switch (c1 & 0xf8)
+	switch (c1 & 0xfc) // c1= XX+ix
 	  {
-	    // r, g, etc coded in single byte instruction
-	  case 0x20: reg.a= *aof_reg8(c1); break; // LD A,r
-	  case 0x28: *aof_reg8(c1)= reg.a; break; // LD r,A
-	  case 0x40: reg.hl= *aof_reg16_rr(c1); break; // LD HL,rr
-	  case 0x48: *aof_reg16_rr(c1)= reg.hl; break; // LD rr,HL
-	  case 0x50: exec_push(PC-1, *aof_reg16_qq(c1)); break; // PUSH qq
-	  case 0x58: res= inst_pop(c1); break; // POP qq
-	  case 0x80: *aof_reg8(c1)= op_inc(*aof_reg8(c1)); break; // INC r
-	  case 0x88: *aof_reg8(c1)= op_dec(*aof_reg8(c1)); break; // DEC r
-	  case 0x90: *aof_reg16_rr(c1)= op_inc16(*aof_reg16_rr(c1)); break; // INC rr
-	  case 0x98: *aof_reg16_rr(c1)= op_dec16(*aof_reg16_rr(c1)); break; // DEC rr
+	  case 0x14: // ADD ix,mn
+	    {
+	      uint16_t *ra= aof_reg16_ix(c1);
+	      uint8_t c2= fetch(), c3= fetch();
+	      *ra= op_add16(*ra, c3*256 + c2);
+	      break;
+	    }
+	  case 0xf0: res= exec_inst3_f0ix(c1); break; //@ F0+ix d XX
 	  default:
-	    // no more left, check for two byte instructions
-	    res= exec_inst2(c1);
+	    switch (c1 & 0xf8) // c1= XX+r,rr,...
+	      {
+		// r, g, etc coded in single byte instruction
+	      case 0x20: reg.a= *aof_reg8(c1); break; // LD A,r
+	      case 0x28: *aof_reg8(c1)= reg.a; break; // LD r,A
+	      case 0x38: break; //@ LD rr,mn
+	      case 0x40: reg.hl= *aof_reg16_rr(c1); break; // LD HL,rr
+	      case 0x48: *aof_reg16_rr(c1)= reg.hl; break; // LD rr,HL
+	      case 0x50: exec_push(PC-1, *aof_reg16_qq(c1)); break; // PUSH qq
+	      case 0x58: res= inst_pop(c1); break; // POP qq
+	      case 0x80: *aof_reg8(c1)= op_inc(*aof_reg8(c1)); break; // INC r
+	      case 0x88: *aof_reg8(c1)= op_dec(*aof_reg8(c1)); break; // DEC r
+	      case 0x90: *aof_reg16_rr(c1)= op_inc16(*aof_reg16_rr(c1)); break; // INC rr
+	      case 0x98: *aof_reg16_rr(c1)= op_dec16(*aof_reg16_rr(c1)); break; // DEC rr
+	      default:
+		// no more left, check for two byte instructions
+		res= exec_inst2(c1);
+		break;
+	      }
 	    break;
 	  }
 	break;
@@ -681,7 +695,7 @@ cl_tlcs::exec_inst2_f3(uint8_t c2)
 	{
 	  uint16_t *op1= aof_reg16_ix(c2);
 	  uint16_t op2= mem16(reg.hl+reg.a);
-	  *op1= add16(*op1, op2);
+	  *op1= op_add16(*op1, op2);
 	}
       else
 	switch (c2 & 0xf8)
@@ -843,7 +857,7 @@ cl_tlcs::exec_inst2_e0gg(uint8_t c1, uint8_t c2)
       if ((c2 & 0xfc) == 0x14) // ADD ix,(gg)
 	{
 	  uint16_t *ix= aof_reg16_ix(c2);
-	  *ix= add16(*ix, mem16(*aof_reg16_gg(c1)));
+	  *ix= op_add16(*ix, mem16(*aof_reg16_gg(c1)));
 	}
       else
 	switch (c2 & 0xf8)
@@ -964,7 +978,7 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
       // non-fix 2nd byte cases
     default:
       if ((c2 & 0xfc) == 0x14) // ADD ix,gg
-	*aof_reg16_ix(c2)= add16(*aof_reg16_ix(c2), *gga);
+	*aof_reg16_ix(c2)= op_add16(*aof_reg16_ix(c2), *gga);
       else
 	switch (c2 & 0xf8)
 	  {
@@ -985,6 +999,7 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
 
 /*
  */
+
 int
 cl_tlcs::exec_inst3(uint8_t c1, uint8_t c2)
 {
@@ -1008,6 +1023,12 @@ cl_tlcs::exec_inst3(uint8_t c1, uint8_t c2)
     case 0x7d: reg.hl= op_xor_hl((t_mem)(c3*256+c2)); break; // XOR HL,mn
     case 0x7e: reg.hl= op_or_hl((t_mem)(c3*256+c2)); break; // OR HL,mn
     case 0x7f: op_sub_hl((t_mem)(c3*256+c2)); break; // CP HL,mn
+    default:
+      switch (c1 & 0xf8)
+	{
+	case 0x38: *aof_reg16_rr(c1)= c3*256 + c2; break; // LD rr,mn
+	}
+      break;
     }
 
   return res;
@@ -1040,7 +1061,7 @@ cl_tlcs::exec_inst3_e7(uint8_t c1, uint8_t c2, uint8_t c3)
       if ((c3 & 0xfc) == 0x14) // ADD ix,(0ffn)
 	{
 	  uint16_t *aix= aof_reg16_ix(c3);
-	  *aix= add16(*aix, mem16(0xff00 + c2));
+	  *aix= op_add16(*aix, mem16(0xff00 + c2));
 	}
       else
 	switch (c3 & 0xf8)
@@ -1051,6 +1072,57 @@ cl_tlcs::exec_inst3_e7(uint8_t c1, uint8_t c2, uint8_t c3)
 	  default:
 	    res= resINV_INST;
 	  }
+      break;
+    }
+  
+  return res;
+}
+
+/*
+ */
+
+int
+cl_tlcs::exec_inst3_f0ix(uint8_t c1)
+{
+  uint8_t d= fetch(), c3= fetch();
+  int res= resGO;
+  cl_memory_cell *c= cell_ixd(c1, d);
+  
+  switch (c3)
+    {
+    case 0x10: inst_rld(c); break; // RLD (ix+d)
+    case 0x11: inst_rrd(c); break; // RRD (ix+d)
+    case 0x12: break; //@ MUL HL,(ix+d)
+    case 0x13: break; //@ DIV HL,(ix+d)
+    case 0x60: inst_add_a(c); break; // ADD A,(ix+d)
+    case 0x61: inst_adc_a(c); break; // ADC A,(ix+d)
+    case 0x62: inst_sub_a(c); break; // SUB A,(ix+d)
+    case 0x63: inst_sbc_a(c); break; // SBC A,(ix+d)
+    case 0x64: inst_and_a(c); break; // AND A,(ix+d)
+    case 0x65: inst_xor_a(c); break; // XOR A,(ix+d)
+    case 0x66: inst_or_a(c); break; // OR A,(ix+d)
+    case 0x67: op_cp_a(c); break; // CP A,(ix+d)
+    case 0x70: break; //@ ADD HL,(ix+d)
+    case 0x71: break; //@ ADC HL,(ix+d)
+    case 0x72: break; //@ SUB HL,(ix+d)
+    case 0x73: break; //@ SBC HL,(ix+d)
+    case 0x74: break; //@ AND HL,(ix+d)
+    case 0x75: break; //@ XOR HL,(ix+d)
+    case 0x76: break; //@ OR HL,(ix+d)
+    case 0x77: break; //@ CP HL,(ix+d)
+    case 0x87: break; //@ INC (ix+d)
+    case 0x8F: break; //@ DEC (ix+d)
+    case 0x97: break; //@ INCW (ix+d)
+    case 0x9F: break; //@ DECW (ix+d)
+    case 0xA0: break; //@ RLC (ix+d)
+    case 0xA1: break; //@ RRC (ix+d)
+    case 0xA2: break; //@ RL (ix+d)
+    case 0xA3: break; //@ RR (ix+d)
+    case 0xA4: break; //@ SLA (ix+d)
+    case 0xA5: break; //@ SRA (ix+d)
+    case 0xA6: break; //@ SLL (ix+d)
+    case 0xA7: break; //@ SRL (ix+d)
+    default:
       break;
     }
   
@@ -1252,6 +1324,18 @@ class cl_memory_cell *
 cl_tlcs::cell_n(uint8_t n)
 {
   return nas->get_cell(0xff00 + n);
+}
+
+class cl_memory_cell *
+cl_tlcs::cell_ixd(uint8_t ix, uint8_t d)
+{
+  switch (ix & 0xfc)
+    {
+    case 0: return das->get_cell(reg.ix + d); break;
+    case 1: return das->get_cell(reg.iy + d); break;
+    case 2: return nas->get_cell(reg.sp + d); break;
+    }
+  return nas->dummy;
 }
 
 uint16_t

@@ -196,7 +196,8 @@ class cl_tlcs: public cl_uc
   virtual int exec_inst2_f8gg(uint8_t c1, uint8_t c2);
   virtual int exec_inst3_e7(uint8_t c1, uint8_t c2, uint8_t c3);
   virtual int exec_inst3(uint8_t c1, uint8_t c2);
-  
+  virtual int exec_inst3_f0ix(uint8_t c1);
+    
   virtual t_addr do_push(t_mem data);
   virtual t_addr do_pop(t_mem *data);
   virtual int exec_push(t_addr PC_of_inst, t_mem data);
@@ -214,6 +215,8 @@ class cl_tlcs: public cl_uc
   virtual class cl_memory_cell *cell_hl_a();
   virtual class cl_memory_cell *cell_gg(uint8_t gg);
   virtual class cl_memory_cell *cell_n(uint8_t n);
+  virtual class cl_memory_cell *cell_ixd(uint8_t ix, uint8_t d);
+  
   virtual uint16_t mem16(t_addr addr);
   virtual void write16(t_addr addr, uint16_t val);
   virtual uint16_t xmem16(t_addr addr);
@@ -290,8 +293,8 @@ class cl_tlcs: public cl_uc
   virtual uint16_t op_xor_hl(t_addr addr);		// XOR HL,mem
   virtual uint16_t op_or_hl(t_mem val);			// OR HL,16-bit
   virtual uint16_t op_or_hl(t_addr addr);		// OR HL,mem
-  virtual uint16_t add16(t_mem op1, t_mem op2);		// ADD 16-bit
-  virtual uint16_t sub16(t_mem op1, t_mem op2);		// SUB 16-bit
+  virtual uint16_t op_add16(t_mem op1, t_mem op2);		// ADD 16-bit
+  virtual uint16_t op_sub16(t_mem op1, t_mem op2);		// SUB 16-bit
 
   // (6) cpu control and others
   virtual int inst_daa_a();		// 0b

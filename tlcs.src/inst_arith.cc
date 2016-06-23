@@ -536,7 +536,7 @@ cl_tlcs::op_add_hl(t_mem val)
 
 // ADD 16-bit
 uint16_t
-cl_tlcs::add16(t_mem op1, t_mem op2)
+cl_tlcs::op_add16(t_mem op1, t_mem op2)
 {
   uint16_t d1, d;
   int r, newc15;
@@ -622,12 +622,12 @@ cl_tlcs::op_sub_hl(t_addr addr)
 
 // SUB 16-bit
 uint16_t
-cl_tlcs::sub16(t_mem op1, t_mem op2)
+cl_tlcs::op_sub16(t_mem op1, t_mem op2)
 {
   uint16_t d= op2;
   uint16_t r;
 
-  r= add16(op1, (t_mem)(~d + 1));
+  r= op_add16(op1, (t_mem)(~d + 1));
   reg.f|= FLAG_N;
 
   return r;
