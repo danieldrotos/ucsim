@@ -302,6 +302,7 @@ struct dis_entry disass_tlcs[]= {
   { 0x1800e7, 0xf800ff, 'n', 3, "TSET %B,(0xff%n)" },
   { 0x2800e7, 0xf800ff, 'n', 3, "LD %t,(0xff%n)" },
   { 0x4800e7, 0xf800ff, 'n', 3, "LD %u,(0xff%n)" },
+  { 0x5000e7, 0xf800ff, 'n', 3, "EX (0xff%n),%u" },
   { 0xA000e7, 0xff00ff, 'n', 3, "RLC (0xff%n)" },
   { 0xA100e7, 0xff00ff, 'n', 3, "RRC (0xff%n)" },
   { 0xA200e7, 0xff00ff, 'n', 3, "RL (0xff%n)" },
@@ -354,21 +355,66 @@ struct dis_entry disass_tlcs[]= {
 
   { 0x000038, 0x0000f8, 'm', 3, "LD %R,%M" },
   
+  { 0x100000e3, 0xff0000ff, ' ', 4, "RLD (%M)" },
+  { 0x110000e3, 0xff0000ff, ' ', 4, "RRD (%M)" },
+  { 0x120000e3, 0xff0000ff, ' ', 4, "MUL HL,(%M)" },
+  { 0x130000e3, 0xff0000ff, ' ', 4, "DIV HL,(%M)" },
+  { 0x600000e3, 0xff0000ff, ' ', 4, "ADD A,(%M)" },
+  { 0x610000e3, 0xff0000ff, ' ', 4, "ADC A,(%M)" },
+  { 0x620000e3, 0xff0000ff, ' ', 4, "SUB A,(%M)" },
+  { 0x630000e3, 0xff0000ff, ' ', 4, "SBC A,(%M)" },
+  { 0x640000e3, 0xff0000ff, ' ', 4, "AND A,(%M)" },
+  { 0x650000e3, 0xff0000ff, ' ', 4, "XOR A,(%M)" },
+  { 0x660000e3, 0xff0000ff, ' ', 4, "OR A,(%M)" },
+  { 0x670000e3, 0xff0000ff, ' ', 4, "CP A,(%M)" },
+  { 0x700000e3, 0xff0000ff, ' ', 4, "ADD HL,(%M)" },
+  { 0x710000e3, 0xff0000ff, ' ', 4, "ADC HL,(%M)" },
+  { 0x720000e3, 0xff0000ff, ' ', 4, "SUB HL,(%M)" },
+  { 0x730000e3, 0xff0000ff, ' ', 4, "SBC HL,(%M)" },
+  { 0x740000e3, 0xff0000ff, ' ', 4, "AND HL,(%M)" },
+  { 0x750000e3, 0xff0000ff, ' ', 4, "XOR HL,(%M)" },
+  { 0x760000e3, 0xff0000ff, ' ', 4, "OR HL,(%M)" },
+  { 0x770000e3, 0xff0000ff, ' ', 4, "CP HL,(%M)" },
+  { 0x870000e3, 0xff0000ff, ' ', 4, "INC (%M)" },
+  { 0x8F0000e3, 0xff0000ff, ' ', 4, "DEC (%M)" },
+  { 0x970000e3, 0xff0000ff, ' ', 4, "INCW (%M)" },
+  { 0x9F0000e3, 0xff0000ff, ' ', 4, "DECW (%M)" },
+  { 0xA00000e3, 0xff0000ff, ' ', 4, "RLC (%M)" },
+  { 0xA10000e3, 0xff0000ff, ' ', 4, "RRC (%M)" },
+  { 0xA20000e3, 0xff0000ff, ' ', 4, "RL (%M)" },
+  { 0xA30000e3, 0xff0000ff, ' ', 4, "RR (%M)" },
+  { 0xA40000e3, 0xff0000ff, ' ', 4, "SLA (%M)" },
+  { 0xA50000e3, 0xff0000ff, ' ', 4, "SRA (%M)" },
+  { 0xA60000e3, 0xff0000ff, ' ', 4, "SLL (%M)" },
+  { 0xA70000e3, 0xff0000ff, ' ', 4, "SRL (%M)" },
+  { 0x140000e3, 0xfc0000ff, ' ', 4, "ADD %J,(%M)" },
+  { 0x180000e3, 0xf80000ff, ' ', 4, "TSET %e,(%M)" },
+  { 0x280000e3, 0xf80000ff, ' ', 4, "LD %T,(%M)" },
+  { 0x480000e3, 0xf80000ff, ' ', 4, "LD %U,(nm)" },
+  { 0x500000e3, 0xf80000ff, ' ', 4, "ex (%M),rr" },
+  { 0xA80000e3, 0xf80000ff, ' ', 4, "BIT %e,(%M)" },
+  { 0xB00000e3, 0xf80000ff, ' ', 4, "RES %e,(%M)" },
+  { 0xB80000e3, 0xf80000ff, ' ', 4, "SET %e,(%M)" },
+
   { 0, 0, ' ', 0, NULL }
 };
 
 //	    case 'r': /*  r in 1st byte */ s+= regname_r(c); break;
 //	    case 'p': /*  r in 2nd byte */ s+= regname_r(c>>8); break;
 //	    case 't': /*  r in 3rd byte */ s+= regname_r(c>>16); break;
+//	    case 'T': /*  r in 4th byte */ s+= regname_r(c>>24); break;
 //	    case 'R': /* rr in 1st byte */ s+= regname_R(c); break;
 //	    case 's': /* rr in 2nd byte */ s+= regname_R(c>>8); break;
 //	    case 'u': /* rr in 3rd byte */ s+= regname_R(c>>16); break;
+//	    case 'U': /* rr in 4th byte */ s+= regname_R(c>>24); break;
 //	    case 'Q': /* qq in 1st byte */ s+= regname_Q(c); break;
 //	    case 'I': /* ix in 1st byte */ s+= regname_i(c); break;
 //	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
 //	    case 'j': /* ix in 3rd byte */ s+= regname_i(c>>16); break;
+//	    case 'J': /* ix in 4th byte */ s+= regname_i(c>>24); break;
 //	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
 //	    case 'B': /*  b in 3rd byte */ s+= bitname(c>>16); break;
+//	    case 'e': /*  b in 4th byte */ s+= bitname(c>>24); break;
 //	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 //	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 //	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
