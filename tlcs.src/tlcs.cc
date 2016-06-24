@@ -1133,18 +1133,28 @@ cl_tlcs::exec_inst3_f0ix(uint8_t c1)
     case 0xA6: inst_sla(c); break; // SLL (ix+d)
     case 0xA7: inst_srl(c); break; // SRL (ix+d)
     default:
-      if ((c3 & 0xfc) == 0x14) //@ ADD ix,(jx+d)
-	;
+      if ((c3 & 0xfc) == 0x14) // ADD ix,(jx+d)
+	{
+	  uint16_t *rp= aof_reg16_ix(c3);
+	  uint16_t op= mem16ixd(c1, d);
+	  *rp= op_add16(*rp, op);
+	}
       else
 	switch (c3 & 0xf8)
 	  {
-	  case 0x18: break; //@ TSET b,(ix+d)
-	  case 0x28: break; //@ LD r,(ix+d)
-	  case 0x48: break; //@ LD rr,(ix+d)
-	  case 0x50: break; //@ EX (ix+d),rr
-	  case 0xa8: break; //@ BIT b,(ix+d)
-	  case 0xb0: break; //@ RES b,(ix+d)
-	  case 0xb8: break; //@ SET b,(ix+d)
+	  case 0x18: inst_tset(c, c3); break; // TSET b,(ix+d)
+	  case 0x28: *aof_reg8(c3)= c->read(); break; // LD r,(ix+d)
+	  case 0x48: *aof_reg16_rr(c3)= mem16ixd(c1, d); break; // LD rr,(ix+d)
+	  case 0x50: // EX (ix+d),rr
+	    {
+	      uint16_t temp= mem16ixd(c1, d);
+	      uint16_t *ra= aof_reg16_rr(c3);
+	      write16ixd(c1, d, *ra);
+	      *ra= temp;
+	    }
+	  case 0xa8: inst_bit(c, c3); break; // BIT b,(ix+d)
+	  case 0xb0: inst_res(c, c3); break; // RES b,(ix+d)
+	  case 0xb8: inst_set(c, c3); break; // SET b,(ix+d)
 	  }
       break;
     }
@@ -1429,6 +1439,21 @@ cl_tlcs::write16gg(uint8_t gg, uint16_t val)
   if ((gg&7) == 4)
     as = xas;
   if ((gg&7) == 5)
+    as= yas;
+  as->write(addr, val & 0xff);
+  as->write(addr+1, val / 256);
+}
+
+
+void
+cl_tlcs::write16ixd(uint8_t ix, int8_t d, uint16_t val)
+{
+  cl_address_space *as= nas;
+  uint16_t addr= *aof_reg16_ix(ix) + d;
+  
+  if ((ix&3) == 0)
+    as = xas;
+  if ((ix&3) == 1)
     as= yas;
   as->write(addr, val & 0xff);
   as->write(addr+1, val / 256);

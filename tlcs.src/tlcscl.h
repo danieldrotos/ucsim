@@ -223,6 +223,7 @@ class cl_tlcs: public cl_uc
   virtual uint16_t mem16ixd(uint8_t ix, int8_t d);
   virtual void write16(t_addr addr, uint16_t val);
   virtual void write16gg(uint8_t gg, uint16_t val);
+  virtual void write16ixd(uint8_t ix, int8_t d, uint16_t val);
   virtual bool flag(enum tlcs_flags f);
   virtual bool cc(uint8_t cc);
   
@@ -299,8 +300,8 @@ class cl_tlcs: public cl_uc
   virtual uint16_t op_xor_hl(t_addr addr);		// XOR HL,mem
   virtual uint16_t op_or_hl(t_mem val);			// OR HL,16-bit
   virtual uint16_t op_or_hl(t_addr addr);		// OR HL,mem
-  virtual uint16_t op_add16(t_mem op1, t_mem op2);		// ADD 16-bit
-  virtual uint16_t op_sub16(t_mem op1, t_mem op2);		// SUB 16-bit
+  virtual uint16_t op_add16(t_mem op1, t_mem op2);	// ADD 16-bit
+  virtual uint16_t op_sub16(t_mem op1, t_mem op2);	// SUB 16-bit
 
   // (6) cpu control and others
   virtual int inst_daa_a();		// 0b

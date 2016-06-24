@@ -59,9 +59,9 @@
 -87	n					INC (0ffn)
 -8F	n					DEC (0ffn)
 
-90+rr						INC rr
+-90+rr						INC rr
 -97	n					INCW (0ffn)
-98+rr						DEC rr
+-98+rr						DEC rr
 -9F	n					DECW (0ffn)
 
 C0+cc	d					JR [cc,]$+2+d
@@ -210,11 +210,11 @@ EF	w	6F	n			CP (0ffw),n
 -F0+ix	d	11				RRD (ix+d)
 -F0+ix	d	12				MUL HL,(ix+d)
 -F0+ix	d	13				DIV HL,(ix+d)
-F0+jx	d	14+ix				ADD ix,(jx+d)
-F0+ix	d	18+b				TSET b,(ix+d)
-F0+ix	d	28+r				LD r,(ix+d)
-F0+ix	d	48+rr				LD rr,(ix+d)
-F0+ix	d	50+rr				EX (ix+d),rr
+-F0+jx	d	14+ix				ADD ix,(jx+d)
+-F0+ix	d	18+b				TSET b,(ix+d)
+-F0+ix	d	28+r				LD r,(ix+d)
+-F0+ix	d	48+rr				LD rr,(ix+d)
+-F0+ix	d	50+rr				EX (ix+d),rr
 -F0+ix	d	60				ADD A,(ix+d)
 -F0+ix	d	61				ADC A,(ix+d)
 -F0+ix	d	62				SUB A,(ix+d)
@@ -243,9 +243,9 @@ F0+ix	d	50+rr				EX (ix+d),rr
 -F0+ix	d	A5				SRA (ix+d)
 -F0+ix	d	A6				SLL (ix+d)
 -F0+ix	d	A7				SRL (ix+d)
-F0+ix	d	A8+b				BIT b,(ix+d)
-F0+ix	d	B0+b				RES b,(ix+d)
-F0+ix	d	B8+b				SET b,(ix+d)
+-F0+ix	d	A8+b				BIT b,(ix+d)
+-F0+ix	d	B0+b				RES b,(ix+d)
+-F0+ix	d	B8+b				SET b,(ix+d)
 
 -F3	10					RLD (HL+A)
 -F3	11					RRD (HL+A)
