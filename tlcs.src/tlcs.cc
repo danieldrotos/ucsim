@@ -411,7 +411,8 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)((c>>8)&0xff));s+= l; break;
-	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
+	    case 'N': /*  n in 3rd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
+	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
 	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+((c>>8)&0xff))); s+= l; break;
 	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
@@ -533,6 +534,7 @@ cl_tlcs::exec_inst(void)
     case 0x1f: res= inst_reti(); break;
     case 0xe7: res= exec_inst3_e7(c1, fetch(), fetch()); break;
     case 0xe3: res= exec_inst4_e3(c1, fetch(), fetch(), fetch()); break;
+    case 0xef: res= exec_inst4_ef(c1, fetch(), fetch()); break;
     default:
       {
 	switch (c1 & 0xfc) // c1= XX+ix
@@ -1261,6 +1263,42 @@ cl_tlcs::exec_inst4_e3(uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4)
 	    res= resINV_INST;
 	    break;
 	  }
+    }
+  
+  return res;
+}
+
+/* EF n|w X n
+ */
+
+int
+cl_tlcs::exec_inst4_ef(uint8_t c1, uint8_t c2, uint8_t c3)
+{
+  int res= resGO;
+  uint8_t n;
+  cl_memory_cell *wc= cell_n(c2);
+  uint8_t wd= wc->read();
+  
+  switch (c3)
+    {
+    case 0x68: n= fetch(); wc->write(op_add8(wd, n)); break; // ADD (0ffw),n
+    case 0x69: n= fetch(); wc->write(op_adc8(wd, n)); break; // ADC (0ffw),n
+    case 0x6a: n= fetch(); wc->write(op_sub8(wd, n)); break; // SUB (0ffw),n
+    case 0x6b: n= fetch(); wc->write(op_sbc8(wd, n)); break; // SBC (0ffw),n
+    case 0x6c: n= fetch(); wc->write(op_and8(wd, n)); break; // AND (0ffw),n
+    case 0x6d: n= fetch(); wc->write(op_xor8(wd, n)); break; // XOR (0ffw),n
+    case 0x6e: n= fetch(); wc->write(op_or8(wd, n)); break; // OR (0ffw),n
+    case 0x6f: n= fetch(); op_cp8(wd, n); break; // CP (0ffw),n
+    default:
+      switch (c3 & 0xf8) // EF n XX+r
+	{
+	case 0x20: wc->write(*aof_reg8(c3)); break; // LD (0ffn),r
+	case 0x40: write16(0xff00+c2, *aof_reg16_rr(c3)); break; // LD (0ffn),rr
+	default:
+	  res= resINV_INST;
+	  break;
+	}
+      break;
     }
   
   return res;

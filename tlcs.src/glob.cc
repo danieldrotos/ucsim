@@ -156,6 +156,17 @@ struct dis_entry disass_tlcs[]= {
   { 0x9700, 0xff00, 'n', 2, "INCW (0xff%n)" },
   { 0x9F00, 0xff00, 'n', 2, "DECW (0xff%n)" },
 
+  { 0x006800ef, 0x00ff00ff, ' ', 4, "ADD (0xff%n),%o" },
+  { 0x006900ef, 0x00ff00ff, ' ', 4, "ADC (0xff%n),%o" },
+  { 0x006a00ef, 0x00ff00ff, ' ', 4, "SUB (0xff%n),%o" },
+  { 0x006b00ef, 0x00ff00ff, ' ', 4, "SBC (0xff%n),%o" },
+  { 0x006c00ef, 0x00ff00ff, ' ', 4, "AND (0xff%n),%o" },
+  { 0x006d00ef, 0x00ff00ff, ' ', 4, "XOR (0xff%n),%o" },
+  { 0x006e00ef, 0x00ff00ff, ' ', 4, "OR (0xff%n),%o" },
+  { 0x006f00ef, 0x00ff00ff, ' ', 4, "CP (0xff%n),%o" },
+  { 0x2000ef, 0xf800ff, ' ', 3, "LD (0xff%n),%t" },
+  { 0x4000ef, 0xf800ff, ' ', 3, "LD (0xff%n),%u" },
+  
   { 0x14f3, 0xfcff, 'i', 2, "ADD %i,(HL+A)" },
   { 0x18f3, 0xf8ff, 'b', 2, "TSET %b,(HL+A)" },
   { 0x28f3, 0xf8ff, 'p', 2, "LD %p,(HL+A)" },
@@ -419,6 +430,7 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 //	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
 //	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
+//	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
 //	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xff)); s+= l; break;
 //	    case 'D': /* cd in 2,3 byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xffff)); s+= l; break;
 //	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;

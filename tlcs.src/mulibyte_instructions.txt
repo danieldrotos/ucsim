@@ -196,16 +196,16 @@ EB	w	v	6F	n		CP (vw),n
 EB	n	m	C0+cc			JP cc,mn
 EB	n	m	D0+cc			CALL cc,mn
 
-EF	n	20+r				LD (0ffn),r
-EF	n	40+rr				LD (0ffn),rr
-EF	w	68	n			ADD (0ffw),n
-EF	w	69	n			ADC (0ffw),n
-EF	w	6A	n			SUB (0ffw),n
-EF	w	6B	n			SBC (0ffw),n
-EF	w	6C	n			AND (0ffw),n
-EF	w	6D	n			XOR (0ffw),n
-EF	w	6E	n			OR (0ffw),n
-EF	w	6F	n			CP (0ffw),n
+-EF	n	20+r				LD (0ffn),r
+-EF	n	40+rr				LD (0ffn),rr
+-EF	w	68	n			ADD (0ffw),n
+-EF	w	69	n			ADC (0ffw),n
+-EF	w	6A	n			SUB (0ffw),n
+-EF	w	6B	n			SBC (0ffw),n
+-EF	w	6C	n			AND (0ffw),n
+-EF	w	6D	n			XOR (0ffw),n
+-EF	w	6E	n			OR (0ffw),n
+-EF	w	6F	n			CP (0ffw),n
 
 -F0+ix	d	10				RLD (ix+d)
 -F0+ix	d	11				RRD (ix+d)
