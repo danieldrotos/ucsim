@@ -504,7 +504,7 @@ cl_tlcs::print_regs(class cl_console_base *con)
 int
 cl_tlcs::exec_inst(void)
 {
-  t_mem c1;//, c2, c3, c4, c5, c6;
+  t_mem c1, c2, c3, c4;//, c5, c6;
   //t_addr instPC= PC;
   int res= resGO;
   
@@ -538,10 +538,28 @@ cl_tlcs::exec_inst(void)
     case 0xa7: reg.a= op_srl(reg.a, false); break; // SRLA
     case 0x1e: res= inst_ret(); break;
     case 0x1f: res= inst_reti(); break;
-    case 0xe7: res= exec_inst3_e7(c1, fetch(), fetch()); break;
-    case 0xe3: res= exec_inst4_e3(c1, fetch(), fetch(), fetch()); break;
-    case 0xef: res= exec_inst4_ef(c1, fetch(), fetch()); break;
-    case 0xeb: res= exec_inst4_eb(c1, fetch(), fetch(), fetch()); break;
+    case 0xe7:
+      c2= fetch();
+      c3= fetch();
+      res= exec_inst3_e7(c1, c2, c3);
+      break;
+    case 0xe3:
+      c2= fetch();
+      c3= fetch();
+      c4= fetch();
+      res= exec_inst4_e3(c1, c2, c3, c4);
+      break;
+    case 0xef:
+      c2= fetch();
+      c3= fetch();
+      res= exec_inst4_ef(c1, c2, c3);
+      break;
+    case 0xeb:
+      c2= fetch();
+      c3= fetch();
+      c4= fetch();
+      res= exec_inst4_eb(c1, c2, c3, c4);
+      break;
     default:
       {
 	switch (c1 & 0xfc) // c1= XX+ix
@@ -549,11 +567,16 @@ cl_tlcs::exec_inst(void)
 	  case 0x14: // ADD ix,mn
 	    {
 	      uint16_t *ra= aof_reg16_ix(c1);
-	      uint8_t c2= fetch(), c3= fetch();
+	      c2= fetch();
+	      c3= fetch();
 	      *ra= op_add16(*ra, c3*256 + c2);
 	      break;
 	    }
-	  case 0xf4: res= exec_inst4_f4ix(c1, fetch(), fetch()); break; // F4+ix d XX [n [m]]
+	  case 0xf4: // F4+ix d XX [n [m]]
+	      c2= fetch();
+	      c3= fetch();
+	    res= exec_inst4_f4ix(c1, c2, c3);
+	    break;
 	  case 0xf0: res= exec_inst3_f0ix(c1); break; // F0+ix d XX
 	  default:
 	    switch (c1 & 0xf8) // c1= XX+r,rr,...
@@ -561,7 +584,11 @@ cl_tlcs::exec_inst(void)
 		// r, g, etc coded in single byte instruction
 	      case 0x20: reg.a= *aof_reg8(c1); break; // LD A,r
 	      case 0x28: *aof_reg8(c1)= reg.a; break; // LD r,A
-	      case 0x38: *aof_reg16_rr(c1)= fetch() + fetch()*256; break; // LD rr,mn
+	      case 0x38: // LD rr,mn
+		c2= fetch();
+		c3= fetch();
+		*aof_reg16_rr(c1)= c2 + c3*256;
+		break;
 	      case 0x40: reg.hl= *aof_reg16_rr(c1); break; // LD HL,rr
 	      case 0x48: *aof_reg16_rr(c1)= reg.hl; break; // LD rr,HL
 	      case 0x50: exec_push(PC-1, *aof_reg16_qq(c1)); break; // PUSH qq
