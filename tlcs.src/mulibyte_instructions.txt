@@ -21,6 +21,7 @@
 -3F	w	n	m			LDW (0ffw),mn
 
 -47	n					LD HL,(0ffn)
+-4F	n					LD (0ffn),HL
 
 -60	n					ADD A,(0ffn)
 -61	n					ADC A,(0ffn)
@@ -63,6 +64,12 @@
 -97	n					INCW (0ffn)
 -98+rr						DEC rr
 -9F	n					DECW (0ffn)
+
+A8+b	n					BIT b,(0ffn)
+
+B0+b	n					RES b,(0ffn)
+
+B8+b	n					SET b,(0ffn)
 
 -C0+cc	d					JR [cc,]$+2+d
 
@@ -289,11 +296,11 @@
 -F3	B0+b					RES b,(HL+A)
 -F3	B8+b					SET b,(HL+A)
 
-F4+ix	d	20+r				LD (ix+d),r
-F4+ix	d	37	n			LD (ix+d),n
-F4+ix	d	38+rr				LDA rr,ix+d
-F4+ix	d	3F	n	m		LDW (ix+d),mn
-F4+ix	d	40+rr				LD (ix+d),rr
+-F4+ix	d	20+r				LD (ix+d),r
+-F4+ix	d	37	n			LD (ix+d),n
+-F4+ix	d	38+rr				LDA rr,ix+d
+-F4+ix	d	3F	n	m		LDW (ix+d),mn
+-F4+ix	d	40+rr				LD (ix+d),rr
 F4+ix	d	68	n			ADD (ix+d),n
 F4+ix	d	69	n			ADC (ix+d),n
 F4+ix	d	6A	n			SUB (ix+d),n

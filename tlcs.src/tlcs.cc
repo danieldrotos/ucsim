@@ -411,6 +411,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 	    case 'f': /* cc in 4th byte */ s+= condname_cc(c>>24); break; // with ,
+	    case 'F': /* cc in 3rd byte */ s+= condname_cc(c>>16); break; // with ,
 	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)((c>>8)&0xff));s+= l; break;
 	    case 'N': /*  n in 3rd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
@@ -418,6 +419,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+((c>>8)&0xff))); s+= l; break;
 	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
+	    case 'X': /* mn in 4,5 byte */ snprintf(l,19,"0x%04x",(int)((c>>24)&0xffff)); s+= l; break;
 	    case 'x': /* mn in 5,6 byte */ snprintf(l,19,"0x%04x",(int)((c>>32)&0xffff)); s+= l; break;
 	    default: s+= '?'; break;
 	    }
@@ -550,6 +552,7 @@ cl_tlcs::exec_inst(void)
 	      *ra= op_add16(*ra, c3*256 + c2);
 	      break;
 	    }
+	  case 0xf4: res= exec_inst4_f4ix(c1, fetch(), fetch()); break; // F4+ix d XX [n [m]]
 	  case 0xf0: res= exec_inst3_f0ix(c1); break; // F0+ix d XX
 	  default:
 	    switch (c1 & 0xf8) // c1= XX+r,rr,...
@@ -604,6 +607,7 @@ cl_tlcs::exec_inst2(uint8_t c1)
     case 0x27: reg.a= n->read(); break; // LD A,(0ffn)
     case 0x2F: n->write(reg.a); break; // LD (0ffn),A
     case 0x47: reg.hl= mem16(0xff00 + c2); break; // LD HL,(0ffn)
+    case 0x4f: write16(0xff00+c2, reg.hl); break; // LD (0xffn),HL
     case 0x60: inst_add_a(n); break; // ADD A,(0ffn)
     case 0x61: inst_adc_a(n); break; // ADC A,(0ffn)
     case 0x62: inst_sub_a(n); break; // SUB A,(0ffn)
@@ -646,6 +650,9 @@ cl_tlcs::exec_inst2(uint8_t c1)
       switch (c1 & 0x07)
 	{
 	case 0x30: *aof_reg8(c1)= c2; break; // LD r,n
+	case 0xa8: break; //@ BIT b,(0ffn)
+	case 0xb0: break; //@ RES b,(0ffn)
+	case 0xb8: break; //@ SET b,(0ffn)
 	case 0xe0: // e0+gg
 	  res= exec_inst2_e0gg(c1, c2);
 	  break;
@@ -1246,7 +1253,7 @@ cl_tlcs::exec_inst4_e3(uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4)
     case 0xa7: inst_srl(c); break; // SRL (mn)
     default:
       if ((c4 & 0xfc) == 0x14) // ADD ix,(mn)
-	;
+	*aof_reg16_ix(c4)= op_add16(*aof_reg16_ix(c4), mem16(mn));
       else
 	switch (c4 & 0xf8)
 	  {
@@ -1342,6 +1349,52 @@ cl_tlcs::exec_inst4_eb(uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4)
 	    {
 	    case 0xc0: if (cc(c4)) PC= vw23; break; // JP cc,mn
 	    case 0xd0: if (cc(c4)) inst_call(PC-4, vw23); break; // CALL cc,mn
+	    default:
+	      res= resINV_INST;
+	      break;
+	    }
+	  break;
+	}
+      break;
+    }
+  
+  return res;
+}
+
+/*                                                                    F4+ix d XX [n [m]]
+ */
+
+int
+cl_tlcs::exec_inst4_f4ix(uint8_t c1, uint8_t c2, uint8_t c3)
+{
+  int res= resGO;
+  int8_t d= c2;
+  uint8_t n;
+  cl_memory_cell *c= cell_ixd(c1, d);
+  
+  switch (c3)
+    {
+    case 0x37: n= fetch(); c->write(n); break; // LD (ix+d),n
+    case 0x3f: n= fetch(); write16ixd(c1, d, n+fetch()*256); break; // LDW (ix+d),mn
+    case 0x60: n= fetch(); break; //@ ADD (ix+d),n
+    case 0x61: n= fetch(); break; //@ ADC (ix+d),n
+    case 0x62: n= fetch(); break; //@ SUB (ix+d),n
+    case 0x63: n= fetch(); break; //@ SBC (ix+d),n
+    case 0x64: n= fetch(); break; //@ AND (ix+d),n
+    case 0x65: n= fetch(); break; //@ XOR (ix+d),n
+    case 0x66: n= fetch(); break; //@ OR (ix+d),n
+    case 0x67: n= fetch(); break; //@ CP (ix+d),n
+    default:
+      switch (c3 & 0xf0)
+	{
+	case 0xc0: break; //@ JP [cc,]ix+d
+	case 0xd0: break; //@ CALL [cc,]ix+d
+	default:
+	  switch (c3 & 0xf8)
+	    {
+	    case 0x20: c->write(*aof_reg8(c3)); break; // LD (ix+d),r
+	    case 0x38: *aof_reg16_rr(c3)= *aof_reg16_ix(c1)+d; break; // LDA rr,ix+d
+	    case 0x40: write16ixd(c1, d, *aof_reg16_rr(c3)); break; // LD (ix+d),rr
 	    default:
 	      res= resINV_INST;
 	      break;
