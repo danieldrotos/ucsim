@@ -675,7 +675,7 @@ cl_tlcs::exec_inst2(uint8_t c1)
       break;
     default:
       // now handle cases where first byte is not fix
-      switch (c1 & 0x07)
+      switch (c1 & 0xf8)
 	{
 	case 0x30: *aof_reg8(c1)= c2; break; // LD r,n
 	case 0xa8: inst_bit(n, c1); break; // BIT b,(0ffn)
