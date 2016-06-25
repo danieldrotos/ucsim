@@ -156,6 +156,9 @@ struct dis_entry disass_tlcs[]= {
   { 0x0097, 0x00ff, 'n', 2, "INCW (0xff%n)" },
   { 0x009F, 0x00ff, 'n', 2, "DECW (0xff%n)" },
 
+  { 0x0030, 0x00f8, ' ', 2, "LD %r,%n" },
+  { 0x00c0, 0x00f0, ' ', 2, "JR %y%d" },
+    
   { 0x006800ef, 0x00ff00ff, ' ', 4, "ADD (0xff%n),%o" },
   { 0x006900ef, 0x00ff00ff, ' ', 4, "ADC (0xff%n),%o" },
   { 0x006a00ef, 0x00ff00ff, ' ', 4, "SUB (0xff%n),%o" },
@@ -461,6 +464,7 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
 //	    case 'B': /*  b in 3rd byte */ s+= bitname(c>>16); break;
 //	    case 'e': /*  b in 4th byte */ s+= bitname(c>>24); break;
+//	    case 'y': /* cc in 1st byte */ s+= condname_cc(c); break; // with ,
 //	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 //	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 //	    case 'F': /* cc in 3rd byte */ s+= condname_cc(c>>16); break; // with ,

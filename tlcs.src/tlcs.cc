@@ -409,6 +409,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
 	    case 'B': /*  b in 3rd byte */ s+= bitname(c>>16); break;
 	    case 'e': /*  b in 4th byte */ s+= bitname(c>>24); break;
+	    case 'y': /* cc in 1st byte */ s+= condname_cc(c); break; // with ,
 	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
 	    case 'f': /* cc in 4th byte */ s+= condname_cc(c>>24); break; // with ,
@@ -417,7 +418,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'N': /*  n in 3rd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
 	    case 'O': /*  n in 5th byte */ snprintf(l,19,"%02x",(int)((c>>32)&0xff));s+= l; break;
-	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+((c>>8)&0xff))); s+= l; break;
+	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+int8_t((c>>8)&0xff))); s+= l; break;
 	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
 	    case 'X': /* mn in 4,5 byte */ snprintf(l,19,"0x%04x",(int)((c>>24)&0xffff)); s+= l; break;
@@ -538,6 +539,17 @@ cl_tlcs::exec_inst(void)
     case 0xa7: reg.a= op_srl(reg.a, false); break; // SRLA
     case 0x1e: res= inst_ret(); break;
     case 0x1f: res= inst_reti(); break;
+    case 0x37:  // LD (0ffw),n
+      c2= fetch();
+      c3= fetch();
+      cell_n(c2)->write(c3);
+      break;
+    case 0x3F: // LDW (0ffw),mn
+      c2= fetch();
+      c3= fetch();
+      c4= fetch();
+      write16(0xff00+c2, c4*256 + c3);
+      break;
     case 0xe7:
       c2= fetch();
       c3= fetch();
@@ -1071,7 +1083,7 @@ int
 cl_tlcs::exec_inst3(uint8_t c1, uint8_t c2)
 {
   int res= resGO;
-  uint8_t c3= fetch(), c4;
+  uint8_t c3= fetch();
   
   switch (c1)
     {
@@ -1080,8 +1092,6 @@ cl_tlcs::exec_inst3(uint8_t c1, uint8_t c2)
     case 0x1b: PC+= int16_t(c3*256 + c2); break; // JRL $+2+cd
     case 0x1c: inst_call(PC-3, c3*256 + c2); break; // CALL mn
     case 0x1d: inst_call(PC-3, PC + int16_t(c3*256 + c2)); break; // CALR $+2+cd
-    case 0x37: cell_n(c2)->write(c3); break; // LD (0ffw),n
-    case 0x3F: c4= fetch(); write16(0xff00+c2, c4*256 + c3); break; // LDW (0ffw),mn
     case 0x78: reg.hl= op_add_hl((t_mem)(c3*256+c2)); break; // ADD HL,mn
     case 0x79: reg.hl= op_adc_hl((t_mem)(c3*256+c2)); break; // ADC HL,mn
     case 0x7a: reg.hl= op_sub_hl((t_mem)(c3*256+c2)); break; // SUB HL,mn
