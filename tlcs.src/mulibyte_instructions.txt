@@ -65,11 +65,11 @@
 -98+rr						DEC rr
 -9F	n					DECW (0ffn)
 
-A8+b	n					BIT b,(0ffn)
+-A8+b	n					BIT b,(0ffn)
 
-B0+b	n					RES b,(0ffn)
+-B0+b	n					RES b,(0ffn)
 
-B8+b	n					SET b,(0ffn)
+-B8+b	n					SET b,(0ffn)
 
 -C0+cc	d					JR [cc,]$+2+d
 
@@ -301,16 +301,16 @@ B8+b	n					SET b,(0ffn)
 -F4+ix	d	38+rr				LDA rr,ix+d
 -F4+ix	d	3F	n	m		LDW (ix+d),mn
 -F4+ix	d	40+rr				LD (ix+d),rr
-F4+ix	d	68	n			ADD (ix+d),n
-F4+ix	d	69	n			ADC (ix+d),n
-F4+ix	d	6A	n			SUB (ix+d),n
-F4+ix	d	6B	n			SBC (ix+d),n
-F4+ix	d	6C	n			AND (ix+d),n
-F4+ix	d	6D	n			XOR (ix+d),n
-F4+ix	d	6E	n			OR (ix+d),n
-F4+ix	d	6F	n			CP (ix+d),n
-F4+ix	d	C0+cc				JP [cc,]ix+d
-F4+ix	d	D0+cc				CALL [cc,]ix+d
+-F4+ix	d	68	n			ADD (ix+d),n
+-F4+ix	d	69	n			ADC (ix+d),n
+-F4+ix	d	6A	n			SUB (ix+d),n
+-F4+ix	d	6B	n			SBC (ix+d),n
+-F4+ix	d	6C	n			AND (ix+d),n
+-F4+ix	d	6D	n			XOR (ix+d),n
+-F4+ix	d	6E	n			OR (ix+d),n
+-F4+ix	d	6F	n			CP (ix+d),n
+-F4+ix	d	C0+cc				JP [cc,]ix+d
+-F4+ix	d	D0+cc				CALL [cc,]ix+d
 
 -F7	20+r					LD (HL+A),r
 -F7	37	n				LD (HL+A),n

@@ -405,6 +405,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'i': /* ix in 2nd byte */ s+= regname_i(c>>8); break;
 	    case 'j': /* ix in 3rd byte */ s+= regname_i(c>>16); break;
 	    case 'J': /* ix in 4th byte */ s+= regname_i(c>>24); break;
+	    case 'a': /*  b in 1st byte */ s+= bitname(c); break;
 	    case 'b': /*  b in 2nd byte */ s+= bitname(c>>8); break;
 	    case 'B': /*  b in 3rd byte */ s+= bitname(c>>16); break;
 	    case 'e': /*  b in 4th byte */ s+= bitname(c>>24); break;
@@ -650,9 +651,9 @@ cl_tlcs::exec_inst2(uint8_t c1)
       switch (c1 & 0x07)
 	{
 	case 0x30: *aof_reg8(c1)= c2; break; // LD r,n
-	case 0xa8: break; //@ BIT b,(0ffn)
-	case 0xb0: break; //@ RES b,(0ffn)
-	case 0xb8: break; //@ SET b,(0ffn)
+	case 0xa8: inst_bit(n, c1); break; // BIT b,(0ffn)
+	case 0xb0: inst_res(n, c1); break; // RES b,(0ffn)
+	case 0xb8: inst_set(n, c1); break; // SET b,(0ffn)
 	case 0xe0: // e0+gg
 	  res= exec_inst2_e0gg(c1, c2);
 	  break;
@@ -1241,7 +1242,7 @@ cl_tlcs::exec_inst4_e3(uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4)
     case 0x77: op_sub_hl((t_addr)mn); break; // CP HL,(mn)
     case 0x87: inst_inc(c); break; // INC (mn)
     case 0x8f: inst_dec(c); break; // DEC (mn)
-    case 0x97: inst_inc16((t_addr)mn); break; //@ INCW (mn)
+    case 0x97: inst_inc16((t_addr)mn); break; // INCW (mn)
     case 0x9f: inst_dec16((t_addr)mn); break; // DECW (mn)
     case 0xa0: inst_rlc(c); break; // RLC (mn)
     case 0xa1: inst_rrc(c); break; // RRC (mn)
@@ -1376,19 +1377,19 @@ cl_tlcs::exec_inst4_f4ix(uint8_t c1, uint8_t c2, uint8_t c3)
     {
     case 0x37: n= fetch(); c->write(n); break; // LD (ix+d),n
     case 0x3f: n= fetch(); write16ixd(c1, d, n+fetch()*256); break; // LDW (ix+d),mn
-    case 0x60: n= fetch(); break; //@ ADD (ix+d),n
-    case 0x61: n= fetch(); break; //@ ADC (ix+d),n
-    case 0x62: n= fetch(); break; //@ SUB (ix+d),n
-    case 0x63: n= fetch(); break; //@ SBC (ix+d),n
-    case 0x64: n= fetch(); break; //@ AND (ix+d),n
-    case 0x65: n= fetch(); break; //@ XOR (ix+d),n
-    case 0x66: n= fetch(); break; //@ OR (ix+d),n
-    case 0x67: n= fetch(); break; //@ CP (ix+d),n
+    case 0x60: n= fetch(); c->write(op_add8(c->read(), n)); break; // ADD (ix+d),n
+    case 0x61: n= fetch(); c->write(op_adc8(c->read(), n)); break; // ADC (ix+d),n
+    case 0x62: n= fetch(); c->write(op_sub8(c->read(), n)); break; // SUB (ix+d),n
+    case 0x63: n= fetch(); c->write(op_sbc8(c->read(), n)); break; // SBC (ix+d),n
+    case 0x64: n= fetch(); c->write(op_and8(c->read(), n)); break; // AND (ix+d),n
+    case 0x65: n= fetch(); c->write(op_xor8(c->read(), n)); break; // XOR (ix+d),n
+    case 0x66: n= fetch(); c->write(op_or8(c->read(), n)); break; // OR (ix+d),n
+    case 0x67: n= fetch(); op_cp8(c->read(), n); break; // CP (ix+d),n
     default:
       switch (c3 & 0xf0)
 	{
-	case 0xc0: break; //@ JP [cc,]ix+d
-	case 0xd0: break; //@ CALL [cc,]ix+d
+	case 0xc0: if (cc(c3)) PC= *aof_reg16_ix(c1)+d; break; // JP [cc,]ix+d
+	case 0xd0: if (cc(c3)) inst_call(PC-4, *aof_reg16_ix(c1)+d); break; // CALL [cc,]ix+d
 	default:
 	  switch (c3 & 0xf8)
 	    {
