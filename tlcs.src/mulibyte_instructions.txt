@@ -181,10 +181,10 @@
 -E8+gg	C0+cc					JP [cc,]gg
 -E8+gg	D0+cc					CALL [cc,]gg
 
-EB	n	m	20+r			LD (mn),r
-EB	w	v	37	n		LD (vw),n
-EB	w	v	3F	n	m	LDW (vw),mn
-EB	n	m	40+rr			LD (mn),rr
+-EB	n	m	20+r			LD (mn),r
+-EB	w	v	37	n		LD (vw),n
+-EB	w	v	3F	n	m	LDW (vw),mn
+-EB	n	m	40+rr			LD (mn),rr
 EB	w	v	68	n		ADD (vw),n
 EB	w	v	69	n		ADC (vw),n
 EB	w	v	6A	n		SUB (vw),n
@@ -193,8 +193,8 @@ EB	w	v	6C	n		AND (vw),n
 EB	w	v	6D	n		XOR (vw),n
 EB	w	v	6E	n		OR (vw),n
 EB	w	v	6F	n		CP (vw),n
-EB	n	m	C0+cc			JP cc,mn
-EB	n	m	D0+cc			CALL cc,mn
+-EB	n	m	C0+cc			JP cc,mn
+-EB	n	m	D0+cc			CALL cc,mn
 
 -EF	n	20+r				LD (0ffn),r
 -EF	n	40+rr				LD (0ffn),rr

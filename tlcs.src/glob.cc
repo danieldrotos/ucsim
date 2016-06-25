@@ -185,6 +185,21 @@ struct dis_entry disass_tlcs[]= {
   { 0x5efe, 0xffff, ' ', 2, "CPD" },
   { 0x5ffe, 0xffff, ' ', 2, "CPDR" },
   { 0xf0fe, 0xf0ff, 'C', 2, "RET %C" },
+
+  {     0x200000eb,     0xf80000ff, ' ', 4, "LD (%M),%T" },
+  {   0x00370000eb,   0x00ff0000ff, ' ', 5, "LD (%M),%O" },
+  { 0x00003F0000eb, 0x0000ff0000ff, ' ', 6, "LDW (%M),%x" },
+  {     0x400000eb,     0xf80000ff, ' ', 4, "LD (%M),%U" },
+  {   0x00680000eb,   0x00ff0000ff, ' ', 5, "ADD (%M),%O" },
+  {   0x00690000eb,   0x00ff0000ff, ' ', 5, "ADC (%M),%O" },
+  {   0x006A0000eb,   0x00ff0000ff, ' ', 5, "SUB (%M),%O" },
+  {   0x006B0000eb,   0x00ff0000ff, ' ', 5, "SBC (%M),%O" },
+  {   0x006C0000eb,   0x00ff0000ff, ' ', 5, "AND (%M),%O" },
+  {   0x006D0000eb,   0x00ff0000ff, ' ', 5, "XOR (%M),%O" },
+  {   0x006E0000eb,   0x00ff0000ff, ' ', 5, "OR (%M),%O" },
+  {   0x006F0000eb,   0x00ff0000ff, ' ', 5, "CP (%M),%O" },
+  {     0xC00000eb,   0x00f00000ff, ' ', 4, "JP %f%M" },
+  {     0xD00000eb,   0x00f00000ff, ' ', 4, "CALL %f%M" },
   
   { 0x20f7, 0xf8ff, 'p', 2, "LD (HL+A),%p" },
   { 0x38f7, 0xf8ff, 's', 2, "LDA %s,HL+A" },
@@ -428,12 +443,15 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'e': /*  b in 4th byte */ s+= bitname(c>>24); break;
 //	    case 'c': /* cc in 2nd byte */ s+= condname_cc(c>>8); break; // with ,
 //	    case 'C': /* cc in 2nd byte */ s+= condname_C(c>>8); break; // without ,
+//	    case 'f': /* cc in 4th byte */ s+= condname_cc(c>>24); break; // with ,
 //	    case 'n': /*  n in 2nd byte */ snprintf(l,19,"%02x",(int)(c>>8));s+= l; break;
 //	    case 'N': /*  n in 3dd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 //	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
+//	    case 'O': /*  n in 5th byte */ snprintf(l,19,"%02x",(int)((c>>32)&0xff));s+= l; break;
 //	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xff)); s+= l; break;
 //	    case 'D': /* cd in 2,3 byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xffff)); s+= l; break;
 //	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 //	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x04x",(int)((c>>16)&0xffff)); s+= l; break;
+//	    case 'x': /* mn in 5,6 byte */ snprintf(l,19,"0x%04x",(int)((c>>32)&0xffff)); s+= l; break;
 
 /* End of tlcs.src/glob.cc */
