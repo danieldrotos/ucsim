@@ -419,6 +419,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
 	    case 'O': /*  n in 5th byte */ snprintf(l,19,"%02x",(int)((c>>32)&0xff));s+= l; break;
 	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+int8_t((c>>8)&0xff))); s+= l; break;
+	    case 'D': /* cd in 2,3 byte */ snprintf(l,19,"0x%04x",(int)(addr+3+int16_t((c>>8)&0xffff))); s+= l; break;	      
 	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
 	    case 'X': /* mn in 4,5 byte */ snprintf(l,19,"0x%04x",(int)((c>>24)&0xffff)); s+= l; break;
@@ -556,6 +557,7 @@ cl_tlcs::exec_inst(void)
     case 0xa5: reg.a= op_sra(reg.a, false); break; // SRAA
     case 0xa6: reg.a= op_sla(reg.a, false); break; // SLLA (=SLAA)
     case 0xa7: reg.a= op_srl(reg.a, false); break; // SRLA
+    case 0xff: res= inst_swi(); break;
     case 0xe3:
       c2= fetch();
       c3= fetch();
@@ -590,7 +592,6 @@ cl_tlcs::exec_inst(void)
       c2= fetch();
       res= exec_inst2_fe(c2);
       break;
-    case 0xff: res= inst_swi(); break;
     default:
       {
 	switch (c1 & 0xfc) // c1= XX+ix

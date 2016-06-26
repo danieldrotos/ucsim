@@ -45,10 +45,13 @@ struct dis_entry disass_tlcs[]= {
   { 0x0e, 0xff, ' ', 1, "CCF" },
   { 0x10, 0xff, ' ', 1, "CPL A" },
   { 0x11, 0xff, ' ', 1, "NEG A" },
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  { 0xff, 0xff, ' ', 1, "SWI", true },
+  { 0x000017, 0x0000ff, 'D', 3, "LDAR HL,%D" },
+  { 0x1e, 0xff, ' ', 1, "RET" },
+  { 0x1f, 0xff, ' ', 1, "RETI" },
+  { 0x000037, 0x0000ff, 'n', 3, "LD (0xff%n),%N" },
+  { 0x00003f, 0x0000ff, 'm', 3, "LDW (0xff%n),%m" },
+  { 0x0097, 0x00ff, 'n', 2, "INCW (0xff%n)" },
+  { 0x009F, 0x00ff, 'n', 2, "DECW (0xff%n)" },
   { 0xa0, 0xff, ' ', 1, "RLCA" },
   { 0xa1, 0xff, ' ', 1, "RRCA" },
   { 0xa2, 0xff, ' ', 1, "RLA" },
@@ -57,11 +60,86 @@ struct dis_entry disass_tlcs[]= {
   { 0xa5, 0xff, ' ', 1, "SRAA" },
   { 0xa6, 0xff, ' ', 1, "SLLA" },
   { 0xa7, 0xff, ' ', 1, "SRLA" },
-  { 0x1e, 0xff, ' ', 1, "RET" },
-  { 0x1f, 0xff, ' ', 1, "RETI" },
+  { 0xff, 0xff, ' ', 1, "SWI", true },
+  /* E3 group */
+  { 0x100000e3, 0xff0000ff, ' ', 4, "RLD (%M)" },
+  { 0x110000e3, 0xff0000ff, ' ', 4, "RRD (%M)" },
+  { 0x120000e3, 0xff0000ff, ' ', 4, "MUL HL,(%M)" },
+  { 0x130000e3, 0xff0000ff, ' ', 4, "DIV HL,(%M)" },
+  { 0x600000e3, 0xff0000ff, ' ', 4, "ADD A,(%M)" },
+  { 0x610000e3, 0xff0000ff, ' ', 4, "ADC A,(%M)" },
+  { 0x620000e3, 0xff0000ff, ' ', 4, "SUB A,(%M)" },
+  { 0x630000e3, 0xff0000ff, ' ', 4, "SBC A,(%M)" },
+  { 0x640000e3, 0xff0000ff, ' ', 4, "AND A,(%M)" },
+  { 0x650000e3, 0xff0000ff, ' ', 4, "XOR A,(%M)" },
+  { 0x660000e3, 0xff0000ff, ' ', 4, "OR A,(%M)" },
+  { 0x670000e3, 0xff0000ff, ' ', 4, "CP A,(%M)" },
+  { 0x700000e3, 0xff0000ff, ' ', 4, "ADD HL,(%M)" },
+  { 0x710000e3, 0xff0000ff, ' ', 4, "ADC HL,(%M)" },
+  { 0x720000e3, 0xff0000ff, ' ', 4, "SUB HL,(%M)" },
+  { 0x730000e3, 0xff0000ff, ' ', 4, "SBC HL,(%M)" },
+  { 0x740000e3, 0xff0000ff, ' ', 4, "AND HL,(%M)" },
+  { 0x750000e3, 0xff0000ff, ' ', 4, "XOR HL,(%M)" },
+  { 0x760000e3, 0xff0000ff, ' ', 4, "OR HL,(%M)" },
+  { 0x770000e3, 0xff0000ff, ' ', 4, "CP HL,(%M)" },
+  { 0x870000e3, 0xff0000ff, ' ', 4, "INC (%M)" },
+  { 0x8F0000e3, 0xff0000ff, ' ', 4, "DEC (%M)" },
+  { 0x970000e3, 0xff0000ff, ' ', 4, "INCW (%M)" },
+  { 0x9F0000e3, 0xff0000ff, ' ', 4, "DECW (%M)" },
+  { 0xA00000e3, 0xff0000ff, ' ', 4, "RLC (%M)" },
+  { 0xA10000e3, 0xff0000ff, ' ', 4, "RRC (%M)" },
+  { 0xA20000e3, 0xff0000ff, ' ', 4, "RL (%M)" },
+  { 0xA30000e3, 0xff0000ff, ' ', 4, "RR (%M)" },
+  { 0xA40000e3, 0xff0000ff, ' ', 4, "SLA (%M)" },
+  { 0xA50000e3, 0xff0000ff, ' ', 4, "SRA (%M)" },
+  { 0xA60000e3, 0xff0000ff, ' ', 4, "SLL (%M)" },
+  { 0xA70000e3, 0xff0000ff, ' ', 4, "SRL (%M)" },
+  { 0x140000e3, 0xfc0000ff, ' ', 4, "ADD %J,(%M)" },
+  { 0x180000e3, 0xf80000ff, ' ', 4, "TSET %e,(%M)" },
+  { 0x280000e3, 0xf80000ff, ' ', 4, "LD %T,(%M)" },
+  { 0x480000e3, 0xf80000ff, ' ', 4, "LD %U,(nm)" },
+  { 0x500000e3, 0xf80000ff, ' ', 4, "ex (%M),rr" },
+  { 0xA80000e3, 0xf80000ff, ' ', 4, "BIT %e,(%M)" },
+  { 0xB00000e3, 0xf80000ff, ' ', 4, "RES %e,(%M)" },
+  { 0xB80000e3, 0xf80000ff, ' ', 4, "SET %e,(%M)" }, 
+  /* E7 group */
+  { 0x1000e7, 0xff00ff, 'n', 3, "RLD (0xff%n)" },
+  { 0x1100e7, 0xff00ff, 'n', 3, "RRD (0xff%n)" },
+  { 0x1200e7, 0xff00ff, 'n', 3, "MUL HL,(0xff%n)" },
+  { 0x1300e7, 0xff00ff, 'n', 3, "DIV HL,(0xff%n)" },
+  { 0xA000e7, 0xff00ff, 'n', 3, "RLC (0xff%n)" },
+  { 0xA100e7, 0xff00ff, 'n', 3, "RRC (0xff%n)" },
+  { 0xA200e7, 0xff00ff, 'n', 3, "RL (0xff%n)" },
+  { 0xA300e7, 0xff00ff, 'n', 3, "RR (0xff%n)" },
+  { 0xA400e7, 0xff00ff, 'n', 3, "SLA (0xff%n)" },
+  { 0xA500e7, 0xff00ff, 'n', 3, "SRA (0xff%n)" },
+  { 0xA600e7, 0xff00ff, 'n', 3, "SLL (0xff%n)" },
+  { 0xA700e7, 0xff00ff, 'n', 3, "SRL (0xff%n)" },
+  { 0x1400e7, 0xfc00ff, 'n', 3, "ADD %j,(0xff%n)" },
+  { 0x1800e7, 0xf800ff, 'n', 3, "TSET %B,(0xff%n)" },
+  { 0x2800e7, 0xf800ff, 'n', 3, "LD %t,(0xff%n)" },
+  { 0x4800e7, 0xf800ff, 'n', 3, "LD %u,(0xff%n)" },
+  { 0x5000e7, 0xf800ff, 'n', 3, "EX (0xff%n),%u" },
+  /* EB group */
 
+  /* EF group */
+
+  /* F3 group */
+
+  /* F7 group */
+
+  /* FE group */
+
+  /* Others in exec_inst: c1&0xfc */
+  { 0x000014, 0x0000fc, 'm', 3, "ADD %I,%M" },
+  /* F0+ix group */
+
+  /* F4+ix group */
+
+  /* Others in exec_inst: c1&0xf8 */
   { 0x20, 0xf8, 'r', 1, "LD A,%r" },
   { 0x28, 0xf8, 'r', 1, "LD %r,A" },
+  { 0x000038, 0x0000f8, 'm', 3, "LD %R,%M" },
   { 0x40, 0xf8, 'R', 1, "LD HL,%R" },
   { 0x48, 0xf8, 'R', 1, "LD %R,HL" },
   { 0x50, 0xf8, 'Q', 1, "PUSH %Q" },
@@ -71,13 +149,16 @@ struct dis_entry disass_tlcs[]= {
   { 0x90, 0xf8, 'R', 1, "INC %R" },
   { 0x98, 0xf8, 'R', 1, "DEC %R" },
 
-  { 0x000017, 0x0000ff, 'D', 3, "LDAR HL,%D" },
+  /* exec_inst2 */
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
   { 0x00001a, 0x0000ff, 'm', 3, "JP %M" },
   { 0x00001b, 0x0000ff, 'D', 3, "JRL %D" },
   { 0x00001c, 0x0000ff, 'M', 3, "CALL %M" },
   { 0x00001d, 0x0000ff, 'D', 3, "CALR %D" },
-  { 0x000037, 0x0000ff, 'n', 3, "LD (0xff%n),%N" },
-  { 0x00003f, 0x0000ff, 'm', 3, "LDW (0xff%n),%m" },
   { 0x000078, 0x0000ff, 'm', 3, "ADD HL,%M" },
   { 0x000079, 0x0000ff, 'm', 3, "ADC HL,%M" },
   { 0x00007a, 0x0000ff, 'm', 3, "SUB HL,%M" },
@@ -86,7 +167,6 @@ struct dis_entry disass_tlcs[]= {
   { 0x00007d, 0x0000ff, 'm', 3, "XOR HL,%M" },
   { 0x00007e, 0x0000ff, 'm', 3, "OR HL,%M" },
   { 0x00007f, 0x0000ff, 'm', 3, "CP HL,%M" },
-  { 0x000014, 0x0000fc, 'm', 3, "ADD %I,%M" },
   
   { 0x10f3, 0xffff, ' ', 2, "RLD (HL+A)" },
   { 0x11f3, 0xffff, ' ', 2, "RRD (HL+A)" },
@@ -156,8 +236,6 @@ struct dis_entry disass_tlcs[]= {
   { 0x0077, 0x00ff, 'n', 2, "CP HL,(0xff%n)" },
   { 0x0087, 0x00ff, 'n', 2, "INC (0xff%n)" },
   { 0x008F, 0x00ff, 'n', 2, "DEC (0xff%n)" },
-  { 0x0097, 0x00ff, 'n', 2, "INCW (0xff%n)" },
-  { 0x009F, 0x00ff, 'n', 2, "DECW (0xff%n)" },
 
   { 0x0030, 0x00f8, ' ', 2, "LD %r,%n" },
   { 0x00c0, 0x00f0, ' ', 2, "JR %y%d" },
@@ -346,23 +424,6 @@ struct dis_entry disass_tlcs[]= {
 
   { 0x00003Ff7, 0x0000ffff, 'm', 4, "LDW (HL+A),%m" },
 
-  { 0x1000e7, 0xff00ff, 'n', 3, "RLD (0xff%n)" },
-  { 0x1100e7, 0xff00ff, 'n', 3, "RRD (0xff%n)" },
-  { 0x1200e7, 0xff00ff, 'n', 3, "MUL HL,(0xff%n)" },
-  { 0x1300e7, 0xff00ff, 'n', 3, "DIV HL,(0xff%n)" },
-  { 0x1400e7, 0xfc00ff, 'n', 3, "ADD %j,(0xff%n)" },
-  { 0x1800e7, 0xf800ff, 'n', 3, "TSET %B,(0xff%n)" },
-  { 0x2800e7, 0xf800ff, 'n', 3, "LD %t,(0xff%n)" },
-  { 0x4800e7, 0xf800ff, 'n', 3, "LD %u,(0xff%n)" },
-  { 0x5000e7, 0xf800ff, 'n', 3, "EX (0xff%n),%u" },
-  { 0xA000e7, 0xff00ff, 'n', 3, "RLC (0xff%n)" },
-  { 0xA100e7, 0xff00ff, 'n', 3, "RRC (0xff%n)" },
-  { 0xA200e7, 0xff00ff, 'n', 3, "RL (0xff%n)" },
-  { 0xA300e7, 0xff00ff, 'n', 3, "RR (0xff%n)" },
-  { 0xA400e7, 0xff00ff, 'n', 3, "SLA (0xff%n)" },
-  { 0xA500e7, 0xff00ff, 'n', 3, "SRA (0xff%n)" },
-  { 0xA600e7, 0xff00ff, 'n', 3, "SLL (0xff%n)" },
-  { 0xA700e7, 0xff00ff, 'n', 3, "SRL (0xff%n)" },
 
   { 0x1000f0, 0xff00fc, 'd', 3, "RLD (%I+%n)" },
   { 0x1100f0, 0xff00fc, 'd', 3, "RRD (%I+%n)" },
@@ -405,48 +466,7 @@ struct dis_entry disass_tlcs[]= {
   { 0xB000f0, 0xff00fc, 'd', 3, "RES %B,(%I+%n)" },
   { 0xB800f0, 0xff00fc, 'd', 3, "SET %B,(%I+%n)" },
 
-  { 0x000038, 0x0000f8, 'm', 3, "LD %R,%M" },
   
-  { 0x100000e3, 0xff0000ff, ' ', 4, "RLD (%M)" },
-  { 0x110000e3, 0xff0000ff, ' ', 4, "RRD (%M)" },
-  { 0x120000e3, 0xff0000ff, ' ', 4, "MUL HL,(%M)" },
-  { 0x130000e3, 0xff0000ff, ' ', 4, "DIV HL,(%M)" },
-  { 0x600000e3, 0xff0000ff, ' ', 4, "ADD A,(%M)" },
-  { 0x610000e3, 0xff0000ff, ' ', 4, "ADC A,(%M)" },
-  { 0x620000e3, 0xff0000ff, ' ', 4, "SUB A,(%M)" },
-  { 0x630000e3, 0xff0000ff, ' ', 4, "SBC A,(%M)" },
-  { 0x640000e3, 0xff0000ff, ' ', 4, "AND A,(%M)" },
-  { 0x650000e3, 0xff0000ff, ' ', 4, "XOR A,(%M)" },
-  { 0x660000e3, 0xff0000ff, ' ', 4, "OR A,(%M)" },
-  { 0x670000e3, 0xff0000ff, ' ', 4, "CP A,(%M)" },
-  { 0x700000e3, 0xff0000ff, ' ', 4, "ADD HL,(%M)" },
-  { 0x710000e3, 0xff0000ff, ' ', 4, "ADC HL,(%M)" },
-  { 0x720000e3, 0xff0000ff, ' ', 4, "SUB HL,(%M)" },
-  { 0x730000e3, 0xff0000ff, ' ', 4, "SBC HL,(%M)" },
-  { 0x740000e3, 0xff0000ff, ' ', 4, "AND HL,(%M)" },
-  { 0x750000e3, 0xff0000ff, ' ', 4, "XOR HL,(%M)" },
-  { 0x760000e3, 0xff0000ff, ' ', 4, "OR HL,(%M)" },
-  { 0x770000e3, 0xff0000ff, ' ', 4, "CP HL,(%M)" },
-  { 0x870000e3, 0xff0000ff, ' ', 4, "INC (%M)" },
-  { 0x8F0000e3, 0xff0000ff, ' ', 4, "DEC (%M)" },
-  { 0x970000e3, 0xff0000ff, ' ', 4, "INCW (%M)" },
-  { 0x9F0000e3, 0xff0000ff, ' ', 4, "DECW (%M)" },
-  { 0xA00000e3, 0xff0000ff, ' ', 4, "RLC (%M)" },
-  { 0xA10000e3, 0xff0000ff, ' ', 4, "RRC (%M)" },
-  { 0xA20000e3, 0xff0000ff, ' ', 4, "RL (%M)" },
-  { 0xA30000e3, 0xff0000ff, ' ', 4, "RR (%M)" },
-  { 0xA40000e3, 0xff0000ff, ' ', 4, "SLA (%M)" },
-  { 0xA50000e3, 0xff0000ff, ' ', 4, "SRA (%M)" },
-  { 0xA60000e3, 0xff0000ff, ' ', 4, "SLL (%M)" },
-  { 0xA70000e3, 0xff0000ff, ' ', 4, "SRL (%M)" },
-  { 0x140000e3, 0xfc0000ff, ' ', 4, "ADD %J,(%M)" },
-  { 0x180000e3, 0xf80000ff, ' ', 4, "TSET %e,(%M)" },
-  { 0x280000e3, 0xf80000ff, ' ', 4, "LD %T,(%M)" },
-  { 0x480000e3, 0xf80000ff, ' ', 4, "LD %U,(nm)" },
-  { 0x500000e3, 0xf80000ff, ' ', 4, "ex (%M),rr" },
-  { 0xA80000e3, 0xf80000ff, ' ', 4, "BIT %e,(%M)" },
-  { 0xB00000e3, 0xf80000ff, ' ', 4, "RES %e,(%M)" },
-  { 0xB80000e3, 0xf80000ff, ' ', 4, "SET %e,(%M)" },
 
   { 0, 0, ' ', 0, NULL }
 };
@@ -477,6 +497,7 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
 //	    case 'O': /*  n in 5th byte */ snprintf(l,19,"%02x",(int)((c>>32)&0xff));s+= l; break;
 //	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xff)); s+= l; break;
+//	    case 'D': /* cd in 2,3 byte */ snprintf(l,19,"0x%04x",(int)(addr+3+int16_t((c>>8)&0xffff))); s+= l; break;	      
 //	    case 'D': /* cd in 2,3 byte */ snprintf(l,19,"0x%04x", addr+2+((c>>8)&0xffff)); s+= l; break;
 //	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 //	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
