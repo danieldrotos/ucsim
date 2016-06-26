@@ -32,19 +32,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 
 struct dis_entry disass_tlcs[]= {
-  { 0x08, 0xff, ' ', 1, "EX DE,HL" },
-  { 0x09, 0xff, ' ', 1, "EX AF,AF'" },
-  { 0x0a, 0xff, ' ', 1, "EXX" },
-  { 0x0b, 0xff, ' ', 1, "DAA A" },
-  { 0x10, 0xff, ' ', 1, "CPL A" },
-  { 0x11, 0xff, ' ', 1, "NEG A" },
-  { 0x0e, 0xff, ' ', 1, "CCF" },
-  { 0x0d, 0xff, ' ', 1, "SCF" },
-  { 0x0c, 0xff, ' ', 1, "RCF" },
   { 0x00, 0xff, ' ', 1, "NOP" },
   { 0x01, 0xff, ' ', 1, "HALT" },
   { 0x02, 0xff, ' ', 1, "DI" },
   { 0x03, 0xff, ' ', 1, "EI" },
+  { 0x08, 0xff, ' ', 1, "EX DE,HL" },
+  { 0x09, 0xff, ' ', 1, "EX AF,AF'" },
+  { 0x0a, 0xff, ' ', 1, "EXX" },
+  { 0x0b, 0xff, ' ', 1, "DAA A" },
+  { 0x0c, 0xff, ' ', 1, "RCF" },
+  { 0x0d, 0xff, ' ', 1, "SCF" },
+  { 0x0e, 0xff, ' ', 1, "CCF" },
+  { 0x10, 0xff, ' ', 1, "CPL A" },
+  { 0x11, 0xff, ' ', 1, "NEG A" },
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   { 0xff, 0xff, ' ', 1, "SWI", true },
   { 0xa0, 0xff, ' ', 1, "RLCA" },
   { 0xa1, 0xff, ' ', 1, "RRCA" },

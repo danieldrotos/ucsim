@@ -515,28 +515,24 @@ cl_tlcs::exec_inst(void)
 
   switch (c1)
     {
-    case 0x08: res= ex_de_hl(); break;
-    case 0x09: res= ex_af_alt_af(); break;
-    case 0x0a: res= exx(); break;
-    case 0x0b: res= inst_daa_a(); break;
-    case 0x10: res= inst_cpl_a(); break;
-    case 0x11: res= inst_neg_a(); break;
-    case 0x0e: res= inst_ccf(); break;
-    case 0x0d: res= inst_scf(); break;
-    case 0x0c: res= inst_rcf(); break;
     case 0x00: break; // NOP //res= resGO;
     case 0x01: res= resHALT; break; // HALT
     case 0x02: reg.f&= ~FLAG_I; break; // DI
     case 0x03: reg.f|= FLAG_I; break; // EI
-    case 0xff: res= inst_swi(); break;
-    case 0xa0: reg.a= op_rlc(reg.a, false); break; // RLCA
-    case 0xa1: reg.a= op_rrc(reg.a, false); break; // RRCA
-    case 0xa2: reg.a= op_rl(reg.a, false); break; // RLA
-    case 0xa3: reg.a= op_rl(reg.a, false); break; // RRA
-    case 0xa4: reg.a= op_sla(reg.a, false); break; // SLAA
-    case 0xa5: reg.a= op_sra(reg.a, false); break; // SRAA
-    case 0xa6: reg.a= op_sla(reg.a, false); break; // SLLA (=SLAA)
-    case 0xa7: reg.a= op_srl(reg.a, false); break; // SRLA
+    case 0x08: res= ex_de_hl(); break;
+    case 0x09: res= ex_af_alt_af(); break;
+    case 0x0a: res= exx(); break;
+    case 0x0b: res= inst_daa_a(); break;
+    case 0x0d: res= inst_scf(); break;
+    case 0x0c: res= inst_rcf(); break;
+    case 0x0e: res= inst_ccf(); break;
+    case 0x10: res= inst_cpl_a(); break;
+    case 0x11: res= inst_neg_a(); break;
+    case 0x17: // LDAR HL,$+2+cd
+      c2= fetch();
+      c3= fetch();
+      reg.hl= PC + int16_t(c3*256 + c2);
+      break;
     case 0x1e: res= inst_ret(); break;
     case 0x1f: res= inst_reti(); break;
     case 0x37:  // LD (0ffw),n
@@ -550,21 +546,26 @@ cl_tlcs::exec_inst(void)
       c4= fetch();
       write16(0xff00+c2, c4*256 + c3);
       break;
-    case 0xe7:
-      c2= fetch();
-      c3= fetch();
-      res= exec_inst3_e7(c1, c2, c3);
-      break;
+    case 0x97: c2= fetch(); inst_inc16(t_addr(0xff00+c2)); break; // INCW (0ffn)
+    case 0x9F: c2= fetch(); inst_dec16(t_addr(0xff00+c2)); break; // DECW (0ffn)
+    case 0xa0: reg.a= op_rlc(reg.a, false); break; // RLCA
+    case 0xa1: reg.a= op_rrc(reg.a, false); break; // RRCA
+    case 0xa2: reg.a= op_rl(reg.a, false); break; // RLA
+    case 0xa3: reg.a= op_rl(reg.a, false); break; // RRA
+    case 0xa4: reg.a= op_sla(reg.a, false); break; // SLAA
+    case 0xa5: reg.a= op_sra(reg.a, false); break; // SRAA
+    case 0xa6: reg.a= op_sla(reg.a, false); break; // SLLA (=SLAA)
+    case 0xa7: reg.a= op_srl(reg.a, false); break; // SRLA
     case 0xe3:
       c2= fetch();
       c3= fetch();
       c4= fetch();
       res= exec_inst4_e3(c1, c2, c3, c4);
       break;
-    case 0xef:
+    case 0xe7:
       c2= fetch();
       c3= fetch();
-      res= exec_inst4_ef(c1, c2, c3);
+      res= exec_inst3_e7(c1, c2, c3);
       break;
     case 0xeb:
       c2= fetch();
@@ -572,6 +573,24 @@ cl_tlcs::exec_inst(void)
       c4= fetch();
       res= exec_inst4_eb(c1, c2, c3, c4);
       break;
+    case 0xef:
+      c2= fetch();
+      c3= fetch();
+      res= exec_inst4_ef(c1, c2, c3);
+      break;
+    case 0xf3: // c1
+      c2= fetch();
+      res= exec_inst2_f3(c2);
+      break;
+    case 0xf7: // c1
+      c2= fetch();
+      res= exec_inst2_f7(c2);
+      break;
+    case 0xfe: // c1
+      c2= fetch();
+      res= exec_inst2_fe(c2);
+      break;
+    case 0xff: res= inst_swi(); break;
     default:
       {
 	switch (c1 & 0xfc) // c1= XX+ix
@@ -584,12 +603,12 @@ cl_tlcs::exec_inst(void)
 	      *ra= op_add16(*ra, c3*256 + c2);
 	      break;
 	    }
+	  case 0xf0: res= exec_inst3_f0ix(c1); break; // F0+ix d XX
 	  case 0xf4: // F4+ix d XX [n [m]]
 	      c2= fetch();
 	      c3= fetch();
 	    res= exec_inst4_f4ix(c1, c2, c3);
 	    break;
-	  case 0xf0: res= exec_inst3_f0ix(c1); break; // F0+ix d XX
 	  default:
 	    switch (c1 & 0xf8) // c1= XX+r,rr,...
 	      {
@@ -674,17 +693,6 @@ cl_tlcs::exec_inst2(uint8_t c1)
     case 0x77: op_sub_hl(t_addr(0xff00+c2)); break; // CP HL,(0ffn)
     case 0x87: inst_inc(n); break; // INC (0ffn)
     case 0x8F: inst_dec(n); break; // DEC (0ffn)
-    case 0x97: inst_inc16(t_addr(0xff00+c2)); break; // INCW (0ffn)
-    case 0x9F: inst_dec16(t_addr(0xff00+c2)); break; // DECW (0ffn)
-    case 0xf3: // c1
-      res= exec_inst2_f3(c2);
-      break;
-    case 0xfe: // c1
-      res= exec_inst2_fe(c2);
-      break;
-    case 0xf7: // c1
-      res= exec_inst2_f7(c2);
-      break;
     default:
       // now handle cases where first byte is not fix
       switch (c1 & 0xf8)
@@ -1087,7 +1095,6 @@ cl_tlcs::exec_inst3(uint8_t c1, uint8_t c2)
   
   switch (c1)
     {
-    case 0x17: reg.hl= PC + int16_t(c3*256 + c2); break; // LDAR HL,$+2+cd
     case 0x1a: PC= c3*256 + c2; break; // JP mn
     case 0x1b: PC+= int16_t(c3*256 + c2); break; // JRL $+2+cd
     case 0x1c: inst_call(PC-3, c3*256 + c2); break; // CALL mn
