@@ -1422,14 +1422,14 @@ cl_tlcs::exec_inst4_f4ix(uint8_t c1, uint8_t c2, uint8_t c3)
     {
     case 0x37: n= fetch(); c->write(n); break; // LD (ix+d),n
     case 0x3f: n= fetch(); write16ixd(c1, d, n+fetch()*256); break; // LDW (ix+d),mn
-    case 0x60: n= fetch(); c->write(op_add8(c->read(), n)); break; // ADD (ix+d),n
-    case 0x61: n= fetch(); c->write(op_adc8(c->read(), n)); break; // ADC (ix+d),n
-    case 0x62: n= fetch(); c->write(op_sub8(c->read(), n)); break; // SUB (ix+d),n
-    case 0x63: n= fetch(); c->write(op_sbc8(c->read(), n)); break; // SBC (ix+d),n
-    case 0x64: n= fetch(); c->write(op_and8(c->read(), n)); break; // AND (ix+d),n
-    case 0x65: n= fetch(); c->write(op_xor8(c->read(), n)); break; // XOR (ix+d),n
-    case 0x66: n= fetch(); c->write(op_or8(c->read(), n)); break; // OR (ix+d),n
-    case 0x67: n= fetch(); op_cp8(c->read(), n); break; // CP (ix+d),n
+    case 0x68: n= fetch(); c->write(op_add8(c->read(), n)); break; // ADD (ix+d),n
+    case 0x69: n= fetch(); c->write(op_adc8(c->read(), n)); break; // ADC (ix+d),n
+    case 0x6a: n= fetch(); c->write(op_sub8(c->read(), n)); break; // SUB (ix+d),n
+    case 0x6b: n= fetch(); c->write(op_sbc8(c->read(), n)); break; // SBC (ix+d),n
+    case 0x6c: n= fetch(); c->write(op_and8(c->read(), n)); break; // AND (ix+d),n
+    case 0x6d: n= fetch(); c->write(op_xor8(c->read(), n)); break; // XOR (ix+d),n
+    case 0x6e: n= fetch(); c->write(op_or8(c->read(), n)); break; // OR (ix+d),n
+    case 0x6f: n= fetch(); op_cp8(c->read(), n); break; // CP (ix+d),n
     default:
       switch (c3 & 0xf0)
 	{
