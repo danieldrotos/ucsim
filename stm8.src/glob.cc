@@ -339,6 +339,13 @@ struct dis_entry disass_stm8[]= {
 };
 
 
+struct dis_entry disass_stm8_71[]= {
+  { 0x00ec, 0x00ff, ' ', 1, "halt" },
+  { 0x00ed, 0x00ff, ' ', 1, "putchar" },
+  
+  { 0, 0, 0, 0, NULL }
+};
+
 struct dis_entry disass_stm8_72[]= {
 
   { 0x00c9, 0x00ff, ' ', 3, "adc A,[%2.w]" },

@@ -243,7 +243,19 @@ cl_stm8::get_disasm_info(t_addr addr,
       if (b != NULL)
         len += (disass_stm8_72[i].length + 1);
     break;
-	  
+
+    	case 0x71 :
+	  code= get_mem(MEM_ROM_ID, addr++);
+      i= 0;
+      while ((code & disass_stm8_71[i].mask) != disass_stm8_71[i].code &&
+        disass_stm8_71[i].mnemonic)
+        i++;
+      dis_e = &disass_stm8_71[i];
+      b= disass_stm8_71[i].mnemonic;
+      if (b != NULL)
+        len += (disass_stm8_71[i].length + 1);
+    break;
+
 	case 0x90 :
 	  code= get_mem(MEM_ROM_ID, addr++);
       i= 0;

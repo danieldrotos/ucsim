@@ -33,6 +33,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 extern struct dis_entry disass_stm8[];
 
+extern struct dis_entry disass_stm8_71[];
+
 extern struct dis_entry disass_stm8_72[];
 
 extern struct dis_entry disass_stm8_90[];
