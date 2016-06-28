@@ -62,9 +62,9 @@ cl_interrupt::init(void)
 void
 cl_interrupt::added_to_uc(void)
 {
-  uc->it_sources->add(new cl_it_src(bmEX0, TCON, bmIE0, 0x0003, true,
+  uc->it_sources->add(new cl_it_src(uc, IE, bmEX0, TCON, bmIE0, 0x0003, true, false,
 				    "external #0", 1));
-  uc->it_sources->add(new cl_it_src(bmEX1, TCON, bmIE1, 0x0013, true,
+  uc->it_sources->add(new cl_it_src(uc, IE, bmEX1, TCON, bmIE1, 0x0013, true, false,
 				    "external #1", 3));
 }
 
@@ -140,11 +140,9 @@ cl_interrupt::print_info(class cl_console_base *con)
     {
       class cl_it_src *is= (class cl_it_src *)(uc->it_sources->at(i));
       con->dd_printf("  0x%06x", is->addr);
-      con->dd_printf(" %-3s", (ie&(is->ie_mask))?"en":"dis");
+      con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
       con->dd_printf(" %2d", uc->it_priority(is->ie_mask));
-      con->dd_printf(" %-3s",
-		     (sfr->get(is->src_reg)&(is->src_mask))?
-		     "YES":"no");
+      con->dd_printf(" %-3s", (is->pending())?"YES":"no");
       con->dd_printf(" %-3s", (is->active)?"act":"no");
       con->dd_printf(" %s", object_name(is));
       con->dd_printf("\n");

@@ -161,9 +161,9 @@ cl_serial::new_hw_added(class cl_hw *new_hw)
 void
 cl_serial::added_to_uc(void)
 {
-  uc->it_sources->add(new cl_it_src(bmES , SCON, bmTI , 0x0023, false,
+  uc->it_sources->add(new cl_it_src(uc, IE, bmES , SCON, bmTI , 0x0023, false, false,
 				    "serial transmit", 6));
-  uc->it_sources->add(new cl_it_src(bmES , SCON, bmRI , 0x0023, false,
+  uc->it_sources->add(new cl_it_src(uc, IE, bmES , SCON, bmRI , 0x0023, false, false,
 				    "serial receive", 6));
 }
 

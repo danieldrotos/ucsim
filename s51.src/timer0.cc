@@ -115,10 +115,10 @@ void
 cl_timer0::added_to_uc(void)
 {
   if (id == 0)
-    uc->it_sources->add(new cl_it_src(bmET0, TCON, bmTF0, 0x000b, true,
+    uc->it_sources->add(new cl_it_src(uc, IE, bmET0, TCON, bmTF0, 0x000b, true, false,
 				      "timer #0", 2));
   else if (id == 1)
-    uc->it_sources->add(new cl_it_src(bmET1, TCON, bmTF1, 0x001b, true,
+    uc->it_sources->add(new cl_it_src(uc, IE, bmET1, TCON, bmTF1, 0x001b, true, false,
 				      "timer #1", 4));
 }
 

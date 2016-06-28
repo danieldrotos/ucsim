@@ -64,9 +64,9 @@ cl_timer2::init(void)
 void
 cl_timer2::added_to_uc(void)
 {
-  uc->it_sources->add(new cl_it_src(bmET2, T2CON, bmTF2, 0x002b, false,
+  uc->it_sources->add(new cl_it_src(uc, IE, bmET2, T2CON, bmTF2, 0x002b, false, false,
 				    "timer #2 TF2", 7));
-  exf2it= new cl_it_src(bmET2, T2CON, bmEXF2, 0x002b, false,
+  exf2it= new cl_it_src(uc, IE, bmET2, T2CON, bmEXF2, 0x002b, false, false,
 			"timer #2 EXF2", 7);
   uc->it_sources->add(exf2it);
 }

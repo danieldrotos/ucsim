@@ -76,17 +76,17 @@ cl_pca::init(void)
 void
 cl_pca::added_to_uc(void)
 {
-  uc->it_sources->add_at(4, new cl_it_src(bmEC, CCON, bmCCF4, 0x0033, false,
+  uc->it_sources->add_at(4, new cl_it_src(uc, IE, bmEC, CCON, bmCCF4, 0x0033, false, false,
 					  "PCA module #4", 5));
-  uc->it_sources->add_at(4, new cl_it_src(bmEC, CCON, bmCCF3, 0x0033, false,
+  uc->it_sources->add_at(4, new cl_it_src(uc, IE, bmEC, CCON, bmCCF3, 0x0033, false, false,
 					  "PCA module #3", 5));
-  uc->it_sources->add_at(4, new cl_it_src(bmEC, CCON, bmCCF2, 0x0033, false,
+  uc->it_sources->add_at(4, new cl_it_src(uc, IE, bmEC, CCON, bmCCF2, 0x0033, false, false,
 					  "PCA module #2", 5));
-  uc->it_sources->add_at(4, new cl_it_src(bmEC, CCON, bmCCF1, 0x0033, false,
+  uc->it_sources->add_at(4, new cl_it_src(uc, IE, bmEC, CCON, bmCCF1, 0x0033, false, false,
 					  "PCA module #1", 5));
-  uc->it_sources->add_at(4, new cl_it_src(bmEC, CCON, bmCCF0, 0x0033, false,
+  uc->it_sources->add_at(4, new cl_it_src(uc, IE, bmEC, CCON, bmCCF0, 0x0033, false, false,
 					  "PCA module #0", 5));
-  uc->it_sources->add_at(4, new cl_it_src(bmEC, CCON, bmCF, 0x0033, false,
+  uc->it_sources->add_at(4, new cl_it_src(uc, IE, bmEC, CCON, bmCF, 0x0033, false, false,
 					  "PCA counter", 5));
 }
 

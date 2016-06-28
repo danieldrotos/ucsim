@@ -71,11 +71,11 @@ cl_stm8::init(void)
 
   xtal = 8000000;
 
-  rom = address_space(MEM_ROM_ID);
-//  ram = mem(MEM_XRAM);
-  ram = rom;
+  //rom = address_space(MEM_ROM_ID);
+  //ram = mem(MEM_XRAM);
+  //ram = rom;
 
-  printf("******************** leave the RAM dirty now \n");
+  //printf("******************** leave the RAM dirty now \n");
   // zero out ram(this is assumed in regression tests)
   //for (int i=0x0; i<0x8000; i++) {
   //  ram->set((t_addr) i, 0);
@@ -87,18 +87,18 @@ cl_stm8::init(void)
 
 void
 cl_stm8::reset(void)
-{
-  cl_uc::reset();
-
-  regs.SP = 0x17ff;
-  regs.A = 0;
-  regs.X = 0;
-  regs.Y = 0;
-  regs.CC = 0x00;
-  regs.VECTOR = 1;
-}
-
-
+{
+  cl_uc::reset();
+
+  regs.SP = 0x17ff;
+  regs.A = 0;
+  regs.X = 0;
+  regs.Y = 0;
+  regs.CC = 0x00;
+  regs.VECTOR = 1;
+}
+
+
 char *
 cl_stm8::id_string(void)
 {
@@ -134,7 +134,7 @@ cl_stm8::make_memories(void)
 {
   class cl_address_space *as;
 
-  as= new cl_address_space("rom", 0, 0x10000, 8);
+  rom= ram= as= new cl_address_space("rom", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
@@ -176,50 +176,50 @@ cl_stm8::bit_tbl(void)
 
 int
 cl_stm8::inst_length(t_addr addr)
-{
-  int len = 0;
-
-  get_disasm_info(addr, &len, NULL, NULL, NULL);
-
-  return len;
-}
+{
+  int len = 0;
+
+  get_disasm_info(addr, &len, NULL, NULL, NULL);
+
+  return len;
+}
 int
 cl_stm8::inst_branch(t_addr addr)
-{
-  int b;
-
-  get_disasm_info(addr, NULL, &b, NULL, NULL);
-
-  return b;
-}
-
-bool
-cl_stm8::is_call(t_addr addr)
-{
-  struct dis_entry *e;
-
-  get_disasm_info(addr, NULL, NULL, NULL, &e);
-
-  return e?(e->is_call):false;
-}
-
-int
-cl_stm8::longest_inst(void)
-{
+{
+  int b;
+
+  get_disasm_info(addr, NULL, &b, NULL, NULL);
+
+  return b;
+}
+
+bool
+cl_stm8::is_call(t_addr addr)
+{
+  struct dis_entry *e;
+
+  get_disasm_info(addr, NULL, NULL, NULL, &e);
+
+  return e?(e->is_call):false;
+}
+
+int
+cl_stm8::longest_inst(void)
+{
   return 5;
 }
 
 
-
-const char *
-cl_stm8::get_disasm_info(t_addr addr,
-			 int *ret_len,
-			 int *ret_branch,
-			 int *immed_offset,
-			 struct dis_entry **dentry)
-{
-  const char *b = NULL;
-  uint code;
+
+const char *
+cl_stm8::get_disasm_info(t_addr addr,
+			 int *ret_len,
+			 int *ret_branch,
+			 int *immed_offset,
+			 struct dis_entry **dentry)
+{
+  const char *b = NULL;
+  uint code;
   int len = 0;
   int immed_n = 0;
   int i;
@@ -305,15 +305,15 @@ cl_stm8::get_disasm_info(t_addr addr,
   if (len == 0)
     len = 1;
 
-  if (ret_len)
-    *ret_len = len;
-
-  if (dentry)
-    *dentry= dis_e;
-  
-  return b;
-}
-
+  if (ret_len)
+    *ret_len = len;
+
+  if (dentry)
+    *dentry= dis_e;
+  
+  return b;
+}
+
 const char *
 cl_stm8::disass(t_addr addr, const char *sep)
 {
@@ -323,13 +323,13 @@ cl_stm8::disass(t_addr addr, const char *sep)
   int len = 0;
   int immed_offset = 0;
 
-
-  p= work;
-
-  b = get_disasm_info(addr, &len, NULL, &immed_offset, NULL);
-
-  if (b == NULL) {
-    buf= (char*)malloc(30);
+
+  p= work;
+
+  b = get_disasm_info(addr, &len, NULL, &immed_offset, NULL);
+
+  if (b == NULL) {
+    buf= (char*)malloc(30);
     strcpy(buf, "UNKNOWN/INVALID");
     return(buf);
   }
@@ -490,7 +490,7 @@ cl_stm8::exec_inst(void)
   }
 
   if (fetch(&code)) {
-	  printf("******************** break \n");
+    //printf("******************** break \n");
 	  return(resBREAKPOINT);
   }
   tick(1);
@@ -575,7 +575,7 @@ cl_stm8::exec_inst(void)
             case 0xF0: // SUB
                return( inst_sub( code, cprefix));
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -628,7 +628,7 @@ cl_stm8::exec_inst(void)
                   case 0xEC: return(resHALT);
                   case 0xED: putchar(regs.A); fflush(stdout); return(resGO);
                   default:
-                     printf("************* bad code !!!!\n");
+		    //printf("************* bad code !!!!\n");
                      return(resINV_INST);
                }
             case 0x80: // ret
@@ -644,7 +644,7 @@ cl_stm8::exec_inst(void)
                return( inst_cp( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -703,7 +703,7 @@ cl_stm8::exec_inst(void)
                return( inst_sbc( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -758,7 +758,7 @@ cl_stm8::exec_inst(void)
                return( inst_cpw( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -795,7 +795,7 @@ cl_stm8::exec_inst(void)
                return( inst_and( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -852,7 +852,7 @@ cl_stm8::exec_inst(void)
                return( inst_bcp( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -891,7 +891,7 @@ cl_stm8::exec_inst(void)
                return( inst_lda( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -950,7 +950,7 @@ cl_stm8::exec_inst(void)
                return( inst_lddst( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -980,7 +980,7 @@ cl_stm8::exec_inst(void)
                return( inst_xor( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -1017,7 +1017,7 @@ cl_stm8::exec_inst(void)
                return( inst_adc( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -1048,7 +1048,7 @@ cl_stm8::exec_inst(void)
                return( inst_or( code, cprefix));
                break;
              default:
-               printf("************* bad code !!!!\n");
+               //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -1088,7 +1088,7 @@ cl_stm8::exec_inst(void)
                return( inst_add( code, cprefix));
                break;
             default:
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -1138,7 +1138,7 @@ cl_stm8::exec_inst(void)
                return( inst_jp( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -1197,7 +1197,7 @@ cl_stm8::exec_inst(void)
                return( inst_call( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -1212,7 +1212,7 @@ cl_stm8::exec_inst(void)
                return( inst_swap( code, cprefix));
                break;
             case 0x80: 
-               printf("************* HALT instruction reached !!!!\n");
+	      //printf("************* HALT instruction reached !!!!\n");
                return(resHALT);
             case 0x90: // LD A, YH / XH
                if(cprefix==0x90) {
@@ -1234,7 +1234,7 @@ cl_stm8::exec_inst(void)
                return( inst_ldxy( code, cprefix));
                break;
             default:
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
@@ -1253,7 +1253,7 @@ cl_stm8::exec_inst(void)
                return( inst_clr( code, cprefix));
                break;
             case 0x80: 
-               printf("************* WFI/WFE instruction not implemented !!!!\n");
+	      //printf("************* WFI/WFE instruction not implemented !!!!\n");
                return(resINV_INST);
             case 0x90:
                if(cprefix==0x90) {
@@ -1287,24 +1287,24 @@ cl_stm8::exec_inst(void)
                return( inst_ldxydst( code, cprefix));
                break;
             default: 
-               printf("************* bad code !!!!\n");
+	      //printf("************* bad code !!!!\n");
                return(resINV_INST);
          }
          break;
       default:
-         printf("************* bad code !!!!\n");
+	//printf("************* bad code !!!!\n");
          return(resINV_INST);
       
    }
 
-   printf("************* bad code !!!!\n");
+   //printf("************* bad code !!!!\n");
   /*if (PC)
     PC--;
   else
   PC= get_mem_size(MEM_ROM_ID)-1;*/
-  PC= rom->inc_address(PC, -1);
+  //PC= rom->inc_address(PC, -1);
 
-  sim->stop(resINV_INST);
+  //sim->stop(resINV_INST);
   return(resINV_INST);
 }
 

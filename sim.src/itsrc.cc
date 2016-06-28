@@ -41,26 +41,43 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  ******************************************************************************
  */
 
-cl_it_src::cl_it_src(uchar Iie_mask,
-		     uchar Isrc_reg,
-		     uchar Isrc_mask,
-		     uint  Iaddr,
-		     bool  Iclr_bit,
-		     const char *Iname,
-		     int   apoll_priority):
+cl_it_src::cl_it_src(cl_uc  *Iuc,
+		     t_addr Iie_addr,
+		     t_mem  Iie_mask,
+		     t_addr Isrc_reg,
+		     t_mem  Isrc_mask,
+		     t_addr Iaddr,
+		     bool   Iclr_bit,
+		     bool   Iindirect,
+		     const  char *Iname,
+		     int    apoll_priority):
   cl_base()
 {
+  uc= Iuc;
   poll_priority= apoll_priority;
+  ie_addr = Iie_addr;
   ie_mask = Iie_mask;
   src_reg = Isrc_reg;
   src_mask= Isrc_mask;
   addr    = Iaddr;
   clr_bit = Iclr_bit;
+  indirect= Iindirect;
   if (Iname != NULL)
     set_name(Iname);
   else
     set_name("unknown");
   active= DD_TRUE;
+
+  ie_cell= src_cell= NULL;
+  if (uc)
+    {
+      cl_address_space *as= uc->address_space(MEM_SFR_ID);
+      if (as)
+	{
+	  ie_cell= as->get_cell(ie_addr);
+	  src_cell= as->get_cell(src_reg);
+	}
+    }
 }
 
 cl_it_src::~cl_it_src(void) {}
@@ -87,6 +104,19 @@ void
 cl_it_src::deactivate(void)
 {
   set_active_status(DD_FALSE);
+}
+
+
+bool
+cl_it_src::enabled(void)
+{
+  return ie_cell?(ie_cell->get() & ie_mask):false;
+}
+
+bool
+cl_it_src::pending(void)
+{
+  return src_cell?(src_cell->get() & src_mask):false;
 }
 
 
