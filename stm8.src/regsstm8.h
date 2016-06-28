@@ -57,7 +57,7 @@ struct t_regs
   TYPE_UWORD Y;
   TYPE_UWORD SP;
   TYPE_UBYTE CC;
-  TYPE_UBYTE VECTOR;
+  //TYPE_UBYTE VECTOR;
 };
 
 #define BIT_C	0x01  // carry status(out of bit 7)

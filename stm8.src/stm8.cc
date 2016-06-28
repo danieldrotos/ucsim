@@ -95,7 +95,8 @@ cl_stm8::reset(void)
   regs.X = 0;
   regs.Y = 0;
   regs.CC = 0x00;
-  regs.VECTOR = 1;
+  //regs.VECTOR = 1;
+  PC= 0x8000;
 }
 
 
@@ -476,7 +477,7 @@ cl_stm8::exec_inst(void)
 {
   t_mem code;
   unsigned char cprefix; // prefix used for processing in functions
-
+  /*
   if (regs.VECTOR) {
     PC = get1(0x8000);
 	if (PC == 0x82) { // this is reserved opcode for vector table
@@ -488,7 +489,7 @@ cl_stm8::exec_inst(void)
 		return( resERROR);
 	}
   }
-
+  */
   if (fetch(&code)) {
     //printf("******************** break \n");
 	  return(resBREAKPOINT);
@@ -503,6 +504,14 @@ cl_stm8::exec_inst(void)
 		cprefix = code;
 		fetch(&code);
 		break;
+	 case 0x82:
+	   {
+	     int ce= fetch();
+	     int ch= fetch();
+	     int cl= fetch();
+	     PC= ce*0x10000 + ch*0x100 + cl;
+	     return resGO;
+	   }
 	default:
 		cprefix = 0x00;
 		break;
@@ -732,7 +741,7 @@ cl_stm8::exec_inst(void)
                // get TRAP address
                PC = get1(0x8004);
                if (PC == 0x82) { // this is reserved opcode for vector table
-                  regs.VECTOR = 0;
+		 //regs.VECTOR = 0;
                   PC = get1(0x8005) << 16;
                   PC |= get2(0x8006);
                   return(resGO);

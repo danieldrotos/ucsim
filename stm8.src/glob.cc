@@ -139,7 +139,8 @@ struct dis_entry disass_stm8[]= {
   { 0x0051, 0x00ff, ' ', 1, "exgw X,Y" },
   { 0x0061, 0x00ff, ' ', 1, "exg A,YL" },
   { 0x008e, 0x00ff, ' ', 1, "halt" },
-
+  { 0x0082, 0x00ff, ' ', 4, "int %e" },
+  
   { 0x000c, 0x00ff, ' ', 2, "inc (%1,SP)" },
   { 0x003c, 0x00ff, ' ', 2, "inc %d" },
   { 0x004c, 0x00ff, ' ', 1, "inc A" },
