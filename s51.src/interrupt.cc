@@ -130,11 +130,11 @@ cl_interrupt::happen(class cl_hw *where, enum hw_event he, void *params)
 void
 cl_interrupt::print_info(class cl_console_base *con)
 {
-  int ie= sfr->get(IE);
+  //int ie= sfr->get(IE);
   int i;
 
   con->dd_printf("Interrupts are %s. Interrupt sources:\n",
-		 (ie&bmEA)?"enabled":"disabled");
+		 (uc->it_enabled())?"enabled":"disabled");
   con->dd_printf("  Handler  En  Pr Req Act Name\n");
   for (i= 0; i < uc->it_sources->count; i++)
     {
