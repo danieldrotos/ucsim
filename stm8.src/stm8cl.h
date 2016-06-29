@@ -31,10 +31,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uccl.h"
 
 #include "regsstm8.h"
+#include "interruptcl.h"
 
 
 /*
- * Base type of Z80 microcontrollers
+ * Base type of STM8 microcontrollers
  */
 
 class cl_stm8: public cl_uc
@@ -43,6 +44,7 @@ public:
   class cl_memory *ram;
   class cl_memory *rom;
   struct t_regs regs;
+  class cl_interrupt *interrupt;
 public:
   cl_stm8(class cl_sim *asim);
   virtual int init(void);
@@ -69,6 +71,14 @@ public:
   virtual bool is_call(t_addr addr);
 
   virtual void reset(void);
+
+ protected:
+  virtual int  do_interrupt(void);
+  virtual int  priority_of(uchar nuof_it);
+  virtual int  accept_it(class it_level *il);
+ public:
+  virtual bool it_enabled(void);
+
 #include "instcl.h"
 };
 

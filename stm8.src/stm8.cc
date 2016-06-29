@@ -47,6 +47,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "regsstm8.h"
 #include "stm8mac.h"
+#include "interruptcl.h"
+#include "serialcl.h"
 
 #define uint32 t_addr
 #define uint8 unsigned char
@@ -126,8 +128,13 @@ cl_stm8::get_mem_size(enum mem_class type)
 void
 cl_stm8::mk_hw_elements(void)
 {
-  //class cl_base *o;
-  /* t_uc::mk_hw() does nothing */
+  class cl_hw *h;
+  cl_uc::mk_hw_elements();
+
+  hws->add(h= new cl_serial(this, 0x5240, 2));
+  h->init();
+  hws->add(interrupt= new cl_interrupt(this));
+  interrupt->init();
 }
 
 void
@@ -1327,6 +1334,98 @@ cl_stm8::exec_inst(void)
 
   //sim->stop(resINV_INST);
   return(resINV_INST);
+}
+
+
+/*
+ * Checking for interrupt requests and accept one if needed
+ */
+
+int
+cl_stm8::do_interrupt(void)
+{
+  /*
+  int i, ie= 0;
+
+  if (interrupt->was_reti)
+    {
+      interrupt->was_reti= DD_FALSE;
+      return(resGO);
+    }
+  if (!((ie= sfr->get(IE)) & bmEA))
+    return(resGO);
+  class it_level *il= (class it_level *)(it_levels->top()), *IL= 0;
+  for (i= 0; i < it_sources->count; i++)
+    {
+      class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
+      if (is->is_active() &&
+	  (ie & is->ie_mask) &&
+	  (sfr->get(is->src_reg) & is->src_mask))
+	{
+	  int pr= it_priority(is->ie_mask);
+	  if (il->level >= 0 &&
+	      pr <= il->level)
+	    continue;
+	  if (state == stIDLE)
+	    {
+	      state= stGO;
+	      sfr->set_bit0(PCON, bmIDL);
+	      interrupt->was_reti= DD_TRUE;
+	      return(resGO);
+	    }
+	  if (is->clr_bit)
+	    sfr->set_bit0(is->src_reg, is->src_mask);
+	  sim->app->get_commander()->
+	    debug("%g sec (%d clks): Accepting interrupt `%s' PC= 0x%06x\n",
+			  get_rtime(), ticks->ticks, object_name(is), PC);
+	  IL= new it_level(pr, is->addr, PC, is);
+	  return(accept_it(IL));
+	}
+    }
+  */
+  return(resGO);
+}
+
+int
+cl_stm8::priority_of(uchar nuof_it)
+{
+  /*
+  if (sfr->get(IP) & ie_mask)
+    return(1);
+  */
+  return(0);
+}
+
+
+/*
+ * Accept an interrupt
+ */
+
+int
+cl_stm8::accept_it(class it_level *il)
+{
+  /*
+  state= stGO;
+  sfr->set_bit0(PCON, bmIDL);
+  it_levels->push(il);
+  tick(1);
+  int res= inst_lcall(0, il->addr, DD_TRUE);
+  if (res != resGO)
+    return(res);
+  else
+    return(resINTERRUPT);
+  */
+  return resGO;
+}
+
+
+/* check if interrupts are enabled (globally)
+ */
+
+bool
+cl_stm8::it_enabled(void)
+{
+  return (regs.CC & BIT_I0) && (regs.CC & BIT_I1);
 }
 
 
