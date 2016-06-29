@@ -180,7 +180,8 @@ public:
   virtual void post_inst(void);
 
   virtual int it_priority(uchar ie_mask) {return(0);}
-
+  virtual bool it_enabled(void) { return false; }
+  
   // stack tracking
   virtual void stack_write(class cl_stack_op *op);
   virtual void stack_read(class cl_stack_op *op);
