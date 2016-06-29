@@ -225,18 +225,13 @@ cl_hw::register_cell(class cl_address_space *mem, t_addr addr,
 		     enum what_to_do_on_cell_change awtd)
 {
   class cl_watched_cell *wc;
-  //class cl_memory_cell *cell;
 
   if (mem)
     mem->register_hw(addr, this, (int*)0, DD_FALSE);
   else
     printf("regcell JAJ no mem\n");
-  wc= new cl_watched_cell(mem, addr, /*&cell*/store, awtd);
-  //if (store)
-    //*store= cell;
+  wc= new cl_watched_cell(mem, addr, store, awtd);
   watched_cells->add(wc);
-  // announce
-  //uc->sim->mem_cell_changed(mem, addr);
   return(wc->get_cell());
 }
 
@@ -247,16 +242,14 @@ cl_hw::unregister_cell(class cl_memory_cell *the_cell)
     the_cell->remove_hw(this);
   unuse_cell(the_cell);
 }
+
 class cl_memory_cell *
 cl_hw::use_cell(class cl_address_space *mem, t_addr addr,
                 class cl_memory_cell **store,
                 enum what_to_do_on_cell_change awtd)
 {
   class cl_watched_cell *wc;
-  //class cl_memory_cell *cell;
-  wc= new cl_used_cell(mem, addr, store/*&cell*/, awtd);
-  //if (store)
-    //*store= cell;
+  wc= new cl_used_cell(mem, addr, store, awtd);
   watched_cells->add(wc);
   return(wc->get_cell());
 }
