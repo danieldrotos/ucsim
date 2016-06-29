@@ -117,6 +117,9 @@ public:
 protected:
   virtual int  do_interrupt(void);
   virtual int  accept_it(class it_level *il);
+ public:
+  virtual bool it_enabled(void);
+  
 protected:
   virtual int  idle_pd(void);
 

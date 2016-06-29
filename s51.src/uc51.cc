@@ -999,6 +999,16 @@ cl_51core::accept_it(class it_level *il)
 }
 
 
+/* check if interrupts are enabled (globally)
+ */
+
+bool
+cl_51core::it_enabled(void)
+{
+  return sfr->get(IE) & bmEA;
+}
+
+
 /*
  * Checking if Idle or PowerDown mode should be activated
  */
