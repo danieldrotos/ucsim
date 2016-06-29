@@ -38,26 +38,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  *____________________________________________________________________________
  */
 
-cl_watched_cell::cl_watched_cell(class cl_address_space *amem, t_addr aaddr,
-				 class cl_memory_cell **astore,
-				 enum what_to_do_on_cell_change awtd)
+cl_watched_cell::cl_watched_cell(class cl_address_space *amem, t_addr aaddr/*,
+									     class cl_memory_cell **astore*/)
 {
   mem= amem;
   addr= aaddr;
-  store= astore;
-  wtd= awtd;
+  //store= astore;
   if (mem)
     {
       cell= mem->get_cell(addr);
-      if (store)
-	*store= cell;
+      //if (store)
+	//*store= cell;
     }
 }
 
 cl_watched_cell::~cl_watched_cell(void)
 {
-  if (store)
-    *store= 0;
+  //  if (store)
+    //*store= 0;
 }
 
 bool
@@ -65,32 +63,10 @@ cl_watched_cell::match(class cl_memory_cell *the_cell)
 {
   if (cell)
     return(cell == the_cell);
-  if (store)
-    return(*store == the_cell);
+  //if (store)
+  //return(*store == the_cell);
   return(DD_FALSE);
 }
-
-/*
-void
-cl_watched_cell::mem_cell_changed(class cl_address_space *amem, t_addr aaddr,
-				  class cl_hw *hw)
-{
-  if (mem &&
-      mem == amem &&
-      addr == aaddr)
-    {
-      cell= mem->get_cell(addr);
-      if (store &&
-	  (wtd & WTD_RESTORE))
-	*store= cell;
-      if (wtd & WTD_WRITE)
-	{
-	  t_mem d= cell->get();
-	  hw->write(cell, &d);
-	}
-    }
-}
-*/
 
 void
 cl_watched_cell::address_space_added(class cl_address_space *amem,
@@ -220,9 +196,8 @@ cl_hw::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 }
 
 class cl_memory_cell *
-cl_hw::register_cell(class cl_address_space *mem, t_addr addr,
-		     class cl_memory_cell **store,
-		     enum what_to_do_on_cell_change awtd)
+cl_hw::register_cell(class cl_address_space *mem, t_addr addr/*,
+							       class cl_memory_cell **store*/)
 {
   class cl_watched_cell *wc;
 
@@ -230,7 +205,7 @@ cl_hw::register_cell(class cl_address_space *mem, t_addr addr,
     mem->register_hw(addr, this, (int*)0, DD_FALSE);
   else
     printf("regcell JAJ no mem\n");
-  wc= new cl_watched_cell(mem, addr, store, awtd);
+  wc= new cl_watched_cell(mem, addr/*, store*/);
   watched_cells->add(wc);
   return(wc->get_cell());
 }
@@ -244,12 +219,11 @@ cl_hw::unregister_cell(class cl_memory_cell *the_cell)
 }
 
 class cl_memory_cell *
-cl_hw::use_cell(class cl_address_space *mem, t_addr addr,
-                class cl_memory_cell **store,
-                enum what_to_do_on_cell_change awtd)
+cl_hw::use_cell(class cl_address_space *mem, t_addr addr/*,
+							  class cl_memory_cell **store*/)
 {
   class cl_watched_cell *wc;
-  wc= new cl_used_cell(mem, addr, store, awtd);
+  wc= new cl_used_cell(mem, addr/*, store*/);
   watched_cells->add(wc);
   return(wc->get_cell());
 }

@@ -43,8 +43,7 @@ cl_timer2::cl_timer2(class cl_uc *auc, int aid, const char *aid_string,
   sfr= uc->address_space(MEM_SFR_ID);
   if (features & (t2_down|t2_clock_out))
     {
-      register_cell(sfr, T2MOD, &cell_t2mod,
-		    wtd_restore_write);
+      cell_t2mod= register_cell(sfr, T2MOD);
     }
 }
 
@@ -52,10 +51,8 @@ int
 cl_timer2::init(void)
 {
   cl_timer0::init();
-  //cell_rcap2l= uc->mem(MEM_SFR)->get_cell(RCAP2L);
-  //cell_rcap2h= uc->mem(MEM_SFR)->get_cell(RCAP2H);
-  use_cell(sfr, RCAP2L, &cell_rcap2l, wtd_restore);
-  use_cell(sfr, RCAP2H, &cell_rcap2h, wtd_restore);
+  cell_rcap2l= use_cell(sfr, RCAP2L);
+  cell_rcap2h= use_cell(sfr, RCAP2H);
   if (sfr)
     bit_t2ex= sfr->read(P1) & bmT2EX;
   return(0);
@@ -70,41 +67,6 @@ cl_timer2::added_to_uc(void)
 			"timer #2 EXF2", 7);
   uc->it_sources->add(exf2it);
 }
-
-/*void
-cl_timer2::mem_cell_changed(class cl_mem *mem, t_addr addr)
-{
-  class cl_mem *sfr= uc->mem(MEM_SFR);
-  class cl_cell *c= 0;
-
-  if (mem && sfr && mem == sfr)
-    {
-      switch (addr)
-	{
-	case T2CON:
-	  c= cell_tcon= sfr->get_cell(T2CON);
-	  break;
-	}
-      if (c)
-	{
-	  t_mem d= c->get();
-	  write(c, &d);
-	}
-      if (addr == addr_tl)
-	cell_tl= sfr->get_cell(addr_tl);
-      if (addr == addr_th)
-	cell_th= sfr->get_cell(addr_th);
-      cell_rcap2l= sfr->get_cell(RCAP2L);
-      cell_rcap2h= sfr->get_cell(RCAP2H);
-    }
-}*/
-
-/*void
-cl_timer2::added(class cl_hw *new_hw)
-{
-  if (new_hw->cathegory == HW_UART)
-    hws_to_inform->add(new_hw);
-}*/
 
 void
 cl_timer2::write(class cl_memory_cell *cell, t_mem *val)

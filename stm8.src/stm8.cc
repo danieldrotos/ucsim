@@ -137,6 +137,8 @@ cl_stm8::mk_hw_elements(void)
   interrupt->init();
 }
 
+class cl_memory_chip *c;
+
 void
 cl_stm8::make_memories(void)
 {
@@ -149,7 +151,7 @@ cl_stm8::make_memories(void)
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_memory_chip("rom_chip", 0x100000, 8);
+  c= chip= new cl_memory_chip("rom_chip", 0x100000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= address_space("rom"), chip, 0, 0xfffff, 0);

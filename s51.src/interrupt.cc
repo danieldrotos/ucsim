@@ -50,9 +50,8 @@ cl_interrupt::init(void)
   sfr= uc->address_space(MEM_SFR_ID);
   if (sfr)
     {
-      //sfr->register_hw(IE, this, 0);
-      register_cell(sfr, IE, 0, wtd_restore);
-      register_cell(sfr, TCON, &cell_tcon, wtd_restore_write);
+      register_cell(sfr, IE);
+      cell_tcon= register_cell(sfr, TCON);
       bit_INT0= sfr->read(P3) & bm_INT0;
       bit_INT1= sfr->read(P3) & bm_INT1;
     }

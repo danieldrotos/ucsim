@@ -88,25 +88,17 @@ cl_timer0::init(void)
       //t_mem d;
       if (id == 0 || id == 1)
 	{
-	  //cell_tmod= sfr->register_hw(TMOD, this, 0);
-	  register_cell(sfr, TMOD, &cell_tmod, wtd_restore_write);
-	  //d= cell_tmod->get(); write(cell_tmod, &d);
-	  //cell_tcon= sfr->register_hw(TCON, this, 0);
-	  register_cell(sfr, TCON, &cell_tcon, wtd_restore_write);
-	  //d= cell_tcon->get(); write(cell_tcon, &d);
+	  cell_tmod= register_cell(sfr, TMOD);
+	  cell_tcon= register_cell(sfr, TCON);
 	  INT= sfr->read(P3) & mask_INT;
 	}
       else if (id == 2)
 	{
 	  cell_tmod= 0;
-	  //cell_tcon= sfr->register_hw(T2CON, this, 0);
-	  register_cell(sfr, T2CON, &cell_tcon, wtd_restore_write);
-	  //d= cell_tcon->get(); write(cell_tcon, &d);
+	  cell_tcon= register_cell(sfr, T2CON);
 	}
-      //cell_tl= sfr->get_cell(addr_tl);
-      //cell_th= sfr->get_cell(addr_th);
-      use_cell(sfr, addr_tl, &cell_tl, wtd_restore);
-      use_cell(sfr, addr_th, &cell_th, wtd_restore);
+      cell_tl= use_cell(sfr, addr_tl);
+      cell_th= use_cell(sfr, addr_th);
     }
   return(0);
 }

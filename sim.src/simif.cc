@@ -352,7 +352,7 @@ cl_simulator_interface::init(void)
 	  address= addr;
 	  if (addr < 0)
 	    address= as->highest_valid_address();
-	  register_cell(as, address, &cell, wtd_restore_write);
+	  cell= register_cell(as, address);
 	}
     }
   else
@@ -415,7 +415,7 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 	    address= as->highest_valid_address();
 	  if (cell != NULL)
 	    unregister_cell(cell);
-	  register_cell(as, address, &cell, wtd_restore_write);
+	  cell= register_cell(as, address);
 	}
     }
   else

@@ -1113,10 +1113,9 @@ cl_uc51_dummy_hw::init(void)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
     }
-  use_cell(sfr, PSW, &cell_psw, wtd_restore);
-  register_cell(sfr, ACC, &cell_acc, wtd_restore_write);
-  register_cell(sfr, SP , &cell_sp , wtd_restore);
-  //register_cell(sfr, PCON, &cell_pcon, wtd_restore);
+  cell_psw= use_cell(sfr, PSW);
+  cell_acc= register_cell(sfr, ACC);
+  cell_sp= register_cell(sfr, SP);
   return(0);
 }
 

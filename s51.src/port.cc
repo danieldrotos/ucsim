@@ -78,8 +78,7 @@ cl_port::init(void)
     {
       fprintf(stderr, "No SFR to register port into\n");
     }
-  //cell_p= sfr->register_hw(addr_p, this, (int*)0);
-  register_cell(sfr, addr_p, &cell_p, wtd_restore_write);
+  cell_p= register_cell(sfr, addr_p);
   prev= cell_p->get();
   return(0);
 }
@@ -87,7 +86,6 @@ cl_port::init(void)
 t_mem
 cl_port::read(class cl_memory_cell *cell)
 {
-  //printf("port[%d] read\n",id);
   return(cell->get() & port_pins);
 }
 
@@ -105,7 +103,6 @@ cl_port::write(class cl_memory_cell *cell, t_mem *val)
   if (ep.prev_value != ep.new_value)
     inform_partners(EV_PORT_CHANGED, &ep);
   prev= cell_p->get();
-  //printf("port[%d] write 0x%x\n",id,val);
 }
 
 void
@@ -136,14 +133,6 @@ cl_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
       value= 0;
     }
 }
-
-/*void
-cl_port::mem_cell_changed(class cl_m *mem, t_addr addr)
-{
-  cl_hw::mem_cell_changed(mem, addr);
-  t_mem d= sfr->get();
-  write(sfr, &d);
-}*/
 
 void
 cl_port::print_info(class cl_console_base *con)

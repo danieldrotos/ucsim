@@ -48,40 +48,23 @@ cl_uc390_hw::init(void)
   sfr = uc->address_space(MEM_SFR_ID);
   if (sfr)
     {
-      /*cell_dps   = sfr->register_hw (DPS  , this, 0);
-      cell_p4cnt = sfr->register_hw (P4CNT, this, 0);
-      cell_exif  = sfr->register_hw (EXIF , this, 0);
-      cell_acon  = sfr->register_hw (ACON , this, 0);
-      cell_p5cnt = sfr->register_hw (P5CNT, this, 0);
-      cell_c0c   = sfr->register_hw (C0C  , this, 0);
-      cell_pmr   = sfr->register_hw (PMR  , this, 0);
-      cell_mcon  = sfr->register_hw (MCON , this, 0);
-      cell_ta    = sfr->register_hw (TA   , this, 0);
-      cell_cor   = sfr->register_hw (COR  , this, 0);
-      cell_mcnt0 = sfr->register_hw (MCNT0, this, 0);
-      cell_mcnt1 = sfr->register_hw (MCNT1, this, 0);
-      cell_ma    = sfr->register_hw (MA   , this, 0);
-      cell_mb    = sfr->register_hw (MB   , this, 0);
-      cell_mc    = sfr->register_hw (MC   , this, 0);
-      cell_wdcon = sfr->register_hw (WDCON, this, 0);
-      cell_c1c   = sfr->register_hw (C1C  , this, 0);*/
-      register_cell (sfr, DPS  , &cell_dps  , wtd_restore);
-      register_cell (sfr, P4CNT, &cell_p4cnt, wtd_restore);
-      register_cell (sfr, EXIF , &cell_exif , wtd_restore);
-      register_cell (sfr, ACON , &cell_acon , wtd_restore);
-      register_cell (sfr, P5CNT, &cell_p5cnt, wtd_restore);
-      register_cell (sfr, C0C  , &cell_c0c  , wtd_restore);
-      register_cell (sfr, PMR  , &cell_pmr  , wtd_restore);
-      register_cell (sfr, MCON , &cell_mcon , wtd_restore);
-      register_cell (sfr, TA   , &cell_ta   , wtd_restore);
-      register_cell (sfr, COR  , &cell_cor  , wtd_restore);
-      register_cell (sfr, MCNT0, &cell_mcnt0, wtd_restore);
-      register_cell (sfr, MCNT1, &cell_mcnt1, wtd_restore);
-      register_cell (sfr, MA   , &cell_ma   , wtd_restore);
-      register_cell (sfr, MB   , &cell_mb   , wtd_restore);
-      register_cell (sfr, MC   , &cell_mc   , wtd_restore);
-      register_cell (sfr, WDCON, &cell_wdcon, wtd_restore);
-      register_cell (sfr, C1C  , &cell_c1c  , wtd_restore);
+      cell_dps= register_cell (sfr, DPS  );
+      cell_p4cnt= register_cell (sfr, P4CNT);
+      cell_exif= register_cell (sfr, EXIF );
+      cell_acon= register_cell (sfr, ACON );
+      cell_p5cnt= register_cell (sfr, P5CNT);
+      cell_c0c= register_cell (sfr, C0C  );
+      cell_pmr= register_cell (sfr, PMR  );
+      cell_mcon= register_cell (sfr, MCON  );
+      cell_ta= register_cell (sfr, TA   );
+      cell_cor= register_cell (sfr, COR  );
+      cell_mcnt0= register_cell (sfr, MCNT0);
+      cell_mcnt1= register_cell (sfr, MCNT1);
+      cell_ma= register_cell (sfr, MA   );
+      cell_mb= register_cell (sfr, MB   );
+      cell_mc= register_cell (sfr, MC   );
+      cell_wdcon= register_cell (sfr, WDCON);
+      cell_c1c= register_cell (sfr, C1C  );
     }
   return 0;
 }

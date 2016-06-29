@@ -60,16 +60,16 @@ cl_pca::init(void)
     {
       fprintf(stderr, "No SFR to register PCA[%d] into\n", id);
     }
-  register_cell(sfr, CMOD, &cell_cmod, wtd_restore_write);
-  register_cell(sfr, CCON, &cell_ccon, wtd_restore_write);
+  cell_cmod= register_cell(sfr, CMOD);
+  cell_ccon= register_cell(sfr, CCON);
   for (i= 0; i < 5; i++)
     {
-      use_cell(sfr, CCAPL[i], &cell_ccapl[i], wtd_restore);
-      use_cell(sfr, CCAPH[i], &cell_ccaph[i], wtd_restore);
-      register_cell(sfr, CCAPM[i], &cell_ccapm[i], wtd_restore_write);
+      cell_ccapl[i]= use_cell(sfr, CCAPL[i]);
+      cell_ccaph[i]= use_cell(sfr, CCAPH[i]);
+      cell_ccapm[i]= register_cell(sfr, CCAPM[i]);
     }
-  use_cell(sfr, CL, &cell_cl, wtd_restore);
-  use_cell(sfr, CH, &cell_ch, wtd_restore);
+  cell_cl= use_cell(sfr, CL);
+  cell_ch= use_cell(sfr, CH);
   return(0);
 }
 

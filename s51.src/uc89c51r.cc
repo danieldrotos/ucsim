@@ -198,8 +198,7 @@ cl_89c51r_dummy_hw::init(void)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
     }
-  //auxr= sfr->register_hw(AUXR, this, 0);
-  register_cell(sfr, AUXR1, &auxr1, wtd_restore);
+  auxr1= register_cell(sfr, AUXR1);
   return(0);
 }
 

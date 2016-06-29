@@ -209,7 +209,6 @@ cl_uc::init(void)
   fbrk->Duplicates= DD_FALSE;
   brk_counter= 0;
   mk_hw_elements();
-  reset();
   class cl_cmdset *cs= sim->app->get_commander()->cmdset;
   build_cmdset(cs);
 
@@ -223,6 +222,7 @@ cl_uc::init(void)
 						l, fname);
 	}
     }
+  reset();
   return(0);
 }
 

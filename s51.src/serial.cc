@@ -75,9 +75,9 @@ cl_serial::init(void)
   sfr= uc->address_space(MEM_SFR_ID);
   if (sfr)
     {
-      register_cell(sfr, SBUF, &sbuf, wtd_restore_write);
-      register_cell(sfr, PCON, &pcon, wtd_restore_write);
-      register_cell(sfr, SCON, &scon, wtd_restore_write);
+      sbuf= register_cell(sfr, SBUF);
+      pcon= register_cell(sfr, PCON);
+      scon= register_cell(sfr, SCON);
     }
 
   s= format_string("serial%d_in_file", id);

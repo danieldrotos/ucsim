@@ -50,7 +50,7 @@ cl_wdt::init(void)
       fprintf(stderr, "No SFR to register WDT into\n");
     }
   //wdtrst= sfr->register_hw(WDTRST, this, (int*)0);
-  register_cell(sfr, WDTRST, &wdtrst, wtd_restore);
+  wdtrst= register_cell(sfr, WDTRST);
   return(0);
 }
 
