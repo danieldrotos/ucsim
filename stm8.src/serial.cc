@@ -49,12 +49,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_serial::cl_serial(class cl_uc *auc,
 		     t_addr abase,
 		     int ttype):
-  cl_hw(auc, HW_UART, 0, "uart")
+  cl_hw(auc, HW_UART, ttype, "uart")
 {
   fin= 0;
   fout= 0;
   listener= 0;
-  
+  type= ttype;
 }
 
 
@@ -79,7 +79,8 @@ cl_serial::init(void)
     {
       regs[i]= register_cell(uc->rom, base+i, NULL, wtd_restore_write);
     }
-  set_div();
+  pick_div();
+  pick_ctrl();
   
   s= format_string("serial%d_in_file", id);
   serial_in_file_option= new cl_optref(this);
@@ -167,18 +168,30 @@ cl_serial::added_to_uc(void)
 t_mem
 cl_serial::read(class cl_memory_cell *cell)
 {
+
   return cell->get();
 }
 
 void
 cl_serial::write(class cl_memory_cell *cell, t_mem *val)
 {
+  cell->set(*val);
   if ((cell == regs[brr1]) ||
       (cell == regs[brr2]))
-    set_div();
+    pick_div();
   if ((cell == regs[cr1]) ||
       (cell == regs[cr2]))
-    set_ctrl();
+    pick_ctrl();
+
+  if (cell == regs[dr])
+    {
+      s_txd= *val;
+      s_tx_written= true;
+      if (!s_sending)
+	{
+	  start_send();
+	}
+    }
 }
 
 int
@@ -186,60 +199,97 @@ cl_serial::tick(int cycles)
 {
   char c;
 
+  if (!en)
+    return 0;
+  
   if ((mcnt+= cycles) >= div)
     {
       mcnt-= div;
-      if (s_sending)
+      if (ten)
 	s_tr_bit++;
-      if (s_receiving)
+      if (ren)
 	s_rec_bit++;
     }
   else
     return 0;
   
   if (s_sending &&
-      (s_tr_bit >= _bits))
+      (s_tr_bit >= bits))
     {
       s_sending= false;
       if (fout)
 	{
 	  fout->write((char*)(&s_out), 1);
 	}
-      s_tr_bit-= _bits;
+      s_tr_bit-= bits;
+      if (s_tx_written)
+	restart_send();
+      else
+	stop_send();
     }
-  if (() &&
+  if ((ren) &&
       fin &&
       !s_receiving)
     {
       if (fin->input_avail())
 	{
-	  s_receiving= DD_TRUE;
+	  s_receiving= true;
 	  s_rec_bit= 0;
-	  s_rec_tick= s_rec_t1= 0;
 	}
     }
   if (s_receiving &&
-      (s_rec_bit >= _bits))
+      (s_rec_bit >= bits))
     {
       if (fin->read(&c, 1) == 1)
 	{
 	  s_in= c;
-	  sbuf->set(s_in);
-	  received(c);
+	  received();
 	}
-      s_receiving= DD_FALSE;
-      s_rec_bit-= _bits;
+      s_receiving= false;
+      s_rec_bit-= bits;
     }
   
-  int l;
-  s_tr_tick+= (l= cycles * uc->clock_per_cycle());
-  s_rec_tick+= l;
   return(0);
 }
 
 void
-cl_serial::received(int c)
+cl_serial::start_send()
 {
+  if (ten)
+    {
+      s_out= s_txd;
+      s_tx_written= false;
+      s_sending= true;
+      s_tr_bit= 0;
+      show_txe(false);
+    }
+}
+
+void
+cl_serial::restart_send()
+{
+  if (ten)
+    {
+      s_out= s_txd;
+      s_tx_written= false;
+      s_sending= true;
+      s_tr_bit= 0;
+      show_txe(false);
+    }
+}
+
+void
+cl_serial::stop_send()
+{
+  show_txe(true);
+  show_tc(true);
+}
+
+void
+cl_serial::received()
+{
+  set_dr(s_in);
+  show_rxe(false);
 }
 
 void
@@ -261,18 +311,59 @@ cl_serial::new_io(class cl_f *f_in, class cl_f *f_out)
 
 
 void
-cl_serial::set_div()
+cl_serial::pick_div()
 {
-  uint8_t b1= regs[bbr1]->get();
-  uint8_t b2= regs[bbr2]->get();
+  uint8_t b1= regs[brr1]->get();
+  uint8_t b2= regs[brr2]->get();
   div= ((((b2&0xf0)<<4) + b1)<<4) + (b2&0xf);
   mcnt= 0;
 }
 
 void
-cl_serial::set_ctrl()
+cl_serial::pick_ctrl()
 {
-  
+  uint8_t c1= regs[cr1]->get();
+  uint8_t c2= regs[cr2]->get();
+  en= !(c1 & 0x20);
+  ten= c2 & 0x08;
+  ren= c2 & 0x04;
+  bits= 10;
+  s_rec_bit= s_tr_bit= 0;
+  s_receiving= false;
+  s_tx_written= false;
+}
+
+void
+cl_serial::show_txe(bool val)
+{
+  if (val)
+    regs[sr]->set_bit0(0x80);
+  else
+    regs[sr]->set_bit1(0x80);
+}
+
+void
+cl_serial::show_rxe(bool val)
+{
+  if (val)
+    regs[sr]->set_bit1(0x20);
+  else
+    regs[sr]->set_bit0(0x20);
+}
+
+void
+cl_serial::show_tc(bool val)
+{
+  if (val)
+    regs[sr]->set_bit1(0x40);
+  else
+    regs[sr]->set_bit0(0x40);
+}
+
+void
+cl_serial::set_dr(t_mem val)
+{
+  regs[dr]->set(val);
 }
 
 

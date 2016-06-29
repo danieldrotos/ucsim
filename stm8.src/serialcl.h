@@ -60,16 +60,18 @@ class cl_serial: public cl_hw
   class cl_memory_cell *regs[12];
   int div;
   int mcnt;
-  uchar s_in;		// Serial channel input reg
-  uchar s_out;		// Serial channel output reg
-  bool  s_sending;	// Transmitter is working (s_out is not empty)
-  bool  s_receiving;	// Receiver is working (s_in is shifting)
-  int   s_rec_bit;	// Bit counter of receiver
-  int   s_tr_bit;	// Bit counter of transmitter
-  uchar _bits;		// Nr of bits to send/receive
-  bool  ren;		// Receiving is enabled
-  bool  ten;		// Transmitter is enabled
-  bool  en;		// USART is enabled
+  uint8_t s_in;		// Serial channel input reg
+  uint8_t s_out;	// Serial channel output reg
+  uint8_t s_txd;	// TX data register
+  bool    s_sending;	// Transmitter is working (s_out is not empty)
+  bool    s_receiving;	// Receiver is working (s_in is shifting)
+  bool	  s_tx_written;	// TX data reg has been written
+  int     s_rec_bit;	// Bit counter of receiver
+  int     s_tr_bit;	// Bit counter of transmitter
+  uchar   bits;		// Nr of bits to send/receive
+  bool    ren;		// Receiving is enabled
+  bool    ten;		// Transmitter is enabled
+  bool    en;		// USART is enabled
  public:
   class cl_optref *serial_in_file_option;
   class cl_optref *serial_out_file_option;
@@ -90,11 +92,19 @@ class cl_serial: public cl_hw
   virtual void write(class cl_memory_cell *cell, t_mem *val);
 
   virtual int tick(int cycles);
+  virtual void start_send();
+  virtual void restart_send();
+  virtual void stop_send();
+  virtual void received();
   virtual void reset(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
 
-  virtual void set_div();
-  virtual void set_ctrl();
+  virtual void pick_div();
+  virtual void pick_ctrl();
+  virtual void show_txe(bool val);
+  virtual void show_rxe(bool val);
+  virtual void show_tc(bool val);
+  virtual void set_dr(t_mem val);
 };
 
 
