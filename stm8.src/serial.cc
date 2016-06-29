@@ -193,7 +193,7 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
   
   if (cell == regs[dr])
     {
-      printf("** w3 %x\n", *val);
+      printf("** w3 %x txd=%c\n", *val, *val);
       s_txd= *val;
       s_tx_written= true;
       if (!s_sending)
@@ -225,17 +225,18 @@ cl_serial::tick(int cycles)
   if (s_sending &&
       (s_tr_bit >= bits))
     {
-      printf("** sending\n");
+      printf("** sent %c\n", s_out);
       s_sending= false;
       if (fout)
 	{
 	  fout->write((char*)(&s_out), 1);
 	}
       s_tr_bit-= bits;
+      show_txe(true);
       if (s_tx_written)
 	restart_send();
       else
-	stop_send();
+	finish_send();
     }
   if ((ren) &&
       fin &&
@@ -291,7 +292,7 @@ cl_serial::restart_send()
 }
 
 void
-cl_serial::stop_send()
+cl_serial::finish_send()
 {
   show_txe(true);
   show_tc(true);
@@ -309,9 +310,9 @@ cl_serial::reset(void)
 {
   int i;
   printf("** reset\n");
-  regs[sr]->set(0xc0);
+  regs[sr]->write(0xc0);
   for (i= 2; i < 12; i++)
-    regs[i]->set(0);
+    regs[i]->write(0);
 }
 
 void
@@ -356,18 +357,19 @@ void
 cl_serial::show_txe(bool val)
 {
   if (val)
-    regs[sr]->set_bit0(0x80);
-  else
     regs[sr]->set_bit1(0x80);
+  else
+    regs[sr]->set_bit0(0x80);
+  printf("** TXE=%d sr=%x\n", val, regs[sr]->get());
 }
 
 void
 cl_serial::show_rxe(bool val)
 {
   if (val)
-    regs[sr]->set_bit1(0x20);
-  else
     regs[sr]->set_bit0(0x20);
+  else
+    regs[sr]->set_bit1(0x20);
 }
 
 void

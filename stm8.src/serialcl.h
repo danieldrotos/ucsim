@@ -94,7 +94,7 @@ class cl_serial: public cl_hw
   virtual int tick(int cycles);
   virtual void start_send();
   virtual void restart_send();
-  virtual void stop_send();
+  virtual void finish_send();
   virtual void received();
   virtual void reset(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
