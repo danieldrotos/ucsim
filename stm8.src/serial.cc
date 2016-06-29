@@ -55,6 +55,7 @@ cl_serial::cl_serial(class cl_uc *auc,
   fout= 0;
   listener= 0;
   type= ttype;
+  base= abase;
 }
 
 
@@ -77,7 +78,7 @@ cl_serial::init(void)
   set_name("stm8_uart");
   for (i= 0; i < 12; i++)
     {
-      regs[i]= register_cell(uc->rom, base+i, NULL, wtd_restore_write);
+      regs[i]= register_cell(uc->rom, base+i);
     }
   pick_div();
   pick_ctrl();
@@ -175,16 +176,24 @@ cl_serial::read(class cl_memory_cell *cell)
 void
 cl_serial::write(class cl_memory_cell *cell, t_mem *val)
 {
+  printf("** write %x\n", *val);
   cell->set(*val);
   if ((cell == regs[brr1]) ||
       (cell == regs[brr2]))
-    pick_div();
+    {
+      printf("** w1 %x\n", *val);
+      pick_div();
+    }
   if ((cell == regs[cr1]) ||
       (cell == regs[cr2]))
-    pick_ctrl();
-
+    {
+      printf("** w2 %x\n", *val);
+      pick_ctrl();
+    }
+  
   if (cell == regs[dr])
     {
+      printf("** w3 %x\n", *val);
       s_txd= *val;
       s_tx_written= true;
       if (!s_sending)
@@ -216,6 +225,7 @@ cl_serial::tick(int cycles)
   if (s_sending &&
       (s_tr_bit >= bits))
     {
+      printf("** sending\n");
       s_sending= false;
       if (fout)
 	{
@@ -255,6 +265,7 @@ cl_serial::tick(int cycles)
 void
 cl_serial::start_send()
 {
+  printf("** start_send ten=%d %c\n", ten, s_txd);
   if (ten)
     {
       s_out= s_txd;
@@ -268,6 +279,7 @@ cl_serial::start_send()
 void
 cl_serial::restart_send()
 {
+  printf("** restart_send ten=%d %c\n", ten, s_txd);
   if (ten)
     {
       s_out= s_txd;
@@ -295,6 +307,11 @@ cl_serial::received()
 void
 cl_serial::reset(void)
 {
+  int i;
+  printf("** reset\n");
+  regs[sr]->set(0xc0);
+  for (i= 2; i < 12; i++)
+    regs[i]->set(0);
 }
 
 void
@@ -317,6 +334,7 @@ cl_serial::pick_div()
   uint8_t b2= regs[brr2]->get();
   div= ((((b2&0xf0)<<4) + b1)<<4) + (b2&0xf);
   mcnt= 0;
+  printf("pick_div %d\n", div);
 }
 
 void
@@ -331,6 +349,7 @@ cl_serial::pick_ctrl()
   s_rec_bit= s_tr_bit= 0;
   s_receiving= false;
   s_tx_written= false;
+  printf("pick_ctrl en=%d ten=%d ren=%d\n", en, ten, ren);
 }
 
 void
