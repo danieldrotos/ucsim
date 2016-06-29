@@ -270,13 +270,13 @@ cl_stm8::inst_add(t_mem code, unsigned char prefix)
 int
 cl_stm8::get2(unsigned int addr)
 {
-    return((ram->get((t_addr) (addr)) << 8) | ram->get((t_addr) (addr+1)));
+    return((ram->read((t_addr) (addr)) << 8) | ram->read((t_addr) (addr+1)));
 }
 
 int
 cl_stm8::get3(unsigned int addr)
 {
-    return((ram->get((t_addr) (addr)) << 16) | (ram->get((t_addr) (addr+1)) << 8) |ram->get((t_addr) (addr+2)));
+    return((ram->read((t_addr) (addr)) << 16) | (ram->read((t_addr) (addr+1)) << 8) |ram->read((t_addr) (addr+2)));
 }
 
 int
