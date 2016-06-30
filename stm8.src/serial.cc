@@ -186,34 +186,45 @@ void
 cl_serial::write(class cl_memory_cell *cell, t_mem *val)
 {
   printf("** write %x\n", *val);
-  cell->set(*val);
   
-  if ((cell == regs[brr1]) ||
-      (cell == regs[brr2]))
+  if (cell == regs[sr])
     {
-      printf("** w1 %x\n", *val);
-      pick_div();
+      uint8_t v= cell->get();
+      if ((*val & 0x40) == 0)
+	v&= ~0x40;
+      *val= v;
     }
-  else if ((cell == regs[cr1]) ||
-      (cell == regs[cr2]))
+  else
     {
-      printf("** w2 %x\n", *val);
-      pick_ctrl();
-    }
-  
-  else if (cell == regs[dr])
-    {
-      printf("** w3 %x txd=%c\n", *val, *val);
-      s_txd= *val;
-      s_tx_written= true;
-      show_writable(false);
-      if (sr_read)
-	show_tx_complete(false);
-      if (!s_sending)
+      cell->set(*val);
+      if ((cell == regs[brr1]) ||
+	  (cell == regs[brr2]))
 	{
-	  start_send();
-	}      
+	  printf("** w1 %x\n", *val);
+	  pick_div();
+	}
+      else if ((cell == regs[cr1]) ||
+	       (cell == regs[cr2]))
+	{
+	  printf("** w2 %x\n", *val);
+	  pick_ctrl();
+	}
+  
+      else if (cell == regs[dr])
+	{
+	  printf("** w3 %x txd=%c\n", *val, *val);
+	  s_txd= *val;
+	  s_tx_written= true;
+	  show_writable(false);
+	  if (sr_read)
+	    show_tx_complete(false);
+	  if (!s_sending)
+	    {
+	      start_send();
+	    }      
+	}
     }
+
   sr_read= false;
 }
 
@@ -327,9 +338,9 @@ cl_serial::reset(void)
 {
   int i;
   printf("** reset\n");
-  regs[sr]->write(0xc0);
+  regs[sr]->set(0xc0);
   for (i= 2; i < 12; i++)
-    regs[i]->write(0);
+    regs[i]->set(0);
 }
 
 void
@@ -341,6 +352,8 @@ cl_serial::new_io(class cl_f *f_in, class cl_f *f_out)
     delete fout;
   fin= f_in;
   fout= f_out;
+  fin->set_terminal();
+  fout->set_terminal();
   //printf("usart[%d] now using fin=%d fout=%d\n", id, fin->file_id, fout->file_id);
 }
 
@@ -389,6 +402,7 @@ cl_serial::show_readable(bool val)
     regs[sr]->set_bit1(0x20);
   else
     regs[sr]->set_bit0(0x20);
+  printf("** RX=%d sr=%x\n", val, regs[sr]->get());
 }
 
 void
@@ -398,6 +412,7 @@ cl_serial::show_tx_complete(bool val)
     regs[sr]->set_bit1(0x40);
   else
     regs[sr]->set_bit0(0x40);
+  printf("** TC=%d sr=%x\n", val, regs[sr]->get());
 }
 
 void
@@ -413,6 +428,7 @@ void
 cl_serial::set_dr(t_mem val)
 {
   regs[dr]->set(val);
+  printf("** DR<- %x %c\n", val, val);
 }
 
 
