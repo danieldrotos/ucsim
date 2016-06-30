@@ -388,6 +388,8 @@ cl_serial::new_io(class cl_f *f_in, class cl_f *f_out)
     delete fout;
   fin= f_in;
   fout= f_out;
+  fin->set_terminal();
+  fout->set_terminal();
   //printf("usart[%d] now using fin=%d fout=%d\n", id, fin->file_id, fout->file_id);
 }
 
