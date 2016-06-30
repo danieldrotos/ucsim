@@ -52,8 +52,20 @@ struct t_regpair
 
 struct t_regs
 {
-  TYPE_UBYTE A;
-  TYPE_UBYTE F;
+  //TYPE_UBYTE A;
+  //TYPE_UBYTE F;
+  union {
+    uint16_t AF;
+    struct {
+#ifdef WORDS_BIGENDIAN
+      TYPE_UBYTE A;
+      TYPE_UBYTE F;
+#else
+      TYPE_UBYTE F;
+      TYPE_UBYTE A;
+#endif
+    };
+  };
   DEF_REGPAIR(BC, bc);
   DEF_REGPAIR(DE, de);
   DEF_REGPAIR(HL, hl);
@@ -62,8 +74,20 @@ struct t_regs
   TYPE_UWORD SP;
   /* there are alternate AF,BC,DE,HL register sets, and a few instructions
      that swap one for the other */
-  TYPE_UBYTE aA;
-  TYPE_UBYTE aF;
+  //TYPE_UBYTE aA;
+  //TYPE_UBYTE aF;
+  union {
+    uint16_t aAF;
+    struct {
+#ifdef WORDS_BIGENDIAN
+      TYPE_UBYTE aA;
+      TYPE_UBYTE aF;
+#else
+      TYPE_UBYTE aF;
+      TYPE_UBYTE aA;
+#endif
+    };
+  };
   DEF_REGPAIR(aBC, a_bc);
   DEF_REGPAIR(aDE, a_de);
   DEF_REGPAIR(aHL, a_hl);

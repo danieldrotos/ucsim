@@ -42,6 +42,8 @@ public:
   class cl_memory *ram;
   class cl_memory *rom;
   struct t_regs regs;
+  class cl_address_space *regs8;
+  class cl_address_space *regs16;
 
 public:
   cl_z80(int Itype, int Itech, class cl_sim *asim);
