@@ -82,6 +82,8 @@ cl_serial::init(void)
     }
   pick_div();
   pick_ctrl();
+
+  sr_read= false;
   
   s= format_string("serial%d_in_file", id);
   serial_in_file_option= new cl_optref(this);
@@ -169,7 +171,14 @@ cl_serial::added_to_uc(void)
 t_mem
 cl_serial::read(class cl_memory_cell *cell)
 {
-
+  if (cell == regs[dr])
+    {
+      if (sr_read)
+	regs[sr]->set_bit0(0x1f);
+      regs[sr]->set_bit0(0x20);
+      return s_in;
+    }
+  sr_read= (cell == regs[sr]);
   return cell->get();
 }
 
@@ -178,29 +187,34 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
 {
   printf("** write %x\n", *val);
   cell->set(*val);
+  
   if ((cell == regs[brr1]) ||
       (cell == regs[brr2]))
     {
       printf("** w1 %x\n", *val);
       pick_div();
     }
-  if ((cell == regs[cr1]) ||
+  else if ((cell == regs[cr1]) ||
       (cell == regs[cr2]))
     {
       printf("** w2 %x\n", *val);
       pick_ctrl();
     }
   
-  if (cell == regs[dr])
+  else if (cell == regs[dr])
     {
       printf("** w3 %x txd=%c\n", *val, *val);
       s_txd= *val;
       s_tx_written= true;
+      show_writable(false);
+      if (sr_read)
+	show_tx_complete(false);
       if (!s_sending)
 	{
 	  start_send();
-	}
+	}      
     }
+  sr_read= false;
 }
 
 int
@@ -232,7 +246,6 @@ cl_serial::tick(int cycles)
 	  fout->write((char*)(&s_out), 1);
 	}
       s_tr_bit-= bits;
-      show_txe(true);
       if (s_tx_written)
 	restart_send();
       else
@@ -247,6 +260,8 @@ cl_serial::tick(int cycles)
 	  s_receiving= true;
 	  s_rec_bit= 0;
 	}
+      else
+	show_idle(true);
     }
   if (s_receiving &&
       (s_rec_bit >= bits))
@@ -273,7 +288,7 @@ cl_serial::start_send()
       s_tx_written= false;
       s_sending= true;
       s_tr_bit= 0;
-      show_txe(false);
+      show_writable(true);
     }
 }
 
@@ -287,22 +302,24 @@ cl_serial::restart_send()
       s_tx_written= false;
       s_sending= true;
       s_tr_bit= 0;
-      show_txe(false);
+      show_writable(true);
     }
 }
 
 void
 cl_serial::finish_send()
 {
-  show_txe(true);
-  show_tc(true);
+  show_writable(true);
+  show_tx_complete(true);
 }
 
 void
 cl_serial::received()
 {
   set_dr(s_in);
-  show_rxe(false);
+  if (regs[sr]->get() & 0x20)
+    regs[sr]->set_bit1(0x08); // overrun
+  show_readable(true);
 }
 
 void
@@ -354,31 +371,42 @@ cl_serial::pick_ctrl()
 }
 
 void
-cl_serial::show_txe(bool val)
+cl_serial::show_writable(bool val)
 {
   if (val)
+    // TXE=1
     regs[sr]->set_bit1(0x80);
   else
+    // TXE=0
     regs[sr]->set_bit0(0x80);
   printf("** TXE=%d sr=%x\n", val, regs[sr]->get());
 }
 
 void
-cl_serial::show_rxe(bool val)
+cl_serial::show_readable(bool val)
 {
   if (val)
-    regs[sr]->set_bit0(0x20);
-  else
     regs[sr]->set_bit1(0x20);
+  else
+    regs[sr]->set_bit0(0x20);
 }
 
 void
-cl_serial::show_tc(bool val)
+cl_serial::show_tx_complete(bool val)
 {
   if (val)
     regs[sr]->set_bit1(0x40);
   else
     regs[sr]->set_bit0(0x40);
+}
+
+void
+cl_serial::show_idle(bool val)
+{
+  if (val)
+    regs[sr]->set_bit1(0x10);
+  else
+    regs[sr]->set_bit0(0x10);
 }
 
 void

@@ -60,6 +60,7 @@ class cl_serial: public cl_hw
   class cl_memory_cell *regs[12];
   int div;
   int mcnt;
+  bool    sr_read;	// last op was read of SR
   uint8_t s_in;		// Serial channel input reg
   uint8_t s_out;	// Serial channel output reg
   uint8_t s_txd;	// TX data register
@@ -101,9 +102,10 @@ class cl_serial: public cl_hw
 
   virtual void pick_div();
   virtual void pick_ctrl();
-  virtual void show_txe(bool val);
-  virtual void show_rxe(bool val);
-  virtual void show_tc(bool val);
+  virtual void show_writable(bool val);
+  virtual void show_readable(bool val);
+  virtual void show_tx_complete(bool val);
+  virtual void show_idle(bool vol);
   virtual void set_dr(t_mem val);
 };
 
