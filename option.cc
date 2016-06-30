@@ -554,7 +554,7 @@ cl_optref::get_value(bool)
 {
   if (!option)
     {
-      fprintf(stderr, "Warning: \"%s\" is sdereferencing a non-existent "
+      fprintf(stderr, "Warning: \"%s\" is dereferencing a non-existent "
 	      "bool option: %s\n", object_name(owner), get_name());
       return(DD_FALSE);
     }
@@ -571,7 +571,7 @@ cl_optref::get_value(const char *)
 {
   if (!option)
     {
-      fprintf(stderr, "Warning: \"%s\" is sdereferencing a non-existent "
+      fprintf(stderr, "Warning: \"%s\" is dereferencing a non-existent "
 	      "string option: %s\n", object_name(owner), get_name());
       return(0);
     }
@@ -588,7 +588,7 @@ cl_optref::get_value(void *)
 {
   if (!option)
     {
-      fprintf(stderr, "Warning: \"%s\" is sdereferencing a non-existent "
+      fprintf(stderr, "Warning: \"%s\" is dereferencing a non-existent "
 	      "pointer option: %s\n", object_name(owner), get_name());
       return(0);
     }
@@ -605,7 +605,7 @@ cl_optref::get_value(long)
 {
   if (!option)
     {
-      fprintf(stderr, "Warning: \"%s\" is sdereferencing a non-existent "
+      fprintf(stderr, "Warning: \"%s\" is dereferencing a non-existent "
 	      "number option: %s\n", object_name(owner), get_name());
       return(0);
     }
@@ -622,7 +622,7 @@ cl_optref::get_value(double)
 {
   if (!option)
     {
-      fprintf(stderr, "Warning: \"%s\" is sdereferencing a non-existent "
+      fprintf(stderr, "Warning: \"%s\" is dereferencing a non-existent "
 	      "float option: %s\n", object_name(owner), get_name());
       return(0);
     }
