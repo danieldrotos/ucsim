@@ -1,12 +1,12 @@
-volatile int x;
+volatile unsigned char x;
 
 void
 main(void)
 {
-  int i;
+  unsigned char i;
 
-  for (i= 0; i<100; i++)
-    x= i+123;
+  for (i= 0; i<10; i++)
+    x= i;
   for (;;)
     ;
 }
