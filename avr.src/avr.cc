@@ -104,7 +104,7 @@ void
 cl_avr::mk_hw_elements(void)
 {
   class cl_base *o;
-  /* t_uc::mk_hw() does nothing */
+  cl_uc::mk_hw_elements();
   hws->add(o= new cl_port(this));
   o->init();
 }

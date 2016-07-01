@@ -75,7 +75,7 @@ cl_st7::init(void)
   ram = rom;
 
   // zero out ram(this is assumed in regression tests)
-  printf("******************** leave the RAM dirty now \n");
+  //printf("******************** leave the RAM dirty now \n");
 //  for (int i=0x0; i<0x8000; i++) {
 //    ram->set((t_addr) i, 0);
 //  }
@@ -126,7 +126,7 @@ void
 cl_st7::mk_hw_elements(void)
 {
   //class cl_base *o;
-  /* t_uc::mk_hw() does nothing */
+  cl_uc::mk_hw_elements();
 }
 
 void
@@ -470,7 +470,7 @@ cl_st7::exec_inst(void)
 
 
   if (fetch(&code)) {
-	  printf("******************** break \n");
+    //printf("******************** break \n");
 	  return(resBREAKPOINT);
   }
   tick(1);
@@ -487,7 +487,7 @@ cl_st7::exec_inst(void)
 		break;
   }
 	
-  printf("********************  switch; pc=0x%lx, prefix = 0x%x, code = 0x%x\n",(long int)(PC), cprefix, code);
+  //printf("********************  switch; pc=0x%lx, prefix = 0x%x, code = 0x%x\n",(long int)(PC), cprefix, code);
   switch (code & 0xf) {
    int mulres;
    
@@ -526,7 +526,7 @@ cl_st7::exec_inst(void)
             break;
          case 0x90: // this is prefix, do not be mad ???
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 		
@@ -560,7 +560,7 @@ cl_st7::exec_inst(void)
          case 0x70: // 
          case 0x90: // this is prefix, do not be mad ???
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -604,7 +604,7 @@ cl_st7::exec_inst(void)
          case 0x80: // 
          case 0x90: // this is prefix, do not be mad ???
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -627,7 +627,7 @@ cl_st7::exec_inst(void)
             return( inst_cpl( code, cprefix));
             break;
          case 0x80: // trap
-            printf("************* TRAP instruction unimplemented !!!!\n");
+	   //printf("************* TRAP instruction unimplemented !!!!\n");
             return(resINV_INST);
             break;
          case 0x90: // 
@@ -649,7 +649,7 @@ cl_st7::exec_inst(void)
             return( inst_cpxy( code, cprefix));
             break;
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -694,7 +694,7 @@ cl_st7::exec_inst(void)
             return( inst_and( code, cprefix));
             break;
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -741,7 +741,7 @@ cl_st7::exec_inst(void)
          case 0x60:
          case 0x70: // 
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -786,7 +786,7 @@ cl_st7::exec_inst(void)
             return( inst_lda( code, cprefix));
             break;
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -829,7 +829,7 @@ cl_st7::exec_inst(void)
             break;
          case 0x80: // 
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -868,7 +868,7 @@ cl_st7::exec_inst(void)
             return( inst_xor( code, cprefix));
             break;
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -913,7 +913,7 @@ cl_st7::exec_inst(void)
             return( inst_adc( code, cprefix));
             break;
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -952,7 +952,7 @@ cl_st7::exec_inst(void)
             return( inst_or( code, cprefix));
             break;
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -986,7 +986,7 @@ cl_st7::exec_inst(void)
          case 0x70: // 
          case 0x80: // 
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -1024,7 +1024,7 @@ cl_st7::exec_inst(void)
             break;
          case 0x80: // 
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -1061,7 +1061,7 @@ cl_st7::exec_inst(void)
             break;
          case 0x80: // 
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -1105,7 +1105,7 @@ cl_st7::exec_inst(void)
             return( inst_ldxy( code, cprefix));
             break;
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
@@ -1151,13 +1151,13 @@ cl_st7::exec_inst(void)
             break;
          case 0xA0:
          default: 
-            printf("************* bad code !!!!\n");
+	   //printf("************* bad code !!!!\n");
             return(resINV_INST);
 		}
 
 
     default:
-		printf("************* bad code !!!!\n");
+      //printf("************* bad code !!!!\n");
 		return(resINV_INST);
 	}
 	  

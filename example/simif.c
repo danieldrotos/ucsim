@@ -12,6 +12,7 @@ enum sif_command {
   SIFCM_CMDINFO		= 'I',	// info about a command
   SIFCM_CMDHELP		= 'h',	// help about a command
   SIFCM_STOP		= 's',	// stop simulation
+  SIFCM_PRINT		= 'p',	// print character
 };
 
 enum sif_answer_type {
@@ -169,6 +170,20 @@ print_cmd_infos(void)
 }
 
 void
+sif_putchar(char c)
+{
+  *sif= SIFCM_PRINT;
+  *sif= c;
+}
+
+void
+sif_print(char *s)
+{
+  while (*s)
+    sif_putchar(*s++);
+}
+
+void
 main(void)
 {
   sif= (unsigned char SIF_ADDRESS_SPACE *)0xffff;
@@ -187,6 +202,7 @@ main(void)
 	printf("%c", commands[i]);
       printf("\n");
       print_cmd_infos();
+      sif_print("Message from simulated program: Hello World!\n");
     }
   else
     printf("\n");

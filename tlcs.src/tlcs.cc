@@ -177,6 +177,7 @@ cl_tlcs::mk_hw_elements(void)
   //class cl_base *o;
   //hws->add(o= new cl_port(this));
   //o->init();
+  cl_uc::mk_hw_elements();
 }
 
 

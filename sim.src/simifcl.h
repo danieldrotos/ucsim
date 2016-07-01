@@ -35,6 +35,9 @@ enum sif_command {
   SIFCM_STOP		= 's',	// stop simulation
   // -> s
   // -> s
+  SIFCM_PRINT		= 'p',	// print out a character
+  // -> p char
+  // <-
 };
 
 enum sif_answer_type {
@@ -190,6 +193,18 @@ public:
   cl_sif_stop(class cl_simulator_interface *the_sif):
     cl_sif_command(SIFCM_STOP, "stop",
 		   "Stop simulation",
+		   SIFAT_BYTE, 0, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+/* Command: print character */
+class cl_sif_print: public cl_sif_command
+{
+public:
+  cl_sif_print(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_PRINT, "print",
+		   "Print character",
 		   SIFAT_BYTE, 0, the_sif)
   {}
   virtual void produce_answer(void);

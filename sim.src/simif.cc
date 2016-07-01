@@ -320,6 +320,19 @@ cl_sif_stop::produce_answer(void)
 }
 
 
+/* Command: stop simulation */
+
+void
+cl_sif_print::produce_answer(void)
+{
+  t_mem cm;
+  if (get_parameter(0, &cm))
+    putchar(cm);
+  if (sif)
+    sif->finish_command();
+}
+
+
 /*
  * Virtual HW: simulator interface
  */
@@ -376,6 +389,8 @@ cl_simulator_interface::init(void)
   commands->add(c= new cl_sif_cmdhelp(this));
   c->init();
   commands->add(c= new cl_sif_stop(this));
+  c->init();
+  commands->add(c= new cl_sif_print(this));
   c->init();
   return(0);
 }
