@@ -408,6 +408,37 @@ cl_uc390::make_memories(void)
 
   acc= sfr->get_cell(ACC);
   psw= sfr->get_cell(PSW);
+
+  regs= new cl_address_space("regs", 0, 8, 8);
+  regs->init();
+  address_spaces->add(regs);
+  
+  cl_banker *b= new cl_banker(sfr, 0xd0, 0x18,
+			      regs, 0, 7);
+  b->init();
+  regs->decoders->add(b);
+  b->add_bank(0, memory("iram_chip"), 0);
+  b->add_bank(1, memory("iram_chip"), 8);
+  b->add_bank(2, memory("iram_chip"), 16);
+  b->add_bank(3, memory("iram_chip"), 24);
+
+  cl_var *v;
+  vars->add(v= new cl_var(cchars("r0"), regs, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("r1"), regs, 1));
+  v->init();
+  vars->add(v= new cl_var(cchars("r2"), regs, 2));
+  v->init();
+  vars->add(v= new cl_var(cchars("r3"), regs, 3));
+  v->init();
+  vars->add(v= new cl_var(cchars("r4"), regs, 4));
+  v->init();
+  vars->add(v= new cl_var(cchars("r5"), regs, 5));
+  v->init();
+  vars->add(v= new cl_var(cchars("r6"), regs, 6));
+  v->init();
+  vars->add(v= new cl_var(cchars("r7"), regs, 7));
+  v->init();
 }
 
 

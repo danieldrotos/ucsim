@@ -85,7 +85,7 @@ void
 cl_lr35902::mk_hw_elements(void)
 {
   //class cl_base *o;
-  /* t_uc::mk_hw() does nothing */
+  cl_uc::mk_hw_elements();
 }
 
 void lr35902_memory::init(void) {
@@ -109,6 +109,102 @@ void
 cl_lr35902::make_memories(void)
 {
   mem.init( );
+
+  regs8= new cl_address_space("regs8", 0, 16, 8);
+  regs8->init();
+  regs8->get_cell(0)->decode((t_mem*)&regs.A);
+  regs8->get_cell(1)->decode((t_mem*)&regs.F);
+  regs8->get_cell(2)->decode((t_mem*)&regs.bc.h);
+  regs8->get_cell(3)->decode((t_mem*)&regs.bc.l);
+  regs8->get_cell(4)->decode((t_mem*)&regs.de.h);
+  regs8->get_cell(5)->decode((t_mem*)&regs.de.l);
+  regs8->get_cell(6)->decode((t_mem*)&regs.hl.h);
+  regs8->get_cell(7)->decode((t_mem*)&regs.hl.l);
+
+  regs8->get_cell(8)->decode((t_mem*)&regs.aA);
+  regs8->get_cell(9)->decode((t_mem*)&regs.aF);
+  regs8->get_cell(10)->decode((t_mem*)&regs.a_bc.h);
+  regs8->get_cell(11)->decode((t_mem*)&regs.a_bc.l);
+  regs8->get_cell(12)->decode((t_mem*)&regs.a_de.h);
+  regs8->get_cell(13)->decode((t_mem*)&regs.a_de.l);
+  regs8->get_cell(14)->decode((t_mem*)&regs.a_hl.h);
+  regs8->get_cell(15)->decode((t_mem*)&regs.a_hl.l);
+
+  regs16= new cl_address_space("regs16", 0, 11, 16);
+  regs16->init();
+
+  regs16->get_cell(0)->decode((t_mem*)&regs.AF);
+  regs16->get_cell(1)->decode((t_mem*)&regs.BC);
+  regs16->get_cell(2)->decode((t_mem*)&regs.DE);
+  regs16->get_cell(3)->decode((t_mem*)&regs.HL);
+  regs16->get_cell(4)->decode((t_mem*)&regs.IX);
+  regs16->get_cell(5)->decode((t_mem*)&regs.IY);
+  regs16->get_cell(6)->decode((t_mem*)&regs.SP);
+  regs16->get_cell(7)->decode((t_mem*)&regs.aAF);
+  regs16->get_cell(8)->decode((t_mem*)&regs.aBC);
+  regs16->get_cell(9)->decode((t_mem*)&regs.aDE);
+  regs16->get_cell(10)->decode((t_mem*)&regs.aHL);
+
+  address_spaces->add(regs8);
+  address_spaces->add(regs16);
+
+  class cl_var *v;
+  vars->add(v= new cl_var(cchars("a"), regs8, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("f"), regs8, 1));
+  v->init();
+  vars->add(v= new cl_var(cchars("b"), regs8, 2));
+  v->init();
+  vars->add(v= new cl_var(cchars("c"), regs8, 3));
+  v->init();
+  vars->add(v= new cl_var(cchars("d"), regs8, 4));
+  v->init();
+  vars->add(v= new cl_var(cchars("e"), regs8, 5));
+  v->init();
+  vars->add(v= new cl_var(cchars("h"), regs8, 6));
+  v->init();
+  vars->add(v= new cl_var(cchars("l"), regs8, 7));
+  v->init();
+
+  vars->add(v= new cl_var(cchars("alt_a"), regs8, 8));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_f"), regs8, 9));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_b"), regs8, 10));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_c"), regs8, 11));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_d"), regs8, 12));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_e"), regs8, 13));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_h"), regs8, 14));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_l"), regs8, 15));
+  v->init();
+
+  vars->add(v= new cl_var(cchars("af"), regs16, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("bc"), regs16, 1));
+  v->init();
+  vars->add(v= new cl_var(cchars("de"), regs16, 2));
+  v->init();
+  vars->add(v= new cl_var(cchars("hl"), regs16, 3));
+  v->init();
+  vars->add(v= new cl_var(cchars("ix"), regs16, 4));
+  v->init();
+  vars->add(v= new cl_var(cchars("iy"), regs16, 5));
+  v->init();
+  vars->add(v= new cl_var(cchars("sp"), regs16, 6));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_af"), regs16, 7));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_bc"), regs16, 8));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_de"), regs16, 9));
+  v->init();
+  vars->add(v= new cl_var(cchars("alt_hl"), regs16, 10));
+  v->init();
 }
 
 

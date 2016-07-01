@@ -42,6 +42,8 @@ class cl_stm8: public cl_uc
 {
 public:
   class cl_address_space *ram;
+  class cl_address_space *regs8;
+  class cl_address_space *regs16;
   //class cl_memory *rom;
   struct t_regs regs;
   class cl_interrupt *interrupt;

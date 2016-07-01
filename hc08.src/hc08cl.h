@@ -42,6 +42,7 @@ class cl_hc08: public cl_uc
 public:
   class cl_memory *ram;
   class cl_memory *rom;
+  class cl_address_space *regs8, *regs16;
   struct t_regs regs;
 public:
   cl_hc08(int Itype, int Itech, class cl_sim *asim);

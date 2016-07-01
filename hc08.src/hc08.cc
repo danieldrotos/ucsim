@@ -151,6 +151,35 @@ cl_hc08::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+
+
+  regs8= new cl_address_space("regs8", 0, 4, 8);
+  regs8->init();
+  regs8->get_cell(0)->decode((t_mem*)&regs.A);
+  regs8->get_cell(1)->decode((t_mem*)&regs.P);
+  regs8->get_cell(2)->decode((t_mem*)&regs.H);
+  regs8->get_cell(3)->decode((t_mem*)&regs.X);
+
+  regs16= new cl_address_space("regs16", 0, 1, 16);
+  regs16->init();
+
+  regs16->get_cell(0)->decode((t_mem*)&regs.SP);
+
+  address_spaces->add(regs8);
+  address_spaces->add(regs16);
+
+  class cl_var *v;
+  vars->add(v= new cl_var(cchars("a"), regs8, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("p"), regs8, 1));
+  v->init();
+  vars->add(v= new cl_var(cchars("h"), regs8, 2));
+  v->init();
+  vars->add(v= new cl_var(cchars("x"), regs8, 3));
+  v->init();
+
+  vars->add(v= new cl_var(cchars("SP"), regs16, 0));
+  v->init();
 }
 
 

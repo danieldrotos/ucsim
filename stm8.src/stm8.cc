@@ -64,6 +64,7 @@ cl_stm8::cl_stm8(class cl_sim *asim):
   cl_uc(asim)
 {
   type= CPU_STM8;
+
 }
 
 int
@@ -158,6 +159,34 @@ cl_stm8::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+
+  regs8= new cl_address_space("regs8", 0, 2, 8);
+  regs8->init();
+  regs8->get_cell(0)->decode((t_mem*)&regs.A);
+  regs8->get_cell(1)->decode((t_mem*)&regs.CC);
+
+  regs16= new cl_address_space("regs16", 0, 3, 16);
+  regs16->init();
+
+  regs16->get_cell(0)->decode((t_mem*)&regs.X);
+  regs16->get_cell(1)->decode((t_mem*)&regs.Y);
+  regs16->get_cell(2)->decode((t_mem*)&regs.SP);
+
+  address_spaces->add(regs8);
+  address_spaces->add(regs16);
+
+  class cl_var *v;
+  vars->add(v= new cl_var(cchars("a"), regs8, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("cc"), regs8, 1));
+  v->init();
+  
+  vars->add(v= new cl_var(cchars("x"), regs16, 0));
+  v->init();
+  vars->add(v= new cl_var(cchars("y"), regs16, 1));
+  v->init();
+  vars->add(v= new cl_var(cchars("sp"), regs16, 2));
+  v->init();
 }
 
 
