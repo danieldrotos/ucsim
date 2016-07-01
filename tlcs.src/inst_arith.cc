@@ -348,8 +348,29 @@ cl_tlcs::inst_adc_a(class cl_memory_cell *cell)
 uint8_t
 cl_tlcs::op_sub8(uint8_t d1, uint8_t d2)
 {
-  uint8_t r= op_add8(d1, ~d2 + 1);
+  unsigned int op1= (unsigned int)d1;
+  unsigned int op2= (unsigned int)d2;
+  signed int res= (signed char)d1 - (signed char)d2;
+  uint8_t r;
+  
+  reg.f&= ~(FLAG_H|FLAG_V|FLAG_C|FLAG_Z|FLAG_S);
   reg.f|= FLAG_N;
+
+  if ((op1 & 0xf) < (op2 & 0xf))
+    reg.f|= FLAG_H;
+  if ((res < -128) || (res > 127))
+    reg.f|= FLAG_V;
+  if (op1 < op2)
+    reg.f|= FLAG_C;
+
+  r= d1 - op2;
+  //r= op_add8(d1, ~d2 + 1);
+  if (r == 0)
+    reg.f|= FLAG_Z;
+  if (r & 0x80)
+    reg.f|= FLAG_S;
+  
+  //reg.f|= FLAG_N;
   return r;
 }
 
@@ -358,7 +379,7 @@ cl_tlcs::op_sub8(uint8_t d1, uint8_t d2)
 int
 cl_tlcs::inst_sub_a(uint8_t d)
 {
-  reg.a= op_sub8(reg.a, ~d + 1);
+  reg.a= op_sub8(reg.a, d);
   return resGO;
 }
 
@@ -375,8 +396,35 @@ cl_tlcs::inst_sub_a(class cl_memory_cell *cell)
 uint8_t
 cl_tlcs::op_sbc8(uint8_t d1, uint8_t d2)
 {
-  uint8_t r= op_adc8(d1, ~d2 + 1);
+  uint8_t r;
+  unsigned int op1= (unsigned int)d1;
+  unsigned int op2= (unsigned int)d2;
+  signed int res= (signed char)d1 - (signed char)d2;
+
+  if (reg.f & FLAG_C)
+    {
+      ++op2;
+      --res;
+    }
+  reg.f&= ~(FLAG_H|FLAG_V|FLAG_C|FLAG_S|FLAG_Z);
   reg.f|= FLAG_N;
+
+  if ((op1 & 0xf) < (op2 & 0xf))
+    reg.f|= FLAG_H;
+  if ((res < -128) || (res > 127))
+    reg.f|= FLAG_V;
+  if (d1 < op2)
+    reg.f|= FLAG_C;
+
+  r= d1 - op2;
+
+  if (r == 0)
+    reg.f|= FLAG_Z;
+  if (r & 0x80)
+    reg.f|= FLAG_S;
+  
+  //r= op_adc8(d1, ~d2 + 1);
+  //reg.f|= FLAG_N;
   return r;
 }
 
