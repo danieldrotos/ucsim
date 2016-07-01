@@ -969,7 +969,7 @@ cl_f::eof(void)
 {
   if (/*file_f == NULL*/file_id < 0)
     return true;
-  return at_end;//feof(file_f);
+  return at_end && (last_used == first_free);//feof(file_f);
 }
 
 
