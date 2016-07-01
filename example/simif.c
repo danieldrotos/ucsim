@@ -13,6 +13,9 @@ enum sif_command {
   SIFCM_CMDHELP		= 'h',	// help about a command
   SIFCM_STOP		= 's',	// stop simulation
   SIFCM_PRINT		= 'p',	// print character
+  SIFCM_FIN_CHECK	= 'f',	// check input file for input
+  SIFCM_READ		= 'r',	// read from input file
+  SIFCM_WRITE		= 'w',	// write to output file
 };
 
 enum sif_answer_type {
@@ -53,6 +56,13 @@ putchar (char c)
 #define SIF_ADDRESS		0xffff
 
 unsigned char SIF_ADDRESS_SPACE * volatile sif;
+
+char
+sif_get(char cmd)
+{
+  *sif= cmd;
+  return *sif;
+}
 
 char
 simulated(void)
@@ -184,6 +194,42 @@ sif_print(char *s)
 }
 
 void
+fout_demo(char *s)
+{
+  while (*s)
+    {
+      *sif= SIFCM_WRITE;
+      *sif= *s++;
+    }
+}
+
+char
+sif_fin_avail()
+{
+  return sif_get(SIFCM_FIN_CHECK);
+}
+
+char
+sif_read()
+{
+  return sif_get(SIFCM_READ);
+}
+
+void
+fin_demo()
+{
+  char i, c;
+  printf("Reading input from SIMIF input file:\n");
+  while (i= sif_fin_avail())
+    {
+      c= sif_read();
+      if (c > 31)
+	putchar(c);
+    }
+  printf("\nRead demo finished\n");
+}
+
+void
 main(void)
 {
   sif= (unsigned char SIF_ADDRESS_SPACE *)0xffff;
@@ -203,6 +249,11 @@ main(void)
       printf("\n");
       print_cmd_infos();
       sif_print("Message from simulated program: Hello World!\n");
+      fout_demo("Write this message\n"
+		"to simif output file.\n"
+		"\n"
+		"Done.\n");
+      fin_demo();
     }
   else
     printf("\n");
