@@ -205,7 +205,7 @@ public:
   cl_sif_print(class cl_simulator_interface *the_sif):
     cl_sif_command(SIFCM_PRINT, "print",
 		   "Print character",
-		   SIFAT_BYTE, 0, the_sif)
+		   SIFAT_NONE, 1, the_sif)
   {}
   virtual void produce_answer(void);
 };
