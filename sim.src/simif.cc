@@ -1,6 +1,34 @@
+/*
+ * Simulator of microcontrollers (sim.src/simif.cc)
+ *
+ * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
+ * 
+ * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
+ *
+ */
+
+/* This file is part of microcontroller simulator: ucsim.
+
+UCSIM is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+UCSIM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with UCSIM; see the file COPYING.  If not, write to the Free
+Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+02111-1307, USA. */
 /*@1@*/
 
+/* $Id$ */
+
 #include <stdlib.h>
+#include <string.h>
 #include "i_string.h"
 
 // sim
@@ -305,7 +333,7 @@ cl_sif_stop::produce_answer(void)
 }
 
 
-/* Command: stop simulation */
+/* Command: print character */
 
 void
 cl_sif_print::produce_answer(void)
@@ -315,6 +343,76 @@ cl_sif_print::produce_answer(void)
     putchar(cm);
   if (sif)
     sif->finish_command();
+}
+
+
+/* Command: write character to output file */
+
+void
+cl_sif_write::produce_answer(void)
+{
+  t_mem cm;
+  if (sif)
+    {
+      if (get_parameter(0, &cm))
+	{
+	  if (sif->fout)
+	    {
+	      char c= cm;
+	      sif->fout->write(&c, 1);
+	    }
+	}
+    }
+  if (sif)
+    sif->finish_command();
+}
+
+
+/* Command: check input file */
+
+void
+cl_sif_fin_check::produce_answer(void)
+{
+  int i= 0;
+  if (sif)
+    {
+      if (sif->fin)
+	{
+	  i= sif->fin->input_avail();
+	  if (i)
+	    {
+	      if (sif->fin->eof())
+		i= 0;
+	    }
+	  i= i?1:0;
+	}
+    }
+  set_answer(i);
+  answer_length= 1;
+}
+
+
+/* Command: read from input file */
+
+void
+cl_sif_read::produce_answer(void)
+{
+  int i= 0;
+  if (sif)
+    {
+      if (sif->fin)
+	{
+	  char c;
+	  if (sif->fin->input_avail())
+	    {
+	      i= sif->fin->read(&c, 1);
+	      if (i != 0)
+		i= c;
+	    }
+	}
+    }
+  set_answer(i);
+  answer_length= 1;
 }
 
 
@@ -342,6 +440,7 @@ cl_simulator_interface::~cl_simulator_interface(void)
 int
 cl_simulator_interface::init(void)
 {
+  fin= fout= NULL;
   if (as_name)
     {
       as= uc->address_space(as_name);
@@ -376,6 +475,12 @@ cl_simulator_interface::init(void)
   commands->add(c= new cl_sif_stop(this));
   c->init();
   commands->add(c= new cl_sif_print(this));
+  c->init();
+  commands->add(c= new cl_sif_fin_check(this));
+  c->init();
+  commands->add(c= new cl_sif_read(this));
+  c->init();
+  commands->add(c= new cl_sif_write(this));
   c->init();
   return(0);
 }
@@ -418,9 +523,38 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 	  cell= register_cell(as, address);
 	}
     }
+  else if (cmdline->syntax_match(uc, STRING STRING))
+    {
+      char *p1= params[0]->value.string.string;
+      char *p2= params[1]->value.string.string;
+      if (strcmp(p1, "fout") == 0)
+	{
+	  if (fout)
+	    delete fout;
+	  fout= 0;
+	  if ((strcmp(p2, "NULL") != 0) &&
+	      (strcmp(p2, "(NULL)") != 0))
+	    {
+	      fout= mk_io(p2, "w");
+	    }
+	}
+      else if (strcmp(p1, "fin") == 0)
+	{
+	  if (fin)
+	    delete fin;
+	  fin= 0;
+	  if ((strcmp(p2, "NULL") != 0) &&
+	      (strcmp(p2, "(NULL)") != 0))
+	    {
+	      fin= mk_io(p2, "r");
+	    }
+	}
+    }
   else
     {
       con->dd_printf("set hardware simif memory address\n");
+      con->dd_printf("set hardware simif fin \"input_file_name\"\n");
+      con->dd_printf("set hardware simif fout \"output_file_name\"\n");
     }
 }
 

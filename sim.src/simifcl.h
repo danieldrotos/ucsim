@@ -1,7 +1,36 @@
+/*
+ * Simulator of microcontrollers (sim.src/simifcl.h)
+ *
+ * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
+ * 
+ * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
+ *
+ */
+
+/* This file is part of microcontroller simulator: ucsim.
+
+UCSIM is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+UCSIM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with UCSIM; see the file COPYING.  If not, write to the Free
+Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+02111-1307, USA. */
 /*@1@*/
+
+/* $Id$ */
 
 #ifndef SIMIFCL_HEADER
 #define SIMIFCL_HEADER
+
+#include "fiocl.h"
 
 #include "uccl.h"
 
@@ -37,6 +66,15 @@ enum sif_command {
   // -> s
   SIFCM_PRINT		= 'p',	// print out a character
   // -> p char
+  // <-
+  SIFCM_FIN_CHECK	= 'f',	// check input file for input
+  // -> f
+  // <- 0|1
+  SIFCM_READ		= 'r',	// read from input file
+  // -> r
+  // <- char|0
+  SIFCM_WRITE		= 'w',	// write to output file
+  // -> w char
   // <-
 };
 
@@ -211,13 +249,52 @@ public:
 };
 
 
+/* Command: write character to output file */
+class cl_sif_write: public cl_sif_command
+{
+public:
+  cl_sif_write(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_WRITE, "write to output file",
+		   "Write character to output file",
+		   SIFAT_NONE, 1, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+
+/* Command: check input file */
+class cl_sif_fin_check: public cl_sif_command
+{
+public:
+  cl_sif_fin_check(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_FIN_CHECK, "fin_check",
+		   "Check input file if input available",
+		   SIFAT_BYTE, 0, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+
+/* Command: read input file */
+class cl_sif_read: public cl_sif_command
+{
+public:
+  cl_sif_read(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_READ, "read input file",
+		   "Read character from input file",
+		   SIFAT_BYTE, 0, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+
 /*
  * Virtual hardware: simulator interface
  */
 
 class cl_simulator_interface: public cl_hw
 {
-private:
+ private:
   int version;
   const char *as_name;
   t_addr addr;
@@ -225,9 +302,11 @@ private:
   t_addr address;
   class cl_memory_cell *cell;
   class cl_sif_command *active_command;
-public:
+ public:
+  class cl_f *fin, *fout;
+ public:
   class cl_list *commands;
-public:
+ public:
   cl_simulator_interface(class cl_uc *auc);
   virtual ~cl_simulator_interface(void);
   virtual int init(void);
