@@ -577,63 +577,6 @@ cl_tlcs::op_cp_a(class cl_memory_cell *cell)
 }
 
 
-// ADD HL,mem
-uint16_t
-cl_tlcs::op_add_hl(t_addr addr)
-{
-  uint8_t dh, dl;
-  uint16_t d;
-  int r, newc15;
-  
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
-  
-  dl= nas->read(addr);
-  dh= nas->read(addr+1);
-  d= dh*256 + dl;
-
-  r= reg.hl + d;
-  newc15= (((reg.hl&0x7fff)+(d&0x7fff)) > 0x7fff)?0x10000:0;
-  
-  if (r & 0x8000)
-    reg.f|= FLAG_S;
-  if ((r & 0xffff) == 0)
-    reg.f|= FLAG_Z;
-  if (r > 0xffff)
-    reg.f|= FLAG_C|FLAG_X;
-  if (newc15 ^ (r&0x10000))
-    reg.f|= FLAG_V;
-  
-  return r & 0xffff;
-}
-
-
-// ADD HL,16-bit
-uint16_t
-cl_tlcs::op_add_hl(t_mem val)
-{
-  uint16_t d;
-  int r, newc15;
-  
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
-  
-  d= val;
-
-  r= reg.hl + d;
-  newc15= (((reg.hl&0x7fff)+(d&0x7fff)) > 0x7fff)?0x10000:0;
-  
-  if (r & 0x8000)
-    reg.f|= FLAG_S;
-  if ((r & 0xffff) == 0)
-    reg.f|= FLAG_Z;
-  if (r > 0xffff)
-    reg.f|= FLAG_C|FLAG_X;
-  if (newc15 ^ (r&0x10000))
-    reg.f|= FLAG_V;
-  
-  return r & 0xffff;
-}
-
-
 // ADD 16-bit
 uint16_t
 cl_tlcs::op_add16(t_mem op1, t_mem op2)
@@ -659,6 +602,29 @@ cl_tlcs::op_add16(t_mem op1, t_mem op2)
     reg.f|= FLAG_V;
   
   return r & 0xffff;
+}
+
+
+// ADD HL,mem
+uint16_t
+cl_tlcs::op_add_hl(t_addr addr)
+{
+  uint8_t dh, dl;
+  uint16_t d;
+  
+  dl= nas->read(addr);
+  dh= nas->read(addr+1);
+  d= dh*256 + dl;
+
+  return op_add16(reg.hl, d);
+}
+
+
+// ADD HL,16-bit
+uint16_t
+cl_tlcs::op_add_hl(t_mem val)
+{
+  return op_add16(reg.hl, val);
 }
 
 
@@ -688,38 +654,6 @@ cl_tlcs::op_adc_hl(t_addr addr)
 }
 
 
-// SUB HL,16-bit
-uint16_t
-cl_tlcs::op_sub_hl(t_mem val)
-{
-  uint8_t dl= val & 0xff;
-  uint8_t dh= val / 256;
-  uint16_t d= dh*256 + dl;
-  uint16_t r;
-
-  r= op_add_hl((t_mem)(~d + 1));
-  reg.f|= FLAG_N;
-
-  return r;
-}
-
-
-// SUB HL,mem
-uint16_t
-cl_tlcs::op_sub_hl(t_addr addr)
-{
-  uint8_t dl= nas->read(addr);
-  uint8_t dh= nas->read(addr+1);
-  uint16_t d= dh*256 + dl;
-  uint16_t r;
-
-  r= op_add_hl((t_mem)(~d + 1));
-  reg.f|= FLAG_N;
-
-  return r;
-}
-
-
 // SUB 16-bit
 uint16_t
 cl_tlcs::op_sub16(t_mem op1, t_mem op2)
@@ -734,19 +668,60 @@ cl_tlcs::op_sub16(t_mem op1, t_mem op2)
 }
 
 
+// SUB HL,16-bit
+uint16_t
+cl_tlcs::op_sub_hl(t_mem val)
+{
+  return op_sub16(reg.hl, val);
+}
+
+
+// SUB HL,mem
+uint16_t
+cl_tlcs::op_sub_hl(t_addr addr)
+{
+  uint8_t dl= nas->read(addr);
+  uint8_t dh= nas->read(addr+1);
+  uint16_t d= dh*256 + dl;
+
+  return op_sub16(reg.hl, d);
+}
+
+
 // SBC HL,16-bit
 uint16_t
 cl_tlcs::op_sbc_hl(t_mem val)
 {
-  uint8_t dl= val & 0xff;
-  uint8_t dh= val / 256;
-  uint16_t d= dh*256 + dl;
   uint16_t r;
-  int oldc= (reg.f & FLAG_C)?1:0;
-  
-  r= op_add_hl((t_mem)(~d + 1 + oldc));
-  reg.f|= FLAG_N;
 
+  unsigned int op1= (unsigned int)reg.hl;
+  unsigned int op2= (unsigned int)val;
+  signed int res= (int16_t)reg.hl - (int16_t)val;
+
+  if (reg.f & FLAG_C)
+    {
+      ++op2;
+      --res;
+    }
+  reg.f&= ~(FLAG_C|FLAG_H|FLAG_V|FLAG_Z|FLAG_S);
+  reg.f|= FLAG_N;
+  
+  //r= op_add_hl((t_mem)(~d + 1 + oldc));
+
+  if ((op1 & 0xfff) < (op2 & 0xfff))
+    reg.f|= FLAG_H;
+  if ((res < -32768) || (res > 32767))
+    reg.f|= FLAG_V;
+  if (op1 < op2)
+    reg.f|= FLAG_C;
+
+  r= reg.hl - op2;
+
+  if (r == 0)
+    reg.f|= FLAG_Z;
+  if (r & 0x8000)
+    reg.f|= FLAG_S;
+  
   return r;
 }
 
@@ -758,13 +733,8 @@ cl_tlcs::op_sbc_hl(t_addr addr)
   uint8_t dl= nas->read(addr);
   uint8_t dh= nas->read(addr+1);
   uint16_t d= dh*256 + dl;
-  uint16_t r;
-  int oldc= (reg.f & FLAG_C)?1:0;
   
-  r= op_add_hl((t_mem)(~d + 1 + oldc));
-  reg.f|= FLAG_N;
-
-  return r;
+  return op_sbc_hl((t_mem)d);
 }
 
 
