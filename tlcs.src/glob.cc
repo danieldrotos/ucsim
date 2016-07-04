@@ -212,7 +212,7 @@ struct dis_entry disass_tlcs[]= {
   { 0x5dfe, 0xffff, ' ', 2, "CPIR" },
   { 0x5efe, 0xffff, ' ', 2, "CPD" },
   { 0x5ffe, 0xffff, ' ', 2, "CPDR" },
-  { 0xf0fe, 0xf0ff, 'C', 2, "RET %C" },
+  { 0xd0fe, 0xf0ff, 'C', 2, "RET %C" },
 
   /* Others in exec_inst: c1&0xfc */
   { 0x000014, 0x0000fc, 'm', 3, "ADD %I,%M" },

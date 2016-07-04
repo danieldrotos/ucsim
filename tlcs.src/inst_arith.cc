@@ -361,7 +361,7 @@ cl_tlcs::op_sub8(uint8_t d1, uint8_t d2)
   if ((res < -128) || (res > 127))
     reg.f|= FLAG_V;
   if (op1 < op2)
-    reg.f|= FLAG_C;
+    reg.f|= FLAG_C|FLAG_X;
 
   r= d1 - op2;
   //r= op_add8(d1, ~d2 + 1);
@@ -656,14 +656,29 @@ cl_tlcs::op_adc_hl(t_addr addr)
 
 // SUB 16-bit
 uint16_t
-cl_tlcs::op_sub16(t_mem op1, t_mem op2)
+cl_tlcs::op_sub16(t_mem d1, t_mem d2)
 {
-  uint16_t d= op2;
   uint16_t r;
 
-  r= op_add16(op1, (t_mem)(~d + 1));
-  reg.f|= FLAG_N;
+  unsigned int op1= (unsigned int)d1;
+  unsigned int op2= (unsigned int)d2;
+  signed int res= (int16_t)d1 - (int16_t)d2;
 
+  reg.f&= ~(FLAG_C|FLAG_V|FLAG_Z|FLAG_S);
+  reg.f|= FLAG_N;
+  
+  if ((res < -32768) || (res > 32767))
+    reg.f|= FLAG_V;
+  if (op1 < op2)
+    reg.f|= FLAG_C|FLAG_X;
+
+  r= d1 - op2;
+
+  if (r == 0)
+    reg.f|= FLAG_Z;
+  if (r & 0x8000)
+    reg.f|= FLAG_S;
+  
   return r;
 }
 
@@ -703,11 +718,9 @@ cl_tlcs::op_sbc_hl(t_mem val)
       ++op2;
       --res;
     }
-  reg.f&= ~(FLAG_C|FLAG_H|FLAG_V|FLAG_Z|FLAG_S);
+  reg.f&= ~(FLAG_C|FLAG_V|FLAG_Z|FLAG_S);
   reg.f|= FLAG_N;
   
-  //r= op_add_hl((t_mem)(~d + 1 + oldc));
-
   if ((op1 & 0xfff) < (op2 & 0xfff))
     reg.f|= FLAG_H;
   if ((res < -32768) || (res > 32767))
