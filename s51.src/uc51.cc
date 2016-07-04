@@ -323,7 +323,7 @@ cl_51core::bit_tbl(void)
   return(bit_tab51);
 }
 
-const char *
+char *
 cl_51core::disass(t_addr addr, const char *sep)
 {
   char work[256], temp[20], c[2];

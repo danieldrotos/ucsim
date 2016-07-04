@@ -366,7 +366,7 @@ cl_lr35902::get_disasm_info(t_addr addr,
   return b;
 }
 
-const char *
+char *
 cl_lr35902::disass(t_addr addr, const char *sep)
 {
   char work[256], temp[20];

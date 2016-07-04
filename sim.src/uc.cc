@@ -1138,7 +1138,7 @@ cl_uc::bit_tbl(void)
   return(&empty);
 }
 
-const char *
+char *
 cl_uc::disass(t_addr addr, const char *sep)
 {
   char *buf;
@@ -1151,7 +1151,7 @@ cl_uc::disass(t_addr addr, const char *sep)
 void
 cl_uc::print_disass(t_addr addr, class cl_console_base *con)
 {
-  const char *dis;
+  char *dis;
   class cl_brk *b;
   int i, l;
 

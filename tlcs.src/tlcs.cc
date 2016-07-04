@@ -359,7 +359,7 @@ cl_tlcs::condname_C(uint8_t cc)
   return "?";
 }
 
-const char *
+char *
 cl_tlcs::disass(t_addr addr, const char *sep)
 {
   struct dis_entry *de;
@@ -589,10 +589,10 @@ cl_tlcs::exec_inst(void)
       c2= fetch();
       res= exec_inst2_f7(c2);
       break;
-    case 0xfe: // c1
-      c2= fetch();
-      res= exec_inst2_fe(c2);
-      break;
+      //case 0xfe: // c1
+      //c2= fetch();
+      //res= exec_inst2_fe(c2);
+      //break;
     default:
       {
 	switch (c1 & 0xfc) // c1= XX+ix
@@ -1026,61 +1026,71 @@ cl_tlcs::exec_inst2_f8gg(uint8_t c1, uint8_t c2)
   uint8_t *ga= aof_reg8(c1), n;
   uint16_t *gga= aof_reg16_gg(c1);
 
-  switch (c2)
+  if ((c1 == 0xfe) &&
+      (
+       ((c2>=0x58)&&(c2<=0x5f)) ||
+       ((c2&0xf0)==0xd0)
+       )
+      )
+    res= exec_inst2_fe(c2);
+  else
     {
-    case 0x12: reg.hl= reg.l * (*ga); break; // MUL HL,g
-    case 0x13: inst_div_hl(*ga); break; // DIV HL,g
-    case 0x60: reg.a= op_add_a(*ga); break; // ADD A,g
-    case 0x61: inst_adc_a(*ga); break; // ADC A,g
-    case 0x62: inst_sub_a(*ga); break; // SUB A,g
-    case 0x63: inst_sbc_a(*ga); break; // SBC A,g
-    case 0x64: inst_and_a(*ga); break; // AND A,g
-    case 0x65: inst_xor_a(*ga); break; // XOR A,g
-    case 0x66: inst_or_a(*ga); break; // OR A,g
-    case 0x67: op_cp_a(*ga); break; // CP A,g
-    case 0x70: reg.hl= op_add_hl((t_mem)*gga); break; // ADD HL,gg
-    case 0x71: reg.hl= op_adc_hl((t_mem)*gga); break; // ADC HL,gg
-    case 0x72: reg.hl= op_sub_hl((t_mem)*gga); break; // SUB HL,gg
-    case 0x73: reg.hl= op_sbc_hl((t_mem)*gga); break; // SBC HL,gg
-    case 0x74: reg.hl= op_and_hl((t_mem)*gga); break; // AND HL,gg
-    case 0x75: reg.hl= op_xor_hl((t_mem)*gga); break; // XOR HL,gg
-    case 0x76: reg.hl= op_or_hl((t_mem)*gga); break; // OR HL,gg
-    case 0x77: op_sub_hl((t_mem)*gga); break; // CP HL,gg
-    case 0xA0: *ga= op_rlc(*ga, true); break; // RLC g
-    case 0xA1: *ga= op_rrc(*ga, true); break; // RRC g
-    case 0xA2: *ga= op_rl(*ga, true); break; // RL g
-    case 0xA3: *ga= op_rr(*ga, true); break; // RR g
-    case 0xA4: *ga= op_sla(*ga, true); break; // SLA g
-    case 0xA5: *ga= op_sra(*ga, true); break; // SRA g
-    case 0xA6: *ga= op_sla(*ga, true); break; // SLL g
-    case 0xA7: *ga= op_srl(*ga, true); break; // SRL g
-      // some 3 byte cases
-    case 0x68: n= fetch(); *ga= op_add8(*ga, n); break; // ADD g,n
-    case 0x69: n= fetch(); *ga= op_adc8(*ga, n); break; // ADC g,n
-    case 0x6a: n= fetch(); *ga= op_sub8(*ga, n); break; // SUB g,n
-    case 0x6b: n= fetch(); *ga= op_sbc8(*ga, n); break; // SBC g,n
-    case 0x6c: n= fetch(); *ga= op_and8(*ga, n); break; // AND g,n
-    case 0x6d: n= fetch(); *ga= op_xor8(*ga, n); break; // XOR g,n
-    case 0x6e: n= fetch(); *ga= op_or8(*ga, n); break; // OR g,n
-    case 0x6f: n= fetch(); *ga= op_cp8(*ga, n); break; // CP g,n
-      // non-fix 2nd byte cases
-    default:
-      if ((c2 & 0xfc) == 0x14) // ADD ix,gg
-	*aof_reg16_ix(c2)= op_add16(*aof_reg16_ix(c2), *gga);
-      else
-	switch (c2 & 0xf8)
-	  {
-	  case 0x18: *ga= op_tset(*ga, c2); break; // TSET b,g
-	  case 0x30: *aof_reg8(c2)= *ga; break; // LD r,g
-	  case 0x38: *aof_reg16_rr(c2)= *gga; break; // LD rr,gg
-	  case 0xa8: *ga= op_bit(*ga, c2); break; // BIT b,g
-	  case 0xb0: *ga= op_res(*ga, c2); break; // RES b,g
-	  case 0xb8: *ga= op_set(*ga, c2); break; // SET b,g
-	  default:
-	    res= resINV_INST;
-	    break;
-	  }
-      break;
+      switch (c2)
+	{
+	case 0x12: reg.hl= reg.l * (*ga); break; // MUL HL,g
+	case 0x13: inst_div_hl(*ga); break; // DIV HL,g
+	case 0x60: reg.a= op_add_a(*ga); break; // ADD A,g
+	case 0x61: inst_adc_a(*ga); break; // ADC A,g
+	case 0x62: inst_sub_a(*ga); break; // SUB A,g
+	case 0x63: inst_sbc_a(*ga); break; // SBC A,g
+	case 0x64: inst_and_a(*ga); break; // AND A,g
+	case 0x65: inst_xor_a(*ga); break; // XOR A,g
+	case 0x66: inst_or_a(*ga); break; // OR A,g
+	case 0x67: op_cp_a(*ga); break; // CP A,g
+	case 0x70: reg.hl= op_add_hl((t_mem)*gga); break; // ADD HL,gg
+	case 0x71: reg.hl= op_adc_hl((t_mem)*gga); break; // ADC HL,gg
+	case 0x72: reg.hl= op_sub_hl((t_mem)*gga); break; // SUB HL,gg
+	case 0x73: reg.hl= op_sbc_hl((t_mem)*gga); break; // SBC HL,gg
+	case 0x74: reg.hl= op_and_hl((t_mem)*gga); break; // AND HL,gg
+	case 0x75: reg.hl= op_xor_hl((t_mem)*gga); break; // XOR HL,gg
+	case 0x76: reg.hl= op_or_hl((t_mem)*gga); break; // OR HL,gg
+	case 0x77: op_sub_hl((t_mem)*gga); break; // CP HL,gg
+	case 0xA0: *ga= op_rlc(*ga, true); break; // RLC g
+	case 0xA1: *ga= op_rrc(*ga, true); break; // RRC g
+	case 0xA2: *ga= op_rl(*ga, true); break; // RL g
+	case 0xA3: *ga= op_rr(*ga, true); break; // RR g
+	case 0xA4: *ga= op_sla(*ga, true); break; // SLA g
+	case 0xA5: *ga= op_sra(*ga, true); break; // SRA g
+	case 0xA6: *ga= op_sla(*ga, true); break; // SLL g
+	case 0xA7: *ga= op_srl(*ga, true); break; // SRL g
+	  // some 3 byte cases
+	case 0x68: n= fetch(); *ga= op_add8(*ga, n); break; // ADD g,n
+	case 0x69: n= fetch(); *ga= op_adc8(*ga, n); break; // ADC g,n
+	case 0x6a: n= fetch(); *ga= op_sub8(*ga, n); break; // SUB g,n
+	case 0x6b: n= fetch(); *ga= op_sbc8(*ga, n); break; // SBC g,n
+	case 0x6c: n= fetch(); *ga= op_and8(*ga, n); break; // AND g,n
+	case 0x6d: n= fetch(); *ga= op_xor8(*ga, n); break; // XOR g,n
+	case 0x6e: n= fetch(); *ga= op_or8(*ga, n); break; // OR g,n
+	case 0x6f: n= fetch(); *ga= op_cp8(*ga, n); break; // CP g,n
+	  // non-fix 2nd byte cases
+	default:
+	  if ((c2 & 0xfc) == 0x14) // ADD ix,gg
+	    *aof_reg16_ix(c2)= op_add16(*aof_reg16_ix(c2), *gga);
+	  else
+	    switch (c2 & 0xf8)
+	      {
+	      case 0x18: *ga= op_tset(*ga, c2); break; // TSET b,g
+	      case 0x30: *aof_reg8(c2)= *ga; break; // LD r,g
+	      case 0x38: *aof_reg16_rr(c2)= *gga; break; // LD rr,gg
+	      case 0xa8: *ga= op_bit(*ga, c2); break; // BIT b,g
+	      case 0xb0: *ga= op_res(*ga, c2); break; // RES b,g
+	      case 0xb8: *ga= op_set(*ga, c2); break; // SET b,g
+	      default:
+		res= resINV_INST;
+		break;
+	      }
+	  break;
+	}
     }
   
   return res;

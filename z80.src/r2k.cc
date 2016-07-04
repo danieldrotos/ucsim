@@ -425,7 +425,7 @@ cl_r2k::get_disasm_info(t_addr addr,
   return b;
 }
 
-const char *
+char *
 cl_r2k::disass(t_addr addr, const char *sep)
 {
   char work[256], temp[20];

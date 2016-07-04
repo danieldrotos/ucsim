@@ -1113,7 +1113,7 @@ cl_uc390::dis_tbl (void)
 
 }
 
-const char *
+char *
 cl_uc390::disass (t_addr addr, const char *sep)
 {
   char work[256], temp[20], c[2];

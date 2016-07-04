@@ -311,7 +311,7 @@ cl_hc08::get_disasm_info(t_addr addr,
   return b;
 }
 
-const char *
+char *
 cl_hc08::disass(t_addr addr, const char *sep)
 {
   char work[256], temp[20];

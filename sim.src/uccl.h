@@ -202,7 +202,7 @@ public:
   virtual void check_events(void);
 
   // disassembling and symbol recognition
-  virtual const char *disass(t_addr addr, const char *sep);
+  virtual char *disass(t_addr addr, const char *sep);
   virtual struct dis_entry *dis_tbl(void);
   virtual struct name_entry *sfr_tbl(void);
   virtual struct name_entry *bit_tbl(void);
