@@ -426,7 +426,7 @@ struct dis_entry disass_tlcs[]= {
   { 0x006df8, 0x00fff8, 'n', 3, "XOR %r,%N" },
   { 0x006ef8, 0x00fff8, 'n', 3, "OR %r,%N" },
   { 0x006ff8, 0x00fff8, 'n', 3, "CP %r,%N" },
-  { 0x14f8, 0xf8f8, 'g', 2, "ADD %i,%R" },
+  { 0x14f8, 0xfcf8, 'g', 2, "ADD %i,%R" },
   { 0x18f8, 0xf8f8, 'g', 2, "TSET %b,%r" },
   { 0x30f8, 0xf8f8, 'g', 2, "LD %p,%r" },
   { 0x38f8, 0xf8f8, 'g', 2, "LD %s,%R" },
