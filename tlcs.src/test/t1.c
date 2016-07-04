@@ -1,5 +1,9 @@
 volatile unsigned char x;
 
+void t(const char *x)
+{
+}
+
 void
 main(void)
 {
