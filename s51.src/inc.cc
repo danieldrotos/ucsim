@@ -171,11 +171,11 @@ cl_51core::inst_dec_rn(uchar code)
 int
 cl_51core::inst_inc_dptr(uchar code)
 {
-  uint dptr;
+  uint _dptr;
 
-  dptr= sfr->read(DPH)*256 + sfr->read(DPL) + 1;
-  sfr->write(DPH, (dptr >> 8) & 0xff);
-  sfr->write(DPL, dptr & 0xff);
+  _dptr= /*sfr*/dptr->read(/*DPH*/1)*256 + /*sfr*/dptr->read(/*DPL*/0) + 1;
+  /*sfr*/dptr->write(/*DPH*/1, (_dptr >> 8) & 0xff);
+  /*sfr*/dptr->write(/*DPL*/0, _dptr & 0xff);
   tick(1);
   return(resGO);
 }

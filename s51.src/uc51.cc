@@ -217,7 +217,7 @@ cl_51core::make_memories(void)
   address_spaces->add(as);
   
   class cl_address_decoder *ad;
-  class cl_memory_chip *chip;
+  class cl_memory_chip *chip, *sfr_chip;
 
   chip= new cl_memory_chip("rom_chip", 0x10000, 8, 0/*, 0xff*/);
   chip->init();
@@ -246,11 +246,11 @@ cl_51core::make_memories(void)
   as->decoders->add(ad);
   ad->activate(0);
 
-  chip= new cl_memory_chip("sfr_chip", 0x80, 8);
-  chip->init();
-  memchips->add(chip);
+  sfr_chip= new cl_memory_chip("sfr_chip", 0x80, 8);
+  sfr_chip->init();
+  memchips->add(sfr_chip);
   ad= new cl_address_decoder(as= sfr/*address_space(MEM_SFR_ID)*/,
-			     chip, 0x80, 0xff, 0);
+			     sfr_chip, 0x80, 0xff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -288,6 +288,14 @@ cl_51core::make_memories(void)
   v->init();
   vars->add(v= new cl_var(cchars("r7"), regs, 7));
   v->init();
+
+  dptr= new cl_address_space("dptr", 0, 2, 8);
+  dptr->init();
+  ad= new cl_address_decoder(dptr, sfr_chip, 0, 1, DPL-0x80);
+  ad->init();
+  dptr->decoders->add(ad);
+  ad->activate(0);
+  address_spaces->add(dptr);
 }
 
 

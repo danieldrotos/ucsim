@@ -110,7 +110,7 @@ cl_51core::inst_mov_rn_Sdata(uchar code)
 
 
 /*
- * 0x93 1 24 MOVC A,@A+DPTR
+ * 0x93 1 24 MOVC A,@A+PC
  *____________________________________________________________________________
  *
  */
@@ -190,8 +190,8 @@ cl_51core::inst_mov_addr_rn(uchar code)
 int
 cl_51core::inst_mov_dptr_Sdata(uchar code)
 {
-  sfr->write(DPH, fetch());
-  sfr->write(DPL, fetch());
+  /*sfr*/dptr->write(/*DPH*/1, fetch());
+  /*sfr*/dptr->write(/*DPL*/0, fetch());
   tick(1);
   return(resGO);
 }
@@ -206,7 +206,9 @@ cl_51core::inst_mov_dptr_Sdata(uchar code)
 int
 cl_51core::inst_movc_a_Sa_dptr(uchar code)
 {
-  acc->write(rom->read(sfr->read(DPH)*256+sfr->read(DPL) +  acc->read()));
+  uint16_t h= /*sfr*/dptr->read(/*DPH*/1);
+  uint16_t l= /*sfr*/dptr->read(/*DPL*/0);
+  acc->write(rom->read(h*256 + l +  acc->read()));
   tick(1);
   return(resGO);
 }
@@ -395,7 +397,9 @@ cl_51core::inst_xchd_a_Sri(uchar code)
 int
 cl_51core::inst_movx_a_Sdptr(uchar code)
 {
-  acc->write(xram->read(sfr->read(DPH)*256 + sfr->read(DPL)));
+  uint16_t h= /*sfr*/dprt->read(/*DPH*/1);
+  uint16_t l= /*sfr*/dptr->read(/*DPL*/0);
+  acc->write(xram->read(h*256 + l));
   tick(1);
   return(resGO);
 }
@@ -487,7 +491,9 @@ cl_51core::inst_mov_a_rn(uchar code)
 int
 cl_51core::inst_movx_Sdptr_a(uchar code)
 {
-  xram->write(sfr->read(DPH)*256 + sfr->read(DPL), acc->read());
+  uint16_t h= /*sfr*/dptr->read(/*DPH*/1);
+  uint16_t l= /*sfr*/dptr->read(/*DPL*/0);  
+  xram->write(h*256 + l, acc->read());
   tick(1);
   return(resGO);
 }

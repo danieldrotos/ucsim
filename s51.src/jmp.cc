@@ -386,7 +386,9 @@ cl_51core::inst_jnz_addr(uchar code)
 int
 cl_51core::inst_jmp_Sa_dptr(uchar code)
 {
-  PC= rom->validate_address(sfr->read(DPH)*256 + sfr->read(DPL) + acc->read());
+  uint16_t h= /*sfr*/dptr->read(/*DPH*/1);
+  uint16_t l= /*sfr*/dptr->read(/*DPL*/0);
+  PC= rom->validate_address(h*256 + l + acc->read());
   tick(1);
   return(resGO);
 }

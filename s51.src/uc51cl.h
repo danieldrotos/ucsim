@@ -69,6 +69,7 @@ public:
 
   // memories and cells for faster access
   class cl_address_space *sfr, *iram, *xram, *regs, *bits;
+  class cl_address_space *dptr;
   class cl_memory_cell *acc, *psw;
 
 public:
