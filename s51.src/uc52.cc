@@ -59,7 +59,8 @@ void
 cl_uc52::make_memories(void)
 {
   class cl_address_space *as;
-
+  class cl_memory_chip *sfr_chip;
+  
   rom= as= new cl_address_space("rom", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
@@ -100,7 +101,7 @@ cl_uc52::make_memories(void)
   as->decoders->add(ad);
   ad->activate(0);
 
-  chip= new cl_memory_chip("sfr_chip", 0x80, 8);
+  sfr_chip= chip= new cl_memory_chip("sfr_chip", 0x80, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= address_space("sfr"), chip, 0x80, 0xff, 0);
@@ -140,6 +141,14 @@ cl_uc52::make_memories(void)
   v->init();
   vars->add(v= new cl_var(cchars("r7"), regs, 7));
   v->init();
+
+  dptr= new cl_address_space("dptr", 0, 2, 8);
+  dptr->init();
+  ad= new cl_address_decoder(dptr, sfr_chip, 0, 1, DPL-0x80);
+  ad->init();
+  dptr->decoders->add(ad);
+  ad->activate(0);
+  address_spaces->add(dptr);
 }
 
 

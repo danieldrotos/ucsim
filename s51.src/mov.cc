@@ -397,7 +397,7 @@ cl_51core::inst_xchd_a_Sri(uchar code)
 int
 cl_51core::inst_movx_a_Sdptr(uchar code)
 {
-  uint16_t h= /*sfr*/dprt->read(/*DPH*/1);
+  uint16_t h= /*sfr*/dptr->read(/*DPH*/1);
   uint16_t l= /*sfr*/dptr->read(/*DPL*/0);
   acc->write(xram->read(h*256 + l));
   tick(1);
