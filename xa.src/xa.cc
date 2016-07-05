@@ -335,7 +335,7 @@ disass - Disassemble an opcode.
     addr - address of opcode to disassemble/print.
     sep - optionally points to string(tab) to use as separator.
 |--------------------------------------------------------------------*/
-const char *
+char *
 cl_xa::disass(t_addr addr, const char *sep)
 {
   char work[256], parm_str[40];
