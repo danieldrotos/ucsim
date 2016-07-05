@@ -1,16 +1,36 @@
+static unsigned char * volatile sif= (unsigned char *)0xffff;
+
 volatile unsigned char x;
 
-void t(const char *x)
+void
+putchar(unsigned char c)
 {
+  *sif= 'p';
+  *sif= c;
+}
+
+void
+prints(char *s)
+{
+  while (*s)
+    putchar(*s++);
 }
 
 void
 main(void)
 {
   unsigned char i;
+  unsigned int j;
 
-  for (i= 0; i<10; i++)
-    x= i;
+  prints("Start.\n");
+  for (j= 0; j<41000; j++)
+    {
+      x= j;
+      i= j;
+    }
+
+  prints("Done.\n");
+  *sif= 's';
   for (;;)
     ;
 }
