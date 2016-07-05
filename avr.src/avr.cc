@@ -168,7 +168,7 @@ cl_avr::bit_tbl(void)
   return(0);
 }
 
-const char *
+char *
 cl_avr::disass(t_addr addr, const char *sep)
 {
   char work[256], temp[20];
