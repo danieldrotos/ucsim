@@ -144,11 +144,45 @@ cl_uc52::make_memories(void)
 
   dptr= new cl_address_space("dptr", 0, 2, 8);
   dptr->init();
-  ad= new cl_address_decoder(dptr, sfr_chip, 0, 1, DPL-0x80);
-  ad->init();
-  dptr->decoders->add(ad);
-  ad->activate(0);
   address_spaces->add(dptr);
+
+  if (type == CPU_C521)
+    {
+      /*
+      cl_memory_chip *dptr1_chip= new cl_memory_chip("dptr1_chip", 2, 8, 0);
+      dptr1_chip->init();
+      memchips->add(dptr1_chip);
+
+      cl_banker *banker= new cl_banker(sfr, AUXR1, bmDPS,
+				       dptr, 0, 1);
+      banker->init();
+      dptr->decoders->add(banker);
+  
+      banker->add_bank(0, memory("sfr_chip"), 2);
+      banker->add_bank(1, dptr1_chip, 0);
+      banker->activate(0);
+      sfr->write(AUXR1, 0);
+      */
+      // DPL=82  DPH=83
+      // DPL1=84 DPH1=85
+      // DPS=86
+      cl_banker *banker= new cl_banker(sfr, 0x86, 1,
+				       dptr, 0, 1);
+      banker->init();
+      dptr->decoders->add(banker);
+
+      banker->add_bank(0, memory("sfr_chip"), 0x82-0x80);
+      banker->add_bank(1, memory("sfr_chip"), 0x84-0x80);
+      banker->activate(0);
+      sfr->write(0x86, 0);
+    }
+  else
+    {
+      ad= new cl_address_decoder(dptr, sfr_chip, 0, 1, DPL-0x80);
+      ad->init();
+      dptr->decoders->add(ad);
+      ad->activate(0);
+    }
 }
 
 

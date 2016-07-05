@@ -896,7 +896,7 @@ cl_memory_cell::print_operators(class cl_console_base *con)
   class cl_memory_operator *o= operators;
   if (!operators)
     return;
-  int i;
+  int i= 0;
   while (o)
     {
       printf(" %02d. %s\n", i, o->get_name("?"));
@@ -1823,14 +1823,7 @@ cl_banker::print_info(chars pre, class cl_console_base *con)
 {
   int b;
   con->dd_printf(pre);
-  con->dd_printf("bank selector= %s[", banker_as->get_name("unknown"));
-  con->dd_printf(banker_as->addr_format, banker_addr);
-  con->dd_printf("] mask= %x banks= %d bank= %d\n",
-		 banker_mask, nuof_banks,
-		 b= actual_bank());
-
-  con->dd_printf(pre);
-  con->dd_printf("  banked area= ");
+  //con->dd_printf("  banked area= ");
   if (address_space)
     {
       con->dd_printf("%s ", address_space->get_name("unknown"));
@@ -1840,7 +1833,14 @@ cl_banker::print_info(chars pre, class cl_console_base *con)
     }
   else
     con->dd_printf("x");
-  con->dd_printf("\n");
+  con->dd_printf(" -> banked\n");
+
+  con->dd_printf(pre);
+  con->dd_printf("  bank selector: %s[", banker_as->get_name("unknown"));
+  con->dd_printf(banker_as->addr_format, banker_addr);
+  con->dd_printf("] mask=0x%x banks=%d act=%d\n",
+		 banker_mask, nuof_banks,
+		 b= actual_bank());
 
   con->dd_printf(pre);
   con->dd_printf("  banks:\n");

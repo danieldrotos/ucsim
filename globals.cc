@@ -398,7 +398,8 @@ struct cpu_entry cpus_51[]=
   {"C51RC" , CPU_51R, CPU_CMOS},
 
   {"89C51R", CPU_89C51R, CPU_CMOS},
-
+  {"C521"  , CPU_C521  , CPU_CMOS},
+  
   {"251"   , CPU_251, CPU_CMOS},
   {"C251"  , CPU_251, CPU_CMOS},
 
