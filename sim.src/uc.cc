@@ -1668,14 +1668,14 @@ cl_uc::fetch(t_mem *code)
       rom &&
       (sim->steps_done > 0))
     {
-      if (rom->get_cell_flag(PC, CELL_FETCH_BRK) &&
-	  (brk= fbrk->get_bp(PC, &idx)) &&
-	  (brk->do_hit()))
-	{
-	  if (brk->perm == brkDYNAMIC)
-	    fbrk->del_bp(PC);
-	  return(1);
-	}
+      if (rom->get_cell_flag(PC, CELL_FETCH_BRK))
+	if ((brk= fbrk->get_bp(PC, &idx)))
+	  if (brk->do_hit())
+	    {
+	      if (brk->perm == brkDYNAMIC)
+		fbrk->del_bp(PC);
+	      return(1);
+	    }
     }
   *code= fetch();
   return(0);
