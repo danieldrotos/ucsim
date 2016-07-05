@@ -363,6 +363,7 @@ cl_bank_switcher_operator::cl_bank_switcher_operator(class cl_memory_cell *acell
   cl_memory_operator(acell, addr)
 {
   banker= the_banker;
+  set_name("bank_switcher");
 }
 
 t_mem
@@ -1394,6 +1395,15 @@ cl_memory_chip::get_slot(t_addr addr)
   return(&array[addr]);
 }
 
+t_addr
+cl_memory_chip::is_slot(t_mem *data_ptr)
+{
+  if (data_ptr < &(array[0]))
+    return -1;
+  if (data_ptr > &(array[size-1]))
+    return -2;
+  return data_ptr - &(array[0]);
+}
 
 t_mem
 cl_memory_chip::get(t_addr addr)

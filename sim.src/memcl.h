@@ -419,7 +419,8 @@ public:
   virtual bool is_chip(void) { return(DD_TRUE); }
 
   virtual t_mem *get_slot(t_addr addr);
-
+  virtual t_addr is_slot(t_mem *data_ptr);
+  
   virtual t_mem read(t_addr addr) { return(get(addr)); }
   virtual t_mem read(t_addr addr, enum hw_cath skip) { return(get(addr)); }
   virtual t_mem get(t_addr addr);

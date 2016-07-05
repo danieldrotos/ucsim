@@ -46,6 +46,9 @@ COMMAND_ON(uc,cl_memory_create_banker_cmd);
 // MEMORY CREATE BANK
 COMMAND_ON(uc,cl_memory_create_bank_cmd);
 
+// MEMORY CELL
+COMMAND_ON(uc,cl_memory_cell_cmd);
+
 
 #endif
 

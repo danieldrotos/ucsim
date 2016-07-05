@@ -667,6 +667,10 @@ cmd->init();*/
 "memory info        Information about memory system",
 "long help of memory info"));
     cmd->init();
+    cset->add(cmd= new cl_memory_cell_cmd("cell", 0,
+"memory cell        Information about a memory cell",
+"long help of memory cell"));
+    cmd->init();
   }
   if (!super_cmd) {
     cmdset->add(cmd= new cl_super_cmd("memory", 0,

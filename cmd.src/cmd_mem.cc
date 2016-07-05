@@ -338,4 +338,55 @@ COMMAND_DO_WORK_UC(cl_memory_create_bank_cmd)
 }
 
 
+/*
+ * Command: memory create bank
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_UC(cl_memory_cell_cmd)
+{
+  class cl_cmd_arg *params[5]= { cmdline->param(0),
+				 cmdline->param(1) };
+  class cl_memory *m= 0;
+  t_addr a= 0;
+  class cl_address_space *as= 0;
+  class cl_memory_cell *c= 0;
+  
+  if (cmdline->syntax_match(uc, MEMORY NUMBER))
+    {
+      m= params[0]->value.memory.memory;
+      a= params[1]->value.number;
+      if (m->is_address_space())
+	as= (cl_address_space *)m;
+    }
+  if (m == 0)
+    return con->dd_printf("Syntax error.\n"), false;
+
+  c= as->get_cell(a);
+  con->dd_printf("%s", as->get_name());
+  con->dd_printf("[");
+  con->dd_printf(as->addr_format, a);
+  con->dd_printf("]\n");
+
+  con->dd_printf("cell data= %p mask=%x flags=%x\n",
+		 c->get_data(),
+		 c->get_mask(),
+		 c->get_flags());
+
+  int i;
+  for (i= 0; i < uc->memchips->count; i++)
+    {
+      cl_memory_chip *ch= (cl_memory_chip*)(uc->memchips->at(i));
+      t_addr ad;
+      if ((ad= ch->is_slot(c->get_data())) >= 0)
+	{
+	  con->dd_printf("  decoded to %s[%d]\n",
+			 ch->get_name(), ad);
+	  break;
+	}
+    }
+  
+  return false;
+}
+
 /* End of cmd.src/cmd_mem.cc */
