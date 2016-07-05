@@ -75,6 +75,7 @@ cl_uc89c51r::make_memories(void)
   banker->add_bank(0, memory("sfr_chip"), 2);
   banker->add_bank(1, dptr1_chip, 0);
   banker->activate(0);
+  sfr->write(AUXR1, 0);
 }
 
 
