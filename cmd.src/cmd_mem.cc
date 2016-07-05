@@ -385,6 +385,9 @@ COMMAND_DO_WORK_UC(cl_memory_cell_cmd)
 	  break;
 	}
     }
+
+  con->dd_printf("Operators:\n");
+  c->print_operators(con);
   
   return false;
 }

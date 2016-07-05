@@ -387,6 +387,7 @@ cl_hw_operator::cl_hw_operator(class cl_memory_cell *acell, t_addr addr,
   cl_memory_operator(acell, addr/*, data_place, the_mask*/)
 {
   hw= ahw;
+  set_name("hw");
 }
 
 
@@ -445,6 +446,7 @@ cl_write_operator::cl_write_operator(class cl_memory_cell *acell, t_addr addr,
 {
   uc= auc;
   bp= the_bp;
+  set_name("write");
 }
 
 t_mem
@@ -469,6 +471,7 @@ cl_read_operator::cl_read_operator(class cl_memory_cell *acell, t_addr addr,
 {
   uc= auc;
   bp= the_bp;
+  set_name("read");
 }
 
 t_mem
@@ -885,6 +888,21 @@ class cl_event_handler *
 cl_memory_cell::get_event_handler(void)
 {
   return(0);
+}
+
+void
+cl_memory_cell::print_operators(class cl_console_base *con)
+{
+  class cl_memory_operator *o= operators;
+  if (!operators)
+    return;
+  int i;
+  while (o)
+    {
+      printf(" %02d. %s\n", i, o->get_name("?"));
+      i++;
+      o= o->get_next();
+    }
 }
 
 

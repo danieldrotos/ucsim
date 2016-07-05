@@ -280,6 +280,8 @@ class cl_memory_cell: public cl_cell_data
   virtual void remove_hw(class cl_hw *hw);
   //virtual class cl_hw *get_hw(int ith);
   virtual class cl_event_handler *get_event_handler(void);
+
+  virtual void print_operators(class cl_console_base *con);
 };
 
 class cl_bit_cell: public cl_memory_cell
