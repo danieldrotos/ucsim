@@ -203,7 +203,7 @@ cl_uc::init(void)
   make_variables();
   make_memories();
   if (rom == NULL)
-    rom= address_space(MEM_ROM_ID);
+    rom= address_space(cchars("rom")/*MEM_ROM_ID*/);
   ebrk= new brk_coll(2, 2, rom);
   fbrk= new brk_coll(2, 2, rom);
   fbrk->Duplicates= DD_FALSE;

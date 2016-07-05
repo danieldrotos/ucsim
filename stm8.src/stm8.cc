@@ -265,13 +265,13 @@ cl_stm8::get_disasm_info(t_addr addr,
   int start_addr = addr;
   struct dis_entry *dis_e;
 
-  code= get_mem(MEM_ROM_ID, addr++);
+  code= rom->get(addr++);
   dis_e = NULL;
 
   switch(code) {
 	/* here will be all the prefixes for STM8 */
 	case 0x72 :
-	  code= get_mem(MEM_ROM_ID, addr++);
+	  code= rom->get(addr++);
       i= 0;
       while ((code & disass_stm8_72[i].mask) != disass_stm8_72[i].code &&
         disass_stm8_72[i].mnemonic)
@@ -283,7 +283,7 @@ cl_stm8::get_disasm_info(t_addr addr,
     break;
 
     	case 0x71 :
-	  code= get_mem(MEM_ROM_ID, addr++);
+	  code= rom->get(addr++);
       i= 0;
       while ((code & disass_stm8_71[i].mask) != disass_stm8_71[i].code &&
         disass_stm8_71[i].mnemonic)
@@ -295,7 +295,7 @@ cl_stm8::get_disasm_info(t_addr addr,
     break;
 
 	case 0x90 :
-	  code= get_mem(MEM_ROM_ID, addr++);
+	  code= rom->get(addr++);
       i= 0;
       while ((code & disass_stm8_90[i].mask) != disass_stm8_90[i].code &&
         disass_stm8_90[i].mnemonic)
@@ -307,7 +307,7 @@ cl_stm8::get_disasm_info(t_addr addr,
     break;
 	  
 	case 0x91 :
-	  code= get_mem(MEM_ROM_ID, addr++);
+	  code= rom->get(addr++);
       i= 0;
       while ((code & disass_stm8_91[i].mask) != disass_stm8_91[i].code &&
         disass_stm8_91[i].mnemonic)
@@ -319,7 +319,7 @@ cl_stm8::get_disasm_info(t_addr addr,
     break;
 	  
 	case 0x92 :
-	  code= get_mem(MEM_ROM_ID, addr++);
+	  code= rom->get(addr++);
       i= 0;
       while ((code & disass_stm8_92[i].mask) != disass_stm8_92[i].code &&
         disass_stm8_92[i].mnemonic)
@@ -393,64 +393,64 @@ cl_stm8::disass(t_addr addr, const char *sep)
           switch (*(b++))
             {
             case 's': // s    signed byte immediate
-              sprintf(temp, "#%d", (char)get_mem(MEM_ROM_ID, addr+immed_offset));
+              sprintf(temp, "#%d", (char)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             case 'e': // e    extended 24bit immediate operand
               sprintf(temp, "#0x%06lx",
-                 (ulong)((get_mem(MEM_ROM_ID, addr+immed_offset)<<16) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+1)<<8) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+2))) );
+                 (ulong)((rom->get(addr+immed_offset)<<16) |
+                        (rom->get(addr+immed_offset+1)<<8) |
+                        (rom->get(addr+immed_offset+2))) );
               ++immed_offset;
               ++immed_offset;
               ++immed_offset;
               break;
             case 'w': // w    word immediate operand
               sprintf(temp, "#0x%04x",
-                 (uint)((get_mem(MEM_ROM_ID, addr+immed_offset)<<8) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+1))) );
+                 (uint)((rom->get(addr+immed_offset)<<8) |
+                        (rom->get(addr+immed_offset+1))) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'b': // b    byte immediate operand
-              sprintf(temp, "#0x%02x", (uint)get_mem(MEM_ROM_ID, addr+immed_offset));
+              sprintf(temp, "#0x%02x", (uint)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             case 'x': // x    extended addressing
               sprintf(temp, "0x%04x",
-                 (uint)((get_mem(MEM_ROM_ID, addr+immed_offset)<<8) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+1))) );
+                 (uint)((rom->get(addr+immed_offset)<<8) |
+                        (rom->get(addr+immed_offset+1))) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'd': // d    direct addressing
-              sprintf(temp, "0x%02x", (uint)get_mem(MEM_ROM_ID, addr+immed_offset));
+              sprintf(temp, "0x%02x", (uint)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             case '3': // 3    24bit index offset
               sprintf(temp, "0x%06lx",
-                 (ulong)((get_mem(MEM_ROM_ID, addr+immed_offset)<<16) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+1)<<8) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+2))) );
+                 (ulong)((rom->get(addr+immed_offset)<<16) |
+                        (rom->get(addr+immed_offset+1)<<8) |
+                        (rom->get(addr+immed_offset+2))) );
               ++immed_offset;
               ++immed_offset;
               ++immed_offset;
              break;
             case '2': // 2    word index offset
               sprintf(temp, "0x%04x",
-                 (uint)((get_mem(MEM_ROM_ID, addr+immed_offset)<<8) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+1))) );
+                 (uint)((rom->get(addr+immed_offset)<<8) |
+                        (rom->get(addr+immed_offset+1))) );
               ++immed_offset;
               ++immed_offset;
               break;
             case '1': // b    byte index offset
-              sprintf(temp, "0x%02x", (uint)get_mem(MEM_ROM_ID, addr+immed_offset));
+              sprintf(temp, "0x%02x", (uint)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             case 'p': // b    byte index offset
               sprintf(temp, "0x%04lx",
 		      (long int)(addr+immed_offset+1
-				 +(int)get_mem(MEM_ROM_ID, addr+immed_offset)));
+				 +(int)rom->get(addr+immed_offset)));
               ++immed_offset;
               break;
             default:

@@ -60,10 +60,10 @@ cl_lr35902::init(void)
 {
   cl_uc::init(); /* Memories now exist */
 
-  rom= address_space(MEM_ROM_ID);  // code goes here...
+  //rom= address_space(MEM_ROM_ID);  // code goes here...
   
   //  ram= mem(MEM_XRAM);
-  ram= address_space(MEM_XRAM_ID);  // data goes here...
+  //ram= address_space(MEM_XRAM_ID);  // data goes here...
   
   
   // zero out ram(this is assumed in regression tests)
@@ -92,7 +92,7 @@ void lr35902_memory::init(void) {
   cl_address_space *as_rom;
   cl_address_space *as_ram;
   
-  as_rom = new cl_address_space(MEM_ROM_ID,
+  as_rom = new cl_address_space("rom"/*MEM_ROM_ID*/,
 				lr35902_rom_start, lr35902_rom_size, 8);
   as_rom->init();
   uc_r.address_spaces->add(as_rom);
@@ -109,7 +109,9 @@ void
 cl_lr35902::make_memories(void)
 {
   mem.init( );
-
+  rom= mem.rom;
+  ram= mem.ram;
+  
   regs8= new cl_address_space("regs8", 0, 16, 8);
   regs8->init();
   regs8->get_cell(0)->decode((t_mem*)&regs.A);
@@ -318,12 +320,12 @@ cl_lr35902::get_disasm_info(t_addr addr,
   int start_addr = addr;
   struct dis_entry *dis_e;
 
-  code= get_mem(MEM_ROM_ID, addr++);
+  code= rom->get(addr++);
   dis_e = NULL;
 
   switch(code) {
     case 0xcb:  /* ESC code to lots of op-codes, all 2-byte */
-      code= get_mem(MEM_ROM_ID, addr++);
+      code= rom->get(addr++);
       i= 0;
       while ((code & disass_lr35902_cb[i].mask) != disass_lr35902_cb[i].code &&
         disass_lr35902_cb[i].mnemonic)
@@ -393,18 +395,18 @@ cl_lr35902::disass(t_addr addr, const char *sep)
           switch (*(b++))
             {
             case 'd': // d    jump relative target, signed? byte immediate operand
-              sprintf(temp, "#%d", (char)get_mem(MEM_ROM_ID, addr+immed_offset));
+              sprintf(temp, "#%d", (char)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             case 'w': // w    word immediate operand
               sprintf(temp, "#0x%04x",
-                 (uint)((get_mem(MEM_ROM_ID, addr+immed_offset)) |
-                        (get_mem(MEM_ROM_ID, addr+immed_offset+1)<<8)) );
+                 (uint)((rom->get(addr+immed_offset)) |
+                        (rom->get(addr+immed_offset+1)<<8)) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'b': // b    byte immediate operand
-              sprintf(temp, "#0x%02x", (uint)get_mem(MEM_ROM_ID, addr+immed_offset));
+              sprintf(temp, "#0x%02x", (uint)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             default:

@@ -346,7 +346,7 @@ cl_uc390::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= as= new cl_address_space(MEM_ROM_ID, 0, 0x20000, 8);
+  rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x20000, 8);
   as->init();
   address_spaces->add(as);
   iram= as= new cl_address_space(MEM_IRAM_ID, 0, 0x100, 8);

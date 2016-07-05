@@ -61,8 +61,8 @@ int
 cl_avr::init(void)
 {
   cl_uc::init(); /* Memories now exist */
-  ram= address_space(MEM_IRAM_ID);
-  rom= address_space(MEM_ROM_ID);
+  //ram= address_space(MEM_IRAM_ID);
+  //rom= address_space("rom"/*MEM_ROM_ID*/);
   return(0);
 }
 
@@ -115,7 +115,7 @@ cl_avr::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= as= new cl_address_space(MEM_ROM_ID, 0, 0x10000, 16);
+  rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x10000, 16);
   as->init();
   address_spaces->add(as);
   ram= as= new cl_address_space(MEM_IRAM_ID, 0, 0x10000, 8);
@@ -179,7 +179,7 @@ cl_avr::disass(t_addr addr, const char *sep)
 
   p= work;
 
-  code= get_mem(MEM_ROM_ID, addr);
+  code= rom/*get_mem*/->get(/*MEM_ROM_ID,*/ addr);
   i= 0;
   while ((code & dis_tbl()[i].mask) != dis_tbl()[i].code &&
 	 dis_tbl()[i].mnemonic)
@@ -241,7 +241,7 @@ cl_avr::disass(t_addr addr, const char *sep)
 	              //      kkkk kkkk kkkk kkkk  0<=k<=4M
 	      sprintf(temp, "0x%06x",
 		      (((code&0x1f0)>>3)|(code&1))*0x10000+
-		      (uint)get_mem(MEM_ROM_ID, addr+1));
+		      (uint)rom->get/*_mem*/(/*MEM_ROM_ID,*/ addr+1));
 	      break;
 	    case 'P': // P    .... .... pppp p...  0<=P<=31
 	      data= (code&0xf8)>>3;
@@ -258,7 +258,7 @@ cl_avr::disass(t_addr addr, const char *sep)
 		      ((code&0x2000)>>8)|((code&0xc00)>>7)|(code&7));
 	      break;
 	    case 'R': // k    SRAM address on second word 0<=k<=65535
-	      sprintf(temp, "0x%06x", (uint)get_mem(MEM_ROM_ID, addr+1));
+	      sprintf(temp, "0x%06x", (uint)rom->get/*_mem*/(/*MEM_ROM_ID,*/ addr+1));
 	      break;
 	    case 'a': // k    .... kkkk kkkk kkkk  -2k<=k<=2k
 	      {

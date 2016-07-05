@@ -200,7 +200,7 @@ cl_51core::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= as= new cl_address_space(MEM_ROM_ID/*"rom"*/, 0, 0x10000, 8);
+  rom= as= new cl_address_space("rom", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
   iram= as= new cl_address_space(MEM_IRAM_ID/*"iram"*/, 0, 0x80, 8);

@@ -138,7 +138,6 @@ enum mem_class
   MEM_TYPES
 };
 
-#define MEM_ROM_ID	cchars("rom")
 #define MEM_SFR_ID	cchars("sfr")
 #define MEM_XRAM_ID	cchars("xram")
 #define MEM_IXRAM_ID	cchars("ixram")

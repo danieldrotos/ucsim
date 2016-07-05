@@ -101,7 +101,7 @@ cl_break_cmd::do_fetch(class cl_uc *uc,
     con->dd_printf("Breakpoint at 0x%06x is already set.\n", addr);
   else
     {
-      class cl_brk *b= new cl_fetch_brk(uc->address_space(MEM_ROM_ID),
+      class cl_brk *b= new cl_fetch_brk(uc->rom/*address_space(MEM_ROM_ID)*/,
 					uc->make_new_brknr(),
                                         addr, perm, hit);
       b->init();
