@@ -233,7 +233,7 @@ void lr35902_memory::store1( TYPE_UWORD addr, t_mem val ) {
   }
   
   if ((addr- lr35902_ram_start) < lr35902_ram_size) {
-    ram->set(addr, val);
+    ram->write(addr, val);
   }
 }
 
@@ -244,7 +244,7 @@ void lr35902_memory::store2( TYPE_UWORD addr, TYPE_UWORD val ) {
 
 TYPE_UBYTE  lr35902_memory::get1( TYPE_UWORD addr ) {
   if (addr < lr35902_rom_size) {
-    return rom->get(addr);    
+    return rom->read(addr);    
   }
   
   if (addr < lr35902_ram_start) {
@@ -253,7 +253,7 @@ TYPE_UBYTE  lr35902_memory::get1( TYPE_UWORD addr ) {
   }
   
   if ((addr-lr35902_ram_start) < lr35902_ram_size) {
-    return ram->get(addr);
+    return ram->read(addr);
   }
   
   return (addr & 0xff);

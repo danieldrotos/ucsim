@@ -737,23 +737,23 @@ cl_z80::exec_inst(void)
 }
 
 void cl_z80::store1( TYPE_UWORD addr, t_mem val ) {
-  ram->set(addr, val);
+  ram->write(addr, val);
 }
 
 void cl_z80::store2( TYPE_UWORD addr, TYPE_UWORD val ) {
-  ram->set(addr,   val & 0xff);
-  ram->set(addr+1, (val >> 8) & 0xff);
+  ram->write(addr,   val & 0xff);
+  ram->write(addr+1, (val >> 8) & 0xff);
 }
 
 TYPE_UBYTE  cl_z80::get1( TYPE_UWORD addr ) {
-  return ram->get(addr);
+  return ram->read(addr);
 }
 
 TYPE_UWORD  cl_z80::get2( TYPE_UWORD addr ) {
   TYPE_UWORD  l, h;
   
-  l = ram->get(addr  );
-  h = ram->get(addr+1);
+  l = ram->read(addr  );
+  h = ram->read(addr+1);
   
   return (h << 8) | l;
 }
