@@ -433,8 +433,7 @@ cl_tlcs::op_sbc8(uint8_t d1, uint8_t d2)
 int
 cl_tlcs::inst_sbc_a(uint8_t d)
 {
-  inst_adc_a(~d + 1);
-  reg.f|= FLAG_N;
+  reg.a= op_sbc8(reg.a, d);
   return resGO;
 }
 
@@ -554,7 +553,7 @@ cl_tlcs::inst_or_a(class cl_memory_cell *cell)
 uint8_t
 cl_tlcs::op_cp8(uint8_t d1, uint8_t d2)
 {
-  uint8_t r= op_add8(d1, ~d2 + 1);
+  uint8_t r= op_sub8(d1, d2);
   reg.f|= FLAG_N;
   return r;
 }
