@@ -1,4 +1,4 @@
-static unsigned char * volatile sif= (unsigned char *)0xffff;
+static unsigned char * volatile sif= (unsigned char *)0x7fff;
 
 volatile unsigned char x;
 
