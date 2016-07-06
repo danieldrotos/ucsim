@@ -19,15 +19,14 @@ prints(char *s)
 void
 main(void)
 {
-  unsigned char i;
+  unsigned int i;
   unsigned int j;
 
   prints("Start.\n");
-  for (j= 0; j<41000; j++)
+  for (j= 0; j<200; j++)
     {
-      x= j;
-      i= j;
-      putchar('a');
+      for (i= 1000; i; i--)
+	putchar('a');
     }
 
   prints("Done.\n");
