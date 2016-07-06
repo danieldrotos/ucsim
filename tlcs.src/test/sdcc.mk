@@ -1,4 +1,6 @@
-CC		= sdcc -mtlcs90
+TARGET		= tlcs90
+
+CC		= sdcc -m$(TARGET)
 
 CPPFLAGS	=
 CFLAGS		= --debug
