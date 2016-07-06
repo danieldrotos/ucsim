@@ -148,6 +148,7 @@ cl_app::run(void)
   class cl_option *o= options->get_option("go");
   bool g_opt= false;
   unsigned int cyc= 0;
+  //int last_sopc= 0;
   
   if (o)
     o->get_value(&g_opt);
@@ -174,6 +175,14 @@ cl_app::run(void)
 		    done= commander->proc_input();
                 }
 	      sim->step();
+	      /*if (sim->uc->stack_ops->count != last_sopc)
+		{
+		  last_sopc= sim->uc->stack_ops->count;
+		  printf("stack ops count changed: %d\n", last_sopc);
+		  class cl_stack_op *top= (class cl_stack_op *)(sim->uc->stack_ops->top());
+		  if (top && commander->frozen_console)
+		    top->info(commander->frozen_console, sim->uc);
+		    }*/
 	      if (jaj && commander->frozen_console) sim->uc->print_regs(commander->frozen_console);//sim->uc->print_disass(sim->uc->PC, commander->frozen_console);
             }
 	  else

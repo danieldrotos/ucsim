@@ -189,10 +189,10 @@ cl_tlcs::make_memories(void)
   rom= nas= as= new cl_address_space(cchars("nas"), 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
-  xas= as= new cl_address_space(cchars("das"), 0, 0x10000, 8);
+  xas= as= new cl_address_space(cchars("xas"), 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
-  yas= as= new cl_address_space(cchars("das"), 0, 0x10000, 8);
+  yas= as= new cl_address_space(cchars("yas"), 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
@@ -419,7 +419,8 @@ cl_tlcs::disass(t_addr addr, const char *sep)
 	    case 'N': /*  n in 3rd byte */ snprintf(l,19,"%02x",(int)((c>>16)&0xff));s+= l; break;
 	    case 'o': /*  n in 4th byte */ snprintf(l,19,"%02x",(int)((c>>24)&0xff));s+= l; break;
 	    case 'O': /*  n in 5th byte */ snprintf(l,19,"%02x",(int)((c>>32)&0xff));s+= l; break;
-	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+int8_t((c>>8)&0xff))); s+= l; break;
+	    case '1': /*  PC+2+d in 2nd byte */ snprintf(l,19,"0x%04x",(int)(addr+2+int8_t((c>>8)&0xff))); s+= l; break;
+	    case 'd': /*  d in 2nd byte */ snprintf(l,19,"%+d",(int)(int8_t((c>>8)&0xff))); s+= l; break;
 	    case 'D': /* cd in 2,3 byte */ snprintf(l,19,"0x%04x",(int)(addr+3+int16_t((c>>8)&0xffff))); s+= l; break;	      
 	    case 'M': /* mn in 2,3 byte */ snprintf(l,19,"0x%04x",(int)((c>>8)&0xffff)); s+= l; break;
 	    case 'm': /* mn in 3,4 byte */ snprintf(l,19,"0x%04x",(int)((c>>16)&0xffff)); s+= l; break;
@@ -1509,7 +1510,7 @@ cl_tlcs::exec_ret(t_addr PC_of_inst, t_mem *data)
     val= *data;
   class cl_stack_ret *o= new cl_stack_ret(PC_of_inst, val, sp_before, reg.sp);
   o->init();
-  stack_write(o);
+  stack_read(o);
   return resGO;
 }
 
@@ -1522,7 +1523,7 @@ cl_tlcs::exec_reti(t_addr PC_of_inst, t_mem *data)
     val= *data;
   class cl_stack_iret *o= new cl_stack_iret(PC_of_inst, val, sp_before, reg.sp);
   o->init();
-  stack_write(o);
+  stack_read(o);
   return resGO;
 }
 
@@ -1535,7 +1536,7 @@ cl_tlcs::exec_pop(t_addr PC_of_inst, t_mem *data)
     val= *data;
   class cl_stack_pop *o= new cl_stack_pop(PC_of_inst, val, sp_before, reg.sp);
   o->init();
-  stack_write(o);
+  stack_read(o);
   return resGO;
 }
 
@@ -1668,7 +1669,7 @@ cl_tlcs::cell_n(uint8_t n)
 class cl_memory_cell *
 cl_tlcs::cell_ixd(uint8_t ix, int8_t d)
 {
-  switch (ix & 0xfc)
+  switch (ix & 0x03)
     {
     case 0: return xas->get_cell(reg.ix + d); break;
     case 1: return yas->get_cell(reg.iy + d); break;
