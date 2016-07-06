@@ -3,7 +3,7 @@ TARGET		= tlcs90
 CC		= sdcc -m$(TARGET)
 
 CPPFLAGS	=
-CFLAGS		= --debug
+CFLAGS		= --fverbose-asm -DNO_VARARGS --debug
 LDFLAGS		=
 LIBS		=
 

@@ -1,4 +1,4 @@
-PRJ		= t0 t1 t2
+PRJ		= t0 t1 t2 t3
 
 all:
 	for p in $(PRJ); do \
