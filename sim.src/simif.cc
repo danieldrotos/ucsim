@@ -340,7 +340,28 @@ cl_sif_print::produce_answer(void)
 {
   t_mem cm;
   if (get_parameter(0, &cm))
-    putchar(cm);
+    {
+      //printf("** SIF_PRINT 0x%02x,'%c'\n", cm, cm);
+      putchar(cm);
+      fflush(stdout);
+    }
+  if (sif)
+    sif->finish_command();
+}
+
+
+/* Command: print character in hex */
+
+void
+cl_sif_hex::produce_answer(void)
+{
+  t_mem cm;
+  if (get_parameter(0, &cm))
+    {
+      //printf("** SIF_HEX 0x%02x,'%c'\n", cm, cm);
+      printf("%02x", cm);
+      fflush(stdout);
+    }
   if (sif)
     sif->finish_command();
 }
@@ -475,6 +496,8 @@ cl_simulator_interface::init(void)
   commands->add(c= new cl_sif_stop(this));
   c->init();
   commands->add(c= new cl_sif_print(this));
+  c->init();
+  commands->add(c= new cl_sif_hex(this));
   c->init();
   commands->add(c= new cl_sif_fin_check(this));
   c->init();

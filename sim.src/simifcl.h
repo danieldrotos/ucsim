@@ -67,6 +67,9 @@ enum sif_command {
   SIFCM_PRINT		= 'p',	// print out a character
   // -> p char
   // <-
+  SIFCM_HEX		= 'x',	// print out a character in hex
+  // -> x char
+  // <-
   SIFCM_FIN_CHECK	= 'f',	// check input file for input
   // -> f
   // <- 0|1
@@ -243,6 +246,19 @@ public:
   cl_sif_print(class cl_simulator_interface *the_sif):
     cl_sif_command(SIFCM_PRINT, "print",
 		   "Print character",
+		   SIFAT_NONE, 1, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+
+/* Command: print character */
+class cl_sif_hex: public cl_sif_command
+{
+public:
+  cl_sif_hex(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_HEX, "print_hex",
+		   "Print character in hex",
 		   SIFAT_NONE, 1, the_sif)
   {}
   virtual void produce_answer(void);
