@@ -185,7 +185,7 @@ cl_serial::read(class cl_memory_cell *cell)
 void
 cl_serial::write(class cl_memory_cell *cell, t_mem *val)
 {
-  printf("** write %x\n", *val);
+  printf("** write 0x%02x,'%c'\n", *val, *val);
   
   if (cell == regs[sr])
     {
@@ -200,19 +200,19 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
       if ((cell == regs[brr1]) ||
 	  (cell == regs[brr2]))
 	{
-	  printf("** w1 %x\n", *val);
+	  printf("** BRR1,2 %x\n", *val);
 	  pick_div();
 	}
       else if ((cell == regs[cr1]) ||
 	       (cell == regs[cr2]))
 	{
-	  printf("** w2 %x\n", *val);
+	  printf("** CR1,2 %x\n", *val);
 	  pick_ctrl();
 	}
   
       else if (cell == regs[dr])
 	{
-	  printf("** w3 %x txd=%c\n", *val, *val);
+	  printf("** DR %x txd=%c\n", *val, *val);
 	  s_txd= *val;
 	  s_tx_written= true;
 	  show_writable(false);
@@ -352,6 +352,7 @@ cl_serial::new_io(class cl_f *f_in, class cl_f *f_out)
     delete fout;
   fin= f_in;
   fout= f_out;
+  fin->set_telnet(true);
   fin->set_terminal();
   fout->set_terminal();
   //printf("usart[%d] now using fin=%d fout=%d\n", id, fin->file_id, fout->file_id);
