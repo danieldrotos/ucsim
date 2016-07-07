@@ -112,6 +112,7 @@ class cl_f: public cl_base
   int last_used, first_free;
   bool attributes_saved;
   class cl_history *hist;
+  bool proc_telnet;
  public:
   cl_f(void);
   cl_f(chars fn, chars mode);
@@ -137,6 +138,7 @@ class cl_f: public cl_base
   virtual int put(char c);
   virtual int get(void);
   virtual int finish_esc(int k);
+  virtual int process_telnet(char ci);
   virtual int process_esc(char c);
   virtual int process(char c);
   virtual int pick(void);
@@ -177,6 +179,8 @@ class cl_f: public cl_base
   virtual int echo(class cl_f *out);
   virtual void interactive(class cl_f *echo_out);
   virtual int get_cooking() { return cooking; }
+  virtual void set_telnet(bool val);
+  virtual bool get_telnet() { return proc_telnet; }
  public:
   int server_port;
 

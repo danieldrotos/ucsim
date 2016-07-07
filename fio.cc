@@ -151,6 +151,7 @@ cl_f::cl_f(void)
   esc_buffer[0]= 0;
   attributes_saved= 0;
   hist= new cl_history("history");
+  proc_telnet= false;
 }
 
 cl_f::cl_f(chars fn, chars mode):
@@ -173,6 +174,7 @@ cl_f::cl_f(chars fn, chars mode):
   esc_buffer[0]= 0;
   attributes_saved= 0;
   hist= new cl_history("history");
+  proc_telnet= false;
 }
 
 cl_f::cl_f(int the_server_port)
@@ -194,6 +196,7 @@ cl_f::cl_f(int the_server_port)
   esc_buffer[0]= 0;
   attributes_saved= 0;
   hist= new cl_history("history");
+  proc_telnet= false;
 }
 
 class cl_f *
@@ -432,10 +435,32 @@ cl_f::finish_esc(int k)
 }
 
 int
+cl_f::process_telnet(char ci)
+{
+  int l= strlen(esc_buffer);
+  esc_buffer[l]= ci;
+  l++;
+  esc_buffer[l]= 0;
+  if ((ci == 0xff) &&
+      (l == 2))
+    return finish_esc(0xff);
+  if (l == 3)
+    {
+      char s[44];
+      sprintf(s, "IAC %02x %02x\n", esc_buffer[1]&0xff, esc_buffer[2]&0xff);
+      deb(s);
+      //esc_buffer[1]= 0xfc;
+      //write(esc_buffer, 3);
+      return finish_esc(0);
+    }
+  return 0;
+}
+
+int
 cl_f::process_esc(char c)
 {
   int l;
-  char s[100];
+  //char s[100];
   unsigned int ci= c&0xff, b0= esc_buffer[0]&0xff;
   
   if (b0 == '\033')
@@ -527,22 +552,7 @@ cl_f::process_esc(char c)
     }
   else if (b0 == 0xff)
     {
-      l= strlen(esc_buffer);
-      esc_buffer[l]= ci;
-      l++;
-      esc_buffer[l]= 0;
-      if ((ci == 0xff) &&
-	  (l == 2))
-	return finish_esc(0xff);
-      if (l == 3)
-	{
-	  sprintf(s, "IAC %02x %02x\n", esc_buffer[1]&0xff, esc_buffer[2]&0xff);
-	  deb(s);
-	  //esc_buffer[1]= 0xfc;
-	  //write(esc_buffer, 3);
-	  return finish_esc(0);
-	}
-      return 0;
+      return process_telnet(ci);
     }
   else
     {
@@ -570,7 +580,7 @@ cl_f::process(char c)
   int i;
   unsigned int ci= c&0xff;
 
-  deb("\n%d. processing fid=%d c=%02x,%d,%c cooked=%d\n", j++, file_id, ci, ci, (ci>31)?ci:'.', cooking);
+  deb("\n%d. processing fid=%d c=%02x,%d,%c cooked=%d tlnt=%d\n", j++, file_id, ci, ci, (ci>31)?ci:'.', cooking, proc_telnet);
   if (!cooking)
     {
       /*if (ci == 3)
@@ -579,6 +589,18 @@ cl_f::process(char c)
 	  at_end= 1;
 	}
 	else*/
+      if (proc_telnet)
+	{
+	  if ((ci == 0xff) ||
+	      (esc_buffer[0] != 0))
+	    {
+	      ci= process_telnet(ci);
+	      if (ci)
+		return put(ci);
+	      else
+		return 0;
+	    }
+	}
       if ((ci<31) &&
 	  (ci!='\n') &&
 	  (ci!='\r'))
@@ -1134,6 +1156,13 @@ cl_f::interactive(class cl_f *echo_out)
 }
 
 
+void
+cl_f::set_telnet(bool val)
+{
+  proc_telnet= val;
+}
+
+  
 /* Socket functions */
 
 /*
