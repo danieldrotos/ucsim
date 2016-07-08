@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define STM8CL_HEADER
 
 #include "uccl.h"
+#include "itsrccl.h"
 
 #include "regsstm8.h"
 #include "interruptcl.h"
@@ -47,6 +48,7 @@ public:
   //class cl_memory *rom;
   struct t_regs regs;
   class cl_interrupt *interrupt;
+  class cl_it_src *trap_src;
 public:
   cl_stm8(class cl_sim *asim);
   virtual int init(void);

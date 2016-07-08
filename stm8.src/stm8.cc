@@ -84,6 +84,13 @@ cl_stm8::init(void)
   //  ram->set((t_addr) i, 0);
   //}
 
+  trap_src= new cl_it_src(this, -1,
+			  (cl_memory_cell*)NULL, (t_mem)0,
+			  (cl_memory_cell*)NULL, (t_mem)0,
+			  (t_addr)0x8004,
+			  false, false,
+			  "trap", 0);
+  
   return(0);
 }
 
@@ -624,6 +631,15 @@ cl_stm8::exec_inst(void)
                pop1( tempi);
                pop2( PC);
                PC += (tempi <<16); //Add PCE to PC
+	       {
+		 class it_level *il= (class it_level *)(it_levels->top());
+		 if (il &&
+		     il->level >= 0)
+		   {
+		     il= (class it_level *)(it_levels->pop());
+		     delete il;
+		   }
+	       }
                return(resGO);
             case 0x10: 
             case 0xA0:
@@ -779,6 +795,7 @@ cl_stm8::exec_inst(void)
             case 0x80: // TRAP
                // store to stack
                PC++;
+	       /*
                push2( PC & 0xffff);
                push1( PC >> 16); //extended PC
                push2( regs.Y);
@@ -795,7 +812,11 @@ cl_stm8::exec_inst(void)
                   PC = get1(0x8005) << 16;
                   PC |= get2(0x8006);
                   return(resGO);
-               }
+		  }*/
+	       {
+		 class it_level *il= new it_level(3, 0x8004, PC, trap_src);
+		 accept_it(il);
+	       }
                return(resHALT);
             case 0x90:
                if(cprefix==0x90) {
@@ -1375,46 +1396,7 @@ cl_stm8::exec_inst(void)
 int
 cl_stm8::do_interrupt(void)
 {
-  /*
-  int i, ie= 0;
-
-  if (interrupt->was_reti)
-    {
-      interrupt->was_reti= DD_FALSE;
-      return(resGO);
-    }
-  if (!((ie= sfr->get(IE)) & bmEA))
-    return(resGO);
-  class it_level *il= (class it_level *)(it_levels->top()), *IL= 0;
-  for (i= 0; i < it_sources->count; i++)
-    {
-      class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
-      if (is->is_active() &&
-	  (ie & is->ie_mask) &&
-	  (sfr->get(is->src_reg) & is->src_mask))
-	{
-	  int pr= it_priority(is->ie_mask);
-	  if (il->level >= 0 &&
-	      pr <= il->level)
-	    continue;
-	  if (state == stIDLE)
-	    {
-	      state= stGO;
-	      sfr->set_bit0(PCON, bmIDL);
-	      interrupt->was_reti= DD_TRUE;
-	      return(resGO);
-	    }
-	  if (is->clr_bit)
-	    sfr->set_bit0(is->src_reg, is->src_mask);
-	  sim->app->get_commander()->
-	    debug("%g sec (%d clks): Accepting interrupt `%s' PC= 0x%06x\n",
-			  get_rtime(), ticks->ticks, object_name(is), PC);
-	  IL= new it_level(pr, is->addr, PC, is);
-	  return(accept_it(IL));
-	}
-    }
-  */
-  return(resGO);
+  return cl_uc::do_interrupt();
 }
 
 int
@@ -1444,8 +1426,8 @@ cl_stm8::priority_main(void)
   t_mem cv= regs.CC;
   uint8_t i1, i0;
   int levels[4]= { 2, 1, 0, 3 };
-  i0= (cv&0x08)?1:0;
-  i1= (cv&0x20)?2:0;
+  i0= (cv & BIT_I0)?1:0;
+  i1= (cv & BIT_I1)?2:0;
   return levels[i1+i0];
 }
 
@@ -1457,18 +1439,26 @@ cl_stm8::priority_main(void)
 int
 cl_stm8::accept_it(class it_level *il)
 {
-  /*
-  state= stGO;
-  sfr->set_bit0(PCON, bmIDL);
+  //class cl_it_src *is= il->source;
+  push2( PC & 0xffff);
+  push1( PC >> 16); //extended PC
+  push2( regs.Y);
+  push2( regs.X);
+  push1( regs.A);
+  push1( regs.CC);
+  // set I1 and I0 status bits
+  if (il->level == 0)
+    { FLAG_SET(BIT_I1) FLAG_CLEAR(BIT_I0) }
+  else if (il->level == 1)
+    { FLAG_CLEAR(BIT_I1) FLAG_SET(BIT_I0) }
+  else if (il->level == 2)
+    { FLAG_CLEAR(BIT_I1) FLAG_CLEAR(BIT_I0) }
+  else // 3
+    { FLAG_SET(BIT_I1) FLAG_SET(BIT_I0) }
+  PC = il->addr;
+
   it_levels->push(il);
-  tick(1);
-  int res= inst_lcall(0, il->addr, DD_TRUE);
-  if (res != resGO)
-    return(res);
-  else
-    return(resINTERRUPT);
-  */
-  return resGO;
+  return resINTERRUPT;
 }
 
 
