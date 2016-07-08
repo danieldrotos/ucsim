@@ -83,7 +83,7 @@ cl_timer1::print_info(class cl_console_base *con)
   con->dd_printf(" %s", on?"ON":"OFF");
   con->dd_printf(" irq=%c", (cell_tcon->get()&mask_TF)?'1':'0');
   con->dd_printf(" %s", sfr?"?":((sfr->get(IE)&bmET1)?"en":"dis"));
-  con->dd_printf(" prio=%d", uc->it_priority(bmPT1));
+  con->dd_printf(" prio=%d", uc->priority_of(bmPT1));
   con->dd_printf("\n");
 }
 

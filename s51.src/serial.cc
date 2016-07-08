@@ -411,7 +411,7 @@ cl_serial::print_info(class cl_console_base *con)
   con->dd_printf(" MultiProc=%s",
 		 (mode&2)?((sc&bmSM2)?"ON":"OFF"):"none");
   con->dd_printf(" irq=%s", (sfr->get(IE)&bmES)?"en":"dis");
-  con->dd_printf(" prio=%d", uc->it_priority(bmPS));
+  con->dd_printf(" prio=%d", uc->priority_of(bmPS));
   con->dd_printf("\n");
 
   con->dd_printf("Receiver");

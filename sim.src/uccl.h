@@ -179,9 +179,11 @@ public:
   virtual int exec_inst(void);
   virtual void post_inst(void);
 
-  virtual int it_priority(uchar ie_mask) {return(0);}
+  virtual int do_interrupt(void) { return resGO; }
+  virtual int priority_of(uchar nuof_it) {return(0);}
+  virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void) { return false; }
-  
+
   // stack tracking
   virtual void stack_write(class cl_stack_op *op);
   virtual void stack_read(class cl_stack_op *op);

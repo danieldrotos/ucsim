@@ -956,7 +956,7 @@ cl_51core::do_interrupt(void)
 	  is->enabled() &&
 	  is->pending())
 	{
-	  int pr= it_priority(is->ie_mask);
+	  int pr= priority_of(is->ie_mask);
 	  if (il->level >= 0 &&
 	      pr <= il->level)
 	    continue;
@@ -980,9 +980,9 @@ cl_51core::do_interrupt(void)
 }
 
 int
-cl_51core::it_priority(uchar ie_mask)
+cl_51core::priority_of(uchar nuof_it)
 {
-  if (sfr->get(IP) & ie_mask)
+  if (sfr->get(IP) & /*ie_mask*/nuof_it)
     return(1);
   return(0);
 }

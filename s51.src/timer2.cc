@@ -377,7 +377,7 @@ cl_timer2::print_info(class cl_console_base *con)
   con->dd_printf(" %s", (TR)?"ON":"OFF");
   con->dd_printf(" irq=%c", (t2con&bmTF2)?'1':'0');
   con->dd_printf(" %s", sfr?"?":((sfr->get(IE)&bmET2)?"en":"dis"));
-  con->dd_printf(" prio=%d", uc->it_priority(bmPT2));
+  con->dd_printf(" prio=%d", uc->priority_of(bmPT2));
   con->dd_printf("\n");
 }
 

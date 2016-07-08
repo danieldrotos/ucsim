@@ -109,16 +109,14 @@ public:
   virtual void   reset(void);
   virtual void   clear_sfr(void);
   virtual void   analyze(t_addr addr);
-  virtual int    it_priority(uchar ie_mask);
 
   virtual int    do_inst(int step);
 
   //virtual void mem_cell_changed(class cl_m *mem, t_addr addr);
 
-protected:
+  virtual int  priority_of(uchar nuof_it);
   virtual int  do_interrupt(void);
   virtual int  accept_it(class it_level *il);
- public:
   virtual bool it_enabled(void);
   
 protected:

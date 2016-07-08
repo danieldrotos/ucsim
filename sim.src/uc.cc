@@ -1701,6 +1701,13 @@ cl_uc::do_inst(int step)
 	PC = PCsave;
       
       post_inst();
+
+      if (res == resGO)
+	{
+	  int r= do_interrupt();
+	  if (r != resGO)
+	    res= r;
+	}
     }
   if (res != resGO)
     sim->stop(res);
@@ -1731,6 +1738,18 @@ cl_uc::post_inst(void)
   if (events->count)
     check_events();
   inst_exec= DD_FALSE;
+}
+
+
+/*
+ * Interrupt processing
+ */
+
+int
+cl_uc::accept_it(class it_level *il)
+{
+  it_levels->push(il);
+  return resGO;
 }
 
 

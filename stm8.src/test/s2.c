@@ -53,7 +53,7 @@ void main(void)
   UART2_CR3 &= ~(UART_CR3_STOP1 | UART_CR3_STOP2); // 1 stop bit
   UART2_BRR2 = 0x03; UART2_BRR1 = 0x68; // 9600 baud
   
-  prints("Hello World!\n");
+  printf("Hello World!\n");
   for (;;)
     {
       if (received())
