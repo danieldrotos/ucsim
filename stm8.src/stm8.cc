@@ -1420,11 +1420,33 @@ cl_stm8::do_interrupt(void)
 int
 cl_stm8::priority_of(uchar nuof_it)
 {
-  /*
-  if (sfr->get(IP) & ie_mask)
-    return(1);
-  */
-  return(0);
+  t_addr ra= 0x7f70;
+  int idx= nuof_it / 4;
+  uint8_t i1_mask, i0_mask, i0, i1;
+  cl_memory_cell *c;
+  t_mem cv;
+  int levels[4]= { 2, 1, 0, 3 };
+
+  if (nuof_it > 29)
+    return 0;
+  i1_mask= 2 << ((nuof_it % 4) * 2);
+  i0_mask= 1 << ((nuof_it % 4) * 2);
+  c= ram->get_cell(ra + idx);
+  cv= c->read();
+  i0= (cv & i0_mask)?1:0;
+  i1= (cv & i1_mask)?2:0;
+  return levels[i1+i0];
+}
+
+int
+cl_stm8::priority_main(void)
+{
+  t_mem cv= regs.CC;
+  uint8_t i1, i0;
+  int levels[4]= { 2, 1, 0, 3 };
+  i0= (cv&0x08)?1:0;
+  i1= (cv&0x20)?2:0;
+  return levels[i1+i0];
 }
 
 
@@ -1456,7 +1478,7 @@ cl_stm8::accept_it(class it_level *il)
 bool
 cl_stm8::it_enabled(void)
 {
-  return (regs.CC & BIT_I0) && (regs.CC & BIT_I1);
+  return !(regs.CC & BIT_I0) || !(regs.CC & BIT_I1);
 }
 
 

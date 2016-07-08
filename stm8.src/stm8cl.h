@@ -74,11 +74,10 @@ public:
 
   virtual void reset(void);
 
- protected:
   virtual int  do_interrupt(void);
   virtual int  priority_of(uchar nuof_it);
+  virtual int  priority_main(void);
   virtual int  accept_it(class it_level *il);
- public:
   virtual bool it_enabled(void);
 
 #include "instcl.h"
