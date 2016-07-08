@@ -41,7 +41,7 @@ cl_pca::cl_pca(class cl_uc *auc, int aid):
 {
   t0_overflows= ECI_edge= 0;
   int i;
-  for (i= 0; i < 5; cex_pos[i]= cex_neg[i]= DD_FALSE, i++) ;
+  for (i= 0; i < 5; cex_pos[i]= cex_neg[i]= false, i++) ;
 }
 
 int
@@ -139,7 +139,7 @@ cl_pca::write(class cl_memory_cell *cell, t_mem *val)
 	      t_mem o= ccapm[i];
 	      ccapm[i]= *val & 0xff;
 	      if (o != ccapm[i])
-		cex_neg[i]= cex_pos[i]= DD_FALSE;
+		cex_neg[i]= cex_pos[i]= false;
 	    }
 	  else
 	    {
@@ -242,18 +242,18 @@ cl_pca::do_pca_module(int nr)
   uchar bmCCF[5]= {bmCCF0, bmCCF1, bmCCF2, bmCCF3, bmCCF4};
   //uint p1= sfr->get(P1);
 
-  bool capture= DD_FALSE;
+  bool capture= false;
   if ((ccapm[nr] & bmCAPP) &&
       cex_pos[nr])
     {
-      capture= DD_TRUE;
-      cex_pos[nr]= DD_FALSE;
+      capture= true;
+      cex_pos[nr]= false;
     }
   if ((ccapm[nr] & bmCAPN) &&
       cex_neg[nr])
     {
-      capture= DD_TRUE;
-      cex_pos[nr]= DD_FALSE;
+      capture= true;
+      cex_pos[nr]= false;
     }
   if (capture)
     {
@@ -302,7 +302,7 @@ cl_pca::reset(void)
 {
   t0_overflows= ECI_edge= 0;
   int i;
-  for (i= 0; i < 5; cex_pos[i]= cex_neg[i]= DD_FALSE, i++) ;
+  for (i= 0; i < 5; cex_pos[i]= cex_neg[i]= false, i++) ;
 }
 
 void
@@ -325,10 +325,10 @@ cl_pca::happen(class cl_hw *where, enum hw_event he, void *params)
 	{
 	  if (!(p1n & bmCEX[i]) &&
 	      (p1o & bmCEX[i]))
-	    cex_neg[i]= DD_TRUE;
+	    cex_neg[i]= true;
 	  else if ((p1n & bmCEX[i]) &&
 		   !(p1o & bmCEX[i]))
-	    cex_pos[i]= DD_TRUE;
+	    cex_pos[i]= true;
 	}
     }
   else if (where->cathegory == HW_TIMER &&

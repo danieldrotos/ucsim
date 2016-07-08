@@ -76,8 +76,8 @@ public:
   virtual void pre_remove(void);
 
   virtual class cl_base *get_creator(void) { return(creator); }
-  virtual void hide(void) { hidden= DD_TRUE; }
-  virtual void show(void) { hidden= DD_FALSE; }
+  virtual void hide(void) { hidden= true; }
+  virtual void show(void) { hidden= false; }
 
   virtual void print(class cl_console_base *con) {}
   virtual char *get_type_name(void) { return(cchars("non")); }
@@ -105,7 +105,7 @@ class cl_options: public cl_sorted_list
 {
  public:
  cl_options(void): cl_sorted_list(2, 2, cchars("options"))
-    { Duplicates= DD_TRUE; }
+    { Duplicates= true; }
   virtual void *key_of(void *item);
   virtual int compare(void *key1, void *key2);
   virtual void new_option(class cl_option *opt);

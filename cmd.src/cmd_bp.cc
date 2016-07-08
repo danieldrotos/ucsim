@@ -83,9 +83,9 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
   else
     {
       con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
-      return(DD_FALSE);
+      return(false);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 void
@@ -157,7 +157,7 @@ COMMAND_DO_WORK_UC(cl_clear_cmd)
     {
       t_addr addr;
       if (!param->as_address(uc))
-	return(DD_FALSE);
+	return(false);
       addr= param->value.address;
       if (uc->fbrk->bp_at(addr) == 0)
 	con->dd_printf("No breakpoint at 0x%06x\n", addr);
@@ -165,7 +165,7 @@ COMMAND_DO_WORK_UC(cl_clear_cmd)
 	uc->fbrk->del_bp(addr);
     }
 
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -197,7 +197,7 @@ COMMAND_DO_WORK_UC(cl_delete_cmd)
 	    }
 	}
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 

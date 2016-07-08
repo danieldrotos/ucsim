@@ -86,7 +86,7 @@ COMMAND_DO_WORK_UC(cl_set_mem_cmd)
   else
     con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
   
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -121,7 +121,7 @@ COMMAND_DO_WORK_UC(cl_set_bit_cmd)
   else
     con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
 
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -163,7 +163,7 @@ COMMAND_DO_WORK_UC(cl_set_hw_cmd)
       else
 	con->dd_printf("Error: no hw\n");
     }
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -198,7 +198,7 @@ COMMAND_DO_WORK_APP(cl_set_option_cmd)
     if (n > 1)
       {
 	con->dd_printf("Ambiguous option name, use number instead\n");
-	return(DD_FALSE);
+	return(false);
       }
     else if (n == 0)
       ;//con->dd_printf("Named option does not exist\n");
@@ -233,12 +233,12 @@ COMMAND_DO_WORK_APP(cl_set_option_cmd)
   if (!option)
     {
       con->dd_printf("Option does not exist\n");
-      return(DD_FALSE);
+      return(false);
     }
 
   option->set_value(s);
 
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -289,13 +289,13 @@ COMMAND_DO_WORK_APP(cl_set_error_cmd)
 		e->set_on(ERROR_OFF);
 	      else
 		con->dd_printf("Bad value (%s)\n", value);
-	      return(DD_FALSE);
+	      return(false);
 	    }
 	}
     }
   con->dd_printf("Error %s not found\n", error_name);
 
-  return(DD_FALSE);
+  return(false);
 }
 
 

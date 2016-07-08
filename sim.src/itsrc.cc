@@ -69,7 +69,7 @@ cl_it_src::cl_it_src(cl_uc  *Iuc,
     set_name(Iname);
   else
     set_name("unknown");
-  active= DD_TRUE;
+  active= true;
 }
 
 cl_it_src::~cl_it_src(void) {}

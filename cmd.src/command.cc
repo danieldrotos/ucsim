@@ -396,15 +396,15 @@ bool
 cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
 {
   if (!syntax)
-    return(DD_FALSE);
+    return(false);
   if (!*syntax &&
       !params->count)
     {
       matched_syntax= syntax;
-      return(DD_TRUE);
+      return(true);
     }
   if (!params->count)
-    return(DD_FALSE);
+    return(false);
   //printf("syntax %s?\n",syntax);
   const char *p= syntax;
   int iparam= 0;
@@ -418,17 +418,17 @@ cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
 	  {
 	  case SY_ADDR:
 	    if (!parm->as_address(uc))
-	      return(DD_FALSE);
+	      return(false);
 	    //printf("ADDRESS match %lx\n",parm->value.address);
 	    break;
 	  case SY_MEMORY:
 	    if (!parm->as_memory(uc))
-	      return(DD_FALSE);
+	      return(false);
 	    //printf("MEMORY match %s\n",parm->value.memory->class_name);
 	    break;
 	  case SY_BIT:
 	    if (!parm->as_bit(uc))
-	      return(DD_FALSE);
+	      return(false);
 	    break;
 	  }
       switch (*p)
@@ -436,26 +436,26 @@ cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
 	case SY_ADDR: case SY_MEMORY: case SY_BIT: break;
 	case SY_NUMBER:
 	  if (!parm->as_number())
-	    return(DD_FALSE);
+	    return(false);
 	  break;
 	case SY_DATA:
 	  if (!parm->as_data())
-	    return(DD_FALSE);
+	    return(false);
 	  break;
 	case SY_HW:
 	  if (!parm->as_hw(uc))
-	    return(DD_FALSE);
+	    return(false);
 	  break;
 	case SY_STRING:
 	  if (!parm->as_string())
-	    return(DD_FALSE);
+	    return(false);
 	  break;
 	case SY_DATALIST:
 	  if (!set_data_list(parm, &iparam))
-	    return(DD_FALSE);
+	    return(false);
 	  break;
 	default:
-	  return(DD_FALSE);
+	  return(false);
 	}
       p++;
       iparam++;
@@ -468,9 +468,9 @@ cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
       !parm)
     {
       matched_syntax= syntax;
-      return(DD_TRUE);
+      return(true);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 bool
@@ -511,7 +511,7 @@ cl_cmdline::set_data_list(class cl_cmd_arg *parm, int *iparm)
 	    {
 	      if (array)
 		free(array);
-	      return(DD_FALSE);
+	      return(false);
 	    }
 	  if (!array)
 	    array= (t_mem*)malloc(sizeof(t_mem));
@@ -524,7 +524,7 @@ cl_cmdline::set_data_list(class cl_cmd_arg *parm, int *iparm)
   *iparm= i;
   parm->value.data_list.array= array;
   parm->value.data_list.len= len;
-  return(DD_TRUE);
+  return(true);
 }
 
 
@@ -631,21 +631,21 @@ cl_cmd::work(class cl_app *app,
       if (!app)
 	{
 	  con->dd_printf("There is no application to work on!\n");
-	  return(DD_TRUE);
+	  return(true);
 	}
       return(do_work(app, cmdline, con));
     case operate_on_sim:
       if (!sim)
 	{
 	  con->dd_printf("There is no simulator to work on!\n");
-	  return(DD_TRUE);
+	  return(true);
 	}
       return(do_work(sim, cmdline, con));
     case operate_on_uc:
       if (!sim)
 	{
 	  con->dd_printf("There is no microcontroller to work on!\n");
-	  return(DD_TRUE);
+	  return(true);
 	}
       return(do_work(uc, cmdline, con));
     default:

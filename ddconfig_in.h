@@ -284,8 +284,5 @@
 /* XXX */
 /*#undef _M_*/
 
-/* ucsim custom defines */
-/*#define DD_TRUE     1*/
-/*#define DD_FALSE    0*/
 #define NIL         0
 #endif /* DDCONFIG_HEADER */

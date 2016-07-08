@@ -556,7 +556,7 @@ cl_optref::get_value(bool)
     {
       fprintf(stderr, "Warning: \"%s\" is dereferencing a non-existent "
 	      "bool option: %s\n", object_name(owner), get_name());
-      return(DD_FALSE);
+      return(false);
     }
   else
     {
@@ -666,9 +666,9 @@ cl_bool_option::set_value(char *s)
       if (c == '1' ||
 	  c == 'T' ||
 	  c == 'Y')
-	/**(bool *)option=*/ value.bval= DD_TRUE;
+	/**(bool *)option=*/ value.bval= true;
       else
-	/**(bool *)option=*/ value.bval= DD_FALSE;
+	/**(bool *)option=*/ value.bval= false;
     }
   inform_users();
 }

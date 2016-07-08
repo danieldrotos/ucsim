@@ -258,13 +258,13 @@ cl_memory::search_next(bool case_sensitive,
     a= *addr;
 
   if (a+len > size)
-    return(DD_FALSE);
+    return(false);
 
-  found= DD_FALSE;
+  found= false;
   while (!found &&
 	 a+len <= size)
     {
-      bool match= DD_TRUE;
+      bool match= true;
       for (i= 0; i < len && match; i++)
 	{
 	  t_mem d1, d2;
@@ -942,7 +942,7 @@ cl_address_space::cl_address_space(const char *id,
   class cl_cell16 c16(awidth);
   class cl_memory_cell *cell= &c;
   start_address= astart;
-  decoders= new cl_decoder_list(2, 2, DD_FALSE);
+  decoders= new cl_decoder_list(2, 2, false);
   cella= (class cl_memory_cell *)malloc(size * sizeof(class cl_memory_cell));
   if (awidth == 1)
     cell= &bc8;
@@ -1171,7 +1171,7 @@ cl_address_space::decode_cell(t_addr addr,
   t_addr idx= addr-start_address;
   if (idx >= size ||
       addr < start_address)
-    return(DD_FALSE);
+    return(false);
   class cl_memory_cell *cell= &cella[idx];
 
   if (!cell->get_flag(CELL_NON_DECODED))
@@ -1313,7 +1313,7 @@ cl_address_space::set_brk(t_addr addr, class cl_brk *brk)
 			       uc, brk);
       break;
     case brkNONE:
-      set_cell_flag(addr, DD_TRUE, CELL_FETCH_BRK);
+      set_cell_flag(addr, true, CELL_FETCH_BRK);
       return;
       break;
     default:
@@ -1341,7 +1341,7 @@ cl_address_space::del_brk(t_addr addr, class cl_brk *brk)
       cell->del_operator(brk);
       break;
     case brkNONE:
-      set_cell_flag(addr, DD_FALSE, CELL_FETCH_BRK);
+      set_cell_flag(addr, false, CELL_FETCH_BRK);
       return;
       break;
     default:
@@ -1479,7 +1479,7 @@ cl_address_decoder::cl_address_decoder(class cl_memory *as,
   as_begin= asb;
   as_end= ase;
   chip_begin= cb;
-  activated= DD_FALSE;
+  activated= false;
 }
 
 cl_address_decoder::~cl_address_decoder(void)
@@ -1505,40 +1505,40 @@ cl_address_decoder::activate(class cl_console_base *con)
   if (activated)
     {
       D("Already activated\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (!address_space ||
       !address_space->is_address_space())
     {
       D("No or non address space\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (!memchip ||
       !memchip->is_chip())
     {
       D("No or non memory chip\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (as_begin > as_end)
     {
       D("Wrong address area specification\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (chip_begin >= memchip->get_size())
     {
       D("Wrong chip area specification\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (as_begin < address_space->start_address ||
       as_end >= address_space->start_address + address_space->get_size())
     {
       D("Specified area is out of address space\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (as_end-as_begin > memchip->get_size()-chip_begin)
     {
       D("Specified area is out of chip size\n");
-      return(DD_FALSE);
+      return(false);
     }
 
   address_space->undecode_area(this, as_begin, as_end, con);
@@ -1553,7 +1553,7 @@ cl_address_decoder::activate(class cl_console_base *con)
 	  D("Decoding 0x%06x->0x%06x failed\n", asa, ca);
 	}
     }
-  activated= DD_TRUE;
+  activated= true;
 
 #undef D
   return(activated);
@@ -1565,8 +1565,8 @@ cl_address_decoder::fully_covered_by(t_addr begin, t_addr end)
 {
   if (begin <= as_begin &&
       end >= as_end)
-    return(DD_TRUE);
-  return(DD_FALSE);
+    return(true);
+  return(false);
 }
 
 bool
@@ -1574,11 +1574,11 @@ cl_address_decoder::is_in(t_addr begin, t_addr end)
 {
   if (begin >= as_begin &&
       begin <= as_end)
-    return(DD_TRUE);
+    return(true);
   if (end >= as_begin &&
       end <= as_end)
-    return(DD_TRUE);
-  return(DD_FALSE);
+    return(true);
+  return(false);
 }
 
 bool
@@ -1586,8 +1586,8 @@ cl_address_decoder::covers(t_addr begin, t_addr end)
 {
   if (begin >= as_begin &&
       end <= as_end)
-    return(DD_TRUE);
-  return(DD_FALSE);
+    return(true);
+  return(false);
 }
 
 
@@ -1599,7 +1599,7 @@ cl_address_decoder::shrink_out_of(t_addr begin, t_addr end)
   t_addr a= as_begin;
 
   if (!address_space)
-    return(DD_TRUE);
+    return(true);
   if (begin > a)
     a= begin;
   while (a <= end &&
@@ -1616,8 +1616,8 @@ cl_address_decoder::shrink_out_of(t_addr begin, t_addr end)
       as_begin= end+1;
     }
   if (as_end < as_begin)
-    return(DD_TRUE);
-  return(DD_FALSE);
+    return(true);
+  return(false);
 }
 
 class cl_address_decoder *
@@ -1875,7 +1875,7 @@ cl_banker::print_info(chars pre, class cl_console_base *con)
 cl_decoder_list::cl_decoder_list(t_index alimit, t_index adelta, bool bychip):
   cl_sorted_list(alimit, adelta, "decoder list")
 {
-  Duplicates= DD_TRUE;
+  Duplicates= true;
   by_chip= bychip;
 }
 

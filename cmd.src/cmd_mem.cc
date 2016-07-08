@@ -82,7 +82,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_chip_cmd)
       uc->memchips->add(mem);
       mem->set_uc(uc);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -138,7 +138,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_addressspace_cmd)
       uc->address_spaces->add(mem);
       mem->set_uc(uc);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -221,7 +221,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_addressdecoder_cmd)
       ((class cl_address_space *)as)->decoders->add(d);
       d->activate(con);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -276,7 +276,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_banker_cmd)
       ((class cl_address_space *)banked_as)->decoders->add(d);
       d->activate(con);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -334,7 +334,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_bank_cmd)
 	  d->add_bank(bank, chip, chip_begin);
 	}
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 

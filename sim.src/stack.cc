@@ -111,7 +111,7 @@ cl_stack_op::data_size(void)
 bool
 cl_stack_op::match(class cl_stack_op *op)
 {
-  return(DD_FALSE);
+  return(false);
 }
 
 bool
@@ -124,7 +124,7 @@ cl_stack_op::can_removed(class cl_stack_op *op)
       (!incr && op_incr))
     {
       printf("BIGBIG ERROR!\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (incr)
     {

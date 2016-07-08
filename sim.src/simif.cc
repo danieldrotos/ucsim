@@ -55,7 +55,7 @@ cl_sif_command::cl_sif_command(enum sif_command cmd,
   params_needed= the_params_needed;
   nuof_params= params_received= 0;
   answer_length= answered_bytes= 0;
-  answering= DD_FALSE;
+  answering= false;
 }
 
 cl_sif_command::~cl_sif_command(void)
@@ -106,10 +106,10 @@ cl_sif_command::get_parameter(int nr, t_mem *into)
 {
   if (!parameters ||
       nr >= nuof_params)
-    return(DD_FALSE);
+    return(false);
   if (into)
     *into= parameters[nr];
-  return(DD_TRUE);
+  return(true);
 }
 
 
@@ -223,10 +223,10 @@ void
 cl_sif_command::start_answer(void)
 {
   if (answer_length)
-    answering= DD_TRUE;
+    answering= true;
   else
     {
-      answering= DD_FALSE;
+      answering= false;
       sif->finish_command();
     }
 }

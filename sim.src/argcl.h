@@ -61,7 +61,7 @@ public:
   virtual bool get_bit_address(class cl_uc *uc, // input
 			       class cl_address_space **mem, // outputs
 			       t_addr *mem_addr,
-			       t_mem *bit_mask) { return(DD_FALSE); }
+			       t_mem *bit_mask) { return(false); }
 };
 
 
@@ -101,13 +101,13 @@ public:
 
 public:
   cl_cmd_arg(long i): cl_arg(i)
-  { interpreted_as_string= DD_FALSE; }
+  { interpreted_as_string= false; }
   cl_cmd_arg(const char *s): cl_arg(s)
-  { interpreted_as_string= DD_FALSE; }
+  { interpreted_as_string= false; }
   virtual ~cl_cmd_arg(void);
 
-  virtual int is_string(void) { return(DD_FALSE); }
-  virtual bool get_address(class cl_uc *uc, t_addr *addr) { return(DD_FALSE); }
+  virtual int is_string(void) { return(false); }
+  virtual bool get_address(class cl_uc *uc, t_addr *addr) { return(false); }
   virtual bool as_address(class cl_uc *uc);
   virtual bool as_number(void);
   virtual bool as_data(void);
@@ -141,7 +141,7 @@ public:
 			       t_addr *mem_addr,
 			       t_mem *bit_mask);
   virtual bool as_address(class cl_uc *uc);
-  virtual bool as_number(void) { return(DD_FALSE); }
+  virtual bool as_number(void) { return(false); }
   virtual bool as_string(void);
   virtual bool as_hw(class cl_uc *uc);
 };
@@ -152,7 +152,7 @@ public:
   cl_cmd_str_arg(const char *str);
 
   virtual int is_string(void) { return(1); }
-  virtual bool as_number(void) { return(DD_FALSE); }
+  virtual bool as_number(void) { return(false); }
 };
 
 class cl_cmd_bit_arg: public cl_cmd_arg

@@ -419,7 +419,7 @@ cl_commander::init(void)
   active_inputs= new cl_list(10, 5, "active_inputs");
   check_list= new cl_list(10, 5, "check_list");
   
-  bool need_config= DD_TRUE;
+  bool need_config= true;
 
   if (port_number_option.use("port_number"))
     add_console(new cl_listen_console(port_number_option.get_value((long)0), app));
@@ -437,7 +437,7 @@ cl_commander::init(void)
 	  in->interactive(out);
 	  add_console(con= new cl_console(in, out, app));
 	  config_console= exec_on(con, Config);
-	  need_config= DD_FALSE;
+	  need_config= false;
 	  if (in->tty)
 	    con->set_flag(CONS_INTERACTIVE, true);
 	}
@@ -445,7 +445,7 @@ cl_commander::init(void)
 	{
 	  add_console(con= new cl_console(cn, cn, app));
 	  config_console= exec_on(con, Config);
-	  need_config= DD_FALSE;
+	  need_config= false;
 	}
     }
   if (cons->get_count() == 0)
@@ -456,7 +456,7 @@ cl_commander::init(void)
       in->interactive(out);
       add_console(con= new cl_console(in, out, app));
       config_console= exec_on(con, Config);
-      need_config= DD_FALSE;
+      need_config= false;
       if (in->tty)
 	con->set_flag(CONS_INTERACTIVE, true);
     }

@@ -269,8 +269,8 @@ cl_app::proc_arguments(int argc, char *argv[])
   int i, c;
   char opts[100], *cp, *subopts, *value;
   char *cpu_type= NULL;
-  bool /*s_done= DD_FALSE,*/ k_done= DD_FALSE;
-  //bool S_i_done= DD_FALSE, S_o_done= DD_FALSE;
+  bool /*s_done= DD_FALSE,*/ k_done= false;
+  //bool S_i_done= false, S_o_done= false;
 
   strcpy(opts, "c:C:p:PX:vVt:s:S:a:hHgJ");
 #ifdef SOCKET_AVAIL
@@ -319,7 +319,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	break;
       }
       case 'P':
-	if (!options->set_value("null_prompt", this, bool(DD_TRUE)))
+	if (!options->set_value("null_prompt", this, bool(true)))
 	  fprintf(stderr, "Warning: No \"null_prompt\" option found\n");
 	break;
       case 'X':
@@ -351,7 +351,7 @@ cl_app::proc_arguments(int argc, char *argv[])
         exit(0);
         break;
       case 'V':
-	if (!options->set_value("debug", this, (bool)DD_TRUE))
+	if (!options->set_value("debug", this, (bool)true))
 	  fprintf(stderr, "Warning: No \"debug\" option found to set "
 		  "by -V parameter\n");	
 	break;
@@ -375,7 +375,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	    break;
 	  }
 	*/
-	//s_done= DD_TRUE;
+	//s_done= true;
 	/*
 	if ((Ser_in= fopen(optarg, "r")) == NULL)
 	  {
@@ -414,7 +414,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	  if (k_done) {
 	    fprintf(stderr, "Serial input specified more than once.\n");
 	  }
-	  k_done= DD_TRUE;
+	  k_done= true;
 
 	  serverport = strtol(optarg, 0, 0);
 	  //sock= make_server_socket(serverport);

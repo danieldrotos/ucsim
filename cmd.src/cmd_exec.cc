@@ -63,13 +63,13 @@ COMMAND_DO_WORK_SIM(cl_run_cmd)
     if (!(params[0]->get_address(sim->uc, &start)))
       {
 	con->dd_printf(cchars("Error: wrong start address\n"));
-	return(DD_FALSE);
+	return(false);
       }
   if (params[1])
     if (!(params[1]->get_address(sim->uc, &end)))
       {
 	con->dd_printf(cchars("Error: wromg end address\n"));
-	return(DD_FALSE);
+	return(false);
       }
   if (params[0])
     {
@@ -82,7 +82,7 @@ COMMAND_DO_WORK_SIM(cl_run_cmd)
 	  if (start == end)
 	    {
 	      con->dd_printf(cchars("Addresses must be different.\n"));
-	      return(DD_FALSE);
+	      return(false);
 	    }
 	  if ((b= sim->uc->fbrk_at(end)))
 	    {
@@ -102,7 +102,7 @@ COMMAND_DO_WORK_SIM(cl_run_cmd)
     sim->uc->do_inst(1);
   */
   sim->start(con, 0);
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -118,7 +118,7 @@ COMMAND_DO_WORK_SIM(cl_stop_cmd)
 {
   sim->stop(resUSER);
   sim->uc->print_disass(sim->uc->PC, con);
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -203,7 +203,7 @@ COMMAND_DO_WORK_SIM(cl_next_cmd)
     //sim->stop(resSTEP);
     //sim->uc->print_regs(con);
   }
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -225,7 +225,7 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
   if ((commander= app->get_commander()) != 0)
     cmdset= commander->cmdset;
   if (!cmdset)
-    return(DD_FALSE);
+    return(false);
   if (!parm) {
     for (i= 0; i < cmdset->count; i++)
       {
@@ -267,7 +267,7 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
       if (!matches ||
 	  !cmd_found)
 	con->dd_printf("No such command.\n");
-      //return(DD_FALSE);
+      //return(false);
       /*
       int pari;
       for (pari= 0; pari < cmdline->nuof_params(); pari++)
@@ -277,7 +277,7 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
 	  for (i= 0; i < cmdset->count; i++)
 	    {
 	      class cl_cmd *c= (class cl_cmd *)(cmdset->at(i));
-	      if (!c->name_match(act_param->s_value, DD_FALSE))
+	      if (!c->name_match(act_param->s_value, false))
 		continue;
 	      if (c->short_help)
 		con->dd_printf("%s\n", c->short_help);
@@ -287,20 +287,20 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
 		continue;
 	      cmdset= c->get_subcommands();
 	      if (!cmdset)
-		return(DD_FALSE);
+		return(false);
 	    }
 	}
-      return(DD_FALSE);
+      return(false);
       */
     }
-  return(DD_FALSE);
+  return(false);
   /*
   if (cmdline->syntax_match(0, STRING)) {
     matches= 0;
     for (i= 0; i < cmdset->count; i++)
       {
 	c= (class cl_cmd *)(cmdset->at(i));
-	if (c->name_match(parm->value.string.string, DD_FALSE))
+	if (c->name_match(parm->value.string.string, false))
 	  matches++;
       }
     if (!matches)
@@ -309,7 +309,7 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
       for (i= 0; i < cmdset->count; i++)
 	{
 	  c= (class cl_cmd *)(cmdset->at(i));
-	  if (!c->name_match(parm->value.string.string, DD_FALSE))
+	  if (!c->name_match(parm->value.string.string, false))
 	    continue;
 	  if (c->short_help)
 	    con->dd_printf("%s\n", c->short_help);
@@ -320,7 +320,7 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
       for (i= 0; i < cmdset->count; i++)
 	{
 	  c= (class cl_cmd *)(cmdset->at(i));
-	  if (!c->name_match(parm->value.string.string, DD_FALSE))
+	  if (!c->name_match(parm->value.string.string, false))
 	    continue;
 	  if (c->short_help)
 	    con->dd_printf("%s\n", c->short_help);
@@ -356,12 +356,12 @@ cl_help_cmd::do_set(class cl_cmdline *cmdline, int pari,
       if (!cmd)
 	continue;
       if (pari >= cmdline->nuof_params())
-	return(DD_FALSE);
+	return(false);
       class cl_cmd_arg *param= cmdline->param(pari);
       if (!param)
-	return(DD_FALSE);
+	return(false);
       class cl_cmdset *next_set= cmd->get_subcommands();
-      if (cmd->name_match(param->s_value, DD_FALSE))
+      if (cmd->name_match(param->s_value, false))
 	{
 	  if (pari+1 >= cmdline->nuof_params())
 	    {
@@ -378,7 +378,7 @@ cl_help_cmd::do_set(class cl_cmdline *cmdline, int pari,
 	      do_set(cmdline, pari+1, next_set, con);
 	}
     }
-  return(DD_TRUE);
+  return(true);
 }
 
 
@@ -434,7 +434,7 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
   class cl_commander_base *c= app->get_commander();
   c->exec_on(con, fn);
 
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -447,7 +447,7 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
   char *s= cmdline->cmd;
   if (!s ||
       !*s)
-    return(DD_FALSE);
+    return(false);
   int i= strspn(s, " \t\v\n");
   s+= i;
   i= strspn(s, "abcdefghijklmnopqrstuvwxyz");
@@ -455,7 +455,7 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
   uc_yy_set_string_to_parse(s);
   yyparse();
   uc_yy_free_string_to_parse();
-  return(DD_FALSE);
+  return(false);
 }
 
 

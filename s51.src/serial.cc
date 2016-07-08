@@ -141,7 +141,7 @@ cl_serial::init(void)
       t2_baud= d & (bmRCLK | bmTCLK);
     }
   else
-    t2_baud= DD_FALSE;
+    t2_baud= false;
 
   return(0);
 }
@@ -152,7 +152,7 @@ cl_serial::new_hw_added(class cl_hw *new_hw)
   if (new_hw->cathegory == HW_TIMER &&
       new_hw->id == 2)
     {
-      there_is_t2= DD_TRUE;
+      there_is_t2= true;
       t_mem d= sfr->get(T2CON);
       t2_baud= d & (bmRCLK | bmTCLK);
     }
@@ -190,7 +190,7 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
   if (cell == sbuf)
     {
       s_out= *val;
-      s_sending= DD_TRUE;
+      s_sending= true;
       s_tr_bit = 0;
       s_tr_tick= 0;
       s_tr_t1= 0;
@@ -295,7 +295,7 @@ cl_serial::tick(int cycles)
   if (s_sending &&
       (s_tr_bit >= _bits))
     {
-      s_sending= DD_FALSE;
+      s_sending= false;
       scon->set_bit1(bmTI);
       if (fout)
 	{
@@ -309,7 +309,7 @@ cl_serial::tick(int cycles)
     {
       if (fin->input_avail())
 	{
-	  s_receiving= DD_TRUE;
+	  s_receiving= true;
 	  s_rec_bit= 0;
 	  s_rec_tick= s_rec_t1= 0;
 	}
@@ -323,7 +323,7 @@ cl_serial::tick(int cycles)
 	  sbuf->set(s_in);
 	  received(c);
 	}
-      s_receiving= DD_FALSE;
+      s_receiving= false;
       s_rec_bit-= _bits;
     }
   
@@ -348,8 +348,8 @@ cl_serial::reset(void)
   s_rec_tick = 0;
   s_in       = 0;
   s_out      = 0;
-  s_sending  = DD_FALSE;
-  s_receiving= DD_FALSE;
+  s_sending  = false;
+  s_receiving= false;
   s_rec_bit  = 0;
   s_tr_bit   = 0;
 }

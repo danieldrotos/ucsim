@@ -126,7 +126,7 @@ cl_base::is_named(const char *the_name)
       !*name ||
       !the_name ||
       !*the_name)
-    return(DD_FALSE);
+    return(false);
   return(strcmp(name, the_name) == 0);
 }
 
@@ -137,7 +137,7 @@ cl_base::is_inamed(const char *the_name)
       !*name ||
       !the_name ||
       !*the_name)
-    return(DD_FALSE);
+    return(false);
   return(strcasecmp(name, the_name) == 0);
 }
 
@@ -222,7 +222,7 @@ cl_base::pass_event_down(class cl_event &event)
 {
   int i;
   if (!children)
-    return(DD_FALSE);
+    return(false);
   for (i= 0; i < children->count; i++)
     {
       class cl_base *child=
@@ -231,10 +231,10 @@ cl_base::pass_event_down(class cl_event &event)
 	{
 	  child->handle_event(event);
 	  if (event.is_handled())
-	    return(DD_TRUE);
+	    return(true);
 	}
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -245,7 +245,7 @@ cl_base::pass_event_down(class cl_event &event)
 cl_event::cl_event(enum event what_event):
   cl_base()
 {
-  handled= DD_FALSE;
+  handled= false;
   what= what_event;
 }
 
@@ -560,9 +560,9 @@ cl_list::index_of(void *item, t_index *idx)
       {
 	if (idx)
 	  *idx= i;
-	return(DD_TRUE);
+	return(true);
       }
-  return(DD_FALSE);
+  return(false);
 }
 
 void *
@@ -694,13 +694,13 @@ cl_list::set_limit(t_index alimit)
 cl_sorted_list::cl_sorted_list(t_index alimit, t_index adelta, char *aname):
   cl_list(alimit, adelta, aname)
 {
-  Duplicates= DD_FALSE;
+  Duplicates= false;
 }
 
 cl_sorted_list::cl_sorted_list(t_index alimit, t_index adelta, const char *aname):
   cl_list(alimit, adelta, aname)
 {
-  Duplicates= DD_FALSE;
+  Duplicates= false;
 }
 
 
@@ -770,7 +770,7 @@ cl_sorted_list::search(void *key, t_index &index)
 {
   t_index l  = 0;
   t_index h  = count - 1;
-  bool    res= DD_FALSE;
+  bool    res= false;
 
   while (l <= h)
     {
@@ -782,7 +782,7 @@ cl_sorted_list::search(void *key, t_index &index)
 	  h= i - 1;
 	  if (c == 0)
 	    {
-	      res= DD_TRUE;
+	      res= true;
 	      if (!Duplicates)
 		l= i;
 	    }
@@ -807,13 +807,13 @@ cl_sorted_list::search(void *key, t_index &index)
 cl_strings::cl_strings(t_index alimit, t_index adelta, char *aname):
   cl_sorted_list(alimit, adelta, aname)
 {
-  Duplicates= DD_TRUE;
+  Duplicates= true;
 }
 
 cl_strings::cl_strings(t_index alimit, t_index adelta, const char *aname):
   cl_sorted_list(alimit, adelta, aname)
 {
-  Duplicates= DD_TRUE;
+  Duplicates= true;
 }
 
 
@@ -883,7 +883,7 @@ bool
 cl_ustrings::search(void *key, t_index& index)
 {
   t_index i    = 0;
-  bool    found= DD_FALSE;
+  bool    found= false;
   void    *Actual;
 
   if ((count) && key)

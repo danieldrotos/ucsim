@@ -159,7 +159,7 @@ cl_uc::cl_uc(class cl_sim *asim):
   events= new cl_list(2, 2, "events in uc");
   sp_max= 0;
   sp_avg= 0;
-  inst_exec= DD_FALSE;
+  inst_exec= false;
 }
 
 
@@ -206,7 +206,7 @@ cl_uc::init(void)
     rom= address_space(cchars("rom")/*MEM_ROM_ID*/);
   ebrk= new brk_coll(2, 2, rom);
   fbrk= new brk_coll(2, 2, rom);
-  fbrk->Duplicates= DD_FALSE;
+  fbrk->Duplicates= false;
   brk_counter= 0;
   mk_hw_elements();
   class cl_cmdset *cs= sim->app->get_commander()->cmdset;
@@ -372,24 +372,24 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
 "long help of reset"));
   cmd->init();
 
-  cmdset->add(cmd= new cl_dump_cmd("dump", DD_TRUE,
+  cmdset->add(cmd= new cl_dump_cmd("dump", true,
 "dump memory_type [start [stop [bytes_per_line]]]\n"
 "                   Dump memory of specified type\n"
 "dump bit...        Dump bits",
 "long help of dump"));
   cmd->init();
 
-  cmdset->add(cmd= new cl_dch_cmd("dch", DD_TRUE,
+  cmdset->add(cmd= new cl_dch_cmd("dch", true,
 "dch [start [stop]] Dump code in hex form",
 "long help of dch"));
   cmd->init();
 
-  cmdset->add(cmd= new cl_dc_cmd("dc", DD_TRUE,
+  cmdset->add(cmd= new cl_dc_cmd("dc", true,
 "dc [start [stop]]  Dump code in disass form",
 "long help of dc"));
   cmd->init();
 
-  cmdset->add(cmd= new cl_disassemble_cmd("disassemble", DD_TRUE,
+  cmdset->add(cmd= new cl_disassemble_cmd("disassemble", true,
 "disassemble [start [offset [lines]]]\n"
 "                   Disassemble code",
 "long help of disassemble"));
@@ -797,7 +797,7 @@ ReadInt(FILE *f, bool *ok, int bytes)
   char s2[3];
   long l= 0;
 
-  *ok= DD_FALSE;
+  *ok= false;
   while (bytes)
     {
       if (fscanf(f, "%2c", &s2[0]) == EOF)
@@ -806,7 +806,7 @@ ReadInt(FILE *f, bool *ok, int bytes)
       l= l*256 + strtol(s2, NULL, 16);
       bytes--;
     }
-  *ok= DD_TRUE;
+  *ok= true;
   return(l);
 }
 
@@ -857,7 +857,7 @@ cl_uc::read_hex_file(const char *nam)
       }
 
   //memset(inst_map, '\0', sizeof(inst_map));
-  ok= DD_TRUE;
+  ok= true;
   while (ok &&
 	 rtyp != 1)
     {
@@ -961,14 +961,14 @@ void
 cl_uc::set_inst_at(t_addr addr)
 {
   if (rom)
-    rom->set_cell_flag(addr, DD_TRUE, CELL_INST);
+    rom->set_cell_flag(addr, true, CELL_INST);
 }
 
 void
 cl_uc::del_inst_at(t_addr addr)
 {
   if (rom)
-    rom->set_cell_flag(addr, DD_FALSE, CELL_INST);
+    rom->set_cell_flag(addr, false, CELL_INST);
 }
 
 bool
@@ -976,7 +976,7 @@ cl_uc::there_is_inst(void)
 {
   if (!rom)
     return(0);
-  bool got= DD_FALSE;
+  bool got= false;
   t_addr addr;
   for (addr= 0; rom->valid_address(addr) && !got; addr++)
     got= rom->get_cell_flag(addr, CELL_INST);
@@ -1283,7 +1283,7 @@ cl_uc::symbol2address(char *sym, struct name_entry tab[],
 
   if (!sym ||
       !*sym)
-    return(DD_FALSE);
+    return(false);
   i= 0;
   while (tab[i].name &&
 	 (!(tab[i].cpu_type & type) ||
@@ -1293,9 +1293,9 @@ cl_uc::symbol2address(char *sym, struct name_entry tab[],
     {
       if (addr)
 	*addr= tab[i].addr;
-      return(DD_TRUE);
+      return(true);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 bool
@@ -1397,7 +1397,7 @@ cl_uc::handle_event(class cl_event &event)
       return(pass_event_down(event));
       break;
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 /*
@@ -1446,7 +1446,7 @@ cl_uc::check_errors(void)
 {
   int i;
   class cl_commander_base *c= sim->app->get_commander();
-  bool must_stop= DD_FALSE;
+  bool must_stop= false;
 
   if (c)
     {
@@ -1717,7 +1717,7 @@ cl_uc::do_inst(int step)
 void
 cl_uc::pre_inst(void)
 {
-  inst_exec= DD_TRUE;
+  inst_exec= true;
   inst_ticks= 0;
   events->disconn_all();
 }
@@ -1737,7 +1737,7 @@ cl_uc::post_inst(void)
     check_errors();
   if (events->count)
     check_events();
-  inst_exec= DD_FALSE;
+  inst_exec= false;
 }
 
 
@@ -1820,7 +1820,7 @@ cl_uc::stack_write(class cl_stack_op *op)
   if (op->get_op() & stack_read_operation)
     {
       class cl_error_stack_tracker_wrong_handle *e= new
-	cl_error_stack_tracker_wrong_handle(DD_FALSE);
+	cl_error_stack_tracker_wrong_handle(false);
       e->init();
       error(e);
       return;
@@ -1836,7 +1836,7 @@ cl_uc::stack_read(class cl_stack_op *op)
   if (op->get_op() & stack_write_operation)
     {
       class cl_error_stack_tracker_wrong_handle *e= new
-	cl_error_stack_tracker_wrong_handle(DD_TRUE);
+	cl_error_stack_tracker_wrong_handle(true);
       e->init();
       error(e);
       return;
@@ -1995,14 +1995,14 @@ cl_uc::rm_brk(int nr)
   if ((bp= brk_by_nr(fbrk, nr)))
     {
       fbrk->del_bp(bp->addr);
-      return(DD_TRUE);
+      return(true);
     }
   else if ((bp= brk_by_nr(ebrk, nr)))
     {
       ebrk->del_bp(ebrk->index_of(bp), 0);
-      return(DD_TRUE);
+      return(true);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 void

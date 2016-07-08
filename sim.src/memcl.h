@@ -94,8 +94,8 @@ public:
   virtual t_addr inc_address(t_addr addr);
   virtual t_addr validate_address(t_addr addr);
 
-  virtual bool is_chip(void) { return(DD_FALSE); }
-  virtual bool is_address_space(void) { return(DD_FALSE); }
+  virtual bool is_chip(void) { return(false); }
+  virtual bool is_address_space(void) { return(false); }
 
   virtual void err_inv_addr(t_addr addr);
   virtual void err_non_decoded(t_addr addr);
@@ -141,8 +141,8 @@ public:
   virtual class cl_memory_operator *get_next(void) { return(next_operator); }
   virtual void set_next(class cl_memory_operator *next) { next_operator= next;}
 
-  virtual bool match(class cl_hw *the_hw) { return(DD_FALSE); }
-  virtual bool match(class cl_brk *brk) { return(DD_FALSE); }
+  virtual bool match(class cl_hw *the_hw) { return(false); }
+  virtual bool match(class cl_brk *brk) { return(false); }
 
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip) { return(read()); }
@@ -353,7 +353,7 @@ class cl_address_space: public cl_memory
   cl_address_space(const char *id, t_addr astart, t_addr asize, int awidth);
   virtual ~cl_address_space(void);
 
-  virtual bool is_address_space(void) { return(DD_TRUE); }
+  virtual bool is_address_space(void) { return(true); }
 
   virtual t_mem read(t_addr addr);
   virtual t_mem read(t_addr addr, enum hw_cath skip);
@@ -418,7 +418,7 @@ public:
   virtual ~cl_memory_chip(void);
   virtual int init(void);
 
-  virtual bool is_chip(void) { return(DD_TRUE); }
+  virtual bool is_chip(void) { return(true); }
 
   virtual t_mem *get_slot(t_addr addr);
   virtual t_addr is_slot(t_mem *data_ptr);

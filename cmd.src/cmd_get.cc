@@ -59,7 +59,7 @@ COMMAND_DO_WORK_UC(cl_get_sfr_cmd)
   if (!mem)
     {
       con->dd_printf("Error: No SFR\n");
-      return(DD_FALSE);
+      return(false);
     }
   for (i= 0, parm= cmdline->param(i);
        parm;
@@ -73,7 +73,7 @@ COMMAND_DO_WORK_UC(cl_get_sfr_cmd)
 	mem->dump(parm->value.address, parm->value.address, 1, con);
     }
 
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -122,7 +122,7 @@ COMMAND_DO_WORK_APP(cl_get_option_cmd)
 	}
     }
   
-  return(DD_FALSE);;
+  return(false);;
 }
 
 

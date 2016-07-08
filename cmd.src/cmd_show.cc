@@ -53,7 +53,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 COMMAND_DO_WORK(cl_show_copying_cmd)
 {
   con->dd_printf("%s\n", copying);
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -68,7 +68,7 @@ COMMAND_DO_WORK(cl_show_copying_cmd)
 COMMAND_DO_WORK(cl_show_warranty_cmd)
 {
   con->dd_printf("%s\n", warranty);
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -124,7 +124,7 @@ COMMAND_DO_WORK_APP(cl_show_option_cmd)
 	}
     }
   
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -183,7 +183,7 @@ COMMAND_DO_WORK_APP(cl_show_error_cmd)
       if (!ec->get_parent())
 	show_error_cmd_print_node(con, 0, ec);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 #include "newcmdposixcl.h"

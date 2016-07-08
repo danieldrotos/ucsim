@@ -65,7 +65,7 @@ cl_watched_cell::match(class cl_memory_cell *the_cell)
     return(cell == the_cell);
   //if (store)
   //return(*store == the_cell);
-  return(DD_FALSE);
+  return(false);
 }
 
 void
@@ -202,7 +202,7 @@ cl_hw::register_cell(class cl_address_space *mem, t_addr addr/*,
   class cl_watched_cell *wc;
 
   if (mem)
-    mem->register_hw(addr, this, (int*)0, DD_FALSE);
+    mem->register_hw(addr, this, (int*)0, false);
   else
     printf("regcell JAJ no mem\n");
   wc= new cl_watched_cell(mem, addr/*, store*/);

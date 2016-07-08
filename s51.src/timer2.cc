@@ -252,7 +252,7 @@ cl_timer2::do_t2_reload(int cycles)
 void
 cl_timer2::do_t2_down(int cycles)
 {
-  bool toggle= DD_FALSE;
+  bool toggle= false;
 
   if (!TR)
     return;
@@ -271,7 +271,7 @@ cl_timer2::do_t2_down(int cycles)
 		cell_tcon->set_bit1(mask_TF);
 		cell_th->set(cell_rcap2h->get());
 		cell_tl->set(cell_rcap2l->get());
-		toggle= DD_TRUE;
+		toggle= true;
 	      }
 	  }
     }
@@ -291,7 +291,7 @@ cl_timer2::do_t2_down(int cycles)
 	      cell_tcon->set_bit1(mask_TF);
 	      cell_th->set(0xff);
 	      cell_tl->set(0xff);
-	      toggle= DD_TRUE;
+	      toggle= true;
 	    }
 	}
     }

@@ -50,7 +50,7 @@ COMMAND_DO_WORK_UC(cl_statistic_cmd)
 {
   class cl_address_space *mem;
   t_addr start= 0, end= 0;
-  bool addresses= DD_FALSE;
+  bool addresses= false;
   class cl_cmd_arg *params[4]= { cmdline->param(0),
 				 cmdline->param(1),
 				 cmdline->param(2),
@@ -61,16 +61,16 @@ COMMAND_DO_WORK_UC(cl_statistic_cmd)
     mem= params[0]->value.memory.address_space;
     start= params[1]->value.address;
     end= params[2]->value.address;
-    addresses= DD_TRUE;
+    addresses= true;
   }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS)) {
     mem= params[0]->value.memory.address_space;
     start= end= params[1]->value.address;
-    addresses= DD_TRUE;
+    addresses= true;
   }
   else if (cmdline->syntax_match(uc, MEMORY)) {
     mem= params[0]->value.memory.address_space;
-    addresses= DD_FALSE;
+    addresses= false;
   }
   else
     {
@@ -111,7 +111,7 @@ COMMAND_DO_WORK_UC(cl_statistic_cmd)
 	  }
     }
 
-  return(DD_FALSE);;
+  return(false);;
 }
 #endif
 

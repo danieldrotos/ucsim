@@ -57,7 +57,7 @@ COMMAND_DO_WORK_UC(cl_gui_start_cmd)
       con->dd_printf("Error: wrong syntax\n"
 		     "%s\n", short_help?short_help:"no help");
     }
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -71,7 +71,7 @@ COMMAND_DO_WORK_UC(cl_gui_start_cmd)
 //			 class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_gui_stop_cmd)
 {
-  return(DD_FALSE);;
+  return(false);;
 }
 
 

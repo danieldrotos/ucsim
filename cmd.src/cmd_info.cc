@@ -112,7 +112,7 @@ COMMAND_DO_WORK_UC(cl_info_hw_cmd)
   else
     con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
 
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -133,7 +133,7 @@ COMMAND_DO_WORK_UC(cl_info_stack_cmd)
       class cl_stack_op *so= (class cl_stack_op *)(uc->stack_ops->at(i));
       so->info(con, uc);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 

@@ -100,7 +100,7 @@ public:
   virtual ~cl_event(void);
 
   bool is_handled(void) { return(handled); }
-  virtual void handle(void) { handled= DD_TRUE; }
+  virtual void handle(void) { handled= true; }
 };
 
 

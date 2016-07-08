@@ -101,7 +101,7 @@ cl_51core::cl_51core(int Itype, int Itech, class cl_sim *asim):
   technology= Itech;
 
   irq_stop_option= new cl_irq_stop_option(this);
-  stop_at_it= DD_FALSE;
+  stop_at_it= false;
 }
 
 
@@ -178,17 +178,17 @@ cl_51core::build_cmdset(class cl_cmdset *cmdset)
 
   cl_uc::build_cmdset(cmdset);
 
-  cmdset->add(cmd= new cl_di_cmd("di", DD_TRUE,
+  cmdset->add(cmd= new cl_di_cmd("di", true,
 "di [start [stop]]  Dump Internal RAM",
 "long help of di"));
   cmd->init();
 
-  cmdset->add(cmd= new cl_dx_cmd("dx", DD_TRUE,
+  cmdset->add(cmd= new cl_dx_cmd("dx", true,
 "dx [start [stop]]  Dump External RAM",
 "long help of dx"));
   cmd->init();
 
-  cmdset->add(cmd= new cl_ds_cmd("ds", DD_TRUE,
+  cmdset->add(cmd= new cl_ds_cmd("ds", true,
 "ds [start [stop]]  Dump SFR",
 "long help of ds"));
   cmd->init();
@@ -548,7 +548,7 @@ cl_51core::reset(void)
 
   result= resGO;
 
-  //was_reti= DD_FALSE;
+  //was_reti= false;
 }
 
 
@@ -735,7 +735,7 @@ cl_51core::exec_inst(void)
     case 0x10: res= inst_jbc_bit_addr(code); break;
     case 0x11: case 0x31: case 0x51: case 0x71:
     case 0x91: case 0xb1: case 0xd1: case 0xf1:res=inst_acall_addr(code);break;
-    case 0x12: res= inst_lcall(code, 0, DD_FALSE); break;
+    case 0x12: res= inst_lcall(code, 0, false); break;
     case 0x13: res= inst_rrc(code); break;
     case 0x14: res= inst_dec_a(code); break;
     case 0x15: res= inst_dec_addr(code); break;
@@ -886,7 +886,7 @@ cl_51core::do_inst(int step)
 	step--;
       if (state == stGO)
 	{
-	  interrupt->was_reti= DD_FALSE;
+	  interrupt->was_reti= false;
 	  pre_inst();
 	  result= exec_inst();
 	  post_inst();
@@ -943,7 +943,7 @@ cl_51core::do_interrupt(void)
 
   if (interrupt->was_reti)
     {
-      interrupt->was_reti= DD_FALSE;
+      interrupt->was_reti= false;
       return(resGO);
     }
   if (!((ie= sfr->get(IE)) & bmEA))
@@ -964,7 +964,7 @@ cl_51core::do_interrupt(void)
 	    {
 	      state= stGO;
 	      sfr->set_bit0(PCON, bmIDL);
-	      interrupt->was_reti= DD_TRUE;
+	      interrupt->was_reti= true;
 	      return(resGO);
 	    }
 	  is->clear();
@@ -998,7 +998,7 @@ cl_51core::accept_it(class it_level *il)
   sfr->set_bit0(PCON, bmIDL);
   it_levels->push(il);
   tick(1);
-  int res= inst_lcall(0, il->addr, DD_TRUE);
+  int res= inst_lcall(0, il->addr, true);
   if (res != resGO)
     return(res);
   else
@@ -1135,7 +1135,7 @@ cl_uc51_dummy_hw::write(class cl_memory_cell *cell, t_mem *val)
       int i;
       uchar uc;
 
-      p = DD_FALSE;
+      p = false;
       uc= *val;
       for (i= 0; i < 8; i++)
 	{

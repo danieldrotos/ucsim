@@ -37,7 +37,7 @@ cl_wdt::cl_wdt(class cl_uc *auc, long resetvalue):
 {
   reset_value= resetvalue;
   wdt= -1;
-  written_since_reset= DD_FALSE;
+  written_since_reset= false;
 }
 
 int
@@ -67,7 +67,7 @@ cl_wdt::write(class cl_memory_cell *cell, t_mem *val)
 	debug("%g sec (%d tick): Watchdog timer enabled/reset PC= 0x%06x"
 	"\n", uc->get_rtime(), uc->ticks->ticks, uc51r->PC);*/
     }
-  written_since_reset= DD_TRUE;
+  written_since_reset= true;
 }
 
 int
@@ -91,7 +91,7 @@ cl_wdt::tick(int cycles)
 void
 cl_wdt::reset(void)
 {
-  written_since_reset= DD_FALSE;
+  written_since_reset= false;
   wdt= -1;
 }
 

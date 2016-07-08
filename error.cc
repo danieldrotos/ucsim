@@ -86,7 +86,7 @@ cl_error_class::is_on(void)
   if (on == ERROR_PARENT)
     {
       if (!get_parent())
-	return(DD_TRUE);
+	return(true);
       class cl_error_class *p=
 	dynamic_cast<class cl_error_class *>(get_parent());
       return(p->is_on());
@@ -161,7 +161,7 @@ bool
 cl_error::is_on(void)
 {
   if (!classification)
-    return(DD_TRUE);
+    return(true);
   return(classification->is_on());
 }
 

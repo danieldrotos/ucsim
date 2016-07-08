@@ -133,7 +133,7 @@ COMMAND_DO_WORK_UC(cl_pc_cmd)
       if (!(params[0]->get_address(uc, &addr)))
 	{
 	  con->dd_printf("Error: wrong parameter\n");
-	  return(DD_FALSE);
+	  return(false);
 	}
       class cl_address_space *rom= uc->rom;
       if (rom)
@@ -146,7 +146,7 @@ COMMAND_DO_WORK_UC(cl_pc_cmd)
       uc->PC= addr;
     }
   uc->print_disass(uc->PC, con);
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -215,7 +215,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	  !params[0]->as_memory(uc))
 	{
 	  con->dd_printf("No memory specified. Use \"info memory\" for available memories\n");
-	  return(DD_FALSE);
+	  return(false);
 	}
       if (cmdline->syntax_match(uc, MEMORY))
 	{
@@ -245,7 +245,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
     }
 
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -329,7 +329,7 @@ COMMAND_DO_WORK_UC(cl_dc_cmd)
   class cl_address_space *rom= uc->rom;
 
   if (!rom)
-    return(DD_FALSE);
+    return(false);
   if (params[0] == 0)
     ;
   else if (cmdline->syntax_match(uc, ADDRESS)) {
@@ -343,12 +343,12 @@ COMMAND_DO_WORK_UC(cl_dc_cmd)
   if (start > rom->highest_valid_address())
     {
       con->dd_printf("Error: start address is too high\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (end > rom->highest_valid_address())
     {
       con->dd_printf("Error: end address is too high\n");
-      return(DD_FALSE);
+      return(false);
     }
 
   for (;
@@ -356,7 +356,7 @@ COMMAND_DO_WORK_UC(cl_dc_cmd)
        start+= uc->inst_length(start))
     uc->print_disass(start, con);
   last= start;
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -396,20 +396,20 @@ COMMAND_DO_WORK_UC(cl_disassemble_cmd)
   else
     {
       con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
-      return(DD_FALSE);
+      return(false);
     }
 
   if (lines < 1)
     {
       con->dd_printf("Error: wrong `lines' parameter\n");
-      return(DD_FALSE);
+      return(false);
     }
   if (!uc->there_is_inst())
-    return(DD_FALSE);
+    return(false);
   realstart= start;
   class cl_address_space *rom= uc->rom;
   if (!rom)
-    return(DD_FALSE);
+    return(false);
   while (realstart <= rom->highest_valid_address() &&
 	 !uc->inst_at(realstart))
     realstart= realstart+1;
@@ -440,7 +440,7 @@ COMMAND_DO_WORK_UC(cl_disassemble_cmd)
 
   disass_last_stop= realstart;
 
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -478,7 +478,7 @@ COMMAND_DO_WORK_UC(cl_fill_cmd)
   else
     con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
 
-  return(DD_FALSE);;
+  return(false);;
 }
 
 
@@ -503,7 +503,7 @@ cl_where_cmd::do_real_work(class cl_uc *uc,
     if (!len)
       {
 	con->dd_printf("Error: nothing to search for\n");
-	return(DD_FALSE);
+	return(false);
       }
     t_addr addr= 0;
     bool found= mem->search_next(case_sensitive, array, len, &addr);
@@ -517,7 +517,7 @@ cl_where_cmd::do_real_work(class cl_uc *uc,
   else
     con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
 
-  return(DD_FALSE);
+  return(false);
 }
 
 //int
@@ -525,7 +525,7 @@ cl_where_cmd::do_real_work(class cl_uc *uc,
 //		      class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_where_cmd)
 {
-  return(do_real_work(uc, cmdline, con, DD_FALSE));
+  return(do_real_work(uc, cmdline, con, false));
 }
 
 //int
@@ -533,7 +533,7 @@ COMMAND_DO_WORK_UC(cl_where_cmd)
 //		      class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_Where_cmd)
 {
-  return(do_real_work(uc, cmdline, con, DD_TRUE));
+  return(do_real_work(uc, cmdline, con, true));
 }
 
 

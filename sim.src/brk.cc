@@ -143,7 +143,7 @@ cl_ev_brk::type(void)
 bool
 cl_ev_brk::match(struct event_rec *ev)
 {
-  return(DD_FALSE);
+  return(false);
 }
 
 
@@ -200,9 +200,9 @@ brk_coll::there_is_event(enum brk_event ev)
       b= (class cl_brk *)at(i);
       if (b->type() == brkEVENT &&
 	  ((class cl_ev_brk *)b)->event == ev)
-	return(DD_TRUE);
+	return(true);
     }
-  return(DD_FALSE);
+  return(false);
 }
 
 /*int

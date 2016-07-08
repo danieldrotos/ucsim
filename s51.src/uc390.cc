@@ -1081,7 +1081,7 @@ cl_uc390::inst_reti (uchar code)
   else
     PC = h * 256 + l;
 
-  interrupt->was_reti = DD_TRUE;
+  interrupt->was_reti = true;
   class it_level *il = (class it_level *) (it_levels->top ());
   if (il &&
       il->level >= 0)

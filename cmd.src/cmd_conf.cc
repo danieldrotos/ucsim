@@ -97,7 +97,7 @@ COMMAND_DO_WORK_APP(cl_conf_objects_cmd)
   conf_objects_cmd_print_node(con, 0,
 			      /*application*/cl_error_base->get_class());
   delete cl_error_base;
-  return(DD_FALSE);
+  return(false);
 }
 
 

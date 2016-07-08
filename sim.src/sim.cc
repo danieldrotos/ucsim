@@ -254,13 +254,13 @@ cl_sim::build_cmdset(class cl_cmdset *cmdset)
 "long help of stop"));
   cmd->init();
 
-  cmdset->add(cmd= new cl_step_cmd("step", DD_TRUE,
+  cmdset->add(cmd= new cl_step_cmd("step", true,
 "step               Step",
 "long help of step"));
   cmd->init();
   cmd->add_name("s");
 
-  cmdset->add(cmd= new cl_next_cmd("next", DD_TRUE,
+  cmdset->add(cmd= new cl_next_cmd("next", true,
 "next               Next",
 "long help of next"));
   cmd->init();

@@ -41,7 +41,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_interrupt::cl_interrupt(class cl_uc *auc):
   cl_hw(auc, HW_INTERRUPT, 0, "irq")
 {
-  was_reti= DD_FALSE;
+  was_reti= false;
 }
 
 int
@@ -85,7 +85,7 @@ cl_interrupt::write(class cl_memory_cell *cell, t_mem *val)
     }
   else
     // IE register
-    was_reti= DD_TRUE;
+    was_reti= true;
 }
 
 /*void
@@ -106,7 +106,7 @@ cl_interrupt::tick(int cycles)
 void
 cl_interrupt::reset(void)
 {
-  was_reti= DD_FALSE;
+  was_reti= false;
 }
 
 void
