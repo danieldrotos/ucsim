@@ -967,8 +967,7 @@ cl_51core::do_interrupt(void)
 	      interrupt->was_reti= DD_TRUE;
 	      return(resGO);
 	    }
-	  if (is->clr_bit)
-	    sfr->set_bit0(is->src_reg, is->src_mask);
+	  is->clear();
 	  sim->app->get_commander()->
 	    debug("%g sec (%d clks): Accepting interrupt `%s' PC= 0x%06x\n",
 			  get_rtime(), ticks->ticks, object_name(is), PC);

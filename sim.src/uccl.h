@@ -179,8 +179,9 @@ public:
   virtual int exec_inst(void);
   virtual void post_inst(void);
 
-  virtual int do_interrupt(void) { return resGO; }
+  virtual int do_interrupt(void);
   virtual int priority_of(uchar nuof_it) {return(0);}
+  virtual int priority_main() { return 0; }
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void) { return false; }
 

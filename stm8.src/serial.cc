@@ -42,6 +42,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // cmd
 #include "cmdutil.h"
 
+// sim
+#include "itsrccl.h"
+
 // local
 #include "serialcl.h"
 
@@ -160,12 +163,21 @@ cl_serial::new_hw_added(class cl_hw *new_hw)
 void
 cl_serial::added_to_uc(void)
 {
-/*
-  uc->it_sources->add(new cl_it_src(uc, IE, bmES , SCON, bmTI , 0x0023, false, false,
-				    "serial transmit", 6));
-  uc->it_sources->add(new cl_it_src(uc, IE, bmES , SCON, bmRI , 0x0023, false, false,
-				    "serial receive", 6));
-*/
+  uc->it_sources->add(new cl_it_src(uc, 20,
+				    regs[cr2], 0x80,
+				    regs[sr], 0x80,
+				    0x8058, false, false,
+				    "usart transmit register empty", 20*10+1));
+  uc->it_sources->add(new cl_it_src(uc, 20,
+				    regs[cr2], 0x40,
+				    regs[sr], 0x40,
+				    0x8058, false, false,
+				    "usart trasnmit complete", 20*10+2));
+  uc->it_sources->add(new cl_it_src(uc, 21,
+				    regs[cr2], 0x20,
+				    regs[sr], 0x20,
+				    0x805C, false, false,
+				    "usart receive", 20*10+3));
 }
 
 t_mem

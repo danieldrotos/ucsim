@@ -48,25 +48,24 @@ class cl_it_src: public cl_base
   class cl_memory_cell *src_cell;
 public:
   int poll_priority;
-  t_addr ie_addr;  // Address of IE register
+  int    nuof;	   // Number of IT to check priority
   t_mem  ie_mask;  // Mask in IE register
-  t_addr src_reg;  // Register in SFR of source
   t_mem  src_mask; // Mask of source bit in src_reg
   t_addr addr;     // Address of service routine
   bool   clr_bit;  // Request bit must be cleared when IT accepted
-  //char  *name;	  // For debug
   bool   active;   // Acceptance can be disabled
   bool   indirect; // address comes from a vector table from `addr'
   
   cl_it_src(cl_uc  *Iuc,
-	    t_addr Iie_addr,
+	    int    Inuof,
+	    class  cl_memory_cell *Iie_cell,
 	    t_mem  Iie_mask,
-	    t_addr Isrc_reg,
+	    class  cl_memory_cell *Isrc_cell,
 	    t_mem  Isrc_mask,
 	    t_addr Iaddr,
 	    bool   Iclr_bit,
 	    bool   Iindirect,
-	    const char *Iname,
+	    const  char *Iname,
 	    int    apoll_priority);
   virtual ~cl_it_src(void);
 
@@ -77,6 +76,7 @@ public:
 
   virtual bool enabled(void);
   virtual bool pending(void);
+  virtual void clear(void);
 };
 
 

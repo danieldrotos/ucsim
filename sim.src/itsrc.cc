@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itsrccl.h"
 #include "pobjcl.h"
 #include "stypes.h"
+#include "memcl.h"
 
 
 /*
@@ -42,9 +43,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 cl_it_src::cl_it_src(cl_uc  *Iuc,
-		     t_addr Iie_addr,
+		     int    Inuof,
+		     class  cl_memory_cell *Iie_cell,
 		     t_mem  Iie_mask,
-		     t_addr Isrc_reg,
+		     class  cl_memory_cell *Isrc_cell,
 		     t_mem  Isrc_mask,
 		     t_addr Iaddr,
 		     bool   Iclr_bit,
@@ -55,9 +57,10 @@ cl_it_src::cl_it_src(cl_uc  *Iuc,
 {
   uc= Iuc;
   poll_priority= apoll_priority;
-  ie_addr = Iie_addr;
+  nuof    = Inuof;
+  ie_cell = Iie_cell;
   ie_mask = Iie_mask;
-  src_reg = Isrc_reg;
+  src_cell= Isrc_cell;
   src_mask= Isrc_mask;
   addr    = Iaddr;
   clr_bit = Iclr_bit;
@@ -67,17 +70,6 @@ cl_it_src::cl_it_src(cl_uc  *Iuc,
   else
     set_name("unknown");
   active= DD_TRUE;
-
-  ie_cell= src_cell= NULL;
-  if (uc)
-    {
-      cl_address_space *as= uc->address_space(MEM_SFR_ID);
-      if (as)
-	{
-	  ie_cell= as->get_cell(ie_addr);
-	  src_cell= as->get_cell(src_reg);
-	}
-    }
 }
 
 cl_it_src::~cl_it_src(void) {}
@@ -97,13 +89,13 @@ cl_it_src::set_active_status(bool Aactive)
 void
 cl_it_src::activate(void)
 {
-  set_active_status(DD_TRUE);
+  set_active_status(true);
 }
 
 void
 cl_it_src::deactivate(void)
 {
-  set_active_status(DD_FALSE);
+  set_active_status(false);
 }
 
 
@@ -119,6 +111,12 @@ cl_it_src::pending(void)
   return src_cell?(src_cell->get() & src_mask):false;
 }
 
+void
+cl_it_src::clear(void)
+{
+  if (clr_bit)
+    src_cell->set_bit0(src_mask);
+}
 
 /*
  */
@@ -126,7 +124,7 @@ cl_it_src::pending(void)
 cl_irqs::cl_irqs(t_index alimit, t_index adelta):
   cl_sorted_list(alimit, adelta, "irqs")
 {
-  Duplicates= DD_TRUE;
+  Duplicates= true;
 }
 
 void *

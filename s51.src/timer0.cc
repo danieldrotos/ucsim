@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "timer0cl.h"
 #include "regs51.h"
 #include "types51.h"
+#include "uc51cl.h"
 
 
 cl_timer0::cl_timer0(class cl_uc *auc, int aid, const char *aid_string):
@@ -106,11 +107,19 @@ cl_timer0::init(void)
 void
 cl_timer0::added_to_uc(void)
 {
+  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+
   if (id == 0)
-    uc->it_sources->add(new cl_it_src(uc, IE, bmET0, TCON, bmTF0, 0x000b, true, false,
+    uc->it_sources->add(new cl_it_src(uc, bmET0,
+				      sfr->get_cell(IE), bmET0,
+				      sfr->get_cell(TCON), bmTF0,
+				      0x000b, true, false,
 				      "timer #0", 2));
   else if (id == 1)
-    uc->it_sources->add(new cl_it_src(uc, IE, bmET1, TCON, bmTF1, 0x001b, true, false,
+    uc->it_sources->add(new cl_it_src(uc, bmET1,
+				      sfr->get_cell(IE), bmET1,
+				      sfr->get_cell(TCON), bmTF1,
+				      0x001b, true, false,
 				      "timer #1", 4));
 }
 

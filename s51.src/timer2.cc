@@ -61,9 +61,17 @@ cl_timer2::init(void)
 void
 cl_timer2::added_to_uc(void)
 {
-  uc->it_sources->add(new cl_it_src(uc, IE, bmET2, T2CON, bmTF2, 0x002b, false, false,
+  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+
+  uc->it_sources->add(new cl_it_src(uc, bmET2,
+				    sfr->get_cell(IE), bmET2,
+				    sfr->get_cell(T2CON), bmTF2,
+				    0x002b, false, false,
 				    "timer #2 TF2", 7));
-  exf2it= new cl_it_src(uc, IE, bmET2, T2CON, bmEXF2, 0x002b, false, false,
+  exf2it= new cl_it_src(uc, bmET2,
+			sfr->get_cell(IE), bmET2,
+			sfr->get_cell(T2CON), bmEXF2,
+			0x002b, false, false,
 			"timer #2 EXF2", 7);
   uc->it_sources->add(exf2it);
 }

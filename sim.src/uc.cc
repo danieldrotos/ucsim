@@ -1746,6 +1746,42 @@ cl_uc::post_inst(void)
  */
 
 int
+cl_uc::do_interrupt(void)
+{
+  int i;
+  // NMI?
+
+  // Maskable interrupts
+  if (!it_enabled())
+    return resGO;
+  class it_level *il= (class it_level *)(it_levels->top()), *IL= 0;
+  for (i= 0; i < it_sources->count; i++)
+    {
+      class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
+       if (is->is_active() &&
+	  is->enabled() &&
+	  is->pending())
+	{
+	  int pr= priority_of(is->nuof);
+	  int ap;
+	  if (il)
+	    ap= il->level;
+	  else
+	    ap= priority_main();
+	  if (ap >= pr)
+	    continue;
+	  is->clear();
+	  sim->app->get_commander()->
+	    debug("%g sec (%d clks): Accepting interrupt `%s' PC= 0x%06x\n",
+			  get_rtime(), ticks->ticks, object_name(is), PC);
+	  IL= new it_level(pr, is->addr, PC, is);
+	  return(accept_it(IL));
+	}
+    }
+  return resGO;
+}
+
+int
 cl_uc::accept_it(class it_level *il)
 {
   it_levels->push(il);
