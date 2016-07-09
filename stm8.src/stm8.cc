@@ -794,7 +794,7 @@ cl_stm8::exec_inst(void)
                break;
             case 0x80: // TRAP
                // store to stack
-               PC++;
+               //PC++;
 	       /*
                push2( PC & 0xffff);
                push1( PC >> 16); //extended PC
