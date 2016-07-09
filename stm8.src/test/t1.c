@@ -1,20 +1,21 @@
-volatile int x;
+volatile int x= 1;
 
-void isr_trap(void) __interrupt(-1)
+void isr_trap(void) __trap
 {
+  x= 2;
 }
 
-void isr_tx(void) __interrupt(20)
+void trap()
 {
+  __asm
+    trap;
+  __endasm;
 }
 
 void
 main(void)
 {
-  int i;
-
-  for (i= 0; i<100; i++)
-    x= i+123;
+  trap();
   for (;;)
     ;
 }
