@@ -102,13 +102,21 @@ cl_it_src::deactivate(void)
 bool
 cl_it_src::enabled(void)
 {
-  return ie_cell?(ie_cell->get() & ie_mask):false;
+  if (!ie_cell)
+    return false;
+  t_mem e= ie_cell->get();
+  e&= ie_mask;
+  return e != 0;
 }
 
 bool
 cl_it_src::pending(void)
 {
-  return src_cell?(src_cell->get() & src_mask):false;
+  if (!src_cell)
+    return false;
+  t_mem s= src_cell->get();
+  s&= src_mask;
+  return s != 0;
 }
 
 void
