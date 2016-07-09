@@ -27,6 +27,7 @@ volatile uint8_t last_used= 0;
 void isr_rx(void) __interrupt(21)
 {
   volatile uint8_t d;
+  *sif='p';*sif='I';
   if (UART2_SR & UART_SR_RXNE)
     {
       uint8_t n;
@@ -48,9 +49,12 @@ char received()
 
 char getchar()
 {
+  uint8_t o;
   while (!received())
     ;
-  return UART2_DR;
+  o= last_used;
+  last_used= (last_used+1)%8;
+  return rx_buf[o];
 }
 
 void prints(char *s)
