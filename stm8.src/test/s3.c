@@ -20,9 +20,30 @@ int putchar(int c)
   return c;
 }
 
+volatile uint8_t rx_buf[8];
+volatile uint8_t first_free= 0;
+volatile uint8_t last_used= 0;
+
+void isr_rx(void) __interrupt(21)
+{
+  volatile uint8_t d;
+  if (UART2_SR & UART_SR_RXNE)
+    {
+      uint8_t n;
+      d= UART2_DR;
+      n= (first_free+1)%8;
+      if (n != last_used)
+	{
+	  rx_buf[first_free]= d;
+	  first_free= n;
+	}
+    }
+}
+
 char received()
 {
-  return UART2_SR & UART_SR_RXNE;
+  //return UART2_SR & UART_SR_RXNE;
+  return first_free != last_used;
 }
 
 char getchar()
@@ -42,6 +63,7 @@ void prints(char *s)
     }
 }
 
+
 void main(void)
 {
   unsigned long i = 0;
@@ -52,6 +74,9 @@ void main(void)
   UART2_CR2 = UART_CR2_TEN | UART_CR2_REN; // Allow TX and RX
   UART2_CR3 &= ~(UART_CR3_STOP1 | UART_CR3_STOP2); // 1 stop bit
   UART2_BRR2 = 0x03; UART2_BRR1 = 0x68; // 9600 baud
+
+  UART2_CR2|= UART_CR2_RIEN;
+  EI;
   
   printf("Hello World!\n");
   for (;;)
