@@ -86,6 +86,22 @@ cl_serial::init(void)
   pick_div();
   pick_ctrl();
 
+  uc->it_sources->add(new cl_it_src(uc, 20,
+				    regs[cr2], 0x80,
+				    regs[sr], 0x80,
+				    0x8058, false, false,
+				    "usart transmit register empty", 20*10+1));
+  uc->it_sources->add(new cl_it_src(uc, 20,
+				    regs[cr2], 0x40,
+				    regs[sr], 0x40,
+				    0x8058, false, false,
+				    "usart trasnmit complete", 20*10+2));
+  uc->it_sources->add(new cl_it_src(uc, 21,
+				    regs[cr2], 0x20,
+				    regs[sr], 0x20,
+				    0x805C, false, false,
+				    "usart receive", 20*10+3));
+
   sr_read= false;
   
   s= format_string("serial%d_in_file", id);
@@ -163,21 +179,6 @@ cl_serial::new_hw_added(class cl_hw *new_hw)
 void
 cl_serial::added_to_uc(void)
 {
-  uc->it_sources->add(new cl_it_src(uc, 20,
-				    regs[cr2], 0x80,
-				    regs[sr], 0x80,
-				    0x8058, false, false,
-				    "usart transmit register empty", 20*10+1));
-  uc->it_sources->add(new cl_it_src(uc, 20,
-				    regs[cr2], 0x40,
-				    regs[sr], 0x40,
-				    0x8058, false, false,
-				    "usart trasnmit complete", 20*10+2));
-  uc->it_sources->add(new cl_it_src(uc, 21,
-				    regs[cr2], 0x20,
-				    regs[sr], 0x20,
-				    0x805C, false, false,
-				    "usart receive", 20*10+3));
 }
 
 t_mem
@@ -188,6 +189,7 @@ cl_serial::read(class cl_memory_cell *cell)
       if (sr_read)
 	regs[sr]->set_bit0(0x1f);
       regs[sr]->set_bit0(0x20);
+      printf("** read DR=0x%02x\n", s_in);
       return s_in;
     }
   sr_read= (cell == regs[sr]);
