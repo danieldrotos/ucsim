@@ -1764,7 +1764,8 @@ cl_uc::do_interrupt(void)
 	{
 	  int pr= priority_of(is->nuof);
 	  int ap;
-	  if (il)
+	  if (il &&
+	      il->level >= 0)
 	    ap= il->level;
 	  else
 	    ap= priority_main();
