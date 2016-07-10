@@ -9,6 +9,8 @@
  *
  */
 
+/* $Id$ */
+
 // shift positions
 #define BITPOS_C 0  // 1
 #define BITPOS_Z 1  // 2H

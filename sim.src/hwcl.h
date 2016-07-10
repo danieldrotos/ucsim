@@ -102,12 +102,10 @@ class cl_hw: public cl_guiobj
 
   virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
   virtual class cl_memory_cell *register_cell(class cl_address_space *mem,
-					      t_addr addr/*,
-							   class cl_memory_cell **store*/);
+					      t_addr addr);
   virtual void unregister_cell(class cl_memory_cell *cell);
   virtual class cl_memory_cell *use_cell(class cl_address_space *mem,
-					 t_addr addr/*,
-						      class cl_memory_cell **store*/);
+					 t_addr addr);
   virtual void unuse_cell(class cl_memory_cell *cell);
   virtual void address_space_added(class cl_address_space *as);
 

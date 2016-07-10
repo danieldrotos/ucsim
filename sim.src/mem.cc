@@ -1151,6 +1151,19 @@ cl_address_space::search_cell(enum cell_flag flag, bool value, t_addr *addr)
   return NULL;
 }
 
+bool
+cl_address_space::is_owned(class cl_memory_cell *cell, t_addr *addr)
+{
+  if (cell < cella)
+    return false;
+  if (cell > &cella[size-1])
+    return false;
+  int idx= cell - cella;
+  if (addr)
+    *addr= start_address+idx;
+  return true;
+}
+
 class cl_address_decoder *
 cl_address_space::get_decoder_of(t_addr addr)
 {

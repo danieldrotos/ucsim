@@ -2,13 +2,13 @@
  * Simulator of microcontrollers (inst.cc)
  *
  * stm8 code base from Vaclav Peroutka vaclavpe@users.sourceforge.net
- * and Valentin Dudouyt valentin.dudouyt@gmail.com
- *
- * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
- *
- * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
- *
- */
+ * and Valentin Dudouyt valentin.dudouyt@gmail.com
+ *
+ * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
+ *
+ * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
+ *
+ */
 /* This file is part of microcontroller simulator: ucsim.
 
 UCSIM is free software; you can redistribute it and/or modify
@@ -27,6 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+/* $Id$ */
+
 #include "ddconfig.h"
 #include "stdio.h"
 #include <stdlib.h>
@@ -37,22 +39,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stm8mac.h"
 
 int
-cl_stm8::fetchea(t_mem code, unsigned char prefix)
-{
-   int ftc;
-
-   switch ((code >> 4) & 0x0f) {
-   case 0x1: return (unsigned char)fetch()+regs.SP;  // SP indexed
-
+cl_stm8::fetchea(t_mem code, unsigned char prefix)
+{
+   int ftc;
+
+   switch ((code >> 4) & 0x0f) {
+   case 0x1: return (unsigned char)fetch()+regs.SP;  // SP indexed
+
    case 0xb: return fetch();           // direct short
 
-
-   case 0xc:
-      if ( 0 == prefix) {              // direct long
-         return fetch2();
-      } else if ( 0x72 == prefix) {    // long pointer
-         ftc = fetch2();
-         return get2(ftc);
+
+   case 0xc:
+      if ( 0 == prefix) {              // direct long
+         return fetch2();
+      } else if ( 0x72 == prefix) {    // long pointer
+         ftc = fetch2();
+         return get2(ftc);
       } else if ( 0x92 == prefix) {    // short pointer
          ftc = fetch();
          return get2(ftc);
@@ -79,13 +81,13 @@ cl_stm8::fetchea(t_mem code, unsigned char prefix)
          return( resHALT);
       }
 
-
-   case 0xe:
-      if ( 0 == prefix) {               // short offset with X reg
-         return fetch()+regs.X;
-      } else if ( 0x90 == prefix) {     // short offset with Y reg
-         return fetch()+regs.Y;
-      } else {
+
+   case 0xe:
+      if ( 0 == prefix) {               // short offset with X reg
+         return fetch()+regs.X;
+      } else if ( 0x90 == prefix) {     // short offset with Y reg
+         return fetch()+regs.Y;
+      } else {
          return( resHALT);
       }
 
@@ -127,33 +129,33 @@ cl_stm8::get_dest(t_mem code, unsigned char prefix)
          ftc = fetch();
        resaddr = get2(ftc);
 	  } else {
-	    resaddr = ( resHALT);
-	  }
-     break;
-
-    case 0x4:
-	  if ( 0x72 == prefix) {           // long offset with X
-         ftc = fetch2();
+	    resaddr = ( resHALT);
+	  }
+     break;
+
+    case 0x4:
+	  if ( 0x72 == prefix) {           // long offset with X
+         ftc = fetch2();
          resaddr = ftc + regs.X;
      } else if ( 0x90 == prefix) {    // long offset with Y
          ftc = fetch2();
          resaddr = ftc + regs.Y;
 	  } else {
-         resaddr = ( resHALT);
-	  }
-     break;
-
-    case 0x5:
-	  if ( 0x72 == prefix) {           // long direct
-         resaddr = fetch2();
+         resaddr = ( resHALT);
+	  }
+     break;
+
+    case 0x5:
+	  if ( 0x72 == prefix) {           // long direct
+         resaddr = fetch2();
 	  } else {
-         resaddr = ( resHALT);
-	  }
-     break;
-
-    case 0x6:
-          if ( 0 == prefix) {              // short offset with X
-		resaddr = (fetch()+regs.X);
+         resaddr = ( resHALT);
+	  }
+     break;
+
+    case 0x6:
+          if ( 0 == prefix) {              // short offset with X
+		resaddr = (fetch()+regs.X);
 	  } else if ( 0x72 == prefix) {    // long pointer to offset with X
           ftc = fetch2();
 	  resaddr = (get2(ftc)+regs.X);
@@ -188,13 +190,13 @@ cl_stm8::get_dest(t_mem code, unsigned char prefix)
   return resaddr;
 }
 
-void
-cl_stm8::flag_cvh(int x, int m, int r, bool byte, bool add, int mask)
-{
-  bool xt, xs, xh, mt, ms, mh, rt, rs, rh;
-
-  if (byte)
-    {
+void
+cl_stm8::flag_cvh(int x, int m, int r, bool byte, bool add, int mask)
+{
+  bool xt, xs, xh, mt, ms, mh, rt, rs, rh;
+
+  if (byte)
+    {
       xt = !!(x & 0x80);
       xs = !!(x & 0x40);
       xh = !!(x & 0x08);
@@ -218,26 +220,26 @@ cl_stm8::flag_cvh(int x, int m, int r, bool byte, bool add, int mask)
       rh = !!(r & 0x0080);
     }
 
-  if (add)
-    {
-      if (mask & BIT_V)
-        FLAG_ASSIGN (BIT_V, ((xt && mt) || (mt && !rt) || (!rt && xt)) ^ ((xs && ms) || (ms && !rs) || (!rs && xs)));
-      if (mask & BIT_C)
-        FLAG_ASSIGN (BIT_C, (xt && mt) || (mt && !rt) || (!rt && xt));
-      if (mask & BIT_H)
-        FLAG_ASSIGN (BIT_H, (xh && mh) || (mh && !rh) || (!rh && xh));
-    }
-  else
-    {
-      if (mask & BIT_V)
-        FLAG_ASSIGN (BIT_V, ((!xt && mt) || (!xt && rt) || (xt && mt && rt)) ^ ((!xs && ms) || (!xs && rs) || (xs && ms && rs)));
-      if (mask & BIT_H)
-        FLAG_ASSIGN (BIT_H, (!xh && mh) || (!xh && rh) || (xh && mh && rh));
-      if (mask & BIT_C)
-        FLAG_ASSIGN (BIT_C, (!xt && mt) || (!xt && rt) || (xt && mt && rt));
-    }
-}
-
+  if (add)
+    {
+      if (mask & BIT_V)
+        FLAG_ASSIGN (BIT_V, ((xt && mt) || (mt && !rt) || (!rt && xt)) ^ ((xs && ms) || (ms && !rs) || (!rs && xs)));
+      if (mask & BIT_C)
+        FLAG_ASSIGN (BIT_C, (xt && mt) || (mt && !rt) || (!rt && xt));
+      if (mask & BIT_H)
+        FLAG_ASSIGN (BIT_H, (xh && mh) || (mh && !rh) || (!rh && xh));
+    }
+  else
+    {
+      if (mask & BIT_V)
+        FLAG_ASSIGN (BIT_V, ((!xt && mt) || (!xt && rt) || (xt && mt && rt)) ^ ((!xs && ms) || (!xs && rs) || (xs && ms && rs)));
+      if (mask & BIT_H)
+        FLAG_ASSIGN (BIT_H, (!xh && mh) || (!xh && rh) || (xh && mh && rh));
+      if (mask & BIT_C)
+        FLAG_ASSIGN (BIT_C, (!xt && mt) || (!xt && rt) || (xt && mt && rt));
+    }
+}
+
 #define FLAG_CVH_BYTE_ADD(x, m, r, mask) flag_cvh(x, m, r, true, true, mask)
 #define FLAG_CVH_BYTE_SUB(x, m, r, mask) flag_cvh(x, m, r, true, false, mask)
 #define FLAG_CVH_WORD_ADD(x, m, r, mask) flag_cvh(x, m, r, false, true, mask)
@@ -343,24 +345,24 @@ cl_stm8::inst_and(t_mem code, unsigned char prefix)
 
 int
 cl_stm8::inst_bccmbcpl(t_mem code, unsigned char prefix)
-{
-   int ea = fetch2();
-   unsigned char dbyte = get1( ea);
-
-   if (code & 0x01)  { // bccm
-      char pos = (code - 0x11) >> 1;
-      dbyte = dbyte & (~(1<<pos));
-      if (regs.CC & BIT_C) {
-         dbyte |= (1<<pos);
-      }
-   } else { // bcpl
-      char pos = (code - 0x10) >> 1;
-      dbyte = dbyte ^ (1<<pos);
-   }
-
-   store1(ea, dbyte);
-   return(resGO);
-}
+{
+   int ea = fetch2();
+   unsigned char dbyte = get1( ea);
+
+   if (code & 0x01)  { // bccm
+      char pos = (code - 0x11) >> 1;
+      dbyte = dbyte & (~(1<<pos));
+      if (regs.CC & BIT_C) {
+         dbyte |= (1<<pos);
+      }
+   } else { // bcpl
+      char pos = (code - 0x10) >> 1;
+      dbyte = dbyte ^ (1<<pos);
+   }
+
+   store1(ea, dbyte);
+   return(resGO);
+}
 int
 cl_stm8::inst_bcp(t_mem code, unsigned char prefix)
 {
@@ -376,33 +378,33 @@ cl_stm8::inst_bcp(t_mem code, unsigned char prefix)
 
 int
 cl_stm8::inst_bresbset(t_mem code, unsigned char prefix)
-{
-  int ea = fetch2();
-  unsigned char dbyte = get1( ea);
-
-  if (code & 0x01) { // bres
-	char pos = (code - 0x11) >> 1;
-	dbyte = dbyte & (~(1<<pos));
-  } else { // bset
- 	char pos = (code - 0x10) >> 1;
-	dbyte = dbyte | (1<<pos);
-  }
-
-  store1(ea, dbyte);
-  return(resGO);
-}
+{
+  int ea = fetch2();
+  unsigned char dbyte = get1( ea);
+
+  if (code & 0x01) { // bres
+	char pos = (code - 0x11) >> 1;
+	dbyte = dbyte & (~(1<<pos));
+  } else { // bset
+ 	char pos = (code - 0x10) >> 1;
+	dbyte = dbyte | (1<<pos);
+  }
+
+  store1(ea, dbyte);
+  return(resGO);
+}
 int
 cl_stm8::inst_btjfbtjt(t_mem code, unsigned char prefix)
 {
   int ea = fetch2();
   unsigned char dbyte = get1( ea);
-  char reljump = fetch();
-  char pos;
-
-  if (code & 0x01) { // btjf
-	pos = (code - 0x01) >> 1;
-	if(!( dbyte & (1<<pos))) {
-		PC += reljump;
+  char reljump = fetch();
+  char pos;
+
+  if (code & 0x01) { // btjf
+	pos = (code - 0x01) >> 1;
+	if(!( dbyte & (1<<pos))) {
+		PC += reljump;
 	}
   } else { // btjt
  	pos = (code - 0x00) >> 1;
@@ -431,13 +433,13 @@ cl_stm8::inst_clr(t_mem code, unsigned char prefix)
 {
   unsigned int opaddr = 0;
 
-
-  FLAG_SET (BIT_Z);
-  FLAG_CLEAR (BIT_N);
-
-  switch(((code & 0xf0) | (prefix << 8)) >> 4) {
-    /* clr */
-    case 0x004: regs.A = 0; return(resGO);
+
+  FLAG_SET (BIT_Z);
+  FLAG_CLEAR (BIT_N);
+
+  switch(((code & 0xf0) | (prefix << 8)) >> 4) {
+    /* clr */
+    case 0x004: regs.A = 0; return(resGO);
     case 0x003: opaddr = fetch(); break;
     case 0x725: opaddr = fetch2(); break;
     case 0x007: opaddr = regs.X; break;
@@ -527,13 +529,13 @@ cl_stm8::inst_cpw(t_mem code, unsigned char prefix)
   FLAG_ASSIGN (BIT_Z, (result & 0xffff) == 0);
   FLAG_ASSIGN (BIT_N, 0x8000 & result);
   if (!reversed)
-    FLAG_CVH_WORD_SUB(operand1, operand2, result, BIT_C | BIT_V);
-  else
-    FLAG_CVH_WORD_SUB(operand2, operand1, result, BIT_C | BIT_V);
-
-  return(resGO);
-}
-
+    FLAG_CVH_WORD_SUB(operand1, operand2, result, BIT_C | BIT_V);
+  else
+    FLAG_CVH_WORD_SUB(operand2, operand1, result, BIT_C | BIT_V);
+
+  return(resGO);
+}
+
 int
 cl_stm8::inst_cpl(t_mem code, unsigned char prefix)
 {
@@ -549,13 +551,13 @@ cl_stm8::inst_cpl(t_mem code, unsigned char prefix)
    } else {
       opaddr = get_dest(code,prefix);
       operand = get1(opaddr);
-   }
-
-   operand ^= 0xffff;
-
-   FLAG_SET (BIT_C);
-
-   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
+   }
+
+   operand ^= 0xffff;
+
+   FLAG_SET (BIT_C);
+
+   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
       regs.A = operand&0xff;
       FLAG_ASSIGN (BIT_Z, (operand & 0xff) == 0);
       FLAG_ASSIGN (BIT_N, 0x80 & operand);
@@ -678,15 +680,15 @@ cl_stm8::inst_inc(t_mem code, unsigned char prefix)
    } else if (((code&0xf0)==0x50) &&(prefix == 0x90)) {
       operand = regs.Y;
    } else {
-      opaddr = get_dest(code,prefix);
-      operand = get1(opaddr);
-   }
-
-   resval = operand + 1;
-
-   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
-      regs.A = resval&0xff;
-      FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
+      opaddr = get_dest(code,prefix);
+      operand = get1(opaddr);
+   }
+
+   resval = operand + 1;
+
+   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
+      regs.A = resval&0xff;
+      FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
       FLAG_ASSIGN (BIT_N, 0x80 & resval);
       FLAG_CVH_BYTE_ADD(operand, 0x01, resval, BIT_V);
    } else if (((code&0xf0)==0x50) &&(prefix == 0x00)) {
@@ -754,34 +756,34 @@ cl_stm8::inst_jr(t_mem code, unsigned char prefix)
         bn = !!(regs.CC & BIT_N);
         bv = !!(regs.CC & BIT_V);
         taken = !(bn ^ bv);
-        break;
-      default:
-        return(resHALT);
-    }
-  }
-  else if (prefix==0x90) {
-    switch ((code>>1) & 7) {
+        break;
+      default:
+        return(resHALT);
+    }
+  }
+  else if (prefix==0x90) {
+    switch ((code>>1) & 7) {
       case 4: // JRNH (28) / JRH (29)
          taken = !(regs.CC & BIT_H);
        break;
       case 6: // JRNM (2C) / JRM (2D)
-        taken = !(regs.CC & (BIT_I1|BIT_I0));
-        break;
-      case 7: // JRIL (2E) / JRIH (2F), no means to test this ???
-        taken = 0;
-      default:
-        return(resHALT);
-    }
-  }
-  else
-    return(resHALT);
-
-  if (code & 1)
-    taken = ! taken;
-
-  ofs = fetch();
-  if (taken)
-    PC += ofs;
+        taken = !(regs.CC & (BIT_I1|BIT_I0));
+        break;
+      case 7: // JRIL (2E) / JRIH (2F), no means to test this ???
+        taken = 0;
+      default:
+        return(resHALT);
+    }
+  }
+  else
+    return(resHALT);
+
+  if (code & 1)
+    taken = ! taken;
+
+  ofs = fetch();
+  if (taken)
+    PC += ofs;
   return(resGO);
 }
 
@@ -877,13 +879,13 @@ cl_stm8::inst_lddst(t_mem code, unsigned char prefix)
    opaddr = fetchea(code,prefix);
 
    FLAG_ASSIGN (BIT_Z, (regs.A & 0xff) == 0);
-   FLAG_ASSIGN (BIT_N, 0x80 & regs.A);
-
-   store1(opaddr, regs.A);
-
-   return(resGO);
-}
-
+   FLAG_ASSIGN (BIT_N, 0x80 & regs.A);
+
+   store1(opaddr, regs.A);
+
+   return(resGO);
+}
+
 int
 cl_stm8::inst_ldxydst(t_mem code, unsigned char prefix)
 {
@@ -996,15 +998,15 @@ cl_stm8::inst_neg(t_mem code, unsigned char prefix)
    } else if (((code&0xf0)==0x50) &&(prefix == 0x90)) {
       operand = regs.Y;
    } else {
-      opaddr = get_dest(code,prefix);
-      operand = get1(opaddr);
-   }
-
-   resval = 0 - operand;
-
-   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
-      regs.A = resval&0xff;
-      FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
+      opaddr = get_dest(code,prefix);
+      operand = get1(opaddr);
+   }
+
+   resval = 0 - operand;
+
+   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
+      regs.A = resval&0xff;
+      FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
       FLAG_ASSIGN (BIT_N, 0x80 & resval);
       FLAG_ASSIGN (BIT_V, (0x80 == operand));
       FLAG_ASSIGN (BIT_C, 0x100 & resval);
@@ -1024,13 +1026,13 @@ cl_stm8::inst_neg(t_mem code, unsigned char prefix)
       store1(opaddr, resval &0xff);
       FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
       FLAG_ASSIGN (BIT_N, 0x80 & resval);
-      FLAG_ASSIGN (BIT_V, (0x80 == operand));
-      FLAG_ASSIGN (BIT_C, 0x100 & resval);
-   }
-
-   return(resGO);
-}
-
+      FLAG_ASSIGN (BIT_V, (0x80 == operand));
+      FLAG_ASSIGN (BIT_C, 0x100 & resval);
+   }
+
+   return(resGO);
+}
+
 int
 cl_stm8::inst_or(t_mem code, unsigned char prefix)
 {
@@ -1106,15 +1108,15 @@ cl_stm8::inst_rrc(t_mem code, unsigned char prefix)
    } else if (((code&0xf0)==0x50) &&(prefix == 0x90)) {
       operand = regs.Y;
    } else {
-      opaddr = get_dest(code,prefix);
-      operand = get1(opaddr);
-   }
-
-   resval = operand >> 1;
-
-   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
-      if (regs.CC & BIT_C) {      resval |= 0x80;   }
-      regs.A = resval&0xff;
+      opaddr = get_dest(code,prefix);
+      operand = get1(opaddr);
+   }
+
+   resval = operand >> 1;
+
+   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
+      if (regs.CC & BIT_C) {      resval |= 0x80;   }
+      regs.A = resval&0xff;
       FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
       FLAG_ASSIGN (BIT_N, 0x80 & resval);
       FLAG_ASSIGN (BIT_C, (operand & 0x1));
@@ -1134,13 +1136,13 @@ cl_stm8::inst_rrc(t_mem code, unsigned char prefix)
       if (regs.CC & BIT_C) {      resval |= 0x80;   }
       store1(opaddr, resval &0xff);
       FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
-      FLAG_ASSIGN (BIT_N, 0x80 & resval);
-      FLAG_ASSIGN (BIT_C, (operand & 0x1));
-   }
-
-   return(resGO);
-}
-
+      FLAG_ASSIGN (BIT_N, 0x80 & resval);
+      FLAG_ASSIGN (BIT_C, (operand & 0x1));
+   }
+
+   return(resGO);
+}
+
 int
 cl_stm8::inst_sbc(t_mem code, unsigned char prefix)
 {
@@ -1171,13 +1173,13 @@ cl_stm8::inst_sll(t_mem code, unsigned char prefix)
    } else if (((code&0xf0)==0x50) &&(prefix == 0x90)) {
       operand = regs.Y;
    } else {
-      opaddr = get_dest(code,prefix);
-      operand = get1(opaddr);
-   }
-
-   resval = operand << 0x1;
-
-   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
+      opaddr = get_dest(code,prefix);
+      operand = get1(opaddr);
+   }
+
+   resval = operand << 0x1;
+
+   if (((code&0xf0)==0x40) &&(prefix == 0x00)) {
       regs.A = resval&0xff;
       FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
       FLAG_ASSIGN (BIT_N, 0x80 & resval);
@@ -1195,13 +1197,13 @@ cl_stm8::inst_sll(t_mem code, unsigned char prefix)
    } else {
       store1(opaddr, resval &0xff);
       FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
-      FLAG_ASSIGN (BIT_N, 0x80 & resval);
-      FLAG_ASSIGN (BIT_C, (resval & 0x100));
-   }
-
-   return(resGO);
-}
-
+      FLAG_ASSIGN (BIT_N, 0x80 & resval);
+      FLAG_ASSIGN (BIT_C, (resval & 0x100));
+   }
+
+   return(resGO);
+}
+
 int
 cl_stm8::inst_sra(t_mem code, unsigned char prefix)
 {
@@ -1330,13 +1332,13 @@ cl_stm8::inst_swap(t_mem code, unsigned char prefix)
       operand = get1(opaddr);
       resval = (operand << 4) | (operand >> 4);
       store1(opaddr, resval &0xff);
-      FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
-      FLAG_ASSIGN (BIT_N, 0x80 & resval);
-   }
-
-   return(resGO);
-}
-
+      FLAG_ASSIGN (BIT_Z, (resval & 0xff) == 0);
+      FLAG_ASSIGN (BIT_N, 0x80 & resval);
+   }
+
+   return(resGO);
+}
+
 int
 cl_stm8::inst_tnz(t_mem code, unsigned char prefix)
 {

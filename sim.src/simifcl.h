@@ -79,6 +79,9 @@ enum sif_command {
   SIFCM_WRITE		= 'w',	// write to output file
   // -> w char
   // <-
+  SIFCM_RESET		= 'R',	// reset CPU
+  // -> R
+  // <-
 };
 
 enum sif_answer_type {
@@ -299,6 +302,19 @@ public:
     cl_sif_command(SIFCM_READ, "read input file",
 		   "Read character from input file",
 		   SIFAT_BYTE, 0, the_sif)
+  {}
+  virtual void produce_answer(void);
+};
+
+
+/* Command: reset */
+class cl_sif_reset: public cl_sif_command
+{
+public:
+  cl_sif_reset(class cl_simulator_interface *the_sif):
+    cl_sif_command(SIFCM_RESET, "reset cpu",
+		   "Reset CPU",
+		   SIFAT_NONE, 0, the_sif)
   {}
   virtual void produce_answer(void);
 };

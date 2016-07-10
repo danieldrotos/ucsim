@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+/* $Id$ */
+
 #include "ddconfig.h"
 
 #include <stdarg.h> /* for va_list */
@@ -104,7 +106,7 @@ cl_stm8::reset(void)
   regs.A = 0;
   regs.X = 0;
   regs.Y = 0;
-  regs.CC = 0x00;
+  regs.CC = 0x28;
   //regs.VECTOR = 1;
   PC= 0x8000;
 }

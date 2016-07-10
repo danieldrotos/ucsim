@@ -437,6 +437,20 @@ cl_sif_read::produce_answer(void)
 }
 
 
+/* Command: reset */
+
+void
+cl_sif_reset::produce_answer(void)
+{
+  if (sif)
+    {
+      if (sif->uc)
+	sif->uc->reset();
+      sif->finish_command();
+    }
+}
+
+
 /*
  * Virtual HW: simulator interface
  */
