@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (interruptcl.h)
+ * Simulator of microcontrollers (itc.h)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -27,8 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /* $Id$ */
 
-#ifndef STM8_INTERRUPTCL_HEADER
-#define STM8_INTERRUPTCL_HEADER
+#ifndef STM8_ITCCL_HEADER
+#define STM8_ITCCL_HEADER
 
 #include "stypes.h"
 #include "pobjcl.h"
@@ -37,12 +37,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "newcmdcl.h"
 
 
-class cl_interrupt: public cl_hw
+class cl_itc: public cl_hw
 {
  public:
   class cl_memory_cell *spr[8];
  public:
-  cl_interrupt(class cl_uc *auc);
+  cl_itc(class cl_uc *auc);
   virtual int init(void);
 
 
@@ -61,4 +61,4 @@ class cl_interrupt: public cl_hw
 
 #endif
 
-/* End of s51.src/interruptcl.h */
+/* End of s51.src/itc.h */

@@ -48,7 +48,7 @@ infodir         = @infodir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-OBJECTS_SHARED	= glob.o interrupt.o serial.o \
+OBJECTS_SHARED	= glob.o itc.o serial.o \
 		  inst.o \
 		  simstm8.o stm8.o
 OBJECTS_EXE	= sstm8.o

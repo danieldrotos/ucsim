@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (interrupt.cc)
+ * Simulator of microcontrollers (itc.cc)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -34,10 +34,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itsrccl.h"
 
 // local
-#include "interruptcl.h"
+#include "itccl.h"
 
 
-cl_interrupt::cl_interrupt(class cl_uc *auc):
+cl_itc::cl_itc(class cl_uc *auc):
   cl_hw(auc, HW_INTERRUPT, 0, "itc")
 {
   int i;
@@ -46,7 +46,7 @@ cl_interrupt::cl_interrupt(class cl_uc *auc):
 }
 
 int
-cl_interrupt::init(void)
+cl_itc::init(void)
 {
   int i;
   cl_hw::init();
@@ -60,23 +60,23 @@ cl_interrupt::init(void)
 }
 
 void
-cl_interrupt::added_to_uc(void)
+cl_itc::added_to_uc(void)
 {
 }
 
 void
-cl_interrupt::new_hw_added(class cl_hw *new_hw)
+cl_itc::new_hw_added(class cl_hw *new_hw)
 {
 }
 
 t_mem
-cl_interrupt::read(class cl_memory_cell *cell)
+cl_itc::read(class cl_memory_cell *cell)
 {
   return cell->get();
 }
 
 void
-cl_interrupt::write(class cl_memory_cell *cell, t_mem *val)
+cl_itc::write(class cl_memory_cell *cell, t_mem *val)
 {
   t_addr a;
   if (uc->rom->is_owned(cell, &a) &&
@@ -101,18 +101,18 @@ cl_interrupt::write(class cl_memory_cell *cell, t_mem *val)
 }
 
 /*void
-cl_interrupt::mem_cell_changed(class cl_m *mem, t_addr addr)
+cl_itc::mem_cell_changed(class cl_m *mem, t_addr addr)
 {
 }*/
 
 int
-cl_interrupt::tick(int cycles)
+cl_itc::tick(int cycles)
 {
   return(resGO);
 }
 
 void
-cl_interrupt::reset(void)
+cl_itc::reset(void)
 {
   int i;
   for (i= 0; i < 8; i++)
@@ -120,13 +120,13 @@ cl_interrupt::reset(void)
 }
 
 void
-cl_interrupt::happen(class cl_hw *where, enum hw_event he, void *params)
+cl_itc::happen(class cl_hw *where, enum hw_event he, void *params)
 {
 }
 
 
 void
-cl_interrupt::print_info(class cl_console_base *con)
+cl_itc::print_info(class cl_console_base *con)
 {
   int i;
 
@@ -162,4 +162,4 @@ cl_interrupt::print_info(class cl_console_base *con)
 }
 
 
-/* End of s51.src/interrupt.cc */
+/* End of s51.src/itc.cc */
