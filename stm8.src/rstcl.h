@@ -30,6 +30,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef STM8_RSTCL_HEADER
 #define STM8_RSTCL_HEADER
 
+// sim
+#include "hwcl.h"
+
+
+class cl_rst: public cl_hw
+{
+ public:
+  t_addr base;
+  class cl_memory_cell *rst_sr;
+ public:
+  cl_rst(class cl_uc *auc, t_addr abase);
+  //virtual ~cl_rst(void);
+  virtual int init(void);
+
+  //virtual void new_hw_added(class cl_hw *new_hw);
+  //virtual void added_to_uc(void);
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+
+  //virtual int tick(int cycles);
+};
+
+
 #endif
 
 /* End of stm8.src/rstcl.cc */

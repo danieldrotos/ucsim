@@ -29,4 +29,35 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "rstcl.h"
 
+
+cl_rst::cl_rst(class cl_uc *auc, t_addr abase):
+  cl_hw(auc, HW_RESET, 0, "rst")
+{
+  base= abase;
+  rst_sr= 0;
+}
+
+int
+cl_rst::init(void)
+{
+  rst_sr= register_cell(uc->rom, base);
+}
+
+t_mem
+cl_rst::read(class cl_memory_cell *cell)
+{
+  return cell->get();
+}
+
+void
+cl_rst::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (cell == rst_sr)
+    {
+      uint8_t v= *val & 0x1f, o= cell->get();
+      *val= o & ~v;
+    }
+}
+
+
 /* End of stm8.src/rst.cc */
