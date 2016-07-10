@@ -139,9 +139,9 @@ cl_stm8::mk_hw_elements(void)
   class cl_hw *h;
   cl_uc::mk_hw_elements();
 
-  hws->add(h= new cl_serial(this, 0x5240, 2));
+  add_hw(h= new cl_serial(this, 0x5240, 2));
   h->init();
-  hws->add(interrupt= new cl_interrupt(this));
+  add_hw(interrupt= new cl_interrupt(this));
   interrupt->init();
 }
 
@@ -159,7 +159,7 @@ cl_stm8::make_memories(void)
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  c= chip= new cl_memory_chip("rom_chip", 0x100000, 8);
+  c= chip= new cl_memory_chip("rom_chip", 0x40000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= address_space("rom"), chip, 0, 0xfffff, 0);

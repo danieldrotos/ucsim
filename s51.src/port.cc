@@ -41,6 +41,7 @@ cl_port::cl_port(class cl_uc *auc, int aid):
 int
 cl_port::init(void)
 {
+  cl_hw::init();
   switch (id)
     {
     case 0: addr_p= P0; break;

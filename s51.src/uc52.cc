@@ -51,7 +51,7 @@ cl_uc52::mk_hw_elements(void)
   class cl_hw *h;
 
   cl_51core::mk_hw_elements();
-  hws->add(h= new cl_timer2(this, 2, "timer2", t2_default|t2_down));
+  add_hw(h= new cl_timer2(this, 2, "timer2", t2_default|t2_down));
   h->init();
 }
 

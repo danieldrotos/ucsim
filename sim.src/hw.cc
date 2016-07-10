@@ -131,6 +131,7 @@ cl_hw::cl_hw(class cl_uc *auc, enum hw_cath cath, int aid, const char *aid_strin
   sprintf(s, "watched cells of %s", get_name("hw"));
   watched_cells= new cl_list(2, 2, s);
   free(s);
+  cfg= 0;
 }
 
 cl_hw::~cl_hw(void)
@@ -141,6 +142,30 @@ cl_hw::~cl_hw(void)
   delete watched_cells;
 }
 
+int
+cl_hw::init(void)
+{
+  chars n(id_string);
+  char s[100];
+  int i;
+    
+  snprintf(s, 99, "%d", id);
+  n+= '_';
+  n+= s;
+  n+= cchars("_cfg");
+
+  cfg= new cl_address_space(n, 0, cfg_size(), sizeof(t_mem)*8);
+  cfg->init();
+  cfg->hidden= true;
+  uc->address_spaces->add(cfg);
+
+  for (i= 0; i < cfg_size(); i++)
+    {
+      cfg->register_hw(i, this, false);
+    }
+  
+  return 0;
+}
 
 void
 cl_hw::new_hw_adding(class cl_hw *new_hw)
@@ -202,7 +227,7 @@ cl_hw::register_cell(class cl_address_space *mem, t_addr addr/*,
   class cl_watched_cell *wc;
 
   if (mem)
-    mem->register_hw(addr, this, (int*)0, false);
+    mem->register_hw(addr, this/*, (int*)0*/, false);
   else
     printf("regcell JAJ no mem\n");
   wc= new cl_watched_cell(mem, addr/*, store*/);

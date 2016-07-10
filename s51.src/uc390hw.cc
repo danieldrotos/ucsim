@@ -45,6 +45,7 @@ cl_uc390_hw::cl_uc390_hw (class cl_uc *auc):
 int
 cl_uc390_hw::init(void)
 {
+  cl_hw::init();
   sfr = uc->address_space(MEM_SFR_ID);
   if (sfr)
     {

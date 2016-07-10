@@ -84,6 +84,7 @@ cl_timer0::init(void)
 {
   class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
 
+  cl_hw::init();
   if (sfr)
     {
       //t_mem d;

@@ -461,6 +461,7 @@ cl_simulator_interface::~cl_simulator_interface(void)
 int
 cl_simulator_interface::init(void)
 {
+  cl_hw::init();
   fin= fout= NULL;
   if (as_name)
     {

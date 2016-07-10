@@ -47,6 +47,7 @@ cl_pca::cl_pca(class cl_uc *auc, int aid):
 int
 cl_pca::init(void)
 {
+  cl_hw::init();
   sfr= uc->address_space(MEM_SFR_ID);
   //t_addr CCAPL[5]= {CCAPL[0], CCAPL[1], CCAPL[2], CCAPL[3], CCAPL[4]};
   //t_addr CCAPH[5]= {CCAPH[0], CCAPH[1], CCAPH[2], CCAPH[3], CCAPH[4]};

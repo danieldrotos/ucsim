@@ -326,7 +326,7 @@ cl_uc::mk_hw_elements(void)
 {
   class cl_hw *h;
 
-  hws->add(h= new cl_simulator_interface(this));
+  add_hw(h= new cl_simulator_interface(this));
   h->init();
 }
 
@@ -1016,7 +1016,39 @@ cl_uc::register_hw_write(enum mem_class type, t_addr addr, class cl_hw *hw)
 {
 }*/
 
+void
+cl_uc::add_hw(class cl_hw *hw)
+{
+  int i;
+  for (i= 0; i < hws->count; i++)
+    {
+      class cl_hw *h= (class cl_hw *)(hws->at(i));
+      h->new_hw_adding(hw);
+    }
+  hws->add(hw);
+  for (i= 0; i < hws->count; i++)
+    {
+      class cl_hw *h= (class cl_hw *)(hws->at(i));
+      if (h != hw)
+	h->new_hw_added(hw);
+    }  
+}
+
+int
+cl_uc::nuof_hws(void)
+{
+  return hws->count;
+}
+
 /* Looking for a specific HW element */
+
+class cl_hw *
+cl_uc::get_hw(int idx)
+{
+  if (idx >= hws->count)
+    return NULL;
+  return (class cl_hw *)(hws->at(idx));
+}
 
 class cl_hw *
 cl_uc::get_hw(enum hw_cath cath, int *idx)

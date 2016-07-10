@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_interrupt::cl_interrupt(class cl_uc *auc):
-  cl_hw(auc, HW_INTERRUPT, 0, "irq")
+  cl_hw(auc, HW_INTERRUPT, 0, "itc")
 {
 }
 
@@ -45,7 +45,7 @@ cl_interrupt::init(void)
 {
   //register_cell(sfr, IE, 0, wtd_restore);
   //register_cell(sfr, TCON, &cell_tcon, wtd_restore_write);
-
+  cl_hw::init();
   return(0);
 }
 

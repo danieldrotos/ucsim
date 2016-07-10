@@ -145,23 +145,23 @@ cl_51core::mk_hw_elements(void)
   acc= sfr->get_cell(ACC);
   psw= sfr->get_cell(PSW);
 
-  hws->add(h= new cl_timer0(this, 0, "timer0"));
+  add_hw(h= new cl_timer0(this, 0, "timer0"));
   h->init();
-  hws->add(h= new cl_timer1(this, 1, "timer1"));
+  add_hw(h= new cl_timer1(this, 1, "timer1"));
   h->init();
-  hws->add(h= new cl_serial(this));
+  add_hw(h= new cl_serial(this));
   h->init();
-  hws->add(h= new cl_port(this, 0));
+  add_hw(h= new cl_port(this, 0));
   h->init();
-  hws->add(h= new cl_port(this, 1));
+  add_hw(h= new cl_port(this, 1));
   h->init();
-  hws->add(h= new cl_port(this, 2));
+  add_hw(h= new cl_port(this, 2));
   h->init();
-  hws->add(h= new cl_port(this, 3));
+  add_hw(h= new cl_port(this, 3));
   h->init();
-  hws->add(interrupt= new cl_interrupt(this));
+  add_hw(interrupt= new cl_interrupt(this));
   interrupt->init();
-  hws->add(h= new cl_uc51_dummy_hw(this));
+  add_hw(h= new cl_uc51_dummy_hw(this));
   h->init();
   /*
   acc= sfr->get_cell(ACC);
@@ -1116,6 +1116,7 @@ int
 cl_uc51_dummy_hw::init(void)
 {
   class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  cl_hw::init();
   if (!sfr)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);

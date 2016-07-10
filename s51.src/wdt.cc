@@ -45,6 +45,7 @@ cl_wdt::init(void)
 {
   class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
 
+  cl_hw::init();
   if (!sfr)
     {
       fprintf(stderr, "No SFR to register WDT into\n");

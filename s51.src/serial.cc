@@ -70,7 +70,8 @@ int
 cl_serial::init(void)
 {
   char *s;
-  
+
+  cl_hw::init();
   set_name("mcs51_uart");
   sfr= uc->address_space(MEM_SFR_ID);
   if (sfr)

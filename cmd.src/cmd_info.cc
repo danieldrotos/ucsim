@@ -150,7 +150,8 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
   for (i= 0; i < uc->memchips->count; i++)
     {
       class cl_memory_chip *m= (class cl_memory_chip *)(uc->memchips->at(i));
-      if (m)
+      if (m &&
+	  !m->hidden)
 	{
 	  char *n= (char*)(m->get_name());
 	  con->dd_printf("  0x%06x-0x%06x %8d %s (%d,%s,%s)\n",
@@ -166,7 +167,8 @@ COMMAND_DO_WORK_UC(cl_info_memory_cmd)
     {
       class cl_address_space *m=
 	(class cl_address_space *)(uc->address_spaces->at(i));
-      if (m)
+      if (m &&
+	  !m->hidden)
 	{
 	  char *n= (char*)(m->get_name());
 	  con->dd_printf("  0x%06x-0x%06x %8d %s (%d,%s,%s)\n",

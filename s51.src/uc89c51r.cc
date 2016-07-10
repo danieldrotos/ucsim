@@ -49,11 +49,11 @@ cl_uc89c51r::mk_hw_elements(void)
   class cl_hw *h;
 
   cl_uc52::mk_hw_elements();
-  hws->add(h= new cl_wdt(this, 0x3fff));
+  add_hw(h= new cl_wdt(this, 0x3fff));
   h->init();
-  hws->add(h= new cl_pca(this, 0));
+  add_hw(h= new cl_pca(this, 0));
   h->init();
-  hws->add(h= new cl_89c51r_dummy_hw(this));
+  add_hw(h= new cl_89c51r_dummy_hw(this));
   h->init();
 }
 
@@ -218,6 +218,7 @@ int
 cl_89c51r_dummy_hw::init(void)
 {
   class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  cl_hw::init();
   if (!sfr)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);

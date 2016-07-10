@@ -84,10 +84,14 @@ class cl_hw: public cl_guiobj
  protected:
   class cl_list *partners;
   class cl_list *watched_cells;
+  class cl_address_space *cfg;
  public:
   cl_hw(class cl_uc *auc, enum hw_cath cath, int aid, const char *aid_string);
   virtual ~cl_hw(void);
 
+  virtual int init(void);
+  virtual int cfg_size(void) { return 256; }
+  
   virtual void new_hw_adding(class cl_hw *new_hw);
   virtual void new_hw_added(class cl_hw *new_hw);
   virtual void added_to_uc(void) {}

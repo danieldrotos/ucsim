@@ -47,6 +47,7 @@ cl_interrupt::cl_interrupt(class cl_uc *auc):
 int
 cl_interrupt::init(void)
 {
+  cl_hw::init();
   sfr= uc->address_space(MEM_SFR_ID);
   if (sfr)
     {

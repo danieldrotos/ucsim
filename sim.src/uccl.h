@@ -98,8 +98,10 @@ public:
   class brk_coll *ebrk;		// Collection of EVENT breakpoints
   class cl_sim *sim;
   //class cl_list *mems;
+ private:
   class cl_hws *hws;
 
+ public:
   class cl_list *memchips;      // v3
   class cl_address_space_list *address_spaces;
   class cl_address_space *rom;  // Required for almost every uc
@@ -152,6 +154,9 @@ public:
   virtual bool there_is_inst(void);
 
   // manipulating hw elements
+  virtual void add_hw(class cl_hw *hw);
+  virtual int nuof_hws(void);
+  virtual class cl_hw *get_hw(int idx);
   virtual class cl_hw *get_hw(enum hw_cath cath, int *idx);
   virtual class cl_hw *get_hw(char *id_string, int *idx);
   virtual class cl_hw *get_hw(enum hw_cath cath, int hwid, int *idx);

@@ -38,6 +38,7 @@ cl_timer1::cl_timer1(class cl_uc *auc, int aid, const char *aid_string):
 /*int
 cl_timer1::init(void)
 {
+  cl_hw::init();
   return(0);
 }*/
 

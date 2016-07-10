@@ -103,10 +103,10 @@ cl_avr::get_mem_width(enum mem_class type)
 void
 cl_avr::mk_hw_elements(void)
 {
-  class cl_base *o;
+  class cl_hw *h;
   cl_uc::mk_hw_elements();
-  hws->add(o= new cl_port(this));
-  o->init();
+  add_hw(h= new cl_port(this));
+  h->init();
 }
 
 

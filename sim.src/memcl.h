@@ -77,7 +77,8 @@ public:
   char *addr_format, *data_format;
   int width; // in bits
   t_mem data_mask;
-
+  bool hidden;
+  
   //char *class_name; // used by cl_m!!
 protected:
   t_addr dump_finished;
@@ -276,7 +277,7 @@ class cl_memory_cell: public cl_cell_data
   virtual void del_operator(class cl_brk *brk);
   virtual void del_operator(class cl_hw *hw);
  
-  virtual class cl_memory_cell *add_hw(class cl_hw *hw, int *ith, t_addr addr);
+  virtual class cl_memory_cell *add_hw(class cl_hw *hw, t_addr addr);
   virtual void remove_hw(class cl_hw *hw);
   //virtual class cl_hw *get_hw(int ith);
   virtual class cl_event_handler *get_event_handler(void);
@@ -379,7 +380,6 @@ class cl_address_space: public cl_memory
 			     t_addr begin, t_addr end, class cl_console_base *con);
 
   virtual class cl_memory_cell *register_hw(t_addr addr, class cl_hw *hw,
-					    int *ith,
 					    bool announce);
   virtual void unregister_hw(class cl_hw *hw);
 

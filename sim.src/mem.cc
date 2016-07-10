@@ -64,6 +64,7 @@ cl_memory::cl_memory(const char *id, t_addr asize, int awidth):
   width= awidth;
   start_address= 0;
   uc= 0;
+  hidden= false;
 }
 
 cl_memory::~cl_memory(void)
@@ -865,7 +866,7 @@ cl_memory_cell::del_operator(class cl_hw *hw)
 }
 
 class cl_memory_cell *
-cl_memory_cell::add_hw(class cl_hw *hw, int *ith, t_addr addr)
+cl_memory_cell::add_hw(class cl_hw *hw, t_addr addr)
 {
   class cl_hw_operator *o= new cl_hw_operator(this, addr/*, data, mask*/, hw);
   append_operator(o);
@@ -1264,7 +1265,6 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 
 class cl_memory_cell *
 cl_address_space::register_hw(t_addr addr, class cl_hw *hw,
-			      int *ith,
 			      bool announce)
 {
   t_addr idx= addr-start_address;
@@ -1272,7 +1272,7 @@ cl_address_space::register_hw(t_addr addr, class cl_hw *hw,
       addr < start_address)
     return(0);
   class cl_memory_cell *cell= &cella[idx];
-  cell->add_hw(hw, ith, addr);
+  cell->add_hw(hw, addr);
   if (announce)
     ;//uc->sim->/*app->*/mem_cell_changed(this, addr);//FIXME
   return(cell);
@@ -1646,6 +1646,12 @@ cl_address_decoder::split(t_addr begin, t_addr end)
 void
 cl_address_decoder::print_info(chars pre, class cl_console_base *con)
 {
+  if (address_space &&
+      address_space->hidden)
+    return;
+  if (memchip &&
+      memchip->hidden)
+    return;
   con->dd_printf(pre);
   if (address_space)
     {
