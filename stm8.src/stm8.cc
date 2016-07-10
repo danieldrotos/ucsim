@@ -49,8 +49,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "regsstm8.h"
 #include "stm8mac.h"
-#include "interruptcl.h"
+#include "itccl.h"
 #include "serialcl.h"
+#include "rstcl.h"
 
 #define uint32 t_addr
 #define uint8 unsigned char
@@ -143,8 +144,10 @@ cl_stm8::mk_hw_elements(void)
 
   add_hw(h= new cl_serial(this, 0x5240, 2));
   h->init();
-  add_hw(interrupt= new cl_interrupt(this));
-  interrupt->init();
+  add_hw(itc= new cl_itc(this));
+  itc->init();
+  add_hw(h= new cl_rst(this, 0x50b3));
+  h->init();
 }
 
 class cl_memory_chip *c;

@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itsrccl.h"
 
 #include "regsstm8.h"
-#include "interruptcl.h"
+#include "itccl.h"
 
 
 /*
@@ -49,7 +49,7 @@ public:
   class cl_address_space *regs16;
   //class cl_memory *rom;
   struct t_regs regs;
-  class cl_interrupt *interrupt;
+  class cl_itc *itc;
   class cl_it_src *trap_src;
 public:
   cl_stm8(class cl_sim *asim);
