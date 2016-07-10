@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+/* $Id$ */
+
 #ifndef STM8_INTERRUPTCL_HEADER
 #define STM8_INTERRUPTCL_HEADER
 
@@ -37,7 +39,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_interrupt: public cl_hw
 {
-public:
+ public:
+  class cl_memory_cell *spr[8];
+ public:
   cl_interrupt(class cl_uc *auc);
   virtual int init(void);
 

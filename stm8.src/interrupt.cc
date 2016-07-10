@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+/* $Id$ */
+
 // prj
 #include "utils.h"
 
@@ -38,22 +40,28 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_interrupt::cl_interrupt(class cl_uc *auc):
   cl_hw(auc, HW_INTERRUPT, 0, "itc")
 {
+  int i;
+  for (i= 0; i < 8; i++)
+    spr[i]= 0;
 }
 
 int
 cl_interrupt::init(void)
 {
-  //register_cell(sfr, IE, 0, wtd_restore);
-  //register_cell(sfr, TCON, &cell_tcon, wtd_restore_write);
+  int i;
   cl_hw::init();
+  for (i= 0; i < 8; i++)
+    {
+      if (spr[i])
+	unregister_cell(spr[i]);
+      spr[i]= register_cell(uc->rom, 0x7f70+i);
+    }
   return(0);
 }
 
 void
 cl_interrupt::added_to_uc(void)
 {
-  //uc->it_sources->add(new cl_it_src(uc, IE, bmEX0, TCON, bmIE0, 0x0003, true, false,
-  //				    "external #0", 1));
 }
 
 void
@@ -70,6 +78,26 @@ cl_interrupt::read(class cl_memory_cell *cell)
 void
 cl_interrupt::write(class cl_memory_cell *cell, t_mem *val)
 {
+  t_addr a;
+  if (uc->rom->is_owned(cell, &a) &&
+      (a >= 0x7f70) &&
+      (a <  0x7f70+8))
+    {
+      uint8_t mask= 0xff;
+      if ((*val & 0x03) == 0x02)
+	mask&= ~0x03;
+      if ((*val & 0x0c) == 0x08)
+	mask&= ~0x0c;
+      if ((*val & 0x30) == 0x20)
+	mask&= ~0x30;
+      if ((*val & 0xc0) == 0x80)
+	mask&= ~0xc0;
+      uint8_t o= cell->get(), v= *val;
+      o&= ~mask;
+      v&= mask;
+      o|= v;
+      *val= o;
+    }
 }
 
 /*void
@@ -86,6 +114,9 @@ cl_interrupt::tick(int cycles)
 void
 cl_interrupt::reset(void)
 {
+  int i;
+  for (i= 0; i < 8; i++)
+    spr[i]->write(0xff);
 }
 
 void
