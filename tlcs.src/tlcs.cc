@@ -104,6 +104,11 @@ cl_tlcs::init(void)
   //ram= address_space(MEM_IRAM_ID);
   //rom= address_space(MEM_ROM_ID);
 
+  // zero out ram(this is assumed in regression tests)
+  for (int i=0x8000; i<0x10000; i++) {
+    nas->set((t_addr) i, 0);
+  }
+
   vars->add(v= new cl_var(cchars("a"), regs8, 0));
   v->init();
   vars->add(v= new cl_var(cchars("f"), regs8, 1));
@@ -554,7 +559,7 @@ cl_tlcs::exec_inst(void)
     case 0xa0: reg.a= op_rlc(reg.a, false); break; // RLCA
     case 0xa1: reg.a= op_rrc(reg.a, false); break; // RRCA
     case 0xa2: reg.a= op_rl(reg.a, false); break; // RLA
-    case 0xa3: reg.a= op_rl(reg.a, false); break; // RRA
+    case 0xa3: reg.a= op_rr(reg.a, false); break; // RRA
     case 0xa4: reg.a= op_sla(reg.a, false); break; // SLAA
     case 0xa5: reg.a= op_sra(reg.a, false); break; // SRAA
     case 0xa6: reg.a= op_sla(reg.a, false); break; // SLLA (=SLAA)
