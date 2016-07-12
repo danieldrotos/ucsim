@@ -157,17 +157,17 @@ cl_stm8::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= ram= as= new cl_address_space("rom", 0, 0x1000000, 8);
+  rom= ram= as= new cl_address_space("rom", 0, 0x20000, 8);
   as->init();
   address_spaces->add(as);
 
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  c= chip= new cl_memory_chip("rom_chip", 0x40000, 8);
+  c= chip= new cl_memory_chip("rom_chip", 0x20000, 8);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as= address_space("rom"), chip, 0, 0xfffff, 0);
+  ad= new cl_address_decoder(as= address_space("rom"), chip, 0, 0x1ffff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);

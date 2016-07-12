@@ -1,56 +1,16 @@
-bug-2124 as bug (#2520)
-bug-2175 as bug (#2524)
-bug-2373 as bug (#2520)
+bug-2175 as bug (#2524) SLA-t hibásan fordítja az as
 
 
-bug-2254
-bug-469671/bug-469671_storage_none.c:14
-bug-469671/bug-469671_storage_none.c:18
-bug-500536/bug-500536.c:32
-bug-500536/bug-500536.c:35
-bug-500536/bug-500536.c:39
-bug-716242
-bug-927659
-bug1057979
-bug1477149/bug1477149_type_float.c:34
-bug1477149/bug1477149_type_float.c:35
-bug1477149/bug1477149_type_float.c:36
-bug1520966
-bug1551947/bug1551947.c:14
-compare/compare_storage_none_type_char_attr_volatile.c:115
-compare/compare_storage_none_type_int_attr_volatile.c:115
-compare/compare_storage_none_type_long_attr_volatile.c:115
-compare/compare_storage_static_type_char_attr_volatile.c:115
-compare/compare_storage_static_type_int_attr_volatile.c:115
-compare/compare_storage_static_type_long_attr_volatile.c:115
-const/const.c:27
-dhrystone
-float/float_operation_ADD
-float/float_operation_DIV
-float/float_operation_MUL
-float/float_operation_REVDIV
-float/float_operation_SUB
-
-
-   Failure: gen/tlcs90/bug-2124/bug-2124
+Summary for 'tlcs90': 2 abnormal stops ( 2 invalid instructions, ), 290 failures, 9499 tests, 1767 test cases, 2774744 bytes, 256935358 ticks
    Failure: gen/tlcs90/bug-2175/bug-2175
    Failure: gen/tlcs90/bug-2254/bug-2254
-   Failure: ge-e --- FAIL: "timeout, simulation killed" in gen/tlcs90/bug-2373/bug-2373.c
    Failure: gen/tlcs90/bug-469671/bug-469671_storage_none
    Failure: gen/tlcs90/bug-500536/bug-500536
-   Failure: gen/tlcs90/bug-716242/bug-716242
    Failure: results/tlcs90/bug-927659.out
    Failure: results/tlcs90/bug1057979.out
    Failure: gen/tlcs90/bug1477149/bug1477149_type_float
    Failure: gen/tlcs90/bug1520966/bug1520966
    Failure: gen/tlcs90/bug1551947/bug1551947
-   Failure: gen/tlcs90/compare/compare_storage_none_type_char_attr_volatile
-   Failure: gen/tlcs90/compare/compare_storage_none_type_int_attr_volatile
-   Failure: gen/tlcs90/compare/compare_storage_none_type_long_attr_volatile
-   Failure: gen/tlcs90/compare/compare_storage_static_type_char_attr_volatile
-   Failure: gen/tlcs90/compare/compare_storage_static_type_int_attr_volatile
-   Failure: gen/tlcs90/compare/compare_storage_static_type_long_attr_volatile
-   Failure: gen/tlcs90/const/const
    Failure: results/tlcs90/dhrystone.out
    Failure: gen/tlcs90/float/float_operation_ADD
    Failure: gen/tlcs90/float/float_operation_DIV
@@ -77,21 +37,19 @@ float/float_operation_SUB
    Failure: gen/tlcs90/float_trans/float_trans_func_POWF
    Failure: gen/tlcs90/float_trans/float_trans_func_SQRTF
    Failure: gen/tlcs90/float_trans/float_trans_func_TANF
-   Failure: results/tlcs90/funptrs.out
    Failure: gen/tlcs90/gcc-torture-execute-20000603-1/gcc-torture-execute-20000603-1
    Failure: gen/tlcs90/gcc-torture-execute-20000605-1/gcc-torture-execute-20000605-1
    Failure: gen/tlcs90/gcc-torture-execute-20000731-1/gcc-torture-execute-20000731-1
    Failure: gen/tlcs90/gcc-torture-execute-20001108-1/gcc-torture-execute-20001108-1
    Failure: gen/tlcs90/gcc-torture-execute-20010224-1/gcc-torture-execute-20010224-1
    Failure: gen/tlcs90/gcc-torture-execute-20010910-1/gcc-torture-execute-20010910-1
-   Failure: gen/tlcs90/gcc-torture-execute-20010915-1/gcc-torture-execute-20010915-1
    Failure: gen/tlcs90/gcc-torture-execute-20020201-1/gcc-torture-execute-20020201-1
    Failure: gen/tlcs90/gcc-torture-execute-20020226-1/gcc-torture-execute-20020226-1
    Failure: gen/tlcs90/gcc-torture-execute-20020508-1/gcc-torture-execute-20020508-1
    Failure: gen/tlcs90/gcc-torture-execute-20020508-2/gcc-torture-execute-20020508-2
    Failure: gen/tlcs90/gcc-torture-execute-20020508-3/gcc-torture-execute-20020508-3
    Failure: gen/tlcs90/gcc-torture-execute-20021120-1/gcc-torture-execute-20021120-1
-   Failure: gen/tlcs90/gcc-torture-execute-20021120-3/gcc-torture-execute-20021120-3
+   Failure: results/tlcs90/gcc-torture-execute-20021120-3.out
    Failure: gen/tlcs90/gcc-torture-execute-20030221-1/gcc-torture-execute-20030221-1
    Failure: gen/tlcs90/gcc-torture-execute-20030626-2/gcc-torture-execute-20030626-2
    Failure: gen/tlcs90/gcc-torture-execute-20031012-1/gcc-torture-execute-20031012-1
@@ -102,23 +60,20 @@ float/float_operation_SUB
    Failure: gen/tlcs90/gcc-torture-execute-920829-1/gcc-torture-execute-920829-1
    Failure: gen/tlcs90/gcc-torture-execute-921208-1/gcc-torture-execute-921208-1
    Failure: gen/tlcs90/gcc-torture-execute-930106-1/gcc-torture-execute-930106-1
-   Failure: gen/tlcs90/gcc-torture-execute-930513-1/gcc-torture-execute-930513-1
    Failure: gen/tlcs90/gcc-torture-execute-930603-1/gcc-torture-execute-930603-1
    Failure: gen/tlcs90/gcc-torture-execute-950426-1/gcc-torture-execute-950426-1
    Failure: gen/tlcs90/gcc-torture-execute-950511-1/gcc-torture-execute-950511-1
-   Failure: gen/tlcs90/gcc-torture-execute-950809-1/gcc-torture-execute-950809-1
    Failure: gen/tlcs90/gcc-torture-execute-961213-1/gcc-torture-execute-961213-1
    Failure: gen/tlcs90/gcc-torture-execute-980506-3/gcc-torture-execute-980506-3
    Failure: gen/tlcs90/gcc-torture-execute-990117-1/gcc-torture-execute-990117-1
    Failure: gen/tlcs90/gcc-torture-execute-990404-1/gcc-torture-execute-990404-1
    Failure: gen/tlcs90/gcc-torture-execute-990829-1/gcc-torture-execute-990829-1
    Failure: gen/tlcs90/gcc-torture-execute-991016-1/gcc-torture-execute-991016-1
-   Failure: results/tlcs90/gcc-torture-execute-func-ptr-1.out
    Failure: gen/tlcs90/gcc-torture-execute-loop-7/gcc-torture-execute-loop-7
    Failure: gen/tlcs90/gcc-torture-execute-postmod-1/gcc-torture-execute-postmod-1
    Failure: gen/tlcs90/gcc-torture-execute-pr20527-1/gcc-torture-execute-pr20527-1
    Failure: gen/tlcs90/gcc-torture-execute-pr27285/gcc-torture-execute-pr27285
-   Failure: gen/tlcs90/gcc-torture-execute-pr28982a/gcc-torture-execute-pr28982a
+   Failure: results/tlcs90/gcc-torture-execute-pr28982a.out
    Failure: gen/tlcs90/gcc-torture-execute-pr47538/gcc-torture-execute-pr47538
    Failure: gen/tlcs90/gcc-torture-execute-stdarg-3/gcc-torture-execute-stdarg-3
    Failure: gen/tlcs90/gcc-torture-execute-stdarg-4/gcc-torture-execute-stdarg-4
@@ -137,13 +92,12 @@ float/float_operation_SUB
    Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_long_attr_volatile_sign_signed
    Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_long_attr_volatile_sign_unsigned
    Failure: gen/tlcs90/simplefloat/simplefloat
-   Failure: gen/tlcs90/snprintf/snprintf_type_FLOAT
-   Failure: gen/tlcs90/snprintf/snprintf_type_INT
+   Invalid instruction: gen/tlcs90/snprintf/snprintf_type_INT
+   abnormal stop: gen/tlcs90/snprintf/snprintf_type_INT
    Invalid instruction: gen/tlcs90/snprintf/snprintf_type_LONG
    abnormal stop: gen/tlcs90/snprintf/snprintf_type_LONG
    Failure: gen/tlcs90/snprintf/snprintf_type_STRING
    Failure: gen/tlcs90/string/string
    Failure: gen/tlcs90/swap/swap
-   Failure: gen/tlcs90/z88dk/z88-e --- FAIL: "timeout, simulation killed" in gen/tlcs90/z88dk/z88dk.c
 
-drdani@anb:~/prj/s6/support/regression$ 
+drdani@p4:~/prj/s6/support/regression$ 
