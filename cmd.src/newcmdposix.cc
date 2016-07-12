@@ -173,11 +173,13 @@ void
 cl_console::redirect(char *fname, char *mode)
 {
   frout= mk_io(fname, mode);
+  set_flag(CONS_REDIRECTED, true);
 }
 
 void
 cl_console::un_redirect(void)
 {
+  set_flag(CONS_REDIRECTED, false);
   if (!frout)
     return;
   delete frout;

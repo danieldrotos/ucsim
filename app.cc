@@ -183,7 +183,8 @@ cl_app::run(void)
 		  if (top && commander->frozen_console)
 		    top->info(commander->frozen_console, sim->uc);
 		    }*/
-	      if (jaj && commander->frozen_console) sim->uc->print_regs(commander->frozen_console);//sim->uc->print_disass(sim->uc->PC, commander->frozen_console);
+	      if (jaj && commander->frozen_console)
+		sim->uc->print_regs(commander->frozen_console);//sim->uc->print_disass(sim->uc->PC, commander->frozen_console);
             }
 	  else
 	    {

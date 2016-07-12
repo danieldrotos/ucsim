@@ -54,7 +54,8 @@ enum con_flags {
   CONS_INTERACTIVE = 0x08,   // Interactive console
   CONS_NOWELCOME   = 0x10,   // Do not print welcome message
   CONS_INACTIVE    = 0x20,   // Do not do any action
-  CONS_ECHO        = 0x40    // Echo commands
+  CONS_ECHO        = 0x40,   // Echo commands
+  CONS_REDIRECTED  = 0x80,   // Console is actually redirected
 };
 
 #define SY_ADDR         'a'

@@ -395,10 +395,11 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
             }
         }
     }
-  un_redirect();
+  //un_redirect();
   if (!retval &&
       cmdstr &&
-      do_print_prompt)
+      do_print_prompt &&
+      !get_flag(CONS_REDIRECTED))
     {
       print_prompt();
     }

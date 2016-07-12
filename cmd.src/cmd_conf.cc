@@ -111,7 +111,7 @@ COMMAND_DO_WORK_APP(cl_jaj_cmd)
 
   if (params[0] != NULL)
     {
-      int i= params[0]->value.number;
+      int i= params[0]->i_value;
       jaj= i?true:false;
     }
   con->dd_printf("%d\n", jaj);
