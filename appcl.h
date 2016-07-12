@@ -39,6 +39,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 
 
+extern bool jaj;
+
 /* Options */
 /*
 enum opt_types {

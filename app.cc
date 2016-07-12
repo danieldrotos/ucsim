@@ -711,6 +711,11 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
   cmd->init();
   cmd->add_name("let");
 
+  cmdset->add(cmd= new cl_jaj_cmd("jaj", 0,
+"jaj [val]          Jaj",
+"long help of jaj "));
+  cmd->init();
+
   {
     super_cmd= (class cl_super_cmd *)(cmdset->get_cmd("show"));
     if (super_cmd)

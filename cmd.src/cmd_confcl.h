@@ -48,6 +48,9 @@ class cl_conf_cmd: public cl_cmd
 // CONF OBJECTS
 COMMAND_ON(app,cl_conf_objects_cmd);
 
+// JAJ
+COMMAND_ON(app,cl_jaj_cmd);
+
 
 #endif
 

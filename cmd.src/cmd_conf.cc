@@ -101,4 +101,22 @@ COMMAND_DO_WORK_APP(cl_conf_objects_cmd)
 }
 
 
+COMMAND_DO_WORK_APP(cl_jaj_cmd)
+{
+  //class cl_address_space *mem= 0;
+  class cl_cmd_arg *params[4]= { cmdline->param(0),
+				 cmdline->param(1),
+				 cmdline->param(2),
+				 cmdline->param(3) };
+
+  if (params[0] != NULL)
+    {
+      int i= params[0]->value.number;
+      jaj= i?true:false;
+    }
+  con->dd_printf("%d\n", jaj);
+  return(false);
+}
+
+
 /* End of cmd.src/cmd_conf.cc */
