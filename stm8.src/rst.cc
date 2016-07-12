@@ -41,6 +41,7 @@ int
 cl_rst::init(void)
 {
   rst_sr= register_cell(uc->rom, base);
+  return 0;
 }
 
 t_mem
