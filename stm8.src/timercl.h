@@ -32,6 +32,32 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "hwcl.h"
 
+
+class cl_tim: public cl_hw
+{
+  t_addr base;
+  cl_memory_cell *regs[32];
+};
+
+
+// Advanced
+class cl_tim1: public cl_tim
+{
+};
+
+
+// General purpose
+class cl_tim235: public cl_tim
+{
+};
+
+
+// Basic
+class cl_tim46: public cl_tim
+{
+};
+
+
 #endif
 
 /* End of stm8.src/timercl.h */
