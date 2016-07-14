@@ -35,8 +35,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_tim: public cl_hw
 {
+ protected:
   t_addr base;
   cl_memory_cell *regs[32];
+
+  int bits, mask;
+  int cnt;
+  int ar;
+  
+ public:
+  cl_tim(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+
+  virtual int tick(int cycles);
+  virtual void reset(void);
 };
 
 

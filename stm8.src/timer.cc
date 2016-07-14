@@ -29,4 +29,63 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "timercl.h"
 
+
+cl_tim::cl_tim(class cl_uc *auc, int aid, t_addr abase):
+  cl_hw(auc, HW_TIMER, aid, "timer")
+{
+  base= abase;
+  int i;
+  for (i= 0; i<32; i++)
+    regs[i]= 0;
+}
+
+int
+cl_tim::init(void)
+{
+  int i;
+  set_name("timer");
+  cl_hw::init();
+  for (i= 0; i < 32; i++)
+    {
+      regs[i]= register_cell(uc->rom, base+i);
+    }
+
+  switch (id)
+    {
+    case 2:
+      bits= 16; mask= 0xffff;      
+      break;
+    case 3:
+      bits= 16; mask= 0xffff;      
+      break;
+    case 5:
+      bits= 16; mask= 0xffff;      
+      break;
+    case 4:
+      bits= 8; mask= 0xff;      
+      break;
+    case 6:
+      bits= 8; mask= 0xff;      
+      break;
+    default: // 1
+      bits= 16; mask= 0xffff;      
+      break;
+    }
+ 
+  return 0;
+}
+
+int
+cl_tim::tick(int cycles)
+{
+  return resGO;
+}
+
+void
+cl_tim::reset(void)
+{
+  cnt= 0;
+}
+
+
 /* End of stm8.src/timer.cc */
