@@ -184,7 +184,7 @@ cl_app::run(void)
 		    top->info(commander->frozen_console, sim->uc);
 		    }*/
 	      if (jaj && commander->frozen_console)
-		sim->uc->print_regs(commander->frozen_console);//sim->uc->print_disass(sim->uc->PC, commander->frozen_console);
+		sim->uc->print_regs(commander->frozen_console),commander->frozen_console->dd_printf("\n");//sim->uc->print_disass(sim->uc->PC, commander->frozen_console);
             }
 	  else
 	    {
