@@ -179,14 +179,6 @@ enum inst_result {
   
 #define BIT_MASK(bitaddr) (1 << (bitaddr & 0x07))
 
-//#define IRAM_SIZE 256	  /* Size of Internal RAM */
-//#define SFR_SIZE  256     /* Size of SFR area */
-//#define SFR_START 128     /* Start address of SFR area */
-//#define ERAM_SIZE 256     /* Size of ERAM in 51R */
-//#define XRAM_SIZE 0x10000 /* Size of External RAM */
-//#define IROM_SIZE 0x1000  /* Size of Internal ROM */
-//#define EROM_SIZE 0x10000 /* Size of External ROM */
-
 
 /* Type of breakpoints */
 enum brk_perm

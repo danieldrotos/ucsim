@@ -600,6 +600,8 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 t_mem
 cl_simulator_interface::read(class cl_memory_cell *cel)
 {
+  if (conf(cell, NULL))
+    return cell->get();
   if (!active_command)
     {
       t_mem d= cel->get();
@@ -616,6 +618,8 @@ cl_simulator_interface::read(class cl_memory_cell *cel)
 void
 cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
 {
+  if (conf(cell, val))
+    return;
   if (!active_command)
     {
       int i;

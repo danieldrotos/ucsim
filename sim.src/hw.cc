@@ -118,6 +118,42 @@ cl_hw::make_partner(enum hw_cath cath, int id)
   return(hw);
 }
 
+t_mem
+cl_hw::read(class cl_memory_cell *cell)
+{
+  conf(cell, NULL);
+  return cell->get();
+}
+
+void
+cl_hw::write(class cl_memory_cell *cell, t_mem *val)
+{
+  conf(cell, val);    
+}
+
+bool
+cl_hw::conf(class cl_memory_cell *cell, t_mem *val)
+{
+  t_addr a;
+  if (cfg->is_owned(cell, &a))
+    {
+      if (val)
+	conf_op(cell, a, val);
+      else
+	{
+	  conf_op(cell, a, val);
+	  cell->set(*val);
+	}
+      return true;
+    }
+  return false;
+}
+
+t_mem
+cl_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  return cell->get();
+}
 
 void
 cl_hw::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
