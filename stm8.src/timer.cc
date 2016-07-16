@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_tim::cl_tim(class cl_uc *auc, int aid, t_addr abase):
-  cl_hw(auc, HW_TIMER, aid, "timer")
+  cl_hw(auc, HW_TIMER, aid, "tim")
 {
   base= abase;
   int i;
@@ -43,7 +43,10 @@ int
 cl_tim::init(void)
 {
   int i;
-  set_name("timer");
+  chars s("tim");
+  s.append("%d", id);
+  set_name(s);
+  id_string= strdup(s);
   cl_hw::init();
   for (i= 0; i < 32; i++)
     {
@@ -85,6 +88,30 @@ void
 cl_tim::reset(void)
 {
   cnt= 0;
+}
+
+
+/************************************************************************ 1 */
+
+cl_tim1::cl_tim1(class cl_uc *auc, int aid, t_addr abase):
+  cl_tim(auc, aid, abase)
+{
+}
+
+
+/********************************************************************** 235 */
+
+cl_tim235::cl_tim235(class cl_uc *auc, int aid, t_addr abase):
+  cl_tim(auc, aid, abase)
+{
+}
+
+
+/*********************************************************************** 46 */
+
+cl_tim46::cl_tim46(class cl_uc *auc, int aid, t_addr abase):
+  cl_tim(auc, aid, abase)
+{
 }
 
 

@@ -52,6 +52,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itccl.h"
 #include "serialcl.h"
 #include "rstcl.h"
+#include "timercl.h"
 
 #define uint32 t_addr
 #define uint8 unsigned char
@@ -147,6 +148,14 @@ cl_stm8::mk_hw_elements(void)
   add_hw(itc= new cl_itc(this));
   itc->init();
   add_hw(h= new cl_rst(this, 0x50b3));
+  h->init();
+  add_hw(h= new cl_tim1(this, 1, 0x5250));
+  h->init();
+  add_hw(h= new cl_tim235(this, 2, 0x5300));
+  h->init();
+  add_hw(h= new cl_tim235(this, 3, 0x5320));
+  h->init();
+  add_hw(h= new cl_tim46(this, 4, 0x5340));
   h->init();
 }
 

@@ -55,18 +55,24 @@ class cl_tim: public cl_hw
 // Advanced
 class cl_tim1: public cl_tim
 {
+ public:
+  cl_tim1(class cl_uc *auc, int aid, t_addr abase);
 };
 
 
 // General purpose
 class cl_tim235: public cl_tim
 {
+ public:
+  cl_tim235(class cl_uc *auc, int aid, t_addr abase);
 };
 
 
 // Basic
 class cl_tim46: public cl_tim
 {
+ public:
+  cl_tim46(class cl_uc *auc, int aid, t_addr abase);
 };
 
 
