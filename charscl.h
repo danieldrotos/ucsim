@@ -47,6 +47,7 @@ private:
 public:
   virtual chars &append(char *s);
   virtual chars &append(char c);
+  virtual chars &append(const char *format, ...);
   virtual bool empty();
   virtual int len() { return chars_length; }
   

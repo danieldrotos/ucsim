@@ -25,8 +25,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 #include "charscl.h"
 
@@ -125,6 +127,28 @@ chars::append(char c)
   chars_string= temp;
   chars_length+= 1;
   //delete [] temp;
+
+  return *this;
+}
+
+chars &
+chars::append(const char *format, ...)
+{
+  va_list ap;
+  char n[1000];
+  
+  va_start(ap, format);
+  vsnprintf(n, 999, format, ap);
+  va_end(ap);
+
+  char *temp= new char[chars_length + strlen(n) + 1];
+  if (chars_string)
+    strcpy(temp, chars_string);
+  else
+    temp[0]= '\0';
+  strcat(temp, n);
+  chars_string= temp;
+  chars_length+= strlen(n);
 
   return *this;
 }
