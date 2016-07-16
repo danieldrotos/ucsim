@@ -65,12 +65,12 @@ cl_pca::init(void)
   cell_ccon= register_cell(sfr, CCON);
   for (i= 0; i < 5; i++)
     {
-      cell_ccapl[i]= use_cell(sfr, CCAPL[i]);
-      cell_ccaph[i]= use_cell(sfr, CCAPH[i]);
+      cell_ccapl[i]= sfr->get_cell(CCAPL[i]);//use_cell(sfr, CCAPL[i]);
+      cell_ccaph[i]= sfr->get_cell(CCAPH[i]);//use_cell(sfr, CCAPH[i]);
       cell_ccapm[i]= register_cell(sfr, CCAPM[i]);
     }
-  cell_cl= use_cell(sfr, CL);
-  cell_ch= use_cell(sfr, CH);
+  cell_cl= sfr->get_cell(CL);//use_cell(sfr, CL);
+  cell_ch= sfr->get_cell(CH);//use_cell(sfr, CH);
   return(0);
 }
 

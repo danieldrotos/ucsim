@@ -161,12 +161,8 @@ cl_51core::mk_hw_elements(void)
   h->init();
   add_hw(interrupt= new cl_interrupt(this));
   interrupt->init();
-  add_hw(h= new cl_uc51_dummy_hw(this));
+  add_hw(h= new cl_uc51_cpu(this));
   h->init();
-  /*
-  acc= sfr->get_cell(ACC);
-  psw= sfr->get_cell(PSW);
-  */
 }
 
 void
@@ -1106,14 +1102,13 @@ cl_51core::inst_swap(uchar code)
 /*
  */
 
-cl_uc51_dummy_hw::cl_uc51_dummy_hw(class cl_uc *auc):
-  cl_hw(auc, HW_DUMMY, 0, "_51_dummy")
+cl_uc51_cpu::cl_uc51_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_DUMMY, 0, "cpu")
 {
-  //uc51= (class cl_51core *)uc;
 }
 
 int
-cl_uc51_dummy_hw::init(void)
+cl_uc51_cpu::init(void)
 {
   class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
   cl_hw::init();
@@ -1121,14 +1116,14 @@ cl_uc51_dummy_hw::init(void)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
     }
-  cell_psw= use_cell(sfr, PSW);
+  cell_psw= sfr->get_cell(PSW);//use_cell(sfr, PSW);
   cell_acc= register_cell(sfr, ACC);
   cell_sp= register_cell(sfr, SP);
   return(0);
 }
 
 void
-cl_uc51_dummy_hw::write(class cl_memory_cell *cell, t_mem *val)
+cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (cell == cell_acc)
     {

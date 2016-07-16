@@ -1454,10 +1454,12 @@ cl_uc::mem_cell_changed(class cl_address_space *mem, t_addr addr)
 void
 cl_uc::address_space_added(class cl_address_space *as)
 {
+  /*
   if (hws)
     hws->address_space_added(as);
   else
     printf("JAJ uc\n");//FIXME
+  */
 }
 
 

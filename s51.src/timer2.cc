@@ -51,8 +51,8 @@ int
 cl_timer2::init(void)
 {
   cl_timer0::init();
-  cell_rcap2l= use_cell(sfr, RCAP2L);
-  cell_rcap2h= use_cell(sfr, RCAP2H);
+  cell_rcap2l= sfr->get_cell(RCAP2L);//use_cell(sfr, RCAP2L);
+  cell_rcap2h= sfr->get_cell(RCAP2H);//use_cell(sfr, RCAP2H);
   if (sfr)
     bit_t2ex= sfr->read(P1) & bmT2EX;
   return(0);

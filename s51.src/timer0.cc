@@ -99,8 +99,8 @@ cl_timer0::init(void)
 	  cell_tmod= 0;
 	  cell_tcon= register_cell(sfr, T2CON);
 	}
-      cell_tl= use_cell(sfr, addr_tl);
-      cell_th= use_cell(sfr, addr_th);
+      cell_tl= sfr->get_cell(addr_tl);//use_cell(sfr, addr_tl);
+      cell_th= sfr->get_cell(addr_th);//use_cell(sfr, addr_th);
     }
   return(0);
 }

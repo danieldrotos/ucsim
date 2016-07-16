@@ -42,37 +42,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uccl.h"
 
 
-class cl_hw; // forward
-
-class cl_watched_cell: public cl_base
-{
- protected:
-  class cl_address_space *mem;
-  t_addr addr;
-  class cl_memory_cell *cell;
-  //class cl_memory_cell **store;
- public:
-  cl_watched_cell(class cl_address_space *amem, t_addr aaddr/*,
-							      class cl_memory_cell **astore*/);
-  virtual ~cl_watched_cell(void);
-
-  virtual bool match(class cl_memory_cell *the_cell);
-  virtual void address_space_added(class cl_address_space *amem,
-				   class cl_hw *hw);
-  virtual class cl_memory_cell *get_cell();
-};
-
-class cl_used_cell: public cl_watched_cell
-{
- public:
- cl_used_cell(class cl_address_space *amem, t_addr aaddr/*,
-							  class cl_memory_cell **astore*/):
-  cl_watched_cell(amem, aaddr/*, astore*/) {}
-
-  virtual void address_space_added(class cl_address_space *amem,
-				   class cl_hw *hw);
-};
-
 class cl_hw: public cl_guiobj
 {
  public:
@@ -83,7 +52,6 @@ class cl_hw: public cl_guiobj
   const char *id_string;
  protected:
   class cl_list *partners;
-  class cl_list *watched_cells;
   class cl_address_space *cfg;
  public:
   cl_hw(class cl_uc *auc, enum hw_cath cath, int aid, const char *aid_string);
@@ -104,10 +72,6 @@ class cl_hw: public cl_guiobj
   virtual class cl_memory_cell *register_cell(class cl_address_space *mem,
 					      t_addr addr);
   virtual void unregister_cell(class cl_memory_cell *cell);
-  virtual class cl_memory_cell *use_cell(class cl_address_space *mem,
-					 t_addr addr);
-  virtual void unuse_cell(class cl_memory_cell *cell);
-  virtual void address_space_added(class cl_address_space *as);
 
   virtual int tick(int cycles);
   virtual void reset(void) {}
@@ -123,8 +87,6 @@ class cl_hws: public cl_list
  public:
  cl_hws(void): cl_list(2, 2, cchars("hws")) {}
   virtual t_index add(void *item);
-  //virtual void mem_cell_changed(class cl_address_space *mem, t_addr addr);
-  virtual void address_space_added(class cl_address_space *as);
 };
 
 

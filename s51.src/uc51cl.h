@@ -243,17 +243,15 @@ protected:
 };
 
 
-class cl_uc51_dummy_hw: public cl_hw
+class cl_uc51_cpu: public cl_hw
 {
 protected:
-  //class t_uc51 *uc51;
-  class cl_memory_cell *cell_acc, *cell_sp, *cell_psw/*, *cell_pcon*/;
+  class cl_memory_cell *cell_acc, *cell_sp, *cell_psw;
 public:
-  cl_uc51_dummy_hw(class cl_uc *auc);
+  cl_uc51_cpu(class cl_uc *auc);
   virtual int init(void);
 
   virtual void write(class cl_memory_cell *cell, t_mem *val);
-  //virtual void happen(class cl_hw *where, enum hw_event he, void *params);
 };
 
 
