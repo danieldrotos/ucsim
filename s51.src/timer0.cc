@@ -47,6 +47,7 @@ cl_timer0::cl_timer0(class cl_uc *auc, int aid, const char *aid_string):
       mask_T   = bmT0;
       addr_tl  = TL0;
       addr_th  = TH0;
+      addr_tcon= TCON;
     }
   else if (aid == 1)
     {
@@ -60,6 +61,7 @@ cl_timer0::cl_timer0(class cl_uc *auc, int aid, const char *aid_string):
       mask_T   = bmT1;
       addr_tl  = TL1;
       addr_th  = TH1;
+      addr_tcon= TCON;
     }
   else if (aid == 2)
     {
@@ -70,6 +72,7 @@ cl_timer0::cl_timer0(class cl_uc *auc, int aid, const char *aid_string):
       mask_TR  = bmTR2;
       mask_TF  = bmTF2;
       mask_M0= mask_M1= mask_GATE= mask_INT= 0;
+      addr_tcon= T2CON;
     }
   else {}
   make_partner(HW_PCA, 0);
@@ -83,8 +86,10 @@ int
 cl_timer0::init(void)
 {
   class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
-
+  int i;
+  
   cl_hw::init();
+  bas= uc->address_space("bits");
   if (sfr)
     {
       //t_mem d;
@@ -101,6 +106,10 @@ cl_timer0::init(void)
 	}
       cell_tl= sfr->get_cell(addr_tl);//use_cell(sfr, addr_tl);
       cell_th= sfr->get_cell(addr_th);//use_cell(sfr, addr_th);
+    }
+  for (i= 0; i < 8; i++)
+    {
+      tcon_bits[i]= register_cell(bas, addr_tcon + i);
     }
   return(0);
 }
@@ -133,6 +142,19 @@ cl_timer0::read(class cl_cell *cell)
 void
 cl_timer0::write(class cl_memory_cell *cell, t_mem *val)
 {
+  t_addr ba;
+  bool b= bas->is_owned(cell, &ba);
+  uint8_t n= *val;
+  
+  if (b)
+    {
+      uint8_t m= 1 << (ba - addr_tcon);
+      n= cell_tcon->get();
+      if (*val)
+	n|= m;
+      else
+	n&= ~m;
+    }
   if (cell == cell_tmod)
     {
       t_mem md= *val & (mask_M0|mask_M1);
@@ -148,9 +170,10 @@ cl_timer0::write(class cl_memory_cell *cell, t_mem *val)
       C_T = *val & mask_C_T;
       T_edge= 0;
     }
-  else if (cell == cell_tcon)
+  else if ((cell == cell_tcon) ||
+	   b)
     {
-      TR= *val & mask_TR;
+      TR= n & mask_TR;
       T_edge= 0;
     }
 }

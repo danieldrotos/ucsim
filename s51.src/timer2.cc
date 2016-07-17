@@ -81,17 +81,30 @@ cl_timer2::write(class cl_memory_cell *cell, t_mem *val)
 {
   int oldmode= mode;
   bool oldtr= TR;
-
+  t_addr ba;
+  bool b= bas->is_owned(cell, &ba);
+  t_mem n= *val;
+  
+  if (b)
+    {
+      uint8_t m= 1 << (ba - addr_tcon);
+      n= cell_tcon->get();
+      if (*val)
+	n|= m;
+      else
+	n&= ~m;
+    }
   if (exf2it)
     exf2it->activate();
-  if (cell == cell_tcon)
+  if ((cell == cell_tcon) ||
+      b)
     {
-      C_T = *val & mask_C_T;
-      TR  = *val & mask_TR;
-      RCLK= *val & mask_RCLK;
-      TCLK= *val & mask_TCLK;
-      CP_RL2= *val & mask_CP_RL2;
-      EXEN2 = *val & bmEXEN2;
+      C_T = n & mask_C_T;
+      TR  = n & mask_TR;
+      RCLK= n & mask_RCLK;
+      TCLK= n & mask_TCLK;
+      CP_RL2= n & mask_CP_RL2;
+      EXEN2 = n & bmEXEN2;
       if (!(RCLK || TCLK) &&
 	  !CP_RL2)
 	mode= T2MODE_RELOAD;
@@ -103,7 +116,7 @@ cl_timer2::write(class cl_memory_cell *cell, t_mem *val)
       else
 	mode= T2MODE_OFF;
       if (mode != oldmode)
-	inform_partners(EV_T2_MODE_CHANGED, val);
+	inform_partners(EV_T2_MODE_CHANGED, &n);
     }
   else if (cell == cell_t2mod)
     {
