@@ -709,6 +709,22 @@ cl_memory_cell::decode(t_mem *data_ptr)
     }
 }
 
+void
+cl_memory_cell::decode(t_mem *data_ptr, t_mem bit_mask)
+{
+  if (data_ptr == NULL)
+    {
+      data= &def_data;
+      flags|= CELL_NON_DECODED;
+    }
+  else
+    {
+      data= data_ptr;
+      flags&= ~CELL_NON_DECODED;
+    }
+  mask= bit_mask;
+}
+  
 t_mem
 cl_memory_cell::read(void)
 {
@@ -745,7 +761,10 @@ cl_memory_cell::write(t_mem val)
 #endif
   if (operators)
     val= operators->write(val);
-  /* *data=*/d( val & mask);
+  if (width == 1)
+    d(val);
+  else
+    d(val & mask);
   return d();
 }
 
@@ -1886,6 +1905,51 @@ cl_banker::print_info(chars pre, class cl_console_base *con)
       con->dd_printf("\n");
     }
 }
+
+
+/* 
+ * Bit bander
+ */
+
+cl_bander::cl_bander(class cl_address_space *the_as,
+		     t_addr the_asb,
+		     t_addr the_ase,
+		     class cl_memory *the_chip,
+		     t_addr the_cb,
+		     int the_bpc,
+		     int the_distance):
+  cl_address_decoder(the_as, the_chip, the_asb, the_ase, the_cb)
+{
+  bpc= the_bpc;
+  distance= the_distance;
+}
+
+bool
+cl_bander::activate(class cl_console_base *con)
+{
+  address_space->undecode_area(this, as_begin, as_end, con);
+
+  t_addr asa, ca;
+  int b, m;
+  for (asa= as_begin, ca= chip_begin, b= 0, m= 1;
+       asa <= as_end;
+       asa++)
+    {
+      if (b >= bpc)
+	{
+	  ca+= distance;
+	  b= 0;
+	  m= 1;
+	}
+      t_mem *slot= memchip->get_slot(ca);
+      cl_memory_cell *c= address_space->get_cell(asa);
+      c->decode(slot, m);
+      b++;
+      m<<= 1;
+    }
+  return activated= true;
+}
+
 
 /*
  * List of address decoders

@@ -78,8 +78,6 @@ public:
   int width; // in bits
   t_mem data_mask;
   bool hidden;
-  
-  //char *class_name; // used by cl_m!!
 protected:
   t_addr dump_finished;
 public:
@@ -130,15 +128,12 @@ class cl_memory_operator: public cl_base
 {
 protected:
   t_addr address;
-  //t_mem *data;
   t_mem mask;
   class cl_memory_operator *next_operator;
   class cl_memory_cell *cell;
 public:
   cl_memory_operator(class cl_memory_cell *acell, t_addr addr);
-  //cl_memory_operator(class cl_memory_cell *acell, t_addr addr, t_mem *data_place, t_mem the_mask);
 
-  //virtual void set_data(t_mem *data_place, t_mem the_mask);
   virtual class cl_memory_operator *get_next(void) { return(next_operator); }
   virtual void set_next(class cl_memory_operator *next) { next_operator= next;}
 
@@ -185,9 +180,8 @@ protected:
   class cl_brk *bp;
 public:
   cl_event_break_operator(class cl_memory_cell *acell, t_addr addr,
-			  //t_mem *data_place, t_mem the_mask,
 			  class cl_uc *auc, class cl_brk *the_bp):
-  cl_memory_operator(acell, addr/*, data_place, the_mask*/)
+  cl_memory_operator(acell, addr)
   {
     uc= auc;
     bp= the_bp;
@@ -200,7 +194,6 @@ class cl_write_operator: public cl_event_break_operator
 {
 public:
   cl_write_operator(class cl_memory_cell *acell, t_addr addr,
-		    //t_mem *data_place, t_mem the_mask,
 		    class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem write(t_mem val);
@@ -210,7 +203,6 @@ class cl_read_operator: public cl_event_break_operator
 {
 public:
   cl_read_operator(class cl_memory_cell *acell, t_addr addr,
-		   //t_mem *data_place, t_mem the_mask,
 		   class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem read(void);
@@ -242,8 +234,6 @@ class cl_memory_cell: public cl_cell_data
   uchar width;
   TYPE_UBYTE flags;
   class cl_memory_operator *operators;
-  //uint8_t bank;
-  //t_mem **banked_data_ptrs;
  public:
   cl_memory_cell(uchar awidth);
   virtual ~cl_memory_cell(void);
@@ -251,6 +241,7 @@ class cl_memory_cell: public cl_cell_data
 
   virtual t_mem *get_data(void) { return(data); }
   virtual t_mem get_mask(void) { return(mask); }
+  virtual void set_mask(t_mem m) { mask= m; }
   virtual TYPE_UBYTE get_flags(void);
   virtual bool get_flag(enum cell_flag flag);
   virtual void set_flags(TYPE_UBYTE what);
@@ -259,6 +250,7 @@ class cl_memory_cell: public cl_cell_data
   virtual void un_decode(void);
   virtual void decode(class cl_memory_chip *chip, t_addr addr);
   virtual void decode(t_mem *data_ptr);
+  virtual void decode(t_mem *data_ptr, t_mem bit_mask);
   
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip);
@@ -279,7 +271,6 @@ class cl_memory_cell: public cl_cell_data
  
   virtual class cl_memory_cell *add_hw(class cl_hw *hw, t_addr addr);
   virtual void remove_hw(class cl_hw *hw);
-  //virtual class cl_hw *get_hw(int ith);
   virtual class cl_event_handler *get_event_handler(void);
 
   virtual void print_operators(class cl_console_base *con);
@@ -452,7 +443,8 @@ public:
   virtual ~cl_address_decoder(void);
   virtual int init(void);
   virtual bool is_banker() { return false; }
-  
+  virtual bool is_bander() { return false; }
+
   virtual bool activate(class cl_console_base *con);
 
   virtual bool fully_covered_by(t_addr begin, t_addr end);
@@ -479,7 +471,6 @@ class cl_banker: public cl_address_decoder
   int nuof_banks;
   int bank;
   class cl_address_decoder **banks;
-  //t_mem **bank_ptrs;
   int shift_by;
  public:
   cl_banker(class cl_address_space *the_banker_as,
@@ -498,6 +489,30 @@ class cl_banker: public cl_address_decoder
   virtual bool activate(class cl_console_base *con);
 
   virtual void print_info(chars pre, class cl_console_base *con);
+};
+
+
+/*
+ * Address decoder which maps to individual bits
+ */
+
+class cl_bander: public cl_address_decoder
+{
+ protected:
+  int bpc; // bits_per_chip
+  int distance; // distance of next chip location
+ public:
+  cl_bander(class cl_address_space *the_as,
+	    t_addr the_asb,
+	    t_addr the_ase,
+	    class cl_memory *the_chip,
+	    t_addr the_cb,
+	    int the_bpc,
+	    int the_distance);
+ public:
+  virtual bool is_bander() { return true; }
+
+  virtual bool activate(class cl_console_base *con);
 };
 
 
