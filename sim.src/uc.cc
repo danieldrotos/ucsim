@@ -656,6 +656,16 @@ cmd->init();*/
 "long help of memory create bank"));
     cmd->init();
 
+    mem_create_cset->add(cmd= new cl_memory_create_bander_cmd("bander", 0,
+"memory create bander addressspace begin end chip begin bits_per_chip [distance]\n"
+"                   Create a new bit bander",
+"long help of memory create bander"));
+    cmd->init();
+    cmd->add_name("bitbander");
+    cmd->add_name("bitband");
+    cmd->add_name("band");
+    cmd->add_name("bb");
+
     if (!mem_create)
       cset->add(mem_create= new cl_super_cmd("create", 0,
 "memory create      Set of commands to create memory objects",
