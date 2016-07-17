@@ -281,6 +281,75 @@ COMMAND_DO_WORK_UC(cl_memory_create_banker_cmd)
 
 
 /*
+ * Command: memory create bander
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_UC(cl_memory_create_bander_cmd)
+{
+  class cl_cmd_arg *params[7]= { cmdline->param(0),
+				 cmdline->param(1),
+				 cmdline->param(2),
+				 cmdline->param(3),
+				 cmdline->param(4),
+				 cmdline->param(5),
+				 cmdline->param(6) };
+  class cl_memory *as= 0;
+  t_addr asb= 0, ase= 0;
+  class cl_memory *chip= 0;
+  t_addr cb= 0;
+  int bpc= 0, dist= 1;
+
+  if (cmdline->syntax_match(uc, MEMORY NUMBER NUMBER MEMORY NUMBER NUMBER NUMBER))
+    {
+      as= params[0]->value.memory.memory;
+      asb= params[1]->value.number;
+      ase= params[2]->value.number;
+      chip= params[3]->value.memory.memory;
+      cb= params[4]->value.number;
+      bpc= params[5]->value.number;
+      dist= params[6]->value.number;
+    }
+  else if (cmdline->syntax_match(uc, MEMORY NUMBER NUMBER MEMORY NUMBER NUMBER))
+    {
+      as= params[0]->value.memory.memory;
+      asb= params[1]->value.number;
+      ase= params[2]->value.number;
+      chip= params[3]->value.memory.memory;
+      cb= params[4]->value.number;
+      bpc= params[5]->value.number;
+    }
+  else
+    return con->dd_printf("Syntax error.\n"), false;
+
+  if (!as->is_address_space())
+    con->dd_printf("%s is not an address space\n", as->get_name("unknown"));
+  else if (!chip->is_chip())
+    con->dd_printf("%s is not a chip\n", chip->get_name("unknown"));
+  else if (asb < as->start_address ||
+           asb > as->highest_valid_address())
+    con->dd_printf("Specified begin address is out of address space\n");
+  else if (ase < as->start_address ||
+           ase > as->highest_valid_address())
+    con->dd_printf("Specified end address is out of address space\n");
+  else if (cb < chip->start_address ||
+           cb > chip->highest_valid_address())
+    con->dd_printf("Specified chip address is out of size\n");
+  else
+    {
+      class cl_bander *b=
+	new cl_bander((class cl_address_space *)as, asb, ase,
+		      (class cl_memory_chip *)chip, cb,
+		      bpc, dist);
+      b->init();
+      ((class cl_address_space *)as)->decoders->add(b);
+      b->activate(con);
+    }
+  return(false);
+}
+
+
+/*
  * Command: memory create bank
  *----------------------------------------------------------------------------
  */
@@ -339,7 +408,7 @@ COMMAND_DO_WORK_UC(cl_memory_create_bank_cmd)
 
 
 /*
- * Command: memory create bank
+ * Command: memory cell
  *----------------------------------------------------------------------------
  */
 
@@ -391,5 +460,6 @@ COMMAND_DO_WORK_UC(cl_memory_cell_cmd)
   
   return false;
 }
+
 
 /* End of cmd.src/cmd_mem.cc */

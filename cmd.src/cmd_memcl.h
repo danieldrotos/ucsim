@@ -43,6 +43,9 @@ COMMAND_ON(uc,cl_memory_create_addressdecoder_cmd);
 // MEMORY CREATE BANKER
 COMMAND_ON(uc,cl_memory_create_banker_cmd);
 
+// MEMORY CREATE BANDER
+COMMAND_ON(uc,cl_memory_create_bander_cmd);
+
 // MEMORY CREATE BANK
 COMMAND_ON(uc,cl_memory_create_bank_cmd);
 
