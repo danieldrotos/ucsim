@@ -137,13 +137,9 @@ cl_hw::conf(class cl_memory_cell *cell, t_mem *val)
   t_addr a;
   if (cfg->is_owned(cell, &a))
     {
+      conf_op(cell, a, val);
       if (val)
-	conf_op(cell, a, val);
-      else
-	{
-	  conf_op(cell, a, val);
-	  cell->set(*val);
-	}
+	cell->set(*val);
       return true;
     }
   return false;

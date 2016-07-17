@@ -38,9 +38,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // prj
 #include "pobjcl.h"
+#include "optioncl.h"
 
 // sim.src
-#include "appcl.h"
+//#include "appcl.h"
 
 // local, cmd
 #include "commandcl.h"

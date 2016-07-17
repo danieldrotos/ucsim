@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "newcmdcl.h"
 
 // sim.src
+#include "uccl.h"
+
 #include "stackcl.h"
 
 

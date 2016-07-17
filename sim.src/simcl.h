@@ -54,7 +54,8 @@ public:
   //class cl_commander *cmd;
   class cl_uc *uc;
   class cl_gui *gui;
-
+  class cl_hw *simif;
+  
   double start_at;
   unsigned long start_tick;
   unsigned long steps_done;

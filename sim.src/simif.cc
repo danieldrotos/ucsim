@@ -31,7 +31,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <string.h>
 #include "i_string.h"
 
+// prj
+
 // sim
+#include "simcl.h"
+
 #include "simifcl.h"
 
 
@@ -520,6 +524,15 @@ cl_simulator_interface::init(void)
   c->init();
   commands->add(c= new cl_sif_write(this));
   c->init();
+
+  cl_var *v;
+  uc->vars->add(v= new cl_var(cchars("sim_run"), cfg, 0));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_start"), cfg, 1));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_stop"), cfg, 2));
+  v->init();
+  
   return(0);
 }
 
@@ -600,8 +613,8 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 t_mem
 cl_simulator_interface::read(class cl_memory_cell *cel)
 {
-  if (conf(cell, NULL))
-    return cell->get();
+  if (conf(cel, NULL))
+    return cel->get();
   if (!active_command)
     {
       t_mem d= cel->get();
@@ -618,7 +631,7 @@ cl_simulator_interface::read(class cl_memory_cell *cel)
 void
 cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
 {
-  if (conf(cell, val))
+  if (conf(cel, val))
     return;
   if (!active_command)
     {
@@ -644,6 +657,49 @@ cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
     }
 }
 
+t_mem
+cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch (addr)
+    {
+    case 0: // simulator state: true= run, false= stop
+      if (val)
+	{
+	  if (*val)
+	    uc->sim->start(0, 0), *val= 1;
+	  else
+	    uc->sim->stop(resSIMIF), *val= 0;
+	}
+      else
+	{
+	  int i= uc->sim->state;
+	  i= i & SIM_GO;
+	  cell->set(i?1:0);
+	}
+      break;
+    case 1: // start simulation
+      if (val)
+	uc->sim->start(0, 0), *val= 1;
+      else
+	{
+	  int i= uc->sim->state;
+	  i= i & SIM_GO;
+	  cell->set(i?1:0);
+	}
+      break;
+    case 2: // stop simulation
+      if (val)
+	uc->sim->stop(resSIMIF), *val= 1;
+      else
+	{
+	  int i= uc->sim->state;
+	  i= i & SIM_GO;
+	  cell->set((!i)?1:0);
+	}
+      break;
+    }
+  return cell->get();
+}
 
 void
 cl_simulator_interface::finish_command(void)

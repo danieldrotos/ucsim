@@ -27,9 +27,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include <ctype.h>
 
-#include "portcl.h"
+// cmd
+#include "argcl.h"
+
+// local
 #include "regs51.h"
 #include "types51.h"
+
+#include "portcl.h"
 
 
 cl_port::cl_port(class cl_uc *auc, int aid):

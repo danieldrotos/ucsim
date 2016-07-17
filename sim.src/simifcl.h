@@ -30,9 +30,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef SIMIFCL_HEADER
 #define SIMIFCL_HEADER
 
+// prj
 #include "fiocl.h"
 
+// local
 #include "uccl.h"
+#include "hwcl.h"
 
 
 #define SIMIF_VERSION	1
@@ -342,11 +345,13 @@ class cl_simulator_interface: public cl_hw
   cl_simulator_interface(class cl_uc *auc);
   virtual ~cl_simulator_interface(void);
   virtual int init(void);
-
+  virtual int cfg_size(void) { return 10; }
+ 
   virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
-  virtual t_mem read(class cl_memory_cell *cell);
-  virtual void write(class cl_memory_cell *cell, t_mem *val);
-  
+  virtual t_mem read(class cl_memory_cell *cel);
+  virtual void write(class cl_memory_cell *cel, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
   virtual void finish_command(void);
 
   virtual void print_info(class cl_console_base *con);

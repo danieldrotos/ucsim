@@ -34,6 +34,7 @@
 
 // prj
 #include "errorcl.h"
+#include "appcl.h"
 
 // sim
 #include "simcl.h"

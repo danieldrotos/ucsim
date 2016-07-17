@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "stypes.h"
 #include "pobjcl.h"
+#include "errorcl.h"
 
 
 enum stack_op {

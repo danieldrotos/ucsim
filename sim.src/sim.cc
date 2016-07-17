@@ -68,6 +68,7 @@ cl_sim::init(void)
   if (!(uc= mk_controller()))
     return(1);
   uc->init();
+  simif= uc->get_hw(cchars("simif"), 0);
   return(0);
 }
 

@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // prj
 #include "utils.h"
+#include "appcl.h"
 
 // sim
 #include "simcl.h"
