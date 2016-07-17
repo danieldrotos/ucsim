@@ -1123,7 +1123,9 @@ cl_uc51_cpu::cl_uc51_cpu(class cl_uc *auc):
 int
 cl_uc51_cpu::init(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID),
+    *bas= uc->address_space("bits");
+  int i;
   cl_hw::init();
   if (!sfr)
     {
@@ -1132,20 +1134,33 @@ cl_uc51_cpu::init(void)
   cell_psw= sfr->get_cell(PSW);//use_cell(sfr, PSW);
   cell_acc= register_cell(sfr, ACC);
   cell_sp= register_cell(sfr, SP);
+  for (i= 0; i < 8; i++)
+    acc_bits[i]= register_cell(bas, ACC+i);
   return(0);
 }
 
 void
 cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
 {
-  if (cell == cell_acc)
+  if (cell == cell_sp)
+    {
+      if (*val > uc->sp_max)
+	uc->sp_max= *val;
+      uc->sp_avg= (uc->sp_avg+(*val))/2;
+    }
+  else 
     {
       bool p;
       int i;
-      uchar uc;
+      uchar uc, n= *val;
 
+      if (cell != cell_acc)
+	{
+	  cell->set(*val);
+	  n= cell_acc->get();
+	}
       p = false;
-      uc= *val;
+      uc= n;
       for (i= 0; i < 8; i++)
 	{
 	  if (uc & 1)
@@ -1156,12 +1171,6 @@ cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
 	cell_psw->set_bit1(bmP);
       else
 	cell_psw->set_bit0(bmP);
-    }
-  else if (cell == cell_sp)
-    {
-      if (*val > uc->sp_max)
-	uc->sp_max= *val;
-      uc->sp_avg= (uc->sp_avg+(*val))/2;
     }
   /*else if (cell == cell_pcon)
     {

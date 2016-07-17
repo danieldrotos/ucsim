@@ -245,9 +245,10 @@ protected:
 
 class cl_uc51_cpu: public cl_hw
 {
-protected:
+ protected:
   class cl_memory_cell *cell_acc, *cell_sp, *cell_psw;
-public:
+  class cl_memory_cell *acc_bits[8];
+ public:
   cl_uc51_cpu(class cl_uc *auc);
   virtual int init(void);
 
