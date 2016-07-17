@@ -74,13 +74,19 @@ cl_serial::init(void)
   cl_hw::init();
   set_name("mcs51_uart");
   sfr= uc->address_space(MEM_SFR_ID);
+  bas= uc->address_space("bits");
   if (sfr)
     {
       sbuf= register_cell(sfr, SBUF);
       pcon= register_cell(sfr, PCON);
       scon= register_cell(sfr, SCON);
     }
-
+  int i;
+  for (i= 0; i < 8; i++)
+    {
+      scon_bits[i]= register_cell(bas, SCON+i);
+    }
+  
   s= format_string("serial%d_in_file", id);
   serial_in_file_option= new cl_optref(this);
   serial_in_file_option->init();
@@ -188,6 +194,10 @@ cl_serial::read(class cl_memory_cell *cell)
 void
 cl_serial::write(class cl_memory_cell *cell, t_mem *val)
 {
+  t_addr ba;
+  bool b= bas->is_owned(cell, &ba);
+  uint8_t n= *val;
+  
   if (cell == sbuf)
     {
       s_out= *val;
@@ -196,10 +206,20 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
       s_tr_tick= 0;
       s_tr_t1= 0;
     }
-  if (cell == scon)
+  if (b)
     {
-      _mode= *val >> 6;
-      _bmREN= *val & bmREN;
+      n= scon->get();
+      uint8_t m= 1 << (ba - SCON);
+      if (*val)
+	n|= m;
+      else
+	n&= ~m;
+    }
+  if ((cell == scon) ||
+      b)
+    {
+      _mode= n >> 6;
+      _bmREN= n & bmREN;
       _bits= 8;
       switch (_mode)
 	{

@@ -41,9 +41,9 @@ class cl_serial_listener;
 class cl_serial: public cl_hw
 {
 protected:
-  class cl_address_space *sfr;
+  class cl_address_space *sfr, *bas;
   bool there_is_t2, t2_baud;
-  class cl_memory_cell *sbuf, *pcon, *scon;
+  class cl_memory_cell *sbuf, *pcon, *scon, *scon_bits[8];
   class cl_optref *serial_in_file_option;
   class cl_optref *serial_out_file_option;
   class cl_optref *serial_port_option;
