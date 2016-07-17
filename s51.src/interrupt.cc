@@ -55,6 +55,9 @@ cl_interrupt::init(void)
       cell_tcon= register_cell(sfr, TCON);
       bit_INT0= sfr->read(P3) & bm_INT0;
       bit_INT1= sfr->read(P3) & bm_INT1;
+      cl_address_space *bas= uc->address_space("bits");
+      cell_it0= register_cell(bas, 0x88);
+      cell_it1= register_cell(bas, 0x8a);
     }
   return(0);
 }
@@ -79,7 +82,11 @@ cl_interrupt::added_to_uc(void)
 void
 cl_interrupt::write(class cl_memory_cell *cell, t_mem *val)
 {
-  if (cell == cell_tcon)
+  if (cell == cell_it0)
+    bit_IT0= *val;
+  else if (cell == cell_it1)
+    bit_IT1= *val;
+  else if (cell == cell_tcon)
     {
       bit_IT0= *val & bmIT0;
       bit_IT1= *val & bmIT1;
