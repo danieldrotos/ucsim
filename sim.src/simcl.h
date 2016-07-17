@@ -61,9 +61,6 @@ public:
   unsigned long steps_done;
   unsigned long steps_todo; // use this if not 0
   
-  //char *accept_args;
-  //class cl_list *arguments;
-  
 public:
   cl_sim(class cl_app *the_app);
   virtual ~cl_sim(void);
@@ -74,9 +71,6 @@ public:
 
   virtual class cl_uc *get_uc(void) { return(uc); }
 
-  // messages from app to handle and broadcast
-  //virtual void mem_cell_changed(class cl_address_space *m, t_addr addr);
-  
   virtual void start(class cl_console_base *con, unsigned long steps_to_do);
   virtual void stop(int reason);
   virtual void stop(class cl_ev_brk *brk);
