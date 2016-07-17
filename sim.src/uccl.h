@@ -127,11 +127,8 @@ public:
   virtual void reset(void);
 
   // making objects
-  //virtual class cl_m *mk_mem(enum mem_class type, char *class_name);
   virtual void make_memories(void);
   virtual void make_variables(void);
-  //virtual t_addr get_mem_size(char *id);
-  //virtual int get_mem_width(char *id);
   virtual void mk_hw_elements(void);
   virtual void build_cmdset(class cl_cmdset *cmdset);
 
@@ -241,7 +238,6 @@ public:
 
   // messages from app to handle and broadcast
   virtual bool handle_event(class cl_event &event);
-  //virtual void mem_cell_changed(class cl_address_space *mem, t_addr addr);
   virtual void address_space_added(class cl_address_space *as);
 
   // Error handling
