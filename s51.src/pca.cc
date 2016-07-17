@@ -71,6 +71,8 @@ cl_pca::init(void)
     }
   cell_cl= sfr->get_cell(CL);//use_cell(sfr, CL);
   cell_ch= sfr->get_cell(CH);//use_cell(sfr, CH);
+  cl_address_space *bas= uc->address_space("bits");
+  cell_cr= register_cell(bas, 0xda);
   return(0);
 }
 
@@ -129,6 +131,10 @@ cl_pca::write(class cl_memory_cell *cell, t_mem *val)
   else if (cell == cell_ccon)
     {
       bit_CR= *val & bmCR;
+    }
+  else if (cell == cell_cr)
+    {
+      bit_CR= *val;
     }
   else
     {
