@@ -252,6 +252,19 @@ enum letter_case {
 };
 
 
+/* Simulator interface config memory addresses */
+enum simif_cfg {
+  simif_run		= 0, // RW
+  simif_start		= 1, // RW
+  simif_stop		= 2, // RW
+  simif_quit		= 3, // W
+  simif_reason		= 4, // R
+  simif_xtal		= 5, // RW
+  simif_ticks		= 6, // R
+  simif_isr_ticks	= 7, // R
+  simif_idle_ticks	= 8, // R
+};
+
 #endif
 
 /* End of stypes.h */

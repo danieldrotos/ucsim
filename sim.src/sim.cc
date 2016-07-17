@@ -140,6 +140,9 @@ cl_sim::stop(int reason)
   class cl_commander_base *cmd= app->get_commander();
 
   state&= ~SIM_GO;
+  if (simif)
+    simif->cfg_set(simif_reason, reason);
+  
   if (cmd->frozen_console)
     {
       if (reason == resUSER &&

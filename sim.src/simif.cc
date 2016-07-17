@@ -526,11 +526,23 @@ cl_simulator_interface::init(void)
   c->init();
 
   cl_var *v;
-  uc->vars->add(v= new cl_var(cchars("sim_run"), cfg, 0));
+  uc->vars->add(v= new cl_var(cchars("sim_run"), cfg, simif_run));
   v->init();
-  uc->vars->add(v= new cl_var(cchars("sim_start"), cfg, 1));
+  uc->vars->add(v= new cl_var(cchars("sim_start"), cfg, simif_start));
   v->init();
-  uc->vars->add(v= new cl_var(cchars("sim_stop"), cfg, 2));
+  uc->vars->add(v= new cl_var(cchars("sim_stop"), cfg, simif_stop));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_quit"), cfg, simif_quit));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_reason"), cfg, simif_reason));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_xtal"), cfg, simif_xtal));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_ticks"), cfg, simif_ticks));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_isr_ticks"), cfg, simif_isr_ticks));
+  v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_idle_ticks"), cfg, simif_idle_ticks));
   v->init();
   
   return(0);
@@ -662,7 +674,7 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
   switch (addr)
     {
-    case 0: // simulator state: true= run, false= stop
+    case simif_run: // simulator runing: true= run, false= stop
       if (val)
 	{
 	  if (*val)
@@ -677,7 +689,7 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set(i?1:0);
 	}
       break;
-    case 1: // start simulation
+    case simif_start: // start simulation
       if (val)
 	uc->sim->start(0, 0), *val= 1;
       else
@@ -687,7 +699,7 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set(i?1:0);
 	}
       break;
-    case 2: // stop simulation
+    case simif_stop: // stop simulation
       if (val)
 	uc->sim->stop(resSIMIF), *val= 1;
       else
@@ -696,6 +708,33 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  i= i & SIM_GO;
 	  cell->set((!i)?1:0);
 	}
+      break;
+    case simif_quit: // quit
+      if (val)
+	uc->sim->state|= SIM_QUIT;
+      break;
+    case simif_reason: // reason of last stop
+      if (val)
+	*val= cell->get();
+    case simif_xtal: // xtal frequ
+      if (val)
+	uc->xtal= *val;
+      cell->set(uc->xtal);
+      break;
+    case simif_ticks: // tick counter
+      if (val)
+	*val= cell->get();
+      cell->set(uc->ticks->ticks);
+      break;
+    case simif_isr_ticks: // isr tick counter
+      if (val)
+	*val= cell->get();
+      cell->set(uc->isr_ticks->ticks);
+      break;
+    case simif_idle_ticks: // idle tick counter
+      if (val)
+	*val= cell->get();
+      cell->set(uc->idle_ticks->ticks);
       break;
     }
   return cell->get();

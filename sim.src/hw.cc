@@ -152,6 +152,12 @@ cl_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 }
 
 void
+cl_hw::cfg_set(t_addr addr, t_mem val)
+{
+  cfg->set(addr, val);
+}
+
+void
 cl_hw::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 {
   con->dd_printf("Nothing to do\n");
