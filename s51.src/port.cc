@@ -80,11 +80,15 @@ cl_port::init(void)
     default: addr_p= P0; return(1);
     }
   class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  bas= uc->address_space("bits");
   if (!sfr)
     {
       fprintf(stderr, "No SFR to register port into\n");
     }
   cell_p= register_cell(sfr, addr_p);
+  int i;
+  for (i= 0; i < 8; i++)
+    bit_cells[i]= register_cell(bas, addr_p+i);
   prev= cell_p->get();
   return(0);
 }
@@ -92,19 +96,47 @@ cl_port::init(void)
 t_mem
 cl_port::read(class cl_memory_cell *cell)
 {
-  return(cell->get() & port_pins);
+  if (cell == cell_p)
+    return(cell->get() & port_pins);
+  t_addr ba;
+  if (bas->is_owned(cell, &ba))
+    {
+      int bi= ba - addr_p;
+      bool cv= cell->get();
+      bool pv= port_pins & (1 << bi);
+      return (cv && pv)?1:0;
+    }
+  return cell->get();
 }
 
 void
 cl_port::write(class cl_memory_cell *cell, t_mem *val)
 {
   struct ev_port_changed ep;
-
-  (*val)&= 0xff; // 8 bit port
+  uint8_t nv= *val;
+  t_addr ba;
+  
+  if (cell == cell_p)
+    {
+      (*val)&= 0xff; // 8 bit port
+      nv= *val;
+    }
+  
+  if (bas->is_owned(cell, &ba))
+    {
+      int bi= ba - addr_p;
+      int m= 1 << bi;
+      nv= cell_p->get();
+      if (*val)
+	nv|= m;
+      else
+	nv&= ~m;
+    }
+  
   ep.id= id;
   ep.addr= addr_p;
   ep.prev_value= cell_p->get();
-  ep.new_value= *val;
+  ep.new_value= nv;
   ep.pins= ep.new_pins= port_pins;
   if (ep.prev_value != ep.new_value)
     inform_partners(EV_PORT_CHANGED, &ep);
