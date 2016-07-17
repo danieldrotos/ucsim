@@ -208,12 +208,9 @@ cl_51core::make_memories(void)
   xram= as= new cl_address_space(MEM_XRAM_ID/*"xram"*/, 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
-  bits= as= new cl_address_space("bits", 0, 0x100, 1);
-  as->init();
-  address_spaces->add(as);
   
   class cl_address_decoder *ad;
-  class cl_memory_chip *chip, *sfr_chip;
+  class cl_memory_chip *chip, *sfr_chip, *iram_chip;
 
   chip= new cl_memory_chip("rom_chip", 0x10000, 8, 0/*, 0xff*/);
   chip->init();
@@ -224,7 +221,7 @@ cl_51core::make_memories(void)
   as->decoders->add(ad);
   ad->activate(0);
 
-  chip= new cl_memory_chip("iram_chip", 0x80, 8);
+  chip= iram_chip= new cl_memory_chip("iram_chip", 0x80, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= iram/*address_space(MEM_IRAM_ID)*/,
@@ -292,6 +289,22 @@ cl_51core::make_memories(void)
   dptr->decoders->add(ad);
   ad->activate(0);
   address_spaces->add(dptr);
+
+  bits= as= new cl_address_space("bits", 0, 0x100, 1);
+  as->init();
+  address_spaces->add(as);
+  ad= new cl_bander(bits, 0, 127,
+		    iram_chip, 32,
+		    8, 1);
+  ad->init();
+  bits->decoders->add(ad);
+  ad->activate(0);
+  ad= new cl_bander(bits, 128, 255,
+		    sfr_chip, 0,
+		    8, 8);
+  ad->init();
+  bits->decoders->add(ad);
+  ad->activate(0);
 }
 
 
