@@ -67,8 +67,8 @@ cl_51core::inst_rrc(uchar code)
   bool cy;
   uchar ac;
 
-  cy= SFR_GET_C;
-  SFR_SET_C((ac= acc->read()) & 0x01);
+  cy= /*SFR_GET_C*/bits->get(0xd7);
+  /*SFR_SET_C(*/bits->set(0xd7, (ac= acc->read()) & 0x01);
   ac>>= 1;
   if (cy)
     ac|= 0x80;
@@ -115,7 +115,7 @@ cl_51core::inst_add_a_Sdata(uchar code)
   newA= ((ac&0x0f)+(data&0x0f)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)) & 0x80;
   acc->write(ac+data);
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
@@ -143,7 +143,7 @@ cl_51core::inst_add_a_addr(uchar code)
   newA= ((ac&0x0f)+(data&0x0f)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)) & 0x80;
   acc->write(ac+data);
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
@@ -170,7 +170,7 @@ cl_51core::inst_add_a_Sri(uchar code)
   newA= ((ac&0x0f)+(data&0x0f)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)) & 0x80;
   acc->write(ac+data);
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
@@ -195,7 +195,7 @@ cl_51core::inst_add_a_rn(uchar code)
   newA= ((ac&0x0f)+(data&0x0f)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)) & 0x80;
   acc->write(ac+data);
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
@@ -214,8 +214,8 @@ cl_51core::inst_rlc(uchar code)
   bool cy;
   uchar ac;
 
-  cy= SFR_GET_C;
-  SFR_SET_C((ac= acc->get()) & 0x80);
+  cy= /*SFR_GET_C*/bits->get(0xd7);
+  /*SFR_SET_C(*/bits->set(0xd7, (ac= acc->get()) & 0x80);
   ac<<= 1;
   if (cy)
     ac|= 0x01;
@@ -238,11 +238,11 @@ cl_51core::inst_addc_a_Sdata(uchar code)
 
   data= fetch();
   ac  = acc->get();
-  newC= (((uint)ac+(uint)data+((orgC= SFR_GET_C)?1:0)) > 255)?0x80:0;
+  newC= (((uint)ac+(uint)data+((orgC= /*SFR_GET_C*/bits->get(0xd7))?1:0)) > 255)?0x80:0;
   newA= ((ac&0x0f)+(data&0x0f)+(orgC?1:0)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)+(orgC?1:0)) & 0x80;
   acc->write(ac + data + (orgC?1:0));
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
@@ -266,11 +266,11 @@ cl_51core::inst_addc_a_addr(uchar code)
   cell= get_direct(a= fetch());
   data= cell->read();
   ac  = acc->get();
-  newC= (((uint)ac+(uint)data+((orgC= SFR_GET_C)?1:0)) > 255)?0x80:0;
+  newC= (((uint)ac+(uint)data+((orgC= /*SFR_GET_C*/bits->get(0xd7))?1:0)) > 255)?0x80:0;
   newA= ((ac&0x0f)+(data&0x0f)+(orgC?1:0)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)+(orgC?1:0)) & 0x80;
   acc->write(ac + data + (orgC?1:0));
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
@@ -293,11 +293,11 @@ cl_51core::inst_addc_a_Sri(uchar code)
   cell= iram->get_cell(get_reg(code & 0x01)->read());
   ac  = acc->get();
   data= cell->read();
-  newC= (((uint)ac+(uint)data+((orgC= SFR_GET_C)?1:0)) > 255)?0x80:0;
+  newC= (((uint)ac+(uint)data+((orgC= /*SFR_GET_C*/bits->get(0xd7))?1:0)) > 255)?0x80:0;
   newA= ((ac&0x0f)+(data&0x0f)+(orgC?1:0)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)+(orgC?1:0)) & 0x80;
   acc->write(ac + data + (orgC?1:0));
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
@@ -318,11 +318,11 @@ cl_51core::inst_addc_a_rn(uchar code)
 
   data= get_reg(code & 0x07)->read();
   ac  = acc->get();
-  newC= (((uint)ac+(uint)data+((orgC= SFR_GET_C)?1:0)) > 255)?0x80:0;
+  newC= (((uint)ac+(uint)data+((orgC= /*SFR_GET_C*/bits->get(0xd7))?1:0)) > 255)?0x80:0;
   newA= ((ac&0x0f)+(data&0x0f)+(orgC?1:0)) & 0xf0;
   c6  = ((ac&0x7f)+(data&0x7f)+(orgC?1:0)) & 0x80;
   acc->write(ac + data + (orgC?1:0));
-  SFR_SET_C(newC);
+  /*SFR_SET_C(*/bits->set(0xd7, newC);
   SFR_SET_BIT(newC ^ c6, PSW, bmOV);
   SFR_SET_BIT(newA, PSW, bmAC);
   return(resGO);
