@@ -547,7 +547,9 @@ cl_bit_cell8::d()
 {
   if (!data)
     return 0;
-  return ((*((uint8_t*)data))&((uint8_t)mask))?1:0;
+  uint8_t x= *((uint8_t *)data);
+  x&= mask;
+  return x?1:0;
 }
 
 void
@@ -771,7 +773,10 @@ cl_memory_cell::write(t_mem val)
 t_mem
 cl_memory_cell::set(t_mem val)
 {
-  /* *data=*/d( val & mask);
+  if (width == 1)
+    d(val);
+  else
+    /* *data=*/d(val & mask);
   return /* *data*/d();
 }
 
