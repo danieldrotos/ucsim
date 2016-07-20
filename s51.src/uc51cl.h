@@ -70,7 +70,7 @@ public:
   // memories and cells for faster access
   class cl_address_space *sfr, *iram, *xram, *regs, *bits;
   class cl_address_space *dptr;
-  class cl_memory_cell *acc, *psw;
+  class cl_memory_cell *acc, *psw, *R[8];
 
 public:
   // Help to detect external it requests (falling edge)
@@ -123,7 +123,6 @@ protected:
   virtual int  idle_pd(void);
 
   virtual class cl_memory_cell *get_direct(t_mem addr);
-  virtual class cl_memory_cell *get_reg(uchar regnum);
 
   virtual int   exec_inst(void);
   //virtual void  post_inst(void);

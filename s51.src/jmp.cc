@@ -476,7 +476,7 @@ cl_51core::inst_cjne_Sri_Sdata_addr(uchar code)
   uchar data, jaddr;
   class cl_memory_cell *cell;
 
-  cell= iram->get_cell(get_reg(code & 0x01)->read());
+  cell= iram->get_cell(R[code & 0x01]->read());
   data = fetch();
   jaddr= fetch();
   tick(1);
@@ -500,7 +500,7 @@ cl_51core::inst_cjne_rn_Sdata_addr(uchar code)
   uchar data, jaddr;
   class cl_memory_cell *reg;
 
-  reg  = get_reg(code & 0x07);
+  reg  = R[code & 0x07];
   data = fetch();
   jaddr= fetch();
   tick(1);
@@ -547,7 +547,7 @@ cl_51core::inst_djnz_rn_addr(uchar code)
   uchar jaddr;
   class cl_memory_cell *reg;
 
-  reg  = get_reg(code & 0x07);
+  reg  = R[code & 0x07];
   jaddr= fetch();
   tick(1);
   t_mem r= reg->wadd(-1);

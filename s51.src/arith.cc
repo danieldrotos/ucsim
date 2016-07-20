@@ -163,7 +163,7 @@ cl_51core::inst_add_a_Sri(uchar code)
   bool newC, newA, c6;
   class cl_memory_cell *cell;
 
-  cell= iram->get_cell(get_reg(code & 0x01)->read());
+  cell= iram->get_cell(R[code & 0x01]->read());
   ac  = acc->get();
   data= cell->read();
   newC= (((uint)ac+(uint)data) > 255)?0x80:0;
@@ -189,7 +189,7 @@ cl_51core::inst_add_a_rn(uchar code)
   uchar data, ac;
   bool newC, newA, c6;
 
-  data= get_reg(code & 0x07)->read();
+  data= R[code & 0x07]->read();
   ac  = acc->get();
   newC= (((uint)ac+(uint)data) > 255)?0x80:0;
   newA= ((ac&0x0f)+(data&0x0f)) & 0xf0;
@@ -290,7 +290,7 @@ cl_51core::inst_addc_a_Sri(uchar code)
   bool orgC, newC, newA, c6;
   class cl_memory_cell *cell;
   
-  cell= iram->get_cell(get_reg(code & 0x01)->read());
+  cell= iram->get_cell(R[code & 0x01]->read());
   ac  = acc->get();
   data= cell->read();
   newC= (((uint)ac+(uint)data+((orgC= /*SFR_GET_C*/bits->get(0xd7))?1:0)) > 255)?0x80:0;
@@ -316,7 +316,7 @@ cl_51core::inst_addc_a_rn(uchar code)
   uchar data, ac;
   bool orgC, newC, newA, c6;
 
-  data= get_reg(code & 0x07)->read();
+  data= R[code & 0x07]->read();
   ac  = acc->get();
   newC= (((uint)ac+(uint)data+((orgC= /*SFR_GET_C*/bits->get(0xd7))?1:0)) > 255)?0x80:0;
   newA= ((ac&0x0f)+(data&0x0f)+(orgC?1:0)) & 0xf0;
@@ -427,7 +427,7 @@ cl_51core::inst_subb_a_Sri(uchar code)
   uchar data, ac, result, pw, c;
   class cl_memory_cell *cell;
 
-  cell= iram->get_cell(get_reg(code & 0x01)->read());
+  cell= iram->get_cell(R[code & 0x01]->read());
   data= cell->read();
   ac  = acc->get();
   result= ac-data;
@@ -456,7 +456,7 @@ cl_51core::inst_subb_a_rn(uchar code)
 {
   uchar data, ac, result, pw, c;
 
-  data= get_reg(code & 0x07)->read();
+  data= R[code & 0x07]->read();
   ac  = acc->get();
   result= ac-data;
   pw= psw->get();

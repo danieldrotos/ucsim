@@ -345,7 +345,8 @@ void
 cl_uc390::make_memories(void)
 {
   class cl_address_space *as;
-
+  int i;
+  
   rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x20000, 8);
   as->init();
   address_spaces->add(as);
@@ -421,23 +422,26 @@ cl_uc390::make_memories(void)
   b->add_bank(1, memory("iram_chip"), 8);
   b->add_bank(2, memory("iram_chip"), 16);
   b->add_bank(3, memory("iram_chip"), 24);
-
+  psw->write(0);
+  for (i= 0; i < 8; i++)
+    R[i]= regs->get_cell(i);
+  
   cl_var *v;
-  vars->add(v= new cl_var(cchars("r0"), regs, 0));
+  vars->add(v= new cl_var(cchars("R0"), regs, 0));
   v->init();
-  vars->add(v= new cl_var(cchars("r1"), regs, 1));
+  vars->add(v= new cl_var(cchars("R1"), regs, 1));
   v->init();
-  vars->add(v= new cl_var(cchars("r2"), regs, 2));
+  vars->add(v= new cl_var(cchars("R2"), regs, 2));
   v->init();
-  vars->add(v= new cl_var(cchars("r3"), regs, 3));
+  vars->add(v= new cl_var(cchars("R3"), regs, 3));
   v->init();
-  vars->add(v= new cl_var(cchars("r4"), regs, 4));
+  vars->add(v= new cl_var(cchars("R4"), regs, 4));
   v->init();
-  vars->add(v= new cl_var(cchars("r5"), regs, 5));
+  vars->add(v= new cl_var(cchars("R5"), regs, 5));
   v->init();
-  vars->add(v= new cl_var(cchars("r6"), regs, 6));
+  vars->add(v= new cl_var(cchars("R6"), regs, 6));
   v->init();
-  vars->add(v= new cl_var(cchars("r7"), regs, 7));
+  vars->add(v= new cl_var(cchars("R7"), regs, 7));
   v->init();
 
   bits= as= new cl_address_space("bits", 0, 0x100, 1);
