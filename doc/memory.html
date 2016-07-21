@@ -9,7 +9,7 @@
 
 Typical microprocessor system can look like this:
  
-<p><img src="cpu-mem.gif" border="0" alt="[CPU-memory connection]">
+<p><img src="cpu-mem.svg" border="0" alt="[CPU-memory connection]">
 
 
 <a name="address_space"><h3>Address space</h3></a>
@@ -40,7 +40,7 @@ location.
 cells. Cells are indexed from 0 up to size-1. Each cell stores some
 (usually 8) bits.
 
-<p><img src="chip.gif" border="0" alt="[Memory chip]">
+<p><img src="chip.svg" border="0" alt="[Memory chip]">
 
 
 <a name="address_decoder"><h3>Address decoder</h3></a>
@@ -51,7 +51,7 @@ to memory and translated to cell indexes. This is done by the
 lines and enables exactly one memory chip. This way cells of the
 memory chip appear in the address space.
 
-<p><img src="decoded.gif" boder="0" alt="[Decoded addresses]">
+<p><img src="decoded.svg" boder="0" alt="[Decoded addresses]">
 
 <p>It is possible that some addresses are not decoded. Writing to such
 an address results data to be lost. Reading of a non-decoded address
@@ -69,7 +69,7 @@ chip. Only one cell can be connected to each addresses but same cell
 can be connected to more than one address spaces. This is done by
 routing different control lines to the same chip through logic <b>L</b>:
 
-<p><img src="share-chip.gif" border="0" alt="[Sharing memchip]">
+<p><img src="share-chip.svg" border="0" alt="[Sharing memchip]">
 
 <p>Because each cell of a memory chip uses same read/write control, in
 real world it is not possible to share individual cells of a chip
