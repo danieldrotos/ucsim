@@ -215,8 +215,9 @@ static void
 print_help(char *name)
 {
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-hHVvP] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
-	 "       [-c file] [-s file] [-S optionlist]"
+  printf("Usage: %s [-hHVvPg] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
+	 "       [-C cfg_file] [-c file] [-s file] [-S optionlist]\n"
+	 "       [-a nr]"
 #ifdef SOCKET_AVAIL
 	 " [-Z portnum] [-k portnum]"
 #endif

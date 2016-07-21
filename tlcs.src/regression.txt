@@ -1,103 +1,18 @@
-bug-2175 as bug (#2524) SLA-t hibásan fordítja az as
 
-
-Summary for 'tlcs90': 2 abnormal stops ( 2 invalid instructions, ), 290 failures, 9499 tests, 1767 test cases, 2774744 bytes, 256935358 ticks
-   Failure: gen/tlcs90/bug-2175/bug-2175
-   Failure: gen/tlcs90/bug-2254/bug-2254
-   Failure: gen/tlcs90/bug-469671/bug-469671_storage_none
-   Failure: gen/tlcs90/bug-500536/bug-500536
-   Failure: results/tlcs90/bug-927659.out
-   Failure: results/tlcs90/bug1057979.out
-   Failure: gen/tlcs90/bug1477149/bug1477149_type_float
-   Failure: gen/tlcs90/bug1520966/bug1520966
-   Failure: gen/tlcs90/bug1551947/bug1551947
-   Failure: results/tlcs90/dhrystone.out
-   Failure: gen/tlcs90/float/float_operation_ADD
-   Failure: gen/tlcs90/float/float_operation_DIV
-   Failure: gen/tlcs90/float/float_operation_MUL
-   Failure: gen/tlcs90/float/float_operation_REVDIV
-   Failure: gen/tlcs90/float/float_operation_SUB
-   Failure: gen/tlcs90/float_single/float_single_func_ACOSF
-   Failure: gen/tlcs90/float_single/float_single_func_ASINF
-   Failure: gen/tlcs90/float_single/float_single_func_ATANF
-   Failure: gen/tlcs90/float_single/float_single_func_CEILF
-   Failure: gen/tlcs90/float_single/float_single_func_COSF
-   Failure: gen/tlcs90/float_single/float_single_func_COSHF
-   Failure: gen/tlcs90/float_single/float_single_func_EXPF
-   Failure: gen/tlcs90/float_single/float_single_func_FABSF
-   Failure: gen/tlcs90/float_single/float_single_func_FLOORF
-   Failure: gen/tlcs90/float_single/float_single_func_LOG10F
-   Failure: gen/tlcs90/float_single/float_single_func_LOGF
-   Failure: gen/tlcs90/float_single/float_single_func_SINF
-   Failure: gen/tlcs90/float_single/float_single_func_SINHF
-   Failure: gen/tlcs90/float_single/float_single_func_SQRTF
-   Failure: gen/tlcs90/float_single/float_single_func_TANF
-   Failure: gen/tlcs90/float_single/float_single_func_TANHF
-   Failure: gen/tlcs90/float_trans/float_trans_func_LOGF
-   Failure: gen/tlcs90/float_trans/float_trans_func_POWF
-   Failure: gen/tlcs90/float_trans/float_trans_func_SQRTF
-   Failure: gen/tlcs90/float_trans/float_trans_func_TANF
-   Failure: gen/tlcs90/gcc-torture-execute-20000603-1/gcc-torture-execute-20000603-1
-   Failure: gen/tlcs90/gcc-torture-execute-20000605-1/gcc-torture-execute-20000605-1
-   Failure: gen/tlcs90/gcc-torture-execute-20000731-1/gcc-torture-execute-20000731-1
-   Failure: gen/tlcs90/gcc-torture-execute-20001108-1/gcc-torture-execute-20001108-1
+Summary for 'tlcs90': 88 failures, 9594 tests, 1783 test cases, 2805727 bytes, 14862813 ticks
+   Failure: gen/tlcs90/bug1057979/bug1057979
+   Failure: gen/tlcs90/bug3474855/bug3474855
    Failure: gen/tlcs90/gcc-torture-execute-20010224-1/gcc-torture-execute-20010224-1
-   Failure: gen/tlcs90/gcc-torture-execute-20010910-1/gcc-torture-execute-20010910-1
-   Failure: gen/tlcs90/gcc-torture-execute-20020201-1/gcc-torture-execute-20020201-1
-   Failure: gen/tlcs90/gcc-torture-execute-20020226-1/gcc-torture-execute-20020226-1
-   Failure: gen/tlcs90/gcc-torture-execute-20020508-1/gcc-torture-execute-20020508-1
-   Failure: gen/tlcs90/gcc-torture-execute-20020508-2/gcc-torture-execute-20020508-2
-   Failure: gen/tlcs90/gcc-torture-execute-20020508-3/gcc-torture-execute-20020508-3
-   Failure: gen/tlcs90/gcc-torture-execute-20021120-1/gcc-torture-execute-20021120-1
-   Failure: results/tlcs90/gcc-torture-execute-20021120-3.out
    Failure: gen/tlcs90/gcc-torture-execute-20030221-1/gcc-torture-execute-20030221-1
    Failure: gen/tlcs90/gcc-torture-execute-20030626-2/gcc-torture-execute-20030626-2
    Failure: gen/tlcs90/gcc-torture-execute-20031012-1/gcc-torture-execute-20031012-1
-   Failure: gen/tlcs90/gcc-torture-execute-20041011-1/gcc-torture-execute-20041011-1
-   Failure: gen/tlcs90/gcc-torture-execute-20041113-1/gcc-torture-execute-20041113-1
-   Failure: gen/tlcs90/gcc-torture-execute-20071030-1/gcc-torture-execute-20071030-1
    Failure: gen/tlcs90/gcc-torture-execute-20111208-1/gcc-torture-execute-20111208-1
-   Failure: gen/tlcs90/gcc-torture-execute-920829-1/gcc-torture-execute-920829-1
-   Failure: gen/tlcs90/gcc-torture-execute-921208-1/gcc-torture-execute-921208-1
-   Failure: gen/tlcs90/gcc-torture-execute-930106-1/gcc-torture-execute-930106-1
-   Failure: gen/tlcs90/gcc-torture-execute-930603-1/gcc-torture-execute-930603-1
    Failure: gen/tlcs90/gcc-torture-execute-950426-1/gcc-torture-execute-950426-1
-   Failure: gen/tlcs90/gcc-torture-execute-950511-1/gcc-torture-execute-950511-1
-   Failure: gen/tlcs90/gcc-torture-execute-961213-1/gcc-torture-execute-961213-1
    Failure: gen/tlcs90/gcc-torture-execute-980506-3/gcc-torture-execute-980506-3
-   Failure: gen/tlcs90/gcc-torture-execute-990117-1/gcc-torture-execute-990117-1
-   Failure: gen/tlcs90/gcc-torture-execute-990404-1/gcc-torture-execute-990404-1
-   Failure: gen/tlcs90/gcc-torture-execute-990829-1/gcc-torture-execute-990829-1
-   Failure: gen/tlcs90/gcc-torture-execute-991016-1/gcc-torture-execute-991016-1
-   Failure: gen/tlcs90/gcc-torture-execute-loop-7/gcc-torture-execute-loop-7
-   Failure: gen/tlcs90/gcc-torture-execute-postmod-1/gcc-torture-execute-postmod-1
-   Failure: gen/tlcs90/gcc-torture-execute-pr20527-1/gcc-torture-execute-pr20527-1
-   Failure: gen/tlcs90/gcc-torture-execute-pr27285/gcc-torture-execute-pr27285
-   Failure: results/tlcs90/gcc-torture-execute-pr28982a.out
-   Failure: gen/tlcs90/gcc-torture-execute-pr47538/gcc-torture-execute-pr47538
-   Failure: gen/tlcs90/gcc-torture-execute-stdarg-3/gcc-torture-execute-stdarg-3
-   Failure: gen/tlcs90/gcc-torture-execute-stdarg-4/gcc-torture-execute-stdarg-4
-   Failure: gen/tlcs90/gcc-torture-execute-stdarg-5/gcc-torture-execute-stdarg-5_inlined_no
-   Failure: gen/tlcs90/gcc-torture-execute-stdarg-5/gcc-torture-execute-stdarg-5_inlined_yes
    Failure: gen/tlcs90/gcc-torture-execute-string-opt-5/gcc-torture-execute-string-opt-5
-   Failure: gen/tlcs90/longlong/longlong
    Failure: gen/tlcs90/memory/memory
-   Failure: gen/tlcs90/rotate/rotate_msb_0_size_32
-   Failure: gen/tlcs90/rotate/rotate_msb_1_size_32
    Failure: results/tlcs90/setjmp.out
-   Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_char_attr_volatile_sign_signed
-   Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_char_attr_volatile_sign_unsigned
-   Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_int_attr_volatile_sign_signed
-   Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_int_attr_volatile_sign_unsigned
-   Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_long_attr_volatile_sign_signed
-   Failure: gen/tlcs90/shifts/shifts_vals_3_storage_none_type_long_attr_volatile_sign_unsigned
-   Failure: gen/tlcs90/simplefloat/simplefloat
-   Invalid instruction: gen/tlcs90/snprintf/snprintf_type_INT
-   abnormal stop: gen/tlcs90/snprintf/snprintf_type_INT
-   Invalid instruction: gen/tlcs90/snprintf/snprintf_type_LONG
-   abnormal stop: gen/tlcs90/snprintf/snprintf_type_LONG
    Failure: gen/tlcs90/snprintf/snprintf_type_STRING
    Failure: gen/tlcs90/string/string
-   Failure: gen/tlcs90/swap/swap
 
-drdani@p4:~/prj/s6/support/regression$ 
+drdani@anb:~/prj/s6/support/regression$ 
