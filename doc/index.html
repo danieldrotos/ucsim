@@ -3,9 +3,10 @@
     <meta content="text/html; charset=ISO-8859-2" http-equiv="content-type">
     <title>Mikrocontroller Simulator</title>
   </head>
-  <body style="  background-color: white;"> [ <a href="#download">Download</a>
-    ] [ <a href="#install">Installation</a> ] [ <a href="#use">Usage</a> ] [ <a
-      href="mailto:drdani@mazsola.iit.uni-miskolc.hu">Mail to developer</a> ]
+  <body style="    background-color: white;"> [ <a href="news.html">News</a> ]
+    [ <a href="#download">Download</a> ] [ <a href="#install">Installation</a>
+    ] [ <a href="#use">Usage</a> ] [ <a href="mailto:drdani@mazsola.iit.uni-miskolc.hu">Mail
+      to developer</a> ]
     <p> </p>
     <pre><tt><font size="+1">
         _____     _           
@@ -20,9 +21,11 @@
     <h1>Software simulator for microcontrollers</h1>
     <b><i>&#181;Csim</i></b> can be used to simulate microcontrollers. It supports
     MCS51 family, AVR core, Z80, HC08, ST7, STM8, TLCS90 and XA51. It can run on
-    Linux, Windows, OSX, BSD, and other systems. <a name="download">
-      <h2>Download</h2>
-    </a> There are two places where you can download <i>&#181;Csim</i> from:<br>
+    Linux, Windows, OSX, BSD, and other systems.<br>
+    <br>
+    See <a href="news.html">what's new</a> in current version.<br>
+    <h2><a name="download">Download</a></h2>
+    There are two places where you can download <i>&#181;Csim</i> from:<br>
     <ol>
       <li>SDCC homepage. <i>&#181;Csim</i> is part of the SDCC (Small Device C
         Compiler) project. You can download source of SDCC and precompiled
@@ -40,22 +43,24 @@
         directory <b>ucsim-X.Y.Z</b> where X.Y.Z is the version number. </li>
       <li>Go to the directory and configure the package. Issue <tt><b>configure</b></tt>
         command. It will determine your system and make <b>Makefile</b>.
-        Installation directory can be specified with <b><tt>--<!-- -- -->prefix=<i>dir</i></tt></b>
+        Installation directory can be specified with <b><tt>--prefix=<i>dir</i></tt></b><!-- -- -->
         option to the <tt><b>configure</b></tt>. Default directory is <tt>/usr/local</tt>.
         Executable file will be placed in <tt>bin</tt> subdirectory. </li>
       <li>Compile the package with <tt><b>make</b></tt> command. </li>
       <li>Install executables <b>s51</b>, <b>savr</b>, <b>shc08</b>, <b>sxa</b>,
         <b>sz80, etc.</b> to any directory you want. It can be done with <tt><b>make
             install</b></tt> command which will place files in installation
-        directory specified with <tt><b>--<!-- --
--->prefix=<i>dir</i></b></tt> option of <tt><b>configure</b></tt>. Note that
-        you may have to have special privilege to do this if installation
-        directory is not writeable by you. </li>
+        directory specified with <tt><b>--prefix=<i>dir</i></b><!-- --
+--></tt> option of <tt><b>configure</b></tt>. Note that you may have to have
+        special privilege to do this if installation directory is not writeable
+        by you. </li>
     </ol>
     <!-- USE -->
     <h2><a name="use">How to use</a></h2>
-    <a href="invoke.html">Invokation</a>. <br>
-    Starting the simulator program.
+    <ul>
+      <li> <a href="invoke.html">Invokation</a>.<br>
+        Starting the simulator program. </li>
+    </ul>
     <p><b>Features of the simulator</b> </p>
     <ul>
       <li><a href="analyzer.html">Code analyzer</a>. <br>
