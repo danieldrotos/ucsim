@@ -229,6 +229,8 @@ cl_io::check_dev(void)
 		else if (vk == VK_HOME)		pick("\033[1~");
 		else if (vk == VK_LEFT)		pick("\033[D");
 		else if (vk == VK_RIGHT)	pick("\033[C");
+		else if (vk == VK_UP)		pick("\033[A");
+		else if (vk == VK_DOWN)		pick("\033[B");
 		else if (vk == VK_INSERT)	pick("\033[2~");
 		else if (vk == VK_DELETE)	pick("\033[3~");
 		else if ((vk >= 0x30) &&
