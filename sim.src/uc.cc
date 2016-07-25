@@ -1324,7 +1324,8 @@ cl_uc::symbol2address(char *sym, struct name_entry tab[],
   int i;
 
   if (!sym ||
-      !*sym)
+      !*sym ||
+      !tab)
     return(false);
   i= 0;
   while (tab[i].name &&
