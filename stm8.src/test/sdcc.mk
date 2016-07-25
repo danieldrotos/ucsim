@@ -35,7 +35,8 @@ $(MAIN).ihx: $(OBJECTS)
 
 clean:
 	rm -f $(ALL:=.rel) $(ALL:=.asm) $(ALL:=.lst) $(ALL:=.rst) $(ALL:=.sym) $(ALL:=.adb)
-	rm -f $(MAIN).ihx $(MAIN).hex $(MAIN).lk $(MAIN).map $(MAIN).mem $(MAIN).cdb $(MAIN).omf $(MAIN).noi
+	rm -f $(MAIN).ihx $(MAIN).hex $(MAIN).lk $(MAIN).map $(MAIN).mem $(MAIN).cdb $(MAIN).omf $(MAIN).noi $(MAIN).adb $(MAIN).sym $(MAIN).cdb
+	rm -f *.ihx *.hex
 	rm -f *~
 	rm -f $(MAIN).dep
 
