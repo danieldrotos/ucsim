@@ -42,13 +42,14 @@ _sdcc_external_startup (void)
   return 0;
 }
 
-void
-putchar (char c)
+int
+putchar (int c)
 {
   while (!TI)
     ;
   SBUF = c;
   TI = 0;
+  return c;
 }
 
 #define SIF_ADDRESS_SPACE_NAME	"xram"
