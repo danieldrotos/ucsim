@@ -1,20 +1,22 @@
 <html>
-<head>
-<title>&micro;Csim: Command Reference</title>
-</head>
-
-<body bgcolor="white">
-
-<h1>Command reference</h1>
-
-
-<p>The simulator can be controlled with a simple monitor program which
-uses the command console to read commands and print out results. After
-starting the program you see a prompt on the command console and you
-can write in commands after the prompt:
-
-<a name="help_example"><pre>
-<a href="cmd.html#g">g</a> [start [stop]]   Go
+  <head>
+    <meta content="text/html; charset=ISO-8859-2" http-equiv="content-type">
+    <title>&#181;Csim: Command Reference</title>
+  </head>
+  <body bgcolor="white">
+    <h1>Command reference</h1>
+    <p>The simulator can be controlled with a simple monitor program which
+      uses the command console to read commands and print out results. After
+      starting the program you see a prompt on the command console and you
+      can write in commands after the prompt:
+      <a name="help_example"></a></p>
+    <pre><a href="cmd.html#conf">conf</a>               Configuration
+<a href="cmd.html#h">help,?</a>             Help about commands
+<a href="cmd.html#q">quit</a>               Quit
+<a href="cmd.html#kill">kill</a>               Shut down the simulator
+exec file          Execute commands from file<br>expression expr    Evaluate the expression<br><a
+href="cmd.html#show">show c|w</a>           Show licensing information
+<br><a href="cmd.html#g">g</a> [start [stop]]   Go
 <a href="cmd.html#stop">stop</a>               Stop
 <a href="cmd.html#pc">pc [address]</a>       Get/set content of PC
 <a href="cmd.html#s">s [step]</a>           Step
@@ -44,10 +46,8 @@ can write in commands after the prompt:
 <a href="cmd.html#wc">wc,Wc string</a>       Search for `string' in ROM (Wc case sensitive)
 <a href="cmd.html#sopt">sopt opt value</a>     Set value of option
 <a href="cmd.html#gopt">gopt [opt]</a>         Get value of option(s)
-<a href="cmd.html#show">show c|w</a>           Show licensing information
 ----
 Set of new commands:
-<a href="cmd.html#conf">conf</a>               Configuration
 <a href="cmd.html#state">state</a>              State of simulator
 <a href="cmd.html#file">file,load "FILE"</a>   Load FILE into ROM
 <a href="cmd.html#dl">download,dl</a>        Download (intel hex) data
@@ -68,16 +68,12 @@ dump i|x|r|s [start [stop]]
 <a href="cmd.html#break">break addr [hit]</a>   Set fix breakpoint
 <a href="cmd.html#tbreak">tbreak addr [hit]</a>  Set temporary breakpoint
 <a href="cmd.html#clear">clear [addr...]</a>    Clear fix breakpoint
-<a href="cmd.html#h">help,?</a>             Help about commands
-<a href="cmd.html#q">quit</a>               Quit
-<a href="cmd.html#kill">kill</a>               Shut down the simulator
-</pre></a>
-
 In <a href="cmd.html">command reference</a> you can find more
 information about breakpoints and execution of the simulated program.
 
 
-<hr>
+</pre><hr>
 
-</body>
-</html>
+
+
+</body></html>
