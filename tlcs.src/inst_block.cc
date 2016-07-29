@@ -125,7 +125,7 @@ cl_tlcs::lddr()
 int
 cl_tlcs::cpi()
 {
-  reg.f&= ~(FLAG_S|FLAG_N|FLAG_H|FLAG_X|FLAG_V);
+  reg.f&= ~(FLAG_Z|FLAG_S|FLAG_N|FLAG_H|FLAG_X|FLAG_V);
   reg.f|= FLAG_N;
   int a= reg.a;
   int d= nas->read(reg.hl);
@@ -136,7 +136,7 @@ cl_tlcs::cpi()
 
   if (r == 0)
     reg.f|= FLAG_Z;
-  if (reg.bc == 0)
+  if (reg.bc != 0)
     reg.f|= FLAG_V;
   if (a == d)
     reg.f|= FLAG_N;
