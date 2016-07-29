@@ -178,7 +178,7 @@ cl_tlcs::cpd()
 
   if (r == 0)
     reg.f|= FLAG_Z;
-  if (reg.bc == 0)
+  if (reg.bc != 0)
     reg.f|= FLAG_V;
   if (a == d)
     reg.f|= FLAG_N;
