@@ -674,7 +674,7 @@ cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
 t_mem
 cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
-  switch (addr)
+  switch ((enum simif_cfg)addr)
     {
     case simif_on: // turn this HW on/off
       if (val)
