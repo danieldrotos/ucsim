@@ -30,7 +30,39 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef SERIAL_HWCL_HEADER
 #define SERIAL_HWCL_HEADER
 
+#include "newcmdposixcl.h"
+
 #include "hwcl.h"
+
+
+class cl_serial_hw: public cl_hw
+{
+ protected:
+  class cl_optref *serial_in_file_option;
+  class cl_optref *serial_out_file_option;
+  class cl_optref *serial_port_option;
+  class cl_serial_listener *listener;
+  class cl_f *fin;	// Serial line input
+  class cl_f *fout;	// Serial line output
+ public:
+  cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
+  virtual ~cl_serial_hw(void);
+  virtual int init(void);
+  
+  virtual void new_io(class cl_f *f_in, class cl_f *f_out);
+};
+
+
+class cl_serial_listener: public cl_listen_console
+{
+ public:
+  class cl_serial_hw *serial_hw;
+  cl_serial_listener(int serverport, class cl_app *the_app,
+		     class cl_serial_hw *the_serial);
+  virtual int proc_input(class cl_cmdset *cmdset);
+  virtual bool prevent_quit(void) { return false; }
+};
+
 
 #endif
 
