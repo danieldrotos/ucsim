@@ -36,6 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // cmd.src
 #include "newcmdcl.h"
+#include "newcmdposixcl.h"
 
 // local
 #include "memcl.h"
@@ -82,7 +83,8 @@ class cl_hw: public cl_guiobj
   virtual void happen(class cl_hw * /*where*/, enum hw_event /*he*/,
                       void * /*params*/) {}
   virtual void inform_partners(enum hw_event he, void *params);
-
+  virtual void proc_input(class cl_f *fin, class cl_f *fout) {}
+  
   virtual void print_info(class cl_console_base *con);
 };
 
@@ -109,6 +111,20 @@ class cl_partner_hw: public cl_base
   virtual void refresh(class cl_hw *new_hw);
 
   virtual void happen(class cl_hw *where, enum hw_event he, void *params);
+};
+
+
+class cl_hw_io: public cl_console
+{
+ protected:
+  class cl_hw *hw;
+ public:
+  cl_hw_io(class cl_hw *ihw);
+  virtual int init(void);
+  
+  virtual int proc_input(class cl_cmdset *cmdset);
+  virtual bool prevent_quit(void) { return false; }
+  virtual void print_prompt(void) {}
 };
 
 

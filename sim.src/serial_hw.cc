@@ -39,19 +39,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_serial_hw::cl_serial_hw(class cl_uc *auc, int aid, chars aid_string):
   cl_hw(auc, HW_UART, aid, (const char *)aid_string)
 {
-  fin= 0;
-  fout= 0;
   listener= 0;
+  io= new cl_hw_io(this);
+  io->init();
 }
 
 cl_serial_hw::~cl_serial_hw(void)
 {
-  if (fout)
-    delete fout;
-  if (fin)
-    delete fin;
   delete serial_in_file_option;
   delete serial_out_file_option;
+  delete io;
 }
 
 int
@@ -61,6 +58,8 @@ cl_serial_hw::init(void)
 
   cl_hw::init();
 
+  input_avail= false;
+  
   s= format_string("serial%d_in_file", id);
   serial_in_file_option= new cl_optref(this);
   serial_in_file_option->init();
@@ -90,46 +89,81 @@ cl_serial_hw::init(void)
   if (f_serial_in)
     {
       if (f_serial_in[0] == '\001')
-	fin= (class cl_f *)(strtoll(&f_serial_in[1], 0, 0));
+	io->fin= (class cl_f *)(strtoll(&f_serial_in[1], 0, 0));
       else
-	fin= mk_io(chars(f_serial_in), cchars("r"));
-      //fin->save_attributes();
-      fin->set_terminal();
-      if (!fin->tty)
+	io->fin= mk_io(chars(f_serial_in), cchars("r"));
+      if (!io->fin->tty)
 	fprintf(stderr, "Warning: serial input interface connected to a "
 		"non-terminal file.\n");
     }
   else
-    fin= mk_io(chars(""), chars(""));
+    io->fin= mk_io(chars(""), chars(""));
   if (f_serial_out)
     {
       if (f_serial_out[0] == '\001')
-	fout= (class cl_f *)(strtoll(&f_serial_out[1], 0, 0));
+	io->fout= (class cl_f *)(strtoll(&f_serial_out[1], 0, 0));
       else
-	fout= mk_io(chars(f_serial_out), "w");
-      //fout->save_attributes();
-      fout->set_terminal();
-      if (!fout->tty)
+	io->fout= mk_io(chars(f_serial_out), "w");
+      io->fout->set_terminal();
+      if (!io->fout->tty)
 	fprintf(stderr, "Warning: serial output interface connected to a "
 		"non-terminal file.\n");
     }
   else
-    fout= mk_io(chars(""), chars(""));
+    io->fout= mk_io(chars(""), chars(""));
 
+  if (io->fin)
+    {
+      io->fin->interactive(NULL);
+      io->fin->raw();
+      io->fin->echo(NULL);
+    }
+  application->get_commander()->add_console(io);
+  
   return 0;
 }
 
 void
 cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 {
-  if (fin)
-    delete fin;
-  if (fout)
-    delete fout;
-  fin= f_in;
-  fout= f_out;
-  fin->set_terminal();
-  fout->set_terminal();
+  if (io->fin)
+    delete io->fin;
+  if (io->fout)
+    delete io->fout;
+  io->fin= f_in;
+  io->fout= f_out;
+  if (io->fin)
+    {
+      io->fin->interactive(NULL);
+      io->fin->raw();
+      io->fin->echo(NULL);
+    }
+  if (io->fout)
+    io->fout->set_terminal();
+  application->get_commander()->update_active();
+}
+
+void
+cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
+{
+  char c;
+
+  if (!input_avail)
+    {
+      if (fi->read(&c, 1))
+	{
+	  input= c;
+	  input_avail= true;
+	}
+      else
+	{
+	  delete io->fin;
+	  delete io->fout;
+	  io->fin= mk_io("", "");
+	  io->fout= mk_io("", "");
+	  application->get_commander()->update_active();
+	}
+    }
 }
 
 
@@ -146,6 +180,7 @@ cl_serial_listener::proc_input(class cl_cmdset *cmdset)
   class cl_f *i, *o;
 
   srv_accept(fin, &i, &o);
+  i->set_telnet(true);
   serial_hw->new_io(i, o);
   return 0;
 }

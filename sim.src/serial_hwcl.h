@@ -42,14 +42,16 @@ class cl_serial_hw: public cl_hw
   class cl_optref *serial_out_file_option;
   class cl_optref *serial_port_option;
   class cl_serial_listener *listener;
-  class cl_f *fin;	// Serial line input
-  class cl_f *fout;	// Serial line output
+  class cl_hw_io *io;
+  char input;
+  bool input_avail;
  public:
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
   virtual ~cl_serial_hw(void);
   virtual int init(void);
   
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
+  virtual void proc_input(class cl_f *fi, class cl_f *fo);
 };
 
 

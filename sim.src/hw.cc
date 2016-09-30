@@ -307,4 +307,30 @@ cl_partner_hw::happen(class cl_hw *where, enum hw_event he, void *params)
 }
 
 
+/*
+ *____________________________________________________________________________
+ */
+
+cl_hw_io::cl_hw_io(class cl_hw *ihw):
+  cl_console()
+{
+  hw= ihw;
+}
+
+int
+cl_hw_io::init(void)
+{
+  set_flag(CONS_NOWELCOME, true);
+  return 0;
+}
+
+int
+cl_hw_io::proc_input(class cl_cmdset *cmdset)
+{
+  if (hw)
+    hw->proc_input(get_fin(), get_fout());
+  return 0;
+}
+
+
 /* End of hw.cc */
