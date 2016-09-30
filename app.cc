@@ -98,8 +98,8 @@ cl_app::init(int argc, char *argv[])
 int
 cl_app::run(void)
 {
-  int done= 0;
-  double input_last_checked= 0, last_check= 0, now= 0;
+  int done= 0, now_cyc= 10000;
+  double input_last_checked= 0, last_check= 0, now= 0, last_now= 0;
   class cl_option *o= options->get_option("go");
   bool g_opt= false;
   unsigned int cyc= 0;
@@ -112,8 +112,27 @@ cl_app::run(void)
   
   while (!done)
     {
-      if ((++cyc % 1000000) == 0)
-	now= dnow();
+      if ((++cyc % now_cyc) == 0)
+	{
+	  now= dnow();
+	  if (last_now != 0)
+	    {
+	      double d= now - last_now;
+	      if (d > 0.25)
+		{
+		  now_cyc*= 0.9;
+		  if (now_cyc < 1000)
+		    now_cyc= 1000;
+		  printf("now_cyc=%d\n",now_cyc);
+		}
+	      if (d < 0.15)
+		{
+		  now_cyc*= 1.1;
+		  printf("now_cyc=%d\n",now_cyc);
+		}
+	    }
+	  last_now= now;
+	}
       if (!sim)
 	{
 	  commander->wait_input();
