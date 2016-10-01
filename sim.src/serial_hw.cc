@@ -117,7 +117,13 @@ cl_serial_hw::init(void)
       io->fin->interactive(NULL);
       io->fin->raw();
       io->fin->echo(NULL);
+      deb("** serial io fin %d\n", io->fin->file_id);
     }
+  if (io->fout)
+    {
+      deb("** serial io fount %d\n", io->fout->file_id);
+    }
+  
   application->get_commander()->add_console(io);
   
   return 0;
@@ -158,9 +164,9 @@ cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
       else
 	{
 	  delete io->fin;
-	  delete io->fout;
+	  //delete io->fout;
 	  io->fin= mk_io("", "");
-	  io->fout= mk_io("", "");
+	  //io->fout= mk_io("", "");
 	  application->get_commander()->update_active();
 	}
     }

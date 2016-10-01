@@ -235,9 +235,10 @@ cl_serial::tick(int cycles)
     {
       printf("** sent %c\n", s_out);
       s_sending= false;
-      if (io->fout)
+      //if (io->fout)
 	{
-	  io->fout->write((char*)(&s_out), 1);
+	  io->dd_printf("%c", s_out);
+	  //io->flush();
 	}
       s_tr_bit-= bits;
       if (s_tx_written)

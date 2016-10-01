@@ -25,12 +25,13 @@ void deb(chars format, ...)
   return;
   if (dd==NULL)
     {
-      dd= mk_io(cchars("/dev/pts/6"),cchars("w"));
+      dd= mk_io(cchars("/dev/pts/2"),cchars("w"));
       dd->init();
     }
   va_list ap;
   va_start(ap, format);
-  dd->vprintf(format, ap);
+  //dd->vprintf(format, ap);
+  vdprintf(dd->file_id, format, ap);
   va_end(ap);
 }
 

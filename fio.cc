@@ -945,7 +945,10 @@ cl_f::write(char *buf, int count)
   if (file_id >= 0)
     {
       if (type != F_SOCKET)
-	return ::write(file_id, buf, count);
+	{
+	  for (i=0;i<count;i++) {deb("+%c",buf[i]);fflush(stdout);}
+	  return ::write(file_id, buf, count);
+	}
       // on socket, assume telnet
       for (i= 0; i < count; i++)
 	{
