@@ -118,15 +118,15 @@ cl_app::run(void)
 	  if (last_now != 0)
 	    {
 	      double d= now - last_now;
-	      if (d > 0.19)
+	      if (d > 0.045)
 		{
-		  now_cyc*= 0.9;
+		  now_cyc*= 0.95;
 		  if (now_cyc < 1000)
 		    now_cyc= 1000;
 		}
-	      if (d < 0.15)
+	      if (d < 0.035)
 		{
-		  now_cyc*= 1.1;
+		  now_cyc*= 1.05;
 		}
 	    }
 	  last_now= now;
@@ -140,9 +140,9 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
-	      if (now - input_last_checked > 0.2)
+	      if (now - input_last_checked > 0.1)
 		{
-		  input_last_checked= now;
+		  input_last_checked= dnow();
 		  if (commander->input_avail())
 		    done= commander->proc_input();
                 }

@@ -25,7 +25,7 @@ void deb(chars format, ...)
   return;
   if (dd==NULL)
     {
-      dd= mk_io(cchars("/dev/pts/2"),cchars("w"));
+      dd= mk_io(cchars("/dev/pts/1"),cchars("w"));
       dd->init();
     }
   va_list ap;

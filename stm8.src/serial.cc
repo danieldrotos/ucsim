@@ -250,8 +250,8 @@ cl_serial::tick(int cycles)
       io->fin &&
       !s_receiving)
     {
-      if (io->fin->input_avail())
-	io->proc_input(0);
+      //if (io->fin->input_avail())
+      //io->proc_input(0);
       if (input_avail)
 	{
 	  s_receiving= true;
