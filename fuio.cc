@@ -9,11 +9,14 @@
 # include <arpa/inet.h>
 #endif
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
 #include <string.h>
 #include <stdarg.h>
+
+#include "utils.h"
 
 #include "fuiocl.h"
 
@@ -31,7 +34,12 @@ void deb(chars format, ...)
   va_list ap;
   va_start(ap, format);
   //dd->vprintf(format, ap);
-  vdprintf(dd->file_id, format, ap);
+  //vdprintf(dd->file_id, format, ap);
+  {
+    char *buf= vformat_string(format, ap);
+    dd->write(buf, strlen(buf));
+    free(buf);
+  }
   va_end(ap);
 }
 
