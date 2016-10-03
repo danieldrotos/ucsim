@@ -84,14 +84,14 @@ cl_serial::init(void)
     }
   else
     t2_baud= false;
-
+  /*
   cl_var *v;
   chars pn(id_string);
   pn.append("%d_", id);
   uc->vars->add(v= new cl_var(pn+chars("on"), cfg, serconf_on));
   uc->vars->add(v= new cl_var(pn+chars("check_often"), cfg, serconf_check_often));
   v->init();
-  
+  */
   return(0);
 }
 

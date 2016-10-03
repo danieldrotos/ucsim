@@ -129,7 +129,18 @@ cl_serial_hw::init(void)
   
   cfg_set(serconf_on, true);
   cfg_set(serconf_check_often, false);
-  cfg_set(serconf_escape, 'z'-'a'+1);
+  cfg_set(serconf_escape, 'x'-'a'+1);
+
+  cl_var *v;
+  chars pn(id_string);
+  pn.append("%d_", id);
+  uc->vars->add(v= new cl_var(pn+chars("on"), cfg, serconf_on));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("check_often"), cfg, serconf_check_often));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("esc_char"), cfg, serconf_escape));
+  v->init();
+		
   return 0;
 }
 
@@ -186,7 +197,7 @@ cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 void
 cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
 {
-  char c;
+  char c, esc= (char)cfg_get(serconf_escape);
   bool run= uc->sim->state & SIM_GO;
   
   if (fi->eof())
@@ -208,18 +219,20 @@ cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
 	{
 	  if (fi->read(&c, 1))
 	    {
-	      if (c == (char)cfg_get(serconf_escape))
+	      if (c == esc)
 		{
 		  menu= 'm';
 		  io->dd_printf("\n"
 				"Simulator control menu\n"
-				" z      Insert ^z\n"
+				" %c      Insert ^%c\n"
 				" s,r,g  Start simulation\n"
 				" p      Stop simulation\n"
 				" T      Reset CPU\n"
 				" q      Quit simulator\n"
 				" c      Close serial terminal\n"
 				" e      Exit menu\n"
+				,
+				'a'+esc-1, 'a'+esc-1
 				);
 		}
 	      else if (run)
@@ -237,18 +250,23 @@ cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
 	  switch (menu)
 	    {
 	    case 'm':
-	      switch (c)
+	      if ((c == esc-1+'a') ||
+		  (c == esc-1+'A') ||
+		  (c == esc))
 		{
-		case 'z': case 'z'-'a'-1: case 'Z':
-		  // insert ^Z
+		  // insert ^esc
 		  if (run && !input_avail)
 		    {
-		      input= 'z'-'a'+1, input_avail= true;
-		      io->dd_printf("^z interted.\n");
+		      input= esc, input_avail= true;
+		      io->dd_printf("^%c interted.\n", 'a'+esc-1);
 		    }
 		  else
 		    io->dd_printf("Control menu exited.\n");
 		  menu= 0;
+		}
+	      switch (c)
+		{
+		case 'z': case 'z'-'a'-1: case 'Z':
 		  break;
 		case 'e': case 'E': case 'e'-'a'+1:
 		  // exit menu
