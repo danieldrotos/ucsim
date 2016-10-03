@@ -123,11 +123,13 @@ cl_serial_hw::init(void)
     {
       deb("** serial io fount %d\n", io->fout->file_id);
     }
-  
+
+  menu= 0;
   application->get_commander()->add_console(io);
   
   cfg_set(serconf_on, true);
   cfg_set(serconf_check_often, false);
+  cfg_set(serconf_escape, 'z'-'a'+1);
   return 0;
 }
 
@@ -185,7 +187,8 @@ void
 cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
 {
   char c;
-
+  bool run= uc->sim->state & SIM_GO;
+  
   if (fi->eof())
     {
       if (io->fout &&
@@ -199,12 +202,106 @@ cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
       application->get_commander()->update_active();
       return;
     }
-  if (!input_avail)
+  if (menu == 0)
+    {
+      if (!input_avail || !run)
+	{
+	  if (fi->read(&c, 1))
+	    {
+	      if (c == (char)cfg_get(serconf_escape))
+		{
+		  menu= 'm';
+		  io->dd_printf("\n"
+				"Simulator control menu\n"
+				" z      Insert ^z\n"
+				" s,r,g  Start simulation\n"
+				" p      Stop simulation\n"
+				" T      Reset CPU\n"
+				" q      Quit simulator\n"
+				" c      Close serial terminal\n"
+				" e      Exit menu\n"
+				);
+		}
+	      else if (run)
+		{
+		  input= c;
+		  input_avail= true;
+		}
+	    }
+	}
+    }
+  else
     {
       if (fi->read(&c, 1))
 	{
-	  input= c;
-	  input_avail= true;
+	  switch (menu)
+	    {
+	    case 'm':
+	      switch (c)
+		{
+		case 'z': case 'z'-'a'-1: case 'Z':
+		  // insert ^Z
+		  if (run && !input_avail)
+		    {
+		      input= 'z'-'a'+1, input_avail= true;
+		      io->dd_printf("^z interted.\n");
+		    }
+		  else
+		    io->dd_printf("Control menu exited.\n");
+		  menu= 0;
+		  break;
+		case 'e': case 'E': case 'e'-'a'+1:
+		  // exit menu
+		  menu= 0;
+		  io->dd_printf("Control menu exited.\n");
+		  break;
+		case 's': case 'S': case 's'-'a'+1:
+		case 'r': case 'R': case 'r'-'a'+1:
+		case 'g': case 'G': case 'g'-'a'+1:
+		  // start
+		  uc->sim->start(0, 0);
+		  menu= 0;
+		  io->dd_printf("Simulation started.\n");
+		  break;
+		case 'p': case 'P': case 'p'-'a'+1:
+		  uc->sim->stop(resSIMIF);
+		  // stop
+		  menu= 0;
+		  io->dd_printf("Simulation stopped.\n");
+		  break;
+		case 'T':
+		  uc->reset();
+		  menu= 0;
+		  io->dd_printf("CPU reseted.\n");
+		  break;
+		case 'q': case 'Q': case 'q'-'a'+1:
+		  // kill
+		  uc->sim->state|= SIM_QUIT;
+		  menu= 0;
+		  io->dd_printf("Exit simulator.\n");
+		  break;
+		case 'c': case 'C': case 'c'-'a'+1:
+		  // close
+		  menu= 0;
+		  io->dd_printf("Closing terminal.\n");
+		  if (io->fout)
+		    {
+		      delete io->fout;
+		      io->fout= mk_io("", "");
+		    }
+		  if (io->fin)
+		    {
+		      delete io->fin;
+		      io->fin= mk_io("", "");
+		    }
+		  break;
+		default:
+		  menu= 0;
+		  io->dd_printf("Control menu closed (%d).\n", c);
+		  break;
+		}
+	      break;
+	    }
 	}
     }
 }

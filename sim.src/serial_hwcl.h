@@ -38,8 +38,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 enum serial_cfg {
   serconf_on	   	= 0,
   serconf_check_often	= 1,
-  serconf_common	= 2,
-  serconf_nr		= 2
+  serconf_escape	= 2,
+  serconf_common	= 3,
+  serconf_nr		= 3
 };
 
 
@@ -53,6 +54,7 @@ class cl_serial_hw: public cl_hw
   class cl_hw_io *io;
   char input;
   bool input_avail;
+  char menu;
  public:
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
   virtual ~cl_serial_hw(void);
