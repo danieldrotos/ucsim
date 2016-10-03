@@ -57,7 +57,7 @@ cl_serial_hw::init(void)
   char *s;
 
   cl_hw::init();
-
+  
   input_avail= false;
   
   s= format_string("serial%d_in_file", id);
@@ -126,7 +126,39 @@ cl_serial_hw::init(void)
   
   application->get_commander()->add_console(io);
   
+  cfg_set(serconf_on, true);
+  cfg_set(serconf_check_often, false);
   return 0;
+}
+
+t_mem
+cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch ((enum serial_cfg)addr)
+    {
+    case serconf_on: // turn this HW on/off
+      if (val)
+	{
+	  if (*val)
+	    on= true;
+	  else
+	    on= false;
+	}
+      else
+	{
+	  cell->set(on?1:0);
+	}
+      break;
+    case serconf_check_often:
+      if (val)
+	{
+	  cell->set(*val?1:0);
+	}
+      break;
+    default:
+      break;
+    }
+  return cell->get();
 }
 
 void
@@ -154,20 +186,25 @@ cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
 {
   char c;
 
+  if (fi->eof())
+    {
+      if (io->fout &&
+	  (io->fout->file_id == io->fin->file_id))
+	{
+	  delete io->fout;
+	  io->fout= mk_io("", "");
+	}
+      delete io->fin;
+      io->fin= mk_io("", "");
+      application->get_commander()->update_active();
+      return;
+    }
   if (!input_avail)
     {
       if (fi->read(&c, 1))
 	{
 	  input= c;
 	  input_avail= true;
-	}
-      else
-	{
-	  delete io->fin;
-	  //delete io->fout;
-	  io->fin= mk_io("", "");
-	  //io->fout= mk_io("", "");
-	  application->get_commander()->update_active();
 	}
     }
 }

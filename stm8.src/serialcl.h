@@ -40,10 +40,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "newcmdposixcl.h"
 
 
-enum serial_cfg {
-  serial_on	   	= 0,
-};
-
 class cl_serial_listener;
 
 enum reg_idx {

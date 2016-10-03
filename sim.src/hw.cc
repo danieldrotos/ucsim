@@ -159,6 +159,12 @@ cl_hw::cfg_set(t_addr addr, t_mem val)
   cfg->set(addr, val);
 }
 
+t_mem
+cl_hw::cfg_get(t_addr addr)
+{
+  return cfg->get(addr);
+}
+
 void
 cl_hw::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 {

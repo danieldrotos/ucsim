@@ -88,7 +88,8 @@ cl_serial::init(void)
   cl_var *v;
   chars pn(id_string);
   pn.append("%d_", id);
-  uc->vars->add(v= new cl_var(pn+chars("on"), cfg, serial_on));
+  uc->vars->add(v= new cl_var(pn+chars("on"), cfg, serconf_on));
+  uc->vars->add(v= new cl_var(pn+chars("check_often"), cfg, serconf_check_often));
   v->init();
   
   return(0);
@@ -207,9 +208,12 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
 t_mem
 cl_serial::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
+  if (addr < serconf_common)
+    return cl_serial_hw::conf_op(cell, addr, val);
   switch ((enum serial_cfg)addr)
     {
-    case serial_on: // turn this HW on/off
+      /*
+    case serial_:
       if (val)
 	{
 	  if (*val)
@@ -221,6 +225,9 @@ cl_serial::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	{
 	  cell->set(on?1:0);
 	}
+      break;
+      */
+    default:
       break;
     }
   return cell->get();
@@ -294,8 +301,11 @@ cl_serial::tick(int cycles)
       io->fin &&
       !s_receiving)
     {
-      //if (io->input_avail())
-      //io->proc_input(0);
+      if (cfg_get(serconf_check_often))
+	{
+	  if (io->input_avail())
+	    io->proc_input(0);
+	}
       if (/*fin->*/input_avail/*()*/)
 	{
 	  s_receiving= true;

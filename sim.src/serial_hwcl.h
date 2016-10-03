@@ -35,6 +35,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "hwcl.h"
 
 
+enum serial_cfg {
+  serconf_on	   	= 0,
+  serconf_check_often	= 1,
+  serconf_common	= 2,
+  serconf_nr		= 2
+};
+
+
 class cl_serial_hw: public cl_hw
 {
  protected:
@@ -49,7 +57,10 @@ class cl_serial_hw: public cl_hw
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
   virtual ~cl_serial_hw(void);
   virtual int init(void);
-  
+  virtual int cfg_size(void) { return serconf_nr; }
+
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual void proc_input(class cl_f *fi, class cl_f *fo);
 };

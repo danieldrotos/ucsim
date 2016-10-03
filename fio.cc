@@ -1207,4 +1207,22 @@ cl_f::set_telnet(bool val)
 }
 
 
+chars
+fio_type_name(enum file_type t)
+{
+  switch (t)
+    {
+    case F_UNKNOWN: return "unknown";
+    case F_FILE: return "file";
+    case F_CHAR: return "char";
+    case F_SOCKET: return "socket";
+    case F_LISTENER: return "listener";
+    case F_PIPE: return "pipe";
+    case F_CONSOLE: return "console";
+    case F_SERIAL: return "serial";
+    }
+  return "undef";
+}
+
+
 /* End of fio.cc */
