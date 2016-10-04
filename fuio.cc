@@ -228,6 +228,7 @@ cl_io::restore_attributes()
 {
   if (attributes_saved)
     {
+      saved_attributes.c_lflag|= ICANON|ECHO;
       tcsetattr(file_id, TCSAFLUSH, &saved_attributes);
       attributes_saved= 0;
     }
