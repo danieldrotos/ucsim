@@ -112,7 +112,9 @@ cl_app::run(void)
   
   while (!done)
     {
-      if ((++cyc % now_cyc) == 0)
+      ++cyc;
+      /*
+      if ((cyc % now_cyc) == 0)
 	{
 	  now= dnow();
 	  if (last_now != 0)
@@ -131,6 +133,7 @@ cl_app::run(void)
 	    }
 	  last_now= now;
 	}
+      */
       if (!sim)
 	{
 	  commander->wait_input();
@@ -140,9 +143,9 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
-	      if (now - input_last_checked > 0.1)
+	      if (/*now*/cyc - input_last_checked > /*0.1*/10000)
 		{
-		  input_last_checked= dnow();
+		  input_last_checked= /*dnow()*/cyc;
 		  if (commander->input_avail())
 		    done= commander->proc_input();
                 }
