@@ -192,7 +192,7 @@ cl_io::check_dev(void)
 }
 
 void
-cl_io::set_terminal()
+cl_io::prepare_terminal()
 {
   if (tty)
     {
@@ -203,6 +203,7 @@ cl_io::set_terminal()
       tattr.c_cc[VTIME]= 0;
       tcsetattr(file_id, TCSAFLUSH, &tattr);
     }
+  /*
   else if (type == F_SOCKET)
     {
       // assume telnet client
@@ -210,6 +211,7 @@ cl_io::set_terminal()
       sprintf(s, "%c%c%c%c%c%c", 0xff, 0xfb, 1, 0xff, 0xfb, 3 );
       write(s, 7);
     }
+  */
 }
 
 void

@@ -382,14 +382,14 @@ cl_io::changed(void)
 }
 
 void
-cl_io::set_terminal()
+cl_io::prepare_terminal()
 {
   deb("wio set_attr fid=%d type=%d\n",file_id,type);
   if (type == F_CONSOLE)
     {
       deb("wio: console mode 0 fid=%d handle=%p\n", file_id, handle);
       SetConsoleMode(handle,0);
-		     //ENABLE_PROCESSED_OUTPUT|4/*ENABLE_VIRTUAL_TERMINAL_PROCESSING*/);
+      //ENABLE_PROCESSED_OUTPUT|4/*ENABLE_VIRTUAL_TERMINAL_PROCESSING*/);
     }
   else if (type == F_SOCKET)
     {

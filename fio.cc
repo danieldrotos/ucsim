@@ -265,6 +265,7 @@ cl_f::use_opened(int opened_file_id, char *mode)
       file_id= opened_file_id;
       tty= isatty(file_id);
       changed();
+      if (type == F_SOCKET) tty= true;
     }
   return file_id;
 }
@@ -1125,7 +1126,7 @@ cl_f::echo_write_str(const char *s)
 /* Device handling */
 
 void
-cl_f::set_terminal()
+cl_f::prepare_terminal()
 {
 }
 
@@ -1196,7 +1197,7 @@ cl_f::interactive(class cl_f *echo_out)
   save_attributes();
   echo(echo_out);
   cooked();
-  set_terminal();
+  prepare_terminal();
 }
 
 
