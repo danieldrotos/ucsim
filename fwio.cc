@@ -363,6 +363,8 @@ cl_io::changed(void)
       //printf("win opened socket id=%d\n", file_id);
       handle= (void*)file_id;
       type= F_SOCKET;
+      deb("assuming TTY on socket %d\n", file_id);
+      tty= true;
     }
   else
     {
@@ -376,6 +378,11 @@ cl_io::changed(void)
 	      SetConsoleMode(handle, 0);
 	    }
 	    }*/
+      if (type == F_SOCKET)
+	{
+	  deb("determined socket, assume TTY... id=%d\n", file_id);
+	  tty= true;
+	}
     }
   //printf("win opened file id=%d\n", file_id);
   //printf("win handle=%p type=%d\n", handle, type);
