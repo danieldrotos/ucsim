@@ -40,11 +40,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_console: public cl_console_base
 {
-public:
+ protected:
   //FILE *in/*, *out, *rout*//*redirected output*/;
   cl_f *fin, *fout, *frout;
   
-public:
+ public:
   cl_console(void) { fin= fout= frout= 0; }
   cl_console(const char *_fin, const char *_fout, class cl_app *the_app);
   //cl_console(FILE *_fin, FILE *_fout, class cl_app *the_app);
@@ -67,7 +67,7 @@ public:
   virtual bool need_check(void);
   virtual bool set_cooked(bool new_val);
   
-public:
+ public:
   //FILE *get_out(void) { return rout ? rout : out; }
   class cl_f *get_fout(void) { return frout ? frout : fout; }
   class cl_f *get_fin(void) { return fin; }
@@ -76,7 +76,7 @@ public:
 //#ifdef SOCKET_AVAIL
 class cl_listen_console: public cl_console
 {
-public:
+ public:
   cl_listen_console(int serverport, class cl_app *the_app);
 
   //virtual void set_id(int new_id);
@@ -91,10 +91,10 @@ public:
 
 class cl_sub_console: public cl_console
 {
-private:
+ private:
   class cl_console_base *parent;
 
-public:
+ public:
   //cl_sub_console(class cl_console_base *the_parent, FILE *fin, FILE *fout, class cl_app *the_app);
   cl_sub_console(class cl_console_base *the_parent,
                  class cl_f *fin, class cl_f *fout, class cl_app *the_app);
@@ -110,11 +110,11 @@ public:
 
 class cl_commander: public cl_commander_base
 {
-private:
+ private:
   //fd_set read_set, active_set;
   //UCSOCKET_T fd_num;
   
-public:
+ public:
   cl_commander(class cl_app *the_app, class cl_cmdset *acmdset)
     : cl_commander_base(the_app, acmdset)
   {

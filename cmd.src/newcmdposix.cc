@@ -531,7 +531,7 @@ cl_commander::update_active(void)
     {
       class cl_console *c=
 	(class cl_console *)cons->at(i);
-      class cl_f *f= c->fin;
+      class cl_f *f= c->get_fin();
 
       if (config_console &&
 	  (config_console != c))
@@ -592,22 +592,23 @@ cl_commander::proc_input(void)
   for (int j = 0; j < cons->count; j++)
     {
       class cl_console *c = dynamic_cast<class cl_console*>((class cl_console_base*)(cons->at(j)));
-
+      class cl_f *f= c->get_fin();
+      
       if (config_console &&
 	  (config_console != c))
 	continue;
       
       if (c->input_active() &&
-	  c->fin)
+	  f)
         {
-	  deb("check input on fid=%d\n", c->fin->file_id);
+	  deb("check input on fid=%d\n", f->file_id);
 	  if (c->input_avail())
             {
               actual_console = c;
               int retval = c->proc_input(cmdset);
               if (retval)
                 {
-		  deb("closing console fin-fid=%d\n", c->fin->file_id);
+		  deb("closing console fin-fid=%d\n", f->file_id);
                   del_console(c);
                   //delete c;
                 }
@@ -618,7 +619,7 @@ cl_commander::proc_input(void)
               return(i == 0);
             }
 	  else
-	    deb("no input on fid=%d\n", c->fin->file_id);
+	    deb("no input on fid=%d\n", f->file_id);
         }
     }
   return 0;

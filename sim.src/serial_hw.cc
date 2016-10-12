@@ -85,41 +85,44 @@ cl_serial_hw::init(void)
   
   char *f_serial_in = (char*)serial_in_file_option->get_value((char*)0);
   char *f_serial_out= (char*)serial_out_file_option->get_value((char*)0);
+  class cl_f *fi, *fo;
   if (f_serial_in)
     {
       if (f_serial_in[0] == '\001')
-	io->fin= (class cl_f *)(strtoll(&f_serial_in[1], 0, 0));
+	fi= (class cl_f *)(strtoll(&f_serial_in[1], 0, 0));
       else
-	io->fin= mk_io(chars(f_serial_in), cchars("r"));
-      if (!io->fin->tty)
+	fi= mk_io(chars(f_serial_in), cchars("r"));
+      if (!fi->tty)
 	fprintf(stderr, "Warning: serial input interface connected to a "
 		"non-terminal file.\n");
     }
   else
-    io->fin= 0;//mk_io(chars(""), chars(""));
+    fi= 0;//mk_io(chars(""), chars(""));
   if (f_serial_out)
     {
       if (f_serial_out[0] == '\001')
-	io->fout= (class cl_f *)(strtoll(&f_serial_out[1], 0, 0));
+	fo= (class cl_f *)(strtoll(&f_serial_out[1], 0, 0));
       else
-	io->fout= mk_io(chars(f_serial_out), "w");
-      if (!io->fout->tty)
+	fo= mk_io(chars(f_serial_out), "w");
+      if (!fo->tty)
 	fprintf(stderr, "Warning: serial output interface connected to a "
 		"non-terminal file.\n");
     }
   else
-    io->fout= 0;//mk_io(chars(""), chars(""));
+    fo= 0;//mk_io(chars(""), chars(""));
 
-  if (io->fin)
+  io->replace_files(true, fi, fo);
+  
+  if (fi)
     {
-      io->fin->interactive(NULL);
-      io->fin->raw();
-      io->fin->echo(NULL);
-      deb("** serial io fin %d\n", io->fin->file_id);
+      fi->interactive(NULL);
+      fi->raw();
+      fi->echo(NULL);
+      deb("** serial io fin %d\n", fi->file_id);
     }
-  if (io->fout)
+  if (fo)
     {
-      deb("** serial io fount %d\n", io->fout->file_id);
+      deb("** serial io fount %d\n", fo->file_id);
     }
 
   menu= 0;
@@ -183,29 +186,31 @@ cl_serial_hw::proc_input(void)
 {
   char c, esc= (char)cfg_get(serconf_escape);
   bool run= uc->sim->state & SIM_GO;
-  class cl_f *fi;//, *fout;
+  class cl_f *fin, *fout;
 
-  fi= io->get_fin();
-  //fout= io->get_fout();
+  fin= io->get_fin();
+  fout= io->get_fout();
   
-  if (fi->eof())
+  if (fin->eof())
     {
-      if (io->fout &&
-	  (io->fout->file_id == io->fin->file_id))
+      if (fout &&
+	  (fout->file_id == fin->file_id))
 	{
-	  delete io->fout;
-	  io->fout= 0;//mk_io("", "");
+	  delete fout;
+	  //io->fout= 0;//mk_io("", "");
+	  io->replace_files(false, fin, 0);
 	}
-      delete io->fin;
-      io->fin= 0;//mk_io("", "");
-      application->get_commander()->update_active();
+      delete fin;
+      //io->fin= 0;//mk_io("", "");
+      io->replace_files(false, 0, 0);
+      //application->get_commander()->update_active();
       return;
     }
   if (menu == 0)
     {
       if (!input_avail || !run)
 	{
-	  if (fi->read(&c, 1))
+	  if (fin->read(&c, 1))
 	    {
 	      if (c == esc)
 		{
@@ -233,7 +238,7 @@ cl_serial_hw::proc_input(void)
     }
   else
     {
-      if (fi->read(&c, 1))
+      if (fin->read(&c, 1))
 	{
 	  switch (menu)
 	    {
@@ -290,11 +295,11 @@ cl_serial_hw::proc_input(void)
 		  {
 		    // close
 		    io->dd_printf("Closing terminal.\n");
-		    if (io->fin &&
-			io->fout)
+		    if (fin &&
+			fout)
 		      {
 			class cl_console *con=
-			  new cl_console(io->fin, io->fout, application);
+			  new cl_console(fin, fout, application);
 			con->init();
 			application->get_commander()->add_console(con);
 		      }

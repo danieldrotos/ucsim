@@ -229,19 +229,21 @@ cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
     make_io();
   if (!io)
     return ;
-  if (io->fin)
+  /*if (io->fin)
     delete io->fin;
   if (io->fout)
-    delete io->fout;
-  io->fin= f_in;
-  io->fout= f_out;
-  if (io->fin)
+  delete io->fout;*/
+  //io->close_files();
+  /*io->fin= f_in;
+    io->fout= f_out;*/
+  io->replace_files(true, f_in, f_out);
+  if (f_in)
     {
-      io->fin->interactive(NULL);
-      io->fin->raw();
-      io->fin->echo(NULL);
+      f_in->interactive(NULL);
+      f_in->raw();
+      f_in->echo(NULL);
     }
-  application->get_commander()->update_active();
+  //application->get_commander()->update_active();
 }
 
 void

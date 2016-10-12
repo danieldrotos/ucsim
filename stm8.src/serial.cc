@@ -254,7 +254,7 @@ cl_serial::tick(int cycles)
 	finish_send();
     }
   if ((ren) &&
-      io->fin &&
+      io->get_fin() &&
       !s_receiving)
     {
       //if (io->fin->input_avail())
@@ -416,11 +416,13 @@ cl_serial::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d] %s\n", id_string, id, on?"on":"off");
   con->dd_printf("Input: ");
-  if (io->fin)
-    con->dd_printf("%s/%d ", io->fin->get_file_name(), io->fin->file_id);
+  class cl_f *fin= io->get_fin(), *fout= io->get_fout();
+  if (fin)
+    con->dd_printf("%s/%d ", fin->get_file_name(), fin->file_id);
   con->dd_printf("Output: ");
-  if (io->fout)
-    con->dd_printf("%s/%d\n", io->fout->get_file_name(), io->fout->file_id);
+  if (fout)
+    con->dd_printf("%s/%d", fout->get_file_name(), fout->file_id);
+  con->dd_printf("\n");
 }
 
 
