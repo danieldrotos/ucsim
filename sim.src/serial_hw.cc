@@ -40,8 +40,6 @@ cl_serial_hw::cl_serial_hw(class cl_uc *auc, int aid, chars aid_string):
   cl_hw(auc, HW_UART, aid, (const char *)aid_string)
 {
   listener= 0;
-  io= new cl_serial_io(this);
-  io->init();
 }
 
 cl_serial_hw::~cl_serial_hw(void)
@@ -57,7 +55,8 @@ cl_serial_hw::init(void)
   char *s;
 
   cl_hw::init();
-  
+
+  make_io();
   input_avail= false;
   
   s= format_string("serial%d_in_file", id);
@@ -97,7 +96,7 @@ cl_serial_hw::init(void)
 		"non-terminal file.\n");
     }
   else
-    io->fin= mk_io(chars(""), chars(""));
+    io->fin= 0;//mk_io(chars(""), chars(""));
   if (f_serial_out)
     {
       if (f_serial_out[0] == '\001')
@@ -109,7 +108,7 @@ cl_serial_hw::init(void)
 		"non-terminal file.\n");
     }
   else
-    io->fout= mk_io(chars(""), chars(""));
+    io->fout= 0;//mk_io(chars(""), chars(""));
 
   if (io->fin)
     {
@@ -174,28 +173,20 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 }
 
 void
-cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
+cl_serial_hw::make_io()
 {
-  if (io->fin)
-    delete io->fin;
-  if (io->fout)
-    delete io->fout;
-  io->fin= f_in;
-  io->fout= f_out;
-  if (io->fin)
-    {
-      io->fin->interactive(NULL);
-      io->fin->raw();
-      io->fin->echo(NULL);
-    }
-  application->get_commander()->update_active();
+  io= new cl_serial_io(this);
 }
 
 void
-cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
+cl_serial_hw::proc_input(void)
 {
   char c, esc= (char)cfg_get(serconf_escape);
   bool run= uc->sim->state & SIM_GO;
+  class cl_f *fi;//, *fout;
+
+  fi= io->get_fin();
+  //fout= io->get_fout();
   
   if (fi->eof())
     {
@@ -203,10 +194,10 @@ cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
 	  (io->fout->file_id == io->fin->file_id))
 	{
 	  delete io->fout;
-	  io->fout= mk_io("", "");
+	  io->fout= 0;//mk_io("", "");
 	}
       delete io->fin;
-      io->fin= mk_io("", "");
+      io->fin= 0;//mk_io("", "");
       application->get_commander()->update_active();
       return;
     }
@@ -308,8 +299,9 @@ cl_serial_hw::proc_input(class cl_f *fi, class cl_f *fo)
 			application->get_commander()->add_console(con);
 		      }
 		    menu= 0;
-		    io->fout= mk_io("", "");
-		    io->fin= mk_io("", "");
+		    //io->fout= 0;//mk_io("", "");
+		    //io->fin= 0;//mk_io("", "");
+		    io->drop_files();
 		    break;
 		  }
 		default:

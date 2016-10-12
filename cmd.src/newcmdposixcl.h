@@ -53,6 +53,9 @@ public:
   virtual ~cl_console(void);
   //virtual void set_id(int new_id);
   virtual class cl_console *clone_for_exec(char *_fin);
+  virtual void drop_files(void); // do not close, just ignore
+  virtual void close_files(void);
+  virtual void replace_files(bool close_old, cl_f *new_in, cl_f *new_out);
 
   virtual void redirect(char *fname, char *mode);
   virtual void un_redirect(void);

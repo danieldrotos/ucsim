@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i_string.h"
 
 #include "stypes.h"
+#include "globals.h"
+
 #include "hwcl.h"
 
 
@@ -56,6 +58,7 @@ cl_hw::cl_hw(class cl_uc *auc, enum hw_cath cath, int aid, const char *aid_strin
   sprintf(s, "watched cells of %s", get_name("hw"));
   free(s);
   cfg= 0;
+  io= 0;
 }
 
 cl_hw::~cl_hw(void)
@@ -211,6 +214,35 @@ cl_hw::inform_partners(enum hw_event he, void *params)
     }
 }
 
+void
+cl_hw::make_io()
+{
+  io= new cl_hw_io(this);
+  io->init();
+  application->get_commander()->add_console(io);
+}
+
+void
+cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
+{
+  if (!io)
+    make_io();
+  if (!io)
+    return ;
+  if (io->fin)
+    delete io->fin;
+  if (io->fout)
+    delete io->fout;
+  io->fin= f_in;
+  io->fout= f_out;
+  if (io->fin)
+    {
+      io->fin->interactive(NULL);
+      io->fin->raw();
+      io->fin->echo(NULL);
+    }
+  application->get_commander()->update_active();
+}
 
 void
 cl_hw::print_info(class cl_console_base *con)
@@ -334,7 +366,7 @@ int
 cl_hw_io::proc_input(class cl_cmdset *cmdset)
 {
   if (hw)
-    hw->proc_input(get_fin(), get_fout());
+    hw->proc_input();
   return 0;
 }
 

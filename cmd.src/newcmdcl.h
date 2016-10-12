@@ -125,6 +125,9 @@ class cl_console_base: public cl_base
   virtual int read_line(void) = 0;
   virtual class cl_f *get_fout(void)= 0;
   virtual class cl_f *get_fin(void)= 0;
+  virtual void drop_files(void)= 0; // do not close, just ignore
+  virtual void close_files(void)= 0;
+  virtual void replace_files(bool close_old, cl_f *new_in, cl_f *new_out)= 0;
   
   virtual int init(void);
   virtual void welcome(void);

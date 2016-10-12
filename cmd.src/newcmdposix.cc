@@ -126,6 +126,40 @@ cl_console::clone_for_exec(char *_fin)
   return(con);
 }
 
+void
+cl_console::drop_files(void) // do not close, just ignore
+{
+  fin= 0;
+  fout= 0;
+  frout= 0;
+  application->get_commander()->update_active();
+}
+
+void
+cl_console::close_files(void)
+{
+  if (frout)
+    delete frout;
+  if (fout)
+    delete fout;
+  if (fin)
+    delete fin;
+  drop_files();
+}
+
+void
+cl_console::replace_files(bool close_old, cl_f *new_in, cl_f *new_out)
+{
+  if (frout)
+    delete frout;
+  frout= 0;
+  if (close_old)
+    close_files();
+  fin= new_in;
+  fout= new_out;
+  application->get_commander()->update_active();
+}
+
 /*
 void
 cl_console::set_id(int new_id)
@@ -563,7 +597,8 @@ cl_commander::proc_input(void)
 	  (config_console != c))
 	continue;
       
-      if (c->input_active())
+      if (c->input_active() &&
+	  c->fin)
         {
 	  deb("check input on fid=%d\n", c->fin->file_id);
 	  if (c->input_avail())

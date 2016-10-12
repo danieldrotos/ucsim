@@ -59,7 +59,7 @@ class cl_serial_hw: public cl_hw
   class cl_optref *serial_out_file_option;
   class cl_optref *serial_port_option;
   class cl_serial_listener *listener;
-  class cl_hw_io *io;
+  //class cl_hw_io *io;
   char input;
   bool input_avail;
   char menu;
@@ -71,8 +71,8 @@ class cl_serial_hw: public cl_hw
 
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
-  virtual void new_io(class cl_f *f_in, class cl_f *f_out);
-  virtual void proc_input(class cl_f *fi, class cl_f *fo);
+  virtual void make_io(void);
+  virtual void proc_input(void);
 };
 
 
