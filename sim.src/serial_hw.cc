@@ -295,6 +295,8 @@ cl_serial_hw::proc_input(void)
 		  {
 		    // close
 		    io->dd_printf("Closing terminal.\n");
+		    menu= 0;
+		    /*
 		    if (fin &&
 			fout)
 		      {
@@ -303,10 +305,11 @@ cl_serial_hw::proc_input(void)
 			con->init();
 			application->get_commander()->add_console(con);
 		      }
-		    menu= 0;
 		    //io->fout= 0;//mk_io("", "");
 		    //io->fin= 0;//mk_io("", "");
 		    io->drop_files();
+		    */
+		    io->convert2console();
 		    break;
 		  }
 		default:

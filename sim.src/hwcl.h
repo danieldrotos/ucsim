@@ -56,6 +56,8 @@ class cl_hw_io: public cl_console
   virtual int proc_input(class cl_cmdset *cmdset);
   virtual bool prevent_quit(void) { return false; }
   virtual void print_prompt(void) {}
+
+  virtual void convert2console(void);
 };
 
 
@@ -104,7 +106,7 @@ class cl_hw: public cl_guiobj
 
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
-  virtual void proc_input(void) {}
+  virtual void proc_input(void);
 
   virtual void print_info(class cl_console_base *con);
 };

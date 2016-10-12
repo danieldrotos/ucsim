@@ -27,6 +27,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "ddconfig.h"
 
+#include <ctype.h>
 #include <stdlib.h>
 #include "i_string.h"
 
@@ -247,6 +248,20 @@ cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 }
 
 void
+cl_hw::proc_input(void)
+{
+  char c;
+  class cl_f *fin= io->get_fin();
+  if (fin)
+    {
+      fin->read(&c, 1);
+      io->dd_printf("Display of %s[%d]: unhandled command: %c\n",
+		    id_string, id,
+		    isprint(c)?c:'?');
+    }
+}
+
+void
 cl_hw::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d]\n", id_string, id);
@@ -369,7 +384,27 @@ cl_hw_io::proc_input(class cl_cmdset *cmdset)
 {
   if (hw)
     hw->proc_input();
+  else
+    {
+      char c;
+      fin->read(&c, 1);
+      dd_printf("Unhandled command: %c\n", isprint(c)?c:'?');
+    }
   return 0;
+}
+
+
+void
+cl_hw_io::convert2console(void)
+{
+  if (fin &&
+      fout)
+    {
+      class cl_console *con= new cl_console(fin, fout, application);
+      con->init();
+      application->get_commander()->add_console(con);
+    }
+  drop_files();
 }
 
 
