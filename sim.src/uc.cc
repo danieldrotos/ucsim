@@ -1481,7 +1481,7 @@ cl_uc::address_space_added(class cl_address_space *as)
 void
 cl_uc::error(class cl_error *error)
 {
-  printf("error adding: %s...\n", error->get_class()->get_name());
+  //printf("error adding: %s...\n", error->get_class()->get_name());
   errors->add(error);
   if ((error->inst= inst_exec))
     error->PC= instPC;
@@ -1496,7 +1496,7 @@ cl_uc::check_errors(void)
 
   if (c)
     {
-      printf("error list: %d items\n", errors->count);
+      //printf("error list: %d items\n", errors->count);
       for (i= 0; i < errors->count; i++)
 	{
 	  class cl_error *error= (class cl_error *)(errors->at(i));
