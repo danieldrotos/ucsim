@@ -262,6 +262,11 @@ cl_hw::proc_input(void)
 }
 
 void
+cl_hw::refresh_display(void)
+{
+}
+
+void
 cl_hw::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d]\n", id_string, id);

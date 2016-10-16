@@ -10,7 +10,8 @@
 
 class cl_port_io: public cl_hw_io
 {
-  
+ public:
+  virtual bool input_avail(void);  
 };
 
 class cl_port_hw: public cl_hw
@@ -21,6 +22,7 @@ class cl_port_hw: public cl_hw
   cl_port_hw(class cl_uc *auc, int aid, chars aid_string);
 
   virtual void proc_input(void);
+  virtual void refresh_display(void);
 };
 
 

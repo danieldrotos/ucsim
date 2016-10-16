@@ -13,5 +13,19 @@ cl_port_hw::proc_input(void)
 {
 }
 
+void
+cl_port_hw::refresh_display(void)
+{
+}
+
+
+bool
+cl_port_io::input_avail(void)
+{
+  if (hw)
+    hw->refresh_display();
+  return cl_console::input_avail();
+}
+
 
 /* End of sim.src/port_hw.cc */
