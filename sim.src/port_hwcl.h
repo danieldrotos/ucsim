@@ -1,4 +1,4 @@
-/* $Id:$ */
+/* $Id$ */
 
 #ifndef PORT_HW_HEADER
 #define PORT_HW_HEADER
