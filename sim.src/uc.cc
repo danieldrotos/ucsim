@@ -1416,6 +1416,35 @@ cl_uc::symbolic_bit_name(t_addr bit_address,
 
 
 /*
+ * Searching for a name in the specified table
+ */
+
+struct name_entry *
+cl_uc::get_name_entry(struct name_entry tabl[], char *name)
+{
+  int i= 0;
+  char *p;
+
+  if (!tabl ||
+      !name ||
+      !(*name))
+    return(0);
+  for (p= name; *p; *p= toupper(*p), p++);
+  while (tabl[i].name &&
+	 (!(tabl[i].cpu_type & type) ||
+	 (strcmp(tabl[i].name, name) != 0)))
+    {
+      //printf("tabl[%d].name=%s <-> %s\n",i,tabl[i].name,name);
+      i++;
+    }
+  if (tabl[i].name != NULL)
+    return(&tabl[i]);
+  else
+    return(0);
+}
+
+
+/*
  * Messages to broadcast
  */
 

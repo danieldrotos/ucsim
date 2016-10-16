@@ -34,17 +34,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "newcmdcl.h"
 
+#include "port_hwcl.h"
+
 
 enum port_cfg {
   port_on		= 0, // RW
   port_pin		= 1, // RW
 };
 
-class cl_port: public cl_hw
+class cl_port: public cl_port_hw
 {
 public:
   t_addr addr_p;
-  class cl_memory_cell *cell_p, *bit_cells[8];
   t_mem port_pins;
   t_mem prev;
   class cl_address_space *bas;

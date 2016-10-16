@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "ddconfig.h"
 
-#include "uccl.h"
+//#include "uccl.h"
 
 
 #ifdef SOCKET_AVAIL
@@ -49,9 +49,7 @@ bool input_avail(UCSOCKET_T handle);
 bool input_avail(UCSOCKET_T handle);
 #endif
 //extern void print_bin(long data, int bits, class cl_console *con);
-extern struct name_entry *get_name_entry(struct name_entry tabl[],
-					 char *name,
-					 class cl_uc *uc);
+//extern struct name_entry *get_name_entry(struct name_entry tabl[], char *name, class cl_uc *uc);
 /*extern bool interpret_bitname(char *name, class cl_uc *uc,
 			      uchar **cell, uchar *celladdr,
 			      uchar *bitaddr, uchar *bitmask,
