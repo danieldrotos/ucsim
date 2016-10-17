@@ -172,7 +172,8 @@ public:
   virtual void del_counter(const char *nam);
   virtual double get_rtime(void);
   virtual int clock_per_cycle(void);
-
+  virtual void touch(void);
+  
   // execution
   virtual t_mem fetch(void);
   virtual bool fetch(t_mem *code);

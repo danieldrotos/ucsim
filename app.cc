@@ -124,6 +124,8 @@ cl_app::run(void)
 	      if (cyc - input_last_checked > 10000)
 		{
 		  input_last_checked= cyc;
+		  if (sim->uc)
+		    sim->uc->touch();
 		  if (commander->input_avail())
 		    done= commander->proc_input();
                 }
@@ -136,6 +138,8 @@ cl_app::run(void)
 	    {
 	      commander->wait_input();
 	      done= commander->proc_input();
+	      if (sim->uc)
+		sim->uc->touch();
 	    }
 	  if (sim->state & SIM_QUIT)
 	    done= 1;

@@ -29,20 +29,30 @@ cl_port_hw::proc_input(void)
       io->replace_files(false, 0, 0);
       return;
     }
-  io->read(&c, 1);
-  
+  fin->read(&c, 1);
+  if (c == 'a')
+    {
+      t_mem m= cell_in->read();
+      cell_in->write(m ^ 1);
+    }
 }
 
 void
 cl_port_hw::refresh_display(bool force)
 {
+  if (!io)
+    return;
   if (force ||
       (cell_p->get() != cache_p))
     {
+      cache_p= cell_p->get();
+      io->dd_printf("Out: %x\n", cache_p);
     }
   if (force ||
       (cell_in->get() != cache_in))
     {
+      cache_in= cell_in->get();
+      io->dd_printf("In: %x\n", cache_in);
     }
 }
 

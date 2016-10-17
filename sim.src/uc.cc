@@ -1887,6 +1887,18 @@ cl_uc::clock_per_cycle(void)
   return(1);
 }
 
+void
+cl_uc::touch(void)
+{
+  class cl_hw *hw;
+  int i;
+  for (i= 0; i < hws->count; i++)
+    {
+      hw= (class cl_hw *)(hws->at(i));
+      hw->touch();
+    }
+}
+
 
 /*
  * Stack tracking system

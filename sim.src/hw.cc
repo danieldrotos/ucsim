@@ -216,6 +216,12 @@ cl_hw::inform_partners(enum hw_event he, void *params)
 }
 
 void
+cl_hw::touch(void)
+{
+  refresh_display(false);
+}
+
+void
 cl_hw::make_io()
 {
   io= new cl_hw_io(this);
