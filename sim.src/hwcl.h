@@ -107,8 +107,9 @@ class cl_hw: public cl_guiobj
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual void proc_input(void);
-  virtual void refresh_display(void);
-
+  virtual void refresh_display(bool force);
+  virtual void draw_display(void);
+  
   virtual void print_info(class cl_console_base *con);
 };
 

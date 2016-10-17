@@ -262,7 +262,12 @@ cl_hw::proc_input(void)
 }
 
 void
-cl_hw::refresh_display(void)
+cl_hw::refresh_display(bool force)
+{
+}
+
+void
+cl_hw::draw_display(void)
 {
 }
 
