@@ -262,9 +262,40 @@ cl_hw::proc_input(void)
   if (fin)
     {
       fin->read(&c, 1);
-      io->dd_printf("Display of %s[%d]: unhandled command: %c\n",
-		    id_string, id,
-		    isprint(c)?c:'?');
+      switch (c)
+	{
+	case 's'-'a'+1: case 'r'-'a'+1: case 'g'-'a'+1:
+	  uc->sim->start(0, 0);
+	  io->dd_printf("Simulation started.\n");
+	  break;
+	case 'p'-'a'+1:
+	  uc->sim->stop(resSIMIF);
+	  io->dd_printf("Simulation stopped.\n");
+	  break;
+	case 't'-'a'+1:
+	  uc->reset();
+	  io->dd_printf("CPU reseted.\n");
+	  break;
+	case 'q'-'a'+1:
+	  uc->sim->state|= SIM_QUIT;
+	  io->dd_printf("Exit simulator.\n");
+	  break;
+	case 'c'-'a'+1:
+	  io->dd_printf("Closing display.\n");
+	  io->convert2console();
+	  break;
+	default:
+	  io->dd_printf("Display of %s[%d]: unhandled command: %c (%d)\n",
+			id_string, id,
+			isprint(c)?c:'?', c);
+	  io->dd_printf("Deafult keys:\n"
+			"  ^s,^r,^g  Start\n"
+			"  ^p        Stop\n"
+			"  ^t        Reset\n"
+			"  ^q        Quit\n"
+			"  ^c        Close\n");
+	  break;
+	}
     }
 }
 
