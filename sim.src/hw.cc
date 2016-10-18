@@ -250,6 +250,7 @@ cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
       f_in->raw();
       f_in->echo(NULL);
     }
+  draw_display();
   //application->get_commander()->update_active();
 }
 

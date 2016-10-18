@@ -272,6 +272,48 @@ cl_console_base::cmd_do_print(const char *format, va_list ap)
     return 0;
 }
 
+void
+cl_console_base::tu_cls(void)
+{
+  dd_printf("\033[2J");
+}
+
+void
+cl_console_base::tu_clc(void)
+{
+  tu_save();
+  dd_printf(" ");
+  tu_restore();
+}
+
+void
+cl_console_base::tu_go(int x1, int y1)
+{
+  dd_printf("\033[%d;%dH", y1, x1);
+}
+
+void
+cl_console_base::tu_save(void)
+{
+  dd_printf("\033[s");
+}
+
+void
+cl_console_base::tu_restore(void)
+{
+  dd_printf("\033[u");
+}
+
+void
+cl_console_base::tu_color(int bg, int fg)
+{
+  if (bg >= 0)
+    dd_printf("\033[%dm", (tu_bg_color= bg)+40);
+  if (fg >= 0)
+    dd_printf("\033[%dm", (tu_fg_color= fg)+30);
+}
+
+
 /*void
 cl_console_base::flush(void)
 {

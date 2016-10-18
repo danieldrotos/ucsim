@@ -111,6 +111,8 @@ class cl_console_base: public cl_base
 
   char nl;
   chars lbuf;
+
+  int tu_bg_color, tu_fg_color;
   
  public:
   cl_console_base(void);
@@ -141,7 +143,13 @@ class cl_console_base: public cl_base
   virtual void print_char_octal(char c);
   virtual int cmd_do_print(const char *format, va_list ap);
   //virtual void flush(void);
-  
+  virtual void tu_cls(void);
+  virtual void tu_clc(void);
+  virtual void tu_go(int x1, int y1);
+  virtual void tu_save(void);
+  virtual void tu_restore(void);
+  virtual void tu_color(int bg, int fg);
+    
   virtual bool interpret(char *cmd);
   virtual int get_id(void) const { return(id); }
   virtual void set_id(int new_id);

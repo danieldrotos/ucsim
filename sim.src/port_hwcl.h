@@ -11,9 +11,11 @@
 class cl_port_io: public cl_hw_io
 {
  public:
-  int basx, basy;
+  int basx, basy, keyset;
  public:
-  virtual bool input_avail(void);  
+  cl_port_io(class cl_hw *ihw);
+  virtual int init(void);
+  //virtual bool input_avail(void);  
 };
 
 class cl_port_hw: public cl_hw
@@ -24,6 +26,7 @@ class cl_port_hw: public cl_hw
  public:
   cl_port_hw(class cl_uc *auc, int aid, chars aid_string);
 
+  virtual void make_io(void);
   virtual void proc_input(void);
   virtual void refresh_display(bool force);
   virtual void draw_display(void);
