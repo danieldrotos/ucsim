@@ -145,6 +145,7 @@ class cl_console_base: public cl_base
   //virtual void flush(void);
   virtual void tu_cls(void);
   virtual void tu_clc(void);
+  virtual void tu_cll(void);
   virtual void tu_go(int x1, int y1);
   virtual void tu_save(void);
   virtual void tu_restore(void);

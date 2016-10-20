@@ -546,6 +546,8 @@ cl_simulator_interface::init(void)
   v->init();
   uc->vars->add(v= new cl_var(cchars("sim_idle_ticks"), cfg, simif_idle_ticks));
   v->init();
+  uc->vars->add(v= new cl_var(cchars("sim_real_time"), cfg, simif_real_time));
+  v->init();
   
   return(0);
 }
@@ -689,7 +691,7 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set(on?1:0);
 	}
       break;
-    case simif_run: // simulator runing: true= run, false= stop
+    case simif_run: // simulator running: true= run, false= stop
       if (val)
 	{
 	  if (*val)
@@ -751,6 +753,13 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       if (val)
 	*val= cell->get();
       cell->set(uc->idle_ticks->ticks);
+      break;
+    case simif_real_time: // real time in msec
+      if (val)
+	*val= cell->get();
+      cell->set(uc->get_rtime() * 1000);
+      break;
+    case simif_nuof:
       break;
     }
   return cell->get();

@@ -279,6 +279,12 @@ cl_console_base::tu_cls(void)
 }
 
 void
+cl_console_base::tu_cll(void)
+{
+  dd_printf("\033[K");
+}
+
+void
 cl_console_base::tu_clc(void)
 {
   tu_save();

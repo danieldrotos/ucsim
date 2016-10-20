@@ -27,6 +27,7 @@ class cl_port_hw: public cl_hw
   cl_port_hw(class cl_uc *auc, int aid, chars aid_string);
 
   virtual void make_io(void);
+  virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual void proc_input(void);
   virtual void refresh_display(bool force);
   virtual void draw_display(void);

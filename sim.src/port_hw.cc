@@ -1,5 +1,7 @@
 /* $Id$ */
 
+#include <ctype.h>
+
 #include "globals.h"
 
 #include "port_hwcl.h"
@@ -28,6 +30,21 @@ cl_port_hw::make_io()
   io->init();
   application->get_commander()->add_console(io);
 }
+
+
+void
+cl_port_hw::new_io(class cl_f *f_in, class cl_f *f_out)
+{
+  cl_hw::new_io(f_in, f_out);
+  if (io && io->get_fout())
+    {
+      // enable mouse click reports of terminal
+      io->dd_printf("\033[1;2'z");
+      io->dd_printf("\033[?9h");
+      io->dd_printf("\033[3 q");
+    }
+}
+
 
 void
 cl_port_hw::proc_input(void)
@@ -60,9 +77,12 @@ cl_port_hw::proc_input(void)
 	  {
 	    t_mem m= cell_in->read();
 	    cell_in->write(m ^ (1<<(7-i)));
-	    break;
+	    return;
 	  }
     }
+  pio->tu_go(1,1);
+  //pio->tu_cll();
+  //pio->dd_printf("Unknown command: %c (%d,0x%02x)\n", isprint(c)?c:'?', c, c);
 }
 
 void
@@ -79,6 +99,8 @@ cl_port_hw::refresh_display(bool force)
       int m= 0x80;
       for ( ; m; m>>= 1)
 	pio->dd_printf("%c", (cache_p&m)?'*':'-');
+      pio->tu_go(pio->basx+4+8+1, pio->basy);
+      pio->dd_printf("%02x", cache_p);
     }
   if (force ||
       (cell_in->get() != cache_in))
@@ -88,6 +110,8 @@ cl_port_hw::refresh_display(bool force)
       int m= 0x80;
       for ( ; m; m>>= 1)
 	pio->dd_printf("%c", (cache_in&m)?'*':'-');
+      pio->tu_go(pio->basx+4+8+1, pio->basy+2);
+      pio->dd_printf("%02x", cache_in);
     }
   pio->tu_go(1, 1);
 }
@@ -120,6 +144,7 @@ cl_port_hw::draw_display(void)
 cl_port_io::cl_port_io(class cl_hw *ihw):
   cl_hw_io(ihw)
 {
+  set_name("port");
 }
 
 int
