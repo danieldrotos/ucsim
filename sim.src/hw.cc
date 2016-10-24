@@ -418,6 +418,7 @@ cl_hw_io::cl_hw_io(class cl_hw *ihw):
   cl_console()
 {
   hw= ihw;
+  set_name(chars("", "%s[%d]", ihw->id_string, ihw->id));
 }
 
 int

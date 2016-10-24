@@ -49,9 +49,7 @@ class cl_serial_io: public cl_hw_io
  public:
  cl_serial_io(class cl_hw *ihw):
   cl_hw_io(ihw)
-  {
-    set_name("serial");
-  }
+  {}
   //virtual bool prevent_quit(void) { return true; }
 };
 

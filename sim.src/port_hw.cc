@@ -144,7 +144,6 @@ cl_port_hw::draw_display(void)
 cl_port_io::cl_port_io(class cl_hw *ihw):
   cl_hw_io(ihw)
 {
-  set_name("port");
 }
 
 int

@@ -126,7 +126,6 @@ cl_serial_hw::init(void)
     }
 
   menu= 0;
-  application->get_commander()->add_console(io);
   
   cfg_set(serconf_on, true);
   cfg_set(serconf_check_often, false);
@@ -179,6 +178,7 @@ void
 cl_serial_hw::make_io()
 {
   io= new cl_serial_io(this);
+  application->get_commander()->add_console(io);
 }
 
 void

@@ -338,11 +338,11 @@ cl_console_base::interpret(char *cmd)
 void
 cl_console_base::set_id(int new_id)
 {
-  char *s;
-
+  //char *s;
   id= new_id;
-  set_name(s= format_string("console%d", id));
-  free(s);
+  if (!have_real_name())
+    set_name(/*s= format_string*/chars("", "console%d", id));
+  //free(s);
 }
 
 void
