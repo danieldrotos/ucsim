@@ -181,7 +181,7 @@ cl_serial_hw::make_io()
   application->get_commander()->add_console(io);
 }
 
-void
+bool
 cl_serial_hw::proc_input(void)
 {
   char c, esc= (char)cfg_get(serconf_escape);
@@ -204,7 +204,7 @@ cl_serial_hw::proc_input(void)
       //io->fin= 0;//mk_io("", "");
       io->replace_files(false, 0, 0);
       //application->get_commander()->update_active();
-      return;
+      return true;
     }
   if (menu == 0)
     {
@@ -321,6 +321,7 @@ cl_serial_hw::proc_input(void)
 	    }
 	}
     }
+  return true;
 }
 
 

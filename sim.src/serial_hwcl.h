@@ -73,7 +73,7 @@ class cl_serial_hw: public cl_hw
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
   virtual void make_io(void);
-  virtual void proc_input(void);
+  virtual bool proc_input(void);
 };
 
 

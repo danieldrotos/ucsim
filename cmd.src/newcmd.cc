@@ -319,6 +319,28 @@ cl_console_base::tu_color(int bg, int fg)
     dd_printf("\033[%dm", (tu_fg_color= fg)+30);
 }
 
+void
+cl_console_base::tu_mouse_on(void)
+{
+  // enable mouse click reports of terminal
+  dd_printf("\033[1;2'z"); // enable locator reporting, as character cells
+  dd_printf("\033[?9h"); // send mouse X,Y on btn press (X10 mode)
+}
+
+void
+cl_console_base::tu_mouse_off(void)
+{
+  dd_printf("\033[?9l"); // do not send mouse X,Y on btn press
+  dd_printf("\033[0;0'z"); // disable locator reporting
+}
+
+void
+cl_console_base::tu_reset(void)
+{
+  tu_mouse_off();
+  dd_printf("\033c"); // terminal reset
+  dd_printf("\033[!p"); // soft terminal reset
+}
 
 /*void
 cl_console_base::flush(void)

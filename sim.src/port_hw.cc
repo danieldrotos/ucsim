@@ -36,39 +36,21 @@ void
 cl_port_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 {
   cl_hw::new_io(f_in, f_out);
-  if (io && io->get_fout())
-    {
-      // enable mouse click reports of terminal
-      io->dd_printf("\033[1;2'z");
-      io->dd_printf("\033[?9h");
-      io->dd_printf("\033[3 q");
-    }
+  io->tu_mouse_on();
 }
 
 
-void
+bool
 cl_port_hw::proc_input(void)
 {
-  char c;
-  class cl_f *fin, *fout;
+  return cl_hw::proc_input();
+}
+
+bool
+cl_port_hw::handle_input(char c)
+{
   class cl_port_io *pio= (class cl_port_io *)io;
 
-  fin= io->get_fin();
-  fout= io->get_fout();
-
-  if (fin->eof())
-    {
-      if (fout &&
-	  (fout->file_id == fin->file_id))
-	{
-	  delete fout;
-	  io->replace_files(false, fin, 0);
-	}
-      delete fin;
-      io->replace_files(false, 0, 0);
-      return;
-    }
-  fin->read(&c, 1);
   if (pio->keyset >= 0)
     {
       int i;
@@ -77,12 +59,16 @@ cl_port_hw::proc_input(void)
 	  {
 	    t_mem m= cell_in->read();
 	    cell_in->write(m ^ (1<<(7-i)));
-	    return;
+	    return true;
 	  }
     }
   pio->tu_go(1,1);
+  pio->tu_cll();
+  int ret= cl_hw::handle_input(c); // handle default keys
+  pio->tu_go(1,1);
   //pio->tu_cll();
   //pio->dd_printf("Unknown command: %c (%d,0x%02x)\n", isprint(c)?c:'?', c, c);
+  return ret;
 }
 
 void

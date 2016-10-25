@@ -150,7 +150,10 @@ class cl_console_base: public cl_base
   virtual void tu_save(void);
   virtual void tu_restore(void);
   virtual void tu_color(int bg, int fg);
-    
+  virtual void tu_mouse_on(void);
+  virtual void tu_mouse_off(void);
+  virtual void tu_reset(void);
+  
   virtual bool interpret(char *cmd);
   virtual int get_id(void) const { return(id); }
   virtual void set_id(int new_id);
