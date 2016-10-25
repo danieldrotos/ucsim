@@ -141,7 +141,11 @@ cl_console::close_files(void)
   if (frout)
     delete frout;
   if (fout)
-    delete fout;
+    {
+      if (fout->tty)
+	tu_reset();
+      delete fout;
+    }
   if (fin)
     delete fin;
   drop_files();
@@ -185,6 +189,8 @@ cl_console::~cl_console(void)
       //if (flags & CONS_PROMPT)
       //fout->write_str("\n");
       //fout->flush();
+      if (fout->tty)
+	tu_reset();
       deb("deleting fout:%d of console %d\n", fout->file_id, id);
       delete fout;
     }
