@@ -255,10 +255,20 @@ cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
   //application->get_commander()->update_active();
 }
 
+class cl_hw_io *
+cl_hw::get_io(void)
+{
+  return io;
+}
+
 bool
 cl_hw::proc_input(void)
 {
   char c;
+
+  if (!io)
+    return false;
+  
   class cl_f *fin= io->get_fin();
   class cl_f *fout= io->get_fout();
   
@@ -286,6 +296,9 @@ cl_hw::proc_input(void)
 bool
 cl_hw::handle_input(char c)
 {
+  if (!io)
+    return false;
+  
   switch (c)
     {
     case 's'-'a'+1: case 'r'-'a'+1: case 'g'-'a'+1:
@@ -465,7 +478,7 @@ cl_hw_io::proc_input(class cl_cmdset *cmdset)
     {
       char c;
       fin->read(&c, 1);
-      dd_printf("Unhandled command: %c\n", isprint(c)?c:'?');
+      dd_printf("Unhandled hwio command: %c %d 0x%02x\n", isprint(c)?c:'?', c, c);
     }
   return 0;
 }

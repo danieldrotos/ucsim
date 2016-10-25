@@ -42,13 +42,14 @@ enum port_cfg {
   port_pin		= 1, // RW
 };
 
-class cl_port: public cl_port_hw
+class cl_port: public cl_hw
 {
 public:
   t_addr addr_p;
   t_mem port_pins;
   t_mem prev;
   class cl_address_space *bas;
+  class cl_memory_cell *cell_p, *cell_in, *bit_cells[8];
 public:
   cl_port(class cl_uc *auc, int aid);
   virtual int init(void);
@@ -63,6 +64,7 @@ public:
   virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
   //virtual void mem_cell_changed(class cl_m *mem, t_addr addr);
 
+  virtual void make_io(void) {}
   //virtual int tick(int cycles);
   virtual void print_info(class cl_console_base *con);
 };

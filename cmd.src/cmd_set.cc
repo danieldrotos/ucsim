@@ -318,8 +318,10 @@ COMMAND_DO_WORK_APP(cl_set_console_cmd)
       con->dd_printf("Converting console to display of %s[%d]...\n",
 		     hw->id_string, hw->id);
       hw->new_io(con->get_fin(), con->get_fout());
-      con->drop_files();
-      return true;
+      if (hw->get_io())
+	return con->drop_files(), true;
+      else
+	return con->dd_printf("%s[%d]: no display\n", hw->id_string, hw->id), false;
     }
   
   if (cmdline->syntax_match(0, STRING))

@@ -17,14 +17,24 @@ static const char *keysets[7]= {
   "ZXCVBNM."
 };
 
-cl_port_hw::cl_port_hw(class cl_uc *auc, int aid, chars aid_string):
-  cl_hw(auc, HW_PORT, aid, aid_string)
+cl_port_ui::cl_port_ui(class cl_uc *auc, int aid, chars aid_string):
+  cl_hw(auc, HW_DUMMY, aid, aid_string)
 {
+  int i;
+  
+  for (i= 0; i < NUOF_PORT_UIS; i++)
+    {
+      pd[i].cell_p= NULL;
+      pd[i].cell_in= NULL;
+      pd[i].cache_p= 0;
+      pd[i].cache_in= 0;
+      pd[i].keyset= NULL;
+    }
 }
 
 
 void
-cl_port_hw::make_io()
+cl_port_ui::make_io()
 {
   io= new cl_port_io(this);
   io->init();
@@ -33,7 +43,7 @@ cl_port_hw::make_io()
 
 
 void
-cl_port_hw::new_io(class cl_f *f_in, class cl_f *f_out)
+cl_port_ui::new_io(class cl_f *f_in, class cl_f *f_out)
 {
   cl_hw::new_io(f_in, f_out);
   io->tu_mouse_on();
@@ -41,28 +51,35 @@ cl_port_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 
 
 bool
-cl_port_hw::proc_input(void)
+cl_port_ui::proc_input(void)
 {
   return cl_hw::proc_input();
 }
 
 bool
-cl_port_hw::handle_input(char c)
+cl_port_ui::handle_input(char c)
 {
   class cl_port_io *pio= (class cl_port_io *)io;
+  int i;
 
-  if (pio->keyset >= 0)
-    {
-      int i;
-      for (i= 0; keysets[pio->keyset][i]; i++)
-	if (keysets[pio->keyset][i] == c)
-	  {
-	    t_mem m= cell_in->read();
-	    cell_in->write(m ^ (1<<(7-i)));
-	    return true;
-	  }
-    }
   pio->tu_go(1,1);
+  for (i= 0; i < NUOF_PORT_UIS; i++)
+    {
+      if (pd[i].cell_p)
+	{
+	  if (pd[i].keyset != NULL)
+	    {
+	      int bit;
+	      for (bit= 0; pd[i].keyset[bit]; i++)
+		if (pd[i].keyset[bit] == c)
+		  {
+		    t_mem m= pd[i].cell_in->read();
+		    pd[i].cell_in->write(m ^ (1<<(7-bit)));
+		    return true;
+		  }
+	    }
+	}
+    }
   pio->tu_cll();
   int ret= cl_hw::handle_input(c); // handle default keys
   pio->tu_go(1,1);
@@ -72,55 +89,67 @@ cl_port_hw::handle_input(char c)
 }
 
 void
-cl_port_hw::refresh_display(bool force)
+cl_port_ui::refresh_display(bool force)
 {
   class cl_port_io *pio= (class cl_port_io *)io;
   if (!io)
     return;
-  if (force ||
-      (cell_p->get() != cache_p))
+  int i;
+  for (i= 0; i < NUOF_PORT_UIS; i++)
     {
-      cache_p= cell_p->get();
-      pio->tu_go(pio->basx+4, pio->basy);
-      int m= 0x80;
-      for ( ; m; m>>= 1)
-	pio->dd_printf("%c", (cache_p&m)?'*':'-');
-      pio->tu_go(pio->basx+4+8+1, pio->basy);
-      pio->dd_printf("%02x", cache_p);
-    }
-  if (force ||
-      (cell_in->get() != cache_in))
-    {
-      cache_in= cell_in->get();
-      pio->tu_go(pio->basx+4, pio->basy+2);
-      int m= 0x80;
-      for ( ; m; m>>= 1)
-	pio->dd_printf("%c", (cache_in&m)?'*':'-');
-      pio->tu_go(pio->basx+4+8+1, pio->basy+2);
-      pio->dd_printf("%02x", cache_in);
+      if (pd[i].cell_p == NULL)
+	continue;
+      if (force ||
+	  (pd[i].cell_p->get() != pd[i].cache_p))
+	{
+	  pd[i].cache_p= pd[i].cell_p->get();
+	  pio->tu_go(pd[i].basx+4, pd[i].basy);
+	  int m= 0x80;
+	  for ( ; m; m>>= 1)
+	    pio->dd_printf("%c", (pd[i].cache_p&m)?'*':'-');
+	  pio->tu_go(pd[i].basx+4+8+1, pd[i].basy);
+	  pio->dd_printf("%02x", pd[i].cache_p);
+	}
+      if (force ||
+	  (pd[i].cell_in->get() != pd[i].cache_in))
+	{
+	  pd[i].cache_in= pd[i].cell_in->get();
+	  pio->tu_go(pd[i].basx+4, pd[i].basy+2);
+	  int m= 0x80;
+	  for ( ; m; m>>= 1)
+	    pio->dd_printf("%c", (pd[i].cache_in&m)?'*':'-');
+	  pio->tu_go(pd[i].basx+4+8+1, pd[i].basy+2);
+	  pio->dd_printf("%02x", pd[i].cache_in);
+	}
     }
   pio->tu_go(1, 1);
 }
 
 void
-cl_port_hw::draw_display(void)
+cl_port_ui::draw_display(void)
 {
   class cl_port_io *pio= (class cl_port_io *)io;
   if (!io)
     return;
   pio->tu_cls();
-  pio->tu_go(pio->basx, pio->basy);
-  pio->dd_printf("Out:");
-  pio->tu_go(pio->basx, pio->basy+1);
-  pio->dd_printf("Bit:76543210");
-  pio->tu_go(pio->basx, pio->basy+2);
-  pio->dd_printf("In :");
-  pio->tu_go(pio->basx, pio->basy+3);
-  pio->dd_printf("Key:%s", keysets[pio->keyset]);
+  int i;
+  for (i= 0; i < NUOF_PORT_UIS; i++)
+    {
+      if (pd[i].cell_p == NULL)
+	continue;
+      pio->tu_go(pd[i].basx, pd[i].basy);
+      pio->dd_printf("Out:");
+      pio->tu_go(pd[i].basx, pd[i].basy+1);
+      pio->dd_printf("Bit:76543210");
+      pio->tu_go(pd[i].basx, pd[i].basy+2);
+      pio->dd_printf("In :");
+      pio->tu_go(pd[i].basx, pd[i].basy+3);
+      if (pd[i].keyset)
+	pio->dd_printf("Key:%s", pd[i].keyset);
 
-  cache_p= cell_p->get();
-  cache_in= cell_in->read();
-
+      pd[i].cache_p= pd[i].cell_p->get();
+      pd[i].cache_in= pd[i].cell_in->read();
+    }
   refresh_display(true);
 }
 
@@ -136,9 +165,6 @@ int
 cl_port_io::init(void)
 {
   cl_hw_io::init();
-  basx= 1;
-  basy= 3+(hw->id*5);
-  keyset= (hw->id) % 4;
   return 0;
 }
 

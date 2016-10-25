@@ -11,20 +11,26 @@
 class cl_port_io: public cl_hw_io
 {
  public:
-  int basx, basy, keyset;
- public:
   cl_port_io(class cl_hw *ihw);
   virtual int init(void);
   //virtual bool input_avail(void);  
 };
 
-class cl_port_hw: public cl_hw
+struct s_port_data {
+  class cl_memory_cell *cell_p/*, *bit_cells[32]*/, *cell_in;
+  t_mem cache_p, cache_in;
+  char *keyset;
+  int basx, basy;
+};
+
+enum { NUOF_PORT_UIS };
+
+class cl_port_ui: public cl_hw
 {
  public:
-  class cl_memory_cell *cell_p, *bit_cells[32], *cell_in;
-  t_mem cache_p, cache_in;
+  struct s_port_data pd[16];
  public:
-  cl_port_hw(class cl_uc *auc, int aid, chars aid_string);
+  cl_port_ui(class cl_uc *auc, int aid, chars aid_string);
 
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);

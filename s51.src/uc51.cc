@@ -141,7 +141,7 @@ cl_51core::mk_hw_elements(void)
 {
   cl_uc::mk_hw_elements();
 
-  class cl_hw *h;
+  class cl_hw *h, *d;
 
   acc= sfr->get_cell(ACC);
   psw= sfr->get_cell(PSW);
@@ -152,6 +152,9 @@ cl_51core::mk_hw_elements(void)
   h->init();
   add_hw(h= new cl_serial(this));
   h->init();
+
+  add_hw(d= new cl_port_ui(this, 0, "dport"));
+  d->init();
   add_hw(h= new cl_port(this, 0));
   h->init();
   add_hw(h= new cl_port(this, 1));
@@ -160,6 +163,7 @@ cl_51core::mk_hw_elements(void)
   h->init();
   add_hw(h= new cl_port(this, 3));
   h->init();
+
   add_hw(interrupt= new cl_interrupt(this));
   interrupt->init();
   add_hw(h= new cl_uc51_cpu(this));

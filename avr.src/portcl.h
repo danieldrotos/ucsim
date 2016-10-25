@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "port_hwcl.h"
 
 
-class cl_port: public cl_port_hw
+class cl_port: public cl_hw
 {
 public:
   cl_port(class cl_uc *auc);

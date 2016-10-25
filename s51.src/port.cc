@@ -38,7 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_port::cl_port(class cl_uc *auc, int aid):
-  cl_port_hw(auc, aid, "port")
+  cl_hw(auc, HW_PORT, aid, "port")
 {
   port_pins= 0xff;
 }
