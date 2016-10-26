@@ -8,6 +8,9 @@
 #include "hwcl.h"
 
 
+extern const char *keysets[7];
+
+
 class cl_port_io: public cl_hw_io
 {
  public:
@@ -16,22 +19,26 @@ class cl_port_io: public cl_hw_io
   //virtual bool input_avail(void);  
 };
 
-struct s_port_data {
+class cl_port_data: public cl_base
+{
+ public:
   class cl_memory_cell *cell_p/*, *bit_cells[32]*/, *cell_in;
   t_mem cache_p, cache_in;
   char *keyset;
   int basx, basy;
 };
 
-enum { NUOF_PORT_UIS };
+enum { NUOF_PORT_UIS= 16 };
 
 class cl_port_ui: public cl_hw
 {
  public:
-  struct s_port_data pd[16];
+  class cl_port_data pd[16];
  public:
   cl_port_ui(class cl_uc *auc, int aid, chars aid_string);
 
+  virtual bool add_port(class cl_port_data *p, int nr);
+  
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual bool proc_input(void);

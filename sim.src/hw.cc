@@ -303,23 +303,23 @@ cl_hw::handle_input(char c)
     {
     case 's'-'a'+1: case 'r'-'a'+1: case 'g'-'a'+1:
       uc->sim->start(0, 0);
-      io->dd_printf("Simulation started.\n");
+      io->dd_printf("Simulation started.");
       break;
     case 'p'-'a'+1:
       uc->sim->stop(resSIMIF);
-      io->dd_printf("Simulation stopped.\n");
+      io->dd_printf("Simulation stopped.");
       break;
     case 't'-'a'+1:
       uc->reset();
-      io->dd_printf("CPU reseted.\n");
+      io->dd_printf("CPU reseted.");
       break;
     case 'q'-'a'+1:
       uc->sim->state|= SIM_QUIT;
-      io->dd_printf("Exit simulator.\n");
+      io->dd_printf("Exit simulator.");
       io->tu_reset();
       break;
     case 'c'-'a'+1:
-      io->dd_printf("Closing display.\n");
+      io->dd_printf("Closing display.");
       io->tu_reset();
       io->tu_cls();
       io->convert2console();
@@ -348,6 +348,10 @@ cl_hw::refresh_display(bool force)
 void
 cl_hw::draw_display(void)
 {
+  if (!io)
+    return ;
+  io->tu_go(1, 1);
+  io->dd_printf("[^s] Start  [^p] stoP  [^t] reseT  [^q] Quit  [^c] Close"); 
 }
 
 void

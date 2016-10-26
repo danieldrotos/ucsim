@@ -74,6 +74,8 @@ class cl_serial_hw: public cl_hw
 
   virtual void make_io(void);
   virtual bool proc_input(void);
+  virtual void refresh_display(bool force) {}
+  virtual void draw_display(void) {}
 };
 
 
