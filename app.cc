@@ -136,10 +136,13 @@ cl_app::run(void)
             }
 	  else
 	    {
-	      commander->wait_input();
-	      done= commander->proc_input();
+	      if (commander->input_avail())
+		done= commander->proc_input();
+	      //commander->wait_input();
+	      //done= commander->proc_input();
 	      if (sim->uc)
 		sim->uc->touch();
+	      loop_delay();
 	    }
 	  if (sim->state & SIM_QUIT)
 	    done= 1;

@@ -147,6 +147,7 @@ cl_port_ui::refresh_display(bool force)
 	  pio->dd_printf("%02x", pd[i].cache_in);
 	}
     }
+  cl_hw::refresh_display(force);
   pio->tu_go(1, 1);
 }
 

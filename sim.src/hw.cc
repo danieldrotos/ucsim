@@ -91,7 +91,9 @@ cl_hw::init(void)
     {
       cfg->register_hw(i, this, false);
     }
-  
+
+  cache_run= -1;
+  cache_time= 0;
   return 0;
 }
 
@@ -346,6 +348,26 @@ cl_hw::handle_input(char c)
 void
 cl_hw::refresh_display(bool force)
 {
+  if (!io)
+    return ;
+  int n= uc->sim->state & SIM_GO;
+  if ((n != cache_run) ||
+      force)
+    {
+      io->tu_go(72,1);
+      io->dd_printf("%4s", n?"Run":"Stop");
+      cache_run= n;
+    }
+  unsigned int t= uc->get_rtime() * 1000;
+  if ((t != cache_time) ||
+      force)
+    {
+      io->tu_go(1,2);
+      io->dd_printf("%u ms", t);
+      if (t < cache_time)
+	io->dd_printf("                ");
+      cache_time= t;
+    }
 }
 
 void

@@ -74,6 +74,8 @@ class cl_hw: public cl_guiobj
   class cl_list *partners;
   class cl_address_space *cfg;
   class cl_hw_io *io;
+  int cache_run;
+  unsigned int cache_time;
  public:
   cl_hw(class cl_uc *auc, enum hw_cath cath, int aid, const char *aid_string);
   virtual ~cl_hw(void);

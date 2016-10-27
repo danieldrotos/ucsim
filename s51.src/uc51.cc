@@ -176,7 +176,7 @@ cl_51core::mk_hw_elements(void)
   pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[0]);
   pd.basx    = 1;
-  pd.basy    = 3;
+  pd.basy    = 4;
   d->add_port(&pd, 0);
   
   pd.init();
@@ -187,7 +187,7 @@ cl_51core::mk_hw_elements(void)
   pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[1]);
   pd.basx    = 20;
-  pd.basy    = 3;
+  pd.basy    = 4;
   d->add_port(&pd, 1);
   
   pd.init();
@@ -197,8 +197,8 @@ cl_51core::mk_hw_elements(void)
   pd.cache_p = pd.cell_p->read();
   pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[2]);
-  pd.basx    = 1;
-  pd.basy    = 3+6;
+  pd.basx    = 40;
+  pd.basy    = 4;
   d->add_port(&pd, 2);
   
   pd.init();
@@ -208,8 +208,8 @@ cl_51core::mk_hw_elements(void)
   pd.cache_p = pd.cell_p->read();
   pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[3]);
-  pd.basx    = 20;
-  pd.basy    = 3+6;
+  pd.basx    = 60;
+  pd.basy    = 4;
   d->add_port(&pd, 3);
   
   add_hw(interrupt= new cl_interrupt(this));
