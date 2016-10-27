@@ -98,7 +98,7 @@ public:
   class brk_coll *ebrk;		// Collection of EVENT breakpoints
   class cl_sim *sim;
   //class cl_list *mems;
- private:
+ public:
   class cl_hws *hws;
 
  public:

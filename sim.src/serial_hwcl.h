@@ -73,6 +73,7 @@ class cl_serial_hw: public cl_hw
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
   virtual void make_io(void);
+  virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual bool proc_input(void);
   virtual void refresh_display(bool force) {}
   virtual void draw_display(void) {}

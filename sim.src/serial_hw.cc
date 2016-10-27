@@ -181,6 +181,17 @@ cl_serial_hw::make_io()
   application->get_commander()->add_console(io);
 }
 
+void
+cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
+{
+  char esc= (char)cfg_get(serconf_escape);
+  cl_hw::new_io(f_in, f_out);
+  if (io)
+    io->dd_printf("%s[%d] terminal display, press ^%c to access control menu\n",
+		  id_string, id,
+		  'a'+esc-1);
+}
+
 bool
 cl_serial_hw::proc_input(void)
 {
@@ -224,6 +235,7 @@ cl_serial_hw::proc_input(void)
 				" q      Quit simulator\n"
 				" o      Close serial terminal\n"
 				" e      Exit menu\n"
+				" n      Change display\n"
 				,
 				'a'+esc-1, 'a'+esc-1
 				);
@@ -296,20 +308,20 @@ cl_serial_hw::proc_input(void)
 		    // close
 		    io->dd_printf("Closing terminal.\n");
 		    menu= 0;
-		    /*
-		    if (fin &&
-			fout)
-		      {
-			class cl_console *con=
-			  new cl_console(fin, fout, application);
-			con->init();
-			application->get_commander()->add_console(con);
-		      }
-		    //io->fout= 0;//mk_io("", "");
-		    //io->fin= 0;//mk_io("", "");
-		    io->drop_files();
-		    */
 		    io->convert2console();
+		    break;
+		  }
+		case 'n': case 'N': case 'n'-'a'+1:
+		  {
+		    class cl_hw *h= next_displayer();
+		    if (!h)
+		      io->dd_printf("No other displayer.\n");
+		    else
+		      {
+			io->tu_reset();
+			io->tu_cls();
+			io->pass2hw(h);
+		      }
 		    break;
 		  }
 		default:

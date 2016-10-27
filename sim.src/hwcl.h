@@ -58,6 +58,7 @@ class cl_hw_io: public cl_console
   virtual void print_prompt(void) {}
 
   virtual void convert2console(void);
+  virtual void pass2hw(class cl_hw *new_hw);
 };
 
 
@@ -114,6 +115,7 @@ class cl_hw: public cl_guiobj
   virtual bool handle_input(char c);
   virtual void refresh_display(bool force);
   virtual void draw_display(void);
+  virtual cl_hw *next_displayer(void);
   
   virtual void print_info(class cl_console_base *con);
 };
@@ -123,6 +125,7 @@ class cl_hws: public cl_list
  public:
  cl_hws(void): cl_list(2, 2, cchars("hws")) {}
   virtual t_index add(void *item);
+  virtual cl_hw *next_displayer(class cl_hw *hw);
 };
 
 

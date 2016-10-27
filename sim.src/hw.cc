@@ -329,16 +329,20 @@ cl_hw::handle_input(char c)
     case 'l'-'a'+1:
       draw_display();
       break;
+    case 'n'-'a'+1:
+      {
+	class cl_hw *h= next_displayer();
+	if (!h)
+	  io->dd_printf("No other displayer.");
+	else
+	  {
+	    io->tu_reset();
+	    io->tu_cls();
+	    io->pass2hw(h);
+	  }
+	break;
+      }
     default:
-	/*io->dd_printf("Display of %s[%d]: unhandled command: %c (%d)\n",
-	id_string, id,
-	isprint(c)?c:'?', c);
-	io->dd_printf("Deafult keys:\n"
-	"  ^s,^r,^g  Start\n"
-	"  ^p        Stop\n"
-	"  ^t        Reset\n"
-	"  ^q        Quit\n"
-	"  ^c        Close\n");*/
       return false;
       break;
     }
@@ -362,7 +366,7 @@ cl_hw::refresh_display(bool force)
   if ((t != cache_time) ||
       force)
     {
-      io->tu_go(1,2);
+      io->tu_go(28,2);
       io->dd_printf("%u ms", t);
       if (t < cache_time)
 	io->dd_printf("                ");
@@ -376,8 +380,21 @@ cl_hw::draw_display(void)
   if (!io)
     return ;
   io->tu_go(1, 1);
-  io->dd_printf("[^s] Start  [^p] stoP  [^t] reseT  [^q] Quit  [^o] clOse  [^l] redraw"); 
+  io->dd_printf("[^s] Start  [^p] stoP  [^t] reseT  [^q] Quit  [^o] clOse  [^l] redraw\n");
+  io->dd_printf("[^n] chaNge display  Time: ");
+  io->tu_go(72,2);
+  chars s("", "%s[%d]", id_string, id);
+  io->dd_printf("%8s", (char*)s);
 }
+
+class cl_hw *
+cl_hw::next_displayer(void)
+{
+  if (!uc)
+    return NULL;
+  return uc->hws->next_displayer(this);
+}
+
 
 void
 cl_hw::print_info(class cl_console_base *con)
@@ -414,6 +431,32 @@ cl_hws::add(void *item)
   return(res);
 }
 
+class cl_hw *
+cl_hws::next_displayer(class cl_hw *hw)
+{
+  int i, j;
+
+  if (!index_of(hw, &i))
+    return NULL;
+
+  for (j= i+1; j < count; j++)
+    {
+      class cl_hw *h= (class cl_hw *)(at(j));
+      h->make_io();
+      if (h->get_io())
+	return h;
+    }
+  for (j= 0; j < i; j++)
+    {
+      class cl_hw *h= (class cl_hw *)(at(j));
+      h->make_io();
+      if (h->get_io())
+	return h;
+    }
+  return NULL;
+}
+
+		       
 /*
  *____________________________________________________________________________
  */
@@ -523,6 +566,14 @@ cl_hw_io::convert2console(void)
       con->init();
       application->get_commander()->add_console(con);
     }
+  drop_files();
+}
+
+void
+cl_hw_io::pass2hw(class cl_hw *new_hw)
+{
+  if (new_hw)
+    new_hw->new_io(fin, fout);
   drop_files();
 }
 
