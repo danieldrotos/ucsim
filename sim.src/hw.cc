@@ -318,11 +318,14 @@ cl_hw::handle_input(char c)
       io->dd_printf("Exit simulator.");
       io->tu_reset();
       break;
-    case 'c'-'a'+1:
+    case 'o'-'a'+1:
       io->dd_printf("Closing display.");
       io->tu_reset();
       io->tu_cls();
       io->convert2console();
+      break;
+    case 'l'-'a'+1:
+      draw_display();
       break;
     default:
 	/*io->dd_printf("Display of %s[%d]: unhandled command: %c (%d)\n",
@@ -351,7 +354,7 @@ cl_hw::draw_display(void)
   if (!io)
     return ;
   io->tu_go(1, 1);
-  io->dd_printf("[^s] Start  [^p] stoP  [^t] reseT  [^q] Quit  [^c] Close"); 
+  io->dd_printf("[^s] Start  [^p] stoP  [^t] reseT  [^q] Quit  [^o] clOse  [^l] redraw"); 
 }
 
 void

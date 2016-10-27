@@ -222,7 +222,7 @@ cl_serial_hw::proc_input(void)
 				" p      Stop simulation\n"
 				" T      Reset CPU\n"
 				" q      Quit simulator\n"
-				" c      Close serial terminal\n"
+				" o      Close serial terminal\n"
 				" e      Exit menu\n"
 				,
 				'a'+esc-1, 'a'+esc-1
@@ -259,7 +259,7 @@ cl_serial_hw::proc_input(void)
 		}
 	      switch (c)
 		{
-		case 'z': case 'z'-'a'-1: case 'Z':
+		case 'z': case 'z'-'a'+1: case 'Z':
 		  break;
 		case 'e': case 'E': case 'e'-'a'+1:
 		  // exit menu
@@ -291,7 +291,7 @@ cl_serial_hw::proc_input(void)
 		  menu= 0;
 		  io->dd_printf("Exit simulator.\n");
 		  break;
-		case 'c': case 'C': case 'c'-'a'+1:
+		case 'o': case 'O': case 'o'-'a'+1:
 		  {
 		    // close
 		    io->dd_printf("Closing terminal.\n");

@@ -1907,6 +1907,8 @@ cl_uc::touch(void)
 void
 cl_uc::stack_write(class cl_stack_op *op)
 {
+  delete op;
+  return ;
   if (op->get_op() & stack_read_operation)
     {
       class cl_error_stack_tracker_wrong_handle *e= new
@@ -1921,6 +1923,8 @@ cl_uc::stack_write(class cl_stack_op *op)
 void
 cl_uc::stack_read(class cl_stack_op *op)
 {
+  delete op;
+  return ;
   class cl_stack_op *top= (class cl_stack_op *)(stack_ops->top());
 
   if (op->get_op() & stack_write_operation)

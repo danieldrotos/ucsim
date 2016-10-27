@@ -122,6 +122,7 @@ bool bigbig= false;
 bool
 cl_stack_op::can_removed(class cl_stack_op *op)
 {
+  return false;
   bool incr= sp_increased(); // FIXME
   bool op_incr= op->sp_increased(); // FIXME
 
