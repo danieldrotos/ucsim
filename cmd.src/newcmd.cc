@@ -311,6 +311,18 @@ cl_console_base::tu_restore(void)
 }
 
 void
+cl_console_base::tu_hide(void)
+{
+  dd_printf("\033[?25l");
+}
+
+void
+cl_console_base::tu_show(void)
+{
+  dd_printf("\033[?25h");
+}
+
+void
 cl_console_base::tu_color(int bg, int fg)
 {
   if (bg >= 0)

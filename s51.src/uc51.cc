@@ -169,44 +169,35 @@ cl_51core::mk_hw_elements(void)
 
   class cl_port_data pd;
   pd.init();
+  pd.cell_dir= NULL;
+
   pd.set_name("P0");
   pd.cell_p  = p0->cell_p;
   pd.cell_in = p0->cell_in;
-  pd.cache_p = pd.cell_p->read();
-  pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[0]);
   pd.basx    = 1;
   pd.basy    = 4;
   d->add_port(&pd, 0);
   
-  pd.init();
   pd.set_name("P1");
   pd.cell_p  = p1->cell_p;
   pd.cell_in = p1->cell_in;
-  pd.cache_p = pd.cell_p->read();
-  pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[1]);
   pd.basx    = 20;
   pd.basy    = 4;
   d->add_port(&pd, 1);
   
-  pd.init();
   pd.set_name("P2");
   pd.cell_p  = p2->cell_p;
   pd.cell_in = p2->cell_in;
-  pd.cache_p = pd.cell_p->read();
-  pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[2]);
   pd.basx    = 40;
   pd.basy    = 4;
   d->add_port(&pd, 2);
   
-  pd.init();
   pd.set_name("P3");
   pd.cell_p  = p3->cell_p;
   pd.cell_in = p3->cell_in;
-  pd.cache_p = pd.cell_p->read();
-  pd.cache_in= pd.cell_in->read();
   pd.keyset  = chars(keysets[3]);
   pd.basx    = 60;
   pd.basy    = 4;

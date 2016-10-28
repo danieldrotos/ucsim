@@ -22,8 +22,8 @@ class cl_port_io: public cl_hw_io
 class cl_port_data: public cl_base
 {
  public:
-  class cl_memory_cell *cell_p/*, *bit_cells[32]*/, *cell_in;
-  t_mem cache_p, cache_in;
+  class cl_memory_cell *cell_p, *cell_in, *cell_dir;
+  t_mem cache_p, cache_in, cache_dir, cache_value;
   char *keyset;
   int basx, basy;
 };
@@ -34,6 +34,7 @@ class cl_port_ui: public cl_hw
 {
  public:
   class cl_port_data pd[16];
+  int act_port;
  public:
   cl_port_ui(class cl_uc *auc, int aid, chars aid_string);
 

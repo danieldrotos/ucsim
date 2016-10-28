@@ -149,6 +149,8 @@ class cl_console_base: public cl_base
   virtual void tu_go(int x1, int y1);
   virtual void tu_save(void);
   virtual void tu_restore(void);
+  virtual void tu_hide(void);
+  virtual void tu_show(void);
   virtual void tu_color(int bg, int fg);
   virtual void tu_mouse_on(void);
   virtual void tu_mouse_off(void);
