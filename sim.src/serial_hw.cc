@@ -177,8 +177,11 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 void
 cl_serial_hw::make_io()
 {
-  io= new cl_serial_io(this);
-  application->get_commander()->add_console(io);
+  if (!io)
+    {
+      io= new cl_serial_io(this);
+      application->get_commander()->add_console(io);
+    }
 }
 
 void
@@ -190,6 +193,7 @@ cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
     io->dd_printf("%s[%d] terminal display, press ^%c to access control menu\n",
 		  id_string, id,
 		  'a'+esc-1);
+  menu= 0;
 }
 
 bool
@@ -271,8 +275,6 @@ cl_serial_hw::proc_input(void)
 		}
 	      switch (c)
 		{
-		case 'z': case 'z'-'a'+1: case 'Z':
-		  break;
 		case 'e': case 'E': case 'e'-'a'+1:
 		  // exit menu
 		  menu= 0;
@@ -322,6 +324,7 @@ cl_serial_hw::proc_input(void)
 			io->tu_cls();
 			io->pass2hw(h);
 		      }
+		    menu= 0;
 		    break;
 		  }
 		default:

@@ -66,9 +66,12 @@ cl_port_ui::add_port(class cl_port_data *p, int nr)
 void
 cl_port_ui::make_io()
 {
-  io= new cl_port_io(this);
-  io->init();
-  application->get_commander()->add_console(io);
+  if (!io)
+    {
+      io= new cl_port_io(this);
+      io->init();
+      application->get_commander()->add_console(io);
+    }
 }
 
 

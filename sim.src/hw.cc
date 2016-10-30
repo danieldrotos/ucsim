@@ -226,16 +226,18 @@ cl_hw::touch(void)
 void
 cl_hw::make_io()
 {
-  io= new cl_hw_io(this);
-  io->init();
-  application->get_commander()->add_console(io);
+  if (!io)
+    {
+      io= new cl_hw_io(this);
+      io->init();
+      application->get_commander()->add_console(io);
+    }
 }
 
 void
 cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 {
-  if (!io)
-    make_io();
+  make_io();
   if (!io)
     return ;
   /*if (io->fin)
@@ -435,7 +437,9 @@ class cl_hw *
 cl_hws::next_displayer(class cl_hw *hw)
 {
   int i, j;
-
+  cl_hw_io *io;
+  cl_f *fi, *fo;
+  
   if (!index_of(hw, &i))
     return NULL;
 
@@ -443,15 +447,27 @@ cl_hws::next_displayer(class cl_hw *hw)
     {
       class cl_hw *h= (class cl_hw *)(at(j));
       h->make_io();
-      if (h->get_io())
-	return h;
+      if ((io= h->get_io()))
+	{
+	  fi= io->get_fin();
+	  fo= io->get_fout();
+	  if (!fi &&
+	      !fo)
+	    return h;
+	}
     }
   for (j= 0; j < i; j++)
     {
       class cl_hw *h= (class cl_hw *)(at(j));
       h->make_io();
-      if (h->get_io())
-	return h;
+      if ((io= h->get_io()))
+	{
+	  fi= io->get_fin();
+	  fo= io->get_fout();
+	  if (!fi &&
+	      !fo)
+	    return h;
+	}
     }
   return NULL;
 }
