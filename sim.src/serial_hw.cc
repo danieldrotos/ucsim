@@ -215,10 +215,11 @@ cl_serial_hw::proc_input(void)
 	  delete fout;
 	  //io->fout= 0;//mk_io("", "");
 	  io->replace_files(false, fin, 0);
+	  fout= 0;
 	}
       delete fin;
       //io->fin= 0;//mk_io("", "");
-      io->replace_files(false, 0, 0);
+      io->replace_files(false, 0, fout);
       //application->get_commander()->update_active();
       return true;
     }
