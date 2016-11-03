@@ -427,7 +427,7 @@ cl_sif_read::produce_answer(void)
     {
       if (sif->fin)
 	{
-	  char c;
+	  int c;
 	  if (sif->fin->input_avail())
 	    {
 	      i= sif->fin->read(&c, 1);

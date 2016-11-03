@@ -199,7 +199,8 @@ cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 bool
 cl_serial_hw::proc_input(void)
 {
-  char c, esc= (char)cfg_get(serconf_escape);
+  int c;
+  char esc= (char)cfg_get(serconf_escape);
   bool run= uc->sim->state & SIM_GO;
   class cl_f *fin, *fout;
 

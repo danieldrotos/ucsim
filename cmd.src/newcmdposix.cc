@@ -278,7 +278,7 @@ int
 cl_console::read_line(void)
 {
   int i= 0;
-  char b[2]= { 0, 0 };
+  int b[2]= { 0, 0 };
 
   do {
     i= fin->read(b, 1);
@@ -321,7 +321,12 @@ cl_console::read_line(void)
 	    */
 	    return 1;
 	  }
-	lbuf+= b;
+	{
+	  char s[2];
+	  s[0]= b[0];
+	  s[1]= b[1];
+	  lbuf+= s;
+	}
       }
   }
   while (i > 0);

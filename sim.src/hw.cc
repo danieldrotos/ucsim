@@ -268,7 +268,7 @@ cl_hw::get_io(void)
 bool
 cl_hw::proc_input(void)
 {
-  char c;
+  int c;
 
   if (!io)
     return false;
@@ -564,7 +564,7 @@ cl_hw_io::proc_input(class cl_cmdset *cmdset)
     hw->proc_input();
   else
     {
-      char c;
+      int c;
       fin->read(&c, 1);
       dd_printf("Unhandled hwio command: %c %d 0x%02x\n", isprint(c)?c:'?', c, c);
     }
