@@ -193,6 +193,7 @@ print_help(char *name)
      "  -p prompt    Specify string for prompt\n"
      "  -P           Prompt is a null ('\\0') character\n"
      "  -g           Go, start simulation\n"
+     "  -G           Go, start simulation, quit on stop\n"
      "  -a nr        Specify size of variable space (default=256)\n"
      "  -V           Verbose mode\n"
      "  -v           Print out version number\n"
@@ -227,7 +228,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "c:C:p:PX:vVt:s:S:a:hHgJ_");
+  strcpy(opts, "c:C:p:PX:vVt:s:S:a:hHgGJ_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
@@ -250,6 +251,14 @@ cl_app::proc_arguments(int argc, char *argv[])
 	if (!options->set_value("go", this, true))
 	  fprintf(stderr, "Warning: No \"go\" option found "
 		  "to set by -g\n");
+	break;
+      case 'G':
+	if (!options->set_value("go", this, true))
+	  fprintf(stderr, "Warning: No \"go\" option found "
+		  "to set by -G\n");
+	if (!options->set_value("quit", this, true))
+	  fprintf(stderr, "Warning: No \"quit\" option found "
+		  "to set by -G\n");
 	break;
       case 'c':
 	if (!options->set_value("console_on", this, optarg))
@@ -750,6 +759,11 @@ cl_app::mk_options(void)
   o->init();
   o->hide();
 
+  options->new_option(o= new cl_bool_option(this, "quit",
+					    "Quit on stop (-G)"));
+  o->init();
+  o->hide();
+  
   options->new_option(o= new cl_number_option(this, "var_size",
 					      "Size of variable space (-a)"));
   o->init();
