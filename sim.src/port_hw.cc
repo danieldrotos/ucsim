@@ -81,6 +81,8 @@ cl_port_ui::new_io(class cl_f *f_in, class cl_f *f_out)
   cl_hw::new_io(f_in, f_out);
   io->tu_mouse_on();
   io->dd_printf("\033[2 q");
+  if (f_in)
+    f_in->set_escape(true);
 }
 
 
@@ -91,7 +93,7 @@ cl_port_ui::proc_input(void)
 }
 
 bool
-cl_port_ui::handle_input(char c)
+cl_port_ui::handle_input(int c)
 {
   class cl_port_io *pio= (class cl_port_io *)io;
   int i;
@@ -119,7 +121,8 @@ cl_port_ui::handle_input(char c)
   int ret= cl_hw::handle_input(c); // handle default keys
   pio->tu_go(1,1);
   //pio->tu_cll();
-  //pio->dd_printf("Unknown command: %c (%d,0x%02x)\n", isprint(c)?c:'?', c, c);
+  if (!ret)
+    fprintf(stderr, "Unknown command: %c (%d,0x%x)\n", isprint(c)?c:'?', c, c);
   return ret;
 }
 

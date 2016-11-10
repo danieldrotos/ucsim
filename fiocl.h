@@ -66,7 +66,22 @@ enum tu_special_keys {
   TU_F10	= -119,
   TU_F11	= -120,
   TU_F12	= -121,
-  TU_INS	= -122
+  TU_INS	= -122,
+
+  // mouse reports in 4 bytes: FF X Y Code
+  TU_BTN1	= -200, // button1
+  TU_BTN2	= -201, // button2
+  TU_BTN3	= -202, // button3
+  TU_CBTN1	= -203, // CTRL-button1
+  TU_CBTN2	= -204, // CTRL-button2
+  TU_CBTN3	= -205, // CTRL-button3
+  TU_ABTN1	= -206, // ALT-button1
+  TU_ABTN2	= -207, // ALT-button2
+  TU_ABTN3	= -208, // ALT-button3
+  TU_SUP	= -209, // Scroll-UP
+  TU_SDOWN	= -210, // Scroll-DOWN
+  TU_CSUP	= -211, // CTRL-Scroll-UP
+  TU_CSDOWN	= -212, // CTRL-Scroll-DOWN
 };
 
 

@@ -490,7 +490,43 @@ cl_f::process_esc(char c)
 	  return 0;
 	  break;
 	case '[':
-	  if (isalpha((int)c))
+	  if (l > 2)
+	    {
+	      int ret;
+	      switch (esc_buffer[2])
+		{
+		case 'M':
+		  if (l == 6)
+		    {
+		      switch (esc_buffer[3])
+			{
+			case ' ': ret= TU_BTN1; break;
+			case '!': ret= TU_BTN2; break;
+			case '"': ret= TU_BTN3; break;
+			case '0': ret= TU_CBTN1; break;
+			case '1': ret= TU_CBTN2; break;
+			case '2': ret= TU_CBTN3; break;
+			case '(': ret= TU_ABTN1; break;
+			case ')': ret= TU_ABTN2; break;
+			case '*': ret= TU_ABTN3; break;
+			case '`': ret= TU_SUP; break;
+			case 'a': ret= TU_SDOWN; break;
+			case 'p': ret= TU_CSUP; break;
+			case 'q': ret= TU_CSDOWN; break;
+			}
+		      ret&= ~0xffff00;
+		      int x= (esc_buffer[4] - 0x20) & 0xff;
+		      int y= (esc_buffer[5] - 0x20) & 0xff;
+		      ret|= x << 16;
+		      ret|= y << 8;
+		      return finish_esc(ret);
+		    }
+		  break;
+		default:
+		  return finish_esc(c);
+		}
+	    }
+	  else if (isalpha((int)c))
 	    {
 	      deb("ESC_[x ");deb(&esc_buffer[1]);deb("\n");
 	      switch (c)
@@ -502,6 +538,7 @@ cl_f::process_esc(char c)
 		case 'H': return finish_esc(TU_HOME);
 		case 'F': return finish_esc(TU_END);
 		case 'E': return finish_esc(0); // NumPad 5
+		case 'M': return 0;		  
 		default: return finish_esc(c);
 		}
 	    }
@@ -579,6 +616,18 @@ cl_f::process(char c)
 	  at_end= 1;
 	}
 	else*/
+      if (proc_escape)
+	{
+	  if ((ci == '\033') &&
+	      (esc_buffer[0] != 0))
+	    {
+	      i= process_esc(ci);
+	      if (i != 0)
+		return put(i);
+	      else
+		return 0;
+	    }
+	}
       if (proc_telnet)
 	{
 	  if ((ci == 0xff) ||
