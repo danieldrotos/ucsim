@@ -386,7 +386,7 @@ dc(unsigned char c)
 /* Buffer handling */
 
 int
-cl_f::put(char c)
+cl_f::put(int c)
 {
   int n= (first_free + 1) % 1024;
   if (n == last_used)
@@ -405,7 +405,7 @@ cl_f::get(void)
       deb("fid=%d get: empty\n",file_id);
       return -1;
     }
-  char c= buffer[last_used];
+  int c= buffer[last_used];
   //if (c == 3 /* ^C */)
   //return -2;
   deb("fid=%d get[%d]=%s\n",file_id,last_used,dc(c));
@@ -492,7 +492,7 @@ cl_f::process_esc(char c)
 	case '[':
 	  if (l > 2)
 	    {
-	      int ret;
+	      int f, ret;
 	      switch (esc_buffer[2])
 		{
 		case 'M':
@@ -514,11 +514,13 @@ cl_f::process_esc(char c)
 			case 'p': ret= TU_CSUP; break;
 			case 'q': ret= TU_CSDOWN; break;
 			}
+		      f= ret;
 		      ret&= ~0xffff00;
 		      int x= (esc_buffer[4] - 0x20) & 0xff;
 		      int y= (esc_buffer[5] - 0x20) & 0xff;
 		      ret|= x << 16;
 		      ret|= y << 8;
+		      fprintf(stderr, "Mouse: 0x%0x (f=%d,0x%x)\n", ret, f, f);
 		      return finish_esc(ret);
 		    }
 		  break;
@@ -618,7 +620,7 @@ cl_f::process(char c)
 	else*/
       if (proc_escape)
 	{
-	  if ((ci == '\033') &&
+	  if ((ci == '\033') ||
 	      (esc_buffer[0] != 0))
 	    {
 	      i= process_esc(ci);

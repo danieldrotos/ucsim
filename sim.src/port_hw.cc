@@ -97,23 +97,31 @@ cl_port_ui::handle_input(int c)
 {
   class cl_port_io *pio= (class cl_port_io *)io;
   int i;
+  int8_t i8= c;
 
-  for (i= 0; i < NUOF_PORT_UIS; i++)
+  if (i8 < 0)
     {
-      if (pd[i].cell_p == NULL)
-	continue;
-	
-      if (pd[i].keyset != NULL)
+      fprintf(stderr, "Port: spec key= %d\n", i8);
+    }
+  else
+    {
+      for (i= 0; i < NUOF_PORT_UIS; i++)
 	{
-	  int bit;
-	  for (bit= 0; pd[i].keyset[bit]; bit++)
-	    if (pd[i].keyset[bit] == c)
-	      {
-		t_mem m= pd[i].cell_in->read();
-		pd[i].cell_in->write(m ^ (1<<(7-bit)));
-		pio->tu_go(1,1);
-		return true;
-	      }
+	  if (pd[i].cell_p == NULL)
+	    continue;
+	  
+	  if (pd[i].keyset != NULL)
+	    {
+	      int bit;
+	      for (bit= 0; pd[i].keyset[bit]; bit++)
+		if (pd[i].keyset[bit] == c)
+		  {
+		    t_mem m= pd[i].cell_in->read();
+		    pd[i].cell_in->write(m ^ (1<<(7-bit)));
+		    pio->tu_go(1,1);
+		    return true;
+		  }
+	    }
 	}
     }
   pio->tu_go(1,24);
@@ -122,7 +130,10 @@ cl_port_ui::handle_input(int c)
   pio->tu_go(1,1);
   //pio->tu_cll();
   if (!ret)
-    fprintf(stderr, "Unknown command: %c (%d,0x%x)\n", isprint(c)?c:'?', c, c);
+    {
+      uint8_t u= c;
+      fprintf(stderr, "Unknown command: %c (%d,0x%x)\n", isprint(u)?u:'?', i8, c);
+    }
   return ret;
 }
 
