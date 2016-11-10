@@ -196,9 +196,9 @@ print_help(char *name)
      "  -G           Go, start simulation, quit on stop\n"
      "  -a nr        Specify size of variable space (default=256)\n"
      "  -V           Verbose mode\n"
-     "  -v           Print out version number\n"
-     "  -H           Print out types of known CPUs\n"
-     "  -h           Print out this help\n"
+     "  -v           Print out version number and quit\n"
+     "  -H           Print out types of known CPUs and quit\n"
+     "  -h           Print out this help and quit\n"
      );
 }
 
@@ -769,6 +769,24 @@ cl_app::mk_options(void)
   o->init();
   o->set_value((long)0x100);
   o->hide();
+
+  options->new_option(o= new cl_string_option(this, "simif_memory",
+					      "Memory for simulator interface (-I)"));
+  o->init();
+  o->hide();
+  options->new_option(o= new cl_number_option(this, "simif_address",
+					      "Address for simulator interface (-I)"));
+  o->init();
+  o->hide();
+  options->new_option(o= new cl_string_option(this, "simif_infile",
+					      "Name of input file for simulator interface (-I)"));
+  o->init();
+  o->hide();
+  options->new_option(o= new cl_string_option(this, "simif_outfile",
+					      "Name of output file for simulator interface (-I)"));
+  o->init();
+  o->hide();
+  
 }
 
 
