@@ -131,7 +131,7 @@ cl_port_ui::handle_input(int c)
   //pio->tu_cll();
   if (!ret)
     {
-      uint8_t u= c;
+      u8_t u= c;
       fprintf(stderr, "Unknown command: %c (%d,0x%x)\n", isprint(u)?u:'?', i8, c);
     }
   return ret;

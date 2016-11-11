@@ -156,6 +156,7 @@ class cl_f: public cl_base
   virtual int finish_esc(int k);
   virtual int process_telnet(char ci);
   virtual int process_esc(char c);
+  virtual int process_csi(void);
   virtual int process(char c);
   virtual int pick(void);
   virtual int pick(char c);

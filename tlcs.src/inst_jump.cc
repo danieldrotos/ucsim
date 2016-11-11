@@ -58,7 +58,7 @@ cl_tlcs::inst_reti()
 
 // CALL
 int
-cl_tlcs::inst_call(t_addr PC_of_inst, uint16_t addr)
+cl_tlcs::inst_call(t_addr PC_of_inst, u16_t addr)
 {
   exec_call(PC_of_inst, addr, PC);
   PC= addr;

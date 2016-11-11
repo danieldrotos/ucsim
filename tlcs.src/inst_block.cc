@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 cl_tlcs::ex_de_hl()
 {
-  uint16_t temp= reg.de;
+  u16_t temp= reg.de;
   reg.de= reg.hl;
   reg.hl= temp;
   return resGO;
@@ -45,7 +45,7 @@ cl_tlcs::ex_de_hl()
 int
 cl_tlcs::ex_af_alt_af()
 {
-  uint16_t temp= reg.af;
+  u16_t temp= reg.af;
   reg.af= reg.alt_af;
   reg.alt_af= temp;
   return resGO;
@@ -56,7 +56,7 @@ cl_tlcs::ex_af_alt_af()
 int
 cl_tlcs::exx()
 {
-  uint16_t temp= reg.bc;
+  u16_t temp= reg.bc;
   reg.bc= reg.alt_bc;
   reg.alt_bc= temp;
   temp= reg.de;

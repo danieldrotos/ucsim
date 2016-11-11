@@ -55,7 +55,7 @@ cl_rst::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (cell == rst_sr)
     {
-      uint8_t v= *val & 0x1f, o= cell->get();
+      u8_t v= *val & 0x1f, o= cell->get();
       *val= o & ~v;
     }
 }

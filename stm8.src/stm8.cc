@@ -1418,7 +1418,7 @@ cl_stm8::priority_of(uchar nuof_it)
 {
   t_addr ra= 0x7f70;
   int idx= nuof_it / 4;
-  uint8_t i1_mask, i0_mask, i0, i1;
+  u8_t i1_mask, i0_mask, i0, i1;
   cl_memory_cell *c;
   t_mem cv;
   int levels[4]= { 2, 1, 0, 3 };
@@ -1438,7 +1438,7 @@ int
 cl_stm8::priority_main(void)
 {
   t_mem cv= regs.CC;
-  uint8_t i1, i0;
+  u8_t i1, i0;
   int levels[4]= { 2, 1, 0, 3 };
   i0= (cv & BIT_I0)?1:0;
   i1= (cv & BIT_I1)?2:0;

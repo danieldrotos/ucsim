@@ -31,10 +31,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 // RLC 8-bit
-uint8_t
-cl_tlcs::op_rlc(uint8_t data, bool set_sz)
+u8_t
+cl_tlcs::op_rlc(u8_t data, bool set_sz)
 {
-  uint8_t c= data & 0x80;
+  u8_t c= data & 0x80;
   reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   data<<= 1;
   if (c)
@@ -57,20 +57,20 @@ cl_tlcs::op_rlc(uint8_t data, bool set_sz)
 
 
 // RLC mem
-uint8_t
+u8_t
 cl_tlcs::inst_rlc(cl_memory_cell *cell)
 {
-  uint8_t d= op_rlc(cell->read(), true);
+  u8_t d= op_rlc(cell->read(), true);
   cell->write(d);
   return d;
 }
 
 
 // RRC 8-bit
-uint8_t
-cl_tlcs::op_rrc(uint8_t data, bool set_sz)
+u8_t
+cl_tlcs::op_rrc(u8_t data, bool set_sz)
 {
-  uint8_t c= data & 0x01;
+  u8_t c= data & 0x01;
   reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   data>>= 1;
   if (c)
@@ -93,20 +93,20 @@ cl_tlcs::op_rrc(uint8_t data, bool set_sz)
 
 
 // RRC mem
-uint8_t
+u8_t
 cl_tlcs::inst_rrc(cl_memory_cell *cell)
 {
-  uint8_t d= op_rrc(cell->read(), true);
+  u8_t d= op_rrc(cell->read(), true);
   cell->write(d);
   return d;
 }
 
 
 // RL 8-bit
-uint8_t
-cl_tlcs::op_rl(uint8_t data, bool set_sz)
+u8_t
+cl_tlcs::op_rl(u8_t data, bool set_sz)
 {
-  uint8_t c= data & 0x80;
+  u8_t c= data & 0x80;
   data<<= 1;
   if (reg.f & FLAG_C)
     data|= 1;
@@ -128,20 +128,20 @@ cl_tlcs::op_rl(uint8_t data, bool set_sz)
 
 
 // RL mem
-uint8_t
+u8_t
 cl_tlcs::inst_rl(cl_memory_cell *cell)
 {
-  uint8_t d= op_rl(cell->read(), true);
+  u8_t d= op_rl(cell->read(), true);
   cell->write(d);
   return d;
 }
 
 
 // RR 8-bit
-uint8_t
-cl_tlcs::op_rr(uint8_t data, bool set_sz)
+u8_t
+cl_tlcs::op_rr(u8_t data, bool set_sz)
 {
-  uint8_t c= data & 0x01;
+  u8_t c= data & 0x01;
   data>>= 1;
   if (reg.f & FLAG_C)
     data|= 0x80;
@@ -163,20 +163,20 @@ cl_tlcs::op_rr(uint8_t data, bool set_sz)
 
 
 // RR mem
-uint8_t
+u8_t
 cl_tlcs::inst_rr(cl_memory_cell *cell)
 {
-  uint8_t d= op_rr(cell->read(), true);
+  u8_t d= op_rr(cell->read(), true);
   cell->write(d);
   return d;
 }
 
 
 // SLA 8-bit
-uint8_t
-cl_tlcs::op_sla(uint8_t data, bool set_sz)
+u8_t
+cl_tlcs::op_sla(u8_t data, bool set_sz)
 {
-  uint8_t c= data & 0x80;
+  u8_t c= data & 0x80;
   data<<= 1;
   reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c)
@@ -196,21 +196,21 @@ cl_tlcs::op_sla(uint8_t data, bool set_sz)
 
 
 // SLA mem
-uint8_t
+u8_t
 cl_tlcs::inst_sla(cl_memory_cell *cell)
 {
-  uint8_t d= op_sla(cell->read(), true);
+  u8_t d= op_sla(cell->read(), true);
   cell->write(d);
   return d;
 }
 
 
 // SRA 8-bit
-uint8_t
-cl_tlcs::op_sra(uint8_t data, bool set_sz)
+u8_t
+cl_tlcs::op_sra(u8_t data, bool set_sz)
 {
-  uint8_t c7= data & 0x80;
-  uint8_t c0= data & 0x01;
+  u8_t c7= data & 0x80;
+  u8_t c0= data & 0x01;
   data>>= 1;
   reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c0)
@@ -231,20 +231,20 @@ cl_tlcs::op_sra(uint8_t data, bool set_sz)
 
 
 // SRA mem
-uint8_t
+u8_t
 cl_tlcs::inst_sra(cl_memory_cell *cell)
 {
-  uint8_t d= op_sra(cell->read(), true);
+  u8_t d= op_sra(cell->read(), true);
   cell->write(d);
   return d;
 }
 
 
 // SRL 8-bit
-uint8_t
-cl_tlcs::op_srl(uint8_t data, bool set_sz)
+u8_t
+cl_tlcs::op_srl(u8_t data, bool set_sz)
 {
-  uint8_t c0= data & 0x01;
+  u8_t c0= data & 0x01;
   data>>= 1;
   reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c0)
@@ -264,10 +264,10 @@ cl_tlcs::op_srl(uint8_t data, bool set_sz)
 
 
 // SRL mem
-uint8_t
+u8_t
 cl_tlcs::inst_srl(cl_memory_cell *cell)
 {
-  uint8_t d= op_srl(cell->read(), true);
+  u8_t d= op_srl(cell->read(), true);
   cell->write(d);
   return d;
 }
@@ -279,8 +279,8 @@ cl_tlcs::inst_rld(class cl_memory_cell *cell)
 {
   reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
 
-  uint8_t c= cell->read();
-  uint8_t temp= reg.a & 0x0f;
+  u8_t c= cell->read();
+  u8_t temp= reg.a & 0x0f;
   reg.a= (reg.a & 0xf0) + (c >> 4);
   cell->write((c << 4) + temp);
   set_p(reg.a);
@@ -294,8 +294,8 @@ cl_tlcs::inst_rrd(class cl_memory_cell *cell)
 {
   reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
 
-  uint8_t c= cell->read();
-  uint8_t temp= reg.a & 0x0f;
+  u8_t c= cell->read();
+  u8_t temp= reg.a & 0x0f;
   reg.a= (reg.a & 0xf0) + (c & 0x0f);
   cell->write((temp << 4) + (c >> 4));
   set_p(reg.a);

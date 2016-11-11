@@ -447,6 +447,90 @@ cl_f::process_telnet(char ci)
 }
 
 int
+cl_f::process_csi(void)
+{
+  int l= strlen(esc_buffer);
+  if (l < 3)
+    return 0;
+  int f, ret;
+  char c= esc_buffer[l-1];
+  
+  switch (esc_buffer[2])
+    {
+    case 'M':
+      if (l == 6)
+	{
+	  switch (esc_buffer[3])
+	    {
+	    case ' ': ret= TU_BTN1; break;
+	    case '!': ret= TU_BTN2; break;
+	    case '"': ret= TU_BTN3; break;
+	    case '0': ret= TU_CBTN1; break;
+	    case '1': ret= TU_CBTN2; break;
+	    case '2': ret= TU_CBTN3; break;
+	    case '(': ret= TU_ABTN1; break;
+	    case ')': ret= TU_ABTN2; break;
+	    case '*': ret= TU_ABTN3; break;
+	    case '`': ret= TU_SUP; break;
+	    case 'a': ret= TU_SDOWN; break;
+	    case 'p': ret= TU_CSUP; break;
+	    case 'q': ret= TU_CSDOWN; break;
+	    }
+	  f= ret;
+	  ret&= ~0xffff00;
+	  int x= (esc_buffer[4] - 0x20) & 0xff;
+	  int y= (esc_buffer[5] - 0x20) & 0xff;
+	  ret|= x << 16;
+	  ret|= y << 8;
+	  fprintf(stderr, "Mouse: 0x%0x (f=%d,0x%x)\n", ret, f, f);
+	  return finish_esc(ret);
+	}
+      return 0;
+      break;
+    }
+  // first char not recognized, check the last
+  switch (c)
+    {
+    case 'A': return finish_esc(TU_UP);
+    case 'B': return finish_esc(TU_DOWN);
+    case 'C': return finish_esc(TU_RIGHT);
+    case 'D': return finish_esc(TU_LEFT);
+    case 'H': return finish_esc(TU_HOME);
+    case 'F': return finish_esc(TU_END);
+    case 'E': return finish_esc(0); // NumPad 5
+    case '~':
+      {
+	int n;
+	deb("ESC_[~ ");deb(&esc_buffer[1]);deb("\n");
+	n= strtol(&esc_buffer[2], 0, 0);
+	switch (n)
+	  {
+	  case 1: return finish_esc(TU_HOME);
+	  case 2: return finish_esc(TU_INS);
+	  case 3: return finish_esc(TU_DEL);
+	  case 4: return finish_esc(TU_END);
+	  case 5: return finish_esc(TU_PGUP);
+	  case 6: return finish_esc(TU_PGDOWN);
+	  case 11: return finish_esc(TU_F1);
+	  case 12: return finish_esc(TU_F2);
+	  case 13: return finish_esc(TU_F3);
+	  case 14: return finish_esc(TU_F4);
+	  case 15: return finish_esc(TU_F5);
+	  case 17: return finish_esc(TU_F6);
+	  case 18: return finish_esc(TU_F7);
+	  case 19: return finish_esc(TU_F8);
+	  case 20: return finish_esc(TU_F9);
+	  case 21: return finish_esc(TU_F10);
+	  case 23: return finish_esc(TU_F11);
+	  case 24: return finish_esc(TU_F12);
+	  default: return finish_esc(c);
+	  }
+      }
+    }
+  return 0;
+}
+
+int
 cl_f::process_esc(char c)
 {
   int l;
@@ -462,117 +546,31 @@ cl_f::process_esc(char c)
       switch (esc_buffer[1])
 	{
 	case 'O':
-	  if (l==3)
+	  if (l < 3)
+	    return 0;
+	  deb("ESC_O ");deb(&esc_buffer[1]);deb("\n");
+	  switch (c)
 	    {
-	      deb("ESC_O ");deb(&esc_buffer[1]);deb("\n");
-	      switch (c)
-		{
-		case 'P': return finish_esc(TU_F1);
-		case 'Q': return finish_esc(TU_F2);
-		case 'R': return finish_esc(TU_F3);
-		case 'S': return finish_esc(TU_F4);
-		case 'H': return finish_esc(TU_HOME);
-		case 'F': return finish_esc(TU_END);
-		default: return finish_esc(c);
-		}
+	    case 'P': return finish_esc(TU_F1);
+	    case 'Q': return finish_esc(TU_F2);
+	    case 'R': return finish_esc(TU_F3);
+	    case 'S': return finish_esc(TU_F4);
+	    case 'H': return finish_esc(TU_HOME);
+	    case 'F': return finish_esc(TU_END);
+	    default: return finish_esc(c);
 	    }
-	  return 0;
 	  break;
 	case 'N':
-	  if (l==3)
+	  if (l < 3)
+	    return 0;
+	  deb("ESC_N ");deb(&esc_buffer[1]);deb("\n");
+	  switch (c)
 	    {
-	      deb("ESC_N ");deb(&esc_buffer[1]);deb("\n");
-	      switch (c)
-		{
-		default: return finish_esc(c);
-		}
+	    default: return finish_esc(c);
 	    }
-	  return 0;
 	  break;
 	case '[':
-	  if (l > 2)
-	    {
-	      int f, ret;
-	      switch (esc_buffer[2])
-		{
-		case 'M':
-		  if (l == 6)
-		    {
-		      switch (esc_buffer[3])
-			{
-			case ' ': ret= TU_BTN1; break;
-			case '!': ret= TU_BTN2; break;
-			case '"': ret= TU_BTN3; break;
-			case '0': ret= TU_CBTN1; break;
-			case '1': ret= TU_CBTN2; break;
-			case '2': ret= TU_CBTN3; break;
-			case '(': ret= TU_ABTN1; break;
-			case ')': ret= TU_ABTN2; break;
-			case '*': ret= TU_ABTN3; break;
-			case '`': ret= TU_SUP; break;
-			case 'a': ret= TU_SDOWN; break;
-			case 'p': ret= TU_CSUP; break;
-			case 'q': ret= TU_CSDOWN; break;
-			}
-		      f= ret;
-		      ret&= ~0xffff00;
-		      int x= (esc_buffer[4] - 0x20) & 0xff;
-		      int y= (esc_buffer[5] - 0x20) & 0xff;
-		      ret|= x << 16;
-		      ret|= y << 8;
-		      fprintf(stderr, "Mouse: 0x%0x (f=%d,0x%x)\n", ret, f, f);
-		      return finish_esc(ret);
-		    }
-		  break;
-		default:
-		  return finish_esc(c);
-		}
-	    }
-	  else if (isalpha((int)c))
-	    {
-	      deb("ESC_[x ");deb(&esc_buffer[1]);deb("\n");
-	      switch (c)
-		{
-		case 'A': return finish_esc(TU_UP);
-		case 'B': return finish_esc(TU_DOWN);
-		case 'C': return finish_esc(TU_RIGHT);
-		case 'D': return finish_esc(TU_LEFT);
-		case 'H': return finish_esc(TU_HOME);
-		case 'F': return finish_esc(TU_END);
-		case 'E': return finish_esc(0); // NumPad 5
-		case 'M': return 0;		  
-		default: return finish_esc(c);
-		}
-	    }
-	  else if (c == '~')
-	    {
-	      int n;
-	      deb("ESC_[~ ");deb(&esc_buffer[1]);deb("\n");
-	      n= strtol(&esc_buffer[2], 0, 0);
-	      switch (n)
-		{
-		case 1: return finish_esc(TU_HOME);
-		case 2: return finish_esc(TU_INS);
-		case 3: return finish_esc(TU_DEL);
-		case 4: return finish_esc(TU_END);
-		case 5: return finish_esc(TU_PGUP);
-		case 6: return finish_esc(TU_PGDOWN);
-		case 11: return finish_esc(TU_F1);
-		case 12: return finish_esc(TU_F2);
-		case 13: return finish_esc(TU_F3);
-		case 14: return finish_esc(TU_F4);
-		case 15: return finish_esc(TU_F5);
-		case 17: return finish_esc(TU_F6);
-		case 18: return finish_esc(TU_F7);
-		case 19: return finish_esc(TU_F8);
-		case 20: return finish_esc(TU_F9);
-		case 21: return finish_esc(TU_F10);
-		case 23: return finish_esc(TU_F11);
-		case 24: return finish_esc(TU_F12);
-		default: return finish_esc(c);
-		}
-	    }
-	  return 0;
+	  return process_csi();
 	  break;
 	default:
 	  deb("ESC_? ");deb(&esc_buffer[1]);deb("\n");
@@ -583,7 +581,7 @@ cl_f::process_esc(char c)
     {
       return process_telnet(ci);
     }
-  else
+  else // start sequence
     {
       if (ci == '\033')
 	{
