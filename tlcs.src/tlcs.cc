@@ -384,7 +384,7 @@ cl_tlcs::disass(t_addr addr, const char *sep)
   de= dis_tbl();
   while (de->mnemonic != NULL)
     {
-      if ((c & de->mask) == de->code)
+      if ((c & de->mask) == u64_t(de->code))
 	break;
       de++;
     }
@@ -460,7 +460,7 @@ cl_tlcs::inst_length(t_addr addr)
   de= dis_tbl();
   while (de->mnemonic != NULL)
     {
-      if ((c & de->mask) == de->code)
+      if ((c & de->mask) == u64_t(de->code))
 	break;
       de++;
     }
