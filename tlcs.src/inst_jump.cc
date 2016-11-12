@@ -70,8 +70,8 @@ cl_tlcs::inst_call(t_addr PC_of_inst, u16_t addr)
 int
 cl_tlcs::inst_djnz_b(int8_t d)
 {
-  reg.b--;
-  if (reg.b != 0)
+  reg.rbc.b--;
+  if (reg.rbc.b != 0)
     PC+= d;
   return resGO;
 }

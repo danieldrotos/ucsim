@@ -34,12 +34,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 u8_t
 cl_tlcs::op_tset(u8_t val, u8_t bitnr)
 {
-  reg.f&= ~(FLAG_Z|FLAG_N);
-  reg.f|= FLAG_H;
+  reg.raf.f&= ~(FLAG_Z|FLAG_N);
+  reg.raf.f|= FLAG_H;
   
   bitnr&= 0x07;
   if ((val & (1 << bitnr)) == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   val|= (1 << bitnr);
   return val;
 }
@@ -60,13 +60,13 @@ cl_tlcs::inst_tset(cl_memory_cell *cell, u8_t bitnr)
 u8_t
 cl_tlcs::op_bit(u8_t val, u8_t bitnr)
 {
-  reg.f&= ~(FLAG_Z|FLAG_N);
-  reg.f|= FLAG_H;
+  reg.raf.f&= ~(FLAG_Z|FLAG_N);
+  reg.raf.f|= FLAG_H;
 
   bitnr&= 7;
 
   if ((val & (1 << bitnr)) == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
 
   return val;
 }

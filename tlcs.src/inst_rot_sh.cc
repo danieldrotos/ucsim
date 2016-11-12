@@ -35,20 +35,20 @@ u8_t
 cl_tlcs::op_rlc(u8_t data, bool set_sz)
 {
   u8_t c= data & 0x80;
-  reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
+  reg.raf.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   data<<= 1;
   if (c)
     {
       data|= 1;
-      reg.f|= FLAG_C;
+      reg.raf.f|= FLAG_C;
     }
 
   if (set_sz)
     {
       if (!data)
-	reg.f|= FLAG_Z;
+	reg.raf.f|= FLAG_Z;
       if (data&0x80)
-	reg.f|= FLAG_S;
+	reg.raf.f|= FLAG_S;
       set_p(data);
     }
   
@@ -71,20 +71,20 @@ u8_t
 cl_tlcs::op_rrc(u8_t data, bool set_sz)
 {
   u8_t c= data & 0x01;
-  reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
+  reg.raf.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   data>>= 1;
   if (c)
     {
       data|= 0x80;
-      reg.f|= FLAG_C;
+      reg.raf.f|= FLAG_C;
     }
 
   if (set_sz)
     {
       if (!data)
-	reg.f|= FLAG_Z;
+	reg.raf.f|= FLAG_Z;
       if (data&0x80)
-	reg.f|= FLAG_S;
+	reg.raf.f|= FLAG_S;
       set_p(data);
     }
   
@@ -108,18 +108,18 @@ cl_tlcs::op_rl(u8_t data, bool set_sz)
 {
   u8_t c= data & 0x80;
   data<<= 1;
-  if (reg.f & FLAG_C)
+  if (reg.raf.f & FLAG_C)
     data|= 1;
-  reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
+  reg.raf.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c)
-    reg.f|= FLAG_C;
+    reg.raf.f|= FLAG_C;
 
   if (set_sz)
     {
       if (!data)
-	reg.f|= FLAG_Z;
+	reg.raf.f|= FLAG_Z;
       if (data&0x80)
-	reg.f|= FLAG_S;
+	reg.raf.f|= FLAG_S;
       set_p(data);
     }
   
@@ -143,18 +143,18 @@ cl_tlcs::op_rr(u8_t data, bool set_sz)
 {
   u8_t c= data & 0x01;
   data>>= 1;
-  if (reg.f & FLAG_C)
+  if (reg.raf.f & FLAG_C)
     data|= 0x80;
-  reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
+  reg.raf.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c)
-    reg.f|= FLAG_C;
+    reg.raf.f|= FLAG_C;
 
   if (set_sz)
     {
       if (!data)
-	reg.f|= FLAG_Z;
+	reg.raf.f|= FLAG_Z;
       if (data&0x80)
-	reg.f|= FLAG_S;
+	reg.raf.f|= FLAG_S;
       set_p(data);
     }
   
@@ -178,16 +178,16 @@ cl_tlcs::op_sla(u8_t data, bool set_sz)
 {
   u8_t c= data & 0x80;
   data<<= 1;
-  reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
+  reg.raf.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c)
-    reg.f|= FLAG_C;
+    reg.raf.f|= FLAG_C;
 
   if (set_sz)
     {
       if (!data)
-	reg.f|= FLAG_Z;
+	reg.raf.f|= FLAG_Z;
       if (data&0x80)
-	reg.f|= FLAG_S;
+	reg.raf.f|= FLAG_S;
       set_p(data);
     }
   
@@ -212,17 +212,17 @@ cl_tlcs::op_sra(u8_t data, bool set_sz)
   u8_t c7= data & 0x80;
   u8_t c0= data & 0x01;
   data>>= 1;
-  reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
+  reg.raf.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c0)
-    reg.f|= FLAG_C;
+    reg.raf.f|= FLAG_C;
   data|= c7;
   
   if (set_sz)
     {
       if (!data)
-	reg.f|= FLAG_Z;
+	reg.raf.f|= FLAG_Z;
       if (data&0x80)
-	reg.f|= FLAG_S;
+	reg.raf.f|= FLAG_S;
       set_p(data);
     }
   
@@ -246,16 +246,16 @@ cl_tlcs::op_srl(u8_t data, bool set_sz)
 {
   u8_t c0= data & 0x01;
   data>>= 1;
-  reg.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
+  reg.raf.f&= ~((set_sz?(FLAG_S|FLAG_Z):0)|FLAG_H|FLAG_N|FLAG_C);
   if (c0)
-    reg.f|= FLAG_C;
+    reg.raf.f|= FLAG_C;
   
   if (set_sz)
     {
       if (!data)
-	reg.f|= FLAG_Z;
+	reg.raf.f|= FLAG_Z;
       if (data&0x80)
-	reg.f|= FLAG_S;
+	reg.raf.f|= FLAG_S;
       set_p(data);
     }
   
@@ -277,13 +277,13 @@ cl_tlcs::inst_srl(cl_memory_cell *cell)
 int
 cl_tlcs::inst_rld(class cl_memory_cell *cell)
 {
-  reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
+  reg.raf.f&= ~(FLAG_H|FLAG_X|FLAG_N);
 
   u8_t c= cell->read();
-  u8_t temp= reg.a & 0x0f;
-  reg.a= (reg.a & 0xf0) + (c >> 4);
+  u8_t temp= reg.raf.a & 0x0f;
+  reg.raf.a= (reg.raf.a & 0xf0) + (c >> 4);
   cell->write((c << 4) + temp);
-  set_p(reg.a);
+  set_p(reg.raf.a);
   return resGO;
 }
 
@@ -292,13 +292,13 @@ cl_tlcs::inst_rld(class cl_memory_cell *cell)
 int
 cl_tlcs::inst_rrd(class cl_memory_cell *cell)
 {
-  reg.f&= ~(FLAG_H|FLAG_X|FLAG_N);
+  reg.raf.f&= ~(FLAG_H|FLAG_X|FLAG_N);
 
   u8_t c= cell->read();
-  u8_t temp= reg.a & 0x0f;
-  reg.a= (reg.a & 0xf0) + (c & 0x0f);
+  u8_t temp= reg.raf.a & 0x0f;
+  reg.raf.a= (reg.raf.a & 0xf0) + (c & 0x0f);
   cell->write((temp << 4) + (c >> 4));
-  set_p(reg.a);
+  set_p(reg.raf.a);
   return resGO;
 }
 

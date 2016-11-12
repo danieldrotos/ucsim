@@ -77,9 +77,9 @@ cl_tlcs::ldi()
   reg.de++;
   reg.hl++;
   reg.bc--;
-  reg.f&= ~(FLAG_H|FLAG_N|FLAG_V);
+  reg.raf.f&= ~(FLAG_H|FLAG_N|FLAG_V);
   if (reg.bc)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   return resGO;
 }
 
@@ -103,9 +103,9 @@ cl_tlcs::ldd()
   reg.de--;
   reg.hl--;
   reg.bc--;
-  reg.f&= ~(FLAG_H|FLAG_N|FLAG_V);
+  reg.raf.f&= ~(FLAG_H|FLAG_N|FLAG_V);
   if (reg.bc)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   return resGO;
 }
 
@@ -125,9 +125,9 @@ cl_tlcs::lddr()
 int
 cl_tlcs::cpi()
 {
-  reg.f&= ~(FLAG_Z|FLAG_S|FLAG_N|FLAG_H|FLAG_X|FLAG_V);
-  reg.f|= FLAG_N;
-  int a= reg.a;
+  reg.raf.f&= ~(FLAG_Z|FLAG_S|FLAG_N|FLAG_H|FLAG_X|FLAG_V);
+  reg.raf.f|= FLAG_N;
+  int a= reg.raf.a;
   int d= nas->read(reg.hl);
   int r= a-d;
   
@@ -135,17 +135,17 @@ cl_tlcs::cpi()
   reg.bc--;
 
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (reg.bc != 0)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if (a == d)
-    reg.f|= FLAG_N;
+    reg.raf.f|= FLAG_N;
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (((a&0xf) + ((~d+1)&0xf)) > 0xf)
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
   if ((unsigned int)r > 0xff)
-    reg.f|= FLAG_X;
+    reg.raf.f|= FLAG_X;
 
   return resGO;
 }
@@ -157,7 +157,7 @@ cl_tlcs::cpir()
 {
   cpi();
   if ((reg.bc != 0) &&
-      ((reg.f&FLAG_Z) == 0))
+      ((reg.raf.f&FLAG_Z) == 0))
     PC-= 2;
   return resGO;
 }
@@ -167,9 +167,9 @@ cl_tlcs::cpir()
 int
 cl_tlcs::cpd()
 {
-  reg.f&= ~(FLAG_Z|FLAG_S|FLAG_N|FLAG_H|FLAG_X|FLAG_V);
-  reg.f|= FLAG_N;
-  int a= reg.a;
+  reg.raf.f&= ~(FLAG_Z|FLAG_S|FLAG_N|FLAG_H|FLAG_X|FLAG_V);
+  reg.raf.f|= FLAG_N;
+  int a= reg.raf.a;
   int d= nas->read(reg.hl);
   int r= a-d;
   
@@ -177,17 +177,17 @@ cl_tlcs::cpd()
   reg.bc--;
 
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (reg.bc != 0)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if (a == d)
-    reg.f|= FLAG_N;
+    reg.raf.f|= FLAG_N;
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (((a&0xf) + ((~d+1)&0xf)) > 0xf)
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
   if ((unsigned int)r > 0xff)
-    reg.f|= FLAG_X;
+    reg.raf.f|= FLAG_X;
 
   return resGO;
 }
@@ -199,7 +199,7 @@ cl_tlcs::cpdr()
 {
   cpd();
   if ((reg.bc != 0) &&
-      ((reg.f&FLAG_Z) == 0))
+      ((reg.raf.f&FLAG_Z) == 0))
     PC-= 2;
   return resGO;
 }

@@ -35,18 +35,18 @@ u8_t
 cl_tlcs::op_inc(u8_t data)
 {
   u16_t n= data+1;
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X);
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X);
 
   if (n > 255)
-    reg.f|= FLAG_X;
+    reg.raf.f|= FLAG_X;
   if (n & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if ((n & 0xff) == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (data == 0x7f)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if ((n & 0x0f) == 0x00)
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
 
   return n;
 }
@@ -66,7 +66,7 @@ cl_tlcs::inst_inc(cl_memory_cell *cell)
 void
 cl_tlcs::inst_incx(cl_memory_cell *cell)
 {
-  if (reg.f & FLAG_X)
+  if (reg.raf.f & FLAG_X)
     {
       u8_t d= cell->read();
       d= op_inc(d);
@@ -80,19 +80,19 @@ u8_t
 cl_tlcs::op_dec(u8_t data)
 {
   u16_t n= data-1;
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X);
-  reg.f|= FLAG_N;
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X);
+  reg.raf.f|= FLAG_N;
   
   if (n > 255)
-    reg.f|= FLAG_X;
+    reg.raf.f|= FLAG_X;
   if (n & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if ((n & 0xff) == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (data == 0x80)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if ((n & 0x0f) == 0x00)
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
 
   return n & 0xff;
 }
@@ -112,7 +112,7 @@ cl_tlcs::inst_dec(cl_memory_cell *cell)
 void
 cl_tlcs::inst_decx(cl_memory_cell *cell)
 {
-  if (reg.f & FLAG_X)
+  if (reg.raf.f & FLAG_X)
     {
       u8_t d= cell->read();
       d= op_dec(d);
@@ -126,10 +126,10 @@ u16_t
 cl_tlcs::op_inc16(u16_t data)
 {
   u16_t n= data+1;
-  reg.f&= ~(FLAG_X);
+  reg.raf.f&= ~(FLAG_X);
 
   if (n == 0)
-    reg.f|= FLAG_X;
+    reg.raf.f|= FLAG_X;
 
   return n;
 }
@@ -150,14 +150,14 @@ cl_tlcs::inst_inc16gg(u8_t gg, t_addr addr)
   u16_t d= h*256 + l;
 
   if (((int)d + 1) > 0xffff)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   
   d= op_inc16(d);
-  reg.f&= ~FLAG_N;
+  reg.raf.f&= ~FLAG_N;
   if (d & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (d == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
 
   as->write(addr, d & 0xff);
   as->write(addr+1, d >> 8);
@@ -191,10 +191,10 @@ u16_t
 cl_tlcs::op_dec16(t_mem data)
 {
   u16_t n= data-1;
-  reg.f&= ~(FLAG_X);
+  reg.raf.f&= ~(FLAG_X);
 
   if (n == 0xffff)
-    reg.f|= FLAG_X;
+    reg.raf.f|= FLAG_X;
 
   return n;
 }
@@ -215,14 +215,14 @@ cl_tlcs::inst_dec16gg(u8_t gg, t_addr addr)
   u16_t d= h*256 + l;
 
   if (((int)d - 1) < 0)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   
   d= op_dec16(d);
-  reg.f&= ~FLAG_N;
+  reg.raf.f&= ~FLAG_N;
   if (d & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (d == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
 
   as->write(addr, d & 0xff);
   as->write(addr+1, d >> 8);
@@ -255,26 +255,26 @@ cl_tlcs::inst_dec16ix(u8_t ix, t_addr addr)
 u8_t
 cl_tlcs::op_add8(u8_t d1, u8_t d2)
 {
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
 
   int r= d1 + d2;
   int new_c= 0, new_c6;
   
   if (((d1 & 0xf) + (d2 & 0xf)) > 0xf)
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
   new_c6= (((d1&0x7f) + (d2&0x7f)) > 0x7f)?1:0;
   
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if ((r&0xff) == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (r > 255)
     {
-      reg.f|= FLAG_X|FLAG_C;
+      reg.raf.f|= FLAG_X|FLAG_C;
       new_c= 1;
     }
   if (new_c ^ new_c6)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
 
   return r & 0xff;
 }
@@ -284,7 +284,7 @@ cl_tlcs::op_add8(u8_t d1, u8_t d2)
 u8_t
 cl_tlcs::op_add_a(u8_t d)
 {
-  return op_add8(reg.a, d);
+  return op_add8(reg.raf.a, d);
 }
 
 
@@ -292,7 +292,7 @@ cl_tlcs::op_add_a(u8_t d)
 int
 cl_tlcs::inst_add_a(class cl_memory_cell *cell)
 {
-  reg.a= op_add_a((u8_t)(cell->read()));
+  reg.raf.a= op_add_a((u8_t)(cell->read()));
   return resGO;
 }
 
@@ -301,27 +301,27 @@ cl_tlcs::inst_add_a(class cl_memory_cell *cell)
 u8_t
 cl_tlcs::op_adc8(u8_t d1, u8_t d2)
 {
-  int oldc= (reg.f&FLAG_C)?1:0;
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
+  int oldc= (reg.raf.f&FLAG_C)?1:0;
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_V|FLAG_N|FLAG_C);
 
   int r= d1 + d2 + oldc;
   int new_c= 0, new_c6;
   
   if (((d1 & 0xf) + (d2 & 0xf) + oldc) > 0xf)
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
   new_c6= (((d1&0x7f) + (d2&0x7f) + oldc) > 0x7f)?1:0;
   
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if ((r & 0xff) == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (r > 255)
     {
-      reg.f|= FLAG_X|FLAG_C;
+      reg.raf.f|= FLAG_X|FLAG_C;
       new_c= 1;
     }
   if (new_c ^ new_c6)
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
 
   return r;
 }
@@ -331,7 +331,7 @@ cl_tlcs::op_adc8(u8_t d1, u8_t d2)
 int
 cl_tlcs::inst_adc_a(u8_t d)
 {
-  reg.a= op_adc8(reg.a, d);
+  reg.raf.a= op_adc8(reg.raf.a, d);
   return resGO;
 }
 
@@ -353,24 +353,24 @@ cl_tlcs::op_sub8(u8_t d1, u8_t d2)
   signed int res= (signed char)d1 - (signed char)d2;
   u8_t r;
   
-  reg.f&= ~(FLAG_H|FLAG_V|FLAG_C|FLAG_Z|FLAG_S);
-  reg.f|= FLAG_N;
+  reg.raf.f&= ~(FLAG_H|FLAG_V|FLAG_C|FLAG_Z|FLAG_S);
+  reg.raf.f|= FLAG_N;
 
   if ((op1 & 0xf) < (op2 & 0xf))
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
   if ((res < -128) || (res > 127))
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if (op1 < op2)
-    reg.f|= FLAG_C|FLAG_X;
+    reg.raf.f|= FLAG_C|FLAG_X;
 
   r= d1 - op2;
   //r= op_add8(d1, ~d2 + 1);
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   
-  //reg.f|= FLAG_N;
+  //reg.raf.f|= FLAG_N;
   return r;
 }
 
@@ -379,7 +379,7 @@ cl_tlcs::op_sub8(u8_t d1, u8_t d2)
 int
 cl_tlcs::inst_sub_a(u8_t d)
 {
-  reg.a= op_sub8(reg.a, d);
+  reg.raf.a= op_sub8(reg.raf.a, d);
   return resGO;
 }
 
@@ -401,30 +401,30 @@ cl_tlcs::op_sbc8(u8_t d1, u8_t d2)
   unsigned int op2= (unsigned int)d2;
   signed int res= (signed char)d1 - (signed char)d2;
 
-  if (reg.f & FLAG_C)
+  if (reg.raf.f & FLAG_C)
     {
       ++op2;
       --res;
     }
-  reg.f&= ~(FLAG_H|FLAG_V|FLAG_C|FLAG_S|FLAG_Z);
-  reg.f|= FLAG_N;
+  reg.raf.f&= ~(FLAG_H|FLAG_V|FLAG_C|FLAG_S|FLAG_Z);
+  reg.raf.f|= FLAG_N;
 
   if ((op1 & 0xf) < (op2 & 0xf))
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
   if ((res < -128) || (res > 127))
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if (d1 < op2)
-    reg.f|= FLAG_C;
+    reg.raf.f|= FLAG_C;
 
   r= d1 - op2;
 
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   
   //r= op_adc8(d1, ~d2 + 1);
-  //reg.f|= FLAG_N;
+  //reg.raf.f|= FLAG_N;
   return r;
 }
 
@@ -433,7 +433,7 @@ cl_tlcs::op_sbc8(u8_t d1, u8_t d2)
 int
 cl_tlcs::inst_sbc_a(u8_t d)
 {
-  reg.a= op_sbc8(reg.a, d);
+  reg.raf.a= op_sbc8(reg.raf.a, d);
   return resGO;
 }
 
@@ -450,15 +450,15 @@ cl_tlcs::inst_sbc_a(class cl_memory_cell *cell)
 u8_t
 cl_tlcs::op_and8(u8_t d1, u8_t d2)
 {
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
-  reg.f|= FLAG_H;
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
+  reg.raf.f|= FLAG_H;
 
   u8_t r= d1 & d2;
   set_p(r);
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
 
   return r;
 }
@@ -468,7 +468,7 @@ cl_tlcs::op_and8(u8_t d1, u8_t d2)
 int
 cl_tlcs::inst_and_a(u8_t d)
 {
-  reg.a= op_and8(reg.a, d);
+  reg.raf.a= op_and8(reg.raf.a, d);
   return resGO;
 }
 
@@ -485,14 +485,14 @@ cl_tlcs::inst_and_a(class cl_memory_cell *cell)
 u8_t
 cl_tlcs::op_xor8(u8_t d1, u8_t d2)
 {
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
 
   u8_t r= d1 ^ d2;
   set_p(r);
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
 
   return r;
 }
@@ -502,7 +502,7 @@ cl_tlcs::op_xor8(u8_t d1, u8_t d2)
 int
 cl_tlcs::inst_xor_a(u8_t d)
 {
-  reg.a= op_xor8(reg.a, d);
+  reg.raf.a= op_xor8(reg.raf.a, d);
   return resGO;
 }
 
@@ -519,14 +519,14 @@ cl_tlcs::inst_xor_a(class cl_memory_cell *cell)
 u8_t
 cl_tlcs::op_or8(u8_t d1, u8_t d2)
 {
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
 
   u8_t r= d1 | d2;
   set_p(r);
   if (r & 0x80)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
 
   return r;
 }
@@ -536,7 +536,7 @@ cl_tlcs::op_or8(u8_t d1, u8_t d2)
 int
 cl_tlcs::inst_or_a(u8_t d)
 {
-  reg.a= op_or8(reg.a, d);
+  reg.raf.a= op_or8(reg.raf.a, d);
   return resGO;
 }
 
@@ -554,7 +554,7 @@ u8_t
 cl_tlcs::op_cp8(u8_t d1, u8_t d2)
 {
   u8_t r= op_sub8(d1, d2);
-  reg.f|= FLAG_N;
+  reg.raf.f|= FLAG_N;
   return r;
 }
 
@@ -563,7 +563,7 @@ cl_tlcs::op_cp8(u8_t d1, u8_t d2)
 int
 cl_tlcs::op_cp_a(u8_t d)
 {
-  op_cp8(reg.a, d);
+  op_cp8(reg.raf.a, d);
   return resGO;
 }
 
@@ -583,7 +583,7 @@ cl_tlcs::op_add16(t_mem op1, t_mem op2)
   u16_t d1, d;
   int r, newc15;
   
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
 
   d1= op1;
   d= op2;
@@ -592,13 +592,13 @@ cl_tlcs::op_add16(t_mem op1, t_mem op2)
   newc15= (((d1&0x7fff)+(d&0x7fff)) > 0x7fff)?0x10000:0;
   
   if (r & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if ((r & 0xffff) == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (r > 0xffff)
-    reg.f|= FLAG_C|FLAG_X;
+    reg.raf.f|= FLAG_C|FLAG_X;
   if (newc15 ^ (r&0x10000))
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   
   return r & 0xffff;
 }
@@ -634,7 +634,7 @@ cl_tlcs::op_adc_hl(t_mem val)
   u8_t dl= val & 0xff;
   u8_t dh= val / 256;
   u16_t d= dh*256 + dl;
-  int oldc= (reg.f & FLAG_C)?1:0;
+  int oldc= (reg.raf.f & FLAG_C)?1:0;
   
   return op_add_hl((t_mem)d + oldc);
 }
@@ -647,7 +647,7 @@ cl_tlcs::op_adc_hl(t_addr addr)
   u8_t dl= nas->read(addr);
   u8_t dh= nas->read(addr+1);
   u16_t d= dh*256 + dl;
-  int oldc= (reg.f & FLAG_C)?1:0;
+  int oldc= (reg.raf.f & FLAG_C)?1:0;
   
   return op_add_hl((t_mem)d + oldc);
 }
@@ -663,20 +663,20 @@ cl_tlcs::op_sub16(t_mem d1, t_mem d2)
   unsigned int op2= (unsigned int)d2;
   signed int res= (int16_t)d1 - (int16_t)d2;
 
-  reg.f&= ~(FLAG_C|FLAG_V|FLAG_Z|FLAG_S);
-  reg.f|= FLAG_N;
+  reg.raf.f&= ~(FLAG_C|FLAG_V|FLAG_Z|FLAG_S);
+  reg.raf.f|= FLAG_N;
   
   if ((res < -32768) || (res > 32767))
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if (op1 < op2)
-    reg.f|= FLAG_C|FLAG_X;
+    reg.raf.f|= FLAG_C|FLAG_X;
 
   r= d1 - op2;
 
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (r & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   
   return r;
 }
@@ -712,27 +712,27 @@ cl_tlcs::op_sbc_hl(t_mem val)
   unsigned int op2= (unsigned int)val;
   signed int res= (int16_t)reg.hl - (int16_t)val;
 
-  if (reg.f & FLAG_C)
+  if (reg.raf.f & FLAG_C)
     {
       ++op2;
       --res;
     }
-  reg.f&= ~(FLAG_C|FLAG_V|FLAG_Z|FLAG_S);
-  reg.f|= FLAG_N;
+  reg.raf.f&= ~(FLAG_C|FLAG_V|FLAG_Z|FLAG_S);
+  reg.raf.f|= FLAG_N;
   
   if ((op1 & 0xfff) < (op2 & 0xfff))
-    reg.f|= FLAG_H;
+    reg.raf.f|= FLAG_H;
   if ((res < -32768) || (res > 32767))
-    reg.f|= FLAG_V;
+    reg.raf.f|= FLAG_V;
   if (op1 < op2)
-    reg.f|= FLAG_C;
+    reg.raf.f|= FLAG_C;
 
   r= reg.hl - op2;
 
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   if (r & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   
   return r;
 }
@@ -757,14 +757,14 @@ cl_tlcs::op_and_hl(t_mem val)
   u16_t d= val;
   u16_t r;
 
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
-  reg.f|= FLAG_H;
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
+  reg.raf.f|= FLAG_H;
   
   r= reg.hl & d;
   if (r & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   
   return r;
 }
@@ -789,13 +789,13 @@ cl_tlcs::op_xor_hl(t_mem val)
   u16_t d= val;
   u16_t r;
 
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
   
   r= reg.hl ^ d;
   if (r & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   
   return r;
 }
@@ -820,13 +820,13 @@ cl_tlcs::op_or_hl(t_mem val)
   u16_t d= val;
   u16_t r;
 
-  reg.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_H|FLAG_X|FLAG_N|FLAG_C);
   
   r= reg.hl | d;
   if (r & 0x8000)
-    reg.f|= FLAG_S;
+    reg.raf.f|= FLAG_S;
   if (r == 0)
-    reg.f|= FLAG_Z;
+    reg.raf.f|= FLAG_Z;
   
   return r;
 }

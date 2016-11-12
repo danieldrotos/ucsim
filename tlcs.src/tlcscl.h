@@ -64,7 +64,7 @@ class cl_tlcs: public cl_uc
 	u8_t f;
 	u8_t a;
 #endif
-      };
+      } raf;
     };
     union {
       u16_t bc;
@@ -76,7 +76,7 @@ class cl_tlcs: public cl_uc
 	u8_t c;
 	u8_t b;
 #endif
-      };
+      } rbc;
     };
     union {
       u16_t de;
@@ -88,7 +88,7 @@ class cl_tlcs: public cl_uc
 	u8_t e;
 	u8_t d;
 #endif
-      };
+       } rde;
     };
     union {
       u16_t hl;
@@ -100,7 +100,7 @@ class cl_tlcs: public cl_uc
 	u8_t l;
 	u8_t h;
 #endif
-      };
+      } rhl;
     };
     u16_t ix;
     u16_t iy;
@@ -117,7 +117,7 @@ class cl_tlcs: public cl_uc
 	u8_t alt_f;
 	u8_t alt_a;
 #endif
-      };
+      } ralt_af;
     };
     union {
       u16_t alt_bc;
@@ -129,7 +129,7 @@ class cl_tlcs: public cl_uc
 	u8_t alt_c;
 	u8_t alt_b;
 #endif
-      };
+      } ralt_bc;
     };
     union {
       u16_t alt_de;
@@ -141,7 +141,7 @@ class cl_tlcs: public cl_uc
 	u8_t alt_e;
 	u8_t alt_d;
 #endif
-      };
+      } ralt_de;
     };
     union {
       u16_t alt_hl;
@@ -153,7 +153,7 @@ class cl_tlcs: public cl_uc
 	u8_t alt_l;
 	u8_t alt_h;
 #endif
-      };
+      } ralt_hl;
     };
   } reg;
 
