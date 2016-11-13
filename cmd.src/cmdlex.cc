@@ -488,7 +488,7 @@ char *yytext;
 #line 1 "cmdlex.l"
 #line 2 "cmdlex.l"
 #include <stdio.h>
-#include <stdint.h>
+//#include <stdint.h>
 #include "cmdlexcl.h"
 #include "cmdpars.hh"
 

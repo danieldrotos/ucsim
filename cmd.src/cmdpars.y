@@ -1,5 +1,4 @@
 %{
-  //#include <stdint.h>
 
 #include "cmdlexcl.h"
 #include "memcl.h"
