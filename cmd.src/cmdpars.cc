@@ -64,7 +64,7 @@
 /* Copy the first part of user declarations.  */
 #line 1 "cmdpars.y" /* yacc.c:339  */
 
-  //#include <stdint.h>
+#include <stdint.h>
 
 #include "cmdlexcl.h"
 #include "memcl.h"
@@ -1548,11 +1548,11 @@ yyreduce:
 	  (yyval.number)= (yyvsp[0].memory).memory->read((yyvsp[0].memory).address);
 	  if ((yyvsp[-2].number) == PTOK_INT)
 	    {
-	      u32_t smask;
+	      uint32_t smask;
 	      smask= 1 << ((yyvsp[0].memory).memory->width - 1);
 	      if ((yyval.number) & smask)
 		{
-		  u32_t mask;
+		  uint32_t mask;
 		  mask= -1 & ~((yyvsp[0].memory).memory->data_mask);
 		  (yyval.number)= (yyval.number) | mask;
 		}
