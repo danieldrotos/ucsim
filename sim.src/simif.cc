@@ -280,7 +280,7 @@ cl_sif_cmdinfo::produce_answer(void)
     {
       class cl_sif_command *sc=
 	dynamic_cast<class cl_sif_command *>(sif->commands->object_at(i));
-      if (sc->get_command() == cm)
+      if (sc->get_command() == (enum sif_command)cm)
 	{
 	  about= sc;
 	  break;
@@ -311,7 +311,7 @@ cl_sif_cmdhelp::produce_answer(void)
     {
       class cl_sif_command *sc=
 	dynamic_cast<class cl_sif_command *>(sif->commands->object_at(i));
-      if (sc->get_command() == cm)
+      if (sc->get_command() == (enum sif_command)cm)
 	{
 	  about= sc;
 	  break;
@@ -704,7 +704,7 @@ cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
 	  if (!c)
 	    continue;
 	  enum sif_command cm= c->get_command();
-	  if (*val == cm)
+	  if ((enum sif_command)(*val) == cm)
 	    {
 	      active_command= c;
 	      c->start();
