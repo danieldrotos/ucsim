@@ -132,7 +132,7 @@ cl_51core::id_string(void)
   for (i= 0; cpus_51[i].type_str != NULL && cpus_51[i].type != type; i++) ;
   sprintf(id_string_51, "%s %s",
 	  cpus_51[i].type_str?cpus_51[i].type_str:"51",
-	  (technology==CPU_HMOS)?"HMOS":"CMOS");
+	  (technology & CPU_HMOS)?"HMOS":"CMOS");
   return(id_string_51);
 }
 
@@ -1071,7 +1071,7 @@ cl_51core::idle_pd(void)
 {
   uint pcon= sfr->get(PCON);
 
-  if (technology != CPU_CMOS)
+  if (!(technology & CPU_CMOS))
     return(resGO);
   if (pcon & bmIDL)
     {
