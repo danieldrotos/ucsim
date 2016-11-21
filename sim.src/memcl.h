@@ -59,6 +59,12 @@ enum cell_flag {
   CELL_NON_DECODED	= 0x40	/* Cell is not decoded (yet) */
 };
 
+enum dump_format {
+  df_hex,
+  df_string,
+  df_ihex
+};
+
 #define CELL_GENERAL	(CELL_NORMAL|CELL_INST|CELL_FETCH_BRK)
 
 

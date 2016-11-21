@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <ctype.h>
+
 // prj
 #include "globals.h"
 #include "utils.h"
@@ -184,7 +186,8 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 				 cmdline->param(1),
 				 cmdline->param(2),
 				 cmdline->param(3) };
-
+  enum dump_format frm= df_hex;
+  
   if (params[0] &&
       params[0]->as_bit(uc))
     {
@@ -210,42 +213,62 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	}
       if (params[0])
 	con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
+      return false;
     }
-  else
+  if (params[0] &&
+      params[0]->as_string())
     {
-      if (!params[0] ||
-	  !params[0]->as_memory(uc))
+      char *s= params[0]->get_svalue();
+      if (s && *s &&
+	  (strlen(s) > 1) &&
+	  (s[0]=='/'))
 	{
-	  con->dd_printf("No memory specified. Use \"info memory\" for available memories\n");
-	  return(false);
+	  switch (tolower(s[1]))
+	    {
+	    case 's':
+	      frm= df_string;
+	      break;
+	    }
+	  cmdline->shift();
+	  params[0]= cmdline->param(0);
+	  params[1]= cmdline->param(1);
+	  params[2]= cmdline->param(2);
+	  params[3]= cmdline->param(3);
 	}
-      if (cmdline->syntax_match(uc, MEMORY))
-	{
-	  mem= params[0]->value.memory.memory;
-	  mem->dump(con);
-	}
-      else if (cmdline->syntax_match(uc, MEMORY ADDRESS)) {
-	mem  = params[0]->value.memory.memory;
-	start= params[1]->value.address;
-	end  = start+10*8-1;
-	mem->dump(start, end, bpl, con);
-      }
-      else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS)) {
-	mem  = params[0]->value.memory.memory;
-	start= params[1]->value.address;
-	end  = params[2]->value.address;
-	mem->dump(start, end, bpl, con);
-      }
-      else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS NUMBER)) {
-	mem  = params[0]->value.memory.memory;
-	start= params[1]->value.address;
-	end  = params[2]->value.address;
-	bpl  = params[3]->value.number;
-	mem->dump(start, end, bpl, con);
-      }
-      else
-	con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
     }
+
+  if (!params[0] ||
+      !params[0]->as_memory(uc))
+    {
+      con->dd_printf("No memory specified. Use \"info memory\" for available memories\n");
+      return(false);
+    }
+  if (cmdline->syntax_match(uc, MEMORY))
+    {
+      mem= params[0]->value.memory.memory;
+      mem->dump(con);
+    }
+  else if (cmdline->syntax_match(uc, MEMORY ADDRESS)) {
+    mem  = params[0]->value.memory.memory;
+    start= params[1]->value.address;
+    end  = start+10*8-1;
+    mem->dump(start, end, bpl, con);
+  }
+  else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS)) {
+    mem  = params[0]->value.memory.memory;
+    start= params[1]->value.address;
+    end  = params[2]->value.address;
+    mem->dump(start, end, bpl, con);
+  }
+  else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS NUMBER)) {
+    mem  = params[0]->value.memory.memory;
+    start= params[1]->value.address;
+    end  = params[2]->value.address;
+    bpl  = params[3]->value.number;
+    mem->dump(start, end, bpl, con);
+  }
+  else
+    con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
 
   return(false);;
 }
