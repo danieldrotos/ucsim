@@ -314,6 +314,68 @@ cl_memory::dump_b(t_addr start, t_addr stop, int bpl, class cl_f *f)
 }
 
 t_addr
+cl_memory::dump_i(t_addr start, t_addr stop, int bpl, class cl_f *f)
+{
+  t_addr lva= lowest_valid_address();
+  t_addr hva= highest_valid_address();
+  unsigned int sum;
+  t_addr start_line;
+  
+  if (!f)
+    return dump_finished;
+  if (start < 0)
+    start= dump_finished;
+  if (start < lva)
+    start= lva;
+  if (stop < 0)
+    stop= start + 10*8 - 1;
+  if (stop > hva)
+    stop= hva;
+  if (start > stop)
+    return dump_finished= stop;
+  if (bpl < 0)
+    bpl= 16;
+  if (bpl > 32)
+    bpl= 32;
+  t_addr a= start;
+  sum= 0;
+  start_line= a;
+  while (a <= stop)
+    {
+      a++;
+      if (((a % bpl) == 0) ||
+	  (a > stop))
+	{
+	  // dump line
+	  if ((a - start_line) > 0)
+	    {
+	      unsigned char c;	      
+	      sum= 0;
+	      c= a-start_line;
+	      sum+= c;
+	      c= (start_line >> 8) & 0xff;
+	      sum+= c;
+	      c= start_line & 0xff;
+	      sum+= c;
+	      int i;
+	      for (i= 0; i < a-start_line; i++)
+		{
+		  c= read(start_line + i);
+		  f->prntf("%02X", c);
+		  sum+= c;
+		}
+	      sum&= 0xff;
+	      unsigned char chk= 0x100 - sum;
+	      f->prntf("%02X\r\n", chk);
+	    }
+	  start_line= a;
+	}
+    }
+  f->write_str(":00000001FF\r\n");
+  return dump_finished= a;
+}
+
+t_addr
 cl_memory::dump(class cl_f *f)
 {
   return(dump(dump_finished, dump_finished+10*8-1, 8, f));
@@ -337,7 +399,7 @@ cl_memory::dump(enum dump_format fmt,
     case df_string:
       return dump_s(start, stop, bpl, f);
     case df_ihex:
-      break;
+      return dump_i(start, stop, bpl, f);
     case df_binary:
       return dump_b(start, stop, bpl, f);
     default:
