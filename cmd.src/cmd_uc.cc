@@ -232,8 +232,10 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	    case 'h': fmt= df_hex; break;
 	    case 'i': fmt= df_ihex; break;
 	    case 'b':
-	      if (!(con->get_fout()->tty))
-		return con->dd_printf("Error: binary format not supported on tty\n"), false;
+	      if (con->get_fout() &&
+		  con->get_fout()->tty)
+		return con->dd_printf("Error: binary format not supported on tty\n"),
+		  false;
 	      fmt= df_binary;
 	      break;
 	    }
