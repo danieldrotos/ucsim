@@ -266,7 +266,7 @@ cl_memory::dump_s(t_addr start, t_addr stop, int bpl, class cl_f *f)
     bpl= 8;
   t_addr a= start;
   t_mem d= read(a);
-  char last;
+  char last= '\n';
   while ((a <= stop) &&
 	 (d != 0) &&
 	 (a <= hva))
@@ -281,6 +281,35 @@ cl_memory::dump_s(t_addr start, t_addr stop, int bpl, class cl_f *f)
     }
   if (last != '\n')
     f->write_str("\n");
+  return dump_finished= a;
+}
+
+t_addr
+cl_memory::dump_b(t_addr start, t_addr stop, int bpl, class cl_f *f)
+{
+  t_addr lva= lowest_valid_address();
+  t_addr hva= highest_valid_address();
+
+  if (!f)
+    return dump_finished;
+  if (start < 0)
+    start= dump_finished;
+  if (stop < 0)
+    stop= start + 10*8 - 1;
+  if (bpl < 0)
+    bpl= 8;
+  t_addr a= start;
+  t_mem d= read(a);
+  while ((a <= stop) &&
+	 (a <= hva))
+    {
+      char c= d;
+      if (a >= lva)
+	{
+	  f->write(&c, 1);
+	}
+      d= read(++a);
+    }
   return dump_finished= a;
 }
 
@@ -301,7 +330,7 @@ cl_memory::dump(enum dump_format fmt,
     stop= start + 10*8 - 1;
   if (bpl < 0)
     bpl= 8;
-  switch (fmt)
+  switch (fmt & df_format)
     {
     case df_hex:
       return dump(start, stop, bpl, f);
@@ -309,6 +338,10 @@ cl_memory::dump(enum dump_format fmt,
       return dump_s(start, stop, bpl, f);
     case df_ihex:
       break;
+    case df_binary:
+      return dump_b(start, stop, bpl, f);
+    default:
+      return dump(start, stop, bpl, f);
     }
   return dump_finished;
 }

@@ -186,7 +186,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 				 cmdline->param(1),
 				 cmdline->param(2),
 				 cmdline->param(3) };
-  enum dump_format fmt= df_hex;
+  /*enum dump_format*/int fmt= df_hex;
   
   if (params[0] &&
       params[0]->as_bit(uc))
@@ -223,12 +223,33 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	  (strlen(s) > 1) &&
 	  (s[0]=='/'))
 	{
+	  size_t i;
+	  for (i= 0; i < strlen(s); i++)
+	    s[i]= tolower(s[i]);
 	  switch (tolower(s[1]))
 	    {
-	    case 's':
-	      fmt= df_string;
+	    case 's': fmt= df_string; break;
+	    case 'h': fmt= df_hex; break;
+	    case 'i': fmt= df_ihex; break;
+	    case 'b':
+	      if (!(con->get_fout()->tty))
+		return con->dd_printf("Error: binary format not supported on tty\n"), false;
+	      fmt= df_binary;
 	      break;
 	    }
+	  if (strlen(s) > 2)
+	    for (i= 2; i < strlen(s); i++)
+	      {
+		switch (s[i])
+		  {
+		  case 'l': fmt|= df_little; break;
+		  case 'b': fmt|= df_big; break;
+		  case '1': fmt|= df_1; break;
+		  case '2': fmt|= df_2; break;
+		  case '4': fmt|= df_4; break;
+		  case '8': fmt|= df_8; break;
+		  }
+	      }
 	  cmdline->shift();
 	  params[0]= cmdline->param(0);
 	  params[1]= cmdline->param(1);
@@ -236,7 +257,8 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	  params[3]= cmdline->param(3);
 	}
     }
-
+  
+  enum dump_format df= (enum dump_format)fmt;
   if (!params[0] ||
       !params[0]->as_memory(uc))
     {
@@ -246,26 +268,26 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
   if (cmdline->syntax_match(uc, MEMORY))
     {
       mem= params[0]->value.memory.memory;
-      mem->dump(fmt, -1, -1, bpl, con->get_fout());
+      mem->dump(df, -1, -1, bpl, con->get_fout());
     }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS)) {
     mem  = params[0]->value.memory.memory;
     start= params[1]->value.address;
     end  = start+10*8-1;
-    mem->dump(fmt, start, end, bpl, con->get_fout());
+    mem->dump(df, start, end, bpl, con->get_fout());
   }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS)) {
     mem  = params[0]->value.memory.memory;
     start= params[1]->value.address;
     end  = params[2]->value.address;
-    mem->dump(fmt, start, end, bpl, con->get_fout());
+    mem->dump(df, start, end, bpl, con->get_fout());
   }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS NUMBER)) {
     mem  = params[0]->value.memory.memory;
     start= params[1]->value.address;
     end  = params[2]->value.address;
     bpl  = params[3]->value.number;
-    mem->dump(fmt, start, end, bpl, con->get_fout());
+    mem->dump(df, start, end, bpl, con->get_fout());
   }
   else
     con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
