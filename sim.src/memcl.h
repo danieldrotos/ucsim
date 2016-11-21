@@ -106,8 +106,13 @@ public:
   virtual void err_non_decoded(t_addr addr);
 
   virtual t_addr dump(t_addr start, t_addr stop, int bpl,
-		      class cl_console_base *con);
-  virtual t_addr dump(class cl_console_base *con);
+		      class cl_f *f);
+  virtual t_addr dump_s(t_addr start, t_addr stop, int bpl,
+			class cl_f *f);
+  virtual t_addr dump(class cl_f *f);
+  virtual t_addr dump(enum dump_format fmt,
+		      t_addr start, t_addr stop, int bpl,
+		      class cl_f *f);
   virtual bool search_next(bool case_sensitive,
 			   t_mem *array, int len, t_addr *addr);
 

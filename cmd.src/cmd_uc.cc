@@ -186,7 +186,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 				 cmdline->param(1),
 				 cmdline->param(2),
 				 cmdline->param(3) };
-  enum dump_format frm= df_hex;
+  enum dump_format fmt= df_hex;
   
   if (params[0] &&
       params[0]->as_bit(uc))
@@ -226,7 +226,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	  switch (tolower(s[1]))
 	    {
 	    case 's':
-	      frm= df_string;
+	      fmt= df_string;
 	      break;
 	    }
 	  cmdline->shift();
@@ -246,26 +246,26 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
   if (cmdline->syntax_match(uc, MEMORY))
     {
       mem= params[0]->value.memory.memory;
-      mem->dump(con);
+      mem->dump(fmt, -1, -1, bpl, con->get_fout());
     }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS)) {
     mem  = params[0]->value.memory.memory;
     start= params[1]->value.address;
     end  = start+10*8-1;
-    mem->dump(start, end, bpl, con);
+    mem->dump(fmt, start, end, bpl, con->get_fout());
   }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS)) {
     mem  = params[0]->value.memory.memory;
     start= params[1]->value.address;
     end  = params[2]->value.address;
-    mem->dump(start, end, bpl, con);
+    mem->dump(fmt, start, end, bpl, con->get_fout());
   }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS NUMBER)) {
     mem  = params[0]->value.memory.memory;
     start= params[1]->value.address;
     end  = params[2]->value.address;
     bpl  = params[3]->value.number;
-    mem->dump(start, end, bpl, con);
+    mem->dump(fmt, start, end, bpl, con->get_fout());
   }
   else
     con->dd_printf("%s\n", short_help?short_help:"Error: wrong syntax\n");
@@ -534,7 +534,7 @@ cl_where_cmd::do_real_work(class cl_uc *uc,
     bool found= mem->search_next(case_sensitive, array, len, &addr);
     while (found)
       {
-	mem->dump(addr, addr+len-1, 8, con);
+	mem->dump(addr, addr+len-1, 8, con->get_fout());
 	addr++;
 	found= mem->search_next(case_sensitive, array, len, &addr);
       }

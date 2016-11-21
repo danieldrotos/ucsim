@@ -505,7 +505,7 @@ cl_51core::print_regs(class cl_console_base *con)
   uchar data;
 
   start= psw->get() & 0x18;
-  iram->dump(start, start+7, 8, con);
+  iram->dump(start, start+7, 8, con->get_fout());
   data= iram->get(iram->get(start));
   con->dd_printf("@R0 %02x %c", data, isprint(data) ? data : '.');
 
@@ -525,7 +525,7 @@ cl_51core::print_regs(class cl_console_base *con)
   /* show stack pointer */
   start = sfr->get (SP);
   con->dd_printf ("SP ", start);
-  iram->dump (start, start - 7, 8, con);
+  iram->dump (start, start - 7, 8, con->get_fout());
 
   print_disass(PC, con);
 }

@@ -177,7 +177,7 @@ cl_memory::err_non_decoded(t_addr addr)
 
 
 t_addr
-cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_console_base *con)
+cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_f *f)
 {
   int i, step;
   t_addr lva= lowest_valid_address();
@@ -207,7 +207,7 @@ cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_console_base *con)
     }
   while ((step>0)?(start < stop):(start > stop))
     {
-      con->dd_printf(addr_format, start); con->dd_printf(" ");
+      f->prntf(addr_format, start); f->write_str(" ");
       for (i= 0;
            (i < bpl) &&
              (start+i*step >= lva) &&
@@ -215,7 +215,7 @@ cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_console_base *con)
              (start+i*step != stop);
            i++)
         {
-          con->dd_printf(data_format, read/*get*/(start+i*step)); con->dd_printf(" ");
+          f->prntf(data_format, read/*get*/(start+i*step)); f->write_str(" ");
         }
       while (i < bpl)
         {
@@ -223,7 +223,7 @@ cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_console_base *con)
 	  j= width/4 + ((width%4)?1:0) + 1;
 	  while (j)
 	    {
-	      con->dd_printf(" ");
+	      f->write_str(" ");
 	      j--;
 	    }
           i++;
@@ -235,15 +235,15 @@ cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_console_base *con)
            i++)
         {
           long c= read(start+i*step);
-          con->dd_printf("%c", isprint(255&c)?(255&c):'.');
+          f->prntf("%c", isprint(255&c)?(255&c):'.');
           if (width > 8)
-            con->dd_printf("%c", isprint(255&(c>>8))?(255&(c>>8)):'.');
+            f->prntf("%c", isprint(255&(c>>8))?(255&(c>>8)):'.');
           if (width > 16)
-            con->dd_printf("%c", isprint(255&(c>>16))?(255&(c>>16)):'.');
+            f->prntf("%c", isprint(255&(c>>16))?(255&(c>>16)):'.');
           if (width > 24)
-            con->dd_printf("%c", isprint(255&(c>>24))?(255&(c>>24)):'.');
+            f->prntf("%c", isprint(255&(c>>24))?(255&(c>>24)):'.');
         }
-      con->dd_printf("\n");
+      f->prntf("\n");
       dump_finished= start+i*step;
       start+= i*step;
     }
@@ -251,9 +251,66 @@ cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_console_base *con)
 }
 
 t_addr
-cl_memory::dump(class cl_console_base *con)
+cl_memory::dump_s(t_addr start, t_addr stop, int bpl, class cl_f *f)
 {
-  return(dump(dump_finished, dump_finished+10*8-1, 8, con));
+  t_addr lva= lowest_valid_address();
+  t_addr hva= highest_valid_address();
+
+  if (!f)
+    return dump_finished;
+  if (start < 0)
+    start= dump_finished;
+  if (stop < 0)
+    stop= start + 10*8 - 1;
+  if (bpl < 0)
+    bpl= 8;
+  t_addr a= start;
+  t_mem d= read(a);
+  char last;
+  while ((a <= stop) &&
+	 (d != 0) &&
+	 (a <= hva))
+    {
+      char c= d;
+      if (a >= lva)
+	{
+	  f->write(&c, 1);
+	  last= c;
+	}
+      d= read(++a);
+    }
+  if (last != '\n')
+    f->write_str("\n");
+  return dump_finished= a;
+}
+
+t_addr
+cl_memory::dump(class cl_f *f)
+{
+  return(dump(dump_finished, dump_finished+10*8-1, 8, f));
+}
+
+t_addr
+cl_memory::dump(enum dump_format fmt,
+		t_addr start, t_addr stop, int bpl,
+		class cl_f *f)
+{
+  if (start < 0)
+    start= dump_finished;
+  if (stop < 0)
+    stop= start + 10*8 - 1;
+  if (bpl < 0)
+    bpl= 8;
+  switch (fmt)
+    {
+    case df_hex:
+      return dump(start, stop, bpl, f);
+    case df_string:
+      return dump_s(start, stop, bpl, f);
+    case df_ihex:
+      break;
+    }
+  return dump_finished;
 }
 
 bool
