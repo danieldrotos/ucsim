@@ -230,7 +230,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 	    {
 	    case 's': fmt= df_string; break;
 	    case 'h': fmt= df_hex; break;
-	    case 'i': fmt= df_ihex; break;
+	    case 'i': fmt= df_ihex; bpl= 32; break;
 	    case 'b':
 	      if (con->get_fout() &&
 		  con->get_fout()->tty)

@@ -352,8 +352,9 @@ cl_memory::dump_i(t_addr start, t_addr stop, int bpl, class cl_f *f)
 	      unsigned char c;	      
 	      sum= 0;
 	      c= a-start_line;
+	      f->prntf(":%02X%04X00", c, start_line);
 	      sum+= c;
-	      c= (start_line >> 8) & 0xff;
+	      c= int(start_line >> 8) & 0xff;
 	      sum+= c;
 	      c= start_line & 0xff;
 	      sum+= c;
