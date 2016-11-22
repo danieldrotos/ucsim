@@ -74,6 +74,8 @@ int
 cl_tlcs::ldi()
 {
   nas->write(reg.de, nas->read(reg.hl));
+  vc.rd++;
+  vc.wr++;
   reg.de++;
   reg.hl++;
   reg.bc--;
@@ -100,6 +102,8 @@ int
 cl_tlcs::ldd()
 {
   nas->write(reg.de, nas->read(reg.hl));
+  vc.rd++;
+  vc.wr++;
   reg.de--;
   reg.hl--;
   reg.bc--;
@@ -129,6 +133,7 @@ cl_tlcs::cpi()
   reg.raf.f|= FLAG_N;
   int a= reg.raf.a;
   int d= nas->read(reg.hl);
+  vc.rd++;
   int r= a-d;
   
   reg.hl++;
@@ -172,6 +177,7 @@ cl_tlcs::cpd()
   int a= reg.raf.a;
   int d= nas->read(reg.hl);
   int r= a-d;
+  vc.rd++;
   
   reg.hl--;
   reg.bc--;

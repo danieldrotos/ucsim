@@ -150,6 +150,7 @@ int
 cl_tlcs::inst_mul_hl(class cl_memory_cell *cell)
 {
   reg.hl= reg.rhl.l * cell->read();
+  vc.rd++;
   return resGO;
 }
 
@@ -159,6 +160,7 @@ int
 cl_tlcs::inst_div_hl(class cl_memory_cell *cell)
 {
   u8_t m= cell->read();
+  vc.rd++;
   return inst_div_hl(m);
 }
 
