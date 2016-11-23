@@ -213,8 +213,8 @@ cl_51core::inst_cpl_c(uchar code)
 {
   //psw->write(psw->read() ^ bmCY);
   bits->write(0xd7, !bits->read(0xd7));
-  vc.rd++;
-  vc.wr++;
+  //vc.rd++;
+  //vc.wr++;
   return(resGO);
 }
 

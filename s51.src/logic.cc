@@ -48,7 +48,7 @@ cl_51core::inst_orl_addr_a(uchar code)
 
   cell= get_direct(fetch());
   cell->write(cell->read(HW_PORT) | acc->read());
-  vc.rd+= 2;
+  vc.rd++;//= 2;
   vc.wr++;
   return(resGO);
 }
@@ -89,8 +89,8 @@ cl_51core::inst_orl_a_Sdata(uchar code)
 
   d= acc->read();
   acc->write(d|= fetch());
-  vc.rd++;
-  vc.wr++;
+  //vc.rd++;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -110,8 +110,8 @@ cl_51core::inst_orl_a_addr(uchar code)
   cell= get_direct(fetch());
   d= acc->read();
   acc->write(d|= cell->read());
-  vc.rd+= 2;
-  vc.wr++;
+  vc.rd++;//= 2;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -131,8 +131,8 @@ cl_51core::inst_orl_a_Sri(uchar code)
   cell= iram->get_cell(R[code & 0x01]->read());
   d= acc->read();
   acc->write(d|= cell->read());
-  vc.rd+= 3;
-  vc.wr++;
+  vc.rd++;//= 3;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -150,8 +150,8 @@ cl_51core::inst_orl_a_rn(uchar code)
 
   d= acc->read();
   acc->write(d|= R[code & 0x07]->read());
-  vc.rd+= 2;
-  vc.wr++;
+  //vc.rd+= 2;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -169,7 +169,7 @@ cl_51core::inst_anl_addr_a(uchar code)
   
   cell= get_direct(fetch());
   cell->write(cell->read(HW_PORT) & acc->read());
-  vc.rd+= 2;
+  vc.rd++;//= 2;
   vc.wr++;
   return(resGO);
 }
@@ -210,8 +210,8 @@ cl_51core::inst_anl_a_Sdata(uchar code)
 
   d= acc->read();
   acc->write(d & fetch());
-  vc.rd++;
-  vc.wr++;
+  //vc.rd++;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -231,8 +231,8 @@ cl_51core::inst_anl_a_addr(uchar code)
   cell= get_direct(fetch());
   d= acc->read();
   acc->write(d & cell->read());
-  vc.rd+= 2;
-  vc.wr++;
+  vc.rd++;//= 2;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -252,8 +252,8 @@ cl_51core::inst_anl_a_Sri(uchar code)
   cell= iram->get_cell(R[code & 0x01]->read());
   d= acc->read();
   acc->write(d & cell->read());
-  vc.rd+= 3;
-  vc.wr++;
+  vc.rd++;//= 3;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -271,8 +271,8 @@ cl_51core::inst_anl_a_rn(uchar code)
 
   d= acc->read();
   acc->write(d & R[code & 0x07]->read());
-  vc.rd+= 2;
-  vc.wr++;
+  //vc.rd+= 2;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -290,7 +290,7 @@ cl_51core::inst_xrl_addr_a(uchar code)
 
   cell= get_direct(fetch());
   cell->write(cell->read(HW_PORT) ^ acc->read());
-  vc.rd+= 2;
+  vc.rd++;//= 2;
   vc.wr++;
   return(resGO);
 }
@@ -329,8 +329,8 @@ cl_51core::inst_xrl_a_Sdata(uchar code)
 
   d= acc->read();
   acc->write(d ^ fetch());
-  vc.rd++;
-  vc.wr++;
+  //vc.rd++;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -350,8 +350,8 @@ cl_51core::inst_xrl_a_addr(uchar code)
   cell= get_direct(fetch());
   d= acc->read();
   acc->write(d ^ cell->read());
-  vc.rd+= 2;
-  vc.wr++;
+  vc.rd++;//= 2;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -371,8 +371,8 @@ cl_51core::inst_xrl_a_Sri(uchar code)
   cell= iram->get_cell(R[code & 0x01]->read());
   d= acc->read();
   acc->write(d ^ cell->read());
-  vc.rd+= 3;
-  vc.wr++;
+  vc.rd++;//= 3;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -390,8 +390,8 @@ cl_51core::inst_xrl_a_rn(uchar code)
 
   d= acc->read();
   acc->write(d ^ R[code & 0x07]->read());
-  vc.rd+= 2;
-  vc.wr++;
+  //vc.rd+= 2;
+  //vc.wr++;
   return(resGO);
 }
 
@@ -406,8 +406,8 @@ int
 cl_51core::inst_cpl_a(uchar code)
 {
   acc->write(~(acc->read()));
-  vc.rd++;
-  vc.wr++;
+  //vc.rd++;
+  //vc.wr++;
   return(resGO);
 }
 

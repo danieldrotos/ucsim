@@ -470,7 +470,7 @@ cl_51core::inst_cjne_a_addr_addr(uchar code)
   /*SFR_SET_C(*/bits->set(0xd7, acc->get() < data);
   if (acc->read() != data)
     PC= rom->validate_address(PC + (signed char)jaddr);
-  vc.rd+= 2;
+  vc.rd++;//= 2;
   return(resGO);
 }
 
@@ -495,7 +495,7 @@ cl_51core::inst_cjne_Sri_Sdata_addr(uchar code)
   /*SFR_SET_C(*/bits->set(0xd7, (d= cell->read()) < data);
   if (d != data)
     PC= rom->validate_address(PC + (signed char)jaddr);
-  vc.rd+= 2;
+  vc.rd++;//= 2;
   return(resGO);
 }
 
@@ -520,7 +520,7 @@ cl_51core::inst_cjne_rn_Sdata_addr(uchar code)
   /*SFR_SET_C(*/bits->set(0xd7, (r= reg->read()) < data);
   if (r != data)
     PC= rom->validate_address(PC + (signed char)jaddr);
-  vc.rd++;
+  //vc.rd++;
   return(resGO);
 }
 
@@ -568,8 +568,8 @@ cl_51core::inst_djnz_rn_addr(uchar code)
   t_mem r= reg->wadd(-1);
   if (r)
     PC= rom->validate_address(PC + (signed char)jaddr);
-  vc.rd++;
-  vc.wr++;
+  //vc.rd++;
+  //vc.wr++;
   return(resGO);
 }
 
