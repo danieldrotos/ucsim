@@ -212,7 +212,7 @@ cl_io::prepare_terminal()
       tcgetattr(file_id, &tattr);
       tattr.c_iflag&= ~IXON;
       tattr.c_lflag&= ~ICANON;
-      tattr_c_flags&= ~ECHO;
+      tattr.c_lflag&= ~ECHO;
       tattr.c_cc[VMIN] = 1;
       tattr.c_cc[VTIME]= 0;
       tcsetattr(file_id, TCSAFLUSH, &tattr);
