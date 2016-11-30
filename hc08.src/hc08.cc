@@ -676,14 +676,14 @@ t_mem
 cl_hc08::get_1(t_addr addr)
 {
   vc.rd++;
-  return ram->get(addr & 0xffff);
+  return ram->read(addr & 0xffff);
 }
 
 t_mem
 cl_hc08::get_2(t_addr addr)
 {
   vc.rd+= 2;
-  return (ram->get(addr & 0xffff) << 8) | ram->get((addr+1) & 0xffff);
+  return (ram->read(addr & 0xffff) << 8) | ram->read((addr+1) & 0xffff);
 }
 
 /* End of hc08.src/hc08.cc */
