@@ -58,8 +58,6 @@ cl_uc51r::mk_hw_elements(void)
   cl_uc52::mk_hw_elements();
   add_hw(h= new cl_wdt(this, 0x3fff));
   h->init();
-  add_hw(h= new cl_uc51r_dummy_hw(this));
-  h->init();
 }
 
 
@@ -67,6 +65,7 @@ void
 cl_uc51r::make_memories(void)
 {
   class cl_address_space *as;
+  class cl_banker *b;
   int i;
   
   rom= as= new cl_address_space("rom", 0, 0x10000, 8);
@@ -104,14 +103,23 @@ cl_uc51r::make_memories(void)
   chip= new cl_memory_chip("xram_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as= address_space("xram"), chip, 0, 0xffff, 0);
+  
+  ad= new cl_address_decoder(xram, chip, 0x100, 0xffff, 0x100);
   ad->init();
-  as->decoders->add(ad);
+  xram->decoders->add(ad);
   ad->activate(0);
+  
   chip= new cl_memory_chip("eram_chip", 0x100, 8);
   chip->init();
   memchips->add(chip);
 
+  b= new cl_banker(sfr, AUXR, 0x02,
+		   xram, 0, 0xff);
+  b->init();
+  xram->decoders->add(b);
+  b->add_bank(0, memory("eram_chip"), 0);
+  b->add_bank(1, memory("xram_chip"), 0);
+  
   chip= sfr_chip= new cl_memory_chip("sfr_chip", 0x80, 8);
   chip->init();
   memchips->add(chip);
@@ -127,7 +135,7 @@ cl_uc51r::make_memories(void)
   regs->init();
   address_spaces->add(regs);
   
-  cl_banker *b= new cl_banker(sfr, 0xd0, 0x18,
+  b= new cl_banker(sfr, 0xd0, 0x18,
 			      regs, 0, 7);
   b->init();
   regs->decoders->add(b);
@@ -228,75 +236,6 @@ cl_uc51r::received(int c)
     }
   sfr->set_bit1(SCON, bmRI);
 }
-
-
-/*
- */
-
-cl_uc51r_dummy_hw::cl_uc51r_dummy_hw(class cl_uc *auc):
-  cl_hw(auc, HW_DUMMY, 0, "_51r_dummy")
-{}
-
-int
-cl_uc51r_dummy_hw::init(void)
-{
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
-  cl_hw::init();
-  if (!sfr)
-    {
-      fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
-    }
-  cell_auxr= register_cell(sfr, AUXR);
-  return(0);
-}
-
-void
-cl_uc51r_dummy_hw::write(class cl_memory_cell *cell, t_mem *val)
-{
-  if (cell == cell_auxr)
-    {
-      class cl_address_space *xram= uc->address_space(MEM_XRAM_ID);
-      class cl_memory_chip *eram=
-	dynamic_cast<class cl_memory_chip *>(uc->memory("eram_chip"));
-      class cl_address_decoder *d;
-      if (eram &&
-	  xram)
-	{
-	  if (*val & bmEXTRAM)
-	    d= new cl_address_decoder(xram, uc->memory("xram_chip"), 0,0xff,0);
-	  else
-	    d= new cl_address_decoder(xram, eram, 0, 0xff, 0);
-	  d->init();
-	  xram->decoders->add(d);
-	  d->activate(0);
-	}
-    }
-  /*else if (cell == cell_pcon)
-    {
-      printf("PCON write 0x%x (PC=0x%x)\n", *val, uc->PC);
-      uc->sim->stop(0);
-      }*/
-}
-
-/*void
-cl_uc51r_dummy_hw::happen(class cl_hw *where, enum hw_event he, void *params)
-{
-  struct ev_port_changed *ep= (struct ev_port_changed *)params;
-
-  if (where->cathegory == HW_PORT &&
-      he == EV_PORT_CHANGED &&
-      ep->id == 3)
-    {
-      t_mem p3o= ep->pins & ep->prev_value;
-      t_mem p3n= ep->new_pins & ep->new_value;
-      if ((p3o & bm_INT0) &&
-	  !(p3n & bm_INT0))
-	uc51->p3_int0_edge++;
-      if ((p3o & bm_INT1) &&
-	  !(p3n & bm_INT1))
-	uc51->p3_int1_edge++;
-    }
-}*/
 
 
 /* End of s51.src/uc51r.cc */

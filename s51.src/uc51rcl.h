@@ -64,19 +64,6 @@ public:
 };
 
 
-class cl_uc51r_dummy_hw: public cl_hw
-{
-protected:
-  class cl_memory_cell *cell_auxr;
-public:
-  cl_uc51r_dummy_hw(class cl_uc *auc);
-  virtual int init(void);
-
-  virtual void write(class cl_memory_cell *cell, t_mem *val);
-  //virtual void happen(class cl_hw *where, enum hw_event he, void *params);
-};
-
-
 #endif
 
 /* End of s51.src/uc52cl.h */
