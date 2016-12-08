@@ -61,6 +61,7 @@ void
 cl_uc89c51r::make_memories(void)
 {
   cl_uc52::make_memories();
+
   dptr->decoders->free_all();
 
   cl_memory_chip *dptr1_chip= new cl_memory_chip("dptr1_chip", 2, 8, 0);
@@ -72,7 +73,7 @@ cl_uc89c51r::make_memories(void)
   banker->init();
   dptr->decoders->add(banker);
   
-  banker->add_bank(0, memory("sfr_chip"), 2);
+  banker->add_bank(0, sfr_chip, 2);
   banker->add_bank(1, dptr1_chip, 0);
   banker->activate(0);
   sfr->write(AUXR1, 0);
@@ -109,52 +110,6 @@ cl_uc89c51r::it_priority(uchar ie_mask)
   if (h && l)
     return(3);
   return(0);
-}
-
-void
-cl_uc89c51r::pre_inst(void)
-{
-  //printf("pre dptr0:%02X%02X dptr1:%02X%02X\n", dph0, dpl0, dph1, dpl1);
-  /*dps = (sfr->get(AUXR1) & bmDPS);
-  if (dps)
-    {
-      sfr->set(DPL, dpl1);
-      sfr->set(DPH, dph1);
-    }
-  else
-    {
-      sfr->set(DPL, dpl0);
-      sfr->set(DPH, dph0);
-      }*/
-  cl_uc51r::pre_inst();
-}
-
-void
-cl_uc89c51r::post_inst(void)
-{
-  /*if (dps)
-    {
-      dpl1= sfr->get(DPL);
-      dph1= sfr->get(DPH);
-    }
-  else
-    {
-      dpl0= sfr->get(DPL);
-      dph0= sfr->get(DPH);
-      }*/
-  //dps = (sfr->get(AUXR1) & bmDPS);
-  /*if (dps)
-    {
-      sfr->set(DPL, dpl1);
-      sfr->set(DPH, dph1);
-    }
-  else
-    {
-      sfr->set(DPL, dpl0);
-      sfr->set(DPH, dph0);
-      }*/
-  //printf("post dptr0:%02X%02X dptr1:%02X%02X\n", dph0, dpl0, dph1, dpl1);
-  cl_uc51r::post_inst();
 }
 
 

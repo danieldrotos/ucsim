@@ -71,7 +71,8 @@ public:
   class cl_address_space *sfr, *iram, *xram, *regs, *bits;
   class cl_address_space *dptr;
   class cl_memory_cell *acc, *psw, *R[8];
-
+  class cl_memory_chip *rom_chip, *sfr_chip, *iram_chip, *xram_chip;
+  
 public:
   // Help to detect external it requests (falling edge)
   uchar prev_p1;	// Prev state of P1
@@ -94,7 +95,11 @@ public:
   virtual void build_cmdset(class cl_cmdset *cmdset);
   //virtual class cl_m *mk_mem(enum mem_class type, char *class_name);
   virtual void make_memories(void);
-
+  virtual void make_address_spaces(void);
+  virtual void make_chips(void);
+  virtual void decode_regs(void);
+  virtual void decode_bits(void);
+  
   virtual int clock_per_cycle(void) { return(12); }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct name_entry *sfr_tbl(void);
