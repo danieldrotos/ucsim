@@ -397,6 +397,16 @@ cl_51core::decode_dptr(void)
   ad->init();
   dptr->decoders->add(ad);
   ad->activate(0);
+
+  cl_var *v;
+  vars->add(v= new cl_var(chars("dpl"), dptr, 0));
+  v->init();
+  vars->add(v= new cl_var(chars("DPL"), dptr, 0));
+  v->init();
+  vars->add(v= new cl_var(chars("dph"), dptr, 1));
+  v->init();
+  vars->add(v= new cl_var(chars("DPH"), dptr, 1));
+  v->init();
 }
 
 void
@@ -419,15 +429,6 @@ cl_51core::make_vars(void)
   vars->add(v= new cl_var(cchars("R6"), regs, 6));
   v->init();
   vars->add(v= new cl_var(cchars("R7"), regs, 7));
-  v->init();
-
-  vars->add(v= new cl_var(chars("dpl"), dptr, 0));
-  v->init();
-  vars->add(v= new cl_var(chars("DPL"), dptr, 0));
-  v->init();
-  vars->add(v= new cl_var(chars("dph"), dptr, 1));
-  v->init();
-  vars->add(v= new cl_var(chars("DPH"), dptr, 1));
   v->init();
 }
 

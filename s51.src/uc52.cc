@@ -117,6 +117,7 @@ void
 cl_uc52::decode_dptr(void)
 {
   cl_banker *banker;
+  cl_var *v;
   
   if (type == CPU_C521)
     {
@@ -129,6 +130,15 @@ cl_uc52::decode_dptr(void)
       banker->add_bank(1, memory("sfr_chip"), 0x84-0x80);
       banker->activate(0);
       sfr->write(0x86, 0);
+
+      vars->add(v= new cl_var(chars("dpl"), dptr, 0));
+      v->init();
+      vars->add(v= new cl_var(chars("DPL"), dptr, 0));
+      v->init();
+      vars->add(v= new cl_var(chars("dph"), dptr, 1));
+      v->init();
+      vars->add(v= new cl_var(chars("DPH"), dptr, 1));
+      v->init();
     }
   else if (type == CPU_517)
     {
@@ -144,6 +154,15 @@ cl_uc52::decode_dptr(void)
       dptr->decoders->add(banker);
       banker->activate(0);
       sfr->write(0x92, 0);
+
+      vars->add(v= new cl_var(chars("dpl"), dptr, 0));
+      v->init();
+      vars->add(v= new cl_var(chars("DPL"), dptr, 0));
+      v->init();
+      vars->add(v= new cl_var(chars("dph"), dptr, 1));
+      v->init();
+      vars->add(v= new cl_var(chars("DPH"), dptr, 1));
+      v->init();
     }
   else
     cl_51core::decode_dptr();

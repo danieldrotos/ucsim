@@ -80,6 +80,16 @@ cl_uc89c51r::decode_dptr(void)
   banker->add_bank(1, dptr1_chip, 0);
   banker->activate(0);
   sfr->write(AUXR1, 0);
+
+  cl_var *v;
+  vars->add(v= new cl_var(chars("dpl"), dptr, 0));
+  v->init();
+  vars->add(v= new cl_var(chars("DPL"), dptr, 0));
+  v->init();
+  vars->add(v= new cl_var(chars("dph"), dptr, 1));
+  v->init();
+  vars->add(v= new cl_var(chars("DPH"), dptr, 1));
+  v->init();
 }
 
 void

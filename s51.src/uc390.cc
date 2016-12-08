@@ -360,7 +360,8 @@ cl_uc390::make_memories(void)
   decode_sfr();
   decode_xram();
   decode_bits();
- 
+  decode_dptr();
+  
   ad= new cl_address_decoder(ixram, ixram_chip, 0, 0xfff, 0);
   ad->init();
   ixram->decoders->add(ad);
@@ -443,6 +444,22 @@ cl_uc390::decode_xram(void)
   xram->decoders->add(ad);
   ad->activate(0);
 }
+
+void
+cl_uc390::decode_dptr(void)
+{
+  cl_var *v;
+  vars->add(v= new cl_var(chars("dpl"), sfr, 0x82));
+  v->init();
+  vars->add(v= new cl_var(chars("DPL"), sfr, 0x82));
+  v->init();
+  vars->add(v= new cl_var(chars("dph"), sfr, 0x83));
+  v->init();
+  vars->add(v= new cl_var(chars("DPH"), sfr, 0x83));
+  v->init();
+}
+
+
 /*
  * Setting up SFR area to reset value
  */
