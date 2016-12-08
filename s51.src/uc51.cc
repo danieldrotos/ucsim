@@ -403,6 +403,7 @@ void
 cl_51core::make_vars(void)
 {
   cl_var *v;
+
   vars->add(v= new cl_var(cchars("R0"), regs, 0));
   v->init();
   vars->add(v= new cl_var(cchars("R1"), regs, 1));
@@ -418,6 +419,15 @@ cl_51core::make_vars(void)
   vars->add(v= new cl_var(cchars("R6"), regs, 6));
   v->init();
   vars->add(v= new cl_var(cchars("R7"), regs, 7));
+  v->init();
+
+  vars->add(v= new cl_var(chars("dpl"), dptr, 0));
+  v->init();
+  vars->add(v= new cl_var(chars("DPL"), dptr, 0));
+  v->init();
+  vars->add(v= new cl_var(chars("dph"), dptr, 1));
+  v->init();
+  vars->add(v= new cl_var(chars("DPH"), dptr, 1));
   v->init();
 }
 

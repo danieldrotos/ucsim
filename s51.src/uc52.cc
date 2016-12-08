@@ -116,10 +116,12 @@ cl_uc52::decode_iram(void)
 void
 cl_uc52::decode_dptr(void)
 {
+  cl_banker *banker;
+  
   if (type == CPU_C521)
     {
-      cl_banker *banker= new cl_banker(sfr, 0x86, 1,
-				       dptr, 0, 1);
+      banker= new cl_banker(sfr, 0x86, 1,
+			    dptr, 0, 1);
       banker->init();
       dptr->decoders->add(banker);
 
@@ -127,6 +129,21 @@ cl_uc52::decode_dptr(void)
       banker->add_bank(1, memory("sfr_chip"), 0x84-0x80);
       banker->activate(0);
       sfr->write(0x86, 0);
+    }
+  else if (type == CPU_517)
+    {
+      cl_memory_chip *dptr_chip= new cl_memory_chip("dptr_chip", 16, 8);
+      dptr_chip->init();
+      memchips->add(dptr_chip);
+      banker= new cl_banker(sfr, 0x92, 0x7,
+			    dptr, 0, 1);
+      banker->init();
+      int a;
+      for (a= 0; a < 8; a++)
+	banker->add_bank(a, dptr_chip, a*2);
+      dptr->decoders->add(banker);
+      banker->activate(0);
+      sfr->write(0x92, 0);
     }
   else
     cl_51core::decode_dptr();
