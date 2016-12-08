@@ -348,57 +348,23 @@ cl_uc390::make_memories(void)
   class cl_address_decoder *ad;
 
   make_address_spaces();
+  dptr= 0;
   make_chips();
 
   acc= sfr->get_cell(ACC);
   psw= sfr->get_cell(PSW);
 
   decode_regs();
+  decode_rom();
+  decode_iram();
+  decode_sfr();
+  decode_xram();
   decode_bits();
  
-  
-  ad= new cl_address_decoder(rom, rom_chip, 0, 0x1ffff, 0);
-  ad->init();
-  rom->decoders->add(ad);
-  ad->activate(0);
-
-  ad= new cl_address_decoder(iram, iram_chip, 0, 0xff, 0);
-  ad->init();
-  iram->decoders->add(ad);
-  ad->activate(0);
-
-  ad= new cl_address_decoder(xram, xram_chip, 0, 0x10007f, 0);
-  ad->init();
-  xram->decoders->add(ad);
-  ad->activate(0);
-
   ad= new cl_address_decoder(ixram, ixram_chip, 0, 0xfff, 0);
   ad->init();
   ixram->decoders->add(ad);
   ad->activate(0);
-
-  ad= new cl_address_decoder(sfr, sfr_chip, 0x80, 0xff, 0);
-  ad->init();
-  sfr->decoders->add(ad);
-  ad->activate(0);
-
-  cl_var *v;
-  vars->add(v= new cl_var(cchars("R0"), regs, 0));
-  v->init();
-  vars->add(v= new cl_var(cchars("R1"), regs, 1));
-  v->init();
-  vars->add(v= new cl_var(cchars("R2"), regs, 2));
-  v->init();
-  vars->add(v= new cl_var(cchars("R3"), regs, 3));
-  v->init();
-  vars->add(v= new cl_var(cchars("R4"), regs, 4));
-  v->init();
-  vars->add(v= new cl_var(cchars("R5"), regs, 5));
-  v->init();
-  vars->add(v= new cl_var(cchars("R6"), regs, 6));
-  v->init();
-  vars->add(v= new cl_var(cchars("R7"), regs, 7));
-  v->init();
 }
 
 void
@@ -457,6 +423,26 @@ cl_uc390::make_chips(void)
   memchips->add(sfr_chip);
 }
 
+void
+cl_uc390::decode_rom(void)
+{
+  class cl_address_decoder *ad;
+  ad= new cl_address_decoder(rom, rom_chip, 0, 0x1ffff, 0);
+  ad->init();
+  rom->decoders->add(ad);
+  ad->activate(0);
+}
+
+void
+cl_uc390::decode_xram(void)
+{
+  class cl_address_decoder *ad;
+  
+  ad= new cl_address_decoder(xram, xram_chip, 0, 0x10007f, 0);
+  ad->init();
+  xram->decoders->add(ad);
+  ad->activate(0);
+}
 /*
  * Setting up SFR area to reset value
  */

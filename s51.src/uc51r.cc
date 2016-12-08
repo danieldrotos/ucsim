@@ -64,71 +64,7 @@ cl_uc51r::mk_hw_elements(void)
 void
 cl_uc51r::make_memories(void)
 {
-  class cl_banker *b;
-  class cl_address_decoder *ad;
-  
-  make_address_spaces();
-  make_chips();
-  
-  acc= sfr->get_cell(ACC);
-  psw= sfr->get_cell(PSW);
-
-  decode_regs();
-  decode_bits();
-  
-  ad= new cl_address_decoder(rom, rom_chip, 0, 0xffff, 0);
-  ad->init();
-  rom->decoders->add(ad);
-  ad->activate(0);
-
-  ad= new cl_address_decoder(iram, iram_chip, 0, 0xff, 0);
-  ad->init();
-  iram->decoders->add(ad);
-  ad->activate(0);
-
-  ad= new cl_address_decoder(xram, xram_chip, 0x100, 0xffff, 0x100);
-  ad->init();
-  xram->decoders->add(ad);
-  ad->activate(0);
-  
-
-  b= new cl_banker(sfr, AUXR, 0x02,
-		   xram, 0, 0xff);
-  b->init();
-  xram->decoders->add(b);
-  b->add_bank(0, eram_chip, 0);
-  b->add_bank(1, xram_chip, 0);
-  
-  ad= new cl_address_decoder(sfr, sfr_chip, 0x80, 0xff, 0);
-  ad->init();
-  sfr->decoders->add(ad);
-  ad->activate(0);
-  
-  cl_var *v;
-  vars->add(v= new cl_var(cchars("R0"), regs, 0));
-  v->init();
-  vars->add(v= new cl_var(cchars("R1"), regs, 1));
-  v->init();
-  vars->add(v= new cl_var(cchars("R2"), regs, 2));
-  v->init();
-  vars->add(v= new cl_var(cchars("R3"), regs, 3));
-  v->init();
-  vars->add(v= new cl_var(cchars("R4"), regs, 4));
-  v->init();
-  vars->add(v= new cl_var(cchars("R5"), regs, 5));
-  v->init();
-  vars->add(v= new cl_var(cchars("R6"), regs, 6));
-  v->init();
-  vars->add(v= new cl_var(cchars("R7"), regs, 7));
-  v->init();
-
-  dptr= new cl_address_space("dptr", 0, 2, 8);
-  dptr->init();
-  ad= new cl_address_decoder(dptr, sfr_chip, 0, 1, DPL-0x80);
-  ad->init();
-  dptr->decoders->add(ad);
-  ad->activate(0);
-  address_spaces->add(dptr);
+  cl_uc52::make_memories();
 }
 
 void
@@ -141,6 +77,24 @@ cl_uc51r::make_chips(void)
   memchips->add(eram_chip);
 }
 
+void
+cl_uc51r::decode_xram(void)
+{
+  class cl_address_decoder *ad;
+  class cl_banker *b;
+
+  ad= new cl_address_decoder(xram, xram_chip, 0x100, 0xffff, 0x100);
+  ad->init();
+  xram->decoders->add(ad);
+  ad->activate(0);
+  
+  b= new cl_banker(sfr, AUXR, 0x02,
+		   xram, 0, 0xff);
+  b->init();
+  xram->decoders->add(b);
+  b->add_bank(0, eram_chip, 0);
+  b->add_bank(1, xram_chip, 0);
+}
 
 /*
  * Resetting of the microcontroller

@@ -40,7 +40,10 @@ public:
   cl_uc52(int Itype, int Itech, class cl_sim *asim);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
-
+  virtual void make_address_spaces(void);
+  virtual void decode_iram(void);
+  virtual void decode_dptr(void);
+  
   virtual void clear_sfr(void);
 };
 

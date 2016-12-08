@@ -45,6 +45,8 @@ public:
   virtual void make_memories(void);
   virtual void make_address_spaces();
   virtual void make_chips(void);
+  virtual void decode_rom(void);
+  virtual void decode_xram(void);
   
   virtual void clear_sfr (void);
 

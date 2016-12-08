@@ -61,9 +61,12 @@ void
 cl_uc89c51r::make_memories(void)
 {
   cl_uc52::make_memories();
+}
 
-  dptr->decoders->free_all();
-
+void
+cl_uc89c51r::decode_dptr(void)
+{
+  //dptr->decoders->free_all();
   cl_memory_chip *dptr1_chip= new cl_memory_chip("dptr1_chip", 2, 8, 0);
   dptr1_chip->init();
   memchips->add(dptr1_chip);
@@ -78,7 +81,6 @@ cl_uc89c51r::make_memories(void)
   banker->activate(0);
   sfr->write(AUXR1, 0);
 }
-
 
 void
 cl_uc89c51r::reset(void)

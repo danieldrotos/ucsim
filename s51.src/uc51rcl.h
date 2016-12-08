@@ -45,7 +45,8 @@ public:
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
   virtual void make_chips(void);
-			  
+  virtual void decode_xram(void);
+  
   virtual void reset(void);
   virtual void clear_sfr(void);
 

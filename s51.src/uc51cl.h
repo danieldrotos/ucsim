@@ -99,6 +99,12 @@ public:
   virtual void make_chips(void);
   virtual void decode_regs(void);
   virtual void decode_bits(void);
+  virtual void decode_rom(void);
+  virtual void decode_iram(void);
+  virtual void decode_sfr(void);
+  virtual void decode_xram(void);
+  virtual void decode_dptr(void);
+  virtual void make_vars(void);
   
   virtual int clock_per_cycle(void) { return(12); }
   virtual struct dis_entry *dis_tbl(void);

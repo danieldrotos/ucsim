@@ -41,7 +41,8 @@ public:
   cl_uc89c51r(int Itype, int Itech, class cl_sim *asim);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
-
+  virtual void decode_dptr(void);
+  
   virtual void  reset(void);
   virtual int   it_priority(uchar ie_mask);
   virtual void  print_regs(class cl_console_base *con);
