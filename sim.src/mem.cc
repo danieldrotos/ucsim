@@ -1146,6 +1146,7 @@ cl_address_space::cl_address_space(const char *id,
     cell= &c8;
   else if (awidth <= 16)
     cell= &c16;
+  cell->init();
   int i;
   for (i= 0; i < size; i++)
     {
