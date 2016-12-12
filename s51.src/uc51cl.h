@@ -91,6 +91,7 @@ public:
   virtual ~cl_51core(void);
   virtual int    init(void);
   virtual char  *id_string(void);
+  virtual void make_cpu_hw(void);
   virtual void mk_hw_elements(void);
   virtual void build_cmdset(class cl_cmdset *cmdset);
   //virtual class cl_m *mk_mem(enum mem_class type, char *class_name);
@@ -253,6 +254,18 @@ protected:
 };
 
 
+enum uc51cpu_cfg {
+  uc51cpu_aof_mdps	= 0, // addr of multi_DPTR_sfr selector
+  uc51cpu_mask_mdps	= 1, // mask in mutli_DPTR_sfr selector
+  uc51cpu_aof_mdps1l	= 2, // addr of multi_DPTR_sfr DPL1
+  uc51cpu_aof_mdps1h	= 3, // addr of multi_DPTR_sfr DPH1
+
+  uc51cpu_aof_mdpc	= 4, // addr of multi_DPTR_chip selector
+  uc51cpu_mask_mdpc	= 5, // mask in multi_DPTR_chip selector
+  
+  uc51cpu_nuof		= 16
+};
+
 class cl_uc51_cpu: public cl_hw
 {
  protected:
@@ -261,8 +274,10 @@ class cl_uc51_cpu: public cl_hw
  public:
   cl_uc51_cpu(class cl_uc *auc);
   virtual int init(void);
+  virtual int cfg_size(void) { return uc51cpu_nuof; }
 
   virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 

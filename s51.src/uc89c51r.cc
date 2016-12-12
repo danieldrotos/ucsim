@@ -53,43 +53,12 @@ cl_uc89c51r::mk_hw_elements(void)
   h->init();
   add_hw(h= new cl_pca(this, 0));
   h->init();
-  add_hw(h= new cl_89c51r_dummy_hw(this));
-  h->init();
 }
 
 void
 cl_uc89c51r::make_memories(void)
 {
   cl_uc52::make_memories();
-}
-
-void
-cl_uc89c51r::decode_dptr(void)
-{
-  //dptr->decoders->free_all();
-  cl_memory_chip *dptr1_chip= new cl_memory_chip("dptr1_chip", 2, 8, 0);
-  dptr1_chip->init();
-  memchips->add(dptr1_chip);
-
-  cl_banker *banker= new cl_banker(sfr, AUXR1, bmDPS,
-				   dptr, 0, 1);
-  banker->init();
-  dptr->decoders->add(banker);
-  
-  banker->add_bank(0, sfr_chip, 2);
-  banker->add_bank(1, dptr1_chip, 0);
-  banker->activate(0);
-  sfr->write(AUXR1, 0);
-
-  cl_var *v;
-  vars->add(v= new cl_var(chars("dpl"), dptr, 0));
-  v->init();
-  vars->add(v= new cl_var(chars("DPL"), dptr, 0));
-  v->init();
-  vars->add(v= new cl_var(chars("dph"), dptr, 1));
-  v->init();
-  vars->add(v= new cl_var(chars("DPH"), dptr, 1));
-  v->init();
 }
 
 void
@@ -101,8 +70,6 @@ cl_uc89c51r::reset(void)
   sfr->set_bit1(CCAPM2, bmECOM);
   sfr->set_bit1(CCAPM3, bmECOM);
   sfr->set_bit1(CCAPM4, bmECOM);
-  //t0_overflows= 0;
-  //dpl0= dph0= dpl1= dph1= 0;
   sfr->write(IPH, 0);
 }
 
@@ -139,20 +106,19 @@ cl_uc89c51r::print_regs(class cl_console_base *con)
   acc= sfr->get(ACC);
   con->dd_printf("  ACC= 0x%02x %3d %c  B= 0x%02x\n", acc, acc,
               isprint(acc)?(acc):'.', sfr->get(B)); 
-  //eram2xram();
 
   data= iram->get(iram->get(start+1));
   con->dd_printf("@R1 %02x %c\n", data, isprint(data) ? data : '.');
 
   dps = sfr->get(AUXR1) & bmDPS;
-  h= memory("sfr_chip")->get(3);
-  l= memory("sfr_chip")->get(2);
+  l= memory("dptr_chip")->get(0);
+  h= memory("dptr_chip")->get(1);
   data= xram->get(h*256+l);
   con->dd_printf(" %cDPTR0= 0x%02x%02x @DPTR0= 0x%02x %3d %c\n",
               dps?' ':'*', h, l,
               data, data, isprint(data)?data:'.');
-  h= memory("dptr1_chip")->get(3);
-  l= memory("dptr1_chip")->get(2);
+  l= memory("dptr_chip")->get(2);
+  h= memory("dptr_chip")->get(3);
   data= xram->get(h*256+l);
   con->dd_printf(" %cDPTR1= 0x%02x%02x @DPTR1= 0x%02x %3d %c\n",
               dps?'*':' ', h, l,
@@ -176,7 +142,7 @@ cl_uc89c51r::print_regs(class cl_console_base *con)
 
 /*
  */
-
+/*
 cl_89c51r_dummy_hw::cl_89c51r_dummy_hw(class cl_uc *auc):
   cl_hw(auc, HW_DUMMY, 0, "_89c51r_dummy")
 {}
@@ -213,6 +179,6 @@ cl_89c51r_dummy_hw::write(class cl_memory_cell *cell, t_mem *val)
   else if (cell == dph)
     ((cl_uc89c51r*)uc)->dptr->write(1, *val);
 }
-
+*/
 
 /* End of s51.src/uc89c51r.cc */

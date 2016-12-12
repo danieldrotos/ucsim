@@ -38,6 +38,7 @@ class cl_uc52: public cl_51core
 {
 public:
   cl_uc52(int Itype, int Itech, class cl_sim *asim);
+  virtual int init(void);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
   virtual void make_address_spaces(void);

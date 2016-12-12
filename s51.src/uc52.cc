@@ -45,6 +45,45 @@ cl_uc52::cl_uc52(int Itype, int Itech, class cl_sim *asim):
 {
 }
 
+int
+cl_uc52::init(void)
+{
+  int ret;
+  ret= cl_51core::init();
+  if (cpu &&
+      (type == CPU_C521))
+    {
+      cpu->cfg_set(uc51cpu_aof_mdps, 0x86);
+      cpu->cfg_set(uc51cpu_mask_mdps, 1);
+      cpu->cfg_set(uc51cpu_aof_mdps1l, 0x84);
+      cpu->cfg_set(uc51cpu_aof_mdps1h, 0x85);
+      decode_dptr();
+    }
+  else if (cpu &&
+	   (type == CPU_517))
+    {
+      cpu->cfg_set(uc51cpu_aof_mdpc, 0x92);
+      cpu->cfg_set(uc51cpu_mask_mdpc, 7);
+      class cl_memory_chip *dptr_chip=
+	new cl_memory_chip("dptr_chip", 3*8, 8);
+      dptr_chip->init();
+      memchips->add(dptr_chip);
+      decode_dptr();
+    }
+  else if (cpu &&
+	   (type == CPU_89C51R))
+    {
+      cpu->cfg_set(uc51cpu_aof_mdpc, 0xA2);
+      cpu->cfg_set(uc51cpu_mask_mdpc, 1);
+      class cl_memory_chip *dptr_chip=
+	new cl_memory_chip("dptr_chip", 3*8, 8);
+      dptr_chip->init();
+      memchips->add(dptr_chip);
+      decode_dptr();
+    }
+  return ret;
+}
+
 void
 cl_uc52::mk_hw_elements(void)
 {
@@ -116,56 +155,7 @@ cl_uc52::decode_iram(void)
 void
 cl_uc52::decode_dptr(void)
 {
-  cl_banker *banker;
-  cl_var *v;
-  
-  if (type == CPU_C521)
-    {
-      banker= new cl_banker(sfr, 0x86, 1,
-			    dptr, 0, 1);
-      banker->init();
-      dptr->decoders->add(banker);
-
-      banker->add_bank(0, memory("sfr_chip"), 0x82-0x80);
-      banker->add_bank(1, memory("sfr_chip"), 0x84-0x80);
-      banker->activate(0);
-      sfr->write(0x86, 0);
-
-      vars->add(v= new cl_var(chars("dpl"), dptr, 0));
-      v->init();
-      vars->add(v= new cl_var(chars("DPL"), dptr, 0));
-      v->init();
-      vars->add(v= new cl_var(chars("dph"), dptr, 1));
-      v->init();
-      vars->add(v= new cl_var(chars("DPH"), dptr, 1));
-      v->init();
-    }
-  else if (type == CPU_517)
-    {
-      cl_memory_chip *dptr_chip= new cl_memory_chip("dptr_chip", 16, 8);
-      dptr_chip->init();
-      memchips->add(dptr_chip);
-      banker= new cl_banker(sfr, 0x92, 0x7,
-			    dptr, 0, 1);
-      banker->init();
-      int a;
-      for (a= 0; a < 8; a++)
-	banker->add_bank(a, dptr_chip, a*2);
-      dptr->decoders->add(banker);
-      banker->activate(0);
-      sfr->write(0x92, 0);
-
-      vars->add(v= new cl_var(chars("dpl"), dptr, 0));
-      v->init();
-      vars->add(v= new cl_var(chars("DPL"), dptr, 0));
-      v->init();
-      vars->add(v= new cl_var(chars("dph"), dptr, 1));
-      v->init();
-      vars->add(v= new cl_var(chars("DPH"), dptr, 1));
-      v->init();
-    }
-  else
-    cl_51core::decode_dptr();
+  cl_51core::decode_dptr();
 }
 
 void
