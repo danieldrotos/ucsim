@@ -416,12 +416,13 @@ cl_51core::decode_dptr(void)
 	  (dpl1 > 0x7f) &&
 	  (dph1 > 0x7f))
 	{
+	  // multi DPTR sfr style
 	  //printf("MDPS %x %x %x %x\n", adps, mdps, dpl1, dph1);
 	  banker= new cl_banker(sfr, adps, mdps,
 				dptr, 0, 0);
 	  banker->init();
 	  dptr->decoders->add(banker);
-	  banker->add_bank(0, memory("sfr_chip"), 0x82-0x80);
+	  banker->add_bank(0, memory("sfr_chip"), DPL-0x80);
 	  banker->add_bank(1, memory("sfr_chip"), dpl1-0x80);
 	  banker->activate(0);
 
@@ -429,7 +430,7 @@ cl_51core::decode_dptr(void)
 				dptr, 1, 1);
 	  banker->init();
 	  dptr->decoders->add(banker);
-	  banker->add_bank(0, memory("sfr_chip"), 0x83-0x80);
+	  banker->add_bank(0, memory("sfr_chip"), DPH-0x80);
 	  banker->add_bank(1, memory("sfr_chip"), dph1-0x80);
 	  banker->activate(0);
 
@@ -437,6 +438,7 @@ cl_51core::decode_dptr(void)
 	}
       else if (adpc > 0x7f)
 	{
+	  // multi DPTR chip style
 	  adps=0x80;
 	  class cl_memory_chip *dptr_chip= (cl_memory_chip*)memory("dptr_chip");
 	  if (dptr_chip == 0)
@@ -452,6 +454,7 @@ cl_51core::decode_dptr(void)
 	      //printf("MDPC %x %x\n", adpc, mdpc);
 	      while ((m&1) == 0)
 		m>>= 1;
+	      
 	      banker= new cl_banker(sfr, adpc, mdpc,
 			    dptr, 0, 1);
 	      banker->init();
@@ -459,6 +462,15 @@ cl_51core::decode_dptr(void)
 	      for (a= 0; a <= m; a++)
 		banker->add_bank(a, dptr_chip, a*2);
 	      banker->activate(0);
+
+	      banker= new cl_banker(sfr, adpc, mdpc,
+			    sfr, DPL, DPH);
+	      banker->init();
+	      sfr->decoders->add(banker);
+	      for (a= 0; a <= m; a++)
+		banker->add_bank(a, dptr_chip, a*2);
+	      banker->activate(0);
+	      
 	      sfr->write(adpc, sfr->get(adpc));
 	    }
 	}
@@ -654,8 +666,9 @@ void
 cl_51core::print_regs(class cl_console_base *con)
 {
   t_addr start;
-  uchar data;
-
+  t_mem data;
+  t_mem dp;
+  
   // show regs
   start= psw->get() & 0x18;
   iram->dump(start, start+7, 8, con->get_fout());
@@ -678,12 +691,15 @@ cl_51core::print_regs(class cl_console_base *con)
   // show DPTR(s)
   if (dptr)
     {
+      int act;
+      int mask;
+	      int i;
       if (cpu &&
 	  (cpu->cfg_get(uc51cpu_aof_mdpc) > 0x7f))
 	{
 	  // multi DPTR chip style
-	  int act= sfr->get(cpu->cfg_get(uc51cpu_aof_mdpc));
-	  int mask= cpu->cfg_get(uc51cpu_mask_mdpc);
+	  act= sfr->get(cpu->cfg_get(uc51cpu_aof_mdpc));
+	  mask= cpu->cfg_get(uc51cpu_mask_mdpc);
 	  while ((mask&1) == 0)
 	    {
 	      act>>= 1;
@@ -693,17 +709,16 @@ cl_51core::print_regs(class cl_console_base *con)
 	  class cl_memory *dptr_chip= memory("dptr_chip");
 	  if (dptr_chip)
 	    {
-	      int i;
 	      for (i= 0; i <= mask; i++)
 		{
 		  int a= i*dptr->get_size();
-		  t_mem dp= 0;
+		  dp= 0;
 		  int di;
 		  for (di= dptr->get_size()-1; di >= 0; di--)
 		    dp= (dp<<8) + dptr_chip->get(a+di);
 		  con->dd_printf(" %cDPTR%d= ", (i==act)?'*':' ', i);
 		  con->dd_printf(xram->addr_format, dp);
-		  t_mem data= xram->read(dp);
+		  data= xram->read(dp);
 		  con->dd_printf(" @DPTR%d= ", i);
 		  con->dd_printf("0x%02x %3d %c\n", data, data,
 				 isprint(data)?data:'.');
@@ -714,7 +729,32 @@ cl_51core::print_regs(class cl_console_base *con)
 	  (cpu->cfg_get(uc51cpu_aof_mdps) > 0x7f))
 	{
 	  // multi DPTR sfr style
-	  con->dd_printf("\n");
+	  act= sfr->get(cpu->cfg_get(uc51cpu_aof_mdps));
+	  mask= cpu->cfg_get(uc51cpu_mask_mdps);
+	  while ((mask&1) == 0)
+	    {
+	      act>>= 1;
+	      mask>>= 1;
+	    }
+	  act&= mask;
+	  i= 0;
+	  dp= sfr_chip->get(DPL-0x80) +
+	    sfr_chip->get(DPH-0x80) * 256;
+	  con->dd_printf(" %cDPTR%d= ", (i==act)?'*':' ', i);
+	  con->dd_printf(xram->addr_format, dp);
+	  data= xram->read(dp);
+	  con->dd_printf(" @DPTR%d= ", i);
+	  con->dd_printf("0x%02x %3d %c\n", data, data,
+			 isprint(data)?data:'.');
+	  i= 1;
+	  dp= sfr_chip->get(cpu->cfg_get(uc51cpu_aof_mdps1l) - 0x80) +
+	    sfr_chip->get(cpu->cfg_get(uc51cpu_aof_mdps1h) - 0x80) * 256;
+	  con->dd_printf(" %cDPTR%d= ", (i==act)?'*':' ', i);
+	  con->dd_printf(xram->addr_format, dp);
+	  data= xram->read(dp);
+	  con->dd_printf(" @DPTR%d= ", i);
+	  con->dd_printf("0x%02x %3d %c\n", data, data,
+			 isprint(data)?data:'.');
 	}
       else
 	{
