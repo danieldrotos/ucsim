@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "regs51.h"
 #include "timer2cl.h"
 #include "portcl.h"
+#include "mducl.h"
 
 
 /*
@@ -114,6 +115,13 @@ cl_uc52::mk_hw_elements(void)
 	  pd.basy    = 4+7;
 	  d->add_port(&pd, 4);
 	}
+    }
+
+  if (type == CPU_517)
+    {
+      class cl_mdu517 *mdu= new cl_mdu517(this, 0);
+      add_hw(mdu);
+      mdu->init();
     }
 }
 
