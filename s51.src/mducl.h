@@ -33,9 +33,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_mdu517: public cl_hw
 {
+ protected:
+  u8_t v[5];
+  class cl_memory_cell *regs[5], *arcon;
+  int writes[5];
+  int nuof_writes;
  public:
   cl_mdu517(class cl_uc *auc, int aid);
-
+  virtual int init(void);
+  
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);

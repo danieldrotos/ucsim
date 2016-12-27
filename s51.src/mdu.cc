@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "uc51cl.h"
+
 #include "mducl.h"
 
 
@@ -33,18 +35,47 @@ cl_mdu517::cl_mdu517(class cl_uc *auc, int aid):
 {
 }
 
+int
+cl_mdu517::init(void)
+{
+  int i;
+  class cl_51core *u= (cl_51core*)uc;
+  
+  arcon= register_cell(u->sfr, 0xef);
+  for (i= 0; i<5; i++)
+    {
+      regs[i]= register_cell(u->sfr, 0xe9+i);
+      v[i]= regs[i]->get();
+      writes[i]= -1;
+    }
+  nuof_writes= 0;
+  return 0;
+}
 
 t_mem
 cl_mdu517::read(class cl_memory_cell *cell)
 {
-  conf(cell, NULL);
+  if (conf(cell, NULL))
+    return cell->get();
+
   return cell->get();
 }
 
 void
 cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 {
-  conf(cell, val);    
+  cl_address_space *sfr= ((cl_51core*)uc)->sfr;
+  t_addr a;
+  
+  if (conf(cell, val))
+    return;
+  if (sfr->is_owned(cell, &a))
+    {
+      a-= 0xe9;
+      if ((a < 0) ||
+	  (a > 0xef))
+	return;
+    }
 }
 
 t_mem
