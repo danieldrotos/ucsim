@@ -56,10 +56,22 @@ cl_mdu517::init(void)
 t_mem
 cl_mdu517::read(class cl_memory_cell *cell)
 {
+  cl_address_space *sfr= ((cl_51core*)uc)->sfr;
+  t_addr a;
+  t_mem v= cell->get();
+  
   if (conf(cell, NULL))
-    return cell->get();
-
-  return cell->get();
+    return v;
+  if (sfr->is_owned(cell, &a))
+    {
+      a-= 0xe9;
+      if ((a < 0) ||
+	  (a > 6))
+	return v;
+      if (a == 6)
+	cell->set(v & ~0x80);
+    }
+  return v;
 }
 
 void
@@ -67,7 +79,7 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 {
   cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   t_addr a;
-  u8_t ar= regs[6]->get();
+  u8_t ar= regs[6]->get() & ~0x80;
   
   if (conf(cell, val))
     return;
@@ -75,7 +87,7 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
     {
       a-= 0xe9;
       if ((a < 0) ||
-	  (a > 5))
+	  (a > 6))
 	return;
       /*if (calcing)
 	{
@@ -94,8 +106,14 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	  return;
 	}
       writes&= (a << (nuof_writes*8));
-      v[nuof_writes]= *val;
+      v[a]= *val;
       nuof_writes++;
+      if (a == 6)
+	{
+	  writes= 0xff06030201; // force norm/shift
+	  v[a]&= ~0x80;
+	  ar= v[6];
+	}
 
       switch (writes)
 	{
@@ -122,6 +140,8 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	    regs[4]->set(rem & 0xff);
 	    regs[5]->set((rem>>8) & 0xff);
 	    //calcing= 6;
+	    writes= 0xffffffffffff;
+	    nuof_writes= 0;
 	    break;
 	  }
 	  //   665544332211
@@ -145,6 +165,8 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	    regs[4]->set(rem & 0xff);
 	    regs[5]->set((rem>>8) & 0xff);
 	    //calcing= 6;
+	    writes= 0xffffffffffff;
+	    nuof_writes= 0;
 	    break;
 	  }
 	  //   665544332211
@@ -158,17 +180,58 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	    regs[1]->set((pr>>8) & 0xff);
 	    regs[2]->set((pr>>16) & 0xff);
 	    regs[3]->set((pr>>24) & 0xff);
+	    if (pr > 0xffff)
+	      regs[6]->set(ar | 0x40);
+	    else
+	      regs[6]->set(ar & ~0x40);
+	    writes= 0xffffffffffff;
+	    nuof_writes= 0;
 	    break;
 	  }
 	  //   665544332211
 	case 0xff0603020100:
 	  {
 	    // norm, shift
+	    u32_t d;
+	    d= v[3]*256*256*256 + v[2]*256*256 + v[1]*256 + v[0];
+	    if ((ar & 0x1f) == 0)
+	      {
+		// normalize
+		if (d == 0)
+		  regs[6]->set(ar & ~0x1f);
+		else if (d & 0x80000000)
+		  regs[6]->set(ar | 0x40);
+		else
+		  {
+		    int i;
+		    for (i= 0; (d&0x80000000)==0; i++)
+		      d<<= 1;
+		    regs[6]->set((ar&~0x1f) | i);
+		  }
+	      }
+	    else
+	      {
+		// shift
+		if (ar & 0x20)
+		  d<<= (ar & 0x1f);
+		else
+		  d>>= (ar & 0x1f);
+	      }
+	    regs[0]->set(d & 0xff);
+	    regs[1]->set((d>>8) & 0xff);
+	    regs[2]->set((d>>16) & 0xff);
+	    regs[3]->set((d>>24) & 0xff);
+	    writes= 0xffffffffffff;
+	    nuof_writes= 0;
 	    break;
 	  }
 	default:
 	  if (nuof_writes > 5)
-	    regs[6]->set(ar | 0x80);
+	    {
+	      regs[6]->set(ar | 0x80);
+	      writes= 0xffffffffffff;
+	      nuof_writes= 0;
+	    }
 	  break;
 	}
     }
