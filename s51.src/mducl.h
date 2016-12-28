@@ -38,7 +38,7 @@ class cl_mdu517: public cl_hw
   class cl_memory_cell *regs[7];//, *arcon;
   u64_t writes;
   int nuof_writes;
-  int calcing; // counts ticks downward
+  //bool calcing;
  public:
   cl_mdu517(class cl_uc *auc, int aid);
   virtual int init(void);

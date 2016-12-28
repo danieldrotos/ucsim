@@ -49,7 +49,7 @@ cl_mdu517::init(void)
     }
   nuof_writes= 0;
   writes= 0xffffffffffff;
-  calcing= 0;
+  //calcing= 0;
   return 0;
 }
 
@@ -77,15 +77,16 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
       if ((a < 0) ||
 	  (a > 5))
 	return;
-      if (calcing)
+      /*if (calcing)
 	{
 	  regs[6]->set(ar | 0x80);
 	  return;
-	}
+	  }*/
       if (a == 0)
 	{
 	  writes= 0xffffffffffff;
 	  nuof_writes= 0;
+	  regs[6]->set(ar & ~0x80);
 	}
       if (nuof_writes > 5)
 	{
@@ -120,21 +121,51 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	    regs[3]->set((quo>>24) & 0xff);
 	    regs[4]->set(rem & 0xff);
 	    regs[5]->set((rem>>8) & 0xff);
-	    calcing= 6;
+	    //calcing= 6;
 	    break;
 	  }
 	  //   665544332211
 	case 0xffff05040100:
-	  // 16/16
-	  break;
+	  {
+	    // 16/16
+	    u16_t dend= v[1]*256 + v[0];
+	    u16_t dor= v[5]*256 + v[4];
+	    u16_t quo= 0;
+	    u16_t rem= 0;
+	    if (dor == 0)
+	      regs[6]->set(ar | 0x40);
+	    else
+	      {
+		quo= dend / dor;
+		rem= dend % dor;
+		regs[6]->set(ar & ~0x40);
+	      }
+	    regs[0]->set(quo & 0xff);
+	    regs[1]->set((quo>>8) & 0xff);
+	    regs[4]->set(rem & 0xff);
+	    regs[5]->set((rem>>8) & 0xff);
+	    //calcing= 6;
+	    break;
+	  }
 	  //   665544332211
 	case 0xffff05010400:
-	  // 16*16
-	  break;
+	  {
+	    // 16*16
+	    u16_t mand= v[1]*256 + v[0];
+	    u16_t mor= v[5]*256 + v[4];
+	    u32_t pr= mand * mor;
+	    regs[0]->set(pr & 0xff);
+	    regs[1]->set((pr>>8) & 0xff);
+	    regs[2]->set((pr>>16) & 0xff);
+	    regs[3]->set((pr>>24) & 0xff);
+	    break;
+	  }
 	  //   665544332211
 	case 0xff0603020100:
-	  // norm, shift
-	  break;
+	  {
+	    // norm, shift
+	    break;
+	  }
 	default:
 	  if (nuof_writes > 5)
 	    regs[6]->set(ar | 0x80);
