@@ -34,10 +34,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_mdu517: public cl_hw
 {
  protected:
-  u8_t v[5];
-  class cl_memory_cell *regs[5], *arcon;
-  int writes[5];
+  u8_t v[7];
+  class cl_memory_cell *regs[7];//, *arcon;
+  u64_t writes;
   int nuof_writes;
+  int calcing; // counts ticks downward
  public:
   cl_mdu517(class cl_uc *auc, int aid);
   virtual int init(void);

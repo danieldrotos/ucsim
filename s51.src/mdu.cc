@@ -41,14 +41,15 @@ cl_mdu517::init(void)
   int i;
   class cl_51core *u= (cl_51core*)uc;
   
-  arcon= register_cell(u->sfr, 0xef);
-  for (i= 0; i<5; i++)
+  //arcon= register_cell(u->sfr, 0xef);
+  for (i= 0; i<7; i++)
     {
       regs[i]= register_cell(u->sfr, 0xe9+i);
       v[i]= regs[i]->get();
-      writes[i]= -1;
     }
   nuof_writes= 0;
+  writes= 0xffffffffffff;
+  calcing= 0;
   return 0;
 }
 
@@ -66,6 +67,7 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 {
   cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   t_addr a;
+  u8_t ar= regs[6]->get();
   
   if (conf(cell, val))
     return;
@@ -73,8 +75,71 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
     {
       a-= 0xe9;
       if ((a < 0) ||
-	  (a > 0xef))
+	  (a > 5))
 	return;
+      if (calcing)
+	{
+	  regs[6]->set(ar | 0x80);
+	  return;
+	}
+      if (a == 0)
+	{
+	  writes= 0xffffffffffff;
+	  nuof_writes= 0;
+	}
+      if (nuof_writes > 5)
+	{
+	  regs[6]->set(ar | 0x80);
+	  return;
+	}
+      writes&= (a << (nuof_writes*8));
+      v[nuof_writes]= *val;
+      nuof_writes++;
+
+      switch (writes)
+	{
+	  //   665544332211
+	case 0x050403020100:
+	  {
+	    // 32/16
+	    u32_t dend= v[3]*256*256*256 + v[2]*256*256 + v[1]*256 + v[0];
+	    u16_t dor= v[5]*256 + v[4];
+	    u32_t quo= 0;
+	    u16_t rem= 0;
+	    if (dor == 0)
+	      regs[6]->set(ar | 0x40);
+	    else
+	      {
+		quo= dend / dor;
+		rem= dend % dor;
+		regs[6]->set(ar & ~0x40);
+	      }
+	    regs[0]->set(quo & 0xff);
+	    regs[1]->set((quo>>8) & 0xff);
+	    regs[2]->set((quo>>16) & 0xff);
+	    regs[3]->set((quo>>24) & 0xff);
+	    regs[4]->set(rem & 0xff);
+	    regs[5]->set((rem>>8) & 0xff);
+	    calcing= 6;
+	    break;
+	  }
+	  //   665544332211
+	case 0xffff05040100:
+	  // 16/16
+	  break;
+	  //   665544332211
+	case 0xffff05010400:
+	  // 16*16
+	  break;
+	  //   665544332211
+	case 0xff0603020100:
+	  // norm, shift
+	  break;
+	default:
+	  if (nuof_writes > 5)
+	    regs[6]->set(ar | 0x80);
+	  break;
+	}
     }
 }
 
