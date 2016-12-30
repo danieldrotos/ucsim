@@ -40,6 +40,8 @@ cl_mdu517::init(void)
 {
   int i;
   class cl_51core *u= (cl_51core*)uc;
+
+  cl_hw::init();
   
   //arcon= register_cell(u->sfr, 0xef);
   for (i= 0; i<7; i++)
@@ -68,6 +70,7 @@ cl_mdu517::read(class cl_memory_cell *cell)
       if ((a < 0) ||
 	  (a > 6))
 	return v;
+      //printf("\nREAD a=%ld v=%02x %p\n", a, v, cell);
       if (a == 6)
 	cell->set(v & ~0x80);
     }
@@ -85,10 +88,13 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
     return;
   if (sfr->is_owned(cell, &a))
     {
+      // if (a==0xee) printf(" WRITE EE %02x\n", *val);
       a-= 0xe9;
       if ((a < 0) ||
 	  (a > 6))
-	return;
+	{
+	  return;
+	}
       /*if (calcing)
 	{
 	  regs[6]->set(ar | 0x80);
@@ -105,7 +111,8 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	  regs[6]->set(ar | 0x80);
 	  return;
 	}
-      writes&= (a << (nuof_writes*8));
+      writes&= ~(0xffL << (nuof_writes*8));
+      writes|= ((u64_t)a << (nuof_writes*8));
       v[a]= *val;
       nuof_writes++;
       if (a == 6)
@@ -132,6 +139,7 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 		quo= dend / dor;
 		rem= dend % dor;
 		regs[6]->set(ar & ~0x40);
+		//printf("\nSIM %u/%u=%u,%u %x,%x\n", dend, dor, quo, rem, quo, rem);
 	      }
 	    regs[0]->set(quo & 0xff);
 	    regs[1]->set((quo>>8) & 0xff);
@@ -139,6 +147,13 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	    regs[3]->set((quo>>24) & 0xff);
 	    regs[4]->set(rem & 0xff);
 	    regs[5]->set((rem>>8) & 0xff);
+	    /*{
+	      int j;
+	      for (j=0;j<6;j++)
+		{
+		  printf("  REG[%d]=%02x/%02x %p\n",j,regs[j]->get(),sfr->get(0xe9+j), regs[j]);
+		}
+		}*/
 	    //calcing= 6;
 	    writes= 0xffffffffffff;
 	    nuof_writes= 0;
@@ -235,6 +250,7 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 	  break;
 	}
     }
+  *val= regs[a]->get();
 }
 
 t_mem
