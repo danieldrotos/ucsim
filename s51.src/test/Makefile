@@ -1,4 +1,4 @@
-PRJ		= mdu
+PRJ		= test_mdu517
 
 all:
 	for p in $(PRJ); do \

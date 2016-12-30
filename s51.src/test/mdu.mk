@@ -1,5 +1,5 @@
-MAIN		= mdu
+MAIN		= test_mdu517
 
-OTHERS		= serial print
+OTHERS		= serial print mdu517
 
 include sdcc.mk
