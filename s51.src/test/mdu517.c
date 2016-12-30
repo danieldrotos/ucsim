@@ -49,3 +49,22 @@ mdu_16div16(uint16_t op1, uint16_t op2, uint16_t *res, uint16_t *rem)
 
   return ARCON & 0xc0;
 }
+
+uint8_t
+mdu_16mul16(uint16_t op1, uint16_t op2, uint32_t *res)
+{
+  uint32_t d;
+ 
+  MD0= op1 & 0xff;
+  MD4= op2 & 0xff;
+  MD1= (op1 >> 8) & 0xff;
+  MD5= (op2 >> 8) & 0xff;
+
+  __asm__ ("nop");
+
+  d= (uint32_t)MD0 + (uint32_t)MD1*256l + (uint32_t)MD2*256l*256l + (uint32_t)MD3*256l*256l*256l;
+  if (res)
+    *res= d;
+
+  return ARCON & 0x80;
+}
