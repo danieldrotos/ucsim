@@ -117,7 +117,7 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
       nuof_writes++;
       if (a == 6)
 	{
-	  writes= 0xff06030201; // force norm/shift
+	  writes= 0xff0603020100; // force norm/shift
 	  v[a]&= ~0x80;
 	  ar= v[6];
 	}
@@ -222,6 +222,7 @@ cl_mdu517::write(class cl_memory_cell *cell, t_mem *val)
 		    for (i= 0; (d&0x80000000)==0; i++)
 		      d<<= 1;
 		    regs[6]->set((ar&~0x1f) | i);
+		    //printf("NORM d=%x i=%d\n", d, i);
 		  }
 	      }
 	    else
