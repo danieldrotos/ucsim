@@ -42,6 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include "cmd51cl.h"
 #include "uc51cl.h"
 #include "uc52cl.h"
+#include "uc521cl.h"
 #include "uc51rcl.h"
 #include "uc89c51rcl.h"
 #include "uc251cl.h"
@@ -86,7 +87,7 @@ cl_sim51::mk_controller(void)
     case CPU_89C51R:
       return(new cl_uc89c51r(cpus_51[i].type, cpus_51[i].technology, this));
     case CPU_C521:
-      return(new cl_uc52(cpus_51[i].type, cpus_51[i].technology, this));
+      return(new cl_uc521(cpus_51[i].type, cpus_51[i].technology, this));
     case CPU_517:
       return(new cl_uc52(cpus_51[i].type, cpus_51[i].technology, this));
     case CPU_XC88X:

@@ -52,16 +52,7 @@ cl_uc52::init(void)
   int ret;
   ret= cl_51core::init();
   if (cpu &&
-      (type == CPU_C521))
-    {
-      cpu->cfg_set(uc51cpu_aof_mdps, 0x86);
-      cpu->cfg_set(uc51cpu_mask_mdps, 1);
-      cpu->cfg_set(uc51cpu_aof_mdps1l, 0x84);
-      cpu->cfg_set(uc51cpu_aof_mdps1h, 0x85);
-      decode_dptr();
-    }
-  else if (cpu &&
-	   (type == CPU_517))
+      (type == CPU_517))
     {
       cpu->cfg_set(uc51cpu_aof_mdpc, 0x92);
       cpu->cfg_set(uc51cpu_mask_mdpc, 7);
@@ -73,17 +64,6 @@ cl_uc52::init(void)
     }
   else if (cpu &&
 	   (type == CPU_XC88X))
-    {
-      cpu->cfg_set(uc51cpu_aof_mdpc, 0xA2);
-      cpu->cfg_set(uc51cpu_mask_mdpc, 1);
-      class cl_memory_chip *dptr_chip=
-	new cl_memory_chip("dptr_chip", 3*8, 8);
-      dptr_chip->init();
-      memchips->add(dptr_chip);
-      decode_dptr();
-    }
-  else if (cpu &&
-	   (type == CPU_89C51R))
     {
       cpu->cfg_set(uc51cpu_aof_mdpc, 0xA2);
       cpu->cfg_set(uc51cpu_mask_mdpc, 1);
