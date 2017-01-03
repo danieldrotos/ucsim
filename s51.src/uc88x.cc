@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (s51.src/uc521cl.h)
+ * Simulator of microcontrollers (s51.src/uc88x.cc)
  *
  * Copyright (C) 2017,17 Drotos Daniel, Talker Bt.
  * 
@@ -25,19 +25,42 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef UC521CL_HEADER
-#define UC521CL_HEADER
+#include "mducl.h"
 
-#include "uc52cl.h"
+#include "uc88xcl.h"
 
-class cl_uc521: public cl_uc52
+
+cl_uc88x::cl_uc88x(int Itype, int Itech, class cl_sim *asim):
+  cl_uc52(Itype, Itech, asim)
 {
- public:
-  cl_uc521(int Itype, int Itech, class cl_sim *asim);
-  virtual int init(void);
-};
+}
+
+int
+cl_uc88x::init(void)
+{
+  int ret;
+  ret= cl_uc52::init();
+
+  cpu->cfg_set(uc51cpu_aof_mdpc, 0xA2);
+  cpu->cfg_set(uc51cpu_mask_mdpc, 1);
+  class cl_memory_chip *dptr_chip=
+    new cl_memory_chip("dptr_chip", 3*8, 8);
+  dptr_chip->init();
+  memchips->add(dptr_chip);
+  decode_dptr();
+  
+  return ret;
+}
 
 
-#endif
+void
+cl_uc88x::mk_hw_elements(void)
+{
+  cl_uc52::mk_hw_elements();
 
-/* End of s51.src/uc521cl.h */
+  class cl_mdu88x *mdu= new cl_mdu88x(this, 0);
+  add_hw(mdu);
+  mdu->init();
+}
+
+/* End of s51.src/uc88x.cc */

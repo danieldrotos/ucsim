@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (s51.src/uc521cl.h)
+ * Simulator of microcontrollers (s51.src/uc88xcl.h)
  *
  * Copyright (C) 2017,17 Drotos Daniel, Talker Bt.
  * 
@@ -25,19 +25,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef UC521CL_HEADER
-#define UC521CL_HEADER
+#ifndef UC88XCL_HEADER
+#define UC88XCL_HEADER
 
 #include "uc52cl.h"
 
-class cl_uc521: public cl_uc52
+class cl_uc88x: public cl_uc52
 {
  public:
-  cl_uc521(int Itype, int Itech, class cl_sim *asim);
+  cl_uc88x(int Itype, int Itech, class cl_sim *asim);
   virtual int init(void);
+  virtual void mk_hw_elements(void);
 };
 
 
 #endif
 
-/* End of s51.src/uc521cl.h */
+/* End of s51.src/uc88xcl.h */
