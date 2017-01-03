@@ -89,6 +89,10 @@ class cl_mdu88x: public cl_mdu
 
   virtual int tick(int cycles);
 
+  virtual void op_32sdiv16(void);
+  virtual void op_16sdiv16(void);
+  virtual void op_16smul16(void);
+
   virtual bool dir_right(void);
   virtual void set_steps(int steps);
   virtual int get_steps(void);

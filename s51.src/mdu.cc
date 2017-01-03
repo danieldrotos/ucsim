@@ -440,6 +440,26 @@ cl_mdu88x::write(class cl_memory_cell *cell, t_mem *val)
 	      op_32udiv16();
 	      ticks= 32 / uc->clock_per_cycle();
 	      break;
+	    case 3:
+	      op_lshift();
+	      ticks= (get_steps()+1) / uc->clock_per_cycle();
+	      break;
+	    case 4:
+	      op_16smul16();
+	      ticks= 16 / uc->clock_per_cycle();
+	      break;
+	    case 5:
+	      op_16sdiv16();
+	      ticks= 16 / uc->clock_per_cycle();
+	      break;
+	    case 6:
+	      op_32sdiv16();
+	      ticks= 32 / uc->clock_per_cycle();
+	      break;
+	    case 8:
+	      op_norm();
+	      ticks= (get_steps()+1) / uc->clock_per_cycle();
+	      break;
 	    default:
 	      {
 		// ERROR, unknown opcode
@@ -482,6 +502,79 @@ cl_mdu88x::tick(int cycles)
     }
   return 0;
 }
+
+
+void
+cl_mdu88x::op_32sdiv16(void)
+{
+  i32_t dend= v[3]*256*256*256 + v[2]*256*256 + v[1]*256 + v[0];
+  i16_t dor= v[5]*256 + v[4];
+  i32_t quo= 0;
+  i16_t rem= 0;
+  if (dor == 0)
+    set_ovr(true);
+  else
+    {
+      quo= dend / dor;
+      rem= dend % dor;
+      set_ovr(false);
+      //printf("\nSIM %u/%u=%u,%u %x,%x\n", dend, dor, quo, rem, quo, rem);
+    }
+  regs[0]->set(quo & 0xff);
+  regs[1]->set((quo>>8) & 0xff);
+  regs[2]->set((quo>>16) & 0xff);
+  regs[3]->set((quo>>24) & 0xff);
+  regs[4]->set(rem & 0xff);
+  regs[5]->set((rem>>8) & 0xff);
+  /*{
+    int j;
+    for (j=0;j<6;j++)
+    {
+    printf("  REG[%d]=%02x/%02x %p\n",j,regs[j]->get(),sfr->get(0xe9+j), regs[j]);
+    }
+    }*/
+}
+
+void
+cl_mdu88x::op_16sdiv16(void)
+{
+  // 16/16
+  i16_t dend= v[1]*256 + v[0];
+  i16_t dor= v[5]*256 + v[4];
+  i16_t quo= 0;
+  i16_t rem= 0;
+  if (dor == 0)
+    set_ovr(true);
+  else
+    {
+      quo= dend / dor;
+      rem= dend % dor;
+      set_ovr(false);
+    }
+  regs[0]->set(quo & 0xff);
+  regs[1]->set((quo>>8) & 0xff);
+  regs[4]->set(rem & 0xff);
+  regs[5]->set((rem>>8) & 0xff);
+}
+
+void
+cl_mdu88x::op_16smul16(void)
+{
+  i16_t mand= v[1]*256 + v[0];
+  i16_t mor= v[5]*256 + v[4];
+  i32_t pr= mand * mor;
+  regs[0]->set(pr & 0xff);
+  regs[1]->set((pr>>8) & 0xff);
+  regs[2]->set((pr>>16) & 0xff);
+  regs[3]->set((pr>>24) & 0xff);
+  if (pr > 0xffff)
+    set_ovr(true);
+  else
+    set_ovr(false);
+  regs[4]->set(v[4]); // behavior of xc88x
+  regs[5]->set(v[5]);
+}
+
 
 bool
 cl_mdu88x::dir_right(void)
