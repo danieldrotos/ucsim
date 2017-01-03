@@ -48,7 +48,7 @@ main(int argc, char *argv[])
   application->init(argc, argv);
   sim= new cl_simtlcs(application);
   if (sim->init())
-    return(1);
+    sim->state|= SIM_QUIT;
   application->set_simulator(sim);
   retval= application->run();
   application->done();
