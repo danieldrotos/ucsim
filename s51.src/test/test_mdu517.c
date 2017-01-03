@@ -35,7 +35,7 @@ test_32div16(char verbose)
 
       if (verbose)
 	printf("%8lx/%4x %10lu/%5u=%10lu,%5u ", lop1, iop2, lop1, iop2, lres, ires1);
-      r= mdu_32div16(lop1, iop2, &mdu_lres, &mdu_ires1);
+      r= mdu_32udiv16(lop1, iop2, &mdu_lres, &mdu_ires1);
       if (verbose)
 	printf("mdu=%10lu,%5u ", mdu_lres, mdu_ires1);
       if ((lres != mdu_lres) ||
@@ -82,7 +82,7 @@ test_16div16(char verbose)
 
       if (verbose)
 	printf("%4x/%4x %5u/%5u=%5u,%5u ", iop1, iop2, iop1, iop2, ires1, ires2);
-      r= mdu_16div16(iop1, iop2, &mdu_ires1, &mdu_ires2);
+      r= mdu_16udiv16(iop1, iop2, &mdu_ires1, &mdu_ires2);
       if (verbose)
 	printf("mdu=%5u,%5u ", mdu_ires1, mdu_ires2);
       if ((ires1 != mdu_ires1) ||
@@ -125,7 +125,7 @@ test_16mul16(char verbose)
 
       if (verbose)
 	printf("%4x*%4x %5u*%5u=%10lu ", iop1, iop2, iop1, iop2, lres);
-      r= mdu_16mul16(iop1, iop2, &mdu_lres);
+      r= mdu_16umul16(iop1, iop2, &mdu_lres);
       if (verbose)
 	printf("mdu=%10lu ", mdu_lres);
       if (lres != mdu_lres)
@@ -239,7 +239,7 @@ test_shift(char verbose)
       
       if (verbose)
 	printf("%8lx%c%2d=%8lx ", lop1, r?'<':'>', shifts, lres);
-      r= mdu_shift(lop1, shifts, r, &mdu_lres);
+      r= mdu_lshift(lop1, shifts, r, &mdu_lres);
       if (verbose)
 	printf("mdu=%8lx ", mdu_lres);
       if (lres != mdu_lres)

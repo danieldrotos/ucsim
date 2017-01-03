@@ -6,7 +6,7 @@ static uint16_t v;
 static uint32_t d;
 
 uint8_t
-mdu_32div16(uint32_t op1, uint16_t op2, uint32_t *res, uint16_t *rem)
+mdu_32udiv16(uint32_t op1, uint16_t op2, uint32_t *res, uint16_t *rem)
 {
   MD0= op1 & 0xff;
   MD1= (op1 >> 8) & 0xff;
@@ -29,7 +29,7 @@ mdu_32div16(uint32_t op1, uint16_t op2, uint32_t *res, uint16_t *rem)
 }
 
 uint8_t
-mdu_16div16(uint16_t op1, uint16_t op2, uint16_t *res, uint16_t *rem)
+mdu_16udiv16(uint16_t op1, uint16_t op2, uint16_t *res, uint16_t *rem)
 {
   MD0= op1 & 0xff;
   MD1= (op1 >> 8) & 0xff;
@@ -49,7 +49,7 @@ mdu_16div16(uint16_t op1, uint16_t op2, uint16_t *res, uint16_t *rem)
 }
 
 uint8_t
-mdu_16mul16(uint16_t op1, uint16_t op2, uint32_t *res)
+mdu_16umul16(uint16_t op1, uint16_t op2, uint32_t *res)
 {
   MD0= op1 & 0xff;
   MD4= op2 & 0xff;
@@ -88,7 +88,7 @@ mdu_norm(uint32_t op, uint32_t *res, uint8_t *nuof_shifts)
 }
 
 uint8_t
-mdu_shift(uint32_t op, uint8_t shifts, uint8_t right, uint32_t *res)
+mdu_lshift(uint32_t op, uint8_t shifts, uint8_t right, uint32_t *res)
 {
   MD0= op & 0xff;
   MD1= (op >> 8) & 0xff;
@@ -105,13 +105,13 @@ mdu_shift(uint32_t op, uint8_t shifts, uint8_t right, uint32_t *res)
 }
 
 uint8_t
-mdu_lshift(uint32_t op, uint8_t shifts, uint32_t *res)
+mdu_lshift_left(uint32_t op, uint8_t shifts, uint32_t *res)
 {
-  return mdu_shift(op, shifts, 0, res);
+  return mdu_lshift(op, shifts, 0, res);
 }
 
 uint8_t
-mdu_rshift(uint32_t op, uint8_t shifts, uint32_t *res)
+mdu_lshift_right(uint32_t op, uint8_t shifts, uint32_t *res)
 {
-  return mdu_shift(op, shifts, 1, res);
+  return mdu_lshift(op, shifts, 1, res);
 }
