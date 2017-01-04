@@ -424,7 +424,7 @@ cl_mdu88x::write(class cl_memory_cell *cell, t_mem *val)
 	  if (busy())
 	    // skip when already BUSY
 	    return;
-	  con->set(*val);
+	  con->set(*val&= ~0x10);
 	  set_bsy(true);
 	  switch (*val & 0x0f)
 	    {
@@ -522,7 +522,7 @@ cl_mdu88x::op_32sdiv16(void)
       quo= dend / dor;
       rem= dend % dor;
       set_ovr(false);
-      //printf("\nSIM %u/%u=%u,%u %x,%x\n", dend, dor, quo, rem, quo, rem);
+      //printf("\nSIM %d/%d=%d,%d %x,%x\n", dend, dor, quo, rem, quo, rem);
     }
   regs[0]->set(quo & 0xff);
   regs[1]->set((quo>>8) & 0xff);
