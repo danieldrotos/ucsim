@@ -441,8 +441,8 @@ cl_mdu88x::write(class cl_memory_cell *cell, t_mem *val)
 	      ticks= 32 / uc->clock_per_cycle();
 	      break;
 	    case 3:
-	      op_lshift();
 	      ticks= (get_steps()+1) / uc->clock_per_cycle();
+	      op_lshift();
 	      break;
 	    case 4:
 	      op_16smul16();
@@ -455,6 +455,10 @@ cl_mdu88x::write(class cl_memory_cell *cell, t_mem *val)
 	    case 6:
 	      op_32sdiv16();
 	      ticks= 32 / uc->clock_per_cycle();
+	      break;
+	    case 7:
+	      ticks= (get_steps()+1) / uc->clock_per_cycle();
+	      op_ashift();
 	      break;
 	    case 8:
 	      op_norm();
@@ -573,6 +577,24 @@ cl_mdu88x::op_16smul16(void)
     set_ovr(false);
   regs[4]->set(v[4]); // behavior of xc88x
   regs[5]->set(v[5]);
+}
+
+/* Arithmetic shift */
+
+void
+cl_mdu88x::op_ashift(void)
+{
+  i32_t d;
+  
+  d= v[3]*256*256*256 + v[2]*256*256 + v[1]*256 + v[0];
+  if (dir_right())
+    d<<= get_steps();
+  else
+    d>>= get_steps();
+  regs[0]->set(d & 0xff);
+  regs[1]->set((d>>8) & 0xff);
+  regs[2]->set((d>>16) & 0xff);
+  regs[3]->set((d>>24) & 0xff);
 }
 
 
