@@ -145,19 +145,38 @@ cl_stm8::mk_hw_elements(void)
   cl_uc::mk_hw_elements();
   class cl_option *o;
 
-  o= new cl_string_option(this, "serial2_in_file",
-			  "Input file for serial line uart2 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
-  o= new cl_string_option(this, "serial2_out_file",
-			  "Output file for serial line uart2 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
+  {
+    o= new cl_string_option(this, "serial1_in_file",
+			    "Input file for serial line uart1 (-S)");
+    application->options->new_option(o);
+    o->init();
+    o->hide();
+    o= new cl_string_option(this, "serial1_out_file",
+			    "Output file for serial line uart1 (-S)");
+    application->options->new_option(o);
+    o->init();
+    o->hide();
+    
+    add_hw(h= new cl_serial(this, 0x5230, 1));
+    h->init();
+  }
 
-  add_hw(h= new cl_serial(this, 0x5240, 2));
-  h->init();
+  {
+    o= new cl_string_option(this, "serial2_in_file",
+			    "Input file for serial line uart2 (-S)");
+    application->options->new_option(o);
+    o->init();
+    o->hide();
+    o= new cl_string_option(this, "serial2_out_file",
+			    "Output file for serial line uart2 (-S)");
+    application->options->new_option(o);
+    o->init();
+    o->hide();
+    
+    add_hw(h= new cl_serial(this, 0x5240, 2));
+    h->init();
+  }
+  
   add_hw(itc= new cl_itc(this));
   itc->init();
   add_hw(h= new cl_rst(this, 0x50b3));
