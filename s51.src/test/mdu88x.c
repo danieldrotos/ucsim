@@ -87,7 +87,7 @@ mdu_32sdiv16(int32_t op1, int16_t op2, int32_t *res, int16_t *rem)
   MD4= op2 & 0xff;
   MD5= (op2 >> 8) & 0xff;
 
-  MDUCON= 0x10 + 0x02;
+  MDUCON= 0x10 + 0x06;
   while (MDUSTAT & 0x04) ;
   
   d= (uint32_t)MD0 + (uint32_t)MD1*256l + (uint32_t)MD2*256l*256l + (uint32_t)MD3*256l*256l*256l;
@@ -101,7 +101,7 @@ mdu_32sdiv16(int32_t op1, int16_t op2, int32_t *res, int16_t *rem)
 }
 
 uint8_t
-mdu_16div16(int16_t op1, int16_t op2, int16_t *res, int16_t *rem)
+mdu_16sdiv16(int16_t op1, int16_t op2, int16_t *res, int16_t *rem)
   __reentrant
 {
   MD0= op1 & 0xff;
@@ -109,7 +109,7 @@ mdu_16div16(int16_t op1, int16_t op2, int16_t *res, int16_t *rem)
   MD4= op2 & 0xff;
   MD5= (op2 >> 8) & 0xff;
 
-  MDUCON= 0x10 + 0x01;
+  MDUCON= 0x10 + 0x05;
   while (MDUSTAT & 0x04) ;
   
   v= MD1*256 + MD0;
@@ -131,7 +131,7 @@ mdu_16smul16(int16_t op1, int16_t op2, int32_t *res)
   MD1= (op1 >> 8) & 0xff;
   MD5= (op2 >> 8) & 0xff;
 
-  MDUCON= 0x10 + 0x00;
+  MDUCON= 0x10 + 0x04;
   while (MDUSTAT & 0x04) ;
   
   d= (uint32_t)MD0 + (uint32_t)MD1*256l + (uint32_t)MD2*256l*256l + (uint32_t)MD3*256l*256l*256l;

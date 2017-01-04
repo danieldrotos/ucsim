@@ -1,5 +1,4 @@
-CC		= sdcc
-#--model-large
+CC		= sdcc --model-large
 
 CPPFLAGS	=
 CFLAGS		= --debug
