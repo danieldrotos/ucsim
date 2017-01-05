@@ -42,21 +42,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_serial_listener;
 
-enum reg_idx {
-  sr	= 0,
-  dr	= 1,
-  brr1	= 2,
-  brr2	= 3,
-  cr1	= 4,
-  cr2	= 5,
-  cr3	= 6,
-  cr4	= 7,
-  cr5	= 8,
-  cr6	= 9,
-  gtr	= 10,
-  pscr	= 11
-};
-
 class cl_serial: public cl_serial_hw
 {
  protected:

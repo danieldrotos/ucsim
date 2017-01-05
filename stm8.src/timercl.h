@@ -33,6 +33,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "hwcl.h"
 
 
+enum stm8_tim_cfg {
+  stm8_tim_on= 0,
+  stm8_tim_nuof_cfg= 1
+};
+
+
 class cl_tim: public cl_hw
 {
  protected:
@@ -42,13 +48,28 @@ class cl_tim: public cl_hw
   int bits, mask;
   int cnt;
   int ar;
+
+  u16_t prescaler_cnt; // actual downcounter
+  u16_t prescaler_preload; // start value of prescaler downcount
+  u8_t prescaler_ms_buffer; // written MS buffered until LS write
+  u8_t arr_ms_buffer; // written MS buffered until LS write
+  u8_t timer_ls_buffer; // LS buffered at MS read
   
  public:
   cl_tim(class cl_uc *auc, int aid, t_addr abase);
   virtual int init(void);
-
+  virtual int cfg_size(void) { return stm8_tim_nuof_cfg; }
+ 
   virtual int tick(int cycles);
   virtual void reset(void);
+  
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
+  virtual void count(void);
+  virtual u16_t set_counter(u16_t val);
+  virtual void update_event(void);
 };
 
 
