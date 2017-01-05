@@ -182,7 +182,7 @@ cl_stm8::mk_hw_elements(void)
   add_hw(h= new cl_rst(this, 0x50b3));
   h->init();
   
-  add_hw(h= new cl_tim1(this, 1, 0x5250));
+  add_hw(h= new cl_tim1(this, 1, 0x52b0));
   h->init();
   add_hw(h= new cl_tim235(this, 2, 0x5300));
   h->init();

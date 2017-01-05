@@ -190,6 +190,12 @@ cl_tim::read(class cl_memory_cell *cell)
 	    case pscrh:
 	      v= (prescaler_preload >> 8) & 0xff;
 	      break;
+	    case cntrh:
+	      timer_ls_buffer= regs[cntrl]->get();
+	      break;
+	    case cntrl:
+	      v= timer_ls_buffer;
+	      break;
 	    default:
 	      break;
 	    }
@@ -221,13 +227,17 @@ cl_tim::write(class cl_memory_cell *cell, t_mem *val)
 	    {
 	    case pscrh:
 	      prescaler_ms_buffer= *val;
+	      *val= cell->get();
 	      break;
 	    case pscrl:
 	      prescaler_preload= prescaler_ms_buffer * 256 + *val;
 	      break;
 	    case arrh:
 	      if ((regs[cr1]->get() & arpe) != 0)
-		arr_ms_buffer= *val;
+		{
+		  arr_ms_buffer= *val;
+		  *val= cell->get();
+		}
 	      break;
 	    case arrl:
 	      {
@@ -341,6 +351,18 @@ cl_tim::update_event(void)
 	  set_counter(0);
 	}
     }
+}
+
+
+void
+cl_tim::print_info(class cl_console_base *con)
+{
+  u8_t c1= regs[cr1]->get();
+  con->dd_printf("%s 0x%04x %d %s\n", get_name(), cnt, cnt, (c1&cen)?"on":"off");
+  con->dd_printf("dir= %s\n", (c1&dir)?"down":"up");
+  con->dd_printf("prescaler= 0x%04x %d of 0x%04x %d\n",
+		 prescaler_cnt, prescaler_cnt,
+		 prescaler_preload, prescaler_preload);
 }
 
 

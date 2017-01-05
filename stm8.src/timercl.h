@@ -70,6 +70,8 @@ class cl_tim: public cl_hw
   virtual void count(void);
   virtual u16_t set_counter(u16_t val);
   virtual void update_event(void);
+
+  virtual void print_info(class cl_console_base *con);
 };
 
 
