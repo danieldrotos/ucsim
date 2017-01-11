@@ -39,7 +39,7 @@ $(MAIN).ihx: $(OBJECTS)
 	packihx $< >$@
 
 clean:
-	rm -f $(ALL:=.rel) $(ALL:=.lst) $(ALL:=.rst) $(ALL:=.sym) $(ALL:=.adb)
+	rm -f $(ALL:=.rel) $(ALL:=.lst) $(ALL:=.asm) $(ALL:=.rst) $(ALL:=.sym) $(ALL:=.adb)
 	rm -f $(MAIN).ihx $(MAIN).hex $(MAIN).lk $(MAIN).map $(MAIN).mem $(MAIN).cdb $(MAIN).omf $(MAIN).noi
 	rm -f *~
 	rm -f $(MAIN).dep
