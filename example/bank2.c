@@ -3,5 +3,5 @@
 int
 b2(int x) __banked
 {
-  return x+2;
+  return x+3;
 }
