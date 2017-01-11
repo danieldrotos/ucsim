@@ -837,6 +837,30 @@ ReadInt(FILE *f, bool *ok, int bytes)
  *
  */
 
+void
+cl_uc::set_rom(t_addr addr, t_mem val)
+{
+  t_addr size= rom->get_size();
+  if (addr < size)
+    {
+      rom->set(addr, val);
+      return;
+    }
+  t_addr bank, caddr;
+  bank= addr / size;
+  caddr= addr % size;
+  class cl_memory_cell *cell= rom->get_cell(caddr);
+  if (cell)
+    {
+      class cl_banker *b= cell->get_banker();
+      if (!b)
+	return;
+      b->switch_to(bank, NULL);
+      cell->set(val);
+      b->activate(NULL);
+    }
+}
+
 long
 cl_uc::read_hex_file(const char *nam)
 {
@@ -844,6 +868,7 @@ cl_uc::read_hex_file(const char *nam)
   int c;
   long written= 0, recnum= 0;
 
+  uint  base= 0;  // extended address, added to every adress
   uchar dnum;     // data number
   uchar rtyp=0;   // record type
   uint  addr= 0;  // address
@@ -911,7 +936,7 @@ cl_uc::read_hex_file(const char *nam)
 			{
 			  if (rom->width <= 8)
 			    {
-			      rom->set(addr, rec[i]);
+			      set_rom(base+addr, rec[i]);
 			      addr++;
 			      written++;
 			    }
@@ -925,12 +950,19 @@ cl_uc::read_hex_file(const char *nam)
 			      else
 				{
 				  high= rec[i];
-				  rom->set(addr, (high*256)+low);
+				  set_rom(base+addr, (high*256)+low);
 				  addr++;
 				  written++;
 				  get_low= 1;
 				}
 			    }
+			}
+		    }
+		  else if (rtyp == 4)
+		    {
+		      if (dnum >= 2)
+			{
+			  base= (rec[0]*256+rec[1]) << 16;
 			}
 		    }
 		  else
