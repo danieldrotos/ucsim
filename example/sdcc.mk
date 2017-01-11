@@ -32,11 +32,14 @@ $(MAIN).ihx: $(OBJECTS)
 .c.rel:
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
 
+.asm.rel:
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
+
 .ihx.hex:
 	packihx $< >$@
 
 clean:
-	rm -f $(ALL:=.rel) $(ALL:=.asm) $(ALL:=.lst) $(ALL:=.rst) $(ALL:=.sym) $(ALL:=.adb)
+	rm -f $(ALL:=.rel) $(ALL:=.lst) $(ALL:=.rst) $(ALL:=.sym) $(ALL:=.adb)
 	rm -f $(MAIN).ihx $(MAIN).hex $(MAIN).lk $(MAIN).map $(MAIN).mem $(MAIN).cdb $(MAIN).omf $(MAIN).noi
 	rm -f *~
 	rm -f $(MAIN).dep

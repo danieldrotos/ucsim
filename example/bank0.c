@@ -5,3 +5,8 @@ main(void)
     {
     }
 }
+
+void
+__sdcc_banked_call(void) __naked
+{
+}
