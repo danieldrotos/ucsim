@@ -1,4 +1,8 @@
-CC		= sdcc --model-large
+TARGET		= -mmcs51
+
+MODEL		= 
+
+CC		= sdcc $(TARGET) $(MODEL)
 
 CPPFLAGS	=
 CFLAGS		= --debug

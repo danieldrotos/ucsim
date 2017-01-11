@@ -1,4 +1,4 @@
-#pragme codeseg BANK2
+#pragma codeseg BANK2
 
 int
 b2(int x) __banked
