@@ -649,7 +649,7 @@ cmd->init();*/
     cmd->add_name("ad");
 
     mem_create_cset->add(cmd= new cl_memory_create_banker_cmd("banker", 0,
-"memory create banker addressspace begin end chip begin\n"
+"memory create banker switcher_addressspace switcher_address switcher_mask banked_addressspace start end\n"
 "                   Create a new bank switcher",
 "long help of memory create banker"));
     cmd->init();
@@ -659,7 +659,7 @@ cmd->init();*/
     cmd->add_name("bs");
 
     mem_create_cset->add(cmd= new cl_memory_create_bank_cmd("bank", 0,
-"memory create bank addressspace begin end chip begin\n"
+"memory create bank addressspace begin bank_nr chip begin\n"
 "                   Add a new bank to bank switcher",
 "long help of memory create bank"));
     cmd->init();
@@ -840,6 +840,7 @@ ReadInt(FILE *f, bool *ok, int bytes)
 void
 cl_uc::set_rom(t_addr addr, t_mem val)
 {
+  printf("rom[%lx]=%x\n", addr, val);
   t_addr size= rom->get_size();
   if (addr < size)
     {
@@ -849,16 +850,22 @@ cl_uc::set_rom(t_addr addr, t_mem val)
   t_addr bank, caddr;
   bank= addr / size;
   caddr= addr % size;
-  class cl_memory_cell *cell= rom->get_cell(caddr);
-  if (cell)
+  printf("getting decoder of %ld/%lx\n", bank, caddr);
+  class cl_banker *d= (class cl_banker *)(rom->get_decoder_of(caddr));
+  if (d)
     {
-      class cl_banker *b= cell->get_banker();
-      if (!b)
-	return;
-      b->switch_to(bank, NULL);
-      cell->set(val);
-      b->activate(NULL);
+      if (!d->is_banker())
+	{
+	  printf("cell at %lx has no banker\n", caddr);
+	  return;
+	}
+      printf("setting %ld/rom[%lx]=%x\n", bank, caddr, val);
+      d->switch_to(bank, NULL);
+      rom->set(caddr, val);
+      d->activate(NULL);
     }
+  else
+    printf("no decoder at %lx\n", caddr);
 }
 
 long
@@ -960,9 +967,11 @@ cl_uc::read_hex_file(const char *nam)
 		    }
 		  else if (rtyp == 4)
 		    {
+		      printf("hex record type=4\n");
 		      if (dnum >= 2)
 			{
 			  base= (rec[0]*256+rec[1]) << 16;
+			  printf("hex base=%x\n", base);
 			}
 		    }
 		  else
