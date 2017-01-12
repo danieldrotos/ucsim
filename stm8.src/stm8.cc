@@ -68,7 +68,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_stm8::cl_stm8(class cl_sim *asim):
   cl_uc(asim)
 {
-  type= CPU_STM8;
+  type= CPU_STM8S;
 
 }
 
