@@ -1,4 +1,4 @@
-PRJ		= simif bank0
+PRJ		= simif banking
 
 all:
 	for p in $(PRJ); do \
