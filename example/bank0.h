@@ -1,6 +1,6 @@
-#ifndef BANK1_HEADER
-#define BANK1_HEADER
+#ifndef BANK0_HEADER
+#define BANK0_HEADER
 
-extern int b1(int x) __banked;
+extern int bank0_fn(int x) __banked;
 
 #endif

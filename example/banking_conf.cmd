@@ -13,3 +13,5 @@ fill rom_chip 0x8000 0xffff 0
 fill bank1_chip 0 0x7fff 0
 fill bank2_chip 0 0x7fff 0
 fill bank3_chip 0 0x7fff 0
+
+set hardware simif xram 0xffff

@@ -1,7 +1,7 @@
 PRJ=$1
 
 if [ -z "$PRJ" ]; then
-   PRJ=test_mdu88x
+   PRJ=simif
 fi
 
 if [ -f ${PRJ}.ihx ]; then
@@ -21,4 +21,5 @@ if [ -f ${PRJ}.ihx ]; then
     echo $CMD
     $CMD
     cat ${PRJ}.out
+    echo
 fi

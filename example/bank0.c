@@ -1,7 +1,7 @@
-#pragma codeseg BANK1
+#pragma codeseg BANK0
 
 int
-b1(int x) __banked
+bank0_fn(int x) __banked
 {
   return x+2;
 }

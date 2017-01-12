@@ -1,10 +1,12 @@
 #include <mcs51reg.h>
 #include <stdio.h>
 
+#include "bank0.h"
 #include "bank1.h"
-#include "bank2.h"
 
 __sfr __at(0xB1) PSBANK; // like Silabs F120
+
+unsigned char __xdata * volatile sif;
 
 unsigned char
 _sdcc_external_startup (void)
@@ -33,7 +35,7 @@ putchar (int c)
 }
 
 int
-b(int x)
+non_banked(int x)
 {
   return x+1;
 }
@@ -42,13 +44,19 @@ void
 main(void)
 {
   int i;
+
+  sif= (unsigned char __xdata *)0xffff;
   i= 0;
-  while (1)
-    {
-      i= b(i);
-      i= b1(i);
-      i= b2(i);
-    }
+
+  i= non_banked(i);
+  printf("i must be 1: %d\n", i);
+  i= bank0_fn(i);
+  printf("i must be 3: %d\n", i);
+  i= bank1_fn(i);
+  printf("i must be 6: %d\n", i);
+
+  *sif= 's';
+  while (1) ;
 }
 
 void
