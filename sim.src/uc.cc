@@ -840,7 +840,7 @@ ReadInt(FILE *f, bool *ok, int bytes)
 void
 cl_uc::set_rom(t_addr addr, t_mem val)
 {
-  printf("rom[%lx]=%x\n", addr, val);
+  //printf("rom[%lx]=%x\n", addr, val);
   t_addr size= rom->get_size();
   if (addr < size)
     {
@@ -850,22 +850,22 @@ cl_uc::set_rom(t_addr addr, t_mem val)
   t_addr bank, caddr;
   bank= addr / size;
   caddr= addr % size;
-  printf("getting decoder of %ld/%lx\n", bank, caddr);
+  //printf("getting decoder of %ld/%lx\n", bank, caddr);
   class cl_banker *d= (class cl_banker *)(rom->get_decoder_of(caddr));
   if (d)
     {
       if (!d->is_banker())
 	{
-	  printf("cell at %lx has no banker\n", caddr);
+	  //printf("cell at %lx has no banker\n", caddr);
 	  return;
 	}
-      printf("setting %ld/rom[%lx]=%x\n", bank, caddr, val);
+      //printf("setting %ld/rom[%lx]=%x\n", bank, caddr, val);
       d->switch_to(bank, NULL);
       rom->set(caddr, val);
       d->activate(NULL);
     }
   else
-    printf("no decoder at %lx\n", caddr);
+    ;//printf("no decoder at %lx\n", caddr);
 }
 
 long
