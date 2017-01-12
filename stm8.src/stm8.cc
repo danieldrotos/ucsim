@@ -65,11 +65,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base type of STM8 controllers
  */
 
-cl_stm8::cl_stm8(class cl_sim *asim):
+cl_stm8::cl_stm8(int IType, class cl_sim *asim):
   cl_uc(asim)
 {
-  type= CPU_STM8S;
-
+  type= IType;
 }
 
 int
@@ -118,7 +117,15 @@ cl_stm8::reset(void)
 char *
 cl_stm8::id_string(void)
 {
-  return((char*)"unspecified STM8");
+  switch (type)
+    {
+    case CPU_STM8S:
+      return((char*)"STM8S");
+    case CPU_STM8L:
+      return((char*)"STM8L");
+    default:
+      return((char*)"STM8");
+    }
 }
 
 

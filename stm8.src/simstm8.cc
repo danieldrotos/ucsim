@@ -27,6 +27,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /* $Id$ */
 
+// prj
+#include "globals.h"
+
 // local
 #include "simstm8cl.h"
 #include "stm8cl.h"
@@ -39,7 +42,34 @@ cl_simstm8::cl_simstm8(class cl_app *the_app):
 class cl_uc *
 cl_simstm8::mk_controller(void)
 {
-  return(new cl_stm8(this));
+  int i;
+  char *typ= 0;
+  class cl_optref type_option(this);
+
+  type_option.init();
+  type_option.use(cchars("cpu_type"));
+  i= 0;
+  if ((typ= type_option.get_value(typ)) == 0)
+    typ= cchars("STM8S");
+  while ((cpus_stm8[i].type_str != NULL) &&
+	 (strcasecmp(typ, cpus_stm8[i].type_str) != 0))
+    i++;
+  if (cpus_stm8[i].type_str == NULL)
+    {
+      fprintf(stderr, "Unknown processor type. "
+	      "Use -H option to see known types.\n");
+      return(NULL);
+    }
+  switch (cpus_stm8[i].type)
+    {
+    case CPU_STM8S:
+    case CPU_STM8L:
+      return(new cl_stm8(cpus_stm8[i].type, this));
+    default:
+      fprintf(stderr, "Unknown processor type\n");
+      return NULL;
+    }
+  return NULL;
 }
 
 

@@ -71,7 +71,7 @@ cl_sim51::mk_controller(void)
   if ((typ= type_option.get_value(typ)) == 0)
     typ= cchars("C52");
   while ((cpus_51[i].type_str != NULL) &&
-	 (strcmp(typ, cpus_51[i].type_str) != 0))
+	 (strcasecmp(typ, cpus_51[i].type_str) != 0))
     i++;
   if (cpus_51[i].type_str == NULL)
     {

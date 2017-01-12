@@ -365,79 +365,90 @@ const char *copying=
 struct cpu_entry *cpus= 0;
 
 struct cpu_entry cpus_51[]=
-{
-  {"51"    , CPU_51, CPU_HMOS},
-  {"8051"  , CPU_51, CPU_HMOS},
-  {"8751"  , CPU_51, CPU_HMOS},
-  {"C51"   , CPU_51, CPU_CMOS},
-  {"80C51" , CPU_51, CPU_CMOS},
-  {"87C51" , CPU_51, CPU_CMOS},
-  {"31"    , CPU_31, CPU_HMOS},
-  {"8031"  , CPU_31, CPU_HMOS},
-  {"C31"   , CPU_31, CPU_CMOS},
-  {"80C31" , CPU_31, CPU_CMOS},
-
-  {"52"    , CPU_52, CPU_HMOS},
-  {"8052"  , CPU_52, CPU_HMOS},
-  {"8752"  , CPU_52, CPU_HMOS},
-  {"C52"   , CPU_52, CPU_CMOS},
-  {"80C52" , CPU_52, CPU_CMOS},
-  {"87C52" , CPU_52, CPU_CMOS},
-  {"32"    , CPU_32, CPU_HMOS},
-  {"8032"  , CPU_32, CPU_HMOS},
-  {"C32"   , CPU_32, CPU_CMOS},
-  {"80C32" , CPU_32, CPU_CMOS},
-  {"F380"  , CPU_F380, CPU_CMOS},
-  
-
-  {"51R"   , CPU_51R, CPU_CMOS},
-  {"51RA"  , CPU_51R, CPU_CMOS},
-  {"51RB"  , CPU_51R, CPU_CMOS},
-  {"51RC"  , CPU_51R, CPU_CMOS},
-  {"C51R"  , CPU_51R, CPU_CMOS},
-  {"C51RA" , CPU_51R, CPU_CMOS},
-  {"C51RB" , CPU_51R, CPU_CMOS},
-  {"C51RC" , CPU_51R, CPU_CMOS},
-
-  {"89C51R", CPU_89C51R, CPU_CMOS},
-  
-  {"C521"  , CPU_C521  , CPU_CMOS},
-  {"521"   , CPU_C521  , CPU_CMOS},
-  
-  {"251"   , CPU_251, CPU_CMOS},
-  {"C251"  , CPU_251, CPU_CMOS},
-
-  {"517"   , CPU_517, CPU_CMOS},
-  {"C517"  , CPU_517, CPU_CMOS},
-
-  {"88X"   , CPU_XC88X, CPU_CMOS},
-  {"886"   , CPU_XC88X, CPU_CMOS},
-  {"888"   , CPU_XC88X, CPU_CMOS},
-  {"XC88X" , CPU_XC88X, CPU_CMOS},
-  {"XC886" , CPU_XC88X, CPU_CMOS},
-  {"XC888" , CPU_XC88X, CPU_CMOS},
-  
-  {"DS390" , CPU_DS390, CPU_CMOS},
-  {"DS390F", CPU_DS390F, CPU_CMOS},
-
-  {NULL, CPU_NONE, 0}
-};
+  {
+    {"51"    , CPU_51, CPU_HMOS},
+    {"8051"  , CPU_51, CPU_HMOS},
+    {"8751"  , CPU_51, CPU_HMOS},
+    {"C51"   , CPU_51, CPU_CMOS},
+    {"80C51" , CPU_51, CPU_CMOS},
+    {"87C51" , CPU_51, CPU_CMOS},
+    {"31"    , CPU_31, CPU_HMOS},
+    {"8031"  , CPU_31, CPU_HMOS},
+    {"C31"   , CPU_31, CPU_CMOS},
+    {"80C31" , CPU_31, CPU_CMOS},
+    
+    {"52"    , CPU_52, CPU_HMOS},
+    {"8052"  , CPU_52, CPU_HMOS},
+    {"8752"  , CPU_52, CPU_HMOS},
+    {"C52"   , CPU_52, CPU_CMOS},
+    {"80C52" , CPU_52, CPU_CMOS},
+    {"87C52" , CPU_52, CPU_CMOS},
+    {"32"    , CPU_32, CPU_HMOS},
+    {"8032"  , CPU_32, CPU_HMOS},
+    {"C32"   , CPU_32, CPU_CMOS},
+    {"80C32" , CPU_32, CPU_CMOS},
+    {"F380"  , CPU_F380, CPU_CMOS},
+    
+    
+    {"51R"   , CPU_51R, CPU_CMOS},
+    {"51RA"  , CPU_51R, CPU_CMOS},
+    {"51RB"  , CPU_51R, CPU_CMOS},
+    {"51RC"  , CPU_51R, CPU_CMOS},
+    {"C51R"  , CPU_51R, CPU_CMOS},
+    {"C51RA" , CPU_51R, CPU_CMOS},
+    {"C51RB" , CPU_51R, CPU_CMOS},
+    {"C51RC" , CPU_51R, CPU_CMOS},
+    
+    {"89C51R", CPU_89C51R, CPU_CMOS},
+    
+    {"C521"  , CPU_C521  , CPU_CMOS},
+    {"521"   , CPU_C521  , CPU_CMOS},
+    
+    {"251"   , CPU_251, CPU_CMOS},
+    {"C251"  , CPU_251, CPU_CMOS},
+    
+    {"517"   , CPU_517, CPU_CMOS},
+    {"C517"  , CPU_517, CPU_CMOS},
+    
+    {"88X"   , CPU_XC88X, CPU_CMOS},
+    {"886"   , CPU_XC88X, CPU_CMOS},
+    {"888"   , CPU_XC88X, CPU_CMOS},
+    {"XC88X" , CPU_XC88X, CPU_CMOS},
+    {"XC886" , CPU_XC88X, CPU_CMOS},
+    {"XC888" , CPU_XC88X, CPU_CMOS},
+    
+    {"DS390" , CPU_DS390, CPU_CMOS},
+    {"DS390F", CPU_DS390F, CPU_CMOS},
+    
+    {NULL, CPU_NONE, 0}
+  };
 
 struct cpu_entry cpus_z80[]=
-{
-  {"Z80"    , CPU_Z80,     0},
-  {"Z180"   , CPU_Z180,    0},
-  {"R2K"    , CPU_R2K,     0},
-  {"R3KA"   , CPU_R3KA,    0},
-  {"LR35902", CPU_LR35902, 0},
-  {NULL, CPU_NONE, 0}
-};
+  {
+    {"Z80"    , CPU_Z80,     0},
+    {"Z180"   , CPU_Z180,    0},
+    {"R2K"    , CPU_R2K,     0},
+    {"R3KA"   , CPU_R3KA,    0},
+    {"LR35902", CPU_LR35902, 0},
+    {NULL, CPU_NONE, 0}
+  };
 
 struct cpu_entry cpus_hc08[]=
-{
-  {"HC08"   , CPU_HC08, 0},
-  {"HCS08"  , CPU_HCS08,0},
-  {NULL, CPU_NONE, 0}
-};
+  {
+    {"HC08"   , CPU_HC08, 0},
+    {"HCS08"  , CPU_HCS08,0},
+    {NULL, CPU_NONE, 0}
+  };
+
+struct cpu_entry cpus_stm8[]=
+  {
+    {"S"      , CPU_STM8S, 0},
+    {"STM8S"  , CPU_STM8S, 0},
+
+    {"L"      , CPU_STM8L, 0},
+    {"STM8L"  , CPU_STM8L, 0},
+
+    {NULL, CPU_NONE, 0}
+  };
 
 /* End of globals.cc */
