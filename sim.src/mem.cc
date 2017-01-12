@@ -1066,15 +1066,12 @@ cl_memory_cell::get_banker(void)
   class cl_memory_operator *op= operators;
   class cl_banker *b= NULL;
 
-  b= op->get_banker();
-  if (b)
-    return b;
   while (op)
     {
-      op= op->get_next();
       b= op->get_banker();
       if (b)
 	return b;
+      op= op->get_next();
     }
   return NULL;
 }
