@@ -4,7 +4,7 @@
 #include "bank1.h"
 #include "bank2.h"
 
-__sfr __at(0x88) PSBANK;
+__sfr __at(0xB1) PSBANK; // like Silabs F120
 
 unsigned char
 _sdcc_external_startup (void)
