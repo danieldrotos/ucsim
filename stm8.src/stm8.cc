@@ -65,10 +65,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base type of STM8 controllers
  */
 
-cl_stm8::cl_stm8(int IType, class cl_sim *asim):
+cl_stm8::cl_stm8(int IType, int IDevice, class cl_sim *asim):
   cl_uc(asim)
 {
   type= IType;
+  technology= IDevice;
 }
 
 int

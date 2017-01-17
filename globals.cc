@@ -442,8 +442,8 @@ struct cpu_entry cpus_hc08[]=
 
 struct cpu_entry cpus_stm8[]=
   {
-    {"S"      , CPU_STM8S, 0},
-    {"STM8S"  , CPU_STM8S, 0},
+    {"S"      , CPU_STM8S, DEV_STM8S208},
+    {"STM8S"  , CPU_STM8S, DEV_STM8S208},
 
     {"L"      , CPU_STM8L, 0},
     {"STM8L"  , CPU_STM8L, 0},
