@@ -30,7 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uc380cl.h"
 
 
-cl_uc380::cl_uc380(int Itype, int Itech, class cl_sim *asim):
+cl_uc380::cl_uc380(enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_uc52(Itype, Itech, asim)
 {
 }

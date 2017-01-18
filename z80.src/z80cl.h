@@ -46,7 +46,7 @@ public:
   class cl_address_space *regs16;
 
 public:
-  cl_z80(int Itype, int Itech, class cl_sim *asim);
+  cl_z80(enum cpu_type Itype, int Itech, class cl_sim *asim);
   virtual int init(void);
   virtual char *id_string(void);
 

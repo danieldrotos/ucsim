@@ -320,7 +320,7 @@ struct dis_entry disass_390f[] = {
  * Making an 390 CPU object
  */
 
-cl_uc390::cl_uc390 (int Itype, int Itech, class cl_sim *asim):
+cl_uc390::cl_uc390 (enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_uc52 (Itype, Itech, asim)
 {
   //flat24_flag= 0;

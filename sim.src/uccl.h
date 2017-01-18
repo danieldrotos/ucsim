@@ -85,7 +85,7 @@ struct vcounter_t {
 class cl_uc: public cl_base
 {
 public:
-  int type;			// CPU family
+  enum cpu_type type;			// CPU family
   int technology;		// CMOS, HMOS
   int state;			// GO, IDLE, PD
   //class cl_list *options;

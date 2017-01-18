@@ -60,13 +60,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  *  (base for Rabbit 3000/4000/5000)
  */
 
-cl_r2k::cl_r2k(int Itype, int Itech, class cl_sim *asim):
+cl_r2k::cl_r2k(enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_z80(Itype, Itech, asim), mmu(this)
 {
   type= Itype;
 }
 
-cl_r3ka::cl_r3ka(int Itype, int Itech, class cl_sim *asim):
+cl_r3ka::cl_r3ka(enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_r2k(Itype, Itech, asim)
 {
   SU = 0;

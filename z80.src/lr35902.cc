@@ -49,7 +49,7 @@
 
 lr35902_memory::lr35902_memory( cl_uc &uc_parent_ref ):uc_r(uc_parent_ref) { }
 
-cl_lr35902::cl_lr35902(int Itype, int Itech, class cl_sim *asim):
+cl_lr35902::cl_lr35902(enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_z80(Itype, Itech, asim), mem(*this)
 {
   type= Itype;

@@ -28,7 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uc521cl.h"
 
 
-cl_uc521::cl_uc521(int Itype, int Itech, class cl_sim *asim):
+cl_uc521::cl_uc521(enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_uc52(Itype, Itech, asim)
 {
 }

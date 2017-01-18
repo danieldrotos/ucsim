@@ -95,7 +95,7 @@ cl_irq_stop_option::option_changed(void)
  * Making a new micro-controller and reset it
  */
 
-cl_51core::cl_51core(int Itype, int Itech, class cl_sim *asim):
+cl_51core::cl_51core(enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_uc(asim)
 {
   type= Itype;

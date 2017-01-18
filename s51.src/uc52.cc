@@ -41,7 +41,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Making an 8052 CPU object
  */
 
-cl_uc52::cl_uc52(int Itype, int Itech, class cl_sim *asim):
+cl_uc52::cl_uc52(enum cpu_type Itype, int Itech, class cl_sim *asim):
   cl_51core(Itype, Itech, asim)
 {
 }

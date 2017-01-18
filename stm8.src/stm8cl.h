@@ -52,7 +52,7 @@ public:
   class cl_itc *itc;
   class cl_it_src *trap_src;
 public:
-  cl_stm8(int IType, int IDevice, class cl_sim *asim);
+  cl_stm8(enum cpu_type IType, int IDevice, class cl_sim *asim);
   virtual int init(void);
   virtual char *id_string(void);
 

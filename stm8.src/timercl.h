@@ -42,8 +42,48 @@ enum stm8_tim_cfg {
 class cl_tim: public cl_hw
 {
  protected:
+  struct
+  {
+    int
+    // register indexes
+    cr1, // control 1
+      cr2, // control 2
+      smcr, // slave mode control
+      etr, // external trigger
+      der, //
+      ier, // interrupt enable
+      sr1, // status 1
+      sr2, // status 2
+      egr, // event generation
+      ccmr1, // capture/compare mode 1
+      ccmr2, // capture/compare mode 2
+      ccmr3, // capture/compare mode 3
+      ccmr4, // capture/compare mode 4
+      ccer1, // capture/compare enable 1
+      ccer2, // capture/compare enable 2
+      cntrh, // counter high
+      cntrl, // counter low
+      pscrh, // prescaler high
+      pscrl, // prescaler low
+      arrh, // auto-reload high
+      arrl, // auto-reload low
+      rcr, // repetition counter
+      ccr1h, // capture/compare 1 high
+      ccr1l, // capture/compare 1 low
+      ccr2h, // capture/compare 2 high
+      ccr2l, // capture/compare 2 low
+      ccr3h, // capture/compare 3 high
+      ccr3l, // capture/compare 3 low
+      ccr4h, // capture/compare 4 high
+      ccr4l, // capture/compare 4 low
+      bkr, // break
+      dtr, // deadtime
+      oisr;  // output idle state
+  }
+  idx;
+ protected:
   t_addr base;
-  cl_memory_cell *regs[32];
+  cl_memory_cell *regs[32+6];
 
   int bits, mask;
   int cnt;
@@ -82,16 +122,78 @@ class cl_tim1: public cl_tim
   cl_tim1(class cl_uc *auc, int aid, t_addr abase);
 };
 
+class cl_tim1_saf: public cl_tim1
+{
+ public:
+  cl_tim1_saf(class cl_uc *auc, int aid, t_addr abase);
+};
 
-// General purpose
+class cl_tim1_all: public cl_tim1
+{
+ public:
+  cl_tim1_all(class cl_uc *auc, int aid, t_addr abase);
+};
+
+
+// General purpose 2, 3, and 5
 class cl_tim235: public cl_tim
 {
  public:
   cl_tim235(class cl_uc *auc, int aid, t_addr abase);
 };
 
+class cl_tim2_saf: public cl_tim235
+{
+ public:
+  cl_tim2_saf(class cl_uc *auc, int aid, t_addr abase);
+};
 
-// Basic
+class cl_tim2_all: public cl_tim235
+{
+ public:
+  cl_tim2_all(class cl_uc *auc, int aid, t_addr abase);
+};
+
+class cl_tim2_l101: public cl_tim235
+{
+ public:
+  cl_tim2_l101(class cl_uc *auc, int aid, t_addr abase);
+};
+
+
+class cl_tim3_saf: public cl_tim235
+{
+ public:
+  cl_tim3_saf(class cl_uc *auc, int aid, t_addr abase);
+};
+
+class cl_tim3_all: public cl_tim235
+{
+ public:
+  cl_tim3_all(class cl_uc *auc, int aid, t_addr abase);
+};
+
+class cl_tim3_l101: public cl_tim235
+{
+ public:
+  cl_tim3_l101(class cl_uc *auc, int aid, t_addr abase);
+};
+
+
+class cl_tim5_saf: public cl_tim235
+{
+ public:
+  cl_tim5_saf(class cl_uc *auc, int aid, t_addr abase);
+};
+
+class cl_tim5_all: public cl_tim235
+{
+ public:
+  cl_tim5_all(class cl_uc *auc, int aid, t_addr abase);
+};
+
+
+// Basic 4 and 6
 class cl_tim46: public cl_tim
 {
  public:
