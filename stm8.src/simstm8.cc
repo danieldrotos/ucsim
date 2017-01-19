@@ -64,7 +64,8 @@ cl_simstm8::mk_controller(void)
     {
     case CPU_STM8S:
     case CPU_STM8L:
-      return(new cl_stm8(cpus_stm8[i].type, cpus_stm8[i].technology, this));
+    case CPU_STM8L101:
+      return(new cl_stm8(&cpus_stm8[i], this));
     default:
       fprintf(stderr, "Unknown processor type\n");
       return NULL;

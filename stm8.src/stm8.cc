@@ -65,11 +65,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base type of STM8 controllers
  */
 
-cl_stm8::cl_stm8(enum cpu_type IType, int IDevice, class cl_sim *asim):
+cl_stm8::cl_stm8(struct cpu_entry *IType, class cl_sim *asim):
   cl_uc(asim)
 {
   type= IType;
-  technology= IDevice;
 }
 
 int
@@ -118,12 +117,14 @@ cl_stm8::reset(void)
 char *
 cl_stm8::id_string(void)
 {
-  switch (type)
+  switch (type->type)
     {
     case CPU_STM8S:
-      return((char*)"STM8S");
+      return((char*)"STM8 S,AF");
     case CPU_STM8L:
-      return((char*)"STM8L");
+      return((char*)"STM8 AL,L");
+    case CPU_STM8L101:
+      return((char*)"STM8 L101");
     default:
       return((char*)"STM8");
     }
@@ -188,7 +189,7 @@ cl_stm8::mk_hw_elements(void)
   add_hw(itc= new cl_itc(this));
   itc->init();
 
-  if (type == CPU_STM8S)
+  if (type->type == CPU_STM8S)
     {
       // all S and AF
       add_hw(h= new cl_tim1_saf(this, 1, 0x5250));
@@ -196,38 +197,38 @@ cl_stm8::mk_hw_elements(void)
       add_hw(h= new cl_rst(this, 0x50b3));
       h->init();
       // some S, some AF
-      if (technology & (DEV_STM8S003|
-			DEV_STM8S005|
-			DEV_STM8S007|
-			DEV_STM8S103|
-			DEV_STM8S105|
-			DEV_STM8S207|
-			DEV_STM8S208|
-			DEV_STM8AF52|
-			DEV_STM8AF62_46))
+      if (type->subtype & (DEV_STM8S003|
+			   DEV_STM8S005|
+			   DEV_STM8S007|
+			   DEV_STM8S103|
+			   DEV_STM8S105|
+			   DEV_STM8S207|
+			   DEV_STM8S208|
+			   DEV_STM8AF52|
+			   DEV_STM8AF62_46))
 	{
 	  add_hw(h= new cl_tim2_saf(this, 2, 0x5300));
 	  h->init();
 	}
-      if (technology & (DEV_STM8S005|
-			DEV_STM8S007|
-			DEV_STM8S105|
-			DEV_STM8S207|
-			DEV_STM8S208|
-			DEV_STM8AF52|
-			DEV_STM8AF62_46))
+      if (type->subtype & (DEV_STM8S005|
+			   DEV_STM8S007|
+			   DEV_STM8S105|
+			   DEV_STM8S207|
+			   DEV_STM8S208|
+			   DEV_STM8AF52|
+			   DEV_STM8AF62_46))
 	{
 	  add_hw(h= new cl_tim3_saf(this, 3, 0x5320));
 	  h->init();
 	}
-      if (technology & (DEV_STM8S903|
-			DEV_STM8AF62_12))
+      if (type->subtype & (DEV_STM8S903|
+			   DEV_STM8AF62_12))
 	{
 	  add_hw(h= new cl_tim5_saf(this, 5, 0x5300));
 	  h->init();
 	}
     }
-  else if (type == CPU_STM8L)
+  else if (type->type == CPU_STM8L)
     {
       add_hw(h= new cl_rst(this, 0x50b0));
       h->init();
@@ -236,32 +237,32 @@ cl_stm8::mk_hw_elements(void)
       add_hw(h= new cl_tim3_all(this, 3, 0x5280));
       h->init();
       // all AL
-      if (technology & DEV_STM8AL)
+      if (type->subtype & DEV_STM8AL)
 	{
 	  add_hw(h= new cl_tim1_all(this, 1, 0x52b0));
 	  h->init();
 	}
       // some L
-      if (technology & (DEV_STM8L052C |
-			DEV_STM8L052R |
-			DEV_STM8L15x46 |
-			DEV_STM8L15x8 |
-			DEV_STM8L162))
+      if (type->subtype & (DEV_STM8L052C |
+			   DEV_STM8L052R |
+			   DEV_STM8L15x46 |
+			   DEV_STM8L15x8 |
+			   DEV_STM8L162))
 	{
 	  add_hw(h= new cl_tim1_all(this, 1, 0x52b0));
 	  h->init();
 	}
-      if (technology & (DEV_STM8AL3xE |
-			DEV_STM8AL3x8 |
-			DEV_STM8L052R |
-			DEV_STM8L15x8 |
-			DEV_STM8L162))
+      if (type->subtype & (DEV_STM8AL3xE |
+			   DEV_STM8AL3x8 |
+			   DEV_STM8L052R |
+			   DEV_STM8L15x8 |
+			   DEV_STM8L162))
 	{
 	  add_hw(h= new cl_tim5_all(this, 5, 0x5300));
 	  h->init();
 	}
     }
-  else if (type == CPU_STM8L101)
+  else if (type->type == CPU_STM8L101)
     {
       add_hw(h= new cl_rst(this, 0x50b0));
       h->init();

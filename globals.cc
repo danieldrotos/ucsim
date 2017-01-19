@@ -366,109 +366,182 @@ struct cpu_entry *cpus= 0;
 
 struct cpu_entry cpus_51[]=
   {
-    {"51"    , CPU_51, CPU_HMOS},
-    {"8051"  , CPU_51, CPU_HMOS},
-    {"8751"  , CPU_51, CPU_HMOS},
-    {"C51"   , CPU_51, CPU_CMOS},
-    {"80C51" , CPU_51, CPU_CMOS},
-    {"87C51" , CPU_51, CPU_CMOS},
-    {"31"    , CPU_31, CPU_HMOS},
-    {"8031"  , CPU_31, CPU_HMOS},
-    {"C31"   , CPU_31, CPU_CMOS},
-    {"80C31" , CPU_31, CPU_CMOS},
+    {"C52"   , CPU_52, CPU_CMOS			, "mcs52"	, "cmos"},
+
+    {"51"    , CPU_51, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"8051"  , CPU_51, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"8751"  , CPU_51, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"C51"   , CPU_51, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"80C51" , CPU_51, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"87C51" , CPU_51, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"31"    , CPU_31, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"8031"  , CPU_31, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"C31"   , CPU_31, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"80C31" , CPU_31, CPU_CMOS			, "mcs51"	, "cmos"},
     
-    {"52"    , CPU_52, CPU_HMOS},
-    {"8052"  , CPU_52, CPU_HMOS},
-    {"8752"  , CPU_52, CPU_HMOS},
-    {"C52"   , CPU_52, CPU_CMOS},
-    {"80C52" , CPU_52, CPU_CMOS},
-    {"87C52" , CPU_52, CPU_CMOS},
-    {"32"    , CPU_32, CPU_HMOS},
-    {"8032"  , CPU_32, CPU_HMOS},
-    {"C32"   , CPU_32, CPU_CMOS},
-    {"80C32" , CPU_32, CPU_CMOS},
-    {"F380"  , CPU_F380, CPU_CMOS},
+    {"52"    , CPU_52, CPU_HMOS			, "mcs52"	, "hmos"},
+    {"8052"  , CPU_52, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"8752"  , CPU_52, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"80C52" , CPU_52, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"87C52" , CPU_52, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"32"    , CPU_32, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"8032"  , CPU_32, CPU_HMOS			, "mcs51"	, "hmos"},
+    {"C32"   , CPU_32, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"80C32" , CPU_32, CPU_CMOS			, "mcs51"	, "cmos"},
+    {"F380"  , CPU_F380, CPU_CMOS		, "Silabs F380"	, "cmos"},
     
     
-    {"51R"   , CPU_51R, CPU_CMOS},
-    {"51RA"  , CPU_51R, CPU_CMOS},
-    {"51RB"  , CPU_51R, CPU_CMOS},
-    {"51RC"  , CPU_51R, CPU_CMOS},
-    {"C51R"  , CPU_51R, CPU_CMOS},
-    {"C51RA" , CPU_51R, CPU_CMOS},
-    {"C51RB" , CPU_51R, CPU_CMOS},
-    {"C51RC" , CPU_51R, CPU_CMOS},
+    {"51R"   , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
+    {"51RA"  , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
+    {"51RB"  , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
+    {"51RC"  , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
+    {"C51R"  , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
+    {"C51RA" , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
+    {"C51RB" , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
+    {"C51RC" , CPU_51R, CPU_CMOS		, "Intel mcs51R", "cmos"},
     
-    {"89C51R", CPU_89C51R, CPU_CMOS},
+    {"89C51R", CPU_89C51R, CPU_CMOS		, "89C51R"	, "cmos"},
     
-    {"C521"  , CPU_C521  , CPU_CMOS},
-    {"521"   , CPU_C521  , CPU_CMOS},
+    {"C521"  , CPU_C521  , CPU_CMOS		, "AMD 80C521"	, "cmos"},
+    {"521"   , CPU_C521  , CPU_CMOS		, "AMD 80C521"	, "cmos"},
     
-    {"251"   , CPU_251, CPU_CMOS},
-    {"C251"  , CPU_251, CPU_CMOS},
+    {"251"   , CPU_251, CPU_CMOS		, "Intel mcs251", "cmos"},
+    {"C251"  , CPU_251, CPU_CMOS		, "Intel mcs251", "cmos"},
     
-    {"517"   , CPU_517, CPU_CMOS},
-    {"C517"  , CPU_517, CPU_CMOS},
+    {"517"   , CPU_517, CPU_CMOS		, "Siemens C517", "cmos"},
+    {"C517"  , CPU_517, CPU_CMOS		, "Siemens C517", "cmos"},
     
-    {"88X"   , CPU_XC88X, CPU_CMOS},
-    {"886"   , CPU_XC88X, CPU_CMOS},
-    {"888"   , CPU_XC88X, CPU_CMOS},
-    {"XC88X" , CPU_XC88X, CPU_CMOS},
-    {"XC886" , CPU_XC88X, CPU_CMOS},
-    {"XC888" , CPU_XC88X, CPU_CMOS},
+    {"88X"   , CPU_XC88X, CPU_CMOS		, "Infineon XC88[68]", "cmos"},
+    {"886"   , CPU_XC88X, CPU_CMOS		, "Infineon XC88[68]", "cmos"},
+    {"888"   , CPU_XC88X, CPU_CMOS		, "Infineon XC88[68]", "cmos"},
+    {"XC88X" , CPU_XC88X, CPU_CMOS		, "Infineon XC88[68]", "cmos"},
+    {"XC886" , CPU_XC88X, CPU_CMOS		, "Infineon XC88[68]", "cmos"},
+    {"XC888" , CPU_XC88X, CPU_CMOS		, "Infineon XC88[68]", "cmos"},
+
+    // F type should go to subtype...
+    {"DS390" , CPU_DS390, CPU_CMOS		, "Dallas DS80C390" , "cmos"},
+    {"DS390F", CPU_DS390F, CPU_CMOS		, "Dallas DS80C390F", "cmos"},
     
-    {"DS390" , CPU_DS390, CPU_CMOS},
-    {"DS390F", CPU_DS390F, CPU_CMOS},
-    
-    {NULL, CPU_NONE, 0}
+    {NULL, CPU_NONE, 0, "", ""}
   };
 
 struct cpu_entry cpus_z80[]=
   {
-    {"Z80"    , CPU_Z80,     0},
-    {"Z180"   , CPU_Z180,    0},
-    {"R2K"    , CPU_R2K,     0},
-    {"R3KA"   , CPU_R3KA,    0},
-    {"LR35902", CPU_LR35902, 0},
-    {NULL, CPU_NONE, 0}
+    {"Z80"    , CPU_Z80,     0			, ""		, ""},
+
+    {"Z180"   , CPU_Z180,    0			, ""		, ""},
+    {"R2K"    , CPU_R2K,     0			, ""		, ""},
+    {"R3KA"   , CPU_R3KA,    0			, ""		, ""},
+    {"LR35902", CPU_LR35902, 0			, ""		, ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
   };
 
 struct cpu_entry cpus_hc08[]=
   {
-    {"HC08"   , CPU_HC08, 0},
-    {"HCS08"  , CPU_HCS08,0},
-    {NULL, CPU_NONE, 0}
+    {"HC08"   , CPU_HC08, 0			, ""		, ""},
+    
+    {"HCS08"  , CPU_HCS08,0			, ""		, ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
   };
 
 struct cpu_entry cpus_stm8[]=
   {
-    {"S"	, CPU_STM8S, DEV_STM8S208},
-    {"STM8S"  	, CPU_STM8S, DEV_STM8S208},
-
-    {"S903"	, CPU_STM8S, DEV_STM8S903},
-    {"STM8S903"	, CPU_STM8S, DEV_STM8S903},
-    {"S003"	, CPU_STM8S, DEV_STM8S003},
-    {"STM8S003"	, CPU_STM8S, DEV_STM8S003},
-    {"S005"	, CPU_STM8S, DEV_STM8S005},
-    {"STM8S005"	, CPU_STM8S, DEV_STM8S005},
-    {"S007"	, CPU_STM8S, DEV_STM8S007},
-    {"STM8S007"	, CPU_STM8S, DEV_STM8S007},
-    {"S103"	, CPU_STM8S, DEV_STM8S103},
-    {"STM8S103"	, CPU_STM8S, DEV_STM8S103},
-    {"S105"	, CPU_STM8S, DEV_STM8S105},
-    {"STM8S105"	, CPU_STM8S, DEV_STM8S105},
-    {"S207"	, CPU_STM8S, DEV_STM8S207},
-    {"STM8S207"	, CPU_STM8S, DEV_STM8S207},
-    {"S208"	, CPU_STM8S, DEV_STM8S208},
-    {"STM8S208"	, CPU_STM8S, DEV_STM8S208},
+    {"S"		, CPU_STM8S, DEV_STM8S208	, ""		, ""},
     
-    {"L"      	, CPU_STM8L, DEV_STM8L162},
-    {"STM8L"  	, CPU_STM8L, DEV_STM8L162},
+    {"STM8S"  		, CPU_STM8S, DEV_STM8S208	, ""		, ""},
 
-    {"L101"     , CPU_STM8L101, DEV_STM8L101},
-    {"STM8L101" , CPU_STM8L101, DEV_STM8L101},
+    {"S903"		, CPU_STM8S, DEV_STM8S903	, ""		, ""},
+    {"STM8S903"		, CPU_STM8S, DEV_STM8S903	, ""		, ""},
+    {"S003"		, CPU_STM8S, DEV_STM8S003	, ""		, ""},
+    {"STM8S003"		, CPU_STM8S, DEV_STM8S003	, ""		, ""},
+    {"S005"		, CPU_STM8S, DEV_STM8S005	, ""		, ""},
+    {"STM8S005"		, CPU_STM8S, DEV_STM8S005	, ""		, ""},
+    {"S007"		, CPU_STM8S, DEV_STM8S007	, ""		, ""},
+    {"STM8S007"		, CPU_STM8S, DEV_STM8S007	, ""		, ""},
+    {"S103"		, CPU_STM8S, DEV_STM8S103	, ""		, ""},
+    {"STM8S103"		, CPU_STM8S, DEV_STM8S103	, ""		, ""},
+    {"S105"		, CPU_STM8S, DEV_STM8S105	, ""		, ""},
+    {"STM8S105"		, CPU_STM8S, DEV_STM8S105	, ""		, ""},
+    {"S207"		, CPU_STM8S, DEV_STM8S207	, ""		, ""},
+    {"STM8S207"		, CPU_STM8S, DEV_STM8S207	, ""		, ""},
+    {"S208"		, CPU_STM8S, DEV_STM8S208	, ""		, ""},
+    {"STM8S208"		, CPU_STM8S, DEV_STM8S208	, ""		, ""},
 
-    {NULL, CPU_NONE, 0}
+    {"AF52"		, CPU_STM8S, DEV_STM8AF52	, ""		, ""},
+    {"STM8AF52"		, CPU_STM8S, DEV_STM8AF52	, ""		, ""},
+    {"AF62_12"		, CPU_STM8S, DEV_STM8AF62_12	, ""		, ""},
+    {"AF621"		, CPU_STM8S, DEV_STM8AF62_12	, ""		, ""},
+    {"AF622"		, CPU_STM8S, DEV_STM8AF62_12	, ""		, ""},
+    {"STM8AF62_12"	, CPU_STM8S, DEV_STM8AF62_12	, ""		, ""},
+    {"AF62"		, CPU_STM8S, DEV_STM8AF62_46	, ""		, ""},
+    {"AF62_46"		, CPU_STM8S, DEV_STM8AF62_46	, ""		, ""},
+    {"AF624"		, CPU_STM8S, DEV_STM8AF62_46	, ""		, ""},
+    {"AF626"		, CPU_STM8S, DEV_STM8AF62_46	, ""		, ""},
+    {"STM8AF62_46"	, CPU_STM8S, DEV_STM8AF62_46	, ""		, ""},
+    
+    {"L"      		, CPU_STM8L, DEV_STM8L162	, ""		, ""},
+    {"STM8L"  		, CPU_STM8L, DEV_STM8L162	, ""		, ""},
+
+    {"AL3xE"		, CPU_STM8L, DEV_STM8AL3xE	, ""		, ""},
+    {"AL31E"		, CPU_STM8L, DEV_STM8AL3xE	, ""		, ""},
+    {"AL3LE"		, CPU_STM8L, DEV_STM8AL3xE	, ""		, ""},
+    {"STM8AL3xE"	, CPU_STM8L, DEV_STM8AL3xE	, ""		, ""},
+    {"AL3x8"		, CPU_STM8L, DEV_STM8AL3x8	, ""		, ""},
+    {"AL318"		, CPU_STM8L, DEV_STM8AL3x8	, ""		, ""},
+    {"AL3L8"		, CPU_STM8L, DEV_STM8AL3x8	, ""		, ""},
+    {"STM8AL3x8"	, CPU_STM8L, DEV_STM8AL3x8	, ""		, ""},
+    {"AL3x346"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL3x3"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL313"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL3L3"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL3x4"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL314"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL3L4"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL3x6"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL316"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"AL3L6"		, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+    {"STM8AL3x346"	, CPU_STM8L, DEV_STM8AL3x346	, ""		, ""},
+
+    {"L051"		, CPU_STM8L, DEV_STM8L051	, ""		, ""},
+    {"STM8L051"		, CPU_STM8L, DEV_STM8L051	, ""		, ""},
+    {"L052C"		, CPU_STM8L, DEV_STM8L052C	, ""		, ""},
+    {"STM8L052C"	, CPU_STM8L, DEV_STM8L052C	, ""		, ""},
+    {"L052R"		, CPU_STM8L, DEV_STM8L052R	, ""		, ""},
+    {"L052"		, CPU_STM8L, DEV_STM8L052R	, ""		, ""},
+    {"STM8L052R"	, CPU_STM8L, DEV_STM8L052R	, ""		, ""},
+    {"L151x23"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151x2"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151x3"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L1512"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L1513"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151F3"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151G3"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151K3"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151C3"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151F2"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151G2"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151K2"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L151C2"		, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"STM8L151x23"	, CPU_STM8L, DEV_STM8L151x23	, ""		, ""},
+    {"L15x46"		, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"L151G4"		, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"L151G6"		, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"L1514"		, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"L1524"		, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"L1516"		, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"L1526"		, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"STM8L15x46"	, CPU_STM8L, DEV_STM8L15x46	, ""		, ""},
+    {"L15x8"		, CPU_STM8L, DEV_STM8L15x8	, ""		, ""},
+    {"STM8L15x8"	, CPU_STM8L, DEV_STM8L15x8	, ""		, ""},
+    {"L162"		, CPU_STM8L, DEV_STM8L162	, ""		, ""},
+    {"STM8L162"		, CPU_STM8L, DEV_STM8L162	, ""		, ""},
+    
+    {"L101"     	, CPU_STM8L101, DEV_STM8L101	, ""		, ""},
+    {"STM8L101" 	, CPU_STM8L101, DEV_STM8L101	, ""		, ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
   };
 
 /* End of globals.cc */

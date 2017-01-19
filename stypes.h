@@ -205,7 +205,9 @@ struct cpu_entry
 {
   const char *type_str;
   enum cpu_type  type;
-  int  technology;
+  int  subtype;
+  const char *type_help;
+  const char *sub_help;
 };
 
 /* Classes of memories, this is index on the list */
