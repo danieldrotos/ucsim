@@ -192,9 +192,9 @@ cl_stm8::mk_hw_elements(void)
   if (type->type == CPU_STM8S)
     {
       // all S and AF
-      add_hw(h= new cl_tim1_saf(this, 1, 0x5250));
-      h->init();
       add_hw(h= new cl_rst(this, 0x50b3));
+      h->init();
+      add_hw(h= new cl_tim1_saf(this, 1, 0x5250));
       h->init();
       // some S, some AF
       if (type->subtype & (DEV_STM8S005|

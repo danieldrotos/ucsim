@@ -381,14 +381,15 @@ cl_tim::print_info(class cl_console_base *con)
 {
   u8_t c1= regs[idx.cr1]->get();
   // features
-  con->dd_printf("%s %d bit %s counter\n", get_name(), bits,
-		 bidir?"Up/Down":"Up");
+  con->dd_printf("%s %d bit %s counter at 0x%06x\n", get_name(), bits,
+		 bidir?"Up/Down":"Up", base);
   // actual values
   con->dd_printf("cnt= 0x%04x %d %s\n", cnt, cnt, (c1&cen)?"on":"off");
   con->dd_printf("dir= %s\n", (c1&dir)?"down":"up");
   con->dd_printf("prs= 0x%04x %d of 0x%04x %d\n",
 		 prescaler_cnt, prescaler_cnt,
 		 calc_prescaler(), calc_prescaler());
+  con->dd_printf("arr= 0x%04x %d\n", get_arr(), get_arr());
 }
 
 
