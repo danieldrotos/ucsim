@@ -54,6 +54,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "serialcl.h"
 #include "rstcl.h"
 #include "timercl.h"
+#include "portcl.h"
 
 #define uint32 t_addr
 #define uint8 unsigned char
@@ -154,44 +155,147 @@ cl_stm8::mk_hw_elements(void)
   cl_uc::mk_hw_elements();
   class cl_option *o;
 
-  {
-    o= new cl_string_option(this, "serial1_in_file",
-			    "Input file for serial line uart1 (-S)");
-    application->options->new_option(o);
-    o->init();
-    o->hide();
-    o= new cl_string_option(this, "serial1_out_file",
-			    "Output file for serial line uart1 (-S)");
-    application->options->new_option(o);
-    o->init();
-    o->hide();
-    
-    add_hw(h= new cl_serial(this, 0x5230, 1));
-    h->init();
-  }
+  o= new cl_string_option(this, "serial1_in_file",
+			  "Input file for serial line uart1 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
+  o= new cl_string_option(this, "serial1_out_file",
+			  "Output file for serial line uart1 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
 
-  {
-    o= new cl_string_option(this, "serial2_in_file",
-			    "Input file for serial line uart2 (-S)");
-    application->options->new_option(o);
-    o->init();
-    o->hide();
-    o= new cl_string_option(this, "serial2_out_file",
-			    "Output file for serial line uart2 (-S)");
-    application->options->new_option(o);
-    o->init();
-    o->hide();
-    
-    add_hw(h= new cl_serial(this, 0x5240, 2));
-    h->init();
-  }
+  o= new cl_string_option(this, "serial2_in_file",
+			  "Input file for serial line uart2 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
+  o= new cl_string_option(this, "serial2_out_file",
+			  "Output file for serial line uart2 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
   
+  o= new cl_string_option(this, "serial3_in_file",
+			  "Input file for serial line uart3 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
+  o= new cl_string_option(this, "serial3_out_file",
+			  "Output file for serial line uart3 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
+  
+  o= new cl_string_option(this, "serial4_in_file",
+			  "Input file for serial line uart4 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
+  o= new cl_string_option(this, "serial4_out_file",
+			  "Output file for serial line uart4 (-S)");
+  application->options->new_option(o);
+  o->init();
+  o->hide();
+  
+  if (type->type == CPU_STM8S)
+    {
+      if (type->subtype & (DEV_STM8S003|
+			   DEV_STM8S007|
+			   DEV_STM8S103|
+			   DEV_STM8S207|
+			   DEV_STM8S208|
+			   DEV_STM8S903|
+			   DEV_STM8AF52))
+	{
+	  add_hw(h= new cl_serial(this, 0x5230, 1));
+	  h->init();
+	}
+      if (type->subtype & (DEV_STM8S005|
+			   DEV_STM8S105|
+			   DEV_STM8AF52|
+			   DEV_STM8AF62_46))
+	{
+	  add_hw(h= new cl_serial(this, 0x5240, 2));
+	  h->init();
+	}
+      if (type->subtype & (DEV_STM8S007|
+			   DEV_STM8S207|
+			   DEV_STM8S208))
+	{
+	  add_hw(h= new cl_serial(this, 0x5240, 3));
+	  h->init();
+	}
+    }
+  if (type->type == CPU_STM8L)
+    {
+      add_hw(h= new cl_serial(this, 0x5230, 1));
+      h->init();
+      if (type->subtype & (DEV_STM8AL3xE|
+			   DEV_STM8AL3x8|
+			   DEV_STM8L052R|
+			   DEV_STM8L15x8|
+			   DEV_STM8L162))
+	{
+	  add_hw(h= new cl_serial(this, 0x53e0, 2));
+	  h->init();
+	}
+      if (type->subtype & (DEV_STM8AL3xE|
+			   DEV_STM8AL3x8|
+			   DEV_STM8L052R|
+			   DEV_STM8L15x8|
+			   DEV_STM8L162))
+	{
+	  add_hw(h= new cl_serial(this, 0x53f0, 3));
+	  h->init();
+	}
+    }
+  if (type->type == CPU_STM8L101)
+    {
+      add_hw(h= new cl_serial(this, 0x5230, 1));
+      h->init();
+    }
+
   add_hw(itc= new cl_itc(this));
   itc->init();
 
+  {
+    add_hw(h= new cl_port(this, 0x5000, "pa"));
+    h->init();
+    add_hw(h= new cl_port(this, 0x5005, "pb"));
+    h->init();
+    add_hw(h= new cl_port(this, 0x500a, "pc"));
+    h->init();
+    add_hw(h= new cl_port(this, 0x500f, "pd"));
+    h->init();
+  }
+  
   if (type->type == CPU_STM8S)
     {
       // all S and AF
+      add_hw(h= new cl_port(this, 0x5014, "pe"));
+      h->init();
+      add_hw(h= new cl_port(this, 0x5019, "pf"));
+      h->init();
+      if (type->subtype & (DEV_STM8S005|
+			   DEV_STM8S007|
+			   DEV_STM8S105|
+			   DEV_STM8S207|
+			   DEV_STM8S208|
+			   DEV_STM8AF52|
+			   DEV_STM8AF62_46))
+	{
+	  add_hw(h= new cl_port(this, 0x501e, "pg"));
+	  h->init();
+	  if (type->subtype != DEV_STM8AF62_46)
+	    {
+	      add_hw(h= new cl_port(this, 0x5023, "ph"));
+	      h->init();
+	      add_hw(h= new cl_port(this, 0x5028, "pi"));
+	      h->init();
+	    }
+	}
       add_hw(h= new cl_rst(this, 0x50b3));
       h->init();
       add_hw(h= new cl_tim1_saf(this, 1, 0x5250));
@@ -232,6 +336,29 @@ cl_stm8::mk_hw_elements(void)
     }
   else if (type->type == CPU_STM8L)
     {
+      if (type->subtype != DEV_STM8L051)
+	{
+	  add_hw(h= new cl_port(this, 0x5014, "pe"));
+	  h->init();
+	  add_hw(h= new cl_port(this, 0x5019, "pf"));
+	  h->init();
+	}
+      if (type->subtype & (DEV_STM8AL3xE|
+			   DEV_STM8AL3x8|
+			   DEV_STM8L052R|
+			   DEV_STM8L15x8|
+			   DEV_STM8L162))
+	{
+	  add_hw(h= new cl_port(this, 0x501e, "pg"));
+	  h->init();
+	  if (type->subtype != DEV_STM8L052R)
+	    {
+	      add_hw(h= new cl_port(this, 0x5023, "ph"));
+	      h->init();
+	      add_hw(h= new cl_port(this, 0x5028, "pi"));
+	      h->init();
+	    }
+	}
       add_hw(h= new cl_rst(this, 0x50b0));
       h->init();
       add_hw(h= new cl_tim2_all(this, 2, 0x5250));
