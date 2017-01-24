@@ -197,19 +197,6 @@ cl_stm8::mk_hw_elements(void)
       add_hw(h= new cl_rst(this, 0x50b3));
       h->init();
       // some S, some AF
-      if (type->subtype & (DEV_STM8S003|
-			   DEV_STM8S005|
-			   DEV_STM8S007|
-			   DEV_STM8S103|
-			   DEV_STM8S105|
-			   DEV_STM8S207|
-			   DEV_STM8S208|
-			   DEV_STM8AF52|
-			   DEV_STM8AF62_46))
-	{
-	  add_hw(h= new cl_tim2_saf(this, 2, 0x5300));
-	  h->init();
-	}
       if (type->subtype & (DEV_STM8S005|
 			   DEV_STM8S007|
 			   DEV_STM8S105|
@@ -218,13 +205,28 @@ cl_stm8::mk_hw_elements(void)
 			   DEV_STM8AF52|
 			   DEV_STM8AF62_46))
 	{
+	  add_hw(h= new cl_tim2_saf_a(this, 2, 0x5300));
+	  h->init();
 	  add_hw(h= new cl_tim3_saf(this, 3, 0x5320));
+	  h->init();
+	  add_hw(h= new cl_tim4_saf_a(this, 4, 0x5340));
 	  h->init();
 	}
       if (type->subtype & (DEV_STM8S903|
 			   DEV_STM8AF62_12))
 	{
 	  add_hw(h= new cl_tim5_saf(this, 5, 0x5300));
+	  h->init();
+	  add_hw(h= new cl_tim6_saf(this, 6, 0x5340));
+	  h->init();
+	}
+      if (type->subtype & (DEV_STM8S903|
+			   DEV_STM8S103))
+	{
+	  add_hw(h= new cl_tim2_saf_b(this, 2, 0x5300));
+	  h->init();
+	  // tim4 B
+	  add_hw(h= new cl_tim4_saf_b(this, 4, 0x5340));
 	  h->init();
 	}
     }
@@ -235,6 +237,8 @@ cl_stm8::mk_hw_elements(void)
       add_hw(h= new cl_tim2_all(this, 2, 0x5250));
       h->init();
       add_hw(h= new cl_tim3_all(this, 3, 0x5280));
+      h->init();
+      add_hw(h= new cl_tim4_all(this, 4, 0x52E0));
       h->init();
       // all AL
       if (type->subtype & DEV_STM8AL)
@@ -269,6 +273,8 @@ cl_stm8::mk_hw_elements(void)
       add_hw(h= new cl_tim2_l101(this, 2, 0x5250));
       h->init();
       add_hw(h= new cl_tim3_l101(this, 2, 0x5280));
+      h->init();
+      add_hw(h= new cl_tim4_l101(this, 4, 0x52E0));
       h->init();
     }
     

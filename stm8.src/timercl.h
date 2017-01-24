@@ -47,7 +47,7 @@ class cl_tim: public cl_hw
     int
     // register indexes
     cr1, // control 1
-      cr2, // control 2
+      cr2, // control 2 (used in Master/Slave timers only, all except SAF 235)
       smcr, // slave mode control
       etr, // external trigger
       der, //
@@ -63,9 +63,9 @@ class cl_tim: public cl_hw
       ccer2, // capture/compare enable 2
       cntrh, // counter high
       cntrl, // counter low
-      pscrh, // prescaler high
+      pscrh, // prescaler high (used only n TIM1)
       pscrl, // prescaler low
-      arrh, // auto-reload high
+      arrh, // auto-reload high (used in 16 bit counters)
       arrl, // auto-reload low
       rcr, // repetition counter
       ccr1h, // capture/compare 1 high
@@ -85,10 +85,15 @@ class cl_tim: public cl_hw
   t_addr base;
   cl_memory_cell *regs[32+6];
 
-  int bits, mask;
-  int cnt;
-  int ar;
+  int cnt; // copy of counter value
 
+  // Features
+  int bits; // size of counter: 8 or 16
+  int mask; // binary mask according to counter size
+  int pbits; // nuof bits used in prescaler value
+  bool bidir;
+  
+  // Internal "regs"
   u16_t prescaler_cnt; // actual downcounter
   u16_t prescaler_preload; // start value of prescaler downcount
   u8_t prescaler_ms_buffer; // written MS buffered until LS write
@@ -108,9 +113,13 @@ class cl_tim: public cl_hw
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
   virtual void count(void);
+  virtual u16_t get_counter();
   virtual u16_t set_counter(u16_t val);
   virtual void update_event(void);
-
+  virtual bool get_dir(); // true: UP, false: down
+  virtual u16_t get_arr();
+  virtual u16_t calc_prescaler();
+  
   virtual void print_info(class cl_console_base *con);
 };
 
@@ -120,18 +129,21 @@ class cl_tim1: public cl_tim
 {
  public:
   cl_tim1(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 class cl_tim1_saf: public cl_tim1
 {
  public:
   cl_tim1_saf(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 class cl_tim1_all: public cl_tim1
 {
  public:
   cl_tim1_all(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 
@@ -140,24 +152,37 @@ class cl_tim235: public cl_tim
 {
  public:
   cl_tim235(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
-class cl_tim2_saf: public cl_tim235
+class cl_tim2_saf_a: public cl_tim235
 {
  public:
-  cl_tim2_saf(class cl_uc *auc, int aid, t_addr abase);
+  cl_tim2_saf_a(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
+};
+
+class cl_tim2_saf_b: public cl_tim235
+{
+ public:
+  cl_tim2_saf_b(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
 };
 
 class cl_tim2_all: public cl_tim235
 {
  public:
   cl_tim2_all(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 class cl_tim2_l101: public cl_tim235
 {
  public:
   cl_tim2_l101(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 
@@ -165,18 +190,22 @@ class cl_tim3_saf: public cl_tim235
 {
  public:
   cl_tim3_saf(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
 };
 
 class cl_tim3_all: public cl_tim235
 {
  public:
   cl_tim3_all(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 class cl_tim3_l101: public cl_tim235
 {
  public:
   cl_tim3_l101(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 
@@ -184,12 +213,15 @@ class cl_tim5_saf: public cl_tim235
 {
  public:
   cl_tim5_saf(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
 };
 
 class cl_tim5_all: public cl_tim235
 {
  public:
   cl_tim5_all(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
 };
 
 
@@ -198,6 +230,48 @@ class cl_tim46: public cl_tim
 {
  public:
   cl_tim46(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
+};
+
+class cl_tim4_saf_a: public cl_tim46
+{
+ public:
+  cl_tim4_saf_a(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
+};
+
+class cl_tim4_saf_b: public cl_tim46
+{
+ public:
+  cl_tim4_saf_b(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
+};
+
+class cl_tim4_all: public cl_tim46
+{
+ public:
+  cl_tim4_all(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
+};
+
+class cl_tim4_l101: public cl_tim46
+{
+ public:
+  cl_tim4_l101(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
+};
+
+class cl_tim6_saf: public cl_tim46
+{
+ public:
+  cl_tim6_saf(class cl_uc *auc, int aid, t_addr abase);
+  virtual int init(void);
+  virtual bool get_dir() { return true; }
 };
 
 
