@@ -69,11 +69,13 @@ enum reg_idx {
 
 cl_serial::cl_serial(class cl_uc *auc,
 		     t_addr abase,
-		     int ttype):
+		     int ttype, int atxit, int arxit):
   cl_serial_hw(auc, ttype, "uart")
 {
   type= ttype;
   base= abase;
+  txit= atxit;
+  rxit= arxit;
 }
 
 
@@ -95,21 +97,21 @@ cl_serial::init(void)
   pick_div();
   pick_ctrl();
 
-  uc->it_sources->add(new cl_it_src(uc, 20,
+  uc->it_sources->add(new cl_it_src(uc, txit,
 				    regs[cr2], 0x80,
 				    regs[sr], 0x80,
-				    0x8058, false, false,
-				    "usart transmit register empty", 20*10+1));
-  uc->it_sources->add(new cl_it_src(uc, 20,
+				    0x8008+txit*4, false, false,
+				    chars("", "usart%d transmit register empty", id), 20*10+1));
+  uc->it_sources->add(new cl_it_src(uc, txit,
 				    regs[cr2], 0x40,
 				    regs[sr], 0x40,
-				    0x8058, false, false,
-				    "usart trasnmit complete", 20*10+2));
-  uc->it_sources->add(new cl_it_src(uc, 21,
+				    0x8008+txit*4, false, false,
+				    chars("", "usart%d transmit complete", id), 20*10+2));
+  uc->it_sources->add(new cl_it_src(uc, rxit,
 				    regs[cr2], 0x20,
 				    regs[sr], 0x20,
-				    0x805C, false, false,
-				    "usart receive", 20*10+3));
+				    0x8008+rxit*4, false, false,
+				    chars("", "usart%d receive", id), 20*10+3));
 
   sr_read= false;
   /*

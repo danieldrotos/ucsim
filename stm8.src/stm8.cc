@@ -209,28 +209,33 @@ cl_stm8::mk_hw_elements(void)
 			   DEV_STM8S903|
 			   DEV_STM8AF52))
 	{
-	  add_hw(h= new cl_serial(this, 0x5230, 1));
+	  add_hw(h= new cl_serial(this, 0x5230, 1, 17, 18));
 	  h->init();
 	}
       if (type->subtype & (DEV_STM8S005|
 			   DEV_STM8S105|
-			   DEV_STM8AF52|
 			   DEV_STM8AF62_46))
 	{
-	  add_hw(h= new cl_serial(this, 0x5240, 2));
+	  add_hw(h= new cl_serial(this, 0x5240, 2, 20, 21));
 	  h->init();
 	}
       if (type->subtype & (DEV_STM8S007|
 			   DEV_STM8S207|
-			   DEV_STM8S208))
+			   DEV_STM8S208|
+			   DEV_STM8AF52))
 	{
-	  add_hw(h= new cl_serial(this, 0x5240, 3));
+	  add_hw(h= new cl_serial(this, 0x5240, 3, 20, 21));
+	  h->init();
+	}
+      if (type->subtype & (DEV_STM8AF62_12))
+	{
+	  add_hw(h= new cl_serial(this, 0x5230, 4, 17, 18));
 	  h->init();
 	}
     }
   if (type->type == CPU_STM8L)
     {
-      add_hw(h= new cl_serial(this, 0x5230, 1));
+      add_hw(h= new cl_serial(this, 0x5230, 1, 27, 28));
       h->init();
       if (type->subtype & (DEV_STM8AL3xE|
 			   DEV_STM8AL3x8|
@@ -238,7 +243,7 @@ cl_stm8::mk_hw_elements(void)
 			   DEV_STM8L15x8|
 			   DEV_STM8L162))
 	{
-	  add_hw(h= new cl_serial(this, 0x53e0, 2));
+	  add_hw(h= new cl_serial(this, 0x53e0, 2, 19, 20));
 	  h->init();
 	}
       if (type->subtype & (DEV_STM8AL3xE|
@@ -247,13 +252,13 @@ cl_stm8::mk_hw_elements(void)
 			   DEV_STM8L15x8|
 			   DEV_STM8L162))
 	{
-	  add_hw(h= new cl_serial(this, 0x53f0, 3));
+	  add_hw(h= new cl_serial(this, 0x53f0, 3, 21, 22));
 	  h->init();
 	}
     }
   if (type->type == CPU_STM8L101)
     {
-      add_hw(h= new cl_serial(this, 0x5230, 1));
+      add_hw(h= new cl_serial(this, 0x5230, 1, 27, 28));
       h->init();
     }
 

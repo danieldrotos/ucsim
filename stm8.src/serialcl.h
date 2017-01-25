@@ -46,7 +46,7 @@ class cl_serial: public cl_serial_hw
 {
  protected:
   t_addr base;
-  int type;
+  int type, txit, rxit;
   class cl_memory_cell *regs[12];
   int div;
   int mcnt;
@@ -66,7 +66,7 @@ class cl_serial: public cl_serial_hw
  public:
   cl_serial(class cl_uc *auc,
 	    t_addr abase,
-	    int ttype);
+	    int ttype, int atxit, int arxit);
   virtual ~cl_serial(void);
   virtual int init(void);
   virtual int cfg_size(void) { return 10; }
