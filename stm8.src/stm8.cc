@@ -198,6 +198,9 @@ cl_stm8::mk_hw_elements(void)
   application->options->new_option(o);
   o->init();
   o->hide();
+
+  add_hw(h= new cl_stm8_cpu(this));
+  h->init();
   
   if (type->type == CPU_STM8S)
     {
@@ -1740,6 +1743,145 @@ bool
 cl_stm8::it_enabled(void)
 {
   return !(regs.CC & BIT_I0) || !(regs.CC & BIT_I1);
+}
+
+
+cl_stm8_cpu::cl_stm8_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_DUMMY, 0, "cpu")
+{
+}
+
+int
+cl_stm8_cpu::init(void)
+{
+  int i;
+  cl_hw::init();
+  for (i= 0; i < 11; i++)
+    {
+      regs[i]= register_cell(uc->rom, 0x7f00+i);
+    }
+  return 0;
+}
+
+void
+cl_stm8_cpu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  t_addr a;
+  cl_stm8 *u= (cl_stm8*)uc;
+
+  if (conf(cell, val))
+    return;
+  
+  if (conf(cell, NULL))
+    return;
+
+  *val&= 0xff;
+  if (!uc->rom->is_owned(cell, &a))
+    return;  
+  if ((a < 0x7f00) ||
+      (a > 0x7f0a))
+    return;
+
+  a-= 0x7f00;
+  switch (a)
+    {
+    case 0:
+      u->regs.A= *val;
+      break;
+    case 1:
+      u->PC= (u->PC & 0xffff) + (*val << 16);
+      break;
+    case 2:
+      u->PC= (u->PC & 0xff00ff) | (*val << 8);
+      break;
+    case 3:
+      u->PC= (u->PC & 0xffff00) | (*val);
+      break;
+    case 4:
+      u->regs.X= (u->regs.X & 0xff) | (*val << 8);
+      break;
+    case 5:
+      u->regs.X= (u->regs.X & 0xff00) | (*val);
+      break;
+    case 6:
+      u->regs.Y= (u->regs.Y & 0xff) | (*val << 8);
+      break;
+    case 7:
+      u->regs.Y= (u->regs.Y & 0xff00) | (*val);
+      break;
+    case 8:
+      u->regs.SP= (u->regs.SP & 0xff) | (*val << 8);
+      break;
+    case 9:
+      u->regs.SP= (u->regs.SP & 0xff00) | (*val);
+      break;
+    case 0xa:
+      u->regs.CC= (u->regs.CC & 0xff00) | (*val);
+      break;
+    }
+}
+
+t_mem
+cl_stm8_cpu::read(class cl_memory_cell *cell)
+{
+  t_mem v= cell->get();
+  t_addr a;
+  cl_stm8 *u= (cl_stm8*)uc;
+  
+  if (conf(cell, NULL))
+    return v;
+  if (!uc->rom->is_owned(cell, &a))
+    return v;
+  if ((a < 0x7f00) ||
+      (a > 0x7f0a))
+    return v;
+
+  a-= 0x7f00;
+  switch (a)
+    {
+    case 0:
+      v= u->regs.A;
+      break;
+    case 1:
+      v= (u->PC >> 16) & 0xff;
+      break;
+    case 2:
+      v= (u->PC >> 8) & 0xff;
+      break;
+    case 3:
+      v= u->PC & 0xff;
+      break;
+    case 4:
+      v= (u->regs.X >> 8) & 0xff;
+      break;
+    case 5:
+      v= u->regs.X & 0xff;
+      break;
+    case 6:
+      v= (u->regs.Y >> 8) & 0xff;
+      break;
+    case 7:
+      v= u->regs.Y & 0xff;
+      break;
+    case 8:
+      v= (u->regs.SP >> 8) & 0xff;
+      break;
+    case 9:
+      v= u->regs.SP & 0xff;
+      break;
+    case 0xa:
+      v= u->regs.CC;
+      break;
+    }
+  return v;
+}
+
+t_mem
+cl_stm8_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  if (val)
+    cell->set(*val);
+  return cell->get();
 }
 
 

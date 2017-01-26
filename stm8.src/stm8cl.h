@@ -88,6 +88,21 @@ public:
 };
 
 
+class cl_stm8_cpu: public cl_hw
+{
+ protected:
+  class cl_memory_cell *regs[11];
+ public:
+  cl_stm8_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual int cfg_size(void) { return 2; }
+
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+};
+
+
 #endif
 
 /* End of stm8.src/stm8cl.h */
