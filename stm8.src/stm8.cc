@@ -426,17 +426,75 @@ cl_stm8::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= ram= as= new cl_address_space("rom", 0, 0x20000, 8);
+  rom= ram= as= new cl_address_space("rom", 0, 0x28000, 8);
   as->init();
   address_spaces->add(as);
 
   class cl_address_decoder *ad;
-  class cl_memory_chip *chip;
+  class cl_memory_chip *chip, *rom_chip;
 
-  c= chip= new cl_memory_chip("rom_chip", 0x20000, 8);
-  chip->init();
-  memchips->add(chip);
-  ad= new cl_address_decoder(as= address_space("rom"), chip, 0, 0x1ffff, 0);
+  c= rom_chip= new cl_memory_chip("rom_chip", 0x20000, 8);
+  rom_chip->init();
+  memchips->add(rom_chip);
+
+  ram_chip= new cl_memory_chip("ram_chip", 0x1800, 8);
+  ram_chip->init();
+  memchips->add(ram_chip);
+  eeprom_chip= new cl_memory_chip("eeprom_chip", 0x0800, 8);
+  eeprom_chip->init();
+  memchips->add(eeprom_chip);
+  option_chip= new cl_memory_chip("option_chip", 0x0080, 8);
+  option_chip->init();
+  memchips->add(option_chip);
+  io_chip= new cl_memory_chip("io_chip", 0x0800, 8);
+  io_chip->init();
+  memchips->add(io_chip);
+  boot_chip= new cl_memory_chip("boot_chip", 0x0800, 8);
+  boot_chip->init();
+  memchips->add(boot_chip);
+  cpu_chip= new cl_memory_chip("cpu_chip", 0x0100, 8);
+  cpu_chip->init();
+  memchips->add(cpu_chip);
+  flash_chip= new cl_memory_chip("flash_chip", 0x20000, 8);
+  flash_chip->init();
+  memchips->add(flash_chip);
+  /*
+  ad= new cl_address_decoder(as= address_space("rom"), rom_chip, 0, 0x1ffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  */
+  ad= new cl_address_decoder(as= address_space("rom"), ram_chip, 0, 0x17ff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ad= new cl_address_decoder(as= address_space("rom"), eeprom_chip, 0x4000, 0x47ff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ad= new cl_address_decoder(as= address_space("rom"), option_chip, 0x4800, 0x487f, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ad= new cl_address_decoder(as= address_space("rom"), io_chip, 0x5000, 0x57ff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ad= new cl_address_decoder(as= address_space("rom"), boot_chip, 0x6000, 0x67ff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ad= new cl_address_decoder(as= address_space("rom"), cpu_chip, 0x7f00, 0x7fff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ad= new cl_address_decoder(as= address_space("rom"), flash_chip, 0x8000, 0x27fff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);

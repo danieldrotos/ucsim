@@ -47,6 +47,14 @@ public:
   class cl_address_space *ram;
   class cl_address_space *regs8;
   class cl_address_space *regs16;
+  class cl_memory_chip
+    *ram_chip, // max 6k
+    *eeprom_chip, // max 2k
+    *option_chip, // 128 bytes
+    *io_chip, // 2k
+    *boot_chip, // 2k
+    *cpu_chip, // 256 bytes
+    *flash_chip; // max 128k
   //class cl_memory *rom;
   struct t_regs regs;
   class cl_itc *itc;
