@@ -39,8 +39,9 @@ class cl_rst: public cl_hw
  public:
   t_addr base;
   class cl_memory_cell *rst_sr;
+  t_mem mask;
  public:
-  cl_rst(class cl_uc *auc, t_addr abase);
+  cl_rst(class cl_uc *auc, t_addr abase, t_mem amask);
   //virtual ~cl_rst(void);
   virtual int init(void);
 

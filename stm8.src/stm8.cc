@@ -304,7 +304,7 @@ cl_stm8::mk_hw_elements(void)
 	      h->init();
 	    }
 	}
-      add_hw(h= new cl_rst(this, 0x50b3));
+      add_hw(h= new cl_rst(this, 0x50b3, 0x1f));
       h->init();
       add_hw(h= new cl_tim1_saf(this, 1, 0x5250));
       h->init();
@@ -367,7 +367,7 @@ cl_stm8::mk_hw_elements(void)
 	      h->init();
 	    }
 	}
-      add_hw(h= new cl_rst(this, 0x50b0));
+      add_hw(h= new cl_rst(this, 0x50b0+1, 0x3f));
       h->init();
       add_hw(h= new cl_tim2_all(this, 2, 0x5250));
       h->init();
@@ -403,7 +403,7 @@ cl_stm8::mk_hw_elements(void)
     }
   else if (type->type == CPU_STM8L101)
     {
-      add_hw(h= new cl_rst(this, 0x50b0));
+      add_hw(h= new cl_rst(this, 0x50b0+1, 0x0f));
       h->init();
       add_hw(h= new cl_tim2_l101(this, 2, 0x5250));
       h->init();
@@ -431,7 +431,7 @@ cl_stm8::make_memories(void)
   address_spaces->add(as);
 
   class cl_address_decoder *ad;
-  class cl_memory_chip *chip, *rom_chip;
+  class cl_memory_chip /* *chip,*/ *rom_chip;
 
   c= rom_chip= new cl_memory_chip("rom_chip", 0x20000, 8);
   rom_chip->init();

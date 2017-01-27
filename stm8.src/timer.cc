@@ -192,22 +192,33 @@ cl_tim::write(class cl_memory_cell *cell, t_mem *val)
   a-= base;
   if (a == idx.cr1)
     {
+      u8_t v= cell->get();
       if (!bidir)
 	*val&= 0x1f;
+      else
+	{
+	  if ((v & cms))
+	    {
+	      *val&= ~dir;
+	      if (v & dir)
+		*val|= dir;
+	    }
+	}
     }
   else if (a == idx.egr)
     {
       if (*val & 0x01)
 	{
 	  update_event();
-	  prescaler_cnt= calc_prescaler() - 1;  
+	  prescaler_cnt= calc_prescaler() - 1;
+	  //*val&= ~0x01;
 	}
       *val= 0;
     }
   else if (a == idx.pscrh)
     {
       prescaler_ms_buffer= *val;
-      *val= cell->get();
+      //*val= cell->get();
     }
   else if (a == idx.pscrl)
     {
@@ -221,7 +232,7 @@ cl_tim::write(class cl_memory_cell *cell, t_mem *val)
       if ((regs[idx.cr1]->get() & arpe) != 0)
 	{
 	  arr_ms_buffer= *val;
-	  *val= cell->get();
+	  //*val= cell->get();
 	}
     }
   else if (a == idx.arrl)

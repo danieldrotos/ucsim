@@ -30,11 +30,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "rstcl.h"
 
 
-cl_rst::cl_rst(class cl_uc *auc, t_addr abase):
+cl_rst::cl_rst(class cl_uc *auc, t_addr abase, t_mem amask):
   cl_hw(auc, HW_RESET, 0, "rst")
 {
   base= abase;
   rst_sr= 0;
+  mask= amask;
 }
 
 int
@@ -55,7 +56,7 @@ cl_rst::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (cell == rst_sr)
     {
-      u8_t v= *val & 0x1f, o= cell->get();
+      u8_t v= *val & mask, o= cell->get();
       *val= o & ~v;
     }
 }
