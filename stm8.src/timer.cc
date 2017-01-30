@@ -469,7 +469,7 @@ cl_tim1_all::cl_tim1_all(class cl_uc *auc, int aid, t_addr abase):
   idx.cr2	=  1;
   idx.smcr	=  2;
   idx.etr	=  3;
-  //der=4
+  idx.der	=  4;
   idx.ier	=  5;
   idx.sr1	=  6;
   idx.sr2	=  7;

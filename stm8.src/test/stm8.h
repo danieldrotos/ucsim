@@ -1,8 +1,65 @@
 #ifndef STM8_HEADER
 #define STM8_HEADER
 
-#define CLK_DIVR	(*(volatile uint8_t *)0x50c6)
-#define CLK_PCKENR1	(*(volatile uint8_t *)0x50c7)
+#define DEV_STM8S903	0x00000001
+#define DEV_STM8S003	0x00000002
+#define DEV_STM8S005	0x00000004
+#define DEV_STM8S007	0x00000008
+#define DEV_STM8S103	0x00000010
+#define DEV_STM8S105	0x00000020
+#define DEV_STM8S207	0x00000040
+#define DEV_STM8S208	0x00000080
+#define DEV_STM8S	(DEV_STM8S903|\
+			 DEV_STM8S003|\
+			 DEV_STM8S005|\
+			 DEV_STM8S007|\
+			 DEV_STM8S103|\
+			 DEV_STM8S105|\
+			 DEV_STM8S207|\
+			 DEV_STM8S208)
+
+#define DEV_STM8AF52	0x00000100
+#define DEV_STM8AF62_12	0x00000200
+#define DEV_STM8AF62_46	0x00000400
+#define DEV_STM8AF	(DEV_STM8AF52|\
+			 DEV_STM8AF62_12|\
+			 DEV_STM8AF62_46)
+
+#define DEV_STM8SAF	(DEV_STM8S|DEV_STM8AF)
+
+#define DEV_STM8AL3xE	0x00010000
+#define DEV_STM8AL3x8	0x00020000
+#define DEV_STM8AL3x346	0x00040000
+#define DEV_STM8AL	(DEV_STM8AL3xE|\
+			 DEV_STM8AL3x8|\
+			 DEV_STM8AL3x346)
+
+#define DEV_STM8L051	0x01000000
+#define DEV_STM8L052C	0x02000000
+#define DEV_STM8L052R	0x04000000
+#define DEV_STM8L151x23	0x08000000
+#define DEV_STM8L15x46	0x10000000
+#define DEV_STM8L15x8	0x20000000
+#define DEV_STM8L162	0x40000000
+
+#define DEV_STM8L	(DEV_STM8L051|\
+			 DEV_STM8L052C|\
+			 DEV_STM8L052R|\
+			 DEV_STM8L151x23|\
+			 DEV_STM8L15x46|\
+			 DEV_STM8L15x8|\
+			 DEV_STM8L162)
+
+#define DEV_STM8ALL	(DEV_STM8AL|DEV_STM8L)
+
+#define DEV_STM8L101	0x00001000
+
+#ifndef DEVICE
+#define DEVICE DEV_STM8S208
+#endif
+
+//#define CLK_DIVR	(*(volatile uint8_t *)0x50c6)
+//#define CLK_PCKENR1	(*(volatile uint8_t *)0x50c7)
 
 
 #define UART2_SR	(*(volatile uint8_t *)0x5240)
@@ -19,6 +76,115 @@
 #define UART_CR3_STOP1 (1 << 4)
 #define UART_SR_TXE (1 << 7)
 #define UART_SR_RXNE (1 << 5)
+
+
+/* GPIO
+ */
+
+struct GPIO_t {
+  volatile uint8_t odr;
+  volatile uint8_t idr;
+  volatile uint8_t ddr;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+};
+
+#define GPIOA ((struct GPIO_t *)0x5000)
+#define GPIOB ((struct GPIO_t *)0x5005)
+#define GPIOC ((struct GPIO_t *)0x500A)
+#define GPIOD ((struct GPIO_t *)0x500F)
+#if (DEVICE & DEV_STM8SAF) || \
+  (DEVICE & DEV_STM8AL) || \
+  (DEVICE & DEV_STM8L052C) || \
+  (DEVICE & DEV_STM8L052R) || \
+  (DEVICE & DEV_STM8L151x23) || \
+  (DEVICE & DEV_STM8L15x46) || \
+  (DEVICE & DEV_STM8L15x8) || \
+  (DEVICE & DEV_STM8L162)
+#define GPIOE ((struct GPIO_t *)0x5014)
+#define GPIOF ((struct GPIO_t *)0x5019)
+#endif
+#if (DEVICE & DEV_STM8S005) || \
+  (DEVICE & DEV_STM8S007) || \
+  (DEVICE & DEV_STM8S105) || \
+  (DEVICE & DEV_STM8S207) || \
+  (DEVICE & DEV_STM8S208) || \
+  (DEVICE & DEV_STM8AF52) || \
+  (DEVICE & DEV_STM8AF62_46) || \
+  (DEVICE & DEV_STM8AL3xE) || \
+  (DEVICE & DEV_STM8AL3x8) || \
+  (DEVICE & DEV_STM8L052R) || \
+  (DEVICE & DEV_STM8L15x8) || \
+  (DEVICE & DEV_STM8L162)
+#define GPIOG ((struct GPIO_t *)0x501E)
+#endif
+#if (DEVICE & DEV_STM8S005) || \
+  (DEVICE & DEV_STM8S007) || \
+  (DEVICE & DEV_STM8S105) || \
+  (DEVICE & DEV_STM8S207) || \
+  (DEVICE & DEV_STM8S208) || \
+  (DEVICE & DEV_STM8AF52) || \
+  (DEVICE & DEV_STM8AL3xE) || \
+  (DEVICE & DEV_STM8AL3x8) || \
+  (DEVICE & DEV_STM8L15x8) || \
+  (DEVICE & DEV_STM8L162)
+#define  GPIOH ((struct GPIO_t *)0x5023)
+#define  GPIOI ((struct GPIO_t *)0x5028)
+#endif
+
+
+/* TIM1
+ */
+
+#if (DEVICE & DEV_STM8ALL)
+struct TIM1_t {
+  volatile uint8_t cr1;		//=  0;
+  volatile uint8_t cr2;		//=  1;
+  volatile uint8_t smcr;	//=  2;
+  volatile uint8_t etr;		//=  3;
+  volatile uint8_t der;         //=  4;
+  volatile uint8_t ier;		//=  5;
+  volatile uint8_t sr1;		//=  6;
+  volatile uint8_t sr2;		//=  7;
+  volatile uint8_t egr;		//=  8;
+  volatile uint8_t ccmr1;	//=  9;
+  volatile uint8_t ccmr2;	//= 10;
+  volatile uint8_t ccmr3;	//= 11;
+  volatile uint8_t ccmr4;	//= 12;
+  volatile uint8_t ccer1;	//= 13;
+  volatile uint8_t ccer2;	//= 14;
+  volatile uint8_t cntrh;	//= 15;
+  volatile uint8_t cntrl;	//= 16;
+  volatile uint8_t pscrh;	//= 17;
+  volatile uint8_t pscrl;	//= 18;
+  volatile uint8_t arrh;	//= 19;
+  volatile uint8_t arrl;	//= 20;
+  volatile uint8_t rcr;		//= 21;
+  volatile uint8_t ccr1h;	//= 22;
+  volatile uint8_t ccr1l;	//= 23;
+  volatile uint8_t ccr2h;	//= 24;
+  volatile uint8_t ccr2l;	//= 25;
+  volatile uint8_t ccr3h;	//= 26;
+  volatile uint8_t ccr3l;	//= 27;
+  volatile uint8_t ccr4h;	//= 28;
+  volatile uint8_t ccr4l;	//= 29;
+  volatile uint8_t bkr;		//= 30;
+  volatile uint8_t dtr;		//= 31;
+  volatile uint8_t oisr;	//= 32;
+};
+#endif
+
+#if (DEVICE & DEV_STM8S) || (DEVICE & DEV_STM8AF)
+#define TIM1 ((struct TIM1_t *)0x5250)
+#endif
+#if (DEVICE & DEV_STM8AL) || \
+  (DEVICE & DEV_STM8L052C) || \
+  (DEVICE & DEV_STM8L052R) || \
+  (DEVICE & DEV_STM8L15x46) || \
+  (DEVICE & DEV_STM8L15x8) || \
+  (DEVICE & DEV_STM8L162)
+#define TIM1 ((struct TIM1_t *)0x52B0)
+#endif
 
 #define EI __asm__("rim")
 #define DI __asm__("sim")

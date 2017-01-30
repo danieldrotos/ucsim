@@ -71,11 +71,29 @@ char getchar()
   return rx_buf[o];
 }
 
+void
+print_bl()
+{
+  int a, l;
+  uint8_t *p= (uint8_t *)0x6000;
+  printf("%c\n", 2);
+  printf("$A%04x,\n", 0x6000);
+  for (a= 0, l= 0; a < 0x800; a++)
+    {
+      printf("%02x ", p[a]);
+      l++;
+      if ((l % 16) == 0)
+	{
+	  l= 0;
+	  printf("\n");
+	}
+    }
+  printf("%c\n", 3);
+}
+	 
 void main(void)
 {
   unsigned long i = 0;
-  int a= 0;
-  uint8_t *p= (uint8_t *)0x6000;
   
   CLK_DIVR = 0x00; // Set the frequency to 16 MHz
   CLK_PCKENR1 = 0xFF; // Enable peripherals
@@ -92,18 +110,15 @@ void main(void)
 
   for(;;)
     {
-      i++;
       if (received())
 	{
 	  char c= getchar();
-	  printf("%c", c);
-	  i= 0;
-	}
-      else
-      if (i > 147456*2)
-	{
-	  printf("\ntick %d, press any key\n", a++);
-	  i= 0;
+	  if (c == '=')
+	    {
+	      print_bl();
+	    }
+	  else
+	    printf("%c", c);
 	}
     }
 }

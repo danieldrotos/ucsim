@@ -3,6 +3,9 @@
 
 #include "stm8.h"
 
+#define CLK_DIVR	(*(volatile uint8_t *)0x50c6)
+#define CLK_PCKENR1	(*(volatile uint8_t *)0x50c7)
+
 int putchar(int c)
 {
 	while(!(UART2_SR & UART_SR_TXE));
