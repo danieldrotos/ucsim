@@ -1,6 +1,11 @@
 #ifndef STM8_HEADER
 #define STM8_HEADER
 
+#include "stdint.h"
+
+/* DEVICES 
+ */
+
 #define DEV_STM8S903	0x00000001
 #define DEV_STM8S003	0x00000002
 #define DEV_STM8S005	0x00000004
@@ -184,6 +189,189 @@ struct TIM1_t {
   (DEVICE & DEV_STM8L15x8) || \
   (DEVICE & DEV_STM8L162)
 #define TIM1 ((struct TIM1_t *)0x52B0)
+#endif
+
+/* USART1
+ */
+
+struct USART1_saf_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+  volatile uint8_t cr5;
+  volatile uint8_t gtr;
+  volatile uint8_t pscr;
+};
+
+struct USART1_all_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+  volatile uint8_t cr5;
+  volatile uint8_t gtr;
+  volatile uint8_t pscr;
+};
+
+struct USART1_l101_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+};
+
+#if (DEVICE & DEV_STM8S003) || \
+  (DEVICE & DEV_STM8S007) || \
+  (DEVICE & DEV_STM8S103) || \
+  (DEVICE & DEV_STM8S207) || \
+  (DEVICE & DEV_STM8S208) || \
+  (DEVICE & DEV_STM8S903) || \
+  (DEVICE & DEV_STM8AF52)
+#define USART1_t USART1_saf_t
+#define USART1 ((struct USART1_t *)0x5230)
+#endif
+
+#if (DEVICE & DEV_STM8ALL)
+#define USART1_t USART1_all_t
+#define USART1 ((struct USART1_t *)0x5230)
+#endif
+
+#if (DEVICE & DEV_STM8L101)
+#define USART1_t USART1_l101_t
+#define USART1 ((struct USART1_t *)0x5230)
+#endif
+
+/* USART2
+ */
+
+struct USART2_saf_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+  volatile uint8_t cr5;
+  volatile uint8_t cr6;
+  volatile uint8_t gtr;
+  volatile uint8_t pscr;
+};
+
+struct USART2_all_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+  volatile uint8_t cr5;
+  volatile uint8_t gtr;
+  volatile uint8_t pscr;
+};
+
+#if (DEVICE & DEV_STM8S005) || \
+  (DEVICE & DEV_STM8S105) || \
+  (DEVICE & DEV_STM8AF52) || \
+  (DEVICE & DEV_STM8AF62_46)
+#define USART2_t USART2_saf_t
+#define USART2 ((struct USART2_t *)0x5240)
+#endif
+
+#if (DEVICE & DEV_STM8AL3xE) || \
+  (DEVICE & DEV_STM8AL3x8) || \
+  (DEVICE & DEV_STM8L052R) || \
+  (DEVICE & DEV_STM8L15x8) || \
+  (DEVICE & DEV_STM8L162)
+#define USART2_t USART2_all_t
+#define USART2 ((struct USART2_t *)0x53E0)
+#endif
+
+/* USART3
+ */
+
+struct USART3_saf_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+  volatile uint8_t _dummy;
+  volatile uint8_t cr6;
+  volatile uint8_t gtr;
+  volatile uint8_t pscr;
+};
+
+struct USART3_all_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+  volatile uint8_t cr5;
+  volatile uint8_t gtr;
+  volatile uint8_t pscr;
+};
+
+#if (DEVICE & DEV_STM8S007) || \
+  (DEVICE & DEV_STM8S207) ||   \
+  (DEVICE & DEV_STM8S208)
+#define USART3_t USART3_saf_t
+#define USART3 ((struct USART3_t *)0x5240)
+#endif
+
+#if (DEVICE & DEV_STM8AL3xE) || \
+  (DEVICE & DEV_STM8AL3x8) || \
+  (DEVICE & DEV_STM8L052R) || \
+  (DEVICE & DEV_STM8L15x8) || \
+  (DEVICE & DEV_STM8L162)
+#define USART3_t USART3_all_t
+#define USART3 ((struct USART3_t *)0x53F0)
+#endif
+
+/* USART4
+ */
+
+struct USART4_saf_t {
+  volatile uint8_t sr;
+  volatile uint8_t dr;
+  volatile uint8_t brr1;
+  volatile uint8_t brr2;
+  volatile uint8_t cr1;
+  volatile uint8_t cr2;
+  volatile uint8_t cr3;
+  volatile uint8_t cr4;
+  volatile uint8_t cr5;
+  volatile uint8_t cr6;
+  volatile uint8_t gtr;
+  volatile uint8_t pscr;
+};
+
+#if (DEVICE & DEV_STM8AF62_12)
+#define USART4_t USART4_saf_t
+#define USART4 ((struct USART4_t *)0x5230)
 #endif
 
 #define EI __asm__("rim")
