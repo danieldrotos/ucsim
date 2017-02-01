@@ -67,20 +67,20 @@
 //#define CLK_PCKENR1	(*(volatile uint8_t *)0x50c7)
 
 
-#define UART2_SR	(*(volatile uint8_t *)0x5240)
-#define UART2_DR	(*(volatile uint8_t *)0x5241)
-#define UART2_BRR1	(*(volatile uint8_t *)0x5242)
-#define UART2_BRR2	(*(volatile uint8_t *)0x5243)
-#define UART2_CR2	(*(volatile uint8_t *)0x5245)
-#define UART2_CR3	(*(volatile uint8_t *)0x5246)
+//#define UART2_SR	(*(volatile uint8_t *)0x5240)
+//#define UART2_DR	(*(volatile uint8_t *)0x5241)
+//#define UART2_BRR1	(*(volatile uint8_t *)0x5242)
+//#define UART2_BRR2	(*(volatile uint8_t *)0x5243)
+//#define UART2_CR2	(*(volatile uint8_t *)0x5245)
+//#define UART2_CR3	(*(volatile uint8_t *)0x5246)
 
-#define UART_CR2_TEN (1 << 3)
-#define UART_CR2_REN (1 << 2)
-#define UART_CR2_RIEN (1 << 5)
-#define UART_CR3_STOP2 (1 << 5)
-#define UART_CR3_STOP1 (1 << 4)
-#define UART_SR_TXE (1 << 7)
-#define UART_SR_RXNE (1 << 5)
+//#define UART_CR2_TEN (1 << 3)
+//#define UART_CR2_REN (1 << 2)
+//#define UART_CR2_RIEN (1 << 5)
+//#define UART_CR3_STOP2 (1 << 5)
+//#define UART_CR3_STOP1 (1 << 4)
+//#define UART_SR_TXE (1 << 7)
+//#define UART_SR_RXNE (1 << 5)
 
 
 /* GPIO
@@ -191,6 +191,17 @@ struct TIM1_t {
 #define TIM1 ((struct TIM1_t *)0x52B0)
 #endif
 
+/* USART
+ */
+
+#define USART_CR2_TEN (1 << 3)
+#define USART_CR2_REN (1 << 2)
+#define USART_CR2_RIEN (1 << 5)
+#define USART_CR3_STOP2 (1 << 5)
+#define USART_CR3_STOP1 (1 << 4)
+#define USART_SR_TXE (1 << 7)
+#define USART_SR_RXNE (1 << 5)
+
 /* USART1
  */
 
@@ -288,7 +299,6 @@ struct USART2_all_t {
 
 #if (DEVICE & DEV_STM8S005) || \
   (DEVICE & DEV_STM8S105) || \
-  (DEVICE & DEV_STM8AF52) || \
   (DEVICE & DEV_STM8AF62_46)
 #define USART2_t USART2_saf_t
 #define USART2 ((struct USART2_t *)0x5240)
@@ -336,8 +346,9 @@ struct USART3_all_t {
 };
 
 #if (DEVICE & DEV_STM8S007) || \
-  (DEVICE & DEV_STM8S207) ||   \
-  (DEVICE & DEV_STM8S208)
+  (DEVICE & DEV_STM8S207) || \
+  (DEVICE & DEV_STM8S208) || \
+  (DEVICE & DEV_STM8AF52)
 #define USART3_t USART3_saf_t
 #define USART3 ((struct USART3_t *)0x5240)
 #endif
@@ -373,6 +384,139 @@ struct USART4_saf_t {
 #define USART4_t USART4_saf_t
 #define USART4 ((struct USART4_t *)0x5230)
 #endif
+
+/* USART interrupt numbers */
+
+#if (DEVICE & DEV_STM8SAF)
+#if defined USART1
+#define USART1_TX_IRQ 11
+#define USART1_RX_IRQ 12
+#endif
+#endif
+#if (DEVICE & DEV_STM8ALL) || \
+  (DEVICE & DEV_STM8_L101)
+#if defined USART1
+#define USART1_TX_IRQ 27
+#define USART1_RX_IRQ 28
+#endif
+#endif
+
+#if (DEVICE & DEV_STM8SAF)
+#if defined USART2
+#define USART2_TX_IRQ 20
+#define USART2_RX_IRQ 21
+#endif
+#endif
+#if (DEVICE & DEV_STM8ALL)
+#if defined USART2
+#define USART2_TX_IRQ 19
+#define USART2_RX_IRQ 20
+#endif
+#endif
+
+#if (DEVICE & DEV_STM8SAF)
+#if defined USART3
+#define USART3_TX_IRQ 20
+#define USART3_RX_IRQ 21
+#endif
+#endif
+#if (DEVICE & DEV_STM8ALL)
+#if defined USART3
+#define USART3_TX_IRQ 21
+#define USART3_RX_IRQ 22
+#endif
+#endif
+
+#if defined USART4
+#define USART3_TX_IRQ 17
+#define USART3_RX_IRQ 18
+#endif
+
+/* Select first USART as default */
+
+#ifndef USART
+#if (DEVICE & DEV_STM8S003) || \
+  (DEVICE & DEV_STM8S007) || \
+  (DEVICE & DEV_STM8S103) || \
+  (DEVICE & DEV_STM8S207) || \
+  (DEVICE & DEV_STM8S208) || \
+  (DEVICE & DEV_STM8S903) || \
+  (DEVICE & DEV_STM8AF52) || \
+  (DEVICE & DEV_STM8ALL) || \
+  (DEVICE & DEV_STM8L101)
+#define USART USART1
+#define USART_TX_IRQ USART1_TX_IRQ
+#define USART_RX_IRQ USART1_RX_IRQ
+#endif
+#if (DEVICE & DEV_STM8S005) || \
+  (DEVICE & DEV_STM8S105) || \
+  (DEVICE & DEV_STM8AF62_46)
+#define USART USART2
+#define USART_TX_IRQ USART2_TX_IRQ
+#define USART_RX_IRQ USART2_RX_IRQ
+#endif
+#if (DEVICE & DEV_STM8AF62_12)
+#define USART USART4
+#define USART_TX_IRQ USART4_TX_IRQ
+#define USART_RX_IRQ USART4_RX_IRQ
+#endif
+#endif
+
+/* CLK
+ */
+
+#if (DEVICE & DEV_STM8SAF)
+struct CLK_t {
+  uint8_t ickr;
+  uint8_t eckr;
+  uint8_t _dummy1;
+  uint8_t cmsr;
+  uint8_t swr;
+  uint8_t swcr;
+  uint8_t ckdivr;
+  uint8_t pckenr1;
+  uint8_t cssr;
+  uint8_t ccor;
+  uint8_t pckenr2;
+  uint8_t _dummy2;
+  uint8_t hsitrimr;
+  uint8_t swimccr;
+};
+#endif
+#if (DEVICE & DEV_STM8ALL)
+struct CLK_t {
+  uint8_t ckdivr;
+  uint8_t crtcr;
+  uint8_t ickcr;
+  uint8_t pckenr1;
+  uint8_t pckenr2;
+  uint8_t ccor;
+  uint8_t eckcr;
+  uint8_t scsr;
+  uint8_t swr;
+  uint8_t swcr;
+  uint8_t cssr;
+  uint8_t cbeepr;
+  uint8_t hsicalr;
+  uint8_t hsitrimr;
+  uint8_t hsiunclkr;
+  uint8_t regcsr;
+  uint8_t pckenr3;
+};
+#endif
+#if (DEVICE & DEV_STM8L101)
+struct CLK_t {
+  uint8_t ckdivr;
+  uint8_t _dummy1;
+  uint8_t _dummy2;
+  uint8_t pckenr;
+  uint8_t _dummy3;
+  uint8_t ccor;
+};
+#endif
+
+#define CLK ((struct CLK_t *)0x50C0)
+
 
 #define EI __asm__("rim")
 #define DI __asm__("sim")

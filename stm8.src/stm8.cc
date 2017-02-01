@@ -1790,7 +1790,7 @@ cl_stm8::accept_it(class it_level *il)
   PC = il->addr;
 
   it_levels->push(il);
-  return resINTERRUPT;
+  return resGO;//resINTERRUPT;
 }
 
 

@@ -1,6 +1,7 @@
 #ifndef SERIAL_HEADER
 #define SERIAL_HEADER
 
+#include "stm8.h"
 
 extern void isr_rx(void) __interrupt(USART_RX_IRQ);
 
