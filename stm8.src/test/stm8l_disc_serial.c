@@ -4,29 +4,6 @@
 
 #include "stm8.h"
 
-//#define EI __asm__("rim")
-//#define DI __asm__("sim")
-
-//#define PC_DDR	(*(volatile uint8_t *)0x500c)
-//#define PC_CR1	(*(volatile uint8_t *)0x500d)
-
-//#define CLK_DIVR	(*(volatile uint8_t *)0x50c0)
-//#define CLK_PCKENR1	(*(volatile uint8_t *)0x50c3)
-
-//#define USART1_SR	(*(volatile uint8_t *)0x5230)
-//#define USART1_DR	(*(volatile uint8_t *)0x5231)
-//#define USART1_BRR1	(*(volatile uint8_t *)0x5232)
-//#define USART1_BRR2	(*(volatile uint8_t *)0x5233)
-//#define USART1_CR2	(*(volatile uint8_t *)0x5235)
-//#define USART1_CR3	(*(volatile uint8_t *)0x5236)
-
-//#define USART_CR2_TEN (1 << 3)
-//#define UART_CR2_REN (1 << 2)
-//#define UART_CR2_RIEN (1 << 5)
-//#define USART_CR3_STOP2 (1 << 5)
-//#define USART_CR3_STOP1 (1 << 4)
-//#define USART_SR_TXE (1 << 7)
-//#define UART_SR_RXNE (1 << 5)
 
 int putchar(int c)
 {
@@ -59,7 +36,6 @@ void isr_rx(void) __interrupt(USART_RX_IRQ)
 
 char received()
 {
-  //return UART2_SR & UART_SR_RXNE;
   return first_free != last_used;
 }
 

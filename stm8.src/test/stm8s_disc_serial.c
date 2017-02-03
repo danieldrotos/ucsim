@@ -10,7 +10,7 @@
 void main(void)
 {
   unsigned long i = 0;
-  int a= 0;
+  unsigned int a= 0;
 
   CLK->ckdivr = 0x00; // Set the frequency to 16 MHz
   CLK->pckenr1 = 0xFF; // Enable peripherals
@@ -41,11 +41,9 @@ void main(void)
 	}
       if (i > 147456*2)
 	{
-	  printf("tick ");
-	  print_ix4(a);
-	  a++;
-	  printf(" Hello World!\n");
+	  printf("tick %u 0x%04x Hello World!\n", a, a);
 	  i= 0;
+	  a++;
 	}
     }
 }

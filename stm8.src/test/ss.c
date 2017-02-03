@@ -19,10 +19,10 @@
 
 int putchar(int c)
 {
-	while(!(UART2_SR & UART_SR_TXE));
-
-	UART2_DR = c;
-	return c;
+  while(!(UART2_SR & UART_SR_TXE));
+  
+  UART2_DR = c;
+  return c;
 }
 
 void main(void)

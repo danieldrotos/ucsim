@@ -7,8 +7,8 @@
 
 #define PE GPIOE
 
-#define CLK_DIVR	(*(volatile uint8_t *)0x50c0)
-#define CLK_PCKENR2	(*(volatile uint8_t *)0x50c4)
+//#define CLK_DIVR	(*(volatile uint8_t *)0x50c0)
+//#define CLK_PCKENR2	(*(volatile uint8_t *)0x50c4)
 
 unsigned int clock(void)
 {
@@ -20,8 +20,8 @@ unsigned int clock(void)
 
 void main(void)
 {
-  CLK_DIVR = 0x00; // Set the frequency to 16 MHz
-  CLK_PCKENR2 |= 0x02; // Enable clock to timer
+  CLK->ckdivr = 0x00; // Set the frequency to 16 MHz
+  CLK->pckenr2 |= 0x02; // Enable clock to timer
 
   // Configure timer
   // 1000 ticks per second

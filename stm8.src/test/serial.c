@@ -4,8 +4,8 @@
 
 #include "serial.h"
 
-#define USART_SR_TXE  (1 << 7)
-#define USART_SR_RXNE (1 << 5)
+//#define USART_SR_TXE  (1 << 7)
+//#define USART_SR_RXNE (1 << 5)
 
 int
 putchar(int c)

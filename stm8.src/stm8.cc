@@ -55,9 +55,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "rstcl.h"
 #include "timercl.h"
 #include "portcl.h"
-
-#define uint32 t_addr
-#define uint8 unsigned char
+#include "clkcl.h"
 
 /*******************************************************************/
 
@@ -204,6 +202,8 @@ cl_stm8::mk_hw_elements(void)
   
   if (type->type == CPU_STM8S)
     {
+      add_hw(h= new cl_clk_saf(this));
+      h->init();
       if (type->subtype & (DEV_STM8S003|
 			   DEV_STM8S007|
 			   DEV_STM8S103|
@@ -238,6 +238,8 @@ cl_stm8::mk_hw_elements(void)
     }
   if (type->type == CPU_STM8L)
     {
+      add_hw(h= new cl_clk_all(this));
+      h->init();
       add_hw(h= new cl_serial(this, 0x5230, 1, 27, 28));
       h->init();
       if (type->subtype & (DEV_STM8AL3xE|
@@ -261,6 +263,8 @@ cl_stm8::mk_hw_elements(void)
     }
   if (type->type == CPU_STM8L101)
     {
+      add_hw(h= new cl_clk_l101(this));
+      h->init();
       add_hw(h= new cl_serial(this, 0x5230, 1, 27, 28));
       h->init();
     }

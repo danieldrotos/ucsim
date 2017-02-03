@@ -27,6 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /* $Id$ */
 
+#include "clkcl.h"
+
 #include "timercl.h"
 
 
@@ -92,6 +94,7 @@ cl_tim::init(void)
     }
   pbits= 16;
   bidir= true;
+  clk_enabled= false;
   
   return 0;
 }
@@ -99,9 +102,10 @@ cl_tim::init(void)
 int
 cl_tim::tick(int cycles)
 {
-  if (!on)
+  if (!on ||
+      !clk_enabled)
     return resGO;
-
+  
   while (cycles--)
     {
       // count prescaler
@@ -137,6 +141,20 @@ cl_tim::reset(void)
   regs[idx.arrl]->set(0xff);
 
   update_event();
+}
+
+void
+cl_tim::happen(class cl_hw *where, enum hw_event he,
+	       void *params)
+{
+  if ((he == EV_CLK_ON) ||
+      (he == EV_CLK_OFF))
+    {
+      cl_clk_event *e= (cl_clk_event *)params;
+      if ((e->cath == HW_TIMER) &&
+	  (e->id == id))
+	clk_enabled= he == EV_CLK_ON;
+    }
 }
 
 t_mem
@@ -395,6 +413,7 @@ cl_tim::print_info(class cl_console_base *con)
   con->dd_printf("%s %d bit %s counter at 0x%06x\n", get_name(), bits,
 		 bidir?"Up/Down":"Up", base);
   // actual values
+  con->dd_printf("clk= %s\n", clk_enabled?"enabled":"disabled");
   con->dd_printf("cnt= 0x%04x %d %s\n", cnt, cnt, (c1&cen)?"on":"off");
   con->dd_printf("dir= %s\n", (c1&dir)?"down":"up");
   con->dd_printf("prs= 0x%04x %d of 0x%04x %d\n",

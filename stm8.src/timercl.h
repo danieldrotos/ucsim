@@ -84,7 +84,8 @@ class cl_tim: public cl_hw
  protected:
   t_addr base;
   cl_memory_cell *regs[32+6];
-
+  bool clk_enabled;
+  
   int cnt; // copy of counter value
 
   // Features
@@ -107,7 +108,9 @@ class cl_tim: public cl_hw
  
   virtual int tick(int cycles);
   virtual void reset(void);
-  
+  virtual void happen(class cl_hw *where, enum hw_event he,
+                      void *params);
+
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);

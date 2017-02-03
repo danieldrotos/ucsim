@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#define DEVICE DEV_STM8S208
+
 #include "stm8.h"
 
 //#define CLK_DIVR	(*(volatile uint8_t *)0x50c6)
