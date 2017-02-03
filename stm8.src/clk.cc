@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "stm8cl.h"
+
 #include "clkcl.h"
 
 
@@ -70,6 +72,11 @@ cl_clk::write(class cl_memory_cell *cell, t_mem *val)
       inform_partners(tim(e.id++)?EV_CLK_ON:EV_CLK_OFF, &e);
       inform_partners(tim(e.id++)?EV_CLK_ON:EV_CLK_OFF, &e);
       inform_partners(tim(e.id  )?EV_CLK_ON:EV_CLK_OFF, &e);
+      e.set(HW_UART, 1);
+      inform_partners(usart(e.id++)?EV_CLK_ON:EV_CLK_OFF, &e);
+      inform_partners(usart(e.id++)?EV_CLK_ON:EV_CLK_OFF, &e);
+      inform_partners(usart(e.id++)?EV_CLK_ON:EV_CLK_OFF, &e);
+      inform_partners(usart(e.id  )?EV_CLK_ON:EV_CLK_OFF, &e);
     }
 }
 
@@ -125,6 +132,41 @@ cl_clk_saf::tim(int id)
   return false;
 }
 
+bool
+cl_clk_saf::usart(int id)
+{
+  cl_stm8 *u= (cl_stm8 *)uc;
+  if (id == 1)
+    switch (u->type->subtype)
+      {
+      case DEV_STM8S003: case DEV_STM8S103: case DEV_STM8S903:
+	return pckenr1 && (pckenr1->get() & 0x08);
+      case DEV_STM8S007: case DEV_STM8S207: case DEV_STM8S208:
+      case DEV_STM8AF52:
+	return pckenr1 && (pckenr1->get() & 0x04);
+      }
+  else if (id == 2)
+    switch (u->type->subtype)
+      {
+      case DEV_STM8S005: case DEV_STM8S105: case DEV_STM8AF62_46:
+	return pckenr1 && (pckenr1->get() & 0x08);
+      }
+  else if (id == 3)
+    switch (u->type->subtype)
+      {
+      case DEV_STM8S007: case DEV_STM8S207: case DEV_STM8S208:
+      case DEV_STM8AF52:
+	return pckenr1 && (pckenr1->get() & 0x08);
+      }
+  else if (id == 4)
+    switch (u->type->subtype)
+      {
+      case DEV_STM8AF62_12:
+	return pckenr1 && (pckenr1->get() & 0x08);
+      }
+  return false;
+}
+
 /* ALL */
 
 cl_clk_all::cl_clk_all(class cl_uc *auc):
@@ -141,6 +183,15 @@ cl_clk_all::init(void)
   pckenr2= register_cell(uc->rom, base+4);
   pckenr3= register_cell(uc->rom, base+16);
   return 0;
+}
+
+void
+cl_clk_all::reset(void)
+{
+  ckdivr->write(3);
+  pckenr1->write(0);
+  pckenr2->write(0x80);
+  pckenr3->write(0);
 }
 
 bool
@@ -162,6 +213,21 @@ cl_clk_all::tim(int id)
   return false;
 }
 
+bool
+cl_clk_all::usart(int id)
+{
+  switch (id)
+    {
+    case 1:
+      return pckenr1 && (pckenr1->get() & 0x20);
+    case 2:
+      return pckenr3 && (pckenr3->get() & 0x08);
+    case 3:
+      return pckenr3 && (pckenr3->get() & 0x10);
+    }
+  return false;
+}
+
 
 /* L101 */
 
@@ -179,6 +245,13 @@ cl_clk_l101::init(void)
   return 0;
 }
 
+void
+cl_clk_l101::reset(void)
+{
+  ckdivr->write(3);
+  pckenr1->write(0);
+}
+
 bool
 cl_clk_l101::tim(int id)
 {
@@ -190,6 +263,17 @@ cl_clk_l101::tim(int id)
       return pckenr1 && (pckenr1->get() & 0x02);
     case 4:
       return pckenr1 && (pckenr1->get() & 0x04);
+    }
+  return false;
+}
+
+bool
+cl_clk_l101::usart(int id)
+{
+  switch (id)
+    {
+    case 1:
+      return pckenr1 && (pckenr1->get() & 0x20);
     }
   return false;
 }

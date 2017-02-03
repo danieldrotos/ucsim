@@ -48,6 +48,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itsrccl.h"
 
 // local
+#include "clkcl.h"
 #include "serialcl.h"
 
 
@@ -90,6 +91,7 @@ cl_serial::init(void)
 
   set_name("stm8_uart");
   cl_serial_hw::init();
+  clk_enabled= false;
   for (i= 0; i < 12; i++)
     {
       regs[i]= register_cell(uc->rom, base+i);
@@ -241,7 +243,8 @@ cl_serial::tick(int cycles)
 {
   char c;
 
-  if (!en)
+  if (!en ||
+      !clk_enabled)
     return 0;
   
   if ((mcnt+= cycles) >= div)
@@ -357,6 +360,20 @@ cl_serial::reset(void)
 }
 
 void
+cl_serial::happen(class cl_hw *where, enum hw_event he,
+		  void *params)
+{
+  if ((he == EV_CLK_ON) ||
+      (he == EV_CLK_OFF))
+    {
+      cl_clk_event *e= (cl_clk_event *)params;
+      if ((e->cath == HW_UART) &&
+	  (e->id == id))
+	clk_enabled= he == EV_CLK_ON;
+    }
+}
+
+void
 cl_serial::pick_div()
 {
   u8_t b1= regs[brr1]->get();
@@ -433,6 +450,7 @@ void
 cl_serial::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d] %s\n", id_string, id, on?"on":"off");
+  con->dd_printf("clk %s\n", clk_enabled?"enabled":"disabled");
   con->dd_printf("Input: ");
   class cl_f *fin= io->get_fin(), *fout= io->get_fout();
   if (fin)

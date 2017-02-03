@@ -57,6 +57,7 @@ class cl_clk: public cl_hw
 
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual bool tim(int id) { return false; }
+  virtual bool usart(int id) { return false; }
   
   virtual void reset(void) {}
 };
@@ -70,6 +71,7 @@ class cl_clk_saf: public cl_clk
   virtual void reset(void);
 
   virtual bool tim(int id);
+  virtual bool usart(int id);
 };
 
 class cl_clk_all: public cl_clk
@@ -78,7 +80,10 @@ class cl_clk_all: public cl_clk
   cl_clk_all(class cl_uc *auc);
   virtual int init(void);
 
+  virtual void reset(void);
+
   virtual bool tim(int id);
+  virtual bool usart(int id);
 };
 
 class cl_clk_l101: public cl_clk
@@ -87,7 +92,10 @@ class cl_clk_l101: public cl_clk
   cl_clk_l101(class cl_uc *auc);
   virtual int init(void);
 
+  virtual void reset(void);
+
   virtual bool tim(int id);
+  virtual bool usart(int id);
 };
 
 

@@ -45,6 +45,7 @@ class cl_serial_listener;
 class cl_serial: public cl_serial_hw
 {
  protected:
+  bool clk_enabled;
   t_addr base;
   int type, txit, rxit;
   class cl_memory_cell *regs[12];
@@ -83,6 +84,8 @@ class cl_serial: public cl_serial_hw
   virtual void finish_send();
   virtual void received();
   virtual void reset(void);
+  virtual void happen(class cl_hw *where, enum hw_event he,
+                      void *params);
 
   virtual void pick_div();
   virtual void pick_ctrl();
