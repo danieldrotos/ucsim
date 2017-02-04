@@ -1236,8 +1236,7 @@ int
 cl_z80::inst_out(t_mem code)
 {
   t_addr a= fetch();
-  t_mem v= fetch();
-  outputs->write(a, v);
+  outputs->write(a, regs.A);
   return(resGO);
 }
 
