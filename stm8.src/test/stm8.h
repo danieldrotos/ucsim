@@ -517,7 +517,25 @@ struct CLK_t {
 
 #define CLK ((struct CLK_t *)0x50C0)
 
+/* UID
+ */
 
+#if (DEVICE & DEV_STM8S103) || \
+  (DEVICE & DEV_STM8S903) || \
+  (DEVICE & DEV_STM8AF62_12)
+#define UID ((uint8_t*)0x4865)
+#endif
+#if (DEVICE & DEV_STM8AL) || \
+  (DEVICE & DEV_STM8L151x23) || \
+  (DEVICE & DEV_STM8L15x46) ||	\
+  (DEVICE & DEV_STM8L15x8) || \
+  (DEVICE & DEV_STM8L162)
+#define UID ((uint8_t*)0x4926)
+#endif
+#if (DEVICE & DEV_STM8L101)
+#define UID ((uint8_t*)0x4925)
+#endif
+  
 #define EI __asm__("rim")
 #define DI __asm__("sim")
 

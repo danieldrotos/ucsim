@@ -146,6 +146,11 @@ cl_stm8::get_mem_size(enum mem_class type)
  return(cl_uc::get_mem_size(type));
 }
 */
+
+ /*
+   L15x46 uid: 0x4926 00 5b 00 16 11 47 30 31 38 35 35 36
+ */
+
 void
 cl_stm8::mk_hw_elements(void)
 {

@@ -10,7 +10,10 @@ LIBS		=
 ALL		= $(MAIN) $(OTHERS)
 OBJECTS		= $(MAIN).rel $(OTHERS:=.rel)
 
-all: $(MAIN).hex
+all: del_serial_rel $(MAIN).hex
+
+del_serial_rel:
+	rm -f serial.rel
 
 dep: $(MAIN).dep
 
