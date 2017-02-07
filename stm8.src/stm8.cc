@@ -56,6 +56,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "timercl.h"
 #include "portcl.h"
 #include "clkcl.h"
+#include "uidcl.h"
 
 /*******************************************************************/
 
@@ -421,7 +422,30 @@ cl_stm8::mk_hw_elements(void)
       add_hw(h= new cl_tim4_l101(this, 4, 0x52E0));
       h->init();
     }
-    
+
+  // UID
+  if (type->subtype & (DEV_STM8S103 |
+		       DEV_STM8S903 |
+		       DEV_STM8AF62_12))
+    {
+      add_hw(h= new cl_uid(this, 0x4865));
+      h->init();
+    }
+  else if (type->subtype & (DEV_STM8AL |
+			    DEV_STM8L151x23 |
+			    DEV_STM8L15x46 |
+			    DEV_STM8L15x8 |
+			    DEV_STM8L162))
+    {
+      add_hw(h= new cl_uid(this, 0x4926));
+      h->init();
+    }
+  else if (type->subtype & (DEV_STM8L101))
+    {
+      add_hw(h= new cl_uid(this, 0x4925));
+      h->init();
+    }
+  
   //add_hw(h= new cl_tim235(this, 3, 0x5320));
   //h->init();
   //add_hw(h= new cl_tim46(this, 4, 0x5340));
