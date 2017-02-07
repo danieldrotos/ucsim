@@ -452,7 +452,7 @@ cl_stm8::make_memories(void)
   eeprom_chip= new cl_memory_chip("eeprom_chip", 0x0800, 8);
   eeprom_chip->init();
   memchips->add(eeprom_chip);
-  option_chip= new cl_memory_chip("option_chip", 0x0080, 8);
+  option_chip= new cl_memory_chip("option_chip", 0x0800, 8);
   option_chip->init();
   memchips->add(option_chip);
   io_chip= new cl_memory_chip("io_chip", 0x0800, 8);
@@ -483,7 +483,7 @@ cl_stm8::make_memories(void)
   as->decoders->add(ad);
   ad->activate(0);
 
-  ad= new cl_address_decoder(as= address_space("rom"), option_chip, 0x4800, 0x487f, 0);
+  ad= new cl_address_decoder(as= address_space("rom"), option_chip, 0x4800, 0x4fff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
