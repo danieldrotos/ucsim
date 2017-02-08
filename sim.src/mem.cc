@@ -770,7 +770,7 @@ cl_bit_cell16::d(t_mem v)
 cl_memory_cell::cl_memory_cell(uchar awidth)//: cl_base()
 {
   data= 0;
-  flags= 0;
+  flags= CELL_NON_DECODED;
   width= awidth;
   //*data= 0;
   def_data= 0;
@@ -780,6 +780,13 @@ cl_memory_cell::cl_memory_cell(uchar awidth)//: cl_base()
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
 #endif
+  mask= 1;
+  int w= width;
+  for (--w; w; w--)
+    {
+      mask<<= 1;
+      mask|= 1;
+    }
 }
 
 cl_memory_cell::~cl_memory_cell(void)
@@ -794,14 +801,14 @@ cl_memory_cell::init(void)
 {
   //cl_base::init();
   data= &def_data;
-  flags= CELL_NON_DECODED;
-  mask= 1;
+  //flags= CELL_NON_DECODED;
+  /*mask= 1;
   int w= width;
   for (--w; w; w--)
     {
       mask<<= 1;
       mask|= 1;
-    }
+      }*/
   //set(0/*rand()*/);
   return(0);
 }
@@ -1162,7 +1169,7 @@ cl_address_space::cl_address_space(const char *id,
     cell= &c8;
   else if (awidth <= 16)
     cell= &c16;
-  cell->init();
+  //cell->init();
   int i;
   for (i= 0; i < size; i++)
     {
