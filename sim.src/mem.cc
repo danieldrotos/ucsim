@@ -932,6 +932,8 @@ cl_memory_cell::write(t_mem val)
 #ifdef STATISTIC
   nuof_writes++;
 #endif
+  if (flags & CELL_READ_ONLY)
+    return d();
   if (operators)
     val= operators->write(val);
   if (width == 1)
@@ -944,6 +946,8 @@ cl_memory_cell::write(t_mem val)
 t_mem
 cl_memory_cell::set(t_mem val)
 {
+  if (flags & CELL_READ_ONLY)
+    return d();
   if (width == 1)
     d(val);
   else
@@ -971,21 +975,21 @@ void
 cl_memory_cell::set_bit1(t_mem bits)
 {
   bits&= mask;
-  /*(*data)|=*/d(d()| bits);
+  /*(*data)|=*//*d*/set(d()| bits);
 }
 
 void
 cl_memory_cell::set_bit0(t_mem bits)
 {
   bits&= mask;
-  /*(*data)&=*/d(d()& ~bits);
+  /*(*data)&=*//*d*/set(d()& ~bits);
 }
 
 void
 cl_memory_cell::toggle_bits(t_mem bits)
 {
   bits&= mask;
-  d(d() ^ bits);
+  /*d*/set(d() ^ bits);
 }
 
 

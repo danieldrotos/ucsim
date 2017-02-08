@@ -42,22 +42,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_event_handler;
 
-
-// Cell types
-#define CELL_NORMAL	0x00	/* Nothing special */
-#define CELL_HW_READ	0x01	/* Hw handles read */
-#define CELL_HW_WRITE	0x02	/* Hw catches write */
-//#define CELL_INST	0x04	/* Marked as instruction */
-//#define CELL_FETCH_BRK	0x08	/* Fetch breakpoint */
-#define CELL_READ_BRK	0x10	/* Read event breakpoint */
-#define CELL_WRITE_BRK	0x20	/* Write event breakpoint */
-
 // Cell flags
 enum cell_flag {
   CELL_NONE		= 0x00,
   CELL_VAR		= 0x01, /* At least one variable points to it */
   CELL_INST		= 0x04,	/* Marked as instruction */
   CELL_FETCH_BRK	= 0x08,	/* Fetch breakpoint */
+  CELL_READ_ONLY	= 0x10, /* Cell is readonly */
   CELL_NON_DECODED	= 0x40	/* Cell is not decoded (yet) */
 };
 
