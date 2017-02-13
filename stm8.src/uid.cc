@@ -56,7 +56,9 @@ cl_uid::init(void)
   cl_hw::init();
   for (i= 0; i < 12; i++)
     {
-      regs[i]= register_cell(uc->rom, base+i);
+      //regs[i]= register_cell(uc->rom, base+i);
+      uc->rom->download(base+i, uid[i]);
+      uc->rom->set_cell_flag(base+i, true, CELL_READ_ONLY);
     }
   return 0;
 }
@@ -65,10 +67,11 @@ t_mem
 cl_uid::read(class cl_memory_cell *cell)
 {
   t_mem v= cell->get();
-  t_addr a;
+  //t_addr a;
   
   if (conf(cell, NULL))
     return v;
+  /*
   if (!uc->rom->is_owned(cell, &a))
     return v;
   if ((a < base) ||
@@ -77,16 +80,18 @@ cl_uid::read(class cl_memory_cell *cell)
   a-= base;
 
   cell->set(v= uid[a]);
+  */
   return v;
 }
 
 void
 cl_uid::write(class cl_memory_cell *cell, t_mem *val)
 {
-  t_addr a;
+  //t_addr a;
 
   if (conf(cell, val))
     return;
+  /*
   if (!uc->rom->is_owned(cell, &a))
     return;  
   if ((a < base) ||
@@ -94,6 +99,22 @@ cl_uid::write(class cl_memory_cell *cell, t_mem *val)
     return;
   a-= base;
   *val= uid[a];
+  */
+}
+
+void
+cl_uid::print_info(class cl_console_base *con)
+{
+  /*
+  con->dd_printf("base= 0x%04x\n", base);
+  con->dd_printf("end = 0x%04x\n", base+12);
+  con->dd_printf("uid =");
+  int i;
+  for (i= 0; i < 12; i++)
+    con->dd_printf(" %02x", uc->rom->get(base+i));
+  con->dd_printf("\n");
+  */
+  uc->rom->dump(base, base+12, 16, con->get_fout());
 }
 
 

@@ -34,13 +34,14 @@ class cl_uid: public cl_hw
 {
  protected:
   t_addr base;
-  class cl_memory_cell *regs[12];
+  //class cl_memory_cell *regs[12];
  public:
   cl_uid(class cl_uc *auc, t_addr abase);
   virtual int init(void);
 
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual void print_info(class cl_console_base *con);
 };
 
 #endif
