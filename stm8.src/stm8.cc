@@ -483,12 +483,12 @@ cl_stm8::make_memories(void)
   io_chip= new cl_memory_chip("io_chip", 0x0800, 8);
   io_chip->init();
   memchips->add(io_chip);
-  if (type->subtype & DEV_STM8SAF)
+  if (type->subtype & DEV_STM8S105)
     boot_chip= new cl_memory_chip("boot_chip_s105", bl_s105_length, 8, bl_s105);
-  else if (type->subtype & DEV_STM8ALL)
+  else if (type->subtype & DEV_STM8L15x46)
     boot_chip= new cl_memory_chip("boot_chip_l15x46", bl_l15x46_length, 8, bl_l15x46);
-  else if (type->subtype & DEV_STM8L101)
-    boot_chip= new cl_memory_chip("boot_chip_l101", bl_l15x46_length, 8, bl_l15x46);
+  /*else if (type->subtype & DEV_STM8L101)
+    boot_chip= new cl_memory_chip("boot_chip_l101", bl_l15x46_length, 8, bl_l15x46);*/
   else
     boot_chip= new cl_memory_chip("boot_chip", 0x0800, 8);
   boot_chip->init();
