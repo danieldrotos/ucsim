@@ -431,8 +431,10 @@ class cl_memory_chip: public cl_memory
 protected:
   t_mem *array;
   int init_value;
+  bool array_is_mine;
 public:
   cl_memory_chip(const char *id, int asize, int awidth, int initial= -1);
+  cl_memory_chip(const char *id, int asize, int awidth, t_mem *aarray);
   virtual ~cl_memory_chip(void);
   virtual int init(void);
 
@@ -450,7 +452,7 @@ public:
   virtual void set_bit0(t_addr addr, t_mem bits);
 };
 
-
+  
 /*
  * Address decoder
  */

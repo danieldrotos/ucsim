@@ -1652,16 +1652,32 @@ cl_address_space_list::add(class cl_address_space *mem)
  *                                                                  Memory chip
  */
 
-cl_memory_chip::cl_memory_chip(const char *id, int asize, int awidth, int initial):
+cl_memory_chip::cl_memory_chip(const char *id,
+			       int asize,
+			       int awidth,
+			       int initial):
   cl_memory(id, asize, awidth)
 {
   array= (t_mem *)malloc(size * sizeof(t_mem));
   init_value= initial;
+  array_is_mine= true;
+}
+
+cl_memory_chip::cl_memory_chip(const char *id,
+			       int asize,
+			       int awidth,
+			       t_mem *aarray):
+  cl_memory(id, asize, awidth)
+{
+  array= aarray;
+  init_value= 0;
+  array_is_mine= false;
 }
 
 cl_memory_chip::~cl_memory_chip(void)
 {
-  if (array)
+  if (array &&
+      array_is_mine)
     free(array);
 }
 
@@ -1670,10 +1686,13 @@ cl_memory_chip::init(void)
 {
   cl_memory::init();
   int i;
-  for (i= 0; i < size; i++)
-    set(i,
-	(init_value<0)?rand():(init_value)
-	);
+  if (array_is_mine)
+    {
+      for (i= 0; i < size; i++)
+	set(i,
+	    (init_value<0)?rand():(init_value)
+	    );
+    }
   return(0);
 }
 
