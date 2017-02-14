@@ -57,6 +57,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "portcl.h"
 #include "clkcl.h"
 #include "uidcl.h"
+#include "bl.h"
 
 /*******************************************************************/
 
@@ -482,7 +483,14 @@ cl_stm8::make_memories(void)
   io_chip= new cl_memory_chip("io_chip", 0x0800, 8);
   io_chip->init();
   memchips->add(io_chip);
-  boot_chip= new cl_memory_chip("boot_chip", 0x0800, 8);
+  if (type->subtype & DEV_STM8SAF)
+    boot_chip= new cl_memory_chip("boot_chip_s105", bl_s105_length, 8, bl_s105);
+  else if (type->subtype & DEV_STM8ALL)
+    boot_chip= new cl_memory_chip("boot_chip_l15x46", bl_l15x46_length, 8, bl_l15x46);
+  else if (type->subtype & DEV_STM8L101)
+    boot_chip= new cl_memory_chip("boot_chip_l101", bl_l15x46_length, 8, bl_l15x46);
+  else
+    boot_chip= new cl_memory_chip("boot_chip", 0x0800, 8);
   boot_chip->init();
   memchips->add(boot_chip);
   cpu_chip= new cl_memory_chip("cpu_chip", 0x0100, 8);
@@ -521,6 +529,7 @@ cl_stm8::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+  rom->set_cell_flag(0x6000, 0x67ff, true, CELL_READ_ONLY);
 
   ad= new cl_address_decoder(as= rom, cpu_chip, 0x7f00, 0x7fff, 0);
   ad->init();
