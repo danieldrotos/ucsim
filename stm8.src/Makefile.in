@@ -153,12 +153,12 @@ bl_l15x46.hex: bl_l15x46.asc
 	srec_cat $< -Ascii_Hex -Output $@ -Intel
 
 bl_l15x46.cc: bl_l15x46.asc
-	srec_cat $< -Ascii_Hex -Output $@ -C-Array bl_l15x46 -INClude
+	srec_cat $< -Ascii_Hex -Output $@ -C-Array bl_l15x46 -INClude -No-CONST
 
 bl_s105.hex: bl_s105.asc
 	srec_cat $< -Ascii_Hex -Output $@ -Intel
 
 bl_s105.cc: bl_s105.asc
-	srec_cat $< -Ascii_Hex -Output $@ -C-Array bl_s105 -INClude
+	srec_cat $< -Ascii_Hex -Output $@ -C-Array bl_s105 -INClude -No-CONST
 
 # End of stm8.src/Makefile.in
