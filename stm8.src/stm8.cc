@@ -343,7 +343,7 @@ cl_stm8::mk_hw_elements(void)
 	  add_hw(h= new cl_tim6_saf(this, 6, 0x5340));
 	  h->init();
 	}
-      if (type->subtype & (DEV_STM8S903|
+      if (type->subtype & (DEV_STM8S003|
 			   DEV_STM8S103))
 	{
 	  add_hw(h= new cl_tim2_saf_b(this, 2, 0x5300));
@@ -1784,7 +1784,7 @@ cl_stm8::priority_of(uchar nuof_it)
   t_mem cv;
   int levels[4]= { 2, 1, 0, 3 };
 
-  if (nuof_it > 29)
+  if (nuof_it > 31)
     return 0;
   i1_mask= 2 << ((nuof_it % 4) * 2);
   i0_mask= 1 << ((nuof_it % 4) * 2);

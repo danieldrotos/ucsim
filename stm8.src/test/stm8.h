@@ -191,7 +191,7 @@ struct TIM1_t {
   volatile uint8_t dtr;		//= 30;
   volatile uint8_t oisr;	//= 31;
 };
-#define TIM1_UC_IRQ	11
+#define TIM1_UP_IRQ	11
 #define TIM1_CC_IRQ	12
 #elif (DEVICE & DEV_STM8ALL)
 struct TIM1_t {
@@ -229,7 +229,7 @@ struct TIM1_t {
   volatile uint8_t dtr;		//= 31;
   volatile uint8_t oisr;	//= 32;
 };
-#define TIM1_UC_IRQ	23
+#define TIM1_UP_IRQ	23
 #define TIM1_CC_IRQ	24
 #endif
 
