@@ -38,10 +38,46 @@ int
 cl_port::init(void)
 {
   cl_hw::init();
+  // ODR
   cell_p= register_cell(uc->rom, base + 0);
+  // IDR
   cell_in= register_cell(uc->rom, base + 1);
+  // DDR: 0=input, 1=output
   cell_dir= register_cell(uc->rom, base + 2);
   return 0;
 }
+
+void
+cl_port::print_info(class cl_console_base *con)
+{
+  int m;
+  t_mem o= cell_p->get(),
+    i= cell_in->get(),
+    d= cell_dir->get();
+  con->dd_printf("%s at 0x%04x\n", get_name(), base);
+  con->dd_printf("dir: 0x%02x ", d);
+  for (m= 1; m <= 0xff; m<<= 1)
+    con->dd_printf("%c", (d & m)?'O':'I');
+  con->dd_printf("\n");
+  con->dd_printf("out: 0x%02x ", o);
+  for (m= 1; m <= 0xff; m<<= 1)
+    {
+      if (d & m)
+	con->dd_printf("%c", (o & m)?'1':'0');
+      else
+	con->dd_printf("-");
+    }
+  con->dd_printf("\n");
+  con->dd_printf("in : 0x%02x ", i);
+  for (m= 1; m <= 0xff; m<<= 1)
+    {
+      if (!(d & m))
+	con->dd_printf("%c", (i & m)?'1':'0');
+      else
+	con->dd_printf("-");
+    }
+  con->dd_printf("\n");
+}
+
 
 /* End of stm8.src/port.cc */

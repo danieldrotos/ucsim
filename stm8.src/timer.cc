@@ -493,7 +493,7 @@ cl_tim1_saf::init(void)
 {
   cl_tim1::init();
   uc->it_sources->add(new cl_it_src(uc, 11,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+11*4, false, false,
 				    "timer1 update",
@@ -547,7 +547,7 @@ cl_tim1_all::init(void)
 {
   cl_tim1::init();
   uc->it_sources->add(new cl_it_src(uc, 23,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+23*4, false, false,
 				    "timer1 update",
@@ -622,7 +622,7 @@ cl_tim2_saf_a::init(void)
   pbits= 4;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 13,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+13*4, false, false,
 				    "timer2 update",
@@ -680,7 +680,7 @@ cl_tim2_saf_b::init(void)
   pbits= 4;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 13,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+13*4, false, false,
 				    "timer2 update",
@@ -736,7 +736,7 @@ cl_tim2_all::init(void)
   cl_tim235::init();
   pbits= 3;
   uc->it_sources->add(new cl_it_src(uc, 19,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+19*4, false, false,
 				    "timer2 update",
@@ -792,7 +792,7 @@ cl_tim2_l101::init(void)
   cl_tim235::init();
   pbits= 3;
   uc->it_sources->add(new cl_it_src(uc, 19,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+19*4, false, false,
 				    "timer2 update",
@@ -851,7 +851,7 @@ cl_tim3_saf::init(void)
   pbits= 4;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 15,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+15*4, false, false,
 				    "timer3 update",
@@ -907,7 +907,7 @@ cl_tim3_all::init(void)
   cl_tim235::init();
   pbits= 3;
   uc->it_sources->add(new cl_it_src(uc, 21,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+21*4, false, false,
 				    "timer3 update",
@@ -963,7 +963,7 @@ cl_tim3_l101::init(void)
   cl_tim235::init();
   pbits= 3;
   uc->it_sources->add(new cl_it_src(uc, 21,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+21*4, false, false,
 				    "timer3 update",
@@ -1022,7 +1022,7 @@ cl_tim5_saf::init(void)
   pbits= 4;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 13,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+13*4, false, false,
 				    "timer5 update",
@@ -1078,7 +1078,7 @@ cl_tim5_all::init(void)
   cl_tim235::init();
   pbits= 3;
   uc->it_sources->add(new cl_it_src(uc, 27,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+27*4, false, false,
 				    "timer5 update",
@@ -1153,7 +1153,7 @@ cl_tim4_saf_a::init(void)
   pbits= 3;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 23,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+23*4, false, false,
 				    "timer4 update",
@@ -1210,7 +1210,7 @@ cl_tim4_saf_b::init(void)
   pbits= 3;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 23,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+23*4, false, false,
 				    "timer4 update",
@@ -1267,7 +1267,7 @@ cl_tim4_all::init(void)
   pbits= 4;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 25,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+25*4, false, false,
 				    "timer4 update",
@@ -1324,7 +1324,7 @@ cl_tim4_l101::init(void)
   pbits= 4;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 25,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+25*4, false, false,
 				    "timer4 update",
@@ -1383,7 +1383,7 @@ cl_tim6_saf::init(void)
   pbits= 3;
   bidir= false;
   uc->it_sources->add(new cl_it_src(uc, 23,
-				    regs[idx.etr], uie,
+				    regs[idx.ier], uie,
 				    regs[idx.sr1], uif,
 				    0x8008+23*4, false, false,
 				    "timer6 update",
