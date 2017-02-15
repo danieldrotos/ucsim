@@ -4,30 +4,6 @@
 
 #include "stm8.h"
 
-//#define EI __asm__("rim")
-//#define DI __asm__("sim")
-
-//#define PC_DDR	(*(volatile uint8_t *)0x500c)
-//#define PC_CR1	(*(volatile uint8_t *)0x500d)
-
-//#define CLK_CKDIVR	(*(volatile uint8_t *)0x50c0)
-//#define CLK_PCKENR1	(*(volatile uint8_t *)0x50c3)
-
-//#define USART1_SR	(*(volatile uint8_t *)0x5230)
-//#define USART1_DR	(*(volatile uint8_t *)0x5231)
-//#define USART1_BRR1	(*(volatile uint8_t *)0x5232)
-//#define USART1_BRR2	(*(volatile uint8_t *)0x5233)
-//#define USART1_CR2	(*(volatile uint8_t *)0x5235)
-//#define USART1_CR3	(*(volatile uint8_t *)0x5236)
-
-//#define USART_CR2_TEN (1 << 3)
-//#define USART_CR2_REN (1 << 2)
-//#define USART_CR2_RIEN (1 << 5)
-//#define USART_CR3_STOP2 (1 << 5)
-//#define USART_CR3_STOP1 (1 << 4)
-//#define USART_SR_TXE (1 << 7)
-//#define USART_SR_RXNE (1 << 5)
-
 int putchar(int c)
 {
   while(!(
@@ -46,7 +22,7 @@ volatile uint8_t rx_buf[8];
 volatile uint8_t first_free= 0;
 volatile uint8_t last_used= 0;
 
-void isr_rx(void) __interrupt(/*USART_RX_IRQ*/28)
+void isr_rx(void) __interrupt(USART_RX_IRQ/*28*/)
 {
   volatile uint8_t d;
   if (
