@@ -567,7 +567,12 @@ cl_stm8::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
-  rom->set_cell_flag(0x8000, 0x27fff, true, CELL_READ_ONLY);
+  class cl_option *o= application->options->get_option("writable_flash");
+  bool wv= false;
+  if (o)
+    o->get_value(&wv);
+  if (!wv)
+    rom->set_cell_flag(0x8000, 0x27fff, true, CELL_READ_ONLY);
   
   regs8= new cl_address_space("regs8", 0, 2, 8);
   regs8->init();
