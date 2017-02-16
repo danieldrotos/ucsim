@@ -153,6 +153,42 @@ cl_stm8::get_mem_size(enum mem_class type)
    L15x46 uid: 0x4926 00 5b 00 16 11 47 30 31 38 35 35 36
  */
 
+static class cl_port_ui *d= NULL;
+static int puix= 1;
+static int puiy= 4;
+static int puik= 0;
+static int puis= 1;
+static const char *puiks= keysets[puik];
+static class cl_port_data pd;
+
+void
+cl_stm8::mk_port(t_addr base, chars n)
+{
+  class cl_port *p;
+  add_hw(p= new cl_port(this, base, n));
+  p->init();
+
+  pd.set_name(n);
+  pd.cell_p  = p->cell_p;
+  pd.cell_in = p->cell_in;
+  pd.cell_dir= p->cell_dir;
+  pd.keyset  = chars(puiks);
+  pd.basx    = puix;
+  pd.basy    = puiy;
+  d->add_port(&pd, puis++);
+  
+  if ((puix+= 20) > 80)
+    {
+      puix= 1;
+      if ((puiy+= 7) > 20)
+	;
+    }
+  if ((puik+= 1) > 6)
+    puiks= NULL;
+  else
+    puiks= keysets[puik];
+}
+
 void
 cl_stm8::mk_hw_elements(void)
 {
@@ -204,6 +240,10 @@ cl_stm8::mk_hw_elements(void)
   o->init();
   o->hide();
 
+  add_hw(d= new cl_port_ui(this, 0, "dport"));
+  d->init();
+  pd.init();
+  
   add_hw(h= new cl_stm8_cpu(this));
   h->init();
   
@@ -280,22 +320,17 @@ cl_stm8::mk_hw_elements(void)
   itc->init();
 
   {
-    add_hw(h= new cl_port(this, 0x5000, "pa"));
-    h->init();
-    add_hw(h= new cl_port(this, 0x5005, "pb"));
-    h->init();
-    add_hw(h= new cl_port(this, 0x500a, "pc"));
-    h->init();
-    add_hw(h= new cl_port(this, 0x500f, "pd"));
-    h->init();
+    mk_port(0x5000, "pa");
+    mk_port(0x5005, "pb");
+    mk_port(0x500a, "pc");
+    mk_port(0x500f, "pd");
   }
   
   if (type->type == CPU_STM8S)
     {
       // all S and AF
-      add_hw(h= new cl_port(this, 0x5014, "pe"));
-      h->init();
-      add_hw(h= new cl_port(this, 0x5019, "pf"));
+      mk_port(0x5014, "pe");
+      mk_port(0x5019, "pf");
       h->init();
       if (type->subtype & (DEV_STM8S005|
 			   DEV_STM8S007|
@@ -305,14 +340,11 @@ cl_stm8::mk_hw_elements(void)
 			   DEV_STM8AF52|
 			   DEV_STM8AF62_46))
 	{
-	  add_hw(h= new cl_port(this, 0x501e, "pg"));
-	  h->init();
+	  mk_port(0x501e, "pg");
 	  if (type->subtype != DEV_STM8AF62_46)
 	    {
-	      add_hw(h= new cl_port(this, 0x5023, "ph"));
-	      h->init();
-	      add_hw(h= new cl_port(this, 0x5028, "pi"));
-	      h->init();
+	      mk_port(0x5023, "ph");
+	      mk_port(0x5028, "pi");
 	    }
 	}
       add_hw(h= new cl_rst(this, 0x50b3, 0x1f));
@@ -357,10 +389,8 @@ cl_stm8::mk_hw_elements(void)
     {
       if (type->subtype != DEV_STM8L051)
 	{
-	  add_hw(h= new cl_port(this, 0x5014, "pe"));
-	  h->init();
-	  add_hw(h= new cl_port(this, 0x5019, "pf"));
-	  h->init();
+	  mk_port(0x5014, "pe");
+	  mk_port(0x5019, "pf");
 	}
       if (type->subtype & (DEV_STM8AL3xE|
 			   DEV_STM8AL3x8|
@@ -368,14 +398,11 @@ cl_stm8::mk_hw_elements(void)
 			   DEV_STM8L15x8|
 			   DEV_STM8L162))
 	{
-	  add_hw(h= new cl_port(this, 0x501e, "pg"));
-	  h->init();
+	  mk_port(0x501e, "pg");
 	  if (type->subtype != DEV_STM8L052R)
 	    {
-	      add_hw(h= new cl_port(this, 0x5023, "ph"));
-	      h->init();
-	      add_hw(h= new cl_port(this, 0x5028, "pi"));
-	      h->init();
+	      mk_port(0x5023, "ph");
+	      mk_port(0x5028, "pi");
 	    }
 	}
       add_hw(h= new cl_rst(this, 0x50b0+1, 0x3f));
