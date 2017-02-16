@@ -254,14 +254,14 @@ cl_port_ui::draw_display(void)
 	continue;
      
       pio->tu_go(pd[i].basx, pd[i].basy+1);
-      pio->dd_printf("Out:");
+      pio->dd_printf("Out ");
       pio->tu_go(pd[i].basx, pd[i].basy+2);
-      pio->dd_printf("Bit:76543210");
+      pio->dd_printf("Bit 76543210");
       pio->tu_go(pd[i].basx, pd[i].basy+3);
-      pio->dd_printf("In :");
+      pio->dd_printf("In  ");
       pio->tu_go(pd[i].basx, pd[i].basy+4);
       if (pd[i].keyset)
-	pio->dd_printf("Key:%s", pd[i].keyset);
+	pio->dd_printf("Key %s", pd[i].keyset);
 
       pd[i].cache_p= pd[i].cell_p->get();
       pd[i].cache_in= pd[i].cell_in->read();

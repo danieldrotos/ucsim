@@ -645,6 +645,47 @@ struct USART4_saf_t {
 #define USART_RX_IRQ USART4_RX_IRQ
 #endif
 #endif
+#if ((DEVICE & DEV_STM8S003) || \
+     (DEVICE & DEV_STM8S005) || \
+     (DEVICE & DEV_STM8S103) || \
+     (DEVICE & DEV_STM8S105) || \
+     (DEVICE & DEV_STM8S903) || \
+     (DEVICE & DEV_STM8AF62_12) || \
+     (DEVICE & DEV_STM8AF62_46))
+#define USART_TX_GPIO GPIOD
+#define USART_RX_GPIO GPIOD
+#define USART_TX_PIN  5
+#define USART_RX_PIN  6
+#endif
+#if ((DEVICE & DEV_STM8S007) ||\
+     (DEVICE & DEV_STM8S207) ||\
+     (DEVICE & DEV_STM8S208) ||\
+     (DEVICE & DEV_STM8AF52))
+#define USART_TX_GPIO GPIOA
+#define USART_RX_GPIO GPIOA
+#define USART_TX_PIN  5
+#define USART_RX_PIN  4
+#endif
+#if (DEVICE & DEV_STM8AL) ||\
+  (DEVICE & DEV_STM8L052C) ||\
+  (DEVICE & DEV_STM8L052R) ||\
+  (DEVICE & DEV_STM8L151x23) ||\
+  (DEVICE & DEV_STM8L15x46) ||\
+  (DEVICE & DEV_STM8L15x8) ||\
+  (DEVICE & DEV_STM8L162) ||\
+  (DEVICE & DEV_STM8L101)
+#define USART_TX_GPIO GPIOC
+#define USART_RX_GPIO GPIOC
+#define USART_TX_PIN  3
+#define USART_RX_PIN  2
+#endif
+#if (DEVICE & DEV_STM8L051)
+/* non-default AF only because C2 and C3 are not available */
+#define USART_TX_GPIO
+#define USART_RX_GPIO
+#define USART_TX_PIN 
+#define USART_RX_PIN 
+#endif
 
 /* CLK
  */

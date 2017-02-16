@@ -10,22 +10,24 @@ LIBS		=
 ALL		= $(MAIN) $(OTHERS)
 OBJECTS		= $(MAIN).rel $(OTHERS:=.rel)
 
-all: del_serial_rel $(MAIN).hex
+APP		?= $(MAIN)
+
+all: del_serial_rel $(APP).hex
 
 del_serial_rel:
 	rm -f serial.rel
 
-dep: $(MAIN).dep
+dep: $(APP).dep
 
-$(MAIN).dep: $(OBJECTS:.rel=.c) *.h
-	@>$(MAIN).dep
+$(APP).dep: $(OBJECTS:.rel=.c) *.h
+	@>$(APP).dep
 	@for c in $(OBJECTS:.rel=.c); do \
-		$(CC) -MM $(CPPFALGS) $$c >>$(MAIN).dep ;\
+		$(CC) -MM $(CPPFALGS) $$c >>$(APP).dep ;\
 	done
 
-include $(MAIN).dep
+include $(APP).dep
 
-$(MAIN).ihx: $(OBJECTS)
+$(APP).ihx: $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $@
 
 .SUFFIXES: .rel .ihx .hex
@@ -41,7 +43,7 @@ clean:
 	rm -f $(MAIN).ihx $(MAIN).hex $(MAIN).lk $(MAIN).map $(MAIN).mem $(MAIN).cdb $(MAIN).omf $(MAIN).noi $(MAIN).adb $(MAIN).sym $(MAIN).cdb
 	rm -f *.ihx *.hex
 	rm -f *~
-	rm -f $(MAIN).dep
+	rm -f $(MAIN).dep $(APP).dep
 
 
 # End of sdcc.mk
