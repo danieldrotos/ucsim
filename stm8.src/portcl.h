@@ -39,6 +39,9 @@ class cl_port: public cl_hw
  public:
   cl_port(class cl_uc *auc, t_addr abase/*, int aid*/, const char *aname);
   virtual int init(void);
+  virtual void reset(void);
+
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
 
   virtual void print_info(class cl_console_base *con);
 };
