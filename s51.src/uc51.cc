@@ -46,6 +46,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // sim
 #include "optioncl.h"
+#include "iwrap.h"
 
 //cmd.src
 #include "cmd_uccl.h"
@@ -90,6 +91,7 @@ cl_irq_stop_option::option_changed(void)
   uc51->stop_at_it= b;
 }
 
+instruction_wrapper_fn itab51[256];
 
 /*
  * Making a new micro-controller and reset it
@@ -113,6 +115,7 @@ cl_51core::cl_51core(struct cpu_entry *Itype, class cl_sim *asim):
 int
 cl_51core::init(void)
 {
+  fill_def_wrappers(itab51);
   irq_stop_option->init();
   dptr= 0;
   cl_uc::init();
@@ -1014,6 +1017,8 @@ cl_51core::exec_inst(void)
   t_mem code;
   int res= resGO;
 
+  if ((res= exec_inst_tab(itab51)) != resNOT_DONE)
+    return res;
   //pr_inst();
   instPC= PC;
   if (fetch(&code))
@@ -1022,28 +1027,28 @@ cl_51core::exec_inst(void)
   tick(1);
   switch (code)
     {
-    case 0x30: res= inst_jnb_bit_addr(code); break;
-    case 0xf5: res= inst_mov_addr_a(code); break;
-    case 0xe5: res= inst_mov_a_addr(code); break;
-    case 0x05: res= inst_inc_addr(code); break;
-    case 0x04: res= inst_inc_a(code); break;
-    case 0x60: res= inst_jz_addr(code); break;
-    case 0xe4: res= inst_clr_a(code); break;
-    case 0x80: res= inst_sjmp(code); break;
-    case 0x74: res= inst_mov_a_Sdata(code); break;
-    case 0x45: res= inst_orl_a_addr(code); break;
-    case 0x35: res= inst_addc_a_addr(code); break;
-    case 0x25: res= inst_add_a_addr(code); break;
-    case 0x85: res= inst_mov_addr_addr(code); break;
-    case 0xf8: case 0xf9: case 0xfa: case 0xfb:
-    case 0xfc: case 0xfd: case 0xfe: case 0xff: res= inst_mov_rn_a(code);break;
-    case 0x95: res= inst_subb_a_addr(code); break;
-    case 0x93: res= inst_movc_a_Sa_dptr(code); break;
-    case 0x88: case 0x89: case 0x8a: case 0x8b:
-    case 0x8c: case 0x8d: case 0x8e: case 0x8f:res=inst_mov_addr_rn(code);break;
-    case 0xd0: res= inst_pop(code); break;
-    case 0xc0: res= inst_push(code); break;
-    case 0x02: res= inst_ljmp(code); break;
+      //case 0x30: res= inst_jnb_bit_addr(code); break;
+      //case 0xf5: res= inst_mov_addr_a(code); break;
+      //case 0xe5: res= inst_mov_a_addr(code); break;
+      //case 0x05: res= inst_inc_addr(code); break;
+      //case 0x04: res= inst_inc_a(code); break;
+      //case 0x60: res= inst_jz_addr(code); break;
+      //case 0xe4: res= inst_clr_a(code); break;
+      //case 0x80: res= inst_sjmp(code); break;
+      //case 0x74: res= inst_mov_a_Sdata(code); break;
+      //case 0x45: res= inst_orl_a_addr(code); break;
+      //case 0x35: res= inst_addc_a_addr(code); break;
+      //case 0x25: res= inst_add_a_addr(code); break;
+      //case 0x85: res= inst_mov_addr_addr(code); break;
+      //case 0xf8: case 0xf9: case 0xfa: case 0xfb:
+      //case 0xfc: case 0xfd: case 0xfe: case 0xff: res= inst_mov_rn_a(code);break;
+      //case 0x95: res= inst_subb_a_addr(code); break;
+      //case 0x93: res= inst_movc_a_Sa_dptr(code); break;
+      //case 0x88: case 0x89: case 0x8a: case 0x8b:
+      //case 0x8c: case 0x8d: case 0x8e: case 0x8f:res=inst_mov_addr_rn(code);break;
+      //case 0xd0: res= inst_pop(code); break;
+      //case 0xc0: res= inst_push(code); break;
+      //case 0x02: res= inst_ljmp(code); break;
 
     case 0x00: res= inst_nop(code); break;
     case 0x01: case 0x21: case 0x41: case 0x61:
