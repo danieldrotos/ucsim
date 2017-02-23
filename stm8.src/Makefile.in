@@ -161,12 +161,12 @@ bl_s105.hex: bl_s105.asc
 bl_s105.cc: bl_s105.asc
 	srec_cat $< -Ascii_Hex -Output $@ -C-Array bl_s105 -INClude -No-CONST
 
-bl_source: bl.cc bl.h
+#bl_source: bl.cc bl.h
 
-bl.cc: bl_head.cc bl_l15x46.cc bl_s105.cc
-	cat bl_head.cc bl_l15x46.cc bl_s105.cc|sed 's/unsigned char/t_mem/' >$@
+#bl.cc: bl_head.cc bl_l15x46.cc bl_s105.cc
+#	cat bl_head.cc bl_l15x46.cc bl_s105.cc|sed 's/unsigned char/t_mem/' >$@
 
-bl.h: bl_l15x46.h bl_s105.h
-	cat bl_l15x46.h bl_s105.h|sed 's/unsigned char/t_mem/' >$@
+#bl.h: bl_l15x46.h bl_s105.h
+#	cat bl_l15x46.h bl_s105.h|sed 's/unsigned char/t_mem/' >$@
 
 # End of stm8.src/Makefile.in
