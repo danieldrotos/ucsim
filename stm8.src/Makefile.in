@@ -65,7 +65,7 @@ dlso_ok		= @dlso_ok@
 
 # Compiling entire program or any subproject
 # ------------------------------------------
-all: checkconf otherlibs stm8.src tests
+all: checkconf otherlibs stm8.src
 
 tests: $(TEST_OBJ)
 
