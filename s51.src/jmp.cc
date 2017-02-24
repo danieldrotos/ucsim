@@ -150,7 +150,7 @@ cl_51core::instruction_11/*inst_acall_addr*/(t_mem/*uchar*/ code)
  */
 
 int
-cl_51core::inst_lcall(uchar code, uint addr, bool intr)
+cl_51core::inst_lcall(t_mem code, uint addr, bool intr)
 {
   uchar h= 0, l= 0;
   t_mem sp, sp_before/*, sp_after*/;

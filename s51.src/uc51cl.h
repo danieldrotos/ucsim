@@ -150,7 +150,7 @@ protected:
   virtual int instruction_08/*inst_inc_rn*/(t_mem/*uchar*/ code);	/* 08-0f */
   virtual int instruction_10/*inst_jbc_bit_addr*/(t_mem/*uchar*/ code);	/* 10 */
   virtual int instruction_11/*inst_acall_addr*/(t_mem/*uchar*/ code);	/* [13579bdf]1 */
-  virtual int inst_lcall(uchar code, uint addr, bool intr);		/* 12 */
+  virtual int inst_lcall(t_mem code, uint addr, bool intr);		/* 12 */
   virtual int instruction_12(t_mem code) { return inst_lcall(code, 0, false); }
   virtual int instruction_13/*inst_rrc*/(t_mem/*uchar*/ code);		/* 13 */
   virtual int instruction_14/*inst_dec_a*/(t_mem/*uchar*/ code);	/* 14 */
