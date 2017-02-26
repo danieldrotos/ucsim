@@ -200,15 +200,15 @@
 }
 
 #define rlc_byte(reg) {                             \
-   regs.F &= ~(BIT_ALL);  /* clear these */         \
+   regs.raf.F &= ~(BIT_ALL);  /* clear these */         \
    if (reg & 0x80) {                                \
-     regs.F |= BIT_C;                               \
+     regs.raf.F |= BIT_C;                               \
      reg = (reg << 1) | 0x01;                       \
    } else                                           \
      reg = (reg << 1);                              \
-   if (reg == 0)       regs.F |= BIT_Z;             \
-   if (reg & 0x80)     regs.F |= BIT_S;             \
-   if (parity(regs.A)) regs.F |= BIT_P;             \
+   if (reg == 0)       regs.raf.F |= BIT_Z;             \
+   if (reg & 0x80)     regs.raf.F |= BIT_S;             \
+   if (parity(regs.A)) regs.raf.F |= BIT_P;             \
 }
 
 #define sla_byte(reg) {                             \

@@ -64,7 +64,7 @@ struct t_regs
       u8_t/*TYPE_UBYTE*/ F;
       u8_t/*TYPE_UBYTE*/ A;
 #endif
-    };
+    } raf;
   };
   DEF_REGPAIR(BC, bc);
   DEF_REGPAIR(DE, de);
