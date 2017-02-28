@@ -158,8 +158,8 @@ cl_r2k::make_memories(void)
   regs8->get_cell(8)->decode((t_mem*)&iir);
   regs8->get_cell(9)->decode((t_mem*)&eir);
 
-  regs8->get_cell(9)->decode((t_mem*)&regs.aA);
-  regs8->get_cell(10)->decode((t_mem*)&regs.aF);
+  regs8->get_cell(9)->decode((t_mem*)&regs.ralt_af.aA);
+  regs8->get_cell(10)->decode((t_mem*)&regs.ralt_af.aF);
   regs8->get_cell(11)->decode((t_mem*)&regs.a_bc.h);
   regs8->get_cell(12)->decode((t_mem*)&regs.a_bc.l);
   regs8->get_cell(13)->decode((t_mem*)&regs.a_de.h);

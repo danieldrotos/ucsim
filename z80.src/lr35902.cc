@@ -123,8 +123,8 @@ cl_lr35902::make_memories(void)
   regs8->get_cell(6)->decode((t_mem*)&regs.hl.h);
   regs8->get_cell(7)->decode((t_mem*)&regs.hl.l);
 
-  regs8->get_cell(8)->decode((t_mem*)&regs.aA);
-  regs8->get_cell(9)->decode((t_mem*)&regs.aF);
+  regs8->get_cell(8)->decode((t_mem*)&regs.ralt_af.aA);
+  regs8->get_cell(9)->decode((t_mem*)&regs.ralt_af.aF);
   regs8->get_cell(10)->decode((t_mem*)&regs.a_bc.h);
   regs8->get_cell(11)->decode((t_mem*)&regs.a_bc.l);
   regs8->get_cell(12)->decode((t_mem*)&regs.a_de.h);

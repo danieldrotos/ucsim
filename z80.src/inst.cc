@@ -496,12 +496,12 @@ cl_z80::inst_ex(t_mem code)
 
   switch (code) {
     case 0x08: // EX AF,AF'
-      tmp = regs.aA;
-      regs.aA = regs.raf.A;
+      tmp = regs.ralt_af.aA;
+      regs.ralt_af.aA = regs.raf.A;
       regs.raf.A = tmp;
 
-      tmp = regs.aF;
-      regs.aF = regs.raf.F;
+      tmp = regs.ralt_af.aF;
+      regs.ralt_af.aF = regs.raf.F;
       regs.raf.F = tmp;
     break;
 
