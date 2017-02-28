@@ -86,7 +86,7 @@ struct t_regs
       u8_t/*TYPE_UBYTE*/ aF;
       u8_t/*TYPE_UBYTE*/ aA;
 #endif
-    };
+    } ralt_af;
   };
   DEF_REGPAIR(aBC, a_bc);
   DEF_REGPAIR(aDE, a_de);
