@@ -7,4 +7,4 @@ OTHERS		= serial
 include sdcc.mk
 
 CPPFLAGS	= -DDEVICE=DEV_STM8S208
-SRC		= ..
+SRC_DIR		= ..
