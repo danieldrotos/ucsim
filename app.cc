@@ -157,6 +157,14 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
+	      
+	      if (jaj && commander->frozen_console)
+		{
+		  double n= dnow();
+		  commander->frozen_console->dd_printf("%f %f\n",
+						       n, n-sim->start_at);
+		}
+	      
 	      if (cyc - input_last_checked > 10000)
 		{
 		  input_last_checked= cyc;
@@ -167,8 +175,10 @@ cl_app::run(void)
 		}
 	      sim->step();
 	      if (jaj && commander->frozen_console)
-		sim->uc->print_regs(commander->frozen_console),
-		  commander->frozen_console->dd_printf("\n");
+		{
+		  sim->uc->print_regs(commander->frozen_console),
+		    commander->frozen_console->dd_printf("\n");
+		}
             }
 	  else
 	    {
