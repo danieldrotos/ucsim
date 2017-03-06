@@ -224,6 +224,7 @@ cl_uc::init(void)
 						l, fname);
 	}
     }
+  irq= false;
   reset();
   return(0);
 }
@@ -1830,8 +1831,10 @@ cl_uc::do_inst(int step)
       
       post_inst();
 
-      if (res == resGO)
+      if ((res == resGO) &&
+	  irq)
 	{
+	  printf("DO INTERRUPT\n");
 	  int r= do_interrupt();
 	  if (r != resGO)
 	    res= r;
@@ -1908,6 +1911,7 @@ cl_uc::do_interrupt(void)
   if (!it_enabled())
     return resGO;
   class it_level *il= (class it_level *)(it_levels->top()), *IL= 0;
+  irq= false;
   for (i= 0; i < it_sources->count; i++)
     {
       class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
@@ -1917,6 +1921,7 @@ cl_uc::do_interrupt(void)
 	{
 	  int pr= priority_of(is->nuof);
 	  int ap;
+	  irq= true;
 	  if (il &&
 	      il->level >= 0)
 	    ap= il->level;

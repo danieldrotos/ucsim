@@ -145,12 +145,12 @@ class cl_banker;
 class cl_memory_operator: public cl_base
 {
 protected:
-  t_addr address;
+  //t_addr address;
   t_mem mask;
   class cl_memory_operator *next_operator;
   class cl_memory_cell *cell;
 public:
-  cl_memory_operator(class cl_memory_cell *acell, t_addr addr);
+  cl_memory_operator(class cl_memory_cell *acell/*, t_addr addr*/);
 
   virtual class cl_memory_operator *get_next(void) { return(next_operator); }
   virtual void set_next(class cl_memory_operator *next) { next_operator= next;}
@@ -170,7 +170,7 @@ class cl_bank_switcher_operator: public cl_memory_operator
  protected:
   class cl_banker *banker;
  public:
-  cl_bank_switcher_operator(class cl_memory_cell *acell, t_addr addr,
+  cl_bank_switcher_operator(class cl_memory_cell *acell/*, t_addr addr*/,
 			    class cl_banker *the_banker);
   
   virtual t_mem write(t_mem val);
@@ -182,7 +182,7 @@ class cl_hw_operator: public cl_memory_operator
 protected:
   class cl_hw *hw;
 public:
-  cl_hw_operator(class cl_memory_cell *acell, t_addr addr,
+  cl_hw_operator(class cl_memory_cell *acell/*, t_addr addr*/,
 		 /*t_mem *data_place, t_mem the_mask,*/ class cl_hw *ahw);
 
   virtual bool match(class cl_hw *the_hw) { return(hw == the_hw); }
@@ -198,9 +198,9 @@ protected:
   class cl_uc *uc;
   class cl_brk *bp;
 public:
-  cl_event_break_operator(class cl_memory_cell *acell, t_addr addr,
+ cl_event_break_operator(class cl_memory_cell *acell/*, t_addr addr*/,
 			  class cl_uc *auc, class cl_brk *the_bp):
-  cl_memory_operator(acell, addr)
+  cl_memory_operator(acell/*, addr*/)
   {
     uc= auc;
     bp= the_bp;
@@ -212,7 +212,7 @@ public:
 class cl_write_operator: public cl_event_break_operator
 {
 public:
-  cl_write_operator(class cl_memory_cell *acell, t_addr addr,
+  cl_write_operator(class cl_memory_cell *acell/*, t_addr addr*/,
 		    class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem write(t_mem val);
@@ -221,7 +221,7 @@ public:
 class cl_read_operator: public cl_event_break_operator
 {
 public:
-  cl_read_operator(class cl_memory_cell *acell, t_addr addr,
+  cl_read_operator(class cl_memory_cell *acell/*, t_addr addr*/,
 		   class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem read(void);
@@ -292,7 +292,7 @@ class cl_memory_cell: public cl_cell_data
   virtual void del_operator(class cl_hw *hw);
   virtual class cl_banker *get_banker(void);
   
-  virtual class cl_memory_cell *add_hw(class cl_hw *hw, t_addr addr);
+  virtual class cl_memory_cell *add_hw(class cl_hw *hw/*, t_addr addr*/);
   virtual void remove_hw(class cl_hw *hw);
   virtual class cl_event_handler *get_event_handler(void);
 
