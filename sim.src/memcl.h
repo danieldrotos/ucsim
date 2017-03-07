@@ -283,8 +283,11 @@ class cl_memory_cell: public cl_cell_data
   virtual t_mem wadd(long what);
 
   virtual void set_bit1(t_mem bits);
+  virtual void write_bit1(t_mem bits);
   virtual void set_bit0(t_mem bits);
+  virtual void write_bit0(t_mem bits);
   virtual void toggle_bits(t_mem bits);
+  virtual void wtoggle_bits(t_mem bits);
   
   virtual void append_operator(class cl_memory_operator *op);
   virtual void prepend_operator(class cl_memory_operator *op);

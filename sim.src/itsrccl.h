@@ -80,6 +80,7 @@ public:
   virtual void clear(void);
 
   virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem read(class cl_memory_cell *cell);
 };
 
 

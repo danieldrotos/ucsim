@@ -993,6 +993,13 @@ cl_memory_cell::set_bit1(t_mem bits)
 }
 
 void
+cl_memory_cell::write_bit1(t_mem bits)
+{
+  bits&= mask;
+  /*(*data)|=*//*d*/write(d()| bits);
+}
+
+void
 cl_memory_cell::set_bit0(t_mem bits)
 {
   bits&= mask;
@@ -1000,10 +1007,24 @@ cl_memory_cell::set_bit0(t_mem bits)
 }
 
 void
+cl_memory_cell::write_bit0(t_mem bits)
+{
+  bits&= mask;
+  /*(*data)&=*//*d*/write(d()& ~bits);
+}
+
+void
 cl_memory_cell::toggle_bits(t_mem bits)
 {
   bits&= mask;
   /*d*/set(d() ^ bits);
+}
+
+void
+cl_memory_cell::wtoggle_bits(t_mem bits)
+{
+  bits&= mask;
+  /*d*/write(d() ^ bits);
 }
 
 

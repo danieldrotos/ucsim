@@ -331,7 +331,6 @@ cl_stm8::mk_hw_elements(void)
       // all S and AF
       mk_port(0x5014, "pe");
       mk_port(0x5019, "pf");
-      h->init();
       if (type->subtype & (DEV_STM8S005|
 			   DEV_STM8S007|
 			   DEV_STM8S105|

@@ -198,7 +198,7 @@ cl_serial::write(class cl_memory_cell *cell, t_mem *val)
   
       else if (cell == regs[dr])
 	{
-	  //printf("** DR %x txd=%c\n", *val, *val);
+	  //printf("**%d DR %x txd=%c\n", id, *val, *val);
 	  s_txd= *val;
 	  s_tx_written= true;
 	  show_writable(false);
@@ -265,7 +265,7 @@ cl_serial::tick(int cycles)
   if (s_sending &&
       (s_tr_bit >= bits))
     {
-      //printf("** sent %c\n", s_out);
+      // printf("**%d sent %c\n", id, s_out);
       s_sending= false;
       //if (io->fout)
 	{
@@ -407,10 +407,10 @@ cl_serial::show_writable(bool val)
 {
   if (val)
     // TXE=1
-    regs[sr]->set_bit1(0x80);
+    regs[sr]->write_bit1(0x80);
   else
     // TXE=0
-    regs[sr]->set_bit0(0x80);
+    regs[sr]->write_bit0(0x80);
   //printf("** TXE=%d sr=%x\n", val, regs[sr]->get());
 }
 
@@ -418,9 +418,9 @@ void
 cl_serial::show_readable(bool val)
 {
   if (val)
-    regs[sr]->set_bit1(0x20);
+    regs[sr]->write_bit1(0x20);
   else
-    regs[sr]->set_bit0(0x20);
+    regs[sr]->write_bit0(0x20);
   //printf("** RX=%d sr=%x\n", val, regs[sr]->get());
 }
 
@@ -428,9 +428,9 @@ void
 cl_serial::show_tx_complete(bool val)
 {
   if (val)
-    regs[sr]->set_bit1(0x40);
+    regs[sr]->write_bit1(0x40);
   else
-    regs[sr]->set_bit0(0x40);
+    regs[sr]->write_bit0(0x40);
   //printf("** TC=%d sr=%x\n", val, regs[sr]->get());
 }
 
@@ -438,9 +438,9 @@ void
 cl_serial::show_idle(bool val)
 {
   if (val)
-    regs[sr]->set_bit1(0x10);
+    regs[sr]->write_bit1(0x10);
   else
-    regs[sr]->set_bit0(0x10);
+    regs[sr]->write_bit0(0x10);
 }
 
 void
