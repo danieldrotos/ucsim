@@ -88,7 +88,8 @@ int
 cl_serial::init(void)
 {
   int i;
-
+  class cl_it_src *is;
+  
   set_name("stm8_uart");
   cl_serial_hw::init();
   clk_enabled= false;
@@ -99,21 +100,24 @@ cl_serial::init(void)
   pick_div();
   pick_ctrl();
 
-  uc->it_sources->add(new cl_it_src(uc, txit,
-				    regs[cr2], 0x80,
-				    regs[sr], 0x80,
-				    0x8008+txit*4, false, false,
-				    chars("", "usart%d transmit register empty", id), 20*10+1));
-  uc->it_sources->add(new cl_it_src(uc, txit,
-				    regs[cr2], 0x40,
-				    regs[sr], 0x40,
-				    0x8008+txit*4, false, false,
-				    chars("", "usart%d transmit complete", id), 20*10+2));
-  uc->it_sources->add(new cl_it_src(uc, rxit,
-				    regs[cr2], 0x20,
-				    regs[sr], 0x20,
-				    0x8008+rxit*4, false, false,
-				    chars("", "usart%d receive", id), 20*10+3));
+  uc->it_sources->add(is= new cl_it_src(uc, txit,
+					regs[cr2], 0x80,
+					regs[sr], 0x80,
+					0x8008+txit*4, false, false,
+					chars("", "usart%d transmit register empty", id), 20*10+1));
+  is->init();
+  uc->it_sources->add(is= new cl_it_src(uc, txit,
+					regs[cr2], 0x40,
+					regs[sr], 0x40,
+					0x8008+txit*4, false, false,
+					chars("", "usart%d transmit complete", id), 20*10+2));
+  is->init();
+  uc->it_sources->add(is= new cl_it_src(uc, rxit,
+					regs[cr2], 0x20,
+					regs[sr], 0x20,
+					0x8008+rxit*4, false, false,
+					chars("", "usart%d receive", id), 20*10+3));
+  is->init();
 
   sr_read= false;
   /*

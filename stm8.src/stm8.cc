@@ -95,7 +95,7 @@ cl_stm8::init(void)
 			  (t_addr)0x8004,
 			  false, false,
 			  "trap", 0);
-  
+  trap_src->init();
   return(0);
 }
 

@@ -240,6 +240,7 @@ cl_uc::reset(void)
 {
   class it_level *il;
 
+  irq= false;
   instPC= PC= 0;
   state = stGO;
   ticks->ticks= 0;
