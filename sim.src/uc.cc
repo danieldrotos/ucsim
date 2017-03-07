@@ -1835,7 +1835,7 @@ cl_uc::do_inst(int step)
       if ((res == resGO) &&
 	  irq)
 	{
-	  printf("DO INTERRUPT\n");
+	  //printf("DO INTERRUPT PC=%lx\n", PC);
 	  int r= do_interrupt();
 	  if (r != resGO)
 	    res= r;
@@ -1910,9 +1910,13 @@ cl_uc::do_interrupt(void)
 
   // Maskable interrupts
   if (!it_enabled())
-    return resGO;
+    {
+      //printf("do_interrupt skip (it disabled)\n");
+      return resGO;
+    }
   class it_level *il= (class it_level *)(it_levels->top()), *IL= 0;
   irq= false;
+  //printf("Checking IRQs...\n");
   for (i= 0; i < it_sources->count; i++)
     {
       class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
