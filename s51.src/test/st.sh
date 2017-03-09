@@ -79,7 +79,7 @@ In\t%I
 Out\t%O
 SwT\t%c
 SwIO\t%w
-MajFlt\t%F
+MaxFlt\t%F
 MinFlt\t%R
 Swaps\t%W
 Mem\t%M
@@ -102,3 +102,5 @@ S=$(echo "scale=3;${C}/${E}/1000000"|bc)
 echo "st${TEST} speed= $S Mclk/sec"|tee -a $SIM
 
 echo "st${TEST},${VER},${E},${S}"|tee $CSV
+
+echo $E >st${TEST}${VER}.txt
