@@ -20,6 +20,6 @@ main(void)
 	//printf("j=%4x i=%4x\n", j, i);
 	x= p[i];
       }
-  //* (char __idata *) 0 = * (char __xdata *) 0x7654;
+  * (char __idata *) 0 = * (char __xdata *) 0xfffe;
   *sif= 's';
 }

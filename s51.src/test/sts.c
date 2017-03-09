@@ -17,6 +17,6 @@ main(void)
       print_cx(p[i]);
       putchar('\n');
     }
-  //* (char __idata *) 0 = * (char __xdata *) 0x7654;
+  * (char __idata *) 0 = * (char __xdata *) 0xfffe;
   *sif= 's';
 }

@@ -1,7 +1,6 @@
 TEST=""
 S51v5=s515
 S51v6=s516
-S51vX=${HOME}/prj/ucsim.old/main/s51.src/s51
 VER=6
 S51=$S51v6
 
@@ -17,6 +16,12 @@ while [ -n "$1" ]; do
 	-5)
 	    S51=$S51v5
 	    VER=5
+	    shift
+	    ;;
+	-v)
+	    shift
+	    S51=s51-${1}
+	    VER="${1}"
 	    shift
 	    ;;
 	-X)

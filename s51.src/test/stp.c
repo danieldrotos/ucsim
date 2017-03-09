@@ -15,6 +15,6 @@ main(void)
 	P2= P3+1;
 	P3++;
       }
-  //* (char __idata *) 0 = * (char __xdata *) 0x7654;
+  * (char __idata *) 0 = * (char __xdata *) 0xfffe;
   *sif= 's';
 }
