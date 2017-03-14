@@ -47,9 +47,10 @@ cl_vcd::cl_vcd(class cl_uc *auc, int aid, chars aid_string):
 void
 cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 {
-  class cl_cmd_arg *params[2]= {
+  class cl_cmd_arg *params[3]= {
     cmdline->param(0),
-    cmdline->param(1)
+    cmdline->param(1),
+    cmdline->param(2)
   };
 
   if (cmdline->syntax_match(uc, MEMORY ADDRESS))
@@ -69,7 +70,13 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 	  return;
 	}
     }
+  else if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS))
+    {}
+  else if (cmdline->syntax_match(uc, STRING NUMBER))
+    {}
   else if (cmdline->syntax_match(uc, STRING STRING))
+    {}
+  else if (cmdline->syntax_match(uc, STRING))
     {
       char *p1= params[0]->value.string.string;
       char *p2= params[1]->value.string.string;

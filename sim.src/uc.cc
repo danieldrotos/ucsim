@@ -1401,6 +1401,9 @@ cl_uc::symbol2address(char *sym,
   class cl_var *v;
   t_index i;
 
+  if (!sym ||
+      !*sym)
+    return false;
   if (vars->search(sym, i))
     {
       v= (class cl_var *)(vars->at(i));

@@ -433,6 +433,14 @@ cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
 	    if (!parm->as_bit(uc))
 	      return(false);
 	    break;
+	  case SY_HW:
+	    if (!parm->as_hw(uc))
+	      return(false);
+	    break;
+	  case SY_CELL:
+	    if (!parm->as_cell(uc))
+	      return false;
+	    break;
 	  }
       switch (*p)
 	{
@@ -443,10 +451,6 @@ cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
 	  break;
 	case SY_DATA:
 	  if (!parm->as_data())
-	    return(false);
-	  break;
-	case SY_HW:
-	  if (!parm->as_hw(uc))
 	    return(false);
 	  break;
 	case SY_STRING:
