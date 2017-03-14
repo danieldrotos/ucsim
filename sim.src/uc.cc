@@ -782,6 +782,28 @@ cl_uc::address_space(const char *id)
   return(0);
 }
 
+class cl_address_space *
+cl_uc::address_space(class cl_memory_cell *cell)
+{
+  return(address_space(cell, (t_addr*)NULL));
+}
+
+class cl_address_space *
+cl_uc::address_space(class cl_memory_cell *cell, t_addr *addr)
+{
+  int i;
+
+  for (i= 0; i < address_spaces->count; i++)
+    {
+      class cl_address_space *m= (cl_address_space *)(address_spaces->at(i));
+      if (!m)
+	continue;
+      if (m->is_owned(cell, addr))
+	return(m);
+    }
+  return(0);
+}
+
 class cl_memory *
 cl_uc::memory(const char *id)
 {
