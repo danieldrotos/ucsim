@@ -41,6 +41,9 @@ class cl_vcd: public cl_hw
   cl_vcd(class cl_uc *auc, int aid, chars aid_string);
 
   virtual void add(class cl_memory_cell *cell);
+  virtual bool add(class cl_memory *m, t_addr a, class cl_console_base *con);
+  virtual void del(class cl_memory_cell *cell);
+  virtual bool del(class cl_memory *m, t_addr a, class cl_console_base *con);
   virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
   
   virtual void print_info(class cl_console_base *con);
