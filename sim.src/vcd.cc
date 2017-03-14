@@ -43,6 +43,13 @@ cl_vcd::cl_vcd(class cl_uc *auc, int aid, chars aid_string):
   fout= 0;
 }
 
+void
+cl_vcd::add(class cl_memory_cell *cell)
+{
+  if (!cell)
+    return;
+  locs->add(cell);
+}
 
 void
 cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
@@ -69,19 +76,30 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 			 mem->highest_valid_address());
 	  return;
 	}
+      add(((cl_address_space*)mem)->get_cell(a));
+      return;
+    }
+  else if (cmdline->syntax_match(uc, CELL))
+    {
+      add(params[0]->value.cell);
+      return;
     }
   else if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS))
+    {}
+  else if (cmdline->syntax_match(uc, STRING CELL))
     {}
   else if (cmdline->syntax_match(uc, STRING NUMBER))
     {}
   else if (cmdline->syntax_match(uc, STRING STRING))
-    {}
-  else if (cmdline->syntax_match(uc, STRING))
     {
       char *p1= params[0]->value.string.string;
       char *p2= params[1]->value.string.string;
     }
-  else
+  else if (cmdline->syntax_match(uc, STRING))
+    {
+      char *p1= params[0]->value.string.string;
+    }
+  //else
     {
       con->dd_printf("set hardware vcd[id] memory address\n");
       con->dd_printf("set hardware vcd[id] del[ete] memory address\n");

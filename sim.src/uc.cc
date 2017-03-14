@@ -56,6 +56,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simcl.h"
 #include "itsrccl.h"
 #include "simifcl.h"
+#include "vcdcl.h"
 
 
 static class cl_uc_error_registry uc_error_registry;
@@ -338,6 +339,8 @@ cl_uc::mk_hw_elements(void)
   class cl_hw *h;
 
   add_hw(h= new cl_simulator_interface(this));
+  h->init();
+  add_hw(h= new cl_vcd(this, 0, "vcd"));
   h->init();
 }
 

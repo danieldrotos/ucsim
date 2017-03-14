@@ -39,7 +39,8 @@ class cl_vcd: public cl_hw
   class cl_f *fout;
  public:
   cl_vcd(class cl_uc *auc, int aid, chars aid_string);
-  
+
+  virtual void add(class cl_memory_cell *cell);
   virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
   
   virtual void print_info(class cl_console_base *con);
