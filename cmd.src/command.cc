@@ -444,7 +444,7 @@ cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
 	      break;
 	    }
 	}
-      else
+      //else
 	{
 	  switch (*p)
 	    {
@@ -465,8 +465,7 @@ cl_cmdline::syntax_match(class cl_uc *uc, const char *syntax)
 	      if (!set_data_list(parm, &iparam))
 		return(false);
 	      break;
-	    default:
-	      return(false);
+	      //default: return(false);
 	    }
 	}
       p++;

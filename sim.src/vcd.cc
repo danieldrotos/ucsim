@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <time.h>
+
 // prj
 #include "utils.h"
 
@@ -196,7 +198,7 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 	{
 	  if (strcmp(p1, "add") == 0)
 	    {
-	      if (params[0]->value.cell->get_flag(CELL_NON_DECODED))
+	      if (params[1]->value.cell->get_flag(CELL_NON_DECODED))
 		con->dd_printf("Cell is not decoded\n");
 	      else
 		add(params[1]->value.cell);
@@ -279,7 +281,35 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 		  else
 		    {
 		      // generate vcd file header
-
+		      time_t t= time(NULL);
+		      fout->write_str("$date\n");
+		      fout->write_str(ctime(&t));
+		      fout->write_str("$end\n");
+		      fout->write_str("$version\n");
+		      fout->prntf("ucsim\n");
+		      fout->write_str("$end\n");
+		      fout->write_str("$timescale 1ns $end\n");
+		      fout->prntf("$scope module %s $end\n", (char*)modul);
+		      int i;
+		      for (i= 0; i < locs->count; i++)
+			{
+			  cl_memory_cell *c= (cl_memory_cell *)
+			    (locs->at(i));
+			  chars n= chars("", "m%d", i);
+			  fout->prntf("$var wire %d %c %s $end\n",
+				      c->get_width(), 33+i,
+				      (char*)n);
+			}
+		      fout->write_str("$upscope $end\n");
+		      fout->write_str("$enddefinitions $end\n");
+		      fout->write_str("$dumpvars\n");
+		      for (i= 0; i < locs->count; i++)
+			{
+			  cl_memory_cell *c= (cl_memory_cell *)
+			    (locs->at(i));
+			  report(c, i);
+			}
+		      fout->write_str("$end\n");
 		      started= true;
 		      paused= false;
 		      change= false;
@@ -302,6 +332,12 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 		  fout= NULL;
 		}
 	      started= paused= change= false;
+	      return;
+	    }
+	  if (strcmp(p1, "info") == 0)
+	    {
+	      print_info(con);
+	      return;
 	    }
 	}
     }
@@ -404,6 +440,8 @@ cl_vcd::print_info(class cl_console_base *con)
   con->dd_printf("Started: %s Paused: %s\n",
 		 started?"YES":"no",
 		 paused?"YES":"no");
+  const char *fn= fout?(fout->get_file_name()):"(none)";
+  con->dd_printf("Modul: %s File: %s\n", (char*)modul, fn);
   con->dd_printf("Memory cells:\n");
   for (i= 0; i < locs->count; i++)
     {
