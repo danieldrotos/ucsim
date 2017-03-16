@@ -37,6 +37,9 @@ class cl_vcd: public cl_hw
   class cl_list *locs;
   bool started, paused;
   class cl_f *fout;
+  bool change;
+  double change_time;
+  chars modul;
  public:
   cl_vcd(class cl_uc *auc, int aid, chars aid_string);
 
@@ -45,7 +48,14 @@ class cl_vcd: public cl_hw
   virtual void del(class cl_memory_cell *cell);
   virtual bool del(class cl_memory *m, t_addr a, class cl_console_base *con);
   virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
-  
+
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
+  virtual void report(class cl_memory_cell *cell, int nr);
+  virtual int tick(int cycles);
+
   virtual void print_info(class cl_console_base *con);
 };
 

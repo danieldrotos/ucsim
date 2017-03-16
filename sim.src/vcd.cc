@@ -26,6 +26,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 // prj
+#include "utils.h"
 
 // sim
 #include "argcl.h"
@@ -41,6 +42,8 @@ cl_vcd::cl_vcd(class cl_uc *auc, int aid, chars aid_string):
   started= false;
   paused= false;
   fout= 0;
+  change= 0;
+  modul= chars("", "ucsim_vcd_%d", id);
 }
 
 void
@@ -237,11 +240,70 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 	  con->dd_printf("Already started\n");
 	  return;
 	}
+      if (p1 && *p1)
+	{
+	  if (!p2 || !*p2)
+	    {
+	      con->dd_printf("Name missing\n");
+	      return;
+	    }
+	  if ((strcmp(p1, "fout") == 0) ||
+	      (strcmp(p1, "file") == 0))
+	    {
+	      if ((fout= mk_io(p2, "w")) == NULL)
+		con->dd_printf("File open error\n");
+	      return;
+	    }
+	  if (strstr(p1, "mod") == p1)
+	    {
+	      modul= chars(p2);
+	      return;
+	    }
+	}
     }
-  else if (cmdline->syntax_match(uc, STRING)) // START, PAUSE, STOP
+  else if (cmdline->syntax_match(uc, STRING)) // [RE]START, PAUSE, STOP
     {
       params[0]->as_string();
       char *p1= params[0]->value.string.string;
+      if (p1 && *p1)
+	{
+	  if ((strstr(p1, "re") == p1) ||
+	      (strcmp(p1, "start") == 0))
+	    {
+	      if (started)
+		paused= false;
+	      else
+		{
+		  if (!fout)
+		    con->dd_printf("Output unspecified\n");
+		  else
+		    {
+		      // generate vcd file header
+
+		      started= true;
+		      paused= false;
+		      change= false;
+		    }
+		}
+	      return;
+	    }
+	  if (strstr(p1, "paus") == p1)
+	    {
+	      if (started)
+		paused= !paused;
+	      return;
+	    }
+	  if (strcmp(p1, "stop") == 0)
+	    {
+	      if (started)
+		{
+		  if (fout)
+		    delete fout;
+		  fout= NULL;
+		}
+	      started= paused= change= false;
+	    }
+	}
     }
   //else
     {
@@ -255,6 +317,83 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
       con->dd_printf("set hardware vcd[id] stop\n");
       con->dd_printf("set hardware vcd[id] new id\n");
     }
+}
+
+t_mem
+cl_vcd::read(class cl_memory_cell *cell)
+{
+
+  conf(cell, NULL);
+  return cell->get();
+}
+
+void
+cl_vcd::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (started &&
+      !paused)
+    {
+      if (cell->def_data != *val)
+	{
+	  //change_time= uc->get_rtime();
+	  change= true;
+	}
+    }      
+  if (conf(cell, val))
+    return;
+}
+
+t_mem
+cl_vcd::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  if (addr >= 1)
+    return cell->get();
+  switch (addr)
+    {
+    }
+  return cell->get();
+}
+
+void
+cl_vcd::report(class cl_memory_cell *cell, int nr)
+{
+  t_mem v= cell->get();
+  if (fout)
+    {
+      int w= cell->get_width();
+      if (w == 1)
+	{
+	  fout->prntf("%d%c\n", v?1:0, nr+33);
+	}
+      else
+	{
+	  fout->write((char*)"b", 1);
+	  fout->prntf("%s %c\n", (char*)cbin(v, w), nr+33);
+	}
+    }
+  cell->def_data= v;
+}
+
+int
+cl_vcd::tick(int cycles)
+{
+  if (change)
+    {
+      int i;
+      change_time= uc->get_rtime();
+      if (fout)
+	fout->prntf("#%lu\n", (unsigned long)(change_time * 1000000000));
+      for (i= 0; i < locs->count; i++)
+	{
+	  class cl_memory_cell *c= (cl_memory_cell*)(locs->at(i));
+	  if (c->get() != c->def_data)
+	    {
+	      report(c, i);
+	    }
+	}
+      change= false;
+    }
+  return 0;
 }
 
 void

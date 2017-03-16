@@ -268,7 +268,8 @@ class cl_memory_cell: public cl_cell_data
   virtual bool get_flag(enum cell_flag flag);
   virtual void set_flags(/*TYPE_UBYTE*/uchar what);
   virtual void set_flag(enum cell_flag flag, bool val);
-
+  virtual uchar get_width(void) { return width; }
+  
   virtual void un_decode(void);
   virtual void decode(class cl_memory_chip *chip, t_addr addr);
   virtual void decode(t_mem *data_ptr);
