@@ -82,7 +82,13 @@ cl_vcd::add(class cl_memory *m, t_addr a, class cl_console_base *con)
 			      m->highest_valid_address());
       return false;
     }
-  add(((cl_address_space*)m)->get_cell(a));
+  cl_memory_cell *c= ((cl_address_space*)m)->get_cell(a);
+  if (c->get_flag(CELL_NON_DECODED))
+    {
+      if (con) con->dd_printf("Cell is not decoded\n");
+      return false;
+    }
+  add(c);
   return true;
 }
 
@@ -135,7 +141,7 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 			 mem->highest_valid_address());
 	  return;
 	}
-      add(((cl_address_space*)mem)->get_cell(a));
+      add(mem, a, con);
       return;
     }
   else if (cmdline->syntax_match(uc, CELL)) // ADD
@@ -145,7 +151,10 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 	  con->dd_printf("Already started\n");
 	  return;
 	}
-      add(params[0]->value.cell);
+      if (params[0]->value.cell->get_flag(CELL_NON_DECODED))
+	con->dd_printf("Cell is not decoded\n");
+      else
+	add(params[0]->value.cell);
       return;
     }
   else if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS)) // DEL|ADD
@@ -184,13 +193,16 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 	{
 	  if (strcmp(p1, "add") == 0)
 	    {
-	      /*if*/ (add(params[1]->value.cell))
-		;return;
+	      if (params[0]->value.cell->get_flag(CELL_NON_DECODED))
+		con->dd_printf("Cell is not decoded\n");
+	      else
+		add(params[1]->value.cell);
+	      return;
 	    }
 	  if (strstr(p1, "del") == p1)
 	    {
-	      /*if*/ (del(params[1]->value.cell))
-		;return;
+	      del(params[1]->value.cell);
+	      return;
 	    }
 	}
     }

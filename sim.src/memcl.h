@@ -252,7 +252,6 @@ class cl_memory_cell: public cl_cell_data
  public:
   t_mem mask;
   t_mem def_data;
-  t_mem prev_data;
  protected:
   uchar width;
   /*TYPE_UBYTE*/uchar flags;
