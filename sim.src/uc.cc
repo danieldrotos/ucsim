@@ -1523,6 +1523,30 @@ cl_uc::get_name_entry(struct name_entry tabl[], char *name)
     return(0);
 }
 
+chars
+cl_uc::cell_name(class cl_memory_cell *cell)
+{
+  if (cell == NULL)
+    return chars("");
+  if (cell->get_flag(CELL_VAR))
+    {
+      int i;
+      for (i= 0; i < vars->count; i++)
+	{
+	  class cl_var *v= (cl_var*)(vars->at(i));
+	  if (v->get_cell() &&
+	      (cell == v->get_cell()))
+	    return chars(v->get_name());
+	}
+    }
+  class cl_address_space *as;
+  t_addr a;
+  as= address_space(cell, &a);
+  if (as == NULL)
+    return chars("");
+  return chars("", "%s_%06x", as->get_name(), a);
+}
+
 
 /*
  * Messages to broadcast

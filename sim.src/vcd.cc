@@ -295,7 +295,7 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 			{
 			  cl_memory_cell *c= (cl_memory_cell *)
 			    (locs->at(i));
-			  chars n= chars("", "m%d", i);
+			  chars n= uc->cell_name(c);
 			  fout->prntf("$var wire %d %c %s $end\n",
 				      c->get_width(), 33+i,
 				      (char*)n);
@@ -449,7 +449,7 @@ cl_vcd::print_info(class cl_console_base *con)
       cl_address_space *as;
       t_addr a= 0;
       as= uc->address_space(c, &a);
-      con->dd_printf("  %s[0x%x]\n", as?(as->get_name()):"?", a);
+      con->dd_printf("  %s[0x%x] %s\n", as?(as->get_name()):"?", a, (char*)(uc->cell_name(c)));
     }
 }
 
