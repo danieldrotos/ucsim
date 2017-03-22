@@ -1165,7 +1165,23 @@ cl_uc::read_hex_file(cl_f *f)
 long
 cl_uc::read_omf_file(cl_f *f)
 {
-  return (0);
+  long written= 0;
+  class cl_omf_rec rec;
+  while (rec.read(f))
+    {
+      if (rec.type == 0x06)
+	{
+	  // content
+	  u16_t addr= rec.pick_word(1);
+	  int i= 3;
+	  while (i < rec.len)
+	    {
+	      set_rom(addr+i, rec.rec[i]);
+	      written++;
+	    }
+	}
+    }
+  return (written);
 }
 
 
