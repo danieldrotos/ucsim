@@ -120,7 +120,7 @@ COMMAND_DO_WORK_UC(cl_dl_cmd)
 {
   long l;
   
-  if ((l= uc->read_hex_file(NULL)) >= 0)
+  if ((l= uc->read_hex_file(con)) >= 0)
     con->dd_printf("%ld words loaded\n", l);
 
   return(0);
