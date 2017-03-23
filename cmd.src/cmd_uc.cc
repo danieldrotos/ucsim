@@ -101,9 +101,10 @@ COMMAND_DO_WORK_UC(cl_file_cmd)
       con->dd_printf("File name is missing.\n");
       return(0);
     }
-  if ((l= uc->read_hex_file(fname)) >= 0)
+  
+  if ((l= uc->read_file(fname)) >= 0)
     con->dd_printf("%ld words read from %s\n", l, fname);
-
+    
   return(0);
 }
 

@@ -1184,6 +1184,65 @@ cl_uc::read_omf_file(cl_f *f)
   return (written);
 }
 
+cl_f *
+cl_uc::find_loadable_file(chars nam)
+{
+  cl_f *f;
+  bool o;
+  chars c;
+  
+  f= mk_io(nam, "r");
+  o= (f->opened());
+  if (o)
+    return f;
+
+  c= chars("", "%s.ihx", (char*)nam);
+  f->open(c, chars("r"));
+  o= (f->opened());
+  if (o)
+    return f;
+  c= chars("", "%s.hex", (char*)nam);
+  f->open(c, chars("r"));
+  o= (f->opened());
+  if (o)
+    return f;
+  c= chars("", "%s.ihex", (char*)nam);
+  f->open(c, chars("r"));
+  o= (f->opened());
+  if (o)
+    return f;
+
+  c= chars("", "%s.omf", (char*)nam);
+  f->open(c, chars("r"));
+  o= (f->opened());
+  if (o)
+    return f;
+
+  delete f;
+  return NULL;
+}
+
+long
+cl_uc::read_file(chars nam)
+{
+  cl_f *f= find_loadable_file(nam);
+  long l= 0;
+  
+  if (!f)
+    {
+      printf("no loadable file found\n");
+      return 0;
+    }
+  printf("Loading from %s\n", f->get_file_name());
+  if (is_hex_file(f))
+    l= read_hex_file(f);
+  else if (is_omf_file(f))
+    l= read_omf_file(f);
+
+  delete f;
+  return l;
+}
+
 
 /*
  * Handling instruction map
