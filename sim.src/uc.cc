@@ -1178,6 +1178,7 @@ cl_uc::read_omf_file(cl_f *f)
 	    {
 	      set_rom(addr+i, rec.rec[i]);
 	      written++;
+	      i++;
 	    }
 	}
     }
