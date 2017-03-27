@@ -1465,20 +1465,6 @@ cl_uc::dis_tbl(void)
   return(&empty);
 }
 
-struct name_entry *
-cl_uc::sfr_tbl(void)
-{
-  static struct name_entry empty= { 0, 0 };
-  return(&empty);
-}
-
-struct name_entry *
-cl_uc::bit_tbl(void)
-{
-  static struct name_entry empty= { 0, 0 };
-  return(&empty);
-}
-
 char *
 cl_uc::disass(t_addr addr, const char *sep)
 {
@@ -1598,42 +1584,23 @@ cl_uc::longest_inst(void)
 }
 
 bool
-cl_uc::get_name(t_addr addr, struct name_entry tab[], char *buf)
+cl_uc::addr_name(t_addr addr, class cl_address_space *as, char *buf)
 {
-  int i;
-
-  i= 0;
-  while (tab[i].name &&
-	 (!(tab[i].cpu_type & type->type) ||
-	 (tab[i].addr != addr)))
-    i++;
-  if (tab[i].name)
-    strcpy(buf, tab[i].name);
-  return(tab[i].name != NULL);
-}
-
-bool
-cl_uc::symbol2address(char *sym, struct name_entry tab[],
-		      t_addr *addr)
-{
-  int i;
-
-  if (!sym ||
-      !*sym ||
-      !tab)
-    return(false);
-  i= 0;
-  while (tab[i].name &&
-	 (!(tab[i].cpu_type & type->type) ||
-	  strcasecmp(sym, tab[i].name) != 0))
-    i++;
-  if (tab[i].name)
+  t_index i;
+  
+  for (i= 0; i < vars->count; i++)
     {
-      if (addr)
-	*addr= tab[i].addr;
-      return(true);
+      class cl_var *v= (cl_var *)(vars->at(i));
+      if ((v->as == as) &&
+	  (v->addr == addr))
+	{
+	  strcpy(buf, v->get_name());
+	  return true;
+	}
     }
-  return(false);
+  unsigned int a= addr;
+  sprintf(buf, "%02x", a);
+  return false;
 }
 
 bool
@@ -1670,7 +1637,7 @@ cl_uc::symbolic_bit_name(t_addr bit_address,
   char *sym_name= 0;
   int i;
 
-  i= 0;
+  /*i= 0;
   while (bit_tbl()[i].name &&
 	 (bit_tbl()[i].addr != bit_address))
     i++;
@@ -1679,7 +1646,8 @@ cl_uc::symbolic_bit_name(t_addr bit_address,
       sym_name= strdup(bit_tbl()[i].name);
       return(sym_name);
     }
-
+  */
+  /*
   if (mem &&
       mem->have_real_name() &&
       strstr(mem->get_name(), "sfr") == mem->get_name())
@@ -1693,6 +1661,7 @@ cl_uc::symbolic_bit_name(t_addr bit_address,
       else
 	sym_name= 0;
     }
+  */
   if (!sym_name)
     {
       sym_name= (char *)malloc(16);
@@ -1763,6 +1732,18 @@ cl_uc::cell_name(class cl_memory_cell *cell)
   if (as == NULL)
     return chars("");
   return chars("", "%s_%06x", as->get_name(), a);
+}
+
+class cl_var *
+cl_uc::var(char *nam)
+{
+  if (!vars)
+    return NULL;
+  t_index i;
+  if (!vars->search(nam, i))
+    return NULL;
+  class cl_var *v= (cl_var*)(vars->at(i));
+  return v;
 }
 
 

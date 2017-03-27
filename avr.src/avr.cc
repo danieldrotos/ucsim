@@ -155,20 +155,21 @@ cl_avr::dis_tbl(void)
 {
   return(disass_avr);
 }
-
+/*
 struct name_entry *
 cl_avr::sfr_tbl(void)
 {
   return(sfr_tabl);
 }
-
+*/
+ /*
 struct name_entry *
 cl_avr::bit_tbl(void)
 {
   //FIXME
   return(0);
 }
-
+ */
 char *
 cl_avr::disass(t_addr addr, const char *sep)
 {
@@ -201,24 +202,24 @@ cl_avr::disass(t_addr addr, const char *sep)
 	  switch (*(b++))
 	    {
 	    case 'd': // Rd   .... ...d dddd ....  0<=d<=31
-	      if (!get_name(data= (code&0x01f0)>>4, sfr_tbl(), temp))
+	      if (!/*get*/addr_name(data= (code&0x01f0)>>4, /*sfr_tbl()*/ram, temp))
 		sprintf(temp, "r%d", data);
 	      break;
 	    case 'D': // Rd   .... .... dddd ....  16<=d<=31
-	      if (!get_name(data= 16+((code&0xf0)>>4), sfr_tbl(), temp))
+	      if (!/*get*/addr_name(data= 16+((code&0xf0)>>4), /*sfr_tbl()*/ram, temp))
 		sprintf(temp, "r%d", data);
 	      break;
 	    case 'K': // K    .... KKKK .... KKKK  0<=K<=255
 	      sprintf(temp, "%d", ((code&0xf00)>>4)|(code&0xf));
 	      break;
 	    case 'r': // Rr   .... ..r. .... rrrr  0<=r<=31
-	      if (!get_name(data= ((code&0x0200)>>5)|(code&0x000f),
-			    sfr_tbl(), temp))
+	      if (!/*get*/addr_name(data= ((code&0x0200)>>5)|(code&0x000f),
+				    /*sfr_tbl()*/ram, temp))
 		sprintf(temp, "r%d", data);
 	      break;
 	    case '2': // Rdl  .... .... ..dd ....  dl= {24,26,28,30}
-	      if (!get_name(data= 24+(2*((code&0x0030)>>4)),
-			    sfr_tbl(), temp))
+	      if (!/*get*/addr_name(data= 24+(2*((code&0x0030)>>4)),
+				    /*sfr_tbl()*/ram, temp))
 		sprintf(temp, "r%d", data);
 	      break;
 	    case '6': // K    .... .... KK.. KKKK  0<=K<=63
@@ -246,12 +247,12 @@ cl_avr::disass(t_addr addr, const char *sep)
 	      break;
 	    case 'P': // P    .... .... pppp p...  0<=P<=31
 	      data= (code&0xf8)>>3;
-	      if (!get_name(data+0x20, sfr_tbl(), temp))
+	      if (!/*get*/addr_name(data+0x20, /*sfr_tbl()*/ram, temp))
 		sprintf(temp, "%d", data);
 	      break;
 	    case 'p': // P    .... .PP. .... PPPP  0<=P<=63
 	      data= ((code&0x600)>>5)|(code&0xf);
-	      if (!get_name(data+0x20, sfr_tbl(), temp))
+	      if (!/*get*/addr_name(data+0x20, /*sfr_tbl()*/ram, temp))
 		sprintf(temp, "%d", data);
 	      break;
 	    case 'q': // q    ..q. qq.. .... .qqq  0<=q<=63

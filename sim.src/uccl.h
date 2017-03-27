@@ -255,17 +255,13 @@ public:
   // disassembling and symbol recognition
   virtual char *disass(t_addr addr, const char *sep);
   virtual struct dis_entry *dis_tbl(void);
-  virtual struct name_entry *sfr_tbl(void);
-  virtual struct name_entry *bit_tbl(void);
   virtual void print_disass(t_addr addr, class cl_console_base *con);
   virtual void print_regs(class cl_console_base *con);
   virtual int inst_length(t_addr addr);
   virtual int inst_branch(t_addr addr);
   virtual bool is_call(t_addr addr);
   virtual int longest_inst(void);
-  virtual bool get_name(t_addr addr, struct name_entry tab[], char *buf);
-  virtual bool symbol2address(char *sym, struct name_entry tab[],
-			      t_addr *addr);
+  virtual bool addr_name(t_addr addr, class cl_address_space *as, char *buf);
   virtual bool symbol2address(char *sym,
 			      class cl_address_space **as,
 			      t_addr *addr);
@@ -276,6 +272,7 @@ public:
   virtual name_entry *get_name_entry(struct name_entry tabl[],
 				     char *name);
   virtual chars cell_name(class cl_memory_cell *cell);
+  virtual class cl_var *var(char *nam);
   
   /* Converting abstract address spaces into real ones */
   virtual class cl_address_space *bit2mem(t_addr bitaddr,

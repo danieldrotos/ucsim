@@ -617,6 +617,10 @@ COMMAND_DO_WORK_UC(cl_var_cmd)
       m= params[1]->value.memory.memory;
       addr= params[2]->value.address;
     }
+  else if (cmdline->syntax_match(uc, STRING CELL))
+    {
+      m= uc->address_space(params[1]->value.cell, &addr);
+    }
   else if (cmdline->syntax_match(uc, STRING))
     {
     }
