@@ -262,6 +262,7 @@ public:
   virtual bool is_call(t_addr addr);
   virtual int longest_inst(void);
   virtual bool addr_name(t_addr addr, class cl_address_space *as, char *buf);
+  virtual bool addr_name(t_addr addr, class cl_address_space *as, int bitnr, char *buf);
   virtual bool symbol2address(char *sym,
 			      class cl_address_space **as,
 			      t_addr *addr);

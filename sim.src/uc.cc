@@ -1604,6 +1604,27 @@ cl_uc::addr_name(t_addr addr, class cl_address_space *as, char *buf)
 }
 
 bool
+cl_uc::addr_name(t_addr addr, class cl_address_space *as, int bitnr, char *buf)
+{
+  t_index i;
+  
+  for (i= 0; i < vars->count; i++)
+    {
+      class cl_var *v= (cl_var *)(vars->at(i));
+      if ((v->as == as) &&
+	  (v->addr == addr) &&
+	  (v->bitnr == bitnr))
+	{
+	  strcpy(buf, v->get_name());
+	  return true;
+	}
+    }
+  unsigned int a= addr;
+  sprintf(buf, "%02x.%d", a, bitnr);
+  return false;
+}
+
+bool
 cl_uc::symbol2address(char *sym,
 		      class cl_address_space **as,
 		      t_addr *addr)
@@ -1617,7 +1638,7 @@ cl_uc::symbol2address(char *sym,
   if (vars->search(sym, i))
     {
       v= (class cl_var *)(vars->at(i));
-      if (v->bit >= 0)
+      if (v->bitnr >= 0)
 	return false;
       if (as)
 	*as= v->as;

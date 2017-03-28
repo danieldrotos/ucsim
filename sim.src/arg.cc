@@ -303,13 +303,13 @@ cl_cmd_sym_arg::get_bit_address(class cl_uc *uc, // input
 	*mem_addr= v->addr;
       if (bit_mask)
 	{
-	  if (v->bit < 0)
+	  if (v->bitnr < 0)
 	    {
 	      *bit_mask= 1;
 	    }
 	  else
 	    {
-	      *bit_mask= v->bit;
+	      *bit_mask= 1 << v->bitnr;
 	    }
 	}
       return true;
