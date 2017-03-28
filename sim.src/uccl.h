@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // prj
 #include "stypes.h"
 #include "pobjcl.h"
+#include "pobjt.h"
 
 // sim
 #include "hwcl.h"
@@ -100,6 +101,38 @@ class cl_omf_rec: public cl_base
   virtual u16_t pick_word(int i);
   virtual chars pick_str(int i);
   virtual bool read(cl_f *f);
+};
+
+class cl_cdb_rec: public cl_base
+{
+ public:
+  chars fname;
+  t_addr addr;
+ public:
+ cl_cdb_rec(chars fn): cl_base() { fname= fn; }
+ cl_cdb_rec(chars fn, t_addr a): cl_base() { fname= fn; addr= a; }
+};
+
+class cl_cdb_recs: public cl_sorted_list
+{
+ public:
+ cl_cdb_recs(): cl_sorted_list(2,2,"cdb_recs_list") {}
+  virtual void *key_of(void *item)
+  { return (char*)(((cl_cdb_rec *)item)->fname); }
+  virtual int compare(void *k1, void *k2) {
+    return strcmp((char*)k1,(char*)k2);
+  }
+  virtual cl_cdb_rec *rec(chars n) {
+    t_index i;
+    if (search((char*)n, i))
+      return (cl_cdb_rec*)(at(i));
+    return NULL;
+  }
+  virtual void del(chars n) {
+    t_index i;
+    if (search((char*)n,i))
+      free_at(i);
+  }
 };
 
 /* Abstract microcontroller */
@@ -182,6 +215,7 @@ public:
   virtual long read_hex_file(cl_console_base *con);
   virtual long read_hex_file(cl_f *f);
   virtual long read_omf_file(cl_f *f);
+  virtual long read_cdb_file(cl_f *f);
   virtual cl_f *find_loadable_file(chars nam);
   virtual long read_file(chars nam);
   

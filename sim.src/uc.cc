@@ -1185,6 +1185,73 @@ cl_uc::read_omf_file(cl_f *f)
   return (written);
 }
 
+long
+cl_uc::read_cdb_file(cl_f *f)
+{
+  class cl_cdb_recs *fns= new cl_cdb_recs();
+  chars ln;
+  char *lc;
+  long cnt= 0;
+  class cl_cdb_rec *r;
+  class cl_var *v;
+  
+  ln= f->gets();
+  while (!ln.empty())
+    {
+      //printf("CBD LN=%s\n",(char*)ln);
+      lc= (char*)ln;
+      if (lc[0] == 'F')
+	{
+	  if (ln.len() > 5)
+	    {
+	      if ((lc[1] == ':') &&
+		  (lc[2] == 'G'))
+		{
+		  ln.start_parse(4);
+		  chars n= ln.token("$");
+		  if ((r= fns->rec(n)) != NULL)
+		    {
+		      vars->add(v= new cl_var(n, rom, r->addr));
+		      v->init();
+		      fns->del(n);
+		      cnt++;
+		    }
+		  else
+		    fns->add(new cl_cdb_rec(n));
+		}
+	    }
+	}
+      else if (lc[0] == 'L')
+	{
+	  if (ln.len() > 5)
+	    {
+	      if ((ln[1] == ':') &&
+		  (lc[2] == 'G'))
+		{
+		  ln.start_parse(4);
+		  chars n= ln.token("$");
+		  chars t= ln.token(":");
+		  t= ln.token(" ");
+		  t_addr a= strtol((char*)t, 0, 0);
+		  if ((r= fns->rec(n)) != NULL)
+		    {
+		      fns->del(n);
+		      vars->add(v= new cl_var(n, rom, a));
+		      v->init();
+		      cnt++;
+		    }
+		  else
+		    fns->add(new cl_cdb_rec(n, a));
+		}
+	    }
+	}
+      ln= f->gets();
+    }
+  fns->free_all();
+  delete fns;
+  return cnt;
+}
+
 cl_f *
 cl_uc::find_loadable_file(chars nam)
 {
@@ -1239,6 +1306,8 @@ cl_uc::read_file(chars nam)
     l= read_hex_file(f);
   else if (is_omf_file(f))
     l= read_omf_file(f);
+  else if (is_cdb_file(f))
+    l= read_cdb_file(f);
 
   delete f;
   return l;
