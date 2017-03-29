@@ -1232,7 +1232,7 @@ cl_uc::read_cdb_file(cl_f *f)
 		  chars n= ln.token("$");
 		  chars t= ln.token(":");
 		  t= ln.token(" ");
-		  t_addr a= strtol((char*)t, 0, 0);
+		  t_addr a= strtol((char*)t, 0, 16);
 		  if ((r= fns->rec(n)) != NULL)
 		    {
 		      fns->del(n);
