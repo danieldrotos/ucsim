@@ -1291,24 +1291,43 @@ cl_uc::find_loadable_file(chars nam)
 }
 
 long
-cl_uc::read_file(chars nam)
+cl_uc::read_file(chars nam, class cl_console_base *con)
 {
   cl_f *f= find_loadable_file(nam);
   long l= 0;
   
   if (!f)
     {
-      printf("no loadable file found\n");
+      if (con) con->dd_printf("no loadable file found\n");
       return 0;
     }
-  printf("Loading from %s\n", f->get_file_name());
+  /*if (con) con->dd_*/printf("Loading from %s\n", f->get_file_name());
   if (is_hex_file(f))
-    l= read_hex_file(f);
+    {
+      l= read_hex_file(f);
+      printf("%ld words read from %s\n", l, f->get_fname());
+    }
   else if (is_omf_file(f))
-    l= read_omf_file(f);
+    {
+      l= read_omf_file(f);
+      printf("%ld words read from %s\n", l, f->get_fname());
+    }
   else if (is_cdb_file(f))
-    l= read_cdb_file(f);
-
+    {
+      l= read_cdb_file(f);
+      printf("%ld symbols read from %s\n", l, f->get_fname());
+    }
+  if (strcmp(nam, f->get_fname()) != 0)
+    {
+      chars n= nam;
+      n+= (char*)".cdb";
+      cl_f *c= mk_io(n, "r");
+      if (c->opened())
+	{
+	  l= read_cdb_file(c);
+	  printf("%ld symbols read from %s\n", l, c->get_fname());
+	}
+    }
   delete f;
   return l;
 }

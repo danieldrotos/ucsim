@@ -102,8 +102,8 @@ COMMAND_DO_WORK_UC(cl_file_cmd)
       return(0);
     }
   
-  if ((l= uc->read_file(fname)) >= 0)
-    con->dd_printf("%ld words read from %s\n", l, fname);
+  if ((l= uc->read_file(fname, con)) >= 0)
+    ;//con->dd_printf("%ld words read from %s\n", l, fname);
     
   return(0);
 }
