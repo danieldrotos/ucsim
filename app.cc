@@ -128,7 +128,7 @@ cl_app::run(void)
 		{
 		  char *fname= (char *)(in_files->at(i));
 		  long l;
-		  if ((l= sim->uc->read_hex_file(fname)) >= 0)
+		  if ((l= sim->uc->read_file(fname)) >= 0)
 		    {
 		      /*commander->all_printf*/printf("%ld words read from %s\n",
 					    l, fname);
