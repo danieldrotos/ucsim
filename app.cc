@@ -121,7 +121,7 @@ cl_app::run(void)
 	}
       if (rs == rs_read_files)
 	{
-	  if (sim->uc != NULL)
+	  if (sim && (sim->uc != NULL))
 	    {
 	      int i;
 	      for (i= 0; i < in_files->count; i++)
