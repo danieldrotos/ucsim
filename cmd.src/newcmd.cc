@@ -153,6 +153,7 @@ cl_console_base::init(void)
   print_prompt();
   last_command= 0;
   last_cmdline= 0;
+  prev_quit= -1;
   return(0);
 }
 
