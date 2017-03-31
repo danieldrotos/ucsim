@@ -84,7 +84,6 @@ cl_serial_hw::init(void)
     }
   else
     port= 5560+id;
-  printf("add serial listener on %d for %d\n",port,id);
   listener= new cl_serial_listener(port, application, this);
   class cl_commander_base *c= application->get_commander();
   c->add_console(listener);

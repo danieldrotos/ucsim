@@ -56,30 +56,7 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
 				 cmdline->param(2),
 				 cmdline->param(3) };
 
-  if (cmdline->syntax_match(uc, ADDRESS)) {
-    addr= params[0]->value.address;
-    hit= 1;
-    do_fetch(uc, addr, hit, con);
-  }
-  else if (cmdline->syntax_match(uc, ADDRESS NUMBER)) {
-    addr= params[0]->value.address;
-    hit= params[1]->value.number;
-    do_fetch(uc, addr, hit, con);
-  }
-  else if (cmdline->syntax_match(uc, MEMORY STRING ADDRESS)) {
-    mem= params[0]->value.memory.address_space;
-    op= *(params[1]->get_svalue());
-    addr= params[2]->value.address;
-    hit= 1;
-    do_event(uc, mem, op, addr, hit, con);
-  }
-  else if (cmdline->syntax_match(uc, MEMORY STRING ADDRESS NUMBER)) {
-    mem= params[0]->value.memory.address_space;
-    op= *(params[1]->get_svalue());
-    addr= params[2]->value.address;
-    hit= params[3]->value.number;
-    do_event(uc, mem, op, addr, hit, con);
-  }
+  if (0) {}
   else if (cmdline->syntax_match(uc, CELL NUMBER)) {
     hit= params[1]->value.number;
     mem= uc->address_space(params[0]->value.cell, &addr);
@@ -107,6 +84,30 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
 	do_event(uc, mem, 'r', addr, hit, con);
 	do_event(uc, mem, 'w', addr, hit, con);
       }
+  }
+  else if (cmdline->syntax_match(uc, ADDRESS)) {
+    addr= params[0]->value.address;
+    hit= 1;
+    do_fetch(uc, addr, hit, con);
+  }
+  else if (cmdline->syntax_match(uc, ADDRESS NUMBER)) {
+    addr= params[0]->value.address;
+    hit= params[1]->value.number;
+    do_fetch(uc, addr, hit, con);
+  }
+  else if (cmdline->syntax_match(uc, MEMORY STRING ADDRESS)) {
+    mem= params[0]->value.memory.address_space;
+    op= *(params[1]->get_svalue());
+    addr= params[2]->value.address;
+    hit= 1;
+    do_event(uc, mem, op, addr, hit, con);
+  }
+  else if (cmdline->syntax_match(uc, MEMORY STRING ADDRESS NUMBER)) {
+    mem= params[0]->value.memory.address_space;
+    op= *(params[1]->get_svalue());
+    addr= params[2]->value.address;
+    hit= params[3]->value.number;
+    do_event(uc, mem, op, addr, hit, con);
   }
   else
     {

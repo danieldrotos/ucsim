@@ -1327,6 +1327,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con)
 	  l= read_cdb_file(c);
 	  printf("%ld symbols read from %s\n", l, c->get_fname());
 	}
+      delete c;
     }
   delete f;
   return l;
