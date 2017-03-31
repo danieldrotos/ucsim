@@ -54,6 +54,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_getcl.h"
 #include "cmd_setcl.h"
 #include "newcmdposixcl.h"
+#include "cmdlexcl.h"
 
 bool jaj= false;
 
@@ -649,6 +650,15 @@ cl_app::get_cmd(class cl_cmdline *cmdline)
   return(0);
 }
 
+long
+cl_app::eval(chars expr)
+{
+  expr_result= 0;
+  uc_yy_set_string_to_parse((char*)expr);
+  yyparse();
+  uc_yy_free_string_to_parse();
+  return expr_result;
+}
 
 /*
  * Messages to broadcast
