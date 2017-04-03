@@ -429,7 +429,7 @@ cl_f::finish_esc(int k)
 }
 
 int
-cl_f::process_telnet(char ci)
+cl_f::process_telnet(unsigned char ci)
 {
   int l= strlen(esc_buffer);
   esc_buffer[l]= ci;
