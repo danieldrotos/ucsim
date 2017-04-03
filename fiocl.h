@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdio.h>
 #include <stdarg.h>
 
+#include "charscl.h"
 #include "pobjcl.h"
 
 
