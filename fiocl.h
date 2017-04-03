@@ -169,8 +169,8 @@ class cl_f: public cl_base
  public:
   virtual int input_avail(void);
   virtual int read(int *buf, int max);
-  virtual int getc(void);
-  virtual chars gets(void);
+  virtual int get_c(void);
+  virtual chars get_s(void);
   
  public:
   //FILE *f(void) { return file_f; };
