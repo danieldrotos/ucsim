@@ -811,7 +811,7 @@ void
 cl_51core::decode_regs(void)
 {
   int i;
-  cl_banker *b= new cl_banker(sfr, 0xd0, 0x18, 0,
+  cl_banker *b= new cl_banker(sfr, 0xd0, 0x18, //0,
 			      regs, 0, 7);
   b->init();
   regs->decoders->add(b);
@@ -902,7 +902,7 @@ cl_51core::decode_dptr(void)
 	{
 	  // multi DPTR sfr style
 	  //printf("MDPS %x %x %x %x\n", adps, mdps, dpl1, dph1);
-	  banker= new cl_banker(sfr, adps, mdps, 0,
+	  banker= new cl_banker(sfr, adps, mdps, //0,
 				dptr, 0, 0);
 	  banker->init();
 	  dptr->decoders->add(banker);
@@ -910,7 +910,7 @@ cl_51core::decode_dptr(void)
 	  banker->add_bank(1, memory("sfr_chip"), dpl1-0x80);
 	  banker->activate(0);
 
-	  banker= new cl_banker(sfr, adps, mdps, 0,
+	  banker= new cl_banker(sfr, adps, mdps, //0,
 				dptr, 1, 1);
 	  banker->init();
 	  dptr->decoders->add(banker);
@@ -939,7 +939,7 @@ cl_51core::decode_dptr(void)
 	      while ((m&1) == 0)
 		m>>= 1;
 	      
-	      banker= new cl_banker(sfr, adpc, mdpc, 0,
+	      banker= new cl_banker(sfr, adpc, mdpc, //0,
 			    dptr, 0, 1);
 	      banker->init();
 	      dptr->decoders->add(banker);
@@ -947,7 +947,7 @@ cl_51core::decode_dptr(void)
 		banker->add_bank(a, dptr_chip, a*2);
 	      banker->activate(0);
 
-	      banker= new cl_banker(sfr, adpc, mdpc, 0,
+	      banker= new cl_banker(sfr, adpc, mdpc, //0,
 			    sfr, DPL, DPH);
 	      banker->init();
 	      sfr->decoders->add(banker);

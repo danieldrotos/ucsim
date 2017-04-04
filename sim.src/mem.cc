@@ -2086,16 +2086,47 @@ cl_address_decoder::print_info(chars pre, class cl_console_base *con)
 cl_banker::cl_banker(class cl_address_space *the_banker_as,
 		     t_addr the_banker_addr,
 		     t_mem the_banker_mask,
-		     int the_banker_shift,
+		     //int the_banker_shift,
 		     class cl_address_space *the_as,
 		     t_addr the_asb,
 		     t_addr the_ase):
-  cl_address_decoder(the_as, NULL, the_asb, the_ase, -1)
+  cl_address_decoder(the_as, NULL, the_asb, the_ase, (t_addr)-1)
 {
   banker_as= the_banker_as;
   banker_addr= the_banker_addr;
   banker_mask= the_banker_mask;
-  banker_shift= the_banker_shift;
+  //banker_shift= the_banker_shift;
+  banker2_as= NULL;
+  banker2_addr= 0;
+  banker2_mask= 0;
+  banker2_shift= 0;
+  nuof_banks= 0;
+  banks= 0;
+  //bank_ptrs= 0;
+  bank= -1;
+}
+
+cl_banker::cl_banker(class cl_address_space *the_banker_as,
+		     t_addr the_banker_addr,
+		     t_mem the_banker_mask,
+		     //int the_banker_shift,
+		     class cl_address_space *the_banker2_as,
+		     t_addr the_banker2_addr,
+		     t_mem the_banker2_mask,
+		     int the_banker2_shift,
+		     class cl_address_space *the_as,
+		     t_addr the_asb,
+		     t_addr the_ase):
+  cl_address_decoder(the_as, NULL, the_asb, the_ase, (t_addr)-1)
+{
+  banker_as= the_banker_as;
+  banker_addr= the_banker_addr;
+  banker_mask= the_banker_mask;
+  //banker_shift= the_banker_shift;
+  banker2_as= the_banker2_as;
+  banker2_addr= the_banker2_addr;
+  banker2_mask= the_banker2_mask;
+  banker2_shift= the_banker2_shift;
   nuof_banks= 0;
   banks= 0;
   //bank_ptrs= 0;
@@ -2106,14 +2137,14 @@ int
 cl_banker::init()
 {
   int m= banker_mask;
-  int b;
+  int b, b2;
 
   shift_by= 0;
+  shift2_by= 0;
   if (m == 0)
     nuof_banks= 0;
   else
     {
-      shift_by= 0;
       while ((m&1) == 0)
 	m>>= 1, shift_by++;
       b= 1;
@@ -2124,6 +2155,20 @@ cl_banker::init()
 	  b++;
 	}
       nuof_banks= 1 << b;
+    }
+  shift2_by= 0;
+  if (banker2_as &&
+      banker2_mask)
+    {
+      m= banker2_mask;
+      while ((m&1) == 0)
+	m>>=1, shift2_by++;
+      b2= 1;
+      m>>= 1;
+      while ((m&1) != 0)
+	m>>= 1, b2++;
+      if (b2)
+	nuof_banks*= (1 << b2);
     }
   if (nuof_banks > 0)
     {
@@ -2142,7 +2187,17 @@ cl_banker::init()
 	new cl_bank_switcher_operator(c/*, banker_addr*/, this);
       c->prepend_operator(o);
     }
-  
+  if (banker2_as &&
+      banker2_mask)
+    {
+      c= banker2_as->get_cell(banker2_addr);
+      if (c)
+	{
+	  class cl_bank_switcher_operator *o=
+	    new cl_bank_switcher_operator(c/*, banker_addr*/, this);
+	  c->prepend_operator(o);
+	}
+    }
   return 0;
 }
 
@@ -2202,8 +2257,18 @@ cl_banker::actual_bank()
 {
   //t_mem m= banker_mask;
   t_mem v= banker_as->read(banker_addr) & banker_mask;
-
-  return v >> shift_by;
+  t_mem v2;
+  
+  v= (v >> shift_by);
+  if (banker2_as &&
+      banker2_mask)
+    {
+      v2= banker2_as->read(banker2_addr) & banker2_mask;
+      v2>>= shift2_by;
+      v2= v2 << banker2_shift;
+      v= v | v2;
+    }
+  return v;
 }
 
 bool
