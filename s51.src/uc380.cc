@@ -72,6 +72,32 @@ cl_uc380::mk_hw_elements(void)
 }
 
 void
+cl_uc380::make_chips(void)
+{
+  cl_uc52::make_chips();
+  sfr_f_chip= new cl_memory_chip("sfr_f_chip", 0x80, 8, 0);
+  sfr_f_chip->init();
+  memchips->add(sfr_f_chip);
+}
+
+void
+cl_uc380::decode_sfr(void)
+{
+  cl_uc52::decode_sfr();
+
+  class cl_banker *ad;
+
+  ad= new cl_banker(sfr, 0xb9, 0x0f,
+		    sfr, 0xe4, 0xe4);
+  ad->init();
+  ad->set_name("sfr_banker_0xe4");
+  ad->add_bank(0  , sfr_chip  , 0xe4-0x80);
+  ad->add_bank(0xf, sfr_f_chip, 0xe4-0x80);
+  sfr->decoders->add(ad);
+  ad->activate(NULL);
+}
+
+void
 cl_uc380::clear_sfr(void)
 {
   cl_uc52::clear_sfr();

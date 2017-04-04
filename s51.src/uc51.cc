@@ -803,6 +803,7 @@ cl_51core::decode_rom(void)
   class cl_address_decoder *ad;
   ad= new cl_address_decoder(rom, rom_chip, 0, 0xffff, 0);
   ad->init();
+  ad->set_name("def_rom_decoder");
   rom->decoders->add(ad);
   ad->activate(0);
 }
@@ -814,6 +815,7 @@ cl_51core::decode_regs(void)
   cl_banker *b= new cl_banker(sfr, 0xd0, 0x18, //0,
 			      regs, 0, 7);
   b->init();
+  b->set_name("def_regs_banker");
   regs->decoders->add(b);
   b->add_bank(0, memory("iram_chip"), 0);
   b->add_bank(1, memory("iram_chip"), 8);
@@ -833,6 +835,7 @@ cl_51core::decode_bits(void)
 		    iram_chip, 32,
 		    8, 1);
   ad->init();
+  ad->set_name("def_bits_bander_0-7f");
   bits->decoders->add(ad);
   ad->activate(0);
 
@@ -840,6 +843,7 @@ cl_51core::decode_bits(void)
 		    sfr_chip, 0,
 		    8, 8);
   ad->init();
+  ad->set_name("def_bits_bander_80-ff");
   bits->decoders->add(ad);
   ad->activate(0);
 }
@@ -851,6 +855,7 @@ cl_51core::decode_iram(void)
   
   ad= new cl_address_decoder(iram, iram_chip, 0, 0x7f, 0);
   ad->init();
+  ad->set_name("def_iram_decoder");
   iram->decoders->add(ad);
   ad->activate(0);
 }
@@ -862,6 +867,7 @@ cl_51core::decode_sfr(void)
   
   ad= new cl_address_decoder(sfr, sfr_chip, 0x80, 0xff, 0);
   ad->init();
+  ad->set_name("def_sfr_decoder");
   sfr->decoders->add(ad);
   ad->activate(0);
 }
@@ -873,6 +879,7 @@ cl_51core::decode_xram(void)
   
   ad= new cl_address_decoder(xram, xram_chip, 0, 0xffff, 0);
   ad->init();
+  ad->set_name("def_xram_decoder");
   xram->decoders->add(ad);
   ad->activate(0);
 }

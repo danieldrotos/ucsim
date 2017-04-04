@@ -1529,8 +1529,9 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 				t_addr begin, t_addr end,
 				class cl_console_base *con)
 {
-#define D if (con) con->debug
-  D("Undecoding area 0x%x-0x%x of %s\n", begin, end, get_name());
+  //#define D if (con) con->debug
+#define D printf
+  D("Undecoding area 0x%lx-0x%lx of %s (skip=%s)\n", begin, end, get_name(), skip?(skip->get_name()):"-");
   int i;
   for (i= 0; i < decoders->count; i++)
     {
@@ -1539,7 +1540,7 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
       if (!d ||
 	  d == skip)
 	continue;
-      D("  Checking decoder 0x%x-0x%x -> %s[0x%x]\n",
+      D("  Checking decoder 0x%lx-0x%lx -> %s[0x%lx]\n",
 	d->as_begin, d->as_end, d->memchip->get_name(), d->chip_begin);
       if (d->fully_covered_by(begin, end))
 	{
@@ -1557,12 +1558,12 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 	  D("    Must be split\n");
 	  class cl_address_decoder *nd= d->split(begin, end);
 	  D("    After split:\n");
-	  D("      0x%x-0x%x -> %s[0x%x]\n",
+	  D("      0x%lx-0x%lx -> %s[0x%lx]\n",
 	    d->as_begin, d->as_end, d->memchip->get_name(), d->chip_begin);
 	  if (nd)
 	    {
 	      decoders->add(nd);
-	      D("      0x%x-0x%x -> %s[0x%x]\n",
+	      D("      0x%lx-0x%lx -> %s[0x%lx]\n",
 		nd->as_begin, nd->as_end, nd->memchip->get_name(), nd->chip_begin);
 	      nd->activate(con);
 	    }
@@ -1582,7 +1583,7 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 	    }
 	  else
 	    {
-	      D("    Shrinked to 0x%x-0x%x -> %s[0x%x]\n",
+	      D("    Shrinked to 0x%lx-0x%lx -> %s[0x%lx]\n",
 		d->as_begin, d->as_end, d->memchip->get_name(), d->chip_begin);
 	    }
 	}
@@ -1878,8 +1879,9 @@ cl_address_decoder::init(void)
 bool
 cl_address_decoder::activate(class cl_console_base *con)
 {
-#define D if (con) con->debug
-  D("Activation of an address decoder\n");
+  //#define D if (con) con->debug
+#define D printf
+  D("Activation of an address decoder %s\n", get_name(""));
   if (activated)
     {
       D("Already activated\n");
@@ -1928,7 +1930,7 @@ cl_address_decoder::activate(class cl_console_base *con)
     {
       if (!address_space->decode_cell(asa, memchip, ca))
 	{
-	  D("Decoding 0x%06x->0x%06x failed\n", asa, ca);
+	  D("Decoding 0x%06lx->0x%06lx failed\n", asa, ca);
 	}
     }
   activated= true;
