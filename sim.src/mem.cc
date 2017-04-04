@@ -2086,6 +2086,7 @@ cl_address_decoder::print_info(chars pre, class cl_console_base *con)
 cl_banker::cl_banker(class cl_address_space *the_banker_as,
 		     t_addr the_banker_addr,
 		     t_mem the_banker_mask,
+		     int the_banker_shift,
 		     class cl_address_space *the_as,
 		     t_addr the_asb,
 		     t_addr the_ase):
@@ -2094,6 +2095,7 @@ cl_banker::cl_banker(class cl_address_space *the_banker_as,
   banker_as= the_banker_as;
   banker_addr= the_banker_addr;
   banker_mask= the_banker_mask;
+  banker_shift= the_banker_shift;
   nuof_banks= 0;
   banks= 0;
   //bank_ptrs= 0;

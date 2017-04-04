@@ -507,6 +507,7 @@ class cl_banker: public cl_address_decoder
   class cl_address_space *banker_as;
   t_addr banker_addr;
   t_mem banker_mask;
+  int banker_shift;
   int nuof_banks;
   int bank;
   class cl_address_decoder **banks;
@@ -515,6 +516,7 @@ class cl_banker: public cl_address_decoder
   cl_banker(class cl_address_space *the_banker_as,
 	    t_addr the_banker_addr,
 	    t_mem the_banker_mask,
+	    int the_banker_shift,
 	    class cl_address_space *the_as,
 	    t_addr the_asb,
 	    t_addr the_ase);
