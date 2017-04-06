@@ -267,11 +267,18 @@ static struct name_entry sfr_tab51[]=
   {CPU_F380, 0xbd, "ADC0L"},
   {CPU_F380, 0xbe, "ADC0H"},
   {CPU_F380, 0xbf, "SFRPAGE"},
-  {CPU_F380, 0x, ""},
-  {CPU_F380, 0x, ""},
-  {CPU_F380, 0x, ""},
-  {CPU_F380, 0x, ""},
-  {CPU_F380, 0x, ""},
+  {CPU_F380, 0xc0, "SMB0CN"},
+  {CPU_F380, 0xc0, "SMB1CN"},
+  {CPU_F380, 0xc1, "SMB0CF"},
+  {CPU_F380, 0xc1, "SMB1CF"},
+  {CPU_F380, 0xc2, "SMB0DAT"},
+  {CPU_F380, 0xc2, "SMB1DAT"},
+  {CPU_F380, 0xc3, "ADC0GTL"},
+  {CPU_F380, 0xc4, "ADC0GTH"},
+  {CPU_F380, 0xc5, "ADC0LTL"},
+  {CPU_F380, 0xc6, "ADC0LTH"},
+  {CPU_F380, 0xc7, "P4"},
+  //{CPU_F380, 0x, ""},
   
   {0, 0, NULL}
 };

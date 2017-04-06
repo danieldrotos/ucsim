@@ -1529,8 +1529,8 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 				t_addr begin, t_addr end,
 				class cl_console_base *con)
 {
-  //#define D if (con) con->debug
-#define D printf
+#define D if (con) con->debug
+  //#define D printf
   D("Undecoding area 0x%lx-0x%lx of %s (skip=%s)\n", begin, end, get_name(), skip?(skip->get_name()):"-");
   int i;
   for (i= 0; i < decoders->count; i++)
@@ -1541,7 +1541,7 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 	  d == skip)
 	continue;
       D("  Checking decoder 0x%lx-0x%lx -> %s[0x%lx]\n",
-	d->as_begin, d->as_end, d->memchip->get_name(), d->chip_begin);
+	d->as_begin, d->as_end, (d->memchip)?(d->memchip->get_name()):"(none)", d->chip_begin);
       if (d->fully_covered_by(begin, end))
 	{
 	  // decoder can be removed
@@ -1559,12 +1559,12 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 	  class cl_address_decoder *nd= d->split(begin, end);
 	  D("    After split:\n");
 	  D("      0x%lx-0x%lx -> %s[0x%lx]\n",
-	    d->as_begin, d->as_end, d->memchip->get_name(), d->chip_begin);
+	    d->as_begin, d->as_end, (d->memchip)?(d->memchip->get_name()):"(none)", d->chip_begin);
 	  if (nd)
 	    {
 	      decoders->add(nd);
 	      D("      0x%lx-0x%lx -> %s[0x%lx]\n",
-		nd->as_begin, nd->as_end, nd->memchip->get_name(), nd->chip_begin);
+		nd->as_begin, nd->as_end, (nd->memchip)?(nd->memchip->get_name()):"none", nd->chip_begin);
 	      nd->activate(con);
 	    }
 	}
@@ -1584,7 +1584,7 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 	  else
 	    {
 	      D("    Shrinked to 0x%lx-0x%lx -> %s[0x%lx]\n",
-		d->as_begin, d->as_end, d->memchip->get_name(), d->chip_begin);
+		d->as_begin, d->as_end, (d->memchip)?(d->memchip->get_name()):"(none)", d->chip_begin);
 	    }
 	}
     }
@@ -1879,9 +1879,9 @@ cl_address_decoder::init(void)
 bool
 cl_address_decoder::activate(class cl_console_base *con)
 {
-  //#define D if (con) con->debug
-#define D printf
-  D("Activation of an address decoder %s\n", get_name(""));
+#define D if (con) con->debug
+  //#define D printf
+  D("Activation of an address decoder %s (%s[%06lx-%06lx]\n", get_name(""), address_space->get_name(), as_begin, as_end);
   if (activated)
     {
       D("Already activated\n");
@@ -1923,6 +1923,7 @@ cl_address_decoder::activate(class cl_console_base *con)
 
   address_space->undecode_area(this, as_begin, as_end, con);
 
+  D("Decoder maps %s[%06lx-%06lx] -> %s[%06lx]...\n",address_space->get_name(),as_begin,as_end,memchip->get_name(),chip_begin);
   t_addr asa, ca;
   for (asa= as_begin, ca= chip_begin;
        asa <= as_end;
