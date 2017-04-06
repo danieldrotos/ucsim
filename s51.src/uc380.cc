@@ -84,16 +84,18 @@ void
 cl_uc380::decode_sfr(void)
 {
   cl_uc52::decode_sfr();
-
+  t_addr sfrpage= 0xbf;
+  
   class cl_banker *ad;
 
-  ad= new cl_banker(sfr, 0xb9, 0x0f,
+  ad= new cl_banker(sfr, sfrpage, 0x0f,
 		    sfr, 0xe4, 0xe4);
   ad->init();
   ad->set_name("sfr_banker_0xe4");
   ad->add_bank(0  , sfr_chip  , 0xe4-0x80);
   ad->add_bank(0xf, sfr_f_chip, 0xe4-0x80);
   sfr->decoders->add(ad);
+  
   ad->activate(NULL);
 }
 
