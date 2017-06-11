@@ -58,6 +58,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "clkcl.h"
 #include "uidcl.h"
 #include "bl.h"
+#include "flashcl.h"
 
 /*******************************************************************/
 
@@ -472,7 +473,19 @@ cl_stm8::mk_hw_elements(void)
       add_hw(h= new cl_uid(this, 0x4925));
       h->init();
     }
-  
+
+  // FLASH
+  if (type->subtype & (DEV_STM8SAF))
+    {
+      add_hw(h= new cl_saf_flash(this, 0x505a));
+      h->init();
+    }
+  else if (type->subtype & (DEV_STM8ALL |
+			    DEV_STM8L101))
+    {
+      add_hw(h= new cl_l_flash(this, 0x5050));
+      h->init();
+    }
   //add_hw(h= new cl_tim235(this, 3, 0x5320));
   //h->init();
   //add_hw(h= new cl_tim46(this, 4, 0x5340));
