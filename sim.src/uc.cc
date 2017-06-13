@@ -1211,7 +1211,7 @@ cl_uc::read_cdb_file(cl_f *f)
 		  chars n= ln.token("$");
 		  if ((r= fns->rec(n)) != NULL)
 		    {
-		      vars->add(v= new cl_var(n, rom, r->addr));
+		      vars->add(v= new cl_var(n, rom, r->addr, ""));
 		      v->init();
 		      fns->del(n);
 		      cnt++;
@@ -1236,7 +1236,7 @@ cl_uc::read_cdb_file(cl_f *f)
 		  if ((r= fns->rec(n)) != NULL)
 		    {
 		      fns->del(n);
-		      vars->add(v= new cl_var(n, rom, a));
+		      vars->add(v= new cl_var(n, rom, a, ""));
 		      v->init();
 		      cnt++;
 		    }

@@ -286,6 +286,11 @@ cl_serial::tick(int cycles)
     {
       //if (io->fin->input_avail())
       //io->proc_input(0);
+      if (cfg_get(serconf_check_often))
+	{
+	  if (io->input_avail())
+	    io->proc_input(0);
+	}
       if (input_avail)
 	{
 	  s_receiving= true;
