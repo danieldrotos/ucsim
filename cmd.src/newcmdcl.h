@@ -109,7 +109,8 @@ class cl_console_base: public cl_base
   class cl_debug_option *debug_option;
   class cl_ustrings *lines_printed;
   class cl_cmd *last_command;
-  class cl_cmdline *last_cmdline;
+  //class cl_cmdline *last_cmdline;
+  chars last_cmd;
 
   char nl;
   chars lbuf;

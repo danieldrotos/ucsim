@@ -26,11 +26,11 @@ cl_f *dd= NULL;
 
 void deb(const char *format, ...)
 {
-  return;
+  //return;
   if (dd==NULL)
     {
       dd= mk_io(/*cchars("/dev/pts/2"),cchars("w")*/"","");
-      dd->file_id= open("/dev/pts/2", O_WRONLY);
+      dd->file_id= open("/dev/pts/4", O_WRONLY);
       //dd->init();
     }
   va_list ap;
