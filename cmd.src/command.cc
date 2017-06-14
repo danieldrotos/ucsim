@@ -74,7 +74,6 @@ cl_cmdline::init(void)
   params->free_all();
   tokens->free_all();
   split();
-  deb("cmdline splitted=\"%s\"\nrest=\"%s\"\n", cmd, rest);
   return(0);
 }
 
@@ -95,8 +94,6 @@ cl_cmdline::split(void)
   int i;//, j;
   class cl_cmd_arg *arg;
 
-  deb("cmdline split=\"%s\"\n", cmd);
-  deb("cmdline 1 name=ENTER\n");
   set_name("\n");
   if (!cmd ||
       !*cmd)
@@ -104,12 +101,10 @@ cl_cmdline::split(void)
   start+= strspn(start, " \t\v\r,");
   if (!start)
     return 0;
-  deb("cmdline 2 name=NULL\n");
   set_name(0);
   if (*start == '\n')
     {
       // never, as \n stripped by readline
-      deb("cmdline 3 name=ENTER\n");
       set_name("\n");
       return(0);
     }
@@ -129,17 +124,12 @@ cl_cmdline::split(void)
   if (i)
     {
       if (*start == '#')
-	return deb("cmdline 4 name=ENTER"), set_name("\n"), *start= 0;
+	return set_name("\n"), *start= 0;
       char *n= (char*)malloc(i+1);
       strncpy(n, start, i);
       n[i]= '\0';
-      /*j= strispn(start, '#');
-      if (j>0)
-      n[j]= '\0';*/
-      deb("cmdline 5 name=%s\n",n);
       set_name(n);
       free(n);
-      // if (j>0) return start[j]= 0;
     }
   start+= i;
   start= skip_delims(start);
@@ -163,14 +153,9 @@ cl_cmdline::split(void)
 	  char *dot;
           i= strcspn(start, " \t\v\r,#;");
           end= start+i;
-	  // if (*start == '#') return *start= 0;
           param_str= (char *)malloc(i+1);
           strncpy(param_str, start, i);
 	  param_str[i]= '\0';
-	  /*j= strispn(start, '#');
-	  if (j>0)
-	  end= start+j, param_str[j]= start[j]= '\0';*/
-	  deb("cmdline token=%s\n",param_str);
 	  tokens->add(strdup(param_str));
 	  if ((dot= strchr(param_str, '.')) != NULL)
 	    split_out_bit(dot, param_str);
@@ -190,7 +175,6 @@ cl_cmdline::split(void)
 	      arg->init();
 	    }
 	  free(param_str);
-	  //if (j>0) return 0;
 	}
       start= end;
       start= skip_delims(start);
@@ -224,7 +208,6 @@ cl_cmdline::split_out_string(char **_start, char **_end)
   strncpy(param_str, start, 1+end-start);
   param_str[1+end-start]= '\0';
   tokens->add(strdup(param_str));
-  deb("cmdline token(string)=\"%s\"\n",param_str);
   class cl_cmd_arg *arg;
   params->add(arg= new cl_cmd_str_arg(param_str));
   arg->init();
@@ -259,7 +242,6 @@ cl_cmdline::split_out_output_redirection(char **_start, char **_end)
       n++;
       mode[0]= 'a';
     }
-  deb("cmdline token(oredir)=\"%s\"\n",n);
   tokens->add(strdup(n));
   con->redirect(n, mode);
   free(param_str);
@@ -371,20 +353,20 @@ cl_cmdline::shift(void)
 {
   char *s= skip_delims(cmd);
 
+  params->free_all();
+  tokens->free_all();
   set_name(0);
   if (s && *s)
     {
       while (*s &&
-	     strchr(" \t\v\r,", *s) == NULL)
+	     strchr(" \t\v\r,;#", *s) == NULL)
 	s++;
       s= skip_delims(s);
       char *p= strdup(s), *r= rest?strdup(rest):NULL;
       free(cmd);
       cmd= p;
       rest= r;
-      params->free_all();
-      tokens->free_all();
-      params= new cl_list(2, 2, "params");
+      //params= new cl_list(2, 2, "params");
       split();
       if (strcmp(get_name(), "\n") == 0)
 	set_name(0);
@@ -567,11 +549,9 @@ cl_cmdline::restart_at_rest(void)
   if ((rest == NULL) ||
       (*rest == 0))
     {
-      deb("cmdline no rest to restart at (cmd=%s)\n", cmd);
       return false;
     }
   newcmd= strdup(rest);
-  deb("cmdline restart=\"%s\"\n", newcmd);
   if (cmd)
     free(cmd);
   cmd= newcmd;

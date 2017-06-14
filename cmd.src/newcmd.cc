@@ -276,7 +276,6 @@ cl_console_base::cmd_do_print(const char *format, va_list ap)
 	  fi->eof() &&
 	  (fi->id() == fo->id()))
 	{
-	  deb("do not attempt to write on console, where input is at file_end\n");
 	  return 0;
 	}
       ret= fo->vprintf((char*)format, ap);
@@ -432,7 +431,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   i= read_line();
   if (i < 0)
     {
-      deb("closing, bacause read_line on con=%d returned %d\n", id, i);
       return 1;
     }
   if (i == 0)
@@ -460,7 +458,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
           cmdline= new cl_cmdline(app, cmdstr, this);
 	  do
 	    {
-	      deb("executing=\"%s\"\n",cmdline->cmd);
 	      cmdline->init();
 	      if (cmdline->repeat() &&
 		  is_interactive() &&
@@ -487,7 +484,6 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 		  char *e= cmdline->cmd;
 		  if (strlen(e) > 0)
 		    {
-		      deb("Evaluating=\"%s\"\n", e);
 		      long l= application->eval(e);
 		      dd_printf("%ld\n", l);
 		    }

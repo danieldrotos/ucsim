@@ -188,6 +188,26 @@ class cl_console_base: public cl_base
   int id;
 };
 
+class cl_console_dummy: public cl_console_base
+{
+ public:
+ cl_console_dummy(void): cl_console_base() {}
+
+  virtual class cl_console_base *clone_for_exec(char *fin) { return NULL; }
+
+  virtual void redirect(char *fname, char *mode) {}
+  virtual void un_redirect(void) {}
+  virtual bool is_tty(void) const { return false; }
+  virtual bool is_eof(void) const { return false; }
+  virtual bool input_avail(void) { return false; }
+  virtual int read_line(void) { return 0; }
+  virtual class cl_f *get_fout(void) { return NULL; }
+  virtual class cl_f *get_fin(void) { return NULL; }
+  virtual void drop_files(void) {}
+  virtual void close_files(void) {}
+  virtual void replace_files(bool close_old, cl_f *new_in, cl_f *new_out) {}
+};
+
 /*
  * Command interpreter
  */
