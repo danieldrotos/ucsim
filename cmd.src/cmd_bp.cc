@@ -289,11 +289,15 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
   long nr= -1;
   
   cmdline->shift();
-  char *s= cmdline->cmd;
-  if (s &&
-      *s)
+  chars s= chars(cmdline->cmd);
+  if (cmdline->rest)
     {
-      if (isdigit(s[0]))
+      s+= ';';
+      s+= cmdline->rest;
+    }
+  if (!s.empty())
+    {
+      if (isdigit(((char*)s)[0]))
 	{
 	  class cl_cmd_arg *p= cmdline->param(0);
 	  if (p)
@@ -303,7 +307,12 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
 		nr= l;
 	    }
 	  cmdline->shift();
-	  s= chars(cmdline->cmd) + cmdline->rest;
+	  s= chars(cmdline->cmd);
+	  if (cmdline->rest)
+	    {
+	      s+= ';';
+	      s+= cmdline->rest;
+	    }
 	}
     }
   else
@@ -318,11 +327,12 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
   if (!b)
     return con->dd_printf("no breakpoint (%d)\n", nr), false;
 
-  if (s && *s)
-    b->commands= chars(s);
+  if (!s.empty())
+    b->commands= s;
   else
     b->commands= chars("");
-
+  cmdline->rest= NULL;
+  
   return false;
 }
 
