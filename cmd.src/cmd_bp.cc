@@ -303,7 +303,7 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
 		nr= l;
 	    }
 	  cmdline->shift();
-	  s= cmdline->cmd;
+	  s= chars(cmdline->cmd) + cmdline->rest;
 	}
     }
   else

@@ -89,12 +89,15 @@ cl_sim::mk_controller(void)
 int
 cl_sim::step(void)
 {
+  printf("Step %ld, PC=%ld\n",steps_done,uc->PC);
   if (state & SIM_GO)
     {
       if (steps_done == 0)
-	start_at= dnow();
-      uc->do_inst(1);
-      steps_done++;
+	{
+	  start_at= dnow();
+	}
+      if (uc->do_inst(1) == resGO)
+	steps_done++;
       if ((steps_todo > 0) &&
 	  (steps_done >= steps_todo))
 	stop(resSTEP);
