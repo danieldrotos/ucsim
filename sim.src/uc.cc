@@ -555,6 +555,11 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
 "long help of clear"));
   cmd->init();
 
+  cmdset->add(cmd= new cl_commands_cmd("commands", 0,
+"commands [breakpoint-nr] command_string",
+"long help of commands"));
+  cmd->init();
+  
   {
     super_cmd= (class cl_super_cmd *)(cmdset->get_cmd("get"));
     if (super_cmd)

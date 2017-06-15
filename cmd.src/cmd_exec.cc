@@ -377,10 +377,7 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
   s+= i;
   i= strspn(s, "abcdefghijklmnopqrstuvwxyz");
   s+= i;
-  /*uc_yy_set_string_to_parse(s);
-  yyparse();
-  uc_yy_free_string_to_parse();*/
-  con->dd_printf("%ld\n", application->/*expr_result*/eval(s));
+  con->dd_printf("%ld\n", application->eval(s));
   return(false);
 }
 
