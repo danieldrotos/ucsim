@@ -676,7 +676,6 @@ cl_app::exec(chars line)
       if (cm)
 	{
 	  cm->work(this, cmdline, c);
-	  delete cm;
 	}
       else if (cmdline->get_name() != 0)
 	{

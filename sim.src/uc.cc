@@ -2573,13 +2573,13 @@ void
 cl_uc::check_events(void)
 {
   int i;
+  //sim->stop(resEVENTBREAK);
   for (i= 0; i < events->count; i++)
     {
       class cl_ev_brk *brk=
 	dynamic_cast<class cl_ev_brk *>(events->object_at(i));
-      sim->stop(brk);
+      sim->stop(resEVENTBREAK, brk);
     }
-  sim->stop(resBREAKPOINT);
 }
 
 
