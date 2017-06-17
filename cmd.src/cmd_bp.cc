@@ -316,7 +316,7 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
 	}
     }
   else
-    return con->dd_printf("command missing\n"), true;
+    return con->dd_printf("command missing\n"), false;
 
   if (nr < 0)
     nr= uc->brk_counter;
