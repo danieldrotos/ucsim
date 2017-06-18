@@ -607,7 +607,10 @@ cl_simulator_interface::init(void)
   uc->vars->add(v= new cl_var(cchars("sim_vclk"), cfg, simif_vclk,
 			      "RO: nuof simulated virtual clocks"));
   v->init();
-  
+  uc->vars->add(v= new cl_var(cchars("PC"), cfg, simif_pc,
+			      "RW: PC register"));
+  v->init();
+
   return(0);
 }
 
@@ -822,6 +825,20 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       if (val)
 	*val= cell->get();
       cell->set(uc->vc.fetch + uc->vc.rd + uc->vc.wr);
+      break;
+    case simif_pc: // PC of uc
+      if (val)
+	{
+	  t_addr addr= *val;
+	  class cl_address_space *rom= uc->rom;
+	  if (rom)
+	    {
+	      if (addr > rom->highest_valid_address())
+		addr= rom->highest_valid_address();
+	    }
+	  uc->PC= addr;
+	}
+      cell->set(uc->PC);
       break;
     case simif_nuof:
       break;

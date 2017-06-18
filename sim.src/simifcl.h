@@ -108,8 +108,9 @@ enum simif_cfg {
   simif_idle_ticks	= 9,  // R
   simif_real_time	= 10, // R
   simif_vclk		= 11, // R
+  simif_pc		= 12, // RW
   
-  simif_nuof		= 12
+  simif_nuof		= 13
 };
 
 class cl_simulator_interface;
