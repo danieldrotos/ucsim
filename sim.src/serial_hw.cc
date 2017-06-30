@@ -65,11 +65,13 @@ cl_serial_hw::init(void)
   serial_in_file_option= new cl_optref(this);
   serial_in_file_option->init();
   serial_in_file_option->use(s);
+  printf("%s optref @%p (o=%p)\n",s,serial_in_file_option,serial_in_file_option->option);
   free(s);
   s= format_string("serial%d_out_file", id);
   serial_out_file_option= new cl_optref(this);
   serial_out_file_option->init();
   serial_out_file_option->use(s);
+  printf("%s optref @%p (o=%p)\n",s,serial_out_file_option,serial_out_file_option->option);
   free(s);
   s= format_string("serial%d_port", id);
   serial_port_option= new cl_optref(this);
@@ -227,6 +229,7 @@ cl_serial_hw::proc_input(void)
   
   if (fin->eof())
     {
+      printf("eof on uart[%d] fin\n",id);
       if (fout &&
 	  (fout->file_id == fin->file_id))
 	{
@@ -243,10 +246,11 @@ cl_serial_hw::proc_input(void)
     }
   if (menu == 0)
     {
-      if (!input_avail || !run)
+      if (!input_avail/* && !run*/)
 	{
 	  if (fin->read(&c, 1))
 	    {
+	      printf("uart[%d] read c=%c\n",id,c);
 	      if (c == esc)
 		{
 		  menu= 'm';
@@ -264,7 +268,7 @@ cl_serial_hw::proc_input(void)
 				'a'+esc-1, 'a'+esc-1
 				);
 		}
-	      else if (run)
+	      else //if (run)
 		{
 		  input= c;
 		  input_avail= true;

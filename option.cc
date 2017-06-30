@@ -395,8 +395,8 @@ cl_options::set_value(const char *the_name, cl_base *creator, char *value)
 {
   class cl_option *o= get_option(the_name, creator);
 
-  if (o)
-    o->set_value(value);
+  if (o) {
+    o->set_value(value); printf("setcharval @%p (%s)\n",o,value);}
   return(o);
 }
 

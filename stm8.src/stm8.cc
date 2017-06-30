@@ -197,50 +197,76 @@ cl_stm8::mk_hw_elements(void)
   cl_uc::mk_hw_elements();
   class cl_option *o;
 
-  o= new cl_string_option(this, "serial1_in_file",
-			  "Input file for serial line uart1 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
-  o= new cl_string_option(this, "serial1_out_file",
-			  "Output file for serial line uart1 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
-
-  o= new cl_string_option(this, "serial2_in_file",
-			  "Input file for serial line uart2 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
-  o= new cl_string_option(this, "serial2_out_file",
-			  "Output file for serial line uart2 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
+  if ((o= application->options->get_option("serial1_in_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial1_in_file",
+			      "Input file for serial line uart1 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+      printf("stm8 sin=%p\n", o);
+    }
+  if ((o= application->options->get_option("serial1_out_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial1_out_file",
+			      "Output file for serial line uart1 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+      printf("stm8 sout=%p\n", o);
+    }
   
-  o= new cl_string_option(this, "serial3_in_file",
-			  "Input file for serial line uart3 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
-  o= new cl_string_option(this, "serial3_out_file",
-			  "Output file for serial line uart3 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
+  if ((o= application->options->get_option("serial2_in_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial2_in_file",
+			      "Input file for serial line uart2 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
+  if ((o= application->options->get_option("serial2_out_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial2_out_file",
+			      "Output file for serial line uart2 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
   
-  o= new cl_string_option(this, "serial4_in_file",
-			  "Input file for serial line uart4 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
-  o= new cl_string_option(this, "serial4_out_file",
-			  "Output file for serial line uart4 (-S)");
-  application->options->new_option(o);
-  o->init();
-  o->hide();
-
+  if ((o= application->options->get_option("serial3_in_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial3_in_file",
+			      "Input file for serial line uart3 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
+  if ((o= application->options->get_option("serial3_out_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial3_out_file",
+			      "Output file for serial line uart3 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
+  
+  if ((o= application->options->get_option("serial4_in_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial4_in_file",
+			      "Input file for serial line uart4 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
+  if ((o= application->options->get_option("serial4_out_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial4_out_file",
+			      "Output file for serial line uart4 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
+  
   add_hw(d= new cl_port_ui(this, 0, "dport"));
   d->init();
   pd.init();

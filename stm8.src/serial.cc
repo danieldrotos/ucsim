@@ -273,6 +273,7 @@ cl_serial::tick(int cycles)
 	{
 	  io->dd_printf("%c", s_out);
 	  //io->flush();
+	  printf("SENDING! uart[%d]=> %c/%d\n",id,s_out,s_out);
 	}
       s_tr_bit-= bits;
       if (s_tx_written)
@@ -305,6 +306,7 @@ cl_serial::tick(int cycles)
       //if (fin->read(&c, 1) == 1)
 	{
 	  c= input;
+	  printf("RECEIVE! uart[%d]<= %c/%d\n",id,c,c);
 	  input_avail= false;
 	  s_in= c;
 	  received();
