@@ -15,6 +15,11 @@ int sifchar(int c)
   return c;
 }
 
+int waitsend()
+{
+  while(!(USART->sr & USART_SR_TXE));
+}
+
 int putchar(int c)
 {
   while(!(USART->sr & USART_SR_TXE));
@@ -57,6 +62,7 @@ void main(void)
   USART->brr1 = 0x68; // 9600 baud
   
   printf("Hello World!\n");
+  waitsend();
   USART->cr2 = USART_CR2_TEN | USART_CR2_REN; // Allow TX and RX
   for (;;)
     {
