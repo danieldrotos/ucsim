@@ -204,7 +204,6 @@ cl_stm8::mk_hw_elements(void)
       application->options->new_option(o);
       o->init();
       o->hide();
-      printf("stm8 sin=%p\n", o);
     }
   if ((o= application->options->get_option("serial1_out_file")) == NULL)
     {
@@ -213,7 +212,6 @@ cl_stm8::mk_hw_elements(void)
       application->options->new_option(o);
       o->init();
       o->hide();
-      printf("stm8 sout=%p\n", o);
     }
   
   if ((o= application->options->get_option("serial2_in_file")) == NULL)
