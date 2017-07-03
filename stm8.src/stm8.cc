@@ -71,6 +71,7 @@ cl_stm8::cl_stm8(struct cpu_entry *IType, class cl_sim *asim):
   cl_uc(asim)
 {
   type= IType;
+  flash_ctrl= NULL;
 }
 
 int
@@ -501,14 +502,14 @@ cl_stm8::mk_hw_elements(void)
   // FLASH
   if (type->subtype & (DEV_STM8SAF))
     {
-      add_hw(h= new cl_saf_flash(this, 0x505a));
-      h->init();
+      add_hw(flash_ctrl= new cl_saf_flash(this, 0x505a));
+      flash_ctrl->init();
     }
   else if (type->subtype & (DEV_STM8ALL |
 			    DEV_STM8L101))
     {
-      add_hw(h= new cl_l_flash(this, 0x5050));
-      h->init();
+      add_hw(flash_ctrl= new cl_l_flash(this, 0x5050));
+      flash_ctrl->init();
     }
   //add_hw(h= new cl_tim235(this, 3, 0x5320));
   //h->init();
@@ -523,7 +524,7 @@ cl_stm8::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= ram= as= new cl_address_space("rom", 0, 0x28000, 8);
+  rom= ram= as= new cl_flash_as/*address_space*/("rom", 0, 0x28000/*, 8*/);
   as->init();
   address_spaces->add(as);
 

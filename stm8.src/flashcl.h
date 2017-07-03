@@ -29,7 +29,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define FLASHCL_HEADER
 
 #include "hwcl.h"
+#include "memcl.h"
 
+
+/* Special memory/address space to handle flash ops */
+
+class cl_flash_cell: public cl_cell8
+{
+ public:
+ cl_flash_cell(uchar awidth): cl_cell8(awidth) {}
+  virtual t_mem write(t_mem val);
+};
+
+class cl_flash_as: public cl_address_space
+{
+ public:
+  cl_flash_as(const char *id, t_addr astart, t_addr asize);
+  virtual int init(void);
+};
 
 enum stm8_flash_cfg {
   stm8_flash_on= 0,

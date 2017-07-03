@@ -59,6 +59,7 @@ public:
   struct t_regs regs;
   class cl_itc *itc;
   class cl_it_src *trap_src;
+  class cl_flash *flash_ctrl;
 public:
   cl_stm8(struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);

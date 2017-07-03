@@ -25,8 +25,62 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <stdlib.h>
+
+#include "globals.h"
+
+#include "stm8cl.h"
+
 #include "flashcl.h"
 
+
+/* Address space/cell which can contain flash memory */
+
+t_mem
+cl_flash_cell::write(t_mem val)
+{
+  if (flags & CELL_READ_ONLY)
+    {
+      class cl_stm8 *uc= (cl_stm8 *)(application->get_uc());
+      if (uc)
+	{
+	  t_addr a;
+	  if (uc->rom->is_owned(this, &a) &&
+	      uc->flash_ctrl)
+	    {
+	    }
+	}
+    }
+  return cl_cell8::write(val);
+}
+
+cl_flash_as::cl_flash_as(const char *id, t_addr astart, t_addr asize):
+  cl_address_space(id, astart, asize, 8)
+{
+  class cl_flash_cell c8(8);
+  class cl_memory_cell *cell= &c8;
+  start_address= astart;
+  decoders= new cl_decoder_list(2, 2, false);
+  cella= (class cl_memory_cell *)malloc(size * sizeof(class cl_memory_cell));
+  //cell->init();
+  int i;
+  for (i= 0; i < size; i++)
+    {
+      memcpy(&(cella[i]), cell, sizeof(class cl_memory_cell));
+      cella[i].init();
+    }
+  dummy= new cl_dummy_cell(8);
+  dummy->init();
+}
+
+int
+cl_flash_as::init(void)
+{
+  return cl_address_space::init();
+}
+
+
+/* Flash controller */
 
 cl_flash::cl_flash(class cl_uc *auc, t_addr abase, const char *aname):
 	cl_hw(auc, HW_FLASH, 0, aname)
