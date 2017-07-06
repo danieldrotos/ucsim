@@ -68,6 +68,9 @@ class cl_flash: public cl_hw
   bool puk1st, duk1st;
   bool p_unlocked, d_unlocked;
   bool p_failed, d_failed;
+  u8_t wbuf[256];
+  bool wbuf_started;
+  t_addr wbuf_start;
  public:
   cl_flash(class cl_uc *auc, t_addr abase, const char *aname);
   virtual int init(void);
@@ -77,6 +80,8 @@ class cl_flash: public cl_hw
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
+  virtual void flash_write(class cl_memory_cell *cell);
   
   virtual void print_info(class cl_console_base *con);
 };

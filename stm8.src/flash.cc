@@ -48,6 +48,8 @@ cl_flash_cell::write(t_mem val)
 	  if (uc->rom->is_owned(this, &a) &&
 	      uc->flash_ctrl)
 	    {
+	      uc->flash_ctrl->flash_write(this);
+	      return d();
 	    }
 	}
     }
@@ -87,6 +89,8 @@ cl_flash::cl_flash(class cl_uc *auc, t_addr abase, const char *aname):
 {
   base= abase;
   set_name(aname);
+  wbuf_started= false;
+  wbuf_start= 0;
 }
 
 int
@@ -214,6 +218,25 @@ cl_flash::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       break;
     }
   return cell->get();
+}
+
+void
+cl_flash::flash_write(class cl_memory_cell *cell)
+{
+  t_addr a;
+  
+  if (!uc)
+    return;
+  if (uc->rom)
+    return;
+  if (!uc->rom->is_owned(cell, &a))
+    return;
+  if ((a >= 0x8000) &&
+      !p_unlocked)
+    return;
+  if ((a < 0x8000) &&
+      !d_unlocked)
+    return;
 }
 
 void
