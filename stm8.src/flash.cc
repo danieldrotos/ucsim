@@ -111,6 +111,9 @@ cl_flash::reset(void)
   d_unlocked= false;
   p_failed= false;
   d_failed= false;
+
+  cr1r->write(0);
+  iapsr->write(0x40);
 }
 
 t_mem
@@ -277,9 +280,19 @@ cl_saf_flash::cl_saf_flash(class cl_uc *auc, t_addr abase):
 void
 cl_saf_flash::registration(void)
 {
+  class cl_it_src *is;
+
+  cr1r= register_cell(uc->rom, base+0);
   pukr= register_cell(uc->rom, base+8);
   dukr= register_cell(uc->rom, base+10);
   iapsr= register_cell(uc->rom, base+5);
+
+  uc->it_sources->add(is= new cl_it_src(uc, 24,
+					cr1r,0x02,
+					iapsr,0x04,
+					0x8008+24*4, false, false,
+					chars("end of flash programming"), 20*20));
+  is->init();
 }
 
 
@@ -293,9 +306,19 @@ cl_l_flash::cl_l_flash(class cl_uc *auc, t_addr abase):
 void
 cl_l_flash::registration(void)
 {
+  class cl_it_src *is;
+
+  cr1r= register_cell(uc->rom, base+0);
   pukr= register_cell(uc->rom, base+2);
   dukr= register_cell(uc->rom, base+3);
   iapsr= register_cell(uc->rom, base+4);
+
+  uc->it_sources->add(is= new cl_it_src(uc, 24,
+					cr1r,0x02,
+					iapsr,0x04,
+					0x8008+24*4, false, false,
+					chars("end of flash programming"), 20*20));
+  is->init();
 }
 
 

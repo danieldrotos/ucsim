@@ -64,7 +64,7 @@ class cl_flash: public cl_hw
 {
  protected:
   t_addr base;
-  cl_memory_cell *pukr, *dukr, *iapsr;
+  cl_memory_cell *cr1r, *pukr, *dukr, *iapsr;
   bool puk1st, duk1st;
   bool p_unlocked, d_unlocked;
   bool p_failed, d_failed;
