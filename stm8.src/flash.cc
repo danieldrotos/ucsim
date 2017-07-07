@@ -91,6 +91,7 @@ cl_flash::cl_flash(class cl_uc *auc, t_addr abase, const char *aname):
   set_name(aname);
   wbuf_started= false;
   wbuf_start= 0;
+  rww= true;
 }
 
 int

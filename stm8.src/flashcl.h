@@ -71,6 +71,7 @@ class cl_flash: public cl_hw
   u8_t wbuf[256];
   bool wbuf_started;
   t_addr wbuf_start;
+  bool rww;
  public:
   cl_flash(class cl_uc *auc, t_addr abase, const char *aname);
   virtual int init(void);
