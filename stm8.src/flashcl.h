@@ -112,7 +112,8 @@ class cl_flash: public cl_hw
   virtual void start_wbuf(t_addr addr);
   virtual void start_program(enum stm8_flash_state start_state);
   virtual void finish_program(bool ok);
-  
+
+  virtual const char *state_name(enum stm8_flash_state s);
   virtual void print_info(class cl_console_base *con);
 };
 

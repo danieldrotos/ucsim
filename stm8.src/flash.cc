@@ -429,6 +429,20 @@ cl_flash::start_program(enum stm8_flash_state start_state)
   state= start_state;
   start_time= uc->get_rtime();
 }
+
+const char *
+cl_flash::state_name(enum stm8_flash_state s)
+{
+  switch (s)
+    {
+    case fs_wait_mode: return "wait_mode";
+    case fs_wait_data: return "wait_data";
+    case fs_pre_erease: return "erease";
+    case fs_program: return "program";
+    case fs_busy: return "busy";
+    }
+  return "unknown";
+}
   
 void
 cl_flash::print_info(class cl_console_base *con)
@@ -455,6 +469,8 @@ cl_flash::print_info(class cl_console_base *con)
   else
     con->dd_printf("locked");
   con->dd_printf("\n");
+
+  con->dd_printf("State: %s\n", state_name(state));
 }
 
 
