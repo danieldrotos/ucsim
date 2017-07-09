@@ -571,7 +571,7 @@ cl_hw_operator::cl_hw_operator(class cl_memory_cell *acell/*, t_addr addr*/,
   cl_memory_operator(acell/*, addr*//*, data_place, the_mask*/)
 {
   hw= ahw;
-  set_name("hw");
+  set_name(chars("hw:")+hw->get_name());
 }
 
 
@@ -630,7 +630,7 @@ cl_write_operator::cl_write_operator(class cl_memory_cell *acell/*, t_addr addr*
 {
   uc= auc;
   bp= the_bp;
-  set_name("write");
+  set_name("write_event");
 }
 
 t_mem
@@ -655,7 +655,7 @@ cl_read_operator::cl_read_operator(class cl_memory_cell *acell/*, t_addr addr*/,
 {
   uc= auc;
   bp= the_bp;
-  set_name("read");
+  set_name("read_event");
 }
 
 t_mem
