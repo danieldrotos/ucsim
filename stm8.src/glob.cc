@@ -337,6 +337,8 @@ struct dis_entry disass_stm8[]= {
   { 0x00e8, 0x00ff, ' ', 2, "xor A,(%1,X)" },
   { 0x00f8, 0x00ff, ' ', 1, "xor A,(X)" },
 
+  { 0x008b, 0x00ff, ' ', 1, "break" },
+  
   { 0, 0, 0, 0, NULL }
 };
 

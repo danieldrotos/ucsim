@@ -1006,26 +1006,28 @@ cl_stm8::exec_inst(void)
   }
   tick(1);
 
-  switch (code) { // get prefix
-	case 0x72:
-	case 0x90:
-	case 0x91:
-	case 0x92:
-		cprefix = code;
-		fetch(&code);
-		break;
-	 case 0x82:
-	   {
-	     int ce= fetch();
-	     int ch= fetch();
-	     int cl= fetch();
-	     PC= ce*0x10000 + ch*0x100 + cl;
-	     return resGO;
-	   }
-	default:
-		cprefix = 0x00;
-		break;
-  }
+  switch (code)
+    { // get prefix
+    case 0x72:
+    case 0x90:
+    case 0x91:
+    case 0x92:
+      cprefix = code;
+      fetch(&code);
+      break;
+    case 0x82:
+      {
+	int ce= fetch();
+	int ch= fetch();
+	int cl= fetch();
+	PC= ce*0x10000 + ch*0x100 + cl;
+	return resGO;
+      }
+    case 0x8b: return resSTOP; // BREAK instruction
+    default:
+      cprefix = 0x00;
+      break;
+    }
 
    // exceptions
    if((cprefix==0x90)&&((code&0xf0)==0x10)) {
