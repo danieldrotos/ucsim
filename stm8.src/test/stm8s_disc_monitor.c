@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #include "stm8.h"
 
@@ -28,18 +30,55 @@ print_bl()
   printf("%c\n", 3);
 }
 
+void
+dump(int start, int len)
+{
+  uint8_t *p= (uint8_t *)0;
+  int i= 0;
+  
+  printf("%06x ", start);
+  while (i<len)
+    {
+      printf("%02x ", p[start+i]);
+      i++;
+      if ((i<len) && ((start+i)%8 == 0))
+	{
+	  printf("\n%06x ", start+i);
+	}
+    }
+  printf("\n");
+}
+
 #define DELIM " ,"
+
+int
+xtoi(char *s)
+{
+  int r= 0;
+  while (*s)
+    {
+      if (isdigit(*s))
+	r= r*16 + *s-'0';
+      else if ((*s >= 'a') && (*s <= 'f'))
+	r= r*16 + *s-'a'+10;
+      else if ((*s >= 'A') && (*s <= 'F'))
+	r= r*16 + *s-'A'+10;
+      s++;
+    }
+  return r;
+}
 
 void
 proc_cmd(char *cmd)
 {
-  char *s= strtok(cmd, DELIM);
+  char *w= strtok(cmd, DELIM);
+  char *s;
   
-  if (s)
+  if (w)
     {
-      if (strcmp(s, "bl") == 0)
+      if (strcmp(w, "bl") == 0)
 	print_bl();
-      if (strcmp(s, "uid") == 0)
+      else if (strcmp(w, "uid") == 0)
 	{
 #if defined UID
 	  int i;
@@ -51,6 +90,19 @@ proc_cmd(char *cmd)
 #else
 	  printf("no uid\n");
 #endif
+	}
+      else if (strcmp(w, "dump") == 0)
+	{
+	  s= strtok(NULL, DELIM);
+	  if (s)
+	    {
+	      int start= xtoi(s);
+	      int len= 32;
+	      s= strtok(NULL, DELIM);
+	      if (s)
+		len= xtoi(s);
+	      dump(start, len);
+	    }
 	}
     }
 }
