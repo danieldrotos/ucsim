@@ -111,7 +111,7 @@ cl_flash::tick(int cycles)
       double now= uc->get_rtime();
       double elapsed= (now - start_time) * 10e6;
 
-      if ((state == fs_pre_erease) &&
+      if ((state == fs_pre_erase) &&
 	  (elapsed > tprog/2.0))
 	{
 	  int i;
@@ -120,7 +120,7 @@ cl_flash::tick(int cycles)
 	      class cl_memory_cell *c= uc->rom->get_cell(wbuf_start + i);
 	      c->download(0);
 	    }
-	  if (mode == fm_erease)
+	  if (mode == fm_erase)
 	    finish_program(true);
 	  else
 	    state= fs_program;
@@ -348,7 +348,7 @@ cl_flash::flash_write(t_addr a, t_mem val)
       if (tprog < 6000)
 	start_program(fs_program);
     }
-  else if (mode == fm_erease)
+  else if (mode == fm_erase)
     {
       if ((wbuf_writes == 4) &&
 	  (((a+1) % 4) == 0))
@@ -359,7 +359,7 @@ cl_flash::flash_write(t_addr a, t_mem val)
 	  v|= wbuf[2];
 	  v|= wbuf[3];
 	  if (v == 0)
-	    start_program(fs_pre_erease);
+	    start_program(fs_pre_erase);
 	}
     }
   else
@@ -374,14 +374,14 @@ cl_flash::flash_write(t_addr a, t_mem val)
 	      (mode == fm_fast_block))
 	    start_program(fs_program);
 	  else
-	    start_program(fs_pre_erease);
+	    start_program(fs_pre_erase);
 	}
     }
 }
 
 // normal program: 6 ms
 // fast program: 3 ms
-// erease: 3 ms
+// erase: 3 ms
 
 void
 cl_flash::set_flash_mode(t_mem cr2val)
@@ -396,7 +396,7 @@ cl_flash::set_flash_mode(t_mem cr2val)
     }
   else if (cr2val & 0x20 /* ERASE */ )
     {
-      mode= fm_erease;
+      mode= fm_erase;
       tprog= 3000;
       wbuf_size= 128;
     }
@@ -447,7 +447,7 @@ cl_flash::state_name(enum stm8_flash_state s)
     {
     case fs_wait_mode: return "wait_mode";
     case fs_wait_data: return "wait_data";
-    case fs_pre_erease: return "erease";
+    case fs_pre_erase: return "erase";
     case fs_program: return "program";
     case fs_busy: return "busy";
     }

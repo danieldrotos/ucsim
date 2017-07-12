@@ -63,9 +63,9 @@ enum stm8_mass {
 enum stm8_flash_state {
   fs_wait_mode= 0x00,
   fs_wait_data= 0x01,
-  fs_pre_erease= 0x02,
+  fs_pre_erase= 0x02,
   fs_program= 0x04,
-  fs_busy= fs_pre_erease|fs_program
+  fs_busy= fs_pre_erase|fs_program
 };
 
 enum stm8_flash_mode {
@@ -75,7 +75,7 @@ enum stm8_flash_mode {
   fm_fast_word= 3,
   fm_block= 4,
   fm_fast_block= 5,
-  fm_erease= 6
+  fm_erase= 6
 };
 
 class cl_flash: public cl_hw
