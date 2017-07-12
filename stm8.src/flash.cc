@@ -350,7 +350,17 @@ cl_flash::flash_write(t_addr a, t_mem val)
     }
   else if (mode == fm_erease)
     {
-      start_program(fs_pre_erease);
+      if ((wbuf_writes == 4) &&
+	  (((a+1) % 4) == 0))
+	{
+	  u8_t v= 0;
+	  v|= wbuf[0];
+	  v|= wbuf[1];
+	  v|= wbuf[2];
+	  v|= wbuf[3];
+	  if (v == 0)
+	    start_program(fs_pre_erease);
+	}
     }
   else
     {
