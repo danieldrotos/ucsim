@@ -32,19 +32,19 @@ print_bl()
 }
 
 void
-dump(int start, int len)
+dump(unsigned long int start, unsigned long int len)
 {
   uint8_t *p= (uint8_t *)0;
   int i= 0;
   
-  printf("%06x ", start);
+  printf("%06lx ", start);
   while (i<len)
     {
       printf("%02x ", p[start+i]);
       i++;
       if ((i<len) && ((start+i)%8 == 0))
 	{
-	  printf("\n%06x ", start+i);
+	  printf("\n%06lx ", start+i);
 	}
     }
   printf("\n");
@@ -56,6 +56,23 @@ int
 xtoi(char *s)
 {
   int r= 0;
+  while (*s)
+    {
+      if (isdigit(*s))
+	r= r*16 + *s-'0';
+      else if ((*s >= 'a') && (*s <= 'f'))
+	r= r*16 + *s-'a'+10;
+      else if ((*s >= 'A') && (*s <= 'F'))
+	r= r*16 + *s-'A'+10;
+      s++;
+    }
+  return r;
+}
+
+unsigned long int
+xtol(char *s)
+{
+  unsigned long int r= 0;
   while (*s)
     {
       if (isdigit(*s))
@@ -97,18 +114,22 @@ proc_cmd(char *cmd)
 	  s= strtok(NULL, DELIM);
 	  if (s)
 	    {
-	      int start= xtoi(s);
-	      int len= 32;
+	      unsigned long int start= xtol(s);
+	      unsigned long int len= 32;
 	      s= strtok(NULL, DELIM);
 	      if (s)
-		len= xtoi(s);
+		len= xtol(s);
 	      dump(start, len);
 	    }
 	}
       else if (strcmp(w, "fb") == 0)
 	{
+	  uint8_t *rom= (uint8_t *)0;
 	  flash_byte_mode();
 	  flash_punlock();
+	  rom[0xa000]= 0xa5;
+	  flash_plock();
+	  dump(0xa000, 1);
 	}
       else
 	printf("Unknown command\n");

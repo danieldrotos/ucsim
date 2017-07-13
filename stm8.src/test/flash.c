@@ -19,6 +19,24 @@ flash_dunlock(void)
 }
 
 void
+flash_plock(void)
+{
+  FLASH->iapsr&= ~0x02;
+}
+
+void
+flash_dlock(void)
+{
+  FLASH->iapsr&= ~0x08;
+}
+
+void
+flash_lock(void)
+{
+  FLASH->iapsr&= ~0x0a;
+}
+
+void
 flash_byte_mode(void)
 {
   FLASH->cr2= 0;
