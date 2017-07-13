@@ -86,6 +86,9 @@ xtol(char *s)
   return r;
 }
 
+void f1() {}
+void f2() {}
+
 void
 proc_cmd(char *cmd)
 {
@@ -124,11 +127,18 @@ proc_cmd(char *cmd)
 	}
       else if (strcmp(w, "fb") == 0)
 	{
+	  uint8_t res;
 	  uint8_t *rom= (uint8_t *)0;
+	  printf("Before:\n");
+	  dump(0xa000, 1);
+	  f1();
 	  flash_byte_mode();
 	  flash_punlock();
 	  rom[0xa000]= 0xa5;
+	  res= flash_wait_finish();
+	  f2();
 	  flash_plock();
+	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
 	  dump(0xa000, 1);
 	}
       else
@@ -179,6 +189,7 @@ void main(void)
   USART->cr2|= USART_CR2_RIEN;
   EI;
 
+  printf("stm8s discovery monitor\n");
   cmd[0]= 0;
   for(;;)
     {

@@ -778,6 +778,7 @@ struct FLASH_t {
   volatile uint8_t dukr;
 };
 #define FLASH ((struct FLASH_t *)0x505a)
+#define FLASH_IRQ 24
 #elif (DEVICE & DEV_STM8ALL) ||			\
   (DEVICE & DEV_STM8L101)
 struct FLASH_t {
@@ -788,6 +789,7 @@ struct FLASH_t {
   volatile uint8_t iapsr;
 };
 #define FLASH ((struct FLASH_t *)0x5050)
+#define FLASH_IRQ 1
 #endif
 
 #define EI __asm__("rim")

@@ -153,6 +153,7 @@ cl_flash::finish_program(bool ok)
 void
 cl_flash::reset(void)
 {
+  printf("FLASH reset\n");
   puk1st= false;
   duk1st= false;
   p_unlocked= false;
@@ -203,6 +204,7 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
   
   if (cell == pukr)
     {
+      printf("FLASH write-pukr %02x\n",*val);
       if (p_failed)
 	;
       else if (!puk1st)
@@ -223,6 +225,7 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
     }
   else if (cell == dukr)
     {
+      printf("FLASH write-dukr %02x\n",*val);
       if (d_failed)
 	;
       else if (!duk1st)
@@ -243,6 +246,7 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
     }
   else if (cell == iapsr)
     {
+      printf("FLASH write-iapsr %02x\n",*val);
       t_mem org= iapsr->get();
       // PUL, DUL
       if (!(*val & 0x02))
@@ -263,6 +267,7 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
     }
   else if (cell == cr2r)
     {
+      printf("FLASH write-cr2r %02x\n",*val);
       *val&= ~0x0e;
       if (state & fs_busy)
 	{
@@ -276,6 +281,7 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
   else if ((ncr2r != NULL) &&
 	   (cell == ncr2r))
     {
+      printf("FLASH write-ncr2r %02x\n",*val);
       *val|= 0x0e;
       if (state & fs_busy)
 	{
@@ -312,23 +318,29 @@ cl_flash::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 void
 cl_flash::flash_write(t_addr a, t_mem val)
 {
+  printf("FLASH wr(%06lx,%02x)\n",a,val);
   if (!uc)
-    return;
-  if (uc->rom)
-    return;
+    {printf("  no uc\n");return;}
+  if (uc->rom == NULL)
+    {printf("  no rom\n");return;}
   if ((a >= 0x8000) &&
       !p_unlocked)
-    return;
+    {printf("  plocked\n");return;}
   if ((a < 0x8000) &&
       !d_unlocked)
-    return;
+    {printf("  dlocked\n");return;}
   if (state & fs_busy)
-    return;
-  
+    {printf("  busy %d\n",state);return;}
+
+  printf("  wbuf_start=%ld\n",wbuf_start);
   if (wbuf_start == 0)
-    start_wbuf(a);
+    {
+      printf("  calling start_wbuf(%06lx)\n",a);
+      start_wbuf(a);
+    }
   
   int offset= a - wbuf_start;
+  printf("  offset=%d\n",offset);
   if (mode == fm_byte)
     {
       // fixup tprog
@@ -387,7 +399,8 @@ void
 cl_flash::set_flash_mode(t_mem cr2val)
 {
   bool fix= cr1r->get() & 0x01; /* FIX */
-  
+
+  printf("FLASH set_mode %02x\n", cr2val);
   if (cr2val & 0x40 /* WPRG */ )
     {
       mode= fm_word;
@@ -431,11 +444,13 @@ cl_flash::start_wbuf(t_addr addr)
   wbuf_writes= 0;
   for (i= 0; i < 256; i++)
     wbuf[i]= 0;
+  printf("FLASH start_wbuf %06lx\n", addr);
 }
 
 void
 cl_flash::start_program(enum stm8_flash_state start_state)
 {
+  printf("FLASH start prg %d\n", start_state);
   state= start_state;
   start_time= uc->get_rtime();
 }
