@@ -12,6 +12,7 @@ extern void flash_dlock(void);
 extern void flash_lock(void);
 
 extern void flash_byte_mode(void);
+extern void flash_word_mode(void);
 
 extern uint8_t flash_wait_finish(void);
 

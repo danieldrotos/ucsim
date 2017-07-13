@@ -129,17 +129,38 @@ proc_cmd(char *cmd)
 	{
 	  uint8_t res;
 	  uint8_t *rom= (uint8_t *)0;
+	  unsigned long addr= 0xa000;
 	  printf("Before:\n");
-	  dump(0xa000, 1);
+	  dump(addr, 1);
 	  f1();
 	  flash_byte_mode();
 	  flash_punlock();
-	  rom[0xa000]= 0xa5;
+	  rom[addr]= 0xa5;
 	  res= flash_wait_finish();
 	  f2();
 	  flash_plock();
 	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
-	  dump(0xa000, 1);
+	  dump(addr, 1);
+	}
+      else if (strcmp(w, "fw") == 0)
+	{
+	  uint8_t res;
+	  uint8_t *rom= (uint8_t *)0;
+	  unsigned long addr= 0xa0a0;
+	  printf("Before:\n");
+	  dump(addr, 4);
+	  f1();
+	  flash_word_mode();
+	  flash_punlock();
+	  rom[addr+0]= 0x12;
+	  rom[addr+1]= 0x34;
+	  rom[addr+2]= 0x56;
+	  rom[addr+3]= 0x78;
+	  res= flash_wait_finish();
+	  f2();
+	  flash_plock();
+	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
+	  dump(addr, 4);
 	}
       else
 	printf("Unknown command\n");

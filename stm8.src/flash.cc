@@ -289,7 +289,7 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
 	  *val|= (ncr2r->get() & 0x30);
 	}
       if (cr2r->get() == ((~(*val))&0xff))
-	set_flash_mode((!(*val))&0xff);
+	set_flash_mode((~(*val))&0xff);
     }
 }
 
@@ -320,19 +320,34 @@ cl_flash::flash_write(t_addr a, t_mem val)
 {
   printf("FLASH wr(%06lx,%02x)\n",a,val);
   if (!uc)
-    {printf("  no uc\n");return;}
+    {
+      printf("  no uc\n");
+      return;
+    }
   if (uc->rom == NULL)
-    {printf("  no rom\n");return;}
+    {
+      printf("  no rom\n");
+      return;
+    }
   if ((a >= 0x8000) &&
       !p_unlocked)
-    {printf("  plocked\n");return;}
+    {
+      printf("  plocked\n");
+      return;
+    }
   if ((a < 0x8000) &&
       !d_unlocked)
-    {printf("  dlocked\n");return;}
+    {
+      printf("  dlocked\n");
+      return;
+    }
   if (state & fs_busy)
-    {printf("  busy %d\n",state);return;}
+    {
+      printf("  busy %d\n",state);
+      return;
+    }
 
-  printf("  wbuf_start=%ld\n",wbuf_start);
+  printf("  wbuf_start=%06lx\n",wbuf_start);
   if (wbuf_start == 0)
     {
       printf("  calling start_wbuf(%06lx)\n",a);

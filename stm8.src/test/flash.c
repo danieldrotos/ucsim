@@ -4,6 +4,9 @@
 
 #include "flash.h"
 
+
+// Lock, unklock
+
 void
 flash_punlock(void)
 {
@@ -36,6 +39,9 @@ flash_lock(void)
   FLASH->iapsr&= ~0x0a;
 }
 
+
+// Set programing mode
+
 void
 flash_byte_mode(void)
 {
@@ -44,6 +50,18 @@ flash_byte_mode(void)
   FLASH->ncr2= 0xff;
 #endif
 }
+
+void
+flash_word_mode(void)
+{
+  FLASH->cr2= 0x40;
+#if (DEVICE & DEV_STM8SAF)
+  FLASH->ncr2= 0xbf;
+#endif
+}
+
+
+// Check the result
 
 uint8_t
 flash_wait_finish(void)
