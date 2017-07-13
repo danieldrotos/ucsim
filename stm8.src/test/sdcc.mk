@@ -15,7 +15,7 @@ APP		?= $(MAIN)
 all: del_serial_rel $(APP).hex
 
 del_serial_rel:
-	rm -f serial.rel
+	rm -f serial.rel flash.rel
 
 dep: $(APP).dep
 

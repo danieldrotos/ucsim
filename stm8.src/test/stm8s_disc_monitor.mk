@@ -1,6 +1,6 @@
 MAIN		= stm8s_disc_monitor
 
-OTHERS		= serial
+OTHERS		= serial flash
 
 include sdcc.mk
 

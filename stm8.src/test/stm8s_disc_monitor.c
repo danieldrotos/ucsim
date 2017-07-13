@@ -8,6 +8,7 @@
 #include "stm8.h"
 
 #include "serial.h"
+#include "flash.h"
 
 
 void
@@ -104,6 +105,13 @@ proc_cmd(char *cmd)
 	      dump(start, len);
 	    }
 	}
+      else if (strcmp(w, "fb") == 0)
+	{
+	  flash_byte_mode();
+	  flash_punlock();
+	}
+      else
+	printf("Unknown command\n");
     }
 }
 
