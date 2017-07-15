@@ -94,6 +94,9 @@ proc_cmd(char *cmd)
 {
   char *w= strtok(cmd, DELIM);
   char *s;
+  uint8_t res;
+  uint8_t *rom= (uint8_t *)0;
+  unsigned long addr;
   
   if (w)
     {
@@ -127,9 +130,7 @@ proc_cmd(char *cmd)
 	}
       else if (strcmp(w, "fb") == 0)
 	{
-	  uint8_t res;
-	  uint8_t *rom= (uint8_t *)0;
-	  unsigned long addr= 0xa000;
+	  addr= 0xa000;
 	  printf("Before:\n");
 	  dump(addr, 1);
 	  f1();
@@ -144,9 +145,7 @@ proc_cmd(char *cmd)
 	}
       else if (strcmp(w, "fw") == 0)
 	{
-	  uint8_t res;
-	  uint8_t *rom= (uint8_t *)0;
-	  unsigned long addr= 0xa0a0;
+	  addr= 0xa0a0;
 	  printf("Before:\n");
 	  dump(addr, 4);
 	  f1();
@@ -162,9 +161,29 @@ proc_cmd(char *cmd)
 	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
 	  dump(addr, 4);
 	}
+      else if (strcmp(w, "fe") == 0)
+	{
+	  addr= 0xa000;
+	  printf("Before:\n");
+	  dump(addr, 64);
+	  f1();
+	  flash_erase_mode();
+	  flash_punlock();
+	  rom[addr+0]= 0;
+	  rom[addr+1]= 0;
+	  rom[addr+2]= 0;
+	  rom[addr+3]= 0;
+	  res= flash_wait_finish();
+	  f2();
+	  flash_plock();
+	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
+	  dump(addr, 64);
+	}
       else
 	printf("Unknown command\n");
     }
+  else
+    printf("What?\n");
 }
 
 char cmd[100];
@@ -204,13 +223,17 @@ void main(void)
   // RX: PD6, CN4.11
   USART->cr2 = USART_CR2_TEN | USART_CR2_REN; // Allow TX and RX
   USART->cr3 &= ~(USART_CR3_STOP1 | USART_CR3_STOP2); // 1 stop bit
-  USART->brr2 = 0x03;
-  USART->brr1 = 0x68; // 9600 baud
+  // 0 68 3 0x0683=1667 16MHz-> 9600 baud
+  //USART->brr2 = 0x03;
+  //USART->brr1 = 0x68;
+  // 0 08 b 0x008b=139  16MHz-> 115200 baud
+  USART->brr2 = 0x0b;
+  USART->brr1 = 0x08;
 
   USART->cr2|= USART_CR2_RIEN;
   EI;
 
-  printf("stm8s discovery monitor\n");
+  printf("%d discovery monitor\n", DEVICE);
   cmd[0]= 0;
   for(;;)
     {

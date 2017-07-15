@@ -60,6 +60,15 @@ flash_word_mode(void)
 #endif
 }
 
+void
+flash_erase_mode(void)
+{
+  FLASH->cr2= 0x20;
+#if (DEVICE & DEV_STM8SAF)
+  FLASH->ncr2= 0xdf;
+#endif
+}
+
 
 // Check the result
 
