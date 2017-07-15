@@ -215,6 +215,7 @@ void main(void)
   unsigned long i = 0;
   unsigned int a= 0;
 
+
   CLK->ckdivr = 0x00; // Set the frequency to 16 MHz
   CLK->pckenr1 = 0xFF; // Enable peripherals
 
@@ -234,6 +235,11 @@ void main(void)
   EI;
 
   printf("%d discovery monitor\n", DEVICE);
+  /*{
+      uint8_t *p= (uint8_t *)0x123456;
+      printf("sizeof p=%d\n", sizeof(p));
+      *p= 0;
+      }*/
   cmd[0]= 0;
   for(;;)
     {

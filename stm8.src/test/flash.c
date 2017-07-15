@@ -89,4 +89,15 @@ flash_wait_finish(void)
   return 3;
 }
 
+void
+flash_erase(unsigned long addr, unsigned int iapsr)
+{
+  ((uint8_t*)0)[addr+0]= 0;
+  ((uint8_t*)0)[addr+1]= 0;
+  ((uint8_t*)0)[addr+2]= 0;
+  ((uint8_t*)0)[addr+3]= 0;
+  while ((((uint8_t*)0)[iapsr] & 0x05) == 0) ;
+}
+
+
 /* End of stm8.src/test/flash.c */
