@@ -169,11 +169,14 @@ proc_cmd(char *cmd)
 	  f1();
 	  flash_erase_mode();
 	  flash_punlock();
+	  /*
 	  rom[addr+0]= 0;
 	  rom[addr+1]= 0;
 	  rom[addr+2]= 0;
 	  rom[addr+3]= 0;
 	  res= flash_wait_finish();
+	  */
+	  res= flash_erase((uint8_t*)0xa000, &(FLASH->iapsr));	  
 	  f2();
 	  flash_plock();
 	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);

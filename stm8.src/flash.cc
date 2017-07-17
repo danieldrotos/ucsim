@@ -115,25 +115,34 @@ cl_flash::tick(int cycles)
 	  (elapsed > tprog/2.0))
 	{
 	  int i;
+	  printf("FLASH zeroing %06lx .. %d\n", wbuf_start, wbuf_size);
 	  for (i= 0; i < wbuf_size; i++)
 	    {
 	      class cl_memory_cell *c= uc->rom->get_cell(wbuf_start + i);
 	      c->download(0);
 	    }
 	  if (mode == fm_erase)
-	    finish_program(true);
+	    {
+	      printf("FLASH end of erase, finish\n");
+	      finish_program(true);
+	    }
 	  else
-	    state= fs_program;
+	    {
+	      printf("FLASH end of erase, cont program\n");
+	      state= fs_program;
+	    }
 	}
       else if (elapsed > tprog)
 	{
 	  int i;
+	  printf("FLASH dl-ing %06lx .. %d\n", wbuf_start, wbuf_size);
 	  for (i= 0; i < wbuf_size; i++)
 	    {
 	      class cl_memory_cell *c= uc->rom->get_cell(wbuf_start + i);
 	      t_mem org= c->get();
 	      c->download(org | wbuf[i]);
 	    }
+	  printf("FLASH end of program\n");
 	  finish_program(true);
 	}
     }
@@ -377,6 +386,9 @@ cl_flash::flash_write(t_addr a, t_mem val)
     }
   else if (mode == fm_erase)
     {
+      printf("  romwrite in erase mode\n");
+      wbuf[offset]= val;
+      wbuf_writes++;
       if ((wbuf_writes == 4) &&
 	  (((a+1) % 4) == 0))
 	{
@@ -386,7 +398,10 @@ cl_flash::flash_write(t_addr a, t_mem val)
 	  v|= wbuf[2];
 	  v|= wbuf[3];
 	  if (v == 0)
-	    start_program(fs_pre_erase);
+	    {
+	      printf("  starting erase\n");
+	      start_program(fs_pre_erase);
+	    }
 	}
     }
   else

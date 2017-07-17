@@ -16,7 +16,7 @@ extern void flash_word_mode(void);
 extern void flash_erase_mode(void);
 
 extern uint8_t flash_wait_finish(void);
-extern void flash_erase(unsigned long addr, unsigned int iapsr);
+extern uint8_t flash_erase(volatile uint8_t *addr, volatile uint8_t *iapsr);
 
 #endif
 

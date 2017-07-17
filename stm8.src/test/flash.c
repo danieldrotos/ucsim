@@ -76,27 +76,36 @@ uint8_t
 flash_wait_finish(void)
 {
   unsigned long int timeout= 0xfffff;
-  
-  while (((FLASH->iapsr & 0x05) == 0) &&
+  uint8_t r;
+
+  r= FLASH->iapsr;
+  while (((r & 0x05) == 0) &&
 	 (timeout != 0))
-    timeout--;
-  if (FLASH->iapsr & 0x04)
+    {
+      timeout--;
+      r= FLASH->iapsr;
+    }
+  if (r & 0x04)
     return 0;
-  if (FLASH->iapsr & 0x01)
+  if (r & 0x01)
     return 1;
   if (timeout == 0)
     return 2;
   return 3;
 }
 
-void
-flash_erase(unsigned long addr, unsigned int iapsr)
+uint8_t
+flash_erase(volatile uint8_t *addr, volatile uint8_t *iapsr)
 {
-  ((uint8_t*)0)[addr+0]= 0;
-  ((uint8_t*)0)[addr+1]= 0;
-  ((uint8_t*)0)[addr+2]= 0;
-  ((uint8_t*)0)[addr+3]= 0;
-  while ((((uint8_t*)0)[iapsr] & 0x05) == 0) ;
+  uint8_t r;
+  *(addr+0)= 0;
+  *(addr+1)= 0;
+  *(addr+2)= 0;
+  *(addr+3)= 0;
+  r= *iapsr;
+  while ((r & 0x05) == 0)
+    r= *iapsr;
+  return r;
 }
 
 
