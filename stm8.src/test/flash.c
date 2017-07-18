@@ -98,28 +98,33 @@ flash_wait_finish(void)
 }
 
 uint8_t
-flash_erase_code(volatile uint8_t *addr, volatile uint8_t *iapsr)
+flash_erase_fn(volatile uint8_t *addr, volatile uint8_t *iapsr)
 {
   volatile uint8_t r;
+  unsigned long timeout= 0xfffff;
+  flash_erase_mode();
   *(addr++)= 0;
   *(addr++)= 0;
   *(addr++)= 0;
   *(addr)= 0;
   r= *iapsr;
-  while ((r & 0x05) == 0)
-    r= *iapsr;
+  while (((r & 0x05) == 0) &&
+	 (timeout != 0))
+    {
+      timeout--;
+      r= *iapsr;
+      GPIOD->odr^= 1;
+    }
   if (r & 0x04)
     return 0;
   if (r & 0x01)
     return 1;
-  /*
   if (timeout == 0)
     return 2;
-  */
   return 3;
 }
 
-uint8_t flash_op_in_ram[70];
+uint8_t flash_op_in_ram[120];
 
 uint8_t
 flash_erase(volatile uint8_t *addr, volatile uint8_t *iapsr)
@@ -127,7 +132,7 @@ flash_erase(volatile uint8_t *addr, volatile uint8_t *iapsr)
   uint8_t r;
   typedef uint8_t (*ft)(volatile uint8_t *addr, volatile uint8_t *iapsr);
   ft f= (ft)flash_op_in_ram;
-  memcpy(flash_op_in_ram, &flash_erase_code, 99);
+  memcpy(flash_op_in_ram, &flash_erase_fn, 119);
   r= (*f)(addr, iapsr);
   return r;
 }

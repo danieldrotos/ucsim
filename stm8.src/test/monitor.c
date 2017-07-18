@@ -10,6 +10,13 @@
 #include "serial.h"
 #include "flash.h"
 
+#if (DEVICE & DEV_SDISC)
+#define LED_PORT GPIOD
+#define LED_MASK 0x01
+#else
+#define LED_PORT GPIOC
+#define LED_MASK 0x80
+#endif
 
 void
 print_bl()
@@ -145,6 +152,7 @@ proc_cmd(char *cmd)
 	}
       else if (strcmp(w, "fw") == 0)
 	{
+	  LED_PORT->odr|= LED_MASK;
 	  addr= 0xa0a0;
 	  printf("Before:\n");
 	  dump(addr, 4);
@@ -160,14 +168,15 @@ proc_cmd(char *cmd)
 	  flash_plock();
 	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
 	  dump(addr, 4);
+	  LED_PORT->odr&= ~LED_MASK;
 	}
       else if (strcmp(w, "fe") == 0)
 	{
+	  LED_PORT->odr|= LED_MASK;
 	  addr= 0xa000;
 	  printf("Before:\n");
 	  dump(addr, 64);
 	  f1();
-	  flash_erase_mode();
 	  flash_punlock();
 	  /*
 	  rom[addr+0]= 0;
@@ -181,6 +190,7 @@ proc_cmd(char *cmd)
 	  flash_plock();
 	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
 	  dump(addr, 64);
+	  LED_PORT->odr&= ~LED_MASK;
 	}
       else if (strcmp(w, "test") == 0)
 	{
@@ -222,10 +232,12 @@ void main(void)
   unsigned long i = 0;
   unsigned int a= 0;
 
-
   CLK->ckdivr = 0x00; // Set the frequency to 16 MHz
   CLK->pckenr1 = 0xFF; // Enable peripherals
 
+  LED_PORT->ddr= LED_MASK;
+  LED_PORT->cr1= LED_MASK;
+  
   // USART2
   // TX: PD5, CN4.10
   // RX: PD6, CN4.11
