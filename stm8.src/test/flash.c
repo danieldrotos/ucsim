@@ -1,5 +1,7 @@
 /* */
 
+#include <string.h>
+
 #include "stm8.h"
 
 #include "flash.h"
@@ -76,6 +78,7 @@ uint8_t
 flash_wait_finish(void)
 {
   unsigned long int timeout= 0xfffff;
+  //volatile
   uint8_t r;
 
   r= FLASH->iapsr;
@@ -95,16 +98,37 @@ flash_wait_finish(void)
 }
 
 uint8_t
-flash_erase(volatile uint8_t *addr, volatile uint8_t *iapsr)
+flash_erase_code(volatile uint8_t *addr, volatile uint8_t *iapsr)
 {
-  uint8_t r;
-  *(addr+0)= 0;
-  *(addr+1)= 0;
-  *(addr+2)= 0;
-  *(addr+3)= 0;
+  volatile uint8_t r;
+  *(addr++)= 0;
+  *(addr++)= 0;
+  *(addr++)= 0;
+  *(addr)= 0;
   r= *iapsr;
   while ((r & 0x05) == 0)
     r= *iapsr;
+  if (r & 0x04)
+    return 0;
+  if (r & 0x01)
+    return 1;
+  /*
+  if (timeout == 0)
+    return 2;
+  */
+  return 3;
+}
+
+uint8_t flash_op_in_ram[70];
+
+uint8_t
+flash_erase(volatile uint8_t *addr, volatile uint8_t *iapsr)
+{
+  uint8_t r;
+  typedef uint8_t (*ft)(volatile uint8_t *addr, volatile uint8_t *iapsr);
+  ft f= (ft)flash_op_in_ram;
+  memcpy(flash_op_in_ram, &flash_erase_code, 99);
+  r= (*f)(addr, iapsr);
   return r;
 }
 

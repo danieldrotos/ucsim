@@ -182,6 +182,10 @@ proc_cmd(char *cmd)
 	  printf("After (%s,%d):\n", (res==0)?"succ":"fail", res);
 	  dump(addr, 64);
 	}
+      else if (strcmp(w, "test") == 0)
+	{
+	  printf("%d\n", sizeof(flash_erase));
+	}
       else
 	printf("Unknown command\n");
     }
@@ -244,6 +248,15 @@ void main(void)
       *p= 0;
       }*/
   cmd[0]= 0;
+  {/*
+    struct st {
+      volatile uint8_t v;
+    };
+    struct st s;*/
+    uint8_t r= FLASH->iapsr;
+    while (FLASH->iapsr == 0)
+      ;//r= FLASH->iapsr;
+  }
   for(;;)
     {
       if (serial_received())

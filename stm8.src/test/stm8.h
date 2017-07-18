@@ -777,7 +777,7 @@ struct FLASH_t {
   volatile uint8_t dummy2;
   volatile uint8_t dukr;
 };
-#define FLASH ((struct FLASH_t *)0x505a)
+#define FLASH ((volatile struct FLASH_t * volatile)0x505a)
 #define FLASH_IRQ 24
 #elif (DEVICE & DEV_STM8ALL) ||			\
   (DEVICE & DEV_STM8L101)

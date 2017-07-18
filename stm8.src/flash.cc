@@ -198,6 +198,7 @@ cl_flash::read(class cl_memory_cell *cell)
 	v|= 0x08;
       // read clears EOP and WR_PG_DIS bits
       cell->set(v & ~0x05);
+      if (v & 0x05) printf("FLASH read iapsr%5 %02x\n",v);	
     }
   return v;
 }
@@ -474,7 +475,7 @@ cl_flash::start_wbuf(t_addr addr)
   wbuf_writes= 0;
   for (i= 0; i < 256; i++)
     wbuf[i]= 0;
-  printf("FLASH start_wbuf %06lx\n", addr);
+  printf("FLASH start_wbuf %06lx (wbuf_start=%06lx,size=%d)\n", addr, wbuf_start, wbuf_size);
 }
 
 void
