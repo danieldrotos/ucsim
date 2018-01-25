@@ -198,7 +198,7 @@ cl_flash::read(class cl_memory_cell *cell)
 	v|= 0x08;
       // read clears EOP and WR_PG_DIS bits
       cell->set(v & ~0x05);
-      if (v & 0x05) printf("FLASH read iapsr%5 %02x\n",v);	
+      if (v & 0x05) printf("FLASH read iapsr5 %02x\n",v);	
     }
   return v;
 }
