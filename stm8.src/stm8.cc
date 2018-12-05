@@ -1202,9 +1202,11 @@ cl_stm8::exec_inst(void)
                break;
             case 0x30: // POP longmem
                opaddr = fetch2();
-               pop1( opaddr);
+               pop1(tempi);
+               store1(opaddr, tempi);
                return(resGO);
-            case 0x40: //mul
+            case 0x40: // mul
+               tick(3);
                if(cprefix==0x90) {
                   regs.Y = (regs.Y&0xff) * regs.A;
                } else if(cprefix==0x00) {
@@ -1689,7 +1691,7 @@ cl_stm8::exec_inst(void)
                break;
             case 0xA0: // CALLR
              {
-               char c = (char) fetch1();
+               signed char c = (signed char) fetch1();
                push2(PC);
                PC += c;
                return(resGO);
