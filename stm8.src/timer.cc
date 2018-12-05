@@ -381,7 +381,7 @@ cl_tim::update_event(void)
 	  set_counter(ar);
 	}
     }
-  regs[idx.sr1]->set_bit1(uif);
+  regs[idx.sr1]->write_bit1(uif);
 }
 
 // true: UP, false: down
