@@ -38,4 +38,10 @@ cl_ez80::init(void)
   return cl_z80::init();
 }
 
+char *
+cl_ez80::id_string(void)
+{
+  return ((char*)"EZ80");
+}
+
 /* End of z80.src/ez80.cc */
