@@ -235,7 +235,7 @@ cl_serial_hw::proc_input(void)
     }
   if (menu == 0)
     {
-      if (fin->tty)
+      if (0/*fin->tty*/)
 	{
 	  if (fin->read(&c, 1))
 	    {
@@ -267,6 +267,7 @@ cl_serial_hw::proc_input(void)
 	{
 	  if (fin->read(&c, 1))
 	    {
+	      printf("ser: %d,%c\n",c,isprint(c)?c:' ');
 	      input= c;
 	      input_avail= true;
 	    }
