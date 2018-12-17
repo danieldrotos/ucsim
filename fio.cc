@@ -368,7 +368,6 @@ cl_f::~cl_f(void)
 int
 cl_f::put(int c)
 {
-  printf("put: %d,%c\n",c,isprint(c)?c:' ');
   int n= (first_free + 1) % 1024;
   if (n == last_used)
     {
@@ -388,7 +387,6 @@ cl_f::get(void)
       return -1;
     }
   int c= buffer[last_used];
-  printf("get: %d,%c\n",c,isprint(c)?c:' ');
   //if (c == 3 /* ^C */)
   //return -2;
   last_used= (last_used + 1) % 1024;
