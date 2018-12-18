@@ -1,6 +1,5 @@
 # tlcs.src/clean.mk
 #
-# $Id$
 #
 
 # Deleting all files created by building the program

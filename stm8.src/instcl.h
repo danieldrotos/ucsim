@@ -1,4 +1,3 @@
-/* $Id$ */
 
 /* stm8.src/instcl.h */
 
