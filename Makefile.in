@@ -89,6 +89,11 @@ distclean: clean
 	  $(MAKE) -C $$pkg -f ../$(srcdir)/$$pkg/clean.mk distclean ;\
 	done
 	rm -rf doc/*~ doc/*.bak Makefile packages.mk libtool
+	$(MAKE) -C example clean
+	$(MAKE) -C s51.src/test clean
+	$(MAKE) -C stm8.src/test clean
+	$(MAKE) -C tlcs.src/test clean
+	$(MAKE) -C z80.src/test clean
 
 
 # Like clean but some files may still exist
