@@ -32,6 +32,11 @@ struct dis_entry disass_ez80_ed[]=
    { 0x000f, 0x00ff, ' ', 1, "LD (HL),BC" },
    { 0x001f, 0x00ff, ' ', 1, "LD (HL),DE" },
    { 0x002f, 0x00ff, ' ', 1, "LD (HL),HL" },
+   { 0x0037, 0x00ff, ' ', 1, "LD IX,(HL)" },
+   { 0x0031, 0x00ff, ' ', 1, "LD IY,(HL)" },
+   { 0x0007, 0x00ff, ' ', 1, "LD BC,(HL)" },
+   { 0x0017, 0x00ff, ' ', 1, "LD DE,(HL)" },
+   { 0x0027, 0x00ff, ' ', 1, "LD HL,(HL)" },
    { 0, 0, 0, 0, NULL }
   };
 
@@ -115,16 +120,27 @@ cl_ez80::inst_ed_ez80(t_mem code)
     case 0x0f: // LD (HL),BC
       store2(regs.HL, regs.BC);
       return resGO;
-      break;
     case 0x1f: // LD (HL),DE
       store2(regs.HL, regs.DE);
       return resGO;
-      break;
     case 0x2f: // LD (HL),HL
       store2(regs.HL, regs.HL);
       return resGO;
-      break;
-      
+    case 0x37: // LD IX,(HL)
+      regs.IX= get2(regs.HL);
+      return resGO;
+    case 0x31: // LD IY,(HL)
+      regs.IY= get2(regs.HL);
+      return resGO;
+    case 0x07: // LD BC,(HL)
+      regs.BC= get2(regs.HL);
+      return resGO;
+    case 0x17: // LD DE,(HL)
+      regs.DE= get2(regs.HL);
+      return resGO;
+    case 0x27: // LD HL,(HL)
+      regs.HL= get2(regs.HL);
+      return resGO;
     default: // fall back to original Z80
       return inst_ed_(code);
     }
