@@ -417,7 +417,7 @@ int  cl_z80::inst_ed_(t_mem code)
 }
 
 /******** start ED codes *****************/
-int  cl_z80::inst_ed(void)
+int  cl_z80::inst_ed(t_mem prefix)
 {
   t_mem code;
 

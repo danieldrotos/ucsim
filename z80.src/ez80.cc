@@ -145,6 +145,9 @@ cl_ez80::get_disasm_info(t_addr addr,
 	  break;
 	}
       break;
+
+    default:
+      return cl_z80::get_disasm_info(addr_org, ret_len, ret_branch, immed_offset, dentry);
     }
 
   if (ret_branch)
