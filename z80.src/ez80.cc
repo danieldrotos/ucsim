@@ -56,6 +56,9 @@ struct dis_entry disass_ez80_dd[]=
    { 0x003E, 0x00ff, ' ', 2, "LD (IX+%d),IY" },
    { 0x0037, 0x00ff, ' ', 2, "LD IX,(IX+%d)" },
    { 0x0031, 0x00ff, ' ', 2, "LD IY,(IX+%d)" },
+   { 0x000f, 0x00ff, ' ', 2, "LD (IX+%d),BC" },
+   { 0x001f, 0x00ff, ' ', 2, "LD (IX+%d),DE" },
+   { 0x002f, 0x00ff, ' ', 2, "LD (IX+%d),HL" },
    { 0, 0, 0, 0, NULL }
   };
 
@@ -133,6 +136,7 @@ cl_ez80::get_disasm_info(t_addr addr,
 	{
 	case 0x3f: case 0x3e:
 	case 0x37: case 0x31:
+	case 0x0f: case 0x1f: case 0x2f:
 	  immed_n= 2;
 	  break;
 	}
@@ -274,6 +278,19 @@ cl_ez80::inst_dd_spec(t_mem code)
     case 0x31: // LD IY,(IX+d)
       d= fetch1();
       regs.IY= get2(regs.IX+d);
+      return resGO;
+
+    case 0x0f: // LD (IX+d),BC
+      d= fetch1();
+      store2(regs.IX+d, regs.BC);
+      return resGO;
+    case 0x1f: // LD (IX+d),DE
+      d= fetch1();
+      store2(regs.IX+d, regs.DE);
+      return resGO;
+    case 0x2f: // LD (IX+d),HL
+      d= fetch1();
+      store2(regs.IX+d, regs.HL);
       return resGO;
     }
   
