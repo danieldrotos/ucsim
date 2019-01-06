@@ -44,4 +44,38 @@ cl_ez80::id_string(void)
   return ((char*)"EZ80");
 }
 
+int
+cl_ez80::inst_ed_ez80(t_mem code)
+{
+  switch (code)
+    {
+    case 0x0f: // LD (HL),BC
+      store2(regs.HL, regs.BC);
+      return resGO;
+      break;
+    case 0x1f: // LD (HL),DE
+      store2(regs.HL, regs.DE);
+      return resGO;
+      break;
+    case 0x2f: // LD (HL),HL
+      store2(regs.HL, regs.HL);
+      return resGO;
+      break;
+      
+    default: // fall back to original Z80
+      return inst_ed_(code);
+    }
+}
+
+int
+cl_ez80::inst_ed(void)
+{
+  t_mem code;
+
+  if (fetch(&code))
+    return (resBREAKPOINT);
+
+  return inst_ed_ez80(code);
+}
+
 /* End of z80.src/ez80.cc */

@@ -37,6 +37,9 @@ class cl_ez80: public cl_z80
   cl_ez80(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
   virtual char *id_string(void);
+
+  virtual int inst_ed_ez80(t_mem code);    
+  virtual int inst_ed(void);
 };
 
 #endif
