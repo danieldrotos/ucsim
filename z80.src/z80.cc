@@ -465,7 +465,7 @@ cl_z80::disass(t_addr addr, const char *sep)
           switch (*(b++))
             {
             case 'd': // d    jump relative target, signed? byte immediate operand
-              sprintf(temp, "#%d", (char)rom->get(addr+immed_offset));
+              sprintf(temp, "#%d", (signed char)(rom->get(addr+immed_offset)));
               ++immed_offset;
               break;
             case 'w': // w    word immediate operand
