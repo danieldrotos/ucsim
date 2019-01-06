@@ -419,10 +419,14 @@ int
 cl_z80::inst_Xd(void)
 {
   t_mem code;
-
+  int i;
+  
   if (fetch(&code))
     return(resBREAKPOINT);
 
+  if ((i= inst_dd_spec(code)) >= 0)
+    return i;
+  
   switch (code)
     {
       case 0x21: // LD IX,nnnn

@@ -222,4 +222,10 @@ cl_ez80::inst_ed(void)
   return inst_ed_ez80(code);
 }
 
+int
+cl_ez80::inst_dd_spec(t_mem code)
+{
+  return -1;
+}
+
 /* End of z80.src/ez80.cc */

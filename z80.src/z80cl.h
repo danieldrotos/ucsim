@@ -75,20 +75,21 @@ public:
   virtual void store2( u16_t addr, u16_t val );
 
   virtual u8_t  get1( u16_t addr );
-  virtual u16_t  get2( u16_t addr );
+  virtual u16_t get2( u16_t addr );
 
-  virtual t_mem       fetch1( void );
-  virtual u16_t  fetch2( void );
-  virtual t_mem       peek1 ( void );
+  virtual t_mem fetch1( void );
+  virtual u16_t fetch2( void );
+  virtual t_mem peek1 ( void );
 
-  virtual u8_t   in_byte( u16_t ioaddr );
-  virtual void        out_byte( u16_t ioaddr, u8_t io_val );
+  virtual u8_t in_byte( u16_t ioaddr );
+  virtual void out_byte( u16_t ioaddr, u8_t io_val );
 
   //virtual t_mem fetch(void);
-  virtual u8_t  reg_g_read ( t_mem g );
-  virtual void        reg_g_store( t_mem g, u8_t new_val );
+  virtual u8_t reg_g_read ( t_mem g );
+  virtual void reg_g_store( t_mem g, u8_t new_val );
 
 #include "instcl.h"
+  virtual int inst_dd_spec(t_mem code) { return -1; }
 };
 
 
