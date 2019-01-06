@@ -27,6 +27,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "ez80cl.h"
 
+struct dis_entry disass_ez80_ed[]=
+  {
+   { 0x000f, 0x00ff, ' ', 1, "LD (HL),BC" },
+   { 0x001f, 0x00ff, ' ', 1, "LD (HL),DE" },
+   { 0x002f, 0x00ff, ' ', 1, "LD (HL),HL" },
+   { 0, 0, 0, 0, NULL }
+  };
+
 cl_ez80::cl_ez80(struct cpu_entry *Itype, class cl_sim *asim):
 	cl_z80(Itype, asim)
 {
@@ -42,6 +50,61 @@ char *
 cl_ez80::id_string(void)
 {
   return ((char*)"EZ80");
+}
+
+
+const char *
+cl_ez80::get_disasm_info(t_addr addr,
+			 int *ret_len,
+			 int *ret_branch,
+			 int *immed_offset,
+			 struct dis_entry **dentry)
+{
+  const char *b = NULL;
+  uint code;
+  t_addr addr_org= addr;
+  int start_addr = addr;
+  int i;
+  int len= 0;
+  int immed_n = 0;
+  struct dis_entry *dis_e= NULL;
+  
+  code= rom->get(addr++);
+  switch (code)
+    {
+    case 0xed:
+      code= rom->get(addr++);
+      i= 0;
+      while ((code & disass_ez80_ed[i].mask) != disass_ez80_ed[i].code &&
+	     disass_ez80_ed[i].mnemonic)
+	i++;
+      dis_e= &disass_ez80_ed[i];
+      b= dis_e->mnemonic;
+      if (b == NULL)
+	return cl_z80::get_disasm_info(addr_org, ret_len, ret_branch, immed_offset, dentry);
+      len+= dis_e->length+1;
+      break;
+    }
+
+  if (ret_branch)
+    *ret_branch = dis_e->branch;
+
+  if (immed_offset) {
+    if (immed_n > 0)
+         *immed_offset = immed_n;
+    else *immed_offset = (addr - start_addr);
+  }
+
+  if (len == 0)
+    len = 1;
+
+  if (ret_len)
+    *ret_len = len;
+
+  if (dentry)
+    *dentry= dis_e;
+  
+  return b;
 }
 
 int
