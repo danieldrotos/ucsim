@@ -53,7 +53,7 @@ struct dis_entry disass_ez80_ed[]=
 struct dis_entry disass_ez80_dd[]=
   {
    { 0x003f, 0x00ff, ' ', 2, "LD (IX+%d),IX" },
-   { 0x003E, 0x00ff, ' ', 2, "LD (IX+%d),Iy" },
+   { 0x003E, 0x00ff, ' ', 2, "LD (IX+%d),IY" },
    { 0x0037, 0x00ff, ' ', 2, "LD IX,(IX+%d)" },
    { 0x0031, 0x00ff, ' ', 2, "LD IY,(IX+%d)" },
    { 0, 0, 0, 0, NULL }
@@ -267,7 +267,7 @@ cl_ez80::inst_dd_spec(t_mem code)
       store2(regs.IX+d, regs.IY);
       return resGO;
       
-    case 0x37: // LD ix,(IX+d)
+    case 0x37: // LD IX,(IX+d)
       d= fetch1();
       regs.IX= get2(regs.IX+d);
       return resGO;
