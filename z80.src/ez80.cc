@@ -50,6 +50,15 @@ struct dis_entry disass_ez80_ed[]=
    { 0, 0, 0, 0, NULL }
   };
 
+struct dis_entry disass_ez80_dd[]=
+  {
+   { 0x003f, 0x00ff, ' ', 2, "LD (IX+%d),IX" },
+   { 0x003E, 0x00ff, ' ', 2, "LD (IX+%d),Iy" },
+   { 0x0037, 0x00ff, ' ', 2, "LD IX,(IX+%d)" },
+   { 0x0031, 0x00ff, ' ', 2, "LD IY,(IX+%d)" },
+   { 0, 0, 0, 0, NULL }
+  };
+
 cl_ez80::cl_ez80(struct cpu_entry *Itype, class cl_sim *asim):
 	cl_z80(Itype, asim)
 {
@@ -104,6 +113,26 @@ cl_ez80::get_disasm_info(t_addr addr,
 	case 0x54: case 0x33:
 	case 0x02: case 0x12: case 0x22:
 	case 0x03: case 0x13: case 0x23:
+	  immed_n= 2;
+	  break;
+	}
+      break;
+
+    case 0xdd:
+      code= rom->get(addr++);
+      i= 0;
+      while ((code & disass_ez80_dd[i].mask) != disass_ez80_dd[i].code &&
+	     disass_ez80_dd[i].mnemonic)
+	i++;
+      dis_e= &disass_ez80_dd[i];
+      b= dis_e->mnemonic;
+      if (b == NULL)
+	return cl_z80::get_disasm_info(addr_org, ret_len, ret_branch, immed_offset, dentry);
+      len+= dis_e->length+1;
+      switch (code)
+	{
+	case 0x3f: case 0x3e:
+	case 0x37: case 0x31:
 	  immed_n= 2;
 	  break;
 	}
@@ -225,6 +254,29 @@ cl_ez80::inst_ed(void)
 int
 cl_ez80::inst_dd_spec(t_mem code)
 {
+  int8_t d;
+  
+  switch (code)
+    {
+    case 0x3f: // LD (IX+d),IX
+      d= fetch1();
+      store2(regs.IX+d, regs.IX);
+      return resGO;
+    case 0x3e: // LD (IX+d),IY
+      d= fetch1();
+      store2(regs.IX+d, regs.IY);
+      return resGO;
+      
+    case 0x37: // LD ix,(IX+d)
+      d= fetch1();
+      regs.IX= get2(regs.IX+d);
+      return resGO;
+    case 0x31: // LD IY,(IX+d)
+      d= fetch1();
+      regs.IY= get2(regs.IX+d);
+      return resGO;
+    }
+  
   return -1;
 }
 
