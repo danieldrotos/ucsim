@@ -38,6 +38,9 @@ struct dis_entry disass_ez80_ed[]=
    { 0x0017, 0x00ff, ' ', 1, "LD DE,(HL)" },
    { 0x0027, 0x00ff, ' ', 1, "LD HL,(HL)" },
    { 0x0032, 0x00ff, ' ', 2, "LEA IX,IX+%d" },
+   { 0x0055, 0x00ff, ' ', 2, "LEA IY,IX+%d" },
+   { 0x0054, 0x00ff, ' ', 2, "LEA IX,IY+%d" },
+   { 0x0033, 0x00ff, ' ', 2, "LEA IY,IY+%d" },
    { 0, 0, 0, 0, NULL }
   };
 
@@ -92,6 +95,7 @@ cl_ez80::get_disasm_info(t_addr addr,
       switch (code)
 	{
 	case 0x32: case 0x55:
+	case 0x54: case 0x33:
 	  immed_n= 2;
 	  break;
 	}
@@ -158,6 +162,14 @@ cl_ez80::inst_ed_ez80(t_mem code)
     case 0x55: // LEA IY,IX+d
       d= fetch1();
       regs.IY= regs.IX + d;
+      return resGO;
+    case 0x54: // LEA IX,IY+d
+      d= fetch1();
+      regs.IX= regs.IY + d;
+      return resGO;
+    case 0x33: // LEA IY,IY+d
+      d= fetch1();
+      regs.IY= regs.IY + d;
       return resGO;
       
     default: // fall back to original Z80
