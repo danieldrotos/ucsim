@@ -44,7 +44,7 @@ class cl_ez80: public cl_z80
 				      struct dis_entry **dentry);
   
   virtual int inst_ed_ez80(t_mem code);    
-  virtual int inst_ed(void);
+  virtual int inst_ed(t_mem prefix);
   virtual int inst_dd_spec(t_mem code);
   virtual int inst_fd_spec(t_mem code);
 };

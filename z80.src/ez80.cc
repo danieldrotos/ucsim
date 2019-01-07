@@ -289,7 +289,7 @@ cl_ez80::inst_ed_ez80(t_mem code)
 }
 
 int
-cl_ez80::inst_ed(void)
+cl_ez80::inst_ed(t_mem prefix)
 {
   t_mem code;
 

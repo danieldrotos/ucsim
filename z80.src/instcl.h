@@ -44,7 +44,7 @@
   virtual int inst_fd_dec(t_mem code);
   virtual int inst_fd_misc(t_mem code);
 
-virtual int inst_dd(t_mem prefix);
+  virtual int inst_dd(t_mem prefix);
   virtual int inst_dd_ld(t_mem code);
   virtual int inst_dd_add(t_mem code);
   virtual int inst_dd_push(t_mem code);
