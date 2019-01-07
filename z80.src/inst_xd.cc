@@ -424,9 +424,15 @@ cl_z80::inst_Xd(t_mem prefix)
   if (fetch(&code))
     return(resBREAKPOINT);
 
-  if ((prefix == 0xdd) &&
-      (i= inst_dd_spec(code)) >= 0)
-    return i;
+  switch (prefix)
+    {
+    case 0xdd:
+      if ((i= inst_dd_spec(code)) >= 0)
+	return i;
+    case 0xfd:
+      if ((i= inst_fd_spec(code)) >= 0)
+	return i;
+    }
   
   switch (code)
     {

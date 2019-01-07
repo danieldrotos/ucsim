@@ -46,6 +46,7 @@ class cl_ez80: public cl_z80
   virtual int inst_ed_ez80(t_mem code);    
   virtual int inst_ed(void);
   virtual int inst_dd_spec(t_mem code);
+  virtual int inst_fd_spec(t_mem code);
 };
 
 #endif
