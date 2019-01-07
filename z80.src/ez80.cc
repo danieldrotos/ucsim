@@ -62,6 +62,12 @@ struct dis_entry disass_ez80_dd[]=
    { 0x0007, 0x00ff, ' ', 2, "LD BC,(IX+%d)" },
    { 0x0017, 0x00ff, ' ', 2, "LD DE,(IX+%d)" },
    { 0x0027, 0x00ff, ' ', 2, "LD HL,(IX+%d)" },
+   { 0x0064, 0x00ff, ' ', 1, "LD IXH,IXH" },
+   { 0x0065, 0x00ff, ' ', 1, "LD IXH,IXL" },
+   { 0x006c, 0x00ff, ' ', 1, "LD IXL,IXH" },
+   { 0x006d, 0x00ff, ' ', 1, "LD IXL,IXL" },
+   { 0x0026, 0x00ff, ' ', 2, "LD IXH,%d" },
+   { 0x002e, 0x00ff, ' ', 2, "LD IXL,%d" },
    { 0, 0, 0, 0, NULL }
   };
 
@@ -77,6 +83,12 @@ struct dis_entry disass_ez80_fd[]=
    { 0x0007, 0x00ff, ' ', 2, "LD BC,(IY+%d)" },
    { 0x0017, 0x00ff, ' ', 2, "LD DE,(IY+%d)" },
    { 0x0027, 0x00ff, ' ', 2, "LD HL,(IY+%d)" },
+   { 0x0064, 0x00ff, ' ', 1, "LD IYH,IYH" },
+   { 0x0065, 0x00ff, ' ', 1, "LD IYH,IYL" },
+   { 0x006c, 0x00ff, ' ', 1, "LD IYL,IYH" },
+   { 0x006d, 0x00ff, ' ', 1, "LD IYL,IYL" },
+   { 0x0026, 0x00ff, ' ', 2, "LD IYH,%d" },
+   { 0x002e, 0x00ff, ' ', 2, "LD IYL,%d" },
    { 0, 0, 0, 0, NULL }
   };
 
@@ -156,6 +168,7 @@ cl_ez80::get_disasm_info(t_addr addr,
 	case 0x37: case 0x31:
 	case 0x0f: case 0x1f: case 0x2f:
 	case 0x07: case 0x17: case 0x27:
+	case 0x26: case 0x2e:
 	  immed_n= 2;
 	  break;
 	}
@@ -178,6 +191,7 @@ cl_ez80::get_disasm_info(t_addr addr,
 	case 0x31: case 0x37:
 	case 0x0f: case 0x1f: case 0x2f:
 	case 0x07: case 0x17: case 0x27:
+	case 0x26: case 0x2e:
 	  immed_n= 2;
 	  break;
 	}
@@ -349,6 +363,27 @@ cl_ez80::inst_dd_spec(t_mem code)
       d= fetch1();
       regs.HL= get2(regs.IX+d);
       return resGO;
+
+    case 0x64: // LD IXH,IXH
+      return resGO;      
+    case 0x65: // LD IXH,IXL
+      regs.ix.h= regs.ix.l;
+      return resGO;      
+    case 0x6c: // LD IXL,IXH
+      regs.ix.l= regs.ix.h;
+      return resGO;      
+    case 0x6d: // LD IXL,IXL
+      return resGO;
+
+    case 0x26: // LD IXH,n
+      d= fetch1();
+      regs.ix.h= d;
+      return resGO;
+    case 0x2e: // LD IXL,n
+      d= fetch1();
+      regs.ix.l= d;
+      return resGO;
+      
     }
   
   return -1;
@@ -403,6 +438,26 @@ cl_ez80::inst_fd_spec(t_mem code)
     case 0x27: // LD HL,(IY+d)
       d= fetch1();
       regs.HL= get2(regs.IY+d);
+      return resGO;
+
+    case 0x64: // LD IYH,IYH
+      return resGO;      
+    case 0x65: // LD IYH,IYL
+      regs.iy.h= regs.iy.l;
+      return resGO;      
+    case 0x6c: // LD IYL,IYH
+      regs.iy.l= regs.iy.h;
+      return resGO;      
+    case 0x6d: // LD IYL,IYL
+      return resGO;      
+
+    case 0x26: // LD IYH,n
+      d= fetch1();
+      regs.iy.h= d;
+      return resGO;
+    case 0x2e: // LD IYL,n
+      d= fetch1();
+      regs.iy.l= d;
       return resGO;
 
     }
