@@ -98,6 +98,8 @@ struct dis_entry disass_ez80_dd[]=
     // DD
     { 0x0084, 0x00ff, ' ', 1, "ADD A,IXH" },
     { 0x0085, 0x00ff, ' ', 1, "ADD A,IXL" },
+    { 0x008c, 0x00ff, ' ', 1, "ADC A,IXH" },
+    { 0x008d, 0x00ff, ' ', 1, "ADC A,IXL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -145,6 +147,8 @@ struct dis_entry disass_ez80_fd[]=
     // FD
     { 0x0084, 0x00ff, ' ', 1, "ADD A,IYH" },
     { 0x0085, 0x00ff, ' ', 1, "ADD A,IYL" },
+    { 0x008c, 0x00ff, ' ', 1, "ADC A,IYH" },
+    { 0x008d, 0x00ff, ' ', 1, "ADC A,IYL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -519,6 +523,13 @@ cl_ez80::inst_dd_spec(t_mem code)
     case 0x85: // ADD A,IXL
       add_A_bytereg(regs.ix.l);
       return resGO;
+    case 0x8c: // ADC A,IXH
+      adc_A_bytereg(regs.ix.h);
+      return resGO;
+    case 0x8d: // ADC A,IXL
+      adc_A_bytereg(regs.ix.l);
+      return resGO;
+
     }
   
   return -1;
@@ -673,6 +684,12 @@ cl_ez80::inst_fd_spec(t_mem code)
       return resGO;
     case 0x85: // ADD A,IYL
       add_A_bytereg(regs.iy.l);
+      return resGO;
+    case 0x8c: // ADC A,IYH
+      adc_A_bytereg(regs.iy.h);
+      return resGO;
+    case 0x8d: // ADC A,IYL
+      adc_A_bytereg(regs.iy.l);
       return resGO;
 
     }
