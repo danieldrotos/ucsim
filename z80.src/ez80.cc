@@ -110,6 +110,8 @@ struct dis_entry disass_ez80_dd[]=
     // DD
     { 0x0025, 0x00ff, ' ', 1, "DEC IXH" },
     { 0x002d, 0x00ff, ' ', 1, "DEC IXL" },
+    { 0x0024, 0x00ff, ' ', 1, "INC IXH" },
+    { 0x002c, 0x00ff, ' ', 1, "INC IXL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -164,6 +166,8 @@ struct dis_entry disass_ez80_fd[]=
     // FD
     { 0x0025, 0x00ff, ' ', 1, "DEC IYH" },
     { 0x002d, 0x00ff, ' ', 1, "DEC IYL" },
+    { 0x0024, 0x00ff, ' ', 1, "INC IYH" },
+    { 0x002c, 0x00ff, ' ', 1, "INC IYL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -572,6 +576,12 @@ cl_ez80::inst_dd_spec(t_mem code)
     case 0x2d: // DEC IXL
       dec(regs.ix.l);
       return resGO;
+    case 0x24: // INC IXH
+      inc(regs.ix.h);
+      return resGO;
+    case 0x2c: // INC IXL
+      inc(regs.ix.l);
+      return resGO;
 
     }
   
@@ -762,6 +772,13 @@ cl_ez80::inst_fd_spec(t_mem code)
     case 0x2d: // DEC IYL
       dec(regs.iy.l);
       return resGO;
+    case 0x24: // INC IYH
+      inc(regs.iy.h);
+      return resGO;
+    case 0x2c: // INC IYL
+      inc(regs.iy.l);
+      return resGO;
+
     }
 
   return -1;
