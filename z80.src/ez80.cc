@@ -117,6 +117,8 @@ struct dis_entry disass_ez80_dd[]=
     { 0x00a5, 0x00ff, ' ', 1, "AND A,IXL" },
     { 0x00b4, 0x00ff, ' ', 1, "OR A,IXH" },
     { 0x00b5, 0x00ff, ' ', 1, "OR A,IXL" },
+    { 0x00ac, 0x00ff, ' ', 1, "XOR A,IXH" },
+    { 0x00ad, 0x00ff, ' ', 1, "XOR A,IXL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -178,6 +180,8 @@ struct dis_entry disass_ez80_fd[]=
     { 0x00a5, 0x00ff, ' ', 1, "AND A,IYL" },
     { 0x00b4, 0x00ff, ' ', 1, "OR A,IYH" },
     { 0x00b5, 0x00ff, ' ', 1, "OR A,IYL" },
+    { 0x00ac, 0x00ff, ' ', 1, "XOR A,IYH" },
+    { 0x00ad, 0x00ff, ' ', 1, "XOR A,IYL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -606,6 +610,12 @@ cl_ez80::inst_dd_spec(t_mem code)
     case 0xb5: // OR A,IXL
       or_A_bytereg(regs.ix.l);
       return resGO;
+    case 0xac: // XOR A,IXH
+      xor_A_bytereg(regs.ix.h);
+      return resGO;
+    case 0xad: // XOR A,IXL
+      xor_A_bytereg(regs.ix.l);
+      return resGO;
 
     }
   
@@ -815,6 +825,12 @@ cl_ez80::inst_fd_spec(t_mem code)
       return resGO;
     case 0xb5: // OR A,IYL
       or_A_bytereg(regs.iy.l);
+      return resGO;
+    case 0xac: // XOR A,IYH
+      xor_A_bytereg(regs.iy.h);
+      return resGO;
+    case 0xad: // XOR A,IYL
+      xor_A_bytereg(regs.iy.l);
       return resGO;
 
     }
