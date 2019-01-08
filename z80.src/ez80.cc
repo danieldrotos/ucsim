@@ -51,6 +51,9 @@ struct dis_entry disass_ez80_ed[]=
     { 0x0003, 0x00ff, ' ', 2, "LEA BC,IY+%d" },
     { 0x0013, 0x00ff, ' ', 2, "LEA DE,IY+%d" },
     { 0x0023, 0x00ff, ' ', 2, "LEA HL,IY+%d" },
+    // ED
+    { 0x0065, 0x00ff, ' ', 2, "PEA IX+%d" },
+    { 0x0066, 0x00ff, ' ', 2, "PEA IY+%d" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -322,6 +325,7 @@ cl_ez80::inst_ed_ez80(t_mem code)
   
   switch (code)
     {
+      // ED
     case 0x0f: // LD (HL),BC
       store2(regs.HL, regs.BC);
       return resGO;
@@ -347,6 +351,7 @@ cl_ez80::inst_ed_ez80(t_mem code)
       regs.HL= get2(regs.HL);
       return resGO;
 
+      // ED
     case 0x32: // LEA IX,IX+d
       d= fetch1();
       regs.IX= regs.IX + d;
@@ -364,6 +369,7 @@ cl_ez80::inst_ed_ez80(t_mem code)
       regs.IY= regs.IY + d;
       return resGO;
 
+      // ED
     case 0x02: // LEA BC,IX+d
       d= fetch1();
       regs.BC= regs.IX + d;
@@ -376,7 +382,8 @@ cl_ez80::inst_ed_ez80(t_mem code)
       d= fetch1();
       regs.HL= regs.IX + d;
       return resGO;
-      
+
+      // ED
     case 0x03: // LEA BC,IY+d
       d= fetch1();
       regs.BC= regs.IY + d;
@@ -388,6 +395,18 @@ cl_ez80::inst_ed_ez80(t_mem code)
     case 0x23: // LEA HL,IY+d
       d= fetch1();
       regs.HL= regs.IY + d;
+      return resGO;
+
+      // ED
+    case 0x65: // PEA IX+d
+      d= fetch1();
+      push2(regs.IX + d);
+      vc.wr+= 2;
+      return resGO;
+    case 0x66: // PEA IY+d
+      d= fetch1();
+      push2(regs.IY + d);
+      vc.wr+= 2;
       return resGO;
       
     default: // fall back to original Z80
