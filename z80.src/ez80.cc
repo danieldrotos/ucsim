@@ -25,111 +25,127 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "z80mac.h"
+
 #include "ez80cl.h"
 
 struct dis_entry disass_ez80_ed[]=
   {
-   { 0x000f, 0x00ff, ' ', 1, "LD (HL),BC" },
-   { 0x001f, 0x00ff, ' ', 1, "LD (HL),DE" },
-   { 0x002f, 0x00ff, ' ', 1, "LD (HL),HL" },
-   { 0x0037, 0x00ff, ' ', 1, "LD IX,(HL)" },
-   { 0x0031, 0x00ff, ' ', 1, "LD IY,(HL)" },
-   { 0x0007, 0x00ff, ' ', 1, "LD BC,(HL)" },
-   { 0x0017, 0x00ff, ' ', 1, "LD DE,(HL)" },
-   { 0x0027, 0x00ff, ' ', 1, "LD HL,(HL)" },
-   { 0x0032, 0x00ff, ' ', 2, "LEA IX,IX+%d" },
-   { 0x0055, 0x00ff, ' ', 2, "LEA IY,IX+%d" },
-   { 0x0054, 0x00ff, ' ', 2, "LEA IX,IY+%d" },
-   { 0x0033, 0x00ff, ' ', 2, "LEA IY,IY+%d" },
-   { 0x0002, 0x00ff, ' ', 2, "LEA BC,IX+%d" },
-   { 0x0012, 0x00ff, ' ', 2, "LEA DE,IX+%d" },
-   { 0x0022, 0x00ff, ' ', 2, "LEA HL,IX+%d" },
-   { 0x0003, 0x00ff, ' ', 2, "LEA BC,IY+%d" },
-   { 0x0013, 0x00ff, ' ', 2, "LEA DE,IY+%d" },
-   { 0x0023, 0x00ff, ' ', 2, "LEA HL,IY+%d" },
-   { 0, 0, 0, 0, NULL }
+    // ED
+    { 0x000f, 0x00ff, ' ', 1, "LD (HL),BC" },
+    { 0x001f, 0x00ff, ' ', 1, "LD (HL),DE" },
+    { 0x002f, 0x00ff, ' ', 1, "LD (HL),HL" },
+    { 0x0037, 0x00ff, ' ', 1, "LD IX,(HL)" },
+    { 0x0031, 0x00ff, ' ', 1, "LD IY,(HL)" },
+    { 0x0007, 0x00ff, ' ', 1, "LD BC,(HL)" },
+    { 0x0017, 0x00ff, ' ', 1, "LD DE,(HL)" },
+    { 0x0027, 0x00ff, ' ', 1, "LD HL,(HL)" },
+    // ED
+    { 0x0032, 0x00ff, ' ', 2, "LEA IX,IX+%d" },
+    { 0x0055, 0x00ff, ' ', 2, "LEA IY,IX+%d" },
+    { 0x0054, 0x00ff, ' ', 2, "LEA IX,IY+%d" },
+    { 0x0033, 0x00ff, ' ', 2, "LEA IY,IY+%d" },
+    { 0x0002, 0x00ff, ' ', 2, "LEA BC,IX+%d" },
+    { 0x0012, 0x00ff, ' ', 2, "LEA DE,IX+%d" },
+    { 0x0022, 0x00ff, ' ', 2, "LEA HL,IX+%d" },
+    { 0x0003, 0x00ff, ' ', 2, "LEA BC,IY+%d" },
+    { 0x0013, 0x00ff, ' ', 2, "LEA DE,IY+%d" },
+    { 0x0023, 0x00ff, ' ', 2, "LEA HL,IY+%d" },
+    { 0, 0, 0, 0, NULL }
   };
 
 struct dis_entry disass_ez80_dd[]=
   {
-   { 0x003f, 0x00ff, ' ', 2, "LD (IX+%d),IX" },
-   { 0x003E, 0x00ff, ' ', 2, "LD (IX+%d),IY" },
-   { 0x0037, 0x00ff, ' ', 2, "LD IX,(IX+%d)" },
-   { 0x0031, 0x00ff, ' ', 2, "LD IY,(IX+%d)" },
-   { 0x000f, 0x00ff, ' ', 2, "LD (IX+%d),BC" },
-   { 0x001f, 0x00ff, ' ', 2, "LD (IX+%d),DE" },
-   { 0x002f, 0x00ff, ' ', 2, "LD (IX+%d),HL" },
-   { 0x0007, 0x00ff, ' ', 2, "LD BC,(IX+%d)" },
-   { 0x0017, 0x00ff, ' ', 2, "LD DE,(IX+%d)" },
-   { 0x0027, 0x00ff, ' ', 2, "LD HL,(IX+%d)" },
-   { 0x0064, 0x00ff, ' ', 1, "LD IXH,IXH" },
-   { 0x0065, 0x00ff, ' ', 1, "LD IXH,IXL" },
-   { 0x006c, 0x00ff, ' ', 1, "LD IXL,IXH" },
-   { 0x006d, 0x00ff, ' ', 1, "LD IXL,IXL" },
-   { 0x0026, 0x00ff, ' ', 2, "LD IXH,%d" },
-   { 0x002e, 0x00ff, ' ', 2, "LD IXL,%d" },
-   { 0x0067, 0x00ff, ' ', 1, "LD IXH,A" },
-   { 0x0060, 0x00ff, ' ', 1, "LD IXH,B" },
-   { 0x0061, 0x00ff, ' ', 1, "LD IXH,C" },
-   { 0x0062, 0x00ff, ' ', 1, "LD IXH,D" },
-   { 0x0063, 0x00ff, ' ', 1, "LD IXH,E" },
-   { 0x006f, 0x00ff, ' ', 1, "LD IXL,A" },
-   { 0x0068, 0x00ff, ' ', 1, "LD IXL,B" },
-   { 0x0069, 0x00ff, ' ', 1, "LD IXL,C" },
-   { 0x006a, 0x00ff, ' ', 1, "LD IXL,D" },
-   { 0x006b, 0x00ff, ' ', 1, "LD IXL,E" },
-   { 0x007c, 0x00ff, ' ', 1, "LD A,IXH" },
-   { 0x007d, 0x00ff, ' ', 1, "LD A,IXL" },
-   { 0x0044, 0x00ff, ' ', 1, "LD B,IXH" },
-   { 0x0045, 0x00ff, ' ', 1, "LD B,IXL" },
-   { 0x004c, 0x00ff, ' ', 1, "LD C,IXH" },
-   { 0x004d, 0x00ff, ' ', 1, "LD C,IXL" },
-   { 0x0054, 0x00ff, ' ', 1, "LD D,IXH" },
-   { 0x0055, 0x00ff, ' ', 1, "LD D,IXL" },
-   { 0x005c, 0x00ff, ' ', 1, "LD E,IXH" },
-   { 0x005d, 0x00ff, ' ', 1, "LD E,IXL" },
-   { 0, 0, 0, 0, NULL }
+    // DD
+    { 0x003f, 0x00ff, ' ', 2, "LD (IX+%d),IX" },
+    { 0x003E, 0x00ff, ' ', 2, "LD (IX+%d),IY" },
+    { 0x0037, 0x00ff, ' ', 2, "LD IX,(IX+%d)" },
+    { 0x0031, 0x00ff, ' ', 2, "LD IY,(IX+%d)" },
+    { 0x000f, 0x00ff, ' ', 2, "LD (IX+%d),BC" },
+    { 0x001f, 0x00ff, ' ', 2, "LD (IX+%d),DE" },
+    { 0x002f, 0x00ff, ' ', 2, "LD (IX+%d),HL" },
+    { 0x0007, 0x00ff, ' ', 2, "LD BC,(IX+%d)" },
+    { 0x0017, 0x00ff, ' ', 2, "LD DE,(IX+%d)" },
+    { 0x0027, 0x00ff, ' ', 2, "LD HL,(IX+%d)" },
+    // DD
+    { 0x0064, 0x00ff, ' ', 1, "LD IXH,IXH" },
+    { 0x0065, 0x00ff, ' ', 1, "LD IXH,IXL" },
+    { 0x006c, 0x00ff, ' ', 1, "LD IXL,IXH" },
+    { 0x006d, 0x00ff, ' ', 1, "LD IXL,IXL" },
+    { 0x0026, 0x00ff, ' ', 2, "LD IXH,%d" },
+    { 0x002e, 0x00ff, ' ', 2, "LD IXL,%d" },
+    // DD
+    { 0x0067, 0x00ff, ' ', 1, "LD IXH,A" },
+    { 0x0060, 0x00ff, ' ', 1, "LD IXH,B" },
+    { 0x0061, 0x00ff, ' ', 1, "LD IXH,C" },
+    { 0x0062, 0x00ff, ' ', 1, "LD IXH,D" },
+    { 0x0063, 0x00ff, ' ', 1, "LD IXH,E" },
+    { 0x006f, 0x00ff, ' ', 1, "LD IXL,A" },
+    { 0x0068, 0x00ff, ' ', 1, "LD IXL,B" },
+    { 0x0069, 0x00ff, ' ', 1, "LD IXL,C" },
+    { 0x006a, 0x00ff, ' ', 1, "LD IXL,D" },
+    { 0x006b, 0x00ff, ' ', 1, "LD IXL,E" },
+    { 0x007c, 0x00ff, ' ', 1, "LD A,IXH" },
+    { 0x007d, 0x00ff, ' ', 1, "LD A,IXL" },
+    { 0x0044, 0x00ff, ' ', 1, "LD B,IXH" },
+    { 0x0045, 0x00ff, ' ', 1, "LD B,IXL" },
+    { 0x004c, 0x00ff, ' ', 1, "LD C,IXH" },
+    { 0x004d, 0x00ff, ' ', 1, "LD C,IXL" },
+    { 0x0054, 0x00ff, ' ', 1, "LD D,IXH" },
+    { 0x0055, 0x00ff, ' ', 1, "LD D,IXL" },
+    { 0x005c, 0x00ff, ' ', 1, "LD E,IXH" },
+    { 0x005d, 0x00ff, ' ', 1, "LD E,IXL" },
+    // DD
+    { 0x0084, 0x00ff, ' ', 1, "ADD A,IXH" },
+    { 0x0085, 0x00ff, ' ', 1, "ADD A,IXL" },
+    { 0, 0, 0, 0, NULL }
   };
 
 struct dis_entry disass_ez80_fd[]=
   {
-   { 0x003e, 0x00ff, ' ', 2, "LD (IY+%d),IX" },
-   { 0x003f, 0x00ff, ' ', 2, "LD (IY+%d),IY" },
-   { 0x0031, 0x00ff, ' ', 2, "LD IX,(IY+%d)" },
-   { 0x003f, 0x00ff, ' ', 2, "LD IY,(IY+%d)" },
-   { 0x000f, 0x00ff, ' ', 2, "LD (IY+%d),BC" },
-   { 0x001f, 0x00ff, ' ', 2, "LD (IY+%d),DE" },
-   { 0x002f, 0x00ff, ' ', 2, "LD (IY+%d),HL" },
-   { 0x0007, 0x00ff, ' ', 2, "LD BC,(IY+%d)" },
-   { 0x0017, 0x00ff, ' ', 2, "LD DE,(IY+%d)" },
-   { 0x0027, 0x00ff, ' ', 2, "LD HL,(IY+%d)" },
-   { 0x0064, 0x00ff, ' ', 1, "LD IYH,IYH" },
-   { 0x0065, 0x00ff, ' ', 1, "LD IYH,IYL" },
-   { 0x006c, 0x00ff, ' ', 1, "LD IYL,IYH" },
-   { 0x006d, 0x00ff, ' ', 1, "LD IYL,IYL" },
-   { 0x0026, 0x00ff, ' ', 2, "LD IYH,%d" },
-   { 0x002e, 0x00ff, ' ', 2, "LD IYL,%d" },
-   { 0x0067, 0x00ff, ' ', 1, "LD IYH,A" },
-   { 0x0060, 0x00ff, ' ', 1, "LD IYH,B" },
-   { 0x0061, 0x00ff, ' ', 1, "LD IYH,C" },
-   { 0x0062, 0x00ff, ' ', 1, "LD IYH,D" },
-   { 0x0063, 0x00ff, ' ', 1, "LD IYH,E" },
-   { 0x006f, 0x00ff, ' ', 1, "LD IYL,A" },
-   { 0x0068, 0x00ff, ' ', 1, "LD IYL,B" },
-   { 0x0069, 0x00ff, ' ', 1, "LD IYL,C" },
-   { 0x006a, 0x00ff, ' ', 1, "LD IYL,D" },
-   { 0x006b, 0x00ff, ' ', 1, "LD IYL,E" },
-   { 0x007c, 0x00ff, ' ', 1, "LD A,IYH" },
-   { 0x007d, 0x00ff, ' ', 1, "LD A,IYL" },
-   { 0x0044, 0x00ff, ' ', 1, "LD B,IYH" },
-   { 0x0045, 0x00ff, ' ', 1, "LD B,IYL" },
-   { 0x004c, 0x00ff, ' ', 1, "LD C,IYH" },
-   { 0x004d, 0x00ff, ' ', 1, "LD C,IYL" },
-   { 0x0054, 0x00ff, ' ', 1, "LD D,IYH" },
-   { 0x0055, 0x00ff, ' ', 1, "LD D,IYL" },
-   { 0x005c, 0x00ff, ' ', 1, "LD E,IYH" },
-   { 0x005d, 0x00ff, ' ', 1, "LD E,IYL" },
-   { 0, 0, 0, 0, NULL }
+    // FD
+    { 0x003e, 0x00ff, ' ', 2, "LD (IY+%d),IX" },
+    { 0x003f, 0x00ff, ' ', 2, "LD (IY+%d),IY" },
+    { 0x0031, 0x00ff, ' ', 2, "LD IX,(IY+%d)" },
+    { 0x003f, 0x00ff, ' ', 2, "LD IY,(IY+%d)" },
+    { 0x000f, 0x00ff, ' ', 2, "LD (IY+%d),BC" },
+    { 0x001f, 0x00ff, ' ', 2, "LD (IY+%d),DE" },
+    { 0x002f, 0x00ff, ' ', 2, "LD (IY+%d),HL" },
+    { 0x0007, 0x00ff, ' ', 2, "LD BC,(IY+%d)" },
+    { 0x0017, 0x00ff, ' ', 2, "LD DE,(IY+%d)" },
+    { 0x0027, 0x00ff, ' ', 2, "LD HL,(IY+%d)" },
+    // FD
+    { 0x0064, 0x00ff, ' ', 1, "LD IYH,IYH" },
+    { 0x0065, 0x00ff, ' ', 1, "LD IYH,IYL" },
+    { 0x006c, 0x00ff, ' ', 1, "LD IYL,IYH" },
+    { 0x006d, 0x00ff, ' ', 1, "LD IYL,IYL" },
+    { 0x0026, 0x00ff, ' ', 2, "LD IYH,%d" },
+    { 0x002e, 0x00ff, ' ', 2, "LD IYL,%d" },
+    // FD
+    { 0x0067, 0x00ff, ' ', 1, "LD IYH,A" },
+    { 0x0060, 0x00ff, ' ', 1, "LD IYH,B" },
+    { 0x0061, 0x00ff, ' ', 1, "LD IYH,C" },
+    { 0x0062, 0x00ff, ' ', 1, "LD IYH,D" },
+    { 0x0063, 0x00ff, ' ', 1, "LD IYH,E" },
+    { 0x006f, 0x00ff, ' ', 1, "LD IYL,A" },
+    { 0x0068, 0x00ff, ' ', 1, "LD IYL,B" },
+    { 0x0069, 0x00ff, ' ', 1, "LD IYL,C" },
+    { 0x006a, 0x00ff, ' ', 1, "LD IYL,D" },
+    { 0x006b, 0x00ff, ' ', 1, "LD IYL,E" },
+    { 0x007c, 0x00ff, ' ', 1, "LD A,IYH" },
+    { 0x007d, 0x00ff, ' ', 1, "LD A,IYL" },
+    { 0x0044, 0x00ff, ' ', 1, "LD B,IYH" },
+    { 0x0045, 0x00ff, ' ', 1, "LD B,IYL" },
+    { 0x004c, 0x00ff, ' ', 1, "LD C,IYH" },
+    { 0x004d, 0x00ff, ' ', 1, "LD C,IYL" },
+    { 0x0054, 0x00ff, ' ', 1, "LD D,IYH" },
+    { 0x0055, 0x00ff, ' ', 1, "LD D,IYL" },
+    { 0x005c, 0x00ff, ' ', 1, "LD E,IYH" },
+    { 0x005d, 0x00ff, ' ', 1, "LD E,IYL" },
+    // FD
+    { 0x0084, 0x00ff, ' ', 1, "ADD A,IYH" },
+    { 0x0085, 0x00ff, ' ', 1, "ADD A,IYL" },
+    { 0, 0, 0, 0, NULL }
   };
 
 cl_ez80::cl_ez80(struct cpu_entry *Itype, class cl_sim *asim):
@@ -495,7 +511,14 @@ cl_ez80::inst_dd_spec(t_mem code)
     case 0x5d: // LD E,IXL
       regs.de.l= regs.ix.l;
       return resGO;
-      
+
+      // DD
+    case 0x84: // ADD A,IXH
+      add_A_bytereg(regs.ix.h);
+      return resGO;
+    case 0x85: // ADD A,IXL
+      add_A_bytereg(regs.ix.l);
+      return resGO;
     }
   
   return -1;
@@ -643,6 +666,15 @@ cl_ez80::inst_fd_spec(t_mem code)
     case 0x5d: // LD E,IYL
       regs.de.l= regs.iy.l;
       return resGO;
+
+      // FD
+    case 0x84: // ADD A,IYH
+      add_A_bytereg(regs.iy.h);
+      return resGO;
+    case 0x85: // ADD A,IYL
+      add_A_bytereg(regs.iy.l);
+      return resGO;
+
     }
 
   return -1;
