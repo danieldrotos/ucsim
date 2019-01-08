@@ -105,6 +105,8 @@ struct dis_entry disass_ez80_dd[]=
     { 0x0095, 0x00ff, ' ', 1, "SUB A,IXL" },
     { 0x009c, 0x00ff, ' ', 1, "SBC A,IXH" },
     { 0x009d, 0x00ff, ' ', 1, "SBC A,IXL" },
+    { 0x00bc, 0x00ff, ' ', 1, "CP A,IXH" },
+    { 0x00bd, 0x00ff, ' ', 1, "CP A,IXL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -154,6 +156,8 @@ struct dis_entry disass_ez80_fd[]=
     { 0x0095, 0x00ff, ' ', 1, "SUB A,IYL" },
     { 0x009c, 0x00ff, ' ', 1, "SBC A,IYH" },
     { 0x009d, 0x00ff, ' ', 1, "SBC A,IYL" },
+    { 0x00bc, 0x00ff, ' ', 1, "CP A,IYH" },
+    { 0x00bd, 0x00ff, ' ', 1, "CP A,IYL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -548,6 +552,12 @@ cl_ez80::inst_dd_spec(t_mem code)
     case 0x9d: // SBC A,IXL
       sbc_A_bytereg(regs.ix.l);
       return resGO;
+    case 0xbc: // SUB A,IXH
+      cp_bytereg(regs.ix.h);
+      return resGO;
+    case 0xbd: // SUB A,IXL
+      cp_bytereg(regs.ix.l);
+      return resGO;
 
     }
   
@@ -723,6 +733,12 @@ cl_ez80::inst_fd_spec(t_mem code)
       return resGO;
     case 0x9d: // SBC A,IYL
       sbc_A_bytereg(regs.iy.l);
+      return resGO;
+    case 0xbc: // SUB A,IYH
+      cp_bytereg(regs.iy.h);
+      return resGO;
+    case 0xbd: // SUB A,IYL
+      cp_bytereg(regs.iy.l);
       return resGO;
 
     }
