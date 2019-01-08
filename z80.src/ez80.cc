@@ -112,6 +112,9 @@ struct dis_entry disass_ez80_dd[]=
     { 0x002d, 0x00ff, ' ', 1, "DEC IXL" },
     { 0x0024, 0x00ff, ' ', 1, "INC IXH" },
     { 0x002c, 0x00ff, ' ', 1, "INC IXL" },
+    // DD
+    { 0x00a4, 0x00ff, ' ', 1, "AND A,IXH" },
+    { 0x00a5, 0x00ff, ' ', 1, "AND A,IXL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -168,6 +171,9 @@ struct dis_entry disass_ez80_fd[]=
     { 0x002d, 0x00ff, ' ', 1, "DEC IYL" },
     { 0x0024, 0x00ff, ' ', 1, "INC IYH" },
     { 0x002c, 0x00ff, ' ', 1, "INC IYL" },
+    // FD
+    { 0x00a4, 0x00ff, ' ', 1, "AND A,IYH" },
+    { 0x00a5, 0x00ff, ' ', 1, "AND A,IYL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -583,6 +589,14 @@ cl_ez80::inst_dd_spec(t_mem code)
       inc(regs.ix.l);
       return resGO;
 
+      // DD
+    case 0xa4: // AND A,IXH
+      and_A_bytereg(regs.ix.h);
+      return resGO;
+    case 0xa5: // AND A,IXL
+      and_A_bytereg(regs.ix.l);
+      return resGO;
+
     }
   
   return -1;
@@ -779,6 +793,13 @@ cl_ez80::inst_fd_spec(t_mem code)
       inc(regs.iy.l);
       return resGO;
 
+      // DD
+    case 0xa4: // AND A,IYH
+      and_A_bytereg(regs.iy.h);
+      return resGO;
+    case 0xa5: // AND A,IYL
+      and_A_bytereg(regs.iy.l);
+      return resGO;
     }
 
   return -1;
