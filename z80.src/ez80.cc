@@ -100,6 +100,11 @@ struct dis_entry disass_ez80_dd[]=
     { 0x0085, 0x00ff, ' ', 1, "ADD A,IXL" },
     { 0x008c, 0x00ff, ' ', 1, "ADC A,IXH" },
     { 0x008d, 0x00ff, ' ', 1, "ADC A,IXL" },
+    // DD
+    { 0x0094, 0x00ff, ' ', 1, "SUB A,IXH" },
+    { 0x0095, 0x00ff, ' ', 1, "SUB A,IXL" },
+    { 0x009c, 0x00ff, ' ', 1, "SBC A,IXH" },
+    { 0x009d, 0x00ff, ' ', 1, "SBC A,IXL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -145,10 +150,10 @@ struct dis_entry disass_ez80_fd[]=
     { 0x005c, 0x00ff, ' ', 1, "LD E,IYH" },
     { 0x005d, 0x00ff, ' ', 1, "LD E,IYL" },
     // FD
-    { 0x0084, 0x00ff, ' ', 1, "ADD A,IYH" },
-    { 0x0085, 0x00ff, ' ', 1, "ADD A,IYL" },
-    { 0x008c, 0x00ff, ' ', 1, "ADC A,IYH" },
-    { 0x008d, 0x00ff, ' ', 1, "ADC A,IYL" },
+    { 0x0094, 0x00ff, ' ', 1, "SUB A,IYH" },
+    { 0x0095, 0x00ff, ' ', 1, "SUB A,IYL" },
+    { 0x009c, 0x00ff, ' ', 1, "SBC A,IYH" },
+    { 0x009d, 0x00ff, ' ', 1, "SBC A,IYL" },
     { 0, 0, 0, 0, NULL }
   };
 
@@ -530,6 +535,20 @@ cl_ez80::inst_dd_spec(t_mem code)
       adc_A_bytereg(regs.ix.l);
       return resGO;
 
+      // DD
+    case 0x94: // SUB A,IXH
+      sub_A_bytereg(regs.ix.h);
+      return resGO;
+    case 0x95: // SUB A,IXL
+      sub_A_bytereg(regs.ix.l);
+      return resGO;
+    case 0x9c: // SBC A,IXH
+      sbc_A_bytereg(regs.ix.h);
+      return resGO;
+    case 0x9d: // SBC A,IXL
+      sbc_A_bytereg(regs.ix.l);
+      return resGO;
+
     }
   
   return -1;
@@ -690,6 +709,20 @@ cl_ez80::inst_fd_spec(t_mem code)
       return resGO;
     case 0x8d: // ADC A,IYL
       adc_A_bytereg(regs.iy.l);
+      return resGO;
+
+      // FD
+    case 0x94: // SUB A,IYH
+      sub_A_bytereg(regs.iy.h);
+      return resGO;
+    case 0x95: // SUB A,IYL
+      sub_A_bytereg(regs.iy.l);
+      return resGO;
+    case 0x9c: // SBC A,IYH
+      sbc_A_bytereg(regs.iy.h);
+      return resGO;
+    case 0x9d: // SBC A,IYL
+      sbc_A_bytereg(regs.iy.l);
       return resGO;
 
     }
