@@ -126,6 +126,85 @@ cl_xtal_option::option_changed(void)
 }
 
 
+/* Time measurer */
+
+cl_time_measurer::cl_time_measurer(class cl_uc *the_uc):
+  cl_base()
+{
+  to_reach= 0;
+  uc= the_uc;
+}
+
+void
+cl_time_measurer::set_reach(unsigned long val)
+{
+  to_reach= val;
+}
+
+bool
+cl_time_measurer::reached()
+{
+  return to_reach &&
+    (now() >= to_reach);
+}
+
+unsigned long
+cl_time_measurer::now()
+{
+  return 0;
+}
+
+
+/* value of xtal clock */
+
+unsigned long
+cl_time_clk::now()
+{
+  if (!uc) return 0;
+  return uc->ticks->ticks;
+}
+
+
+/* value of virtual clocks */
+
+unsigned long
+cl_time_vclk::now()
+{
+  if (!uc) return 0;
+  return uc->vc.fetch + uc->vc.rd + uc->vc.wr;
+}
+
+
+/* value of fetches */
+
+unsigned long
+cl_time_fclk::now()
+{
+  if (!uc) return 0;
+  return uc->vc.fetch;
+}
+
+
+/* value of reads */
+
+unsigned long
+cl_time_rclk::now()
+{
+  if (!uc) return 0;
+  return uc->vc.rd;
+}
+
+
+/* value of writes */
+
+unsigned long
+cl_time_wclk::now()
+{
+  if (!uc) return 0;
+  return uc->vc.wr;
+}
+
+
 /* OMF file record */
 
 cl_omf_rec::cl_omf_rec(void):

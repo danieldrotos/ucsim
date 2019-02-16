@@ -130,10 +130,14 @@ COMMAND_DO_WORK_SIM(cl_stop_cmd)
 //		     class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_SIM(cl_step_cmd)
 {
-  class cl_cmd_arg *parm= cmdline->param(0);
+  class cl_cmd_arg *params[2];
+  params[0]= cmdline->param(0);
+  params[1]= cmdline->param(1);
   int instrs= 1;
-  if (parm != NULL)
-    instrs= parm->i_value;
+  if (params[0] != NULL)
+    {
+      instrs= params[0]->i_value;
+    }
   if (instrs <= 0)
     instrs= 1;
   sim->start(con, instrs);

@@ -85,6 +85,54 @@ struct vcounter_t {
   t_mem wr;
 };
 
+class cl_time_measurer: public cl_base
+{
+public:
+  unsigned long to_reach;
+  class cl_uc *uc;
+public:
+  cl_time_measurer(class cl_uc *the_uc);
+  virtual void set_reach(unsigned long val);
+  virtual bool reached();
+  virtual unsigned long now();
+};
+
+class cl_time_clk: public cl_time_measurer
+{
+public:
+  cl_time_clk(class cl_uc *the_uc): cl_time_measurer(the_uc) { set_name("clk"); }
+  virtual unsigned long now();
+};
+  
+class cl_time_vclk: public cl_time_measurer
+{
+public:
+  cl_time_vclk(class cl_uc *the_uc): cl_time_measurer(the_uc) { set_name("vclk"); }
+  virtual unsigned long now();
+};
+
+class cl_time_fclk: public cl_time_measurer
+{
+public:
+  cl_time_fclk(class cl_uc *the_uc): cl_time_measurer(the_uc) { set_name("fclk"); }
+  virtual unsigned long now();
+};
+
+class cl_time_rclk: public cl_time_measurer
+{
+public:
+  cl_time_rclk(class cl_uc *the_uc): cl_time_measurer(the_uc) { set_name("rclk"); }
+  virtual unsigned long now();
+};
+
+class cl_time_wclk: public cl_time_measurer
+{
+public:
+  cl_time_wclk(class cl_uc *the_uc): cl_time_measurer(the_uc) { set_name("wclk"); }
+  virtual unsigned long now();
+};
+
+
 class cl_omf_rec: public cl_base
 {
  protected:
