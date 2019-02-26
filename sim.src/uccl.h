@@ -93,6 +93,7 @@ public:
 public:
   cl_time_measurer(class cl_uc *the_uc);
   virtual void set_reach(unsigned long val);
+  virtual void from_now(unsigned long val);
   virtual bool reached();
   virtual unsigned long now();
 };
@@ -210,6 +211,7 @@ public:
   class brk_coll *ebrk;		// Collection of EVENT breakpoints
   class cl_sim *sim;
   //class cl_list *mems;
+  class cl_time_measurer *stop_at_time;
  public:
   class cl_hw *cpu;
   class cl_hws *hws;
@@ -295,6 +297,7 @@ public:
   virtual void del_counter(int nr);
   virtual void del_counter(const char *nam);
   virtual double get_rtime(void);
+  virtual unsigned long clocks_of_time(double t);
   virtual int clock_per_cycle(void);
   virtual void touch(void);
   
@@ -333,7 +336,8 @@ public:
 				   class cl_address_space *mem,
 				   char op, t_addr addr, int hit);
   virtual void check_events(void);
-
+  virtual void stop_when(class cl_time_measurer *t);
+  
   // disassembling and symbol recognition
   virtual char *disass(t_addr addr, const char *sep);
   virtual struct dis_entry *dis_tbl(void);

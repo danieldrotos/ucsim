@@ -141,6 +141,12 @@ cl_time_measurer::set_reach(unsigned long val)
   to_reach= val;
 }
 
+void
+cl_time_measurer::from_now(unsigned long val)
+{
+  set_reach(now() + val);
+}
+
 bool
 cl_time_measurer::reached()
 {
@@ -392,6 +398,7 @@ cl_uc::init(void)
   fbrk= new brk_coll(2, 2, rom);
   fbrk->Duplicates= false;
   brk_counter= 0;
+  stop_at_time= 0;
   make_cpu_hw();
   mk_hw_elements();
   class cl_cmdset *cs= sim->app->get_commander()->cmdset;
@@ -2262,6 +2269,14 @@ cl_uc::do_inst(int step)
 	  if (r != resGO)
 	    res= r;
 	}
+
+      if (stop_at_time &&
+	  stop_at_time->reached())
+	{
+	  delete stop_at_time;
+	  stop_at_time= NULL;
+	  res= resBREAKPOINT;
+	}
     }
   if (res != resGO)
     sim->stop(res);
@@ -2387,6 +2402,12 @@ cl_uc::get_rtime(void)
   d= (double)ticks/xtal;
   return(d);*/
   return(ticks->get_rtime(xtal));
+}
+
+unsigned long
+cl_uc::clocks_of_time(double t)
+{
+  return t * xtal;
 }
 
 int
@@ -2659,6 +2680,14 @@ cl_uc::check_events(void)
 	dynamic_cast<class cl_ev_brk *>(events->object_at(i));
       sim->stop(resEVENTBREAK, brk);
     }
+}
+
+void
+cl_uc::stop_when(class cl_time_measurer *t)
+{
+  if (stop_at_time != NULL)
+    delete stop_at_time;
+  stop_at_time= t;
 }
 
 
