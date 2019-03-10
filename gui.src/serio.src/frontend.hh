@@ -7,7 +7,8 @@
 
 #include <sys/types.h>
 #include <curses.h>
-/*#include <term.h>*/
+#include <stdint.h>
+
 #include "config.h"
 
 struct COORDS_S
@@ -26,6 +27,11 @@ struct COORDINATES_S
 };
 typedef struct COORDINATES_S COORDINATES;
 
+enum filter_t
+  {
+   flt_none,
+   flt_hex
+  };
 
 class Viewer
 {
@@ -36,13 +42,23 @@ public:
   virtual void AddStrOutWin(char *string);
   virtual void GetStrInWin(char *string);
   virtual void AddChOutWin(char b);
-  virtual char GetChInWin(void);
+  virtual int  GetChInWin(char *res);
+
+  virtual void iflt_mode(enum filter_t iflt);
+  virtual void oflt_mode(enum filter_t oflt);
+  virtual void set_length(int l);
   
 private:
   WINDOW *inp, *outp;
   COORDS win_c, inp_c, outp_c;
   COORDINATES topleft, bottomright, current;
   int middle_y, middle_x;
+  enum filter_t flt_in, flt_out;
+  unsigned int ocnt, icnt;
+  int line_length;
+  
+  uint8_t ohex_buf[16], ihex_buf[16];
+  int ohex_ptr, ihex_ptr, ihex_high, ihex_val;
 };
 
 #endif

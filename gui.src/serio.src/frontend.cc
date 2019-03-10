@@ -13,6 +13,17 @@
 #include <unistd.h>
 #include "frontend.hh"
 
+char *
+flt_name(enum filter_t f)
+{
+  switch (f)
+    {
+    case flt_none	: return (char*)"none";
+    case flt_hex	: return (char*)"hex";
+    }
+  return (char*)"unknown";
+}
+
 Viewer::Viewer()
 {
   /* initalise the output screen */
@@ -22,7 +33,13 @@ Viewer::Viewer()
   nl();
   intrflush(stdscr,FALSE);
   keypad(stdscr, TRUE);
-	
+
+  flt_in= flt_none;
+  flt_out= flt_none;
+  ohex_ptr= 0;
+  ocnt= icnt= 0;
+  line_length= 8;
+  
   /* clear the screen and off you go */
   refresh();
 
@@ -77,6 +94,38 @@ Viewer::~Viewer()
   erase();
   refresh();
   endwin();
+}
+
+void
+Viewer::iflt_mode(enum filter_t iflt)
+{
+  char s[100];
+  flt_in= iflt;
+  sprintf(s, "Input filter: %s\n", flt_name(flt_in));
+  waddstr(inp, s);
+  wrefresh(inp);
+  ihex_high= 1;
+  ihex_ptr= 0;
+}
+
+void
+Viewer::oflt_mode(enum filter_t oflt)
+{
+  char s[100];
+  flt_out= oflt;
+  sprintf(s, "Otput filter: %s\n", flt_name(flt_out));
+  waddstr(outp, s);
+  wrefresh(outp);
+  wrefresh(inp);
+  ohex_ptr= 0;
+}
+
+void
+Viewer::set_length(int l)
+{
+  if (l > (bottomright.x-2-7) / 4)
+    l= ((bottomright.x-2-7)/4) - 1;
+  line_length= l;
 }
 
 void Viewer::DrawBox(void)
@@ -144,21 +193,100 @@ void Viewer::GetStrInWin(char *string)
 
 void Viewer::AddChOutWin(char b)
 {
-  waddch(outp, b);
+  switch (flt_out)
+    {
+    case flt_none:
+      waddch(outp, b);
+      break;
+    case flt_hex:
+      {
+	char s[10];
+	unsigned int u= b&0xff;
+	int i;
+	ohex_buf[ohex_ptr++]= b;
+	sprintf(s, "%02x ", u);
+	waddstr(outp, s);
+	if (ohex_ptr >= line_length)
+	  {
+	    for (i= 0; i < line_length; i++)
+	      {
+		u= ohex_buf[i];
+		waddch(outp, isprint(u)?u:'.');
+	      }
+	    waddch(outp, '\n');
+	    ohex_ptr= 0;
+	    sprintf(s, "%06x ", ocnt);
+	    waddstr(outp, s);
+	  }
+	break;
+      }
+    }
+  ocnt++;
   wrefresh(outp);
   wrefresh(inp);
 }
 
-char Viewer::GetChInWin(void)
+int Viewer::GetChInWin(char *res)
 {
   int b = wgetch(inp);
+  int ret= 1;
+  char c= b;
   
-  if(b==ERR) {
-    b=0;
-  } else {
-    waddch(inp, (chtype)b);
-    wrefresh(inp);
-  }
+  if (b==ERR)
+    {
+      return 0;
+    }
+  else
+    {
+      b= b & 0xff;
+      if (b == 4)
+	return -2;
+      switch (flt_in)
+	{
+	case flt_none:
+	  {
+	    char c= b;
+	    if (!isprint(b) &&
+		(b != '\n') &&
+		(b != '\r'))
+	      c= ' ';
+	    waddch(inp, c);
+	    wrefresh(inp);
+	    break;
+	  }
+	case flt_hex:
+	  {
+	    char s[10];
+	    s[0]= c;
+	    s[1]= 0;
+	    if (!isxdigit(b))
+	      return 0;
+	    if (ihex_high)
+	      {
+		ihex_val= strtol(s, NULL, 16);
+		ihex_high= 0;
+		waddch(inp, c);
+		wrefresh(inp);
+		return 0;
+	      }
+	    else
+	      {
+		ihex_val*= 16;
+		ihex_val+= strtol(s, NULL, 16);
+		waddch(inp, c);
+		waddch(inp, ' ');
+		wrefresh(inp);
+		ihex_high= 1;
+		b= ihex_val;
+		ret= 1;
+	      }
+	    break;
+	  }
+	}
+    }
   
-  return((char)b);
+  if (res)
+    *res= b;
+
+  return ret;
 }
