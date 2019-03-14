@@ -1325,7 +1325,7 @@ cl_51core::print_regs(class cl_console_base *con)
 		  dp= 0;
 		  int di;
 		  for (di= dptr->get_size()-1; di >= 0; di--)
-		    dp= (dp<<8) + dptr_chip->get(a+di);
+		    dp= (dp*256) + dptr_chip->get(a+di);
 		  con->dd_printf(" %cDPTR%d= ", (i==act)?'*':' ', i);
 		  con->dd_printf(xram->addr_format, dp);
 		  data= xram->read(dp);
@@ -1348,8 +1348,8 @@ cl_51core::print_regs(class cl_console_base *con)
 	    }
 	  act&= mask;
 	  i= 0;
-	  dp= sfr_chip->get(DPL-0x80) +
-	    sfr_chip->get(DPH-0x80) * 256;
+	  dp= (sfr_chip->get(DPL-0x80) +
+	       sfr_chip->get(DPH-0x80) * 256) & 0xffff;
 	  con->dd_printf(" %cDPTR%d= ", (i==act)?'*':' ', i);
 	  con->dd_printf(xram->addr_format, dp);
 	  data= xram->read(dp);
@@ -1965,7 +1965,7 @@ cl_uc51_cpu::init(void)
 			      "Address of multi_DPTR_sfr DPH1"));
   v->init();
   uc->vars->add(v= new cl_var(cchars("cpu_aof_mdpc"), cfg, uc51cpu_aof_mdpc,
-			      "Address of multi_DPTR_chip selector (WR selects this stly of ulti_DPTR)"));
+			      "Address of multi_DPTR_chip selector (WR selects this stlye of multi_DPTR)"));
   v->init();
   uc->vars->add(v= new cl_var(cchars("cpu_mask_mdpc"), cfg, uc51cpu_mask_mdpc,
 			      "Mask in multi_DPTR_chip selector"));
