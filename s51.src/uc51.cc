@@ -1326,7 +1326,7 @@ cl_51core::print_regs(class cl_console_base *con)
 		  int di;
 		  for (di= dptr->get_size()-1; di >= 0; di--)
 		    dp= (dp*256) + dptr_chip->get(a+di);
-		  con->dd_printf(" 1 %cDPTR%d= ", (i==act)?'*':' ', i);
+		  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
 		  con->dd_printf(xram->addr_format, dp);
 		  data= xram->read(dp);
 		  con->dd_printf(" @DPTR%d= ", i);
@@ -1350,7 +1350,7 @@ cl_51core::print_regs(class cl_console_base *con)
 	  i= 0;
 	  dp= (sfr_chip->get(DPL-0x80) +
 	       sfr_chip->get(DPH-0x80) * 256) & 0xffff;
-	  con->dd_printf(" 2 %cDPTR%d= ", (i==act)?'*':' ', i);
+	  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
 	  con->dd_printf(xram->addr_format, dp);
 	  data= xram->read(dp);
 	  con->dd_printf(" @DPTR%d= ", i);
@@ -1359,7 +1359,7 @@ cl_51core::print_regs(class cl_console_base *con)
 	  i= 1;
 	  dp= sfr_chip->get(cpu->cfg_get(uc51cpu_aof_mdps1l) - 0x80) +
 	    sfr_chip->get(cpu->cfg_get(uc51cpu_aof_mdps1h) - 0x80) * 256;
-	  con->dd_printf(" %cDPTR%d= ", (i==act)?'*':' ', i);
+	  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
 	  con->dd_printf(xram->addr_format, dp);
 	  data= xram->read(dp);
 	  con->dd_printf(" @DPTR%d= ", i);
@@ -1369,26 +1369,17 @@ cl_51core::print_regs(class cl_console_base *con)
       else
 	{
 	  // non-multi DPTR
-		  int a= dptr->get_size();
-		  dp= 0;
-		  int di;
-chars f="";
-		  for (di= a-1; di >= 0; di--)
-		    {
-dp= (dp*256) + dptr->get(di);
-//printf("%x %x=%x dp=%x\n",a,di,dptr->get(di),dp);
-}
-f.format("0x%%0%dx",a*2);
-//printf("%d %u %x %s\n",dp,dp,dp,(char*)f);
-//printf((char*)(f+" HAHA\n"), dp);
-	/*
-	  t_mem dp= dptr->get(0) +
-	    dptr->get(1) * 256 +
-	    dptr->get(2) * 256*256 +
-	    dptr->get(3) * 256*256*256;
-*/
+	  int a= dptr->get_size();
+	  dp= 0;
+	  int di;
+	  chars f="";
+	  for (di= a-1; di >= 0; di--)
+	    {
+	      dp= (dp*256) + dptr->get(di);
+	    }
+	  f.format("0x%%0%dx",a*2);
 	  data= xram->get(dp);
-	  con->dd_printf(" 3  DPTR= ");
+	  con->dd_printf("   DPTR= ");
 	  con->dd_printf(/*xram->addr_format*/(char*)f, dp);
 	  con->dd_printf(" @DPTR= 0x%02x %3d %c\n",
 			 data, data, isprint(data)?data:'.');
@@ -1398,7 +1389,7 @@ f.format("0x%%0%dx",a*2);
     {
       // no dptr address space, read SFR directly
       data= xram->get(sfr->read(DPH)*256+sfr->read(DPL));
-      con->dd_printf(" 4  DPTR= 0x%02x%02x @DPTR= 0x%02x %3d %c\n",
+      con->dd_printf("   DPTR= 0x%02x%02x @DPTR= 0x%02x %3d %c\n",
 		     sfr->get(DPH),
 		     sfr->get(DPL),
 		     data, data, isprint(data)?data:'.');
