@@ -1,17 +1,16 @@
 # Deleting all files created by building the program
 # --------------------------------------------------
 clean:
-	rm -f *core *[%~] *.[oa] *.so ucsim$(EXEEXT) ucsim.map relay$(EXEEXT)
-	rm -f .[a-z]*~ ptt
+	rm -f *core *[%~] *.[oa]
+	rm -f .[a-z]*~
+	rm -f spdk$(EXEEXT)
 
 
 # Deleting all files created by configuring or building the program
 # -----------------------------------------------------------------
 distclean: clean
 	rm -f config.cache config.log config.status
-	rm -f ddconfig.h main.mk Makefile *.dep packages.mk
-	rm -rf autom4te.cache
-	rm -f GPATH GRTAGS GSYMS GTAGS
+	rm -f Makefile *.dep
 
 
 # Like clean but some files may still exist
@@ -23,3 +22,5 @@ mostlyclean: clean
 # everything deleted by distclean plus files created by bison, etc.
 # -----------------------------------------------------------------------
 realclean: distclean
+
+# End of pdk.src/clean.mk

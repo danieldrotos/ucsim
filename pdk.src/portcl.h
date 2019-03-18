@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (globals.h)
+ * Simulator of microcontrollers (pdk.src/portcl.h)
  *
- * Copyright (C) 1997,16 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2017,17 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,37 +25,28 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GLOBALS_HEADER
-#define GLOBALS_HEADER
+#ifndef PORTCL_HEADER
+#define PORTCL_HEADER
 
-#include "ddconfig.h"
-
-// prj
-#include "stypes.h"
-#include "appcl.h"
+#include "port_hwcl.h"
 
 
-extern class cl_app *application;
+class cl_port: public cl_hw
+{
+ public:
+  class cl_memory_cell *cell_p, *cell_in, *cell_dir;
+  t_addr base;
+ public:
+  cl_port(class cl_uc *auc, t_addr abase/*, int aid*/, const char *aname);
+  virtual int init(void);
+  virtual void reset(void);
 
-extern char delimiters[];
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
 
-extern struct id_element mem_ids[];
-extern struct id_element mem_classes[];
-extern struct id_element cpu_states[];
-extern struct id_element error_type_names[];
-//extern char *case_string(enum letter_case lcase, const char *str);
-
-extern char *warranty;
-extern char *copying;
-
-extern struct cpu_entry *cpus;
-extern struct cpu_entry cpus_51[];
-extern struct cpu_entry cpus_z80[];
-extern struct cpu_entry cpus_hc08[];
-extern struct cpu_entry cpus_stm8[];
-extern struct cpu_entry cpus_pdk[];
+  virtual void print_info(class cl_console_base *con);
+};
 
 
 #endif
 
-/* End of globals.h */
+/* End of pdk.src/portcl.h */

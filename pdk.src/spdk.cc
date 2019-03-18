@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (globals.h)
+ * Simulator of microcontrollers (spdk.cc)
  *
- * Copyright (C) 1997,16 Drotos Daniel, Talker Bt.
+ * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -24,38 +24,34 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
-
-#ifndef GLOBALS_HEADER
-#define GLOBALS_HEADER
-
-#include "ddconfig.h"
-
+  
 // prj
-#include "stypes.h"
+#include "globals.h"
+
+// sim.src
 #include "appcl.h"
 
-
-extern class cl_app *application;
-
-extern char delimiters[];
-
-extern struct id_element mem_ids[];
-extern struct id_element mem_classes[];
-extern struct id_element cpu_states[];
-extern struct id_element error_type_names[];
-//extern char *case_string(enum letter_case lcase, const char *str);
-
-extern char *warranty;
-extern char *copying;
-
-extern struct cpu_entry *cpus;
-extern struct cpu_entry cpus_51[];
-extern struct cpu_entry cpus_z80[];
-extern struct cpu_entry cpus_hc08[];
-extern struct cpu_entry cpus_stm8[];
-extern struct cpu_entry cpus_pdk[];
+// local
+#include "simpdkcl.h"
 
 
-#endif
+int
+main(int argc, char *argv[])
+{
+  class cl_sim *sim;
 
-/* End of globals.h */
+  cpus= cpus_pdk;
+  application= new cl_app();
+  application->init(argc, argv);
+  sim= new cl_simpdk(application);
+  if (sim->init())
+    sim->state|= SIM_QUIT;
+  application->set_simulator(sim);
+  application->run();
+  application->done();
+  delete application;
+  return(0);
+}
+
+
+/* End of pdk.src/spdk.cc */

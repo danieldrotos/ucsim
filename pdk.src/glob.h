@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (globals.h)
+ * Simulator of microcontrollers (glob.h)
  *
- * Copyright (C) 1997,16 Drotos Daniel, Talker Bt.
+ * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,37 +25,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GLOBALS_HEADER
-#define GLOBALS_HEADER
+#ifndef GLOB_HEADER
+#define GLOB_HEADER
 
-#include "ddconfig.h"
-
-// prj
 #include "stypes.h"
-#include "appcl.h"
 
 
-extern class cl_app *application;
+/*extern struct dis_entry disass_pdk_13[];*/
 
-extern char delimiters[];
+extern struct dis_entry disass_pdk_14[];
 
-extern struct id_element mem_ids[];
-extern struct id_element mem_classes[];
-extern struct id_element cpu_states[];
-extern struct id_element error_type_names[];
-//extern char *case_string(enum letter_case lcase, const char *str);
+/*extern struct dis_entry disass_pdk_15[];*/
 
-extern char *warranty;
-extern char *copying;
-
-extern struct cpu_entry *cpus;
-extern struct cpu_entry cpus_51[];
-extern struct cpu_entry cpus_z80[];
-extern struct cpu_entry cpus_hc08[];
-extern struct cpu_entry cpus_stm8[];
-extern struct cpu_entry cpus_pdk[];
-
+/*extern struct dis_entry disass_pdk_16[];*/
 
 #endif
 
-/* End of globals.h */
+/* End of pdk.src/glob.h */
