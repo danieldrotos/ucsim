@@ -322,37 +322,57 @@ COMMAND_DO_WORK_UC(cl_delete_cmd)
 
 COMMAND_DO_WORK_UC(cl_commands_cmd)
 {
-  int nr= -1;
+  int nr= -1/*, i*/;
+  /*class cl_cmd_arg *params[10]=
+    {
+     cmdline->param(0),
+     cmdline->param(1),
+     cmdline->param(2),
+     cmdline->param(3),
+     cmdline->param(4),
+     cmdline->param(5),
+     cmdline->param(6),
+     cmdline->param(7),
+     cmdline->param(8),
+     cmdline->param(9)
+     };*/
+  //for (i=0;i<10;i++)printf("p[%d]=\"%s\"\n",i,(params[i])?(params[i]->get_svalue()):"N/A");
   
-  //cmdline->shift();
+  cmdline->shift();
   chars s= chars(cmdline->cmd);
-  printf("cmd=\"%s\"\n",(char*)s);
+  //printf("cmd(after.shift)=\"%s\"\n",(char*)s);
+  //for (i=0;i<10;i++)params[i]=cmdline->param(i);
+  //for (i=0;i<10;i++)printf("p[%d]=\"%s\"\n",i,(params[i])?(params[i]->get_svalue()):"N/A");
   if (cmdline->rest)
     {
       s+= ';';
       s+= cmdline->rest;
     }
+  //printf("s(bef.nr.check)=\"%s\"\n",(char*)s);
   if (!s.empty())
-    {printf("s=\"%s\"\n",(char*)s);
+    {
+      //printf("s(not.empty)=\"%s\"\n",(char*)s);
       if (isdigit(((char*)s)[0]))
 	{
 	  class cl_cmd_arg *p= cmdline->param(0);
-	  printf("p=\"%s\"\n",p->get_svalue());
+	  char *p0= (char*)s;
+	  //printf("param0=\"%s\" p0=\"%s\"\n",p->get_svalue(),p0);
 	  if (p)
 	    {
 	      long l=-2;
-	      if (p->get_ivalue(&l))
+	      //if (p->get_ivalue(&l))
+	      l= strtol(s, 0, 0);
 		nr= l;
-	      printf("nr=%d\n",nr);
+		//printf("nr=%d\n",nr);
 	    }
 	  cmdline->shift();
 	  s= chars(cmdline->cmd);
-	  printf("S=\"%s\"\n",(char*)s);
+	  //printf("S=\"%s\"\n",(char*)s);
 	  if (cmdline->rest)
 	    {
 	      s+= ';';
 	      s+= cmdline->rest;
-	      printf("S=\"%s\"\n",(char*)s);
+	      //printf("S=\"%s\"\n",(char*)s);
 	    }
 	}
     }
@@ -361,8 +381,9 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
 
   if (nr < 0)
     {
+      //printf("nr<0 %d\n",nr);
       nr= uc->brk_counter;
-      printf("brk_counter nr=%d\n",nr);
+      //printf("brk_counter nr=%d\n",nr);
     }
   if (nr == 0)
     return con->dd_printf("breakpoint (%d) not found\n", nr), false;
@@ -372,7 +393,10 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
     return con->dd_printf("no breakpoint (%d)\n", nr), false;
 
   if (!s.empty())
-    b->commands= s;
+    {
+      b->commands= s;
+      //printf("USE=\"%s\"\n",(char*)s);
+    }
   else
     b->commands= chars("");
   cmdline->rest= NULL;
