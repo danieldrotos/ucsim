@@ -322,32 +322,37 @@ COMMAND_DO_WORK_UC(cl_delete_cmd)
 
 COMMAND_DO_WORK_UC(cl_commands_cmd)
 {
-  long nr= -1;
+  int nr= -1;
   
-  cmdline->shift();
+  //cmdline->shift();
   chars s= chars(cmdline->cmd);
+  printf("cmd=\"%s\"\n",(char*)s);
   if (cmdline->rest)
     {
       s+= ';';
       s+= cmdline->rest;
     }
   if (!s.empty())
-    {
+    {printf("s=\"%s\"\n",(char*)s);
       if (isdigit(((char*)s)[0]))
 	{
 	  class cl_cmd_arg *p= cmdline->param(0);
+	  printf("p=\"%s\"\n",p->get_svalue());
 	  if (p)
 	    {
-	      long l;
+	      long l=-2;
 	      if (p->get_ivalue(&l))
 		nr= l;
+	      printf("nr=%d\n",nr);
 	    }
 	  cmdline->shift();
 	  s= chars(cmdline->cmd);
+	  printf("S=\"%s\"\n",(char*)s);
 	  if (cmdline->rest)
 	    {
 	      s+= ';';
 	      s+= cmdline->rest;
+	      printf("S=\"%s\"\n",(char*)s);
 	    }
 	}
     }
@@ -355,7 +360,10 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
     return con->dd_printf("command missing\n"), false;
 
   if (nr < 0)
-    nr= uc->brk_counter;
+    {
+      nr= uc->brk_counter;
+      printf("brk_counter nr=%d\n",nr);
+    }
   if (nr == 0)
     return con->dd_printf("breakpoint (%d) not found\n", nr), false;
   
