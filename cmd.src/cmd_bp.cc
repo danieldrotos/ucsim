@@ -361,7 +361,7 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
 	    {
 	      long l=-2;
 	      //if (p->get_ivalue(&l))
-	      l= strtol(s, 0, 0);
+	      l= strtol(p0, 0, 0);
 		nr= l;
 		//printf("nr=%d\n",nr);
 	    }
