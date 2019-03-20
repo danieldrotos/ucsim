@@ -166,7 +166,6 @@ cl_sim::stop(int reason, class cl_ev_brk *ebrk)
     {
       if (!(b->commands.empty()))
 	{
-	  printf("BRK:\"%s\"\n",(char*)(b->commands));
 	  application->exec(b->commands);
 	  steps_done= 0;
 	}
