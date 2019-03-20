@@ -37,7 +37,7 @@ public:
   class cl_ticker *ticker;
   bool as_nr;
   int id_nr;
-  const char *id_str;
+  chars id_str;
 COMMAND_METHODS_ON(uc,cl_timer_cmd)
   void set_ticker(class cl_uc *uc,
 		  class cl_cmd_arg *param);

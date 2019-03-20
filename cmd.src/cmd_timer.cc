@@ -61,6 +61,7 @@ COMMAND_DO_WORK_UC(cl_timer_cmd)
     {
       as_nr= true;
       id_nr= params[0]->value.number;
+      id_str= 0;
       if (id_nr <= 0)
 	{
 	  con->dd_printf("Error: "
@@ -119,7 +120,7 @@ COMMAND_DO_WORK_UC(cl_timer_add_cmd)
 
   if (!as_nr)
     {
-      ticker= new cl_ticker(dir, in_isr, id_str);
+      ticker= new cl_ticker(dir, in_isr, (char*)id_str);
       uc->add_counter(ticker, id_str);
     }
   else
