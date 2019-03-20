@@ -728,10 +728,12 @@ cmd->init();*/
 "long help of info hardware"));
     cmd->add_name("hw");
     cmd->init();
+    /*
     cset->add(cmd= new cl_info_stack_cmd("stack", 0,
 "info stack         Status of stack of the CPU",
 "long help of info stack"));
     cmd->init();
+    */
     cset->add(cmd= new cl_info_memory_cmd("memory", 0,
 "info memory        Information about memory system",
 "long help of info memory"));

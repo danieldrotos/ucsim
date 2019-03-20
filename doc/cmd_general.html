@@ -464,7 +464,7 @@ under certain conditions; type `show c' for details.
     <p>info <a href="#info_breakpoints">breakpoints</a> <br>
       info <a href="#info_registers">registers</a> <br>
       info <a href="#info_hardware">hardware</a> <br>
-      info <a href="#info_stack">stack</a> <br>
+      <!-- info <a href="#info_stack">stack</a> <br>-->
       info <a href="#info_memory">memory</a> <br>
       info <a href="#info_variables">variables</a> </p>
     <blockquote>
@@ -663,7 +663,8 @@ timer0[0] 0x0000 13 bit timer OFF irq=0 dis prio=0
 timer2[2] 0x0000 reload 0x0000 timer OFF irq=0 dis prio=0
 0&gt; 
 </pre>
-      <hr>
+<hr>
+<!-- 
       <h4><a name="info_stack">info stack</a></h4>
       This command prints out information about data stored in the CPU's stack
       and operations which put them there.
@@ -692,7 +693,8 @@ intr 0x000028-0x00002a 2 0x000023    0x366f 20 0c 02 JB    21.4,3674
       (call, and intr) the <b>called</b> address is printed, not the pushed
       one! Last column is the instruction which has been executed when the
       operation occurred.
-      <hr>
+<hr>
+-->
       <h4><a name="info_memory">info memory</a></h4>
       This command shows information about <a href="memory.html">memory system</a>:
       chips, address spaces and address decoders.

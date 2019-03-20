@@ -120,7 +120,7 @@ COMMAND_DO_WORK_UC(cl_info_hw_cmd)
 /*
  * INFO STACK command
  */
-
+/*
 COMMAND_DO_WORK_UC(cl_info_stack_cmd)
 {
   int i;
@@ -133,7 +133,7 @@ COMMAND_DO_WORK_UC(cl_info_stack_cmd)
     }
   return(false);
 }
-
+*/
 
 /*
  * INFO MEMORY command

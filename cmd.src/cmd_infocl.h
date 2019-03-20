@@ -41,7 +41,7 @@ COMMAND_ON(uc,cl_info_reg_cmd);
 COMMAND_ON(uc,cl_info_hw_cmd);
 
 // INFO STACK
-COMMAND_ON(uc,cl_info_stack_cmd);
+//COMMAND_ON(uc,cl_info_stack_cmd);
 
 // INFO MEMORY
 COMMAND_ON(uc,cl_info_memory_cmd);
