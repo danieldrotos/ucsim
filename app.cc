@@ -731,7 +731,7 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
     cset->init();
     cset->add(cmd= new cl_conf_cmd("_no_parameters_", 0,
 "conf               Configuration",
-"long help of conf"));
+"long help of conf 1"));
     cmd->init();
     cset->add(cmd= new cl_conf_objects_cmd("objects", 0, 
 "conf objects       Show object tree",
@@ -740,7 +740,7 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
   }
   cmdset->add(cmd= new cl_super_cmd("conf", 0,
 "conf subcommand    Information, see `conf' command for more help",
-"long help of conf", cset));
+"long help of conf 2", cset));
   cmd->init();
 
   cmd= new cl_help_cmd("help", 0,

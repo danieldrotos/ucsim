@@ -99,8 +99,8 @@ public:
   enum cmd_operate_on operate_on;
   class cl_strings *names;
   int  can_repeat;
-  const char *short_help;
-  const char *long_help;
+  chars short_help;
+  chars long_help;
 
 public:
   cl_cmd(enum cmd_operate_on opon,

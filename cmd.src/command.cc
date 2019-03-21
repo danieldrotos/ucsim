@@ -575,8 +575,8 @@ cl_cmd::cl_cmd(enum cmd_operate_on op_on,
   names= new cl_strings(1, 1, "names of a command");
   names->add(aname?strdup(aname):strdup("unknown"));
   can_repeat= can_rep;
-  short_help= short_hlp?strdup(short_hlp):NULL;
-  long_help= long_hlp?strdup(long_hlp):NULL;
+  short_help= short_hlp;//?strdup(short_hlp):NULL;
+  long_help= long_hlp;//?strdup(long_hlp):NULL;
 }
 
 /*cl_cmd::cl_cmd(class cl_sim *asim):
@@ -590,10 +590,8 @@ cl_cmd::cl_cmd(enum cmd_operate_on op_on,
 cl_cmd::~cl_cmd(void)
 {
   delete names;
-  if (short_help)
-    free((void*)short_help);
-  if (long_help)
-    free((void*)long_help);
+  //if (short_help) free((void*)short_help);
+  //if (long_help) free((void*)long_help);
 }
 
 void
@@ -856,7 +854,7 @@ cl_super_cmd::work(class cl_app *app,
       for (i= 0; i < commands->count; i++)
 	{
 	  cmd= (class cl_cmd *)(commands->at(i));
-	  con->dd_printf("%s\n", cmd->short_help);
+	  con->dd_printf("%s\n", (char*)cmd->short_help);
 	}
       return(0);
     }
