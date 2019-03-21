@@ -887,7 +887,8 @@ cl_super_cmd::work(class cl_app *app,
       for (i= 0; i < commands->count; i++)
 	{
 	  cmd= (class cl_cmd *)(commands->at(i));
-	  con->dd_printf("%s\n", (char*)cmd->short_help);
+	  //con->dd_printf("%s\n", (char*)cmd->short_help);
+	  cmd->print_short(con);
 	}
       return(0);
     }
