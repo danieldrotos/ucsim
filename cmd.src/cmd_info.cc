@@ -34,6 +34,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "cmd_infocl.h"
 
+void
+set_info_help(class cl_cmd *cmd)
+{
+  cmd->set_help("info subcommand",
+		"Information about simulator objects",
+		"Long of info");
+}
 
 /*
  * INFO BREAKPOINTS command

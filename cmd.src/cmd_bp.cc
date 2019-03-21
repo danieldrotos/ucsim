@@ -197,7 +197,7 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
 
 CMDHELP(cl_break_cmd,
 	"break addr [hit [if expr]] | break mem_type r|w addr [hit [if expr]]",
-	"Set fix or event breakpoint\n",
+	"Set fix or event breakpoint",
 	"long help of break")
 
 void

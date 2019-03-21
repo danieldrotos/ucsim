@@ -37,6 +37,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_guicl.h"
 
 
+void
+set_gui_help(class cl_cmd *cmd)
+{
+  cmd->set_help("gui subcommand",
+		"Operations to support GUI tools",
+		"Long of gui");
+}
+
 /*
  * Command: gui start
  *----------------------------------------------------------------------------

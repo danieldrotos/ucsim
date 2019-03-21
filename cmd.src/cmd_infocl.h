@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "newcmdcl.h"
 
 
+extern void set_info_help(class cl_cmd *cmd);
+
 // INFO BP
 COMMAND_ON(uc,cl_info_bp_cmd);
 

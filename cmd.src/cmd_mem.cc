@@ -36,6 +36,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_memcl.h"
 
 
+void
+set_memory_help(class cl_cmd *cmd)
+{
+  cmd->set_help("memory subcommand",
+		"Manage memory chips and address spaces",
+		"Long of memory");
+}
+
+void
+set_memory_create_help(class cl_cmd *cmd)
+{
+  cmd->set_help("memory create subcommand",
+		"Set of commands to create memory objects",
+		"Long of memory create");
+}
+
 /*
  * Command: memory create chip
  *----------------------------------------------------------------------------

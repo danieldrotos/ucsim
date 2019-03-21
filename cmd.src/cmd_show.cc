@@ -42,6 +42,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_showcl.h"
 
 
+void
+set_show_help(class cl_cmd *cmd)
+{
+  cmd->set_help("show subcommand",
+		"Generic command for showing things about",
+		"Long of show");
+}
+
 /*
  * Command: show copying
  *----------------------------------------------------------------------------

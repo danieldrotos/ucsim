@@ -44,6 +44,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmdutil.h"
 
 
+void
+set_get_help(class cl_cmd *cmd)
+{
+  cmd->set_help("get subcommand",
+		"Get value of differend objects",
+		"Long of get");
+}
+
 /*
  * Command: get sfr
  *----------------------------------------------------------------------------

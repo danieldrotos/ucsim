@@ -45,6 +45,14 @@
 #include "cmdutil.h"
 
 
+void
+set_set_help(class cl_cmd *cmd)
+{
+  cmd->set_help("set subcommand",
+		"Set value of different objects",
+		"Long of set");
+}
+
 /*
  * Command: set memory
  *----------------------------------------------------------------------------

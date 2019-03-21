@@ -566,19 +566,16 @@ cl_cmdline::restart_at_rest(void)
 
 cl_cmd::cl_cmd(enum cmd_operate_on op_on,
 	       const char *aname,
-	       int can_rep,
-	       const char *usage_hlp,
-	       const char *short_hlp,
-	       const char *long_hlp):
+	       int can_rep):
   cl_base()
 {
   operate_on= op_on;
   names= new cl_strings(1, 1, "names of a command");
   names->add(aname?strdup(aname):strdup("unknown"));
   can_repeat= can_rep;
-  usage_help= usage_hlp;
-  short_help= short_hlp;//?strdup(short_hlp):NULL;
-  long_help= long_hlp;//?strdup(long_hlp):NULL;
+  usage_help= 0;
+  short_help= 0;//short_hlp;//?strdup(short_hlp):NULL;
+  long_help= 0;//long_hlp;//?strdup(long_hlp):NULL;
 }
 
 /*cl_cmd::cl_cmd(class cl_sim *asim):
@@ -588,6 +585,14 @@ cl_cmd::cl_cmd(enum cmd_operate_on op_on,
   name= short_help= long_help= 0;
   can_repeat= 0;
 }*/
+
+void
+cl_cmd::set_help(const char *usage_hlp, const char *short_hlp, const char *long_hlp)
+{
+  usage_help= usage_hlp;
+  short_help= short_hlp;
+  long_help= long_hlp;
+}
 
 cl_cmd::~cl_cmd(void)
 {
@@ -851,11 +856,8 @@ cl_cmdset::replace(char *nam, class cl_cmd *cmd)
 
 cl_super_cmd::cl_super_cmd(const char *aname,
 			   int  can_rep,
-			   const char *usage_hlp,
-			   const char *short_hlp,
-			   const char *long_hlp,
 			   class cl_cmdset *acommands):
-  cl_cmd(operate_on_none, aname, can_rep, usage_hlp, short_hlp, long_hlp)
+  cl_cmd(operate_on_none, aname, can_rep)
 {
   commands= acommands;
 }

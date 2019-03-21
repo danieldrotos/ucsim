@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "newcmdcl.h"
 
 
+extern void set_timer_help(class cl_cmd *cmd);
 
 COMMAND_HEAD(cl_timer_cmd)
 public:

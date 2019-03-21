@@ -52,11 +52,8 @@ class cl_tbreak_cmd: public cl_break_cmd
 {
 public:
   cl_tbreak_cmd(const char *aname,
-		int  can_rep,
-		const char *usage_help,
-		const char *short_hlp,
-		const char *long_hlp):
-    cl_break_cmd(aname, can_rep, usage_help, short_hlp, long_hlp) {perm=brkDYNAMIC;}
+		int  can_rep):
+    cl_break_cmd(aname, can_rep) {perm=brkDYNAMIC;}
 };
 
 // CLEAR

@@ -36,6 +36,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_confcl.h"
 
 
+void
+set_conf_help(class cl_cmd *cmd)
+{
+  cmd->set_help("conf [subcommand]",
+		"Information about simulator",
+		"Long of conf");
+}
+
 /*
  * Command: conf
  *----------------------------------------------------------------------------

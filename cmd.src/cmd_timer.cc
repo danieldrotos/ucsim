@@ -37,6 +37,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_timercl.h"
 
 
+void
+set_timer_help(class cl_cmd *cmd)
+{
+  cmd->set_help("timer subcommand",
+		"Manage timers",
+		"Long of timer");
+}
+
 /*
  * Command: timer
  *----------------------------------------------------------------------------
