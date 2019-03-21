@@ -67,6 +67,12 @@ cl_conf_cmd::do_work(class cl_uc *uc,
   return(0);
 }
 
+CMDHELP(cl_conf_cmd,
+	"conf",
+	"Configuration",
+	"long help of conf 1")
+
+
 /*
  * Command: conf objects
  *----------------------------------------------------------------------------
@@ -108,6 +114,10 @@ COMMAND_DO_WORK_APP(cl_conf_objects_cmd)
   return(false);
 }
 
+CMDHELP(cl_conf_objects_cmd,
+	"conf objects",
+	"Show object tree",
+	"long help of conf objects")
 
 COMMAND_DO_WORK_APP(cl_jaj_cmd)
 {
@@ -126,5 +136,9 @@ COMMAND_DO_WORK_APP(cl_jaj_cmd)
   return(false);
 }
 
+CMDHELP(cl_jaj_cmd,
+	"jaj [val]",
+	"Jaj",
+	"long help of jaj")
 
 /* End of cmd.src/cmd_conf.cc */

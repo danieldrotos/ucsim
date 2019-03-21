@@ -44,6 +44,7 @@ class cl_conf_cmd: public cl_cmd
   cl_cmd(operate_on_uc, aname, can_rep, usage_help, short_help, long_help) {}
   virtual int do_work(class cl_uc *uc ,
 		      class cl_cmdline *cmdline, class cl_console_base *con);
+  virtual void set_help(void);
 };
 
 // CONF OBJECTS

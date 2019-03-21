@@ -112,6 +112,8 @@ public:
 	 const char *long_hlp);
   virtual ~cl_cmd(void);
 
+  virtual int init(void) { set_help(); return 0; }
+  virtual void set_help(void) {}
   virtual class cl_cmdset *get_subcommands(void) { return(0); }
   virtual void add_name(const char *nam);
   virtual int name_match(const char *aname, int strict);
@@ -144,7 +146,8 @@ public:\
               const char *short_help,\
               const char *long_help):\
   cl_cmd(operate_on_none, aname, can_rep, usage_help, short_help, long_help) {} \
-  virtual int do_work(class cl_cmdline *cmdline, class cl_console_base *con);
+  virtual int do_work(class cl_cmdline *cmdline, class cl_console_base *con);\
+  virtual void set_help(void);
 
 #define COMMAND_METHODS_ON(ON,CLASS_NAME) \
 public:\
@@ -155,7 +158,8 @@ public:\
               const char *long_help):\
   cl_cmd(operate_on_ ## ON, aname, can_rep, usage_help, short_help, long_help) {} \
   virtual int do_work(class cl_ ## ON * ON ,\
-		      class cl_cmdline *cmdline, class cl_console_base *con);
+		      class cl_cmdline *cmdline, class cl_console_base *con);\
+  virtual void set_help(void);
 
 #define COMMAND_METHODS_ANCESTOR(CLASS_NAME,ANCESTOR) \
 public:\
@@ -165,7 +169,8 @@ public:\
               const char *short_help,\
               const char *long_help):\
   ANCESTOR (aname, can_rep, usage_help, short_help, long_help) {}	\
-  virtual int do_work(class cl_cmdline *cmdline, class cl_console_base *con);
+  virtual int do_work(class cl_cmdline *cmdline, class cl_console_base *con);\
+  virtual void set_help(void);
 
 #define COMMAND_METHODS_ANCESTOR_ON(ON,CLASS_NAME,ANCESTOR) \
 public:\
@@ -176,7 +181,8 @@ public:\
               const char *long_help):\
   ANCESTOR (aname, can_rep, usage_help, short_help, long_help) {}	\
   virtual int do_work(class cl_ ## ON * ON ,\
-		      class cl_cmdline *cmdline, class cl_console_base *con); \
+		      class cl_cmdline *cmdline, class cl_console_base *con);\
+  virtual void set_help(void); \
 
 
 #define COMMAND_TAIL }
@@ -235,6 +241,15 @@ CLASS_NAME::do_work(class cl_sim *sim,\
 int \
 CLASS_NAME::do_work(class cl_uc *uc,\
 		    class cl_cmdline *cmdline, class cl_console_base *con)
+
+#define CMDHELP(CLASS_NAME,USAGE_HLP,SHORT_HLP,LONG_HLP) \
+  void \
+  CLASS_NAME::set_help(void) \
+  { \
+    usage_help=(char*)USAGE_HLP;		\
+    short_help=(char*)SHORT_HLP;		\
+    long_help=(char*)LONG_HLP;			\
+  }
 
 // Command set is list of cl_cmd objects
 class cl_cmdset: public cl_list

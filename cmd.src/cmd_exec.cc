@@ -104,6 +104,10 @@ COMMAND_DO_WORK_SIM(cl_run_cmd)
   return(false);
 }
 
+CMDHELP(cl_run_cmd,
+	"run [start [stop]]",
+	"Go",
+	"long help of run")
 
 /*
  * Command: stop
@@ -120,6 +124,10 @@ COMMAND_DO_WORK_SIM(cl_stop_cmd)
   return(false);
 }
 
+CMDHELP(cl_stop_cmd,
+	"stop",
+	"Stop",
+	"long help of stop")
 
 /*
  * Command: step
@@ -222,7 +230,10 @@ COMMAND_DO_WORK_SIM(cl_step_cmd)
   return(0);
 }
 
-
+CMDHELP(cl_step_cmd,
+	"step [number [unit]]",
+	"Step",
+	"long help of step")
 /*
  * Command: next
  *----------------------------------------------------------------------------
@@ -286,6 +297,10 @@ COMMAND_DO_WORK_SIM(cl_next_cmd)
   return(false);
 }
 
+CMDHELP(cl_next_cmd,
+	"next",
+	"Next",
+	"long help of next")
 
 /*
  * Command: help
@@ -353,6 +368,11 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
   return(false);
 }
 
+CMDHELP(cl_help_cmd,
+	"help [command [subcommand]]",
+	"List of known commands, or description of specified command",
+	"Long help of help command")
+
 bool
 cl_help_cmd::do_set(class cl_cmdline *cmdline, int pari,
 		    class cl_cmdset *cmdset,
@@ -405,6 +425,10 @@ COMMAND_DO_WORK(cl_quit_cmd)
   return(1);
 }
 
+CMDHELP(cl_quit_cmd,
+	"quit",
+	"Quit",
+	"long help of quit")
 
 /*
  * Command: kill
@@ -422,6 +446,10 @@ COMMAND_DO_WORK_APP(cl_kill_cmd)
   return(1);
 }
 
+CMDHELP(cl_kill_cmd,
+	"kill",
+	"Shutdown simulator",
+	"long help of kill")
 
 /*
  * EXEC file
@@ -448,6 +476,10 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
   return(false);
 }
 
+CMDHELP(cl_exec_cmd,
+	"exec \"file\"",
+	"Execute commands from file",
+	"long help of exec")
 
 /*
  * expression expression
@@ -503,5 +535,9 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
   return(false);
 }
 
+CMDHELP(cl_expression_cmd,
+	"expression expr",
+	"Evaluate the expression",
+	"long help of expression ")
 
 /* End of cmd.src/cmd_exec.cc */
