@@ -542,107 +542,104 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
   class cl_cmdset *cset;
 
   cmdset->add(cmd= new cl_state_cmd("state", 0,
-"state              State of microcontroller",
+				    "state",              "State of microcontroller",
 "long help of state"));
   cmd->init();
 
 #ifdef STATISTIC
   cmdset->add(cmd= new cl_statistic_cmd("statistic", 0,
-"statistic [mem [startaddr [endaddr]]]\n"
-"                   Statistic of memory accesses",
+					"statistic [mem [startaddr [endaddr]]]",
+"Statistic of memory accesses",
 "long help of statistic"));
   cmd->init();
 #endif
 
   cmdset->add(cmd= new cl_file_cmd("file", 0,
-"file \"FILE\"        Load FILE into ROM",
+				   "file \"FILE\"",        "Load FILE into ROM",
 "long help of file"));
   cmd->init();
   cmd->add_name("load");
 
   cmdset->add(cmd= new cl_dl_cmd("download", 0,
-"download           Load (intel.hex) data",
+				 "download",           "Load (intel.hex) data",
 "long help of download"));
   cmd->init();
   cmd->add_name("dl");
 
   cmdset->add(cmd= new cl_pc_cmd("pc", 0,
-"pc [addr]          Set/get PC",
+				 "pc [addr]",          "Set/get PC",
 "long help of pc"));
   cmd->init();
 
   cmdset->add(cmd= new cl_reset_cmd("reset", 0,
-"reset              Reset",
+				    "reset",              "Reset",
 "long help of reset"));
   cmd->init();
 
   cmdset->add(cmd= new cl_dump_cmd("dump", true,
-"dump memory_type [start [stop [bytes_per_line]]]\n"
-"                   Dump memory of specified type\n"
-"dump bit...        Dump bits",
+				   "dump memory_type [start [stop [bytes_per_line]]] | dump bit...",
+				   "Dump memory of specified type or bit(s)",
 "long help of dump"));
   cmd->init();
 
   cmdset->add(cmd= new cl_dch_cmd("dch", true,
-"dch [start [stop]] Dump code in hex form",
+				  "dch [start [stop]]", "Dump code in hex form",
 "long help of dch"));
   cmd->init();
 
   cmdset->add(cmd= new cl_dc_cmd("dc", true,
-"dc [start [stop]]  Dump code in disass form",
+				 "dc [start [stop]]",  "Dump code in disass form",
 "long help of dc"));
   cmd->init();
 
   cmdset->add(cmd= new cl_disassemble_cmd("disassemble", true,
-"disassemble [start [offset [lines]]]\n"
-"                   Disassemble code",
+					  "disassemble [start [offset [lines]]]",
+"Disassemble code",
 "long help of disassemble"));
   cmd->init();
 
   cmdset->add(cmd= new cl_fill_cmd("fill", 0,
-"fill memory_type start end data\n"
-"                   Fill memory region with data",
+				   "fill memory_type start end data",
+"Fill memory region with data",
 "long help of fill"));
   cmd->init();
 
   cmdset->add(cmd= new cl_where_cmd("where", 0,
-"where memory_type data...\n"
-"                   Case unsensitive search for data",
+				    "where memory_type data...",
+"Case unsensitive search for data",
 "long help of where"));
   cmd->init();
 
   cmdset->add(cmd= new cl_Where_cmd("Where", 0,
-"Where memory_type data...\n"
-"                   Case sensitive search for data",
+				    "Where memory_type data...",
+"Case sensitive search for data",
 "long help of Where"));
   cmd->init();
 
   cmdset->add(cmd= new cl_break_cmd("break", 0,
-"break addr [hit]   Set fix breakpoint\n"
-"break mem_type r|w addr [hit]\n"
-"                   Set fix event breakpoint",
+				    "break addr [hit [if expr]] | break mem_type r|w addr [hit [if expr]]",
+				    "Set fix or event breakpoint\n",
 "long help of break"));
   cmd->init();
 
   cmdset->add(cmd= new cl_tbreak_cmd("tbreak", 0,
-"tbreak addr [hit]  Set temporary breakpoint\n"
-"tbreak mem_type r|w addr [hit]\n"
-"                   Set temporary event breakpoint",
+				     "tbreak addr [hit] | tbreak mem_type r|w addr [hit]",
+				     "Set temporary breakpoint, fix or event\n",
 "long help of tbreak"));
   cmd->init();
 
   cmdset->add(cmd= new cl_clear_cmd("clear", 0,
-"clear [addr...]    Clear fix breakpoint",
+				    "clear [addr...]",    "Clear fix breakpoint",
 "long help of clear"));
   cmd->init();
 
   cmdset->add(cmd= new cl_delete_cmd("delete", 0,
-"delete [nr...]     Delete breakpoint(s)",
+				     "delete [nr...]",     "Delete breakpoint(s)",
 "long help of clear"));
   cmd->init();
 
   cmdset->add(cmd= new cl_commands_cmd("commands", 0,
-"commands [breakpoint-nr] command_string",
+				       "commands [breakpoint-nr]", "command_string",
 "long help of commands"));
   cmd->init();
   
@@ -655,8 +652,8 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
       cset->init();
     }
     cset->add(cmd= new cl_get_sfr_cmd("sfr", 0,
-"get sfr address...\n"
-"                   Get value of addressed SFRs",
+				      "get sfr address...",
+"Get value of addressed SFRs",
 "long help of get sfr"));
     cmd->init();
     /*cset->add(cmd= new cl_get_option_cmd("option", 0,
@@ -668,7 +665,7 @@ cmd->init();*/
   if (!super_cmd)
     {
       cmdset->add(cmd= new cl_super_cmd("get", 0,
-"get subcommand     Get, see `get' command for more help",
+					"get subcommand",     "Get, see `get' command for more help",
 "long help of get", cset));
       cmd->init();
     }
@@ -682,17 +679,17 @@ cmd->init();*/
       cset->init();
     }
     cset->add(cmd= new cl_set_mem_cmd("memory", 0,
-"set memory memory_type address data...\n"
-"                   Place list of data into memory",
+				      "set memory memory_type address data...",
+"Place list of data into memory",
 "long help of set memory"));
     cmd->init();
     cset->add(cmd= new cl_set_bit_cmd("bit", 0,
-"set bit addr 0|1   Set specified bit to 0 or 1",
+				      "set bit addr 0|1",   "Set specified bit to 0 or 1",
 "long help of set bit"));
     cmd->init();
     cset->add(cmd= new cl_set_hw_cmd("hardware", 0,
-"set hardware cathegory params...\n"
-"                   Set parameters of specified hardware element",
+				     "set hardware cathegory params...",
+"Set parameters of specified hardware element",
 "long help of set hardware"));
     cmd->add_name("hw");
     cmd->init();
@@ -700,7 +697,7 @@ cmd->init();*/
   if (!super_cmd)
     {
       cmdset->add(cmd= new cl_super_cmd("set", 0,
-"set subcommand     Set, see `set' command for more help",
+					"set subcommand",     "Set, see `set' command for more help",
 "long help of set", cset));
       cmd->init();
     }
@@ -714,17 +711,17 @@ cmd->init();*/
       cset->init();
     }
     cset->add(cmd= new cl_info_bp_cmd("breakpoints", 0,
-"info breakpoints   Status of user-settable breakpoints",
+				      "info breakpoints",   "Status of user-settable breakpoints",
 "long help of info breakpoints"));
     cmd->add_name("bp");
     cmd->init();
     cset->add(cmd= new cl_info_reg_cmd("registers", 0,
-"info registers     List of integer registers and their contents",
+				       "info registers",     "List of integer registers and their contents",
 "long help of info registers"));
     cmd->init();
     cset->add(cmd= new cl_info_hw_cmd("hardware", 0,
-"info hardware cathegory\n"
-"                   Status of hardware elements of the CPU",
+				      "info hardware cathegory",
+"Status of hardware elements of the CPU",
 "long help of info hardware"));
     cmd->add_name("hw");
     cmd->init();
@@ -735,18 +732,18 @@ cmd->init();*/
     cmd->init();
     */
     cset->add(cmd= new cl_info_memory_cmd("memory", 0,
-"info memory        Information about memory system",
+					  "info memory",        "Information about memory system",
 "long help of info memory"));
     cmd->init();
     cset->add(cmd= new cl_info_var_cmd("variables", 0,
-"info variables     Information about variables",
+				       "info variables [filter]",     "Information about variables",
 "long help of info variables"));
     cmd->init();
     cmd->add_name("vars");
   }
   if (!super_cmd) {
     cmdset->add(cmd= new cl_super_cmd("info", 0,
-"info subcommand    Information, see `info' command for more help",
+				      "info subcommand",    "Information, see `info' command for more help",
 "long help of info", cset));
     cmd->init();
   }
@@ -760,40 +757,40 @@ cmd->init();*/
       cset->init();
     }
     cset->add(cmd= new cl_timer_add_cmd("add", 0,
-"timer add id [direction [in_isr]]\n"
-"                   Create a clock counter (timer)",
+					"timer add id [direction [in_isr]]",
+"Create a clock counter (timer)",
 "log help of timer add"));
     cmd->init();
     cmd->add_name("create");
     cmd->add_name("make");
     cset->add(cmd= new cl_timer_delete_cmd("delete", 0,
-"timer delete id    Delete a timer",
+					   "timer delete id",    "Delete a timer",
 "long help of timer delete"));
     cmd->init();
     cmd->add_name("remove");
     cset->add(cmd= new cl_timer_get_cmd("get", 0,
-"timer get [id]     Get value of a timer, or all",
+					"timer get [id]",     "Get value of a timer, or all",
 "long help of timer get"));
     cmd->init();
     cset->add(cmd= new cl_timer_run_cmd("run", 0,
-"timer start id     Start a timer",
+					"timer start id",     "Start a timer",
 "long help of timer run"));
     cmd->init();
     cmd->add_name("start");
     cset->add(cmd= new cl_timer_stop_cmd("stop", 0,
-"timer stop id      Stop a timer",
+					 "timer stop id",      "Stop a timer",
 "long help of timer stop"));
     cmd->init();
     cset->add(cmd= new cl_timer_value_cmd("set", 0,
-"timer set id value\n"
-"                   Set a timer value",
+					  "timer set id value",
+"Set a timer value",
 "long help of timer set"));
     cmd->init();
     cmd->add_name("value");
   }
   if (!super_cmd) {
     cmdset->add(cmd= new cl_super_cmd("timer", 0,
-"timer subcommand   Manage timers",
+				      "timer subcommand",   "Manage timers",
 "long help of timer", cset));
     cmd->init();
   }
@@ -823,14 +820,14 @@ cmd->init();*/
     }
     
     mem_create_cset->add(cmd= new cl_memory_create_chip_cmd("chip", 0,
-"memory create chip id size cellsize\n"
-"                   Create a new memory chip",
+							    "memory create chip id size cellsize",
+"Create a new memory chip",
 "long help of memory create chip"));
     cmd->init();
 
     mem_create_cset->add(cmd= new cl_memory_create_addressspace_cmd("addressspace", 0,
-"memory create addressspace id startaddr size\n"
-"                   Create a new address space",
+								    "memory create addressspace id startaddr size",
+"Create a new address space",
 "long help of memory create addressspace"));
     cmd->init();
     cmd->add_name("addrspace");
@@ -840,8 +837,8 @@ cmd->init();*/
     cmd->add_name("addr");
 
     mem_create_cset->add(cmd= new cl_memory_create_addressdecoder_cmd("addressdecoder", 0,
-"memory create addressdecoder addressspace begin end chip begin\n"
-"                   Create a new address decoder",
+								      "memory create addressdecoder addressspace begin end chip begin",
+"Create a new address decoder",
 "long help of memory create addressdecoder"));
     cmd->init();
     cmd->add_name("addrdecoder");
@@ -852,8 +849,8 @@ cmd->init();*/
     cmd->add_name("ad");
 
     mem_create_cset->add(cmd= new cl_memory_create_banker_cmd("banker", 0,
-"memory create banker switcher_addressspace switcher_address switcher_mask banked_addressspace start end\n"
-"                   Create a new bank switcher",
+							      "memory create banker switcher_addressspace switcher_address switcher_mask banked_addressspace start end",
+"Create a new bank switcher",
 "long help of memory create banker"));
     cmd->init();
     cmd->add_name("bankswitcher");
@@ -862,14 +859,14 @@ cmd->init();*/
     cmd->add_name("bs");
 
     mem_create_cset->add(cmd= new cl_memory_create_bank_cmd("bank", 0,
-"memory create bank addressspace begin bank_nr chip begin\n"
-"                   Add a new bank to bank switcher",
+							    "memory create bank addressspace begin bank_nr chip begin",
+"Add a new bank to bank switcher",
 "long help of memory create bank"));
     cmd->init();
 
     mem_create_cset->add(cmd= new cl_memory_create_bander_cmd("bander", 0,
-"memory create bander addressspace begin end chip begin bits_per_chip [distance]\n"
-"                   Create a new bit bander",
+							      "memory create bander addressspace begin end chip begin bits_per_chip [distance]",
+"Create a new bit bander",
 "long help of memory create bander"));
     cmd->init();
     cmd->add_name("bitbander");
@@ -879,30 +876,30 @@ cmd->init();*/
 
     if (!mem_create)
       cset->add(mem_create= new cl_super_cmd("create", 0,
-"memory create      Set of commands to create memory objects",
+					     "memory create",      "Set of commands to create memory objects",
 "long help of memory create", mem_create_cset));
     mem_create->init();
     mem_create->add_name("add");
 
     cset->add(cmd= new cl_info_memory_cmd("info", 0,
-"memory info        Information about memory system",
+					  "memory info",        "Information about memory system",
 "long help of memory info"));
     cmd->init();
     cset->add(cmd= new cl_memory_cell_cmd("cell", 0,
-"memory cell        Information about a memory cell",
+					  "memory cell",        "Information about a memory cell",
 "long help of memory cell"));
     cmd->init();
   }
   if (!super_cmd) {
     cmdset->add(cmd= new cl_super_cmd("memory", 0,
-"memory subcommand  Manage memory chips and address spaces",
+				      "memory subcommand",  "Manage memory chips and address spaces",
 "long help of memory", cset));
     cmd->init();
   }
 
   cmdset->add(cmd= new cl_var_cmd("var", 0,
-"var name [memory addr [bit_nr]]\n"
-"                    Create new variable",
+				  "var name [memory addr [bit_nr]]",
+"Create new variable",
 "long help of var"));
   cmd->init();
   cmd->add_name("variable");

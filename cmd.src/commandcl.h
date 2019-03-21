@@ -99,6 +99,7 @@ public:
   enum cmd_operate_on operate_on;
   class cl_strings *names;
   int  can_repeat;
+  chars usage_help;
   chars short_help;
   chars long_help;
 
@@ -106,6 +107,7 @@ public:
   cl_cmd(enum cmd_operate_on opon,
 	 const char *aname,
 	 int  can_rep,
+	 const char *usage_hlp,
 	 const char *short_hlp,
 	 const char *long_hlp);
   virtual ~cl_cmd(void);
@@ -124,6 +126,7 @@ public:
 		      class cl_cmdline *cmdline, class cl_console_base *con);
   virtual int do_work(class cl_uc *uc,
 		      class cl_cmdline *cmdline, class cl_console_base *con);
+  virtual void print_short(class cl_console_base *con);
 };
 
 #define COMMAND_HEAD(CLASS_NAME) \
@@ -137,18 +140,20 @@ class CLASS_NAME : public ANCESTOR \
 public:\
   CLASS_NAME (const char *aname,\
               int  can_rep,\
+              const char *usage_help,\
               const char *short_help,\
               const char *long_help):\
-    cl_cmd(operate_on_none, aname, can_rep, short_help, long_help) {}\
+  cl_cmd(operate_on_none, aname, can_rep, usage_help, short_help, long_help) {} \
   virtual int do_work(class cl_cmdline *cmdline, class cl_console_base *con);
 
 #define COMMAND_METHODS_ON(ON,CLASS_NAME) \
 public:\
   CLASS_NAME (const char *aname,\
               int  can_rep,\
+              const char *usage_help,\
               const char *short_help,\
               const char *long_help):\
-    cl_cmd(operate_on_ ## ON, aname, can_rep, short_help, long_help) {}\
+  cl_cmd(operate_on_ ## ON, aname, can_rep, usage_help, short_help, long_help) {} \
   virtual int do_work(class cl_ ## ON * ON ,\
 		      class cl_cmdline *cmdline, class cl_console_base *con);
 
@@ -156,18 +161,20 @@ public:\
 public:\
   CLASS_NAME (const char *aname,\
               int  can_rep,\
+              const char *usage_help,\
               const char *short_help,\
               const char *long_help):\
-    ANCESTOR (aname, can_rep, short_help, long_help) {}\
+  ANCESTOR (aname, can_rep, usage_help, short_help, long_help) {}	\
   virtual int do_work(class cl_cmdline *cmdline, class cl_console_base *con);
 
 #define COMMAND_METHODS_ANCESTOR_ON(ON,CLASS_NAME,ANCESTOR) \
 public:\
   CLASS_NAME (const char *aname,\
               int  can_rep,\
+              const char *usage_help,\
               const char *short_help,\
               const char *long_help):\
-    ANCESTOR (aname, can_rep, short_help, long_help) {}\
+  ANCESTOR (aname, can_rep, usage_help, short_help, long_help) {}	\
   virtual int do_work(class cl_ ## ON * ON ,\
 		      class cl_cmdline *cmdline, class cl_console_base *con); \
 
@@ -255,6 +262,7 @@ public:
 public:
   cl_super_cmd(const char *aname,
 	       int  can_rep,
+               const char *usage_help,
 	       const char *short_hlp,
 	       const char *long_hlp,
 	       class cl_cmdset *acommands);

@@ -567,6 +567,7 @@ cl_cmdline::restart_at_rest(void)
 cl_cmd::cl_cmd(enum cmd_operate_on op_on,
 	       const char *aname,
 	       int can_rep,
+	       const char *usage_hlp,
 	       const char *short_hlp,
 	       const char *long_hlp):
   cl_base()
@@ -575,6 +576,7 @@ cl_cmd::cl_cmd(enum cmd_operate_on op_on,
   names= new cl_strings(1, 1, "names of a command");
   names->add(aname?strdup(aname):strdup("unknown"));
   can_repeat= can_rep;
+  usage_help= usage_hlp;
   short_help= short_hlp;//?strdup(short_hlp):NULL;
   long_help= long_hlp;//?strdup(long_hlp):NULL;
 }
@@ -717,7 +719,35 @@ cl_cmd::do_work(class cl_uc *uc,
   return(0);
 }
 
+void
+cl_cmd::print_short(class cl_console_base *con)
+{
+  int l= usage_help.len();
 
+  if (!con)
+    return;
+  
+  if (usage_help.nempty())
+    con->dd_printf("%s", (char*)usage_help);
+  if (l > 19)
+    {
+      con->dd_printf("\n");
+      l=0;
+    }
+  while (l < 20)
+    {
+      con->dd_printf(" ");
+      l++;
+    }
+  if (short_help.nempty())
+    {
+	con->dd_printf("%s", (char*)short_help);
+    }
+  else
+    con->dd_printf("%s", (char*)(names->at(0)));
+  con->dd_printf("\n");
+}
+  
 /*
  * Set of commands
  *____________________________________________________________________________
@@ -821,10 +851,11 @@ cl_cmdset::replace(char *nam, class cl_cmd *cmd)
 
 cl_super_cmd::cl_super_cmd(const char *aname,
 			   int  can_rep,
+			   const char *usage_hlp,
 			   const char *short_hlp,
 			   const char *long_hlp,
 			   class cl_cmdset *acommands):
-  cl_cmd(operate_on_none, aname, can_rep, short_hlp, long_hlp)
+  cl_cmd(operate_on_none, aname, can_rep, usage_hlp, short_hlp, long_hlp)
 {
   commands= acommands;
 }

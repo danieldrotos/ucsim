@@ -730,49 +730,49 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
     cset= new cl_cmdset();
     cset->init();
     cset->add(cmd= new cl_conf_cmd("_no_parameters_", 0,
-"conf               Configuration",
+				   "conf",               "Configuration",
 "long help of conf 1"));
     cmd->init();
     cset->add(cmd= new cl_conf_objects_cmd("objects", 0, 
-"conf objects       Show object tree",
+					   "conf objects",       "Show object tree",
 "long help of conf objects"));
     cmd->init();
   }
   cmdset->add(cmd= new cl_super_cmd("conf", 0,
-"conf subcommand    Information, see `conf' command for more help",
+				    "conf subcommand",    "Information, see `conf' command for more help",
 "long help of conf 2", cset));
   cmd->init();
 
   cmd= new cl_help_cmd("help", 0,
-"help [command]     Help about command(s)",
+		       "help [command]",     "Help about command(s)",
 "long help of help");
   cmdset->add(cmd);
   cmd->init();
   cmd->add_name("?");
 
   cmdset->add(cmd= new cl_quit_cmd("quit", 0,
-"quit               Quit",
+				   "quit",               "Quit",
 "long help of quit"));
   cmd->init();
 
   cmdset->add(cmd= new cl_kill_cmd("kill", 0,
-"kill               Shutdown simulator",
+				   "kill",               "Shutdown simulator",
 "long help of kill"));
   cmd->init();
 
   cmdset->add(cmd= new cl_exec_cmd("exec", 0,
-"exec file          Execute commands from file",
+				   "exec file",          "Execute commands from file",
 "long help of exec"));
   cmd->init();
 
   cmdset->add(cmd= new cl_expression_cmd("expression", 0,
-"expression expr    Evaluate the expression",
+					 "expression expr",    "Evaluate the expression",
 "long help of expression "));
   cmd->init();
   cmd->add_name("let");
 
   cmdset->add(cmd= new cl_jaj_cmd("jaj", 0,
-"jaj [val]          Jaj",
+				  "jaj [val]",          "Jaj",
 "long help of jaj "));
   cmd->init();
 
@@ -785,30 +785,30 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
       cset->init();
     }
     cset->add(cmd= new cl_show_copying_cmd("copying", 0, 
-"show copying       Conditions for redistributing copies of uCsim",
+					   "show copying",       "Conditions for redistributing copies of uCsim",
 "long help of show copying"));
     cmd->init();
     cset->add(cmd= new cl_show_warranty_cmd("warranty", 0, 
-"show warranty      Various kinds of warranty you do not have",
+					    "show warranty",      "Various kinds of warranty you do not have",
 "long help of show warranty"));
     cmd->init();
     cset->add(cmd= new cl_show_option_cmd("option", 0,
-"show option [name] Show internal data of options",
+					  "show option [name]", "Show internal data of options",
 "long help of show option"));
     cmd->init();
     cset->add(cmd= new cl_show_error_cmd("error", 0,
-"show error         Show class of errors",
+					 "show error",         "Show class of errors",
 "long help of show error"));
     cmd->init();
     cset->add(cmd= new cl_show_console("console", 0,
-				       "",
+				       "","",
 				       ""));
     cmd->init();
   }
   if (!super_cmd)
     {
       cmdset->add(cmd= new cl_super_cmd("show", 0,
-"show subcommand    Generic command for showing things about the uCsim",
+					"show subcommand",    "Generic command for showing things about the uCsim",
 "long help of show", cset));
       cmd->init();
     }
@@ -822,18 +822,18 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
       cset->init();
     }
     cset->add(cmd= new cl_get_option_cmd("option", 0,
-"get option [name]  Get value of an option",
+					 "get option [name]",  "Get value of an option",
 "long help of get option"));
     cmd->init();
     cset->add(cmd= new cl_show_error_cmd("error", 0,
-"get error          Get class of errors",
+					 "get error",          "Get class of errors",
 "long help of get error"));
     cmd->init();
   }
   if (!super_cmd)
     {
       cmdset->add(cmd= new cl_super_cmd("get", 0,
-"get subcommand     Get, see `get' command for more help",
+					"get subcommand",     "Get, see `get' command for more help",
 "long help of get", cset));
       cmd->init();
     }
@@ -847,25 +847,25 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
       cset->init();
     }
     cset->add(cmd= new cl_set_option_cmd("option", 0,
-"set option name|nr value\n"
-"                   Set value of an option",
+					 "set option name|nr value",
+"Set value of an option",
 "long help of set option"));
     cmd->init();
     cset->add(cmd= new cl_set_error_cmd("error", 0,
-"set error error_name on|off|unset\n"
-"                   Set value of an error",
+					"set error error_name on|off|unset",
+"Set value of an error",
 "long help of set error"));
     cmd->init();
     cset->add(cmd= new cl_set_console_cmd("console", 0,
-"set console interactive [on|off]|noninteractive|raw|edited\n"
-"                   Set console parameters",
+					  "set console interactive [on|off]|noninteractive|raw|edited",
+"Set console parameters",
 "long help of set console"));
     cmd->init();
   }
   if (!super_cmd)
     {
       cmdset->add(cmd= new cl_super_cmd("set", 0,
-"set subcommand     Set, see `set' command for more help",
+					"set subcommand",     "Set, see `set' command for more help",
 "long help of set", cset));
       cmd->init();
     }

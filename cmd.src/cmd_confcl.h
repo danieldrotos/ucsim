@@ -38,9 +38,10 @@ class cl_conf_cmd: public cl_cmd
  public:
  cl_conf_cmd(const char *aname,
 	     int  can_rep,
+	     const char *usage_help,
 	     const char *short_help,
 	     const char *long_help):
-  cl_cmd(operate_on_uc, aname, can_rep, short_help, long_help) {}
+  cl_cmd(operate_on_uc, aname, can_rep, usage_help, short_help, long_help) {}
   virtual int do_work(class cl_uc *uc ,
 		      class cl_cmdline *cmdline, class cl_console_base *con);
 };

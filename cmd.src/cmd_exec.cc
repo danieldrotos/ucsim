@@ -310,10 +310,11 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
     for (i= 0; i < cmdset->count; i++)
       {
 	class cl_cmd *c= (class cl_cmd *)(cmdset->at(i));
-	if (c->short_help.nempty())
+	/*if (c->short_help.nempty())
 	  con->dd_printf("%s\n", (char*)c->short_help);
 	else
-	  con->dd_printf("%s\n", (char*)(c->names->at(0)));
+	con->dd_printf("%s\n", (char*)(c->names->at(0)));*/
+	c->print_short(con);
       }
   }
   else
@@ -338,7 +339,8 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
 		{
 		  class cl_cmd *c=
 		    dynamic_cast<class cl_cmd *>(subset->object_at(i));
-		  con->dd_printf("%s\n", (char*)c->short_help);
+		  //con->dd_printf("%s\n", (char*)c->short_help);
+		  c->print_short(con);
 		}
 	    }
 	  if (cmd_found->long_help.nempty())
@@ -374,10 +376,11 @@ cl_help_cmd::do_set(class cl_cmdline *cmdline, int pari,
 	    {
 	      matches++;
 	      cmd_found= cmd;
-	      if (cmd->short_help.nempty())
+	      /*if (cmd->short_help.nempty())
 		con->dd_printf("%s\n", (char*)cmd->short_help);
 	      else
-		con->dd_printf("%s\n", (char*)(cmd->names->at(0)));
+	      con->dd_printf("%s\n", (char*)(cmd->names->at(0)));*/
+	      cmd->print_short(con);
 	      //continue;
 	    }
 	  else
@@ -434,7 +437,8 @@ COMMAND_DO_WORK_APP(cl_exec_cmd)
   }
   if (!fn || !*fn)
     {
-      con->dd_printf("%s\n", (short_help.nempty())?(char*)short_help:"Error: wrong syntax\n");
+      //con->dd_printf("%s\n", (short_help.nempty())?(char*)short_help:"Error: wrong syntax\n");
+      print_short(con);
       return (false);
     }
 

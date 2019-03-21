@@ -817,17 +817,17 @@ cl_51core::build_cmdset(class cl_cmdset *cmdset)
   cl_uc::build_cmdset(cmdset);
 
   cmdset->add(cmd= new cl_di_cmd("di", true,
-"di [start [stop]]  Dump Internal RAM",
+				 "di [start [stop]]",  "Dump Internal RAM",
 "long help of di"));
   cmd->init();
 
   cmdset->add(cmd= new cl_dx_cmd("dx", true,
-"dx [start [stop]]  Dump External RAM",
+				 "dx [start [stop]]",  "Dump External RAM",
 "long help of dx"));
   cmd->init();
 
   cmdset->add(cmd= new cl_ds_cmd("ds", true,
-"ds [start [stop]]  Dump SFR",
+				 "ds [start [stop]]",  "Dump SFR",
 "long help of ds"));
   cmd->init();
 }
