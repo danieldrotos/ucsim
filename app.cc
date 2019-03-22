@@ -203,7 +203,7 @@ static void
 print_help(char *name)
 {
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-hHVvPg] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
+  printf("Usage: %s [-hHVvPgGw] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
 	 "       [-C cfg_file] [-c file] [-s file] [-S optionlist]\n"
 	 "       [-a nr]"
 #ifdef SOCKET_AVAIL
