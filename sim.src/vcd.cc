@@ -390,6 +390,12 @@ cl_vcd::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return cell->get();
 }
 
+char *
+cl_vcd::cfg_help(t_addr addr)
+{
+  return (char*)"Not used";
+}
+
 void
 cl_vcd::report(class cl_memory_cell *cell, int nr)
 {
@@ -451,6 +457,7 @@ cl_vcd::print_info(class cl_console_base *con)
       as= uc->address_space(c, &a);
       con->dd_printf("  %s[0x%x] %s\n", as?(as->get_name()):"?", a, (char*)(uc->cell_name(c)));
     }
+  print_cfg_info(con);
 }
 
 

@@ -159,6 +159,7 @@ cl_itc::print_info(class cl_console_base *con)
 	  con->dd_printf("\n");
 	}
     }
+  print_cfg_info(con);
 }
 
 

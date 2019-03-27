@@ -125,6 +125,15 @@ COMMAND_DO_WORK_UC(cl_info_hw_cmd)
     hw= params[0]->value.hw;
     hw->print_info(con);
   }
+  else if (cmdline->syntax_match(uc, STRING))
+    {
+      char *s= params[0]->get_svalue();
+      if (s && *s && (strcmp("cpu", s)==0))
+	{
+	  if (uc->cpu)
+	    uc->cpu->print_info(con);
+	}
+    }
   else
     syntax_error(con);
 

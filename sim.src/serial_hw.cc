@@ -142,29 +142,52 @@ cl_serial_hw::init(void)
   chars pn(id_string);
   pn.append("%d_", id);
   uc->vars->add(v= new cl_var(pn+chars("on"), cfg, serconf_on,
-			      "WR: turn on/off, RD: check state"));
+			      cfg_help(serconf_on)));
   v->init();
   uc->vars->add(v= new cl_var(pn+chars("check_often"), cfg, serconf_check_often,
-			      "When true, serial IO checked at every instruction"));
+			      cfg_help(serconf_check_often)));
   v->init();
   uc->vars->add(v= new cl_var(pn+chars("esc_char"), cfg, serconf_escape,
-			      "Escape character on serial IO screen"));
+			      cfg_help(serconf_escape)));
   v->init();
 
   uc->vars->add(v= new cl_var(pn+chars("received_char"), cfg, serconf_received,
-			      "Received character"));
+			      cfg_help(serconf_received)));
   v->init();
 		
   uc->vars->add(v= new cl_var(pn+chars("flowctrl"), cfg, serconf_flowctrl,
-			      "Simulate flow control"));
+			      cfg_help(serconf_flowctrl)));
   v->init();
 
   uc->vars->add(v= new cl_var(pn+chars("able_receive"), cfg, serconf_able_receive,
-			      "Receiver is able to receive (when flow ctrl)"));
+			      cfg_help(serconf_able_receive)));
   v->init();
 
   cfg_set(serconf_able_receive, 1);
   return 0;
+}
+
+char *
+cl_serial_hw::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case serconf_on:
+      return (char*)"Turn simulation of UART on or off (bool, RW)";
+    case serconf_check_often:
+      return (char*)"Check input file at every cycle (bool, RW)";
+    case serconf_escape:
+      return (char*)"Escape char on display (int, RW)";
+    case serconf_common:
+      return (char*)"Not used";
+    case serconf_received:
+      return (char*)"Received char written by simulator (int, R)";
+    case serconf_flowctrl:
+      return (char*)"Flow-control simulation on/off (bool, RW)";
+    case serconf_able_receive:
+      return (char*)"UART enabled to receive by flow-control (bool, RW)";
+    }
+  return (char*)"Not used";
 }
 
 t_mem
