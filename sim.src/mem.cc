@@ -190,11 +190,11 @@ cl_memory::dump(t_addr start, t_addr stop, int bpl, class cl_f *f)
   if (start < lva)
     start= lva;
   if (start > hva)
-    start= hva;
-  if (stop < lva)
-    stop= lva;
+    return dump_finished;
   if (stop > hva)
     stop= hva;
+  if (stop < lva)
+    return dump_finished;
   if (stop >= start)
     {
       step= +1;
@@ -266,6 +266,16 @@ cl_memory::dump_s(t_addr start, t_addr stop, int bpl, class cl_f *f)
     start= dump_finished;
   if (stop < 0)
     stop= start + 10*8 - 1;
+  
+  if (start < lva)
+    start= lva;
+  if (start > hva)
+    return dump_finished;
+  if (stop > hva)
+    stop= hva;
+  if (stop < lva)
+    return dump_finished;
+  
   if (bpl < 0)
     bpl= 8;
   t_addr a= start;
@@ -300,6 +310,16 @@ cl_memory::dump_b(t_addr start, t_addr stop, int bpl, class cl_f *f)
     start= dump_finished;
   if (stop < 0)
     stop= start + 10*8 - 1;
+
+  if (start < lva)
+    start= lva;
+  if (start > hva)
+    return dump_finished;
+  if (stop > hva)
+    stop= hva;
+  if (stop < lva)
+    return dump_finished;
+
   if (bpl < 0)
     bpl= 8;
   t_addr a= start;
@@ -335,8 +355,19 @@ cl_memory::dump_i(t_addr start, t_addr stop, int bpl, class cl_f *f)
     stop= start + 10*8 - 1;
   if (stop > hva)
     stop= hva;
+
+  if (start < lva)
+    start= lva;
+  if (start > hva)
+    return dump_finished;
+  if (stop > hva)
+    stop= hva;
+  if (stop < lva)
+    return dump_finished;
+  
   if (start > stop)
     return dump_finished= stop;
+  
   if (bpl < 0)
     bpl= 16;
   if (bpl > 32)
@@ -391,10 +422,23 @@ cl_memory::dump(enum dump_format fmt,
 		t_addr start, t_addr stop, int bpl,
 		class cl_f *f)
 {
+  t_addr lva= lowest_valid_address();
+  t_addr hva= highest_valid_address();
+
   if (start < 0)
     start= dump_finished;
   if (stop < 0)
     stop= start + 10*8 - 1;
+
+  if (start < lva)
+    start= lva;
+  if (start > hva)
+    return dump_finished;
+  if (stop > hva)
+    stop= hva;
+  if (stop < lva)
+    return dump_finished;
+  
   if (bpl < 0)
     bpl= 8;
   switch (fmt & df_format)
