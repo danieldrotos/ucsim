@@ -114,6 +114,8 @@ class cl_hw: public cl_guiobj
   
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
+  virtual void new_i(class cl_f *f_in);
+  virtual void new_o(class cl_f *f_out);
   virtual cl_hw_io *get_io(void);
   virtual bool proc_input(void);
   virtual bool handle_input(int c);

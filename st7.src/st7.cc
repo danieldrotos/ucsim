@@ -414,9 +414,9 @@ cl_st7::disass(t_addr addr, const char *sep)
               break;
             case 'p': // b    byte index offset
 	      {
-		int i= (long int)(addr+immed_offset+1
-				  +(char)rom->get(addr+immed_offset)); 
-		sprintf(temp, "0x%04lx", i&0xffff);
+		int i= (int)(addr+immed_offset+1
+			     +(char)rom->get(addr+immed_offset)); 
+		sprintf(temp, "0x%04x", i&0xffff);
 		++immed_offset;
 		break;
 	      }

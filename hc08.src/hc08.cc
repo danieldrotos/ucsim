@@ -380,7 +380,7 @@ cl_hc08::disass(t_addr addr, const char *sep)
 	      {
 		int i= addr+immed_offset+1
 		  +(char)rom->get(addr+immed_offset);
-		sprintf(temp, "0x%04lx", i & 0xffff);
+		sprintf(temp, "0x%04x", i & 0xffff);
 		++immed_offset;
 		break;
 	      }

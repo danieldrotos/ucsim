@@ -61,6 +61,8 @@ class cl_serial_hw: public cl_hw
   class cl_optref *serial_in_file_option;
   class cl_optref *serial_out_file_option;
   class cl_optref *serial_port_option;
+  class cl_optref *serial_iport_option;
+  class cl_optref *serial_oport_option;
   class cl_serial_listener *listener;
   //class cl_hw_io *io;
   char input;
@@ -84,13 +86,22 @@ class cl_serial_hw: public cl_hw
   virtual void reset(void);
 };
 
+enum ser_listener_for
+  {
+   sl_io,
+   sl_i,
+   sl_o
+  };
 
 class cl_serial_listener: public cl_listen_console
 {
+protected:
+  enum ser_listener_for sl_for;
  public:
   class cl_serial_hw *serial_hw;
   cl_serial_listener(int serverport, class cl_app *the_app,
-		     class cl_serial_hw *the_serial);
+		     class cl_serial_hw *the_serial,
+		     enum ser_listener_for slf);
   virtual int init(void);
   virtual int proc_input(class cl_cmdset *cmdset);
   virtual bool prevent_quit(void) { return false; }

@@ -269,13 +269,6 @@ cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
   make_io();
   if (!io)
     return ;
-  /*if (io->fin)
-    delete io->fin;
-  if (io->fout)
-  delete io->fout;*/
-  //io->close_files();
-  /*io->fin= f_in;
-    io->fout= f_out;*/
   io->tu_reset();
   io->replace_files(true, f_in, f_out);
   if (f_in)
@@ -286,6 +279,34 @@ cl_hw::new_io(class cl_f *f_in, class cl_f *f_out)
     }
   draw_display();
   //application->get_commander()->update_active();
+}
+
+void
+cl_hw::new_i(class cl_f *f_in)
+{
+  make_io();
+  if (!io)
+    return ;
+  io->tu_reset();
+  io->replace_files(true, f_in, io->get_fout());
+  if (f_in)
+    {
+      f_in->interactive(NULL);
+      f_in->raw();
+      f_in->echo(NULL);
+    }
+  draw_display();
+}
+
+void
+cl_hw::new_o(class cl_f *f_out)
+{
+  make_io();
+  if (!io)
+    return ;
+  io->tu_reset();
+  io->replace_files(true, io->get_fin(), f_out);
+  draw_display();
 }
 
 class cl_hw_io *

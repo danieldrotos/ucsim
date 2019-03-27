@@ -250,7 +250,9 @@ enum {
   SOPT_OUT,
   SOPT_UART,
   SOPT_USART,
-  SOPT_PORT
+  SOPT_PORT,
+  SOPT_IPORT,
+  SOPT_OPORT
 };
 
 static const char *S_opts[]= {
@@ -259,6 +261,8 @@ static const char *S_opts[]= {
   /*[SOPT_UART]=*/	"uart",
   /*[SOPT_USART]=*/	"usart",
   /*[SOPT_PORT]=*/	"port",
+  /*[SOPT_IPORT]=*/	"iport",
+  /*[SOPT_OPORT]=*/	"oport",
   NULL
 };
 
@@ -447,7 +451,7 @@ cl_app::proc_arguments(int argc, char *argv[])
       case 'S':
 	{
 	  char *iname= NULL, *oname= NULL;
-	  int uart=0, port=0;
+	  int uart=0, port=0, iport= 0, oport= 0;
 	  subopts= optarg;
 	  while (*subopts != '\0')
 	    {
@@ -473,6 +477,12 @@ cl_app::proc_arguments(int argc, char *argv[])
 		case SOPT_PORT:
 		  port= strtol(value, 0, 0);
 		  break;
+		case SOPT_IPORT:
+		  iport= strtol(value, 0, 0);
+		  break;
+		case SOPT_OPORT:
+		  oport= strtol(value, 0, 0);
+		  break;
 		default:
 		  /* Unknown suboption. */
 		  fprintf(stderr, "Unknown suboption `%s' for -S\n", value);
@@ -480,7 +490,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 		  break;
 		}
 	    }
-	  if (!iname && !oname && (port<=0))
+	  if (!iname && !oname && (port<=0 && iport<=0 && oport<=0))
 	    {
 	      fprintf(stderr, "Suboption missing for -S\n");
 	    }
@@ -531,6 +541,36 @@ cl_app::proc_arguments(int argc, char *argv[])
 		      free(h);
 		    }
 		  options->set_value(s, this, (long)port);
+		  free(s);
+		}
+	      if (iport > 0)
+		{
+		  s= format_string("serial%d_iport", uart);
+		  if ((o= options->get_option(s)) == NULL)
+		    {
+		      h= format_string("Use localhost:port for serial line uart%d input (-S)", uart);
+		      o= new cl_number_option(this, s, h);
+		      o->init();
+		      o->hide();
+		      options->add(o);
+		      free(h);
+		    }
+		  options->set_value(s, this, (long)iport);
+		  free(s);
+		}
+	      if (oport > 0)
+		{
+		  s= format_string("serial%d_oport", uart);
+		  if ((o= options->get_option(s)) == NULL)
+		    {
+		      h= format_string("Use localhost:port for serial line uart%d output (-S)", uart);
+		      o= new cl_number_option(this, s, h);
+		      o->init();
+		      //o->hide();
+		      options->add(o);
+		      free(h);
+		    }
+		  options->set_value(s, this, (long)oport);
 		  free(s);
 		}
 	    }
