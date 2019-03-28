@@ -59,8 +59,17 @@ typedef i32_t		t_smem;		/* signed 32 bit memory */
 
 #define AI(addr)   ((int)(addr))
 #define AU(addr)   ((unsigned int)(addr))
+#define AI8(addr)  (AI((addr)&0xff))
+#define AU8(addr)  (AU((addr)&0xff))
 #define AI16(addr) (AI((addr)&0xffff))
 #define AU16(addr) (AU((addr)&0xffff))
+#define AI32(addr) (AI((addr)&0xffffffff))
+#define AU32(addr) (AU((addr)&0xffffffff))
+
+#define MI(v)      ((int)(v))
+#define MU(v)      ((unsigned int)(v))
+#define MI32(addr) (MI((v)&0xffffffff))
+#define MU32(addr) (MU((v)&0xffffffff))
 
 enum {
   max_mem_size= 0x40000000		/* 1 GB */
