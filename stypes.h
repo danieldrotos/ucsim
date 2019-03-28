@@ -54,6 +54,14 @@ typedef i64_t		t_addr;		/* 64 bit max */
 typedef u32_t		t_mem;		/* 32 bit max */
 typedef i32_t		t_smem;		/* signed 32 bit memory */
 
+#define SPECA SPEC_QWORD
+#define SPECM SPEC_DWORD
+
+#define AI(addr)   ((int)(addr))
+#define AU(addr)   ((unsigned int)(addr))
+#define AI16(addr) (AI((addr)&0xffff))
+#define AU16(addr) (AU((addr)&0xffff))
+
 enum {
   max_mem_size= 0x40000000		/* 1 GB */
 };
