@@ -468,9 +468,14 @@ cl_hw::print_cfg_info(class cl_console_base *con)
       for (a= s; a <= e; a++)
 	{
 	  v= cfg->read(a);
-	  con->dd_printf("0x%02x ", a);
-	  con->dd_printf("%08x %c ", v, isprint(v)?v:'.');
-	  con->dd_printf("%s\n", cfg_help(a));
+	  con->dd_printf("0x%02x ", AU(a));
+	  con->dd_printf("%08x ",v);
+	  if ((v < 128) &&
+	      isprint((int)v))
+	    con->dd_printf("%c", v);
+	  else
+	    con->dd_printf(".");
+	  con->dd_printf(" %s\n", cfg_help(a));
 	}
     }
 }

@@ -509,9 +509,9 @@ cl_memory::print_info(chars pre, class cl_console_base *con)
   if (!hidden)
     {
       con->dd_printf("%s0x%06x-0x%06x %8d %s (%d,%s,%s)\n", (char*)pre,
-		     (unsigned int)(get_start_address()),
-		     (unsigned int)(highest_valid_address()),
-		     (unsigned int)(get_size()),
+		     AU(get_start_address()),
+		     AU(highest_valid_address()),
+		     AU(get_size()),
 		     n,
 		     width, data_format, addr_format);
     }
@@ -1737,9 +1737,9 @@ cl_address_space::print_info(chars pre, class cl_console_base *con)
   if (!hidden)
     {
       con->dd_printf("%s0x%06x-0x%06x %8d %s (%d,%s,%s)\n", (char*)pre,
-		     (unsigned int)(get_start_address()),
-		     (unsigned int)(highest_valid_address()),
-		     (unsigned int)(get_size()),
+		     AU(get_start_address()),
+		     AU(highest_valid_address()),
+		     AU(get_size()),
 		     n,
 		     width, data_format, addr_format);
     }
@@ -1882,9 +1882,9 @@ cl_memory_chip::print_info(chars pre, class cl_console_base *con)
     {
       //con->dd_printf(pre0);
       con->dd_printf("%s0x%06x-0x%06x %8d %s (%d,%s,%s)\n", (char*)pre,
-		     (unsigned int)(get_start_address()),
-		     (unsigned int)(highest_valid_address()),
-		     (unsigned int)(get_size()),
+		     AU(get_start_address()),
+		     AU(highest_valid_address()),
+		     AU(get_size()),
 		     n,
 		     width, data_format, addr_format);
     }

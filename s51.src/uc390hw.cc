@@ -257,11 +257,11 @@ cl_uc390_hw::print_info(class cl_console_base *con)
   l = sfr->get (DPX) * 256*256 +
       sfr->get (DPH) * 256 +
       sfr->get (DPL);
-  con->dd_printf ("\tDPTR  0x%06x\n", l);
+  con->dd_printf ("\tDPTR  0x%06lx\n", l);
   l = sfr->get (DPX1) * 256*256 +
       sfr->get (DPH1) * 256 +
       sfr->get (DPL1);
-  con->dd_printf ("\tDPTR1 0x%06x\n", l);
+  con->dd_printf ("\tDPTR1 0x%06lx\n", l);
   print_cfg_info(con);
 }
 

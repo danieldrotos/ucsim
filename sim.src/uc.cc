@@ -2599,7 +2599,7 @@ cl_error_unknown_code::print(class cl_commander_base *c)
       /*cmd_fprintf(f,*/c->dd_printf(")");
     }
   else
-    /*cmd_fprintf(f,*/c->dd_printf("0x%06x", PC);
+    /*cmd_fprintf(f,*/c->dd_printf("0x%06x", AU(PC));
   /*cmd_fprintf(f,*/c->dd_printf("\n");
 }
 

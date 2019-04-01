@@ -663,8 +663,8 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
       if (!mem->valid_address(a))
 	{
 	  con->dd_printf("Address must be between 0x%x and 0x%x\n",
-			 mem->lowest_valid_address(),
-			 mem->highest_valid_address());
+			 AU(mem->lowest_valid_address()),
+			 AU(mem->highest_valid_address()));
 	  return;
 	}
       as_name= strdup((char*)mem->get_name());
@@ -909,7 +909,7 @@ cl_simulator_interface::print_info(class cl_console_base *con)
   if (as)
     con->dd_printf(as->addr_format, address);
   else
-    con->dd_printf("0x%x", address);
+    con->dd_printf("0x%x", AU(address));
   con->dd_printf("]\n");
   
   con->dd_printf("Active command: ");
@@ -930,7 +930,7 @@ cl_simulator_interface::print_info(class cl_console_base *con)
 	    {
 	      t_mem p;
 	      if (c->get_parameter(i, &p))
-		con->dd_printf(" %02x", p);
+		con->dd_printf(" %02x", MU8(p));
 	      else
 		con->dd_printf(" --");
 	    }
