@@ -303,13 +303,13 @@ COMMAND_DO_WORK_UC(cl_timer_value_cmd)
 	con->dd_printf("Error: Timer %d does not exist\n", id_nr);
       return(false);
     }
-  if (params[2])
+  if (cmdline->param(0) == NULL)
     {
       con->dd_printf("Error: Value is missing\n");
       return(false);
     }
   long val;
-  if (!params[2]->get_ivalue(&val))
+  if (!cmdline->param(0)->get_ivalue(&val))
     {
       con->dd_printf("Error: Wrong parameter\n");
       return(false);
