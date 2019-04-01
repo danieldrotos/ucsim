@@ -227,6 +227,8 @@ print_help(char *name)
      "                  in=file   serial input will be read from file named `file'\n"
      "                  out=file  serial output will be written to `file'\n"
      "                  port=nr   Use localhost:nr as server for serial line\n"
+     "                  iport=nr  Use localhost:nr as server for serial input\n"
+     "                  oport=nr  Use localhost:nr as server for serial output\n"
      "  -I options   `options' is a comma separated list of options according to\n"
      "               simulator interface. Known options are:\n"
      "                 if=memory[address]  turn on interface on given memory location\n"
