@@ -414,7 +414,7 @@ cl_hw::refresh_display(bool force)
       io->dd_printf("%4s", n?"Run":"Stop");
       cache_run= n;
     }
-  unsigned int t= uc->get_rtime() * 1000;
+  unsigned int t= (unsigned int)(uc->get_rtime()) * 1000;
   if ((t != cache_time) ||
       force)
     {

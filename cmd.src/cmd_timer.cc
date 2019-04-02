@@ -288,10 +288,9 @@ CMDHELP(cl_timer_stop_cmd,
 COMMAND_DO_WORK_UC(cl_timer_value_cmd)
   //val(class cl_uc *uc, class cl_cmdline *cmdline, class cl_console *con)
 {
-  class cl_cmd_arg *params[4]= { cmdline->param(0),
+  /*class cl_cmd_arg *params[4]= { cmdline->param(0),
 				 cmdline->param(1),
-				 cmdline->param(2),
-				 cmdline->param(3) };
+				 cmdline->param(2) };*/
   
   if (cl_timer_cmd::do_work(uc, cmdline, con))
     return(false);

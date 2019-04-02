@@ -2291,7 +2291,7 @@ cl_uc::get_rtime(void)
 unsigned long
 cl_uc::clocks_of_time(double t)
 {
-  return t * xtal;
+  return (unsigned long)(t * xtal);
 }
 
 int

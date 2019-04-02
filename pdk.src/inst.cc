@@ -183,6 +183,7 @@ void cl_pdk::store_io(t_addr addr, unsigned char value) {
   default:
     assert(!"invalid bit access to FLAG");
   }
+  return 0;
 }
 
 void cl_pdk::store_flag(flag n, /*bool*/int value) {
