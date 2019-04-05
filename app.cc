@@ -140,8 +140,8 @@ cl_app::run(void)
 	}
       if (rs == rs_start)
 	{
-	  if (startup_command.nempty())
-	    exec(startup_command);
+	  //if (startup_command.nempty())
+	  //exec(startup_command);
 	  if (o)
 	    o->get_value(&g_opt);
 	  if (sim && g_opt)
