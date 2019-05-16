@@ -238,6 +238,8 @@ bool
 cl_console::input_avail(void)
 {
   bool ret= false;
+  if (startup_command.nempty())
+    return true;
   if (input_active())
     {
       ret= fin->input_avail();
@@ -618,6 +620,16 @@ cl_commander::input_avail(void)
   bool ret= check_inputs(active_inputs, avail);
   avail->disconn_all();
   delete avail;
+  if (!ret)
+    for (int j = 0; j < cons->count; j++)
+    {
+      class cl_console *c = dynamic_cast<class cl_console*>((class cl_console_base*)(cons->at(j)));
+      chars *s= c->get_startup();
+      if (s->nempty())
+	{
+	  return true;
+	}
+    }
   return ret;
 }
 
@@ -646,9 +658,9 @@ cl_commander::proc_input(void)
       if (config_console &&
 	  (config_console != c))
 	continue;
-      
+
       if (c->input_active() &&
-	  f)
+	  (f || c->has_startup()))
         {
 	  if (c->input_avail())
             {
