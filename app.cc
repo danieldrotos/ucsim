@@ -337,6 +337,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	break;
       case 'e':
 	startup_command= optarg;
+	startup_command+= "\n";
 	break;
 #ifdef SOCKET_AVAIL
       case 'Z': case 'r':

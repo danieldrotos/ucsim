@@ -507,6 +507,10 @@ cl_commander::init(void)
 	  in->interactive(out);
 	  add_console(con= new cl_console(in, out, app));
 	  config_console= exec_on(con, Config);
+	  if (config_console)
+	    config_console->set_startup(app->startup_command);
+	  else
+	    con->set_startup(app->startup_command);
 	  need_config= false;
 	  if (in->tty)
 	    con->set_flag(CONS_INTERACTIVE, true);
@@ -526,21 +530,32 @@ cl_commander::init(void)
       in->interactive(out);
       add_console(con= new cl_console(in, out, app));
       config_console= exec_on(con, Config);
+      if (config_console)
+	config_console->set_startup(app->startup_command);
+      else
+	con->set_startup(app->startup_command);
       need_config= false;
       if (in->tty)
 	con->set_flag(CONS_INTERACTIVE, true);
     }
-  if (need_config &&
-      Config &&
-      *Config)
+  if (
+      need_config &&
+      (
+       (Config && *Config)
+       ||
+       app->startup_command.nempty()
+       )
+      )
     {
-      class cl_f *i, *o;
-      i= mk_io(Config, "r");
+      class cl_f *i= NULL, *o;
+      if (Config && *Config)
+	i= mk_io(Config, "r");
       o= cp_io(fileno(stderr), "w");
       con= new cl_console(/*fc*/i, /*stderr*/o, app);
       con->set_flag(CONS_NOWELCOME|CONS_ECHO, true);
       //exec_on(con, Config);
       config_console= con;
+      con->set_startup(app->startup_command);
       add_console(con);
     }
   return(0);
