@@ -669,18 +669,18 @@ COMMAND_DO_WORK_UC(cl_hole_cmd)
       t_mem v, a;
       if (cmdline->syntax_match(uc, NUMBER NUMBER))
 	{
-	  v= params[0]->value.number;
-	  a= params[1]->value.number;
+	  a= params[0]->value.number;
+	  v= params[1]->value.number;
 	}
       else if (cmdline->syntax_match(uc, NUMBER))
 	{
-	  v= params[0]->value.number;
-	  a= 10;
+	  a= params[0]->value.number;
+	  v= 0;
 	}
       else
 	{
-	  v= 0;
 	  a= 10;
+	  v= 0;
 	}
       t_addr ad, l, h, sa= 0, len= 0;
       t_mem mv;
@@ -728,8 +728,8 @@ COMMAND_DO_WORK_UC(cl_hole_cmd)
 }
 
 CMDHELP(cl_hole_cmd,
-	"hole [value [amount]]",
-	"search area in rom where min size is amount filled with value",
+	"hole [length [value]]",
+	"search area in memory of length that is filled with value",
 	"long help of hole")
 
 
