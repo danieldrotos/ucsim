@@ -657,6 +657,82 @@ CMDHELP(cl_Where_cmd,
 	"Case sensitive search for data",
 	"long help of Where")
 
+
+COMMAND_DO_WORK_UC(cl_hole_cmd)
+{
+  class cl_cmd_arg *params[4]= { cmdline->param(0),
+				 cmdline->param(1) };
+  class cl_memory *m= uc->rom;
+  
+  if (m)
+    {
+      t_mem v, a;
+      if (cmdline->syntax_match(uc, NUMBER NUMBER))
+	{
+	  v= params[0]->value.number;
+	  a= params[1]->value.number;
+	}
+      else if (cmdline->syntax_match(uc, NUMBER))
+	{
+	  v= params[0]->value.number;
+	  a= 10;
+	}
+      else
+	{
+	  v= 0;
+	  a= 10;
+	}
+      t_addr ad, l, h, sa= 0, len= 0;
+      t_mem mv;
+      bool in= false;
+      l= m->lowest_valid_address();
+      h= m->highest_valid_address();
+      for (ad= l; ad <= h; ad++)
+	{
+	  mv= m->get(ad);
+	  if (!in && (mv==v))
+	    {
+	      // found start
+	      sa= ad;
+	      in= true;
+	      len= 0;
+	    }
+	  else if (in && (mv==v))
+	    {
+	      // still inside
+	      len++;
+	    }
+	  else if (in && (mv!=v))
+	    {
+	      // found end
+	      if (len >= a)
+		{
+		  con->dd_printf(m->addr_format, sa);
+		  con->dd_printf(" %u\n", AU(len));
+		}
+	      in= false;
+	    }
+	}
+      if (in)
+	{
+	  // found end after highest reached
+	  if (len >= a)
+	    {
+	      con->dd_printf(m->addr_format, sa);
+	      con->dd_printf(" %u\n", AU(len));
+	    }
+	  in= false;
+	}
+    }
+  return false;
+}
+
+CMDHELP(cl_hole_cmd,
+	"hole [value [amount]]",
+	"search area in rom where min size is amount filled with value",
+	"long help of hole")
+
+
 COMMAND_DO_WORK_UC(cl_var_cmd)
 {
   class cl_cmd_arg *params[4]= { cmdline->param(0),
