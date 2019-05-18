@@ -289,9 +289,16 @@ cl_memory::dump_s(t_addr start, t_addr stop, int bpl, class cl_f *f)
 	 (a <= hva))
     {
       char c= d;
+      int i= d;
       if (a >= lva)
 	{
-	  f->write(&c, 1);
+	  if (isprint(d))
+	    f->write(&c, 1);
+	  else
+	    {
+	      chars s("", "\\%03o", d);
+	      f->write((char*)s, s.len());
+	    }
 	  last= c;
 	}
       d= read(++a);
