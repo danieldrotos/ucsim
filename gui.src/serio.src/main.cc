@@ -22,6 +22,8 @@
 #include "frontend.hh"
 #include "posix_signal.hh"
 
+Viewer *view;
+FileIO *fobj;
 
 struct auto_answer_t {
   char *pattern;
@@ -42,6 +44,7 @@ int aa_p_num= 0;
 int aa_a_num= 0;
 char *aa_queue;
 int aa_q_len= 0;
+
 
 void
 init_aa()
@@ -130,12 +133,12 @@ shift_queue()
     {
       for (i= 1; i<aa_q_len; i++)
 	aa_queue[i-1]= aa_queue[i];
-      aa_queue[aa_q_len= i]= 0;
+      aa_queue[--aa_q_len]= 0;
     }
 }
 
 void
-aa_proc(char c, FileIO *fobj)
+aa_proc(char c)
 {
   int i, p;
   // add to queue
@@ -315,7 +318,9 @@ void PrintUsage(char *progname)
   std::cout << "-o <filename>\t<filename> is the pipe to the controllers' serial output\n";
   std::cout << "-I \t\thexa filter on input\n";
   std::cout << "-O \t\thexa filter on output\n";
-  std::cout << "-L n\tSet line length of hex dump in output panel (def=8)\n";
+  std::cout << "-L n\t\tSet line length of hex dump in output panel (def=8)\n";
+  std::cout << "-a string\tPattern for autoanswer\n";
+  std::cout << "-A string\tAnswer for autoanswer\n";
   std::cout << "-h\t\tshow the help\n";
   std::cout << "\nTim Hurman - t.hurman@virgin.net\n";
   exit(0);
@@ -379,8 +384,8 @@ int main(int argc, char **argv)
     PrintUsage(argv[0]);
   
   // the main objects needed
-  Viewer *view = new Viewer();
-  FileIO *fobj = new FileIO(infile, outfile);
+  view = new Viewer();
+  fobj = new FileIO(infile, outfile);
   SigHandler *sig = new SigHandler();
   
   view->iflt_mode(fi);
@@ -418,7 +423,7 @@ int main(int argc, char **argv)
 	    {
 	      if (fobj->RecvByte(string) > 0)
 		{
-		  aa_proc(string[0], fobj);
+		  aa_proc(string[0]);
 		  view->AddChOutWin(string[0]);
 		}
 	    }
