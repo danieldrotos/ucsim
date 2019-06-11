@@ -205,9 +205,9 @@ static void
 print_help(char *name)
 {
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-hHVvPgGw] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
+  printf("Usage: %s [-hHVvPgGwb] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
 	 "       [-C cfg_file] [-c file] [-s file] [-S optionlist]\n"
-	 "       [-a nr]"
+	 "       [-a nr] [-o color]"
 #ifdef SOCKET_AVAIL
 	 " [-Z portnum] [-k portnum]"
 #endif
@@ -238,6 +238,8 @@ print_help(char *name)
      "                 in=file             specify input file for IO\n"
      "                 out=file            specify output file for IO\n"
      "  -p prompt    Specify string for prompt\n"
+     "  -o colors    List of color specification: what=colspec,...\n"
+     "  -b           Black&white (non-color) console"
      "  -P           Prompt is a null ('\\0') character\n"
      "  -g           Go, start simulation\n"
      "  -G           Go, start simulation, quit on stop\n"
@@ -293,7 +295,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJ_");
+  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJo:_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
@@ -355,12 +357,19 @@ cl_app::proc_arguments(int argc, char *argv[])
 	  break;
 	}
 #endif
-      case 'p': {
-	if (!options->set_value("prompt", this, optarg))
-	  fprintf(stderr, "Warning: No \"prompt\" option found to set "
-		  "parameter of -p as default prompt\n");
-	break;
-      }
+      case 'p':
+	{
+	  if (!options->set_value("prompt", this, optarg))
+	    fprintf(stderr, "Warning: No \"prompt\" option found to set "
+		    "parameter of -p as default prompt\n");
+	  break;
+	}
+      case 'b':
+	{
+	  if (!options->set_value("black_and_white", this, bool(true)))
+	    fprintf(stderr, "Warning: No \"black_and_white\" option found to set\n");
+	  break;
+	}
       case 'P':
 	if (!options->set_value("null_prompt", this, bool(true)))
 	  fprintf(stderr, "Warning: No \"null_prompt\" option found\n");
@@ -640,6 +649,24 @@ cl_app::proc_arguments(int argc, char *argv[])
 	    }
 	  break;
 	}
+      case 'o':
+	{
+	  chars s= optarg;
+	  chars opt= s.token(",");
+	  while (opt.nempty())
+	    {
+	      printf("colspecopt=\"%s\"\n", (char*)opt);
+	      chars col_name, col_value;
+	      col_name= opt.token("=");
+	      col_value=opt.token("=");
+	      printf("name=\"%s\" value=\"%s\"\n", (char*)col_name,(char*)col_value);
+	      class cl_option *o= options->get_option((char*)chars("","color_%s",(char*)col_name));
+	      if (o)
+		o->set_value(col_value);
+	      opt= s.token(",");
+	    }
+	  break;
+	}
       case 'h':
 	print_help(cchars("s51"));
 	exit(0);
@@ -887,6 +914,11 @@ cl_app::mk_options(void)
   o->init();
   o->set_value((bool)false);
   
+  options->new_option(o= new cl_bool_option(this, "black_and_white",
+					    "Non-color console (-b)"));
+  o->init();
+  o->set_value((bool)false);
+  
   options->new_option(o= new cl_bool_option(this, "null_prompt",
 					    "Use \\0 as prompt (-P)"));
   o->init();
@@ -965,6 +997,42 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_bool_option(this, "echo_script",
 					    "Print breakpoint script before execute"));
   o->init();
+
+  options->new_option(o= new cl_string_option(this, "color_prompt",
+					      "Prompt color"));
+  o->init();
+  o->set_value((char*)"bwhite:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_prompt_console",
+					      "Color of console number in prompt"));
+  o->init();
+  o->set_value((char*)"yellow:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_command",
+					      "Color of entered command"));
+  o->init();
+  o->set_value((char*)"white:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_answer",
+					      "Answer color"));
+  o->init();
+  o->set_value((char*)"white:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_dump_address",
+					      "Address color in dump"));
+  o->init();
+  o->set_value((char*)"white:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_dump_number",
+					      "Value color in dump"));
+  o->init();
+  o->set_value((char*)"white:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_dump_char",
+					      "Text color in dump"));
+  o->init();
+  o->set_value((char*)"white:black");
+  
 }
 
 

@@ -181,6 +181,10 @@ cl_console_base::welcome(void)
 void
 cl_console_base::print_prompt(void)
 {
+  bool bw= false;
+  class cl_option *o= app->options->get_option("black_and_white");
+  if (o) o->get_value(&bw);
+  
   if (flags & (CONS_FROZEN | CONS_INACTIVE))
     return;
 
@@ -199,7 +203,21 @@ cl_console_base::print_prompt(void)
     }
   else
     {
-      dd_printf("%d%s", id, (prompt && prompt[0]) ? prompt : "> ");
+      o= app->options->get_option("color_prompt_console");
+      char *cc= NULL;
+      if (o) o->get_value(&cc);
+      chars cce= colopt2ansiseq(cc);
+
+      if (!bw) dd_printf("%s", (char*)cce);
+      dd_printf("%d", id);
+      if (!bw) dd_printf("\033[0m");
+      o= app->options->get_option("color_prompt");
+      cc= NULL;
+      if (o) o->get_value(&cc);
+      cce= colopt2ansiseq(cc);
+      if (!bw) dd_printf("%s", (char*)cce);
+      dd_printf("%s", (prompt && prompt[0]) ? prompt : "> ");
+      if (!bw) dd_printf("\033[0m");
     }
 }
 
