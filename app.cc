@@ -239,7 +239,7 @@ print_help(char *name)
      "                 out=file            specify output file for IO\n"
      "  -p prompt    Specify string for prompt\n"
      "  -o colors    List of color specification: what=colspec,...\n"
-     "  -b           Black&white (non-color) console"
+     "  -b           Black&white (non-color) console\n"
      "  -P           Prompt is a null ('\\0') character\n"
      "  -g           Go, start simulation\n"
      "  -G           Go, start simulation, quit on stop\n"
@@ -295,7 +295,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJo:_");
+  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJo:b_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
