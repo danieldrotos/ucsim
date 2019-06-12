@@ -355,7 +355,7 @@ cl_avr::print_regs(class cl_console_base *con)
   uchar data, sreg= ram->get(SREG);
   uint x, y, z;
 
-  ram->dump(0, 31, 16, con->get_fout());
+  ram->dump(0, 31, 16, con/*->get_fout()*/);
 
   con->dd_printf("ITHSVNZC  SREG= 0x%02x %3d %c\n",
 		 sreg, sreg, isprint(sreg)?sreg:'.');

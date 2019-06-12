@@ -1026,7 +1026,7 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_string_option(this, "color_dump_address",
 					      "Address color in dump"));
   o->init();
-  o->set_value((char*)"white:black");
+  o->set_value((char*)"byellow:black");
   
   options->new_option(o= new cl_string_option(this, "color_dump_number",
 					      "Value color in dump"));
@@ -1036,7 +1036,7 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_string_option(this, "color_dump_char",
 					      "Text color in dump"));
   o->init();
-  o->set_value((char*)"white:black");
+  o->set_value((char*)"green:black");
   
 }
 
