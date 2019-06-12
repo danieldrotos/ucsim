@@ -1016,7 +1016,12 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_string_option(this, "color_answer",
 					      "Answer color"));
   o->init();
-  o->set_value((char*)"white:black");
+  o->set_value((char*)"bwhite:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_result",
+					      "Result of expression"));
+  o->init();
+  o->set_value((char*)"byellow:black");
   
   options->new_option(o= new cl_string_option(this, "color_dump_address",
 					      "Address color in dump"));
