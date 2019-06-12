@@ -181,10 +181,6 @@ cl_console_base::welcome(void)
 void
 cl_console_base::print_prompt(void)
 {
-  bool bw= false;
-  class cl_option *o= app->options->get_option("black_and_white");
-  if (o) o->get_value(&bw);
-  
   if (flags & (CONS_FROZEN | CONS_INACTIVE))
     return;
 
@@ -203,21 +199,8 @@ cl_console_base::print_prompt(void)
     }
   else
     {
-      o= app->options->get_option("color_prompt_console");
-      char *cc= NULL;
-      if (o) o->get_value(&cc);
-      chars cce= colopt2ansiseq(cc);
-
-      if (!bw) dd_printf("%s", (char*)cce);
-      dd_printf("%d", id);
-      if (!bw) dd_printf("\033[0m");
-      o= app->options->get_option("color_prompt");
-      cc= NULL;
-      if (o) o->get_value(&cc);
-      cce= colopt2ansiseq(cc);
-      if (!bw) dd_printf("%s", (char*)cce);
-      dd_printf("%s", (prompt && prompt[0]) ? prompt : "> ");
-      if (!bw) dd_printf("\033[0m");
+      dd_cprintf("prompt_console", "%d", id);
+      dd_cprintf("prompt", "%s", (prompt && prompt[0]) ? prompt : "> ");
     }
 }
 
@@ -231,6 +214,39 @@ cl_console_base::dd_printf(const char *format, ...)
   ret= cmd_do_print(format, ap);
   va_end(ap);
 
+  return(ret);
+}
+
+int
+cl_console_base::dd_cprintf(const char *color_name, const char *format, ...)
+{
+  va_list ap;
+  int ret= 0;
+  bool bw= false;
+  char *cc;
+  chars cce;
+  class cl_f *fo= get_fout();
+  class cl_option *o= app->options->get_option("black_and_white");
+  
+  if (o) o->get_value(&bw);
+  if (!fo ||
+      (fo &&
+      !fo->tty)
+      )
+    bw= true;
+
+  o= app->options->get_option((char*)chars("", "color_%s", color_name));
+  cc= NULL;
+  if (o) o->get_value(&cc);
+  cce= colopt2ansiseq(cc);
+  if (!bw) dd_printf("%s", (char*)cce);
+  
+  va_start(ap, format);
+  ret= cmd_do_print(format, ap);
+  va_end(ap);
+
+  if (!bw) dd_printf("\033[0m");
+  
   return(ret);
 }
 
