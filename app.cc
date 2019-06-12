@@ -1011,7 +1011,7 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_string_option(this, "color_command",
 					      "Color of entered command"));
   o->init();
-  o->set_value((char*)"white:black");
+  o->set_value((char*)"green:black");
   
   options->new_option(o= new cl_string_option(this, "color_answer",
 					      "Answer color"));
@@ -1038,6 +1038,11 @@ cl_app::mk_options(void)
   o->init();
   o->set_value((char*)"green:black");
   
+  options->new_option(o= new cl_string_option(this, "color_error",
+					      "Text color in error messages"));
+  o->init();
+  o->set_value((char*)"red:black");
+  
 }
 
 
@@ -1051,6 +1056,20 @@ cl_app::dd_printf(const char *format, ...)
 
   va_start(ap, format);
   int i= commander->dd_printf(format, ap);
+  va_end(ap);
+  return(i);
+}
+
+int
+cl_app::dd_cprintf(const char *color_name, const char *format, ...)
+{
+  va_list ap;
+
+  if (!commander)
+    return(0);
+
+  va_start(ap, format);
+  int i= commander->dd_cprintf(color_name, format, ap);
   va_end(ap);
   return(i);
 }

@@ -151,6 +151,8 @@ cl_console_base::init(void)
   debug_option->init();
   welcome();
   print_prompt();
+  if (get_fin() != NULL)
+    get_fin()->set_echo_color(get_color_ansiseq("command"));
   last_command= 0;
   //last_cmdline= 0;
   last_cmd= chars("");
@@ -344,6 +346,45 @@ cl_console_base::cmd_do_print(const char *format, va_list ap)
 	{
 	  return 0;
 	}
+      ret= fo->vprintf((char*)format, ap);
+      //fo->flush();
+      return ret;
+    }
+  else
+    return 0;
+}
+
+int
+cl_console_base::cmd_do_cprint(const char *color_name, const char *format, va_list ap)
+{
+  int ret;
+  class cl_f *fo= get_fout(), *fi= get_fin();
+  bool bw= false;
+  char *cc;
+  chars cce;
+  class cl_option *o= app->options->get_option("black_and_white");
+  
+  if (o) o->get_value(&bw);
+  if (!fo ||
+      (fo &&
+      !fo->tty)
+      )
+    bw= true;
+
+  o= app->options->get_option((char*)chars("", "color_%s", color_name));
+  cc= NULL;
+  if (o) o->get_value(&cc);
+  cce= colopt2ansiseq(cc);
+
+  if (fo)
+    {
+      if (fi &&
+	  fi->eof() &&
+	  (fi->id() == fo->id()))
+	{
+	  return 0;
+	}
+      if (!bw) fo->prntf("%s", (char*)cce);
       ret= fo->vprintf((char*)format, ap);
       //fo->flush();
       return ret;
@@ -578,6 +619,8 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 		      dd_cprintf("result", "%ld\n", l);
 		    }
 		}
+	      if (get_fin() != NULL)
+		get_fin()->set_echo_color(get_color_ansiseq("command"));
 	      lbuf= cmdline->rest;
 	      cmdstr= lbuf;
 	      delete cmdline;
@@ -750,6 +793,31 @@ cl_commander_base::dd_printf(const char *format, va_list ap)
 }
 
 int
+cl_commander_base::dd_cprintf(const char *color_name, const char *format, va_list ap)
+{
+  int ret= 0;
+  class cl_console_base *con;
+
+  if (actual_console)
+    {
+      con= actual_console;
+    }
+  else if (frozen_console)
+    {
+      con= frozen_console;
+    }
+  else
+    {
+      con= 0;
+    }
+  if (con)
+    {
+      ret= con->cmd_do_cprint(color_name, format, ap);
+    }
+  return(ret);
+}
+
+int
 cl_commander_base::dd_printf(const char *format, ...)
 {
   va_list ap;
@@ -757,6 +825,19 @@ cl_commander_base::dd_printf(const char *format, ...)
 
   va_start(ap, format);
   ret= dd_printf(format, ap);
+  va_end(ap);
+
+  return(ret);
+}
+
+int
+cl_commander_base::dd_cprintf(const char *color_name, const char *format, ...)
+{
+  va_list ap;
+  int ret= 0;
+
+  va_start(ap, format);
+  ret= dd_cprintf(color_name, format, ap);
   va_end(ap);
 
   return(ret);
