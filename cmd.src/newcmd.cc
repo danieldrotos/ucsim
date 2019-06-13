@@ -228,7 +228,7 @@ cl_console_base::dd_cprintf(const char *color_name, const char *format, ...)
   char *cc;
   chars cce;
   class cl_f *fo= get_fout();
-  class cl_option *o= app->options->get_option("black_and_white");
+  class cl_option *o= application->options->get_option("black_and_white");
   
   if (o) o->get_value(&bw);
   if (!fo ||
@@ -237,11 +237,11 @@ cl_console_base::dd_cprintf(const char *color_name, const char *format, ...)
       )
     bw= true;
 
-  o= app->options->get_option((char*)chars("", "color_%s", color_name));
+  o= application->options->get_option((char*)chars("", "color_%s", color_name));
   cc= NULL;
   if (o) o->get_value(&cc);
   cce= colopt2ansiseq(cc);
-  if (!bw) dd_printf("%s", (char*)cce);
+  if (!bw) dd_printf("\033[0m%s", (char*)cce);
   
   va_start(ap, format);
   ret= cmd_do_print(format, ap);
@@ -253,13 +253,13 @@ cl_console_base::dd_cprintf(const char *color_name, const char *format, ...)
 }
 
 chars
-cl_console_base::get_color_ansiseq(const char *color_name)
+cl_console_base::get_color_ansiseq(const char *color_name, bool add_reset)
 {
   bool bw= false;
   char *cc;
   chars cce= "";
   class cl_f *fo= get_fout();
-  class cl_option *o= app->options->get_option("black_and_white");
+  class cl_option *o= application->options->get_option("black_and_white");
   if (o) o->get_value(&cc);
 
   if (!fo ||
@@ -269,14 +269,22 @@ cl_console_base::get_color_ansiseq(const char *color_name)
       )
     return cce;
 
-  o= app->options->get_option((char*)chars("", "color_%s", color_name));
+  o= application->options->get_option((char*)chars("", "color_%s", color_name));
   cc= NULL;
   if (o) o->get_value(&cc);
-  cce= colopt2ansiseq(cc);
+  if (add_reset)
+    cce.append("\033[0m");
+  cce.append(colopt2ansiseq(cc));
 
   return cce;
 }
 
+
+void
+cl_console_base::dd_color(const char *color_name)
+{
+  dd_printf("%s", (char*)(get_color_ansiseq(color_name, true)));
+}
 
 int
 cl_console_base::debug(const char *format, ...)
@@ -362,7 +370,7 @@ cl_console_base::cmd_do_cprint(const char *color_name, const char *format, va_li
   bool bw= false;
   char *cc;
   chars cce;
-  class cl_option *o= app->options->get_option("black_and_white");
+  class cl_option *o= application->options->get_option("black_and_white");
   
   if (o) o->get_value(&bw);
   if (!fo ||
@@ -371,7 +379,7 @@ cl_console_base::cmd_do_cprint(const char *color_name, const char *format, va_li
       )
     bw= true;
 
-  o= app->options->get_option((char*)chars("", "color_%s", color_name));
+  o= application->options->get_option((char*)chars("", "color_%s", color_name));
   cc= NULL;
   if (o) o->get_value(&cc);
   cce= colopt2ansiseq(cc);
@@ -384,8 +392,9 @@ cl_console_base::cmd_do_cprint(const char *color_name, const char *format, va_li
 	{
 	  return 0;
 	}
-      if (!bw) fo->prntf("%s", (char*)cce);
+      if (!bw) fo->prntf("\033[0m%s", (char*)cce);
       ret= fo->vprintf((char*)format, ap);
+      if (!bw) fo->prntf("\033[0m");
       //fo->flush();
       return ret;
     }
@@ -570,7 +579,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
     cmdstr= (char*)"";
   if (is_frozen())
     {
-      app->get_sim()->stop(resUSER);
+      application->get_sim()->stop(resUSER);
       set_flag(CONS_FROZEN, false);
       retval = 0;
       do_print_prompt= 0;
@@ -602,7 +611,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 		}
 	      if (cm)
 		{
-		  dd_printf("%s", (char*)get_color_ansiseq("answer"));
+		  dd_color("answer");
 		  retval= cm->work(app, cmdline, this);
 		  if (cm->can_repeat)
 		    {

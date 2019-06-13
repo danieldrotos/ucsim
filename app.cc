@@ -206,10 +206,10 @@ print_help(char *name)
 {
   printf("%s: %s\n", name, VERSIONSTR);
   printf("Usage: %s [-hHVvPgGwb] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
-	 "       [-C cfg_file] [-c file] [-s file] [-S optionlist]\n"
-	 "       [-a nr] [-o color]"
+	 "       [-C cfg_file] [-c file] [-e command] [-s file] [-S optionlist]\n"
+	 "       [-I if_optionlist] [-o colorlist] [-a nr]\n"
 #ifdef SOCKET_AVAIL
-	 " [-Z portnum] [-k portnum]"
+	 "       [-Z portnum] [-k portnum]"
 #endif
 	 "\n"
 	 "       [files...]\n", name);
@@ -1048,7 +1048,42 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_string_option(this, "color_debug",
 					      "Color of debug messages"));
   o->init();
-  o->set_value((char*)"red:black");
+  o->set_value((char*)"magenta:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_ui_mkey",
+					      "Menu-key color on UI display"));
+  o->init();
+  o->set_value((char*)"b:yellow:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_ui_mitem",
+					      "Menu-item color on UI display"));
+  o->init();
+  o->set_value((char*)"bwhite:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_ui_label",
+					      "Label color on UI display"));
+  o->init();
+  o->set_value((char*)"white:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_ui_time",
+					      "Color of time-value on UI display"));
+  o->init();
+  o->set_value((char*)"bblue:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_ui_title",
+					      "Title color on UI display"));
+  o->init();
+  o->set_value((char*)"bmagenta:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_ui_run",
+					      "Run state color on UI display"));
+  o->init();
+  o->set_value((char*)"black:green");
+  
+  options->new_option(o= new cl_string_option(this, "color_ui_stop",
+					      "Stop state color on UI display"));
+  o->init();
+  o->set_value((char*)"white:red");
   
 }
 

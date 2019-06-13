@@ -16,9 +16,9 @@
       TLCS90 family is simulated by <b>stlcs<br>
       </b>Padauk family is simulated by <b>spdk</b></p>
     <p>The simulator can be started in the following way: </p>
-    <p><tt><font color="blue">$</font> s51 [-hHVvPgGw] [-p prompt] [-t CPU] [-X
+    <p><tt><font color="blue">$</font> s51 [-hHVvPgGwb] [-p prompt] [-t CPU] [-X
         freq[k|M]] [-C cfg_file] [-e command] [-c file] [-s file] [-S
-        optionlist] [-a nr] [-Z portnum] [-k portnum] [files...]</tt> </p>
+        optionlist] [-I if_optionlist] [-a nr] [-Z portnum] [-k portnum] [-o colorlist] [files...]</tt> </p>
     <p>Specified files must be names of Intel hex files. Simulator loads them in
       the specified order into the ROM of the simulated system. If the file is
       specified without extension, the simulator will try to find intel hex file
@@ -85,7 +85,8 @@
       <dd>Specify options (as comma separated list) for the simulator interface.
         <b>if</b> option turns on the interface and specifies address space and
         location for use by the interface. <b>in</b> and <b>out</b> can be
-        used to specify file names to use for file IO.</dd>
+        used to specify file names to use for file IO.
+	<br>See <a href="simif.html">more about simulator interface</a>.</dd>
       <dt><tt><b>-p prompt</b></tt> </dt>
       <dd>Using this option you can specify any string to be the prompt of
         command interpreter, for example:
@@ -126,6 +127,20 @@ under certain conditions; type `show c' for details.
             messages</li>
           <li><span style="font-family: monospace;">debug</span> color of debug
             messages</li>
+          <li><span style="font-family: monospace;">ui_mkey</span> menu-key
+            color on UI display</li>
+          <li><span style="font-family: monospace;">ui_mitem</span> menu-item
+            color on UI display</li>
+          <li><span style="font-family: monospace;">ui_label</span> label color
+            on UI display</li>
+          <li><span style="font-family: monospace;">ui_time</span> color of
+            time-value on UI display</li>
+          <li><span style="font-family: monospace;">ui_title</span> title color
+            on UI display</li>
+          <li><span style="font-family: monospace;">ui_run</span> run-state
+            color on UI display</li>
+          <li><span style="font-family: monospace;">ui_stop</span> stop-state
+            color on UI display</li>
         </ul>
         <i>colspec</i> can be a rendering option, or a color name. First color
         name is used for foreground color and the last one will be the color of

@@ -357,6 +357,7 @@ cl_avr::print_regs(class cl_console_base *con)
 
   ram->dump(0, 31, 16, con/*->get_fout()*/);
 
+  con->dd_color("answer");
   con->dd_printf("ITHSVNZC  SREG= 0x%02x %3d %c\n",
 		 sreg, sreg, isprint(sreg)?sreg:'.');
   con->dd_printf("%c%c%c%c%c%c%c%c  ",
