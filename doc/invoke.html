@@ -20,7 +20,7 @@
         freq[k|M]] [-C cfg_file] [-e command] [-c file] [-s file] [-S
         optionlist] [-a nr] [-Z portnum] [-k portnum] [files...]</tt> </p>
     <p>Specified files must be names of Intel hex files. Simulator loads them in
-      the specified order into the ROM of the simulated system.If the file is
+      the specified order into the ROM of the simulated system. If the file is
       specified without extension, the simulator will try to find intel hex file
       (filename extended with .hex), omf file (with .omf) and cdb file (with
       .cdb extension). Simulator can interpret content of these SDCC output
@@ -39,7 +39,8 @@
         etc. DS390F is the same as DS390, but it starts already in 24 bit flat
         mode (ACON = 0xFA instead of 0xF8). DS390F is needed to run programs
         compiled with sdcc -mds390.<br>
-        -H option can be used to list all of recognized CPU types.<br>
+        <span style="font-family: monospace;">-H</span> option can be used to
+        list all of recognized CPU types.<br>
         See <a href="cpu_types.html">how to select CPU type</a>. </dd>
       <dt><tt><b>-X freq[k|M]</b></tt> </dt>
       <dd>XTAL frequency is <b>freq</b> Hertz. <b>k</b> or <b>M</b> can be
@@ -98,6 +99,81 @@ under certain conditions; type `show c' for details.
       <dt><tt><b>-P</b></tt> </dt>
       <dd>Prompt will be a null ('\0') character. This feature can be useful for
         programs which controls simulator through a pipe. </dd>
+      <dt><span style="font-family: monospace;"><b>-o colorsetting,...<br>
+          </b></span></dt>
+      <dd>List of color settings in form: <span style="font-family: monospace;">what=colspec,...</span>
+        where <i>what</i> specifies object to be colored and <i>colspec</i> is
+        : separated list of color options e.g.: prompt=b:white:black (bold white
+        on black).<br>
+        <i>what</i> can be:<br>
+        <ul>
+          <li><span style="font-family: monospace;">prompt</span> prompt color,</li>
+          <li><span style="font-family: monospace;">prompt_console</span>
+            console number in front of the prompt,</li>
+          <li><span style="font-family: monospace;">command</span> color of
+            entered command,</li>
+          <li><span style="font-family: monospace;">answer</span> default color
+            for answers printed by commands,</li>
+          <li><span style="font-family: monospace;">result</span> color of
+            expression result,</li>
+          <li><span style="font-family: monospace;">dump_address</span> address
+            color in memory dump (1<sup>st</sup> column)</li>
+          <li><span style="font-family: monospace;">dump_number</span> color of
+            numerical part of the dump (2<sup>nd</sup> column)</li>
+          <li><span style="font-family: monospace;">dump_char</span> color of
+            textual part of the dump (3<sup>rd</sup> column)</li>
+          <li><span style="font-family: monospace;">error</span> color of error
+            messages</li>
+          <li><span style="font-family: monospace;">debug</span> color of debug
+            messages</li>
+        </ul>
+        <i>colspec</i> can be a rendering option, or a color name. First color
+        name is used for foreground color and the last one will be the color of
+        background. Rendering options are:<br>
+        <ul>
+          <li><span style="font-family: monospace;">b</span> bold</li>
+          <li><span style="font-family: monospace;">f</span> faint</li>
+          <li><span style="font-family: monospace;">i</span> italic</li>
+          <li><span style="font-family: monospace;">u</span> undelined</li>
+          <li><span style="font-family: monospace;">d</span> double underlined</li>
+          <li><span style="font-family: monospace;">c</span> crossed over</li>
+          <li><span style="font-family: monospace;">o</span> overlined</li>
+          <li><span style="font-family: monospace;">k</span> or <span style="font-family: monospace;">l</span>
+            blink</li>
+        </ul>
+        Color name can be a predefined name, or an RGB value. Known names are:<br>
+        <ul>
+          <li><span style="font-family: monospace;">black</span></li>
+          <li><span style="font-family: monospace;">bblack</span> (bright black,
+            this is grey on some terminals)</li>
+          <li><span style="font-family: monospace;">red</span></li>
+          <li><span style="font-family: monospace;">bred</span> (bright red)</li>
+          <li><span style="font-family: monospace;">green</span></li>
+          <li><span style="font-family: monospace;">bgreen</span> (bright green)</li>
+          <li><span style="font-family: monospace;">yellow</span></li>
+          <li><span style="font-family: monospace;">byellow</span> (bright
+            yellow)</li>
+          <li><span style="font-family: monospace;">blue</span></li>
+          <li><span style="font-family: monospace;">bblue</span> (bright blue)</li>
+          <li><span style="font-family: monospace;">magenta</span></li>
+          <li><span style="font-family: monospace;">bmagenta</span> (bright
+            magenta)</li>
+          <li><span style="font-family: monospace;">cyan</span></li>
+          <li><span style="font-family: monospace;">bcyan</span> (bright cyan)</li>
+          <li><span style="font-family: monospace;">white</span></li>
+          <li><span style="font-family: monospace;">bwhite</span> (bright white)</li>
+        </ul>
+        How the named colors appear on the screen depends on the terminal
+        emulator program.<br>
+        RGB values can be specified as <span style="font-family: monospace;">#RRGGBB</span>
+        where components are two character hexadecimal values of the red, green
+        and blue.<br>
+        Example (set prompt to blinking bold white on green, and set command to
+        underlined bright green on black):<br>
+        <span style="font-family: monospace;">-o
+          prompt=lb:white:green,command=u:bgreen:black</span></dd>
+      <dt><b><span style="font-family: monospace;">-b</span></b></dt>
+      <dd>Black &amp; white (non-color) console.</dd>
       <dt><span style="font-family: monospace;"><b>-g</b></span></dt>
       <dd>Go, start simulation when the program is loaded.</dd>
       <dt><span style="font-family: monospace;"><b>-G</b></span></dt>

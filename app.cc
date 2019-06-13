@@ -238,9 +238,11 @@ print_help(char *name)
      "                 in=file             specify input file for IO\n"
      "                 out=file            specify output file for IO\n"
      "  -p prompt    Specify string for prompt\n"
-     "  -o colors    List of color specification: what=colspec,...\n"
-     "  -b           Black&white (non-color) console\n"
      "  -P           Prompt is a null ('\\0') character\n"
+     "  -o colors    List of color specification: what=colspec,...\n"
+     "               where colspec is : separated list of color options\n"
+     "               e.g.: prompt=b:white:black (bold white on black)\n"
+     "  -b           Black & white (non-color) console\n"
      "  -g           Go, start simulation\n"
      "  -G           Go, start simulation, quit on stop\n"
      "  -a nr        Specify size of variable space (default=256)\n"
@@ -1040,6 +1042,11 @@ cl_app::mk_options(void)
   
   options->new_option(o= new cl_string_option(this, "color_error",
 					      "Text color in error messages"));
+  o->init();
+  o->set_value((char*)"red:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_debug",
+					      "Color of debug messages"));
   o->init();
   o->set_value((char*)"red:black");
   

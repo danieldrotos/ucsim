@@ -288,7 +288,7 @@ cl_console_base::debug(const char *format, ...)
   int ret= 0;
 
   va_start(ap, format);
-  ret= cmd_do_print(format, ap);
+  ret= cmd_do_cprint("debug", format, ap);
   va_end(ap);
 
   return(ret);
@@ -859,7 +859,7 @@ cl_commander_base::debug(const char *format, ...)
       if (c->get_flag(CONS_DEBUG))
         {
           va_start(ap, format);
-          ret= c->cmd_do_print(format, ap);
+          ret= c->cmd_do_cprint("debug", format, ap);
           va_end(ap);
         }
     }
@@ -876,7 +876,7 @@ cl_commander_base::debug(const char *format, va_list ap)
       class cl_console_base *c= (class cl_console_base*)(cons->at(i));
       if (c->get_flag(CONS_DEBUG))
         {
-          ret= c->cmd_do_print(format, ap);
+          ret= c->cmd_do_cprint("debug", format, ap);
         }
     }
   return(ret);
