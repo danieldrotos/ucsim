@@ -233,7 +233,7 @@ fin_demo()
 void
 main(void)
 {
-  sif= (unsigned char SIF_ADDRESS_SPACE *)0xffff;
+  sif= (unsigned char SIF_ADDRESS_SPACE *) SIF_ADDRESS;
   printf("Testing simulator interface at %s[0x%x]\n",
 	 SIF_ADDRESS_SPACE_NAME, SIF_ADDRESS);
   printf("%s", detect()?"Interface found.":"Interface not found");

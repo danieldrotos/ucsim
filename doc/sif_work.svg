@@ -1,12 +1,33 @@
 <?xml version="1.0" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.7a -->
-<!-- CreationDate: 2019-06-13 15:17:10 -->
+<!-- CreationDate: 2019-06-14 09:02:36 -->
 <!-- Magnification: 1.05 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	width="386pt" height="192pt"
-	viewBox="2581 1170 6120 3043">
+	width="519pt" height="192pt"
+	viewBox="2581 1170 8231 3043">
 <g fill="none">
+<!-- Ellipse -->
+<ellipse cx="10236" cy="2746" rx="562" ry="135"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Arc -->
+<path d="M 9675,3555 A 1238 1238 0 0 0 10800 3555"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Arc -->
+<path d="M 9675,3420 A 1238 1238 0 0 0 10800 3420"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Arc -->
+<path d="M 9675,3285 A 1238 1238 0 0 0 10800 3285"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Arc -->
+<path d="M 9675,3150 A 1238 1238 0 0 0 10800 3150"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Arc -->
+<path d="M 9675,3015 A 1238 1238 0 0 0 10800 3015"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Arc -->
+<path d="M 9675,2880 A 1238 1238 0 0 0 10800 2880"
+	stroke="#000000" stroke-width="8px"/>
 <!-- Line -->
 <rect x="5175" y="1395" width="540" height="225"
 	stroke="#000000" stroke-width="8px"/>
@@ -49,7 +70,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp0">
-	<path clip-rule="evenodd" d="M 2581,1170 H 8701 V 4213 H 2581 z
+	<path clip-rule="evenodd" d="M 2581,1170 H 10812 V 4213 H 2581 z
 		M 4945,2335 5069,2343 4956,2394 5093,2345 5090,2332z"/>
 </clipPath>
 </defs>
@@ -61,7 +82,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp1">
-	<path clip-rule="evenodd" d="M 2581,1170 H 8701 V 4213 H 2581 z
+	<path clip-rule="evenodd" d="M 2581,1170 H 10812 V 4213 H 2581 z
 		M 4548,2722 4425,2739 4526,2666 4401,2741 4406,2754z"/>
 </clipPath>
 </defs>
@@ -73,7 +94,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp2">
-	<path clip-rule="evenodd" d="M 2581,1170 H 8701 V 4213 H 2581 z
+	<path clip-rule="evenodd" d="M 2581,1170 H 10812 V 4213 H 2581 z
 		M 6658,2355 6778,2385 6658,2415 6802,2392 6802,2378z
 		M 5942,2415 5822,2385 5942,2355 5798,2378 5798,2392z"/>
 </clipPath>
@@ -85,6 +106,38 @@
 	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
 <!-- Backward arrow to point 5805,2385 -->
 <polyline points=" 5942,2415 5822,2385 5942,2355"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<polyline points=" 9675,2745 9675,3555"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 10800,2745 10800,3555"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp3">
+	<path clip-rule="evenodd" d="M 2581,1170 H 10812 V 4213 H 2581 z
+		M 6658,2355 6778,2385 6658,2415 6802,2392 6802,2378z
+		M 8282,3495 8162,3465 8282,3435 8138,3458 8138,3472z"/>
+</clipPath>
+</defs>
+<polyline points=" 8145,3465 9630,3465" clip-path="url(#cp3)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Backward arrow to point 8145,3465 -->
+<polyline points=" 8282,3495 8162,3465 8282,3435"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp4">
+	<path clip-rule="evenodd" d="M 2581,1170 H 10812 V 4213 H 2581 z
+		M 10290,2653 10260,2773 10230,2653 10253,2797 10267,2797z
+		M 8282,3495 8162,3465 8282,3435 8138,3458 8138,3472z"/>
+</clipPath>
+</defs>
+<polyline points=" 8100,2520 10260,2520 10260,2790" clip-path="url(#cp4)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 10260,2790 -->
+<polyline points=" 10290,2653 10260,2773 10230,2653"
 	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
 <!-- Line -->
 <polygon points=" 7650,1665 7674,1663 7696,1665 7717,1670 7736,1677 7754,1688 7771,1700 7788,1715
