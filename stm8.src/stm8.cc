@@ -183,7 +183,7 @@ cl_stm8::mk_port(t_addr base, chars n)
       if ((puiy+= 7) > 20)
 	;
     }
-  if ((puik+= 1) > 6)
+  if ((puik+= 1) > 7)
     puiks= NULL;
   else
     puiks= keysets[puik];
@@ -998,6 +998,9 @@ cl_stm8::exec_inst(void)
 	}
   }
   */
+
+  instPC= PC;
+
   if (fetch(&code)) {
     //printf("******************** break \n");
 	  return(resBREAKPOINT);
