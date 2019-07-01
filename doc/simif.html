@@ -31,7 +31,8 @@
     <p>Interface is available behind a memory location, which can be any data
       memory location which is readable and writable by the program. Program can
       send command to the interface by writing one character command code into
-      the memory location and can read back answer from the same location.</p>
+      the memory location (although some of them needs parameter) and can read
+      back answer from the same location.</p>
     <p>The interface must be turned on before use. It means that you must
       specify the address of the memory location to use. It can be done in two
       ways.</p>
@@ -316,8 +317,7 @@ print_cmd_infos(void)
     }
   
 }
-</pre>
-    </div>
+</pre> </div>
     <div><br>
     </div>
     <div><b>Command: stop</b></div>
@@ -354,11 +354,76 @@ sif_print(char *s)
   while (*s)
     sif_putchar(*s++);
 }
-</pre>
-    </div>
+</pre> </div>
     <div><br>
     </div>
-    <div>a</div>
+    <div><b>Command: fin_check</b></div>
+    <div><br>
+    </div>
+    <div>Command character: f</div>
+    <div>Answer: 0 (if input file is not readable), or 1 (if input file is
+      readable)</div>
+    <div><br>
+    </div>
+    <div>This command checks if the input file is readable or not.Here is a
+      simple function which can be used to check readability of the input file:</div>
+    <div>
+      <pre>char
+sif_fin_avail()
+{
+  return sif_get(SIFCM_FIN_CHECK);
+}
+</pre><br>
+    </div>
+    <div><b>Command: read</b></div>
+    <div><br>
+    </div>
+    <div>Commad character: r</div>
+    <div>Answer: next byte from input file</div>
+    <div><br>
+    </div>
+    <div>This command can be used to read next byte from the input file.
+      Remember, name of the input file must be set before use.</div>
+    <div><br>
+    </div>
+    <div>Following demonstration code prints out content of the input file:</div>
+    <div>
+      <pre>void
+fin_demo()
+{
+  char i, c;
+  printf("Reading input from SIMIF input file:\n");
+  while (i= sif_fin_avail())
+    {
+      c= sif_read();
+      if (c &gt; 31)
+	putchar(c);
+    }
+  printf("\nRead demo finished\n");
+}
+</pre></div>
+    <div><b>Command: write</b></div>
+    <div><br>
+    </div>
+    <div>Command character: w, followed by a byte to write to output file</div>
+    <div>Answer: -</div>
+    <div><br>
+    </div>
+    <div>Following function can be used to write a string to the output file:</div>
+    <div>
+      <pre>void
+fout_demo(char *s)
+{
+  while (*s)
+    {
+      *sif= SIFCM_WRITE;
+      *sif= *s++;
+    }
+}
+</pre>Do not forget to specify name of the output file via setting of the
+      simulator interface. Be careful, simulator will overwrite content of the
+      output file!<br>
+    </div>
     <hr>
   </body>
 </html>
