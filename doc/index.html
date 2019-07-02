@@ -41,6 +41,9 @@
     <ol>
       <li>Get archive file, uncompress and untar it. These steps will produce a
         directory <b>ucsim-X.Y.Z</b> where X.Y.Z is the version number. </li>
+      <li>Make sure, that following packages are installed on your system: <b>make</b>,
+        <b>bison</b> (or yacc), <b>flex</b> (or lex), <b>libncurses-dev</b>.
+        You will need a C and a C++ compiler as well.</li>
       <li>Go to the directory and configure the package. Issue <tt><b>configure</b></tt>
         command. It will determine your system and produce <b>Makefile</b>.
         Installation directory can be specified with <b><tt>--prefix=<i>dir</i></tt></b><!-- -- -->
@@ -52,7 +55,7 @@
             install</b></tt> command which will place files in installation
         directory specified with <tt><b>--prefix=<i>dir</i></b><!-- --
 --></tt> option of <tt><b>configure</b></tt>. Note that you may have to have
-        special privilege to do this if installation directory is not writeable
+        special privilege to do this if installation directory is not writable
         by you. </li>
     </ol>
     <!-- USE -->
