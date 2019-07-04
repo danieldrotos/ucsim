@@ -185,12 +185,12 @@ public:
 /*
  * Stack overflow error
  */
-class cl_error_stack_overlow: public cl_error_stack
+class cl_error_stack_overflow: public cl_error_stack
 {
 protected:
   t_addr PC, SP_before, SP_after;
 public:
-  cl_error_stack_overlow(class cl_stack_op *op);
+  cl_error_stack_overflow(class cl_stack_op *op);
   virtual void print(class cl_commander_base *c);
 };
   

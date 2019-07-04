@@ -1845,8 +1845,18 @@ cl_51core::it_enabled(void)
  */
 
 void
-cl_uc51core::stack_check_overflow(class cl_stack_op *op)
+cl_51core::stack_check_overflow(class cl_stack_op *op)
 {
+  t_addr b, a;
+  b= op->get_before();
+  a= op->get_after();
+  if (a < b)
+    {
+      class cl_error_stack_overflow *e=
+	new cl_error_stack_overflow(op);
+      e->init();
+      error(e);
+    }
 }
 
 
