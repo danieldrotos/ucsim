@@ -564,7 +564,7 @@ cl_error_stack_tracker_inconsistent::~cl_error_stack_tracker_inconsistent(void)
 void
 cl_error_stack_tracker_inconsistent::print(class cl_commander_base *c)
 {
-  c->dd_cprintf("error", "%s(0x%06x): %d byte(s) unread from the stack\n",
+  c->dd_cprintf("error",  "%s(0x%06x): %d byte(s) unread from the stack\n",
 	       get_type_name(), AU(operation->get_pc()),
 	       unread_data_size);
 }
