@@ -435,6 +435,22 @@ cl_error_stack::cl_error_stack(void)
 classification = stack_error_registry.find("stack");
 }
 
+/*
+ * Stack overflow error
+ */
+
+cl_error_stack_overflow::cl_error_stack_overflow(class cl_stack_op *op)
+{
+  PC= op->PC;
+  SP_before= op->SP_before;
+  SP_after= op->SP_after;
+}
+
+void
+cl_error_stack_overflow::print(class cl_commander_base *c)
+{
+}
+
 /* Stack Tracker Errors */
 
 cl_error_stack_tracker::cl_error_stack_tracker(void)

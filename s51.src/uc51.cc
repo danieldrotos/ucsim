@@ -1840,6 +1840,16 @@ cl_51core::it_enabled(void)
 }
 
 
+/* 
+ * Check SP validity after stack (write) poeration
+ */
+
+void
+cl_uc51core::stack_check_overflow(class cl_stack_op *op)
+{
+}
+
+
 /*
  * Checking if Idle or PowerDown mode should be activated
  */

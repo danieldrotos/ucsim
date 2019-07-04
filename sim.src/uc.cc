@@ -2323,6 +2323,7 @@ cl_uc::touch(void)
 void
 cl_uc::stack_write(class cl_stack_op *op)
 {
+  stack_check_overlow(op);
   delete op;
   return ;
   if (op->get_op() & stack_read_operation)
@@ -2418,6 +2419,12 @@ cl_uc::stack_read(class cl_stack_op *op)
   delete op;
 }
 
+void
+cl_uc::stack_check_overflow(class cl_stack_op *op)
+{
+}
+
+  
 /*
  * Breakpoint handling
  */
