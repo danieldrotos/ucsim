@@ -260,7 +260,7 @@ cl_console_base::get_color_ansiseq(const char *color_name, bool add_reset)
   chars cce= "";
   class cl_f *fo= get_fout();
   class cl_option *o= application->options->get_option("black_and_white");
-  if (o) o->get_value(&cc);
+  if (o) o->get_value(&bw);
 
   if (!fo ||
       (fo &&
