@@ -1131,4 +1131,14 @@ cl_app::debug(const char *format, ...)
 }
 
 
+void
+cl_app::set_option_s(chars opt_name, chars new_value)
+{
+  class cl_option *o= options->get_option((char*)opt_name);
+  if (o)
+    {
+      o->set_value((char*)new_value);
+    }
+}
+
 /* End of app.cc */
