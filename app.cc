@@ -297,7 +297,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJo:b_");
+  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJo:bl_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
@@ -669,6 +669,24 @@ cl_app::proc_arguments(int argc, char *argv[])
 	    }
 	  break;
 	}
+      case 'l':
+	set_option_s("color_prompt", "green:bwhite");
+	set_option_s("color_prompt_console", "blue:bwhite");
+	set_option_s("color_command", "blue:bwhite");
+	set_option_s("color_answer", "black:bwhite");
+	set_option_s("color_result", "bblue:bwhite");
+	set_option_s("color_dump_address", "blue:bwhite");
+	set_option_s("color_dump_number", "bblack:bwhite");
+	set_option_s("color_dump_char", "black:bwhite");
+	set_option_s("color_error", "red:bwhite");
+	set_option_s("color_ui_mkey", "green:bwhite");
+	set_option_s("color_ui_mitem", "bblack:bwhite");
+	set_option_s("color_ui_label", "black:bwhite");
+	set_option_s("color_ui_time", "blue:bwhite");
+	set_option_s("color_ui_title", "magenta:bwhite");
+	set_option_s("color_ui_run", "black:green");
+	set_option_s("color_ui_stop", "white:red");
+	break;
       case 'h':
 	print_help(cchars("s51"));
 	exit(0);
