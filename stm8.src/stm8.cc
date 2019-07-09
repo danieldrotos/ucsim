@@ -76,6 +76,7 @@ int
 cl_stm8::init(void)
 {
   cl_uc::init(); /* Memories now exist */
+  sp_limit= 0x7000;
 
   xtal = 8000000;
 
@@ -969,9 +970,10 @@ cl_stm8::print_regs(class cl_console_base *con)
                  regs.X, regs.X, isprint(regs.X)?regs.X:'.');
   con->dd_printf("Y= 0x%04x %3d %c\n",
                  regs.Y, regs.Y, isprint(regs.Y)?regs.Y:'.');
-  con->dd_printf("SP= 0x%04x [SP+1]= %02x %3d %c\n",
+  con->dd_printf("SP= 0x%04x [SP+1]= %02x %3d %c  Limit= 0x%04x\n",
                  regs.SP, ram->get(regs.SP+1), ram->get(regs.SP+1),
-                 isprint(ram->get(regs.SP+1))?ram->get(regs.SP+1):'.');
+                 isprint(ram->get(regs.SP+1))?ram->get(regs.SP+1):'.',
+		 sp_limit);
 
   print_disass(PC, con);
 }
@@ -1926,6 +1928,11 @@ cl_stm8_cpu::init(void)
     {
       regs[i]= register_cell(uc->rom, 0x7f00+i);
     }
+  cl_var *v;
+  uc->vars->add(v= new cl_var(chars("sp_limit"), cfg, cpuconf_sp_limit,
+			      cfg_help(cpuconf_sp_limit)));
+  v->init();
+  
   return 0;
 }
 
@@ -2045,10 +2052,30 @@ cl_stm8_cpu::read(class cl_memory_cell *cell)
 t_mem
 cl_stm8_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
+  class cl_stm8 *u= (class cl_stm8 *)uc;
   if (val)
     cell->set(*val);
+  switch ((enum stm8_cpu_cfg)addr)
+    {
+    case cpuconf_sp_limit:
+      if (val)
+	u->sp_limit= *val & 0xffff;
+      else
+	cell->set(u->sp_limit);
+      break;
+    }
   return cell->get();
 }
 
+char *
+cl_stm8_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case cpuconf_sp_limit:
+      return (char*)"Stack overflows when SP is below this limit";
+    }
+  return (char*)"Not used";
+}
 
 /* End of stm8.src/stm8.cc */
