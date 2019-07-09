@@ -37,6 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // prj
 #include "pobjcl.h"
+#include "globals.h"
 
 // sim
 #include "simcl.h"
@@ -77,6 +78,10 @@ cl_z80::init(void)
     ram->set((t_addr) i, 0);
   }
 
+  sp_limit_opt= new cl_sp_limit_opt(this);
+  sp_limit_opt->set_value((char*)"0xf000");
+  application->options->add(sp_limit_opt);
+  
   return(0);
 }
 
@@ -550,7 +555,8 @@ cl_z80::print_regs(class cl_console_base *con)
   con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
                  regs.SP, ram->get(regs.SP), ram->get(regs.SP),
                  isprint(ram->get(regs.SP))?ram->get(regs.SP):'.');
-
+  con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
+  
   print_disass(PC, con);
 }
 
@@ -838,6 +844,41 @@ void        cl_z80::reg_g_store( t_mem g, u8_t new_val )
 
     case 7:  regs.raf.A    = new_val;  break;  /* write to a */
     }
+}
+
+void
+cl_z80::stack_check_overflow(class cl_stack_op *op)
+{
+  if (op)
+    {
+      if (op->get_op() & stack_write_operation)
+	{
+	  t_addr a= op->get_after();
+	  if (a < sp_limit)
+	    {
+	      class cl_error_stack_overflow *e=
+		new cl_error_stack_overflow(op);
+	      e->init();
+	      error(e);
+	    }
+	}
+    }
+}
+
+
+cl_sp_limit_opt::cl_sp_limit_opt(class cl_z80 *the_z80):
+  cl_number_option(the_z80, "sp_limit", "Stack overflows when SP is below this limit")
+{
+  z80= the_z80;
+}
+
+void
+cl_sp_limit_opt::set_value(char *s)
+{
+  long v;
+  cl_number_option::set_value(s);
+  get_value(&v);
+  z80->sp_limit= v;
 }
 
 /* End of z80.src/z80.cc */
