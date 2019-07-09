@@ -1575,11 +1575,18 @@ cl_stm8::exec_inst(void)
       case 0xb:
          switch ( code & 0xf0) {
             case 0x30: // push longmem
-               push1( get1(fetch2()));
-               return(resGO);
+	      {
+		t_addr a= fetch2();
+		t_mem v= get1(a);
+		push1( v /*get1(fetch2())*/);
+		return(resGO);
+	      }
             case 0x40: // push #byte
-               push1( fetch1());
-               return(resGO);
+	      {
+		t_mem v= fetch1();
+		push1(v);
+		return(resGO);
+	      }
             case 0x50: // addw sp,#val
                regs.SP += fetch1();
                return(resGO);
