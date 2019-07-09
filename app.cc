@@ -686,6 +686,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	set_option_s("color_ui_title", "magenta:bwhite");
 	set_option_s("color_ui_run", "black:green");
 	set_option_s("color_ui_stop", "white:red");
+	set_option_s("color_debug", "magenta:bwhite");
 	break;
       case 'h':
 	print_help(cchars("s51"));

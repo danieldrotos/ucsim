@@ -76,7 +76,7 @@ int
 cl_stm8::init(void)
 {
   cl_uc::init(); /* Memories now exist */
-  sp_limit= 0x7000;
+  sp_limit= 0x1500;
 
   xtal = 8000000;
 
@@ -1913,6 +1913,24 @@ cl_stm8::it_enabled(void)
   return !(regs.CC & BIT_I0) || !(regs.CC & BIT_I1);
 }
 
+void
+cl_stm8::stack_check_overflow(class cl_stack_op *op)
+{
+  if (op)
+    {
+      if (op->get_op() & stack_write_operation)
+	{
+	  t_addr a= op->get_after();
+	  if (a < sp_limit)
+	    {
+	      class cl_error_stack_overflow *e=
+		new cl_error_stack_overflow(op);
+	      e->init();
+	      error(e);
+	    }
+	}
+    }
+}
 
 cl_stm8_cpu::cl_stm8_cpu(class cl_uc *auc):
   cl_hw(auc, HW_DUMMY, 0, "cpu")
