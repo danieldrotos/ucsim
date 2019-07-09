@@ -1268,7 +1268,7 @@ cl_51core::disass(t_addr addr, const char *sep)
 void
 cl_51core::print_regs(class cl_console_base *con)
 {
-  t_addr start;
+  t_addr start, stop;
   t_mem data;
   t_mem dp;
   
@@ -1290,9 +1290,13 @@ cl_51core::print_regs(class cl_console_base *con)
               (data&bmCY)?'1':'0', (data&bmAC)?'1':'0',
               (data&bmOV)?'1':'0', (data&bmP)?'1':'0');
   /* show stack pointer */
-  start = sfr->get (SP);
-  con->dd_printf ("SP ", start);
-  iram->dump (start, start - 7, 8, con/*->get_fout()*/);
+  start= sfr->get (SP);
+  if (start >= 7)
+    stop = start-7;
+  else
+    stop= 0;
+  con->dd_printf ("SP ");
+  iram->dump (start, stop, 8, con/*->get_fout()*/);
   con->dd_color("answer");
   // show DPTR(s)
   if (dptr)

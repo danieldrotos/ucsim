@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // prj
 #include "pobjcl.h"
+#include "globals.h"
 
 // sim
 #include "simcl.h"
@@ -86,6 +87,10 @@ cl_r2k::init(void)
     ram->set((t_addr) i, 0);
   }
 
+  sp_limit_opt= new cl_sp_limit_opt(this);
+  sp_limit_opt->set_value((char*)"0xf000");
+  application->options->add(sp_limit_opt);
+  
   return(0);
 }
 
@@ -537,6 +542,7 @@ cl_r2k::print_regs(class cl_console_base *con)
   con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
                  regs.SP, ram->get(regs.SP), ram->get(regs.SP),
                  isprint(ram->get(regs.SP))?ram->get(regs.SP):'.');
+  con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
 
   print_disass(PC, con);
 }
