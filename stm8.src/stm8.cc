@@ -973,7 +973,7 @@ cl_stm8::print_regs(class cl_console_base *con)
   con->dd_printf("SP= 0x%04x [SP+1]= %02x %3d %c  Limit= 0x%04x\n",
                  regs.SP, ram->get(regs.SP+1), ram->get(regs.SP+1),
                  isprint(ram->get(regs.SP+1))?ram->get(regs.SP+1):'.',
-		 sp_limit);
+		 AU(sp_limit));
 
   print_disass(PC, con);
 }

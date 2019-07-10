@@ -1,4 +1,4 @@
-PROJECTS	= t1
+PROJECTS	= t1 stck_ovf
 
 .PHONY: projects $(PROJECTS)
 

@@ -214,21 +214,6 @@ public:
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
-/*
- * This option holds value of SP limit
- * Value passed to uc when changed
- */
-/*
-class cl_sp_limit_opt: public cl_number_option
-{
-protected:
-  class cl_z80 *z80;
-public:
-  cl_sp_limit_opt(class cl_z80 *the_z80);
-  virtual void set_value(char *s);
-};
-*/
-
 #endif
 
 /* End of z80.src/z80cl.h */

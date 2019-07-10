@@ -77,12 +77,7 @@ cl_z80::init(void)
   for (int i=0x8000; i<0x10000; i++) {
     ram->set((t_addr) i, 0);
   }
-
-  /*
-  sp_limit_opt= new cl_sp_limit_opt(this);
-  sp_limit_opt->set_value((char*)"0xf000");
-  application->options->add(sp_limit_opt);
-  */
+  sp_limit= 0xf000;
   
   return(0);
 }
@@ -920,21 +915,5 @@ cl_z80_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return cell->get();
 }
 
-/*
-cl_sp_limit_opt::cl_sp_limit_opt(class cl_z80 *the_z80):
-  cl_number_option(the_z80, "sp_limit", "Stack overflows when SP is below this limit")
-{
-  z80= the_z80;
-}
-
-void
-cl_sp_limit_opt::set_value(char *s)
-{
-  long v;
-  cl_number_option::set_value(s);
-  get_value(&v);
-  z80->sp_limit= v;
-}
-*/
 
 /* End of z80.src/z80.cc */
