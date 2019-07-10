@@ -197,12 +197,28 @@ public:
 unsigned   word_parity( u16_t  x );
 /* returns parity for a 16-bit value */
 
+enum z80cpu_confs
+  {
+   z80cpu_sp_limit	= 0,
+   z80cpu_nuof		= 1
+  };
+
+class cl_z80_cpu: public cl_hw
+{
+public:
+  cl_z80_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual int cfg_size(void) { return z80cpu_nuof; }
+  virtual char *cfg_help(t_addr addr);
+
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+};
 
 /*
  * This option holds value of SP limit
  * Value passed to uc when changed
  */
-
+/*
 class cl_sp_limit_opt: public cl_number_option
 {
 protected:
@@ -211,7 +227,7 @@ public:
   cl_sp_limit_opt(class cl_z80 *the_z80);
   virtual void set_value(char *s);
 };
-  
+*/
 
 #endif
 

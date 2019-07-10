@@ -78,9 +78,11 @@ cl_z80::init(void)
     ram->set((t_addr) i, 0);
   }
 
+  /*
   sp_limit_opt= new cl_sp_limit_opt(this);
   sp_limit_opt->set_value((char*)"0xf000");
   application->options->add(sp_limit_opt);
+  */
   
   return(0);
 }
@@ -113,7 +115,11 @@ void
 cl_z80::mk_hw_elements(void)
 {
   //class cl_base *o;
+  class cl_hw *h;
   cl_uc::mk_hw_elements();
+
+  add_hw(h= new cl_z80_cpu(this));
+  h->init();
 }
 
 void
@@ -866,6 +872,55 @@ cl_z80::stack_check_overflow(class cl_stack_op *op)
 }
 
 
+cl_z80_cpu::cl_z80_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_CPU, 0, "cpu")
+{
+}
+
+int
+cl_z80_cpu::init(void)
+{
+  cl_hw::init();
+
+  cl_var *v;
+  uc->vars->add(v= new cl_var(cchars("sp_limit"), cfg, z80cpu_sp_limit,
+			      cfg_help(z80cpu_sp_limit)));
+  v->init();
+
+  return 0;
+}
+
+char *
+cl_z80_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case z80cpu_sp_limit:
+      return (char*)"Stack overflows when SP is below this limit";
+    }
+  return (char*)"Not used";
+}
+
+t_mem
+cl_z80_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  class cl_z80 *u= (class cl_z80 *)uc;
+  if (val)
+    cell->set(*val);
+  switch ((enum z80cpu_confs)addr)
+    {
+    case z80cpu_sp_limit:
+      if (val)
+	u->sp_limit= *val & 0xffff;
+      else
+	cell->set(u->sp_limit);
+      break;
+    case z80cpu_nuof: break;
+    }
+  return cell->get();
+}
+
+/*
 cl_sp_limit_opt::cl_sp_limit_opt(class cl_z80 *the_z80):
   cl_number_option(the_z80, "sp_limit", "Stack overflows when SP is below this limit")
 {
@@ -880,5 +935,6 @@ cl_sp_limit_opt::set_value(char *s)
   get_value(&v);
   z80->sp_limit= v;
 }
+*/
 
 /* End of z80.src/z80.cc */

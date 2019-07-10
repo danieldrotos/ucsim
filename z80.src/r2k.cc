@@ -86,10 +86,11 @@ cl_r2k::init(void)
   for (int i=0x8000; i<0x10000; i++) {
     ram->set((t_addr) i, 0);
   }
-
+  /*
   sp_limit_opt= new cl_sp_limit_opt(this);
   sp_limit_opt->set_value((char*)"0xf000");
   application->options->add(sp_limit_opt);
+  */
   
   return(0);
 }
@@ -127,7 +128,11 @@ void
 cl_r2k::mk_hw_elements(void)
 {
   //class cl_base *o;
+  class cl_hw *h;
   cl_uc::mk_hw_elements();
+  
+  add_hw(h= new cl_z80_cpu(this));
+  h->init();
 }
 
 void
