@@ -26,14 +26,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
 #include <stdio.h>
-#include <errno.h>
+//#include <errno.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "i_string.h"
+#include <unistd.h>
+#include <stdbool.h>
+#include <string.h>
+
+//#include "i_string.h"
 
 //#include "cmdlexcl.h"
 
@@ -43,13 +47,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "fiocl.h"
 
 // sim
-#include "simcl.h"
-#include "argcl.h"
-#include "appcl.h"
+//#include "simcl.h"
+//#include "argcl.h"
+//#include "appcl.h"
 
 // local
 #include "newcmdcl.h"
-#include "cmdutil.h"
+//#include "cmdutil.h"
 
 
 /*

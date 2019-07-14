@@ -25,27 +25,28 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
-#include <ctype.h>
-#include <stdarg.h> /* for va_list */
-#include <cassert>
+//#include <ctype.h>
+//#include <stdarg.h> /* for va_list */
+//#include <cassert>
 #include <stdio.h>
 #include <stdlib.h>
-#include "i_string.h"
+#include <string.h>
+//#include "i_string.h"
 
 // prj
 #include "globals.h"
-#include "pobjcl.h"
+//#include "pobjcl.h"
 
 // sim
-#include "simcl.h"
+//#include "simcl.h"
 
 // local
 #include "glob.h"
 #include "pdkcl.h"
-#include "portcl.h"
-#include "regspdk.h"
+//#include "portcl.h"
+//#include "regspdk.h"
 
 /*******************************************************************/
 

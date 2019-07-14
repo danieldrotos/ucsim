@@ -25,8 +25,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+//#include <stdarg.h>
+#include <stdbool.h>
+
 // prj
-#include <stdarg.h>
 #include "utils.h"
 
 // sim

@@ -28,22 +28,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "ddconfig.h"
 
 #include <stdio.h>
-#include <sys/time.h>
+//#include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include HEADER_FD
-#include <errno.h>
+//#include <errno.h>
 #include <string.h>
 #if defined HAVE_SYS_SOCKET_H
 # include <sys/socket.h>
 # include <netinet/in.h>
 # include <arpa/inet.h>
+# include <sys/socket.h>
 #endif
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdarg.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 
 // These two flags aren't defined on some platforms
 #ifndef S_IRGRP

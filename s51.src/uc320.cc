@@ -24,14 +24,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include "i_string.h"
+//#include <stdlib.h>
+//#include <ctype.h>
+#include <stdbool.h>
+//#include "i_string.h"
 
-#include "glob.h"
+//#include "glob.h"
 #include "uc320cl.h"
 #include "regs51.h"
 

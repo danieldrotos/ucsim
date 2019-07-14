@@ -19,14 +19,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+//#include "ddconfig.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <cassert>
-#include "ddconfig.h"
-#include "stdio.h"
+#include <assert.h>
 
 // local
 #include "pdkcl.h"
-#include "regspdk.h"
+//#include "regspdk.h"
 
 #define CODE_MASK(op, m) ((code & ~(m)) == (op))
 

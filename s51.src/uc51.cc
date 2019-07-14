@@ -25,27 +25,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
 #include <stdio.h>
-#include <stdarg.h>
+//#include <stdarg.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/time.h>
+//#include <fcntl.h>
+//#include <errno.h>
+//#include <sys/types.h>
+//#include <sys/time.h>
 //#if FD_HEADER_OK
 //# include HEADER_FD
 //#endif
-#include "i_string.h"
+#include <stdbool.h>
+#include <string.h>
+//#include "i_string.h"
 
 // prj
 #include "utils.h"
 #include "globals.h"
 
 // sim
-#include "optioncl.h"
+//#include "optioncl.h"
 #include "iwrap.h"
 
 //cmd.src
@@ -55,12 +57,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uc51cl.h"
 #include "glob.h"
 #include "regs51.h"
-#include "timer0cl.h"
+//#include "timer0cl.h"
 #include "timer1cl.h"
 #include "serialcl.h"
 #include "portcl.h"
-#include "interruptcl.h"
-#include "types51.h"
+//#include "interruptcl.h"
+//#include "types51.h"
 
 
 
