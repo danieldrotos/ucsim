@@ -392,8 +392,8 @@ cl_mdu88x::read(class cl_memory_cell *cell)
   else if (sfr->is_owned(cell, &a))
     {
       a-= 0xb2;
-      if ((a < 0) ||
-	  (a > 5))
+      if (((a < 0) ||
+	   (a > 5)))
 	{
 	  if (con->get() & 0x20)
 	    val= regs[a]->get();

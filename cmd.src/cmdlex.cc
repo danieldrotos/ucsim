@@ -485,14 +485,15 @@ char *yytext;
 #line 2 "cmdlex.l"
 #include <stdio.h>
 //#include <stdint.h>
+#include <unistd.h>
 #include "cmdlexcl.h"
 #include "cmdpars.hh"
 
 static int uc_yy_check_id(char *token);
 static int uc_yy_input(char *buf, int max_size);
 #define YY_INPUT(buf,result,max_size) result = uc_yy_input(buf, max_size) 
-#line 495 "<stdout>"
 #line 496 "<stdout>"
+#line 497 "<stdout>"
 
 #define INITIAL 0
 
@@ -707,10 +708,10 @@ YY_DECL
 		}
 
 	{
-#line 14 "cmdlex.l"
+#line 15 "cmdlex.l"
 
 
-#line 714 "<stdout>"
+#line 715 "<stdout>"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -769,222 +770,222 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 16 "cmdlex.l"
+#line 17 "cmdlex.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 18 "cmdlex.l"
+#line 19 "cmdlex.l"
 return(PTOK_INT);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 19 "cmdlex.l"
+#line 20 "cmdlex.l"
 return(PTOK_MUL_ASSIGN);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 20 "cmdlex.l"
+#line 21 "cmdlex.l"
 return(PTOK_DIV_ASSIGN);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 21 "cmdlex.l"
+#line 22 "cmdlex.l"
 return(PTOK_MOD_ASSIGN);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 22 "cmdlex.l"
+#line 23 "cmdlex.l"
 return(PTOK_ADD_ASSIGN);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 23 "cmdlex.l"
+#line 24 "cmdlex.l"
 return(PTOK_SUB_ASSIGN);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 24 "cmdlex.l"
+#line 25 "cmdlex.l"
 return(PTOK_LEFT_ASSIGN);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 25 "cmdlex.l"
+#line 26 "cmdlex.l"
 return(PTOK_RIGHT_ASSIGN);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 26 "cmdlex.l"
+#line 27 "cmdlex.l"
 return(PTOK_AND_ASSIGN);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 27 "cmdlex.l"
+#line 28 "cmdlex.l"
 return(PTOK_XOR_ASSIGN);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 28 "cmdlex.l"
+#line 29 "cmdlex.l"
 return(PTOK_OR_ASSIGN);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 29 "cmdlex.l"
+#line 30 "cmdlex.l"
 return(PTOK_AND_OP);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 30 "cmdlex.l"
+#line 31 "cmdlex.l"
 return(PTOK_OR_OP);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 31 "cmdlex.l"
+#line 32 "cmdlex.l"
 return(PTOK_INC_OP);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 32 "cmdlex.l"
+#line 33 "cmdlex.l"
 return(PTOK_DEC_OP);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 33 "cmdlex.l"
+#line 34 "cmdlex.l"
 return(PTOK_EQ_OP);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 34 "cmdlex.l"
+#line 35 "cmdlex.l"
 return(PTOK_NE_OP);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 35 "cmdlex.l"
+#line 36 "cmdlex.l"
 return(PTOK_GE_OP);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 36 "cmdlex.l"
+#line 37 "cmdlex.l"
 return(PTOK_LE_OP);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 37 "cmdlex.l"
+#line 38 "cmdlex.l"
 return(PTOK_RIGHT_OP);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 38 "cmdlex.l"
+#line 39 "cmdlex.l"
 return(PTOK_LEFT_OP);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 39 "cmdlex.l"
+#line 40 "cmdlex.l"
 return(PTOK_PLUS);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 40 "cmdlex.l"
+#line 41 "cmdlex.l"
 return(PTOK_MINUS);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 41 "cmdlex.l"
+#line 42 "cmdlex.l"
 return(PTOK_ASTERIX);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 42 "cmdlex.l"
+#line 43 "cmdlex.l"
 return(PTOK_SLASH);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 43 "cmdlex.l"
+#line 44 "cmdlex.l"
 return(PTOK_LEFT_PAREN);
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 44 "cmdlex.l"
+#line 45 "cmdlex.l"
 return(PTOK_RIGHT_PAREN);
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 45 "cmdlex.l"
+#line 46 "cmdlex.l"
 return(PTOK_LEFT_BRACKET);
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 46 "cmdlex.l"
+#line 47 "cmdlex.l"
 return(PTOK_RIGHT_BRACKET);
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 47 "cmdlex.l"
+#line 48 "cmdlex.l"
 return(PTOK_EQUAL);
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 48 "cmdlex.l"
+#line 49 "cmdlex.l"
 return(PTOK_DOT);
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 49 "cmdlex.l"
+#line 50 "cmdlex.l"
 return(PTOK_AMPERSAND);
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 50 "cmdlex.l"
+#line 51 "cmdlex.l"
 return(PTOK_PIPE);
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 51 "cmdlex.l"
+#line 52 "cmdlex.l"
 return(PTOK_CIRCUM);
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 52 "cmdlex.l"
+#line 53 "cmdlex.l"
 return(PTOK_PERCENT);
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 53 "cmdlex.l"
+#line 54 "cmdlex.l"
 return(PTOK_TILDE);
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 54 "cmdlex.l"
+#line 55 "cmdlex.l"
 return(PTOK_QUESTION);
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 55 "cmdlex.l"
+#line 56 "cmdlex.l"
 return(PTOK_COLON);
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 56 "cmdlex.l"
+#line 57 "cmdlex.l"
 return(PTOK_LESS);
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 57 "cmdlex.l"
+#line 58 "cmdlex.l"
 return(PTOK_GREATHER);
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 58 "cmdlex.l"
+#line 59 "cmdlex.l"
 return(PTOK_EXCLAMATION);
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 59 "cmdlex.l"
+#line 60 "cmdlex.l"
 return(PTOK_COMMA);
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 61 "cmdlex.l"
+#line 62 "cmdlex.l"
 {
   //printf("\nlexer found a nr: %s\n",yytext);
   yylval.number = strtol(yytext, 0, 0);
@@ -993,7 +994,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 67 "cmdlex.l"
+#line 68 "cmdlex.l"
 {
   yylval.number = 0;
   for (int i= 2; yytext[i]; i++)
@@ -1003,20 +1004,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 74 "cmdlex.l"
+#line 75 "cmdlex.l"
 return(uc_yy_check_id(yytext));
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 76 "cmdlex.l"
+#line 77 "cmdlex.l"
 return(yytext[0]);
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 78 "cmdlex.l"
+#line 79 "cmdlex.l"
 ECHO;
 	YY_BREAK
-#line 1020 "<stdout>"
+#line 1021 "<stdout>"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1984,7 +1985,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "cmdlex.l"
+#line 79 "cmdlex.l"
 
 
 int

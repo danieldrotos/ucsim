@@ -27,22 +27,24 @@
 */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
-#include <ctype.h>
-#include "i_string.h"
+//#include <ctype.h>
+#include <string.h>
+
+//#include "i_string.h"
 
 // prj
-#include "errorcl.h"
+//#include "errorcl.h"
 #include "appcl.h"
 
 // sim
-#include "simcl.h"
-#include "optioncl.h"
+//#include "simcl.h"
+//#include "optioncl.h"
 
 // local
 #include "cmd_setcl.h"
-#include "cmdutil.h"
+//#include "cmdutil.h"
 
 
 void

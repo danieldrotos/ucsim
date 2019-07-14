@@ -77,7 +77,7 @@ cl_serial::init(void)
     }
 
   class cl_hw *t2= uc->get_hw(HW_TIMER, 2, 0);
-  if ((there_is_t2= t2 != 0))
+  if (((there_is_t2= t2) != 0))
     {
       t_mem d= sfr->get(T2CON);
       t2_baud= d & (bmRCLK | bmTCLK);

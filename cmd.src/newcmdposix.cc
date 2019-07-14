@@ -43,10 +43,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // sim
 #include "simcl.h"
 #include "argcl.h"
-#include "appcl.h"
 
 // local
-#include "newcmdposixcl.h"
 
 
 /*
