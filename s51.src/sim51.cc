@@ -45,7 +45,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include "uc52cl.h"
 //#include "uc521cl.h"
 #include "uc517cl.h"
-#include "uc51rcl.h"
+//#include "uc51rcl.h"
 //#include "uc89c51rcl.h"
 #include "uc251cl.h"
 #include "uc390cl.h"

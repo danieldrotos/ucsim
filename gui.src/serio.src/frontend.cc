@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <ctype.h>
 //#include <sys/types.h>
-#include <iostream>
+//#include <iostream>
 #include <stdlib.h>
 //#include <sys/stat.h>
 //#include <fcntl.h>

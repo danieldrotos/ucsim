@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 //#include "ddconfig.h"
 
-#include <stdio.h>
+//#include <stdio.h>
 //#include <stdlib.h>
 
 // local
