@@ -27,25 +27,25 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
-#include <stdarg.h> /* for va_list */
+//#include <stdarg.h> /* for va_list */
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "i_string.h"
+#include <string.h>
 
 // prj
-#include "pobjcl.h"
+//#include "pobjcl.h"
 #include "globals.h"
 
 // sim
-#include "simcl.h"
+//#include "simcl.h"
 
 // local
 #include "z80cl.h"
 #include "glob.h"
-#include "regsz80.h"
+//#include "regsz80.h"
 
 #define uint32 t_addr
 #define uint8 unsigned char

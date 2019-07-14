@@ -25,7 +25,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
 #if defined(HAVE_VASPRINTF) && !defined(_GNU_SOURCE)
   /* define before including stdio.h to enable vasprintf() declaration */
@@ -35,13 +35,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <sys/time.h>
-#include "i_string.h"
+#include <string.h>
+#include <stdbool.h>
 
   // prj
-#include "stypes.h"
-#include "pobjcl.h"
+//#include "stypes.h"
+//#include "pobjcl.h"
 
 #include "utils.h"
 

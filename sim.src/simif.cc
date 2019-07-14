@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "globals.h"
 
 // sim
-#include "simcl.h"
+//#include "simcl.h"
 
 #include "simifcl.h"
 

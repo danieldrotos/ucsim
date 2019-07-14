@@ -27,16 +27,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "ddconfig.h"
+//#include "ddconfig.h"
 
-#include <stdarg.h> /* for va_list */
+//#include <stdarg.h> /* for va_list */
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "i_string.h"
+#include <string.h>
 
 // prj
-#include "pobjcl.h"
+//#include "pobjcl.h"
 
 // sim
 #include "simcl.h"
@@ -44,7 +44,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "st7cl.h"
 #include "glob.h"
-#include "regsst7.h"
+//#include "regsst7.h"
 #include "st7mac.h"
 
 #define uint32 t_addr
