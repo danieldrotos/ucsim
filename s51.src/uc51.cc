@@ -484,6 +484,7 @@ cl_irq_stop_option::init(void)
 {
   cl_optref::init();
   create(uc51, bool_opt, "irq_stop", "Stop when IRQ accepted");
+  
   return(0);
 }
 
