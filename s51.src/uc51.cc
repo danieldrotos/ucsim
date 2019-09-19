@@ -1577,7 +1577,8 @@ cl_51core::analyze(t_addr addr)
 {
   uint code;
   struct dis_entry *tabl;
-
+  t_addr a;
+  
   code= rom->get(addr);
   tabl= &(dis_tbl()[code]);
   while (!inst_at(addr) &&
@@ -1587,29 +1588,34 @@ cl_51core::analyze(t_addr addr)
       switch (tabl->branch)
 	{
 	case 'a': // acall
-	  analyze((addr & 0xf800)|
-		  ((rom->get(addr+1)&0x07)*256+
-		   rom->get(addr+2)));
-	  analyze(addr+tabl->length);
+	  a= (addr & 0xf800)|
+	    ((rom->get(addr+1)&0x07)*256+
+	     rom->get(addr+2));
+	  analyze(a);
+	  addr= addr+tabl->length;
 	  break;
 	case 'A': // ajmp
-	  addr= (addr & 0xf800)|
-	    ((rom->get(addr+1) & 0x07)*256 + rom->get(addr+2));
+	  a= (addr & 0xf800)|
+	    (((rom->get(addr)>>5) & 0x07)*256 + rom->get(addr+1));
+	  addr= a;
 	  break;
 	case 'l': // lcall
-	  analyze(rom->get(addr+1)*256 + rom->get(addr+2));
-	  analyze(addr+tabl->length);
+	  a= rom->get(addr+1)*256 + rom->get(addr+2);
+	  analyze(a);
+	  addr= addr+tabl->length;
 	  break;
 	case 'L': // ljmp
-	  addr= rom->get(addr+1)*256 + rom->get(addr+2);
+	  a= rom->get(addr+1)*256 + rom->get(addr+2);
+	  addr= a;
 	  break;
 	case 'r': // reljmp (2nd byte)
-	  analyze(rom->validate_address(addr+(signed char)(rom->get(addr+1))));
-	  analyze(addr+tabl->length);
+	  a= rom->validate_address(addr+2+(signed char)(rom->get(addr+1)));
+	  analyze(a);
+	  addr= addr+tabl->length;
 	  break;
 	case 'R': // reljmp (3rd byte)
-	  analyze(rom->validate_address(addr+(signed char)(rom->get(addr+2))));
-	  analyze(addr+tabl->length);
+	  analyze(rom->validate_address(addr+3+(signed char)(rom->get(addr+2))));
+	  addr= addr+tabl->length;
 	  break;
 	case 's': // sjmp
 	  {
