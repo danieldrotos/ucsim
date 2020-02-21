@@ -127,6 +127,29 @@ CMDHELP(cl_conf_objects_cmd,
 	"Show object tree",
 	"long help of conf objects")
 
+
+/*
+ * Command: ver
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_APP(cl_ver_cmd)
+{
+  con->dd_printf("%s\n", VERSIONSTR);
+  return false;
+}
+
+CMDHELP(cl_ver_cmd,
+	"version",
+	"Version of the program",
+	"long help of ver command")
+
+
+/*
+ * Command: jaj
+ *----------------------------------------------------------------------------
+ */
+
 COMMAND_DO_WORK_APP(cl_jaj_cmd)
 {
   //class cl_address_space *mem= 0;

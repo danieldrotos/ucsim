@@ -834,6 +834,10 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
   cmdset->add(cmd= new cl_super_cmd("conf", 0, cset));
   cmd->init();
   set_conf_help(cmd);
+
+  cmd= new cl_ver_cmd("version", 0);
+  cmdset->add(cmd);
+  cmd->init();
   
   cmd= new cl_help_cmd("help", 0);
   cmdset->add(cmd);
