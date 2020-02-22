@@ -111,7 +111,7 @@ int cl_pdk::execute(unsigned int code) {
   case CPU_PDK15:
     return(execute_pdk15(code));
   default:
-    __builtin_unreachable();
+    return 0;//__builtin_unreachable();
   }
 }
 
