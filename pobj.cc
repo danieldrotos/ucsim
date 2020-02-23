@@ -28,7 +28,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
-#include <stdbool.h>
 
 //#include "ddconfig.h"
 

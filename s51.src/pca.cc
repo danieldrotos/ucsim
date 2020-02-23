@@ -27,7 +27,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include <stdio.h>
 //#include <ctype.h>
-#include <stdbool.h>
 
 // sim.src
 #include "itsrccl.h"

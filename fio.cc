@@ -45,7 +45,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdarg.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <stdbool.h>
 
 // These two flags aren't defined on some platforms
 #ifndef S_IRGRP

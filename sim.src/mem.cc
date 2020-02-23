@@ -31,7 +31,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 //#include <stdarg.h>
-#include <stdbool.h>
 #include <string.h>
 //#include "i_string.h"
 

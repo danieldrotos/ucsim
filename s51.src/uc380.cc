@@ -26,7 +26,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 //#include <string.h>
-//#include <stdbool.h>
 
 #include "portcl.h"
 

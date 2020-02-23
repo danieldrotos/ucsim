@@ -31,7 +31,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include <stdlib.h>
 //#include <unistd.h>
 #include <string.h>
-#include <stdbool.h>
 //#include "i_string.h"
 
 // prj

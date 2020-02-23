@@ -27,7 +27,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include <ctype.h>
 #include <string.h>
-#include <stdbool.h>
 
 // prj
 #include "globals.h"

@@ -38,7 +38,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#if FD_HEADER_OK
 //# include HEADER_FD
 //#endif
-#include <stdbool.h>
 #include <string.h>
 //#include "i_string.h"
 

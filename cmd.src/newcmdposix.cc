@@ -35,7 +35,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include <sys/types.h>
 //#include <sys/time.h>
 #include <string.h>
-#include <stdbool.h>
 #include <unistd.h>
 
 //#include "i_string.h"

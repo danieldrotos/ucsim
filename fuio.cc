@@ -18,7 +18,6 @@
 #include <string.h>
 #include <stdarg.h>
 #include <fcntl.h>
-#include <stdbool.h>
 #include <termios.h>
 
 #include "utils.h"
