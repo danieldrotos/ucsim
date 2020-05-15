@@ -309,6 +309,12 @@ cl_app::proc_arguments(int argc, char *argv[])
 	  (strcmp(argv[i], "-args") == 0) ||
 	  (strcmp(argv[i], "-nx") == 0))
 	strcpy(argv[i], "-_");
+      if ((strcmp(argv[i], "-help")==0) ||
+	  (strcmp(argv[i], "--help")==0))
+	{
+	  print_help(cchars("s51"));
+	  exit(0);
+	}
     }
   
   while((c= getopt(argc, argv, opts)) != -1)
