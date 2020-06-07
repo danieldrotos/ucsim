@@ -85,7 +85,15 @@ cl_z80::init(void)
 char *
 cl_z80::id_string(void)
 {
-  return((char*)"unspecified Z80");
+  switch (type->type)
+    {
+    case CPU_Z80: return (char*)"Z80";
+    case CPU_Z180: return (char*)"Z180";
+    case CPU_Z80N: return (char*)"Z80N";
+    default:
+      return((char*)"unspecified Z80");
+    }
+  return (char*)"Z80";
 }
 
 
