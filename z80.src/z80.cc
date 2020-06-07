@@ -577,12 +577,17 @@ int
 cl_z80::exec_inst(void)
 {
   t_mem code;
-
+  int ret;
+  
   instPC= PC;
 
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
+
+  if (inst_z80n(code, &ret))
+    return ret;
+  
   switch (code)
     {
     case 0x00: return(inst_nop(code));
@@ -769,6 +774,11 @@ cl_z80::exec_inst(void)
 
   sim->stop(resINV_INST);
   return(resINV_INST);
+}
+
+bool cl_z80::inst_z80n(t_mem code, int *ret)
+{
+  return false;
 }
 
 void cl_z80::store1( u16_t addr, t_mem val ) {
