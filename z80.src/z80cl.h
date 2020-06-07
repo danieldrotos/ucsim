@@ -193,6 +193,7 @@ public:
   virtual int inst_fd_spec(t_mem code) { return -1; }
 
   virtual bool inst_z80n(t_mem code, int *ret);
+  virtual int inst_ldix(t_mem code);
 };
 
 

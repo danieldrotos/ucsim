@@ -48,6 +48,13 @@ int  cl_z80::inst_ed_(t_mem code)
 {
   unsigned short tw;
   u8_t     ubtmp;
+
+  if (type->type == CPU_Z80N)
+    {
+      int ret;
+      if (inst_z80n(code, &ret))
+	return ret;
+    }
   
   if (code < 0x40)
     {

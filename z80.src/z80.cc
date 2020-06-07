@@ -577,7 +577,6 @@ int
 cl_z80::exec_inst(void)
 {
   t_mem code;
-  int ret;
   
   instPC= PC;
 
@@ -585,9 +584,6 @@ cl_z80::exec_inst(void)
     return(resBREAKPOINT);
   tick(1);
 
-  if (inst_z80n(code, &ret))
-    return ret;
-  
   switch (code)
     {
     case 0x00: return(inst_nop(code));
@@ -778,7 +774,60 @@ cl_z80::exec_inst(void)
 
 bool cl_z80::inst_z80n(t_mem code, int *ret)
 {
-  return false;
+  int r= resGO;
+  switch (code)
+    {
+    case 0xa4: r= inst_ldix(code); break;
+    case 0xa5: break; // ldws
+    case 0xb4: break; // ldirx
+    case 0xac: break; // lddx
+    case 0xbc: break; // lddrx
+    case 0xb7: break; // ldpirx
+    case 0x90: break; // outinb
+    case 0x30: break; // mul
+    case 0x31: break; // add hl,a
+    case 0x32: break; // add de,a
+    case 0x33: break; // add bc,a
+    case 0x34: break; // add hl,$nnnn
+    case 0x35: break; // add de,$nnnn
+    case 0x36: break; // add bc,$nnnn
+    case 0x23: break; // swapnib
+    case 0x24: break; // mirror a
+    case 0x8a: break; // push $nnnn
+    case 0x91: break; // nextreg $rr,$nn
+    case 0x92: break; // nextreg $rr,a
+    case 0x93: break; // pixeldn
+    case 0x94: break; // pixelad
+    case 0x95: break; // setae
+    case 0x27: break; // test $nn
+      // core version 2.00.22+
+    case 0x28: break; // bsla de,b
+    case 0x29: break; // bsra de,b
+    case 0x2a: break; // bsrl de,b
+    case 0x2b: break; // bsrf de,b
+    case 0x2c: break; // brlc de,b
+    case 0x98: break; // jp (c)
+    default: return false;
+    }
+  if (ret)
+    *ret= r;
+  return true;
+}
+
+int
+cl_z80::inst_ldix(t_mem code)
+{
+  // ldix, -, {if HL*!=A DE*:=HL*;} DE++; HL++; BC--
+  u8_t at_hl;
+  at_hl= get1(regs.HL);
+  if (at_hl == regs.raf.A)
+    {
+      store1(regs.DE, at_hl);
+    }
+  regs.DE++;
+  regs.HL++;
+  regs.BC--;
+  return resGO;
 }
 
 void cl_z80::store1( u16_t addr, t_mem val ) {
