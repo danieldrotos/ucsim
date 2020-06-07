@@ -194,6 +194,7 @@ public:
 
   virtual bool inst_z80n(t_mem code, int *ret);
   virtual int inst_ldix(t_mem code);
+  virtual int inst_lddx(t_mem code);
 };
 
 

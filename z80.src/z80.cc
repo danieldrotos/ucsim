@@ -779,9 +779,9 @@ bool cl_z80::inst_z80n(t_mem code, int *ret)
     {
     case 0xa4: r= inst_ldix(code); break;
     case 0xa5: break; // ldws
-    case 0xb4: break; // ldirx
-    case 0xac: break; // lddx
-    case 0xbc: break; // lddrx
+    case 0xb4: while (regs.BC) r= inst_ldix(code); break;
+    case 0xac: r= inst_lddx(code); break;
+    case 0xbc: while (regs.BC) r= inst_lddx(code); break;
     case 0xb7: break; // ldpirx
     case 0x90: break; // outinb
     case 0x30: break; // mul
@@ -826,6 +826,22 @@ cl_z80::inst_ldix(t_mem code)
     }
   regs.DE++;
   regs.HL++;
+  regs.BC--;
+  return resGO;
+}
+
+int
+cl_z80::inst_lddx(t_mem code)
+{
+  // lddx, -, {if HL*!=A DE*:=HL*;} DE++; HL--; BC--
+  u8_t at_hl;
+  at_hl= get1(regs.HL);
+  if (at_hl == regs.raf.A)
+    {
+      store1(regs.DE, at_hl);
+    }
+  regs.DE++;
+  regs.HL--;
   regs.BC--;
   return resGO;
 }
