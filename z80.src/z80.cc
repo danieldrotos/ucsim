@@ -46,6 +46,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "z80cl.h"
 #include "glob.h"
 //#include "regsz80.h"
+#include "z80mac.h"
 
 #define uint32 t_addr
 #define uint8 unsigned char
@@ -778,11 +779,27 @@ bool cl_z80::inst_z80n(t_mem code, int *ret)
   switch (code)
     {
     case 0xa4: r= inst_ldix(code); break;
-    case 0xa5: break; // ldws
-    case 0xb4: while (regs.BC) r= inst_ldix(code); break;
+    case 0xa5: // ldws
+      {
+	store1(regs.DE, get1(regs.HL));
+	inc(regs.hl.l);
+	inc(regs.de.h);
+      }
+    case 0xb4: do r= inst_ldix(code); while (regs.BC); break;
     case 0xac: r= inst_lddx(code); break;
-    case 0xbc: while (regs.BC) r= inst_lddx(code); break;
-    case 0xb7: break; // ldpirx
+    case 0xbc: do r= inst_lddx(code); while (regs.BC); break;
+    case 0xb7:  // ldpirx
+      {
+	u8_t t;
+	do {
+	  t= get1((regs.HL & 0xfff8)+(regs.de.l & 7));
+	  if (t != regs.raf.A)
+	    store1(regs.DE, t);
+	  regs.DE++;
+	  regs.BC--;
+	}
+	while (regs.BC);
+      }
     case 0x90: break; // outinb
     case 0x30: break; // mul
     case 0x31: break; // add hl,a
