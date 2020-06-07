@@ -356,6 +356,19 @@ cl_z80::get_disasm_info(t_addr addr,
 
     case 0xed: /* ESC code to about 80 opcodes of various lengths */
       code= rom->get(addr++);
+      if (type->type == CPU_Z80N)
+	{
+	  i= 0;
+	  while ((code & disass_z80n_ed[i].mask) != disass_z80n_ed[i].code &&
+		 disass_z80n_ed[i].mnemonic)
+	    i++;
+	  b= disass_z80n_ed[i].mnemonic;
+	  if (b != NULL)
+	    {
+	      len += (disass_z80n_ed[i].length + 1);
+	      break;
+	    }
+	}
       i= 0;
       while ((code & disass_z80_ed[i].mask) != disass_z80_ed[i].code &&
         disass_z80_ed[i].mnemonic)

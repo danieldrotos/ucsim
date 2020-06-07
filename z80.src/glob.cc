@@ -402,6 +402,17 @@ disass_r2k
 
 
 #ifndef R2K
+struct dis_entry disass_z80n_ed[]=
+  {
+   { 0x00a4, 0x00ff, ' ', 1, "LDIX" },
+   { 0x00a5, 0x00ff, ' ', 1, "LDWS" },
+   { 0x00b4, 0x00ff, ' ', 1, "LDIRX" },
+   { 0x00ac, 0x00ff, ' ', 1, "LDDX" },
+   { 0x00bc, 0x00ff, ' ', 1, "LDDRX" },
+   { 0x00b7, 0x00ff, ' ', 1, "LDPIRX" },
+   { 0, 0, 0, 0, NULL }
+};
+
 struct dis_entry disass_z80_ed[]= {
   { 0x0000, 0x00ff, ' ', 1, "RLC B" },
   { 0x0040, 0x00ff, ' ', 1, "IN B,(C)" },
