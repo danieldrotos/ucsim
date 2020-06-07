@@ -80,6 +80,9 @@ cl_z80::init(void)
   }
   sp_limit= 0xf000;
   
+  IFF1= false;
+  IFF2= false;
+
   return(0);
 }
 
@@ -794,7 +797,9 @@ bool cl_z80::inst_z80n(t_mem code, int *ret)
     case 0xa4: r= inst_ldix(code); break;
     case 0xa5: // ldws
       {
-	store1(regs.DE, get1(regs.HL));
+	this->store1(regs.DE, this->get1(regs.HL));
+	vc.rd++;
+	vc.wr++;
 	inc(regs.hl.l);
 	inc(regs.de.h);
       }
@@ -805,30 +810,67 @@ bool cl_z80::inst_z80n(t_mem code, int *ret)
       {
 	u8_t t;
 	do {
-	  t= get1((regs.HL & 0xfff8)+(regs.de.l & 7));
+	  t= this->get1((regs.HL & 0xfff8)+(regs.de.l & 7));
+	  vc.rd++;
 	  if (t != regs.raf.A)
-	    store1(regs.DE, t);
+	    {
+	      this->store1(regs.DE, t);
+	      vc.wr++;
+	    }
 	  regs.DE++;
 	  regs.BC--;
 	}
 	while (regs.BC);
       }
-    case 0x90: break; // outinb
-    case 0x30: break; // mul
+    case 0x90: // outinb
+      outputs->write(regs.BC, this->get1(regs.HL));
+      vc.wr++;
+      vc.rd++;
+      SET_Z(regs.bc.h);
+      regs.raf.F|= BIT_N;
+      regs.HL++;
+      break;
+    case 0x30: // mul
+      regs.DE= regs.de.h * regs.de.l;
+      break;
     case 0x31: break; // add hl,a
     case 0x32: break; // add de,a
     case 0x33: break; // add bc,a
     case 0x34: break; // add hl,$nnnn
     case 0x35: break; // add de,$nnnn
     case 0x36: break; // add bc,$nnnn
-    case 0x23: break; // swapnib
-    case 0x24: break; // mirror a
+    case 0x23: // swapnib
+      regs.raf.A= (regs.raf.A >> 4) | (regs.raf.A << 4);
+      break;
+    case 0x24: // mirror a
+      regs.raf.A=
+	((regs.raf.A&0x01)?0x80:0) |
+	((regs.raf.A&0x02)?0x40:0) |
+	((regs.raf.A&0x04)?0x20:0) |
+	((regs.raf.A&0x08)?0x10:0) |
+	((regs.raf.A&0x10)?0x08:0) |
+	((regs.raf.A&0x20)?0x04:0) |
+	((regs.raf.A&0x40)?0x02:0) |
+	((regs.raf.A&0x80)?0x01:0);
+      break;	
     case 0x8a: break; // push $nnnn
     case 0x91: break; // nextreg $rr,$nn
     case 0x92: break; // nextreg $rr,a
-    case 0x93: break; // pixeldn
-    case 0x94: break; // pixelad
-    case 0x95: break; // setae
+    case 0x93: // pixeldn
+      if (regs.HL!=0x0700)
+	regs.HL+= 256;
+      else if (regs.HL&0xe0!=0xe0)
+	regs.HL= regs.HL&0xf800+0x20;
+      else
+	regs.HL= regs.HL&0xf81f+0x0800;
+      break;
+    case 0x94: // pixelad
+      regs.HL= 0x4000 + ((regs.de.h&0xc0)<<5) + ((regs.de.h&0x07)<<8) +
+	((regs.de.h&0x38)<<2) + (regs.de.l>>3);
+      break;
+    case 0x95: // setae
+      regs.raf.A= 0x80 >> (regs.de.l & 0x7);
+      break;
     case 0x27: break; // test $nn
       // core version 2.00.22+
     case 0x28: break; // bsla de,b
@@ -849,10 +891,12 @@ cl_z80::inst_ldix(t_mem code)
 {
   // ldix, -, {if HL*!=A DE*:=HL*;} DE++; HL++; BC--
   u8_t at_hl;
-  at_hl= get1(regs.HL);
+  at_hl= this->get1(regs.HL);
+  vc.rd++;
   if (at_hl == regs.raf.A)
     {
-      store1(regs.DE, at_hl);
+      this->store1(regs.DE, at_hl);
+      vc.wr++;
     }
   regs.DE++;
   regs.HL++;
@@ -865,10 +909,12 @@ cl_z80::inst_lddx(t_mem code)
 {
   // lddx, -, {if HL*!=A DE*:=HL*;} DE++; HL--; BC--
   u8_t at_hl;
-  at_hl= get1(regs.HL);
+  at_hl= this->get1(regs.HL);
+  vc.rd++;
   if (at_hl == regs.raf.A)
     {
-      store1(regs.DE, at_hl);
+      this->store1(regs.DE, at_hl);
+      vc.wr++;
     }
   regs.DE++;
   regs.HL--;
@@ -994,7 +1040,6 @@ cl_z80_cpu::init(void)
   uc->vars->add(v= new cl_var(cchars("sp_limit"), cfg, z80cpu_sp_limit,
 			      cfg_help(z80cpu_sp_limit)));
   v->init();
-
   return 0;
 }
 

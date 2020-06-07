@@ -51,6 +51,7 @@ public:
   class cl_address_space *outputs;
   class cl_sp_limit_opt *sp_limit_opt;
   t_addr sp_limit;
+  bool IFF1, IFF2;
 public:
   cl_z80(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
