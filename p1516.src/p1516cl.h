@@ -48,7 +48,8 @@ class cl_p1516: public cl_uc
 {
 public:
   u8_t F;
- public:
+  u32_t R[16];
+public:
   class cl_address_space *rom;
  public:
   cl_p1516(class cl_sim *asim);
@@ -60,7 +61,7 @@ public:
 
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disass(t_addr addr, const char *sep);
-    
+  virtual void print_regs(class cl_console_base *con);
 };
 
 
