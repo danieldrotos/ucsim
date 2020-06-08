@@ -25,6 +25,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <stdlib.h>
+
+#include "glob.h"
+
 #include "p1516cl.h"
 
 
@@ -44,6 +48,146 @@ char *
 cl_p1516::id_string(void)
 {
   return (char*)"P1516";
+}
+
+
+void
+cl_p1516::mk_hw_elements(void)
+{
+  //class cl_hw *h;
+  cl_uc::mk_hw_elements();
+  //add_hw(h= new cl_port(this));
+  //h->init();
+}
+
+void
+cl_p1516::make_memories(void)
+{
+  class cl_address_space *as;
+
+  rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x10000, 32);
+  as->init();
+  address_spaces->add(as);
+
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+
+  chip= new cl_memory_chip("rom_chip", 0x10000, 32);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(as= rom/*address_space(MEM_ROM_ID)*/,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+}
+
+
+struct dis_entry *
+cl_p1516::dis_tbl(void)
+{
+  return(disass_p1516);
+}
+
+char *
+cl_p1516::disass(t_addr addr, const char *sep)
+{
+  chars work= chars(), temp= chars();
+  char *buf, *p;
+  const char *b;
+  t_mem code, data= 0;
+  int i;
+
+  //work= "";
+  //p= (char*)work;
+
+  code= rom->get(addr);
+  
+  i= 0;
+  while ((code & dis_tbl()[i].mask) != dis_tbl()[i].code &&
+	 dis_tbl()[i].mnemonic)
+    i++;
+  if (dis_tbl()[i].mnemonic == NULL)
+    {
+      buf= (char*)malloc(40);
+      strcpy(buf, "-- UNKNOWN/INVALID");
+      return(buf);
+    }
+  b= dis_tbl()[i].mnemonic;
+
+  data= (code&0xf0000000)>>28;
+  if (((data & 1) == 0) || (dis_tbl()[i].branch == 'M'))
+    work.append("   ");
+  else
+    {
+      switch (data>>2)
+	{
+	case 0: work.append("S"); break;
+	case 1: work.append("C"); break;
+	case 2: work.append("Z"); break;
+	case 3: work.append("O"); break;
+	}
+      if (data&2)
+	work.append("1 ");
+      else
+	work+= "0 ";
+    }
+
+  while (*b)
+    {
+      if (*b == '%')
+	{
+	  b++;
+	  switch (*(b++))
+	    {
+	    case 'd': // Rd
+	      data= (code & 0x00f00000)>>20;
+	      temp.format("r%d", data);
+	      break;
+	    case 'a': // Ra
+	      data= (code & 0x000f0000)>>16;
+	      temp.format("r%d", data);
+	      break;
+	    case 'b': // Rb
+	      data= (code & 0x0000f000)>>12;
+	      temp.format("r%d", data);
+	      break;
+	    case '0': // LDL0
+	      data= (code & 0x0000ffff);
+	      temp.format("0x0000%04x", data);
+	      break;
+	    case 'O': // LDL0
+	      data= (code & 0x0000ffff);
+	      temp.format("0x%04x", data);
+	      break;
+	    case 'l': // LDL
+	      data= (code & 0x0000ffff);
+	      temp.format("0x....%04x", data);
+	      break;
+	    case 'h': // LDH
+	      data= (code & 0x0000ffff);
+	      temp.format("0x%04x....", data);
+	      break;
+	    case 'A': // CALL
+	      data= (code & 0x07ffffff);
+	      temp.format("0x%x", data);
+	      break;
+	    default:
+	      temp= (char*)"?";
+	      break;
+	    }
+	  //t= temp;
+	  //while (*t) *(p++)= *(t++);
+	  work+= temp;
+	}
+      else
+	work.append(*(b++));
+    }
+  //*p= '\0';
+
+  p= (char*)work;
+  buf= strdup(p);
+  return(buf);
 }
 
 

@@ -36,14 +36,31 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base of P1516 processor
  */
 
+enum flags
+  {
+   S= 1,
+   C= 2,
+   Z= 4,
+   O= 8
+  };
+
 class cl_p1516: public cl_uc
 {
+public:
+  u8_t F;
  public:
   class cl_address_space *rom;
  public:
   cl_p1516(class cl_sim *asim);
   virtual int init(void);
   virtual char *id_string(void);
+
+  virtual void mk_hw_elements(void);
+  virtual void make_memories(void);
+
+  virtual struct dis_entry *dis_tbl(void);
+  virtual char *disass(t_addr addr, const char *sep);
+    
 };
 
 

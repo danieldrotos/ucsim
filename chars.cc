@@ -313,6 +313,15 @@ chars::operator=(char *s)
   return(*this);
 }
 
+/*
+chars &
+chars::operator=(const char *s)
+{
+  allocate_string((char*)s);
+  return(*this);
+}
+*/
+
 chars &
 chars::operator=(const chars &cs)
 {

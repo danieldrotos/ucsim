@@ -71,6 +71,7 @@ public:
   operator char*(void) const { return(chars_string); };
   // Assignment
   chars &operator=(char *s);
+  //chars &operator=(const char *s);
   chars &operator=(const chars &cs);
   // Arithmetic
   chars operator+(char c);
@@ -78,6 +79,7 @@ public:
   chars operator+(const chars &cs);
   chars &operator+=(char c) { return(append(c)); }
   chars &operator+=(char *s) { return(append(s)); }
+  chars &operator+=(const char *s) { return(append((char*)s)); }
   chars &operator+=(const chars &cs) { return(append((char*)cs)); }
   // Boolean
   bool equal(char *);

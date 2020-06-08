@@ -300,27 +300,33 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
   if (cmdline->syntax_match(uc, MEMORY))
     {
       mem= cmdline->param(0)->value.memory.memory;
+      if (mem->width > 16) bpl/= 2;
       mem->dump(df, -1, -1, bpl, con/*->get_fout()*/);
     }
-  else if (cmdline->syntax_match(uc, MEMORY ADDRESS)) {
-    mem  = cmdline->param(0)->value.memory.memory;
-    start= cmdline->param(1)->value.address;
-    end  = start+10*8-1;
-    mem->dump(df, start, end, bpl, con/*->get_fout()*/);
-  }
-  else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS)) {
-    mem  = cmdline->param(0)->value.memory.memory;
-    start= cmdline->param(1)->value.address;
-    end  = cmdline->param(2)->value.address;
-    mem->dump(df, start, end, bpl, con/*->get_fout()*/);
-  }
-  else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS NUMBER)) {
-    mem  = cmdline->param(0)->value.memory.memory;
-    start= cmdline->param(1)->value.address;
-    end  = cmdline->param(2)->value.address;
-    bpl  = cmdline->param(3)->value.number;
-    mem->dump(df, start, end, bpl, con/*->get_fout()*/);
-  }
+  else if (cmdline->syntax_match(uc, MEMORY ADDRESS))
+    {
+      mem  = cmdline->param(0)->value.memory.memory;
+      start= cmdline->param(1)->value.address;
+      end  = start+10*8-1;
+      if (mem->width > 16) bpl/= 2;
+      mem->dump(df, start, end, bpl, con/*->get_fout()*/);
+    }
+  else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS))
+    {
+      mem  = cmdline->param(0)->value.memory.memory;
+      start= cmdline->param(1)->value.address;
+      end  = cmdline->param(2)->value.address;
+      if (mem->width > 16) bpl/= 2;
+      mem->dump(df, start, end, bpl, con/*->get_fout()*/);
+    }
+  else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS NUMBER))
+    {
+      mem  = cmdline->param(0)->value.memory.memory;
+      start= cmdline->param(1)->value.address;
+      end  = cmdline->param(2)->value.address;
+      bpl  = cmdline->param(3)->value.number;
+      mem->dump(df, start, end, bpl, con/*->get_fout()*/);
+    }
   else
     syntax_error(con);
 
