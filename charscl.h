@@ -61,6 +61,7 @@ public:
   virtual chars token(chars delims);
   virtual void ltrim(void);
   virtual void rtrim(void);
+  virtual void trim() { ltrim(); rtrim(); }
   // search
   bool starts_with(char *x);
   bool starts_with(const char *x);

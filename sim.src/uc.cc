@@ -1170,7 +1170,7 @@ cl_uc::read_asc_file(cl_f *f)
   int c;
   chars line= chars();
   bool in;
-  t_addr a= 0;
+  t_addr addr= 0;
   
   in= true;
   while ((c= f->get_c()) &&
@@ -1182,9 +1182,20 @@ cl_uc::read_asc_file(cl_f *f)
 	    {
 	      in= false;
 	      {
+		chars word= chars();
+		char *s;
 		// process
-		
-		line= "";
+		line.trim();
+		line.start_parse();
+		word= line.token(" ");
+		s= (char*)word;
+		if (isxdigit(*s))
+		  {
+		    t_mem d= strtoll(s, 0, 16);
+		    set_rom(addr, d);
+		    addr++;
+		  }
+		line= (char*)"";
 	      }
 	    }
 	  else
@@ -1201,6 +1212,7 @@ cl_uc::read_asc_file(cl_f *f)
 	    }
 	}
     }
+  return addr;
 }
   
 long

@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <ctype.h>
 
 #include "charscl.h"
 
@@ -182,11 +183,11 @@ chars::rtrim(void)
     return;
   if (*p == 0)
     return;
-  p= p+len();
+  p= p+len()-1;
   while ((p!=chars_string) && isspace(*p))
     p--;
-  *p= 0;
-  allocate_string(chars_string);
+  if (isspace(*p))
+    *p= 0;
 }
 
 
