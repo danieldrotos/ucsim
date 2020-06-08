@@ -65,10 +65,14 @@ public:
   virtual char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
 
+  virtual t_mem inst_ad(t_mem ra, t_mem rb, u32_t c);
   virtual int inst_alu(t_mem code);
   virtual int exec_inst(void);
 };
 
+#define SET_C(v) ( F= (F&~C) | ((v)?C:0) )
+#define SET_Z(v) ( F= (F&~Z) | ((v==0)?Z:0) )
+#define SET_S(v) ( F= (F&~S) | ((v)?S:0) )
 
 #endif
 
