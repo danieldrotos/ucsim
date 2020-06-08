@@ -169,7 +169,7 @@ COMMAND_DO_WORK_UC(cl_pc_cmd)
 	}
       if (!uc->inst_at(addr))
 	con->dd_printf("Warning: maybe not instruction at 0x%06x\n", AU(addr));
-      uc->PC= addr;
+      uc->set_PC(addr);
     }
   uc->print_disass(uc->PC, con);
   return(false);

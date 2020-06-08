@@ -241,7 +241,8 @@ public:
   virtual int init(void);
   virtual char *id_string(void);
   virtual void reset(void);
-
+  virtual void set_PC(t_addr addr) { PC= addr; }
+  
   // making objects
   virtual void make_memories(void);
   virtual void make_variables(void);

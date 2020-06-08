@@ -55,6 +55,8 @@ public:
   cl_p1516(class cl_sim *asim);
   virtual int init(void);
   virtual char *id_string(void);
+  virtual void reset(void);
+  virtual void set_PC(t_addr addr);
 
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
@@ -62,6 +64,9 @@ public:
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
+
+  virtual int inst_alu(t_mem code);
+  virtual int exec_inst(void);
 };
 
 

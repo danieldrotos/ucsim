@@ -54,6 +54,17 @@ cl_p1516::id_string(void)
   return (char*)"P1516";
 }
 
+void
+cl_p1516::reset(void)
+{
+  PC= R[15]= 0;
+}
+  
+void
+cl_p1516::set_PC(t_addr addr)
+{
+  PC= R[15]= addr;
+}
 
 void
 cl_p1516::mk_hw_elements(void)
@@ -217,6 +228,103 @@ cl_p1516::print_regs(class cl_console_base *con)
 	con->dd_printf(" ");
     }
   print_disass(PC, con);
+}
+
+
+int
+cl_p1516::inst_alu(t_mem code)
+{
+  u8_t Rd, Ra, Rb, Op;
+
+  Rd= (code & 0x00f00000) >> 20;
+  Ra= (code & 0x000f0000) >> 16;
+  Rb= (code & 0x0000f000) >> 12;
+  Op= (code & 0x00000f80) >> 7;
+
+  switch (Op)
+    {
+    case 0:
+      R[Rd]= R[Ra] + R[Rb];
+      break;
+    }
+  
+  return resGO;
+}
+
+int
+cl_p1516::exec_inst(void)
+{
+  t_mem code;
+  u8_t inst;
+  u8_t cond;
+  bool fe;
+  
+  PC= R[15];
+  instPC= PC;
+  fe= fetch(&code);
+  tick(1);
+  R[15]= PC;
+  if (fe)
+    return(resBREAKPOINT);
+
+  cond= (code & 0xf0000000) >> 28;
+  if ((cond&1) == 1)
+    {
+      u8_t flag, fv, v;
+      switch (cond>>2)
+	{
+	case 0: flag= F&S; break;
+	case 1: flag= F&C; break;
+	case 2: flag= F&Z; break;
+	case 3: flag= F&O; break;
+	}
+      fv= flag?1:0;
+      v= (cond&2)?1:0;
+      if (fv != v)
+	return resGO;
+    }
+  
+  inst= (code & 0x0f000000) >> 24;
+  if (code & 0x08000000)
+    {
+      // CALL
+      return resGO;
+    }
+
+  u8_t Rd, Ra;
+  Rd= (code & 0x00f00000) >> 20;
+  Ra= (code & 0x000f0000) >> 16;
+  switch (inst)
+    {
+    case 0: // nop
+      break;
+    case 1: // LD Rd,Ra
+      R[Rd]= rom->read(R[Ra]);
+      vc.rd++;
+      break;
+    case 2: // ST Rd,Ra
+      rom->write(R[Ra], R[Rd]);
+      vc.wr++;
+      break;
+    case 3: // MOV Rd,Ra
+      R[Rd]= R[Ra];
+      break;
+    case 4: // LDL0 Rd,data
+      R[Rd]= code & 0x0000ffff;
+      break;
+    case 5: // LDL Rd,data
+      R[Rd]= (R[Rd] & 0xffff0000) | (code & 0x0000ffff);
+      break;
+    case 6: // LDH Rd,data
+      R[Rd]= (R[Rd] & 0x0000ffff) | (code << 16);
+      break;
+    case 7: // ALU
+      inst_alu(code);
+      break;
+    }
+  PC= R[15];
+  
+  return resGO;
 }
 
 
