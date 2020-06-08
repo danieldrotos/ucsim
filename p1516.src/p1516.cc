@@ -259,6 +259,7 @@ cl_p1516::inst_alu(t_mem code)
 {
   u8_t d, a, b, Op;
   u8_t c1, c2;
+  u64_t big;
   
   d= (code & 0x00f00000) >> 20;
   a= (code & 0x000f0000) >> 16;
@@ -337,7 +338,12 @@ cl_p1516::inst_alu(t_mem code)
       SET_Z(R[d]);
       SET_S(R[d] & 0x80000000);
       break;
-
+    case 19: // MUH
+      big= R[a] * R[b];
+      R[d]= big >> 32;
+      SET_Z(R[d]);
+      SET_S(R[d] & 0x80000000);
+      break;
     case 14: // DIV
       break;
 
