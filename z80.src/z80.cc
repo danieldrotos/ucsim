@@ -495,18 +495,25 @@ cl_z80::disass(t_addr addr, const char *sep)
           b++;
           switch (*(b++))
             {
-            case 'd': // d    jump relative target, signed? byte immediate operand
+            case 'd': // jump relative target, signed? byte immediate operand
               sprintf(temp, "#%d", (signed char)(rom->get(addr+immed_offset)));
               ++immed_offset;
               break;
-            case 'w': // w    word immediate operand
+            case 'w': // word immediate operand, little endian
               sprintf(temp, "#0x%04x",
-                 (uint)((rom->get(addr+immed_offset)) |
-                        (rom->get(addr+immed_offset+1)<<8)) );
+		      (uint)((rom->get(addr+immed_offset)) |
+			     (rom->get(addr+immed_offset+1)<<8)) );
               ++immed_offset;
               ++immed_offset;
               break;
-            case 'b': // b    byte immediate operand
+            case 'W': // word immediate operand, big endian
+              sprintf(temp, "#0x%04x",
+		      (uint)((rom->get(addr+immed_offset)<<8) |
+			     (rom->get(addr+immed_offset+1))) );
+              ++immed_offset;
+              ++immed_offset;
+              break;
+            case 'b': // byte immediate operand
               sprintf(temp, "#0x%02x", (uint)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
@@ -530,7 +537,7 @@ cl_z80::disass(t_addr addr, const char *sep)
       return(buf);
     }
   if (sep == NULL)
-    buf= (char *)malloc(6+strlen(p)+1);
+    buf= (char *)malloc(8+strlen(p)+1);
   else
     buf= (char *)malloc((p-work)+strlen(sep)+strlen(p)+1);
   for (p= work, t= buf; *p != ' '; p++, t++)
@@ -539,7 +546,7 @@ cl_z80::disass(t_addr addr, const char *sep)
   *t= '\0';
   if (sep == NULL)
     {
-      while (strlen(buf) < 6)
+      while (strlen(buf) < 8)
         strcat(buf, " ");
     }
   else
@@ -833,12 +840,34 @@ bool cl_z80::inst_z80n(t_mem code, int *ret)
     case 0x30: // mul
       regs.DE= regs.de.h * regs.de.l;
       break;
-    case 0x31: break; // add hl,a
-    case 0x32: break; // add de,a
-    case 0x33: break; // add bc,a
-    case 0x34: break; // add hl,$nnnn
-    case 0x35: break; // add de,$nnnn
-    case 0x36: break; // add bc,$nnnn
+    case 0x31: // add hl,a
+      regs.HL+= regs.raf.A;
+      break;
+    case 0x32: // add de,a
+      regs.DE+= regs.raf.A;
+      break;
+    case 0x33: // add bc,a
+      regs.BC+= regs.raf.A;
+      break;
+    case 0x34: // add hl,$nnnn
+      {
+	u16_t w= fetch2();
+	regs.HL+= w;
+	break;
+      }
+    case 0x35: // add de,$nnnn
+      {
+	u16_t w= fetch2();
+	regs.DE+= w;
+	break;
+      }
+
+    case 0x36: // add bc,$nnnn
+      {
+	u16_t w= fetch2();
+	regs.BC+= w;
+	break;
+      }
     case 0x23: // swapnib
       regs.raf.A= (regs.raf.A >> 4) | (regs.raf.A << 4);
       break;
@@ -853,16 +882,30 @@ bool cl_z80::inst_z80n(t_mem code, int *ret)
 	((regs.raf.A&0x40)?0x02:0) |
 	((regs.raf.A&0x80)?0x01:0);
       break;	
-    case 0x8a: break; // push $nnnn
-    case 0x91: break; // nextreg $rr,$nn
-    case 0x92: break; // nextreg $rr,a
+    case 0x8a: // push $nnnn
+      {
+	u16_t w= fetch() * 256;
+	w+= fetch();
+	push2(w);
+	vc.wr+= 2;
+      }
+    case 0x91: // nextreg $rr,$nn
+      outputs->write(0x243b, fetch());
+      outputs->write(0x253b, fetch());
+      vc.wr+= 2;
+      break;
+    case 0x92: // nextreg $rr,a
+      outputs->write(0x243b, fetch());
+      outputs->write(0x253b, regs.raf.A);
+      vc.wr+= 2;
+      break;
     case 0x93: // pixeldn
       if (regs.HL!=0x0700)
 	regs.HL+= 256;
-      else if (regs.HL&0xe0!=0xe0)
-	regs.HL= regs.HL&0xf800+0x20;
+      else if ((regs.HL&0xe0)!=0xe0)
+	regs.HL= (regs.HL&0xf800)+0x20;
       else
-	regs.HL= regs.HL&0xf81f+0x0800;
+	regs.HL= (regs.HL&0xf81f)+0x0800;
       break;
     case 0x94: // pixelad
       regs.HL= 0x4000 + ((regs.de.h&0xc0)<<5) + ((regs.de.h&0x07)<<8) +
@@ -871,14 +914,39 @@ bool cl_z80::inst_z80n(t_mem code, int *ret)
     case 0x95: // setae
       regs.raf.A= 0x80 >> (regs.de.l & 0x7);
       break;
-    case 0x27: break; // test $nn
+    case 0x27: // test $nn
+      {
+	u8_t d= fetch();
+	d&= regs.raf.A;
+	regs.raf.F &= ~(BIT_ALL);
+	SET_Z(d);
+	SET_S(d);
+	if (parity(d))
+	  regs.raf.F|= BIT_P;
+	break;
+      }
       // core version 2.00.22+
-    case 0x28: break; // bsla de,b
-    case 0x29: break; // bsra de,b
-    case 0x2a: break; // bsrl de,b
-    case 0x2b: break; // bsrf de,b
-    case 0x2c: break; // brlc de,b
-    case 0x98: break; // jp (c)
+    case 0x28: // bsla de,b
+      regs.DE= regs.DE << (regs.bc.h&31);
+      break;
+    case 0x29: // bsra de,b
+      {
+	i16_t w= regs.DE;
+	w= w >> (regs.bc.h&31);
+	regs.DE= w;
+      }
+    case 0x2a: // bsrl de,b
+      regs.DE= regs.DE >> (regs.bc.h&31);
+      break;
+    case 0x2b: // bsrf de,b
+      regs.DE= ~(~regs.DE >> (regs.bc.h&31));
+      break;
+    case 0x2c: // brlc de,b
+      regs.DE= (regs.DE << (regs.bc.h&15)) | (regs.DE >> (16-(regs.bc.h&15)));
+      break;
+    case 0x98: // jp (c)
+      PC= (PC&0xc000) + (inputs->read(regs.BC)<<6);
+      break;
     default: return false;
     }
   if (ret)
