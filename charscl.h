@@ -59,6 +59,8 @@ public:
   virtual void start_parse(void) { start_parse(0); }
   virtual void start_parse(int at) { pars_pos= at; }
   virtual chars token(chars delims);
+  virtual void ltrim(void);
+  virtual void rtrim(void);
   // search
   bool starts_with(char *x);
   bool starts_with(const char *x);

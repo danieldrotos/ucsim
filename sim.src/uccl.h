@@ -266,6 +266,7 @@ public:
   virtual long read_hex_file(cl_console_base *con);
   virtual long read_hex_file(cl_f *f);
   virtual long read_omf_file(cl_f *f);
+  virtual long read_asc_file(cl_f *f);
   virtual long read_cdb_file(cl_f *f);
   virtual cl_f *find_loadable_file(chars nam);
   virtual long read_file(chars nam, class cl_console_base *con);

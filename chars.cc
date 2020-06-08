@@ -163,6 +163,33 @@ chars::token(chars delims)
 }
 
 
+void
+chars::ltrim(void)
+{
+  char *p= chars_string;
+  if (!p)
+    return;
+  while (*p && isspace(*p))
+    p++;
+  allocate_string(p);
+}
+
+void
+chars::rtrim(void)
+{
+  char *p= chars_string;
+  if (!p)
+    return;
+  if (*p == 0)
+    return;
+  p= p+len();
+  while ((p!=chars_string) && isspace(*p))
+    p--;
+  *p= 0;
+  allocate_string(chars_string);
+}
+
+
 bool
 chars::starts_with(char *x)
 {

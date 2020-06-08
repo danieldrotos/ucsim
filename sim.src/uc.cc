@@ -1165,6 +1165,45 @@ cl_uc::read_omf_file(cl_f *f)
 }
 
 long
+cl_uc::read_asc_file(cl_f *f)
+{
+  int c;
+  chars line= chars();
+  bool in;
+  t_addr a= 0;
+  
+  in= true;
+  while ((c= f->get_c()) &&
+	 (!f->eof()))
+    {
+      if (in)
+	{
+	  if ((c=='\n') || (c=='\r'))
+	    {
+	      in= false;
+	      {
+		// process
+		
+		line= "";
+	      }
+	    }
+	  else
+	    line.append(c);
+	}
+      else // out
+	{
+	  if ((c=='\n') || (c=='\r'))
+	    ;
+	  else
+	    {
+	      in= true;
+	      line.append(c);
+	    }
+	}
+    }
+}
+  
+long
 cl_uc::read_cdb_file(cl_f *f)
 {
   class cl_cdb_recs *fns= new cl_cdb_recs();
@@ -1243,6 +1282,11 @@ cl_uc::find_loadable_file(chars nam)
   if (o)
     return f;
 
+  c= chars("", "%s.asc", (char*)nam);
+  f->open(c, chars("r"));
+  o= (f->opened());
+  if (o)
+    return f;
   c= chars("", "%s.ihx", (char*)nam);
   f->open(c, chars("r"));
   o= (f->opened());
@@ -1281,6 +1325,11 @@ cl_uc::read_file(chars nam, class cl_console_base *con)
       return 0;
     }
   /*if (con) con->dd_*/printf("Loading from %s\n", f->get_file_name());
+  if (is_asc_file(f))
+    {
+      l= read_asc_file(f);
+      printf("%ld words read from %s\n", l, f->get_fname());
+    }
   if (is_hex_file(f))
     {
       l= read_hex_file(f);
