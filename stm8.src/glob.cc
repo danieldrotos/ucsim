@@ -194,8 +194,8 @@ struct dis_entry disass_stm8[]= {
 
   { 0x00a7, 0x00ff, ' ', /*2*/4, "ldf (%3,X),A" },
   { 0x00af, 0x00ff, ' ', /*2*/4, "ldf A,(%3,X)" },
-  { 0x00bd, 0x00ff, ' ', /*2*/4, "ldf %e,A" },
-  { 0x00bc, 0x00ff, ' ', /*2*/4, "ldf A,%e" },
+  { 0x00bd, 0x00ff, ' ', /*2*/4, "ldf %3,A" },
+  { 0x00bc, 0x00ff, ' ', /*2*/4, "ldf A,%3" },
   { 0x001e, 0x00ff, ' ', 2, "ldw X,(%1,SP)" },
   { 0x00ae, 0x00ff, ' ', 3, "ldw X,%w" },
   { 0x00be, 0x00ff, ' ', 2, "ldw X,%d" },
@@ -591,8 +591,8 @@ struct dis_entry disass_stm8_90[]= {
   { 0x0097, 0x00ff, ' ', 1, "ld YL,A" },
   { 0x009e, 0x00ff, ' ', 1, "ld A,YH" },
   { 0x009f, 0x00ff, ' ', 1, "ld A,YL" },
-  { 0x00a7, 0x00ff, ' ', /*2*/4, "ldf (%e,Y),A" }, // 90
-  { 0x00af, 0x00ff, ' ', /*2*/4, "ldf A,(%e,Y)" },
+  { 0x00a7, 0x00ff, ' ', /*2*/4, "ldf (%3,Y),A" }, // 90
+  { 0x00af, 0x00ff, ' ', /*2*/4, "ldf A,(%3,Y)" },
   { 0x00ae, 0x00ff, ' ', 3, "ldw Y,%w" },
   { 0x00be, 0x00ff, ' ', 2, "ldw Y,%d" },
   { 0x00ce, 0x00ff, ' ', 3, "ldw Y,%x" },
