@@ -45,6 +45,7 @@ cl_p1516::init(void)
   F= 0;
   for (i=0; i<16; i++)
     R[i]= 0;
+  xtal= 10000000;
   return 0;
 }
 
@@ -79,7 +80,8 @@ void
 cl_p1516::make_memories(void)
 {
   class cl_address_space *as;
-
+  int i;
+  
   rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x10000, 32);
   as->init();
   address_spaces->add(as);
@@ -95,6 +97,23 @@ cl_p1516::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+
+  regs= new cl_address_space("regs", 0, 16, 32);
+  regs->init();
+  for (i= 0; i<16; i++)
+    {
+      RC[i]= regs->get_cell(i);
+      RC[i]->decode((t_mem*)&R[i]);
+    }
+  address_spaces->add(regs);
+
+  class cl_var *v;
+  for (i=0; i<16; i++)
+    {
+      v= new cl_var(chars("", "R%d", i), regs, i, chars("", "CPU register %d",i));
+      v->init();
+      vars->add(v);
+    }
 }
 
 
@@ -269,64 +288,64 @@ cl_p1516::inst_alu(t_mem code)
   switch (Op)
     {
     case 0: // ADD
-      R[d]= inst_ad(R[a], R[b], 0);
+      RC[d]->W(inst_ad(RC[a]->R(), RC[b]->R(), 0));
       break;
     case 1: // ADC
-      R[d]= inst_ad(R[a], R[b], (F&C)?1:0);
+      RC[d]->W(inst_ad(RC[a]->R(), RC[b]->R(), (F&C)?1:0));
       break;
     case 2: // SUB
-      R[d]= inst_ad(R[a], ~R[b], 1);
+      RC[d]->W(inst_ad(RC[a]->R(), ~(RC[b]->R()), 1));
       break;
     case 3: // SBB
-      R[d]= inst_ad(R[a], ~R[b], (F&C)?1:0);
+      RC[d]->W(inst_ad(RC[a]->R(), ~(RC[b]->R()), (F&C)?1:0));
       break;
 
     case 4: // INC
-      R[d]= R[a]+1;
+      RC[d]->W(RC[a]->R()+1);
       break;
     case 5: // DEC
-      R[d]= R[a]=1;
+      RC[d]->W(RC[a]->R()-1);
       break;
 
     case 6: // AND
-      R[d]= R[a] & R[b];
+      RC[d]->W(RC[a]->R() & RC[b]->R());
       SET_Z(R[d]);
       break;
     case 7: // OR
-      R[d]= R[a] | R[b];
+      RC[d]->W(RC[a]->R() | RC[b]->R());
       SET_Z(R[d]);
       break;
     case 8: // XOR
-      R[d]= R[a] ^ R[b];
+      RC[d]->W(RC[a]->R() ^ RC[b]->R());
       SET_Z(R[d]);
       break;
 
     case 9: // SHL
       SET_C(R[a] & 0x80000000);
-      R[d]= R[a] << 1;
+      RC[d]->W(RC[a]->R() << 1);
       SET_Z(R[d]);
       break;
     case 10: // SHR
       SET_C(R[a] & 1);
-      R[d]= R[a] >> 1;
+      RC[d]->W(RC[a]->R() >> 1);
       SET_Z(R[d]);
       break;
     case 16: // SHA
       SET_C(R[a] & 1);
-      R[d]= ((i32_t)(R[a])) >> 1;
+      RC[d]->W(((i32_t)(RC[a]->R())) >> 1);
       SET_Z(R[d]);
       break;
     case 11: // ROL
       c1= (F&C)?1:0;
       c2= (R[a] & 0x80000000)?1:0;
-      R[d]= (R[a]<<1) + c1;
+      RC[d]->W((RC[a]->R()<<1) + c1);
       SET_C(c2);
       SET_Z(R[d]);
       break;
     case 12: // ROR
       c1= (F&C)?1:0;
       c2= R[a] & 1;
-      R[d]= R[a] >> 1;
+      RC[d]->W(RC[a]->R() >> 1);
       if (c1)
 	R[d]|= 0x80000000;
       SET_C(c2);
@@ -334,13 +353,13 @@ cl_p1516::inst_alu(t_mem code)
       break;
 
     case 13: // MUL
-      R[d]= R[a] * R[b];
+      RC[d]->W(RC[a]->R() * RC[b]->R());
       SET_Z(R[d]);
       SET_S(R[d] & 0x80000000);
       break;
     case 19: // MUH
-      big= R[a] * R[b];
-      R[d]= big >> 32;
+      big= RC[a]->R() * RC[b]->R();
+      RC[d]->W(big >> 32);
       SET_Z(R[d]);
       SET_S(R[d] & 0x80000000);
       break;
@@ -355,7 +374,7 @@ cl_p1516::inst_alu(t_mem code)
       break;
       
     case 15: // CMP
-      inst_ad(R[a], ~R[b], 1);
+      inst_ad(RC[a]->R(), ~(RC[b]->R()), 1);
       break;
     }
   
@@ -399,6 +418,9 @@ cl_p1516::exec_inst(void)
   if (code & 0x08000000)
     {
       // CALL
+      t_addr data= (code & 0x07ffffff);
+      RC[14]->W(R[15]);
+      RC[15]->W(PC= data);
       return resGO;
     }
 
