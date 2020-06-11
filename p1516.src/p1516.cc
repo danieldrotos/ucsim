@@ -73,13 +73,13 @@ cl_p1516::mk_hw_elements(void)
 {
   class cl_hw *h;
   cl_uc::mk_hw_elements();
-  add_hw(h= new cl_port(this, 0xf000, "PORTA"));
+  add_hw(h= new cl_port(this, 0xf000, "pa"));
   h->init();
-  add_hw(h= new cl_port(this, 0xf001, "PORTB"));
+  add_hw(h= new cl_port(this, 0xf001, "pb"));
   h->init();
-  add_hw(h= new cl_port(this, 0xf002, "PORTC"));
+  add_hw(h= new cl_port(this, 0xf002, "pc"));
   h->init();
-  add_hw(h= new cl_port(this, 0xf003, "PORTD"));
+  add_hw(h= new cl_port(this, 0xf003, "pd"));
   h->init();
 }
 
