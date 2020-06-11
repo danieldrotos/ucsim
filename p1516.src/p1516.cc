@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdlib.h>
 
 #include "glob.h"
+#include "portcl.h"
 
 #include "p1516cl.h"
 
@@ -70,10 +71,16 @@ cl_p1516::set_PC(t_addr addr)
 void
 cl_p1516::mk_hw_elements(void)
 {
-  //class cl_hw *h;
+  class cl_hw *h;
   cl_uc::mk_hw_elements();
-  //add_hw(h= new cl_port(this));
-  //h->init();
+  add_hw(h= new cl_port(this, 0xf000, "PORTA"));
+  h->init();
+  add_hw(h= new cl_port(this, 0xf001, "PORTB"));
+  h->init();
+  add_hw(h= new cl_port(this, 0xf002, "PORTC"));
+  h->init();
+  add_hw(h= new cl_port(this, 0xf003, "PORTD"));
+  h->init();
 }
 
 void
