@@ -137,23 +137,34 @@ cl_porto::refresh_display(bool force)
   t_mem d= value;
   if (force || d != cache)
     {
+      t_mem m;
+      int b, bv;
       pio->tu_go(1,6);
-      print(pio);
+      pio->dd_color("answer");
+      pio->dd_printf("%s at %04x %08x\n", get_name(), addr, d);
       cache= d;
-      pio->tu_go(1,9);
-      int b= 31;
-      for ( ; b>=0; b--)
+      pio->tu_go(1,8);
+      for (b=31; b>=0; b--)
 	{
-	  t_mem m= 1<<b;
-	  int bv= (d&m)?1:0;
+	  m= 1<<b;
+	  bv= (d&m)?1:0;
+	  pio->dd_printf("%d", bv);
+	  if (b%8 == 0) pio->dd_printf(" ");
+	}
+      pio->tu_go(1,9);
+      for (b=31; b>=0; b--)
+	{
+	  m= 1<<b;
+	  bv= (d&m)?1:0;
 	  if (bv)
 	    {
-	      pio->dd_cprintf("ui_bit1", "*");
+	      pio->dd_cprintf("ui_bit1", "O");
 	    }
 	  else
 	    {
-	      pio->dd_cprintf("ui_bit0", "-");
+	      pio->dd_cprintf("ui_bit0", ".");
 	    }
+	  if (b%8 == 0) pio->dd_printf(" ");
 	}
     }
   pio->dd_color("answer");
@@ -173,7 +184,20 @@ cl_porto::draw_display(void)
 
   pio->tu_go(1,5);
   pio->dd_printf("OPORT %s", get_name());
-  
+
+  pio->tu_go(1,10);
+  int b;
+  for (b=31; b>=0; b--)
+    {
+      pio->dd_printf("%d", b/10);
+      if (b%8 == 0) pio->dd_printf(" ");
+    }
+  pio->tu_go(1,11);
+  for (b=31; b>=0; b--)
+    {
+      pio->dd_printf("%d", b%10);
+      if (b%8 == 0) pio->dd_printf(" ");
+    }
   refresh_display(true);
 }
 
