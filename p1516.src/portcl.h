@@ -31,19 +31,42 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "port_hwcl.h"
 
 
-class cl_port: public cl_hw
+enum port_cfg
+  {
+   port_on= 0, // RW
+   port_pin= 1, // RW
+   port_value= 2 // RO
+  };
+
+
+class cl_porto: public cl_hw
 {
  public:
   class cl_memory_cell *dr;
   t_addr addr;
+  u32_t value;
  public:
-  cl_port(class cl_uc *auc, t_addr the_addr, const char *aname);
+  cl_porto(class cl_uc *auc, t_addr the_addr, const char *aname);
   virtual int init(void);
   virtual void reset(void);
-  
+  virtual int cfg_size(void) { return 3; }
+  virtual char *cfg_help(t_addr addr);
+
   virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
   virtual void print_info(class cl_console_base *con);
+};
+
+class cl_porti: public cl_porto
+{
+public:
+  cl_porti(class cl_uc *auc, t_addr the_addr, const char *aname);
+public:
+  virtual int init(void);
+
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 
