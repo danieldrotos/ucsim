@@ -101,6 +101,7 @@ cl_hc08::reset(void)
   regs.P = 0x60;
   regs.VECTOR = 1;
 
+  PC= rom->get(0xfffe)*256 + rom->get(0xffff);
 }
 
 

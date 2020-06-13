@@ -47,15 +47,13 @@ cl_porto::init(void)
   cl_var *v;
   chars s= chars();
   s= get_name();
-  s+= "_dr";
+  
   v= new cl_var(s, uc->rom, addr, chars("", "Data register of %s", get_name()));
   v->init();
   uc->vars->add(v);
-  
-  v= new cl_var(get_name(), uc->rom, addr, chars("", "Data register of %s", get_name()));
-  v->init();
-  uc->vars->add(v);
 
+  cache= 0;
+  
   return 0;
 }
 
@@ -63,18 +61,6 @@ void
 cl_porto::reset(void)
 {
   value= 0;
-}
-
-char *
-cl_porto::cfg_help(t_addr addr)
-{
-  switch (addr)
-    {
-    case port_on: return (char*)"Turn/get on/off state (bool, RW)";
-    case port_pin: return (char*)"Outside value of port pins (int, RW)";
-    case port_value: return (char*)"Value of the port (int, RO)";
-    }
-  return (char*)"Not used";
 }
 
 void
@@ -88,7 +74,7 @@ cl_porto::write(class cl_memory_cell *cell, t_mem *val)
   conf(cell, val);
 }
 
-
+/*
 t_mem
 cl_porto::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
@@ -116,17 +102,14 @@ cl_porto::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     }
   return cell->get();
 }
+*/
 
 void
-cl_porto::print_info(class cl_console_base *con)
+cl_porto::print(class cl_console_base *con)
 {
   u32_t m;
   t_mem d= value;//dr->get();
-  con->dd_printf("dr->data= %p\n", dr->get_data());
-  con->dd_printf("&value  = %p\n", &value);
-  con->dd_printf("value   = %08x\n", value);
-  con->dd_printf("get     = %08x\n", dr->get());
-  con->dd_printf("read    = %08x\n", dr->read());
+  con->dd_color("answer");
   con->dd_printf("%s at %04x %08x\n", get_name(), addr, d);
   for (m= 0x80000000; m; m>>= 1)
     {
@@ -135,7 +118,63 @@ cl_porto::print_info(class cl_console_base *con)
 	//else 	con->dd_printf("-");
     }
   con->dd_printf("\n");
+}
+
+void
+cl_porto::print_info(class cl_console_base *con)
+{
+  print(con);
   print_cfg_info(con);
+}
+
+void
+cl_porto::refresh_display(bool force)
+{
+  class cl_port_io *pio= (class cl_port_io *)io;
+  if (!io)
+    return;
+
+  t_mem d= value;
+  if (force || d != cache)
+    {
+      pio->tu_go(1,6);
+      print(pio);
+      cache= d;
+      pio->tu_go(1,9);
+      int b= 31;
+      for ( ; b>=0; b--)
+	{
+	  t_mem m= 1<<b;
+	  int bv= (d&m)?1:0;
+	  if (bv)
+	    {
+	      pio->dd_cprintf("ui_bit1", "*");
+	    }
+	  else
+	    {
+	      pio->dd_cprintf("ui_bit0", "-");
+	    }
+	}
+    }
+  pio->dd_color("answer");
+  
+  cl_hw::refresh_display(force);
+}
+
+void
+cl_porto::draw_display(void)
+{
+  class cl_port_io *pio= (class cl_port_io *)io;
+  if (!io)
+    return;
+  pio->tu_cls();
+
+  cl_hw::draw_display();
+
+  pio->tu_go(1,5);
+  pio->dd_printf("OPORT %s", get_name());
+  
+  refresh_display(true);
 }
 
 
@@ -161,6 +200,16 @@ cl_porti::init(void)
   uc->vars->add(v);
 
   return 0;
+}
+
+char *
+cl_porti::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case port_pin: return (char*)"Outside value of port pins (int, RW)";
+    }
+  return (char*)"Not used";
 }
 
 void

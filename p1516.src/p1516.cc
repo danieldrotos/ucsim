@@ -89,6 +89,12 @@ cl_p1516::mk_hw_elements(void)
   class cl_port_ui *u= new cl_port_ui(this, 0, "dport");
   u->init();
   add_hw(u);
+  class cl_port_ui *uo= new cl_port_ui(this, 0, "oports");
+  uo->init();
+  add_hw(uo);
+  class cl_port_ui *ui= new cl_port_ui(this, 0, "iports");
+  ui->init();
+  add_hw(ui);
 
   class cl_port_data d;
   d.init();
@@ -101,7 +107,8 @@ cl_p1516::mk_hw_elements(void)
   d.basx   = 1;
   d.basy   = 4;
   u->add_port(&d, 0);
-
+  uo->add_port(&d, 0);
+  
   d.set_name("PB");
   d.cell_p = pb->dr;
   d.cell_in= pb->dr;
@@ -109,6 +116,23 @@ cl_p1516::mk_hw_elements(void)
   d.basx   = 1;
   d.basy   = 9;
   u->add_port(&d, 1);
+  uo->add_port(&d, 1);
+
+  d.set_name("PC");
+  d.cell_p = pc->dr;
+  d.cell_in= pc->dr;
+  d.keyset = NULL;
+  d.basx   = 1;
+  d.basy   = 14;
+  uo->add_port(&d, 2);
+
+  d.set_name("PD");
+  d.cell_p = pd->dr;
+  d.cell_in= pd->dr;
+  d.keyset = NULL;
+  d.basx   = 1;
+  d.basy   = 19;
+  uo->add_port(&d, 3);
 
   d.set_name("PI");
   d.cell_p = pi->dr;
@@ -117,6 +141,8 @@ cl_p1516::mk_hw_elements(void)
   d.basx   = 1;
   d.basy   = 14;
   u->add_port(&d, 2);
+  d.basy   = 4;
+  ui->add_port(&d, 0);
 
   d.set_name("PJ");
   d.cell_p = pj->dr;
@@ -125,6 +151,8 @@ cl_p1516::mk_hw_elements(void)
   d.basx   = 1;
   d.basy   = 20;
   u->add_port(&d, 3);
+  d.basy   = 10;
+  ui->add_port(&d, 1);
 }
 
 void

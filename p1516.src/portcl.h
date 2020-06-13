@@ -33,9 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 enum port_cfg
   {
-   port_on= 0, // RW
-   port_pin= 1, // RW
-   port_value= 2 // RO
+   port_pin= 0 // RW
   };
 
 
@@ -44,18 +42,21 @@ class cl_porto: public cl_hw
  public:
   class cl_memory_cell *dr;
   t_addr addr;
-  u32_t value;
+  u32_t value, cache;
  public:
   cl_porto(class cl_uc *auc, t_addr the_addr, const char *aname);
   virtual int init(void);
   virtual void reset(void);
-  virtual int cfg_size(void) { return 3; }
-  virtual char *cfg_help(t_addr addr);
+  virtual int cfg_size(void) { return 1; }
+  //virtual char *cfg_help(t_addr addr);
 
   virtual void write(class cl_memory_cell *cell, t_mem *val);
-  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+  //virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
+  virtual void print(class cl_console_base *con);
   virtual void print_info(class cl_console_base *con);
+  virtual void refresh_display(bool force);
+  virtual void draw_display(void);
 };
 
 class cl_porti: public cl_porto
@@ -64,6 +65,8 @@ public:
   cl_porti(class cl_uc *auc, t_addr the_addr, const char *aname);
 public:
   virtual int init(void);
+  virtual int cfg_size(void) { return 1; }
+  virtual char *cfg_help(t_addr addr);
 
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
