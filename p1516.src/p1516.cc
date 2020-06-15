@@ -45,7 +45,6 @@ cl_p1516::init(void)
   F= 0;
   for (i=0; i<16; i++)
     R[i]= 0;
-  xtal= 10000000;
   return 0;
 }
 
