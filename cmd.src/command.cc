@@ -242,7 +242,7 @@ cl_cmdline::split_out_output_redirection(char **_start, char **_end)
   mode[0]= 'w';
   mode[1]= '\0';
   start++;
-  i= strcspn(start, " \t\v\r,");
+  i= strcspn(start, " \t\v\r,;");
   end= start+i;
   char *param_str= (char *)malloc(i+1);
   char *n= param_str;
@@ -254,7 +254,7 @@ cl_cmdline::split_out_output_redirection(char **_start, char **_end)
       n++;
       mode[0]= 'a';
     }
-  tokens->add(strdup(n));
+  //tokens->add(strdup(n));
   con->redirect(n, mode);
   free(param_str);
   *_start= start;
@@ -383,6 +383,7 @@ cl_cmdline::shift(void)
       if (strcmp(get_name(), "\n") == 0)
 	set_name(0);
     }
+  printf("SHIFT(%s): PARAMS=%d\n",get_name(),nuof_params());
   return(have_real_name());
 }
 
