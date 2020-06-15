@@ -172,8 +172,8 @@ cl_sim::stop(int reason, class cl_ev_brk *ebrk)
 	  if (o) o->get_value(&e);
 	  if (e)
 	    cmd->dd_printf("%s\n", (char*)(b->commands));
-		  application->exec(b->commands);
-		  steps_done= 0;
+	  application->exec(b->commands);
+	  steps_done= 0;
 	}
     }
   

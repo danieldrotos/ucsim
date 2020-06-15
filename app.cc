@@ -779,6 +779,7 @@ cl_app::exec(chars line)
     }
   do
     {
+      c->un_redirect();
       class cl_cmdline *cmdline= new cl_cmdline(this, (char*)line, c);
       cmdline->init();
       class cl_cmd *cm= commander->cmdset->get_cmd(cmdline, false/*c->is_interactive()*/);

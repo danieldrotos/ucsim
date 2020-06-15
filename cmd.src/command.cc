@@ -454,7 +454,6 @@ cl_cmdline::shift(void)
       if (strcmp(get_name(), "\n") == 0)
 	set_name(0);
     }
-  printf("SHIFT(%s): PARAMS=%d\n",get_name(),nuof_params());
   return(have_real_name());
 }
 
