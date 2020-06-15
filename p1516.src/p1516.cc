@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdlib.h>
 
 #include "glob.h"
+#include "portcl.h"
 
 #include "p1516cl.h"
 
@@ -69,10 +70,88 @@ cl_p1516::set_PC(t_addr addr)
 void
 cl_p1516::mk_hw_elements(void)
 {
-  //class cl_hw *h;
   cl_uc::mk_hw_elements();
-  //add_hw(h= new cl_port(this));
-  //h->init();
+  add_hw(pa= new cl_porto(this, 0xf000, "pa"));
+  pa->init();
+  add_hw(pb= new cl_porto(this, 0xf001, "pb"));
+  pb->init();
+  add_hw(pc= new cl_porto(this, 0xf002, "pc"));
+  pc->init();
+  add_hw(pd= new cl_porto(this, 0xf003, "pd"));
+  pd->init();
+
+  add_hw(pi= new cl_porti(this, 0xe000, "pi"));
+  pi->init();
+  add_hw(pj= new cl_porti(this, 0xd000, "pj"));
+  pj->init();
+
+  class cl_port_ui *u= new cl_port_ui(this, 0, "dport");
+  u->init();
+  add_hw(u);
+  class cl_port_ui *uo= new cl_port_ui(this, 0, "oports");
+  uo->init();
+  add_hw(uo);
+  class cl_port_ui *ui= new cl_port_ui(this, 0, "iports");
+  ui->init();
+  add_hw(ui);
+
+  class cl_port_data d;
+  d.init();
+  d.cell_dir= NULL;
+
+  d.set_name("PA");
+  d.cell_p = pa->dr;
+  d.cell_in= pa->dr;
+  d.keyset = NULL;
+  d.basx   = 1;
+  d.basy   = 4;
+  u->add_port(&d, 0);
+  uo->add_port(&d, 0);
+  
+  d.set_name("PB");
+  d.cell_p = pb->dr;
+  d.cell_in= pb->dr;
+  d.keyset = NULL;
+  d.basx   = 1;
+  d.basy   = 9;
+  u->add_port(&d, 1);
+  uo->add_port(&d, 1);
+
+  d.set_name("PC");
+  d.cell_p = pc->dr;
+  d.cell_in= pc->dr;
+  d.keyset = NULL;
+  d.basx   = 1;
+  d.basy   = 14;
+  uo->add_port(&d, 2);
+
+  d.set_name("PD");
+  d.cell_p = pd->dr;
+  d.cell_in= pd->dr;
+  d.keyset = NULL;
+  d.basx   = 1;
+  d.basy   = 19;
+  uo->add_port(&d, 3);
+
+  d.set_name("PI");
+  d.cell_p = pi->dr;
+  d.cell_in= pi->cfg_cell(port_pin);
+  d.keyset = chars("                qwertyui12345678");
+  d.basx   = 1;
+  d.basy   = 14;
+  u->add_port(&d, 2);
+  d.basy   = 4;
+  ui->add_port(&d, 0);
+
+  d.set_name("PJ");
+  d.cell_p = pj->dr;
+  d.cell_in= pj->cfg_cell(port_pin);
+  d.keyset = chars("                asdfghjkzxcvbnm,");
+  d.basx   = 1;
+  d.basy   = 20;
+  u->add_port(&d, 3);
+  d.basy   = 10;
+  ui->add_port(&d, 1);
 }
 
 void
@@ -88,11 +167,11 @@ cl_p1516::make_memories(void)
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_memory_chip("rom_chip", 0x10000, 32);
+  chip= new cl_memory_chip("rom_chip", 0x4000, 32);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= rom/*address_space(MEM_ROM_ID)*/,
-			     chip, 0, 0xffff, 0);
+			     chip, 0, 0x3fff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);

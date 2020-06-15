@@ -51,6 +51,8 @@ public:
   u32_t R[16];
   cl_memory_cell *RC[16];
   cl_address_space *regs;
+  class cl_porto *pa, *pb, *pc, *pd;
+  class cl_porti *pi, *pj;
 public:
   class cl_address_space *rom;
  public:
