@@ -300,7 +300,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= DD_FALSE,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJo:bl_");
+  strcpy(opts, "c:C:e:p:PX:vVt:s:S:I:a:whHgGJo:blB_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:");
 #endif
@@ -699,6 +699,11 @@ cl_app::proc_arguments(int argc, char *argv[])
 	set_option_s("color_ui_bit1", "bred:black");
 	set_option_s("color_debug", "magenta:bwhite");
 	break;
+      case 'B':
+	if (!options->set_value("beep_break", this, (bool)true))
+	  fprintf(stderr, "Warning: No \"debug\" option found to set "
+		  "by -B parameter\n");	
+	break;
       case 'h':
 	print_help((char*)get_name());
 	exit(0);
@@ -1034,6 +1039,11 @@ cl_app::mk_options(void)
 					    "Print breakpoint script before execute"));
   o->init();
 
+  options->new_option(o= new cl_bool_option(this, "beep_break",
+					    "Beep at breakpoint hit (-B)"));
+  o->init();
+  o->set_value((bool)false);
+  
   options->new_option(o= new cl_string_option(this, "color_prompt",
 					      "Prompt color"));
   o->init();
