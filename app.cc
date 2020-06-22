@@ -207,7 +207,7 @@ static void
 print_help(char *name)
 {
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-hHVvPgGwb] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
+  printf("Usage: %s [-hHVvPgGwbB] [-p prompt] [-t CPU] [-X freq[k|M]]\n"
 	 "       [-C cfg_file] [-c file] [-e command] [-s file] [-S optionlist]\n"
 	 "       [-I if_optionlist] [-o colorlist] [-a nr]\n"
 #ifdef SOCKET_AVAIL
@@ -246,6 +246,7 @@ print_help(char *name)
      "               e.g.: prompt=b:white:black (bold white on black)\n"
      "  -l           Use default (builtin) colors\n"
      "  -b           Black & white (non-color) console\n"
+     "  -B           Beep on breakpoints\n"
      "  -g           Go, start simulation\n"
      "  -G           Go, start simulation, quit on stop\n"
      "  -a nr        Specify size of variable space (default=256)\n"
