@@ -1556,21 +1556,27 @@ cl_z80::inst_sub(t_mem code)
     {
     case 0x90: // SUB B
       sub_A_bytereg(regs.bc.h);
+      tick(3);
       break;
     case 0x91: // SUB C
       sub_A_bytereg(regs.bc.l);
+      tick(3);
       break;
     case 0x92: // SUB D
       sub_A_bytereg(regs.de.h);
+      tick(3);
       break;
     case 0x93: // SUB E
       sub_A_bytereg(regs.de.l);
+      tick(3);
       break;
     case 0x94: // SUB H
       sub_A_bytereg(regs.hl.h);
+      tick(3);
       break;
     case 0x95: // SUB L
       sub_A_bytereg(regs.hl.l);
+      tick(3);
       break;
     case 0x96: // SUB (HL)
       {
@@ -1578,16 +1584,19 @@ cl_z80::inst_sub(t_mem code)
         tmp1 = get1(regs.HL);
         sub_A_bytereg(tmp1);
 	vc.rd++;
+	tick(6);
       }
       break;
     case 0x97: // SUB A
       sub_A_bytereg(regs.raf.A);
+      tick(3);
       break;
     case 0xD6: // SUB nn
       {
 	unsigned char tmp1;
         tmp1 = fetch();
         sub_A_bytereg(tmp1);
+	tick(6);
       }
       break;
     default:
@@ -1606,21 +1615,25 @@ cl_z80::inst_pop(t_mem code)
       regs.BC = get2(regs.SP);
       regs.SP+=2;
       vc.rd+= 2;
+      tick(9);
       break;
     case 0xD1: // POP DE
       regs.DE = get2(regs.SP);
       regs.SP+=2;
       vc.rd+= 2;
+      tick(9);
       break;
     case 0xE1: // POP HL
       regs.HL = get2(regs.SP);
       regs.SP+=2;
       vc.rd+= 2;
+      tick(9);
       break;
     case 0xF1: // POP AF
       regs.raf.F = get1(regs.SP++);
       regs.raf.A = get1(regs.SP++);
       vc.rd+= 2;
+      tick(9);
       break;
     default:
       return(resINV_INST);
@@ -1640,10 +1653,12 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
       
     case 0xC3: // JP nnnn
       PC = fetch2();
+      tick(9);
       break;
       
     case 0xCA: // JP Z,nnnn
@@ -1652,6 +1667,7 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
       
     case 0xD2: // JP NC,nnnn
@@ -1660,6 +1676,7 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
       
     case 0xDA: // JP C,nnnn
@@ -1668,6 +1685,7 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
       
     case 0xE2: // JP PO,nnnn
@@ -1676,10 +1694,12 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
       
     case 0xE9: // JP (HL)
       PC = regs.HL;
+      tick(3);
       break;
       
     case 0xEA: // JP PE,nnnn
@@ -1688,6 +1708,7 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
       
     case 0xF2: // JP P,nnnn (positive)
@@ -1696,6 +1717,7 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
       
     case 0xFA: // JP M,nnnn (sign negative)
@@ -1704,6 +1726,7 @@ cl_z80::inst_jp(t_mem code)
       } else {
         fetch2();
       }
+      tick(9);
       break;
     default:
       return(resINV_INST);
@@ -1716,6 +1739,7 @@ int
 cl_z80::inst_di(t_mem code)
 {
   /* disable interrupts */
+  tick(3);
   return(resGO);
 }
 
@@ -1723,6 +1747,7 @@ int
 cl_z80::inst_ei(t_mem code)
 {
   /* enable interrupts */
+  tick(3);
   return(resGO);
 }
 
