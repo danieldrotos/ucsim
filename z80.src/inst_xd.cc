@@ -243,21 +243,27 @@ cl_z80::inst_Xd_add(t_mem code)
   switch (code) {
     case 0x09: // ADD IX,BC
       add_IX_Word(regs.BC);
+      tick(14);
       return(resGO);
     case 0x19: // ADD IX,DE
       add_IX_Word(regs.DE);
+      tick(14);
       return(resGO);
     case 0x29: // ADD IX,IX
       add_IX_Word(regs_IX_OR_IY);
+      tick(14);
       return(resGO);
     case 0x39: // ADD IX,SP
       add_IX_Word(regs.SP);
-    return(resGO);
+      tick(14);
+      return(resGO);
     case 0x84: // ADD A,HX
       add_A_bytereg(regs_iX_h);
+      tick(7);
       return(resGO);
     case 0x85: // ADD A,LX
       add_A_bytereg(regs_iX_l);
+      tick(7);
       return(resGO);
     case 0x86: // ADD A,(IX+dd)
       { unsigned char ourtmp;
@@ -266,6 +272,7 @@ cl_z80::inst_Xd_add(t_mem code)
         ourtmp = get1(addr);
         add_A_bytereg(ourtmp);
 	vc.rd++;
+	tick(18);
       }
       return(resGO);
   }
@@ -279,6 +286,7 @@ cl_z80::inst_Xd_push(t_mem code)
     case 0xe5: // PUSH IX
       push2(regs_IX_OR_IY);
       vc.wr+= 2;
+      tick(14);
     return(resGO);
   }
   return(resINV_INST);
@@ -290,13 +298,16 @@ cl_z80::inst_Xd_inc(t_mem code)
   switch(code) {
     case 0x23: // INC IX
       ++regs_IX_OR_IY;
-    break;
+      tick(9);
+      break;
     case 0x24: // INC HX
       inc(regs_iX_h);
-    break;
+      tick(7);
+      break;
     case 0x2C: // INC LX
       inc(regs_iX_l);
-    break;
+      tick(7);
+      break;
     case 0x34: // INC (IX+dd)
       {
         t_addr addr;
@@ -307,8 +318,9 @@ cl_z80::inst_Xd_inc(t_mem code)
         store1(addr, tmp);
 	vc.rd++;
 	vc.wr++;
+	tick(22);
       }
-    break;
+      break;
     default:
       return(resINV_INST);
     break;
@@ -322,13 +334,16 @@ cl_z80::inst_Xd_dec(t_mem code)
   switch(code) {
     case 0x25: // DEC HX
       dec(regs_iX_h);
-    break;
+      tick(9);
+      break;
     case 0x2B: // DEC IX
       --regs_IX_OR_IY;
-    break;
+      tick(9);
+      break;
     case 0x2D: // DEC LX
       dec(regs_iX_l);
-    break;
+      tick(7);
+      break;
     case 0x35: // DEC (IX+dd)
       {
         t_addr addr;
@@ -339,8 +354,9 @@ cl_z80::inst_Xd_dec(t_mem code)
         store1(addr, tmp);
 	vc.rd++;
 	vc.wr++;
+	tick(22);
       }
-    break;
+      break;
     default:
       return(resINV_INST);
     break;
@@ -356,10 +372,12 @@ cl_z80::inst_Xd_misc(t_mem code)
   switch(code) {
     case 0x8C: // ADC A,HX
       adc_A_bytereg(regs_iX_h);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0x8D: // ADC A,LX
       adc_A_bytereg(regs_iX_l);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0x8E: // ADC A,(IX+dd)
       { unsigned char utmp;
         t_addr addr;
@@ -367,90 +385,109 @@ cl_z80::inst_Xd_misc(t_mem code)
         utmp = get1(addr);
         adc_A_bytereg(utmp);
 	vc.rd++;
+	tick(18);
       }
-    return(resGO);
+      return(resGO);
 
     case 0x94: // SUB HX
       sub_A_bytereg(regs_iX_h);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0x95: // SUB LX
       sub_A_bytereg(regs_iX_l);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0x96: // SUB (IX+dd)
       { unsigned char tmp1;
         tmp1 = get1(add_u16_disp(regs_IX_OR_IY, fetch()));
         sub_A_bytereg(tmp1);
 	vc.rd++;
+	tick(18);
       }
-    return(resGO);
+      return(resGO);
 
     case 0x9C: // SBC A,HX
       sbc_A_bytereg(regs_iX_h);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0x9D: // SBC A,LX
       sbc_A_bytereg(regs_iX_l);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0x9E: // SBC A,(IX+dd)
       { unsigned char utmp;
         utmp = get1(add_u16_disp(regs_IX_OR_IY, fetch()));
         sbc_A_bytereg(utmp);
 	vc.rd++;
+	tick(18);
       }
-    return(resGO);
+      return(resGO);
 
     case 0xA4: // AND HX
       and_A_bytereg(regs_iX_h);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xA5: // AND LX
       and_A_bytereg(regs_iX_l);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xA6: // AND (IX+dd)
       { unsigned char utmp;
         utmp = get1(add_u16_disp(regs_IX_OR_IY, fetch()));
         and_A_bytereg(utmp);
 	vc.rd++;
+	tick(18);
       }
-    return(resGO);
+      return(resGO);
 
     case 0xAC: // XOR HX
       xor_A_bytereg(regs_iX_h);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xAD: // XOR LX
       xor_A_bytereg(regs_iX_l);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xAE: // XOR (IX+dd)
       { unsigned char utmp;
         utmp = get1(add_u16_disp(regs_IX_OR_IY, fetch()));
         xor_A_bytereg(utmp);
 	vc.rd++;
+	tick(18);
       }
-    return(resGO);
+      return(resGO);
 
     case 0xB4: // OR HX
       or_A_bytereg(regs_iX_h);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xB5: // OR LX
       or_A_bytereg(regs_iX_l);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xB6: // OR (IX+dd)
       { unsigned char utmp;
         utmp = get1(add_u16_disp(regs_IX_OR_IY, fetch()));
         or_A_bytereg(utmp);
 	vc.rd++;
+	tick(18);
       }
-    return(resGO);
+      return(resGO);
 
     case 0xBC: // CP HX
       cp_bytereg(regs_iX_h);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xBD: // CP LX
       cp_bytereg(regs_iX_l);
-    return(resGO);
+      tick(7);
+      return(resGO);
     case 0xBE: // CP (IX+dd)
       { unsigned char utmp;
         utmp = get1(add_u16_disp(regs_IX_OR_IY, fetch()));
         cp_bytereg(utmp);
 	vc.rd++;
+	tick(18);
       }
     return(resGO);
   }
@@ -577,7 +614,8 @@ cl_z80::inst_Xd(t_mem prefix)
         regs_IX_OR_IY = get2(regs.SP);
         regs.SP+=2;
 	vc.rd+= 2;
-      return(resGO);
+	tick(13);
+	return(resGO);
 
       case 0xE3: // EX (SP),IX
         {
@@ -588,20 +626,23 @@ cl_z80::inst_Xd(t_mem prefix)
           store2(regs.SP, tempw);
 	  vc.rd+= 2;
 	  vc.wr+= 2;
+	  tick(22);
         }
-      return(resGO);
+	return(resGO);
 
       case 0xE5: // PUSH IX
         push2(regs_IX_OR_IY);
 	vc.wr+= 2;
-      return(resGO);
+	tick(14);
+	return(resGO);
 
       case 0xE9: // JP (IX)
         PC = regs_IX_OR_IY;
-      return(resGO);
+	tick(7);
+	return(resGO);
 
       default:
-      return(resINV_INST);
+	return(resINV_INST);
     }
   return(resINV_INST);
 }
