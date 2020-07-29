@@ -512,30 +512,39 @@ cl_z80::inst_dec(t_mem code)
     {
     case 0x05: // DEC B
       dec(regs.bc.h);
+      tick(3);
       break;
     case 0x0B: // DEC BC
       --regs.BC;
+      tick(6);
       break;
     case 0x0D: // DEC C
       dec(regs.bc.l);
+      tick(3);
       break;
     case 0x15: // DEC D
       dec(regs.de.h);
+      tick(3);
       break;
     case 0x1B: // DEC DE
       --regs.DE;
+      tick(6);
       break;
     case 0x1D: // DEC E
       dec(regs.de.l);
+      tick(3);
       break;
     case 0x25: // DEC H
       dec(regs.hl.h);
+      tick(3);
       break;
     case 0x2B: // DEC HL
       --regs.HL;
+      tick(6);
       break;
     case 0x2D: // DEC L
       dec(regs.hl.l);
+      tick(3);
       break;
     case 0x35: // DEC (HL)
       {
@@ -544,13 +553,16 @@ cl_z80::inst_dec(t_mem code)
 	store1(regs.HL, t);
 	vc.rd++;
 	vc.wr++;
+	tick(6);
 	break;
       }
     case 0x3B: // DEC SP
       --regs.SP;
+      tick(5);
       break;
     case 0x3D: // DEC A
       dec(regs.raf.A);
+      tick(3);
       break;
     default:
       return(resINV_INST);
@@ -568,7 +580,7 @@ cl_z80::inst_rlca(t_mem code)
      regs.raf.A = (regs.raf.A << 1) | 0x01;
    } else
      regs.raf.A = (regs.raf.A << 1);
-
+  tick(3);
   return(resGO);
 }
 
@@ -582,6 +594,7 @@ cl_z80::inst_rrca(t_mem code)
    }
    else
      regs.raf.A = (regs.raf.A >> 1);
+  tick(3);
   return(resGO);
 }
 
@@ -601,7 +614,8 @@ cl_z80::inst_ex(t_mem code)
       tmp = regs.ralt_af.aF;
       regs.ralt_af.aF = regs.raf.F;
       regs.raf.F = tmp;
-    break;
+      tick(3);
+      break;
 
     case 0xE3: // EX (SP),HL
       tempw = regs.HL;
@@ -609,12 +623,14 @@ cl_z80::inst_ex(t_mem code)
       store2(regs.SP, tempw);
       vc.rd+= 2;
       vc.wr+= 2;
+      tick(18);
     break;
 
     case 0xEB: // EX DE,HL
       tempw = regs.DE;
       regs.DE = regs.HL;
       regs.HL = tempw;
+      tick(3);
     break;
 
     default:
@@ -632,34 +648,44 @@ cl_z80::inst_add(t_mem code)
     {
     case 0x09: // ADD HL,BC
       add_HL_Word(regs.BC);
+      tick(10);
       break;
     case 0x19: // ADD HL,DE
       add_HL_Word(regs.DE);
+      tick(10);
       break;
     case 0x29: // ADD HL,HL
       add_HL_Word(regs.HL);
+      tick(10);
       break;
     case 0x39: // ADD HL,SP
       add_HL_Word(regs.SP);
+      tick(10);
       break;
       
     case 0x80: // ADD A,B
       add_A_bytereg(regs.bc.h);
+      tick(3);
       break;
     case 0x81: // ADD A,C
       add_A_bytereg(regs.bc.l);
+      tick(3);
       break;
     case 0x82: // ADD A,D
       add_A_bytereg(regs.de.h);
+      tick(3);
       break;
     case 0x83: // ADD A,E
       add_A_bytereg(regs.de.l);
+      tick(3);
       break;
     case 0x84: // ADD A,H
       add_A_bytereg(regs.hl.h);
+      tick(3);
       break;
     case 0x85: // ADD A,L
       add_A_bytereg(regs.hl.l);
+      tick(3);
       break;
       
     case 0x86: // ADD A,(HL)
@@ -668,11 +694,13 @@ cl_z80::inst_add(t_mem code)
         utmp = get1(regs.HL);
         add_A_bytereg(utmp);
 	vc.rd++;
+	tick(6);
 	break;
       }
       
     case 0x87: // ADD A,A
       add_A_bytereg(regs.raf.A);
+      tick(3);
       break;
       
     case 0xC6: // ADD A,nn
@@ -680,6 +708,7 @@ cl_z80::inst_add(t_mem code)
         unsigned char utmp1;
         utmp1 = fetch();
         add_A_bytereg(utmp1);
+	tick(6);
 	break;
       }
       
@@ -699,8 +728,10 @@ cl_z80::inst_djnz(t_mem code)
   // 0x10: DJNZ dd
 
   j = fetch1();
+  tick(7);
   if ((--regs.bc.h != 0)) {
     PC += j;
+    tick(5);
   } else {
   }
   return(resGO);
@@ -710,6 +741,7 @@ int
 cl_z80::inst_rra(t_mem code)
 {
   rr_byte(regs.raf.A);
+  tick(3);
   return(resGO);
 }
 
@@ -717,6 +749,7 @@ int
 cl_z80::inst_rla(t_mem code)
 {
   rl_byte(regs.raf.A);
+  tick(3);
   return(resGO);
 }
 
@@ -729,25 +762,34 @@ cl_z80::inst_jr(t_mem code)
   switch(code) {
     case 0x18: // JR dd
       PC += j;
+      tick(11);
     break;
     case 0x20: // JR NZ,dd
+      tick(6);
       if (!(regs.raf.F & BIT_Z)) {
         PC += j;
+	tick(5);
       }
     break;
     case 0x28: // JR Z,dd
+      tick(6);
       if ((regs.raf.F & BIT_Z)) {
         PC += j;
+	tick(5);
       }
     break;
     case 0x30: // JR NC,dd
+      tick(6);
       if (!(regs.raf.F & BIT_C)) {
         PC += j;
+	tick(5);
       }
     break;
     case 0x38: // JR C,dd
+      tick(6);
       if ((regs.raf.F & BIT_C)) {
         PC += j;
+	tick(5);
       }
     break;
     default:
