@@ -47,6 +47,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 cl_z80::inst_nop(t_mem code)
 {
+  tick(3);
   return(resGO);
 }
 
@@ -64,40 +65,51 @@ cl_z80::inst_ld(t_mem code)
     {
     case 1:  // LD BC,nnnn
       regs.BC = fetch2();
+      tick(9);
       break;
     case 2: // LD (BC),A
       store1(regs.BC, regs.raf.A);
       vc.wr++;
+      tick(6);
       break;
     case 6: // LD B,nn
       regs.bc.h = fetch();
+      tick(6);
       break;
     case 0xa: // LD A,(BC)
       regs.raf.A = get1(regs.BC);
       vc.rd++;
+      tick(6);
       break;
     case 0x0e: // LD C,nn
       regs.bc.l = fetch();
+      tick(6);
       break;
     case 0x11: // LD DE,nnnn
       regs.DE = fetch2();
+      tick(9);
       break;
     case 0x12: // LD (DE),A
       store1(regs.DE, regs.raf.A);
       vc.wr++;
+      tick(6);
       break;
     case 0x16: // LD D,nn
       regs.de.h = fetch();
+      tick(6);
       break;
     case 0x1A: // LD A,(DE)
       regs.raf.A = get1(regs.DE);
       vc.rd++;
+      tick(6);
       break;
     case 0x1E: // LD E,nn
       regs.de.l = fetch();
+      tick(6);
       break;
     case 0x21: // LD HL,nnnn
       regs.HL = fetch2();
+      tick(9);
       break;
     case 0x22: // LD (nnnn),HL
       {
@@ -105,10 +117,12 @@ cl_z80::inst_ld(t_mem code)
 	tw = fetch2();
 	store2(tw, regs.HL);
 	vc.wr+= 2;
+	tick(15);
 	break;
       }
     case 0x26: // LD H,nn
       regs.hl.h = fetch();
+      tick(6);
       break;
     case 0x2A: // LD HL,(nnnn)
       {
@@ -116,13 +130,16 @@ cl_z80::inst_ld(t_mem code)
 	tw = fetch2();
 	regs.HL = get2(tw);
 	vc.rd+= 2;
+	tick(15);
 	break;
       }
     case 0x2E: // LD L,nn
       regs.hl.l = fetch();
+      tick(6);
       break;
     case 0x31: // LD SP,nnnn
       regs.SP = fetch2();
+      tick(9);
       break;
     case 0x32: // LD (nnnn),A
       {
@@ -130,221 +147,290 @@ cl_z80::inst_ld(t_mem code)
 	tw = fetch2();
 	store1(tw, regs.raf.A);
 	vc.wr++;
+	tick(12);
 	break;
       }
     case 0x36: // LD (HL),nn
       store1(regs.HL, fetch());
       vc.wr++;
+      tick(9);
       break;
     case 0x3A: // LD A,(nnnn)
       regs.raf.A = get1(fetch2());
       vc.rd++;
+      tick(12);
       break;
     case 0x3E: // LD A,nn
       regs.raf.A = fetch();
+      tick(6);
       break;
     case 0x40: // LD B,B
+      tick(3);
       break;
     case 0x41: // LD B,C
       regs.bc.h = regs.bc.l;
+      tick(3);
       break;
     case 0x42: // LD B,D
       regs.bc.h = regs.de.h;
+      tick(3);
       break;
     case 0x43: // LD B,E
       regs.bc.h = regs.de.l;
+      tick(3);
       break;
     case 0x44: // LD B,H
       regs.bc.h = regs.hl.h;
+      tick(3);
       break;
     case 0x45: // LD B,L
       regs.bc.h = regs.hl.l;
+      tick(3);
       break;
     case 0x46: // LD B,(HL)
       regs.bc.h = get1(regs.HL);
       vc.rd++;
+      tick(6);
       break;
     case 0x47: // LD B,A
       regs.bc.h = regs.raf.A;
+      tick(3);
       break;
     case 0x48: // LD C,B
       regs.bc.l = regs.bc.h;
+      tick(3);
       break;
     case 0x49: // LD C,C
+      tick(3);
       break;
     case 0x4A: // LD C,D
       regs.bc.l = regs.de.h;
+      tick(3);
       break;
     case 0x4B: // LD C,E
       regs.bc.l = regs.de.l;
+      tick(3);
       break;
     case 0x4C: // LD C,H
       regs.bc.l = regs.hl.h;
+      tick(3);
       break;
     case 0x4D: // LD C,L
       regs.bc.l = regs.hl.l;
+      tick(3);
       break;
     case 0x4E: // LD C,(HL)
       regs.bc.l = get1(regs.HL);
       vc.rd++;
+      tick(6);
       break;
     case 0x4F: // LD C,A
       regs.bc.l = regs.raf.A;
+      tick(3);
       break;
     case 0x50: // LD D,B
       regs.de.h = regs.bc.h;
+      tick(3);
       break;
     case 0x51: // LD D,C
       regs.de.h = regs.bc.l;
+      tick(3);
       break;
     case 0x52: // LD D,D
+      tick(3);
       break;
     case 0x53: // LD D,E
       regs.de.h = regs.de.l;
+      tick(3);
       break;
     case 0x54: // LD D,H
       regs.de.h = regs.hl.h;
+      tick(3);
       break;
     case 0x55: // LD D,L
       regs.de.h = regs.hl.l;
+      tick(3);
       break;
     case 0x56: // LD D,(HL)
       regs.de.h = get1(regs.HL);
       vc.rd++;
+      tick(6);
       break;
     case 0x57: // LD D,A
       regs.de.h = regs.raf.A;
+      tick(3);
       break;
     case 0x58: // LD E,B
       regs.de.l = regs.bc.h;
+      tick(3);
       break;
     case 0x59: // LD E,C
       regs.de.l = regs.bc.l;
+      tick(3);
       break;
     case 0x5A: // LD E,D
       regs.de.l = regs.de.h;
+      tick(3);
       break;
     case 0x5B: // LD E,E
+      tick(3);
       break;
     case 0x5C: // LD E,H
       regs.de.l = regs.hl.h;
+      tick(3);
       break;
     case 0x5D: // LD E,L
       regs.de.l = regs.hl.l;
+      tick(3);
       break;
     case 0x5E: // LD E,(HL)
       regs.de.l = get1(regs.HL);
       vc.rd++;
+      tick(6);
       break;
     case 0x5F: // LD E,A
       regs.de.l = regs.raf.A;
+      tick(3);
       break;
     case 0x60: // LD H,B
       regs.hl.h = regs.bc.h;
+      tick(3);
       break;
     case 0x61: // LD H,C
       regs.hl.h = regs.bc.l;
+      tick(3);
       break;
     case 0x62: // LD H,D
       regs.hl.h = regs.de.h;
+      tick(3);
       break;
     case 0x63: // LD H,E
       regs.hl.h = regs.de.l;
+      tick(3);
       break;
     case 0x64: // LD H,H
       regs.hl.h = regs.hl.h;
+      tick(3);
       break;
     case 0x65: // LD H,L
       regs.hl.h = regs.hl.l;
+      tick(3);
       break;
     case 0x66: // LD H,(HL)
       regs.hl.h = get1(regs.HL);
       vc.rd++;
+      tick(6);
       break;
     case 0x67: // LD H,A
       regs.hl.h = regs.raf.A;
+      tick(3);
       break;
     case 0x68: // LD L,B
       regs.hl.l = regs.bc.h;
+      tick(3);
       break;
     case 0x69: // LD L,C
       regs.hl.l = regs.bc.l;
+      tick(3);
       break;
     case 0x6A: // LD L,D
       regs.hl.l = regs.de.h;
+      tick(3);
       break;
     case 0x6B: // LD L,E
       regs.hl.l = regs.de.l;
+      tick(3);
       break;
     case 0x6C: // LD L,H
       regs.hl.l = regs.hl.h;
+      tick(3);
       break;
     case 0x6D: // LD L,L
+      tick(3);
       break;
     case 0x6E: // LD L,(HL)
       regs.hl.l = get1(regs.HL);
       vc.rd++;
+      tick(6);
       break;
     case 0x6F: // LD L,A
       regs.hl.l = regs.raf.A;
+      tick(3);
       break;
     case 0x70: // LD (HL),B
       store1(regs.HL, regs.bc.h);
       vc.wr++;
+      tick(6);
       break;
     case 0x71: // LD (HL),C
       store1(regs.HL, regs.bc.l);
       vc.wr++;
+      tick(6);
       break;
     case 0x72: // LD (HL),D
       store1(regs.HL, regs.de.h);
       vc.wr++;
+      tick(6);
       break;
     case 0x73: // LD (HL),E
       store1(regs.HL, regs.de.l);
       vc.wr++;
+      tick(6);
       break;
     case 0x74: // LD (HL),H
       store1(regs.HL, regs.hl.h);
       vc.wr++;
-      break;
+      tick(6);
+     break;
     case 0x75: // LD (HL),L
       store1(regs.HL, regs.hl.l);
       vc.wr++;
+      tick(6);
       break;
     case 0x76: // HALT
+      tick(3);
       return(resHALT);
 
     case 0x77: // LD (HL),A
       store1(regs.HL, regs.raf.A);
       vc.wr++;
+      tick(6);
       break;
     case 0x78: // LD A,B
       regs.raf.A = regs.bc.h;
+      tick(3);
       break;
     case 0x79: // LD A,C
       regs.raf.A = regs.bc.l;
+      tick(3);
       break;
     case 0x7A: // LD A,D
       regs.raf.A = regs.de.h;
+      tick(3);
       break;
     case 0x7B: // LD A,E
       regs.raf.A = regs.de.l;
+      tick(3);
       break;
     case 0x7C: // LD A,H
       regs.raf.A = regs.hl.h;
+      tick(3);
       break;
     case 0x7D: // LD A,L
       regs.raf.A = regs.hl.l;
+      tick(3);
       break;
     case 0x7E: // LD A,(HL)
       regs.raf.A = get1(regs.HL);
       vc.rd++;
+      tick(6);
       break;
     case 0x7F: // LD A,A
+      tick(3);
       break;
     case 0xF9: // LD SP,HL
       regs.SP = regs.HL;
+      tick(5);
       break;
     default:
       return(resINV_INST);
@@ -360,33 +446,43 @@ cl_z80::inst_inc(t_mem code)
     {
     case 0x03: // INC BC
       ++regs.BC;
+      tick(5);
       break;
     case 0x04: // INC B
       inc(regs.bc.h);
+      tick(3);
       break;
     case 0x0C: // INC C
       inc(regs.bc.l);
+      tick(3);
       break;
     case 0x13: // INC DE
       ++regs.DE;
+      tick(5);
       break;
     case 0x14: // INC D
       inc(regs.de.h);
+      tick(3);
       break;
     case 0x1C: // INC E
       inc(regs.de.l);
+      tick(3);
       break;
     case 0x23: // INC HL
       ++regs.HL;
+      tick(5);
       break;
     case 0x24: // INC H
       inc(regs.hl.h);
+      tick(3);
       break;
     case 0x2C: // INC L
       inc(regs.hl.l);
+      tick(3);
       break;
     case 0x33: // INC SP
       ++regs.SP;
+      tick(5);
       break;
     case 0x34: // INC (HL)
       {
@@ -395,10 +491,12 @@ cl_z80::inst_inc(t_mem code)
          store1(regs.HL, t);
 	 vc.rd++;
 	 vc.wr++;
+	 tick(6);
 	 break;
       }
     case 0x3C: // INC A
       inc(regs.raf.A);
+      tick(3);
       break;
     default:
       return(resINV_INST);
