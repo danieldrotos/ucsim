@@ -31,9 +31,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 
 
-extern struct dis_entry disass_p1516[];
+extern struct dis_entry disass_m6809[];
 
 
 #endif
 
-/* End of p1516.src/glob.h */
+/* End of m6809.src/glob.h */

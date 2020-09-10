@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.h)
+ * Simulator of microcontrollers (simm6809cl.h)
  *
  * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
@@ -25,15 +25,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GLOB_HEADER
-#define GLOB_HEADER
+#ifndef SIMM6809CL_HEADER
+#define SIMM6809CL_HEADER
 
-#include "stypes.h"
+#include "simcl.h"
 
 
-extern struct dis_entry disass_p1516[];
+class cl_simm6809: public cl_sim
+{
+public:
+  cl_simm6809(class cl_app *the_app);
+
+  virtual class cl_uc *mk_controller(void);
+};
 
 
 #endif
 
-/* End of p1516.src/glob.h */
+/* End of m6809.src/simm6809cl.h */

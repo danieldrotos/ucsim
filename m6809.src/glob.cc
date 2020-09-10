@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.h)
+ * Simulator of microcontrollers (glob.cc)
  *
  * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
@@ -25,15 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GLOB_HEADER
-#define GLOB_HEADER
-
-#include "stypes.h"
+#include "glob.h"
 
 
-extern struct dis_entry disass_p1516[];
+struct dis_entry disass_m6809[]=
+  {
+   
+   { 0, 0, 0, 0, 0, 0 }
+  };
 
-
-#endif
-
-/* End of p1516.src/glob.h */
+/* End of m6809.src/glob.cc */
