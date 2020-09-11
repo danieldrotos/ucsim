@@ -243,6 +243,7 @@ cl_m6809::inst_alu(t_mem code)
   switch (code & 0x30)
     {
     case 0x00: // immed
+      ea= PC;
       op8= fetch();
       break;
     case 0x10: // direct
@@ -275,6 +276,7 @@ cl_m6809::inst_alu(t_mem code)
       return inst_bool(code, '&', dest, op8, true);
       break;
     case 0x05: // BIT  BIT  BIT  BIT  BIT  BIT  BIT  BIT
+      return inst_bool(code, '&', dest, op8, false);
       break;
     case 0x06: // LD   LD   LD   LD   LD   LD   LD   LD
       break;
