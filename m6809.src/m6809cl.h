@@ -99,7 +99,8 @@ public:
   virtual char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
 
-  virtual int inst_add8(t_mem code, u8_t *dest, u8_t op, int c);
+  virtual int inst_add8(t_mem code, u8_t *dest, u8_t op, int c, bool store);
+  virtual int inst_bool(t_mem code, char bop, u8_t *dest, u8_t op, bool store);
   
   virtual int inst_alu(t_mem code);
   virtual int inst_low(t_mem code);
