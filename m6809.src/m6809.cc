@@ -179,6 +179,123 @@ cl_m6809::print_regs(class cl_console_base *con)
 
 
 int
+cl_m6809::index2ea(u8_t idx, t_addr *res_ea)
+{
+  u16_t iv;
+  i16_t off;
+  u16_t *ir;
+  t_addr ea;
+  
+  switch (idx & 0x60)
+    {
+    case 0x00: ir= &reg.X; break;
+    case 0x20: ir= &reg.Y; break;
+    case 0x40: ir= &reg.U; break;
+    case 0x60: ir= &reg.S; break;
+    }
+  iv= *ir;
+  if (!(idx & 0x80))
+    {
+      idx&= 0x1f;
+      off= (idx & 0x10)? (0xffe0 | idx) : (idx);
+      ea= iv + off;
+    }
+  else
+    {
+      i8_t i8;
+      bool ind= true;
+      switch (idx & 0xf)
+	{
+	case 0x00:
+	  off= 0;
+	  ea= iv;
+	  (*ir)++;
+	  ind= false;
+	  if (idx & 0x10) return resINV_INST;
+	  break;
+	case 0x01:
+	  off= 0;
+	  ea= iv;
+	  (*ir)+= 2;
+	  break;
+	case 0x02:
+	  off= 0;
+	  (*ir)--;
+	  iv= *ir;
+	  ea= iv;
+	  ind= false;
+	  if (idx & 0x10) return resINV_INST;
+	  break;
+	case 0x03:
+	  off= 0;
+	  (*ir)-= 2;
+	  iv= *ir;
+	  ea= iv;
+	  break;
+	case 0x04:
+	  off= 0;
+	  ea= iv;
+	  break;
+	case 0x05:
+	  off= (i8_t)B;
+	  ea= iv + off;
+	  break;
+	case 0x06:
+	  off= (i8_t)A;
+	  ea= iv + off;
+	  break;
+	case 0x07:
+	  return resINV_INST;
+	  break;
+	case 0x08:
+	  i8= fetch();
+	  off= i8;
+	  ea= iv + off;
+	  break;
+	case 0x09:
+	  off= fetch()*256 + fetch();
+	  ea= iv + off;
+	  break;
+	case 0x0a:
+	  return resINV_INST;
+	  break;
+	case 0x0b:
+	  off= D;
+	  ea= iv + off;
+	  break;
+	case 0x0c:
+	  i8= fetch();
+	  off= i8;
+	  iv= PC;
+	  ea= iv + off;
+	  break;
+	case 0x0d:
+	  off= fetch()*256 + fetch();
+	  iv= PC;
+	  ea= iv + off;
+	  break;
+	case 0x0e:
+	  return resINV_INST;
+	  break;
+	case 0x0f:
+	  off= 0;
+	  iv= fetch()*256 + fetch();
+	  ea= iv;
+	  if ((idx & 0x10) == 0) return resINV_INST;
+	  if ((idx & 0x60) != 0) return resINV_INST;
+	  break;
+	}
+      if (ind && (idx & 0x10))
+	ea= rom->read(iv)*256 + rom->read(iv+1);
+    }
+
+  if (res_ea)
+    *res_ea= ea;
+  return resGO;
+}
+
+
+int
 cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store)
 {
   u8_t r;
@@ -237,11 +354,24 @@ cl_m6809::inst_ld8(t_mem code, u8_t *acc, u8_t op)
   return resGO;
 }
 
-  
+int
+cl_m6809::inst_st8(t_mem code, u8_t *src, t_addr ea)
+{
+  rom->write(ea, *src);
+
+  SET_O(0);
+  SET_Z(*src);
+  SET_S(*src & 0x80);
+
+  return resGO;
+}
+
+
 int
 cl_m6809::inst_alu(t_mem code)
 {
   u8_t *acc, op8, idx;
+  u16_t op16;
   t_addr ea;
   
   if (code == 0x87 ||
@@ -265,112 +395,10 @@ cl_m6809::inst_alu(t_mem code)
       break;
     case 0x20: // index
       {
-	u16_t iv;
-	i16_t off;
-	u16_t *ir;
+	int r;
 	idx= fetch();
-	switch (idx & 0x60)
-	  {
-	  case 0x00: ir= &reg.X; break;
-	  case 0x20: ir= &reg.Y; break;
-	  case 0x40: ir= &reg.U; break;
-	  case 0x60: ir= &reg.S; break;
-	  }
-	iv= *ir;
-	if (!(idx & 0x80))
-	  {
-	    idx&= 0x1f;
-	    off= (idx & 0x10)? (0xffe0 | idx) : (idx);
-	    ea= iv + off;
-	  }
-	else
-	  {
-	    i8_t i8;
-	    bool ind= true;
-	    switch (idx & 0xf)
-	      {
-	      case 0x00:
-		off= 0;
-		ea= iv;
-		(*ir)++;
-		ind= false;
-		if (idx & 0x10) return resINV_INST;
-		break;
-	      case 0x01:
-		off= 0;
-		ea= iv;
-		(*ir)+= 2;
-		break;
-	      case 0x02:
-		off= 0;
-		(*ir)--;
-		iv= *ir;
-		ea= iv;
-		ind= false;
-		if (idx & 0x10) return resINV_INST;
-		break;
-	      case 0x03:
-		off= 0;
-		(*ir)-= 2;
-		iv= *ir;
-		ea= iv;
-		break;
-	      case 0x04:
-		off= 0;
-		ea= iv;
-		break;
-	      case 0x05:
-		off= (i8_t)B;
-		ea= iv + off;
-		break;
-	      case 0x06:
-		off= (i8_t)A;
-		ea= iv + off;
-		break;
-	      case 0x07:
-		return resINV_INST;
-		break;
-	      case 0x08:
-		i8= fetch();
-		off= i8;
-		ea= iv + off;
-		break;
-	      case 0x09:
-		off= fetch()*256 + fetch();
-		ea= iv + off;
-		break;
-	      case 0x0a:
-		return resINV_INST;
-		break;
-	      case 0x0b:
-		off= D;
-		ea= iv + off;
-		break;
-	      case 0x0c:
-		i8= fetch();
-		off= i8;
-		iv= PC;
-		ea= iv + off;
-		break;
-	      case 0x0d:
-		off= fetch()*256 + fetch();
-		iv= PC;
-		ea= iv + off;
-		break;
-	      case 0x0e:
-		return resINV_INST;
-		break;
-	      case 0x0f:
-		off= 0;
-		iv= fetch()*256 + fetch();
-		ea= iv;
-		if ((idx & 0x10) == 0) return resINV_INST;
-		if ((idx & 0x60) != 0) return resINV_INST;
-		break;
-	      }
-	    if (ind && (idx & 0x10))
-	      ea= rom->read(iv)*256 + rom->read(iv+1);
-	  }
+	if ((r= index2ea(idx, &ea)) != resGO)
+	  return r;
 	op8= rom->read(ea);
 	break;
       }
@@ -393,6 +421,7 @@ cl_m6809::inst_alu(t_mem code)
       return inst_add8(code, acc, ~op8, (reg.CC&C)?1:0, true);
       break;
     case 0x03: // SUBD SUBD SUBD SUBD ADDD ADDD ADDD ADDD
+      op16= op8*256 + rom->read(ea+1);
       break;
     case 0x04: // AND  AND  AND  AND  AND  AND  AND  AND
       return inst_bool(code, '&', acc, op8, true);
@@ -404,6 +433,7 @@ cl_m6809::inst_alu(t_mem code)
       return inst_ld8(code, acc, op8);
       break;
     case 0x07: // --   STA  STA  STA  --   STB  STB  STB
+      return inst_st8(code, acc, ea);
       break;
     case 0x08: // EOR  EOR  EOR  EOR  EOR  EOR  EOR  EOR
       return inst_bool(code, '^', acc, op8, true);
@@ -418,6 +448,7 @@ cl_m6809::inst_alu(t_mem code)
       return inst_add8(code, acc, op8, 0, true);
       break;
     case 0x0c: // CMPX CMPX CMPX CMPX LDD  LDD  LDD  LDD
+      op16= op8*256 + rom->read(ea+1);
       break;
     case 0x0d: // BSR  JSR  JSR  JSR  --   STD  STD  STD
       break;
