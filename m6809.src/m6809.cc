@@ -229,6 +229,11 @@ int
 cl_m6809::inst_ld8(t_mem code, u8_t *acc, u8_t op)
 {
   *acc= op;
+
+  SET_O(0);
+  SET_Z(op);
+  SET_S(op&0x80);
+  
   return resGO;
 }
 
@@ -236,7 +241,7 @@ cl_m6809::inst_ld8(t_mem code, u8_t *acc, u8_t op)
 int
 cl_m6809::inst_alu(t_mem code)
 {
-  u8_t *acc, op8;
+  u8_t *acc, op8, idx;
   t_addr ea;
   
   if (code == 0x87 ||
@@ -259,7 +264,116 @@ cl_m6809::inst_alu(t_mem code)
       op8= rom->read(ea);
       break;
     case 0x20: // index
-      break;
+      {
+	u16_t iv;
+	i16_t off;
+	u16_t *ir;
+	idx= fetch();
+	switch (idx & 0x60)
+	  {
+	  case 0x00: ir= &reg.X; break;
+	  case 0x20: ir= &reg.Y; break;
+	  case 0x40: ir= &reg.U; break;
+	  case 0x60: ir= &reg.S; break;
+	  }
+	iv= *ir;
+	if (!(idx & 0x80))
+	  {
+	    idx&= 0x1f;
+	    off= (idx & 0x10)? (0xffe0 | idx) : (idx);
+	    ea= iv + off;
+	  }
+	else
+	  {
+	    i8_t i8;
+	    bool ind= true;
+	    switch (idx & 0xf)
+	      {
+	      case 0x00:
+		off= 0;
+		ea= iv;
+		(*ir)++;
+		ind= false;
+		if (idx & 0x10) return resINV_INST;
+		break;
+	      case 0x01:
+		off= 0;
+		ea= iv;
+		(*ir)+= 2;
+		break;
+	      case 0x02:
+		off= 0;
+		(*ir)--;
+		iv= *ir;
+		ea= iv;
+		ind= false;
+		if (idx & 0x10) return resINV_INST;
+		break;
+	      case 0x03:
+		off= 0;
+		(*ir)-= 2;
+		iv= *ir;
+		ea= iv;
+		break;
+	      case 0x04:
+		off= 0;
+		ea= iv;
+		break;
+	      case 0x05:
+		off= (i8_t)B;
+		ea= iv + off;
+		break;
+	      case 0x06:
+		off= (i8_t)A;
+		ea= iv + off;
+		break;
+	      case 0x07:
+		return resINV_INST;
+		break;
+	      case 0x08:
+		i8= fetch();
+		off= i8;
+		ea= iv + off;
+		break;
+	      case 0x09:
+		off= fetch()*256 + fetch();
+		ea= iv + off;
+		break;
+	      case 0x0a:
+		return resINV_INST;
+		break;
+	      case 0x0b:
+		off= D;
+		ea= iv + off;
+		break;
+	      case 0x0c:
+		i8= fetch();
+		off= i8;
+		iv= PC;
+		ea= iv + off;
+		break;
+	      case 0x0d:
+		off= fetch()*256 + fetch();
+		iv= PC;
+		ea= iv + off;
+		break;
+	      case 0x0e:
+		return resINV_INST;
+		break;
+	      case 0x0f:
+		off= 0;
+		iv= fetch()*256 + fetch();
+		ea= iv;
+		if ((idx & 0x10) == 0) return resINV_INST;
+		if ((idx & 0x60) != 0) return resINV_INST;
+		break;
+	      }
+	    if (ind && (idx & 0x10))
+	      ea= rom->read(iv)*256 + rom->read(iv+1);
+	  }
+	op8= rom->read(ea);
+	break;
+      }
     case 0x30: // extend
       ea= fetch()*256 + fetch();
       op8= rom->read(ea);
