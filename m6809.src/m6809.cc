@@ -394,13 +394,27 @@ cl_m6809::inst_ld16(t_mem code, u16_t *acc, u16_t op)
 }
 
 int
-cl_m6809::inst_st8(t_mem code, u8_t *src, t_addr ea)
+cl_m6809::inst_st8(t_mem code, u8_t src, t_addr ea)
 {
-  rom->write(ea, *src);
+  rom->write(ea, src);
 
   SET_O(0);
-  SET_Z(*src);
-  SET_S(*src & 0x80);
+  SET_Z(src);
+  SET_S(src & 0x80);
+
+  return resGO;
+}
+
+
+int
+cl_m6809::inst_st16(t_mem code, u16_t src, t_addr ea)
+{
+  rom->write(ea  , (src)>>8);
+  rom->write(ea+1, (src)&0xff);
+  
+  SET_O(0);
+  SET_Z(src);
+  SET_S(src & 0x8000);
 
   return resGO;
 }
@@ -481,7 +495,7 @@ cl_m6809::inst_alu(t_mem code)
       return inst_ld8(code, acc, op8);
       break;
     case 0x07: // --   STA  STA  STA  --   STB  STB  STB
-      return inst_st8(code, acc, ea);
+      return inst_st8(code, *acc, ea);
       break;
     case 0x08: // EOR  EOR  EOR  EOR  EOR  EOR  EOR  EOR
       return inst_bool(code, '^', acc, op8, true);
@@ -501,13 +515,28 @@ cl_m6809::inst_alu(t_mem code)
       else
 	op16= op8*256 + rom->read(ea+1);
       if ((code & 0x40) == 0)
-	inst_add16(code, &D, op16, 1, false);
+	return inst_add16(code, &D, op16, 1, false);
       else
-	inst_ld16(code, &D, op16);
+	return inst_ld16(code, &D, op16);
       break;
     case 0x0d: // BSR  JSR  JSR  JSR  --   STD  STD  STD
+      if ((code & 0x40) == 0)
+	{
+	  if ((code & 0x30) == 0)
+	    op16= op8*256 + fetch();
+	  else
+	    op16= op8*256 + rom->read(ea+1);
+	  // TODO
+	}
+      else
+	return inst_st16(code, D, ea);
       break;
     case 0x0e: // LDX  LDX  LDX  LDX  LDX  LDX  LDX  LDX
+      if ((code & 0x30) == 0)
+	op16= op8*256 + fetch();
+      else
+	op16= op8*256 + rom->read(ea+1);
+      return inst_ld16(code, &reg.X, op16);
       break;
     case 0x0f: // --   STX  STX  STX  --   STU  STU  STU
       break;
