@@ -320,6 +320,33 @@ cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store)
   return resGO;
 }
 
+
+int
+cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, int c, bool store)
+{
+  u16_t r;
+  unsigned int d= *acc;
+  unsigned int o= op;
+  signed int res= (i16_t)d + (i16_t)o;
+
+  if (c) { ++res, ++o; }
+  
+  reg.CC= ~(V|S|Z);
+  if ((res < (int)(0x8000)) || (res > (int)(0x7fff)))
+    reg.CC|= V;
+  if (d + o > 0xffff)
+    reg.CC|= C;
+
+  r= res & 0xffff;
+  if (r == 0)     reg.CC|= Z;
+  if (r & 0x8000) reg.CC|= S;
+
+  if (store)
+    *acc= r;
+  
+  return resGO;
+}
+
 int
 cl_m6809::inst_bool(t_mem code, char bop, u8_t *acc, u8_t op, bool store)
 {
@@ -350,6 +377,18 @@ cl_m6809::inst_ld8(t_mem code, u8_t *acc, u8_t op)
   SET_O(0);
   SET_Z(op);
   SET_S(op&0x80);
+  
+  return resGO;
+}
+
+int
+cl_m6809::inst_ld16(t_mem code, u16_t *acc, u16_t op)
+{
+  *acc= op;
+
+  SET_O(0);
+  SET_Z(op);
+  SET_S(op&0x8000);
   
   return resGO;
 }
@@ -421,8 +460,17 @@ cl_m6809::inst_alu(t_mem code)
       return inst_add8(code, acc, ~op8, (reg.CC&C)?1:0, true);
       break;
     case 0x03: // SUBD SUBD SUBD SUBD ADDD ADDD ADDD ADDD
-      op16= op8*256 + rom->read(ea+1);
-      break;
+      {
+	int c= 0;
+	if ((code & 0x30) == 0)
+	  op16= op8*256 + fetch();
+	else
+	  op16= op8*256 + rom->read(ea+1);
+	if ((code & 0x40) == 0)
+	  op16= ~op16, c= 1;
+	return inst_add16(code, &D, op16, c, true);
+	break;
+      }
     case 0x04: // AND  AND  AND  AND  AND  AND  AND  AND
       return inst_bool(code, '&', acc, op8, true);
       break;
@@ -448,7 +496,14 @@ cl_m6809::inst_alu(t_mem code)
       return inst_add8(code, acc, op8, 0, true);
       break;
     case 0x0c: // CMPX CMPX CMPX CMPX LDD  LDD  LDD  LDD
-      op16= op8*256 + rom->read(ea+1);
+      if ((code & 0x30) == 0)
+	op16= op8*256 + fetch();
+      else
+	op16= op8*256 + rom->read(ea+1);
+      if ((code & 0x40) == 0)
+	inst_add16(code, &D, op16, 1, false);
+      else
+	inst_ld16(code, &D, op16);
       break;
     case 0x0d: // BSR  JSR  JSR  JSR  --   STD  STD  STD
       break;
