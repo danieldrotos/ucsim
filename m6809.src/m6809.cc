@@ -179,10 +179,10 @@ cl_m6809::print_regs(class cl_console_base *con)
 
 
 int
-cl_m6809::inst_add8(t_mem code, u8_t *dest, u8_t op, int c, bool store)
+cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store)
 {
   u8_t r;
-  unsigned int d= *dest;
+  unsigned int d= *acc;
   unsigned int o= op;
   signed int res= (signed char)d + (signed char)o;
 
@@ -198,25 +198,25 @@ cl_m6809::inst_add8(t_mem code, u8_t *dest, u8_t op, int c, bool store)
   if (r & 0x80) reg.CC|= S;
 
   if (store)
-    *dest= r;
+    *acc= r;
   
   return resGO;
 }
 
 int
-cl_m6809::inst_bool(t_mem code, char bop, u8_t *dest, u8_t op, bool store)
+cl_m6809::inst_bool(t_mem code, char bop, u8_t *acc, u8_t op, bool store)
 {
   u8_t r;
 
   switch (bop)
     {
-    case '&': r= *dest & op; break;
-    case '|': r= *dest | op; break;
-    case '^': r= *dest ^ op; break;
+    case '&': r= *acc & op; break;
+    case '|': r= *acc | op; break;
+    case '^': r= *acc ^ op; break;
     }
 
   if (store)
-    *dest= r;
+    *acc= r;
 
   SET_O(0);
   SET_Z(r);
@@ -226,9 +226,17 @@ cl_m6809::inst_bool(t_mem code, char bop, u8_t *dest, u8_t op, bool store)
 }
 
 int
+cl_m6809::inst_ld8(t_mem code, u8_t *acc, u8_t op)
+{
+  *acc= op;
+  return resGO;
+}
+
+  
+int
 cl_m6809::inst_alu(t_mem code)
 {
-  u8_t *dest, op8;
+  u8_t *acc, op8;
   t_addr ea;
   
   if (code == 0x87 ||
@@ -238,7 +246,7 @@ cl_m6809::inst_alu(t_mem code)
       code == 0xcf)
     return resINV_INST;
   
-  dest= (code & 0x40)? (&B) : (&A);
+  acc= (code & 0x40)? (&B) : (&A);
 
   switch (code & 0x30)
     {
@@ -262,37 +270,38 @@ cl_m6809::inst_alu(t_mem code)
     {
       //          8    9    A    B    C    D    E    F
     case 0x00: // SUB  SUB  SUB  SUB  SUB  SUB  SUB  SUB
-      return inst_add8(code, dest, ~op8, 1, true);
+      return inst_add8(code, acc, ~op8, 1, true);
       break;
     case 0x01: // CMP  CMP  CMP  CMP  CMP  CMP  CMP  CMP
-      return inst_add8(code, dest, ~op8, 1, false);
+      return inst_add8(code, acc, ~op8, 1, false);
       break;
     case 0x02: // SBC  SBC  SBC  SBC  SBC  SBC  SBC  SBC
-      return inst_add8(code, dest, ~op8, (reg.CC&C)?1:0, true);
+      return inst_add8(code, acc, ~op8, (reg.CC&C)?1:0, true);
       break;
     case 0x03: // SUBD SUBD SUBD SUBD ADDD ADDD ADDD ADDD
       break;
     case 0x04: // AND  AND  AND  AND  AND  AND  AND  AND
-      return inst_bool(code, '&', dest, op8, true);
+      return inst_bool(code, '&', acc, op8, true);
       break;
     case 0x05: // BIT  BIT  BIT  BIT  BIT  BIT  BIT  BIT
-      return inst_bool(code, '&', dest, op8, false);
+      return inst_bool(code, '&', acc, op8, false);
       break;
     case 0x06: // LD   LD   LD   LD   LD   LD   LD   LD
+      return inst_ld8(code, acc, op8);
       break;
     case 0x07: // --   STA  STA  STA  --   STB  STB  STB
       break;
     case 0x08: // EOR  EOR  EOR  EOR  EOR  EOR  EOR  EOR
-      return inst_bool(code, '^', dest, op8, true);
+      return inst_bool(code, '^', acc, op8, true);
       break;
     case 0x09: // ADC  ADC  ADC  ADC  ADC  ADC  ADC  ADC
-      return inst_add8(code, dest, op8, (reg.CC&C)?1:0, true);
+      return inst_add8(code, acc, op8, (reg.CC&C)?1:0, true);
       break;
     case 0x0a: // OR   OR   OR   OR   OR   OR   OR   OR
-      return inst_bool(code, '|', dest, op8, true);
+      return inst_bool(code, '|', acc, op8, true);
       break;
     case 0x0b: // ADD  ADD  ADD  ADD  ADD  ADD  ADD  ADD
-      return inst_add8(code, dest, op8, 0, true);
+      return inst_add8(code, acc, op8, 0, true);
       break;
     case 0x0c: // CMPX CMPX CMPX CMPX LDD  LDD  LDD  LDD
       break;
