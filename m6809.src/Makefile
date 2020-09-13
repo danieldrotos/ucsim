@@ -24,8 +24,8 @@ DEFS            = $(subs -DHAVE_CONFIG_H,,-DHAVE_CONFIG_H)
 CPPFLAGS        =  -I$(srcdir) -I$(top_srcdir) -I$(top_builddir) \
 		  -I$(top_srcdir)/cmd.src -I$(top_srcdir)/sim.src \
 		  -I$(top_srcdir)/gui.src
-CFLAGS          = -g -O0  -Wall
-CXXFLAGS        = -g -O0  -g -Wall
+CFLAGS          = -g -O2  -Wall
+CXXFLAGS        = -g -O2  -g -Wall
 LDFLAGS         = 
 PICOPT		=  -fPIC -DPIC
 SHAREDLIB	= yes
@@ -35,7 +35,7 @@ LIBS		= -L$(top_builddir) -lsim -lucsimutil -lguiucsim -lcmd -lsim -lrt -lnsl
 DL		= -ldl
 dl_ok		= yes
 
-prefix          = /usr/local
+prefix          = /home/drdani/local
 exec_prefix     = ${prefix}
 bindir          = ${exec_prefix}/bin
 libdir          = ${exec_prefix}/lib
