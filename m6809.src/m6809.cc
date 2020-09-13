@@ -183,7 +183,7 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea)
 {
   u16_t iv;
   i16_t off;
-  u16_t *ir;
+  u16_t *ir= &reg.X;
   t_addr ea;
   
   switch (idx & 0x60)
@@ -357,6 +357,7 @@ cl_m6809::inst_bool(t_mem code, char bop, u8_t *acc, u8_t op, bool store)
     case '&': r= *acc & op; break;
     case '|': r= *acc | op; break;
     case '^': r= *acc ^ op; break;
+    default: r= *acc; break;
     }
 
   if (store)
@@ -459,6 +460,7 @@ cl_m6809::inst_alu(t_mem code)
       ea= fetch()*256 + fetch();
       op8= rom->read(ea);
       break;
+    default: op8= 0; break;
     }
 
   switch (code & 0x0f)
