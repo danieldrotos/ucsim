@@ -108,13 +108,19 @@ public:
   virtual int inst_ld16 (t_mem code, u16_t *acc, u16_t op);
   virtual int inst_st8  (t_mem code,  u8_t  src, t_addr ea);
   virtual int inst_st16 (t_mem code, u16_t  src, t_addr ea);
-  virtual int inst_branch(t_mem code);
   
   virtual int inst_alu(t_mem code);
+
   virtual int inst_10(t_mem code);
+  virtual int inst_branch(t_mem code);
   virtual int inst_30(t_mem code);
+
+  virtual int inst_neg(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+    
   virtual int inst_low(t_mem code);
+  
   virtual int inst_page1(t_mem code);
+
   virtual int inst_page2(t_mem code);
     
   virtual int exec_inst(void);

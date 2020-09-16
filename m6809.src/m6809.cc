@@ -555,13 +555,6 @@ cl_m6809::inst_alu(t_mem code)
 
 
 int
-cl_m6809::inst_branch(t_mem code)
-{
-  // TODO
-  return resGO;
-}
-
-int
 cl_m6809::inst_10(t_mem code)
 {
   switch (code & 0x0f)
@@ -600,6 +593,13 @@ cl_m6809::inst_10(t_mem code)
       break;
     }
 
+  return resGO;
+}
+
+int
+cl_m6809::inst_branch(t_mem code)
+{
+  // TODO
   return resGO;
 }
 
@@ -645,6 +645,24 @@ cl_m6809::inst_30(t_mem code)
   return resGO;
 }
 
+
+int
+cl_m6809::inst_neg(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  if (acc)
+    {
+      *acc= ~(*acc);
+      return inst_add8(code, acc, 0, 1, true);
+    }
+  op8= rom->read(ea);
+  u8_t t= A;
+  A= ~op8;
+  inst_add8(code, &A, 0, 1, true);
+  rom->write(ea, A);
+  A= t;
+  return resGO;
+}
+
 const u8_t low_illegals[]=
   {
    0x01, 0x41, 0x51, 0x61, 0x71,
@@ -660,8 +678,8 @@ const u8_t low_illegals[]=
 int
 cl_m6809::inst_low(t_mem code)
 {
-  t_addr ea;
-  u8_t op8, *acc, idx;
+  t_addr ea= 0;
+  u8_t op8= 0, *acc, idx;
   
   for (idx= 0; low_illegals[idx]; idx++)
     if (low_illegals[idx] == code)
@@ -708,6 +726,7 @@ cl_m6809::inst_low(t_mem code)
     {
       //          0     1     2     3     4     5     6     7
     case 0x00: // NEG   pg1   BRA   LEAX  NEGA  NEGB  NEG   NEG
+      return inst_neg(code, acc, ea, op8);
       break;
     case 0x01: // --    pg2   BRN   LEAY  --    --    --    --
       break;
