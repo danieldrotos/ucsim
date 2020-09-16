@@ -420,13 +420,6 @@ cl_m6809::inst_st16(t_mem code, u16_t src, t_addr ea)
 }
 
 int
-cl_m6809::inst_branch(t_mem code)
-{
-  // TODO
-  return resGO;
-}
-
-int
 cl_m6809::inst_alu(t_mem code)
 {
   u8_t *acc, op8, idx;
@@ -560,6 +553,15 @@ cl_m6809::inst_alu(t_mem code)
   return resGO;
 }
 
+
+int
+cl_m6809::inst_branch(t_mem code)
+{
+  // TODO
+  return resGO;
+}
+
+
 const u8_t low_illegals[]=
   {
    0x01, 0x41, 0x51, 0x61, 0x71,
@@ -653,6 +655,21 @@ cl_m6809::inst_low(t_mem code)
   return resGO;
 }
 
+
+int
+cl_m6809::inst_page1(t_mem code)
+{
+  return resGO;
+}
+
+
+int
+cl_m6809::inst_page2(t_mem code)
+{
+  return resGO;
+}
+
+
 int
 cl_m6809::exec_inst(void)
 {
@@ -667,7 +684,13 @@ cl_m6809::exec_inst(void)
   if (code & 0x80)
     return inst_alu(code);
   else
-    return inst_low(code);
+    {
+      if (code == 0x10)
+	return inst_page1(fetch());
+      if (code == 0x11)
+	return inst_page2(fetch());
+      return inst_low(code);
+    }
   
   return resGO;
 }

@@ -112,6 +112,9 @@ public:
   
   virtual int inst_alu(t_mem code);
   virtual int inst_low(t_mem code);
+  virtual int inst_page1(t_mem code);
+  virtual int inst_page2(t_mem code);
+    
   virtual int exec_inst(void);
 };
 
