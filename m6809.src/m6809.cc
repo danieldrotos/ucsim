@@ -597,9 +597,77 @@ cl_m6809::inst_10(t_mem code)
 }
 
 int
-cl_m6809::inst_branch(t_mem code)
+cl_m6809::inst_branch(t_mem code, bool l)
 {
-  // TODO
+  bool c= reg.CC & C;
+  bool z= reg.CC & Z;
+  bool n= reg.CC & N;
+  bool v= reg.CC & V;
+  bool t;
+  
+  switch (code & 0x0f)
+    {
+    case 0x00: // BRA 1
+      if (l)
+	return resINV_INST;
+      t= true;
+      break;
+    case 0x01: // BRN 0
+      t= false;
+      break;
+    case 0x02: // BHI ~C * ~Z
+      t= !c && !z;
+      break;
+    case 0x03: // BLS C + Z
+      t= c || z;
+      break;
+    case 0x04: // BHS ~C
+      t= !c;
+      break;
+    case 0x05: // BLO C
+      t= c;
+      break;
+    case 0x06: // BNE ~Z
+      t= !z;
+      break;
+    case 0x07: // BEQ Z
+      t= z;
+      break;
+    case 0x08: // BVC ~V
+      t= !v;
+      break;
+    case 0x09: // BVS V
+      t= v;
+      break;
+    case 0x0a: // BPL ~N
+      t= !n;
+      break;
+    case 0x0b: // BMI N
+      t= n;
+      break;
+    case 0x0c: // BGE N*V + ~N*~V
+      t= (n&&v) || (!n&&!v);
+      break;
+    case 0x0d: // BLT N*~V + ~N*V
+      t= (n&&!v) || (!n&&v);
+      break;
+    case 0x0e: // BGT N*V*~Z + ~N*~V*~Z
+      t= (n&&v&&!z) || (!n&&!v&&!z);
+      break;
+    case 0x0f: // BLE Z + N*~V + ~N*V
+      t= z || (n&&!v) || (!n&&v);
+      break;
+    }
+
+  if (t)
+    {
+      u16_t u= fetch();
+      if (l)
+	u= u*256 + fetch();
+      i16_t i= u;
+      PC= PC + i;
+    }
+  
   return resGO;
 }
 
@@ -897,7 +965,7 @@ cl_m6809::inst_low(t_mem code)
     return inst_10(code);
 
   if ((code & 0xf0) == 0x20)
-    return inst_branch(code);
+    return inst_branch(code, false);
 
   if ((code & 0xf0) == 0x30)
     return inst_30(code);
@@ -954,7 +1022,7 @@ cl_m6809::inst_low(t_mem code)
     case 0x07: // ASR   LBSR  BEQ   PULU  ASRA  ASRB  ASR   ASR
       return inst_asr(code, acc, ea, op8);
       break;
-    case 0x08: // ASL  --    BVC   --    ASLA ASLB ASL  ASL
+    case 0x08: // ASL   --    BVC   --    ASLA  ASLB  ASL   ASL
       return inst_asl(code, acc, ea, op8);
       break;
     case 0x09: // ROL   DAA   BVS   RTS   ROLA  ROLB  ROL   ROL
@@ -972,6 +1040,7 @@ cl_m6809::inst_low(t_mem code)
       return inst_tst(code, acc, ea, op8);
       break;
     case 0x0e: // JMP   EXG   BGT   RESET --    --    JMP   JMP
+      PC= ea;
       break;
     case 0x0f: // CLR   TFR   BLE   SWI   CLRA  CLRB  CLR   CLR
       return inst_clr(code, acc, ea, op8);

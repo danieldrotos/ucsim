@@ -112,7 +112,7 @@ public:
   virtual int inst_alu(t_mem code);
 
   virtual int inst_10(t_mem code);
-  virtual int inst_branch(t_mem code);
+  virtual int inst_branch(t_mem code, bool l);
   virtual int inst_30(t_mem code);
 
   virtual int inst_neg(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
