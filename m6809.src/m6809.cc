@@ -171,9 +171,9 @@ void
 cl_m6809::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("A= 0x%02x %3d %c  ", A, A, isprint(A)?A:'.');
-  con->dd_printf("B= 0x%02x %3d %c  ", B, B, isprint(B)?B:'.');
-  con->dd_printf("D= 0x%04x %5d\n", D, D);
+  con->dd_printf("A= 0x%02x %3d %+4d %c  ", A, A, (i8_t)A, isprint(A)?A:'.');
+  con->dd_printf("B= 0x%02x %3d %+4d %c  ", B, B, (i8_t)B, isprint(B)?B:'.');
+  con->dd_printf("D= 0x%04x %5d %+6d\n", D, D, (i16_t)D);
   con->dd_printf("CC= "); con->print_bin(reg.CC, 8); con->dd_printf("\n");
   con->dd_printf("    EFHINZVC\n");
 
