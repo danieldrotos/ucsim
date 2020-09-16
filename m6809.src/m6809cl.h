@@ -103,6 +103,8 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int index2ea(u8_t idx, t_addr *res_ea);
+  virtual void push_regs(bool do_cc);
+  virtual void pull_regs(bool do_cc);
   
   virtual int inst_add8 (t_mem code,  u8_t *acc,  u8_t op, int c, bool store);
   virtual int inst_add16(t_mem code, u16_t *acc, u16_t op, int c, bool store);

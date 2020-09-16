@@ -314,6 +314,53 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea)
 }
 
 
+void
+cl_m6809::push_regs(bool do_cc)
+{
+  rom->write(--reg.S, PC&0xff);
+  rom->write(--reg.S, PC>>8);
+  if (reg.CC & E)
+    {
+      rom->write(--reg.S, reg.U&0xff);
+      rom->write(--reg.S, reg.U>>8);
+      rom->write(--reg.S, reg.Y&0xff);
+      rom->write(--reg.S, reg.Y>>8);
+      rom->write(--reg.S, reg.X&0xff);
+      rom->write(--reg.S, reg.X>>8);
+      rom->write(--reg.S, reg.DP);
+      rom->write(--reg.S, B);
+      rom->write(--reg.S, A);
+      if (do_cc)
+	rom->write(--reg.S, reg.CC);
+    }
+}
+
+void
+cl_m6809::pull_regs(bool do_cc)
+{
+  u8_t l,h;
+  if(do_cc)
+    reg.CC= rom->read(reg.S++);
+  if (reg.CC & E)
+    {
+      A= rom->read(reg.S++);
+      B= rom->read(reg.S++);
+      reg.DP= rom->read(reg.S++);
+      h= rom->read(reg.S++);
+      l= rom->read(reg.S++);
+      reg.X= h*256 + l;
+      h= rom->read(reg.S++);
+      l= rom->read(reg.S++);
+      reg.Y= h*256 + l;
+      h= rom->read(reg.S++);
+      l= rom->read(reg.S++);
+      reg.U= h*256 + l;
+    }
+  h= rom->read(reg.S++);
+  l= rom->read(reg.S++);
+  PC= h*256 + l;
+}
+
 int
 cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store)
 {
@@ -778,39 +825,165 @@ cl_m6809::inst_branch(t_mem code, bool l)
 int
 cl_m6809::inst_30(t_mem code)
 {
+  t_addr ea;
+  int r;
+  u8_t op8, l, h;    
+  
   switch (code & 0x0f)
     {
     case 0x00: // LEAX
+      r= index2ea(fetch(), &ea);
+      if (r!=resGO)
+	return r;
+      reg.X= ea;
+      SET_Z(reg.X);
       break;
     case 0x01: // LEAY
+      r= index2ea(fetch(), &ea);
+      if (r!=resGO)
+	return r;
+      reg.Y= ea;
+      SET_Z(reg.Y);
       break;
     case 0x02: // LEAS
+      r= index2ea(fetch(), &ea);
+      if (r!=resGO)
+	return r;
+      reg.S= ea;
       break;
     case 0x03: // LEAU
+      r= index2ea(fetch(), &ea);
+      if (r!=resGO)
+	return r;
+      reg.U= ea;
       break;
     case 0x04: // PSHS
+      op8= fetch();
+      if (op8 & 0x80)
+	rom->write(--reg.S, PC&0xff),
+	  rom->write(--reg.S, PC>>8);
+      if (op8 & 0x40)
+	rom->write(--reg.S, reg.U&0xff),
+	  rom->write(--reg.S, reg.U>>8);
+      if (op8 & 0x20)
+	rom->write(--reg.S, reg.Y&0xff),
+	  rom->write(--reg.S, reg.Y>>8);
+      if (op8 & 0x10)
+	rom->write(--reg.S, reg.X&0xff),
+	  rom->write(--reg.S, reg.X>>8);
+      if (op8 & 0x08)
+	rom->write(--reg.S, reg.DP);
+      if (op8 & 0x04)
+	rom->write(--reg.S, B);
+      if (op8 & 0x02)
+	rom->write(--reg.S, A);
+      if (op8 & 0x01)
+	rom->write(--reg.S, reg.CC);
       break;
     case 0x05: // PULS
+      op8= fetch();
+      if(op8 & 0x01)
+	reg.CC= rom->read(reg.S++);
+      if (op8 & 0x02)
+	A= rom->read(reg.S++);
+      if (op8 & 0x04)
+	B= rom->read(reg.S++);
+      if (op8 & 0x08)
+	reg.DP= rom->read(reg.S++);
+      if (op8 & 0x10)
+	h= rom->read(reg.S++),
+	  l= rom->read(reg.S++),
+	  reg.X= h*256 + l;
+      if (op8 & 0x20)
+	h= rom->read(reg.S++),
+	  l= rom->read(reg.S++),
+	  reg.Y= h*256 + l;
+      if (op8 & 0x40)
+	h= rom->read(reg.S++),
+	  l= rom->read(reg.S++),
+	  reg.U= h*256 + l;
+      if (op8 & 0x80)
+	h= rom->read(reg.S++),
+	  l= rom->read(reg.S++),
+	  PC= h*256 + l;
       break;
     case 0x06: // PSHU
+      op8= fetch();
+      if (op8 & 0x80)
+	rom->write(--reg.U, PC&0xff),
+	  rom->write(--reg.U, PC>>8);
+      if (op8 & 0x40)
+	rom->write(--reg.U, reg.S&0xff),
+	  rom->write(--reg.U, reg.S>>8);
+      if (op8 & 0x20)
+	rom->write(--reg.U, reg.Y&0xff),
+	  rom->write(--reg.U, reg.Y>>8);
+      if (op8 & 0x10)
+	rom->write(--reg.U, reg.X&0xff),
+	  rom->write(--reg.U, reg.X>>8);
+      if (op8 & 0x08)
+	rom->write(--reg.U, reg.DP);
+      if (op8 & 0x04)
+	rom->write(--reg.U, B);
+      if (op8 & 0x02)
+	rom->write(--reg.U, A);
+      if (op8 & 0x01)
+	rom->write(--reg.U, reg.CC);
       break;
     case 0x07: // PULU
+      op8= fetch();
+      if(op8 & 0x01)
+	reg.CC= rom->read(reg.U++);
+      if (op8 & 0x02)
+	A= rom->read(reg.U++);
+      if (op8 & 0x04)
+	B= rom->read(reg.U++);
+      if (op8 & 0x08)
+	reg.DP= rom->read(reg.U++);
+      if (op8 & 0x10)
+	h= rom->read(reg.U++),
+	  l= rom->read(reg.U++),
+	  reg.X= h*256 + l;
+      if (op8 & 0x20)
+	h= rom->read(reg.U++),
+	  l= rom->read(reg.U++),
+	  reg.Y= h*256 + l;
+      if (op8 & 0x40)
+	h= rom->read(reg.U++),
+	  l= rom->read(reg.U++),
+	  reg.S= h*256 + l;
+      if (op8 & 0x80)
+	h= rom->read(reg.U++),
+	  l= rom->read(reg.U++),
+	  PC= h*256 + l;
       break;
     case 0x08: // --
       break;
     case 0x09: // RTS
+      ea= rom->read(reg.S++) * 256;
+      ea+= rom->read(reg.S++);
+      PC= ea;
       break;
     case 0x0a: // ABX
+      reg.X+= B;
       break;
     case 0x0b: // RTI
+      pull_regs(true);
       break;
     case 0x0c: // CWAI
       break;
     case 0x0d: // MUL
+      D= A * B;
+      SET_Z(D);
+      SET_C(B & 0x80);
       break;
     case 0x0e: // RESET
       break;
     case 0x0f: // SWI
+      reg.CC|= E;
+      push_regs(true);
+      reg.CC|= F|I;
+      PC= rom->read(0xfffa)*256 + rom->read(0xfffb);
       break;
     }
 
