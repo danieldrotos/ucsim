@@ -590,7 +590,23 @@ cl_m6809::inst_10(t_mem code)
     case 0x08: // --
       break;
     case 0x09: // DAA
-      break;
+      {
+	u8_t cf= 0;
+	if ((reg.CC & C) || ((A&0x0f) > 9))
+	  cf|= 0x06;
+	if ((reg.CC & C) ||
+	    ((A&0xf0) > 0x90) ||
+	    (
+	     ((A&0xf0) > 0x80) &&
+	     ((A&0x0f) > 0x09)
+	     )
+	    )
+	  cf|= 0x60;
+	A= A + cf;
+	SET_Z(A);
+	SET_S(A & 0x80);
+	break;
+      }
     case 0x0a: // ORCC
       break;
     case 0x0b: // --
