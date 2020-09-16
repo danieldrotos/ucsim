@@ -84,6 +84,9 @@ public:
   class cl_porti *pi, *pj;
 public:
   class cl_address_space *rom;
+protected:
+  u8_t *reg8_ptr[8];
+  u16_t *reg16_ptr[8];
 public:
   cl_m6809(class cl_sim *asim);
   virtual int init(void);

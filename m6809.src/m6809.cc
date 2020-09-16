@@ -44,6 +44,25 @@ cl_m6809::init(void)
   cl_uc::init();
   reg.DP= 0;
   PC= 0;
+
+  reg8_ptr[0]= &A;
+  reg8_ptr[1]= &B;
+  reg8_ptr[2]= &(reg.CC);
+  reg8_ptr[3]= &(reg.DP);
+  reg8_ptr[4]= &A;
+  reg8_ptr[5]= &A;
+  reg8_ptr[6]= &A;
+  reg8_ptr[7]= &A;
+
+  reg16_ptr[0]= &D;
+  reg16_ptr[1]= &(reg.X);
+  reg16_ptr[2]= &(reg.Y);
+  reg16_ptr[3]= &(reg.U);
+  reg16_ptr[4]= &(reg.S);
+  reg16_ptr[5]= NULL;
+  reg16_ptr[6]= &D;
+  reg16_ptr[7]= &D;
+  
   return 0;
 }
 
@@ -557,6 +576,8 @@ cl_m6809::inst_alu(t_mem code)
 int
 cl_m6809::inst_10(t_mem code)
 {
+  u8_t op8;
+    
   switch (code & 0x0f)
     {
     case 0x00: // pg1
@@ -608,17 +629,72 @@ cl_m6809::inst_10(t_mem code)
 	break;
       }
     case 0x0a: // ORCC
+      op8= fetch();
+      reg.CC|= op8;
       break;
     case 0x0b: // --
       break;
     case 0x0c: // ANDCC
+      op8= fetch();
+      reg.CC&= op8;
       break;
     case 0x0d: // SEX
+      A= (B & 0x80)?0xff:0;
+      SET_Z(D);
+      SET_S(A & 0x80);
       break;
     case 0x0e: // EXG
-      break;
+      {
+	u8_t r1, r2;
+	op8= fetch();
+	r1= op8>>4;
+	r2= op8&0xf;
+	if (((r1^r2)&0x08)!=0)
+	  return resINV_INST;
+	if (r1>=8)
+	  {
+	    u16_t *R1= reg16_ptr[r1&7];
+	    u16_t *R2= reg16_ptr[r2&7];
+	    u16_t t;
+	    t= (R1)?*R1:PC;
+	    *R1= (R2)?*R2:PC;
+	    *R2= t;
+	  }
+	else
+	  {
+	    u8_t *R1= reg8_ptr[r1&7];
+	    u8_t *R2= reg8_ptr[r2&7];
+	    u8_t t;
+	    t= *R1;
+	    *R1= *R2;
+	    *R2= t;
+	  }
+	break;
+      }
     case 0x0f: // TFR
-      break;
+      {
+	op8= fetch();
+	u8_t rs= op8>>4;
+	u8_t rd= op8&0xf;
+	if (((rd^rs)&8)!=0)
+	  return resINV_INST;
+	if (rs>=8)
+	  {
+	    u16_t *RS= reg16_ptr[rs&7];
+	    u16_t *RD= reg16_ptr[rd&7];
+	    if (RD)
+	      *RD= (RS)?*RS:PC;
+	    else
+	      PC= (RS)?*RS:PC;
+	  }
+	else
+	  {
+	    u8_t *RS= reg8_ptr[rs&7];
+	    u8_t *RD= reg8_ptr[rd&7];
+	    *RD= *RS;
+	  }
+	break;
+      }
     }
 
   return resGO;
