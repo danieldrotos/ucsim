@@ -581,7 +581,7 @@ cl_m6809::inst_alu(t_mem code)
       else
 	op16= op8*256 + rom->read(ea+1);
       if ((code & 0x40) == 0)
-	return inst_add16(code, &D, op16, 1, false);
+	return inst_add16(code, &(reg.X), op16, 1, false);
       else
 	return inst_ld16(code, &D, op16);
       break;
@@ -1331,8 +1331,97 @@ cl_m6809::inst_low(t_mem code)
 int
 cl_m6809::inst_page1(t_mem code)
 {
+  t_addr ea;
+  u8_t op8, idx;
+  u16_t op16;
+  
   if ((code & 0xf0) == 0x20)
     return inst_branch(code, true);
+  if (code == 0x3f)
+    {
+      // SWI2
+      reg.CC|= E;
+      push_regs(true);
+      PC= rom->read(0xfff4)*256 + rom->read(0xfff5);
+    }
+  if ((code & 0x80) == 0)
+    return resINV_INST;
+  
+  /*
+    1000 immed   3 c e
+    1100             e
+
+    1001 direct  3 c e f
+    1101             e f
+
+    1010 index   3 c e f
+    1110             e f
+
+    1011 extend  3 c e f
+    1111             e f
+  */
+  u8_t cl= code & 0xf;
+  u8_t ch= code >> 4;
+  switch (code & 0x30)
+    {
+    case 0x00: // immed
+      if ((ch==8)&&(cl!=3)&&(cl!=12)&&(cl!=14)) return resINV_INST;
+      if ((ch==12)&&(cl!=14)) return resINV_INST;
+      ea= PC;
+      op8= fetch();
+      break;
+    case 0x10: // direct
+      if ((ch==9)&&(cl!=3)&&(cl!=12)&&(cl!=14)&&(cl!=15)) return resINV_INST;
+      if ((ch==13)&&(cl!=14)&&(cl!=15)) return resINV_INST;
+      ea= reg.DP*256 + fetch();
+      op8= rom->read(ea);
+      break;
+    case 0x20: // index
+      {
+	if ((ch==10)&&(cl!=3)&&(cl!=12)&&(cl!=14)&&(cl!=15)) return resINV_INST;
+	if ((ch==14)&&(cl!=14)&&(cl!=15)) return resINV_INST;
+	int r;
+	idx= fetch();
+	if ((r= index2ea(idx, &ea)) != resGO)
+	  return r;
+	op8= rom->read(ea);
+	break;
+      }
+    case 0x30: // extend
+      if ((ch==11)&&(cl!=3)&&(cl!=12)&&(cl!=14)&&(cl!=15)) return resINV_INST;
+      if ((ch==15)&&(cl!=14)&&(cl!=15)) return resINV_INST;
+      ea= fetch()*256 + fetch();
+      op8= rom->read(ea);
+      break;
+    default: op8= 0; break;
+    }
+
+  if ((code & 0x30) == 0)
+    op16= op8*256 + fetch();
+  else
+    op16= op8*256 + rom->read(ea+1);
+  
+  switch (cl)
+    {
+    case 3: // CMPD
+      inst_add16(code, &(D), op16, 1, false);
+      break;
+    case 0xc: // CMPY
+      inst_add16(code, &(reg.Y), op16, 1, false);
+      break;
+    case 0xe: // LDY, LDS
+      if ((code & 0x40) == 0)
+	  inst_ld16(code, &(reg.Y), op16);
+      else
+	  inst_ld16(code, &(reg.S), op16);
+      break;
+    case 0xf: // STY, STS
+      if (code & 0x40)
+	inst_st16(code, reg.Y, ea);
+      else
+	inst_st16(code, reg.S, ea);
+      break;
+    }
   
   return resGO;
 }
@@ -1341,6 +1430,60 @@ cl_m6809::inst_page1(t_mem code)
 int
 cl_m6809::inst_page2(t_mem code)
 {
+  t_addr ea;
+  u8_t op8, idx;
+  u16_t op16;
+  
+  if (code == 0x3f)
+    {
+      // SWI3
+      reg.CC|= E;
+      push_regs(true);
+      PC= rom->read(0xfff2)*256 + rom->read(0xfff3);
+    }
+  if ((code!=0x83)&&(code!=0x8c)&&
+      (code!=0x93)&&(code!=0x9c)&&
+      (code!=0xa3)&&(code!=0xac)&&
+      (code!=0xb3)&&(code!=0xbc))
+    return resINV_INST;
+
+  switch (code & 0xf0)
+    {
+    case 0x00: // direct
+      ea= reg.DP*256 + fetch();
+      op8= rom->read(ea);
+      break;
+    case 0x60: // index
+      {
+	int r;
+	idx= fetch();
+	if ((r= index2ea(idx, &ea)) != resGO)
+	  return r;
+	op8= rom->read(ea);
+	break;
+      }
+    case 0x70: // extend
+      ea= fetch()*256 + fetch();
+      op8= rom->read(ea);
+      break;
+    }
+
+  if ((code & 0x30) == 0)
+    op16= op8*256 + fetch();
+  else
+    op16= op8*256 + rom->read(ea+1);
+
+  if ((code & 0x0f) == 0x03)
+    {
+      // CMPU
+      inst_add16(code, &(reg.U), op16, 1, false);
+    }
+  if ((code & 0x0f) == 0x0c)
+    {
+      // CMPS
+      inst_add16(code, &(reg.S), op16, 1, false);
+    }
+
   return resGO;
 }
 
