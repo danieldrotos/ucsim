@@ -663,6 +663,214 @@ cl_m6809::inst_neg(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
   return resGO;
 }
 
+int
+cl_m6809::inst_com(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  if (acc)
+    {
+      op8= *acc= ~(*acc);
+    }
+  op8= ~(rom->read(ea));
+  rom->write(ea, op8);
+
+  SET_C(1);
+  SET_O(0);
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+  
+  return resGO;
+}
+
+int
+cl_m6809::inst_lsr(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  if (acc)
+    {
+      SET_C(*acc & 1);
+      op8= *acc= (*acc) >> 1;
+    }
+  op8= rom->read(ea);
+  SET_C(op8 & 1);
+  op8>>= 1;
+  rom->write(ea, op8);
+
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+  
+  return resGO;
+}
+
+int
+cl_m6809::inst_ror(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  u8_t oldc, newc;
+  
+  op8= (acc)?(*acc):(rom->read(ea));
+  oldc= reg.CC & C;
+  newc= op8 & 1;
+  
+  op8>>= 1;
+  if (oldc)
+    op8|= 0x80;
+
+  if (acc)
+    *acc= op8;
+  else
+    rom->write(ea, op8);
+  
+  SET_C(newc);
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+  
+  return resGO;
+}
+
+int
+cl_m6809::inst_asr(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  u8_t old8, newc;
+  
+  op8= (acc)?(*acc):(rom->read(ea));
+  old8= op8 & 0x80;
+  newc= op8 & 1;
+  
+  op8>>= 1;
+  if (old8)
+    op8|= 0x80;
+
+  if (acc)
+    *acc= op8;
+  else
+    rom->write(ea, op8);
+  
+  SET_C(newc);
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+  
+  return resGO;
+}
+
+int
+cl_m6809::inst_asl(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  u8_t newc;
+  
+  op8= (acc)?(*acc):(rom->read(ea));
+  newc= op8 & 0x80;
+  
+  op8<<= 1;
+
+  if (acc)
+    *acc= op8;
+  else
+    rom->write(ea, op8);
+  
+  SET_C(newc);
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+  
+  return resGO;
+}
+
+int
+cl_m6809::inst_rol(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  u8_t oldc, newc;
+  
+  op8= (acc)?(*acc):(rom->read(ea));
+  oldc= reg.CC & C;
+  newc= op8 & 0x80;
+
+  SET_O( (op8&0x80) ^ ((op8<<1)&0x80) );
+  
+  op8<<= 1;
+  if (oldc)
+    op8|= 1;
+
+  if (acc)
+    *acc= op8;
+  else
+    rom->write(ea, op8);
+  
+  SET_C(newc);
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+  
+  return resGO;
+}
+
+int
+cl_m6809::inst_dec(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  op8= (acc)?(*acc):(rom->read(ea));
+  SET_O(op8==0x80);
+
+  op8--;
+  
+  if (acc)
+    *acc= op8;
+  else
+    rom->write(ea, op8);
+  
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+
+  return resGO;
+}
+
+int
+cl_m6809::inst_inc(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  op8= (acc)?(*acc):(rom->read(ea));
+  SET_O(op8==0x7f);
+
+  op8++;
+  
+  if (acc)
+    *acc= op8;
+  else
+    rom->write(ea, op8);
+  
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+
+  return resGO;
+}
+
+int
+cl_m6809::inst_tst(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  op8= (acc)?(*acc):(rom->read(ea));
+  SET_O(0);
+  
+  SET_Z(op8);
+  SET_S(op8 & 0x80);
+
+  return resGO;
+}
+
+int
+cl_m6809::inst_clr(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
+{
+  if (!acc)
+    {
+      volatile u8_t u= rom->read(ea);
+      op8= u;
+    }
+  
+  if (acc)
+    *acc= 0;
+  else
+    rom->write(ea, 0);
+  
+  SET_O(0);
+  SET_Z(1);
+  SET_S(0);
+  SET_C(0);
+
+  return resGO;
+}
+
 const u8_t low_illegals[]=
   {
    0x01, 0x41, 0x51, 0x61, 0x71,
@@ -733,30 +941,40 @@ cl_m6809::inst_low(t_mem code)
     case 0x02: // --    NOP   BHI   LEAS  --    --    --    --
       break;
     case 0x03: // COM   SYNC  BLS   LEAU  COMA  COMB  COM   COM
+      return inst_com(code, acc, ea, op8);
       break;
     case 0x04: // LSR   --    BHS   PSHS  LSRA  LSRB  LSR   LSR
+      return inst_lsr(code, acc, ea, op8);
       break;
     case 0x05: // --    --    BLO   PULS  --    --    --    --
       break;
     case 0x06: // ROR   LBRA  BNE   PSHU  RORA  RORB  ROR   ROR
+      return inst_ror(code, acc, ea, op8);
       break;
     case 0x07: // ASR   LBSR  BEQ   PULU  ASRA  ASRB  ASR   ASR
+      return inst_asr(code, acc, ea, op8);
       break;
-    case 0x08: // ALSL  --    BVC   --    ALSLA ALSLB ALSL  ALSL
+    case 0x08: // ASL  --    BVC   --    ASLA ASLB ASL  ASL
+      return inst_asl(code, acc, ea, op8);
       break;
     case 0x09: // ROL   DAA   BVS   RTS   ROLA  ROLB  ROL   ROL
+      return inst_rol(code, acc, ea, op8);
       break;
     case 0x0a: // DEC   ORCC  BPL   ABX   DECA  DECB  DEC   DEC
+      return inst_dec(code, acc, ea, op8);
       break;
     case 0x0b: // --    --    BMI   RTI   --    --    --    --
       break;
     case 0x0c: // INC   ANDCC BGE   CWAI  INCA  INCB  INC   INC
+      return inst_inc(code, acc, ea, op8);
       break;
     case 0x0d: // TST   SEX   BLT   MUL   TSTA  TSTB  TST   TST
+      return inst_tst(code, acc, ea, op8);
       break;
     case 0x0e: // JMP   EXG   BGT   RESET --    --    JMP   JMP
       break;
     case 0x0f: // CLR   TFR   BLE   SWI   CLRA  CLRB  CLR   CLR
+      return inst_clr(code, acc, ea, op8);
       break;
     }
   

@@ -116,7 +116,17 @@ public:
   virtual int inst_30(t_mem code);
 
   virtual int inst_neg(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
-    
+  virtual int inst_com(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_lsr(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_ror(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_asr(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_asl(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_rol(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_dec(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_inc(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_tst(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+  virtual int inst_clr(t_mem code, u8_t *acc, t_addr ea, u8_t op8);
+
   virtual int inst_low(t_mem code);
   
   virtual int inst_page1(t_mem code);
