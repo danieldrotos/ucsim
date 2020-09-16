@@ -179,15 +179,13 @@ cl_m6809::print_regs(class cl_console_base *con)
 
 
 int
-cl_m6809::index2ea(u8_t idx, t_addr *res_ea, t_addr *addr)
+cl_m6809::index2ea(u8_t idx, t_addr *res_ea)
 {
   u16_t iv;
   i16_t off;
   u16_t *ir= &reg.X;
-  t_addr ea, a;
+  t_addr ea;
 
-  a= (addr)?*addr:0;
-  
   switch (idx & 0x60)
     {
     case 0x00: ir= &reg.X; break;
@@ -250,18 +248,12 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea, t_addr *addr)
 	  return resINV_INST;
 	  break;
 	case 0x08:
-	  if (addr)
-	    i8= rom->read(a++);
-	  else
-	    i8= fetch();
+	  i8= fetch();
 	  off= i8;
 	  ea= iv + off;
 	  break;
 	case 0x09:
-	  if (addr)
-	    off= rom->read(a++)*256, off+= rom->read(a++);
-	  else
-	    off= fetch()*256 + fetch();
+	  off= fetch()*256 + fetch();
 	  ea= iv + off;
 	  break;
 	case 0x0a:
@@ -272,19 +264,13 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea, t_addr *addr)
 	  ea= iv + off;
 	  break;
 	case 0x0c:
-	  if (addr)
-	    i8= rom->read(a++);
-	  else
-	    i8= fetch();
+	  i8= fetch();
 	  off= i8;
 	  iv= PC;
 	  ea= iv + off;
 	  break;
 	case 0x0d:
-	  if (addr)
-	    off= rom->read(a++)*256, off+= rom->read(a++);
-	  else
-	    off= fetch()*256 + fetch();
+	  off= fetch()*256 + fetch();
 	  iv= PC;
 	  ea= iv + off;
 	  break;
@@ -293,10 +279,7 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea, t_addr *addr)
 	  break;
 	case 0x0f:
 	  off= 0;
-	  if (addr)
-	    iv= rom->read(a++)*256, iv+= rom->read(a++);
-	  else
-	    iv= fetch()*256 + fetch();
+	  iv= fetch()*256 + fetch();
 	  ea= iv;
 	  if ((idx & 0x10) == 0) return resINV_INST;
 	  if ((idx & 0x60) != 0) return resINV_INST;
@@ -308,8 +291,6 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea, t_addr *addr)
 
   if (res_ea)
     *res_ea= ea;
-  if (addr)
-    *addr= a;
   return resGO;
 }
 
@@ -470,7 +451,7 @@ cl_m6809::inst_alu(t_mem code)
       {
 	int r;
 	idx= fetch();
-	if ((r= index2ea(idx, &ea, NULL)) != resGO)
+	if ((r= index2ea(idx, &ea)) != resGO)
 	  return r;
 	op8= rom->read(ea);
 	break;
