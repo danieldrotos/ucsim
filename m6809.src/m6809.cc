@@ -525,10 +525,14 @@ cl_m6809::inst_alu(t_mem code)
       if ((code & 0x40) == 0)
 	{
 	  if ((code & 0x30) == 0)
-	    op16= op8*256 + fetch();
-	  else
-	    op16= op8*256 + rom->read(ea+1);
-	  // TODO
+	    { //BSR
+	      i8_t i8= op8;
+	      ea= (i16_t)PC + (i16_t)i8;
+	    }
+	  // else JSR
+	  rom->write(--reg.S, PC & 0xff);
+	  rom->write(--reg.S, (PC>>8)&0xff);
+	  PC= ea;
 	}
       else
 	return inst_st16(code, D, ea);
@@ -541,6 +545,10 @@ cl_m6809::inst_alu(t_mem code)
       return inst_ld16(code, &reg.X, op16);
       break;
     case 0x0f: // --   STX  STX  STX  --   STU  STU  STU
+      if ((code & 0x40) == 0)
+	return inst_st16(code, reg.X, ea);
+      else
+	return inst_st16(code, reg.U, ea);
       break;
     }
   
