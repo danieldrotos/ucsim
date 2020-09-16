@@ -572,9 +572,21 @@ cl_m6809::inst_10(t_mem code)
     case 0x05: // --
       break;
     case 0x06: // LBRA
-      break;
+      {
+	u16_t u= fetch()*256 + fetch();
+	i16_t i= u;
+	PC= PC + i;
+	break;
+      }
     case 0x07: // LBSR
-      break;
+      {
+	u16_t u= fetch()*256 + fetch();
+	i16_t i= u;
+	rom->write(--reg.S, PC & 0xff);
+	rom->write(--reg.S, (PC>>8)&0xff);
+	PC= PC + i;
+	break;
+      }
     case 0x08: // --
       break;
     case 0x09: // DAA
@@ -1054,6 +1066,9 @@ cl_m6809::inst_low(t_mem code)
 int
 cl_m6809::inst_page1(t_mem code)
 {
+  if ((code & 0xf0) == 0x20)
+    return inst_branch(code, true);
+  
   return resGO;
 }
 
