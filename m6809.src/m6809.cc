@@ -406,7 +406,6 @@ cl_m6809::inst_st8(t_mem code, u8_t src, t_addr ea)
   return resGO;
 }
 
-
 int
 cl_m6809::inst_st16(t_mem code, u16_t src, t_addr ea)
 {
@@ -420,6 +419,12 @@ cl_m6809::inst_st16(t_mem code, u16_t src, t_addr ea)
   return resGO;
 }
 
+int
+cl_m6809::inst_branch(t_mem code)
+{
+  // TODO
+  return resGO;
+}
 
 int
 cl_m6809::inst_alu(t_mem code)
@@ -555,9 +560,59 @@ cl_m6809::inst_alu(t_mem code)
   return resGO;
 }
 
+const u8_t low_illegals[]=
+  {
+   0x01, 0x41, 0x51, 0x61, 0x71,
+   0x02, 0x42, 0x52, 0x62, 0x72,
+   0x14,
+   0x05, 0x15, 0x45, 0x55, 0x65, 0x75,
+   0x18, 0x38,
+   0x0b, 0x1b, 0x4b, 0x5b, 0x6b, 0x7b,
+   0x4e, 0x5e,
+   0
+  };
+
 int
 cl_m6809::inst_low(t_mem code)
 {
+  t_addr ea;
+  u8_t op8, *acc, idx;
+  
+  for (idx= 0; low_illegals[idx]; idx++)
+    if (low_illegals[idx] == code)
+      return resINV_INST;
+
+  if ((code & 0x0f) == 0x02)
+    return inst_branch(code);
+  
+  switch (code & 0xf0)
+    {
+    case 0x00: // direct
+      ea= reg.DP*256 + fetch();
+      op8= rom->read(ea);
+      break;
+    case 0x60: // index
+      {
+	int r;
+	idx= fetch();
+	if ((r= index2ea(idx, &ea)) != resGO)
+	  return r;
+	op8= rom->read(ea);
+	break;
+      }
+    case 0x70: // extend
+      ea= fetch()*256 + fetch();
+      op8= rom->read(ea);
+      break;
+    }
+
+  if ((code & 0xf0) == 0x40)
+    acc= &A;
+  else if ((code & 0xf0) == 0x50)
+    acc= &B;
+  else
+    acc= NULL;
+  
   switch (code & 0x0f)
     {
       //          0     1     2     3     4     5     6     7
