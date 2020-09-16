@@ -561,6 +561,89 @@ cl_m6809::inst_branch(t_mem code)
   return resGO;
 }
 
+int
+cl_m6809::inst_10(t_mem code)
+{
+  switch (code & 0x0f)
+    {
+    case 0x00: // pg1
+      break;
+    case 0x01: // pg2
+      break;
+    case 0x02: // NOP
+      break;
+    case 0x03: // SYNC
+      break;
+    case 0x04: // --
+      break;
+    case 0x05: // --
+      break;
+    case 0x06: // LBRA
+      break;
+    case 0x07: // LBSR
+      break;
+    case 0x08: // --
+      break;
+    case 0x09: // DAA
+      break;
+    case 0x0a: // ORCC
+      break;
+    case 0x0b: // --
+      break;
+    case 0x0c: // ANDCC
+      break;
+    case 0x0d: // SEX
+      break;
+    case 0x0e: // EXG
+      break;
+    case 0x0f: // TFR
+      break;
+    }
+
+  return resGO;
+}
+
+int
+cl_m6809::inst_30(t_mem code)
+{
+  switch (code & 0x0f)
+    {
+    case 0x00: // LEAX
+      break;
+    case 0x01: // LEAY
+      break;
+    case 0x02: // LEAS
+      break;
+    case 0x03: // LEAU
+      break;
+    case 0x04: // PSHS
+      break;
+    case 0x05: // PULS
+      break;
+    case 0x06: // PSHU
+      break;
+    case 0x07: // PULU
+      break;
+    case 0x08: // --
+      break;
+    case 0x09: // RTS
+      break;
+    case 0x0a: // ABX
+      break;
+    case 0x0b: // RTI
+      break;
+    case 0x0c: // CWAI
+      break;
+    case 0x0d: // MUL
+      break;
+    case 0x0e: // RESET
+      break;
+    case 0x0f: // SWI
+      break;
+    }
+
+  return resGO;
+}
 
 const u8_t low_illegals[]=
   {
@@ -584,8 +667,14 @@ cl_m6809::inst_low(t_mem code)
     if (low_illegals[idx] == code)
       return resINV_INST;
 
-  if ((code & 0x0f) == 0x02)
+  if ((code & 0xf0) == 0x10)
+    return inst_10(code);
+
+  if ((code & 0xf0) == 0x20)
     return inst_branch(code);
+
+  if ((code & 0xf0) == 0x30)
+    return inst_30(code);
   
   switch (code & 0xf0)
     {
