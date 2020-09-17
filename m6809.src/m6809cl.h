@@ -102,6 +102,7 @@ public:
   virtual void disass_indexed(t_addr *addr, chars *work, int siz);
   virtual char *disass(t_addr addr, const char *sep);
   virtual void print_regs(class cl_console_base *con);
+  virtual int indexed_length(t_addr addr);
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
 

@@ -376,14 +376,36 @@ cl_m6809::print_regs(class cl_console_base *con)
 }
 
 int
+cl_m6809::indexed_length(t_addr addr)
+{
+  u8_t idx= rom->get(addr+1);
+  if ((idx&0x80)!=0)
+    {
+      u8_t il= idx&0xf;
+      if (il==8||il==12)
+	return 3;
+      if (il==9||il==13||il==15)
+	return 4;
+    }
+  return 2;
+}
+
+int
 cl_m6809::inst_length(t_addr addr)
 {
   u8_t code= rom->get(addr);
-  u8_t ch, cl, idx, il;
+  u8_t ch, cl;
   ch= code>>4;
   cl= code&0xf;
-  if (code & 0x80)
+  if (code == 0x10)
     {
+    }
+  else if (code == 0x11)
+    {
+    }
+  else if (code & 0x80)
+    {
+      // HIGH HALF
       switch (code & 0x30)
 	{
 	case 0x00: // immed
@@ -395,21 +417,30 @@ cl_m6809::inst_length(t_addr addr)
 	  return 2;
 	  break;
 	case 0x20: // index
-	  idx= rom->get(addr+1);
-	  if ((idx&0x80)!=0)
-	    {
-	      il= idx&0xf;
-	      if (il==8||il==12)
-		return 3;
-	      if (il==9||il==13||il==15)
-		return 4;
-	    }
-	  return 2;
+	  return indexed_length(addr);
 	  break;
 	case 0x30: // extend
 	  return 3;
 	  break;
 	}
+    }
+  else
+    {
+      // LOW HALF
+      if (ch==0) return 2; // direct
+      if (ch==1)
+	{
+	  if (cl==6||cl==7) return 3;
+	  if (cl==10||cl==12||cl==13||cl==15) return 2;
+	}
+      if (ch==2) return 2;
+      if (ch==3)
+	{
+	  if (cl < 4) return indexed_length(addr);
+	  if (cl < 8) return 2;
+	}
+      if (ch==6) return indexed_length(addr);
+      if (ch==7) return 3; // extend
     }
   return 1;
 }
