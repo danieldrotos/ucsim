@@ -1,4 +1,13 @@
-glob.o: glob.cc glob.h ../stypes.h ../ddconfig.h
+sm6809.o: sm6809.cc ../globals.h ../ddconfig.h ../stypes.h ../appcl.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../optioncl.h \
+ ../sim.src/argcl.h ../pobjcl.h ../stypes.h ../sim.src/simcl.h \
+ ../cmd.src/newcmdcl.h ../ddconfig.h ../optioncl.h ../cmd.src/commandcl.h \
+ ../cmd.src/newcmdcl.h ../gui.src/guicl.h ../gui.src/ifcl.h \
+ ../sim.src/guiobjcl.h ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h \
+ ../sim.src/guiobjcl.h ../cmd.src/newcmdposixcl.h ../fiocl.h \
+ ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h ../errorcl.h \
+ ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/argcl.h simm6809cl.h
 m6809.o: m6809.cc glob.h ../stypes.h ../ddconfig.h m6809cl.h \
  ../sim.src/uccl.h ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h \
  ../pobjt.h ../sim.src/hwcl.h ../sim.src/guiobjcl.h ../ddconfig.h \
@@ -17,13 +26,4 @@ simm6809.o: simm6809.cc simm6809cl.h ../sim.src/simcl.h ../pobjcl.h \
  ../sim.src/memcl.h ../eventcl.h ../errorcl.h ../sim.src/brkcl.h \
  ../sim.src/stackcl.h ../sim.src/varcl.h ../sim.src/uccl_instructions.h \
  ../sim.src/argcl.h m6809cl.h ../sim.src/uccl.h ../sim.src/memcl.h
-sm6809.o: sm6809.cc ../globals.h ../ddconfig.h ../stypes.h ../appcl.h \
- ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../optioncl.h \
- ../sim.src/argcl.h ../pobjcl.h ../stypes.h ../sim.src/simcl.h \
- ../cmd.src/newcmdcl.h ../ddconfig.h ../optioncl.h ../cmd.src/commandcl.h \
- ../cmd.src/newcmdcl.h ../gui.src/guicl.h ../gui.src/ifcl.h \
- ../sim.src/guiobjcl.h ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h \
- ../sim.src/guiobjcl.h ../cmd.src/newcmdposixcl.h ../fiocl.h \
- ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h ../errorcl.h \
- ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
- ../sim.src/uccl_instructions.h ../sim.src/argcl.h simm6809cl.h
+glob.o: glob.cc glob.h ../stypes.h ../ddconfig.h

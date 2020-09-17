@@ -581,7 +581,7 @@ cl_m6809::inst_alu(t_mem code)
       else
 	op16= op8*256 + rom->read(ea+1);
       if ((code & 0x40) == 0)
-	return inst_add16(code, &(reg.X), op16, 1, false);
+	return inst_add16(code, &(reg.X), ~op16, 1, false);
       else
 	return inst_ld16(code, &D, op16);
       break;
@@ -1404,10 +1404,10 @@ cl_m6809::inst_page1(t_mem code)
   switch (cl)
     {
     case 3: // CMPD
-      inst_add16(code, &(D), op16, 1, false);
+      inst_add16(code, &(D), ~op16, 1, false);
       break;
     case 0xc: // CMPY
-      inst_add16(code, &(reg.Y), op16, 1, false);
+      inst_add16(code, &(reg.Y), ~op16, 1, false);
       break;
     case 0xe: // LDY, LDS
       if ((code & 0x40) == 0)
@@ -1476,12 +1476,12 @@ cl_m6809::inst_page2(t_mem code)
   if ((code & 0x0f) == 0x03)
     {
       // CMPU
-      inst_add16(code, &(reg.U), op16, 1, false);
+      inst_add16(code, &(reg.U), ~op16, 1, false);
     }
   if ((code & 0x0f) == 0x0c)
     {
       // CMPS
-      inst_add16(code, &(reg.S), op16, 1, false);
+      inst_add16(code, &(reg.S), ~op16, 1, false);
     }
 
   return resGO;
