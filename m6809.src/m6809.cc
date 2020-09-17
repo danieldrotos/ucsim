@@ -235,6 +235,22 @@ cl_m6809::disass_indexed(t_addr *addr, chars *work, int siz)
   *addr= a;
 }
 
+void
+cl_m6809::disass_immediate(t_addr *addr, chars *work, int siz)
+{
+  t_addr a= *addr;
+  //work+= 'm';
+  u8_t op8= rom->get(a++);
+  if (siz==1)
+    work->appendf("#0x%02x", op8);
+  else
+    {
+      u16_t op16= op8*256 + rom->get(a++);
+      work->appendf("#0x%04x", op16);
+    }
+  *addr= a;
+}
+
 char *
 cl_m6809::disass(t_addr addr, const char *sep)
 {
@@ -244,10 +260,13 @@ cl_m6809::disass(t_addr addr, const char *sep)
   int i, j;
   struct dis_entry *tt;
   u8_t op8;
+  i8_t i8;
+  i16_t i16;
   u16_t op16;
   //t_addr ea;
   bool first;
-  
+  int siz;
+
   //work= "";
   //p= (char*)work;
 
@@ -298,24 +317,14 @@ cl_m6809::disass(t_addr addr, const char *sep)
 	    case 'u': case 'U': case 'n': case 'N':
 	      {
 		u8_t mode= code & 0x30;
-		int siz= (islower(b[j]))?1:2;
+		siz= (islower(b[j]))?1:2;
 		switch (mode)
 		  {
 		  case 0x00: // immed
 		    if (toupper(b[j])=='N')
 		      work.append("??");
 		    else
-		      {
-			//work+= 'm';
-			op8= rom->get(addr++);
-			if (siz==1)
-			  work.appendf("#0x%02x", op8);
-			else
-			  {
-			    op16= op8*256 + rom->get(addr++);
-			    work.appendf("#0x%04x", op16);
-			  }
-		      }
+		      disass_immediate(&addr, &work, siz);
 		    break;
 		  case 0x10: // direct
 		    //work+= 'd';
@@ -334,6 +343,48 @@ cl_m6809::disass(t_addr addr, const char *sep)
 		    break;
 		  }
 		break;
+	      }
+	    case 'x': case 'X':
+	      {
+		siz= (islower(b[j]))?1:2;
+		disass_indexed(&addr, &work, siz);
+		break;
+	      }
+	    case 'i':
+	      {
+		siz= (islower(b[j]))?1:2;
+		disass_immediate(&addr, &work, siz);
+		break;
+	      }
+	    case 'b': case 'B':
+	      {
+		siz= (islower(b[j]))?1:2;
+		if (siz==1)
+		  {
+		    i8= rom->get(addr++);
+		    i16= i8;
+		  }
+		else
+		  {
+		    i16= rom->get(addr++)*256;
+		    i16+= rom->get(addr++);
+		  }
+		work.appendf("0x%04x", addr+i16);
+		break;
+	      }
+	    case 'p': case 'P':
+	      { 
+		chars r= "";
+		op8= rom->get(addr++);
+		if (op8 & 0x80) (r.nempty()?(r+=','):r),r+="PC";
+		if (op8 & 0x40) (r.nempty()?(r+=','):r),r+=((b[j]=='p')?"U":"S");
+		if (op8 & 0x20) (r.nempty()?(r+=','):r),r+="Y";
+		if (op8 & 0x10) (r.nempty()?(r+=','):r),r+="X";
+		if (op8 & 0x08) (r.nempty()?(r+=','):r),r+="DP";
+		if (op8 & 0x04) (r.nempty()?(r+=','):r),r+="B";
+		if (op8 & 0x02) (r.nempty()?(r+=','):r),r+="A";
+		if (op8 & 0x01) (r.nempty()?(r+=','):r),r+="CC";
+		work.append(r);
 	      }
 	    }
 	}
@@ -395,13 +446,38 @@ cl_m6809::inst_length(t_addr addr)
 {
   u8_t code= rom->get(addr);
   u8_t ch, cl;
+  int ret= 1;
   ch= code>>4;
   cl= code&0xf;
   if (code == 0x10)
     {
+      ret= 2;
+      code= rom->get(addr+1);
+      ch= code>>4;
+      cl= code&0xf;
+      int aml;
+      switch (code & 0x30)
+	{
+	case 0x00: aml= 1+1; break; // immed
+	case 0x10: aml= 1; break; // direct
+	case 0x20: aml= indexed_length(addr+1); break;// index
+	case 0x30: aml= 2; // extend
+	}
+      ret+= aml;
     }
   else if (code == 0x11)
     {
+      ret= 2;
+      if (code==0x3f) return ret;
+      int aml;
+      switch (code & 0x30)
+	{
+	case 0x00: aml= 1+1; break; // immed
+	case 0x10: aml= 1; break; // direct
+	case 0x20: aml= indexed_length(addr+1); break;// index
+	case 0x30: aml= 2; // extend
+	}
+      ret+= aml;
     }
   else if (code & 0x80)
     {
@@ -442,7 +518,7 @@ cl_m6809::inst_length(t_addr addr)
       if (ch==6) return indexed_length(addr);
       if (ch==7) return 3; // extend
     }
-  return 1;
+  return ret;
 }
 
 int
@@ -840,6 +916,8 @@ cl_m6809::inst_alu(t_mem code)
 	    { //BSR
 	      i8_t i8= op8;
 	      ea= (u16_t)((i16_t)PC + (i16_t)i8);
+	      rom->write(--reg.S, PC&0xff);
+	      rom->write(--reg.S, (PC>>8)&0xff);
 	    }
 	  // else JSR
 	  rom->write(--reg.S, PC & 0xff);
@@ -1058,15 +1136,13 @@ cl_m6809::inst_branch(t_mem code, bool l)
       break;
     }
 
+  i16_t i= fetch();
+  if (i&0x80) i|= 0xff00;
+  if (l)
+    i= i*256 + fetch();
   if (t)
-    {
-      u16_t u= fetch();
-      if (l)
-	u= u*256 + fetch();
-      i16_t i= u;
-      PC= PC + i;
-    }
-  
+    PC= PC + i;
+      
   return resGO;
 }
 
@@ -1219,6 +1295,8 @@ cl_m6809::inst_30(t_mem code)
       pull_regs(true);
       break;
     case 0x0c: // CWAI
+      op8= fetch();
+      // TODO
       break;
     case 0x0d: // MUL
       D= A * B;

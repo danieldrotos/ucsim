@@ -30,7 +30,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // code mask branch len mn call tick
 struct dis_entry disass_m6809[]=
   {
-   { 0x3a, 0xff, ' ', 1, "ABX"		, 0, 0 },
    { 0x48, 0xff, ' ', 1, "ASLA"		, 0, 0 },
    { 0x58, 0xff, ' ', 1, "ASLB"		, 0, 0 },
    { 0x47, 0xff, ' ', 1, "ASRA"		, 0, 0 },
@@ -61,6 +60,48 @@ struct dis_entry disass_m6809[]=
    { 0x13, 0xff, ' ', 1, "SYNC"		, 0, 0 },
    { 0x4d, 0xff, ' ', 1, "TSTA"		, 0, 0 },
    { 0x5d, 0xff, ' ', 1, "TSTB"		, 0, 0 },
+
+   { 0x20, 0xff, ' ', 1, "BRA %b"	, 0, 0 },
+   { 0x21, 0xff, ' ', 1, "BRN %b"	, 0, 0 },
+   { 0x22, 0xff, ' ', 1, "BHI %b"	, 0, 0 },
+   { 0x23, 0xff, ' ', 1, "BLS %b"	, 0, 0 },
+   { 0x24, 0xff, ' ', 1, "BHS %b"	, 0, 0 },
+   { 0x25, 0xff, ' ', 1, "BLO %b"	, 0, 0 },
+   { 0x26, 0xff, ' ', 1, "BNE %b"	, 0, 0 },
+   { 0x27, 0xff, ' ', 1, "BEQ %b"	, 0, 0 },
+   { 0x28, 0xff, ' ', 1, "BVC %b"	, 0, 0 },
+   { 0x29, 0xff, ' ', 1, "BVS %b"	, 0, 0 },
+   { 0x2a, 0xff, ' ', 1, "BPL %b"	, 0, 0 },
+   { 0x2b, 0xff, ' ', 1, "BMI %b"	, 0, 0 },
+   { 0x2c, 0xff, ' ', 1, "BGE %b"	, 0, 0 },
+   { 0x2d, 0xff, ' ', 1, "BLT %b"	, 0, 0 },
+   { 0x2e, 0xff, ' ', 1, "BGT %b"	, 0, 0 },
+   { 0x2f, 0xff, ' ', 1, "BLE %b"	, 0, 0 },
+
+   { 0x8d, 0xff, ' ', 1, "BSR %b"	, 0, 0 },
+   { 0x8d, 0xcf, ' ', 1, "JSR %b"	, 0, 0 },
+   
+   { 0x16, 0xff, ' ', 1, "LBRA %B"	, 0, 0 },
+   { 0x17, 0xff, ' ', 1, "LBSR %B"	, 0, 0 },
+
+   { 0x30, 0xff, ' ', 1, "LEAX %X"	, 0, 0 },
+   { 0x31, 0xff, ' ', 1, "LEAY %X"	, 0, 0 },
+   { 0x32, 0xff, ' ', 1, "LEAS %X"	, 0, 0 },
+   { 0x33, 0xff, ' ', 1, "LEAU %X"	, 0, 0 },
+
+   { 0x34, 0xff, ' ', 1, "PSHS %p"	, 0, 0 },
+   { 0x35, 0xff, ' ', 1, "PULS %p"	, 0, 0 },
+   { 0x36, 0xff, ' ', 1, "PSHU %P"	, 0, 0 },
+   { 0x37, 0xff, ' ', 1, "PULU %P"	, 0, 0 },
+   { 0x39, 0xff, ' ', 1, "RTS"		, 0, 0 },
+   { 0x3a, 0xff, ' ', 1, "ABX"		, 0, 0 },
+   { 0x3b, 0xff, ' ', 1, "RTI"		, 0, 0 },
+   { 0x3d, 0xff, ' ', 1, "MUL"		, 0, 0 },
+   { 0x3e, 0xff, ' ', 1, "RESET"	, 0, 0 },
+   
+   { 0x1c, 0xff, ' ', 1, "ANDCC %i"	, 0, 0 },
+   { 0x3c, 0xff, ' ', 1, "CWAI %i"	, 0, 0 },
+   { 0x1a, 0xff, ' ', 1, "ORCC %i"	, 0, 0 },
    
    { 0x89, 0xcf, ' ', 1, "ADCA %u"	, 0, 0 },
    { 0xc9, 0xcf, ' ', 1, "ADCB %u"	, 0, 0 },
@@ -101,7 +142,7 @@ struct dis_entry disass_m6809[]=
    { 0x09, 0xcf, ' ', 1, "ROL %n"	, 0, 0 },
    { 0x06, 0xcf, ' ', 1, "ROR %n"	, 0, 0 },
    { 0x0d, 0xcf, ' ', 1, "TST %n"	, 0, 0 },
-  
+
    { 0, 0, 0, 0, 0, 0 }
   };
 
