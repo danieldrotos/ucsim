@@ -28,7 +28,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "globals.h"
+
 #include "glob.h"
+#include "serialcl.h"
 
 #include "m6809cl.h"
 
@@ -75,6 +78,7 @@ cl_m6809::id_string(void)
 void
 cl_m6809::reset(void)
 {
+  cl_uc::reset();
   PC= rom->get(0xfffe)*256 + rom->get(0xffff);
   reg.DP= 0;
 }
@@ -88,7 +92,21 @@ cl_m6809::set_PC(t_addr addr)
 void
 cl_m6809::mk_hw_elements(void)
 {
+  class cl_hw *h;
+  class cl_option *o;
   cl_uc::mk_hw_elements();
+
+  if ((o= application->options->get_option("serial1_in_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial1_in_file",
+			      "Input file for serial line uart1 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
+
+  add_hw(h= new cl_serial(this, 0xc000));
+  h->init();
 }
 
 void
