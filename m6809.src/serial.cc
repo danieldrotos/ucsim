@@ -154,12 +154,11 @@ int
 cl_serial::tick(int cycles)
 {
   char c;
-  printf("S_Tick(%d) %d\n",cycles,on);
+
   if (!on)
     return 0;
 
   mcnt+= cycles;
-  printf(" mcnt=%d div=%d\n",mcnt,div);
   if (mcnt >= div)
     {
       mcnt-= div;

@@ -504,7 +504,7 @@ cl_m6809::inst_length(t_addr addr)
       code= rom->get(addr+1);
       ch= code>>4;
       cl= code&0xf;
-      int aml;
+      int aml= 1;
       switch (code & 0x30)
 	{
 	case 0x00: aml= 1+1; break; // immed
@@ -518,7 +518,7 @@ cl_m6809::inst_length(t_addr addr)
     {
       ret= 2;
       if (code==0x3f) return ret;
-      int aml;
+      int aml= 1;
       switch (code & 0x30)
 	{
 	case 0x00: aml= 1+1; break; // immed
