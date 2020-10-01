@@ -248,6 +248,19 @@ int cl_r2k::inst_lcall(t_mem code) {
   return(resGO);
 }
 
+int cl_r2k::inst_lret(t_mem code)
+{
+  u16_t u16;
+  u8_t u8;
+
+  pop2(u16);
+  pop1(u8);
+  mmu.xpc= u8;
+  PC= u16;
+  
+  return resGO;
+}
+
 int cl_r2k::inst_bool(t_mem code) {
   regs.raf.F &= ~BIT_ALL;
   if (regs.HL)

@@ -63,7 +63,9 @@ int  cl_r2k::inst_ed_(t_mem code)
     if (regs.raf.A == 0)    regs.raf.F |= BIT_Z;
     if (regs.raf.A & 0x80)  regs.raf.F |= BIT_S;
     break;
-    
+
+    case 0x45: return inst_lret(code);
+      
   case 0x46: // ipset0
   case 0x56: // ipset1
   case 0x4E: // ipset2
