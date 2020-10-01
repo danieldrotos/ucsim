@@ -166,7 +166,29 @@ int  cl_r2k::inst_ed_(t_mem code)
     store2(tw, regs.HL);
     vc.wr+= 2;
     break;
-    
+
+    case 0x64: // LDP (HL),HL
+      {
+	u16_t u16= regs.HL;
+	t_addr al= ((regs.raf.A & 0xf) << 16) | u16;
+	t_addr ah= ((regs.raf.A & 0xf) << 16) | ((u16+1)&0xffff);
+	rom->write(al, regs.hl.l);
+	rom->write(ah, regs.hl.h);
+	vc.wr+= 2;
+	break;
+      }
+      
+    case 0x65: // LDP (nm),HL
+      {
+	u16_t u16= fetch2();
+	t_addr al= ((regs.raf.A & 0xf) << 16) | u16;
+	t_addr ah= ((regs.raf.A & 0xf) << 16) | ((u16+1)&0xffff);
+	rom->write(al, regs.hl.l);
+	rom->write(ah, regs.hl.h);
+	vc.wr+= 2;
+	break;
+      }
+      
   case 0x67: // LD XPC,A
     mmu.xpc = regs.raf.A;
     break;
@@ -184,7 +206,29 @@ int  cl_r2k::inst_ed_(t_mem code)
     regs.HL = get2(tw);
     vc.rd+= 2;
     break;
-    
+
+    case 0x6c: // LDP HL,(HL)
+      {
+	u16_t u16= regs.HL;
+	t_addr al= ((regs.raf.A & 0xf) << 16) | u16;
+	t_addr ah= ((regs.raf.A & 0xf) << 16) | ((u16+1)&0xffff);
+	regs.hl.l= rom->read(al);
+	regs.hl.h= rom->read(ah);
+	vc.rd+= 2;
+	break;
+      }
+      
+    case 0x6d: // LDP HL,(mn)
+      {
+	u16_t u16= fetch2();
+	t_addr al= ((regs.raf.A & 0xf) << 16) | u16;
+	t_addr ah= ((regs.raf.A & 0xf) << 16) | ((u16+1)&0xffff);
+	regs.hl.l= rom->read(al);
+	regs.hl.h= rom->read(ah);
+	vc.rd+= 2;
+	break;
+      }
+      
   case 0x72: // SBC HL,SP
     sbc_HL_wordreg(regs.SP);
     break;
