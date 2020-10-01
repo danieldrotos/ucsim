@@ -178,7 +178,7 @@ int  cl_r2k::inst_ed_(t_mem code)
 	break;
       }
       
-    case 0x65: // LDP (nm),HL
+    case 0x65: // LDP (mn),HL
       {
 	u16_t u16= fetch2();
 	t_addr al= ((regs.raf.A & 0xf) << 16) | u16;
