@@ -83,6 +83,7 @@ public:
   class cl_address_space *regs16;
   struct reg_t reg;
   bool en_nmi;
+  bool cwai;
 public:
   class cl_address_space *rom;
 protected:
@@ -147,6 +148,9 @@ public:
   virtual int inst_page2(t_mem code);
     
   virtual int exec_inst(void);
+  virtual int priority_of(uchar nuof_it) { return nuof_it; }
+  virtual int accept_it(class it_level *il);
+  virtual bool it_enabled(void) { return true; }
 };
 
 #define SET_C(v) ( (reg.CC)= ((reg.CC)&~flagC) | ((v)?flagC:0) )
@@ -167,8 +171,60 @@ enum cpu_cfg
    cpu_nr	= 6
   };
 
+enum irq_nr {
+	     irq_nmi= 1,
+	     irq_firq= 2,
+	     irq_irq= 3
+};
+
+class cl_m6809_nmi_src: public cl_it_src
+{
+public:
+  u8_t Evalue;
+public:
+  cl_m6809_nmi_src(cl_uc  *Iuc,
+		   int    Inuof,
+		   class  cl_memory_cell *Iie_cell,
+		   t_mem  Iie_mask,
+		   class  cl_memory_cell *Isrc_cell,
+		   t_mem  Isrc_mask,
+		   t_addr Iaddr,
+		   bool   Iclr_bit,
+		   bool   Iindirect,
+		   const  char *Iname,
+		   int    apoll_priority,
+		   u8_t   aEvalue):
+    cl_it_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iclr_bit, Iindirect, Iname, apoll_priority)
+  {
+    Evalue= aEvalue;
+  }
+  virtual void clear(void) { src_cell->write(0); }
+};
+  
+class cl_m6809_it_src: public cl_m6809_nmi_src
+{
+public:
+  cl_m6809_it_src(cl_uc  *Iuc,
+		  int    Inuof,
+		  class  cl_memory_cell *Iie_cell,
+		  t_mem  Iie_mask,
+		  class  cl_memory_cell *Isrc_cell,
+		  t_mem  Isrc_mask,
+		  t_addr Iaddr,
+		  bool   Iclr_bit,
+		  bool   Iindirect,
+		  const  char *Iname,
+		  int    apoll_priority,
+		  u8_t   aEvalue):
+    cl_m6809_nmi_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iclr_bit, Iindirect, Iname, apoll_priority, aEvalue)
+  {}
+  virtual bool enabled(void);
+};
+
 class cl_m6809_cpu: public cl_hw
 {
+public:
+  class cl_m6809 *muc;
 public:
   cl_m6809_cpu(class cl_uc *auc);
   virtual int init(void);

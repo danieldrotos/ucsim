@@ -79,11 +79,13 @@ cl_m6809::id_string(void)
 void
 cl_m6809::reset(void)
 {
-  cl_uc::reset();
-  PC= rom->get(0xfffe)*256 + rom->get(0xffff);
   reg.DP= 0;
   en_nmi= false;
+  cwai= false;
   reg.CC= flagI | flagF;
+  cl_uc::reset();
+  PC= rom->get(0xfffe)*256 + rom->get(0xffff);
+  irq= true;
 }
   
 void
@@ -1411,6 +1413,7 @@ cl_m6809::inst_30(t_mem code)
       reg.CC&= op8;
       reg.CC|= flagE;
       push_regs(true);
+      cwai= true;
       // TODO
       break;
     case 0x0d: // MUL
@@ -1954,12 +1957,44 @@ cl_m6809::exec_inst(void)
   return resGO;
 }
 
+int
+cl_m6809::accept_it(class it_level *il)
+{
+  class cl_m6809_nmi_src *is= (class cl_m6809_nmi_src *)(il->source);
+
+  reg.CC&= ~flagE;
+  reg.CC|= is->Evalue;
+
+  if (!cwai)
+    push_regs(true);
+  cwai= false;
+  
+  t_addr a= rom->get(is->addr) * 256 + rom->get(is->addr+1);
+  PC= a;
+
+  is->clear();
+  
+  it_levels->push(il);
+  return resGO;
+}
+
 
 /* CPU hardware */
+
+bool
+cl_m6809_it_src::enabled(void)
+{
+  if (!ie_cell)
+    return false;
+  t_mem e= ie_cell->get();
+  e&= ie_mask;
+  return e == 0;
+}
 
 cl_m6809_cpu::cl_m6809_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
 {
+  muc= (class cl_m6809 *)auc;
 }
 
 int
@@ -1977,39 +2012,42 @@ cl_m6809_cpu::init()
   
   class cl_it_src *is;
 
-  is= new cl_it_src(uc,
-	  2,
-	  cfg->get_cell(cpu_irq_en), 1,
-	  cfg->get_cell(cpu_irq), 1,
-	  0xfff8,
-	  false,
-	  true,
-	  "Interrupt request",
-	  0);
+  is= new cl_m6809_it_src(uc,
+			  irq_irq,
+			  muc->regs8->get_cell(3), flagI,
+			  cfg->get_cell(cpu_irq), 1,
+			  0xfff8,
+			  false,
+			  true,
+			  "Interrupt request",
+			  0,
+			  flagE);
   is->init();
   uc->it_sources->add(is);
 
-  is= new cl_it_src(uc,
-	  1,
-	  cfg->get_cell(cpu_firq_en), 1,
-	  cfg->get_cell(cpu_firq), 1,
-	  0xfff6,
-	  false,
-	  true,
-	  "Fast interrupt request",
-	  0);
+  is= new cl_m6809_it_src(uc,
+			  irq_firq,
+			  muc->regs8->get_cell(3), flagF,
+			  cfg->get_cell(cpu_firq), 1,
+			  0xfff6,
+			  false,
+			  true,
+			  "Fast interrupt request",
+			  0,
+			  0);
   is->init();
   uc->it_sources->add(is);
 
-  is= new cl_it_src(uc,
-	  0,
-	  cfg->get_cell(cpu_nmi_en), 1,
-	  cfg->get_cell(cpu_nmi), 1,
-	  0xfffc,
-	  false,
-	  true,
-	  "Non-maskable interrupt request",
-	  0);
+  is= new cl_m6809_nmi_src(uc,
+			   irq_nmi,
+			   cfg->get_cell(cpu_nmi_en), 1,
+			   cfg->get_cell(cpu_nmi), 1,
+			   0xfffc,
+			   false,
+			   true,
+			   "Non-maskable interrupt request",
+			   0,
+			   flagE);
   is->init();
   uc->it_sources->add(is);
   
@@ -2087,11 +2125,12 @@ void
 cl_m6809_cpu::print_info(class cl_console_base *con)
 {
   int i;
-  con->dd_printf("  Handler  En  Pr Req Act Name\n");
+  con->dd_printf("  Handler  ISR    En  Pr Req Act Name\n");
   for (i= 0; i < uc->it_sources->count; i++)
     {
       class cl_it_src *is= (class cl_it_src *)(uc->it_sources->at(i));
-      con->dd_printf("  0x%06x", AU(is->addr));
+      t_addr a= uc->rom->get(is->addr) * 256 + uc->rom->get(is->addr+1);
+      con->dd_printf("  [0x%04x] 0x%04x", AU(is->addr), a);
       con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
       con->dd_printf(" %2d", uc->priority_of(is->ie_mask));
       con->dd_printf(" %-3s", (is->pending())?"YES":"no");

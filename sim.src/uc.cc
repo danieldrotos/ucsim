@@ -2304,7 +2304,7 @@ cl_uc::do_interrupt(void)
   for (i= 0; i < it_sources->count; i++)
     {
       class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
-       if (is->is_active() &&
+      if (is->is_active() &&
 	  is->enabled() &&
 	  is->pending())
 	{
