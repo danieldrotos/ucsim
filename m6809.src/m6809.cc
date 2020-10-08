@@ -1937,7 +1937,8 @@ cl_m6809::exec_inst(void)
 {
   t_mem code;
   bool fe;
-  
+
+  printf("irq=%d\n",irq);
   fe= fetch(&code);
   tick(1);
   if (fe)
@@ -1970,6 +1971,7 @@ cl_m6809::accept_it(class it_level *il)
   cwai= false;
   
   t_addr a= rom->get(is->addr) * 256 + rom->get(is->addr+1);
+  printf("accept ISR %x called\n",AU(a));
   PC= a;
 
   is->clear();
@@ -2017,8 +2019,6 @@ cl_m6809_cpu::init()
 			  muc->regs8->get_cell(3), flagI,
 			  cfg->get_cell(cpu_irq), 1,
 			  0xfff8,
-			  false,
-			  true,
 			  "Interrupt request",
 			  0,
 			  flagE);
@@ -2030,8 +2030,6 @@ cl_m6809_cpu::init()
 			  muc->regs8->get_cell(3), flagF,
 			  cfg->get_cell(cpu_firq), 1,
 			  0xfff6,
-			  false,
-			  true,
 			  "Fast interrupt request",
 			  0,
 			  0);
@@ -2043,8 +2041,6 @@ cl_m6809_cpu::init()
 			   cfg->get_cell(cpu_nmi_en), 1,
 			   cfg->get_cell(cpu_nmi), 1,
 			   0xfffc,
-			   false,
-			   true,
 			   "Non-maskable interrupt request",
 			   0,
 			   flagE);
@@ -2132,7 +2128,7 @@ cl_m6809_cpu::print_info(class cl_console_base *con)
       t_addr a= uc->rom->get(is->addr) * 256 + uc->rom->get(is->addr+1);
       con->dd_printf("  [0x%04x] 0x%04x", AU(is->addr), a);
       con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
-      con->dd_printf(" %2d", uc->priority_of(is->ie_mask));
+      con->dd_printf(" %2d", uc->priority_of(is->nuof));
       con->dd_printf(" %-3s", (is->pending())?"YES":"no");
       con->dd_printf(" %-3s", (is->active)?"act":"no");
       con->dd_printf(" %s", object_name(is));

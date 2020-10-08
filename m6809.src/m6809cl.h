@@ -189,12 +189,10 @@ public:
 		   class  cl_memory_cell *Isrc_cell,
 		   t_mem  Isrc_mask,
 		   t_addr Iaddr,
-		   bool   Iclr_bit,
-		   bool   Iindirect,
 		   const  char *Iname,
 		   int    apoll_priority,
 		   u8_t   aEvalue):
-    cl_it_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iclr_bit, Iindirect, Iname, apoll_priority)
+    cl_it_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, false, true, Iname, apoll_priority)
   {
     Evalue= aEvalue;
   }
@@ -211,12 +209,10 @@ public:
 		  class  cl_memory_cell *Isrc_cell,
 		  t_mem  Isrc_mask,
 		  t_addr Iaddr,
-		  bool   Iclr_bit,
-		  bool   Iindirect,
 		  const  char *Iname,
 		  int    apoll_priority,
 		  u8_t   aEvalue):
-    cl_m6809_nmi_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iclr_bit, Iindirect, Iname, apoll_priority, aEvalue)
+    cl_m6809_nmi_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, aEvalue)
   {}
   virtual bool enabled(void);
 };
