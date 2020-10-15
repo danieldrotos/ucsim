@@ -1527,12 +1527,15 @@ cl_m6809::inst_30(t_mem code)
       tick(2);
       vc.rd+= 2;
       PC= ea;
+      tick(1);
       break;
     case 0x0a: // ABX
       reg.X+= B;
+      tick(2);
       break;
     case 0x0b: // RTI
       pull_regs(true);
+      tick(1);
       break;
     case 0x0c: // CWAI
       op8= fetch();
