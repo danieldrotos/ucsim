@@ -29,17 +29,53 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PORTCL_HEADER
 
 #include "hwcl.h"
+#include "port_hwcl.h"
 
+
+enum port_cfg
+  {
+   port_on	= 0,
+   port_base	= 1,
+   port_cra	= 2,
+   port_ddra	= 3,
+   port_ora	= 4,
+   port_pin_a	= 5,
+   port_crb	= 6,
+   port_ddrb	= 7,
+   port_orb	= 8,
+   port_pin_b	= 9,
+  };
 
 class cl_port: public cl_hw
 {
 public:
-  cl_port(class cl_uc *auc);
+  t_addr base;
+  class cl_memory_cell *cra;
+  class cl_memory_cell *ddra;
+  class cl_memory_cell *ora;
+  class cl_memory_cell *ina;
+  class cl_memory_cell *crb;
+  class cl_memory_cell *ddrb;
+  class cl_memory_cell *orb;
+  class cl_memory_cell *inb;
+  class cl_memory_cell *rs[4];
+ public:
+  cl_port(class cl_uc *auc, int aid);
+  cl_port(class cl_uc *auc, int aid, t_addr the_addr);
+  virtual int init(void);
+  virtual int cfg_size(void) { return 10; }
+  virtual const char *cfg_help(t_addr addr);
 
-  //virtual ulong read(class cl_mem *mem, long addr);
+  
+  virtual class cl_memory_cell *reg(class cl_memory_cell *cell_rs);
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
+  virtual void reset(void);
 };
 
 
 #endif
 
-/* End of avr.src/portcl.h */
+/* End of m6898.src/portcl.h */
