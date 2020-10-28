@@ -40,28 +40,12 @@ cl_port::cl_port(class cl_uc *auc, int aid):
   cl_hw(auc, HW_PORT, aid, "port")
 {
   base= 0xc010;
-  cra= new cl_memory_cell(8);
-  ddra= new cl_memory_cell(8);
-  ora= new cl_memory_cell(8);
-  ina= new cl_memory_cell(8);
-  crb= new cl_memory_cell(8);
-  ddrb= new cl_memory_cell(8);
-  orb= new cl_memory_cell(8);
-  inb= new cl_memory_cell(8);
 }
 
 cl_port::cl_port(class cl_uc *auc, int aid, t_addr the_addr):
   cl_hw(auc, HW_PORT, aid, "port")
 {
   base= the_addr;
-  cra= new cl_memory_cell(8);
-  ddra= new cl_memory_cell(8);
-  ora= new cl_memory_cell(8);
-  ina= new cl_memory_cell(8);
-  crb= new cl_memory_cell(8);
-  ddrb= new cl_memory_cell(8);
-  orb= new cl_memory_cell(8);
-  inb= new cl_memory_cell(8);
 }
 
 int
@@ -74,6 +58,15 @@ cl_port::init(void)
   rs[2]= register_cell(uc->rom, base+2);
   rs[3]= register_cell(uc->rom, base+3);
 
+  cra = cfg_cell(port_cra);
+  ddra= cfg_cell(port_ddra);
+  ora = cfg_cell(port_ora);
+  ina = cfg_cell(port_pin_a);
+  crb = cfg_cell(port_crb);
+  ddrb= cfg_cell(port_ddrb);
+  orb = cfg_cell(port_orb);
+  inb = cfg_cell(port_pin_b);
+  
   on= 1;
   
   return(0);
@@ -114,34 +107,22 @@ cl_port::reg(class cl_memory_cell *cell_rs)
 {
   if (cell_rs == rs[0])
     {
-      if (cra->get() & 2)
-	{
-	  return ora;
-	}
+      if (cra->get() & 4)
+	return ora;
       else
-	{
-	  return ddra;
-	}
+	return ddra;
     }
   else if (cell_rs == rs[1])
-    {
-      return cra;
-    }
+    return cra;
   else if (cell_rs == rs[2])
     {
-      if (crb->get() & 2)
-	{
-	  return orb;
-	}
+      if (crb->get() & 4)
+	return orb;
       else
-	{
-	  return ddrb;
-	}
+	return ddrb;
     }
   else if (cell_rs == rs[3])
-    {
-      return crb;
-    }
+    return crb;
   return NULL;
 }
 
@@ -151,7 +132,24 @@ cl_port::read(class cl_memory_cell *cell)
   class cl_memory_cell *r= reg(cell);
   conf(cell, NULL);
   if (r != NULL)
-    return r->get();
+    {
+      u8_t i, o, d;
+      if (r == ora)
+	{
+	  d= ddra->get();
+	  i= ina->get();
+	  o= ora->get();
+	  return (~d&i) | (d&o&i);
+	}
+      if (r == orb)
+	{
+	  d= ddrb->get();
+	  i= inb->get();
+	  o= orb->get();
+	  return (~d&i) | (d&o);	    
+	}
+      return r->get();
+    }
   return cell->get();
 }
 
@@ -160,9 +158,9 @@ cl_port::write(class cl_memory_cell *cell, t_mem *val)
 {
   class cl_memory_cell *r= reg(cell);
   conf(cell, val);
-  if (!r)
+  if (r == NULL)
     return;
-  r->write(*val);
+  r->set(*val);
 }
 
 t_mem
@@ -209,7 +207,7 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   if (r)
     {
       if (val)
-	r->write(*val);
+	r->set(*val);
       v= r->get();
       cell->set(v);
     }
@@ -217,5 +215,33 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return v;
 }
 
+
+void
+cl_port::print_info(class cl_console_base *con)
+{
+  u8_t v;
+  con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on":"off");
+  con->dd_printf("0x%04x ", base+0);
+  if (cra->get() & 4)
+    con->dd_printf(" ORA 0x%02x", ora->get());
+  else
+    con->dd_printf("DDRA 0x%02x", ddra->get());
+  con->dd_printf("\n");
+  con->dd_printf("0x%04x ", base+1);
+  con->dd_printf(" CRA 0x%02x", cra->get());
+  con->dd_printf("\n");
+  
+  con->dd_printf("0x%04x ", base+2);
+  if (cra->get() & 4)
+    con->dd_printf(" ORA 0x%02x", orb->get());
+  else
+    con->dd_printf("DDRA 0x%02x", ddrb->get());
+  con->dd_printf("\n");
+  con->dd_printf("0x%04x ", base+3);
+  con->dd_printf(" CRA 0x%02x", crb->get());
+  con->dd_printf("\n");
+
+  print_cfg_info(con);
+}
 
 /* End of m6809.src/port.cc */
