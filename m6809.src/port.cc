@@ -58,17 +58,51 @@ cl_port::init(void)
   rs[2]= register_cell(uc->rom, base+2);
   rs[3]= register_cell(uc->rom, base+3);
 
-  cra = cfg_cell(port_cra);
-  ddra= cfg_cell(port_ddra);
-  ora = cfg_cell(port_ora);
-  ina = cfg_cell(port_pin_a);
-  crb = cfg_cell(port_crb);
-  ddrb= cfg_cell(port_ddrb);
-  orb = cfg_cell(port_orb);
-  inb = cfg_cell(port_pin_b);
+  cra = cfg_cell(cfg_cra);
+  ddra= cfg_cell(cfg_ddra);
+  ora = cfg_cell(cfg_ora);
+  ina = cfg_cell(cfg_ina);
+  crb = cfg_cell(cfg_crb);
+  ddrb= cfg_cell(cfg_ddrb);
+  orb = cfg_cell(cfg_orb);
+  inb = cfg_cell(cfg_inb);
   
-  on= 1;
+  cl_var *v;
+  chars pn= chars("", "port%d_", id);
+  uc->vars->add(v= new cl_var(pn+chars("base"), cfg, cfg_base,
+			      cfg_help(cfg_base)));
+  v->init();
   
+  uc->vars->add(v= new cl_var(pn+chars("on"), cfg, cfg_on,
+			      cfg_help(cfg_on)));
+  v->init();
+
+  uc->vars->add(v= new cl_var(pn+chars("cra"), cfg, cfg_cra,
+			      cfg_help(cfg_cra)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("ddra"), cfg, cfg_ddra,
+			      cfg_help(cfg_ddra)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("ora"), cfg, cfg_ora,
+			      cfg_help(cfg_ora)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("ina"), cfg, cfg_ina,
+			      cfg_help(cfg_ina)));
+  v->init();
+
+  uc->vars->add(v= new cl_var(pn+chars("crb"), cfg, cfg_crb,
+			      cfg_help(cfg_cra)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("ddrb"), cfg, cfg_ddrb,
+			      cfg_help(cfg_ddra)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("orb"), cfg, cfg_orb,
+			      cfg_help(cfg_ora)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("inb"), cfg, cfg_inb,
+			      cfg_help(cfg_ina)));
+  v->init();
+
   return(0);
 }
 
@@ -88,16 +122,16 @@ cl_port::cfg_help(t_addr addr)
 {
   switch ((enum port_cfg)addr)
     {
-    case port_on	: return "Turn/get on/off state (bool, RW)";
-    case port_base	: return "Base address of the port (int, RW)";
-    case port_cra	: return "Control Register A (int, RW)";
-    case port_ddra	: return "Data Direction Register A (int, RW)";
-    case port_ora	: return "Peripheral Register A (int, RW)";
-    case port_pin_a	: return "Outside value of port A pins (int, RW)";
-    case port_crb	: return "Control Register B (int, RW)";
-    case port_ddrb	: return "Data Direction Register B (int, RW)";
-    case port_orb	: return "Peripheral Register B (int, RW)";
-    case port_pin_b	: return "Outside value of port B pins (int, RW)";
+    case cfg_on		: return "Turn/get on/off state (bool, RW)";
+    case cfg_base	: return "Base address of the port (int, RW)";
+    case cfg_cra	: return "Control Register A (int, RW)";
+    case cfg_ddra	: return "Data Direction Register A (int, RW)";
+    case cfg_ora	: return "Peripheral Register A (int, RW)";
+    case cfg_ina	: return "Outside value of port A pins (int, RW)";
+    case cfg_crb	: return "Control Register B (int, RW)";
+    case cfg_ddrb	: return "Data Direction Register B (int, RW)";
+    case cfg_orb	: return "Peripheral Register B (int, RW)";
+    case cfg_inb	: return "Outside value of port B pins (int, RW)";
     }
   return "Not used";
 }
@@ -170,7 +204,7 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   class cl_memory_cell *r= NULL;
   switch ((enum port_cfg)addr)
     {
-    case port_on	:  // turn this HW on/off
+    case cfg_on	:  // turn this HW on/off
       if (val)
 	{
 	  if (*val)
@@ -181,7 +215,7 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       v= on?1:0;
       cell->set(v);
       break;
-    case port_base:
+    case cfg_base:
       if (val)
 	{
 	  int i;
@@ -195,14 +229,14 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       cell->set(base);
       break;
-    case port_cra	: r= cra; break;
-    case port_ddra	: r= ddra; break;
-    case port_ora	: r= ora; break;
-    case port_pin_a	: r= ina; break;
-    case port_crb	: r= crb; break;
-    case port_ddrb	: r= ddrb; break;
-    case port_orb	: r= orb; break;
-    case port_pin_b	: r= inb; break;
+    case cfg_cra	: r= cra; break;
+    case cfg_ddra	: r= ddra; break;
+    case cfg_ora	: r= ora; break;
+    case cfg_ina	: r= ina; break;
+    case cfg_crb	: r= crb; break;
+    case cfg_ddrb	: r= ddrb; break;
+    case cfg_orb	: r= orb; break;
+    case cfg_inb	: r= inb; break;
     }
   if (r)
     {
@@ -215,11 +249,37 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return v;
 }
 
+void
+cl_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
+{
+  class cl_cmd_arg *params[2]= {
+    cmdline->param(0),
+    cmdline->param(1)
+  };
+
+  if (cmdline->syntax_match(uc, NUMBER))
+    {
+      int i;
+      t_addr a= params[0]->value.number;
+      if (!uc->rom->valid_address(a))
+	{
+	  con->dd_printf("Address must be between 0x%x and 0x%x\n",
+			 AU(uc->rom->lowest_valid_address()),
+			 AU(uc->rom->highest_valid_address()));
+	  return;
+	}
+      for (i= 0; i < 3; i++)
+	unregister_cell(rs[i]);
+      base= a;
+      init();
+    }
+  else
+    con->dd_printf("set hardware port[%d] address\n", id);
+}
 
 void
 cl_port::print_info(class cl_console_base *con)
 {
-  u8_t v;
   con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on":"off");
   con->dd_printf("0x%04x ", base+0);
   if (cra->get() & 4)
@@ -232,13 +292,13 @@ cl_port::print_info(class cl_console_base *con)
   con->dd_printf("\n");
   
   con->dd_printf("0x%04x ", base+2);
-  if (cra->get() & 4)
-    con->dd_printf(" ORA 0x%02x", orb->get());
+  if (crb->get() & 4)
+    con->dd_printf(" ORB 0x%02x", orb->get());
   else
-    con->dd_printf("DDRA 0x%02x", ddrb->get());
+    con->dd_printf("DDRB 0x%02x", ddrb->get());
   con->dd_printf("\n");
   con->dd_printf("0x%04x ", base+3);
-  con->dd_printf(" CRA 0x%02x", crb->get());
+  con->dd_printf(" CRB 0x%02x", crb->get());
   con->dd_printf("\n");
 
   print_cfg_info(con);

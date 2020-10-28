@@ -34,16 +34,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 enum port_cfg
   {
-   port_on	= 0,
-   port_base	= 1,
-   port_cra	= 2,
-   port_ddra	= 3,
-   port_ora	= 4,
-   port_pin_a	= 5,
-   port_crb	= 6,
-   port_ddrb	= 7,
-   port_orb	= 8,
-   port_pin_b	= 9,
+   cfg_on	= 0,
+   cfg_base	= 1,
+   cfg_cra	= 2,
+   cfg_ddra	= 3,
+   cfg_ora	= 4,
+   cfg_ina	= 5,
+   cfg_crb	= 6,
+   cfg_ddrb	= 7,
+   cfg_orb	= 8,
+   cfg_inb	= 9,
   };
 
 class cl_port: public cl_hw
@@ -65,6 +65,7 @@ public:
   virtual int init(void);
   virtual int cfg_size(void) { return 10; }
   virtual const char *cfg_help(t_addr addr);
+  virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
 
   virtual class cl_memory_cell *reg(class cl_memory_cell *cell_rs);
   virtual t_mem read(class cl_memory_cell *cell);

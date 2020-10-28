@@ -112,7 +112,7 @@ cl_m6809::mk_hw_elements(void)
       o->hide();
     }
 
-  add_hw(h= new cl_serial(this, 0xc000));
+  add_hw(h= new cl_serial(this, 0, 0xc000));
   h->init();
 
   class cl_port *p0;
