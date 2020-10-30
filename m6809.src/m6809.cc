@@ -841,7 +841,7 @@ cl_m6809::pull_regs(bool do_cc)
 }
 
 int
-cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store)
+cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store, bool invert_c)
 {
   u8_t r;
   unsigned int d= *acc;
@@ -854,6 +854,8 @@ cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store)
   if ((d & 0xf) + (o & 0xf) > 0xf)  reg.CC|= flagH;
   if ((res < -128) || (res > +127)) reg.CC|= flagV;
   if (d + o > 0xff)                 reg.CC|= flagC;
+  if (invert_c)
+    reg.CC^= flagC;
 
   r= res & 0xff;
   if (r == 0)   reg.CC|= flagZ;
@@ -867,7 +869,7 @@ cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store)
 
 
 int
-cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, int c, bool store)
+cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, int c, bool store, bool invert_c)
 {
   u16_t r;
   unsigned int d= *acc;
@@ -881,6 +883,8 @@ cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, int c, bool store)
     reg.CC|= flagV;
   if (d + o > 0xffff)
     reg.CC|= flagC;
+  if (invert_c)
+    reg.CC^= flagC;
 
   r= res & 0xffff;
   if (r == 0)     reg.CC|= flagZ;
@@ -1031,17 +1035,18 @@ cl_m6809::inst_alu(t_mem code)
     {
       //          8    9    A    B    C    D    E    F
     case 0x00: // SUB  SUB  SUB  SUB  SUB  SUB  SUB  SUB
-      return inst_add8(code, acc, ~op8, 1, true);
+      return inst_add8(code, acc, ~op8, 1, true, true);
       break;
     case 0x01: // CMP  CMP  CMP  CMP  CMP  CMP  CMP  CMP
-      return inst_add8(code, acc, ~op8, 1, false);
+      return inst_add8(code, acc, ~op8, 1, false, true);
       break;
     case 0x02: // SBC  SBC  SBC  SBC  SBC  SBC  SBC  SBC
-      return inst_add8(code, acc, ~op8, (reg.CC&flagC)?1:0, true);
+      return inst_add8(code, acc, ~op8, (reg.CC&flagC)?1:0, true, true);
       break;
     case 0x03: // SUBD SUBD SUBD SUBD ADDD ADDD ADDD ADDD
       {
 	int c= 0;
+	int inv= false;
 	if ((code & 0x30) == 0)
 	  {
 	    op16= op8*256 + fetch();
@@ -1054,8 +1059,8 @@ cl_m6809::inst_alu(t_mem code)
 	    vc.rd++;
 	  }
 	if ((code & 0x40) == 0)
-	  op16= ~op16, c= 1;
-	return inst_add16(code, &D, op16, c, true);
+	  op16= ~op16, c= 1, inv= true;
+	return inst_add16(code, &D, op16, c, true, inv);
 	break;
       }
     case 0x04: // AND  AND  AND  AND  AND  AND  AND  AND
@@ -1074,13 +1079,13 @@ cl_m6809::inst_alu(t_mem code)
       return inst_bool(code, '^', acc, op8, true);
       break;
     case 0x09: // ADC  ADC  ADC  ADC  ADC  ADC  ADC  ADC
-      return inst_add8(code, acc, op8, (reg.CC&flagC)?1:0, true);
+      return inst_add8(code, acc, op8, (reg.CC&flagC)?1:0, true, false);
       break;
     case 0x0a: // OR   OR   OR   OR   OR   OR   OR   OR
       return inst_bool(code, '|', acc, op8, true);
       break;
     case 0x0b: // ADD  ADD  ADD  ADD  ADD  ADD  ADD  ADD
-      return inst_add8(code, acc, op8, 0, true);
+      return inst_add8(code, acc, op8, 0, true, false);
       break;
     case 0x0c: // CMPX CMPX CMPX CMPX LDD  LDD  LDD  LDD
       if ((code & 0x30) == 0)
@@ -1095,7 +1100,7 @@ cl_m6809::inst_alu(t_mem code)
 	  vc.rd++;
 	}
       if ((code & 0x40) == 0)
-	return inst_add16(code, &(reg.X), ~op16, 1, false);
+	return inst_add16(code, &(reg.X), ~op16, 1, false, true);
       else
 	return inst_ld16(code, &D, op16);
       break;
@@ -1606,14 +1611,14 @@ cl_m6809::inst_neg(t_mem code, u8_t *acc, t_addr ea, u8_t op8)
   if (acc)
     {
       *acc= ~(*acc);
-      return inst_add8(code, acc, 0, 1, true);
+      return inst_add8(code, acc, 0, 1, true, true);
     }
   op8= rom->read(ea);
   tick(1);
   vc.rd++;
   u8_t t= A;
   A= ~op8;
-  inst_add8(code, &A, 0, 1, true);
+  inst_add8(code, &A, 0, 1, true, true);
   rom->write(ea, A);
   tick(1);
   vc.wr++;
@@ -2070,10 +2075,10 @@ cl_m6809::inst_page1(t_mem code)
   switch (cl)
     {
     case 3: // CMPD
-      inst_add16(code, &(D), ~op16, 1, false);
+      inst_add16(code, &(D), ~op16, 1, false, true);
       break;
     case 0xc: // CMPY
-      inst_add16(code, &(reg.Y), ~op16, 1, false);
+      inst_add16(code, &(reg.Y), ~op16, 1, false, true);
       break;
     case 0xe: // LDY, LDS
       if ((code & 0x40) == 0)
@@ -2163,13 +2168,13 @@ cl_m6809::inst_page2(t_mem code)
   if ((code & 0x0f) == 0x03)
     {
       // CMPU
-      inst_add16(code, &(reg.U), ~op16, 1, false);
+      inst_add16(code, &(reg.U), ~op16, 1, false, true);
       tick(1);
     }
   if ((code & 0x0f) == 0x0c)
     {
       // CMPS
-      inst_add16(code, &(reg.S), ~op16, 1, false);
+      inst_add16(code, &(reg.S), ~op16, 1, false, true);
       tick(1);
     }
 
