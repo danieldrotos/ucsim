@@ -1041,7 +1041,7 @@ cl_m6809::inst_alu(t_mem code)
       return inst_add8(code, acc, ~op8, 1, false, true);
       break;
     case 0x02: // SBC  SBC  SBC  SBC  SBC  SBC  SBC  SBC
-      return inst_add8(code, acc, ~op8, (reg.CC&flagC)?1:0, true, true);
+      return inst_add8(code, acc, ~op8, (reg.CC&flagC)?0:1, true, true);
       break;
     case 0x03: // SUBD SUBD SUBD SUBD ADDD ADDD ADDD ADDD
       {
