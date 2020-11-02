@@ -773,7 +773,9 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea)
 	}
       if (ind && (idx & 0x10))
 	{
-	  ea= rom->read(iv)*256 + rom->read(iv+1);
+	  u16_t a;
+	  a= rom->read(ea)*256 + rom->read(ea+1);
+	  ea= a;
 	  tick(2);
 	}
     }
@@ -850,7 +852,7 @@ cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store, bool inve
 
   if (c) { ++res, ++o; }
   
-  reg.CC= ~(flagH|flagV|flagS|flagZ);
+  reg.CC= ~(flagH|flagV|flagS|flagZ|flagC);
   if ((d & 0xf) + (o & 0xf) > 0xf)  reg.CC|= flagH;
   if ((res < -128) || (res > +127)) reg.CC|= flagV;
   if (d + o > 0xff)                 reg.CC|= flagC;
@@ -878,7 +880,7 @@ cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, int c, bool store, bool i
 
   if (c) { ++res, ++o; }
   
-  reg.CC= ~(flagV|flagS|flagZ);
+  reg.CC= ~(flagV|flagS|flagZ|flagC);
   if ((res < (int)(0x8000)) || (res > (int)(0x7fff)))
     reg.CC|= flagV;
   if (d + o > 0xffff)
