@@ -451,17 +451,17 @@ cl_m6809::disass(t_addr addr, const char *sep)
 	      }
 	    case 'j': case 'J':
 	      {
-		u8_t mode= code & 0x70;
+		u8_t mode= code & 0x30;
 		switch (mode)
 		  {
-		  case 0x00: // direct
+		  case 0x10: // direct
 		    op8= rom->get(addr++);
 		    work.appendf("DP:0x%02x", op8);
 		    break;
-		  case 0x60: // indexed
+		  case 0x20: // indexed
 		    disass_indexed(&addr, &work, 1/*siz*/);
 		    break;
-		  case 0x70: // extended
+		  case 0x30: // extended
 		    op16= rom->get(addr++)*256;
 		    op16+= rom->get(addr++);
 		    work.appendf("0x%04x", op16);
@@ -2126,16 +2126,21 @@ cl_m6809::inst_page2(t_mem code)
       (code!=0xb3)&&(code!=0xbc))
     return resINV_INST;
 
-  switch (code & 0xf0)
+  switch (code & 0x30)
     {
-    case 0x00: // direct
+    case 0x00: //immediate
+      ea= PC;
+      op8= fetch();
+      tick(1);
+      break;
+    case 0x10: // direct
       ea= reg.DP*256 + fetch();
       tick(1);
       op8= rom->read(ea);
       tick(1);
       vc.rd++;
       break;
-    case 0x60: // index
+    case 0x20: // index
       {
 	int r;
 	idx= fetch();
@@ -2147,7 +2152,7 @@ cl_m6809::inst_page2(t_mem code)
 	vc.rd++;
 	break;
       }
-    case 0x70: // extend
+    case 0x30: // extend
       ea= fetch()*256 + fetch();
       tick(2);
       op8= rom->read(ea);
