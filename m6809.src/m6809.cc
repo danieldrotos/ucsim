@@ -380,7 +380,7 @@ cl_m6809::disass(t_addr addr, const char *sep)
     }
   else if (code == 0x11)
     {
-      tt= disass_m6809_10;
+      tt= disass_m6809_11;
       code= rom->get(++addr);
     }
   else
@@ -606,6 +606,7 @@ cl_m6809::inst_length(t_addr addr)
   else if (code == 0x11)
     {
       ret= 2;
+      code= rom->get(addr+1);
       if (code==0x3f) return ret;
       int aml= 1;
       switch (code & 0x30)
