@@ -522,6 +522,15 @@ cl_m6809::disass(t_addr addr, const char *sep)
 		  work+= "-??";
 		break;
 	      }
+	    case 'e': case 'E':
+	      op16= rom->get(addr++);
+	      if (op16 & 0x80)
+		op16|= 0xff00;
+	      if (b[j]=='E')
+		op16= op16*256 + rom->get(addr++);
+	      op16= (addr + op16)&0xffff;
+	      work.appendf("0x%04x", op16);
+	      break;
 	    }
 	}
       else
