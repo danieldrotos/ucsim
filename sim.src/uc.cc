@@ -413,7 +413,7 @@ cl_uc::init(void)
     xtal= xtal_option->get_value(xtal);
   else
     xtal= 11059200;
-  stop_selfjump= true;
+  stop_selfjump= false;
   stop_selfjump_option->option->set_value(stop_selfjump);
   vars= new cl_var_list();
   make_variables();
