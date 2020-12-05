@@ -53,13 +53,14 @@ class cl_exec_hist: public cl_base
 {
 protected:
   int len;
-  int ff, lu;
+  int h, t;
   struct t_hist_elem *hist;
   class cl_uc *uc;
 public:
   cl_exec_hist(class cl_uc *auc);
   virtual ~cl_exec_hist(void);
   virtual int init(void);
+  virtual void put(void);
 };
   
 class cl_sim: public cl_base

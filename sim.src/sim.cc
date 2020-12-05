@@ -39,7 +39,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // cmd
 #include "cmd_execcl.h"
-//#include "cmd_guicl.h"
+#include "cmd_infocl.h"
 
 // local, sim.src
 //#include "simcl.h"
@@ -53,7 +53,7 @@ cl_exec_hist::cl_exec_hist(class cl_uc *auc):
   uc= auc;
   len= 100;
   hist= (struct t_hist_elem*)malloc(sizeof(struct t_hist_elem) * len);
-  ff= lu= 0;
+  t= h= 0;
 }
 
 cl_exec_hist::~cl_exec_hist(void)
@@ -66,6 +66,29 @@ int
 cl_exec_hist::init(void)
 {
   return 0;
+}
+
+void
+cl_exec_hist::put(void)
+{
+  t_addr pc;
+  if (!uc)
+    return;
+  pc= uc->PC;
+  if (t != h)
+    {
+      if (hist[h].addr == pc)
+	{
+	  hist[h].nr++;
+	  return;
+	}
+    }
+  int nh= (h+1)%len;
+  if (t == nh)
+    t= (t+1)%len;
+  h= nh;
+  hist[h].addr= pc;
+  hist[h].nr= 1;
 }
 
 
@@ -120,6 +143,7 @@ cl_sim::step(void)
 	{
 	  start_at= dnow();
 	}
+      hist->put();
       if (uc->do_inst(1) == resGO)
 	steps_done++;
       if ((steps_todo > 0) &&
@@ -362,7 +386,8 @@ void
 cl_sim::build_cmdset(class cl_cmdset *cmdset)
 {
   class cl_cmd *cmd;
-  //class cl_cmdset *cset;
+  class cl_super_cmd *super_cmd;
+  class cl_cmdset *cset;
 
   cmdset->add(cmd= new cl_run_cmd("run", 0));
   cmd->init();
@@ -381,6 +406,23 @@ cl_sim::build_cmdset(class cl_cmdset *cmdset)
   cmd->init();
   cmd->add_name("n");
 
+  {
+    // info
+    super_cmd= (class cl_super_cmd *)(cmdset->get_cmd("info"));
+    if (super_cmd)
+      cset= super_cmd->get_subcommands();
+    else {
+      cset= new cl_cmdset();
+      cset->init();
+    }
+    cset->add(cmd= new cl_info_hist_cmd("history", 0));
+    cmd->init();
+  }
+  if (!super_cmd) {
+    cmdset->add(cmd= new cl_super_cmd("info", 0, cset));
+    cmd->init();
+    set_info_help(cmd);
+  }
   /*{
     cset= new cl_cmdset();
     cset->init();

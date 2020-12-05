@@ -51,6 +51,9 @@ COMMAND_ON(uc,cl_info_memory_cmd);
 // INFO VARIABLES
 COMMAND_ON(uc,cl_info_var_cmd);
 
+// INFO HISTORY
+COMMAND_ON(sim,cl_info_hist_cmd);
+
 
 #endif
 
