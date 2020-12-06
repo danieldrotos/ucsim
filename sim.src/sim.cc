@@ -95,6 +95,7 @@ cl_sim::step(void)
 	{
 	  start_at= dnow();
 	}
+      uc->save_hist();
       if (uc->do_inst(1) == resGO)
 	steps_done++;
       if ((steps_todo > 0) &&

@@ -385,6 +385,89 @@ cl_exec_hist::put(void)
   hist[h].nr= 1;
 }
 
+void
+cl_exec_hist::list(class cl_console_base *con, bool inc, int nr)
+{
+  int s, p, ta;
+  if (!con)
+    return;
+  if (t==h)
+    return;
+  if (nr > len-1)
+    nr= len-1;
+  if (nr > get_used())
+    nr= get_used();
+  s= h-nr+1;
+  if (s<0)
+    s+= len;
+  //s%= len;
+  ta= (t+1)%len;
+
+  //con->dd_printf("%d,%d,ta=%d,s=%d\n", t, h, ta,s);
+  p= inc?s:h;
+  do
+    {
+      //con->dd_printf("[%3d] ", p);
+      if (!uc)
+	{
+	  con->dd_printf("0x%06x", AU(hist[p].addr));
+	}
+      else
+	{
+	  uc->print_disass(hist[p].addr, con, false);
+	}
+      if (hist[p].nr > 1)
+	con->dd_printf("  (%d times)", hist[p].nr);
+      con->dd_printf("\n");
+      if (inc)
+	{
+	  if (p==h)
+	    break;
+	  p= (p+1)%len;
+	}
+      else
+	{
+	  if (p==ta)
+	    break;
+	  if (p==0)
+	    p=len-1;
+	  else
+	    p= (p-1)%len;
+	}
+      con->dd_color("answer");
+    }
+  while (1);
+}
+
+int
+cl_exec_hist::get_used()
+{
+  if (t==h)
+    return 0;
+  if (h>t)
+    return h-t;
+  return len-t + h;
+}
+
+unsigned int
+cl_exec_hist::get_insts()
+{
+  unsigned int i= 0;
+  int p;
+  if (t==h)
+    return 0;
+  p= (t+1)%len;
+  do
+    {
+      i+= hist[p].nr;
+      if (p==h)
+	break;
+      p= (p+1)%len;
+    }
+  while (1);
+  return i;
+}
+
 
 /*
  * Abstract microcontroller
@@ -867,6 +950,17 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
     }
   }
 
+  {
+    cset= new cl_cmdset();
+    cset->init();
+    cset->add(cmd= new cl_hist_cmd("_no_parameters_", 0));
+    cmd->init();
+    cset->add(cmd= new cl_hist_info_cmd("information", 0));
+    cmd->init();
+  }
+  cmdset->add(cmd= new cl_super_cmd("history", 0, cset));
+  cmd->init();
+  
   cmdset->add(cmd= new cl_var_cmd("var", 0));
   cmd->init();
   cmd->add_name("variable");
@@ -1681,24 +1775,25 @@ cl_uc::disass(t_addr addr, const char *sep)
   return strdup("uc::disass() unimplemented\n");
 }
 
-void
-cl_uc::print_disass(t_addr addr, class cl_console_base *con)
+int
+cl_uc::print_disass(t_addr addr, class cl_console_base *con, bool nl)
 {
   char *dis;
   class cl_brk *b;
-  int i, l;
+  int i, l, len= 0;
 
   if (!rom)
-    return;
+    return 0;
 
   t_mem code= rom->get(addr);
   b= fbrk_at(addr);
   dis= disass(addr, NULL);
   if (b)
-    con->dd_cprintf("answer", "%c", (b->perm == brkFIX)?'F':'D');
+    len+=1,con->dd_cprintf("answer", "%c", (b->perm == brkFIX)?'F':'D');
   else
-    con->dd_printf(" ");
+    len+=1,con->dd_printf(" ");
   con->dd_cprintf("answer", "%c ", inst_at(addr)?' ':'?');
+  len++;
   con->dd_cprintf("dump_address", rom->addr_format, addr); con->dd_printf(" ");
   con->dd_cprintf("dump_number", rom->data_format, code);
   l= inst_length(addr);
@@ -1716,8 +1811,17 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con)
 	con->dd_printf(" "), j--;
       i++;
     }
-  con->dd_cprintf("dump_char", " %s\n", dis);
+  con->dd_cprintf("dump_char", " %s", dis);
+  if (nl)
+    con->dd_printf("\n");
   free((char *)dis);
+  return len;
+}
+
+int
+cl_uc::print_disass(t_addr addr, class cl_console_base *con)
+{
+  return print_disass(addr, con, true);
 }
 
 void
@@ -2285,7 +2389,6 @@ cl_uc::do_inst(int step)
 	{
 	  pre_inst();
 	  PCsave = PC;
-	  hist->put();
 	  res= exec_inst();
 
 	  if (res == resINV_INST)
@@ -2379,6 +2482,13 @@ cl_uc::post_inst(void)
   if (events->count)
     check_events();
   inst_exec= false;
+}
+
+
+void
+cl_uc::save_hist()
+{
+  hist->put();
 }
 
 

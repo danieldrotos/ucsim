@@ -212,8 +212,11 @@ public:
   virtual ~cl_exec_hist(void);
   virtual int init(void);
   virtual void put(void);
-
+  virtual void list(class cl_console_base *con, bool inc, int nr);
+  
   virtual int get_len(void) { return len; }
+  virtual int get_used();
+  virtual unsigned int get_insts();
 };
   
 
@@ -347,7 +350,8 @@ public:
   virtual int exec_inst(void);
   virtual int exec_inst_tab(instruction_wrapper_fn itab[]);
   virtual void post_inst(void);
-
+  virtual void save_hist();
+  
   virtual int do_interrupt(void);
   virtual int priority_of(uchar nuof_it) {return(0);}
   virtual int priority_main() { return 0; }
@@ -380,7 +384,8 @@ public:
   // disassembling and symbol recognition
   virtual char *disass(t_addr addr, const char *sep);
   virtual struct dis_entry *dis_tbl(void);
-  virtual void print_disass(t_addr addr, class cl_console_base *con);
+  virtual int print_disass(t_addr addr, class cl_console_base *con, bool nl);
+  virtual int print_disass(t_addr addr, class cl_console_base *con);
   virtual void print_regs(class cl_console_base *con);
   virtual int inst_length(t_addr addr);
   virtual int inst_branch(t_addr addr);

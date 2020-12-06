@@ -553,6 +553,26 @@ CMDHELP(cl_expression_cmd,
 
 
 /*
+ * HISTORY command
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_UC(cl_hist_cmd)
+{
+  class cl_exec_hist *hi= uc->hist;
+
+  if (hi->get_used() == 0)
+    return 0;
+  uc->hist->list(con, true, 10);
+  return 0;
+}
+
+CMDHELP(cl_hist_cmd,
+	"history",
+	"Execution history",
+	"long help of history")
+
+/*
  * HISTORY INFO command
  *----------------------------------------------------------------------------
  */
@@ -565,6 +585,8 @@ COMMAND_DO_WORK_UC(cl_hist_info_cmd)
   class cl_exec_hist *hi= uc->hist;
   
   con->dd_printf("len: %d\n", hi->get_len());
+  con->dd_printf("used: %u\n", hi->get_used());
+  con->dd_printf("insts: %u\n", hi->get_insts());
   return 0;
 }
 
