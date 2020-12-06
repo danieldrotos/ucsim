@@ -551,4 +551,27 @@ CMDHELP(cl_expression_cmd,
 	"Evaluate the expression",
 	"long help of expression ")
 
+
+/*
+ * HISTORY INFO command
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_UC(cl_hist_info_cmd)
+{
+  //int i;
+  //class cl_cmd_arg *params[1]= { cmdline->param(0) };
+  //char *s= NULL;
+  class cl_exec_hist *hi= uc->hist;
+  
+  con->dd_printf("len: %d\n", hi->get_len());
+  return 0;
+}
+
+CMDHELP(cl_hist_info_cmd,
+	"history info",
+	"Information about execution history",
+	"long help of info history")
+
+
 /* End of cmd.src/cmd_exec.cc */

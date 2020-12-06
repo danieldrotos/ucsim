@@ -54,6 +54,9 @@ COMMAND_ON(app,cl_kill_cmd);
 COMMAND_ON(app,cl_exec_cmd);
 COMMAND_ON(app,cl_expression_cmd);
 
+// INFO HISTORY
+COMMAND_ON(uc,cl_hist_info_cmd);
+
 
 #endif
 

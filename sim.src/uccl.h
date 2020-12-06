@@ -194,6 +194,29 @@ class cl_cdb_recs: public cl_sorted_list
   }
 };
 
+struct t_hist_elem
+{
+  int nr;
+  t_addr addr;
+};
+
+class cl_exec_hist: public cl_base
+{
+protected:
+  int len;
+  int h, t;
+  struct t_hist_elem *hist;
+  class cl_uc *uc;
+public:
+  cl_exec_hist(class cl_uc *auc);
+  virtual ~cl_exec_hist(void);
+  virtual int init(void);
+  virtual void put(void);
+
+  virtual int get_len(void) { return len; }
+};
+  
+
 /* Abstract microcontroller */
 
 class cl_uc: public cl_base
@@ -227,6 +250,7 @@ public:
  public:
   class cl_hw *cpu;
   class cl_hws *hws;
+  class cl_exec_hist *hist;
 
  public:
   class cl_list *memchips;      // v3

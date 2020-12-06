@@ -266,30 +266,4 @@ CMDHELP(cl_info_var_cmd,
 	"long help of info variables")
 
 
-/*
- * INFO HISTORY command
- *----------------------------------------------------------------------------
- */
-
-COMMAND_DO_WORK_SIM(cl_info_hist_cmd)
-{
-  int i;
-  class cl_cmd_arg *params[1]= { cmdline->param(0) };
-  char *s= NULL;
-  
-  if (cmdline->syntax_match(sim->uc, STRING))
-    {
-      s= params[0]->get_svalue();
-      if (!s ||
-	  !*s)
-	s= NULL;
-    }
-  return 0;
-}
-
-CMDHELP(cl_info_hist_cmd,
-	"info history",
-	"Information about execution history",
-	"long help of info history")
-
 /* End of cmd.src/cmd_info.cc */
