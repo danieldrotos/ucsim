@@ -388,7 +388,7 @@ cl_exec_hist::put(void)
 void
 cl_exec_hist::list(class cl_console_base *con, bool inc, int nr)
 {
-  int s, p, ta;
+  int s, p, ta, l;
   if (!con)
     return;
   if (t==h)
@@ -410,14 +410,19 @@ cl_exec_hist::list(class cl_console_base *con, bool inc, int nr)
       //con->dd_printf("[%3d] ", p);
       if (!uc)
 	{
-	  con->dd_printf("0x%06x", AU(hist[p].addr));
+	  l= con->dd_cprintf("dump_address", "0x%06x", AU(hist[p].addr));
 	}
       else
 	{
-	  uc->print_disass(hist[p].addr, con, false);
+	  l= uc->print_disass(hist[p].addr, con, false);
 	}
       if (hist[p].nr > 1)
-	con->dd_printf("  (%d times)", hist[p].nr);
+	{
+	  l++; con->dd_printf(" ");
+	  while (l%8 != 0)
+	    l++, con->dd_printf(" ");
+	  con->dd_printf("(%d times)", hist[p].nr);
+	}
       con->dd_printf("\n");
       if (inc)
 	{
@@ -1789,18 +1794,18 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con, bool nl)
   b= fbrk_at(addr);
   dis= disass(addr, NULL);
   if (b)
-    len+=1,con->dd_cprintf("answer", "%c", (b->perm == brkFIX)?'F':'D');
+    len+= con->dd_cprintf("answer", "%c", (b->perm == brkFIX)?'F':'D');
   else
-    len+=1,con->dd_printf(" ");
-  con->dd_cprintf("answer", "%c ", inst_at(addr)?' ':'?');
-  len++;
-  con->dd_cprintf("dump_address", rom->addr_format, addr); con->dd_printf(" ");
-  con->dd_cprintf("dump_number", rom->data_format, code);
+    len+= con->dd_printf(" ");
+  len+= con->dd_cprintf("answer", "%c ", inst_at(addr)?' ':'?');
+  len+= con->dd_cprintf("dump_address", rom->addr_format, addr);
+  len+= con->dd_printf(" ");
+  len+= con->dd_cprintf("dump_number", rom->data_format, code);
   l= inst_length(addr);
   for (i= 1; i < l; i++)
     {
-      con->dd_printf(" ");
-      con->dd_cprintf("dump_number", rom->data_format, rom->get(addr+i));
+      len+= con->dd_printf(" ");
+      len+= con->dd_cprintf("dump_number", rom->data_format, rom->get(addr+i));
     }
   int li= longest_inst();
   while (i < li)
@@ -1808,10 +1813,10 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con, bool nl)
       int j;
       j= rom->width/4 + ((rom->width%4)?1:0) + 1;
       while (j)
-	con->dd_printf(" "), j--;
+	len+= con->dd_printf(" "), j--;
       i++;
     }
-  con->dd_cprintf("dump_char", " %s", dis);
+  len+= con->dd_cprintf("dump_char", " %s", dis);
   if (nl)
     con->dd_printf("\n");
   free((char *)dis);
