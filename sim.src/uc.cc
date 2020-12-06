@@ -345,7 +345,7 @@ cl_exec_hist::cl_exec_hist(class cl_uc *auc):
   cl_base()
 {
   uc= auc;
-  len= 100;
+  len= 101;
   hist= (struct t_hist_elem*)malloc(sizeof(struct t_hist_elem) * len);
   t= h= 0;
 }
@@ -442,6 +442,17 @@ cl_exec_hist::list(class cl_console_base *con, bool inc, int nr)
       con->dd_color("answer");
     }
   while (1);
+}
+
+void
+cl_exec_hist::keep(int nr)
+{
+  if (nr < 0)
+    nr= 0;
+  if (t==h)
+    return;
+  while (get_used() > nr)
+    t= (t+1)%len;
 }
 
 int
@@ -955,17 +966,26 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
     }
   }
 
-  {
-    cset= new cl_cmdset();
-    cset->init();
-    cset->add(cmd= new cl_hist_cmd("_no_parameters_", 0));
-    cmd->init();
-    cset->add(cmd= new cl_hist_info_cmd("information", 0));
-    cmd->init();
-  }
-  cmdset->add(cmd= new cl_super_cmd("history", 0, cset));
+  super_cmd= (class cl_super_cmd *)(cmdset->get_cmd("history"));
+  if (super_cmd)
+    cset= super_cmd->get_subcommands();
+  else
+    {
+      cset= new cl_cmdset();
+      cset->init();
+      cmdset->add(cmd= new cl_super_cmd("history", 0, cset));
+      cmd->init();	
+    }
+  cset->add(cmd= new cl_hist_cmd("_no_parameters_", 0));
   cmd->init();
-  
+  cset->add(cmd= new cl_hist_info_cmd("information", 0));
+  cmd->init();
+  cset->add(cmd= new cl_hist_clear_cmd("clear", 0));
+  cmd->init();
+  cset->add(cmd= new cl_hist_list_cmd("list", 0));
+  cmd->add_name("print");
+  cmd->init();
+    
   cmdset->add(cmd= new cl_var_cmd("var", 0));
   cmd->init();
   cmd->add_name("variable");

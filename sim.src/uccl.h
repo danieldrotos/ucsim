@@ -213,8 +213,10 @@ public:
   virtual int init(void);
   virtual void put(void);
   virtual void list(class cl_console_base *con, bool inc, int nr);
+  virtual void clear() { keep(0); }
+  virtual void keep(int nr);
   
-  virtual int get_len(void) { return len; }
+  virtual int get_len(void) { return len-1; }
   virtual int get_used();
   virtual unsigned int get_insts();
 };

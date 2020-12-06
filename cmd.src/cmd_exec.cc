@@ -572,6 +572,7 @@ CMDHELP(cl_hist_cmd,
 	"Execution history",
 	"long help of history")
 
+
 /*
  * HISTORY INFO command
  *----------------------------------------------------------------------------
@@ -593,7 +594,58 @@ COMMAND_DO_WORK_UC(cl_hist_info_cmd)
 CMDHELP(cl_hist_info_cmd,
 	"history info",
 	"Information about execution history",
-	"long help of info history")
+	"long help of history info")
+
+
+/*
+ * HISTORY CLEAR command
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_UC(cl_hist_clear_cmd)
+{
+  //int i;
+  //class cl_cmd_arg *params[1]= { cmdline->param(0) };
+  //char *s= NULL;
+  class cl_exec_hist *hi= uc->hist;
+
+  hi->clear();
+  
+  return 0;
+}
+
+CMDHELP(cl_hist_clear_cmd,
+	"history clear",
+	"Clear execution history",
+	"long help of history clear")
+
+
+/*
+ * HISTORY LIST command
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_UC(cl_hist_list_cmd)
+{
+  int nr= 10;
+  class cl_cmd_arg *params[1]= { cmdline->param(0) };
+  //char *s= NULL;
+  class cl_exec_hist *hi= uc->hist;
+
+  if (hi->get_used() == 0)
+    return 0;
+
+  if (params[0] != NULL)
+    nr= params[0]->i_value;
+  uc->hist->list(con, true, nr);
+  
+  return 0;
+}
+
+CMDHELP(cl_hist_list_cmd,
+	"history list [nr]",
+	"List last `nr' elements of execution history",
+	"long help of history list")
 
 
 /* End of cmd.src/cmd_exec.cc */
