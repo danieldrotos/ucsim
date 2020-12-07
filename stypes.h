@@ -28,7 +28,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef STYPES_HEADER
 #define STYPES_HEADER
 
-
 #include "ddconfig.h"
 
 //typedef int8_t TYPE_BYTE;
