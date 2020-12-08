@@ -142,7 +142,28 @@ under certain conditions; type `show c' for details.
 0&gt; <font color="#118811">expr xram[256*dph+dpl]= &amp;sp</font>
 129
 0&gt; 
-</pre>
+    </pre>
+
+    Following formats are supported:
+
+    <ul>
+      <li><b>x</b> hexadecimal</li>
+      <li><b>X</b> hexadecimal prefixed with <tt>0x</tt></li>
+      <li><b>0</b> 8 characted long hexadecimal prefixed with <tt>0x</tt></li>
+      <li><b>d</b> signed decimal</li>
+      <li><b>o</b> octal</li>
+      <li><b>u</b> unsigned decimal</li>
+      <li><b>b</b> binary</li>
+    </ul>
+
+    If more then one format character is used then all requested form
+    will be printed:
+
+    <pre>0&gt; <font color="#118811">expr /bx 123</font>
+00000000000000000000000001111011
+7b
+0&gt;    </pre>
+    
     <hr>
     <h3><a name="show">show</a></h3>
     Show command can be used to display different kind of information. It must
