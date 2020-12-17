@@ -27,6 +27,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 //#include <stdarg.h>
 #include <string.h>
+#include <ctype.h>
 
 //#include "ddconfig.h"
 
@@ -489,59 +490,63 @@ CMDHELP(cl_exec_cmd,
 
 COMMAND_DO_WORK_APP(cl_expression_cmd)
 {
-  const char *s= cmdline->cmd;
+  const char *s;
   const char *fmt= NULL;
   int fmt_len= 0;
   int i;
-  chars cs= chars();
+  chars cs, w;
+  
+  cmdline->shift();
+  s= cmdline->cmd;
   if (!s ||
       !*s)
     return(false);
-
-  for (i=0;i<cmdline->tokens->get_count();i++)
+  
+  if (*s == '/')
     {
-      const char *p= (const char*)(cmdline->tokens->at(i));
-      cs+= " ";
-      cs+= p;
+      i= strcspn(s, " \t\v\n\r");
+      fmt= s+1;
+      fmt_len= i;
+      s+= i;
+      i= strspn(s, " \t\v\n\r");
+      s+= i;
     }
-
-  s= cs.c_str();
-  i= strspn(s, " \t\v\n\r");
-  s+= i;
-  t_mem v= 0;
-  if (s && *s)
+    
+  cs= s;
+  cs.start_parse();
+  w= cs.token(" \r\n\v\r");	      
+  while (w.nempty())
     {
-      if (*s == '/')
+      t_mem v= 0;
+      if (w.nempty())
 	{
-	  i= strcspn(s, " \t\v\n\r");
-	  fmt= s+1;
-	  fmt_len= i;
-	  s+= i;
-	  i= strspn(s, " \t\v\n\r");
-	  s+= i;
-	}
-      if (s && *s)
-	{
-	  v= application->eval(s);
-	}
-      if (fmt)
-	{
-	  for (i= 0; i < fmt_len; i++)
+	  v= application->eval(w);
+	  if (fmt)
 	    {
-	      switch (fmt[i])
+	      for (i= 0; i < fmt_len; i++)
 		{
-		case 'x': con->dd_printf("%x\n", MU(v)); break;
-		case 'X': con->dd_printf("0x%x\n", MU(v)); break;
-		case '0': con->dd_printf("0x%08x\n", MU32(v)); break;
-		case 'd': con->dd_printf("%d\n", MI(v)); break;
-		case 'o': con->dd_printf("%o\n", MU(v)); break;
-		case 'u': con->dd_printf("%u\n", MU(v)); break;
-		case 'b': con->dd_printf("%s\n", cbin(v,8*sizeof(v)).c_str()); break;
+		  switch (fmt[i])
+		    {
+		    case 'x': con->dd_printf("%x\n", MU(v)); break;
+		    case 'X': con->dd_printf("0x%x\n", MU(v)); break;
+		    case '0': con->dd_printf("0x%08x\n", MU32(v)); break;
+		    case 'd': con->dd_printf("%d\n", MI(v)); break;
+		    case 'o': con->dd_printf("%o\n", MU(v)); break;
+		    case 'u': con->dd_printf("%u\n", MU(v)); break;
+		    case 'b': con->dd_printf("%s\n", cbin(v,8*sizeof(v)).c_str()); break;
+		    case 'c':
+		      if (isprint(MI(v)))
+			con->dd_printf("'%c'\n",MI(v));
+		      else
+			con->dd_printf("'\\%03o'\n",MI(v));
+		      break;
+		    }
 		}
 	    }
+	  else
+	    con->dd_printf("%d\n", MI(v));
 	}
-      else
-	con->dd_printf("%d\n", MI(v));
+      w= cs.token(" \n\r\v\t");
     }
   return(false);
 }
