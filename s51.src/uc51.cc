@@ -2013,7 +2013,9 @@ cl_uc51_cpu::init(void)
   uc->vars->add(v= new cl_var("cpu_mask_mdpc", cfg, uc51cpu_mask_mdpc,
 			      cfg_help(uc51cpu_mask_mdpc)));
   v->init();
-  
+  uc->vars->add(v= new cl_var("cpu_mdp_mode", cfg, uc51cpu_mdp_mode,
+			      cfg_help(uc51cpu_mdp_mode)));
+  v->init();
   return(0);
 }
 
@@ -2034,6 +2036,8 @@ cl_uc51_cpu::cfg_help(t_addr addr)
       return "Address of multi_DPTR_chip selector, WR selects this stlye of multi_DPTR (int, RW)";
     case uc51cpu_mask_mdpc:
       return "Mask in multi_DPTR_chip selector (int, RW)";
+    case uc51cpu_mdp_mode:
+      return "Multi DPTR simulation mode 's'=sfr, 'c'=chip, 'n'=none (int, RO)";
     }
   return "Not used";
 }
@@ -2104,7 +2108,24 @@ cl_uc51_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       break;
     case uc51cpu_mask_mdpc: // mask in multi_DPTR_chip selector
       break;
-  
+
+    case uc51cpu_mdp_mode: // mode of dual dptr simulation
+      {
+	t_mem adps= cfg_get(uc51cpu_aof_mdps),
+	  dpl1= cfg_get(uc51cpu_aof_mdps1l),
+	  dph1= cfg_get(uc51cpu_aof_mdps1h),
+	  adpc= cfg_get(uc51cpu_aof_mdpc);;
+	if (adps > 0x7f &&
+	    dpl1 > 0x7f &&
+	    dph1 > 0x7f)
+	  cell->set('s');
+	else if (adpc > 0x7f)
+	  cell->set('c');
+	else
+	  cell->set('n');
+	break;
+      }
+      
     case uc51cpu_nuof:
       break;
     }

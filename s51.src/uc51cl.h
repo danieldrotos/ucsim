@@ -267,6 +267,8 @@ enum uc51cpu_cfg {
 
   uc51cpu_aof_mdpc	= 4, // addr of multi_DPTR_chip selector
   uc51cpu_mask_mdpc	= 5, // mask in multi_DPTR_chip selector
+
+  uc51cpu_mdp_mode	= 6, // 's': sfr mode, 'c': chip_mode
   
   uc51cpu_nuof		= 16
 };
