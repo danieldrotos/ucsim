@@ -837,6 +837,7 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
     cmd->init();
     cset->add(cmd= new cl_info_hw_cmd("hardware", 0));
     cmd->add_name("hw");
+    cmd->add_name("h");
     cmd->init();
     /*
     cset->add(cmd= new cl_info_stack_cmd("stack", 0,

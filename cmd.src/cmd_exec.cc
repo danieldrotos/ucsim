@@ -534,6 +534,8 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
 		    case 'o': con->dd_printf("%o\n", MU(v)); break;
 		    case 'u': con->dd_printf("%u\n", MU(v)); break;
 		    case 'b': con->dd_printf("%s\n", cbin(v,8*sizeof(v)).c_str()); break;
+		    case 'B': con->dd_printf("%d\n", (v)?1:0); break;
+		    case 'L': con->dd_printf("%c\n", (v)?'T':'F'); break;
 		    case 'c':
 		      if (isprint(MI(v)))
 			con->dd_printf("'%c'\n",MI(v));
