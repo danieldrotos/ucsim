@@ -491,77 +491,32 @@ CMDHELP(cl_exec_cmd,
 COMMAND_DO_WORK_APP(cl_expression_cmd)
 {
   const char *s;
-  const char *fmt= NULL;
-  int fmt_len= 0;
-  int i;
-  chars cs, w;
+  chars cs, w, fmt;
   
   cmdline->shift();
   s= cmdline->cmd;
   if (!s ||
       !*s)
     return(false);
-  
-  if (*s == '/')
-    {
-      i= strcspn(s, " \t\v\n\r");
-      fmt= s+1;
-      fmt_len= i;
-      s+= i;
-      i= strspn(s, " \t\v\n\r");
-      s+= i;
-    }
-    
+
   cs= s;
   cs.start_parse();
-  w= cs.token(" \r\n\v\r");	      
+  w= cs.token(" \r\n\v\r");
+  fmt= "";
+  con->dd_color("result");
   while (w.nempty())
     {
-      t_mem v= 0;
-      if (w.nempty())
+      if (w.starts_with("/"))
+	fmt= w;
+      else
 	{
-	  v= application->eval(w);
-	  if (fmt)
+	  t_mem v= 0;
+	  if (w.nempty())
 	    {
-	      for (i= 0; i < fmt_len; i++)
-		{
-		  switch (fmt[i])
-		    {
-		    case 'x': con->dd_printf("%x\n", MU(v)); break;
-		    case 'X': con->dd_printf("0x%x\n", MU(v)); break;
-		    case '0': con->dd_printf("0x%08x\n", MU32(v)); break;
-		    case 'd': con->dd_printf("%d\n", MI(v)); break;
-		    case 'o': con->dd_printf("%o\n", MU(v)); break;
-		    case 'u': con->dd_printf("%u\n", MU(v)); break;
-		    case 'b': con->dd_printf("%s\n", cbin(v,8*sizeof(v)).c_str()); break;
-		    case 'B': con->dd_printf("%d\n", (v)?1:0); break;
-		    case 'L': con->dd_printf("%c\n", (v)?'T':'F'); break;
-		    case 'c':
-		      if (isprint(MI(v)))
-			con->dd_printf("'%c'\n",MI(v));
-		      else
-			{
-			  switch (MI(v))
-			    {
-			    case '\a': con->dd_printf("'\\a\n'"); break;
-			    case '\b': con->dd_printf("'\\b\n'"); break;
-			    case '\e': con->dd_printf("'\\e\n'"); break;
-			    case '\f': con->dd_printf("'\\f\n'"); break;
-			    case '\n': con->dd_printf("'\\n\n'"); break;
-			    case '\r': con->dd_printf("'\\r\n'"); break;
-			    case '\t': con->dd_printf("'\\t\n'"); break;
-			    case '\v': con->dd_printf("'\\v\n'"); break;
-			    default:
-			      con->dd_printf("'\\%03o'\n",MI(v));
-			      break;
-			    }
-			}
-		      break;
-		    }
-		}
+	      v= application->eval(w);
+	      con->print_expr_result(v, fmt.nempty()?((const char *)fmt):NULL);
 	    }
-	  else
-	    con->dd_printf("%d\n", MI(v));
+	  fmt= "";
 	}
       w= cs.token(" \n\r\v\t");
     }
