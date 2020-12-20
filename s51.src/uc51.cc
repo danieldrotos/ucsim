@@ -1697,6 +1697,34 @@ cl_51core::exec_inst(void)
 }
 
 
+int
+cl_51core::high_movxri(void)
+{
+  t_mem mode= cpu->cfg_read(uc51cpu_movxri_mode);
+
+  if (mode == 'm')
+    {
+      t_addr addr= cpu->cfg_read(uc51cpu_movxri_addr);
+      switch (cpu->cfg_read(uc51cpu_movxri_as))
+	{
+	case 's': return sfr->read(addr);
+	case 'c':
+	case 'r': return rom->read(addr);
+	case 'i': return iram->read(addr);
+	default: return xram->read(addr);
+	}
+    }
+  else if (mode == 'e')
+    {
+    }
+  else
+    {
+      return sfr->read(P2);
+    }
+  return 0;
+}
+
+
 /*
  * Simulating execution of next instruction
  *
@@ -2016,6 +2044,19 @@ cl_uc51_cpu::init(void)
   uc->vars->add(v= new cl_var("cpu_mdp_mode", cfg, uc51cpu_mdp_mode,
 			      cfg_help(uc51cpu_mdp_mode)));
   v->init();
+  uc->vars->add(v= new cl_var("cpu_movxri_mode", cfg, uc51cpu_movxri_mode,
+			      cfg_help(uc51cpu_movxri_mode)));
+  v->init();
+  v->write('m');
+  uc->vars->add(v= new cl_var("cpu_movxri_as", cfg, uc51cpu_movxri_as,
+			      cfg_help(uc51cpu_movxri_as)));
+  v->init();
+  v->write('s');
+  uc->vars->add(v= new cl_var("cpu_movxri_addr", cfg, uc51cpu_movxri_addr,
+			      cfg_help(uc51cpu_movxri_addr)));
+  v->init();
+  v->write(0xa0);
+  
   return(0);
 }
 
@@ -2038,6 +2079,12 @@ cl_uc51_cpu::cfg_help(t_addr addr)
       return "Mask in multi_DPTR_chip selector (int, RW)";
     case uc51cpu_mdp_mode:
       return "Multi DPTR simulation mode 's'=sfr, 'c'=chip, 'n'=none (int, RO)";
+    case uc51cpu_movxri_mode:
+      return "Calc mode of high address for MOVX @Ri, 'm': memory, 'e': expr  (int, RW)";
+    case uc51cpu_movxri_as:
+      return "Address space where high address is in 'm' mode, 'i', 's', 'x', 'c' (int, RW)";
+    case uc51cpu_movxri_addr:
+      return "Address where high address is in 'm' mode (int, RW)";
     }
   return "Not used";
 }
@@ -2125,6 +2172,13 @@ cl_uc51_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set('n');
 	break;
       }
+
+    case uc51cpu_movxri_mode:
+      break;
+    case uc51cpu_movxri_as:
+      break;
+    case uc51cpu_movxri_addr:
+      break;
       
     case uc51cpu_nuof:
       break;

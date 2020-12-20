@@ -58,6 +58,21 @@ cl_var::init(void)
   return 0;
 }
 
+t_mem
+cl_var::write(t_mem val)
+{
+  if (!cell)
+    return 0;
+  return cell->write(val);
+}
+
+t_mem
+cl_var::set(t_mem val)
+{
+  if (!cell)
+    return 0;
+  return cell->set(val);
+}
 
 void
 cl_var::print_info(cl_console_base *con)
