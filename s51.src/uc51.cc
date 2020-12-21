@@ -2208,7 +2208,7 @@ cl_uc51_cpu::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d]\n", id_string, id);
   con->dd_printf("Expression for MOVX @Ri: \"%s\"\n", movxri_expr.c_str());
-  print_cfg_info(con);
+  //print_cfg_info(con);
 }
 
 /* End of s51.src/uc51.cc */

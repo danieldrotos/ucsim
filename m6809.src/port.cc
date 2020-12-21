@@ -327,7 +327,7 @@ cl_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 void
 cl_port::print_info(class cl_console_base *con)
 {
-  con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on":"off");
+  con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on ":"off");
   con->dd_printf("0x%04x ", base+0);
   if (cra->get() & 4)
     con->dd_printf(" ORA 0x%02x", ora->get());
@@ -348,7 +348,7 @@ cl_port::print_info(class cl_console_base *con)
   con->dd_printf(" CRB 0x%02x", crb->get());
   con->dd_printf("\n");
 
-  print_cfg_info(con);
+  //print_cfg_info(con);
 }
 
 /* End of m6809.src/port.cc */

@@ -438,6 +438,15 @@ cl_hw::refresh_display(bool force)
 	io->dd_printf("                ");
       cache_time= t;
     }
+
+  io->dd_color("answer");
+  //io->tu_go(1,3);
+  //io->dd_printf("\033[2K"); // entire line
+  //io->dd_printf("\033[0J"); // from cursor to end of screen
+  //io->dd_printf("\n");
+  
+  io->tu_go(1,4);
+  print_info(io);
 }
 
 void
@@ -462,6 +471,11 @@ cl_hw::draw_display(void)
   io->tu_go(66,2);
   chars s("", "%s[%d]", id_string, id);
   io->dd_cprintf("ui_title", "%-13s", s.c_str());
+
+  io->tu_go(1,3);
+  io->dd_printf("\033[2K"); // entire line
+  io->dd_printf("\033[0J"); // from cursor to end of screen
+  io->dd_printf("\n");
 }
 
 class cl_hw *
@@ -477,7 +491,7 @@ void
 cl_hw::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d]\n", id_string, id);
-  print_cfg_info(con);
+  //print_cfg_info(con);
 }
 
 void
