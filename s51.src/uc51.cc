@@ -734,7 +734,7 @@ cl_51core::id_string(void)
 void
 cl_51core::make_cpu_hw(void)
 {
-  cpu= new cl_uc51_cpu(this);
+  add_hw(cpu= new cl_uc51_cpu(this));
   cpu->init();
 }
 
@@ -1716,6 +1716,10 @@ cl_51core::high_movxri(void)
     }
   else if (mode == 'e')
     {
+      t_mem v;
+      class cl_uc51_cpu *c= (class cl_uc51_cpu *)cpu;
+      v= application->eval(c->movxri_expr);
+      return v & 0xff;
     }
   else
     {
@@ -2056,7 +2060,8 @@ cl_uc51_cpu::init(void)
 			      cfg_help(uc51cpu_movxri_addr)));
   v->init();
   v->write(0xa0);
-  
+
+  movxri_expr= "port2_odr";
   return(0);
 }
 
@@ -2188,9 +2193,21 @@ cl_uc51_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 
 
 void
+cl_uc51_cpu::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
+{
+  class cl_cmd_arg *params[1]= { cmdline->param(0) };
+
+  if (cmdline->syntax_match(uc, STRING))
+    {
+      movxri_expr= params[0]->value.string.string;
+    }
+}
+
+void
 cl_uc51_cpu::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d]\n", id_string, id);
+  con->dd_printf("Expression for MOVX @Ri: \"%s\"\n", movxri_expr.c_str());
   print_cfg_info(con);
 }
 

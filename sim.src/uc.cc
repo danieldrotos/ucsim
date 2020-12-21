@@ -1714,6 +1714,8 @@ cl_uc::get_hw(const char *id_string, int *idx)
 
   if (idx)
     i= *idx;
+  if (strcmp(id_string, "cpu") == 0)
+    return cpu;
   for (; i < hws->count; i++)
     {
       hw= (class cl_hw *)(hws->at(i));
