@@ -58,11 +58,11 @@ cl_port::init(void)
   rs[2]= register_cell(uc->rom, base+2);
   rs[3]= register_cell(uc->rom, base+3);
 
-  cra = cfg_cell(cfg_cra);
+  cra = rs[1];
   ddra= cfg_cell(cfg_ddra);
   ora = cfg_cell(cfg_ora);
   ina = cfg_cell(cfg_ina);
-  crb = cfg_cell(cfg_crb);
+  crb = rs[2];
   ddrb= cfg_cell(cfg_ddrb);
   orb = cfg_cell(cfg_orb);
   inb = cfg_cell(cfg_inb);
@@ -84,9 +84,34 @@ cl_port::init(void)
 			      cfg_help(cfg_on)));
   v->init();
 
-  uc->vars->add(v= new cl_var(pn+chars("cra"), cfg, cfg_cra,
-			      cfg_help(cfg_cra)));
-  v->init();
+  chars vn;
+  vn= pn+"cra";
+  v= uc->var(vn);
+  if (v)
+    {
+      vcra= v;
+      vcra->move(base+1);
+    }
+  else
+    {
+      uc->vars->add(vcra= new cl_var(vn, uc->rom, base+1,
+				     "CRA Control Register port A"));
+      vcra->init();
+    }
+  vn= pn+"crb";
+  v= uc->var(vn);
+  if (v)
+    {
+      vcrb= v;
+      vcrb->move(base+3);
+    }
+  else
+    {
+      uc->vars->add(vcrb= new cl_var(vn, uc->rom, base+3,
+				     "CRB Control Register port B"));
+      vcrb->init();
+    }
+  
   uc->vars->add(v= new cl_var(pn+chars("ddra"), cfg, cfg_ddra,
 			      cfg_help(cfg_ddra)));
   v->init();
@@ -96,10 +121,10 @@ cl_port::init(void)
   uc->vars->add(v= new cl_var(pn+chars("ina"), cfg, cfg_ina,
 			      cfg_help(cfg_ina)));
   v->init();
-
-  uc->vars->add(v= new cl_var(pn+chars("crb"), cfg, cfg_crb,
-			      cfg_help(cfg_cra)));
+  uc->vars->add(v= new cl_var(pn+chars("ira"), cfg, cfg_ira,
+			      cfg_help(cfg_ira)));
   v->init();
+
   uc->vars->add(v= new cl_var(pn+chars("ddrb"), cfg, cfg_ddrb,
 			      cfg_help(cfg_ddra)));
   v->init();
@@ -108,6 +133,9 @@ cl_port::init(void)
   v->init();
   uc->vars->add(v= new cl_var(pn+chars("inb"), cfg, cfg_inb,
 			      cfg_help(cfg_ina)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("irb"), cfg, cfg_irb,
+			      cfg_help(cfg_irb)));
   v->init();
 
   uc->vars->add(v= new cl_var(pn+chars("oca"), cfg, cfg_oca,
@@ -128,6 +156,9 @@ cl_port::init(void)
   uc->vars->add(v= new cl_var(pn+chars("incb"), cfg, cfg_incb,
 			      cfg_help(cfg_incb)));
   v->init();
+  uc->vars->add(v= new cl_var(pn+chars("reqs"), cfg, cfg_reqs,
+			      cfg_help(cfg_reqs)));
+  v->init();
 
   return(0);
 }
@@ -135,9 +166,11 @@ cl_port::init(void)
 void
 cl_port::reset(void)
 {
+  cra->set(0);
   cra->write(0);
   ddra->write(0);
   ora->write(0);
+  crb->set(0);
   crb->write(0);
   ddrb->write(0);
   orb->write(0);
@@ -157,15 +190,16 @@ cl_port::cfg_help(t_addr addr)
   switch ((enum port_cfg)addr)
     {
     case cfg_on		: return "Turn/get on/off state (bool, RW)";
+    case cfg_reqs	: return "IRQS of CA2, CA1, CB2, CB1 (int, RW)";
     case cfg_base	: return "Base address of the port (int, RW)";
-    case cfg_cra	: return "CRA  - Control Register A (int, RW)";
     case cfg_ddra	: return "DDRA - Data Direction Register A (int, RW)";
     case cfg_ora	: return "ORA  - Peripheral Register A (int, RW)";
     case cfg_ina	: return "ina  - Outside value of port A pins (int, RW)";
-    case cfg_crb	: return "CRB  - Control Register B (int, RW)";
+    case cfg_ira	: return "ira  - Read value of port A (int RO)";
     case cfg_ddrb	: return "DDRB - Data Direction Register B (int, RW)";
     case cfg_orb	: return "ORB  - Peripheral Register B (int, RW)";
     case cfg_inb	: return "inb  - Outside value of port B pins (int, RW)";
+    case cfg_irb	: return "irb  - Read value of port B (int RO)";
     case cfg_oca	: return "oca  - Output value of port CA (int, RW)";
     case cfg_ddca	: return "ddca - Direction of port CA (int, RW)";
     case cfg_inca	: return "inca - Outside value of port CA pins (int, RW)";
@@ -207,22 +241,15 @@ cl_port::read(class cl_memory_cell *cell)
   conf(cell, NULL);
   if (r != NULL)
     {
-      u8_t i, o, d;
       if (r == ora)
 	{
 	  cra->set(cra->get() & 0x3f);
-	  d= ddra->get();
-	  i= ina->get();
-	  o= ora->get();
-	  return (~d&i) | (d&o&i);
+	  return ira();
 	}
       if (r == orb)
 	{
 	  crb->set(crb->get() & 0x3f);
-	  d= ddrb->get();
-	  i= inb->get();
-	  o= orb->get();
-	  return (~d&i) | (d&o);	    
+	  return irb();
 	}
       return r->get();
     }
@@ -235,12 +262,10 @@ cl_port::write(class cl_memory_cell *cell, t_mem *val)
   class cl_memory_cell *r= reg(cell);
   if (val)
     {
-      // Is CPU allowed to trigger IRQ?
       if (r == cra || r == crb)
 	{
 	  *val&= 0x3f;
-	  if (r->get() & 0x80) *val|= 0x80;
-	  if (r->get() & 0x40) *val|= 0x40;
+	  *val|= (r->get() & 0xc0);
 	}
     }
   conf(cell, val);
@@ -281,33 +306,45 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       cell->set(base);
       break;
-    case cfg_cra	: r= cra;
-      if (val && (*val&0x80) && !(r->get() & 0x80))
+    case cfg_reqs	:
+      if (val)
 	{
-	  // TODO: IRQ by CA1
+	  u8_t ca= cra->get() & 0x3f;
+	  ca|= (*val&8)?0x40:0;
+	  ca|= (*val&4)?0x80:0;
+	  cra->set(ca);
+	  u8_t cb= crb->get() & 0x3f;
+	  ca|= (*val&2)?0x40:0;
+	  ca|= (*val&1)?0x80:0;
+	  crb->set(cb);
 	}
-      if (val && (*val&0x40) && !(r->get() & 0x40))
+      else
 	{
-	  // TODO: IRQ by CA2
+	  u8_t ca= cra->get(), cb= crb->get();
+	  cell->set(
+		    ((ca&0x40)?8:0) |
+		    ((ca&0x80)?4:0) |
+		    ((cb&0x40)?2:0) |
+		    ((cb&0x80)?1:0)
+		    );
 	}
       break;
     case cfg_ddra	: r= ddra; break;
     case cfg_ora	: r= ora; break;
     case cfg_ina	: r= ina; break;
-    case cfg_crb	: r= crb;
-      if (val && (*val&0x80) && !(r->get() & 0x80))
-	{
-	  // TODO: IRQ by CB1
-	}
-      if (val && (*val&0x40) && !(r->get() & 0x40))
-	{
-	  // TODO: IRQ by CB2
-	}
+    case cfg_ira	:
+      cell->set(ira());
+      if (val)
+	*val= cell->get();
       break;
     case cfg_ddrb	: r= ddrb; break;
     case cfg_orb	: r= orb; break;
     case cfg_inb	: r= inb; break;
-
+    case cfg_irb	:
+      cell->set(irb());
+      if (val)
+	*val= cell->get();
+      break;
     case cfg_oca	: r= oca;
       if (val)
 	*val&= 2;
@@ -356,6 +393,26 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     }
   v= cell->get();
   return v;
+}
+
+int
+cl_port::ira()
+{
+  u8_t i, o, d;
+  d= ddra->get();
+  i= ina->get();
+  o= ora->get();
+  return (~d&i) | (d&o&i);
+}
+
+int
+cl_port::irb()
+{
+  u8_t i, o, d;
+  d= ddrb->get();
+  i= inb->get();
+  o= orb->get();
+  return (~d&i) | (d&o);	    
 }
 
 int
@@ -459,14 +516,15 @@ cl_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 void
 cl_port::print_info(class cl_console_base *con)
 {
-  u8_t ca= cra->get();
-  u8_t cb= crb->get();
+  u8_t ca= cra->read();
+  u8_t cb= crb->read();
   con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on ":"off");
   con->dd_printf("0x%04x ", base+0);
-  if (cra->get() & 4)
+  if (ca & 4)
     con->dd_printf(" ORA 0x%02x", ora->get());
   else
     con->dd_printf("DDRA 0x%02x", ddra->get());
+  con->dd_printf("   IRA 0x%02x", ira());
   con->dd_printf("\n");
   con->dd_printf("0x%04x ", base+1);
   con->dd_printf(" CRA 0x%02x", ca);
@@ -490,10 +548,11 @@ cl_port::print_info(class cl_console_base *con)
   con->dd_printf("\n");
   
   con->dd_printf("0x%04x ", base+2);
-  if (crb->get() & 4)
+  if (cb & 4)
     con->dd_printf(" ORB 0x%02x", orb->get());
   else
     con->dd_printf("DDRB 0x%02x", ddrb->get());
+  con->dd_printf("   IRB 0x%02x", irb());
   con->dd_printf("\n");
   con->dd_printf("0x%04x ", base+3);
   con->dd_printf(" CRB 0x%02x", cb);

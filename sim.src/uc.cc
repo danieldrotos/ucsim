@@ -2082,6 +2082,12 @@ cl_uc::var(char *nam)
   return v;
 }
 
+class cl_var *
+cl_uc::var(chars n)
+{
+  const char *s= n.c_str();
+  return var((char*)s);
+}
 
 /*
  * Messages to broadcast
