@@ -132,7 +132,7 @@ cl_m6809::mk_hw_elements(void)
   pd.cell_in = p0->ina;
   pd.keyset  = keysets[0];
   pd.basx    = 1;
-  pd.basy    = 4;
+  pd.basy    = 5;
   d->add_port(&pd, 0);
 
   pd.set_name("P0B");
@@ -141,8 +141,30 @@ cl_m6809::mk_hw_elements(void)
   pd.cell_in = p0->inb;
   pd.keyset  = keysets[1];
   pd.basx    = 20;
-  pd.basy    = 4;
+  pd.basy    = 5;
   d->add_port(&pd, 1);
+
+  pd.set_name("P0CA");
+  pd.cell_dir= p0->ddca;
+  pd.cell_p  = p0->oca;
+  pd.cell_in = p0->inca;
+  pd.cell_dir= p0->ddca;
+  pd.keyset  = keysets[2];
+  pd.basx    = 40;
+  pd.basy    = 5;
+  pd.width   = 2;
+  d->add_port(&pd, 2);
+
+  pd.set_name("P0CB");
+  pd.cell_dir= p0->ddcb;
+  pd.cell_p  = p0->ocb;
+  pd.cell_in = p0->incb;
+  pd.cell_dir= p0->ddcb;
+  pd.keyset  = keysets[3];
+  pd.basx    = 54;
+  pd.basy    = 5;
+  pd.width   = 2;
+  d->add_port(&pd, 3);
 }
 
 void

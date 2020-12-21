@@ -141,6 +141,14 @@ cl_port::reset(void)
   crb->write(0);
   ddrb->write(0);
   orb->write(0);
+
+  oca->write(2);
+  ocb->write(2);
+
+  prev_ca1= ca1();
+  prev_ca2= ca2();
+  prev_cb1= cb1();
+  prev_cb2= cb2();
 }
 
 const char *
@@ -225,6 +233,16 @@ void
 cl_port::write(class cl_memory_cell *cell, t_mem *val)
 {
   class cl_memory_cell *r= reg(cell);
+  if (val)
+    {
+      // Is CPU allowed to trigger IRQ?
+      if (r == cra || r == crb)
+	{
+	  *val&= 0x3f;
+	  if (r->get() & 0x80) *val|= 0x80;
+	  if (r->get() & 0x40) *val|= 0x40;
+	}
+    }
   conf(cell, val);
   if (r == NULL)
     return;
@@ -263,21 +281,71 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       cell->set(base);
       break;
-    case cfg_cra	: r= cra; break;
+    case cfg_cra	: r= cra;
+      if (val && (*val&0x80) && !(r->get() & 0x80))
+	{
+	  // TODO: IRQ by CA1
+	}
+      if (val && (*val&0x40) && !(r->get() & 0x40))
+	{
+	  // TODO: IRQ by CA2
+	}
+      break;
     case cfg_ddra	: r= ddra; break;
     case cfg_ora	: r= ora; break;
     case cfg_ina	: r= ina; break;
-    case cfg_crb	: r= crb; break;
+    case cfg_crb	: r= crb;
+      if (val && (*val&0x80) && !(r->get() & 0x80))
+	{
+	  // TODO: IRQ by CB1
+	}
+      if (val && (*val&0x40) && !(r->get() & 0x40))
+	{
+	  // TODO: IRQ by CB2
+	}
+      break;
     case cfg_ddrb	: r= ddrb; break;
     case cfg_orb	: r= orb; break;
     case cfg_inb	: r= inb; break;
 
-    case cfg_oca	: r= oca; break;
-    case cfg_ddca	: r= ddca; break;
-    case cfg_inca	: r= inca; break;
-    case cfg_ocb	: r= ocb; break;
-    case cfg_ddcb	: r= ddcb; break;
-    case cfg_incb	: r= incb; break;
+    case cfg_oca	: r= oca;
+      if (val)
+	*val&= 2;
+      break;
+    case cfg_ddca	: r= ddca;
+      if (val)
+	{
+	  *val&= 2;
+	  u8_t i= cra->get() & 0xdf;
+	  if (*val) i|= 0x20;
+	  cra->set(i);
+	}
+      else
+	r->set((cra->get() & 0x20)?2:0);
+      break;
+    case cfg_inca	: r= inca;
+      if (val)
+	*val&= 3;
+      break;
+    case cfg_ocb	: r= ocb;
+      if (val)
+	*val&= 2;
+      break;
+    case cfg_ddcb	: r= ddcb;
+      if (val)
+	{
+	  *val&= 2;
+	  u8_t i= crb->get() & 0xdf;
+	  if (*val) i|= 0x20;
+	  crb->set(i);
+	}
+      else
+	r->set((crb->get() & 0x20)?2:0);
+      break;
+    case cfg_incb	: r= incb;
+      if (val)
+	*val&= 3;
+      break;
     }
   if (r)
     {
@@ -291,8 +359,72 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 }
 
 int
+cl_port::ca1()
+{
+  return inca->get() & 1;
+}
+
+int
+cl_port::ca2(void)
+{
+  u8_t ca= cra->get();
+  if (ca & 0x20)
+    {
+      // out
+      return (oca->get() & 2)?1:0;
+    }
+  // input
+  return (inca->get() & 2)?1:0;
+  return 0;
+}
+
+int
+cl_port::cb1()
+{
+  return incb->get() & 1;
+}
+
+int
+cl_port::cb2(void)
+{
+  u8_t cb= crb->get();
+  if (cb & 0x20)
+    {
+      // out
+      return (ocb->get() & 2)?1:0;
+    }
+  // input
+  return (incb->get() & 2)?1:0;
+  return 0;
+}
+
+int
 cl_port::tick(int cycles)
 {
+  u8_t ca= cra->get();
+  u8_t cb= crb->get();
+  if (ca & 1)
+    {
+      int a1= ca1();
+      if (( (ca & 2) && !prev_ca1 &&  a1) ||
+	  (!(ca & 2) &&  prev_ca1 && !a1)
+	  )
+	{
+	  cra->write(ca | 0x80);
+	}
+    }
+  if (prev_ca1 != ca1()) prev_ca1= ca1();
+  if (cb & 1)
+    {
+      int b1= cb1();
+      if (( (cb & 2) && !prev_cb1 &&  b1) ||
+	  (!(cb & 2) &&  prev_cb1 && !b1)
+	  )
+	{
+	  crb->write(cb | 0x80);
+	}
+    }
+  if (prev_cb1 != cb1()) prev_cb1= cb1();
   return 0;
 }
 
@@ -327,6 +459,8 @@ cl_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 void
 cl_port::print_info(class cl_console_base *con)
 {
+  u8_t ca= cra->get();
+  u8_t cb= crb->get();
   con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on ":"off");
   con->dd_printf("0x%04x ", base+0);
   if (cra->get() & 4)
@@ -335,7 +469,24 @@ cl_port::print_info(class cl_console_base *con)
     con->dd_printf("DDRA 0x%02x", ddra->get());
   con->dd_printf("\n");
   con->dd_printf("0x%04x ", base+1);
-  con->dd_printf(" CRA 0x%02x", cra->get());
+  con->dd_printf(" CRA 0x%02x", ca);
+  con->dd_printf("   IRQA1 %d", (ca&0x80)?1:0);
+  con->dd_printf("   EnA1 %d", (ca&0x01)?1:0);
+  con->dd_printf("   EdgA1 %d", (ca&0x02)?1:0);
+  con->dd_printf("   CA1 %d", ca1());
+  con->dd_printf("\n                ");
+  con->dd_printf("   IRQA2 %d", (ca&0x40)?1:0);
+  con->dd_printf("   EnA2 %d", ((ca&0x28)==0x08)?1:0);
+  con->dd_printf("   EdgA2 %d", (ca&0x10)?1:0);
+  con->dd_printf("   CA2 %d", ca2());
+  con->dd_printf("\n                ");
+  con->dd_printf("   DirA2 %s", (ca&0x20)?"Out":"In ");
+  con->dd_printf(" ModA2 ");
+       if ((ca&0x38) == 0x30) con->dd_printf("Output 0               ");
+  else if ((ca&0x38) == 0x38) con->dd_printf("Output 1               ");
+  else if ((ca&0x38) == 0x20) con->dd_printf("Read strobe, A1 restore");
+  else if ((ca&0x08) == 0x28) con->dd_printf("Read strobe,  E restore");
+  else                        con->dd_printf("Input                  ");
   con->dd_printf("\n");
   
   con->dd_printf("0x%04x ", base+2);
@@ -345,7 +496,24 @@ cl_port::print_info(class cl_console_base *con)
     con->dd_printf("DDRB 0x%02x", ddrb->get());
   con->dd_printf("\n");
   con->dd_printf("0x%04x ", base+3);
-  con->dd_printf(" CRB 0x%02x", crb->get());
+  con->dd_printf(" CRB 0x%02x", cb);
+  con->dd_printf("   IRQB1 %d", (cb&0x80)?1:0);
+  con->dd_printf("   EnB1 %d", (cb&0x01)?1:0);
+  con->dd_printf("   EdgB1 %d", (cb&0x02)?1:0);
+  con->dd_printf("   CB1 %d", cb1());
+  con->dd_printf("\n                ");
+  con->dd_printf("   IRQB2 %d", (cb&0x40)?1:0);
+  con->dd_printf("   EnB2 %d", ((cb&0x28)==0x08)?1:0);
+  con->dd_printf("   EdgB2 %d", (cb&0x10)?1:0);
+  con->dd_printf("   CB2 %d", cb2());
+  con->dd_printf("\n                ");
+  con->dd_printf("   DirB2 %s", (ca&0x20)?"Out":"In ");
+  con->dd_printf(" ModB2 ");
+       if ((cb&0x38) == 0x30) con->dd_printf("Output 0                ");
+  else if ((cb&0x38) == 0x38) con->dd_printf("Output 1                ");
+  else if ((cb&0x08) == 0x20) con->dd_printf("Write strobe, A1 restore");
+  else if ((cb&0x08) == 0x28) con->dd_printf("Write strobe,  E restore");
+  else                        con->dd_printf("Input                   ");
   con->dd_printf("\n");
 
   //print_cfg_info(con);

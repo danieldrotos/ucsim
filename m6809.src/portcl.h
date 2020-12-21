@@ -71,6 +71,7 @@ public:
   class cl_memory_cell *ddcb;
   class cl_memory_cell *incb;
   class cl_memory_cell *rs[4];
+  int prev_ca1, prev_ca2, prev_cb1, prev_cb2;
  public:
   cl_port(class cl_uc *auc, int aid);
   cl_port(class cl_uc *auc, int aid, t_addr the_addr);
@@ -84,6 +85,11 @@ public:
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
+  virtual int ca1(void);
+  virtual int ca2(void);
+  virtual int cb1(void);
+  virtual int cb2(void);
+  
   virtual int tick(int cycles);
   virtual void reset(void);
   
