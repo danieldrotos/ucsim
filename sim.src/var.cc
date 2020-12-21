@@ -28,6 +28,7 @@
 /*@1@*/
 
 #include <string.h>
+#include <ctype.h>
 
 #include "varcl.h"
 
@@ -94,6 +95,10 @@ cl_var::print_info(cl_console_base *con)
 	{
 	  con->dd_printf("= ");
 	  con->dd_printf(as->data_format, v);
+	  con->dd_printf(",%u", MU(v));
+	  con->dd_printf(",%d", MI(v));
+	  if (isprint(MI(v)))
+	    con->dd_printf(",'%c'", MI(v));
 	}
     }
   con->dd_printf("\n");

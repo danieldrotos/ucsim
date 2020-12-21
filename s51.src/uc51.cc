@@ -2080,9 +2080,9 @@ cl_uc51_cpu::cfg_help(t_addr addr)
     case uc51cpu_mdp_mode:
       return "Multi DPTR simulation mode 's'=sfr, 'c'=chip, 'n'=none (int, RO)";
     case uc51cpu_movxri_mode:
-      return "Calc mode of high address for MOVX @Ri, 'm': memory, 'e': expr  (int, RW)";
+      return "Calc mode of high address for MOVX @Ri, 'm'=memory, 'e'=expr  (int, RW)";
     case uc51cpu_movxri_as:
-      return "Address space where high address is in 'm' mode, 'i', 's', 'x', 'c' (int, RW)";
+      return "Address space where high address is in 'm' mode, 'i','s','x','c' (int, RW)";
     case uc51cpu_movxri_addr:
       return "Address where high address is in 'm' mode (int, RW)";
     }
@@ -2184,6 +2184,14 @@ cl_uc51_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       break;
     }
   return cell->get();
+}
+
+
+void
+cl_uc51_cpu::print_info(class cl_console_base *con)
+{
+  con->dd_printf("%s[%d]\n", id_string, id);
+  print_cfg_info(con);
 }
 
 /* End of s51.src/uc51.cc */
