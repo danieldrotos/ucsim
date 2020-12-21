@@ -413,10 +413,8 @@ cl_hw::handle_input(int c)
 }
 
 void
-cl_hw::refresh_display(bool force)
+cl_hw::draw_state_time(bool force)
 {
-  if (!io)
-    return ;
   int n= uc->sim->state & SIM_GO;
   if ((n != cache_run) ||
       force)
@@ -438,15 +436,20 @@ cl_hw::refresh_display(bool force)
 	io->dd_printf("                ");
       cache_time= t;
     }
+}
 
-  io->dd_color("answer");
-  //io->tu_go(1,3);
-  //io->dd_printf("\033[2K"); // entire line
-  //io->dd_printf("\033[0J"); // from cursor to end of screen
-  //io->dd_printf("\n");
-  
+void
+cl_hw::refresh_display(bool force)
+{
+  if (!io)
+    return ;
+
+  io->tu_hide();
   io->tu_go(1,4);
+  io->dd_color("answer");
   print_info(io);
+  draw_state_time(force);
+  io->tu_show();
 }
 
 void

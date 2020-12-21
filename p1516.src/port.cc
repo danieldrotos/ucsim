@@ -168,7 +168,7 @@ cl_porto::refresh_display(bool force)
     }
   pio->dd_color("answer");
   
-  cl_hw::refresh_display(force);
+  draw_state_time(force);
 }
 
 void
