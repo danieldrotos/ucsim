@@ -74,6 +74,9 @@ cl_port::init(void)
   ddcb= cfg_cell(cfg_ddcb);
   incb= cfg_cell(cfg_incb);
 
+  cfg_set(cfg_reqs, 0);
+  cfg_set(cfg_firq, 0);
+  
   cl_var *v;
   chars pn= chars("", "port%d_", id);
   uc->vars->add(v= new cl_var(pn+chars("base"), cfg, cfg_base,
@@ -159,6 +162,9 @@ cl_port::init(void)
   uc->vars->add(v= new cl_var(pn+chars("reqs"), cfg, cfg_reqs,
 			      cfg_help(cfg_reqs)));
   v->init();
+  uc->vars->add(v= new cl_var(pn+chars("firq"), cfg, cfg_firq,
+			      cfg_help(cfg_firq)));
+  v->init();
 
   return(0);
 }
@@ -191,6 +197,7 @@ cl_port::cfg_help(t_addr addr)
     {
     case cfg_on		: return "Turn/get on/off state (bool, RW)";
     case cfg_reqs	: return "IRQS of CA2, CA1, CB2, CB1 (int, RW)";
+    case cfg_firq	: return "Fast request by CA2, CA1, CB2, CB1 (int, RW)";
     case cfg_base	: return "Base address of the port (int, RW)";
     case cfg_ddra	: return "DDRA - Data Direction Register A (int, RW)";
     case cfg_ora	: return "ORA  - Peripheral Register A (int, RW)";
@@ -269,9 +276,9 @@ cl_port::write(class cl_memory_cell *cell, t_mem *val)
 	}
     }
   conf(cell, val);
-  if (r == NULL)
-    return;
-  r->set(*val);
+  if (r)
+    r->set(*val);
+  check_edges();
 }
 
 t_mem
@@ -328,6 +335,10 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 		    ((cb&0x80)?1:0)
 		    );
 	}
+      break;
+    case cfg_firq	:
+      if (*val)
+	*val&= 0x0f;
       break;
     case cfg_ddra	: r= ddra; break;
     case cfg_ora	: r= ora; break;
@@ -456,7 +467,7 @@ cl_port::cb2(void)
 }
 
 int
-cl_port::tick(int cycles)
+cl_port::check_edges(void)
 {
   u8_t ca= cra->get();
   u8_t cb= crb->get();

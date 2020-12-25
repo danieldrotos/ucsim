@@ -37,20 +37,21 @@ enum port_cfg
    cfg_on	= 0,
    cfg_base	= 1,
    cfg_reqs	= 2,
-   cfg_ddra	= 3,
-   cfg_ora	= 4,
-   cfg_ina	= 5,
-   cfg_ira	= 6,
-   cfg_ddrb	= 7,
-   cfg_orb	= 8,
-   cfg_inb	= 9,
-   cfg_irb	= 10,
-   cfg_oca	= 11, // out value of CA2
-   cfg_ddca	= 12, // data direction of CA2(,CA1)
-   cfg_inca	= 13, // input value for CA2,CA1
-   cfg_ocb	= 14, // out value of CB2
-   cfg_ddcb	= 15, // data direction of CB2(,CB1)
-   cfg_incb	= 16, // input value for CB2,CB1
+   cfg_firq	= 3,
+   cfg_ddra	= 4,
+   cfg_ora	= 5,
+   cfg_ina	= 6,
+   cfg_ira	= 7,
+   cfg_ddrb	= 8,
+   cfg_orb	= 9,
+   cfg_inb	= 10,
+   cfg_irb	= 11,
+   cfg_oca	= 12, // out value of CA2
+   cfg_ddca	= 13, // data direction of CA2(,CA1)
+   cfg_inca	= 14, // input value for CA2,CA1
+   cfg_ocb	= 15, // out value of CB2
+   cfg_ddcb	= 16, // data direction of CB2(,CB1)
+   cfg_incb	= 17, // input value for CB2,CB1
   };
 
 class cl_port: public cl_hw
@@ -78,7 +79,7 @@ public:
   cl_port(class cl_uc *auc, int aid);
   cl_port(class cl_uc *auc, int aid, t_addr the_addr);
   virtual int init(void);
-  virtual int cfg_size(void) { return 17; }
+  virtual int cfg_size(void) { return 18; }
   virtual const char *cfg_help(t_addr addr);
   virtual void set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
 
@@ -94,7 +95,7 @@ public:
   virtual int cb1(void);
   virtual int cb2(void);
   
-  virtual int tick(int cycles);
+  virtual int check_edges(void);
   virtual void reset(void);
   
   virtual void print_info(class cl_console_base *con);
