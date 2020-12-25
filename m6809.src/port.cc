@@ -75,7 +75,10 @@ cl_port::init(void)
   incb= cfg_cell(cfg_incb);
 
   cfg_set(cfg_reqs, 0);
-  cfg_set(cfg_firq, 0);
+  cfg_set(cfg_ca1_req, 'i');
+  cfg_set(cfg_ca2_req, 'i');
+  cfg_set(cfg_cb1_req, 'i');
+  cfg_set(cfg_cb2_req, 'i');
   
   cl_var *v;
   chars pn= chars("", "port%d_", id);
@@ -162,8 +165,17 @@ cl_port::init(void)
   uc->vars->add(v= new cl_var(pn+chars("reqs"), cfg, cfg_reqs,
 			      cfg_help(cfg_reqs)));
   v->init();
-  uc->vars->add(v= new cl_var(pn+chars("firq"), cfg, cfg_firq,
-			      cfg_help(cfg_firq)));
+  uc->vars->add(v= new cl_var(pn+chars("ca1_req"), cfg, cfg_ca1_req,
+			      cfg_help(cfg_ca1_req)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("ca2_req"), cfg, cfg_ca2_req,
+			      cfg_help(cfg_ca2_req)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("cb1_req"), cfg, cfg_cb1_req,
+			      cfg_help(cfg_cb1_req)));
+  v->init();
+  uc->vars->add(v= new cl_var(pn+chars("cb2_req"), cfg, cfg_cb2_req,
+			      cfg_help(cfg_cb2_req)));
   v->init();
 
   return(0);
@@ -197,7 +209,10 @@ cl_port::cfg_help(t_addr addr)
     {
     case cfg_on		: return "Turn/get on/off state (bool, RW)";
     case cfg_reqs	: return "IRQS of CA2, CA1, CB2, CB1 (int, RW)";
-    case cfg_firq	: return "Fast request by CA2, CA1, CB2, CB1 (int, RW)";
+    case cfg_ca1_req	: return "Req mode of CA1 'i'=IRQ 'f'=FIRQ 'n'=NMI (int, RW)";
+    case cfg_ca2_req	: return "Req mode of CA2 'i'=IRQ 'f'=FIRQ 'n'=NMI (int, RW)";
+    case cfg_cb1_req	: return "Req mode of CB1 'i'=IRQ 'f'=FIRQ 'n'=NMI (int, RW)";
+    case cfg_cb2_req	: return "Req mode of CB2 'i'=IRQ 'f'=FIRQ 'n'=NMI (int, RW)";
     case cfg_base	: return "Base address of the port (int, RW)";
     case cfg_ddra	: return "DDRA - Data Direction Register A (int, RW)";
     case cfg_ora	: return "ORA  - Peripheral Register A (int, RW)";
@@ -336,10 +351,10 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 		    );
 	}
       break;
-    case cfg_firq	:
-      if (*val)
-	*val&= 0x0f;
-      break;
+    case cfg_ca1_req	: break;
+    case cfg_ca2_req	: break;
+    case cfg_cb1_req	: break;
+    case cfg_cb2_req	: break;
     case cfg_ddra	: r= ddra; break;
     case cfg_ora	: r= ora; break;
     case cfg_ina	: r= ina; break;
@@ -469,30 +484,52 @@ cl_port::cb2(void)
 int
 cl_port::check_edges(void)
 {
-  u8_t ca= cra->get();
-  u8_t cb= crb->get();
-  if (ca & 1)
+  class cl_memory_cell *cr= cra;
+  int signal= ca1();
+  int edge= ((cr->get())&2)>>1;
+  int *prev= &prev_ca1;
+  
+  if (*prev != signal)
     {
-      int a1= ca1();
-      if (( (ca & 2) && !prev_ca1 &&  a1) ||
-	  (!(ca & 2) &&  prev_ca1 && !a1)
-	  )
+      *prev= signal;
+      if (!(edge ^ signal))
+	cr->set_bit1(0x80);
+    }
+  if (!(cr->get() & 0x20))
+    {
+      signal= ca2();
+      edge= (cr->get() & 0x10) >> 4;
+      prev= &prev_ca2;
+      if (*prev != signal)
 	{
-	  cra->write(ca | 0x80);
+	  *prev= signal;
+	  if (!(edge ^ signal))
+	    cr->set_bit1(0x40);
 	}
     }
-  if (prev_ca1 != ca1()) prev_ca1= ca1();
-  if (cb & 1)
+  
+  cr= crb;
+  signal= cb1();
+  edge= ((cr->get())&2)>>1;
+  prev= &prev_cb1;
+  if (*prev != signal)
     {
-      int b1= cb1();
-      if (( (cb & 2) && !prev_cb1 &&  b1) ||
-	  (!(cb & 2) &&  prev_cb1 && !b1)
-	  )
+      *prev= signal;
+      if (!(edge ^ signal))
+	cr->set_bit1(0x80);
+    }
+  if (!(cr->get() & 0x20))
+    {
+      signal= cb2();
+      edge= (cr->get() & 0x10) >> 4;
+      prev= &prev_cb2;
+      if (*prev != signal)
 	{
-	  crb->write(cb | 0x80);
+	  *prev= signal;
+	  if (!(edge ^ signal))
+	    cr->set_bit1(0x40);
 	}
     }
-  if (prev_cb1 != cb1()) prev_cb1= cb1();
   return 0;
 }
 
@@ -541,13 +578,13 @@ cl_port::print_info(class cl_console_base *con)
   con->dd_printf(" CRA 0x%02x", ca);
   con->dd_printf("   IRQA1 %d", (ca&0x80)?1:0);
   con->dd_printf("   EnA1 %d", (ca&0x01)?1:0);
-  con->dd_printf("   EdgA1 %d", (ca&0x02)?1:0);
-  con->dd_printf("   CA1 %d", ca1());
+  con->dd_printf("   EdgA1 %c", (ca&0x02)?'R':'F');
+  con->dd_printf("   CA1 %d->%d", prev_ca1, ca1());
   con->dd_printf("\n                ");
   con->dd_printf("   IRQA2 %d", (ca&0x40)?1:0);
   con->dd_printf("   EnA2 %d", ((ca&0x28)==0x08)?1:0);
-  con->dd_printf("   EdgA2 %d", (ca&0x10)?1:0);
-  con->dd_printf("   CA2 %d", ca2());
+  con->dd_printf("   EdgA2 %c", (ca&0x10)?'R':'F');
+  con->dd_printf("   CA2 %d->%d", prev_ca2, ca2());
   con->dd_printf("\n                ");
   con->dd_printf("   DirA2 %s", (ca&0x20)?"Out":"In ");
   con->dd_printf(" ModA2 ");
@@ -569,13 +606,13 @@ cl_port::print_info(class cl_console_base *con)
   con->dd_printf(" CRB 0x%02x", cb);
   con->dd_printf("   IRQB1 %d", (cb&0x80)?1:0);
   con->dd_printf("   EnB1 %d", (cb&0x01)?1:0);
-  con->dd_printf("   EdgB1 %d", (cb&0x02)?1:0);
-  con->dd_printf("   CB1 %d", cb1());
+  con->dd_printf("   EdgB1 %c", (cb&0x02)?'R':'F');
+  con->dd_printf("   CB1 %d->%d", prev_cb1, cb1());
   con->dd_printf("\n                ");
   con->dd_printf("   IRQB2 %d", (cb&0x40)?1:0);
   con->dd_printf("   EnB2 %d", ((cb&0x28)==0x08)?1:0);
-  con->dd_printf("   EdgB2 %d", (cb&0x10)?1:0);
-  con->dd_printf("   CB2 %d", cb2());
+  con->dd_printf("   EdgB2 %c", (cb&0x10)?'R':'F');
+  con->dd_printf("   CB2 %d->%d", prev_cb2, cb2());
   con->dd_printf("\n                ");
   con->dd_printf("   DirB2 %s", (ca&0x20)?"Out":"In ");
   con->dd_printf(" ModB2 ");
