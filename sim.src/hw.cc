@@ -506,7 +506,7 @@ cl_hw::print_cfg_info(class cl_console_base *con)
   if (cfg)
     {      
       s= cfg->get_start_address();
-      e= s + cfg->get_size();
+      e= s + cfg->get_size()-1;
       for (a= s; a <= e; a++)
 	{
 	  v= cfg->read(a);
