@@ -76,6 +76,8 @@ enum flags
    flagE= 128
   };
 
+class cl_m6809_nmi_src;
+
 class cl_m6809: public cl_uc
 {
 public:
@@ -86,6 +88,7 @@ public:
   bool cwai;
 public:
   class cl_address_space *rom;
+  class cl_m6809_nmi_src *src_irq, *src_firq, *src_nmi;
 protected:
   u8_t *reg8_ptr[8];
   u16_t *reg16_ptr[8];
@@ -199,7 +202,9 @@ public:
     Evalue= aEvalue;
     IFvalue= aIFvalue;
   }
+  virtual bool is_nmi(void) { return true; }
   virtual void clear(void) { src_cell->write(0); }
+  virtual class cl_m6809_nmi_src *get_parent(void) { return NULL; }
 };
   
 class cl_m6809_it_src: public cl_m6809_nmi_src
@@ -218,6 +223,7 @@ public:
 		  u8_t   aIFvalue):
     cl_m6809_nmi_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, aEvalue, aIFvalue)
   {}
+  virtual bool is_nmi(void) { return false; }
   virtual bool enabled(void);
 };
 

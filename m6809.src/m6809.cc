@@ -2255,8 +2255,20 @@ cl_m6809::exec_inst(void)
 int
 cl_m6809::accept_it(class it_level *il)
 {
+  //class cl_m6809_nmi_src *org= NULL;
   class cl_m6809_nmi_src *is= (class cl_m6809_nmi_src *)(il->source);
+  class cl_m6809_nmi_src *parent= NULL;
 
+  if (is)
+    {
+      if ((parent= is->get_parent()) != NULL)
+	{
+	  //org= is;
+	  is= parent;
+	  il->source= is;
+	}
+    }
+  
   tick(3);
   reg.CC&= ~flagE;
   reg.CC|= is->Evalue;
@@ -2309,44 +2321,42 @@ cl_m6809_cpu::init()
   v->init();
   uc->vars->add(v= new cl_var("FIRQ", cfg, cpu_firq, "FIRQ request/clear"));
   v->init();
-  
-  class cl_it_src *is;
 
-  is= new cl_m6809_it_src(uc,
-			  irq_irq,
-			  muc->regs8->get_cell(3), flagI,
-			  cfg->get_cell(cpu_irq), 1,
-			  0xfff8,
-			  "Interrupt request",
-			  0,
-			  flagE,
-			  flagI);
-  is->init();
-  uc->it_sources->add(is);
+  muc->src_irq= new cl_m6809_it_src(uc,
+				    irq_irq,
+				    muc->regs8->get_cell(3), flagI,
+				    cfg->get_cell(cpu_irq), 1,
+				    0xfff8,
+				    "Interrupt request",
+				    0,
+				    flagE,
+				    flagI);
+  muc->src_irq->init();
+  uc->it_sources->add(muc->src_irq);
 
-  is= new cl_m6809_it_src(uc,
-			  irq_firq,
-			  muc->regs8->get_cell(3), flagF,
-			  cfg->get_cell(cpu_firq), 1,
-			  0xfff6,
-			  "Fast interrupt request",
-			  0,
-			  0,
-			  flagI|flagF);
-  is->init();
-  uc->it_sources->add(is);
+  muc->src_firq= new cl_m6809_it_src(uc,
+				     irq_firq,
+				     muc->regs8->get_cell(3), flagF,
+				     cfg->get_cell(cpu_firq), 1,
+				     0xfff6,
+				     "Fast interrupt request",
+				     0,
+				     0,
+				     flagI|flagF);
+  muc->src_firq->init();
+  uc->it_sources->add(muc->src_firq);
 
-  is= new cl_m6809_nmi_src(uc,
-			   irq_nmi,
-			   cfg->get_cell(cpu_nmi_en), 1,
-			   cfg->get_cell(cpu_nmi), 1,
-			   0xfffc,
-			   "Non-maskable interrupt request",
-			   0,
-			   flagE,
-			   flagI|flagF);
-  is->init();
-  uc->it_sources->add(is);
+  muc->src_nmi= new cl_m6809_nmi_src(uc,
+				     irq_nmi,
+				     cfg->get_cell(cpu_nmi_en), 1,
+				     cfg->get_cell(cpu_nmi), 1,
+				     0xfffc,
+				     "Non-maskable interrupt request",
+				     0,
+				     flagE,
+				     flagI|flagF);
+  muc->src_nmi->init();
+  uc->it_sources->add(muc->src_nmi);
   
   return 0;
 }
