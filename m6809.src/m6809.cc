@@ -2255,9 +2255,9 @@ cl_m6809::exec_inst(void)
 int
 cl_m6809::accept_it(class it_level *il)
 {
-  //class cl_m6809_nmi_src *org= NULL;
-  class cl_m6809_nmi_src *is= (class cl_m6809_nmi_src *)(il->source);
-  class cl_m6809_nmi_src *parent= NULL;
+  //class cl_m6809_src_base *org= NULL;
+  class cl_m6809_src_base *is= (class cl_m6809_src_base *)(il->source);
+  class cl_m6809_src_base *parent= NULL;
 
   if (is)
     {
@@ -2293,8 +2293,40 @@ cl_m6809::accept_it(class it_level *il)
 
 /* CPU hardware */
 
+class cl_m6809_src_base *
+cl_m6809_src_base::get_parent(void)
+{
+  class cl_m6809 *muc= (class cl_m6809 *)(application->get_uc());
+  switch (pass_to)
+    {
+    case irq_nmi:
+      return muc->src_nmi;
+      break;
+    case irq_firq:
+      return muc->src_firq;
+      break;
+    case irq_irq:
+      return muc->src_irq;
+      break;
+    default:
+      return NULL;
+    }
+  return NULL;
+}
+
+void
+cl_m6809_src_base::set_pass_to(t_mem value)
+{
+  if (value == (t_mem)irq_firq)
+    pass_to= irq_firq;
+  else if (value == (t_mem)irq_nmi)
+    pass_to= irq_nmi;
+  else
+    pass_to= irq_irq;
+}
+
 bool
-cl_m6809_it_src::enabled(void)
+cl_m6809_irq_src::enabled(void)
 {
   if (!ie_cell)
     return false;
@@ -2302,6 +2334,21 @@ cl_m6809_it_src::enabled(void)
   e&= ie_mask;
   return e == 0;
 }
+
+bool
+cl_m6809_slave_src::enabled(void)
+{
+  if (!ie_cell)
+    return false;
+  t_mem e= ie_cell->get();
+  e&= ie_mask;
+  return e == ie_value;
+}
+
+
+/*
+ * peripheral to handle CPU specific stuff
+ */
 
 cl_m6809_cpu::cl_m6809_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
@@ -2322,39 +2369,42 @@ cl_m6809_cpu::init()
   uc->vars->add(v= new cl_var("FIRQ", cfg, cpu_firq, "FIRQ request/clear"));
   v->init();
 
-  muc->src_irq= new cl_m6809_it_src(uc,
-				    irq_irq,
-				    muc->regs8->get_cell(3), flagI,
-				    cfg->get_cell(cpu_irq), 1,
-				    0xfff8,
-				    "Interrupt request",
-				    0,
-				    flagE,
-				    flagI);
+  muc->src_irq= new cl_m6809_irq_src(uc,
+				     irq_irq,
+				     muc->regs8->get_cell(3), flagI,
+				     cfg->get_cell(cpu_irq), 1,
+				     0xfff8,
+				     "Interrupt request",
+				     0,
+				     flagE,
+				     flagI,
+				     irq_none);
   muc->src_irq->init();
   uc->it_sources->add(muc->src_irq);
 
-  muc->src_firq= new cl_m6809_it_src(uc,
-				     irq_firq,
-				     muc->regs8->get_cell(3), flagF,
-				     cfg->get_cell(cpu_firq), 1,
-				     0xfff6,
-				     "Fast interrupt request",
-				     0,
-				     0,
-				     flagI|flagF);
+  muc->src_firq= new cl_m6809_irq_src(uc,
+				      irq_firq,
+				      muc->regs8->get_cell(3), flagF,
+				      cfg->get_cell(cpu_firq), 1,
+				      0xfff6,
+				      "Fast interrupt request",
+				      0,
+				      0,
+				      flagI|flagF,
+				      irq_none);
   muc->src_firq->init();
   uc->it_sources->add(muc->src_firq);
 
-  muc->src_nmi= new cl_m6809_nmi_src(uc,
-				     irq_nmi,
-				     cfg->get_cell(cpu_nmi_en), 1,
-				     cfg->get_cell(cpu_nmi), 1,
-				     0xfffc,
-				     "Non-maskable interrupt request",
-				     0,
-				     flagE,
-				     flagI|flagF);
+  muc->src_nmi= new cl_m6809_src_base(uc,
+				      irq_nmi,
+				      cfg->get_cell(cpu_nmi_en), 1,
+				      cfg->get_cell(cpu_nmi), 1,
+				      0xfffc,
+				      "Non-maskable interrupt request",
+				      0,
+				      flagE,
+				      flagI|flagF,
+				      irq_none);
   muc->src_nmi->init();
   uc->it_sources->add(muc->src_nmi);
   
@@ -2435,9 +2485,12 @@ cl_m6809_cpu::print_info(class cl_console_base *con)
   con->dd_printf("  Handler  ISR    En  Pr Req Act Name\n");
   for (i= 0; i < uc->it_sources->count; i++)
     {
-      class cl_it_src *is= (class cl_it_src *)(uc->it_sources->at(i));
-      t_addr a= uc->rom->get(is->addr) * 256 + uc->rom->get(is->addr+1);
-      con->dd_printf("  [0x%04x] 0x%04x", AU(is->addr), a);
+      class cl_m6809_src_base *is=
+	(class cl_m6809_src_base *)(uc->it_sources->at(i));
+      class cl_m6809_src_base *pa= is->get_parent();
+      class cl_m6809_src_base *isp= (pa)?pa:is;
+      t_addr a= uc->rom->get(isp->addr) * 256 + uc->rom->get(isp->addr+1);
+      con->dd_printf("  [0x%04x] 0x%04x", AU(isp->addr), a);
       con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
       con->dd_printf(" %2d", uc->priority_of(is->nuof));
       con->dd_printf(" %-3s", (is->pending())?"YES":"no");

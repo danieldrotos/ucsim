@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "argcl.h"
 
 // local
-
+#include "m6809cl.h"
 #include "portcl.h"
 
 
@@ -178,6 +178,31 @@ cl_port::init(void)
 			      cfg_help(cfg_cb2_req)));
   v->init();
 
+  is_ca1= new cl_m6809_slave_src(uc,
+				 cra, 1, 1,
+				 cra, 0x80,
+				 pn+"CA1");
+  is_ca1->init();
+  uc->it_sources->add(is_ca1);
+  is_ca2= new cl_m6809_slave_src(uc,
+				 cra, 0x28, 0x08,
+				 cra, 0x40,
+				 pn+"CA2");
+  is_ca2->init();
+  uc->it_sources->add(is_ca2);
+  is_cb1= new cl_m6809_slave_src(uc,
+				 crb, 1, 1,
+				 crb, 0x80,
+				 pn+"CB1");
+  is_cb1->init();
+  uc->it_sources->add(is_cb1);
+  is_cb2= new cl_m6809_slave_src(uc,
+				 crb, 0x28, 0x08,
+				 crb, 0x40,
+				 pn+"CB2");
+  is_cb2->init();
+  uc->it_sources->add(is_cb2);
+  
   return(0);
 }
 
@@ -351,10 +376,22 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 		    );
 	}
       break;
-    case cfg_ca1_req	: break;
-    case cfg_ca2_req	: break;
-    case cfg_cb1_req	: break;
-    case cfg_cb2_req	: break;
+    case cfg_ca1_req	:
+      if (val)
+	is_ca1->set_pass_to(*val);
+      break;
+    case cfg_ca2_req	:
+      if (val)
+	is_ca2->set_pass_to(*val);
+      break;
+    case cfg_cb1_req	:
+      if (val)
+	is_cb1->set_pass_to(*val);
+      break;
+    case cfg_cb2_req	:
+      if (val)
+	is_cb2->set_pass_to(*val);
+      break;
     case cfg_ddra	: r= ddra; break;
     case cfg_ora	: r= ora; break;
     case cfg_ina	: r= ina; break;
