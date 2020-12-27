@@ -33,7 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 #include "serialcl.h"
-#include "portcl.h"
+#include "piacl.h"
 
 #include "m6809cl.h"
 
@@ -115,9 +115,9 @@ cl_m6809::mk_hw_elements(void)
   add_hw(h= new cl_serial(this, 0, 0xc000));
   h->init();
 
-  class cl_port *p0;
+  class cl_pia *p0;
   
-  add_hw(p0= new cl_port(this, 0, 0xc010));
+  add_hw(p0= new cl_pia(this, 0, 0xc010));
   p0->init();
 
   class cl_port_ui *d;

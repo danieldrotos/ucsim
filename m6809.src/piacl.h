@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (portcl.h)
+ * Simulator of microcontrollers (piacl.h)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -25,14 +25,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef PORTCL_HEADER
-#define PORTCL_HEADER
+#ifndef PIACL_HEADER
+#define PIACL_HEADER
 
 #include "hwcl.h"
 #include "port_hwcl.h"
 
 
-enum port_cfg
+enum pia_cfg
   {
    cfg_on	= 0,
    cfg_base	= 1,
@@ -57,7 +57,7 @@ enum port_cfg
    cfg_incb	= 20, // input value for CB2,CB1
   };
 
-class cl_port: public cl_hw
+class cl_pia: public cl_hw
 {
 public:
   t_addr base;
@@ -80,8 +80,8 @@ public:
   class cl_var *vcra, *vcrb;
   class cl_m6809_src_base *is_ca1, *is_ca2, *is_cb1, *is_cb2;
  public:
-  cl_port(class cl_uc *auc, int aid);
-  cl_port(class cl_uc *auc, int aid, t_addr the_addr);
+  cl_pia(class cl_uc *auc, int aid);
+  cl_pia(class cl_uc *auc, int aid, t_addr the_addr);
   virtual int init(void);
   virtual int cfg_size(void) { return 21; }
   virtual const char *cfg_help(t_addr addr);
@@ -108,4 +108,4 @@ public:
 
 #endif
 
-/* End of m6898.src/portcl.h */
+/* End of m6898.src/piacl.h */

@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (port.cc)
+ * Simulator of microcontrollers (pia.cc)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -33,23 +33,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // local
 #include "m6809cl.h"
-#include "portcl.h"
+#include "piacl.h"
 
 
-cl_port::cl_port(class cl_uc *auc, int aid):
-  cl_hw(auc, HW_PORT, aid, "port")
+cl_pia::cl_pia(class cl_uc *auc, int aid):
+  cl_hw(auc, HW_PORT, aid, "pia")
 {
   base= 0xc010;
 }
 
-cl_port::cl_port(class cl_uc *auc, int aid, t_addr the_addr):
-  cl_hw(auc, HW_PORT, aid, "port")
+cl_pia::cl_pia(class cl_uc *auc, int aid, t_addr the_addr):
+  cl_hw(auc, HW_PORT, aid, "pia")
 {
   base= the_addr;
 }
 
 int
-cl_port::init(void)
+cl_pia::init(void)
 {
   cl_hw::init();
 
@@ -81,7 +81,7 @@ cl_port::init(void)
   cfg_set(cfg_cb2_req, 'i');
   
   cl_var *v;
-  chars pn= chars("", "port%d_", id);
+  chars pn= chars("", "pia%d_", id);
   uc->vars->add(v= new cl_var(pn+chars("base"), cfg, cfg_base,
 			      cfg_help(cfg_base)));
   v->init();
@@ -207,7 +207,7 @@ cl_port::init(void)
 }
 
 void
-cl_port::reset(void)
+cl_pia::reset(void)
 {
   cra->set(0);
   cra->write(0);
@@ -228,9 +228,9 @@ cl_port::reset(void)
 }
 
 const char *
-cl_port::cfg_help(t_addr addr)
+cl_pia::cfg_help(t_addr addr)
 {
-  switch ((enum port_cfg)addr)
+  switch ((enum pia_cfg)addr)
     {
     case cfg_on		: return "Turn/get on/off state (bool, RW)";
     case cfg_reqs	: return "IRQS of CA2, CA1, CB2, CB1 (int, RW)";
@@ -258,7 +258,7 @@ cl_port::cfg_help(t_addr addr)
 }
 
 class cl_memory_cell *
-cl_port::reg(class cl_memory_cell *cell_rs)
+cl_pia::reg(class cl_memory_cell *cell_rs)
 {
   if (cell_rs == rs[0])
     {
@@ -282,7 +282,7 @@ cl_port::reg(class cl_memory_cell *cell_rs)
 }
 
 t_mem
-cl_port::read(class cl_memory_cell *cell)
+cl_pia::read(class cl_memory_cell *cell)
 {
   class cl_memory_cell *r= reg(cell);
   conf(cell, NULL);
@@ -304,7 +304,7 @@ cl_port::read(class cl_memory_cell *cell)
 }
 
 void
-cl_port::write(class cl_memory_cell *cell, t_mem *val)
+cl_pia::write(class cl_memory_cell *cell, t_mem *val)
 {
   class cl_memory_cell *r= reg(cell);
   if (val)
@@ -322,11 +322,11 @@ cl_port::write(class cl_memory_cell *cell, t_mem *val)
 }
 
 t_mem
-cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+cl_pia::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
   t_mem v;
   class cl_memory_cell *r= NULL;
-  switch ((enum port_cfg)addr)
+  switch ((enum pia_cfg)addr)
     {
     case cfg_on	:  // turn this HW on/off
       if (val)
@@ -459,7 +459,7 @@ cl_port::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 }
 
 int
-cl_port::ira()
+cl_pia::ira()
 {
   u8_t i, o, d;
   d= ddra->get();
@@ -469,7 +469,7 @@ cl_port::ira()
 }
 
 int
-cl_port::irb()
+cl_pia::irb()
 {
   u8_t i, o, d;
   d= ddrb->get();
@@ -479,13 +479,13 @@ cl_port::irb()
 }
 
 int
-cl_port::ca1()
+cl_pia::ca1()
 {
   return inca->get() & 1;
 }
 
 int
-cl_port::ca2(void)
+cl_pia::ca2(void)
 {
   u8_t ca= cra->get();
   if (ca & 0x20)
@@ -499,13 +499,13 @@ cl_port::ca2(void)
 }
 
 int
-cl_port::cb1()
+cl_pia::cb1()
 {
   return incb->get() & 1;
 }
 
 int
-cl_port::cb2(void)
+cl_pia::cb2(void)
 {
   u8_t cb= crb->get();
   if (cb & 0x20)
@@ -519,7 +519,7 @@ cl_port::cb2(void)
 }
 
 int
-cl_port::check_edges(void)
+cl_pia::check_edges(void)
 {
   class cl_memory_cell *cr= cra;
   int signal= ca1();
@@ -571,7 +571,7 @@ cl_port::check_edges(void)
 }
 
 void
-cl_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
+cl_pia::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 {
   class cl_cmd_arg *params[2]= {
     cmdline->param(0),
@@ -595,11 +595,11 @@ cl_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
       init();
     }
   else
-    con->dd_printf("set hardware port[%d] address\n", id);
+    con->dd_printf("set hardware pia[%d] address\n", id);
 }
 
 void
-cl_port::print_info(class cl_console_base *con)
+cl_pia::print_info(class cl_console_base *con)
 {
   u8_t ca= cra->read();
   u8_t cb= crb->read();
@@ -663,4 +663,4 @@ cl_port::print_info(class cl_console_base *con)
   //print_cfg_info(con);
 }
 
-/* End of m6809.src/port.cc */
+/* End of m6809.src/pia.cc */
