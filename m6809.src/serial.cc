@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "argcl.h"
 
 // local
+#include "m6809cl.h"
 #include "serialcl.h"
 
 enum reg_idx
@@ -77,12 +78,26 @@ cl_serial::init(void)
   r_sr->set(0);//regs[sr]->set(0);
   show_readable(false);
   show_writable(true);
-
+  cfg_set(acia_cfg_req, 'i');
+  
   cl_var *v;
-  chars pn= chars("", "uart%d_base", id);
-  uc->vars->add(v= new cl_var(pn, cfg, acia_cfg_base, cfg_help(acia_cfg_base)));
+  chars pn= chars("", "uart%d_", id);
+  uc->vars->add(v= new cl_var(pn+"base", cfg, acia_cfg_base, cfg_help(acia_cfg_base)));
   v->init();
 
+  is_t= new cl_m6809_slave_src(uc,
+			       r_cr, 0x60, 0x20,
+			       r_sr, 2,
+			       pn+"tx");
+  is_t->init();
+  uc->it_sources->add(is_t);
+  is_r= new cl_m6809_slave_src(uc,
+			       r_cr, 0x80, 0x80,
+			       r_sr, 1,
+			       pn+"rx");
+  is_r->init();
+  uc->it_sources->add(is_r);
+  
   return(0);
 }
 
@@ -92,11 +107,13 @@ cl_serial::cfg_help(t_addr addr)
   switch (addr)
     {
     case acia_cfg_base:
-      return "Base address of UART registers (int, RW)";
+      return "Base address of ACIA registers (int, RW)";
     case acia_cfg_cr:
       return "Copy of written CR value";
     case acia_cfg_sr:
       return "Simulated SR value";
+    case acia_cfg_req:
+      return "Req mode of ACIA 'i'=IRQ 'f'=FIRQ 'n'=NMI";
     }
   return cl_serial_hw::cfg_help(addr);
 }
@@ -168,7 +185,14 @@ cl_serial::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set(base);
 	}
       break;
-
+    case acia_cfg_req:
+      if (val)
+	{
+	  is_r->set_pass_to(*val);
+	  is_t->set_pass_to(*val);
+	}
+      break;
+      
     case acia_cfg_cr: break;
     case acia_cfg_sr: break;
       
