@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "globals.h"
 #include "utils.h"
 
+#include "dregcl.h"
+
 #include "glob.h"
 #include "serialcl.h"
 #include "piacl.h"
@@ -103,6 +105,15 @@ cl_m6809::mk_hw_elements(void)
   class cl_option *o;
   cl_uc::mk_hw_elements();
 
+  if ((o= application->options->get_option("serial0_in_file")) == NULL)
+    {
+      o= new cl_string_option(this, "serial0_in_file",
+			      "Input file for serial line uart0 (-S)");
+      application->options->new_option(o);
+      o->init();
+      o->hide();
+    }
+
   if ((o= application->options->get_option("serial1_in_file")) == NULL)
     {
       o= new cl_string_option(this, "serial1_in_file",
@@ -112,6 +123,9 @@ cl_m6809::mk_hw_elements(void)
       o->hide();
     }
 
+  add_hw(h= new cl_dreg(this, 0, "dreg"));
+  h->init();
+  
   add_hw(h= new cl_serial(this, 0, 0xc000));
   h->init();
 
@@ -219,7 +233,6 @@ cl_m6809::make_cpu_hw(void)
 {
   add_hw(cpu= new cl_m6809_cpu(this));
   cpu->init();
-  add_hw(cpu);
 }
 
 void
