@@ -1,36 +1,72 @@
 	org 0
-	
-	ld hl,1000
-	ld a,50
-	ld (hl),a
-	
-	;; old
-	scf
-	sbc a, a		; 0x9f
-	out (8),a
-	sub a, (hl)		; 0x96
-	out (9),a
-	ccf
-	sbc a,a
-	out (0x10),a
-	sub a,(hl)
-	out (0x11),a
-	ld a,(hl)
-	out (0),a
-	
-	;; new
-	scf
-	ld  a,0			; 0x3e 0x00
-	out (0x18),a
-	sbc a, (hl)		; 0x9e
-	out (0x19),a
-	ccf
-	ld a,0
-	out (0x20),a
-	sbc a,(hl)
-	out (0x21),a
-	ld a,(hl)
-	out (1),a
 
+	ld	hl,0xfff0
+	ld	sp,hl
+
+	ld	a,50
+	ld	c,8
+	call	do_test
+
+	ld 	a,0xa0
+	ld 	c,0x30
+	call 	do_test
 	halt
 	
+do_test:
+	ld 	hl,1000
+	ld 	(hl),a
+	
+	;; old, C=1
+	scf
+	ld  	a,0		; 0x3e 0x00
+	out 	(c),a
+	sbc 	a,(hl)		; 0x9e
+	call 	save
+	
+	;; old, C=0
+	scf
+	ccf
+	ld 	a,0
+	out 	(c),a
+	sbc 	a,(hl)
+	call 	save
+	
+	;; new, C=1
+	scf
+	sbc 	a,a		; 0x9f
+	out 	(c),a
+	sub 	a,(hl)		; 0x96
+	call	save
+	
+	;; new, C=0
+	scf
+	ccf
+	sbc 	a,a
+	out 	(c),a
+	sub 	a,(hl)
+	call 	save
+	
+	ld 	a,(hl)
+
+	ret
+	
+getf:
+	push hl
+	push af
+	pop hl
+	ld a,l
+	pop hl
+	ret
+	
+save:
+	ld e,a
+	call getf
+	ld d,a
+	inc c
+	out (c),e
+	inc c
+	out (c),d
+	ld a,6
+	add a,c
+	ld c,a
+	ret
