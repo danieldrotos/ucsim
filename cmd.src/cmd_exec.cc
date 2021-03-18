@@ -527,7 +527,7 @@ CMDHELP(cl_expression_cmd,
 	"expression [/format] expr",
 	"Evaluate the expression and print result",
 	"Parameter of the command is interpreted as an expression, the value evaluated\n"
-	"and the result is printed")
+	"and the result is printed.")
 
 
 /*
