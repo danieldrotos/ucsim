@@ -53,6 +53,15 @@ cl_lr35902::cl_lr35902(struct cpu_entry *Itype, class cl_sim *asim):
   cl_z80(Itype, asim), mem(*this)
 {
   type= Itype;
+  BIT_C= 0x10;
+  BIT_A= 0x20;
+  BIT_N= 0x40;
+  BIT_Z= 0x80;
+  BIT_ALL= (BIT_C |BIT_N |BIT_A |BIT_Z);
+  BIT_P= 0;
+  BIT_S= 0;
+  regs.raf.F= 0;
+  regs.ralt_af.aF= 0;
 }
 
 int
@@ -450,17 +459,21 @@ cl_lr35902::disass(t_addr addr, const char *sep)
 void
 cl_lr35902::print_regs(class cl_console_base *con)
 {
-  con->dd_printf("SZ-A-PNC  Flags= 0x%02x %3d %c  ",
+  con->dd_color("answer");
+  con->dd_printf("ZNHC---  Flags= 0x%02x %3d %c  ",
                  regs.raf.F, regs.raf.F, isprint(regs.raf.F)?regs.raf.F:'.');
   con->dd_printf("A= 0x%02x %3d %c\n",
                  regs.raf.A, regs.raf.A, isprint(regs.raf.A)?regs.raf.A:'.');
-  con->dd_printf("%c%c-%c-%c%c%c\n",
-                 (regs.raf.F&BIT_S)?'1':'0',
+  con->dd_printf("%c%c%c%c%c%c%c%c\n",
                  (regs.raf.F&BIT_Z)?'1':'0',
-                 (regs.raf.F&BIT_A)?'1':'0',
-                 (regs.raf.F&BIT_P)?'1':'0',
                  (regs.raf.F&BIT_N)?'1':'0',
-                 (regs.raf.F&BIT_C)?'1':'0');
+                 (regs.raf.F&BIT_A)?'1':'0',
+                 (regs.raf.F&BIT_C)?'1':'0',
+                 (regs.raf.F& 0x08)?'1':'0',
+                 (regs.raf.F& 0x04)?'1':'0',
+                 (regs.raf.F& 0x03)?'1':'0',
+                 (regs.raf.F& 0x08)?'1':'0'
+		 );
   con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
                  regs.BC, ram->get(regs.BC), ram->get(regs.BC),
                  isprint(ram->get(regs.BC))?ram->get(regs.BC):'.');
@@ -589,7 +602,12 @@ cl_lr35902::exec_inst(void)
       return(inst_cp(code));
 
     case 0xc0: return(inst_ret(code));
-    case 0xc1: return(inst_pop(code));
+    case 0xc1: {
+      int ret= (inst_pop(code));
+      regs.raf.F&= 0xf0;
+      regs.ralt_af.aF&= 0xf0;
+      return ret;
+    }
     case 0xc2: case 0xc3: return(inst_jp(code));
     case 0xc4: return(inst_call(code));
     case 0xc5: return(inst_push(code));

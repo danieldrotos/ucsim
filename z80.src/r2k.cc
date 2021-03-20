@@ -518,6 +518,7 @@ cl_r2k::disass(t_addr addr, const char *sep)
 void
 cl_r2k::print_regs(class cl_console_base *con)
 {
+  con->dd_color("answer");
   con->dd_printf("SZ-A-PNC  Flags= 0x%02x %3d %c  ",
                  regs.raf.F, regs.raf.F, isprint(regs.raf.F)?regs.raf.F:'.');
   con->dd_printf("A= 0x%02x %3d %c\n",
