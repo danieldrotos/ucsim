@@ -1,17 +1,9 @@
-PRJ		= test_mdu517 test_mdu88x \
-		  stn stp strr sts stt stxr stxrw stxw \
-		  stt_small stt_large \
-		  monitor test_ser tim_ser stck_ovf \
-		  oclk receiver
+# s51.src/test/Makefile.  Generated from Makefile.in by configure.
 
-all:
-	for p in $(PRJ); do \
-		$(MAKE) -f $$p.mk clean all ;\
-	done
+srcdir           = .
 
-clean:
-	for p in $(PRJ); do \
-		$(MAKE) -f $$p.mk clean ;\
-	done
-	rm -f *.out *.sout *.tim *.csv *.sim
-	rm -f st*[56][0-9][0-9].cmd st*[56]*.txt
+abs_top_builddir = /mhome/staff/drdani/prj/ucsim/main
+abs_top_srcdir   = /mhome/staff/drdani/prj/ucsim/main
+
+
+include $(abs_top_srcdir)/test-target.mk

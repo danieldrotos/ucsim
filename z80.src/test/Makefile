@@ -1,11 +1,9 @@
-PRJ		= t0 t1 t2 stck_ovf
+# z80.src/test/Makefile.  Generated from Makefile.in by configure.
 
-all:
-	for p in $(PRJ); do \
-		$(MAKE) -f $$p.mk ;\
-	done
+srcdir           = .
 
-clean:
-	for p in $(PRJ); do \
-		$(MAKE) -f $$p.mk clean ;\
-	done
+abs_top_builddir = /mhome/staff/drdani/prj/ucsim/main
+abs_top_srcdir   = /mhome/staff/drdani/prj/ucsim/main
+
+
+include $(abs_top_srcdir)/test-target.mk
