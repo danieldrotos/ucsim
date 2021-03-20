@@ -88,9 +88,10 @@ distclean: clean
 	@for pkg in $(PKGS_ALL); do\
 	  $(MAKE) -C $$pkg -f clean.mk distclean ;\
 	done
-	@for pkg in $(PKGS); do\
+	@for pkg in $(PKGS) sim.src; do\
 		if test -d $$pkg/test; then \
 			$(MAKE) -C $$pkg/test clean ;\
+			if test -f $$pkg/test/Makefile.in; then rm -f $$pkg/test/Makefile; fi ;\
 		fi ;\
 	done
 	rm -rf doc/*~ doc/*.bak Makefile packages.mk libtool
