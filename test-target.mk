@@ -45,7 +45,7 @@ $(CLEAN_TESTS):
 	@$(MAKE) -f '$<' srcdir='$(srcdir)'
 
 %::	%/Makefile always
-	@+[[ -d '$@' ]] || mkdir '$@'
+	@+test -d '$@' || mkdir '$@'
 	@$(MAKE) -Otarget $(if $(MAKECMDGOALS),,-s) -C '$@' -f '$<' -I '$(abs_top_srcdir)' srcdir='$(srcdir)/$@' SIM='$(SIM)' all || true
 
 
