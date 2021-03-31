@@ -1809,7 +1809,10 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con, bool nl)
   char *dis;
   class cl_brk *b;
   int i, l, len= 0;
-
+  class cl_option *o= sim->app->options->get_option("black_and_white");
+  bool bw= false;
+  if (o) o->get_value(&bw);
+  
   if (!rom)
     return 0;
 
@@ -1841,7 +1844,17 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con, bool nl)
     }
   len+= con->dd_cprintf("dump_char", " %s", dis);
   if (nl)
-    con->dd_printf("\033[0K\n");
+    {
+      if (!bw)
+	{
+	  con->dd_printf("\033[0K");
+	}
+      else
+	{
+	  while (++len < 70) con->dd_printf(" ");
+	}
+      con->dd_printf("\n");
+    }
   free((char *)dis);
   return len;
 }
