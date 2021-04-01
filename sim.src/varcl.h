@@ -44,11 +44,11 @@ class cl_var: public cl_base
   class cl_memory *mem;
   t_addr addr;
   int bitnr_high, bitnr_low;
-  const char *desc;
+  chars desc;
  protected:
   class cl_memory_cell *cell;
  public:
-  cl_var(const char *iname, class cl_memory *imem, t_addr iaddr, const char *adesc, int ibitnr_high= -1, int ibitnr_low= -1);
+  cl_var(chars iname, class cl_memory *imem, t_addr iaddr, chars adesc, int ibitnr_high= -1, int ibitnr_low= -1);
   int init(void);
   class cl_memory_cell *get_cell(void) const { return cell; }
 
@@ -118,15 +118,15 @@ class cl_var_list: public cl_base
 
   /*! \brief Create and add (or replace) a var naming a set of bits in the cell given by mem and addr.
    */
-  cl_var *add(const char *name, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, const char *desc);
+  cl_var *add(chars name, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, chars desc);
 
   /*! \brief Create and add (or replace) a var naming a set of bits in the cell given by a named var.
    */
-  cl_var *add(const char *name, const char *cellname, int bitnr_high, int bitnr_low, const char *desc);
+  cl_var *add(chars name, const char *cellname, int bitnr_high, int bitnr_low, chars desc);
 
   /*! \brief Create and add (or replace) a var labelling a cell.
    */
-  cl_var *add(const char *name, class cl_memory *mem, t_addr addr, const char *desc) {
+  cl_var *add(chars name, class cl_memory *mem, t_addr addr, chars desc) {
     return add(name, mem, addr, -1, -1, desc);
   }
 

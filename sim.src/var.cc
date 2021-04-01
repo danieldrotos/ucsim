@@ -33,7 +33,7 @@
 #include "varcl.h"
 
 
-cl_var::cl_var(const char *iname, class cl_memory *imem, t_addr iaddr, const char *adesc, int ibitnr_high, int ibitnr_low):
+cl_var::cl_var(chars iname, class cl_memory *imem, t_addr iaddr, chars adesc, int ibitnr_high, int ibitnr_low):
   cl_base()
 {
   mem= imem;
@@ -117,7 +117,7 @@ cl_var::print_info(cl_console_base *con) const
     con->dd_printf(",'%c'", MI(m));
   con->dd_printf("\n");
   if (desc && desc[0])
-    con->dd_printf("  %s\n", desc);
+    con->dd_printf("  %s\n", desc.c_str());
 }
 
 
@@ -282,7 +282,7 @@ cl_var_list::add(cl_var *item)
 }
 
 cl_var *
-cl_var_list::add(const char *name, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, const char *desc)
+cl_var_list::add(chars name, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, chars desc)
 {
   cl_var *var;
 
@@ -292,7 +292,7 @@ cl_var_list::add(const char *name, class cl_memory *mem, t_addr addr, int bitnr_
 }
 
 cl_var *
-cl_var_list::add(const char *name, const char *cellname, int bitnr_high, int bitnr_low, const char *desc)
+cl_var_list::add(chars name, const char *cellname, int bitnr_high, int bitnr_low, chars desc)
 {
   int i;
   if (by_name.search(cellname, i))
