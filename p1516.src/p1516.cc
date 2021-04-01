@@ -193,13 +193,12 @@ cl_p1516::make_memories(void)
     }
   address_spaces->add(regs);
 
-  char name[] = "Rxx", desc[] = "CPU register xx";
+  chars n, d;
   for (i=0; i<16; i++)
     {
-      sprintf(&name[sizeof("R")], "%d", i);
-      desc[sizeof("CPU register ")] = name[sizeof("R") + 0];
-      desc[sizeof("CPU register ")] = name[sizeof("R") + 1];
-      vars->add(name, regs, i, 31, 0, desc);
+      n.format("R%d", i);
+      d.format("CPU register %d", i);
+      vars->add(n, regs, i, 31, 0, d);
     }
 }
 
