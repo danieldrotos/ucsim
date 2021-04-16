@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (m6800.cc)
+ * Simulator of microcontrollers (glob.cc)
  *
  * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
@@ -25,33 +25,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include <stdlib.h>
-#include <ctype.h>
-
-#include "globals.h"
-#include "utils.h"
-
-#include "dregcl.h"
-
 #include "glob.h"
 
-#include "m6800cl.h"
+// code mask branch len mn call tick
+struct dis_entry disass_m6800[]=
+  {  
+   { 0, 0, 0, 0, 0, 0 }
+  };
 
-
-cl_m6800::cl_m6800(class cl_sim *asim):
-  cl_uc(asim)
-{
-}
-
-int
-cl_m6800::init(void)
-{
-  cl_uc::init();
-
-  xtal= 1000000;
-    
-  return 0;
-}
-
-
-/* End of m6800.src/m6800.cc */
+/* End of m6800.src/glob.cc */
