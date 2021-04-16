@@ -17,6 +17,7 @@ enable_st7_port     = @enable_st7_port@
 enable_pdk_port     = @enable_pdk_port@
 enable_p1516_port   = @enable_p1516_port@
 enable_m6809_port   = @enable_m6809_port@
+enable_m6800_port   = @enable_m6800_port@
 
 ifeq ($(enable_mcs51_port),yes)
 S51		= s51.src
@@ -108,15 +109,21 @@ else
 M6809      =
 endif
 
+ifeq ($(enable_m6800_port),yes)
+M6800      	= m6800.src
+else
+M6800      =
+endif
+
 PKGS		= $(S51) $(S390) \
 		  $(SAVR) $(SZ80) $(SZ180) $(SGBZ80) $(SR2K) $(SR3KA) \
 		  $(TLCS) \
 		  $(SHC08) $(SS08) $(XA) $(STM8) $(ST7) $(PDK) $(P1516) \
-		  $(M6809) \
+		  $(M6809) $(M6800) \
 		  doc
 
 PKGS_ALL	= cmd.src sim.src gui.src \
 		  s51.src avr.src z80.src tlcs.src xa.src \
 		  hc08.src stm8.src st7.src pdk.src p1516.src \
-		  m6809.src \
+		  m6809.src m6800.src \
 		  doc
