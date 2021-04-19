@@ -1981,13 +1981,15 @@ cl_uc::symbol2address(char *sym,
     return false;
   if (vars->by_name.search(sym, i))
     {
-      const class cl_var *v= vars->by_name.at(i);
-      if (v->bitnr_low >= 0)
+      class cl_cvar *v= vars->by_name.at(i);
+      /*if (v->bitnr_low >= 0)
+	return false;*/
+      if (!v->is_mem_var())
 	return false;
       if (mem)
-	*mem= v->mem;
+	*mem= v->get_mem();
       if (addr)
-	*addr= v->addr;
+	*addr= v->get_addr();
       return true;
     }
   return false;
