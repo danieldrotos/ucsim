@@ -187,7 +187,11 @@ cl_memory::dump(int smart, t_addr start, t_addr stop, int bitnr_high, int bitnr_
     return dump_finished;
 
   if (bpl < 0)
-    bpl= 8;
+    {
+      bpl= 8;
+      if (width > 16)
+	bpl= 4;
+    }
 
   if (start < 0)
     start= dump_finished;
@@ -452,7 +456,7 @@ cl_memory::dump(int smart, t_addr start, t_addr stop, int bitnr_high, int bitnr_
                 break;
             }
           con->dd_printf(" ");
-          con->dd_printf(data_format, get(start+n*step));
+          con->dd_printf(data_format, read(start+n*step));
         }
       con->dd_printf("%-*s", (bpl - n) * (width/4 + ((width%4)?1:0) + 1) + 1, " ");
 
@@ -487,15 +491,11 @@ cl_memory::dump_s(t_addr start, t_addr stop, int bpl, /*class cl_f *f*/class cl_
   t_addr hva= highest_valid_address();
   class cl_f *f= con->get_fout();
 
-  if (stop < 0)
-    stop= start + 10 * bpl - 1;
-
   t_addr a= start;
   t_mem d= read(a);
   char last= '\n';
   con->dd_printf("%s", con->get_color_ansiseq("dump_char").c_str());
-  while ((a <= stop) &&
-	 (d != 0) &&
+  while ((d != 0) &&
 	 (a <= hva))
     {
       char c= d;

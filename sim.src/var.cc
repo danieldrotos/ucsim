@@ -104,7 +104,7 @@ cl_cvar::print_info(cl_console_base *con) const
     }
   con->dd_printf(",%uU", MU(m));
   con->dd_printf(",%d", MI(m));
-  if (isprint(MI(m)))
+  if ((MU(m) < 0x100) && isprint(MI(m)))
     con->dd_printf(",'%c'", MI(m));
   con->dd_printf("\n");
   if (desc && desc[0])
@@ -163,7 +163,7 @@ cl_var::print_info(cl_console_base *con) const
     }
   con->dd_printf(",%uU", MU(m));
   con->dd_printf(",%d", MI(m));
-  if (isprint(MI(m)))
+  if ((MU(m) < 0x100) && isprint(MI(m)))
     con->dd_printf(",'%c'", MI(m));
   con->dd_printf("\n");
   if (desc && desc[0])
