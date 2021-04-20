@@ -2105,8 +2105,9 @@ t_index i;
 found= uc->vars->by_name.search(token, i);
 if (found)
 {
-yylval.number= uc->vars->read(token);
-return PTOK_NUMBER;
+class cl_cvar *v= (class cl_cvar *)uc->vars->by_name.at(i);
+yylval.cell= v->get_cell();
+return PTOK_CELL;
 }
 }
     }

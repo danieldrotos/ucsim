@@ -149,6 +149,7 @@ primary_expr
 		$$= ($1.memory->read($1.mem_address) & mask) >> $1.bitnr_low;
 	}
 | PTOK_NUMBER { $$= $1; }
+| PTOK_CELL { $$= $1->read(); }
      /*   | string_literal_val*/
 | PTOK_LEFT_PAREN expr PTOK_RIGHT_PAREN { $$= $2; }
      /*   | generic_selection*/
@@ -167,11 +168,21 @@ postfix_expr
 	  $$= $1.memory->read($1.address);
 	  $1.memory->write($1.address, $$+1);
 	}
+| PTOK_CELL PTOK_INC_OP
+	{
+	  $$= $1->read();
+	  $1->write($$+1);
+	}
 /*| postfix_expr PTOK_DEC_OP*/
 | memory PTOK_DEC_OP
 	{
 	  $$= $1.memory->read($1.address);
 	  $1.memory->write($1.address, $$-1);
+	}
+| PTOK_CELL PTOK_DEC_OP
+	{
+	  $$= $1->read();
+	  $1->write($$-1);
 	}
 ;
 /*
@@ -190,12 +201,24 @@ unary_expr
 	  $2.memory->write($2.address, $$+1);
 	  $$= $2.memory->read($2.address);
 	}
+| PTOK_INC_OP PTOK_CELL
+	{
+	  $$= $2->read();
+	  $2->write($$+1);
+	  $$= $2->read();
+	}
 /*| PTOK_DEC_OP unary_expr      */
 | PTOK_DEC_OP memory
 	{
 	  $$= $2.memory->read($2.address);
 	  $2.memory->write($2.address, $$-1);
 	  $$= $2.memory->read($2.address);
+	}
+| PTOK_DEC_OP PTOK_CELL
+	{
+	  $$= $2->read();
+	  $2->write($$-1);
+	  $$= $2->read();
 	}
 /*| unary_operator cast_expr	*/
 /*| PTOK_AMPERSAND unary_expr*/
@@ -367,6 +390,48 @@ assignment_expr
 		mask= ($1.memory->read($1.mem_address) & (~mask)) | (($3 & mask) << $1.bitnr_low);
 		$1.memory->write($1.mem_address, mask);
 		$$= mask;
+	}
+| PTOK_CELL assignment_operator assignment_expr
+	{
+	  t_mem org= $1->read();
+	  $$= $3;
+	  switch ($2)
+	    {
+	    case PTOK_EQUAL:
+	      $1->write($3);
+	      break;
+	    case PTOK_MUL_ASSIGN:
+	      $1->write(org *= $3);
+	      break;
+	    case PTOK_DIV_ASSIGN:
+	      $1->write(org /= $3);
+	      break;
+	    case PTOK_MOD_ASSIGN:
+	      $1->write(org %= $3);
+	      break;
+	    case PTOK_ADD_ASSIGN:
+	      $1->write(org += $3);
+	      break;
+	    case PTOK_SUB_ASSIGN:
+	      $1->write(org -= $3);
+	      break;
+	    case PTOK_LEFT_ASSIGN:
+	      $1->write(org <<= $3);
+	      break;
+	    case PTOK_RIGHT_ASSIGN:
+	      $1->write(org >>= $3);
+	      break;
+	    case PTOK_AND_ASSIGN:
+	      $1->write(org &= $3);
+	      break;
+	    case PTOK_XOR_ASSIGN:
+	      $1->write(org ^= $3);
+	      break;
+	    case PTOK_OR_ASSIGN:
+	      $1->write(org |= $3);
+	      break;
+	    }
+	  $$= $1->read();
 	}
 ;
 
