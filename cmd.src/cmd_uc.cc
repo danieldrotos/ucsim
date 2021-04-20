@@ -332,21 +332,21 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 
   switch (fmt)
     {
-      case 0: // default
-        mem->dump(1, start, end, bpl, con);
-        break;
-      case 'b': // binary
-        mem->dump_b(start, end, bpl, con);
-        break;
-      case 'h': // hex
-        mem->dump(0, start, end, bpl, con);
-        break;
-      case 'i': // ihex
-        mem->dump_i(start, end, 32, con);
-        break;
-      case 's': // string
-        mem->dump_s(start, end, bpl, con);
-        break;
+    case 0: // default
+      mem->dump(1, start, end, bpl, con);
+      break;
+    case 'b': // binary
+      mem->dump_b(start, end, bpl, con);
+      break;
+    case 'h': case 'x':// hex
+      mem->dump(0, start, end, bpl, con);
+      break;
+    case 'i': // ihex
+      mem->dump_i(start, end, 32, con);
+      break;
+    case 's': // string
+      mem->dump_s(start, end, bpl, con);
+      break;
     }
 
   return(false);;
