@@ -202,6 +202,9 @@ cl_p1516::make_memories(void)
       d.format("CPU register %d", i);
       vars->add(n, regs, i, 31, 0, d);
     }
+  class cl_cvar *v= new cl_cvar("RC0", RC[0], "CellVar of R0");
+  v->init();
+  vars->add(v);
 }
 
 

@@ -70,6 +70,14 @@ cl_cvar::write(t_mem val)
 }
 
 t_mem
+cl_cvar::read()
+{
+  if (!cell)
+    return 0;
+  return cell->read();
+}
+
+t_mem
 cl_cvar::set(t_mem val)
 {
   if (!cell)
@@ -321,8 +329,8 @@ cl_var_list::del(const char *name)
   return found;
 }
 
-cl_var *
-cl_var_list::add(cl_var *item)
+class cl_cvar *
+cl_var_list::add(class cl_cvar *item)
 {
   const char *name = item->get_name();
 
@@ -340,23 +348,23 @@ cl_var_list::add(cl_var *item)
   return item;
 }
 
-cl_var *
+class cl_cvar *
 cl_var_list::add(chars name, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, chars desc)
 {
-  cl_var *var;
+  class cl_cvar *var;
 
   var = new cl_var(name, mem, addr, desc, bitnr_high, bitnr_low);
   var->init();
   return add(var);
 }
 
-cl_var *
+class cl_cvar *
 cl_var_list::add(chars name, const char *cellname, int bitnr_high, int bitnr_low, chars desc)
 {
   int i;
   if (by_name.search(cellname, i))
     {
-      cl_var *var = (cl_var*)by_name.at(i);
+      class cl_cvar *var = (cl_var*)by_name.at(i);
       return add(name, var->get_mem(), var->get_addr(), bitnr_high, bitnr_low, desc);
     }
 
@@ -407,6 +415,21 @@ cl_var_list::add(chars prefix, class cl_memory *mem, t_addr base, const struct v
           add(var);
         }
     }
+}
+
+t_mem
+cl_var_list::read(chars name)
+{
+  bool found;
+  t_index i;
+  class cl_cvar *v;
+  found= by_name.search(name, i);
+  if (found)
+    {
+      v= by_name.at(i);
+      return v->read();
+    }
+  return 0;
 }
 
 /* End of sim.src/var.cc */

@@ -54,6 +54,7 @@ class cl_cvar: public cl_base
   virtual bool is_mem_var() { return false; }
 
   virtual t_mem write(t_mem val);
+  virtual t_mem read();
   virtual t_mem set(t_mem val);
 
   virtual void print_info(cl_console_base *con) const;
@@ -140,19 +141,19 @@ class cl_var_list: public cl_base
 
   /*! \brief Add the given cl_var replacing any that already exist with the same name.
    */
-  cl_var *add(cl_var *item);
+  class cl_cvar *add(class cl_cvar *item);
 
   /*! \brief Create and add (or replace) a var naming a set of bits in the cell given by mem and addr.
    */
-  cl_var *add(chars name, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, chars desc);
+  class cl_cvar *add(chars name, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, chars desc);
 
   /*! \brief Create and add (or replace) a var naming a set of bits in the cell given by a named var.
    */
-  cl_var *add(chars name, const char *cellname, int bitnr_high, int bitnr_low, chars desc);
+  class cl_cvar *add(chars name, const char *cellname, int bitnr_high, int bitnr_low, chars desc);
 
   /*! \brief Create and add (or replace) a var labelling a cell.
    */
-  cl_var *add(chars name, class cl_memory *mem, t_addr addr, chars desc) {
+  class cl_cvar *add(chars name, class cl_memory *mem, t_addr addr, chars desc) {
     return add(name, mem, addr, -1, -1, desc);
   }
 
@@ -164,9 +165,13 @@ class cl_var_list: public cl_base
    */
   bool del(const char *name);
 
+  
   /*! \brief Return the length of the longest var name.
    */
   int get_max_name_len(void) { return max_name_len; }
+
+  virtual t_mem read(chars name);
+
 };
 
 
