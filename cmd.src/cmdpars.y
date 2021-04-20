@@ -41,6 +41,7 @@ static void yyerror (const char *msg);
 %token <memory> PTOK_MEMORY
 %token <number> PTOK_NUMBER
 %token <bit> PTOK_BITS
+%token <cell> PTOK_CELL
 
 %type <number> ucsim_grammar expr
 %type <number> primary_expr postfix_expr
@@ -59,6 +60,7 @@ static void yyerror (const char *msg);
 %union {
   long number;
   class cl_memory *memory_object;
+  class cl_memory_cell *cell;
   struct {
     class cl_memory *memory;
     long address;
