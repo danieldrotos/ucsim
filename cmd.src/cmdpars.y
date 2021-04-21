@@ -461,6 +461,7 @@ memory:
 	    $$.memory= $1;
 	    $$.address= $3;
 	  }
+	;
 
 bit:
 	  PTOK_BITS

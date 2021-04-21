@@ -2371,7 +2371,7 @@ cl_uc::fetch(t_mem *code)
 int
 cl_uc::do_inst(int step)
 {
-  t_addr PCsave;
+  t_addr PCsave= PC;
   int res= resGO;
 
   if (step < 0)

@@ -765,7 +765,7 @@ cl_m6809::index2ea(u8_t idx, t_addr *res_ea)
   u16_t iv;
   i16_t off;
   u16_t *ir= &reg.X;
-  t_addr ea;
+  t_addr ea= 0;
 
   switch (idx & 0x60)
     {
@@ -1407,7 +1407,7 @@ cl_m6809::inst_branch(t_mem code, bool l)
   bool z= reg.CC & flagZ;
   bool n= reg.CC & flagN;
   bool v= reg.CC & flagV;
-  bool t;
+  bool t= 0;
   
   switch (code & 0x0f)
     {

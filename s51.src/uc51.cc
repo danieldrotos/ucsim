@@ -1735,7 +1735,7 @@ cl_51core::high_movxri(void)
 int
 cl_51core::do_inst(int step)
 {
-  t_addr PCsave;
+  t_addr PCsave= PC;
   result= resGO;
   while ((result == resGO) &&
 	 (state != stPD) &&
