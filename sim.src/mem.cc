@@ -51,6 +51,7 @@
 
 
 static class cl_mem_error_registry mem_error_registry;
+static unsigned int mem_uids= 0;
 
 /*
  *                                                3rd version of memory system
@@ -67,6 +68,7 @@ cl_memory::cl_memory(const char *id, t_addr asize, int awidth):
   start_address= 0;
   uc= 0;
   hidden= false;
+  uid= mem_uids++;
 }
 
 cl_memory::~cl_memory(void)

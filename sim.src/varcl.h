@@ -106,12 +106,12 @@ class cl_var_by_addr_list: public cl_sorted_list
     class cl_var *v= (class cl_var *)a;
     return v;
   }
-  bool search(const class cl_memory *mem, t_addr addr, t_index &index);
-  bool search(const class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, t_index &index);
+  bool search(class cl_memory *mem, t_addr addr, t_index &index);
+  bool search(class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, t_index &index);
 
  private:
-  int compare_addr(const class cl_var *var, const class cl_memory *mem, t_addr addr) const;
-  int compare_addr_and_bits(const class cl_var *var, const class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low) const;
+  int compare_addr(class cl_var *var, class cl_memory *mem, t_addr addr);
+  int compare_addr_and_bits(class cl_var *var, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low);
 
   virtual int compare(const void *key1, const void *key2);
 };

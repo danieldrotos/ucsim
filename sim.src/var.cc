@@ -203,30 +203,30 @@ cl_var_by_addr_list::~cl_var_by_addr_list(void)
 }
 
 int
-cl_var_by_addr_list::compare_addr(const class cl_var *var, const class cl_memory *mem, t_addr addr) const
+cl_var_by_addr_list::compare_addr(class cl_var *var, class cl_memory *mem, t_addr addr)
 {
   int ret;
-  class cl_memory *vmem= ((class cl_var *)var)->get_mem();
-  t_addr vaddr= ((class cl_var *)var)->get_addr();
+  class cl_memory *vmem= var->get_mem();
+  t_addr vaddr= var->get_addr();
   if (!vmem)
     return 0;
   
-  if (!(ret = strcmp(vmem->get_name(), mem->get_name())))
+  if (!(ret = vmem->get_uid() - mem->get_uid()))
     ret = vaddr - addr;
 
   return ret;
 }
 
 int
-cl_var_by_addr_list::compare_addr_and_bits(const class cl_var *var, const class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low) const
+cl_var_by_addr_list::compare_addr_and_bits(class cl_var *var, class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low)
 {
   int ret;
-  class cl_memory *vmem= ((class cl_var *)var)->get_mem();
-  t_addr vaddr= ((class cl_var *)var)->get_addr();
+  class cl_memory *vmem= var->get_mem();
+  t_addr vaddr= var->get_addr();
   if (!vmem)
     return 0;
   
-  if (!(ret = strcmp(vmem->get_name(), mem->get_name())) &&
+  if (!(ret = vmem->get_uid() - mem->get_uid()) &&
      !(ret = vaddr - addr) &&
      (!(ret = (var->bitnr_high < 0
                ? (bitnr_high < 0 ? 0 : -1)
@@ -257,7 +257,7 @@ cl_var_by_addr_list::compare(const void *key1, const void *key2)
 }
 
 bool
-cl_var_by_addr_list::search(const class cl_memory *mem, t_addr addr, t_index &index)
+cl_var_by_addr_list::search(class cl_memory *mem, t_addr addr, t_index &index)
 {
   t_index l  = 0;
   t_index h  = count - 1;
@@ -266,7 +266,7 @@ cl_var_by_addr_list::search(const class cl_memory *mem, t_addr addr, t_index &in
   while (l <= h)
     {
       t_index i= (l + h) >> 1;
-      t_index c= compare_addr(static_cast<const cl_var *>(key_of(Items[i])), mem, addr);
+      t_index c= compare_addr((cl_var *)(key_of(Items[i])), mem, addr);
       if (c < 0) l= i + 1;
       else
         {
@@ -275,7 +275,7 @@ cl_var_by_addr_list::search(const class cl_memory *mem, t_addr addr, t_index &in
             {
               res= true;
               // We want the _first_ name for the given addr.
-              for (l = i; l > 0 && !compare_addr(static_cast<const cl_var *>(key_of(Items[l-1])), mem, addr); l--);
+              for (l = i; l > 0 && !compare_addr((cl_var *)(key_of(Items[l-1])), mem, addr); l--);
             }
         }
     }
@@ -285,7 +285,7 @@ cl_var_by_addr_list::search(const class cl_memory *mem, t_addr addr, t_index &in
 }
 
 bool
-cl_var_by_addr_list::search(const class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, t_index &index)
+cl_var_by_addr_list::search(class cl_memory *mem, t_addr addr, int bitnr_high, int bitnr_low, t_index &index)
 {
   t_index l  = 0;
   t_index h  = count - 1;
@@ -294,7 +294,7 @@ cl_var_by_addr_list::search(const class cl_memory *mem, t_addr addr, int bitnr_h
   while (l <= h)
     {
       t_index i= (l + h) >> 1;
-      t_index c= compare_addr_and_bits(static_cast<const cl_var *>(key_of(Items[i])), mem, addr, bitnr_high, bitnr_low);
+      t_index c= compare_addr_and_bits((cl_var *)(key_of(Items[i])), mem, addr, bitnr_high, bitnr_low);
       if (c < 0) l= i + 1;
       else
         {
@@ -303,7 +303,7 @@ cl_var_by_addr_list::search(const class cl_memory *mem, t_addr addr, int bitnr_h
             {
               res= true;
               // We want the _first_ name for the given addr.
-              for (l = i; l > 0 && !compare_addr_and_bits(static_cast<const cl_var *>(key_of(Items[l-1])), mem, addr, bitnr_high, bitnr_low); l--);
+              for (l = i; l > 0 && !compare_addr_and_bits((cl_var *)(key_of(Items[l-1])), mem, addr, bitnr_high, bitnr_low); l--);
             }
         }
     }
