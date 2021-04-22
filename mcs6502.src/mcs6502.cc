@@ -79,7 +79,7 @@ cl_mcs6502::reset(void)
   cl_uc::reset();
 
   CC= 0x20;
-  PC= rom->read(0xfffe)*256 + rom->read(0xffff);
+  PC= rom->read(0xfffd)*256 + rom->read(0xfffc);
   tick(6);
 }
 
@@ -135,7 +135,7 @@ cl_mcs6502::make_memories(void)
   v->init();
   vars->add(v= new cl_cvar("S", &cSP, "CPU register S"));
   v->init();
-  vars->add(v= new cl_cvar("F", &cCC, "CPU register F"));
+  vars->add(v= new cl_cvar("P", &cCC, "CPU register P"));
   v->init();
 }
 
@@ -147,7 +147,7 @@ cl_mcs6502::print_regs(class cl_console_base *con)
   con->dd_printf("X= 0x%02x %3d %+4d %c  ", X, X, (i8_t)X, isprint(X)?X:'.');
   con->dd_printf("Y= 0x%02x %3d %+4d %c  ", Y, Y, (i8_t)Y, isprint(Y)?Y:'.');
   con->dd_printf("\n");
-  con->dd_printf("F= "); con->print_bin(CC, 8); con->dd_printf("\n");
+  con->dd_printf("P= "); con->print_bin(CC, 8); con->dd_printf("\n");
   con->dd_printf("   NV BDIZC\n");
 
   con->dd_printf("S= ");
