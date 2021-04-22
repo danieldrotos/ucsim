@@ -244,10 +244,12 @@ class cl_memory_cell: public cl_cell_data
   /*TYPE_UBYTE*/uchar flags;
   class cl_memory_operator *operators;
  public:
+  cl_memory_cell();
   cl_memory_cell(uchar awidth);
   virtual ~cl_memory_cell(void);
   virtual int init(void);
-
+  virtual void set_width(uchar awidth);
+  
   virtual t_mem *get_data(void) { return(data); }
   virtual t_mem get_mask(void) { return(mask); }
   virtual void set_mask(t_mem m) { mask= m; }

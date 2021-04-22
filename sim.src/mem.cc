@@ -1009,6 +1009,25 @@ cl_bit_cell16::d(t_mem v)
  *                                                                  Memory cell
  */
 
+cl_memory_cell::cl_memory_cell()
+{
+  data= 0;
+  flags= CELL_NON_DECODED;
+  width= 8;
+  def_data= 0;
+  operators= NULL;
+#ifdef STATISTIC
+  nuof_writes= nuof_reads= 0;
+#endif
+  mask= 1;
+  int w= width;
+  for (--w; w; w--)
+    {
+      mask<<= 1;
+      mask|= 1;
+    }
+}
+
 cl_memory_cell::cl_memory_cell(uchar awidth)//: cl_base()
 {
   data= 0;
@@ -1056,6 +1075,18 @@ cl_memory_cell::init(void)
   return(0);
 }
 
+void
+cl_memory_cell::set_width(uchar awidth)
+{
+  width= awidth;
+  mask= 1;
+  int w= width;
+  for (--w; w; w--)
+    {
+      mask<<= 1;
+      mask|= 1;
+    }
+}
 
 uchar
 cl_memory_cell::get_flags(void)
