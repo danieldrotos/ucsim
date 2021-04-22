@@ -58,7 +58,17 @@ public:
   virtual void print_regs(class cl_console_base *con);
 };
 
-  
+
+/* Unused bits of CC forced to be 1 */
+
+class cl_cc_operator: public cl_memory_operator
+{
+public:
+  cl_cc_operator(class cl_memory_cell *acell): cl_memory_operator(acell) {}
+  virtual t_mem write(t_mem val) { return val|= 0xc0; }
+};
+
+
 #endif
 
 /* End of m6800.src/m6800.cc */

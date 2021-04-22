@@ -45,12 +45,17 @@ cl_m6800::cl_m6800(class cl_sim *asim):
   cA.decode((t_mem*)&A);
   cB.init();
   cB.decode((t_mem*)&B);
+  cCC.init();
+  cCC.decode((t_mem*)&CC);
   cIX.set_width(16);
   cIX.init();
   cIX.decode((t_mem*)&IX);
   cSP.set_width(16);
   cSP.init();
   cSP.decode((t_mem*)&SP);
+
+  class cl_memory_operator *op= new cl_cc_operator(&cCC);
+  cCC.append_operator(op);
 }
 
 int
@@ -123,6 +128,14 @@ cl_m6800::make_memories(void)
 
   class cl_cvar *v;
   vars->add(v= new cl_cvar("A", &cA, "CPU register A"));
+  v->init();
+  vars->add(v= new cl_cvar("B", &cB, "CPU register B"));
+  v->init();
+  vars->add(v= new cl_cvar("CC", &cCC, "CPU register CC"));
+  v->init();
+  vars->add(v= new cl_cvar("IX", &cIX, "CPU register IX"));
+  v->init();
+  vars->add(v= new cl_cvar("SP", &cSP, "CPU register SP"));
   v->init();
 }
 
