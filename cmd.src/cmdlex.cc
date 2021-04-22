@@ -2100,16 +2100,16 @@ uc_yy_check_id(char *token)
 	  yylval.bit.bitnr_low = bitnr_low;
 	  return PTOK_BITS;
 	}
-{
-t_index i;
-found= uc->vars->by_name.search(token, i);
-if (found)
-{
-class cl_cvar *v= (class cl_cvar *)uc->vars->by_name.at(i);
-yylval.cell= v->get_cell();
-return PTOK_CELL;
-}
-}
+      {
+	t_index i;
+	found= uc->vars->by_name.search(token, i);
+	if (found)
+	  {
+	    class cl_cvar *v= (class cl_cvar *)uc->vars->by_name.at(i);
+	    yylval.cell= v->get_cell();
+	    return PTOK_CELL;
+          }
+       }
     }
 
   return 0;
