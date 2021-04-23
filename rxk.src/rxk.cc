@@ -41,6 +41,37 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_rxk::cl_rxk(class cl_sim *asim):
   cl_uc(asim)
 {
+  cA.init();
+  cA.decode((t_mem*)&AF.r.A);
+  cF.init();
+  cF.decode((t_mem*)&AF.r.F);
+  cAF.init();
+  cAF.set_width(16);
+  cAF.decode((t_mem*)&AF.AF);
+
+  cB.init();
+  cB.decode((t_mem*)&BC.r.B);
+  cC.init();
+  cC.decode((t_mem*)&BC.r.B);
+  cBC.init();
+  cBC.set_width(16);
+  cBC.decode((t_mem*)&BC.BC);
+
+  cD.init();
+  cD.decode((t_mem*)&DE.r.D);
+  cE.init();
+  cE.decode((t_mem*)&DE.r.E);
+  cDE.init();
+  cDE.set_width(16);
+  cDE.decode((t_mem*)&DE.DE);
+
+  cH.init();
+  cH.decode((t_mem*)&HL.r.H);
+  cL.init();
+  cL.decode((t_mem*)&HL.r.L);
+  cHL.init();
+  cHL.set_width(16);
+  cHL.decode((t_mem*)&HL.HL);
 }
 
 int

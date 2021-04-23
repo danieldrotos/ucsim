@@ -36,11 +36,41 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base of RXK processor
  */
 
+#ifdef WORDS_BIGENDIAN
+#define RP(N.N16,NH,NL) union			\
+		      {				\
+			u16_t N16;		\
+			struct {		\
+			  u8_t NH;		\
+			  u8_t NL;		\
+			} r;			\
+  } N
+#else
+#define RP(N,N16,NH,NL) union			\
+		      {				\
+			u16_t N16;		\
+			struct {		\
+			  u8_t NL;		\
+			  u8_t NH;		\
+			} r;			\
+  } N
+#endif
+  
 class cl_rxk: public cl_uc  
 {
 public:
-  u8_t A, X, Y, SP, CC;
-  class cl_memory_cell cA, cX, cY, cSP, cCC;
+  RP(AF,AF,A,F);
+  RP(BC,BC,B,C);
+  RP(DE,DE,D,E);
+  RP(HL,HL,H,L);
+  RP(aAF,AF,A,F);
+  RP(aBC,BC,B,C);
+  RP(aDE,DE,D,E);
+  RP(aHL,HL,H,L);
+  class cl_memory_cell cA, cF, cAF;
+  class cl_memory_cell cB, cC, cBC;
+  class cl_memory_cell cD, cE, cDE;
+  class cl_memory_cell cH, cL, cHL;
 public:
   cl_rxk(class cl_sim *asim);
   virtual int init(void);
