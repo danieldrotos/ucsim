@@ -89,7 +89,9 @@ int
 cl_rxk::init(void)
 {
   cl_uc::init();
-
+  ioi_prefix= false;
+  ioe_prefix= false;
+  
   xtal= 1000000;
     
   return 0;
@@ -106,6 +108,14 @@ void
 cl_rxk::reset(void)
 {
   cl_uc::reset();
+
+  // MMU reset
+  mem->segsize= 0;
+  mem->dataseg= 0;
+  mem->dataseg= 0;
+  mem->stackseg= 0;
+  mem->xpc= 0;
+
 }
 
   
@@ -129,6 +139,8 @@ cl_rxk::mk_hw_elements(void)
 void
 cl_rxk::make_cpu_hw(void)
 {
+  add_hw(cpu= new cl_rxk_cpu(this));
+  cpu->init();
 }
 
 void
@@ -136,14 +148,42 @@ cl_rxk::make_memories(void)
 {
   class cl_memory_chip *chip;
   class cl_address_space *as;
-  
+  class cl_address_decoder *ad;
+
   chip= new cl_memory_chip("rom_chip", 0x100000, 8);
   chip->init();
   memchips->add(chip);
 
-  rom= as= new cl_ras("rom", chip);
+  rom= as= mem= new cl_ras("rom", chip);
   as->init();
   address_spaces->add(as);
+
+  /* IO */
+  ioi= as= new cl_address_space("ioi", 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip= new cl_memory_chip("ioi_chip", 0x10000, 8);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(as,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ioe= as= new cl_address_space("ioe", 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip= new cl_memory_chip("ioe_chip", 0x10000, 8);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(as,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
 }
 
 void
@@ -178,5 +218,17 @@ cl_rxk::print_regs(class cl_console_base *con)
 
   print_disass(PC, con);
 }
+
+
+/*
+ * CPU peripheral: MMU functions
+ */
+
+cl_rxk_cpu::cl_rxk_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_CPU, 0, "cpu")
+{
+  ruc= (class cl_rxk *)auc;
+}
+
 
 /* End of rxk.src/rxk.cc */

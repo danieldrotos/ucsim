@@ -31,10 +31,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_ras: public cl_address_space
 {
- protected:
+ public:
   class cl_memory_chip *chip;
  public:
+  u8_t segsize, dataseg, stackseg, xpc;
+ public:
   cl_ras(chars id, class cl_memory_chip *achip);
+ public:
+  virtual t_addr log2phy(t_addr log);
+  virtual t_mem read(t_addr addr);
+  virtual t_mem get(t_addr addr);
+  virtual t_mem write(t_addr addr, t_mem val);
+  virtual void set(t_addr addr, t_mem val);
+  virtual void download(t_addr addr, t_mem val);
 };
 
 #endif

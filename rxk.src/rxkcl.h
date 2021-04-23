@@ -90,6 +90,9 @@ public:
   class cl_memory_cell cD, cE, cDE;
   class cl_memory_cell cH, cL, cHL;
   class cl_memory_cell cIX, cIY, cSP;
+  class cl_ras *mem;
+  class cl_address_space *ioi, *ioe;
+  bool ioi_prefix, ioe_prefix;
 public:
   cl_rxk(class cl_sim *asim);
   virtual int init(void);
@@ -104,6 +107,25 @@ public:
   virtual int clock_per_cycle(void) { return 1; }
 
   virtual void print_regs(class cl_console_base *con);
+};
+
+
+enum rxkcpu_cfg {
+  rxk_cpu_segsize	= 0,
+  rxk_cpu_dataseg	= 1,
+  rxk_cpu_stackseg	= 2,
+  rxk_cpu_xpc		= 3,
+
+  rxkcpu_nuof	= 4
+};
+
+class cl_rxk_cpu: public cl_hw
+{
+protected:
+  class cl_rxk *ruc;
+public:
+  cl_rxk_cpu(class cl_uc *auc);
+  virtual int cfg_size() { return rxkcpu_nuof; }
 };
 
 

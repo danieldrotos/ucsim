@@ -33,5 +33,59 @@ cl_ras::cl_ras(chars id, class cl_memory_chip *achip):
   chip= achip;
 }
 
+t_addr
+cl_ras::log2phy(t_addr log)
+{
+  u8_t h= (log >> 12)&0xf;
+  if (h < (segsize&0xf))
+    {
+      // code space
+      return log;
+    }
+  if (h < (segsize>>4))
+    {
+      // data space
+      return log + (dataseg<<12);
+    }
+  if (h < 0xe)
+    {
+      // stack space
+      return log + (stackseg<<12);
+    }
+  // else
+  // extended program space
+  return log + (xpc<<12);
+}
+
+t_mem
+cl_ras::read(t_addr addr)
+{
+  return chip->read(log2phy(addr));
+}
+
+t_mem
+cl_ras::get(t_addr addr)
+{
+  return chip->get(log2phy(addr));
+}
+
+t_mem
+cl_ras::write(t_addr addr, t_mem val)
+{
+  return chip->write(log2phy(addr), val);
+}
+
+void
+cl_ras::set(t_addr addr, t_mem val)
+{
+  chip->set(log2phy(addr), val);
+}
+
+void
+cl_ras::download(t_addr addr, t_mem val)
+{
+  chip->set(log2phy(addr), val);
+}
+
 
 /* End of rxk.src/rmem.cc */
