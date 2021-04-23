@@ -230,5 +230,65 @@ cl_rxk_cpu::cl_rxk_cpu(class cl_uc *auc):
   ruc= (class cl_rxk *)auc;
 }
 
+int
+cl_rxk_cpu::init(void)
+{
+  cl_hw::init();
+  uc->vars->add("SEGSIZE", cfg, rxk_cpu_segsize, cfg_help(rxk_cpu_segsize));
+  uc->vars->add("DATASEG", cfg, rxk_cpu_dataseg, cfg_help(rxk_cpu_dataseg));
+  uc->vars->add("STACKSEG", cfg, rxk_cpu_stackseg, cfg_help(rxk_cpu_stackseg));
+  uc->vars->add("XPC", cfg, rxk_cpu_xpc, cfg_help(rxk_cpu_xpc));
+  return 0;
+}
+
+const char *
+cl_rxk_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case rxk_cpu_segsize: return "MMU register: SEGSIZE";
+    case rxk_cpu_dataseg: return "MMU register: DATASEG";
+    case rxk_cpu_stackseg: return "MMU register: STACKSEG";
+    case rxk_cpu_xpc: return "MMU register: XPC";
+    case rxk_cpu_nuof: return "";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_rxk_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch ((enum rxkcpu_cfg)addr)
+    {
+    case rxk_cpu_segsize:
+      if (val) ruc->mem->segsize= *val;
+      return ruc->mem->segsize;
+    case rxk_cpu_dataseg:
+      if (val) ruc->mem->dataseg= *val;
+      return ruc->mem->dataseg;
+    case rxk_cpu_stackseg:
+      if (val) ruc->mem->stackseg= *val;
+      return ruc->mem->stackseg;
+    case rxk_cpu_xpc:
+      if (val) ruc->mem->xpc= *val;
+      return ruc->mem->xpc;
+    case rxk_cpu_nuof:
+      return 0;
+    }
+  return 0;
+}
+
+
+void
+cl_rxk_cpu::print_info(class cl_console_base *con)
+{
+  con->dd_color("answer");
+  con->dd_printf("%s[%d]\n", id_string, id);
+  con->dd_printf("SEGSIZE : 0x%02x\n", ruc->mem->segsize);
+  con->dd_printf("DATASEG : 0x%02x\n", ruc->mem->dataseg);
+  con->dd_printf("STACKSEG: 0x%02x\n", ruc->mem->stackseg);
+  con->dd_printf("XPC     : 0x%02x\n", ruc->mem->xpc);
+}
+
 
 /* End of rxk.src/rxk.cc */

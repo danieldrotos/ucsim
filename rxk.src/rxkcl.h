@@ -116,7 +116,7 @@ enum rxkcpu_cfg {
   rxk_cpu_stackseg	= 2,
   rxk_cpu_xpc		= 3,
 
-  rxkcpu_nuof	= 4
+  rxk_cpu_nuof	= 4
 };
 
 class cl_rxk_cpu: public cl_hw
@@ -125,7 +125,14 @@ protected:
   class cl_rxk *ruc;
 public:
   cl_rxk_cpu(class cl_uc *auc);
-  virtual int cfg_size() { return rxkcpu_nuof; }
+  virtual int init(void);
+  virtual int cfg_size() { return rxk_cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+  
+  //virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
+  virtual void print_info(class cl_console_base *con);
 };
 
 
