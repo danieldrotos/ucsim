@@ -55,6 +55,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 			} r;			\
   } N
 #endif
+
+#define rA (AF.r.A)
+#define rF (AF.r.F)
+#define rB (BC.r.B)
+#define rC (BC.r.C)
+#define rD (DE.r.D)
+#define rE (DE.r.E)
+#define rH (HL.r.H)
+#define rL (HL.r.L)
+#define rAF (AF.AF)
+#define rBC (BC.BC)
+#define rDE (DE.DE)
+#define rHL (HL.HL)
+#define rIX (IX)
+#define rIY (IY)
+#define rSP (SP)
+
   
 class cl_rxk: public cl_uc  
 {
@@ -67,10 +84,12 @@ public:
   RP(aBC,BC,B,C);
   RP(aDE,DE,D,E);
   RP(aHL,HL,H,L);
+  u16_t IX, IY, SP;
   class cl_memory_cell cA, cF, cAF;
   class cl_memory_cell cB, cC, cBC;
   class cl_memory_cell cD, cE, cDE;
   class cl_memory_cell cH, cL, cHL;
+  class cl_memory_cell cIX, cIY, cSP;
 public:
   cl_rxk(class cl_sim *asim);
   virtual int init(void);

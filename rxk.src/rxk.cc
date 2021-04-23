@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "glob.h"
+#include "rmemcl.h"
 
 #include "rxkcl.h"
 
@@ -72,6 +73,16 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   cHL.init();
   cHL.set_width(16);
   cHL.decode((t_mem*)&HL.HL);
+
+  cIX.init();
+  cIX.set_width(16);
+  cIX.decode((t_mem*)&IX);
+  cIY.init();
+  cIY.set_width(16);
+  cIY.decode((t_mem*)&IY);
+  cSP.init();
+  cSP.set_width(16);
+  cSP.decode((t_mem*)&SP);
 }
 
 int
@@ -123,27 +134,46 @@ cl_rxk::make_cpu_hw(void)
 void
 cl_rxk::make_memories(void)
 {
-  class cl_address_space *as;
-  class cl_address_decoder *ad;
   class cl_memory_chip *chip;
+  class cl_address_space *as;
   
-  rom= as= new cl_address_space("rom", 0, 0x10000, 8);
-  as->init();
-  address_spaces->add(as);
-
-  chip= new cl_memory_chip("rom_chip", 0x10000, 8);
+  chip= new cl_memory_chip("rom_chip", 0x100000, 8);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as= rom,
-			     chip, 0, 0xffff, 0);
-  ad->init();
-  as->decoders->add(ad);
-  ad->activate(0);
+
+  rom= as= new cl_ras("rom", chip);
+  as->init();
+  address_spaces->add(as);
 }
 
 void
 cl_rxk::print_regs(class cl_console_base *con)
 {
+  con->dd_color("answer");
+  con->dd_printf("A= 0x%02x %3d %c  ",
+                 rA, rA, isprint(rA)?rA:'.');
+  con->dd_printf("F= "); con->print_bin(rF, 8);
+  con->dd_printf(" 0x%02x %3d %c", rF, rF, isprint(rF)?rF:'.');
+  con->dd_printf("\n");
+  con->dd_printf("                  SZxxxVxC\n");
+
+  con->dd_printf("BC= ");
+  rom->dump(0, rBC, rBC+7, 8, con);
+  con->dd_color("answer");
+  con->dd_printf("DE= ");
+  rom->dump(0, rDE, rDE+7, 8, con);
+  con->dd_color("answer");
+  con->dd_printf("HL= ");
+  rom->dump(0, rHL, rHL+7, 8, con);
+  con->dd_color("answer");
+  con->dd_printf("IX= ");
+  rom->dump(0, rIX, rIX+7, 8, con);
+  con->dd_color("answer");
+  con->dd_printf("IY= ");
+  rom->dump(0, rIY, rIY+7, 8, con);
+  con->dd_color("answer");
+  con->dd_printf("SP= ");
+  rom->dump(0, rSP, rSP+7, 8, con);
   con->dd_color("answer");
 
   print_disass(PC, con);

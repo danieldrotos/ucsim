@@ -49,7 +49,7 @@ infodir         = @infodir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-OBJECTS_SHARED	= simrxk.o rxk.o glob.o
+OBJECTS_SHARED	= simrxk.o rxk.o glob.o rmem.o
 
 OBJECTS_EXE	= srxk.o
 OBJECTS		= $(OBJECTS_SHARED) $(OBJECTS_EXE)
