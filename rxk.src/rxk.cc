@@ -43,13 +43,16 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   cl_uc(asim)
 {
   cA.init();
-  cA.decode((t_mem*)&AF.r.A);
+  cA.decode((t_mem*)&rA);
   cF.init();
-  cF.decode((t_mem*)&AF.r.F);
+  cF.decode((t_mem*)&rF);
   cAF.init();
-  cAF.set_width(16);
-  cAF.decode((t_mem*)&AF.AF);
-
+  //cAF.set_width(16);
+  cAF.decode((t_mem*)&rAF);
+  printf("AF: %p\n", &rAF);
+  printf("A : %p\n", &rA);
+  printf("F : %p\n", &rF);
+  
   cB.init();
   cB.decode((t_mem*)&BC.r.B);
   cC.init();
@@ -93,7 +96,12 @@ cl_rxk::init(void)
   ioe_prefix= false;
   
   xtal= 1000000;
-    
+
+  class cl_cvar *v;
+  vars->add(v= new cl_cvar("A",  &cA , "CPU register A" )); v->init();
+  vars->add(v= new cl_cvar("F",  &cF , "CPU register F" )); v->init();
+  vars->add(v= new cl_cvar("AF", &cAF, "CPU register AF")); v->init();
+  
   return 0;
 }
 
@@ -234,10 +242,26 @@ int
 cl_rxk_cpu::init(void)
 {
   cl_hw::init();
-  uc->vars->add("SEGSIZE", cfg, rxk_cpu_segsize, cfg_help(rxk_cpu_segsize));
-  uc->vars->add("DATASEG", cfg, rxk_cpu_dataseg, cfg_help(rxk_cpu_dataseg));
-  uc->vars->add("STACKSEG", cfg, rxk_cpu_stackseg, cfg_help(rxk_cpu_stackseg));
-  uc->vars->add("XPC", cfg, rxk_cpu_xpc, cfg_help(rxk_cpu_xpc));
+  stackseg= ruc->ioi->get_cell(0x11);
+  dataseg = ruc->ioi->get_cell(0x12);
+  segsize = ruc->ioi->get_cell(0x13);
+  stackseg->decode((t_mem*)&(ruc->mem->stackseg));
+  dataseg ->decode((t_mem*)&(ruc->mem->dataseg));
+  segsize ->decode((t_mem*)&(ruc->mem->segsize));
+
+  xpc= new cl_cell8(8);
+  xpc->decode((t_mem*)(&(ruc->mem->xpc)));
+
+  class cl_cvar *v;
+  uc->vars->add(v= new cl_cvar("STACKSEG", stackseg, "MMU register: STACKSEG"));
+  v->init();
+  uc->vars->add(v= new cl_cvar("DATASEG", dataseg, "MMU register: DATASEG"));
+  v->init();
+  uc->vars->add(v= new cl_cvar("SEGSIZE", segsize, "MMU register: SEGSIZE"));
+  v->init();
+  uc->vars->add(v= new cl_cvar("XPC", xpc, "MMU register: XPC"));
+  v->init();
+
   return 0;
 }
 
@@ -246,38 +270,31 @@ cl_rxk_cpu::cfg_help(t_addr addr)
 {
   switch (addr)
     {
-    case rxk_cpu_segsize: return "MMU register: SEGSIZE";
-    case rxk_cpu_dataseg: return "MMU register: DATASEG";
-    case rxk_cpu_stackseg: return "MMU register: STACKSEG";
     case rxk_cpu_xpc: return "MMU register: XPC";
     case rxk_cpu_nuof: return "";
     }
   return "Not used";
 }
 
+/*
 t_mem
 cl_rxk_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
   switch ((enum rxkcpu_cfg)addr)
     {
-    case rxk_cpu_segsize:
-      if (val) ruc->mem->segsize= *val;
-      return ruc->mem->segsize;
-    case rxk_cpu_dataseg:
-      if (val) ruc->mem->dataseg= *val;
-      return ruc->mem->dataseg;
-    case rxk_cpu_stackseg:
-      if (val) ruc->mem->stackseg= *val;
-      return ruc->mem->stackseg;
     case rxk_cpu_xpc:
-      if (val) ruc->mem->xpc= *val;
+      if (val) cell->set(ruc->mem->xpc= *val);
       return ruc->mem->xpc;
     case rxk_cpu_nuof:
       return 0;
     }
   return 0;
-}
 
+  if (val)
+    cell->set(*val);
+  return cell->get();
+}
+*/
 
 void
 cl_rxk_cpu::print_info(class cl_console_base *con)

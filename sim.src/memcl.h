@@ -301,7 +301,7 @@ class cl_memory_cell: public cl_cell_data
 class cl_bit_cell: public cl_memory_cell
 {
  public:
- cl_bit_cell(uchar awidth): cl_memory_cell(awidth) {}
+  cl_bit_cell(uchar awidth): cl_memory_cell(awidth) {}
   virtual t_mem d();
   virtual void d(t_mem v);
 };
@@ -309,7 +309,8 @@ class cl_bit_cell: public cl_memory_cell
 class cl_cell8: public cl_memory_cell
 {
  public:
- cl_cell8(uchar awidth): cl_memory_cell(awidth) {}
+  cl_cell8(uchar awidth): cl_memory_cell(awidth) {}
+  cl_cell8(): cl_memory_cell(8) {}
   virtual t_mem d();
   virtual void d(t_mem v);
 };
@@ -317,7 +318,7 @@ class cl_cell8: public cl_memory_cell
 class cl_bit_cell8: public cl_memory_cell
 {
  public:
- cl_bit_cell8(uchar awidth): cl_memory_cell(awidth) {}
+  cl_bit_cell8(uchar awidth): cl_memory_cell(awidth) {}
   virtual t_mem d();
   virtual void d(t_mem v);
 };
@@ -325,7 +326,8 @@ class cl_bit_cell8: public cl_memory_cell
 class cl_cell16: public cl_memory_cell
 {
  public:
- cl_cell16(uchar awidth): cl_memory_cell(awidth) {}
+  cl_cell16(uchar awidth): cl_memory_cell(awidth) {}
+  cl_cell16(): cl_memory_cell(16) {}
   virtual t_mem d();
   virtual void d(t_mem v);
 };
@@ -333,7 +335,7 @@ class cl_cell16: public cl_memory_cell
 class cl_bit_cell16: public cl_memory_cell
 {
  public:
- cl_bit_cell16(uchar awidth): cl_memory_cell(awidth) {}
+  cl_bit_cell16(uchar awidth): cl_memory_cell(awidth) {}
   virtual t_mem d();
   virtual void d(t_mem v);
 };

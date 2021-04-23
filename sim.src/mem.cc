@@ -937,13 +937,15 @@ cl_bit_cell::d(t_mem v)
 t_mem
 cl_cell8::d()
 {
+  return data?(*((u8_t*)data)):0;
   return data?((/*u8_t*/uchar)*data):0;
 }
 
 void
 cl_cell8::d(t_mem v)
 {
-  data?(*data=(/*u8_t*/uchar)v):0;
+  //data?(*data=(/*u8_t*/uchar)v):0;
+  data?(*((u8_t*)data)=(u8_t)v):0;
 }
 
 // 8 bit cell for bit spaces
@@ -974,13 +976,15 @@ cl_bit_cell8::d(t_mem v)
 t_mem
 cl_cell16::d()
 {
+  return data?(*((u16_t*)data)):0;
   return data?((u16_t)*data):0;
 }
 
 void
 cl_cell16::d(t_mem v)
 {
-  data?(*data=(u16_t)v):0;
+  //data?(*data=(u16_t)v):0;
+  data?(*((u16_t*)data)=(u16_t)v):0;
 }
 
 // 16 bit cell for bit spaces

@@ -85,7 +85,8 @@ public:
   RP(aDE,DE,D,E);
   RP(aHL,HL,H,L);
   u16_t IX, IY, SP;
-  class cl_memory_cell cA, cF, cAF;
+  class cl_cell8 cA, cF;
+  class cl_cell16 cAF;
   class cl_memory_cell cB, cC, cBC;
   class cl_memory_cell cD, cE, cDE;
   class cl_memory_cell cH, cL, cHL;
@@ -111,26 +112,23 @@ public:
 
 
 enum rxkcpu_cfg {
-  rxk_cpu_segsize	= 0,
-  rxk_cpu_dataseg	= 1,
-  rxk_cpu_stackseg	= 2,
-  rxk_cpu_xpc		= 3,
+  rxk_cpu_xpc		= 0,
 
-  rxk_cpu_nuof	= 4
+  rxk_cpu_nuof	= 1
 };
 
 class cl_rxk_cpu: public cl_hw
 {
 protected:
   class cl_rxk *ruc;
+  class cl_memory_cell *xpc, *segsize, *dataseg, *stackseg;
 public:
   cl_rxk_cpu(class cl_uc *auc);
   virtual int init(void);
-  virtual int cfg_size() { return rxk_cpu_nuof; }
+  //virtual int cfg_size() { return rxk_cpu_nuof; }
   virtual const char *cfg_help(t_addr addr);
   
-  //virtual void write(class cl_memory_cell *cell, t_mem *val);
-  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+  //virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
   virtual void print_info(class cl_console_base *con);
 };
