@@ -166,6 +166,12 @@ if test $enable_mcs6502_port  != "no"; then
     enable_mcs6502_port="yes"
 fi,
 enable_mcs6502_port="yes")
+AC_ARG_ENABLE(rxk-port,
+[  --enable-rxk-port     compile simulator for Rabbit rXk],
+if test $enable_rxk_port  != "no"; then
+    enable_rxk_port="yes"
+fi,
+enable_rxk_port="yes")
 AC_ARG_ENABLE(serio,
 [  --enable-serio          compile serio GUI tool (needs curses)],
 if test $enable_serio != "no"; then
