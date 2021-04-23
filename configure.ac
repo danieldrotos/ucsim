@@ -199,6 +199,7 @@ AC_SUBST(enable_p1516_port)
 AC_SUBST(enable_m6809_port)
 AC_SUBST(enable_m6800_port)
 AC_SUBST(enable_mcs6502_port)
+AC_SUBST(enable_rxk_port)
 AC_SUBST(enable_serio)
 
 AC_ARG_ENABLE(statistic,
@@ -741,19 +742,20 @@ cmd.src/Makefile
 
 sim.src/Makefile   sim.src/test/Makefile
 
-avr.src/Makefile   avr.src/test/Makefile
-hc08.src/Makefile  hc08.src/test/Makefile
-m6809.src/Makefile m6809.src/test/Makefile
-m6800.src/Makefile m6800.src/test/Makefile
+avr.src/Makefile     avr.src/test/Makefile
+hc08.src/Makefile    hc08.src/test/Makefile
+m6809.src/Makefile   m6809.src/test/Makefile
+m6800.src/Makefile   m6800.src/test/Makefile
 mcs6502.src/Makefile mcs6502.src/test/Makefile
-p1516.src/Makefile p1516.src/test/Makefile
-pdk.src/Makefile   pdk.src/test/Makefile
-s51.src/Makefile   s51.src/test/Makefile
-st7.src/Makefile   st7.src/test/Makefile
-stm8.src/Makefile  stm8.src/test/Makefile
-tlcs.src/Makefile  tlcs.src/test/Makefile
-xa.src/Makefile    xa.src/test/Makefile
-z80.src/Makefile   z80.src/test/Makefile
+rxk.src/Makefile     rxk.src/test/Makefile
+p1516.src/Makefile   p1516.src/test/Makefile
+pdk.src/Makefile     pdk.src/test/Makefile
+s51.src/Makefile     s51.src/test/Makefile
+st7.src/Makefile     st7.src/test/Makefile
+stm8.src/Makefile    stm8.src/test/Makefile
+tlcs.src/Makefile    tlcs.src/test/Makefile
+xa.src/Makefile      xa.src/test/Makefile
+z80.src/Makefile     z80.src/test/Makefile
 
 gui.src/Makefile
 gui.src/serio.src/Makefile
