@@ -230,13 +230,13 @@ cl_pca::do_pca_counter(int cycles)
 
   while (cycles--)
     {
-      if (cell_cl->add(1) == 0)
+      if (cell_cl->set(cell_cl->get() + 1) == 0)
 	{
 	  int i;
 	  for (i= 0; i < 5; i++)
 	    if (ccapm[i] & bmPWM)
 	      cell_ccapl[i]->set(cell_ccaph[i]->get());
-	  if (cell_ch->add(1) == 0)
+	  if (cell_ch->set(cell_ch->get() + 1) == 0)
 	    {
 	      // CH,CL overflow
 	      cell_ccon->set(cell_ccon->get() | bmCF);
