@@ -1271,28 +1271,28 @@ cl_memory_cell::wadd(long what)
   t_mem d= (/* *data*/read() + what) & mask;
   return(write(d));
 }
-
+/*
 void
 cl_memory_cell::set_bit1(t_mem bits)
 {
   bits&= mask;
-  /*(*data)|=*//*d*/set(d()| bits);
+  set(d()| bits);
 }
-
+*/
 void
 cl_memory_cell::write_bit1(t_mem bits)
 {
   bits&= mask;
   /*(*data)|=*//*d*/write(d()| bits);
 }
-
+/*
 void
 cl_memory_cell::set_bit0(t_mem bits)
 {
   bits&= mask;
-  /*(*data)&=*//*d*/set(d()& ~bits);
+  set(d()& ~bits);
 }
-
+*/
 void
 cl_memory_cell::write_bit0(t_mem bits)
 {
@@ -1618,7 +1618,7 @@ cl_address_space::wadd(t_addr addr, long what)
 }
 
 /* Set or clear bits, without callbacks */
-
+/*
 void
 cl_address_space::set_bit1(t_addr addr, t_mem bits)
 {
@@ -1629,7 +1629,8 @@ cl_address_space::set_bit1(t_addr addr, t_mem bits)
   class cl_memory_cell *cell= &(cella[idx]);
   cell->set_bit1(bits);
 }
-
+*/
+/*
 void
 cl_address_space::set_bit0(t_addr addr, t_mem bits)
 {
@@ -1640,7 +1641,7 @@ cl_address_space::set_bit0(t_addr addr, t_mem bits)
   class cl_memory_cell *cell= &(cella[idx]);
   cell->set_bit0(bits);
 }
-
+*/
 
 class cl_memory_cell *
 cl_address_space::get_cell(t_addr addr)
@@ -2083,7 +2084,7 @@ cl_memory_chip::set(t_addr addr, t_mem val)
     return;
   array[addr]= val & data_mask;
 }
-
+/*
 void
 cl_memory_chip::set_bit1(t_addr addr, t_mem bits)
 {
@@ -2092,7 +2093,8 @@ cl_memory_chip::set_bit1(t_addr addr, t_mem bits)
     return;
   array[addr]|= (bits & data_mask);
 }
-
+*/
+/*
 void
 cl_memory_chip::set_bit0(t_addr addr, t_mem bits)
 {
@@ -2101,7 +2103,7 @@ cl_memory_chip::set_bit0(t_addr addr, t_mem bits)
     return;
   array[addr]&= ((~bits) & data_mask);
 }
-
+*/
 void
 cl_memory_chip::print_info(const char *pre, class cl_console_base *con)
 {

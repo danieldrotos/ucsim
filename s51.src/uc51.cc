@@ -1829,7 +1829,7 @@ cl_51core::do_interrupt(void)
 	  if (state == stIDLE)
 	    {
 	      state= stGO;
-	      sfr->set_bit0(PCON, bmIDL);
+	      sfr->set(PCON, sfr->get(PCON) & ~bmIDL);
 	      interrupt->was_reti= true;
 	      return(resGO);
 	    }
@@ -1861,7 +1861,7 @@ int
 cl_51core::accept_it(class it_level *il)
 {
   state= stGO;
-  sfr->set_bit0(PCON, bmIDL);
+  sfr->set(PCON, sfr->get(PCON) & ~bmIDL);
   it_levels->push(il);
   tick(1);
   int res= inst_lcall(0, il->addr, true);
@@ -2094,9 +2094,9 @@ cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
 	  uc>>= 1;
 	}
       if (p)
-	cell_psw->set_bit1(bmP);
+	cell_psw->set(cell_psw->get() | bmP);
       else
-	cell_psw->set_bit0(bmP);
+	cell_psw->set(cell_psw->get() & ~bmP);
     }
   /*else if (cell == cell_pcon)
     {

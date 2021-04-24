@@ -162,12 +162,12 @@ cl_pca::write(class cl_memory_cell *cell, t_mem *val)
 	      {
 		if (cell == cell_ccapl[i])
 		  {
-		    cell_ccapm[i]->set_bit0(bmECOM);
+		    cell_ccapm[i]->set(cell_ccapm[i]->get() & ~bmECOM);
 		    ccapm[i]= cell_ccapm[i]->get();
 		  }
 		else if (cell == cell_ccaph[i])
 		  {
-		    cell_ccapm[i]->set_bit1(bmECOM);
+		    cell_ccapm[i]->set(cell_ccapm[i]->get() | bmECOM);
 		    ccapm[i]= cell_ccapm[i]->get();
 		  }
 	      }
@@ -239,7 +239,7 @@ cl_pca::do_pca_counter(int cycles)
 	  if (cell_ch->add(1) == 0)
 	    {
 	      // CH,CL overflow
-	      cell_ccon->set_bit1(bmCF);
+	      cell_ccon->set(cell_ccon->get() | bmCF);
 	      do_pca_module(0);
 	      do_pca_module(1);
 	      do_pca_module(2);
@@ -275,7 +275,7 @@ cl_pca::do_pca_module(int nr)
       // Capture
       cell_ccapl[nr]->set(cell_cl->get());
       cell_ccaph[nr]->set(cell_ch->get());
-      cell_ccon->set_bit1(bmCCF[nr]);
+      cell_ccon->set(cell_ccon->get() | bmCCF[nr]);
     }
 
   if (ccapm[nr] & bmECOM)
@@ -291,7 +291,7 @@ cl_pca::do_pca_module(int nr)
 	      reset();
 	      return;
 	    }
-	  cell_ccon->set_bit1(bmCCF[nr]);
+	  cell_ccon->set(cell_ccon->get() | bmCCF[nr]);
 	  if (ccapm[nr] & bmTOG)
 	    {
 	      // Toggle
@@ -301,13 +301,10 @@ cl_pca::do_pca_module(int nr)
       if (ccapm[nr] & bmPWM)
 	{
 	  // PWM
-	  /*if (cell_cl->get() == 0)
-	    cell_ccapl[nr]->set(cell_ccaph[nr]->get());*/
 	  if (cell_cl->get() < cell_ccapl[nr]->get())
-	    //sfr->set(P1, sfr->get(P1) & ~(bmCEX[nr]));
-	    sfr->set_bit1(P1, bmCEX[nr]);
+	    sfr->set(P1, sfr->get(P1) | bmCEX[nr]);
 	  else
-	    sfr->set_bit1(P1, bmCEX[nr]);
+	    sfr->set(P1, sfr->get(P1) | bmCEX[nr]);
 	}
     }
 }

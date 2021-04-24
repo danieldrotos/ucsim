@@ -121,8 +121,8 @@ public:
   virtual t_mem get16(t_addr addr)=0;
   virtual t_mem write(t_addr addr, t_mem val)=0;
   virtual void set(t_addr addr, t_mem val)=0;
-  virtual void set_bit1(t_addr addr, t_mem bits)=0;
-  virtual void set_bit0(t_addr addr, t_mem bits)=0;
+  //virtual void set_bit1(t_addr addr, t_mem bits)=0;
+  //virtual void set_bit0(t_addr addr, t_mem bits)=0;
 
   virtual void print_info(const char *pre, class cl_console_base *con);
 };
@@ -278,9 +278,9 @@ class cl_memory_cell: public cl_cell_data
   virtual t_mem add(long what);
   virtual t_mem wadd(long what);
 
-  virtual void set_bit1(t_mem bits);
+  //virtual void set_bit1(t_mem bits);
   virtual void write_bit1(t_mem bits);
-  virtual void set_bit0(t_mem bits);
+  //virtual void set_bit0(t_mem bits);
   virtual void write_bit0(t_mem bits);
   virtual void toggle_bits(t_mem bits);
   virtual void wtoggle_bits(t_mem bits);
@@ -385,8 +385,8 @@ class cl_address_space: public cl_memory
   virtual void download(t_addr, t_mem val);
   
   virtual t_mem wadd(t_addr addr, long what);
-  virtual void set_bit1(t_addr addr, t_mem bits);
-  virtual void set_bit0(t_addr addr, t_mem bits);
+  //virtual void set_bit1(t_addr addr, t_mem bits);
+  //virtual void set_bit0(t_addr addr, t_mem bits);
   
   virtual class cl_memory_cell *get_cell(t_addr addr);
   virtual int get_cell_flag(t_addr addr);
@@ -459,8 +459,8 @@ public:
   virtual t_mem get16(t_addr addr);
   virtual t_mem write(t_addr addr, t_mem val) { set(addr, val); return(val); }
   virtual void set(t_addr addr, t_mem val);
-  virtual void set_bit1(t_addr addr, t_mem bits);
-  virtual void set_bit0(t_addr addr, t_mem bits);
+  //virtual void set_bit1(t_addr addr, t_mem bits);
+  //virtual void set_bit0(t_addr addr, t_mem bits);
 
   virtual void print_info(const char *pre, class cl_console_base *con);
 };

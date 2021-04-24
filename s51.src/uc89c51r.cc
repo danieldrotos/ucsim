@@ -80,11 +80,11 @@ void
 cl_uc89c51r::reset(void)
 {
   cl_uc51r::reset();
-  sfr->set_bit1(CCAPM0, bmECOM);
-  sfr->set_bit1(CCAPM1, bmECOM);
-  sfr->set_bit1(CCAPM2, bmECOM);
-  sfr->set_bit1(CCAPM3, bmECOM);
-  sfr->set_bit1(CCAPM4, bmECOM);
+  sfr->set(CCAPM0, sfr->get(CCAPM0) | bmECOM);
+  sfr->set(CCAPM1, sfr->get(CCAPM1) | bmECOM);
+  sfr->set(CCAPM2, sfr->get(CCAPM2) | bmECOM);
+  sfr->set(CCAPM3, sfr->get(CCAPM3) | bmECOM);
+  sfr->set(CCAPM4, sfr->get(CCAPM4) | bmECOM);
   sfr->write(IPH, 0);
 }
 

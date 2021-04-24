@@ -139,8 +139,8 @@ cl_serial::read(class cl_memory_cell *cell)
   if (cell == regs[dr])
     {
       if (sr_read)
-	regs[sr]->set_bit0(0x1f);
-      regs[sr]->set_bit0(0x20);
+	regs[sr]->set(regs[sr]->get() | 0x1f);
+      regs[sr]->set(regs[sr]->get() & ~0x20);
       cfg_set(serconf_able_receive, 1);
       return s_in;
     }
@@ -326,7 +326,7 @@ cl_serial::received()
   set_dr(s_in);
   cfg_write(serconf_received, s_in);
   if (regs[sr]->get() & 0x20)
-    regs[sr]->set_bit1(0x08); // overrun
+    regs[sr]->set(regs[sr]->get() | 0x08); // overrun
   show_readable(true);
 }
 

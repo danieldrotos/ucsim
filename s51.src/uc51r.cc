@@ -136,10 +136,10 @@ cl_uc51r::received(int c)
 	  ||
 	  /* Check for broadcast address */
 	  (br == (br & c)))
-	sfr->set_bit1(SCON, bmRI);
+	sfr->set(SCON, sfr->get(SCON) | bmRI);
       return;
     }
-  sfr->set_bit1(SCON, bmRI);
+  sfr->set(SCON, sfr->get(SCON) | bmRI);
 }
 
 

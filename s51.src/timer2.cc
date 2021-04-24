@@ -178,7 +178,7 @@ cl_timer2::do_t2_baud(int cycles)
 {
   if (EXEN2 && t2ex_edge)
     {
-      cell_tcon->set_bit1(bmEXF2);
+      cell_tcon->set(cell_tcon->get() | bmEXF2);
       t2ex_edge= 0;
     }
 
@@ -213,7 +213,7 @@ cl_timer2::do_t2_capture(int cycles)
 {
   if (EXEN2 && t2ex_edge)
     {
-      cell_tcon->set_bit1(bmEXF2);
+      cell_tcon->set(cell_tcon->get() | bmEXF2);
       cell_rcap2h->set(cell_th->get());
       cell_rcap2l->set(cell_tl->get());
       t2ex_edge= 0;
@@ -228,7 +228,7 @@ cl_timer2::do_t2_capture(int cycles)
   if (!cell_tl->add(1))
     {
       if (!cell_th->add(1))
-	cell_tcon->set_bit1(bmTF2);
+	cell_tcon->set(cell_tcon->get() | bmTF2);
     }
 }
 
@@ -242,7 +242,7 @@ cl_timer2::do_t2_reload(int cycles)
 {
   if (EXEN2 && t2ex_edge)
     {
-      cell_tcon->set_bit1(bmEXF2);
+      cell_tcon->set(cell_tcon->get() | bmEXF2);
       cell_th->set(cell_rcap2h->get());
       cell_tl->set(cell_rcap2l->get());
       t2ex_edge= 0;
@@ -258,7 +258,7 @@ cl_timer2::do_t2_reload(int cycles)
     {
       if (!cell_th->add(1))
 	{
-	  cell_tcon->set_bit1(mask_TF);
+	  cell_tcon->set(cell_tcon->get() | mask_TF);
 	  cell_th->set(cell_rcap2h->get());
 	  cell_tl->set(cell_rcap2l->get());
 	}
@@ -284,7 +284,7 @@ cl_timer2::do_t2_down(int cycles)
 	  {
 	    if (!cell_th->add(1))
 	      {
-		cell_tcon->set_bit1(mask_TF);
+		cell_tcon->set(cell_tcon->get() | mask_TF);
 		cell_th->set(cell_rcap2h->get());
 		cell_tl->set(cell_rcap2l->get());
 		toggle= true;
@@ -304,7 +304,7 @@ cl_timer2::do_t2_down(int cycles)
 	  if ((u16_t)(h*256+l) <
 	      (u16_t)(cell_rcap2h->get()*256+cell_rcap2l->get()))
 	    {
-	      cell_tcon->set_bit1(mask_TF);
+	      cell_tcon->set(cell_tcon->get() | mask_TF);
 	      cell_th->set(0xff);
 	      cell_tl->set(0xff);
 	      toggle= true;
@@ -325,7 +325,7 @@ cl_timer2::do_t2_clock_out(int cycles)
 {
   if (EXEN2 && t2ex_edge)
     {
-      cell_tcon->set_bit1(bmEXF2);
+      cell_tcon->set(cell_tcon->get() | bmEXF2);
       t2ex_edge= 0;
     }
 
