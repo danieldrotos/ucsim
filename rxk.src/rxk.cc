@@ -246,9 +246,9 @@ int
 cl_rxk_cpu::init(void)
 {
   cl_hw::init();
-  stackseg= ruc->ioi->get_cell(0x11);
-  dataseg = ruc->ioi->get_cell(0x12);
-  segsize = ruc->ioi->get_cell(0x13);
+  stackseg= (cl_cell8*)ruc->ioi->get_cell(0x11);
+  dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
+  segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
   stackseg->decode((t_mem*)&(ruc->mem->stackseg));
   dataseg ->decode((t_mem*)&(ruc->mem->dataseg));
   segsize ->decode((t_mem*)&(ruc->mem->segsize));
@@ -305,10 +305,10 @@ cl_rxk_cpu::print_info(class cl_console_base *con)
 {
   con->dd_color("answer");
   con->dd_printf("%s[%d]\n", id_string, id);
-  con->dd_printf("SEGSIZE : 0x%02x\n", ruc->mem->segsize);
-  con->dd_printf("DATASEG : 0x%02x\n", ruc->mem->dataseg);
-  con->dd_printf("STACKSEG: 0x%02x\n", ruc->mem->stackseg);
-  con->dd_printf("XPC     : 0x%02x\n", ruc->mem->xpc);
+  con->dd_printf("SEGSIZE : 0x%02x\n", segsize->read());
+  con->dd_printf("DATASEG : 0x%02x\n", dataseg->read());
+  con->dd_printf("STACKSEG: 0x%02x\n", stackseg->read());
+  con->dd_printf("XPC     : 0x%02x\n", xpc->read());
 }
 
 

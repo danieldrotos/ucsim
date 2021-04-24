@@ -117,7 +117,7 @@ class cl_rxk_cpu: public cl_hw
 {
 protected:
   class cl_rxk *ruc;
-  class cl_memory_cell *xpc, *segsize, *dataseg, *stackseg;
+  class cl_cell8 *xpc, *segsize, *dataseg, *stackseg;
 public:
   cl_rxk_cpu(class cl_uc *auc);
   virtual int init(void);
