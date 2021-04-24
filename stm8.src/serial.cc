@@ -381,37 +381,37 @@ cl_serial::show_writable(bool val)
 {
   if (val)
     // TXE=1
-    regs[sr]->write_bit1(0x80);
+    regs[sr]->write(regs[sr]->read() | 0x80);
   else
     // TXE=0
-    regs[sr]->write_bit0(0x80);
+    regs[sr]->write(regs[sr]->read() & ~0x80);
 }
 
 void
 cl_serial::show_readable(bool val)
 {
   if (val)
-    regs[sr]->write_bit1(0x20);
+    regs[sr]->write(regs[sr]->read() | 0x20);
   else
-    regs[sr]->write_bit0(0x20);
+    regs[sr]->write(regs[sr]->read() & ~0x20);
 }
 
 void
 cl_serial::show_tx_complete(bool val)
 {
   if (val)
-    regs[sr]->write_bit1(0x40);
+    regs[sr]->write(regs[sr]->read() | 0x40);
   else
-    regs[sr]->write_bit0(0x40);
+    regs[sr]->write(regs[sr]->read() & ~0x40);
 }
 
 void
 cl_serial::show_idle(bool val)
 {
   if (val)
-    regs[sr]->write_bit1(0x10);
+    regs[sr]->write(regs[sr]->read() | 0x10);
   else
-    regs[sr]->write_bit0(0x10);
+    regs[sr]->write(regs[sr]->read() & ~0x10);
 }
 
 void
