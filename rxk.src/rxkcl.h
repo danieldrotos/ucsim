@@ -37,7 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 #ifdef WORDS_BIGENDIAN
-#define RP(N.N16,NH,NL) union			\
+#define RP(N,N16,NH,NL) union			\
 		      {				\
 			u16_t N16;		\
 			struct {		\

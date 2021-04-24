@@ -241,7 +241,7 @@ class cl_memory_cell: public cl_cell_data
   t_mem def_data;
  protected:
   uchar width;
-  /*TYPE_UBYTE*/uchar flags;
+  uchar flags;
   class cl_memory_operator *operators;
  public:
   cl_memory_cell();

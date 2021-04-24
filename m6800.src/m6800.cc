@@ -47,10 +47,10 @@ cl_m6800::cl_m6800(class cl_sim *asim):
   cB.decode((t_mem*)&B);
   cCC.init();
   cCC.decode((t_mem*)&CC);
-  cIX.set_width(16);
+  //cIX.set_width(16);
   cIX.init();
   cIX.decode((t_mem*)&IX);
-  cSP.set_width(16);
+  //cSP.set_width(16);
   cSP.init();
   cSP.decode((t_mem*)&SP);
 
