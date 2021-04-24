@@ -938,7 +938,7 @@ t_mem
 cl_cell8::d()
 {
   return data?(*((u8_t*)data)):0;
-  return data?((/*u8_t*/uchar)*data):0;
+  //return data?((uchar)*data):0;
 }
 
 void
@@ -955,7 +955,7 @@ cl_bit_cell8::d()
 {
   if (!data)
     return 0;
-  /*u8_t*/uchar x= (/*u8_t*/uchar) *data;
+  u8_t x= *((u8_t*)data);
   x&= mask;
   return x?1:0;
 }
@@ -966,9 +966,9 @@ cl_bit_cell8::d(t_mem v)
   if (!data)
     return;
   if (v)
-    *data |= (/*u8_t*/uchar)mask;
+    *((u8_t*)data) |= (u8_t)mask;
   else
-    *data &= ~(/*u8_t*/uchar)mask;
+    *((u8_t*)data) &= ~((u8_t)mask);
 }
 
 // 16 bit cell;
@@ -977,13 +977,11 @@ t_mem
 cl_cell16::d()
 {
   return data?(*((u16_t*)data)):0;
-  return data?((u16_t)*data):0;
 }
 
 void
 cl_cell16::d(t_mem v)
 {
-  //data?(*data=(u16_t)v):0;
   data?(*((u16_t*)data)=(u16_t)v):0;
 }
 
@@ -994,7 +992,9 @@ cl_bit_cell16::d()
 {
   if (!data)
     return 0;
-  return (((u16_t)*data)&((u16_t)mask))?1:0;
+  u16_t x= *((u16_t*)data);
+  x&= mask;
+  return x?1:0;
 }
 
 void
@@ -1003,9 +1003,9 @@ cl_bit_cell16::d(t_mem v)
   if (!data)
     return;
   if (v)
-    *data |= (u16_t)mask;
+    *((u16_t*)data) |= (u16_t)mask;
   else
-    *data &= ~(u16_t)mask;
+    *((u16_t*)data) &= ~((u16_t)mask);
 }
 
 
