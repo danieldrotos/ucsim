@@ -2055,6 +2055,26 @@ cl_memory_chip::get(t_addr addr)
   return(array[addr]);
 }
 
+t_mem
+cl_memory_chip::get8(t_addr addr)
+{
+  if (!array ||
+      size <= addr)
+    return 0;
+  u8_t *p= (u8_t*)(&array[addr]);
+  return (u8_t)(*p);
+}
+
+t_mem
+cl_memory_chip::get16(t_addr addr)
+{
+  if (!array ||
+      size <= addr)
+    return 0;
+  u16_t *p= (u16_t*)(&array[addr]);
+  return (u16_t)(*p);
+}
+
 void
 cl_memory_chip::set(t_addr addr, t_mem val)
 {

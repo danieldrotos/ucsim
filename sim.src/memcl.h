@@ -117,6 +117,8 @@ public:
   virtual t_mem read(t_addr addr)=0;
   virtual t_mem read(t_addr addr, enum hw_cath skip)=0;
   virtual t_mem get(t_addr addr)=0;
+  virtual t_mem get8(t_addr addr)=0;
+  virtual t_mem get16(t_addr addr)=0;
   virtual t_mem write(t_addr addr, t_mem val)=0;
   virtual void set(t_addr addr, t_mem val)=0;
   virtual void set_bit1(t_addr addr, t_mem bits)=0;
@@ -376,6 +378,8 @@ class cl_address_space: public cl_memory
   virtual t_mem read(t_addr addr);
   virtual t_mem read(t_addr addr, enum hw_cath skip);
   virtual t_mem get(t_addr addr);
+  virtual t_mem get8(t_addr addr) { return get(addr)&0xff; }
+  virtual t_mem get16(t_addr addr) { return get(addr)&0xffff; }
   virtual t_mem write(t_addr addr, t_mem val);
   virtual void set(t_addr addr, t_mem val);
   virtual void download(t_addr, t_mem val);
@@ -451,6 +455,8 @@ public:
   virtual t_mem read(t_addr addr) { return(get(addr)); }
   virtual t_mem read(t_addr addr, enum hw_cath skip) { return(get(addr)); }
   virtual t_mem get(t_addr addr);
+  virtual t_mem get8(t_addr addr);
+  virtual t_mem get16(t_addr addr);
   virtual t_mem write(t_addr addr, t_mem val) { set(addr, val); return(val); }
   virtual void set(t_addr addr, t_mem val);
   virtual void set_bit1(t_addr addr, t_mem bits);
