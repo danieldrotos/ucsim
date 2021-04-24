@@ -948,6 +948,12 @@ cl_cell8::d(t_mem v)
   data?(*((u8_t*)data)=(u8_t)v):0;
 }
 
+void
+cl_cell8::dl(t_mem v)
+{
+  data?(*((u8_t*)data)=(u8_t)v):0;
+}
+
 // 8 bit cell for bit spaces
 
 t_mem
@@ -981,6 +987,12 @@ cl_cell16::d()
 
 void
 cl_cell16::d(t_mem v)
+{
+  data?(*((u16_t*)data)=(u16_t)v):0;
+}
+
+void
+cl_cell16::dl(t_mem v)
 {
   data?(*((u16_t*)data)=(u16_t)v):0;
 }

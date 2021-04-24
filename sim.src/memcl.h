@@ -313,6 +313,7 @@ class cl_cell8: public cl_memory_cell
   cl_cell8(): cl_memory_cell(8) {}
   virtual t_mem d();
   virtual void d(t_mem v);
+  virtual void dl(t_mem v);
 };
 
 class cl_bit_cell8: public cl_memory_cell
@@ -330,6 +331,7 @@ class cl_cell16: public cl_memory_cell
   cl_cell16(): cl_memory_cell(16) {}
   virtual t_mem d();
   virtual void d(t_mem v);
+  virtual void dl(t_mem v);
 };
 
 class cl_bit_cell16: public cl_memory_cell
