@@ -1260,14 +1260,15 @@ cl_memory_cell::download(t_mem val)
 t_mem
 cl_memory_cell::add(long what)
 {
-  /* *data=*/ d( (*data + what) & mask);
+  ///* *data=*/ d( (*data + what) & mask);
+  set(get()+what);
   return(/* *data*/d());
 }
 
 t_mem
 cl_memory_cell::wadd(long what)
 {
-  t_mem d= (*data + what) & mask;
+  t_mem d= (/* *data*/read() + what) & mask;
   return(write(d));
 }
 
