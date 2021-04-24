@@ -47,19 +47,14 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   cF.init();
   cF.decode((t_mem*)&rF);
   cAF.init();
-  //cAF.set_width(16);
   cAF.decode((t_mem*)&rAF);
-  printf("AF: %p\n", &rAF);
-  printf("A : %p\n", &rA);
-  printf("F : %p\n", &rF);
   
   cB.init();
-  cB.decode((t_mem*)&BC.r.B);
+  cB.decode((t_mem*)&rB);
   cC.init();
-  cC.decode((t_mem*)&BC.r.B);
+  cC.decode((t_mem*)&rB);
   cBC.init();
-  cBC.set_width(16);
-  cBC.decode((t_mem*)&BC.BC);
+  cBC.decode((t_mem*)&rBC);
 
   cD.init();
   cD.decode((t_mem*)&DE.r.D);
@@ -101,6 +96,15 @@ cl_rxk::init(void)
   vars->add(v= new cl_cvar("A",  &cA , "CPU register A" )); v->init();
   vars->add(v= new cl_cvar("F",  &cF , "CPU register F" )); v->init();
   vars->add(v= new cl_cvar("AF", &cAF, "CPU register AF")); v->init();
+  vars->add(v= new cl_cvar("B",  &cB , "CPU register B" )); v->init();
+  vars->add(v= new cl_cvar("C",  &cC , "CPU register C" )); v->init();
+  vars->add(v= new cl_cvar("BC", &cBC, "CPU register BC")); v->init();
+  vars->add(v= new cl_cvar("H",  &cH , "CPU register H" )); v->init();
+  vars->add(v= new cl_cvar("L",  &cL , "CPU register L" )); v->init();
+  vars->add(v= new cl_cvar("HL", &cHL, "CPU register HL")); v->init();
+  vars->add(v= new cl_cvar("IX", &cIX, "CPU register IX")); v->init();
+  vars->add(v= new cl_cvar("IY", &cIY, "CPU register IY")); v->init();
+  vars->add(v= new cl_cvar("SP", &cSP, "CPU register SP")); v->init();
   
   return 0;
 }

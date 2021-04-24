@@ -85,12 +85,8 @@ public:
   RP(aDE,DE,D,E);
   RP(aHL,HL,H,L);
   u16_t IX, IY, SP;
-  class cl_cell8 cA, cF;
-  class cl_cell16 cAF;
-  class cl_memory_cell cB, cC, cBC;
-  class cl_memory_cell cD, cE, cDE;
-  class cl_memory_cell cH, cL, cHL;
-  class cl_memory_cell cIX, cIY, cSP;
+  class cl_cell8 cA, cF, cB, cC, cD, cE, cH, cL;
+  class cl_cell16 cAF, cBC, cDE, cHL, cIX, cIY, cSP;
   class cl_ras *mem;
   class cl_address_space *ioi, *ioe;
   bool ioi_prefix, ioe_prefix;
