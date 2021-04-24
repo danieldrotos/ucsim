@@ -1082,10 +1082,10 @@ cl_51core::decode_dptr(void)
       ad->activate(0);
     }
   
-  vars->add("dpl", dptr, 0, 7, 0, "");
-  vars->add("DPL", dptr, 0, 7, 0, "");
-  vars->add("dph", dptr, 1, 7, 0, "");
-  vars->add("DPH", dptr, 1, 7, 0, "");
+  vars->add("dpl", dptr, 0, "");
+  vars->add("DPL", dptr, 0, "");
+  vars->add("dph", dptr, 1, "");
+  vars->add("DPH", dptr, 1, "");
 }
 
 void
@@ -1251,8 +1251,8 @@ cl_51core::print_regs(class cl_console_base *con)
 {
   t_addr start, stop;
   t_mem data;
-  t_mem dp;
-  
+  u16_t dp;
+
   // show regs
   start= psw->get() & 0x18;
   con->dd_color("answer");
@@ -1315,7 +1315,7 @@ cl_51core::print_regs(class cl_console_base *con)
 		  for (di= dptr->get_size()-1; di >= 0; di--)
 		    dp= (dp*256) + dptr_chip->get(a+di);
 		  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
-		  con->dd_printf(xram->addr_format, dp);
+		  con->dd_printf("-0x%04x", dp);
 		  data= xram->read(dp);
 		  con->dd_printf(" @DPTR%d= ", i);
 		  con->dd_printf("0x%02x %3d %c\n", data, data,
@@ -1339,7 +1339,7 @@ cl_51core::print_regs(class cl_console_base *con)
 	  dp= (sfr_chip->get(DPL-0x80) +
 	       sfr_chip->get(DPH-0x80) * 256) & 0xffff;
 	  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
-	  con->dd_printf(xram->addr_format, dp);
+	  con->dd_printf("+0x%04x", dp);
 	  data= xram->read(dp);
 	  con->dd_printf(" @DPTR%d= ", i);
 	  con->dd_printf("0x%02x %3d %c\n", data, data,
