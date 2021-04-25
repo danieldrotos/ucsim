@@ -34,7 +34,7 @@ SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 F? 0x0800c 72 10 00 00    bset  0x0000,#0[0K
 F 0x00800c
 Simulated 5 ticks (6.250e-07 sec)
-Host usage: 0.000011 sec, rate=0.056988
+Host usage: 0.000012 sec, rate=0.051401
 
 # Set up a vcd to monitor the bit changes in loc1 and the value of loc2.
 set hw vcd output "out/test.vcd"
@@ -83,7 +83,7 @@ SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 F? 0x0800c 72 10 00 00    bset  0x0000,#0[0K
 F 0x00800c
 Simulated 25 ticks (3.125e-06 sec)
-Host usage: 0.000054 sec, rate=0.057996
+Host usage: 0.000043 sec, rate=0.072818
 
 # Remove the probe from every second bit.
 # Removing probes while started is ok - we just stop logging changes.
@@ -107,6 +107,6 @@ SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 F? 0x0800c 72 10 00 00    bset  0x0000,#0[0K
 F 0x00800c
 Simulated 25 ticks (3.125e-06 sec)
-Host usage: 0.000041 sec, rate=0.076205
+Host usage: 0.000034 sec, rate=0.091659
 Loading from test.ihx
 111 words read from test.ihx

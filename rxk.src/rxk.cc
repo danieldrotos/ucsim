@@ -53,7 +53,7 @@ cl_rxk::init(void)
   
   xtal= 1000000;
 
-#define RCV(R) reg_cell_var(&c ## R , &r ## R , "#R" , "CPU register #R")
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(A);
   RCV(F);
   RCV(AF);
@@ -74,7 +74,8 @@ cl_rxk::init(void)
   RCV(IP);
   RCV(IIR);
   RCV(EIR);
-
+#undef RCV
+  
   return 0;
 }
 
@@ -178,6 +179,9 @@ cl_rxk::print_regs(class cl_console_base *con)
   con->dd_printf("\n");
   con->dd_printf("                  SZxxxVxC\n");
 
+  con->dd_printf("XPC= 0x%02x IP= 0x%02x IIR= 0x%02x EIR= 0x%02x\n",
+		 mem->xpc, rIP, rIIR, rEIR);
+  
   con->dd_printf("BC= ");
   rom->dump(0, rBC, rBC+7, 8, con);
   con->dd_color("answer");
@@ -215,25 +219,20 @@ int
 cl_rxk_cpu::init(void)
 {
   cl_hw::init();
+
   stackseg= (cl_cell8*)ruc->ioi->get_cell(0x11);
   dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
   segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
-  stackseg->decode((t_mem*)&(ruc->mem->stackseg));
-  dataseg ->decode((t_mem*)&(ruc->mem->dataseg));
-  segsize ->decode((t_mem*)&(ruc->mem->segsize));
-
   xpc= new cl_cell8(8);
-  xpc->decode((t_mem*)(&(ruc->mem->xpc)));
 
-  class cl_cvar *v;
-  uc->vars->add(v= new cl_cvar("STACKSEG", stackseg, "MMU register: STACKSEG"));
-  v->init();
-  uc->vars->add(v= new cl_cvar("DATASEG", dataseg, "MMU register: DATASEG"));
-  v->init();
-  uc->vars->add(v= new cl_cvar("SEGSIZE", segsize, "MMU register: SEGSIZE"));
-  v->init();
-  uc->vars->add(v= new cl_cvar("XPC", xpc, "MMU register: XPC"));
-  v->init();
+  uc->reg_cell_var(stackseg, &(ruc->mem->stackseg),
+		   "STACKSEG", "MMU register: STACKSEG");
+  uc->reg_cell_var(dataseg, &(ruc->mem->dataseg),
+		   "DATASEG", "MMU register: DATASEG");
+  uc->reg_cell_var(segsize, &(ruc->mem->segsize),
+		   "SEGSIZE", "MMU register: SEGSIZE");
+  uc->reg_cell_var(xpc, &(ruc->mem->xpc),
+		   "XPC", "MMU register: XPC");
 
   return 0;
 }
