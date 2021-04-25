@@ -1161,7 +1161,7 @@ cl_memory_cell::decode(class cl_memory_chip *chip, t_addr addr)
 }
 
 void
-cl_memory_cell::decode(t_mem *data_ptr)
+cl_memory_cell::decode(void *data_ptr)
 {
   if (data_ptr == NULL)
     {
@@ -1176,7 +1176,7 @@ cl_memory_cell::decode(t_mem *data_ptr)
 }
 
 void
-cl_memory_cell::decode(t_mem *data_ptr, t_mem bit_mask)
+cl_memory_cell::decode(void *data_ptr, t_mem bit_mask)
 {
   if (data_ptr == NULL)
     {
@@ -1955,7 +1955,16 @@ cl_memory_chip::cl_memory_chip(const char *id,
 			       int initial):
   cl_chip_data(id, asize, awidth)
 {
-  array= (t_mem *)malloc(size * sizeof(t_mem));
+  if (awidth > 32)
+    width= 32;
+  if (width <= 8)
+    bwidth= 1;
+  else if (width <= 16)
+    bwidth= 2;
+  else
+    bwidth= 4;
+  alloc_size= size * sizeof(t_mem);
+  array= (t_mem *)malloc(alloc_size);
   init_value= initial;
   array_is_mine= true;
 }
@@ -1963,9 +1972,18 @@ cl_memory_chip::cl_memory_chip(const char *id,
 cl_memory_chip::cl_memory_chip(const char *id,
 			       int asize,
 			       int awidth,
-			       t_mem *aarray):
+			       t_mem *aarray, int arrsize):
   cl_chip_data(id, asize, awidth)
 {
+if (awidth > 32)
+    width= 32;
+  if (width <= 8)
+    bwidth= 1;
+  else if (width <= 16)
+    bwidth= 2;
+  else
+    bwidth= 4;
+  alloc_size= arrsize;
   array= aarray;
   init_value= 0;
   array_is_mine= false;
@@ -1994,26 +2012,28 @@ cl_memory_chip::init(void)
 }
 
 
-t_mem *
+void *
 cl_memory_chip::get_slot(t_addr addr)
 {
+  u8_t *a= (u8_t*)array;
   if (!array ||
       size <= addr)
     return(0);
-  return(&array[addr]);
+  return(a+(addr*bwidth));
 }
 
 t_addr
 cl_memory_chip::is_slot(/*t_mem*/void *data_ptr)
 {
-  t_mem *p= (t_mem *)data_ptr;
-  if (p < &(array[0]))
+  u8_t *p= (u8_t *)data_ptr;
+  u8_t *a= (u8_t *)array;
+  if (p < &(a[0]))
     return -1;
-  if (p > &(array[size-1]))
+  if (p > &(a[alloc_size-1]))
     return -2;
-  return p - &(array[0]);
+  return p - &(a[0]);
 }
-
+/*
 t_mem
 cl_memory_chip::get(t_addr addr)
 {
@@ -2022,29 +2042,8 @@ cl_memory_chip::get(t_addr addr)
     return(0);
   return(array[addr]);
 }
-/*
-t_mem
-cl_memory_chip::get8(t_addr addr)
-{
-  if (!array ||
-      size <= addr)
-    return 0;
-  u8_t *p= (u8_t*)(&array[addr]);
-  return (u8_t)(*p);
-}
 */
 /*
-t_mem
-cl_memory_chip::get16(t_addr addr)
-{
-  if (!array ||
-      size <= addr)
-    return 0;
-  u16_t *p= (u16_t*)(&array[addr]);
-  return (u16_t)(*p);
-}
-*/
-
 void
 cl_memory_chip::set(t_addr addr, t_mem val)
 {
@@ -2052,25 +2051,6 @@ cl_memory_chip::set(t_addr addr, t_mem val)
       size <= addr)
     return;
   array[addr]= val & data_mask;
-}
-/*
-void
-cl_memory_chip::set_bit1(t_addr addr, t_mem bits)
-{
-  if (!array ||
-      size <= addr)
-    return;
-  array[addr]|= (bits & data_mask);
-}
-*/
-/*
-void
-cl_memory_chip::set_bit0(t_addr addr, t_mem bits)
-{
-  if (!array ||
-      size <= addr)
-    return;
-  array[addr]&= ((~bits) & data_mask);
 }
 */
 void
@@ -2086,6 +2066,96 @@ cl_memory_chip::print_info(const char *pre, class cl_console_base *con)
 		     get_name(),
 		     width, data_format, addr_format);
     }
+}
+
+
+// Chip with 1 byte slots
+
+cl_chip8::cl_chip8(const char *id, int asize, int awidth, int initial):
+  cl_memory_chip(id, asize, awidth, initial)
+{}
+
+cl_chip8::cl_chip8(const char *id, int asize, int awidth, t_mem *aarray, int arrsize):
+  cl_memory_chip(id, asize, awidth, aarray, arrsize)
+{}
+
+t_mem
+cl_chip8::d(t_addr addr)
+{
+  if (array &&
+      addr < size)
+    return 0;
+  return (((u8_t*)array)[addr]) & data_mask;
+}
+
+void
+cl_chip8::d(t_addr addr, t_mem v)
+{
+  if (!array ||
+      size <= addr)
+    return;
+  v&= data_mask;
+  ((u8_t*)array)[addr]= v;
+}
+
+
+// Chip with 2 byte slots
+
+cl_chip16::cl_chip16(const char *id, int asize, int awidth, int initial):
+  cl_memory_chip(id, asize, awidth, initial)
+{}
+
+cl_chip16::cl_chip16(const char *id, int asize, int awidth, t_mem *aarray, int arrsize):
+  cl_memory_chip(id, asize, awidth, aarray, arrsize)
+{}
+
+t_mem
+cl_chip16::d(t_addr addr)
+{
+  if (array &&
+      addr < size)
+    return 0;
+  return (((u16_t*)array)[addr]) & data_mask;
+}
+
+void
+cl_chip16::d(t_addr addr, t_mem v)
+{
+  if (!array ||
+      size <= addr)
+    return;
+  v&= data_mask;
+  ((u16_t*)array)[addr]= v;
+}
+
+
+// Chip with 4 byte slots
+
+cl_chip32::cl_chip32(const char *id, int asize, int awidth, int initial):
+  cl_memory_chip(id, asize, awidth, initial)
+{}
+
+cl_chip32::cl_chip32(const char *id, int asize, int awidth, t_mem *aarray, int arrsize):
+  cl_memory_chip(id, asize, awidth, aarray, arrsize)
+{}
+
+t_mem
+cl_chip32::d(t_addr addr)
+{
+  if (array &&
+      addr < size)
+    return 0;
+  return (((u32_t*)array)[addr]) & data_mask;
+}
+
+void
+cl_chip32::d(t_addr addr, t_mem v)
+{
+  if (!array ||
+      size <= addr)
+    return;
+  v&= data_mask;
+  ((u32_t*)array)[addr]= v;
 }
 
 
@@ -2529,7 +2599,7 @@ cl_banker::activate(class cl_console_base *con)
 {
   int b= actual_bank();
   t_addr i, s;
-  t_mem *data;
+  void *data;
   class cl_memory_cell *c;
 
   if (b == bank)
@@ -2554,7 +2624,7 @@ cl_banker::switch_to(int bank_nr, class cl_console_base *con)
 {
   int b= bank_nr;//actual_bank();
   t_addr i, s;
-  t_mem *data;
+  void *data;
   class cl_memory_cell *c;
 
   if (b == bank)
@@ -2659,7 +2729,7 @@ cl_bander::activate(class cl_console_base *con)
 	  b= 0;
 	  m= 1;
 	}
-      t_mem *slot= memchip->get_slot(ca);
+      void *slot= memchip->get_slot(ca);
       cl_memory_cell *c= address_space->get_cell(asa);
       c->decode(slot, m);
       b++;

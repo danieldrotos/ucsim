@@ -261,8 +261,8 @@ class cl_memory_cell: public cl_cell_data
   
   virtual void un_decode(void);
   virtual void decode(class cl_memory_chip *chip, t_addr addr);
-  virtual void decode(t_mem *data_ptr);
-  virtual void decode(t_mem *data_ptr, t_mem bit_mask);
+  virtual void decode(void *data_ptr);
+  virtual void decode(void *data_ptr, t_mem bit_mask);
   
   virtual t_mem read(void);
   virtual t_mem R(void) { return read(); }
@@ -461,39 +461,69 @@ class cl_chip_data: public cl_memory
 {
 public:
   cl_chip_data(const char *id, t_addr asize, int awidth);
-  virtual t_mem *d() { return 0; };
-  virtual void d(t_mem v) {};
+  virtual t_mem d(t_addr addr) { return 0; };
+  virtual void d(t_addr addr, t_mem v) {};
 };
 
 class cl_memory_chip: public cl_chip_data
 {
 protected:
-  t_mem *array;
+  void *array;
   int init_value;
   bool array_is_mine;
+  int alloc_size;
+  int bwidth; // size of array elements, in bytes
 public:
   cl_memory_chip(const char *id, int asize, int awidth, int initial= -1);
-  cl_memory_chip(const char *id, int asize, int awidth, t_mem *aarray);
+  cl_memory_chip(const char *id, int asize, int awidth, t_mem *aarray, int arrsize);
   virtual ~cl_memory_chip(void);
   virtual int init(void);
 
   virtual bool is_chip(void) { return(true); }
 
-  virtual t_mem *get_slot(t_addr addr);
+  virtual void *get_slot(t_addr addr);
   virtual t_addr is_slot(/*t_mem*/void *data_ptr);
   
-  virtual t_mem read(t_addr addr) { return(get(addr)); }
-  virtual t_mem read(t_addr addr, enum hw_cath skip) { return(get(addr)); }
-  virtual t_mem get(t_addr addr);
-  //virtual t_mem get8(t_addr addr);
-  //virtual t_mem get16(t_addr addr);
-  virtual t_mem write(t_addr addr, t_mem val) { set(addr, val); return(val); }
-  virtual void set(t_addr addr, t_mem val);
+  virtual t_mem read(t_addr addr) { return d(addr); }
+  virtual t_mem read(t_addr addr, enum hw_cath skip) { return d(addr); }
+  virtual t_mem get(t_addr addr) { return d(addr); }
+  virtual t_mem write(t_addr addr, t_mem val) { d(addr, val); return(val); }
+  virtual void set(t_addr addr, t_mem val) { d(addr, val); }
 
   virtual void print_info(const char *pre, class cl_console_base *con);
 };
 
-  
+class cl_chip8: public cl_memory_chip
+{
+public:
+  cl_chip8(const char *id, int asize, int awidth, int initial= -1);
+  cl_chip8(const char *id, int asize, int awidth, t_mem *aarray, int arrsize);
+public:
+  virtual t_mem d(t_addr addr);
+  virtual void d(t_addr addr, t_mem v);
+};
+
+class cl_chip16: public cl_memory_chip
+{
+public:
+  cl_chip16(const char *id, int asize, int awidth, int initial= -1);
+  cl_chip16(const char *id, int asize, int awidth, t_mem *aarray, int arrsize);
+public:
+  virtual t_mem d(t_addr addr);
+  virtual void d(t_addr addr, t_mem v);
+};
+
+class cl_chip32: public cl_memory_chip
+{
+public:
+  cl_chip32(const char *id, int asize, int awidth, int initial= -1);
+  cl_chip32(const char *id, int asize, int awidth, t_mem *aarray, int arrsize);
+public:
+  virtual t_mem d(t_addr addr);
+  virtual void d(t_addr addr, t_mem v);
+};
+
+
 /*
  * Address decoder
  */
