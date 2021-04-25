@@ -68,9 +68,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rBC (BC.BC)
 #define rDE (DE.DE)
 #define rHL (HL.HL)
-#define rIX (IX)
-#define rIY (IY)
-#define rSP (SP)
 
   
 class cl_rxk: public cl_uc  
@@ -84,8 +81,8 @@ public:
   RP(aBC,BC,B,C);
   RP(aDE,DE,D,E);
   RP(aHL,HL,H,L);
-  u8_t IP, IIR, EIR;
-  u16_t IX, IY, SP;
+  u8_t rIP, rIIR, rEIR;
+  u16_t rIX, rIY, rSP;
   class cl_cell8 cIP, cIIR, cEIR;
   class cl_cell8 cA, cF, cB, cC, cD, cE, cH, cL;
   class cl_cell16 cAF, cBC, cDE, cHL, cIX, cIY, cSP;

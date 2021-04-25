@@ -42,47 +42,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_rxk::cl_rxk(class cl_sim *asim):
   cl_uc(asim)
 {
-  cA.init();
-  cA.decode(&rA);
-  cF.init();
-  cF.decode(&rF);
-  cAF.init();
-  cAF.decode(&rAF);
-  
-  cB.init();
-  cB.decode(&rB);
-  cC.init();
-  cC.decode(&rB);
-  cBC.init();
-  cBC.decode(&rBC);
-
-  cD.init();
-  cD.decode(&rD);
-  cE.init();
-  cE.decode(&rE);
-  cDE.init();
-  cDE.decode(&rDE);
-
-  cH.init();
-  cH.decode(&rH);
-  cL.init();
-  cL.decode(&rL);
-  cHL.init();
-  cHL.decode(&rHL);
-
-  cIX.init();
-  cIX.decode(&IX);
-  cIY.init();
-  cIY.decode(&IY);
-  cSP.init();
-  cSP.decode(&SP);
-
-  cIP.init();
-  cIP.decode(&IP);
-  cIIR.init();
-  cIIR.decode(&IIR);
-  cEIR.init();
-  cEIR.decode(&EIR);
 }
 
 int
@@ -94,20 +53,28 @@ cl_rxk::init(void)
   
   xtal= 1000000;
 
-  class cl_cvar *v;
-  vars->add(v= new cl_cvar("A",  &cA , "CPU register A" )); v->init();
-  vars->add(v= new cl_cvar("F",  &cF , "CPU register F" )); v->init();
-  vars->add(v= new cl_cvar("AF", &cAF, "CPU register AF")); v->init();
-  vars->add(v= new cl_cvar("B",  &cB , "CPU register B" )); v->init();
-  vars->add(v= new cl_cvar("C",  &cC , "CPU register C" )); v->init();
-  vars->add(v= new cl_cvar("BC", &cBC, "CPU register BC")); v->init();
-  vars->add(v= new cl_cvar("H",  &cH , "CPU register H" )); v->init();
-  vars->add(v= new cl_cvar("L",  &cL , "CPU register L" )); v->init();
-  vars->add(v= new cl_cvar("HL", &cHL, "CPU register HL")); v->init();
-  vars->add(v= new cl_cvar("IX", &cIX, "CPU register IX")); v->init();
-  vars->add(v= new cl_cvar("IY", &cIY, "CPU register IY")); v->init();
-  vars->add(v= new cl_cvar("SP", &cSP, "CPU register SP")); v->init();
-  
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "#R" , "CPU register #R")
+  RCV(A);
+  RCV(F);
+  RCV(AF);
+  RCV(B);
+  RCV(C);
+  RCV(BC);
+  RCV(D);
+  RCV(E);
+  RCV(DE);
+  RCV(H);
+  RCV(L);
+  RCV(HL);
+
+  RCV(IX);
+  RCV(IY);
+  RCV(SP);
+
+  RCV(IP);
+  RCV(IIR);
+  RCV(EIR);
+
   return 0;
 }
 

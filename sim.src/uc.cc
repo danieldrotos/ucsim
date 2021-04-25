@@ -637,6 +637,26 @@ cl_uc::reset(void)
     }
 }
 
+void
+cl_uc::reg_cell_var(class cl_memory_cell *cell,
+		    void *store,
+		    chars vname, chars vdesc)
+{
+  if (cell)
+    {
+      cell->init();
+      if (store)
+	cell->decode(store);
+      if (vname.nempty())
+	{
+	  class cl_cvar *v;
+	  vars->add(v= new cl_cvar(vname, cell, vdesc));
+	  v->init();
+	}
+    }
+}
+
+
 /*
  * Making elements
  */
