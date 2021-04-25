@@ -43,44 +43,46 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   cl_uc(asim)
 {
   cA.init();
-  cA.decode((t_mem*)&rA);
+  cA.decode(&rA);
   cF.init();
-  cF.decode((t_mem*)&rF);
+  cF.decode(&rF);
   cAF.init();
-  cAF.decode((t_mem*)&rAF);
+  cAF.decode(&rAF);
   
   cB.init();
-  cB.decode((t_mem*)&rB);
+  cB.decode(&rB);
   cC.init();
-  cC.decode((t_mem*)&rB);
+  cC.decode(&rB);
   cBC.init();
-  cBC.decode((t_mem*)&rBC);
+  cBC.decode(&rBC);
 
   cD.init();
-  cD.decode((t_mem*)&DE.r.D);
+  cD.decode(&rD);
   cE.init();
-  cE.decode((t_mem*)&DE.r.E);
+  cE.decode(&rE);
   cDE.init();
-  cDE.set_width(16);
-  cDE.decode((t_mem*)&DE.DE);
+  cDE.decode(&rDE);
 
   cH.init();
-  cH.decode((t_mem*)&HL.r.H);
+  cH.decode(&rH);
   cL.init();
-  cL.decode((t_mem*)&HL.r.L);
+  cL.decode(&rL);
   cHL.init();
-  cHL.set_width(16);
-  cHL.decode((t_mem*)&HL.HL);
+  cHL.decode(&rHL);
 
   cIX.init();
-  cIX.set_width(16);
-  cIX.decode((t_mem*)&IX);
+  cIX.decode(&IX);
   cIY.init();
-  cIY.set_width(16);
-  cIY.decode((t_mem*)&IY);
+  cIY.decode(&IY);
   cSP.init();
-  cSP.set_width(16);
-  cSP.decode((t_mem*)&SP);
+  cSP.decode(&SP);
+
+  cIP.init();
+  cIP.decode(&IP);
+  cIIR.init();
+  cIIR.decode(&IIR);
+  cEIR.init();
+  cEIR.decode(&EIR);
 }
 
 int

@@ -84,7 +84,9 @@ public:
   RP(aBC,BC,B,C);
   RP(aDE,DE,D,E);
   RP(aHL,HL,H,L);
+  u8_t IP, IIR, EIR;
   u16_t IX, IY, SP;
+  class cl_cell8 cIP, cIIR, cEIR;
   class cl_cell8 cA, cF, cB, cC, cD, cE, cH, cL;
   class cl_cell16 cAF, cBC, cDE, cHL, cIX, cIY, cSP;
   class cl_ras *mem;
