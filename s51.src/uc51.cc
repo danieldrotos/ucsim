@@ -1315,7 +1315,7 @@ cl_51core::print_regs(class cl_console_base *con)
 		  for (di= dptr->get_size()-1; di >= 0; di--)
 		    dp= (dp*256) + dptr_chip->get(a+di);
 		  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
-		  con->dd_printf("-0x%04x", dp);
+		  con->dd_printf("0x%04x", dp);
 		  data= xram->read(dp);
 		  con->dd_printf(" @DPTR%d= ", i);
 		  con->dd_printf("0x%02x %3d %c\n", data, data,
@@ -1339,7 +1339,7 @@ cl_51core::print_regs(class cl_console_base *con)
 	  dp= (sfr_chip->get(DPL-0x80) +
 	       sfr_chip->get(DPH-0x80) * 256) & 0xffff;
 	  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
-	  con->dd_printf("+0x%04x", dp);
+	  con->dd_printf("0x%04x", dp);
 	  data= xram->read(dp);
 	  con->dd_printf(" @DPTR%d= ", i);
 	  con->dd_printf("0x%02x %3d %c\n", data, data,

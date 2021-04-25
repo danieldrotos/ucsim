@@ -2082,8 +2082,8 @@ cl_chip8::cl_chip8(const char *id, int asize, int awidth, t_mem *aarray, int arr
 t_mem
 cl_chip8::d(t_addr addr)
 {
-  if (array &&
-      addr < size)
+  if (!array ||
+      size <= addr)
     return 0;
   return (((u8_t*)array)[addr]) & data_mask;
 }
@@ -2112,8 +2112,8 @@ cl_chip16::cl_chip16(const char *id, int asize, int awidth, t_mem *aarray, int a
 t_mem
 cl_chip16::d(t_addr addr)
 {
-  if (array &&
-      addr < size)
+  if (!array ||
+      size <= addr)
     return 0;
   return (((u16_t*)array)[addr]) & data_mask;
 }
@@ -2142,8 +2142,8 @@ cl_chip32::cl_chip32(const char *id, int asize, int awidth, t_mem *aarray, int a
 t_mem
 cl_chip32::d(t_addr addr)
 {
-  if (array &&
-      addr < size)
+  if (!array ||
+      size <= addr)
     return 0;
   return (((u32_t*)array)[addr]) & data_mask;
 }
