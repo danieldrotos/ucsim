@@ -32,6 +32,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "memcl.h"
 
 
+#define rA  (A)
+#define rX  (X)
+#define rY  (Y)
+#define rSP (SP)
+#define rCC (CC)
+#define rP  (CC)
+#define rF  (CC)
+#define cP  (cCC)
+#define cF  (cCC)
+
 /*
  * Base of MCS6502 processor
  */

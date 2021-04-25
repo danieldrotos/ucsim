@@ -32,6 +32,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "memcl.h"
 
 
+#define rA  (A)
+#define rB  (B)
+#define rCC (CC)
+#define rIX (IX)
+#define rSP (SP)
+
 /*
  * Base of M6800 processor
  */
