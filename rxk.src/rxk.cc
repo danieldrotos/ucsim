@@ -92,12 +92,15 @@ cl_rxk::reset(void)
   cl_uc::reset();
 
   // MMU reset
-  mem->segsize= 0;
   mem->dataseg= 0;
-  mem->dataseg= 0;
+  mem->segsize= 0xff;
   mem->stackseg= 0;
   mem->xpc= 0;
 
+  rIP= 0xff;
+  rIIR= 0;
+  rEIR= 0;
+  rSP= 0;
 }
 
   
