@@ -18,6 +18,7 @@ HL= 0x0000 08 70 d4 b2 8a 29 54 48 .p...)TH
 IX= 0x0000 08 70 d4 b2 8a 29 54 48 .p...)TH
 IY= 0x0000 08 70 d4 b2 8a 29 54 48 .p...)TH
 SP= 0x0000 08 70 d4 b2 8a 29 54 48 .p...)TH
+aAF= 0x00-0x00  aBC= 0x00-0x00  aDE= 0x00-0x00  aHL= 0x00-0x00  
  ? 0x0000 08 uc::disass() unimplemented
 [0K
 Memory chips:
