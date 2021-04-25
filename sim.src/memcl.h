@@ -117,8 +117,8 @@ public:
   virtual t_mem read(t_addr addr)=0;
   virtual t_mem read(t_addr addr, enum hw_cath skip)=0;
   virtual t_mem get(t_addr addr)=0;
-  virtual t_mem get8(t_addr addr)=0;
-  virtual t_mem get16(t_addr addr)=0;
+  //virtual t_mem get8(t_addr addr)=0;
+  //virtual t_mem get16(t_addr addr)=0;
   virtual t_mem write(t_addr addr, t_mem val)=0;
   virtual void set(t_addr addr, t_mem val)=0;
 
@@ -224,10 +224,10 @@ public:
 class cl_cell_data: public cl_abs_base
 {
  protected:
-  t_mem *data;
-  virtual t_mem d();
-  virtual void d(t_mem v);
-  virtual void dl(t_mem v);
+  /*t_mem*/void *data;
+  virtual t_mem d()=0;
+  virtual void d(t_mem v)=0;
+  virtual void dl(t_mem v) { d(v); };
 };
 
 class cl_memory_cell: public cl_cell_data
@@ -250,7 +250,7 @@ class cl_memory_cell: public cl_cell_data
   virtual int init(void);
   virtual void set_width(uchar awidth);
   
-  virtual t_mem *get_data(void) { return(data); }
+  virtual /*t_mem*/void *get_data(void) { return(data); }
   virtual t_mem get_mask(void) { return(mask); }
   virtual void set_mask(t_mem m) { mask= m; }
   virtual uchar get_flags(void);
@@ -294,6 +294,7 @@ class cl_memory_cell: public cl_cell_data
   virtual void print_operators(const char *pre, class cl_console_base *con);
 };
 
+/*
 class cl_bit_cell: public cl_memory_cell
 {
  public:
@@ -301,6 +302,9 @@ class cl_bit_cell: public cl_memory_cell
   virtual t_mem d();
   virtual void d(t_mem v);
 };
+*/
+
+/* Cell for 1 byte storage */
 
 class cl_cell8: public cl_memory_cell
 {
@@ -319,6 +323,9 @@ class cl_bit_cell8: public cl_memory_cell
   virtual t_mem d();
   virtual void d(t_mem v);
 };
+
+
+/* Cell for 2 byte storage */
 
 class cl_cell16: public cl_memory_cell
 {
@@ -339,11 +346,36 @@ class cl_bit_cell16: public cl_memory_cell
 };
 
 
+/* Cell for 4 byte storage */
+
+class cl_cell32: public cl_memory_cell
+{
+ public:
+  cl_cell32(uchar awidth): cl_memory_cell(awidth) {}
+  cl_cell32(): cl_memory_cell(32) {}
+  virtual t_mem d();
+  virtual void d(t_mem v);
+  virtual void dl(t_mem v);
+};
+
+class cl_bit_cell32: public cl_memory_cell
+{
+ public:
+  cl_bit_cell32(uchar awidth): cl_memory_cell(awidth) {}
+  virtual t_mem d();
+  virtual void d(t_mem v);
+};
+
+
+/* Dummy cell */
+
 class cl_dummy_cell: public cl_memory_cell
 {
 public:
   cl_dummy_cell(uchar awidth): cl_memory_cell(awidth) {}
 
+  virtual t_mem d();
+  virtual void d(t_mem v);
   virtual t_mem write(t_mem val);
   virtual t_mem set(t_mem val);
 };
@@ -372,15 +404,11 @@ class cl_address_space: public cl_memory
   virtual t_mem read(t_addr addr);
   virtual t_mem read(t_addr addr, enum hw_cath skip);
   virtual t_mem get(t_addr addr);
-  virtual t_mem get8(t_addr addr) { return get(addr)&0xff; }
-  virtual t_mem get16(t_addr addr) { return get(addr)&0xffff; }
+  //virtual t_mem get8(t_addr addr) { return get(addr)&0xff; }
+  //virtual t_mem get16(t_addr addr) { return get(addr)&0xffff; }
   virtual t_mem write(t_addr addr, t_mem val);
   virtual void set(t_addr addr, t_mem val);
   virtual void download(t_addr, t_mem val);
-  
-  //virtual t_mem wadd(t_addr addr, long what);
-  //virtual void set_bit1(t_addr addr, t_mem bits);
-  //virtual void set_bit0(t_addr addr, t_mem bits);
   
   virtual class cl_memory_cell *get_cell(t_addr addr);
   virtual int get_cell_flag(t_addr addr);
@@ -429,7 +457,15 @@ public:
  * Memory chip (storage)
  */
 
-class cl_memory_chip: public cl_memory
+class cl_chip_data: public cl_memory
+{
+public:
+  cl_chip_data(const char *id, t_addr asize, int awidth);
+  virtual t_mem *d() { return 0; };
+  virtual void d(t_mem v) {};
+};
+
+class cl_memory_chip: public cl_chip_data
 {
 protected:
   t_mem *array;
@@ -444,13 +480,13 @@ public:
   virtual bool is_chip(void) { return(true); }
 
   virtual t_mem *get_slot(t_addr addr);
-  virtual t_addr is_slot(t_mem *data_ptr);
+  virtual t_addr is_slot(/*t_mem*/void *data_ptr);
   
   virtual t_mem read(t_addr addr) { return(get(addr)); }
   virtual t_mem read(t_addr addr, enum hw_cath skip) { return(get(addr)); }
   virtual t_mem get(t_addr addr);
-  virtual t_mem get8(t_addr addr);
-  virtual t_mem get16(t_addr addr);
+  //virtual t_mem get8(t_addr addr);
+  //virtual t_mem get16(t_addr addr);
   virtual t_mem write(t_addr addr, t_mem val) { set(addr, val); return(val); }
   virtual void set(t_addr addr, t_mem val);
 
