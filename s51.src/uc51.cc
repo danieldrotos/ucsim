@@ -885,19 +885,19 @@ cl_51core::make_address_spaces(void)
 void
 cl_51core::make_chips(void)
 {
-  rom_chip= new cl_memory_chip("rom_chip", 0x10000, 8, 0/*, 0xff*/);
+  rom_chip= new cl_chip8("rom_chip", 0x10000, 8, 0/*, 0xff*/);
   rom_chip->init();
   memchips->add(rom_chip);
   
-  iram_chip= new cl_memory_chip("iram_chip", 0x100, 8);
+  iram_chip= new cl_chip8("iram_chip", 0x100, 8);
   iram_chip->init();
   memchips->add(iram_chip);
 
-  xram_chip= new cl_memory_chip("xram_chip", 0x10000, 8);
+  xram_chip= new cl_chip8("xram_chip", 0x10000, 8);
   xram_chip->init();
   memchips->add(xram_chip);
 
-  sfr_chip= new cl_memory_chip("sfr_chip", 0x80, 8);
+  sfr_chip= new cl_chip8("sfr_chip", 0x80, 8);
   sfr_chip->init();
   memchips->add(sfr_chip);
 }
@@ -1039,7 +1039,7 @@ cl_51core::decode_dptr(void)
 	  class cl_memory_chip *dptr_chip= (cl_memory_chip*)memory("dptr_chip");
 	  if (dptr_chip == 0)
 	    {
-	      dptr_chip= new cl_memory_chip("dptr_chip", 3*8, 8);
+	      dptr_chip= new cl_chip8("dptr_chip", 3*8, 8);
 	      dptr_chip->init();
 	      memchips->add(dptr_chip);
 	    }

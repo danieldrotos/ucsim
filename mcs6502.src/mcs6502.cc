@@ -117,7 +117,7 @@ cl_mcs6502::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  chip= new cl_memory_chip("rom_chip", 0x10000, 8);
+  chip= new cl_chip8("rom_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= rom,

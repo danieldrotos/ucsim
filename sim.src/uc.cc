@@ -667,7 +667,7 @@ cl_uc::make_variables(void)
       as->init();
       address_spaces->add(as);
 
-      chip= new cl_memory_chip("variable_storage", l, 32);
+      chip= new cl_chip32("variable_storage", l, 32);
       chip->init();
       memchips->add(chip);
       ad= new cl_address_decoder(variables, chip, 0, l-1, 0);

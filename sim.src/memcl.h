@@ -461,8 +461,8 @@ class cl_chip_data: public cl_memory
 {
 public:
   cl_chip_data(const char *id, t_addr asize, int awidth);
-  virtual t_mem d(t_addr addr) { return 0; };
-  virtual void d(t_addr addr, t_mem v) {};
+  virtual t_mem d(t_addr addr)= 0;
+  virtual void d(t_addr addr, t_mem v)= 0;
 };
 
 class cl_memory_chip: public cl_chip_data
@@ -522,6 +522,10 @@ public:
   virtual t_mem d(t_addr addr);
   virtual void d(t_addr addr, t_mem v);
 };
+
+extern class cl_memory_chip *new_chip(const char *id,
+				      int awidth,
+				      int initial= -1);
 
 
 /*

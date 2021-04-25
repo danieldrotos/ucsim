@@ -2158,6 +2158,29 @@ cl_chip32::d(t_addr addr, t_mem v)
   ((u32_t*)array)[addr]= v;
 }
 
+class cl_memory_chip *
+new_chip(const char *id, int awidth, int initial)
+{
+  class cl_memory_chip *c= 0;
+  
+  if (awidth < 1)
+    awidth= 1;
+  if (awidth > 32)
+    awidth= 32;
+
+  if (awidth <= 8)
+    c= new cl_chip8(id, awidth, initial);
+  else if (awidth <= 16)
+    c= new cl_chip16(id, awidth, initial);
+  else
+    c= new cl_chip32(id, awidth, initial);
+
+  if (c)
+    c->init();
+
+  return c;
+}
+
 
 /*
  *                                                              Address decoder
