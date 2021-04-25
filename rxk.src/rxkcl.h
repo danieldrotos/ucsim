@@ -69,6 +69,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rDE (DE.DE)
 #define rHL (HL.HL)
 
+#define raA (aAF.r.A)
+#define raF (aAF.r.F)
+#define raB (aBC.r.B)
+#define raC (aBC.r.C)
+#define raD (aDE.r.D)
+#define raE (aDE.r.E)
+#define raH (aHL.r.H)
+#define raL (aHL.r.L)
+#define raAF (aAF.AF)
+#define raBC (aBC.BC)
+#define raDE (aDE.DE)
+#define raHL (aHL.HL)
+
   
 class cl_rxk: public cl_uc  
 {

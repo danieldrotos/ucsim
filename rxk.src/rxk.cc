@@ -201,6 +201,12 @@ cl_rxk::print_regs(class cl_console_base *con)
   rom->dump(0, rSP, rSP+7, 8, con);
   con->dd_color("answer");
 
+  con->dd_printf("aAF= 0x%02x-0x%02x  ", raA, raF);
+  con->dd_printf("aBC= 0x%02x-0x%02x  ", raB, raC);
+  con->dd_printf("aDE= 0x%02x-0x%02x  ", raD, raE);
+  con->dd_printf("aHL= 0x%02x-0x%02x  ", raH, raL);
+  con->dd_printf("\n");
+  
   print_disass(PC, con);
 }
 
