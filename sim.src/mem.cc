@@ -380,7 +380,7 @@ cl_memory::dump(int smart, t_addr start, t_addr stop, int bitnr_high, int bitnr_
 
               con->dd_printf(" ");
 
-              t_mem m= read(start);
+              /*t_mem*/u64_t m= read(start);
 
               int i;
               con->dd_printf("0b");
@@ -393,7 +393,7 @@ cl_memory::dump(int smart, t_addr start, t_addr stop, int bitnr_high, int bitnr_
 
               int nbits = b_high - b_low + 1;
 
-              m = (m >> b_low) & ((1U << nbits) - 1);
+              m = (m >> b_low) & (((u64_t)1U << nbits) - 1);
 
               con->dd_printf(" 0x%0*x", (nbits > 16 ? 8 : (nbits > 8 ? 4 : 2)), m);
 

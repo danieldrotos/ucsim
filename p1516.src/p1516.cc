@@ -200,7 +200,7 @@ cl_p1516::make_memories(void)
     {
       n.format("R%d", i);
       d.format("CPU register %d", i);
-      vars->add(n, regs, i, 31, 0, d);
+      vars->add(n, regs, i, /*31, 0,*/ d);
     }
 }
 
