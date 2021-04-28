@@ -404,21 +404,28 @@ cl_xa::longest_inst(void)
 }
 
 static char dir_name[64];
-char *cl_xa::get_dir_name(short addr) {
-  if (!/*get*/addr_name(addr, sfr/*_tbl()*/, dir_name)) {
-    sprintf (dir_name, "0x%03x", addr);
+char *cl_xa::get_dir_name(short addr)
+{
+  chars dn= chars();
+  if (!addr_name(addr, sfr, &dn)) {
+    dn.format("0x%03x", addr);
   }
+  strcpy(dir_name, dn.c_str());
   return dir_name;
 }
 
 static char bit_name[64];
-char *cl_xa::get_bit_name(short addr) {
+char *cl_xa::get_bit_name(short addr)
+{
   t_addr a= addr; int offset= 0, bitnr= addr%8;
+  chars bn= "";
   if (a >= 0x200) { a-= 0x200; offset= 0x400; }
   a= offset+a/8;
-  if (!/*get*/addr_name(a/*ddr*/, sfr/*bit_tbl()*/, bitnr, bit_name)) {
-    sprintf (bit_name, "0x%03x", addr);
-  }
+  if (!addr_name(a, sfr, bitnr, &bn))
+    {
+      bn.format("0x%03x", addr);
+    }
+  strcpy(bit_name, bn.c_str());
   return bit_name;
 }
 

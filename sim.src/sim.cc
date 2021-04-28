@@ -216,7 +216,7 @@ cl_sim::stop(int reason, class cl_ev_brk *ebrk)
 	    {
 	      class cl_ev_brk *eb= (cl_ev_brk*)b;
 	      class cl_address_space *m= eb->get_mem();
-	      char *dis = uc->disass(uc->instPC, " ");
+	      char *dis = uc->disass(uc->instPC, NULL/*" "*/);
 	      cmd->frozen_console->dd_printf("Event `%s' at %s[0x%x]: 0x%x %s\n",
 					     eb->id, m?(m->get_name()):"mem?",
 					     AU(eb->addr),
