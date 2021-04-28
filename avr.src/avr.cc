@@ -210,7 +210,7 @@ cl_avr::dis_tbl(void)
 }
 
 char *
-cl_avr::disass(t_addr addr, const char *sep)
+cl_avr::disass(t_addr addr)
 {
   chars work= chars();//, temp[20];
   const char *b;

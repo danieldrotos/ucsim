@@ -1132,7 +1132,7 @@ cl_uc390::dis_tbl (void)
 }
 
 char *
-cl_uc390::disass (t_addr addr, const char *sep)
+cl_uc390::disass (t_addr addr)
 {
   chars work= chars(), temp= chars();
   const char *b;
@@ -1141,7 +1141,7 @@ cl_uc390::disass (t_addr addr, const char *sep)
   bool first;
   
   if (! (sfr->get (ACON) & 0x02)) /* AM1 set: 24-bit flat? */
-    return cl_51core::disass (addr, sep);
+    return cl_51core::disass (addr);
   code = rom->get(addr);
 
   work= "";

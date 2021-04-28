@@ -386,7 +386,7 @@ public:
   virtual void stop_when(class cl_time_measurer *t);
   
   // disassembling and symbol recognition
-  virtual char *disass(t_addr addr, const char *sep);
+  virtual char *disass(t_addr addr);
   virtual struct dis_entry *dis_tbl(void);
   virtual int print_disass(t_addr addr, class cl_console_base *con, bool nl);
   virtual int print_disass(t_addr addr, class cl_console_base *con);

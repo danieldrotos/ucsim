@@ -523,26 +523,25 @@ disass - Disassemble an opcode.
     sep - optionally points to string(tab) to use as separator.
 |--------------------------------------------------------------------*/
 char *
-cl_xa::disass(t_addr addr, const char *sep)
+cl_xa::disass(t_addr addr)
 {
-  char work[256], parm_str[140];
-  char *buf, *p, *b;
+  chars work;
+  char parm_str[140];
   int code;
   int len = 0;
   int immed_offset = 0;
   int operands;
   int mnemonic;
   const char **reg_strs;
-
-  p= work;
+  
+  work= "";
 
   code = get_disasm_info(addr, &len, NULL, &immed_offset, &operands, &mnemonic);
 
-  if (mnemonic == BAD_OPCODE) {
-    buf= (char*)malloc(30);
-    strcpy(buf, "UNKNOWN/INVALID");
-    return(buf);
-  }
+  if (mnemonic == BAD_OPCODE)
+    {
+      return strdup("UNKNOWN/INVALID");
+    }
 
   if (code & 0x0800)
     reg_strs = w_reg_strs;
@@ -926,34 +925,11 @@ cl_xa::disass(t_addr addr, const char *sep)
     break;
   }
 
-  sprintf(work, "%s %s",
-          op_mnemonic_str[ mnemonic ],
-          parm_str);
+  work= op_mnemonic_str[ mnemonic ];
+  while (work.len() < 6) work.append(' ');
+  work+= parm_str;
 
-  p= strchr(work, ' ');
-  if (!p)
-    {
-      buf= strdup(work);
-      return(buf);
-    }
-  if (sep == NULL)
-    buf= (char *)malloc(6+strlen(p)+1);
-  else
-    buf= (char *)malloc((p-work)+strlen(sep)+strlen(p)+1);
-
-  for (p= work, b= buf; *p != ' '; p++, b++)
-    *b= *p;
-  p++;
-  *b= '\0';
-  if (sep == NULL)
-    {
-      while (strlen(buf) < 6)
-        strcat(buf, " ");
-    }
-  else
-    strcat(buf, sep);
-  strcat(buf, p);
-  return(buf);
+  return strdup(work.c_str());
 }
 
 /*--------------------------------------------------------------------

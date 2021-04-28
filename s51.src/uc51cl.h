@@ -110,7 +110,7 @@ public:
   virtual int clock_per_cycle(void) { return(12); }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct name_entry *bit_tbl(void);
-  virtual char *disass(t_addr addr, const char *sep);
+  virtual char *disass(t_addr addr);
   virtual void   print_regs(class cl_console_base *con);
   virtual class cl_address_space *bit2mem(t_addr bitaddr,
 					  t_addr *memaddr,

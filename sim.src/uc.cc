@@ -1817,7 +1817,7 @@ cl_uc::dis_tbl(void)
 }
 
 char *
-cl_uc::disass(t_addr addr, const char *sep)
+cl_uc::disass(t_addr addr)
 {
   return strdup("uc::disass() unimplemented\n");
 }
@@ -1837,7 +1837,7 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con, bool nl)
 
   t_mem code= rom->get(addr);
   b= fbrk_at(addr);
-  dis= disass(addr, NULL);
+  dis= disass(addr);
   if (b)
     len+= con->dd_cprintf("answer", "%c", (b->perm == brkFIX)?'F':'D');
   else

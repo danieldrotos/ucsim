@@ -130,7 +130,7 @@ cl_m6800::dis_tbl(void)
 }
 
 char *
-cl_m6800::disass(t_addr addr, const char *sep)
+cl_m6800::disass(t_addr addr)
 {
   chars work= chars(), temp= chars();
   const char *b;

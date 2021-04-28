@@ -62,7 +62,7 @@ public:
 
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
-  virtual char *disass(t_addr addr, const char *sep);
+  virtual char *disass(t_addr addr);
 
   virtual void print_regs(class cl_console_base *con);
 };
