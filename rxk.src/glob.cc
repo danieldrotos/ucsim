@@ -29,8 +29,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // code mask branch len mn call tick
 struct dis_entry disass_rxk[]=
-  {  
-   { 0, 0, 0, 0, 0, 0 }
+  {
+    { 0x00, 0xff, ' ', 1, "NOP" },
+    { 0, 0, 0, 0, 0, 0 }
   };
 
 /* End of rxk.src/glob.cc */
