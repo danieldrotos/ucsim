@@ -29,8 +29,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // code mask branch len mn call tick
 struct dis_entry disass_mcs6502[]=
-  {  
-   { 0, 0, 0, 0, 0, 0 }
+  {
+    { 0xea, 0xff, ' ', 1, "NOP" },
+    { 0, 0, 0, 0, 0, 0 }
   };
 
 /* End of mcs6502.src/glob.cc */
