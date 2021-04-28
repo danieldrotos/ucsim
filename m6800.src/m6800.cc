@@ -47,7 +47,8 @@ int
 cl_m6800::init(void)
 {
   cl_uc::init();
-
+  fill_def_wrappers(itab);
+  
   xtal= 1000000;
     
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
@@ -194,5 +195,29 @@ cl_m6800::print_regs(class cl_console_base *con)
   
   print_disass(PC, con);
 }
+
+int
+cl_m6800::exec_inst(void)
+{
+  t_mem code;
+  int res= resGO;
+
+  if ((res= exec_inst_tab(itab)) != resNOT_DONE)
+    return res;
+
+  instPC= PC;
+  if (fetch(&code))
+    return(resBREAKPOINT);
+  tick(1);
+  res= resGO;//inst_unknown();
+  return(res);
+}
+
+int
+cl_m6800::NOP(t_mem code)
+{
+  return resGO;
+}
+
 
 /* End of m6800.src/m6800.cc */

@@ -65,6 +65,9 @@ public:
   virtual char *disass(t_addr addr);
 
   virtual void print_regs(class cl_console_base *con);
+
+  virtual int exec_inst(void);
+  virtual int NOP(t_mem code);
 };
 
 
