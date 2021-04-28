@@ -1958,6 +1958,8 @@ cl_uc::addr_name(t_addr addr, class cl_address_space *as, int bitnr_high, int bi
 {
   t_index i;
   
+  if (!as)
+    return false;
   if (vars->by_addr.search(as, addr, bitnr_high, bitnr_low, i))
     {
       *buf= (vars->by_addr.at(i)->get_name());
@@ -1971,6 +1973,8 @@ cl_uc::addr_name(t_addr addr, class cl_address_space *as, int bitnr, chars *buf)
 {
   bool ret;
 
+  if (!as)
+    return false;
   if (!(ret = addr_name(addr, as, bitnr, bitnr, buf)))
     buf->format("%02lx.%d", (unsigned long)addr, bitnr);
   return ret;
@@ -1981,6 +1985,8 @@ cl_uc::addr_name(t_addr addr, class cl_address_space *as, chars *buf)
 {
   bool ret;
 
+  if (!as)
+    return false;
   if (!(ret = addr_name(addr, as, as->width - 1, 0, buf)) &&
       !(ret = addr_name(addr, as, -1, -1, buf)))
     {
