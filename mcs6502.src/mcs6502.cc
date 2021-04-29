@@ -194,4 +194,22 @@ cl_mcs6502::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
+int
+cl_mcs6502::exec_inst(void)
+{
+  t_mem code;
+  int res= resGO;
+
+  if ((res= exec_inst_tab(itab)) != resNOT_DONE)
+    return res;
+
+  instPC= PC;
+  if (fetch(&code))
+    return(resBREAKPOINT);
+  tick(1);
+  res= resGO;//inst_unknown();
+  return(res);
+}
+
+
 /* End of mcs6502.src/mcs6502.cc */

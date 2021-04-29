@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (ibranch.cc)
+ * Simulator of microcontrollers (inst.cc)
  *
  * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
@@ -24,7 +24,12 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
-#include "m6800cl.h"
+#include "mcs6502cl.h"
 
+int
+cl_mcs6502::NOP(t_mem code)
+{
+  return resGO;
+}
 
-/* End of m6800.src/ibranch.cc */
+/* End of mcs6502.src/inst.cc */
