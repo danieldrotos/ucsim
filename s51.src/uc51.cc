@@ -1692,7 +1692,7 @@ cl_51core::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
-  res= inst_unknown();
+  res= inst_unknown(code);
   return(res);
 }
 
@@ -1940,23 +1940,6 @@ cl_51core::idle_pd(void)
 			get_rtime(), ticks->ticks);
       state= stPD;
     }
-  return(resGO);
-}
-
-
-/*
- * Simulating an unknown instruction
- *
- * Normally this function is called for unimplemented instructions, because
- * every instruction must be known!
- */
-
-int
-cl_51core::inst_unknown(void)
-{
-  //PC--;
-  class cl_error_unknown_code *e= new cl_error_unknown_code(this);
-  error(e);
   return(resGO);
 }
 

@@ -47,6 +47,7 @@ int
 cl_mcs6502::init(void)
 {
   cl_uc::init();
+  fill_def_wrappers(itab);
 
   xtal= 1000000;
     
@@ -207,7 +208,7 @@ cl_mcs6502::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
-  res= resGO;//inst_unknown();
+  res= inst_unknown(code);
   return(res);
 }
 

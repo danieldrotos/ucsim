@@ -2571,6 +2571,15 @@ cl_uc::accept_it(class it_level *il)
   return resGO;
 }
 
+int
+cl_uc::inst_unknown(t_mem code)
+{
+  //PC--;
+  class cl_error_unknown_code *e= new cl_error_unknown_code(this);
+  error(e);
+  return(resGO);
+}
+
 
 /*
  * Time related functions

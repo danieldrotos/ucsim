@@ -27,6 +27,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
+
+instruction_wrapper_fn itab[256];
+
 // code mask branch len mn call tick
 struct dis_entry disass_mcs6502[]=
   {

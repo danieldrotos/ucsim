@@ -146,7 +146,6 @@ protected:
   //virtual void  post_inst(void);
   virtual int high_movxri(void);
   
-  virtual int inst_unknown(void);
   virtual int instruction_00/*inst_nop*/(t_mem/*uchar*/ code);		/* 00 */
   virtual int instruction_01/*inst_ajmp_addr*/(t_mem/*uchar*/ code);	/* [02468ace]1 */
   virtual int instruction_02/*inst_ljmp*/(t_mem/*uchar*/ code);		/* 02 */

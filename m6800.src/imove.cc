@@ -26,5 +26,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "m6800cl.h"
 
+int
+cl_m6800::TAP(t_mem code)
+{
+  cF.W(rA);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::TPA(t_mem code)
+{
+  cA.W(rF);
+  tick(1);
+  return resGO;
+}
+
 
 /* End of m6800.src/imove.cc */

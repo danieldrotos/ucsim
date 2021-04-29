@@ -27,4 +27,75 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "m6800cl.h"
 
 
+int
+cl_m6800::INX(t_mem code)
+{
+  if (++rIX)
+    rF&= ~mZ;
+  else
+    rF|= mZ;
+  tick(3);
+  return resGO;
+}
+
+int
+cl_m6800::DEX(t_mem code)
+{
+  if (--rIX)
+    rF&= ~mZ;
+  else
+    rF|= mZ;
+  tick(3);
+  return resGO;
+}
+
+int
+cl_m6800::CLV(t_mem code)
+{
+  rF&= ~mV;
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::SEV(t_mem code)
+{
+  rF|= mV;
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::CLC(t_mem code)
+{
+  rF&= ~mC;
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::SEC(t_mem code)
+{
+  rF|= mC;
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::CLI(t_mem code)
+{
+  rF&= ~mI;
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::SEI(t_mem code)
+{
+  rF|= mI;
+  tick(1);
+  return resGO;
+}
+
+
 /* End of m6800.src/ialu.cc */

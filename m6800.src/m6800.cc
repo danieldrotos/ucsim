@@ -209,7 +209,7 @@ cl_m6800::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
-  res= resGO;//inst_unknown();
+  res= inst_unknown(code);
   return(res);
 }
 

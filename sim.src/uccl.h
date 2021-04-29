@@ -361,7 +361,8 @@ public:
   virtual int priority_main() { return 0; }
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void) { return false; }
-
+  virtual int inst_unknown(t_mem code);
+  
 #include "uccl_instructions.h"
   
   // stack tracking

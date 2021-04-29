@@ -48,9 +48,9 @@ int
 cl_rxk::init(void)
 {
   cl_uc::init();
-  ioi_prefix= false;
-  ioe_prefix= false;
-  
+  io_prefix= false;
+  fill_def_wrappers(itab);
+ 
   xtal= 1000000;
 
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
@@ -169,6 +169,8 @@ cl_rxk::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+
+  rwas= rom;
 }
 
 struct dis_entry *
@@ -262,6 +264,28 @@ cl_rxk::print_regs(class cl_console_base *con)
   con->dd_printf("\n");
   
   print_disass(PC, con);
+}
+
+
+int
+cl_rxk::exec_inst(void)
+{
+  t_mem code;
+  int res= resGO;
+
+  if (!io_prefix)
+    rwas= rom;
+  io_prefix= false;
+  
+  if ((res= exec_inst_tab(itab)) != resNOT_DONE)
+    return res;
+
+  instPC= PC;
+  if (fetch(&code))
+    return(resBREAKPOINT);
+  tick(1);
+  res= inst_unknown(code);
+  return(res);
 }
 
 
