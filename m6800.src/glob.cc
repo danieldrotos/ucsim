@@ -27,10 +27,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
+
+instruction_wrapper_fn itab[256];
+
 // code mask branch len mn call tick
 struct dis_entry disass_m6800[]=
-  {  
-   { 0, 0, 0, 0, 0, 0 }
+  {
+    { 0x01, 0xff, ' ', 1, "NOP" },
+    { 0, 0, 0, 0, 0, 0 }
   };
 
 /* End of m6800.src/glob.cc */

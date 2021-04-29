@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (glob.cc)
+ * Simulator of microcontrollers (imove.cc)
  *
- * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
+ * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -23,15 +23,8 @@ You should have received a copy of the GNU General Public License
 along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
-/*@1@*/
 
-#include "glob.h"
+#incldude "m6800cl.h"
 
-// code mask branch len mn call tick
-struct dis_entry disass_mcs6502[]=
-  {
-    { 0xea, 0xff, ' ', 1, "NOP" },
-    { 0, 0, 0, 0, 0, 0 }
-  };
 
-/* End of mcs6502.src/glob.cc */
+/* End of m6800.src/imove.cc */

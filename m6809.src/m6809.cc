@@ -483,7 +483,7 @@ const char *reg_names[16]=
   };
    
 char *
-cl_m6809::disass(t_addr addr, const char *sep)
+cl_m6809::disass(t_addr addr)
 {
   chars work= chars(), temp= chars();
   const char *b;

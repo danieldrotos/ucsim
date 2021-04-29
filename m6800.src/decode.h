@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.cc)
+ * Simulator of microcontrollers (decode.h)
  *
  * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
@@ -25,13 +25,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "glob.h"
+#ifndef DECODE_HEADER
+#define DECODE_HEADER
 
-// code mask branch len mn call tick
-struct dis_entry disass_mcs6502[]=
-  {
-    { 0xea, 0xff, ' ', 1, "NOP" },
-    { 0, 0, 0, 0, 0, 0 }
-  };
+#define NOP instruction_01
 
-/* End of mcs6502.src/glob.cc */
+#endif
+
+/* End of m6800.src/decode.h */
