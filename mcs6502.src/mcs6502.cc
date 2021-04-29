@@ -79,7 +79,7 @@ cl_mcs6502::reset(void)
 
   CC= 0x20;
   PC= rom->read(0xfffd)*256 + rom->read(0xfffc);
-  tick(6);
+  tick(7);
 }
 
   
