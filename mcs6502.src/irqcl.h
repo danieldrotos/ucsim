@@ -57,6 +57,27 @@ class cl_nmi: public cl_m6xxx_src
   virtual class cl_m6xxx_src *get_parent(void);
 };
 
+// IRQ source
+class cl_irq: public cl_nmi
+{
+ public:
+  cl_irq(cl_uc  *Iuc,
+	 int    Inuof,
+	 class  cl_memory_cell *Iie_cell,
+	 t_mem  Iie_mask,
+	 class  cl_memory_cell *Isrc_cell,
+	 t_mem  Isrc_mask,
+	 t_addr Iaddr,
+	 const  char *Iname,
+	 int    apoll_priority,
+	 u8_t   aEvalue,
+	 u8_t   aIFvalue):
+  cl_nmi(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, aEvalue, aIFvalue)
+  {}
+  virtual bool is_nmi(void) { return false; }
+  virtual bool enabled(void);
+};
+
 
 // IRQ peripheral
 class cl_irq_hw: public cl_hw

@@ -50,6 +50,19 @@ cl_nmi::get_parent(void)
 }
 
 
+/* IRQ source */
+
+bool
+cl_irq::enabled(void)
+{
+  if (!ie_cell)
+    return false;
+  t_mem e= ie_cell->get();
+  e&= ie_mask;
+  return e == 0;
+}
+
+
 /* IRQ handling peripheral */
 
 cl_irq_hw::cl_irq_hw(class cl_uc *auc):

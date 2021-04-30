@@ -69,16 +69,6 @@ cl_mcs6502::init(void)
   brk_src.init();
   brk_src.decode(&brk_src.def_data);
   brk_src.W(0);
-
-  class cl_it_src *brk_is=
-    new cl_it_src(this, 0,
-		  &brk_e, 1, &brk_src, 1,
-		  0xfffe,
-		  true,
-		  true,
-		  "BRK",
-		  0);
-  it_sources->add(brk_is);
   
   return 0;
 }
@@ -96,7 +86,7 @@ cl_mcs6502::reset(void)
   cl_uc::reset();
 
   CC= 0x20;
-  PC= rom->read(0xfffd)*256 + rom->read(0xfffc);
+  PC= read_addr(rom, RESET_AT);
   tick(7);
 }
 
@@ -120,11 +110,23 @@ cl_mcs6502::mk_hw_elements(void)
   add_hw(h= new cl_irq_hw(this));
   h->init();
 
+  src_irq= new cl_irq(this,
+		      irq_irq,
+		      &cCC, flagI,
+		      h->cfg_cell(m65_irq), 1,
+		      IRQ_AT,
+		      "Interrupt request",
+		      0,
+		      flagI,
+		      flagI);
+  src_irq->init();
+  it_sources->add(src_irq);
+  
   src_nmi= new cl_nmi(this,
 		      irq_nmi,
 		      h->cfg_cell(m65_nmi_en), 1,
 		      h->cfg_cell(m65_nmi), 1,
-		      0xfffc,
+		      NMI_AT,
 		      "Non-maskable interrupt request",
 		      0,
 		      flagI,
@@ -132,6 +134,16 @@ cl_mcs6502::mk_hw_elements(void)
   src_nmi->init();
   it_sources->add(src_nmi);
   
+  class cl_it_src *brk_is=
+    new cl_it_src(this, 0,
+		  &brk_e, 1, &brk_src, 1,
+		  0xfffe,
+		  true,
+		  true,
+		  "BRK",
+		  0);
+  brk_is->init();
+  it_sources->add(brk_is);
 }
 
 void

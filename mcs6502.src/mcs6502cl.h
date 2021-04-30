@@ -65,6 +65,13 @@ enum {
   flagC	= 0x01
 };
 
+// Vectors
+enum {
+  RESET_AT	= 0xfffc,
+  IRQ_AT	= 0xfffe,
+  NMI_AT	= 0xfffa
+};
+  
 /*
  * Base of MCS6502 processor
  */

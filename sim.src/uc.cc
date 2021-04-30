@@ -2078,6 +2078,14 @@ cl_uc::cell_name(class cl_memory_cell *cell, int bitnr_high, int bitnr_low)
     return chars("", "%s_%06x.%d", as->get_name(), addr, bitnr_high);
 }
 
+t_addr
+cl_uc::read_addr(class cl_memory *m, t_addr start_addr)
+{
+  if (!m) return 0;
+  // 16 bit little endian, by default
+  return m->read(start_addr) + 256*m->read(start_addr+1);
+}
+
 /*
  * Messages to broadcast
  */
