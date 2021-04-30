@@ -101,8 +101,6 @@ enum irq_nr {
 class cl_m6xxx_src: public cl_it_src
 {
 public:
-  u8_t Evalue;
-  u8_t IFvalue;
   enum irq_nr pass_to;
 public:
   cl_m6xxx_src(cl_uc  *Iuc,
@@ -114,13 +112,9 @@ public:
 	       t_addr Iaddr,
 	       const  char *Iname,
 	       int    apoll_priority,
-	       u8_t   aEvalue,
-	       u8_t   aIFvalue,
 	       enum irq_nr Ipass_to):
     cl_it_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, false, true, Iname, apoll_priority)
   {
-    Evalue= aEvalue;
-    IFvalue= aIFvalue;
     pass_to= Ipass_to;
   }
   virtual bool is_nmi(void) { return false; }

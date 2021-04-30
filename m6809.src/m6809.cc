@@ -2363,12 +2363,12 @@ int
 cl_m6809::accept_it(class it_level *il)
 {
   //class cl_m6809_src_base *org= NULL;
-  class cl_m6xxx_src *is= (class cl_m6xxx_src *)(il->source);
-  class cl_m6xxx_src *parent= NULL;
+  class cl_m6809_src_base *is= (class cl_m6809_src_base *)(il->source);
+  class cl_m6809_src_base *parent= NULL;
 
   if (is)
     {
-      if ((parent= is->get_parent()) != NULL)
+      if ((parent= (cl_m6809_src_base*)is->get_parent()) != NULL)
 	{
 	  //org= is;
 	  is= parent;

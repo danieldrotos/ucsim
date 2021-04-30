@@ -116,9 +116,7 @@ cl_mcs6502::mk_hw_elements(void)
 		      h->cfg_cell(m65_irq), 1,
 		      IRQ_AT,
 		      "Interrupt request",
-		      0,
-		      flagI,
-		      flagI);
+		      0);
   src_irq->init();
   it_sources->add(src_irq);
   
@@ -128,9 +126,7 @@ cl_mcs6502::mk_hw_elements(void)
 		      h->cfg_cell(m65_nmi), 1,
 		      NMI_AT,
 		      "Non-maskable interrupt request",
-		      0,
-		      flagI,
-		      flagI);
+		      0);
   src_nmi->init();
   it_sources->add(src_nmi);
   

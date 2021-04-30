@@ -30,7 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /* NMI source */
-
+/*
 class cl_m6xxx_src *
 cl_nmi::get_parent(void)
 {
@@ -48,7 +48,7 @@ cl_nmi::get_parent(void)
     }
   return NULL;
 }
-
+*/
 
 /* IRQ source */
 

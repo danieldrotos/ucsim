@@ -49,12 +49,9 @@ class cl_nmi: public cl_m6xxx_src
 	 t_mem  Isrc_mask,
 	 t_addr Iaddr,
 	 const  char *Iname,
-	 int    apoll_priority,
-	 u8_t   aEvalue,
-	 u8_t   aIFvalue):
-  cl_m6xxx_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, aEvalue, aIFvalue, irq_none) {}
+	 int    apoll_priority):
+  cl_m6xxx_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, irq_none) {}
   virtual bool is_nmi(void) { return true; }
-  virtual class cl_m6xxx_src *get_parent(void);
 };
 
 // IRQ source
@@ -69,10 +66,8 @@ class cl_irq: public cl_nmi
 	 t_mem  Isrc_mask,
 	 t_addr Iaddr,
 	 const  char *Iname,
-	 int    apoll_priority,
-	 u8_t   aEvalue,
-	 u8_t   aIFvalue):
-  cl_nmi(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, aEvalue, aIFvalue)
+	 int    apoll_priority):
+  cl_nmi(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority)
   {}
   virtual bool is_nmi(void) { return false; }
   virtual bool enabled(void);
