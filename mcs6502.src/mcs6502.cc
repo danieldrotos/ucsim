@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "glob.h"
+#include "irqcl.h"
 
 #include "mcs6502cl.h"
 
@@ -115,6 +116,22 @@ cl_mcs6502::mk_hw_elements(void)
 
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
+
+  add_hw(h= new cl_irq_hw(this));
+  h->init();
+
+  src_nmi= new cl_nmi(this,
+		      irq_nmi,
+		      h->cfg_cell(m65_nmi_en), 1,
+		      h->cfg_cell(m65_nmi), 1,
+		      0xfffc,
+		      "Non-maskable interrupt request",
+		      0,
+		      flagI,
+		      flagI);
+  src_nmi->init();
+  it_sources->add(src_nmi);
+  
 }
 
 void

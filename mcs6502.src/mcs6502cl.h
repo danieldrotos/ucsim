@@ -44,6 +44,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define cP  (cCC)
 #define cF  (cCC)
 
+enum {
+  mN	= 0x80,
+  flagN	= 0x80,
+  mS	= 0x80,
+  flagS	= 0x80,
+  mV	= 0x40,
+  flagV	= 0x40,
+  mO	= 0x40,
+  flagO	= 0x40,
+  mB	= 0x10,
+  flagB	= 0x10,
+  mD	= 0x08,
+  flagD	= 0x08,
+  mI	= 0x04,
+  flagI	= 0x04,
+  mZ	= 0x02,
+  flagZ	= 0x02,
+  mC	= 0x01,
+  flagC	= 0x01
+};
+
 /*
  * Base of MCS6502 processor
  */
@@ -54,6 +75,7 @@ public:
   u8_t A, X, Y, SP, CC;
   class cl_cell8 cA, cX, cY, cSP, cCC;
   class cl_dummy_cell brk_e, brk_src;
+  class cl_m6xxx_src *src_irq, *src_nmi;
 public:
   cl_mcs6502(class cl_sim *asim);
   virtual int init(void);
