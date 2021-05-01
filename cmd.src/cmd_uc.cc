@@ -865,7 +865,7 @@ COMMAND_DO_WORK_UC(cl_var_cmd)
 	    {
 	      t_index i;
 	      for (addr= 0; addr < uc->variables->get_size(); addr++)
-		if (uc->vars->by_addr.search(uc->variables, addr, i))
+		if (!uc->vars->by_addr.search(uc->variables, addr, i))
 		  break;
 	      if (addr == uc->variables->get_size())
 		return con->dd_printf("no space\n"),
