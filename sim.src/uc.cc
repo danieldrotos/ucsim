@@ -760,6 +760,9 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
   cmdset->add(cmd= new cl_reset_cmd("reset", 0));
   cmd->init();
 
+  cmdset->add(cmd= new cl_tick_cmd("tick", 0));
+  cmd->init();
+
   cmdset->add(cmd= new cl_dump_cmd("dump", true));
   cmd->init();
   cmd->add_name("d");
