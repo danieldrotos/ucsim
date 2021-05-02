@@ -311,7 +311,7 @@ char *cl_pdk::disass(t_addr addr)
 	}
       if (*b == '%')
 	{
-	  work= "";
+	  temp= "";
 	  b++;
 	  uint code = rom->get(addr) & ~(uint)dis_e->mask;
 	  switch (*(b++))
@@ -321,7 +321,19 @@ char *cl_pdk::disass(t_addr addr)
 	      break;
 	    case 'm':  // m    memory addressing
 	      if (*b == 'n') {
-		code &= 0x3F;
+		switch (type->type) {
+		case CPU_PDK13:
+		  code &= 0x0F;
+		  break;
+		case CPU_PDK14:
+		  code &= 0x3F;
+		  break;
+		case CPU_PDK15:
+		  code &= 0x7F;
+		  break;
+		default:
+		  ;//__builtin_unreachable();
+		}
 		++b;
 	      }
 	      temp.format("%u", code);
