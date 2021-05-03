@@ -81,8 +81,7 @@ class cl_mcs6502: public cl_uc
 public:
   u8_t A, X, Y, SP, CC;
   class cl_cell8 cA, cX, cY, cSP, cCC;
-  class cl_dummy_cell brk_e, brk_src;
-  class cl_m6xxx_src *src_irq, *src_nmi;
+  class cl_m6xxx_src *src_irq, *src_nmi, *src_brk;
 public:
   cl_mcs6502(class cl_sim *asim);
   virtual int init(void);
@@ -102,6 +101,7 @@ public:
 
   virtual int exec_inst(void);
   virtual int NOP(t_mem code);
+  virtual int BRK(t_mem code);
 };
 
 

@@ -63,13 +63,6 @@ cl_mcs6502::init(void)
   class cl_memory_operator *op= new cl_cc_operator(&cCC);
   cCC.append_operator(op);
 
-  brk_e.init();
-  brk_e.decode(&brk_e.def_data);
-  brk_e.W(1);
-  brk_src.init();
-  brk_src.decode(&brk_src.def_data);
-  brk_src.W(0);
-  
   return 0;
 }
 
@@ -130,16 +123,15 @@ cl_mcs6502::mk_hw_elements(void)
   src_nmi->init();
   it_sources->add(src_nmi);
   
-  class cl_it_src *brk_is=
-    new cl_it_src(this, 0,
-		  &brk_e, 1, &brk_src, 1,
-		  0xfffe,
-		  true,
-		  true,
-		  "BRK",
-		  0);
-  brk_is->init();
-  it_sources->add(brk_is);
+  src_brk= new cl_irq(this,
+		      irq_brk,
+		      h->cfg_cell(m65_brk_en), 1,
+		      h->cfg_cell(m65_brk), 1,
+		      IRQ_AT,
+		      "BRK",
+		      0);
+  src_brk->init();
+  it_sources->add(src_brk);
 }
 
 void

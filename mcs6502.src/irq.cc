@@ -69,6 +69,8 @@ cl_irq_hw::cl_irq_hw(class cl_uc *auc):
   cl_hw(auc, HW_INTERRUPT, 0, "irq")
 {
   muc= (class cl_mcs6502 *)auc;
+  cfg_cell(m65_nmi_en)->set(1);
+  cfg_cell(m65_brk_en)->set(1);
 }
 
 int

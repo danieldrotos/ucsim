@@ -34,7 +34,9 @@ enum irq_cfg
     m65_nmi	= 1,
     m65_irq_en	= 2,
     m65_irq	= 3,
-    m65_nr	= 4
+    m65_brk_en	= 4,
+    m65_brk	= 5,
+    m65_nr	= 6
   };
 
 // NMI source

@@ -34,6 +34,7 @@ instruction_wrapper_fn itab[256];
 struct dis_entry disass_mcs6502[]=
   {
     { 0xea, 0xff, ' ', 1, "NOP" },
+    { 0x00, 0xff, ' ', 1, "BRK" },
     { 0, 0, 0, 0, 0, 0 }
   };
 

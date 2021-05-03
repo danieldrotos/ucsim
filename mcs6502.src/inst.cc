@@ -32,4 +32,12 @@ cl_mcs6502::NOP(t_mem code)
   return resGO;
 }
 
+int
+cl_mcs6502::BRK(t_mem code)
+{
+  src_brk->request();
+  cF.W(flagB);
+  return resGO;
+}
+
 /* End of mcs6502.src/inst.cc */
