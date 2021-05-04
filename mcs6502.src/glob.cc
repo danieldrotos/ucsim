@@ -35,6 +35,9 @@ struct dis_entry disass_mcs6502[]=
   {
     { 0xea, 0xff, ' ', 1, "NOP" },
     { 0x00, 0xff, ' ', 1, "BRK" },
+    { 0x40, 0xff, ' ', 1, "RTI" },
+    { 0x58, 0xff, ' ', 1, "CLI" },
+    { 0x78, 0xff, ' ', 1, "SEI" },
     { 0, 0, 0, 0, 0, 0 }
   };
 

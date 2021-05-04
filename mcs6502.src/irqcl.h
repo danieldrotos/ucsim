@@ -72,7 +72,26 @@ class cl_irq: public cl_nmi
   cl_nmi(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority)
   {}
   virtual bool is_nmi(void) { return false; }
-  virtual bool enabled(void);
+  //virtual bool enabled(void);
+};
+
+// BRK source
+class cl_BRK: public cl_nmi
+{
+ public:
+  cl_BRK(cl_uc  *Iuc,
+	 int    Inuof,
+	 class  cl_memory_cell *Iie_cell,
+	 t_mem  Iie_mask,
+	 class  cl_memory_cell *Isrc_cell,
+	 t_mem  Isrc_mask,
+	 t_addr Iaddr,
+	 const  char *Iname,
+	 int    apoll_priority):
+  cl_nmi(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority)
+  {}
+  virtual bool is_nmi(void) { return true; }
+  //virtual bool enabled(void) { return true; }
 };
 
 
@@ -85,6 +104,7 @@ class cl_irq_hw: public cl_hw
   cl_irq_hw(class cl_uc *auc);
   virtual int init(void);
   virtual int cfg_size(void) { return m65_nr; }
+  virtual void print_info(class cl_console_base *con);  
 };
 
 

@@ -40,4 +40,37 @@ cl_mcs6502::BRK(t_mem code)
   return resGO;
 }
 
+int
+cl_mcs6502::RTI(t_mem code)
+{
+  u8_t l, h;
+  rSP++;
+  cF.W(rom->read(0x0100 + rSP));
+  rSP++;
+  l= rom->read(0x0100 + rSP);
+  rSP++;
+  h= rom->read(0x0100 + rSP);
+  vc.rd+= 3;
+  PC= h*256 + l;
+  tick(5);
+  return resGO;
+}
+
+int
+cl_mcs6502::CLI(t_mem code)
+{
+  rF&= ~flagI;
+  tick(1);
+  return resGO;
+}
+
+int
+cl_mcs6502::SEI(t_mem code)
+{
+  rF|= flagI;
+  tick(1);
+  return resGO;
+}
+
+
 /* End of mcs6502.src/inst.cc */

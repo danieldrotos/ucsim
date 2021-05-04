@@ -78,7 +78,7 @@ cl_mcs6502::reset(void)
 {
   cl_uc::reset();
 
-  CC= 0x20;
+  CC= 0x20 | flagI;
   PC= read_addr(rom, RESET_AT);
   tick(7);
 }
@@ -123,7 +123,7 @@ cl_mcs6502::mk_hw_elements(void)
   src_nmi->init();
   it_sources->add(src_nmi);
   
-  src_brk= new cl_irq(this,
+  src_brk= new cl_BRK(this,
 		      irq_brk,
 		      h->cfg_cell(m65_brk_en), 1,
 		      h->cfg_cell(m65_brk), 1,
@@ -244,6 +244,51 @@ cl_mcs6502::exec_inst(void)
   tick(1);
   res= inst_unknown(code);
   return(res);
+}
+
+int
+cl_mcs6502::accept_it(class it_level *il)
+{
+  class cl_m6xxx_src *is= (class cl_m6xxx_src *)(il->source);
+  class cl_m6xxx_src *parent= NULL;
+
+  if (is)
+    {
+      if ((parent= (cl_m6xxx_src*)is->get_parent()) != NULL)
+	{
+	  //org= is;
+	  is= parent;
+	  il->source= is;
+	}
+    }
+  
+  tick(2);
+
+  rom->write(0x0100 + rSP, (PC>>8)&0xff);
+  rSP--;
+  rom->write(0x0100 + rSP, (PC)&0xff);
+  rSP--;
+  rom->write(0x0100 + rSP, rF);
+  rSP--;
+  tick(3);
+  vc.wr+= 3;
+  
+  t_addr a= read_addr(rom, is->addr);
+  tick(2);
+  vc.rd+= 2;
+  PC= a;
+
+  rF|= flagI;
+  is->clear();
+  it_levels->push(il);
+  
+  return resGO;
+}
+
+bool
+cl_mcs6502::it_enabled(void)
+{
+  return !(rF & flagI);
 }
 
 

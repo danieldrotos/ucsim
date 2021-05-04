@@ -38,11 +38,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rX  (X)
 #define rY  (Y)
 #define rSP (SP)
+#define rS  (SP)
 #define rCC (CC)
 #define rP  (CC)
 #define rF  (CC)
 #define cP  (cCC)
 #define cF  (cCC)
+#define cS  (cSP)
 
 enum {
   mN	= 0x80,
@@ -100,8 +102,14 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_inst(void);
+  virtual int priority_of(uchar nuof_it) { return nuof_it; }
+  virtual int accept_it(class it_level *il);
+  virtual bool it_enabled(void);
   virtual int NOP(t_mem code);
   virtual int BRK(t_mem code);
+  virtual int RTI(t_mem code);
+  virtual int CLI(t_mem code);
+  virtual int SEI(t_mem code);
 };
 
 

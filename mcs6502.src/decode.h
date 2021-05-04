@@ -30,6 +30,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define NOP	instruction_ea
 #define BRK	instruction_00
+#define RTI	instruction_40
+#define CLI	instruction_58
+#define SEI	instruction_78
 
 #endif
 
