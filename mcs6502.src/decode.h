@@ -47,6 +47,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CLD	instruction_d8
 #define INX	instruction_e8
 #define SED	instruction_f8
+#define TXA	instruction_8a
+#define TXS	instruction_9a
+#define TAX	instruction_aa
+#define TSX	instruction_ba
+#define DEX	instruction_ca
 
 #endif
 

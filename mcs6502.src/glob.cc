@@ -52,6 +52,11 @@ struct dis_entry disass_mcs6502[]=
     { 0xd8, 0xff, ' ', 1, "CLD" },
     { 0xe8, 0xff, ' ', 1, "INX" },
     { 0xf8, 0xff, ' ', 1, "SED" },
+    { 0x8a, 0xff, ' ', 1, "TXA" },
+    { 0x9a, 0xff, ' ', 1, "TXS" },
+    { 0xaa, 0xff, ' ', 1, "TAX" },
+    { 0xba, 0xff, ' ', 1, "TSX" },
+    { 0xca, 0xff, ' ', 1, "DEX" },
     { 0, 0, 0, 0, 0, 0 }
   };
 

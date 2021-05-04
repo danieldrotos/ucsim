@@ -124,6 +124,11 @@ public:
   virtual int CLD(t_mem code);
   virtual int INX(t_mem code);
   virtual int SED(t_mem code);
+  virtual int TXA(t_mem code);
+  virtual int TXS(t_mem code);
+  virtual int TAX(t_mem code);
+  virtual int TSX(t_mem code);
+  virtual int DEX(t_mem code);
 };
 
 
