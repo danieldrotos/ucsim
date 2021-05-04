@@ -110,6 +110,20 @@ public:
   virtual int RTI(t_mem code);
   virtual int CLI(t_mem code);
   virtual int SEI(t_mem code);
+  virtual int PHP(t_mem code);
+  virtual int CLC(t_mem code);
+  virtual int PLP(t_mem code);
+  virtual int SEC(t_mem code);
+  virtual int PHA(t_mem code);
+  virtual int PLA(t_mem code);
+  virtual int DEY(t_mem code);
+  virtual int TYA(t_mem code);
+  virtual int TAY(t_mem code);
+  virtual int CLV(t_mem code);
+  virtual int INY(t_mem code);
+  virtual int CLD(t_mem code);
+  virtual int INX(t_mem code);
+  virtual int SED(t_mem code);
 };
 
 
