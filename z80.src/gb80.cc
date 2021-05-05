@@ -80,7 +80,7 @@ cl_gb80::init(void)
   for (int i=0xA000; i<0xFF80; i++) {
     ram->set((t_addr) i, 0);
   }
-
+  
   return(0);
 }
 
