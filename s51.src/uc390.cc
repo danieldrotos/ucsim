@@ -403,23 +403,23 @@ cl_uc390::make_address_spaces(void)
 void
 cl_uc390::make_chips(void)
 {
-  rom_chip= new cl_memory_chip("rom_chip", 0x20000, 8, 0xff);
+  rom_chip= new cl_chip8("rom_chip", 0x20000, 8, 0xff);
   rom_chip->init();
   memchips->add(rom_chip);
 
-  iram_chip= new cl_memory_chip("iram_chip", 0x100, 8, 0);
+  iram_chip= new cl_chip8("iram_chip", 0x100, 8, 0);
   iram_chip->init();
   memchips->add(iram_chip);
 
-  xram_chip= new cl_memory_chip("xram_chip", 0x100000+128, 8, 0);
+  xram_chip= new cl_chip8("xram_chip", 0x100000+128, 8, 0);
   xram_chip->init();
   memchips->add(xram_chip);
 
-  ixram_chip= new cl_memory_chip("ixram_chip", 0x1000, 8);
+  ixram_chip= new cl_chip8("ixram_chip", 0x1000, 8);
   ixram_chip->init();
   memchips->add(ixram_chip);
 
-  sfr_chip= new cl_memory_chip("sfr_chip", 0x80, 8, 0);
+  sfr_chip= new cl_chip8("sfr_chip", 0x80, 8, 0);
   sfr_chip->init();
   memchips->add(sfr_chip);
 }
@@ -554,11 +554,11 @@ cl_uc390::push_byte (t_mem uc)
 {
   t_addr sp;
 
-  sp = sfr->wadd (SP, 1);
+  sp = sfr->write(SP, sfr->read(SP) + 1);
   if (sfr->get (ACON) & 0x04) /* SA: 10 bit stack */
     {
       if (sp == 0) /* overflow SP */
-        sfr->wadd (R51_ESP, 1);
+        sfr->write(R51_ESP, sfr->read(R51_ESP) + 1);
       sp += (sfr->read (R51_ESP) & 0x3) * 256;
       write_mem (MEM_IXRAM_ID, sp, uc); // fixme
     }
@@ -582,9 +582,9 @@ cl_uc390::pop_byte (void)
       sp = sfr->read (SP);
       sp += (sfr->read (R51_ESP) & 0x3) * 256;
       temp = read_mem (MEM_IXRAM_ID, sp); // fixme
-      sp = sfr->wadd (SP, -1);
+      sp = sfr->write(SP, sfr->read(SP) - 1);
       if (sp == 0xff) /* underflow SP */
-        sfr->wadd (R51_ESP, -1);
+        sfr->write(R51_ESP, sfr->read(R51_ESP) - 1);
       return temp;
     }
   else
@@ -593,7 +593,7 @@ cl_uc390::pop_byte (void)
 
       stck = iram->get_cell (sfr->get (SP));
       temp = stck->read();
-      sp = sfr->wadd (SP, -1);
+      sp = sfr->write(SP, sfr->read(SP) - 1);
       return temp;
     }
 }
@@ -974,11 +974,11 @@ cl_uc390::instruction_11/*inst_acall_addr*/ (t_mem/*uchar*/ code)
 
       h = (code >> 5) & 0x07;
       l = fetch();
-      sp = sfr->wadd (SP, 1);
+      sp = sfr->write(SP, sfr->read(SP) + 1);
       stck = iram->get_cell (sp);
       stck->write (PC & 0xff); // push low byte
 
-      sp = sfr->wadd (SP, 1);
+      sp = sfr->write(SP, sfr->read(SP) + 1);
       stck = iram->get_cell (sp);
       stck->write ((PC >> 8) & 0xff); // push high byte
       PC = (PC & 0xf800) | (h*256 + l);
@@ -1132,24 +1132,31 @@ cl_uc390::dis_tbl (void)
 }
 
 char *
-cl_uc390::disass (t_addr addr, const char *sep)
+cl_uc390::disass (t_addr addr)
 {
-  char work[256], temp[200]/*, c[2]*/;
-  char *buf, *p, *b, *t, *org_b;
+  chars work= chars(), temp= chars();
+  const char *b;
   t_mem code;
   uchar dps;
-
+  bool first;
+  
   if (! (sfr->get (ACON) & 0x02)) /* AM1 set: 24-bit flat? */
-    return cl_51core::disass (addr, sep);
+    return cl_51core::disass (addr);
   code = rom->get(addr);
 
-  p = work;
-  b = org_b = strdup(dis_tbl()[code].mnemonic);
+  work= "";
+  b = dis_tbl()[code].mnemonic;
   while (*b)
     {
+      if ((*b == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
       if (*b == '%')
         {
           b++;
+	  temp= "";
           switch (*(b++))
             {
             case 'A': // absolute address
@@ -1159,94 +1166,59 @@ cl_uc390::disass (t_addr addr, const char *sep)
               //          (((code >> 5) & 0x07) * 256 +
               //          rom->get (addr + 1)));
 
-              sprintf (temp, /*"%06lx"*/rom->addr_format,
-                       (addr & 0xf80000L) |
-                       (((code >> 5) & 0x07) * (256 * 256) +
-                       (rom->get (addr + 1) * 256) +
-                        rom->get (addr + 2)));
+              temp.format(/*"%06lx"*/rom->addr_format,
+			  (addr & 0xf80000L) |
+			  (((code >> 5) & 0x07) * (256 * 256) +
+			   (rom->get (addr + 1) * 256) +
+			   rom->get (addr + 2)));
               break;
             case 'l': // long address
-              sprintf (temp, "%06lx",
-                       rom->get (addr + 1) * (256*256L) +
-                       rom->get (addr + 2) * 256 +
-                       rom->get (addr + 3));
-                       // rom->get (addr + 1) * 256 + rom->get (addr + 2));
+              temp.format("%06lx",
+			  rom->get (addr + 1) * (256*256L) +
+			  rom->get (addr + 2) * 256 +
+			  rom->get (addr + 3));
               break;
             case 'a': // addr8 (direct address) at 2nd byte
-	      daddr_name(rom->get(addr+1), temp);
+	      daddr_name(rom->get(addr+1), &temp);
               break;
             case '8': // addr8 (direct address) at 3rd byte
-	      daddr_name(rom->get(addr+2), temp);
+	      daddr_name(rom->get(addr+2), &temp);
               break;
             case 'b': // bitaddr at 2nd byte
 	      {
 		t_addr ba = rom->get (addr+1);
-		/*if (get_name (ba, bit_tbl(), temp))
-		  break;
-		if (ba<128)
-		  addr_name((ba/8)+32,iram,temp);
-		else
-		  addr_name(ba&0xf8,sfr,temp);
-		strcat (temp, ".");
-		sprintf (c, "%1d", (int)(ba & 0x07));
-		strcat (temp, c);
-		break;*/
-		baddr_name(ba, temp);
+		baddr_name(ba, &temp);
 		break;
 	      }
             case 'r': // rel8 address at 2nd byte
-              sprintf (temp, "%04x",
-                       /*t_addr*/int (addr + 2 + (signed char) (rom->get (addr + 1))));
+              temp.format("%04x",
+			  int (addr + 2 + (signed char) (rom->get (addr + 1))));
               break;
             case 'R': // rel8 address at 3rd byte
-              sprintf (temp, "%04x",
-                       /*t_addr*/int (addr + 3 + (signed char) (rom->get (addr + 2))));
+              temp.format("%04x",
+			  int (addr + 3 + (signed char) (rom->get (addr + 2))));
               break;
             case 'd': // data8 at 2nd byte
-              sprintf (temp, "%02x", (int)rom->get (addr + 1));
+              temp.format("%02x", (int)rom->get (addr + 1));
               break;
             case 'D': // data8 at 3rd byte
-              sprintf (temp, "%02x", (int)rom->get (addr + 2));
+              temp.format("%02x", (int)rom->get (addr + 2));
               break;
             case 'i': // inc/dec dptr
               dps = sfr->get(DPS);
-              sprintf (temp, ((dps & 0x01) ? (dps & 0x80) : (dps & 0x40)) ? "DEC" : "INC");
+              temp.format(((dps & 0x01) ? (dps & 0x80) : (dps & 0x40)) ? "DEC" : "INC");
               break;
             default:
-              strcpy (temp, "?");
+	    temp= "?";
               break;
             }
-          t = temp;
-          while (*t)
-            *p++ = *t++;
+	  work+= temp;
         }
       else
-        *p++ = *b++;
+        work+= *b++;
     }
-  *p = '\0';
 
-  p = strchr (work, ' ');
-  if (!p)
-    {
-      buf = strdup (work);
-      return buf;
-    }
-  if (sep == NULL)
-    buf = (char *) malloc (6 + strlen (p) + 1);
-  else
-    buf = (char *) malloc ((p - work) + strlen (sep) + strlen (p) + 1);
-  for (p = work, b = buf; *p != ' '; p++, b++)
-    *b = *p;
-  p++;
-  *b = '\0';
-  if (sep == NULL)
-    while (strlen (buf) < 6)
-      strcat (buf, " ");
-  else
-    strcat (buf, sep);
-  strcat (buf, p);
-  free(org_b);
-  return buf;
+  return strdup(work.c_str());
 }
 
 void

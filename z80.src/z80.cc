@@ -156,7 +156,7 @@ cl_z80::make_memories(void)
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_memory_chip("rom_chip", 0x10000, 8);
+  chip= new cl_chip8("rom_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= address_space("rom"), chip, 0, 0xffff, 0);
@@ -166,7 +166,7 @@ cl_z80::make_memories(void)
 
   inputs= new cl_address_space("inputs", 0, 0x10000, 8);
   inputs->init();
-  chip= new cl_memory_chip("in_chip", 0x10000, 8);
+  chip= new cl_chip8("in_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(inputs, chip, 0, 0xffff, 0);
@@ -175,7 +175,7 @@ cl_z80::make_memories(void)
   address_spaces->add(inputs);
   outputs= new cl_address_space("outputs", 0, 0x10000, 8);
   outputs->init();
-  chip= new cl_memory_chip("out_chip", 0x10000, 8);
+  chip= new cl_chip8("out_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(outputs, chip, 0, 0xffff, 0);
@@ -469,89 +469,69 @@ cl_z80::get_disasm_info(t_addr addr,
 }
 
 char *
-cl_z80::disass(t_addr addr, const char *sep)
+cl_z80::disass(t_addr addr)
 {
-  char work[256], temp[20];
+  chars work, temp;
   const char *b;
-  char *buf, *p, *t;
   int len = 0;
   int immed_offset = 0;
-
-  p= work;
+  bool first= true;
+  
+  work= "";
 
   b = get_disasm_info(addr, &len, NULL, &immed_offset, NULL);
 
-  if (b == NULL) {
-    buf= (char*)malloc(30);
-    strcpy(buf, "UNKNOWN/INVALID");
-    return(buf);
-  }
+  if (b == NULL)
+    {
+      return strdup("UNKNOWN/INVALID");
+    }
 
   while (*b)
     {
+      if ((*b == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
       if (*b == '%')
         {
           b++;
+	  temp= "";
           switch (*(b++))
             {
             case 'd': // jump relative target, signed? byte immediate operand
-              sprintf(temp, "#%d", (signed char)(rom->get(addr+immed_offset)));
+              temp.format("#%d", (signed char)(rom->get(addr+immed_offset)));
               ++immed_offset;
               break;
             case 'w': // word immediate operand, little endian
-              sprintf(temp, "#0x%04x",
-		      (uint)((rom->get(addr+immed_offset)) |
-			     (rom->get(addr+immed_offset+1)<<8)) );
+              temp.format("#0x%04x",
+			  (uint)((rom->get(addr+immed_offset)) |
+				 (rom->get(addr+immed_offset+1)<<8)) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'W': // word immediate operand, big endian
-              sprintf(temp, "#0x%04x",
-		      (uint)((rom->get(addr+immed_offset)<<8) |
-			     (rom->get(addr+immed_offset+1))) );
+              temp.format("#0x%04x",
+			  (uint)((rom->get(addr+immed_offset)<<8) |
+				 (rom->get(addr+immed_offset+1))) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'b': // byte immediate operand
-              sprintf(temp, "#0x%02x", (uint)rom->get(addr+immed_offset));
+              temp.format("#0x%02x", (uint)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             default:
-              strcpy(temp, "?");
+              temp= "?";
               break;
             }
-          t= temp;
-          while (*t)
-            *(p++)= *(t++);
+          work+= temp;
         }
       else
-        *(p++)= *(b++);
+        work+= *(b++);
     }
-  *p= '\0';
 
-  p= strchr(work, ' ');
-  if (!p)
-    {
-      buf= strdup(work);
-      return(buf);
-    }
-  if (sep == NULL)
-    buf= (char *)malloc(8+strlen(p)+1);
-  else
-    buf= (char *)malloc((p-work)+strlen(sep)+strlen(p)+1);
-  for (p= work, t= buf; *p != ' '; p++, t++)
-    *t= *p;
-  p++;
-  *t= '\0';
-  if (sep == NULL)
-    {
-      while (strlen(buf) < 8)
-        strcat(buf, " ");
-    }
-  else
-    strcat(buf, sep);
-  strcat(buf, p);
-  return(buf);
+  return strdup(work.c_str());
 }
 
 

@@ -885,19 +885,19 @@ cl_51core::make_address_spaces(void)
 void
 cl_51core::make_chips(void)
 {
-  rom_chip= new cl_memory_chip("rom_chip", 0x10000, 8, 0/*, 0xff*/);
+  rom_chip= new cl_chip8("rom_chip", 0x10000, 8, 0/*, 0xff*/);
   rom_chip->init();
   memchips->add(rom_chip);
   
-  iram_chip= new cl_memory_chip("iram_chip", 0x100, 8);
+  iram_chip= new cl_chip8("iram_chip", 0x100, 8);
   iram_chip->init();
   memchips->add(iram_chip);
 
-  xram_chip= new cl_memory_chip("xram_chip", 0x10000, 8);
+  xram_chip= new cl_chip8("xram_chip", 0x10000, 8);
   xram_chip->init();
   memchips->add(xram_chip);
 
-  sfr_chip= new cl_memory_chip("sfr_chip", 0x80, 8);
+  sfr_chip= new cl_chip8("sfr_chip", 0x80, 8);
   sfr_chip->init();
   memchips->add(sfr_chip);
 }
@@ -1039,7 +1039,7 @@ cl_51core::decode_dptr(void)
 	  class cl_memory_chip *dptr_chip= (cl_memory_chip*)memory("dptr_chip");
 	  if (dptr_chip == 0)
 	    {
-	      dptr_chip= new cl_memory_chip("dptr_chip", 3*8, 8);
+	      dptr_chip= new cl_chip8("dptr_chip", 3*8, 8);
 	      dptr_chip->init();
 	      memchips->add(dptr_chip);
 	    }
@@ -1082,10 +1082,10 @@ cl_51core::decode_dptr(void)
       ad->activate(0);
     }
   
-  vars->add("dpl", dptr, 0, 7, 0, "");
-  vars->add("DPL", dptr, 0, 7, 0, "");
-  vars->add("dph", dptr, 1, 7, 0, "");
-  vars->add("DPH", dptr, 1, 7, 0, "");
+  vars->add("dpl", dptr, 0, "");
+  vars->add("DPL", dptr, 0, "");
+  vars->add("dph", dptr, 1, "");
+  vars->add("DPH", dptr, 1, "");
 }
 
 void
@@ -1140,92 +1140,91 @@ cl_51core::bit_tbl(void)
 }
 
 char *
-cl_51core::disass(t_addr addr, const char *sep)
+cl_51core::disass(t_addr addr)
 {
-  char work[256], temp[200]/*, c[2]*/;
-  char *buf, *p, *t, *s;
+  chars work= chars(), temp= chars();
   const char *b;
   t_mem code= rom->get(addr);
-
-  p= work;
-  b= dis_tbl()[code].mnemonic;
+  struct dis_entry *dt= &(dis_tbl()[code]);
+  bool first;
+  
+  //p= work;
+  work= ""; first= true;
+  b= dt->mnemonic;
   while (*b)
     {
+      if ((*b == ' ') and first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
       if (*b == '%')
 	{
+	  temp= "";
 	  b++;
 	  switch (*(b++))
 	    {
 	    case 'A': // absolute address
-	      sprintf(temp, "%04x",
-		      /*t_addr*/int((addr&0xf800)|
-				    (((code>>5)&0x07)*256 +
-				     rom->get(addr+1))));
+	      temp.appendf("%04x",
+			   int((addr&0xf800)|
+			       (((code>>5)&0x07)*256 +
+				rom->get(addr+1))));
 	      break;
 	    case 'l': // long address
-	      sprintf(temp, "%04x",
-		      /*t_addr*/int(rom->get(addr+1)*256 +
-				    rom->get(addr+2)));
+	      temp.appendf("%04x",
+			   int(rom->get(addr+1)*256 +
+			       rom->get(addr+2)));
 	      break;
 	    case 'a': // addr8 (direct address) at 2nd byte
-	      daddr_name(rom->get(addr+1), temp);
+	      daddr_name(rom->get(addr+1), &temp);
 	      break;
 	    case '8': // addr8 (direct address) at 3rd byte
-	      daddr_name(rom->get(addr+2), temp);
+	      daddr_name(rom->get(addr+2), &temp);
 	      break;
 	    case 'b': // bitaddr at 2nd byte
 	      {
 		t_addr ba= rom->get(addr+1);
-		/*if (get_name(ba, bit_tbl(), temp))
-		  break;
-		if (ba<128)
-		  addr_name((ba/8)+32,iram,temp);
-		else
-		  addr_name(ba&0xf8,sfr,temp);
-		strcat(temp, ".");
-		sprintf(c, "%1d", (int)(ba & 0x07));
-		strcat(temp, c);*/
-		baddr_name(ba, temp);
+		baddr_name(ba, &temp);
 		break;
 	      }
 	    case 'r': // rel8 address at 2nd byte
-	      sprintf(temp, "%04x",
-		      /*t_addr*/int(addr+2+(signed char)(rom->get(addr+1))));
-	      break;
+	      temp.appendf("%04x",
+			   int(addr+2+(signed char)(rom->get(addr+1))));
+      break;
 	    case 'R': // rel8 address at 3rd byte
-	      sprintf(temp, "%04x",
-		      /*t_addr*/int(addr+3+(signed char)(rom->get(addr+2))));
+	      temp.appendf("%04x",
+			   int(addr+3+(signed char)(rom->get(addr+2))));
 	      break;
 	    case 'd': // data8 at 2nd byte
-	      sprintf(temp, "%02x", (int)rom->get(addr+1));
+	      temp.appendf("%02x", (int)rom->get(addr+1));
 	      break;
 	    case 'D': // data8 at 3rd byte
-	      sprintf(temp, "%02x", (int)rom->get(addr+2));
+	      temp.appendf("%02x", (int)rom->get(addr+2));
 	      break;
 	    case '6': // data16 at 2nd(H)-3rd(L) byte
-	      sprintf(temp, "%04x",
-		      /*t_addr*/int(rom->get(addr+1)*256 +
-				    rom->get(addr+2)));
+	      temp.appendf("%04x",
+			   int(rom->get(addr+1)*256 +
+			       rom->get(addr+2)));
 	      break;
 	    default:
-	      strcpy(temp, "?");
+	      temp= "?";
 	      break;
 	    }
-	  t= temp;
-	  while (*t)
-	    *(p++)= *(t++);
+	  work+= temp;
 	}
       else
-	*(p++)= *(b++);
+	work+= *(b++);
     }
-  *p= '\0';
-
+  //*p= '\0';
+  /*
   p= strchr(work, ' ');
   if (!p)
     {
       buf= strdup(work);
       return(buf);
     }
+  */
+  /*
   if (sep == NULL)
     buf= (char *)malloc(6+strlen(p)+1);
   else
@@ -1242,7 +1241,8 @@ cl_51core::disass(t_addr addr, const char *sep)
   else
     strcat(buf, sep);
   strcat(buf, p);
-  return(buf);
+  */
+  return(/*buf*/strdup(work.c_str()));
 }
 
 
@@ -1251,8 +1251,8 @@ cl_51core::print_regs(class cl_console_base *con)
 {
   t_addr start, stop;
   t_mem data;
-  t_mem dp;
-  
+  u16_t dp;
+
   // show regs
   start= psw->get() & 0x18;
   con->dd_color("answer");
@@ -1315,7 +1315,7 @@ cl_51core::print_regs(class cl_console_base *con)
 		  for (di= dptr->get_size()-1; di >= 0; di--)
 		    dp= (dp*256) + dptr_chip->get(a+di);
 		  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
-		  con->dd_printf(xram->addr_format, dp);
+		  con->dd_printf("0x%04x", dp);
 		  data= xram->read(dp);
 		  con->dd_printf(" @DPTR%d= ", i);
 		  con->dd_printf("0x%02x %3d %c\n", data, data,
@@ -1339,7 +1339,7 @@ cl_51core::print_regs(class cl_console_base *con)
 	  dp= (sfr_chip->get(DPL-0x80) +
 	       sfr_chip->get(DPH-0x80) * 256) & 0xffff;
 	  con->dd_printf("  %cDPTR%d= ", (i==act)?'*':' ', i);
-	  con->dd_printf(xram->addr_format, dp);
+	  con->dd_printf("0x%04x", dp);
 	  data= xram->read(dp);
 	  con->dd_printf(" @DPTR%d= ", i);
 	  con->dd_printf("0x%02x %3d %c\n", data, data,
@@ -1454,36 +1454,45 @@ cl_51core::bit_address(class cl_memory *mem,
 /* Get name of directly addressed iram/sfr cell */
 
 void
-cl_51core::daddr_name(t_addr addr, char *buf)
+cl_51core::daddr_name(t_addr addr, chars *buf)
 {
   if (!buf)
     return;
+
   if (addr < 128)
     {
       // register?
       if (addr_name(addr, regs, buf))
-	return;
+	{
+	  return;
+	}
       // variale?
       if (addr_name(addr, iram, buf))
-	return;
+	{
+	  return;
+	}
     }
   else
     {
       // dptr?
       if (addr_name(addr-0x82, dptr, buf))
-	return;
+	{
+	  return;
+	}
       // sfr?
       if (addr_name(addr, sfr, buf))
-	return;
+	{
+	  return;
+	}
     }
   unsigned int a= addr;
-  sprintf(buf, "%02x", a);
+  buf->format("%02x", a);
 }
 
 /* Get name of a bit cell */
 
 void
-cl_51core::baddr_name(t_addr addr, char *buf)
+cl_51core::baddr_name(t_addr addr, chars *buf)
 {
   t_addr ma;
   
@@ -1497,7 +1506,8 @@ cl_51core::baddr_name(t_addr addr, char *buf)
     ma= addr&0xf8;
   daddr_name(ma, buf);
   chars c= chars("", "%s.%d", buf, (int)(addr & 7));
-  strcpy(buf, c.c_str());
+  //strcpy(buf, c.c_str());
+  buf->append(c);
 }
 
 
@@ -1682,7 +1692,7 @@ cl_51core::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
-  res= inst_unknown();
+  res= inst_unknown(code);
   return(res);
 }
 
@@ -1829,7 +1839,7 @@ cl_51core::do_interrupt(void)
 	  if (state == stIDLE)
 	    {
 	      state= stGO;
-	      sfr->set_bit0(PCON, bmIDL);
+	      sfr->set(PCON, sfr->get(PCON) & ~bmIDL);
 	      interrupt->was_reti= true;
 	      return(resGO);
 	    }
@@ -1861,7 +1871,7 @@ int
 cl_51core::accept_it(class it_level *il)
 {
   state= stGO;
-  sfr->set_bit0(PCON, bmIDL);
+  sfr->set(PCON, sfr->get(PCON) & ~bmIDL);
   it_levels->push(il);
   tick(1);
   int res= inst_lcall(0, il->addr, true);
@@ -1930,23 +1940,6 @@ cl_51core::idle_pd(void)
 			get_rtime(), ticks->ticks);
       state= stPD;
     }
-  return(resGO);
-}
-
-
-/*
- * Simulating an unknown instruction
- *
- * Normally this function is called for unimplemented instructions, because
- * every instruction must be known!
- */
-
-int
-cl_51core::inst_unknown(void)
-{
-  //PC--;
-  class cl_error_unknown_code *e= new cl_error_unknown_code(this);
-  error(e);
   return(resGO);
 }
 
@@ -2094,9 +2087,9 @@ cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
 	  uc>>= 1;
 	}
       if (p)
-	cell_psw->set_bit1(bmP);
+	cell_psw->set(cell_psw->get() | bmP);
       else
-	cell_psw->set_bit0(bmP);
+	cell_psw->set(cell_psw->get() & ~bmP);
     }
   /*else if (cell == cell_pcon)
     {

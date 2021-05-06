@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "glob.h"
+#include "irqcl.h"
 
 #include "mcs6502cl.h"
 
@@ -41,28 +42,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_mcs6502::cl_mcs6502(class cl_sim *asim):
   cl_uc(asim)
 {
-  cA.init();
-  cA.decode((t_mem*)&A);
-  cX.init();
-  cX.decode((t_mem*)&X);
-  cY.init();
-  cY.decode((t_mem*)&Y);
-  cSP.init();
-  cSP.decode((t_mem*)&SP);
-  cCC.init();
-  cCC.decode((t_mem*)&CC);
-
-  class cl_memory_operator *op= new cl_cc_operator(&cCC);
-  cCC.append_operator(op);
 }
 
 int
 cl_mcs6502::init(void)
 {
   cl_uc::init();
+  fill_def_wrappers(itab);
 
   xtal= 1000000;
     
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(A);
+  RCV(X);
+  RCV(Y);
+  RCV(SP);
+  RCV(P);
+#undef RCV
+  
+  class cl_memory_operator *op= new cl_cc_operator(&cCC);
+  cCC.append_operator(op);
+
   return 0;
 }
 
@@ -78,9 +78,9 @@ cl_mcs6502::reset(void)
 {
   cl_uc::reset();
 
-  CC= 0x20;
-  PC= rom->read(0xfffd)*256 + rom->read(0xfffc);
-  tick(6);
+  CC= 0x20 | flagI;
+  PC= read_addr(rom, RESET_AT);
+  tick(7);
 }
 
   
@@ -99,6 +99,39 @@ cl_mcs6502::mk_hw_elements(void)
 
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
+
+  add_hw(h= new cl_irq_hw(this));
+  h->init();
+
+  src_irq= new cl_irq(this,
+		      irq_irq,
+		      &cCC, flagI,
+		      h->cfg_cell(m65_irq), 1,
+		      IRQ_AT,
+		      "Interrupt request",
+		      0);
+  src_irq->init();
+  it_sources->add(src_irq);
+  
+  src_nmi= new cl_nmi(this,
+		      irq_nmi,
+		      h->cfg_cell(m65_nmi_en), 1,
+		      h->cfg_cell(m65_nmi), 1,
+		      NMI_AT,
+		      "Non-maskable interrupt request",
+		      0);
+  src_nmi->init();
+  it_sources->add(src_nmi);
+  
+  src_brk= new cl_BRK(this,
+		      irq_brk,
+		      h->cfg_cell(m65_brk_en), 1,
+		      h->cfg_cell(m65_brk), 1,
+		      IRQ_AT,
+		      "BRK",
+		      0);
+  src_brk->init();
+  it_sources->add(src_brk);
 }
 
 void
@@ -117,7 +150,7 @@ cl_mcs6502::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  chip= new cl_memory_chip("rom_chip", 0x10000, 8);
+  chip= new cl_chip8("rom_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= rom,
@@ -125,18 +158,57 @@ cl_mcs6502::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+}
 
-  class cl_cvar *v;
-  vars->add(v= new cl_cvar("A", &cA, "CPU register A"));
-  v->init();
-  vars->add(v= new cl_cvar("X", &cX, "CPU register X"));
-  v->init();
-  vars->add(v= new cl_cvar("Y", &cY, "CPU register Y"));
-  v->init();
-  vars->add(v= new cl_cvar("S", &cSP, "CPU register S"));
-  v->init();
-  vars->add(v= new cl_cvar("P", &cCC, "CPU register P"));
-  v->init();
+struct dis_entry *
+cl_mcs6502::dis_tbl(void)
+{
+  return(disass_mcs6502);
+}
+
+char *
+cl_mcs6502::disass(t_addr addr)
+{
+  chars work= chars(), temp= chars();
+  const char *b;
+  t_mem code= rom->get(addr);
+  struct dis_entry *dt= dis_tbl();//, *dis_e;
+  int i;
+  bool first;
+  
+  if (!dt)
+    return NULL;
+
+  i= 0;
+  while (((code & dt[i].mask) != dt[i].code) &&
+	 dt[i].mnemonic)
+    i++;
+  //dis_e= &dt[i];
+  if (dt[i].mnemonic == NULL)
+    return strdup("-- UNKNOWN/INVALID");
+  b= dt[i].mnemonic;
+
+  first= true;
+  work= "";
+  for (i=0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '%')
+	{
+	  i++;
+	  switch (b[i])
+	    {
+	    }
+	}
+      else
+	work+= b[i];
+    }
+
+  return(strdup(work.c_str()));
 }
 
 void
@@ -156,5 +228,68 @@ cl_mcs6502::print_regs(class cl_console_base *con)
   
   print_disass(PC, con);
 }
+
+int
+cl_mcs6502::exec_inst(void)
+{
+  t_mem code;
+  int res= resGO;
+
+  if ((res= exec_inst_tab(itab)) != resNOT_DONE)
+    return res;
+
+  instPC= PC;
+  if (fetch(&code))
+    return(resBREAKPOINT);
+  tick(1);
+  res= inst_unknown(code);
+  return(res);
+}
+
+int
+cl_mcs6502::accept_it(class it_level *il)
+{
+  class cl_m6xxx_src *is= (class cl_m6xxx_src *)(il->source);
+  class cl_m6xxx_src *parent= NULL;
+
+  if (is)
+    {
+      if ((parent= (cl_m6xxx_src*)is->get_parent()) != NULL)
+	{
+	  //org= is;
+	  is= parent;
+	  il->source= is;
+	}
+    }
+  
+  tick(2);
+
+  rom->write(0x0100 + rSP, (PC>>8)&0xff);
+  rSP--;
+  rom->write(0x0100 + rSP, (PC)&0xff);
+  rSP--;
+  rom->write(0x0100 + rSP, rF);
+  rSP--;
+  tick(3);
+  vc.wr+= 3;
+  
+  t_addr a= read_addr(rom, is->addr);
+  tick(2);
+  vc.rd+= 2;
+  PC= a;
+
+  rF|= flagI;
+  is->clear();
+  it_levels->push(il);
+  
+  return resGO;
+}
+
+bool
+cl_mcs6502::it_enabled(void)
+{
+  return !(rF & flagI);
+}
+
 
 /* End of mcs6502.src/mcs6502.cc */

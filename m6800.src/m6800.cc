@@ -41,30 +41,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_m6800::cl_m6800(class cl_sim *asim):
   cl_uc(asim)
 {
-  cA.init();
-  cA.decode((t_mem*)&A);
-  cB.init();
-  cB.decode((t_mem*)&B);
-  cCC.init();
-  cCC.decode((t_mem*)&CC);
-  cIX.set_width(16);
-  cIX.init();
-  cIX.decode((t_mem*)&IX);
-  cSP.set_width(16);
-  cSP.init();
-  cSP.decode((t_mem*)&SP);
-
-  class cl_memory_operator *op= new cl_cc_operator(&cCC);
-  cCC.append_operator(op);
 }
 
 int
 cl_m6800::init(void)
 {
   cl_uc::init();
-
+  fill_def_wrappers(itab);
+  
   xtal= 1000000;
     
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(A);
+  RCV(B);
+  RCV(CC);
+  RCV(IX);
+  RCV(SP);
+#undef RCV
+    
+  class cl_memory_operator *op= new cl_cc_operator(&cCC);
+  cCC.append_operator(op);
+
   return 0;
 }
 
@@ -117,7 +114,7 @@ cl_m6800::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  chip= new cl_memory_chip("rom_chip", 0x10000, 8);
+  chip= new cl_chip8("rom_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= rom,
@@ -125,18 +122,57 @@ cl_m6800::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+}
 
-  class cl_cvar *v;
-  vars->add(v= new cl_cvar("A", &cA, "CPU register A"));
-  v->init();
-  vars->add(v= new cl_cvar("B", &cB, "CPU register B"));
-  v->init();
-  vars->add(v= new cl_cvar("CC", &cCC, "CPU register CC"));
-  v->init();
-  vars->add(v= new cl_cvar("IX", &cIX, "CPU register IX"));
-  v->init();
-  vars->add(v= new cl_cvar("SP", &cSP, "CPU register SP"));
-  v->init();
+struct dis_entry *
+cl_m6800::dis_tbl(void)
+{
+  return(disass_m6800);
+}
+
+char *
+cl_m6800::disass(t_addr addr)
+{
+  chars work= chars(), temp= chars();
+  const char *b;
+  t_mem code= rom->get(addr);
+  struct dis_entry *dt= dis_tbl();//, *dis_e;
+  int i;
+  bool first;
+  
+  if (!dt)
+    return NULL;
+
+  i= 0;
+  while (((code & dt[i].mask) != dt[i].code) &&
+	 dt[i].mnemonic)
+    i++;
+  //dis_e= &dt[i];
+  if (dt[i].mnemonic == NULL)
+    return strdup("-- UNKNOWN/INVALID");
+  b= dt[i].mnemonic;
+
+  first= true;
+  work= "";
+  for (i=0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '%')
+	{
+	  i++;
+	  switch (b[i])
+	    {
+	    }
+	}
+      else
+	work+= b[i];
+    }
+
+  return(strdup(work.c_str()));
 }
 
 void
@@ -159,5 +195,23 @@ cl_m6800::print_regs(class cl_console_base *con)
   
   print_disass(PC, con);
 }
+
+int
+cl_m6800::exec_inst(void)
+{
+  t_mem code;
+  int res= resGO;
+
+  if ((res= exec_inst_tab(itab)) != resNOT_DONE)
+    return res;
+
+  instPC= PC;
+  if (fetch(&code))
+    return(resBREAKPOINT);
+  tick(1);
+  res= inst_unknown(code);
+  return(res);
+}
+
 
 /* End of m6800.src/m6800.cc */

@@ -92,6 +92,7 @@ int cl_pdk::get_flag(flag n) {
 }
 
 void cl_pdk::store_flag(flag n, int value) {
+  value= value?1:0;
   switch (n) {
   case flag_z: set_flags((get_flags() & ~1) | value); break;
   case flag_c: set_flags((get_flags() & ~2) | (value << 1)); break;
@@ -498,7 +499,7 @@ int cl_pdk::execute_pdk13(unsigned int code) {
     regs.a = get_mem(code & 0x3F);
   } else if (CODE_MASK(0x00C1, 0x1E)) {
     // TODO: ldt16
-  } else if (CODE_MASK(0x0C00, 0x1E)) {
+  } else if (CODE_MASK(0x00C0, 0x1E)) {
     // TODO: stt16
   } else if ((CODE_MASK(0x0E1, 0x1E))) {
     // idxm a, m
@@ -681,40 +682,40 @@ int cl_pdk::execute_pdk13(unsigned int code) {
     const u8_t bit = (code & 0xE0) >> 5;
     const u8_t addr = code & 0x1F;
     store_io(addr, get_io(addr) & ~(1 << bit));
-  } else if (CODE_MASK(0x0300, 0xFE)) {
+  } else if (CODE_MASK(0x0300, 0xEF)) {
     // set0 m, k
     const u8_t bit = (code & 0xE0) >> 5;
-    const u8_t addr = (code & 0xFE) >> 1;
+    const u8_t addr = code & 0x0F;
     ram->write(addr, get_mem(addr) & ~(1 << bit));
   } else if (CODE_MASK(0x0F00, 0xFF)) {
     // set1 io, k
     const u8_t bit = (code & 0xE0) >> 5;
     const u8_t addr = code & 0x1F;
     store_io(addr, get_io(addr) | (1 << bit));
-  } else if (CODE_MASK(0x0301, 0xFE)) {
+  } else if (CODE_MASK(0x0310, 0xEF)) {
     // set1 m, k
     const u8_t bit = (code & 0xE0) >> 5;
-    const u8_t addr = (code & 0x1E) >> 1;
+    const u8_t addr = code & 0x0F;
     ram->write(addr, get_mem(addr) | (1 << bit));
   } else if (CODE_MASK(0x0C00, 0xFF)) {
     // t0sn io, k
     int n = (code & 0xE0) >> 5;
     if (!(get_io(code & 0x1F) & (1 << n)))
       ++PC;
-  } else if (CODE_MASK(0x0200, 0xFE)) {
+  } else if (CODE_MASK(0x0200, 0xEF)) {
     // t0sn m, k
     int n = (code & 0xE0) >> 5;
-    if (!(get_mem((code & 0xFE) >> 1) & (1 << n)))
+    if (!(get_mem(code & 0x0F) & (1 << n)))
       ++PC;
   } else if (CODE_MASK(0x0D00, 0xFF)) {
     // t1sn io, k
     int n = (code & 0xE0) >> 5;
     if (get_io(code & 0x1F) & (1 << n))
       ++PC;
-  } else if (CODE_MASK(0x0201, 0xFE)) {
+  } else if (CODE_MASK(0x0210, 0xEF)) {
     // t1sn m, k
     int n = (code & 0xE0) >> 5;
-    if (get_mem((code & 0xFE) >> 1) & (1 << n))
+    if (get_mem(code & 0x0F) & (1 << n))
       ++PC;
   } else if (CODE_MASK(0x1200, 0xFF)) {
     // ceqsn a, k
