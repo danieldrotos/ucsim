@@ -1157,7 +1157,7 @@ cl_51core::disass(t_addr addr)
   b= dt->mnemonic;
   while (*b)
     {
-      if ((*b == ' ') and first)
+      if ((*b == ' ') && first)
 	{
 	  first= false;
 	  while (work.len() < 6) work.append(' ');
