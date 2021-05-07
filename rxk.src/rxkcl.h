@@ -123,6 +123,8 @@ public:
 
   virtual int exec_inst(void);
   virtual int NOP(t_mem code);
+  virtual int LD_BC_mn(t_mem code);
+  virtual int INC_BC(t_mem code);
 };
 
 

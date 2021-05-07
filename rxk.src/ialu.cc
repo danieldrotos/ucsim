@@ -27,4 +27,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "rxkcl.h"
 
 
+int
+cl_rxk::INC_BC(t_mem code)
+{
+  cBC.W(rBC+1);
+  tick(1);
+  return resGO;
+}
+
+
 /* End of rxk.src/ialu.cc */

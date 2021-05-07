@@ -28,7 +28,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef DECODE_HEADER
 #define DECODE_HEADER
 
-#define NOP instruction_00
+#define NOP		instruction_00
+#define LD_BC_mn	instruction_01
+#define INC_BC		instruction_03
 
 #endif
 

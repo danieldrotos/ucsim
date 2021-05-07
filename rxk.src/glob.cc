@@ -30,10 +30,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 instruction_wrapper_fn itab[256];
 
+/* 
+%d - signed compl.,byte jump 
+%w - 2-byte jump or imm. value
+%b - byte imm. value
+*/
 // code mask branch len mn call tick
 struct dis_entry disass_rxk[]=
   {
     { 0x00, 0xff, ' ', 1, "NOP" },
+    { 0x01, 0xff, ' ', 1, "LD BC,%w" },
+    { 0x03, 0xff, ' ', 1, "INC BC" },
     { 0, 0, 0, 0, 0, 0 }
   };
 

@@ -182,13 +182,13 @@ cl_rxk::dis_tbl(void)
 char *
 cl_rxk::disass(t_addr addr)
 {
-  chars work= chars(), temp= chars();
+  chars work, temp;
   const char *b;
   t_mem code= rom->get(addr);
   struct dis_entry *dt= dis_tbl();//, *dis_e;
   int i;
   bool first;
-  
+  u8_t h, l;
   if (!dt)
     return NULL;
 
@@ -212,10 +212,17 @@ cl_rxk::disass(t_addr addr)
 	}
       if (b[i] == '%')
 	{
+	  temp= "";
 	  i++;
 	  switch (b[i])
 	    {
+	    case 'w':
+	      l= rom->get(++addr);
+	      h= rom->get(++addr);
+	      temp.format("0x%04x", h*256+l);
+	      break;
 	    }
+	  work+= temp;
 	}
       else
 	work+= b[i];

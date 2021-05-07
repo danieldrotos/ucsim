@@ -27,4 +27,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "rxkcl.h"
 
 
+int
+cl_rxk::LD_BC_mn(t_mem code)
+{
+  u8_t l, h;
+  l= fetch();
+  h= fetch();
+  cBC.W(h*256+l);
+  tick(4);
+  return resGO;
+}
+
+
 /* End of rxk.src/imove.cc */
