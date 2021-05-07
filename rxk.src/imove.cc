@@ -33,10 +33,19 @@ cl_rxk::LD_BC_mn(t_mem code)
   u8_t l, h;
   l= fetch();
   h= fetch();
-  cBC.W(h*256+l);
+  destBC().W(h*256+l);
   tick(4);
   return resGO;
 }
 
+int
+cl_rxk::LD_B_n(t_mem code)
+{
+  u8_t l;
+  l= fetch();
+  destB().W(l);
+  tick(3);
+  return resGO;
+}
 
 /* End of rxk.src/imove.cc */

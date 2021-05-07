@@ -38,9 +38,16 @@ instruction_wrapper_fn itab[256];
 // code mask branch len mn call tick
 struct dis_entry disass_rxk[]=
   {
+    { 0x76, 0xff, ' ', 1, "ALTD" },
+    { 0xd3, 0xff, ' ', 1, "IOI" },
+    { 0xdb, 0xff, ' ', 1, "IOE" },
+
     { 0x00, 0xff, ' ', 1, "NOP" },
-    { 0x01, 0xff, ' ', 1, "LD BC,%w" },
+    { 0x01, 0xff, ' ', 3, "LD BC,%w" },
     { 0x03, 0xff, ' ', 1, "INC BC" },
+    { 0x04, 0xff, ' ', 1, "INC B" },
+    { 0x05, 0xff, ' ', 1, "DEC B" },
+    { 0x06, 0xff, ' ', 2, "LD B,%b" },
     { 0, 0, 0, 0, 0, 0 }
   };
 
