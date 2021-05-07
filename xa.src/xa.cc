@@ -613,16 +613,16 @@ cl_xa::disass(t_addr addr)
     break;
     case DIRECT_REG :
       parm_str= chars("", "%s,%s",
-              get_dir_name(((code & 0x7) << 8) |
-                           rom->get(addr+immed_offset)),
-              reg_strs[((code >> 4) & 0xf)] );
+		      get_dir_name(((code & 0x7) << 8) |
+				   rom->get(addr+immed_offset)).c_str(),
+		      reg_strs[((code >> 4) & 0xf)] );
       ++immed_offset;
     break;
     case REG_DIRECT :
       parm_str= chars("", "%s,%s",
-              reg_strs[((code >> 4) & 0xf)],
-              get_dir_name(((code & 0x7) << 8) |
-                           rom->get(addr+immed_offset)));
+		      reg_strs[((code >> 4) & 0xf)],
+		      get_dir_name(((code & 0x7) << 8) |
+				   rom->get(addr+immed_offset)).c_str());
       ++immed_offset;
     break;
     case REG_DATA8 :
@@ -723,18 +723,18 @@ cl_xa::disass(t_addr addr)
     break;
     case DIRECT_DATA8 :
       parm_str= chars("", "%s,#0x%02x",
-              get_dir_name(((code & 0x0070) << 4) |
-                           rom->get(addr+immed_offset)),
-              rom->get(addr+immed_offset+1));
+		      get_dir_name(((code & 0x0070) << 4) |
+				   rom->get(addr+immed_offset)).c_str(),
+		      rom->get(addr+immed_offset+1));
       immed_offset += 3;
     break;
     case DIRECT_DATA16 :
       operand= rom->get(addr+immed_offset+2) +
-               (rom->get(addr+immed_offset+1)<<8);
+	(rom->get(addr+immed_offset+1)<<8);
       parm_str= chars("", "%s,#0x%04x",
-              get_dir_name(((code & 0x0070) << 4) |
-                           rom->get(addr+immed_offset)),
-              operand);
+		      get_dir_name(((code & 0x0070) << 4) |
+				   rom->get(addr+immed_offset)).c_str(),
+		      operand);
       addr_name(operand, rom, &parm_str);
       immed_offset += 3;
     break;
@@ -745,11 +745,11 @@ cl_xa::disass(t_addr addr)
     break;
     case CY_BIT :
       parm_str= chars("", "C,%s",
-             get_bit_name(((code&0x0003)<<8) + rom->get(addr+2)));
+		      get_bit_name(((code&0x0003)<<8) + rom->get(addr+2)).c_str());
     break;
     case BIT_CY :
       parm_str= chars("", "%s,C",
-              get_bit_name(((code&0x0003)<<8) + rom->get(addr+2)));
+		      get_bit_name(((code&0x0003)<<8) + rom->get(addr+2)).c_str());
     break;
     case REG_DATA4 :
       parm_str= chars("", "REG_DATA4");
@@ -790,13 +790,13 @@ cl_xa::disass(t_addr addr)
     break;
     case BIT_ALONE :
       parm_str= chars("", "%s",
-	      get_bit_name(((code&0x0003)<<8) + rom->get(addr+2)));
+		      get_bit_name(((code&0x0003)<<8) + rom->get(addr+2)).c_str());
     break;
     case BIT_REL8 :
       operand= (u16_t)(((i8_t)rom->get(addr+3)*2+addr+len)&0xfffe);
       parm_str= chars("", "%s,0x%04lx",
-              get_bit_name((code&0x0003)<<8) + rom->get(addr+2),
-              operand);
+		      get_bit_name(((code&0x0003)<<8) + rom->get(addr+2)).c_str(),
+		      operand);
       addr_name(operand, rom, &parm_str);
     break;
     case DATA4:
