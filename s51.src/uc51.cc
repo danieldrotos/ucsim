@@ -1519,7 +1519,7 @@ cl_51core::baddr_name(t_addr addr, chars *buf)
 
   chars temp;
   if (daddr_name(ma, &temp))
-    buf->appendf("%s.%d", temp, (int)(addr & 7));
+    buf->appendf("%s.%d", temp.c_str(), (int)(addr & 7));
 }
 
 
