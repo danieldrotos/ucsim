@@ -834,7 +834,7 @@ cl_stm8::disass(t_addr addr)
   const char *b;
   int len = 0;
   int immed_offset = 0;
-  t_addr operand;
+  t_addr operand= 0;
   bool first= true;
 
   work= "";
