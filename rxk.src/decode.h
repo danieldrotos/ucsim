@@ -35,7 +35,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define NOP		instruction_00
 #define LD_BC_mn	instruction_01
 #define INC_BC		instruction_03
+#define INC_DE		instruction_13
+#define INC_HL		instruction_23
+#define INC_SP		instruction_33
+#define INC_A		instruction_3c
 #define INC_B		instruction_04
+#define INC_C		instruction_0c
+#define INC_D		instruction_14
+#define INC_E		instruction_1c
+#define INC_H		instruction_24
+#define INC_L		instruction_2c
 #define DEC_B		instruction_05
 #define LD_B_n		instruction_06
 

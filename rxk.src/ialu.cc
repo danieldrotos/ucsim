@@ -37,12 +37,134 @@ cl_rxk::INC_BC(t_mem code)
 }
 
 int
+cl_rxk::INC_DE(t_mem code)
+{
+  class cl_cell16 &rp= destDE();
+  rp.W(rDE+1);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_HL(t_mem code)
+{
+  class cl_cell16 &rp= destHL();
+  rp.W(rHL+1);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_SP(t_mem code)
+{
+  cSP.W(rSP+1);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_A(t_mem code)
+{
+  class cl_cell8 &rb= destA(), &rf= destF();
+  u8_t r, f= rF & ~(flagS|flagZ|flagV), na7, r7;
+  na7= (rA&0x80)^0x80;
+  rb.W(r= rA+1);
+  r7= r&0x80;
+  if (r & 0x80) f|= flagS;
+  if (!r) f|= flagZ;
+  if (na7 & r7) f|= flagV;
+  rf.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_rxk::INC_B(t_mem code)
 {
   class cl_cell8 &rb= destB(), &rf= destF();
   u8_t r, f= rF & ~(flagS|flagZ|flagV), na7, r7;
   na7= (rB&0x80)^0x80;
   rb.W(r= rB+1);
+  r7= r&0x80;
+  if (r & 0x80) f|= flagS;
+  if (!r) f|= flagZ;
+  if (na7 & r7) f|= flagV;
+  rf.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_C(t_mem code)
+{
+  class cl_cell8 &rb= destC(), &rf= destF();
+  u8_t r, f= rF & ~(flagS|flagZ|flagV), na7, r7;
+  na7= (rC&0x80)^0x80;
+  rb.W(r= rC+1);
+  r7= r&0x80;
+  if (r & 0x80) f|= flagS;
+  if (!r) f|= flagZ;
+  if (na7 & r7) f|= flagV;
+  rf.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_D(t_mem code)
+{
+  class cl_cell8 &rb= destD(), &rf= destF();
+  u8_t r, f= rF & ~(flagS|flagZ|flagV), na7, r7;
+  na7= (rD&0x80)^0x80;
+  rb.W(r= rD+1);
+  r7= r&0x80;
+  if (r & 0x80) f|= flagS;
+  if (!r) f|= flagZ;
+  if (na7 & r7) f|= flagV;
+  rf.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_E(t_mem code)
+{
+  class cl_cell8 &rb= destE(), &rf= destF();
+  u8_t r, f= rF & ~(flagS|flagZ|flagV), na7, r7;
+  na7= (rE&0x80)^0x80;
+  rb.W(r= rE+1);
+  r7= r&0x80;
+  if (r & 0x80) f|= flagS;
+  if (!r) f|= flagZ;
+  if (na7 & r7) f|= flagV;
+  rf.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_H(t_mem code)
+{
+  class cl_cell8 &rb= destH(), &rf= destF();
+  u8_t r, f= rF & ~(flagS|flagZ|flagV), na7, r7;
+  na7= (rH&0x80)^0x80;
+  rb.W(r= rH+1);
+  r7= r&0x80;
+  if (r & 0x80) f|= flagS;
+  if (!r) f|= flagZ;
+  if (na7 & r7) f|= flagV;
+  rf.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::INC_L(t_mem code)
+{
+  class cl_cell8 &rb= destL(), &rf= destF();
+  u8_t r, f= rF & ~(flagS|flagZ|flagV), na7, r7;
+  na7= (rL&0x80)^0x80;
+  rb.W(r= rL+1);
   r7= r&0x80;
   if (r & 0x80) f|= flagS;
   if (!r) f|= flagZ;

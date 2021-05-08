@@ -153,7 +153,16 @@ public:
   virtual int NOP(t_mem code);
   virtual int LD_BC_mn(t_mem code);
   virtual int INC_BC(t_mem code);
+  virtual int INC_DE(t_mem code);
+  virtual int INC_HL(t_mem code);
+  virtual int INC_SP(t_mem code);
+  virtual int INC_A(t_mem code);
   virtual int INC_B(t_mem code);
+  virtual int INC_C(t_mem code);
+  virtual int INC_D(t_mem code);
+  virtual int INC_E(t_mem code);
+  virtual int INC_H(t_mem code);
+  virtual int INC_L(t_mem code);
   virtual int DEC_B(t_mem code);
   virtual int LD_B_n(t_mem code);
 };
