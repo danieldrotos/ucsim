@@ -152,17 +152,19 @@ public:
   
   virtual int NOP(t_mem code);
   virtual int LD_BC_mn(t_mem code);
-  virtual int INC_BC(t_mem code);
-  virtual int INC_DE(t_mem code);
-  virtual int INC_HL(t_mem code);
-  virtual int INC_SP(t_mem code);
-  virtual int INC_A(t_mem code);
-  virtual int INC_B(t_mem code);
-  virtual int INC_C(t_mem code);
-  virtual int INC_D(t_mem code);
-  virtual int INC_E(t_mem code);
-  virtual int INC_H(t_mem code);
-  virtual int INC_L(t_mem code);
+  virtual int inc_ss(class cl_cell16 &rp, u16_t rr);
+  virtual int INC_BC(t_mem code) { return inc_ss(destBC(), rBC); }
+  virtual int INC_DE(t_mem code) { return inc_ss(destDE(), rDE); }
+  virtual int INC_HL(t_mem code) { return inc_ss(destHL(), rHL); }
+  virtual int INC_SP(t_mem code) { return inc_ss(cSP     , rSP); }
+  virtual int inc_r(class cl_cell8 &cr, u8_t rr);
+  virtual int INC_A(t_mem code) { return inc_r(destA(), rA); }
+  virtual int INC_B(t_mem code) { return inc_r(destB(), rB); }
+  virtual int INC_C(t_mem code) { return inc_r(destC(), rC); }
+  virtual int INC_D(t_mem code) { return inc_r(destD(), rD); }
+  virtual int INC_E(t_mem code) { return inc_r(destE(), rE); }
+  virtual int INC_H(t_mem code) { return inc_r(destH(), rH); }
+  virtual int INC_L(t_mem code) { return inc_r(destL(), rL); }
   virtual int DEC_B(t_mem code);
   virtual int LD_B_n(t_mem code);
 };
