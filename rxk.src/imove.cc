@@ -28,22 +28,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 int
-cl_rxk::LD_BC_mn(t_mem code)
+cl_rxk::ld_dd_mn(class cl_cell16 &dd)
 {
   u8_t l, h;
   l= fetch();
   h= fetch();
-  destBC().W(h*256+l);
+  dd.W(h*256+l);
   tick(4);
   return resGO;
 }
 
 int
-cl_rxk::LD_B_n(t_mem code)
+cl_rxk::ld_r_n(class cl_cell8 &r)
 {
-  u8_t l;
-  l= fetch();
-  destB().W(l);
+  r.W(fetch());
   tick(3);
   return resGO;
 }

@@ -44,6 +44,9 @@ struct dis_entry disass_rxk[]=
 
     { 0x00, 0xff, ' ', 1, "NOP" },
     { 0x01, 0xff, ' ', 3, "LD BC,%w" },
+    { 0x11, 0xff, ' ', 3, "LD DE,%w" },
+    { 0x21, 0xff, ' ', 3, "LD HL,%w" },
+    { 0x31, 0xff, ' ', 3, "LD SP,%w" },
     { 0x03, 0xff, ' ', 1, "INC BC" },
     { 0x13, 0xff, ' ', 1, "INC DE" },
     { 0x23, 0xff, ' ', 1, "INC HL" },
@@ -55,8 +58,20 @@ struct dis_entry disass_rxk[]=
     { 0x1c, 0xff, ' ', 1, "INC E" },
     { 0x24, 0xff, ' ', 1, "INC H" },
     { 0x2c, 0xff, ' ', 1, "INC L" },
+    { 0x3d, 0xff, ' ', 1, "DEC A" },
     { 0x05, 0xff, ' ', 1, "DEC B" },
+    { 0x0d, 0xff, ' ', 1, "DEC C" },
+    { 0x15, 0xff, ' ', 1, "DEC D" },
+    { 0x1d, 0xff, ' ', 1, "DEC E" },
+    { 0x25, 0xff, ' ', 1, "DEC H" },
+    { 0x2d, 0xff, ' ', 1, "DEC L" },
+    { 0x3e, 0xff, ' ', 2, "LD A,%b" },
     { 0x06, 0xff, ' ', 2, "LD B,%b" },
+    { 0x0e, 0xff, ' ', 2, "LD C,%b" },
+    { 0x16, 0xff, ' ', 2, "LD D,%b" },
+    { 0x1e, 0xff, ' ', 2, "LD E,%b" },
+    { 0x26, 0xff, ' ', 2, "LD H,%b" },
+    { 0x2e, 0xff, ' ', 2, "LD L,%b" },
     { 0, 0, 0, 0, 0, 0 }
   };
 
