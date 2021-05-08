@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (srxk.cc)
+ * Simulator of microcontrollers (r5k.cc)
  *
- * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
+ * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,31 +25,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-// prj
-#include "globals.h"
-
-// local
-#include "simrxkcl.h"
+#include "r5kcl.h"
 
 
-int
-main(int argc, char *argv[])
+cl_r5k::cl_r5k(class cl_sim *asim):
+  cl_r4k(asim)
 {
-  class cl_sim *sim;
-
-  cpus= cpus_rxk;
-  application= new cl_app();
-  application->set_name("srxk");
-  application->init(argc, argv);
-  sim= new cl_simrxk(application);
-  if (sim->init())
-    sim->state|= SIM_QUIT;
-  application->set_simulator(sim);
-  //sim->main();
-  application->run();
-  application->done();
-  delete application;
-  return(0);
 }
 
-/* End of rxk.src/srxk.cc */
+const char *
+cl_r5k::id_string(void)
+{
+  return "R5K";
+}
+
+
+/* End of rxk.src/r5k.cc */

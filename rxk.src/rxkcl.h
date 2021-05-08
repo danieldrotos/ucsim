@@ -169,6 +169,11 @@ public:
   virtual int INC_E(t_mem code) { return inc_r(destE(), rE); }
   virtual int INC_H(t_mem code) { return inc_r(destH(), rH); }
   virtual int INC_L(t_mem code) { return inc_r(destL(), rL); }
+  virtual int dec_ss(class cl_cell16 &rp, u16_t op);
+  virtual int DEC_BC(t_mem code) { return dec_ss(destBC(), rBC); }
+  virtual int DEC_DE(t_mem code) { return dec_ss(destDE(), rDE); }
+  virtual int DEC_HL(t_mem code) { return dec_ss(destHL(), rHL); }
+  virtual int DEC_SP(t_mem code) { return dec_ss(cSP     , rSP); }
   virtual int dec_r(class cl_cell8 &cr, u8_t op);
   virtual int DEC_A(t_mem code) { return dec_r(destA(), rA); }
   virtual int DEC_B(t_mem code) { return dec_r(destB(), rB); }
@@ -185,6 +190,7 @@ public:
   virtual int LD_E_n() { return ld_r_n(destE()); }
   virtual int LD_H_n() { return ld_r_n(destH()); }
   virtual int LD_L_n() { return ld_r_n(destL()); }
+  virtual int RLCA(t_mem code);
 };
 
 

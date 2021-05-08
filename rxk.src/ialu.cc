@@ -52,6 +52,14 @@ cl_rxk::inc_r(class cl_cell8 &cr, u8_t op)
 }
 
 int
+cl_rxk::dec_ss(class cl_cell16 &rp, u16_t op)
+{
+  rp.W(op-1);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_rxk::dec_r(class cl_cell8 &cr, u8_t op)
 {
   class cl_cell8 &rf= destF();
@@ -63,6 +71,17 @@ cl_rxk::dec_r(class cl_cell8 &cr, u8_t op)
   if (!r) f|= flagZ;
   if (a7 & nr7) f|= flagV;
   rf.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::RLCA(t_mem code)
+{
+  class cl_cell8 &a= destA(), &f= destF();
+  u8_t a7= rA&0x80;
+  a.W((rA<<1) | (a7?1:0));
+  f.W((rF & ~flagC) | (a7?flagC:0));
   tick(1);
   return resGO;
 }
