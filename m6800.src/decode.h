@@ -47,6 +47,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DAA   instruction_19
 #define ABA   instruction_1b
 
+#define TSX   instruction_30
+#define INS   instruction_31
+#define PULA  instruction_32
+#define PULB  instruction_33
+#define DES   instruction_34
+#define TXS   instruction_35
+#define PSHA  instruction_36
+#define PSHB  instruction_37
+#define RTS   instruction_39
+
 #endif
 
 /* End of m6800.src/decode.h */

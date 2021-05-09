@@ -51,7 +51,17 @@ struct dis_entry disass_m6800[]=
     { 0x17, 0xff, ' ', 1, "TBA" },
     { 0x19, 0xff, ' ', 1, "DAA" },
     { 0x1b, 0xff, ' ', 1, "ABA" },
-	
+
+    { 0x30, 0xff, ' ', 1, "TSX" },
+    { 0x31, 0xff, ' ', 1, "INS" },
+    { 0x32, 0xff, ' ', 1, "PUL A" },
+    { 0x33, 0xff, ' ', 1, "PUL B" },
+    { 0x34, 0xff, ' ', 1, "DES" },
+    { 0x35, 0xff, ' ', 1, "TXS" },
+    { 0x36, 0xff, ' ', 1, "PSH A" },
+    { 0x37, 0xff, ' ', 1, "PSH B" },
+    { 0x39, 0xff, ' ', 1, "RTS" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

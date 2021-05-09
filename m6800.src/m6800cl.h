@@ -42,6 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rSP (SP)
 
 #define cF  (cCC)
+#define cX  (cIX)
 
 
 //  Flag bit masks
@@ -117,6 +118,16 @@ public:
   virtual int TBA(t_mem code);
   virtual int DAA(t_mem code);
   virtual int ABA(t_mem code) { return add(cA, rB, false); }
+
+  virtual int TSX(t_mem code);
+  virtual int INS(t_mem code);
+  virtual int PULA(t_mem code);
+  virtual int PULB(t_mem code);
+  virtual int DES(t_mem code);
+  virtual int TXS(t_mem code);
+  virtual int PSHA(t_mem code);
+  virtual int PSHB(t_mem code);
+  virtual int RTS(t_mem code);
 };
 
 

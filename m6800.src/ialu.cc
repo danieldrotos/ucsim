@@ -189,5 +189,21 @@ cl_m6800::add(class cl_cell8 &dest, u8_t op, bool c)
   return resGO;
 }
 
+int
+cl_m6800::INS(t_mem code)
+{
+  cSP.W(rSP+1);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_m6800::DES(t_mem code)
+{
+  cSP.W(rSP-1);
+  tick(3);
+  return resGO;
+}
+
 
 /* End of m6800.src/ialu.cc */
