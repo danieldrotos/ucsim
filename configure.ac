@@ -221,7 +221,7 @@ dnl AC_LANG_CPLUSPLUS
 
 AC_CHECK_TOOL(STRIP, strip)
 AC_CHECK_TOOL(AR, ar)
-AC_CHECK_TOOL(SREC_CAT, srec_cat)
+dnl AC_CHECK_TOOL(SREC_CAT, srec_cat)
 
 AC_LIBTOOL_DLOPEN
 dnl AC_LIBTOOL_WIN32_DLL
@@ -240,9 +240,9 @@ AC_LANG_CPLUSPLUS
 # Checking for header files.
 # ===========================================================================
 
-if test -d /stuff/include; then
-  CPPFLAGS="$CPPFLAGS -I/stuff/include"
-fi
+#if test -d /stuff/include; then
+#  CPPFLAGS="$CPPFLAGS -I/stuff/include"
+#fi
 
 AC_HEADER_STDC
 AC_CHECK_HEADERS(endian.h sys/endian.h machine/endian.h sys/isa_defs.h)
@@ -338,7 +338,7 @@ else
 AC_DEFINE(FD_NEED_WINSOCK2_H, 0, [XXX])
 fi
 
-AC_DEFINE_UNQUOTED(FD_HEADER_OK, ${ucsim_cv_header_ok}, [XXX])
+dnl AC_DEFINE_UNQUOTED(FD_HEADER_OK, ${ucsim_cv_header_ok}, [XXX])
 AC_DEFINE_UNQUOTED(HEADER_FD, ${ucsim_cv_fd}, [XXX])
 
 
@@ -455,28 +455,27 @@ if test "$ucsim_cv_getcwd" = "yes"; then
   AC_DEFINE(GNU_GETCWD, 1, [XXX])
 fi
 
-AC_DEFUN([ucsim_ACCEPT_LENGTH_T],
- [AC_CACHE_CHECK([for type of length pointer parameter of accept],
-   ucsim_cv_accept_length_type,
-   [ac_save_CPPFLAGS="$CPPFLAGS"
-    ucsim_cv_accept_length_type=no
-    for ac_val in int size_t socklen_t; do
-      CPPFLAGS="$ac_save_CPPFLAGS -DACCEPT_SOCKLEN_T=$ac_val"
-      AC_TRY_COMPILE([#include <sys/types.h>
-#include ${ucsim_cv_socket}],
-        [struct sockaddr a; $ac_val len; accept (0, &a, &len);],
-        [ucsim_cv_accept_length_type=$ac_val; break])
-    done
-    CPPFLAGS="$ac_save_CPPFLAGS"])
-  if test "$ucsim_cv_accept_length_type" != no; then
-    AC_DEFINE_UNQUOTED(ACCEPT_SOCKLEN_T, $ucsim_cv_accept_length_type,
-      [Define to be the type of length parameter of accept (without the \*').])
-  fi
- ]
-)
-#'
-
-ucsim_ACCEPT_LENGTH_T
+#AC_DEFUN([ucsim_ACCEPT_LENGTH_T],
+# [AC_CACHE_CHECK([for type of length pointer parameter of accept],
+#   ucsim_cv_accept_length_type,
+#   [ac_save_CPPFLAGS="$CPPFLAGS"
+#    ucsim_cv_accept_length_type=no
+#    for ac_val in int size_t socklen_t; do
+#      CPPFLAGS="$ac_save_CPPFLAGS -DACCEPT_SOCKLEN_T=$ac_val"
+#      AC_TRY_COMPILE([#include <sys/types.h>
+#        [struct sockaddr a; $ac_val len; accept (0, &a, &len);],
+#        [ucsim_cv_accept_length_type=$ac_val; break])
+#    done
+#    CPPFLAGS="$ac_save_CPPFLAGS"])
+#  if test "$ucsim_cv_accept_length_type" != no; then
+#    AC_DEFINE_UNQUOTED(ACCEPT_SOCKLEN_T, $ucsim_cv_accept_length_type,
+#      [Define to be the type of length parameter of accept (without the \*').])
+#  fi
+# ]
+#)
+##'
+#
+#ucsim_ACCEPT_LENGTH_T
 
 # Macro definitions
 ###################
