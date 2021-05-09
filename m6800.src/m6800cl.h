@@ -110,8 +110,13 @@ public:
 
   virtual int sub(class cl_cell8 &dest, u8_t op, bool c);
   virtual int cmp(u8_t op1, u8_t op2);
+  virtual int add(class cl_cell8 &dest, u8_t op, bool c);
   virtual int SBA(t_mem code) { return sub(cA, rB, false); }
   virtual int CBA(t_mem code) { return cmp(rA, rB); }
+  virtual int TAB(t_mem code);
+  virtual int TBA(t_mem code);
+  virtual int DAA(t_mem code);
+  virtual int ABA(t_mem code) { return add(cA, rB, false); }
 };
 
 

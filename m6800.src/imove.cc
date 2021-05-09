@@ -42,5 +42,27 @@ cl_m6800::TPA(t_mem code)
   return resGO;
 }
 
+int
+cl_m6800::TAB(t_mem code)
+{
+  u8_t f= rCC & ~(flagN|flagZ|flagV);
+  cB.W(rA);
+  if (!rA) f|= flagZ;
+  if (rA&0x80) f|= flagN;
+  cCC.W(f);
+  return resGO;
+}
+
+int
+cl_m6800::TBA(t_mem code)
+{
+  u8_t f= rF & ~(flagN|flagZ|flagV);
+  cA.W(rB);
+  if (!rB) f|= flagZ;
+  if (rB&0x80) f|= flagN;
+  cF.W(f);
+  return resGO;
+}
+
 
 /* End of m6800.src/imove.cc */

@@ -136,5 +136,58 @@ cl_m6800::cmp(u8_t op1, u8_t op2)
   return resGO;
 }
 
+int
+cl_m6800::DAA(t_mem code)
+{
+  int i;
+  if ((rA & 0xf) > 9 ||
+      (rF & flagH))
+    {
+      i= rA+6;
+      if (i > 255)
+	rF|= flagC;
+      rA= i;
+    }
+  if ((rA & 0xf0) > 0x90 ||
+      (rF & flagC))
+    {
+      i= rA + 0x90;
+      if (i > 255)
+	rF|= flagC;
+      rA= i;
+    }
+  rF&= ~(flagZ|flagS);
+  if (rA&0x80)
+    rF|= flagS;
+  if (!rA)
+    rF|= flagZ;
+  cF.W(rF);
+  cA.W(rA);
+  tick(1);
+  return resGO;
+}
+
+
+int
+cl_m6800::add(class cl_cell8 &dest, u8_t op, bool c)
+{
+  u8_t f= CC & ~(flagN|flagZ|flagV|flagC|flagH);
+  u8_t a= dest.read(), b= op, r;
+  u8_t a7, b7, r7, na7, nb7, nr7;
+  r= a+b;
+  a7= a&0x80; na7= a7^0x80;
+  b7= b&0x80; nb7= b7^0x80;
+  r7= r&0x80; nr7= r7^0x80;
+  if ((a&0xf) + (b&0xf) > 0xf) f|= flagH;
+  if (r7) f|= flagN;
+  if (!r) f|= flagZ;
+  if ((a7&b7&nr7) | (na7&nb7&r7)) f|= flagV;
+  if ((a7&b7) | (b7&nr7) | (nr7&a7)) f|= flagC;
+  dest.W(r);
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
 
 /* End of m6800.src/ialu.cc */

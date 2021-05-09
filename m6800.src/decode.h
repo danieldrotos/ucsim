@@ -42,6 +42,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define SBA   instruction_10
 #define CBA   instruction_11
+#define TAB   instruction_16
+#define TBA   instruction_17
+#define DAA   instruction_19
+#define ABA   instruction_1b
 
 #endif
 
