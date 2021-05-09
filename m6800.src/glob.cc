@@ -44,6 +44,10 @@ struct dis_entry disass_m6800[]=
     { 0x0d, 0xff, ' ', 1, "SEC" },
     { 0x0e, 0xff, ' ', 1, "CLI" },
     { 0x0f, 0xff, ' ', 1, "SEI" },
+
+    { 0x10, 0xff, ' ', 1, "SBA" },
+    { 0x11, 0xff, ' ', 1, "CBA" },
+	
     { 0, 0, 0, 0, 0, 0 }
   };
 

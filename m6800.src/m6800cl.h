@@ -46,15 +46,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 //  Flag bit masks
 enum {
-  mC= 0x01,
-  mO= 0x02,
-  mV= 0x02,
-  mZ= 0x04,
-  mN= 0x08,
-  mS= 0x08,
-  mI= 0x10,
-  mH= 0x20,
-  mA= 0x40
+  mC	= 0x01,
+  flagC	= 0x01,
+  mO	= 0x02,
+  flagO	= 0x02,
+  mV	= 0x02,
+  flagV	= 0x02,
+  mZ	= 0x04,
+  flagZ	= 0x04,
+  mN	= 0x08,
+  flagN	= 0x08,
+  mS	= 0x08,
+  flagS	= 0x08,
+  mI	= 0x10,
+  flagI	= 0x10,
+  mH	= 0x20,
+  flagH	= 0x20,
+  mA	= 0x40,
+  flagA	= 0x40
 };
 
 
@@ -98,6 +107,11 @@ public:
   virtual int SEC(t_mem code);
   virtual int CLI(t_mem code);
   virtual int SEI(t_mem code);
+
+  virtual int sub(class cl_cell8 &dest, u8_t op, bool c);
+  virtual int cmp(u8_t op1, u8_t op2);
+  virtual int SBA(t_mem code) { return sub(cA, rB, false); }
+  virtual int CBA(t_mem code) { return cmp(rA, rB); }
 };
 
 

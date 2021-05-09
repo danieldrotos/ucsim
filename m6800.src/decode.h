@@ -40,6 +40,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CLI   instruction_0e
 #define SEI   instruction_0f
 
+#define SBA   instruction_10
+#define CBA   instruction_11
+
 #endif
 
 /* End of m6800.src/decode.h */
