@@ -131,7 +131,7 @@ RXK      =
 endif
 
 ifeq ($(enable_pblaze_port),yes)
-PBLZE      	= pblaze.src
+PBLAZE      	= pblaze.src
 else
 PBLAZE	=
 endif

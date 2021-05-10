@@ -695,6 +695,7 @@ LDFLAGS
 CXXFLAGS
 CXX
 enable_serio
+enable_pblaze_port
 enable_rxk_port
 enable_mcs6502_port
 enable_m6800_port
@@ -3022,6 +3023,7 @@ fi
 else
   enable_serio="no"
 fi
+
 
 
 
@@ -18149,7 +18151,7 @@ _ACEOF
 # Generating output files
 # ===========================================================================
 
-ac_config_files="$ac_config_files Makefile main.mk:main_in.mk packages.mk:packages_in.mk cmd.src/Makefile sim.src/Makefile sim.src/test/Makefile avr.src/Makefile avr.src/test/Makefile hc08.src/Makefile hc08.src/test/Makefile m6809.src/Makefile m6809.src/test/Makefile m6800.src/Makefile m6800.src/test/Makefile mcs6502.src/Makefile mcs6502.src/test/Makefile rxk.src/Makefile rxk.src/test/Makefile p1516.src/Makefile p1516.src/test/Makefile pdk.src/Makefile pdk.src/test/Makefile s51.src/Makefile s51.src/test/Makefile st7.src/Makefile st7.src/test/Makefile stm8.src/Makefile stm8.src/test/Makefile tlcs.src/Makefile tlcs.src/test/Makefile xa.src/Makefile xa.src/test/Makefile z80.src/Makefile z80.src/test/Makefile gui.src/Makefile gui.src/serio.src/Makefile doc/Makefile"
+ac_config_files="$ac_config_files Makefile main.mk:main_in.mk packages.mk:packages_in.mk cmd.src/Makefile sim.src/Makefile sim.src/test/Makefile avr.src/Makefile avr.src/test/Makefile hc08.src/Makefile hc08.src/test/Makefile m6809.src/Makefile m6809.src/test/Makefile m6800.src/Makefile m6800.src/test/Makefile mcs6502.src/Makefile mcs6502.src/test/Makefile rxk.src/Makefile rxk.src/test/Makefile pblaze.src/Makefile pblaze.src/test/Makefile p1516.src/Makefile p1516.src/test/Makefile pdk.src/Makefile pdk.src/test/Makefile s51.src/Makefile s51.src/test/Makefile st7.src/Makefile st7.src/test/Makefile stm8.src/Makefile stm8.src/test/Makefile tlcs.src/Makefile tlcs.src/test/Makefile xa.src/Makefile xa.src/test/Makefile z80.src/Makefile z80.src/test/Makefile gui.src/Makefile gui.src/serio.src/Makefile doc/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -19252,6 +19254,8 @@ do
     "mcs6502.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES mcs6502.src/test/Makefile" ;;
     "rxk.src/Makefile") CONFIG_FILES="$CONFIG_FILES rxk.src/Makefile" ;;
     "rxk.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES rxk.src/test/Makefile" ;;
+    "pblaze.src/Makefile") CONFIG_FILES="$CONFIG_FILES pblaze.src/Makefile" ;;
+    "pblaze.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES pblaze.src/test/Makefile" ;;
     "p1516.src/Makefile") CONFIG_FILES="$CONFIG_FILES p1516.src/Makefile" ;;
     "p1516.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES p1516.src/test/Makefile" ;;
     "pdk.src/Makefile") CONFIG_FILES="$CONFIG_FILES pdk.src/Makefile" ;;

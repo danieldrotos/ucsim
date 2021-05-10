@@ -206,6 +206,7 @@ AC_SUBST(enable_m6809_port)
 AC_SUBST(enable_m6800_port)
 AC_SUBST(enable_mcs6502_port)
 AC_SUBST(enable_rxk_port)
+AC_SUBST(enable_pblaze_port)
 AC_SUBST(enable_serio)
 
 AC_ARG_ENABLE(statistic,
@@ -753,6 +754,7 @@ m6809.src/Makefile   m6809.src/test/Makefile
 m6800.src/Makefile   m6800.src/test/Makefile
 mcs6502.src/Makefile mcs6502.src/test/Makefile
 rxk.src/Makefile     rxk.src/test/Makefile
+pblaze.src/Makefile  pblaze.src/test/Makefile
 p1516.src/Makefile   p1516.src/test/Makefile
 pdk.src/Makefile     pdk.src/test/Makefile
 s51.src/Makefile     s51.src/test/Makefile

@@ -47,12 +47,12 @@
 #include "simcl.h"
 
 // cmd.src
-#include "cmdsetcl.h"
+#include "newcmdcl.h"
 #include "cmdutil.h"
-#include "cmdconfcl.h"
-#include "showcl.h"
-#include "getcl.h"
-#include "setcl.h"
+#include "cmd_confcl.h"
+#include "cmd_showcl.h"
+#include "cmd_getcl.h"
+#include "cmd_setcl.h"
 #ifdef _WIN32
 #include "newcmdwin32cl.h"
 #else

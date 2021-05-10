@@ -41,7 +41,7 @@
 #include "simcl.h"
 
 //cmd
-#include "cmduccl.h"
+#include "cmd_uccl.h"
 
 // local
 #include "pblazecl.h"
