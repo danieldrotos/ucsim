@@ -190,8 +190,8 @@ public:
   virtual int LD_E_n() { return ld_r_n(destE()); }
   virtual int LD_H_n() { return ld_r_n(destH()); }
   virtual int LD_L_n() { return ld_r_n(destL()); }
-  virtual int rot8left(class cl_cell8 &dest);
-  virtual int RLCA(t_mem code) { return rot8left(destA()); }
+  virtual int rot8left(class cl_cell8 &dest, u8_t op);
+  virtual int RLCA(t_mem code) { return rot8left(destA(), rA); }
 };
 
 
