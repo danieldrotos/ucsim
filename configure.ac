@@ -172,6 +172,12 @@ if test $enable_rxk_port  != "no"; then
     enable_rxk_port="yes"
 fi,
 enable_rxk_port="yes")
+AC_ARG_ENABLE(pblaze-port,
+[  --enable-plaze-port   compile simulator for Xilinx PicoBlaze],
+if test $enable_pblaze_port  != "yes"; then
+    enable_pblaze_port="no"
+fi,
+enable_pblaze_port="no")
 AC_ARG_ENABLE(serio,
 [  --enable-serio          compile serio GUI tool (needs curses)],
 if test $enable_serio != "no"; then
