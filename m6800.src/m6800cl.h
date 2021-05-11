@@ -97,6 +97,12 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_inst(void);
+  virtual int sub(class cl_cell8 &dest, u8_t op, bool c);
+  virtual int cmp(u8_t op1, u8_t op2);
+  virtual int add(class cl_cell8 &dest, u8_t op, bool c);
+  virtual int neg(class cl_cell8 &dest);
+  virtual int com(class cl_cell8 &dest);
+  
   virtual int NOP(t_mem code);
   virtual int TAP(t_mem code);
   virtual int TPA(t_mem code);
@@ -109,9 +115,6 @@ public:
   virtual int CLI(t_mem code);
   virtual int SEI(t_mem code);
 
-  virtual int sub(class cl_cell8 &dest, u8_t op, bool c);
-  virtual int cmp(u8_t op1, u8_t op2);
-  virtual int add(class cl_cell8 &dest, u8_t op, bool c);
   virtual int SBA(t_mem code) { return sub(cA, rB, false); }
   virtual int CBA(t_mem code) { return cmp(rA, rB); }
   virtual int TAB(t_mem code);
@@ -128,6 +131,9 @@ public:
   virtual int PSHA(t_mem code);
   virtual int PSHB(t_mem code);
   virtual int RTS(t_mem code);
+
+  virtual int NEGA(t_mem code) { return neg(cA); }
+  virtual int COMA(t_mem code) { return com(cA); }
 };
 
 

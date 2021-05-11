@@ -57,6 +57,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PSHB  instruction_37
 #define RTS   instruction_39
 
+#define NEGA  instruction_40
+#define COMA  instruction_43
+
 #endif
 
 /* End of m6800.src/decode.h */
