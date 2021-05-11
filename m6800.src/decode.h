@@ -81,6 +81,32 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TSTB  instruction_5d
 #define CLRB  instruction_5f
 
+#define NEGi  instruction_60
+#define COMi  instruction_63
+#define LSRi  instruction_64
+#define RORi  instruction_66
+#define ASRi  instruction_67
+#define ASLi  instruction_68
+#define ROLi  instruction_69
+#define DECi  instruction_6a
+#define INCi  instruction_6c
+#define TSTi  instruction_6d
+#define JMPi  instruction_6e
+#define CLRi  instruction_6f
+
+#define NEGe  instruction_70
+#define COMe  instruction_73
+#define LSRe  instruction_74
+#define RORe  instruction_76
+#define ASRe  instruction_77
+#define ASLe  instruction_78
+#define ROLe  instruction_79
+#define DECe  instruction_7a
+#define INCe  instruction_7c
+#define TSTe  instruction_7d
+#define JMPe  instruction_7e
+#define CLRe  instruction_7f
+
 #endif
 
 /* End of m6800.src/decode.h */

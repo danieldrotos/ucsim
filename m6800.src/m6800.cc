@@ -164,9 +164,18 @@ cl_m6800::disass(t_addr addr)
       if (b[i] == '%')
 	{
 	  i++;
+	  temp= "";
 	  switch (b[i])
 	    {
+	    case 'x':
+	      temp.format("0x%02x,X", rom->read(addr+1));
+	      break;
+	    case 'e':
+	      temp.format("0x%04x",
+			  rom->read(addr+1)*256 + rom->read(addr+2));
+	      break;
 	    }
+	  work+= temp;
 	}
       else
 	work+= b[i];

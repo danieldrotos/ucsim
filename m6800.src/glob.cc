@@ -71,6 +71,7 @@ struct dis_entry disass_m6800[]=
     { 0x49, 0xff, ' ', 1, "ROL A" },
     { 0x4a, 0xff, ' ', 1, "DEC A" },
     { 0x4c, 0xff, ' ', 1, "INC A" },
+    { 0x4d, 0xff, ' ', 1, "TST A" },
     { 0x4f, 0xff, ' ', 1, "CLR A" },
     
     { 0x50, 0xff, ' ', 1, "NEG B" },
@@ -82,7 +83,34 @@ struct dis_entry disass_m6800[]=
     { 0x59, 0xff, ' ', 1, "ROL B" },
     { 0x5a, 0xff, ' ', 1, "DEC B" },
     { 0x5c, 0xff, ' ', 1, "INC B" },
+    { 0x5d, 0xff, ' ', 1, "TST B" },
     { 0x5f, 0xff, ' ', 1, "CLR B" },
+    
+    { 0x60, 0xff, ' ', 2, "NEG %x" },
+    { 0x63, 0xff, ' ', 2, "COM %x" },
+    { 0x64, 0xff, ' ', 2, "LSR %x" },
+    { 0x66, 0xff, ' ', 2, "ROR %x" },
+    { 0x67, 0xff, ' ', 2, "ASR %x" },
+    { 0x68, 0xff, ' ', 2, "ASL %x" },
+    { 0x69, 0xff, ' ', 2, "ROL %x" },
+    { 0x6a, 0xff, ' ', 2, "DEC %x" },
+    { 0x6c, 0xff, ' ', 2, "INC %x" },
+    { 0x6d, 0xff, ' ', 2, "TST %x" },
+    { 0x6e, 0xff, ' ', 2, "JMP %x" },
+    { 0x6f, 0xff, ' ', 2, "CLR %x" },
+    
+    { 0x70, 0xff, ' ', 3, "NEG %e" },
+    { 0x73, 0xff, ' ', 3, "COM %e" },
+    { 0x74, 0xff, ' ', 3, "LSR %e" },
+    { 0x76, 0xff, ' ', 3, "ROR %e" },
+    { 0x77, 0xff, ' ', 3, "ASR %e" },
+    { 0x78, 0xff, ' ', 3, "ASL %e" },
+    { 0x79, 0xff, ' ', 3, "ROL %e" },
+    { 0x7a, 0xff, ' ', 3, "DEC %e" },
+    { 0x7c, 0xff, ' ', 3, "INC %e" },
+    { 0x7d, 0xff, ' ', 3, "TST %e" },
+    { 0x7e, 0xff, ' ', 3, "JMP %e" },
+    { 0x7f, 0xff, ' ', 3, "CLR %e" },
     
     { 0, 0, 0, 0, 0, 0 }
   };
