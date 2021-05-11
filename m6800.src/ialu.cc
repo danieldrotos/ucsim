@@ -107,9 +107,130 @@ cl_m6800::com(class cl_cell8 &dest)
 {
   u8_t op= dest.R(), f= rF & ~(flagN|flagZ|flagV);
   op= ~op;
+  dest.W(op);
   f|= flagC;
   if (!op) f|= flagZ;
   if (op&0x80) f|= flagS;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::lsr(class cl_cell8 &dest)
+{
+  u8_t op= dest.R(), f= rF & ~(flagN|flagZ|flagV|flagC);
+  if (op&1) f|= flagC|flagV;
+  op>>= 1;
+  dest.W(op);
+  if (!op) f|= flagZ;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::ror(class cl_cell8 &dest)
+{
+  u8_t op= dest.R(), f, c= rF&flagC;
+  f= rF & ~(flagN|flagZ|flagV|flagC);
+  if (op&1) f|= flagC;
+  op>>= 1;
+  if (c) op|= 0x80;
+  dest.W(op);
+  if (!op) f|= flagZ;
+  if (op^0x80) f|= flagN;
+  if (((f&flagN)?1:0) ^ ((f&flagC)?1:0)) f|= flagV;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::asr(class cl_cell8 &dest)
+{
+  i8_t op= dest.R();
+  u8_t f;
+  f= rF & ~(flagN|flagZ|flagV|flagC);
+  if (op&1) f|= flagC;
+  op>>= 1;
+  dest.W(op);
+  if (!op) f|= flagZ;
+  if (op^0x80) f|= flagN;
+  if (((f&flagN)?1:0) ^ ((f&flagC)?1:0)) f|= flagV;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::asl(class cl_cell8 &dest)
+{
+  i8_t op= dest.R();
+  u8_t f;
+  f= rF & ~(flagN|flagZ|flagV|flagC);
+  if (op&0x80) f|= flagC;
+  op<<= 1;
+  dest.W(op);
+  if (!op) f|= flagZ;
+  if (op^0x80) f|= flagN;
+  if (((f&flagN)?1:0) ^ ((f&flagC)?1:0)) f|= flagV;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::rol(class cl_cell8 &dest)
+{
+  u8_t op= dest.R(), f, c= rF&flagC;
+  f= rF & ~(flagN|flagZ|flagV|flagC);
+  if (op&0x80) f|= flagC;
+  op<<= 1;
+  if (c) op|= 1;
+  dest.W(op);
+  if (!op) f|= flagZ;
+  if (op^0x80) f|= flagN;
+  if (((f&flagN)?1:0) ^ ((f&flagC)?1:0)) f|= flagV;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::dec(class cl_cell8 &dest)
+{
+  u8_t op= dest.R(), f= rF & ~(flagN|flagZ|flagV);
+  op--;
+  dest.W(op);
+  if (op==0x7f) f|= flagV;
+  if (!op) f|= flagZ;
+  if (op&0x80) f|= flagN;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::inc(class cl_cell8 &dest)
+{
+  u8_t op= dest.R(), f= rF & ~(flagN|flagZ|flagV);
+  op++;
+  dest.W(op);
+  if (op==0x80) f|= flagV;
+  if (!op) f|= flagZ;
+  if (op&0x80) f|= flagN;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_m6800::tst(u8_t op)
+{
+  u8_t f= rF & ~(flagN|flagZ|flagV|flagC);
+  if (!op) f|= flagZ;
+  if (op&0x80) f|= flagN;
   cCC.W(f);
   tick(1);
   return resGO;

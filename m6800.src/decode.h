@@ -59,6 +59,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define NEGA  instruction_40
 #define COMA  instruction_43
+#define LSRA  instruction_44
+#define RORA  instruction_46
+#define ASRA  instruction_47
+#define ASLA  instruction_48
+#define ROLA  instruction_49
+#define DECA  instruction_4a
+#define INCA  instruction_4c
+#define TSTA  instruction_4d
+#define CLRA  instruction_4f
+
+#define NEGB  instruction_50
+#define COMB  instruction_53
+#define LSRB  instruction_54
+#define RORB  instruction_56
+#define ASRB  instruction_57
+#define ASLB  instruction_58
+#define ROLB  instruction_59
+#define DECB  instruction_5a
+#define INCB  instruction_5c
+#define TSTB  instruction_5d
+#define CLRB  instruction_5f
 
 #endif
 

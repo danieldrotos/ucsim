@@ -64,6 +64,25 @@ struct dis_entry disass_m6800[]=
 
     { 0x40, 0xff, ' ', 1, "NEG A" },
     { 0x43, 0xff, ' ', 1, "COM A" },
+    { 0x44, 0xff, ' ', 1, "LSR A" },
+    { 0x46, 0xff, ' ', 1, "ROR A" },
+    { 0x47, 0xff, ' ', 1, "ASR A" },
+    { 0x48, 0xff, ' ', 1, "ASL A" },
+    { 0x49, 0xff, ' ', 1, "ROL A" },
+    { 0x4a, 0xff, ' ', 1, "DEC A" },
+    { 0x4c, 0xff, ' ', 1, "INC A" },
+    { 0x4f, 0xff, ' ', 1, "CLR A" },
+    
+    { 0x50, 0xff, ' ', 1, "NEG B" },
+    { 0x53, 0xff, ' ', 1, "COM B" },
+    { 0x54, 0xff, ' ', 1, "LSR B" },
+    { 0x56, 0xff, ' ', 1, "ROR B" },
+    { 0x57, 0xff, ' ', 1, "ASR B" },
+    { 0x58, 0xff, ' ', 1, "ASL B" },
+    { 0x59, 0xff, ' ', 1, "ROL B" },
+    { 0x5a, 0xff, ' ', 1, "DEC B" },
+    { 0x5c, 0xff, ' ', 1, "INC B" },
+    { 0x5f, 0xff, ' ', 1, "CLR B" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

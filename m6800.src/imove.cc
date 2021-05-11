@@ -26,6 +26,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "m6800cl.h"
 
+
+int
+cl_m6800::clr(class cl_cell8 &dest)
+{
+  u8_t f= rF & ~(flagN|flagV|flagC);
+  dest.W(0);
+  f|= flagZ;
+  cCC.W(f);
+  tick(1);
+  return resGO;
+}
+
+
 int
 cl_m6800::TAP(t_mem code)
 {
