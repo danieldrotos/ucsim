@@ -74,7 +74,7 @@ cl_m6800::CLC(t_mem code)
 }
 
 int
-cl_m6800::SEC(t_mem code)
+cl_m6800::SEc(t_mem code)
 {
   rF|= mC;
   tick(1);

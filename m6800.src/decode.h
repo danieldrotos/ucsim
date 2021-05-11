@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CLV   instruction_0a
 #define SEV   instruction_0b
 #define CLC   instruction_0c
-#define SEC   instruction_0d
+#define SEc   instruction_0d
 #define CLI   instruction_0e
 #define SEI   instruction_0f
 

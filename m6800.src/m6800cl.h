@@ -105,7 +105,7 @@ public:
   virtual int CLV(t_mem code);
   virtual int SEV(t_mem code);
   virtual int CLC(t_mem code);
-  virtual int SEC(t_mem code);
+  virtual int SEc(t_mem code);
   virtual int CLI(t_mem code);
   virtual int SEI(t_mem code);
 
