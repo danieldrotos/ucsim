@@ -120,6 +120,7 @@ cl_m6800::com(class cl_cell8 &dest)
   return resGO;
 }
 
+// cc_out[VBIT] = left[0];
 int
 cl_m6800::lsr(class cl_cell8 &dest)
 {
@@ -133,6 +134,7 @@ cl_m6800::lsr(class cl_cell8 &dest)
   return resGO;
 }
 
+// cc_out[VBIT] = left[0] ^ cc[CBIT];
 int
 cl_m6800::ror(class cl_cell8 &dest)
 {
@@ -144,12 +146,14 @@ cl_m6800::ror(class cl_cell8 &dest)
   dest.W(op);
   if (!op) f|= flagZ;
   if (op^0x80) f|= flagN;
-  if (((f&flagN)?1:0) ^ ((f&flagC)?1:0)) f|= flagV;
+  //if (((f&flagN)?1:0) ^ ((f&flagC)?1:0)) f|= flagV;
+  if ((f&flagC) ^ c) f|= flagV;
   cCC.W(f);
   tick(1);
   return resGO;
 }
 
+// cc_out[VBIT] = left[0] ^ left[7];
 int
 cl_m6800::asr(class cl_cell8 &dest)
 {
@@ -167,6 +171,7 @@ cl_m6800::asr(class cl_cell8 &dest)
   return resGO;
 }
 
+// cc_out[VBIT] = left[7] ^ left[6];
 int
 cl_m6800::asl(class cl_cell8 &dest)
 {
@@ -184,6 +189,7 @@ cl_m6800::asl(class cl_cell8 &dest)
   return resGO;
 }
 
+// cc_out[VBIT] = left[7] ^ left[6];
 int
 cl_m6800::rol(class cl_cell8 &dest)
 {
