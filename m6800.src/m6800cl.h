@@ -102,6 +102,9 @@ public:
   virtual class cl_cell8 &dir(void);
   u8_t i8(void) { return fetch(); }
   u16_t i16(void) { u8_t h, l; h= fetch(); l= fetch(); return h*256+l; }
+  u8_t iop(void) { return idx().R(); }
+  u8_t eop(void) { return ext().R(); }
+  u8_t dop(void) { return dir().R(); }
   virtual int sub(class cl_cell8 &dest, u8_t op, bool c);
   virtual int cmp(u8_t op1, u8_t op2);
   virtual int add(class cl_cell8 &dest, u8_t op, bool c);
@@ -116,7 +119,11 @@ public:
   virtual int inc(class cl_cell8 &dest);
   virtual int tst(u8_t op);
   virtual int clr(class cl_cell8 &dest);
-
+  virtual int And(class cl_cell8 &dest, u8_t op);
+  virtual int bit(class cl_cell8 &dest, u8_t op);
+  virtual int eor(class cl_cell8 &dest, u8_t op);
+  virtual int Or (class cl_cell8 &dest, u8_t op);
+  
   virtual int NOP(t_mem code);
   virtual int TAP(t_mem code);
   virtual int TPA(t_mem code);
@@ -169,6 +176,32 @@ public:
   virtual int INCB(t_mem code) { return inc(cB); }
   virtual int TSTB(t_mem code) { return tst(rB); }
   virtual int CLRB(t_mem code) { return clr(cB); }
+
+  virtual int NEGi(t_mem code) { return neg(idx()); }
+  virtual int COMi(t_mem code) { return com(idx()); }
+  virtual int LSRi(t_mem code) { return lsr(idx()); }
+  virtual int RORi(t_mem code) { return ror(idx()); }
+  virtual int ASRi(t_mem code) { return asr(idx()); }
+  virtual int ASLi(t_mem code) { return asl(idx()); }
+  virtual int ROLi(t_mem code) { return rol(idx()); }
+  virtual int DECi(t_mem code) { return dec(idx()); }
+  virtual int INCi(t_mem code) { return inc(idx()); }
+  virtual int TSTi(t_mem code) { return tst(idx().R()); }
+  virtual int JMPi(t_mem code);
+  virtual int CLRi(t_mem code) { return clr(idx()); }
+
+  virtual int NEGe(t_mem code) { return neg(ext()); }
+  virtual int COMe(t_mem code) { return com(ext()); }
+  virtual int LSRe(t_mem code) { return lsr(ext()); }
+  virtual int RORe(t_mem code) { return ror(ext()); }
+  virtual int ASRe(t_mem code) { return asr(ext()); }
+  virtual int ASLe(t_mem code) { return asl(ext()); }
+  virtual int ROLe(t_mem code) { return rol(ext()); }
+  virtual int DECe(t_mem code) { return dec(ext()); }
+  virtual int INCe(t_mem code) { return inc(ext()); }
+  virtual int TSTe(t_mem code) { return tst(ext().R()); }
+  virtual int JMPe(t_mem code);
+  virtual int CLRe(t_mem code) { return clr(ext()); }
 };
 
 

@@ -40,5 +40,25 @@ cl_m6800::RTS(t_mem code)
   return resGO;
 }
 
+int
+cl_m6800::JMPi(t_mem code)
+{
+  t_addr a= fetch();
+  a+= rX;
+  PC= a;
+  tick(2);
+  return resGO;
+}
+
+int
+cl_m6800::JMPe(t_mem code)
+{
+  u8_t h, l;
+  h= fetch();
+  l= fetch();
+  PC= h*256 + l;
+  return resGO;
+}
+
 
 /* End of m6800.src/ibranch.cc */
