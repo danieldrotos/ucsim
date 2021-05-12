@@ -90,6 +90,7 @@ cl_m6800::PULA(t_mem code)
 {
   cSP.W(rSP+1);
   cA.W(rom->read(rSP));
+  vc.rd++;
   tick(3);
   return resGO;
 }
@@ -99,6 +100,7 @@ cl_m6800::PULB(t_mem code)
 {
   cSP.W(rSP+1);
   cB.W(rom->read(rSP));
+  vc.rd++;
   tick(3);
   return resGO;
 }
@@ -116,6 +118,7 @@ cl_m6800::PSHA(t_mem code)
 {
   rom->write(rSP, rA);
   cSP.W(rSP-1);
+  vc.wr++;
   tick(3);
   return resGO;
 }
@@ -125,6 +128,7 @@ cl_m6800::PSHB(t_mem code)
 {
   rom->write(rSP, rB);
   cSP.W(rSP-1);
+  vc.wr++;
   tick(3);
   return resGO;
 }

@@ -36,6 +36,7 @@ cl_m6800::RTS(t_mem code)
   cSP.W(rSP-1);
   l= rom->read(rSP);
   PC= h*256 + l;
+  vc.rd+= 2;
   tick(4);
   return resGO;
 }
