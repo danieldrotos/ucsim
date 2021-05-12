@@ -174,6 +174,14 @@ cl_m6800::disass(t_addr addr)
 	      temp.format("0x%04x",
 			  rom->read(addr+1)*256 + rom->read(addr+2));
 	      break;
+	    case 'b':
+	      temp.format("#0x%02x",
+			  rom->read(addr+1));
+	      break;
+	    case 'B':
+	      temp.format("#0x%04x",
+			  read_addr(rom, addr+1));
+	      break;
 	    }
 	  work+= temp;
 	}
@@ -182,6 +190,15 @@ cl_m6800::disass(t_addr addr)
     }
 
   return(strdup(work.c_str()));
+}
+
+t_addr
+cl_m6800::read_addr(class cl_memory *m, t_addr start_addr)
+{
+  u8_t h, l;
+  h= m->read(start_addr);
+  l= m->read(start_addr+1);
+  return h*256 + l;
 }
 
 void
@@ -251,6 +268,56 @@ cl_m6800::dir(void)
   t_addr a= fetch();
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   return *c;
+}
+
+u16_t
+cl_m6800::iop16(void)
+{
+  t_addr a= iaddr();
+  vc.rd+= 2;
+  return read_addr(rom, a);
+}
+
+u16_t
+cl_m6800::eop16(void)
+{
+  t_addr a= eaddr();
+  vc.rd+= 2;
+  return read_addr(rom, a);
+}
+
+u16_t
+cl_m6800::dop16(void)
+{
+  t_addr a= daddr();
+  vc.rd+= 2;
+  return read_addr(rom, a);
+}
+
+t_addr
+cl_m6800::iaddr(void)
+{
+  t_addr a= fetch();
+  a+= rX;
+  return a;
+}
+
+t_addr
+cl_m6800::eaddr(void)
+{
+  t_addr a;
+  u8_t h, l;
+  h= fetch();
+  l= fetch();
+  a= h*256 + l;
+  return a;
+}
+
+t_addr
+cl_m6800::daddr(void)
+{
+  t_addr a= fetch();
+  return a;
 }
 
 /* End of m6800.src/m6800.cc */

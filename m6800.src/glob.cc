@@ -112,6 +112,19 @@ struct dis_entry disass_m6800[]=
     { 0x7e, 0xff, ' ', 3, "JMP %e" },
     { 0x7f, 0xff, ' ', 3, "CLR %e" },
     
+    { 0x80, 0xff, ' ', 2, "SUB A,%b" },
+    { 0x81, 0xff, ' ', 2, "CMP A,%b" },
+    { 0x82, 0xff, ' ', 2, "SBC A,%b" },
+    { 0x84, 0xff, ' ', 2, "AND A,%b" },
+    { 0x85, 0xff, ' ', 2, "BIT A,%b" },
+    { 0x86, 0xff, ' ', 2, "LDA A,%b" },
+    { 0x88, 0xff, ' ', 2, "EOR A,%b" },
+    { 0x89, 0xff, ' ', 2, "ADC A,%b" },
+    { 0x8a, 0xff, ' ', 2, "ORA A,%b" },
+    { 0x8b, 0xff, ' ', 2, "ADD A,%b" },
+    { 0x8c, 0xff, ' ', 3, "CPX %B" },
+    { 0x8e, 0xff, ' ', 3, "LDS %B" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

@@ -93,6 +93,7 @@ public:
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disass(t_addr addr);
+  virtual t_addr read_addr(class cl_memory *m, t_addr start_addr);
 
   virtual void print_regs(class cl_console_base *con);
 
@@ -105,6 +106,12 @@ public:
   u8_t iop(void) { vc.rd++; return idx().R(); }
   u8_t eop(void) { vc.rd++; return ext().R(); }
   u8_t dop(void) { vc.rd++; return dir().R(); }
+  u16_t iop16(void);
+  u16_t eop16(void);
+  u16_t dop16(void);
+  t_addr iaddr(void);
+  t_addr eaddr(void);
+  t_addr daddr(void);
   virtual class cl_cell8 &idst(void) { vc.rd++; vc.wr++; return idx(); }
   virtual class cl_cell8 &edst(void) { vc.rd++; vc.wr++; return ext(); }
   virtual class cl_cell8 &ddst(void) { vc.rd++; vc.wr++; return dir(); }
@@ -124,10 +131,13 @@ public:
   virtual int tst(u8_t op);
   virtual int clr(class cl_cell8 &dest);
   virtual int And(class cl_cell8 &dest, u8_t op);
-  virtual int bit(class cl_cell8 &dest, u8_t op);
+  virtual int bit(u8_t op1, u8_t op2);
   virtual int eor(class cl_cell8 &dest, u8_t op);
   virtual int Or (class cl_cell8 &dest, u8_t op);
-  
+  virtual int lda(class cl_cell8 &dest, u8_t op);
+  virtual int cpx(u16_t op);
+  virtual int ldsx(class cl_cell16 &dest, u16_t op);
+
   virtual int NOP(t_mem code);
   virtual int TAP(t_mem code);
   virtual int TPA(t_mem code);
@@ -206,6 +216,19 @@ public:
   virtual int TSTe(t_mem code) { vc.rd++; return tst(ext().R()); }
   virtual int JMPe(t_mem code);
   virtual int CLRe(t_mem code) { vc.wr++; return clr(ext()); }
+
+  virtual int SUBA8(t_mem code) { return sub(cA, i8(), false); }
+  virtual int CMPA8(t_mem code) { return cmp(rA, i8()); }
+  virtual int SBCA8(t_mem code) { return sub(cA, i8(), true); }
+  virtual int ANDA8(t_mem code) { return And(cA, i8()); }
+  virtual int BITA8(t_mem code) { return bit(rA, i8()); }
+  virtual int LDAA8(t_mem code) { return lda(cA, i8()); }
+  virtual int EORA8(t_mem code) { return eor(cA, i8()); }
+  virtual int ADCA8(t_mem code) { return add(cA, i8(), true); }
+  virtual int ORAA8(t_mem code) { return Or(cA, i8()); }
+  virtual int ADDA8(t_mem code) { return add(cA, i8(), false); }
+  virtual int CPX16(t_mem code) { return cpx(i16()); }
+  virtual int LDS16(t_mem code) { return ldsx(cSP, i16()); }
 };
 
 

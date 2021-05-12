@@ -107,6 +107,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JMPe  instruction_7e
 #define CLRe  instruction_7f
 
+#define SUBA8 instruction_80
+#define CMPA8 instruction_81
+#define SBCA8 instruction_82
+#define ANDA8 instruction_84
+#define BITA8 instruction_85
+#define LDAA8 instruction_86
+#define EORA8 instruction_88
+#define ADCA8 instruction_89
+#define ORAA8 instruction_8a
+#define ADDA8 instruction_8b
+#define CPX16 instruction_8c
+#define LDS16 instruction_8e
+
 #endif
 
 /* End of m6800.src/decode.h */

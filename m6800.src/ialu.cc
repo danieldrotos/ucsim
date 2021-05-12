@@ -253,10 +253,10 @@ cl_m6800::And(class cl_cell8 &dest, u8_t op)
 }
 
 int
-cl_m6800::bit(class cl_cell8 &dest, u8_t op)
+cl_m6800::bit(u8_t op1, u8_t op2)
 {
-  u8_t a= dest.R(), f= rF & ~(flagV|flagN|flagZ);
-  a&= op;
+  u8_t a= op1, f= rF & ~(flagV|flagN|flagZ);
+  a&= op2;
   if (!a) f|= flagZ;
   if (a&0x80) f|= flagN;
   cCC.W(f);
@@ -287,6 +287,24 @@ cl_m6800::Or(class cl_cell8 &dest, u8_t op)
   return resGO;
 }
 
+int
+cl_m6800::cpx(u16_t op)
+{
+  u32_t r;
+  u16_t r2;
+  u8_t f= rF & ~(flagN|flagZ|flagV);
+  op= ~op+1;
+  r= rX+op;
+  r2= (rX&0x7fff) + (op&0x7fff);
+  if (r&0x8000) f|= flagN;
+  if (!(r&0xffff)) f|= flagZ;
+  r&= ~0xffff;
+  r2&= ~0x7fff;
+  if ((r && !r2) ||
+      (!r && r2)) f|= flagV;
+  cCC.W(f);
+  return resGO;
+}
 
 int
 cl_m6800::INX(t_mem code)

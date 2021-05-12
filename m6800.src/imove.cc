@@ -38,6 +38,28 @@ cl_m6800::clr(class cl_cell8 &dest)
   return resGO;
 }
 
+int
+cl_m6800::lda(class cl_cell8 &dest, u8_t op)
+{
+  u8_t f= rF & ~(flagN|flagV|flagC);
+  dest.W(op);
+  if (!op) f|= flagZ;
+  if (op&0x80) f|= flagN;
+  cCC.W(f);
+  return resGO;
+}
+
+int
+cl_m6800::ldsx(class cl_cell16 &dest, u16_t op)
+{
+  u8_t f= rF & ~(flagN|flagV|flagC);
+  dest.W(op);
+  if (!op) f|= flagZ;
+  if (op&0x8000) f|= flagN;
+  cCC.W(f);
+  return resGO;
+}
+
 
 int
 cl_m6800::TAP(t_mem code)
