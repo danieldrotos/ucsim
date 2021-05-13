@@ -56,6 +56,15 @@ cl_m6800::RTS(t_mem code)
 }
 
 int
+cl_m6800::branch(t_addr a, bool cond)
+{
+  if (cond)
+    PC= a&0xffff;
+  tick(3);
+  return resGO;
+}
+
+int
 cl_m6800::JMPi(t_mem code)
 {
   t_addr a= fetch();

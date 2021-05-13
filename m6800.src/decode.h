@@ -47,6 +47,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DAA   instruction_19
 #define ABA   instruction_1b
 
+#define BRA   instruction_20
+#define BHI   instruction_22
+#define BLS   instruction_23
+#define BCC   instruction_24
+#define BCS   instruction_25
+#define BNE   instruction_26
+#define BEQ   instruction_27
+#define BVC   instruction_28
+#define BVS   instruction_29
+#define BPL   instruction_2a
+#define BMI   instruction_2b
+#define BGE   instruction_2c
+#define BLT   instruction_2d
+#define BGT   instruction_2e
+#define BLE   instruction_2f
+
 #define TSX   instruction_30
 #define INS   instruction_31
 #define PULA  instruction_32
@@ -167,6 +183,60 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JSRe  instruction_bd
 #define LDSe  instruction_be
 #define STSe  instruction_bf
+
+#define SUBB8 instruction_c0
+#define CMPB8 instruction_c1
+#define SBCB8 instruction_c2
+#define ANDB8 instruction_c4
+#define BITB8 instruction_c5
+#define LDAB8 instruction_c6
+#define EORB8 instruction_c8
+#define ADCB8 instruction_c9
+#define ORAB8 instruction_ca
+#define ADDB8 instruction_cb
+#define LDX16 instruction_ce
+
+#define SUBBd instruction_d0
+#define CMPBd instruction_d1
+#define SBCBd instruction_d2
+#define ANDBd instruction_d4
+#define BITBd instruction_d5
+#define LDABd instruction_d6
+#define STABd instruction_d7
+#define EORBd instruction_d8
+#define ADCBd instruction_d9
+#define ORABd instruction_da
+#define ADDBd instruction_db
+#define LDXd  instruction_de
+#define STXd  instruction_df
+
+#define SUBBi instruction_e0
+#define CMPBi instruction_e1
+#define SBCBi instruction_e2
+#define ANDBi instruction_e4
+#define BITBi instruction_e5
+#define LDABi instruction_e6
+#define STABi instruction_e7
+#define EORBi instruction_e8
+#define ADCBi instruction_e9
+#define ORABi instruction_ea
+#define ADDBi instruction_eb
+#define LDXi  instruction_ee
+#define STXi  instruction_ef
+
+#define SUBBe instruction_f0
+#define CMPBe instruction_f1
+#define SBCBe instruction_f2
+#define ANDBe instruction_f4
+#define BITBe instruction_f5
+#define LDABe instruction_f6
+#define STABe instruction_f7
+#define EORBe instruction_f8
+#define ADCBe instruction_f9
+#define ORABe instruction_fa
+#define ADDBe instruction_fb
+#define LDXe  instruction_fe
+#define STXe  instruction_ff
 
 #endif
 

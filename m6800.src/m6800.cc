@@ -163,16 +163,40 @@ cl_m6800::disass(t_addr addr)
 	}
       if (b[i] == '%')
 	{
+	  t_addr a;
+	  u8_t h, l;
 	  i++;
 	  temp= "";
 	  switch (b[i])
 	    {
-	    case 'x': // indexed
-	      temp.format("0x%02x,X", rom->read(addr+1));
+	    case 'x': case 'X': // indexed
+	      h= rom->read(addr+1);
+	      a= rX+h;
+	      temp.format("0x%02x,X", h);
+	      if (b[i]=='x')
+		temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      else
+		temp.appendf(" [0x%04x]=0x%04x", a, read_addr(rom, a));
 	      break;
-	    case 'e': // extended
-	      temp.format("0x%04x",
-			  rom->read(addr+1)*256 + rom->read(addr+2));
+	    case 'e': case 'E': // extended
+	      h= rom->read(addr+1);
+	      l= rom->read(addr+2);
+	      a= h*256 + l;
+	      temp.format("0x%04x", a);
+	      if (b[i]=='e')
+		temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      else
+		temp.appendf(" [0x%04x]=0x%04x", a,
+			     read_addr(rom, a));
+	      break;
+	    case 'd': case 'D': // direct
+	      h= a= rom->read(addr+1);
+	      temp.format("0x00%02x", h);
+	      if (b[i]=='d')
+		temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      else
+		temp.appendf(" [0x%04x]=0x%04x", a,
+			     read_addr(rom, a));
 	      break;
 	    case 'b': // immediate 8 bit
 	      temp.format("#0x%02x",
@@ -182,13 +206,9 @@ cl_m6800::disass(t_addr addr)
 	      temp.format("#0x%04x",
 			  read_addr(rom, addr+1));
 	      break;
-	    case 'd': // direct
-	      temp.format("0x00%02x",
-			  rom->read(addr+1));
-	      break;
 	    case 'r': // relative
 	      temp.format("0x%04x",
-			  addr+2+(i8_t)(rom->read(addr+1)));
+			  (addr+2+(i8_t)(rom->read(addr+1))) & 0xffff );
 	      break;
 	    }
 	  work+= temp;

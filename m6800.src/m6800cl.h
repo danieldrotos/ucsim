@@ -67,6 +67,21 @@ enum {
   flagA	= 0x40
 };
 
+#define ifCS	(rF&mC)
+#define ifCC	(!(rF&mC))
+#define ifMI	(rF&mN)
+#define ifPL	(!(rF&mN))
+#define ifVS	(rF&mV)
+#define ifVC	(!(rF&mV))
+#define ifEQ	(rF&mZ)
+#define ifNE	(!(rF&mZ))
+#define ifLT	( ((rF&mV)?1:0) ^ ((rF&mV)?1:0) )
+#define ifLE	( (rF&mZ) | (((rF&mV)?mZ:0) ^ ((rF&mV)?mZ:0)) )
+#define ifGE	(!ifLT)
+#define ifGT	(!ifLE)
+#define ifLS	( ((rF&mC)?mZ:0) | (rF&mZ) )
+#define ifHI	(!ifLS)
+#define ifA	(true)
 
 /*
  * Base of M6800 processor
@@ -141,7 +156,8 @@ public:
   virtual int ldsx(class cl_cell16 &dest, u16_t op);
   virtual int stsx(t_addr a, u16_t op);
   virtual int call(t_addr a);
-
+  virtual int branch(t_addr a, bool cond);
+  
   virtual int NOP(t_mem code);
   virtual int TAP(t_mem code);
   virtual int TPA(t_mem code);
@@ -161,6 +177,22 @@ public:
   virtual int DAA(t_mem code);
   virtual int ABA(t_mem code) { return add(cA, rB, false); }
 
+  virtual int BRA(t_mem code) { return branch(raddr(), ifA); }
+  virtual int BHI(t_mem code) { return branch(raddr(), ifHI); }
+  virtual int BLS(t_mem code) { return branch(raddr(), ifLS); }
+  virtual int BCC(t_mem code) { return branch(raddr(), ifCC); }
+  virtual int BCS(t_mem code) { return branch(raddr(), ifCS); }
+  virtual int BNE(t_mem code) { return branch(raddr(), ifNE); }
+  virtual int BEQ(t_mem code) { return branch(raddr(), ifEQ); }
+  virtual int BVC(t_mem code) { return branch(raddr(), ifVC); }
+  virtual int BVS(t_mem code) { return branch(raddr(), ifVS); }
+  virtual int BPL(t_mem code) { return branch(raddr(), ifPL); }
+  virtual int BMI(t_mem code) { return branch(raddr(), ifMI); }
+  virtual int BGE(t_mem code) { return branch(raddr(), ifGE); }
+  virtual int BLT(t_mem code) { return branch(raddr(), ifLT); }
+  virtual int BGT(t_mem code) { return branch(raddr(), ifGT); }
+  virtual int BLE(t_mem code) { return branch(raddr(), ifLE); }
+  
   virtual int TSX(t_mem code);
   virtual int INS(t_mem code);
   virtual int PULA(t_mem code);
@@ -229,7 +261,7 @@ public:
   virtual int LDAA8(t_mem code) { return lda(cA, i8()); }
   virtual int EORA8(t_mem code) { return eor(cA, i8()); }
   virtual int ADCA8(t_mem code) { return add(cA, i8(), true); }
-  virtual int ORAA8(t_mem code) { return Or(cA, i8()); }
+  virtual int ORAA8(t_mem code) { return Or (cA, i8()); }
   virtual int ADDA8(t_mem code) { return add(cA, i8(), false); }
   virtual int CPX16(t_mem code) { return cpx(i16()); }
   virtual int BSR  (t_mem code) { return call(raddr()); }
@@ -281,6 +313,60 @@ public:
   virtual int JSRe (t_mem code) { return call(eaddr()); }
   virtual int LDSe (t_mem code) { return ldsx(cSP, eop16()); }
   virtual int STSe (t_mem code) { return stsx(eaddr(), rSP); }
+
+  virtual int SUBB8(t_mem code) { return sub(cB, i8(), false); }
+  virtual int CMPB8(t_mem code) { return cmp(rB, i8()); }
+  virtual int SBCB8(t_mem code) { return sub(cB, i8(), true); }
+  virtual int ANDB8(t_mem code) { return And(cB, i8()); }
+  virtual int BITB8(t_mem code) { return bit(rB, i8()); }
+  virtual int LDAB8(t_mem code) { return lda(cB, i8()); }
+  virtual int EORB8(t_mem code) { return eor(cB, i8()); }
+  virtual int ADCB8(t_mem code) { return add(cB, i8(), true); }
+  virtual int ORAB8(t_mem code) { return Or (cB, i8()); }
+  virtual int ADDB8(t_mem code) { return add(cB, i8(), false); }
+  virtual int LDX16(t_mem code) { return ldsx(cX, i16()); }
+
+  virtual int SUBBd(t_mem code) { return sub(cB, dop(), false); }
+  virtual int CMPBd(t_mem code) { return cmp(rB, dop()); }
+  virtual int SBCBd(t_mem code) { return sub(cB, dop(), true); }
+  virtual int ANDBd(t_mem code) { return And(cB, dop()); }
+  virtual int BITBd(t_mem code) { return bit(rB, dop()); }
+  virtual int LDABd(t_mem code) { return lda(cB, dop()); }
+  virtual int STABd(t_mem code) { return lda(ddst(), rB); }
+  virtual int EORBd(t_mem code) { return eor(cB, dop()); }
+  virtual int ADCBd(t_mem code) { return add(cB, dop(), true); }
+  virtual int ORABd(t_mem code) { return Or (cB, dop()); }
+  virtual int ADDBd(t_mem code) { return add(cB, dop(), false); }
+  virtual int LDXd (t_mem code) { return ldsx(cX, dop16()); }
+  virtual int STXd (t_mem code) { return stsx(daddr(), rX); }
+
+  virtual int SUBBi(t_mem code) { return sub(cB, iop(), false); }
+  virtual int CMPBi(t_mem code) { return cmp(rB, iop()); }
+  virtual int SBCBi(t_mem code) { return sub(cB, iop(), true); }
+  virtual int ANDBi(t_mem code) { return And(cB, iop()); }
+  virtual int BITBi(t_mem code) { return bit(rB, iop()); }
+  virtual int LDABi(t_mem code) { return lda(cB, iop()); }
+  virtual int STABi(t_mem code) { return lda(idst(), rB); }
+  virtual int EORBi(t_mem code) { return eor(cB, iop()); }
+  virtual int ADCBi(t_mem code) { return add(cB, iop(), true); }
+  virtual int ORABi(t_mem code) { return Or (cB, iop()); }
+  virtual int ADDBi(t_mem code) { return add(cB, iop(), false); }
+  virtual int LDXi (t_mem code) { return ldsx(cX, iop16()); }
+  virtual int STXi (t_mem code) { return stsx(iaddr(), rX); }
+
+  virtual int SUBBe(t_mem code) { return sub(cB, eop(), false); }
+  virtual int CMPBe(t_mem code) { return cmp(rB, eop()); }
+  virtual int SBCBe(t_mem code) { return sub(cB, eop(), true); }
+  virtual int ANDBe(t_mem code) { return And(cB, eop()); }
+  virtual int BITBe(t_mem code) { return bit(rB, eop()); }
+  virtual int LDABe(t_mem code) { return lda(cB, eop()); }
+  virtual int STABe(t_mem code) { return lda(edst(), rB); }
+  virtual int EORBe(t_mem code) { return eor(cB, eop()); }
+  virtual int ADCBe(t_mem code) { return add(cB, eop(), true); }
+  virtual int ORABe(t_mem code) { return Or (cB, eop()); }
+  virtual int ADDBe(t_mem code) { return add(cB, eop(), false); }
+  virtual int LDXe (t_mem code) { return ldsx(cX, eop16()); }
+  virtual int STXe (t_mem code) { return stsx(eaddr(), rX); }
 };
 
 
