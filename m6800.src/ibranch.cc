@@ -37,7 +37,7 @@ cl_m6800::call(t_addr a)
   cSP.W(rSP-1);
   PC= a;
   vc.wr+= 2;
-  tick(4);
+  tick(6);
   return resGO;
 }
 

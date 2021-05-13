@@ -157,6 +157,22 @@ struct dis_entry disass_m6800[]=
     { 0xae, 0xff, ' ', 2, "LDS %x" },
     { 0xaf, 0xff, ' ', 2, "STS %x" },
 
+    { 0xb0, 0xff, ' ', 3, "SUB A,%e" },
+    { 0xb1, 0xff, ' ', 3, "CMP A,%e" },
+    { 0xb2, 0xff, ' ', 3, "SBC A,%e" },
+    { 0xb4, 0xff, ' ', 3, "AND A,%e" },
+    { 0xb5, 0xff, ' ', 3, "BIT A,%e" },
+    { 0xb6, 0xff, ' ', 3, "LDA A,%e" },
+    { 0xb7, 0xff, ' ', 3, "STA A,%e" },
+    { 0xb8, 0xff, ' ', 3, "EOR A,%e" },
+    { 0xb9, 0xff, ' ', 3, "ADC A,%e" },
+    { 0xba, 0xff, ' ', 3, "ORA A,%e" },
+    { 0xbb, 0xff, ' ', 3, "ADD A,%e" },
+    { 0xbc, 0xff, ' ', 3, "CPX %e" },
+    { 0xbd, 0xff, ' ', 3, "JSR %e" },
+    { 0xbe, 0xff, ' ', 3, "LDS %e" },
+    { 0xbf, 0xff, ' ', 3, "STS %e" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

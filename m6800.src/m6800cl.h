@@ -232,7 +232,7 @@ public:
   virtual int ORAA8(t_mem code) { return Or(cA, i8()); }
   virtual int ADDA8(t_mem code) { return add(cA, i8(), false); }
   virtual int CPX16(t_mem code) { return cpx(i16()); }
-  virtual int BSR  (t_mem code) { tick(6); return call(raddr()); }
+  virtual int BSR  (t_mem code) { return call(raddr()); }
   virtual int LDS16(t_mem code) { return ldsx(cSP, i16()); }
 
   virtual int SUBAd(t_mem code) { return sub(cA, dop(), false); }
@@ -265,6 +265,22 @@ public:
   virtual int JSRi (t_mem code) { return call(iaddr()); }
   virtual int LDSi (t_mem code) { return ldsx(cSP, iop16()); }
   virtual int STSi (t_mem code) { return stsx(iaddr(), rSP); }
+
+  virtual int SUBAe(t_mem code) { return sub(cA, eop(), false); }
+  virtual int CMPAe(t_mem code) { return cmp(rA, eop()); }
+  virtual int SBCAe(t_mem code) { return sub(cA, eop(), true); }
+  virtual int ANDAe(t_mem code) { return And(cA, eop()); }
+  virtual int BITAe(t_mem code) { return bit(rA, eop()); }
+  virtual int LDAAe(t_mem code) { return lda(cA, eop()); }
+  virtual int STAAe(t_mem code) { return lda(edst(), rA); }
+  virtual int EORAe(t_mem code) { return eor(cA, eop()); }
+  virtual int ADCAe(t_mem code) { return add(cA, eop(), true); }
+  virtual int ORAAe(t_mem code) { return Or (cA, eop()); }
+  virtual int ADDAe(t_mem code) { return add(cA, eop(), false); }
+  virtual int CPXe (t_mem code) { return cpx(eop16()); }
+  virtual int JSRe (t_mem code) { return call(eaddr()); }
+  virtual int LDSe (t_mem code) { return ldsx(cSP, eop16()); }
+  virtual int STSe (t_mem code) { return stsx(eaddr(), rSP); }
 };
 
 

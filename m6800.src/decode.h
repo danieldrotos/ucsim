@@ -152,6 +152,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDSi  instruction_ae
 #define STSi  instruction_af
 
+#define SUBAe instruction_b0
+#define CMPAe instruction_b1
+#define SBCAe instruction_b2
+#define ANDAe instruction_b4
+#define BITAe instruction_b5
+#define LDAAe instruction_b6
+#define STAAe instruction_b7
+#define EORAe instruction_b8
+#define ADCAe instruction_b9
+#define ORAAe instruction_ba
+#define ADDAe instruction_bb
+#define CPXe  instruction_bc
+#define JSRe  instruction_bd
+#define LDSe  instruction_be
+#define STSe  instruction_bf
+
 #endif
 
 /* End of m6800.src/decode.h */
