@@ -133,6 +133,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADDAd instruction_9b
 #define CPXd  instruction_9c
 #define LDSd  instruction_9e
+#define STSd  instruction_9f
+
+#define SUBAi instruction_a0
+#define CMPAi instruction_a1
+#define SBCAi instruction_a2
+#define ANDAi instruction_a4
+#define BITAi instruction_a5
+#define LDAAi instruction_a6
+#define STAAi instruction_a7
+#define EORAi instruction_a8
+#define ADCAi instruction_a9
+#define ORAAi instruction_aa
+#define ADDAi instruction_ab
+#define CPXi  instruction_ac
+#define LDSi  instruction_ae
+#define STSi  instruction_af
 
 #endif
 

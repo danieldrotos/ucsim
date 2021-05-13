@@ -136,8 +136,24 @@ struct dis_entry disass_m6800[]=
     { 0x99, 0xff, ' ', 2, "ADC A,%d" },
     { 0x9a, 0xff, ' ', 2, "ORA A,%d" },
     { 0x9b, 0xff, ' ', 2, "ADD A,%d" },
-    { 0x9c, 0xff, ' ', 3, "CPX %d" },
-    { 0x9e, 0xff, ' ', 3, "LDS %d" },
+    { 0x9c, 0xff, ' ', 2, "CPX %d" },
+    { 0x9e, 0xff, ' ', 2, "LDS %d" },
+    { 0x9f, 0xff, ' ', 2, "STS %d" },
+
+    { 0xa0, 0xff, ' ', 2, "SUB A,%x" },
+    { 0xa1, 0xff, ' ', 2, "CMP A,%x" },
+    { 0xa2, 0xff, ' ', 2, "SBC A,%x" },
+    { 0xa4, 0xff, ' ', 2, "AND A,%x" },
+    { 0xa5, 0xff, ' ', 2, "BIT A,%x" },
+    { 0xa6, 0xff, ' ', 2, "LDA A,%x" },
+    { 0xa7, 0xff, ' ', 2, "STA A,%x" },
+    { 0xa8, 0xff, ' ', 2, "EOR A,%x" },
+    { 0xa9, 0xff, ' ', 2, "ADC A,%x" },
+    { 0xaa, 0xff, ' ', 2, "ORA A,%x" },
+    { 0xab, 0xff, ' ', 2, "ADD A,%x" },
+    { 0xac, 0xff, ' ', 2, "CPX %x" },
+    { 0xae, 0xff, ' ', 2, "LDS %x" },
+    { 0xaf, 0xff, ' ', 2, "STS %x" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

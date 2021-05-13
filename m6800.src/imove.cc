@@ -71,6 +71,19 @@ cl_m6800::ldsx(class cl_cell16 &dest, u16_t op)
   return resGO;
 }
 
+int
+cl_m6800::stsx(t_addr a, u16_t op)
+{
+  u8_t f= rF & ~(flagN|flagV|flagC);
+  rom->write(a, op>>8);
+  rom->write(a+1, op&0xff);
+  vc.wr+= 2;
+  if (!op) f|= flagZ;
+  if (op&0x8000) f|= flagN;
+  cCC.W(f);
+  return resGO;
+}
+
 
 int
 cl_m6800::TAP(t_mem code)
