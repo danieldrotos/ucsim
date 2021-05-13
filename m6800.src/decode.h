@@ -118,6 +118,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ORAA8 instruction_8a
 #define ADDA8 instruction_8b
 #define CPX16 instruction_8c
+#define BSR   instruction_8d
 #define LDS16 instruction_8e
 
 #define SUBAd instruction_90

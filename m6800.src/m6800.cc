@@ -186,6 +186,10 @@ cl_m6800::disass(t_addr addr)
 	      temp.format("0x00%02x",
 			  rom->read(addr+1));
 	      break;
+	    case 'r': // relative
+	      temp.format("0x%04x",
+			  addr+2+(i8_t)(rom->read(addr+1)));
+	      break;
 	    }
 	  work+= temp;
 	}
@@ -322,6 +326,13 @@ cl_m6800::daddr(void)
 {
   t_addr a= fetch();
   return a;
+}
+
+t_addr
+cl_m6800::raddr(void)
+{
+  i8_t a= fetch();
+  return PC+a;
 }
 
 /* End of m6800.src/m6800.cc */

@@ -112,6 +112,7 @@ public:
   t_addr iaddr(void);
   t_addr eaddr(void);
   t_addr daddr(void);
+  t_addr raddr(void);
   virtual class cl_cell8 &idst(void) { vc.rd++; vc.wr++; return idx(); }
   virtual class cl_cell8 &edst(void) { vc.rd++; vc.wr++; return ext(); }
   virtual class cl_cell8 &ddst(void) { vc.rd++; vc.wr++; return dir(); }
@@ -231,6 +232,7 @@ public:
   virtual int ORAA8(t_mem code) { return Or(cA, i8()); }
   virtual int ADDA8(t_mem code) { return add(cA, i8(), false); }
   virtual int CPX16(t_mem code) { return cpx(i16()); }
+  virtual int BSR  (t_mem code) { tick(6); return call(raddr()); }
   virtual int LDS16(t_mem code) { return ldsx(cSP, i16()); }
 
   virtual int SUBAd(t_mem code) { return sub(cA, dop(), false); }
