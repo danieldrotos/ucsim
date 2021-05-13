@@ -167,20 +167,24 @@ cl_m6800::disass(t_addr addr)
 	  temp= "";
 	  switch (b[i])
 	    {
-	    case 'x':
+	    case 'x': // indexed
 	      temp.format("0x%02x,X", rom->read(addr+1));
 	      break;
-	    case 'e':
+	    case 'e': // extended
 	      temp.format("0x%04x",
 			  rom->read(addr+1)*256 + rom->read(addr+2));
 	      break;
-	    case 'b':
+	    case 'b': // immediate 8 bit
 	      temp.format("#0x%02x",
 			  rom->read(addr+1));
 	      break;
-	    case 'B':
+	    case 'B': // immediate 16 bit
 	      temp.format("#0x%04x",
 			  read_addr(rom, addr+1));
+	      break;
+	    case 'd': // direct
+	      temp.format("0x00%02x",
+			  rom->read(addr+1));
 	      break;
 	    }
 	  work+= temp;

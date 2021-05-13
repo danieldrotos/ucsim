@@ -120,6 +120,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CPX16 instruction_8c
 #define LDS16 instruction_8e
 
+#define SUBAd instruction_90
+#define CMPAd instruction_91
+#define SBCAd instruction_92
+#define ANDAd instruction_94
+#define BITAd instruction_95
+#define LDAAd instruction_96
+#define STAAd instruction_97
+#define EORAd instruction_98
+#define ADCAd instruction_99
+#define ORAAd instruction_9a
+#define ADDAd instruction_9b
+#define CPXd  instruction_9c
+#define LDSd  instruction_9e
+
 #endif
 
 /* End of m6800.src/decode.h */

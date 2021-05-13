@@ -135,6 +135,7 @@ public:
   virtual int eor(class cl_cell8 &dest, u8_t op);
   virtual int Or (class cl_cell8 &dest, u8_t op);
   virtual int lda(class cl_cell8 &dest, u8_t op);
+  virtual int sta(class cl_cell8 &dest, u8_t op);
   virtual int cpx(u16_t op);
   virtual int ldsx(class cl_cell16 &dest, u16_t op);
 
@@ -229,6 +230,20 @@ public:
   virtual int ADDA8(t_mem code) { return add(cA, i8(), false); }
   virtual int CPX16(t_mem code) { return cpx(i16()); }
   virtual int LDS16(t_mem code) { return ldsx(cSP, i16()); }
+
+  virtual int SUBAd(t_mem code) { return sub(cA, dop(), false); }
+  virtual int CMPAd(t_mem code) { return cmp(rA, dop()); }
+  virtual int SBCAd(t_mem code) { return sub(cA, dop(), true); }
+  virtual int ANDAd(t_mem code) { return And(cA, dop()); }
+  virtual int BITAd(t_mem code) { return bit(rA, dop()); }
+  virtual int LDAAd(t_mem code) { return lda(cA, dop()); }
+  virtual int STAAd(t_mem code) { return lda(dir(), rA); }
+  virtual int EORAd(t_mem code) { return eor(cA, dop()); }
+  virtual int ADCAd(t_mem code) { return add(cA, dop(), true); }
+  virtual int ORAAd(t_mem code) { return Or (cA, dop()); }
+  virtual int ADDAd(t_mem code) { return add(cA, dop(), false); }
+  virtual int CPXd (t_mem code) { return cpx(dop16()); }
+  virtual int LDSd (t_mem code) { return ldsx(cSP, dop16()); }
 };
 
 
