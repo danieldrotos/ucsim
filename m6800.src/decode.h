@@ -147,6 +147,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ORAAi instruction_aa
 #define ADDAi instruction_ab
 #define CPXi  instruction_ac
+#define JSRi  instruction_ad
 #define LDSi  instruction_ae
 #define STSi  instruction_af
 

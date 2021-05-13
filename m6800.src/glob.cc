@@ -152,6 +152,7 @@ struct dis_entry disass_m6800[]=
     { 0xaa, 0xff, ' ', 2, "ORA A,%x" },
     { 0xab, 0xff, ' ', 2, "ADD A,%x" },
     { 0xac, 0xff, ' ', 2, "CPX %x" },
+    { 0xad, 0xff, ' ', 2, "JSR %x" },
     { 0xae, 0xff, ' ', 2, "LDS %x" },
     { 0xaf, 0xff, ' ', 2, "STS %x" },
 

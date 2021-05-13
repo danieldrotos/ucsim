@@ -139,6 +139,7 @@ public:
   virtual int cpx(u16_t op);
   virtual int ldsx(class cl_cell16 &dest, u16_t op);
   virtual int stsx(t_addr a, u16_t op);
+  virtual int call(t_addr a);
 
   virtual int NOP(t_mem code);
   virtual int TAP(t_mem code);
@@ -259,6 +260,7 @@ public:
   virtual int ORAAi(t_mem code) { return Or (cA, iop()); }
   virtual int ADDAi(t_mem code) { return add(cA, iop(), false); }
   virtual int CPXi (t_mem code) { return cpx(iop16()); }
+  virtual int JSRi (t_mem code) { return call(iaddr()); }
   virtual int LDSi (t_mem code) { return ldsx(cSP, iop16()); }
   virtual int STSi (t_mem code) { return stsx(iaddr(), rSP); }
 };
