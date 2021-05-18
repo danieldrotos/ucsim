@@ -157,6 +157,7 @@ cl_m6809::mk_hw_elements(void)
 				flagE,
 				flagI,
 				irq_none);
+  src_irq->set_cid('i');
   src_irq->init();
   it_sources->add(src_irq);
   
@@ -170,6 +171,7 @@ cl_m6809::mk_hw_elements(void)
 				 0,
 				 flagI|flagF,
 				 irq_none);
+  src_firq->set_cid('f');
   src_firq->init();
   it_sources->add(src_firq);
   
@@ -183,6 +185,7 @@ cl_m6809::mk_hw_elements(void)
 				 flagE,
 				 flagI|flagF,
 				 irq_none);
+  src_nmi->set_cid('n');
   src_nmi->init();
   it_sources->add(src_nmi);
   

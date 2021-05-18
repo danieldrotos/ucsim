@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "glob.h"
+#include "irqcl.h"
 
 #include "m6800cl.h"
 
@@ -96,6 +97,49 @@ cl_m6800::mk_hw_elements(void)
 
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
+
+  add_hw(h= new cl_irq_hw(this));
+  h->init();
+
+  src_irq= new cl_it_src(this,
+			 irq_irq,
+			 &cCC, flagI,
+			 h->cfg_cell(m68_irq), 1,
+			 IRQ_AT,
+			 true,
+			 true,
+			 "Interrupt request",
+			 0);
+  src_irq->set_cid('i');
+  src_irq->init();
+  src_irq->set_ie_value(0);
+  it_sources->add(src_irq);
+  
+  src_nmi= new cl_it_src(this,
+			 irq_nmi,
+			 h->cfg_cell(m68_nmi_en), 1,
+			 h->cfg_cell(m68_nmi), 1,
+			 NMI_AT,
+			 true,
+			 true,
+			 "Non-maskable interrupt request",
+			 0);
+  src_nmi->set_cid('n');
+  src_nmi->init();
+  it_sources->add(src_nmi);
+  
+  src_swi= new cl_it_src(this,
+			 irq_swi,
+			 h->cfg_cell(m68_swi_en), 1,
+			 h->cfg_cell(m68_swi), 1,
+			 SWI_AT,
+			 true,
+			 true,
+			 "SWI",
+			 0);
+  src_swi->set_cid('s');
+  src_swi->init();
+  it_sources->add(src_swi);
 }
 
 void

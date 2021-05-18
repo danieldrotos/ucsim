@@ -50,6 +50,7 @@ class cl_it_src: public /*cl_base*/cl_hw
 public:
   int poll_priority;
   int    nuof;	   // Number of IT to check priority
+  int    cid;	   // identification character
   t_mem  ie_mask;  // Mask in IE register
   t_mem  ie_value; // Enabled when masked cell equals to this
   t_mem  src_mask; // Mask of source bit in src_reg
@@ -74,6 +75,7 @@ public:
   virtual int init(void);
   virtual void set_ie_value(t_mem iv) { ie_value= iv; }
   virtual void set_src_value(t_mem sv) { src_value= sv; }
+  virtual void set_cid(int acid) { cid= acid; }
   virtual bool is_nmi(void) { return false; }
   
           bool is_active(void);
@@ -97,7 +99,8 @@ enum irq_nr {
   irq_nmi= 1,
   irq_firq= 2,
   irq_irq= 3,
-  irq_brk= 4
+  irq_brk= 4,
+  irq_swi= 5
 };
 
 class cl_m6xxx_src: public cl_it_src

@@ -59,6 +59,7 @@ cl_it_src::cl_it_src(cl_uc  *Iuc,
   uc= Iuc;
   poll_priority= apoll_priority;
   nuof     = Inuof;
+  cid      = 0;
   ie_cell  = Iie_cell;
   ie_mask  = Iie_mask;
   ie_value = Iie_mask;

@@ -24,6 +24,9 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
+#ifndef IRQCL_HEADER
+#define IRQCL_HEADER
+
 #include "hwcl.h"
 
 #include "mcs6502cl.h"
@@ -107,5 +110,7 @@ class cl_irq_hw: public cl_hw
   virtual void print_info(class cl_console_base *con);  
 };
 
+
+#endif
 
 /* End of mcs6502.src/irqcl.h */

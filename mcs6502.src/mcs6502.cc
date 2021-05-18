@@ -110,6 +110,7 @@ cl_mcs6502::mk_hw_elements(void)
 		      IRQ_AT,
 		      "Interrupt request",
 		      0);
+  src_irq->set_cid('i');
   src_irq->init();
   it_sources->add(src_irq);
   
@@ -120,6 +121,7 @@ cl_mcs6502::mk_hw_elements(void)
 		      NMI_AT,
 		      "Non-maskable interrupt request",
 		      0);
+  src_nmi->set_cid('n');
   src_nmi->init();
   it_sources->add(src_nmi);
   
@@ -130,6 +132,7 @@ cl_mcs6502::mk_hw_elements(void)
 		      IRQ_AT,
 		      "BRK",
 		      0);
+  src_brk->set_cid('b');
   src_brk->init();
   it_sources->add(src_brk);
 }

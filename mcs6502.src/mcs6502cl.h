@@ -69,9 +69,9 @@ enum {
 
 // Vectors
 enum {
+  NMI_AT	= 0xfffa,
   RESET_AT	= 0xfffc,
-  IRQ_AT	= 0xfffe,
-  NMI_AT	= 0xfffa
+  IRQ_AT	= 0xfffe
 };
   
 /*
