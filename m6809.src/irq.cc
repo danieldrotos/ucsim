@@ -82,7 +82,7 @@ cl_m6809_irq::cfg_help(t_addr addr)
     case cpu_irq_en	: return "IRQ enable (RO)";
     case cpu_irq	: return "IRQ request/clear (RW)";
     case cpu_firq_en	: return "FIRQ enable (RO)";
-    case cpu_firq	: return "FIRQ request (RW)";
+    case cpu_firq	: return "FIRQ request/clear (RW)";
     }
   return cl_hw::cfg_help(addr);
 }

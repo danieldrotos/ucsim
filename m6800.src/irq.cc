@@ -50,6 +50,21 @@ cl_irq_hw::init()
   return 0;
 }
 
+const char *
+cl_m6809_irq::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case m68_nmi_en	: return "NMI enable (RO)";
+    case m68_nmi	: return "NMI request/clear (RW)";
+    case m68_irq_en	: return "IRQ enable (RO)";
+    case m68_irq	: return "IRQ request/clear (RW)";
+    case m68_swi_en	: return "SWI enable (RW)";
+    case m68_swi	: return "SWI request/clear (RW)";
+    }
+  return cl_hw::cfg_help(addr);
+}
+
 void
 cl_irq_hw::print_info(class cl_console_base *con)
 {

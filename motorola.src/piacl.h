@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (piacl.h)
+ * Simulator of microcontrollers (motorola.srcpiacl.h)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -108,4 +108,4 @@ public:
 
 #endif
 
-/* End of m6898.src/piacl.h */
+/* End of motorola.src/piacl.h */

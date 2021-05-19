@@ -32,10 +32,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 #include "dregcl.h"
+#include "ciacl.h"
+#include "piacl.h"
 
 #include "glob.h"
-#include "serialcl.h"
-#include "piacl.h"
 #include "irqcl.h"
 
 #include "m6809cl.h"
@@ -188,10 +188,10 @@ cl_m6809::mk_hw_elements(void)
   src_nmi->init();
   it_sources->add(src_nmi);
   
-  add_hw(h= new cl_serial(this, 0, 0xc000));
+  add_hw(h= new cl_cia(this, 0, 0xc000));
   h->init();
 
-  add_hw(h= new cl_serial(this, 1, 0xc008));
+  add_hw(h= new cl_cia(this, 1, 0xc008));
   h->init();
 
   class cl_pia *p0, *p1;

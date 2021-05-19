@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (pia.cc)
+ * Simulator of microcontrollers (motorola.src/pia.cc)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
@@ -31,9 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // cmd
 #include "argcl.h"
 
-// local
-#include "m6809cl.h"
-#include "irqcl.h"
+// sim
+#include "itsrccl.h"
 
 #include "piacl.h"
 
@@ -680,4 +679,4 @@ cl_pia::print_info(class cl_console_base *con)
   //print_cfg_info(con);
 }
 
-/* End of m6809.src/pia.cc */
+/* End of motorola.src/pia.cc */
