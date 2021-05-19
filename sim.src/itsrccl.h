@@ -44,9 +44,11 @@ class cl_it_src: public /*cl_base*/cl_hw
 {
  private:
   class cl_uc *uc;
+  bool nmi;
  protected:
   class cl_memory_cell *ie_cell;
   class cl_memory_cell *src_cell;
+  class cl_it_src *parent; // slave will pass request to this
 public:
   int poll_priority;
   int    nuof;	   // Number of IT to check priority
@@ -76,13 +78,18 @@ public:
   virtual void set_ie_value(t_mem iv) { ie_value= iv; }
   virtual void set_src_value(t_mem sv) { src_value= sv; }
   virtual void set_cid(int acid) { cid= acid; }
-  virtual bool is_nmi(void) { return false; }
+  virtual void set_parent(class cl_it_src *aparent) { parent= aparent; }
+  virtual void set_nmi(bool anmi) { nmi= anmi; }
+  virtual class cl_it_src *get_parent(void) { return parent; }
+  virtual bool is_nmi(void) { return nmi; }
+  virtual bool is_slave(void) { return parent != NULL; }
   
           bool is_active(void);
   virtual void set_active_status(bool Aactive);
   virtual void activate(void);
   virtual void deactivate(void);
-
+  virtual void pass_over(void);
+  
   virtual bool enabled(void);
   virtual bool pending(void);
   virtual void request(void);
@@ -101,32 +108,6 @@ enum irq_nr {
   irq_irq= 3,
   irq_brk= 4,
   irq_swi= 5
-};
-
-class cl_m6xxx_src: public cl_it_src
-{
-public:
-  enum irq_nr pass_to;
-public:
-  cl_m6xxx_src(cl_uc  *Iuc,
-	       int    Inuof,
-	       class  cl_memory_cell *Iie_cell,
-	       t_mem  Iie_mask,
-	       class  cl_memory_cell *Isrc_cell,
-	       t_mem  Isrc_mask,
-	       t_addr Iaddr,
-	       const  char *Iname,
-	       int    apoll_priority,
-	       enum irq_nr Ipass_to):
-    cl_it_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, false, true, Iname, apoll_priority)
-  {
-    pass_to= Ipass_to;
-  }
-  virtual bool is_nmi(void) { return false; }
-  virtual void clear(void) { src_cell->write(0); }
-  virtual class cl_m6xxx_src *get_parent(void) { return NULL; }
-  virtual void set_pass_to(enum irq_nr value) { pass_to= value; }
-  virtual void set_pass_to(t_mem value);
 };
 
 

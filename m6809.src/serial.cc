@@ -80,7 +80,7 @@ cl_serial::init(void)
   r_sr->set(0);//regs[sr]->set(0);
   show_readable(false);
   show_writable(true);
-  cfg_set(acia_cfg_req, 'i');
+  //cfg_set(acia_cfg_req, 'i');
   
   cl_var *v;
   chars pn= chars("", "uart%d_", id);
@@ -96,17 +96,25 @@ cl_serial::init(void)
 			      cfg_help(acia_cfg_req)));
   v->init();
   
-  is_t= new cl_m6809_slave_src(uc,
-			       r_cr, 0x60, 0x20,
-			       r_sr, 2,
-			       pn+"tx");
+  is_t= new cl_it_src(uc, 1,
+		      r_cr, 0x60, //0x20,
+		      r_sr, 2,
+		      0, false, false,
+		      pn+"tx",
+		      0);
+  is_t->set_ie_value(0x20);
   is_t->init();
+  is_t->set_parent(uc->search_it_src('i'));
   uc->it_sources->add(is_t);
-  is_r= new cl_m6809_slave_src(uc,
-			       r_cr, 0x80, 0x80,
-			       r_sr, 1,
-			       pn+"rx");
+  is_r= new cl_it_src(uc, 2,
+		      r_cr, 0x80, //0x80,
+		      r_sr, 1,
+		      0, false, false,
+		      pn+"rx",
+		      0);
   is_r->init();
+  is_r->set_ie_value(0x80);
+  is_r->set_parent(uc->search_it_src('i'));
   uc->it_sources->add(is_r);
   
   return(0);
@@ -200,8 +208,10 @@ cl_serial::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case acia_cfg_req:
       if (val)
 	{
-	  is_r->set_pass_to(*val);
-	  is_t->set_pass_to(*val);
+	  //is_r->set_pass_to(*val);
+	  //is_t->set_pass_to(*val);
+	  is_r->set_parent(uc->search_it_src(*val));
+	  is_t->set_parent(uc->search_it_src(*val));
 	}
       break;
       

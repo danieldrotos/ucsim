@@ -30,78 +30,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "irqcl.h"
 
 
-/* NMI source */
-/*
-class cl_m6xxx_src *
-cl_nmi::get_parent(void)
-{
-  class cl_mcs6502 *muc= (class cl_mcs6502 *)(application->get_uc());
-  switch (pass_to)
-    {
-    case irq_nmi:
-      return muc->src_nmi;
-      break;
-    case irq_irq:
-      return muc->src_irq;
-      break;
-void
-cl_m6809_irq::print_info(class cl_console_base *con)
-{
-  int i;
-  con->dd_printf("  Handler  ISR    En  Pr Req Act Name\n");
-  for (i= 0; i < uc->it_sources->count; i++)
-    {
-      class cl_m6809_src_base *is=
-	(class cl_m6809_src_base *)(uc->it_sources->at(i));
-      class cl_m6xxx_src *pa= is->get_parent();
-      class cl_m6xxx_src *isp= (pa)?pa:is;
-      t_addr a= uc->rom->get(isp->addr) * 256 + uc->rom->get(isp->addr+1);
-      con->dd_printf("  [0x%04x] 0x%04x", AU(isp->addr), a);
-      con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
-      con->dd_printf(" %2d", uc->priority_of(is->nuof));
-      con->dd_printf(" %-3s", (is->pending())?"YES":"no");
-      con->dd_printf(" %-3s", (is->active)?"act":"no");
-      con->dd_printf(" %s", object_name(is));
-      con->dd_printf("\n");
-    }
-  con->dd_printf("Active interrupt service(s):\n");
-  con->dd_printf("  Pr Handler  PC       Source\n");
-  for (i= 0; i < uc->it_levels->count; i++)
-    {
-      class it_level *il= (class it_level *)(uc->it_levels->at(i));
-      if (il->level >= 0)
-	{
-	  con->dd_printf("  %2d", il->level);
-	  con->dd_printf(" 0x%06x", AU(il->addr));
-	  con->dd_printf(" 0x%06x", AU(il->PC));
-	  con->dd_printf(" %s", (il->source)?(object_name(il->source)):
-			 "nothing");
-	  con->dd_printf("\n");
-	}
-    }
-  //print_cfg_info(con);
-}
-
-    default:
-      return NULL;
-    }
-  return NULL;
-}
-*/
-
-/* IRQ source */
-/*
-bool
-cl_irq::enabled(void)
-{
-  if (!ie_cell)
-    return false;
-  t_mem e= ie_cell->get();
-  e&= ie_mask;
-  return e == 0;
-}
-*/
-
 /* IRQ handling peripheral */
 
 cl_irq_hw::cl_irq_hw(class cl_uc *auc):
@@ -136,10 +64,10 @@ cl_irq_hw::print_info(class cl_console_base *con)
   con->dd_printf("  Handler  ISR    En  Pr Req Act Name\n");
   for (i= 0; i < uc->it_sources->count; i++)
     {
-      class cl_m6xxx_src *is=
-	(class cl_m6xxx_src *)(uc->it_sources->at(i));
-      class cl_m6xxx_src *pa= is->get_parent();
-      class cl_m6xxx_src *isp= (pa)?pa:is;
+      class cl_it_src *is=
+	(class cl_it_src *)(uc->it_sources->at(i));
+      class cl_it_src *pa= is->get_parent();
+      class cl_it_src *isp= (pa)?pa:is;
       t_addr a= uc->read_addr(uc->rom, isp->addr);
       con->dd_printf("  [0x%04x] 0x%04x", AU(isp->addr), a);
       con->dd_printf(" %-3s", (is->enabled())?"en":"dis");

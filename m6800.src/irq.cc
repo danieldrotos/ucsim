@@ -57,10 +57,10 @@ cl_irq_hw::print_info(class cl_console_base *con)
   con->dd_printf("  Handler  ISR    En  Pr Req Act Name\n");
   for (i= 0; i < uc->it_sources->count; i++)
     {
-      class cl_m6xxx_src *is=
-	(class cl_m6xxx_src *)(uc->it_sources->at(i));
-      class cl_m6xxx_src *pa= is->get_parent();
-      class cl_m6xxx_src *isp= (pa)?pa:is;
+      class cl_it_src *is=
+	(class cl_it_src *)(uc->it_sources->at(i));
+      class cl_it_src *pa= is->get_parent();
+      class cl_it_src *isp= (pa)?pa:is;
       t_addr a= uc->read_addr(uc->rom, isp->addr);
       con->dd_printf("  [0x%04x] 0x%04x", AU(isp->addr), a);
       con->dd_printf(" %-3s", (is->enabled())?"en":"dis");

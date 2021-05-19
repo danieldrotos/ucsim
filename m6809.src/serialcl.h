@@ -54,7 +54,7 @@ class cl_serial: public cl_serial_hw
   class cl_memory_cell *regs[2];
   int div;
   int mcnt;
-  class cl_m6809_src_base *is_r, *is_t;
+  class cl_it_src *is_r, *is_t;
   class cl_memory_cell *r_cr;         // Copy of written CR value
   class cl_memory_cell *r_sr;         // Simulated SR value
   u8_t  s_in;         // Serial channel input reg

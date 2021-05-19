@@ -43,80 +43,10 @@ enum cpu_cfg
    cpu_nr	= 6
   };
 
-// This is used as NMI source
-class cl_m6809_src_base: public cl_m6xxx_src
-{
-public:
-  u8_t Evalue;
-  u8_t IFvalue;
-public:
-  cl_m6809_src_base(cl_uc  *Iuc,
-		    int    Inuof,
-		    class  cl_memory_cell *Iie_cell,
-		    t_mem  Iie_mask,
-		    class  cl_memory_cell *Isrc_cell,
-		    t_mem  Isrc_mask,
-		    t_addr Iaddr,
-		    const  char *Iname,
-		    int    apoll_priority,
-		    u8_t   aEvalue,
-		    u8_t   aIFvalue,
-		    enum irq_nr Ipass_to):
-    cl_m6xxx_src(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, Ipass_to)
-  {
-      Evalue= aEvalue;
-    IFvalue= aIFvalue;
-  }
-  virtual bool is_nmi(void) { return true; }
-  virtual class cl_m6xxx_src *get_parent(void);
-};
-
-// Source of IRQ and FIRQ
-class cl_m6809_irq_src: public cl_m6809_src_base
-{
-public:
-  cl_m6809_irq_src(cl_uc  *Iuc,
-		   int    Inuof,
-		   class  cl_memory_cell *Iie_cell,
-		   t_mem  Iie_mask,
-		   class  cl_memory_cell *Isrc_cell,
-		   t_mem  Isrc_mask,
-		   t_addr Iaddr,
-		   const  char *Iname,
-		   int    apoll_priority,
-		   u8_t   aEvalue,
-		   u8_t   aIFvalue,
-		   enum irq_nr Ipass_to):
-    cl_m6809_src_base(Iuc, Inuof, Iie_cell, Iie_mask, Isrc_cell, Isrc_mask, Iaddr, Iname, apoll_priority, aEvalue, aIFvalue, Ipass_to)
-  {}
-  virtual bool is_nmi(void) { return false; }
-  virtual bool enabled(void);
-};
-
-// This irq will be passed to a parent (one of IRQ, FIRQ, NMI)
-class cl_m6809_slave_src: public cl_m6809_irq_src
-{
-protected:
-  t_mem ie_value;
-public:
-  cl_m6809_slave_src(cl_uc *Iuc,
-		     class  cl_memory_cell *Iie_cell,
-		     t_mem  Iie_mask,
-		     t_mem  Iie_value,
-		     class  cl_memory_cell *Isrc_cell,
-		     t_mem  Isrc_mask,
-		     const  char *Iname):
-    cl_m6809_irq_src(Iuc, 0,
-		     Iie_cell, Iie_mask, Isrc_cell, Isrc_mask,
-		     0,
-		     Iname,
-		     0, 0, 0,
-		     irq_irq)
-  {
-    ie_value= Iie_value;
-  }
-  virtual bool enabled(void);
-  virtual void clear(void) {}
+enum {
+  FIRQ_AT	= 0xfff6,
+  IRQ_AT	= 0xfff8,
+  NMI_AT	= 0xfffc
 };
 
 
