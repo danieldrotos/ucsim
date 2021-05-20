@@ -51,7 +51,7 @@ cl_irq_hw::init()
 }
 
 const char *
-cl_m6809_irq::cfg_help(t_addr addr)
+cl_irq_hw::cfg_help(t_addr addr)
 {
   switch (addr)
     {
