@@ -65,6 +65,8 @@ cl_m6800::init(void)
   class cl_memory_operator *op= new cl_cc_operator(&cCC);
   cCC.append_operator(op);
 
+  wai= false;
+  
   return 0;
 }
 
@@ -412,6 +414,57 @@ cl_m6800::exec_inst(void)
   tick(1);
   res= inst_unknown(code);
   return(res);
+}
+
+int
+cl_m6800::accept_it(class it_level *il)
+{
+  class cl_it_src *is= il->source;
+
+  if (!wai)
+    push_regs();
+  wai= false;
+  
+  if ((is == src_irq) ||
+      (is == src_swi))
+    rCC|= flagI;
+  
+  t_addr a= read_addr(rom, is->addr);
+  PC= a;
+  
+  is->clear();
+  it_levels->push(il);
+  
+  return resGO;
+}
+
+void
+cl_m6800::push_regs(void)
+{
+  rom->write(rSP--, PC&0xff);
+  rom->write(rSP--, PC>>8);
+  rom->write(rSP--, rIX&0xff);
+  rom->write(rSP--, rIX>>8);
+  rom->write(rSP--, rA);
+  rom->write(rSP--, rB);
+  rom->write(rSP--, rCC);
+  tick(7);
+}
+
+void
+cl_m6800::pull_regs(void)
+{
+  u8_t l, h;
+  rCC= rom->read(++rSP);
+  rB= rom->read(++rSP);
+  rA= rom->read(++rSP);
+  l= rom->read(++rSP);
+  h= rom->read(++rSP);
+  rIX= h*256+l;
+  l= rom->read(++rSP);
+  h= rom->read(++rSP);
+  PC= h*256+l;
+  tick(7);
 }
 
 class cl_cell8 &
