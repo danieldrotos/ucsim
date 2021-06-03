@@ -30,6 +30,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 instruction_wrapper_fn itab[256];
 
+/*	Formats
+	x (ind,X)
+	y (ind),Y
+	a abs
+*/
+
 // code mask branch len mn call tick
 struct dis_entry disass_mcs6502[]=
   {
@@ -57,6 +63,9 @@ struct dis_entry disass_mcs6502[]=
     { 0xaa, 0xff, ' ', 1, "TAX" },
     { 0xba, 0xff, ' ', 1, "TSX" },
     { 0xca, 0xff, ' ', 1, "DEX" },
+
+    { 0x01, 0xff, ' ', 2, "ORA %x" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

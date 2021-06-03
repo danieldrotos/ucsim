@@ -98,6 +98,7 @@ public:
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disass(t_addr addr);
+  virtual t_addr read_addr(class cl_memory *m, t_addr start_addr);
 
   virtual void print_regs(class cl_console_base *con);
 
@@ -105,6 +106,18 @@ public:
   virtual int priority_of(uchar nuof_it) { return nuof_it; }
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void);
+
+  virtual class cl_cell8 &zpg(void);
+  virtual class cl_cell8 &zpgX(void);
+  virtual class cl_cell8 &abs(void);
+  virtual class cl_cell8 &absX(void);
+  virtual class cl_cell8 &absY(void);
+  virtual class cl_cell8 &ind(void);
+  virtual class cl_cell8 &indX(void);
+  virtual class cl_cell8 &indY(void);
+  virtual u8_t i8(void) { return fetch(); }
+  virtual u16_t i16(void) { u8_t h, l; l=fetch(); h= fetch(); return h*256+l; }
+
   virtual int NOP(t_mem code);
   virtual int BRK(t_mem code);
   virtual int RTI(t_mem code);
@@ -129,6 +142,9 @@ public:
   virtual int TAX(t_mem code);
   virtual int TSX(t_mem code);
   virtual int DEX(t_mem code);
+
+  virtual int ora(class cl_cell8 &op);
+  virtual int ORAix(t_mem code) { return ora(indX()); }
 };
 
 

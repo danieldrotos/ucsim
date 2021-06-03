@@ -53,6 +53,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TSX	instruction_ba
 #define DEX	instruction_ca
 
+#define ORAix	instruction_01
+
 #endif
 
 /* End of mcs6502.src/decode.h */
