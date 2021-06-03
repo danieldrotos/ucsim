@@ -80,6 +80,24 @@ struct dis_entry disass_mcs6502[]=
     { 0x0d, 0xff, ' ', 3, "ORA %a" },
     { 0x1d, 0xff, ' ', 3, "ORA %i" },
 
+    { 0x21, 0xff, ' ', 2, "AND %x" },
+    { 0x31, 0xff, ' ', 2, "AND %y" },
+    { 0x25, 0xff, ' ', 2, "AND %z" },
+    { 0x35, 0xff, ' ', 2, "AND %X" },
+    { 0x29, 0xff, ' ', 2, "AND %#" },
+    { 0x39, 0xff, ' ', 2, "AND %p" },
+    { 0x2d, 0xff, ' ', 3, "AND %a" },
+    { 0x3d, 0xff, ' ', 3, "AND %i" },
+
+    { 0x41, 0xff, ' ', 2, "EOR %x" },
+    { 0x51, 0xff, ' ', 2, "EOR %y" },
+    { 0x45, 0xff, ' ', 2, "EOR %z" },
+    { 0x55, 0xff, ' ', 2, "EOR %X" },
+    { 0x49, 0xff, ' ', 2, "EOR %#" },
+    { 0x59, 0xff, ' ', 2, "EOR %p" },
+    { 0x4d, 0xff, ' ', 3, "EOR %a" },
+    { 0x5d, 0xff, ' ', 3, "EOR %i" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

@@ -153,6 +153,26 @@ public:
   virtual int ORAay(t_mem code) { return ora(absY()); }
   virtual int ORAa (t_mem code) { return ora(abs()); }
   virtual int ORAax(t_mem code) { return ora(absX()); }
+
+  virtual int And(class cl_cell8 &op);
+  virtual int ANDix(t_mem code) { return And(indX()); }
+  virtual int ANDiy(t_mem code) { return And(indY()); }
+  virtual int ANDz (t_mem code) { return And(zpg()); }
+  virtual int ANDzx(t_mem code) { return And(zpgX()); }
+  virtual int AND8 (t_mem code) { return And(imm8()); }
+  virtual int ANDay(t_mem code) { return And(absY()); }
+  virtual int ANDa (t_mem code) { return And(abs()); }
+  virtual int ANDax(t_mem code) { return And(absX()); }
+
+  virtual int eor(class cl_cell8 &op);
+  virtual int EORix(t_mem code) { return eor(indX()); }
+  virtual int EORiy(t_mem code) { return eor(indY()); }
+  virtual int EORz (t_mem code) { return eor(zpg()); }
+  virtual int EORzx(t_mem code) { return eor(zpgX()); }
+  virtual int EOR8 (t_mem code) { return eor(imm8()); }
+  virtual int EORay(t_mem code) { return eor(absY()); }
+  virtual int EORa (t_mem code) { return eor(abs()); }
+  virtual int EORax(t_mem code) { return eor(absX()); }
 };
 
 

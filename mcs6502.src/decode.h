@@ -62,6 +62,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ORAa	instruction_0d
 #define ORAax	instruction_1d
 
+#define ANDix	instruction_21
+#define ANDiy	instruction_31
+#define ANDz	instruction_25
+#define ANDzx	instruction_35
+#define AND8	instruction_29
+#define ANDay	instruction_39
+#define ANDa	instruction_2d
+#define ANDax	instruction_3d
+
+#define EORix	instruction_41
+#define EORiy	instruction_51
+#define EORz	instruction_45
+#define EORzx	instruction_55
+#define EOR8	instruction_49
+#define EORay	instruction_59
+#define EORa	instruction_4d
+#define EORax	instruction_5d
+
 #endif
 
 /* End of mcs6502.src/decode.h */

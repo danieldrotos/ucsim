@@ -108,5 +108,31 @@ cl_mcs6502::ora(class cl_cell8 &op)
   return resGO;
 }
 
+int
+cl_mcs6502::And(class cl_cell8 &op)
+{
+  u8_t f= rF & ~(flagZ|flagS);
+  cA.W(rA & op.R());
+  if (!rA) f|= flagZ;
+  if (rA&0x80) f|= flagS;
+  cF.W(f);
+  vc.rd++;
+  tick(1);
+  return resGO;
+}
+
+int
+cl_mcs6502::eor(class cl_cell8 &op)
+{
+  u8_t f= rF & ~(flagZ|flagS);
+  cA.W(rA ^ op.R());
+  if (!rA) f|= flagZ;
+  if (rA&0x80) f|= flagS;
+  cF.W(f);
+  vc.rd++;
+  tick(1);
+  return resGO;
+}
+
 
 /* End of mcs6502.src/ialu.cc */
