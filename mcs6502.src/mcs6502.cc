@@ -222,12 +222,56 @@ cl_mcs6502::disass(t_addr addr)
 	      a= read_addr(rom, l) + rY;
 	      temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
 	      break;
-	    case 'a':
+	    case 'a': // abs
 	      l= rom->read(addr+1);
 	      h= rom->read(addr+2);
 	      a= h*256+l;
 	      temp.format("0x%04x", a);
 	      temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      break;
+	    case 'z': // zpg
+	      l= rom->read(addr+1);
+	      temp.format("0x%04x", a= l);
+	      temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      break;
+	    case 'X': // zpg.X
+	      l= rom->read(addr+1);
+	      temp.format("0x%04x,X", l);
+	      l+= rX;
+	      a= l;
+	      temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      break;
+	    case 'Y': // zpg.Y
+	      l= rom->read(addr+1);
+	      temp.format("0x%04x,Y", l);
+	      l+= rY;
+	      a= l;
+	      temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      break;
+	    case 'i': // abs,X
+	      l= rom->read(addr+1);
+	      h= rom->read(addr+2);
+	      a= h*256+l;
+	      temp.format("0x%04x,X", a);
+	      a+= rX;
+	      temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      break;
+	    case 'n': // abs,Y
+	      l= rom->read(addr+1);
+	      h= rom->read(addr+2);
+	      a= h*256+l;
+	      temp.format("0x%04x,X", a);
+	      a+= rY;
+	      temp.appendf(" [0x%04x]=0x%02x", a, rom->read(a));
+	      break;
+	    case 'r': // rel
+	      l= rom->read(addr+1);
+	      a= PC + (i8_t)l + 2;
+	      temp.format("0x%04x", a);
+	      break;
+	    case '#': // imm8
+	      l= rom->read(addr+1);
+	      temp.format("#0x02x", l);
 	      break;
 	    }
 	  work+= temp;
@@ -246,6 +290,14 @@ cl_mcs6502::read_addr(class cl_memory *m, t_addr start_addr)
   l= m->read(start_addr);
   h= m->read(start_addr+1);
   return h*256+l;
+}
+
+class cl_cell8 &
+cl_mcs6502::imm8(void)
+{
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(PC);
+  fetch();
+  return *c;
 }
 
 class cl_cell8 &

@@ -107,6 +107,7 @@ public:
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void);
 
+  virtual class cl_cell8 &imm8(void);
   virtual class cl_cell8 &zpg(void);
   virtual class cl_cell8 &zpgX(void);
   virtual class cl_cell8 &abs(void);
@@ -145,6 +146,13 @@ public:
 
   virtual int ora(class cl_cell8 &op);
   virtual int ORAix(t_mem code) { return ora(indX()); }
+  virtual int ORAiy(t_mem code) { return ora(indY()); }
+  virtual int ORAz (t_mem code) { return ora(zpg()); }
+  virtual int ORAzx(t_mem code) { return ora(zpgX()); }
+  virtual int ORA8 (t_mem code) { return ora(imm8()); }
+  virtual int ORAay(t_mem code) { return ora(absY()); }
+  virtual int ORAa (t_mem code) { return ora(abs()); }
+  virtual int ORAax(t_mem code) { return ora(absX()); }
 };
 
 

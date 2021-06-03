@@ -34,6 +34,13 @@ instruction_wrapper_fn itab[256];
 	x (ind,X)
 	y (ind),Y
 	a abs
+	z zpg
+	X zpg,X
+	Y zpg,Y
+	i abs,X
+	p abs.Y
+	r rel
+	# imm8
 */
 
 // code mask branch len mn call tick
@@ -65,6 +72,13 @@ struct dis_entry disass_mcs6502[]=
     { 0xca, 0xff, ' ', 1, "DEX" },
 
     { 0x01, 0xff, ' ', 2, "ORA %x" },
+    { 0x11, 0xff, ' ', 2, "ORA %y" },
+    { 0x05, 0xff, ' ', 2, "ORA %z" },
+    { 0x15, 0xff, ' ', 2, "ORA %X" },
+    { 0x09, 0xff, ' ', 2, "ORA %#" },
+    { 0x19, 0xff, ' ', 2, "ORA %p" },
+    { 0x0d, 0xff, ' ', 3, "ORA %a" },
+    { 0x1d, 0xff, ' ', 3, "ORA %i" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

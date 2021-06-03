@@ -54,6 +54,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DEX	instruction_ca
 
 #define ORAix	instruction_01
+#define ORAiy	instruction_11
+#define ORAz	instruction_05
+#define ORAzx	instruction_15
+#define ORA8	instruction_09
+#define ORAay	instruction_19
+#define ORAa	instruction_0d
+#define ORAax	instruction_1d
 
 #endif
 
