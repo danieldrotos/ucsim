@@ -145,17 +145,17 @@ cl_m6800::mk_hw_elements(void)
   src_swi->init();
   it_sources->add(src_swi);
   
-  add_hw(h= new cl_cia(this, 0, 0xc000));
+  add_hw(h= new cl_cia(this, 0, 0x8000));
   h->init();
 
-  add_hw(h= new cl_cia(this, 1, 0xc008));
+  add_hw(h= new cl_cia(this, 1, 0x8008));
   h->init();
 
   class cl_pia *p0, *p1;
   
-  add_hw(p0= new cl_pia(this, 0, 0xc010));
+  add_hw(p0= new cl_pia(this, 0, 0x8010));
   p0->init();
-  add_hw(p1= new cl_pia(this, 1, 0xc020));
+  add_hw(p1= new cl_pia(this, 1, 0x8020));
   p1->init();
 
   class cl_port_ui *d;
