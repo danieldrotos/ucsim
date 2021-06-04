@@ -116,6 +116,14 @@ public:
   virtual class cl_cell8 &ind(void);
   virtual class cl_cell8 &indX(void);
   virtual class cl_cell8 &indY(void);
+  virtual class cl_cell8 &dstzpg(void) { vc.rd++;vc.wr++; return zpg(); }
+  virtual class cl_cell8 &dstzpgX(void) { vc.rd++;vc.wr++; return zpgX(); }
+  virtual class cl_cell8 &dstabs(void) { vc.rd++;vc.wr++; return abs(); }
+  virtual class cl_cell8 &dstabsX(void) { vc.rd++;vc.wr++; return absX(); }
+  virtual class cl_cell8 &dstabsY(void) { vc.rd++;vc.wr++; return absY(); }
+  virtual class cl_cell8 &dstind(void) { vc.rd++;vc.wr++; return ind(); }
+  virtual class cl_cell8 &dstindX(void) { vc.rd++;vc.wr++; return indX(); }
+  virtual class cl_cell8 &dstindY(void) { vc.rd++;vc.wr++; return indY(); }
   virtual u8_t i8(void) { return fetch(); }
   virtual u16_t i16(void) { u8_t h, l; l=fetch(); h= fetch(); return h*256+l; }
 
