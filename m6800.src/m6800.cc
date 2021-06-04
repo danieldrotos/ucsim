@@ -278,15 +278,15 @@ cl_m6800::dis_tbl(void)
 {
   return(disass_m6800);
 }
-
+/*
 static void add_spaces(chars *c, int len)
 {
   if (c)
     while (c->len() < len) c->append(' ');
 }
-
+*/
 char *
-cl_m6800::disass(t_addr addr)
+cl_m6800::disassc(t_addr addr, chars *comment)
 {
   chars work= chars(), temp= chars();
   const char *b;
@@ -328,32 +328,32 @@ cl_m6800::disass(t_addr addr)
 	      h= rom->read(addr+1);
 	      a= rX+h;
 	      work.appendf("$%02x,X", h);
-	      add_spaces(&work, 20);
+	      //add_spaces(&work, 20);
 	      if (b[i]=='x')
-		work.appendf("; [$%04x]=$%02x", a, rom->read(a));
+		temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      else
-		work.appendf("; [$%04x]=$%04x", a, read_addr(rom, a));
+		temp.appendf("; [$%04x]=$%04x", a, read_addr(rom, a));
 	      break;
 	    case 'e': case 'E': // extended
 	      h= rom->read(addr+1);
 	      l= rom->read(addr+2);
 	      a= h*256 + l;
 	      work.appendf("$%04x", a);
-	      add_spaces(&work, 20);
+	      //add_spaces(&work, 20);
 	      if (b[i]=='e')
-		work.appendf("; [$%04x]=$%02x", a, rom->read(a));
+		temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      else
-		work.appendf("; [$%04x]=$%04x", a,
+		temp.appendf("; [$%04x]=$%04x", a,
 			     read_addr(rom, a));
 	      break;
 	    case 'd': case 'D': // direct
 	      h= a= rom->read(addr+1);
 	      work.appendf("$00%02x", h);
-	      add_spaces(&work, 20);
+	      //add_spaces(&work, 20);
 	      if (b[i]=='d')
-		work.appendf("; [$%04x]=$%02x", a, rom->read(a));
+		temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      else
-		work.appendf("; [$%04x]=$%04x", a,
+	        temp.appendf("; [$%04x]=$%04x", a,
 			     read_addr(rom, a));
 	      break;
 	    case 'b': // immediate 8 bit
@@ -370,6 +370,8 @@ cl_m6800::disass(t_addr addr)
 	      break;
 	    }
 	  //work+= temp;
+	  if (comment && temp.nempty())
+	    *comment= temp;
 	}
       else
 	work+= b[i];
