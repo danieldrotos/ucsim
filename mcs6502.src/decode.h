@@ -106,6 +106,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDAa	instruction_ad
 #define LDAax	instruction_bd
 
+#define CMPix	instruction_c1
+#define CMPiy	instruction_d1
+#define CMPz	instruction_c5
+#define CMPzx	instruction_d5
+#define CMP8	instruction_c9
+#define CMPay	instruction_d9
+#define CMPa	instruction_cd
+#define CMPax	instruction_dd
+
+#define SBCix	instruction_e1
+#define SBCiy	instruction_f1
+#define SBCz	instruction_e5
+#define SBCzx	instruction_f5
+#define SBC8	instruction_e9
+#define SBCay	instruction_f9
+#define SBCa	instruction_ed
+#define SBCax	instruction_fd
+
 #endif
 
 /* End of mcs6502.src/decode.h */

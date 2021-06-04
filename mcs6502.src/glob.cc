@@ -124,6 +124,24 @@ struct dis_entry disass_mcs6502[]=
     { 0xad, 0xff, ' ', 3, "LDA %a" },
     { 0xbd, 0xff, ' ', 3, "LDA %i" },
 
+    { 0xc1, 0xff, ' ', 2, "CMP %x" },
+    { 0xd1, 0xff, ' ', 2, "CMP %y" },
+    { 0xc5, 0xff, ' ', 2, "CMP %z" },
+    { 0xd5, 0xff, ' ', 2, "CMP %X" },
+    { 0xc9, 0xff, ' ', 2, "CMP %#" },
+    { 0xd9, 0xff, ' ', 2, "CMP %p" },
+    { 0xcd, 0xff, ' ', 3, "CMP %a" },
+    { 0xdd, 0xff, ' ', 3, "CMP %i" },
+
+    { 0xe1, 0xff, ' ', 2, "SBC %x" },
+    { 0xf1, 0xff, ' ', 2, "SBC %y" },
+    { 0xe5, 0xff, ' ', 2, "SBC %z" },
+    { 0xf5, 0xff, ' ', 2, "SBC %X" },
+    { 0xe9, 0xff, ' ', 2, "SBC %#" },
+    { 0xf9, 0xff, ' ', 2, "SBC %p" },
+    { 0xed, 0xff, ' ', 3, "SBC %a" },
+    { 0xfd, 0xff, ' ', 3, "SBC %i" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

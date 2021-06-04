@@ -31,14 +31,9 @@ int
 cl_mcs6502::DEY(t_mem code)
 {
   cY.W(rY-1);
-  if (rY)
-    rF&= ~flagZ;
-  else
-    rF|= flagZ;
-  if (rY & 0x80)
-    rF|= flagS;
-  else
-    rF&= ~flagS;
+  rF&= ~(flagZ|flagS);
+  if (!rY) rF|= flagZ;
+  if (rY & 0x80) rF|= flagS;
   cF.W(rF);
   tick(1);
   return resGO;
@@ -48,14 +43,9 @@ int
 cl_mcs6502::INY(t_mem code)
 {
   cY.W(rY+1);
-  if (rY)
-    rF&= ~flagZ;
-  else
-    rF|= flagZ;
-  if (rY & 0x80)
-    rF|= flagS;
-  else
-    rF&= ~flagS;
+  rF&= ~(flagZ|flagS);
+  if (!rY) rF|= flagZ;
+  if (rY & 0x80) rF|= flagS;
   cF.W(rF);
   tick(1);
   return resGO;
@@ -65,14 +55,9 @@ int
 cl_mcs6502::INX(t_mem code)
 {
   cX.W(rX+1);
-  if (rX)
-    rF&= ~flagZ;
-  else
-    rF|= flagZ;
-  if (rX & 0x80)
-    rF|= flagS;
-  else
-    rF&= ~flagS;
+  rF&= ~(flagZ|flagS);
+  if (!rX) rF|= flagZ;
+  if (rX & 0x80) rF|= flagS;
   cF.W(rF);
   tick(1);
   return resGO;
@@ -82,14 +67,9 @@ int
 cl_mcs6502::DEX(t_mem code)
 {
   cX.W(rX-1);
-  if (rX)
-    rF&= ~flagZ;
-  else
-    rF|= flagZ;
-  if (rX & 0x80)
-    rF|= flagS;
-  else
-    rF&= ~flagS;
+  rF&= ~(flagZ|flagS);
+  if (!rX) rF|= flagZ;
+  if (rX & 0x80) rF|= flagS;
   cF.W(rF);
   tick(1);
   return resGO;
@@ -134,40 +114,78 @@ cl_mcs6502::eor(class cl_cell8 &op)
 int
 cl_mcs6502::adc(class cl_cell8 &op)
 {
-  u8_t ah, al, s= op.R(), f, sA= rA;
+  u8_t Op= op.R(), f, oA= rA;
   u16_t res;
   u8_t C= (rF&flagC)?1:0;
-
   f= rF & ~(flagZ|flagC|flagN|flagV);
 
-  if (rF & flagD)
+  if (!(rF & flagD))
     {
-      al= (rA & 0xf) + (s & 0xf) + C;
-      ah= (rA >> 4) + (s >> 4) + ((al>15)?1:0);
-      if (al > 9) al+= 6;
-      if ((rA + s + C) & 0xff) f|= flagZ;
-
-      if (ah & 8) f|= flagN;
-      if ( (((ah << 4) ^ rA) & 0x80) && !((rA ^ s) & 0x80))  f|= flagV;
-
-      if (ah > 9) ah+= 6;
-
-      if (ah > 15) f|= flagC;
-
-      cA.W((ah << 4) | (al & 0xf));
-    }
-  else
-    {
-      res= rA + s + C;
+      res= rA + Op + C;
       cA.W(res);
       if (!rA) f|= flagZ;
       if (rA & 0x80) f|= flagN;
       if (res > 255) f|= flagC;
-      if (((res^sA)&0x80) && !((sA^s)&0x80)) f|= flagV;
+      if ( ((res^oA)&0x80) && !((oA^Op)&0x80) ) f|= flagV;
+    }
+  else
+    {
+      u8_t ah, al;
+      al= (rA & 0xf) + (Op & 0xf) + C;
+      ah= (rA >> 4) + (Op >> 4) + ((al>15)?1:0);
+      if (al > 9) al+= 6;
+      if ((rA + Op + C) & 0xff) f|= flagZ;
+
+      if (ah & 8) f|= flagN;
+      if ( (((ah << 4) ^ rA) & 0x80) && !((rA ^ Op) & 0x80))  f|= flagV;
+
+      if (ah > 9) ah+= 6;
+      if (ah > 15) f|= flagC;
+      cA.W((ah << 4) | (al & 0xf));
     }
   cF.W(f);
   
   tick(1);
+  return resGO;
+}
+
+int
+cl_mcs6502::sbc(class cl_cell8 &op)
+{
+  u8_t Op= op.R();
+  u16_t res;
+  u8_t C= (rF&flagC)?1:0;
+  u8_t f= rF & ~(flagC|flagZ|flagV|flagN);
+  
+  res= rA-Op-1+C;
+  if ( ((res^rA)&0x80) && !((rA^Op)&0x80) ) f|= flagV;
+  if (res < 0x100) f|= flagC;
+  if (!(res & 0xff)) f|= flagZ;
+  if (res & 0x80) f|= flagN;
+  if (!(rF & flagD))
+    cA.W(res);
+  else
+    {
+      u8_t ah, al;
+      al= (rA&0xf)-(Op&0xf)-1+C;
+      if (al&16) al-= 6;
+      ah= (rA>>4)-(Op>>4)-(al&16);
+      if (ah&16) ah-= 6;
+      cA.W( ((ah&0xf)<<4)|(al&0xf) );
+    }
+  cF.W(f);
+  return resGO;
+}
+
+int
+cl_mcs6502::cmp(class cl_cell8 &op1, class cl_cell8 &op2)
+{
+  u16_t res= op1.R() - op2.R();
+  u8_t f= rF & ~(flagZ|flagN|flagC);
+  if (res < 256) f|= flagC;
+  if (!(res&0xff)) f|= flagZ;
+  if (res&0x80) f|= flagN;
+  cF.W(f);
   return resGO;
 }
 

@@ -221,6 +221,26 @@ public:
   virtual int LDAay(t_mem code) { return lda(absY()); }
   virtual int LDAa (t_mem code) { return lda(abs()); }
   virtual int LDAax(t_mem code) { return lda(absX()); }
+
+  virtual int sbc(class cl_cell8 &op);
+  virtual int SBCix(t_mem code) { return sbc(indX()); }
+  virtual int SBCiy(t_mem code) { return sbc(indY()); }
+  virtual int SBCz (t_mem code) { return sbc(zpg()); }
+  virtual int SBCzx(t_mem code) { return sbc(zpgX()); }
+  virtual int SBC8 (t_mem code) { return sbc(imm8()); }
+  virtual int SBCay(t_mem code) { return sbc(absY()); }
+  virtual int SBCa (t_mem code) { return sbc(abs()); }
+  virtual int SBCax(t_mem code) { return sbc(absX()); }
+
+  virtual int cmp(class cl_cell8 &op1, class cl_cell8 &op2);
+  virtual int CMPix(t_mem code) { return cmp(cA, indX()); }
+  virtual int CMPiy(t_mem code) { return cmp(cA, indY()); }
+  virtual int CMPz (t_mem code) { return cmp(cA, zpg()); }
+  virtual int CMPzx(t_mem code) { return cmp(cA, zpgX()); }
+  virtual int CMP8 (t_mem code) { return cmp(cA, imm8()); }
+  virtual int CMPay(t_mem code) { return cmp(cA, absY()); }
+  virtual int CMPa (t_mem code) { return cmp(cA, abs()); }
+  virtual int CMPax(t_mem code) { return cmp(cA, absX()); }
 };
 
 
