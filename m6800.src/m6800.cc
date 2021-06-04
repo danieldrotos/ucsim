@@ -278,13 +278,7 @@ cl_m6800::dis_tbl(void)
 {
   return(disass_m6800);
 }
-/*
-static void add_spaces(chars *c, int len)
-{
-  if (c)
-    while (c->len() < len) c->append(' ');
-}
-*/
+
 char *
 cl_m6800::disassc(t_addr addr, chars *comment)
 {
@@ -371,7 +365,7 @@ cl_m6800::disassc(t_addr addr, chars *comment)
 	    }
 	  //work+= temp;
 	  if (comment && temp.nempty())
-	    *comment= temp;
+	    comment->append(temp);
 	}
       else
 	work+= b[i];

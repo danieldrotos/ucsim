@@ -103,7 +103,6 @@ cl_mcs6502::ora(class cl_cell8 &op)
   if (!rA) f|= flagZ;
   if (rA&0x80) f|= flagS;
   cF.W(f);
-  vc.rd++;
   tick(1);
   return resGO;
 }
@@ -116,7 +115,6 @@ cl_mcs6502::And(class cl_cell8 &op)
   if (!rA) f|= flagZ;
   if (rA&0x80) f|= flagS;
   cF.W(f);
-  vc.rd++;
   tick(1);
   return resGO;
 }
@@ -129,56 +127,49 @@ cl_mcs6502::eor(class cl_cell8 &op)
   if (!rA) f|= flagZ;
   if (rA&0x80) f|= flagS;
   cF.W(f);
-  vc.rd++;
   tick(1);
   return resGO;
 }
 
-/*
-void MathsOpcodeHandlerContainer::adc(Machine& machine, uint8_t value) {
-        auto& cpu = machine.get_cpu();
-        auto init_a = cpu.get_a().get_value();
+int
+cl_mcs6502::adc(class cl_cell8 &op)
+{
+  u8_t ah, al, s= op.R(), f, sA= rA;
+  u16_t res;
+  u8_t C= (rF&flagC)?1:0;
 
-        // allow for operation to breach 8 bits
-        uint16_t result = value + init_a;
-        if (cpu.get_ps().is_carry_set())
-            result += 1;
+  f= rF & ~(flagZ|flagC|flagN|flagV);
 
-        cpu.get_a().set_value(result); // will chop off bit 8 if set
-        auto a = cpu.get_a().get_value();
+  if (rF & flagD)
+    {
+      al= (rA & 0xf) + (s & 0xf) + C;
+      ah= (rA >> 4) + (s >> 4) + ((al>15)?1:0);
+      if (al > 9) al+= 6;
+      if ((rA + s + C) & 0xff) f|= flagZ;
 
-        // 'a' may be 0 if the result wasn't 0, i.e. the cary bit is set
-        set_zero_and_neg_flags(cpu.get_ps(), a);
-        cpu.get_ps().set_carry(result > 0xFF);
-        cpu.get_ps().set_overflow(
-                (value < 0x7F && init_a < 0x7F && a > 0x7F) ||
-                (value > 0x7F && init_a > 0x7F && a < 0x7F));
+      if (ah & 8) f|= flagN;
+      if ( (((ah << 4) ^ rA) & 0x80) && !((rA ^ s) & 0x80))  f|= flagV;
+
+      if (ah > 9) ah+= 6;
+
+      if (ah > 15) f|= flagC;
+
+      cA.W((ah << 4) | (al & 0xf));
     }
-*/
-/*
-#define adc_x(len) 	\
-		register uchar sa,sx=a;\
-		if(!dez) {\
-		  sa=cpu.a;\
-		  a+=cpu.a+carry1();\
-		  overfl=((a^sa)&0x80)&&!((sa^sx)&0x80);\
-		  setc(a);\
-		  a&=0xff;\
-		  setnz(a);\
-		} else {\
-		  register scnt al,ah;\
-		  al=(cpu.a&0x0f)+(a&0x0f)+carry1();\
-		  ah=(cpu.a>>4)+(a>>4)+al>15;\
-		  if(al>9) al+=6;\
-		  zero=!((cpu.a+a+carry1())&0xff);\
-		  neg=ah&8;\
-		  overfl=(((ah<<4)^cpu.a) & 128) && !((cpu.a^a)&128);\
-		  if(ah>9) ah+=6;\
-		  carry=ah>15;\
-		  a=((ah<<4)|(al&0x0f))&0xff; \
-		}\
-		cpu.a=a;\
-		cpu.pc+=len
-*/
+  else
+    {
+      res= rA + s + C;
+      cA.W(res);
+      if (!rA) f|= flagZ;
+      if (rA & 0x80) f|= flagN;
+      if (res > 255) f|= flagC;
+      if (((res^sA)&0x80) && !((sA^s)&0x80)) f|= flagV;
+    }
+  cF.W(f);
+  
+  tick(1);
+  return resGO;
+}
+
 
 /* End of mcs6502.src/ialu.cc */

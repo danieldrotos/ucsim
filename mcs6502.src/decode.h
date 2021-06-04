@@ -80,6 +80,32 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define EORa	instruction_4d
 #define EORax	instruction_5d
 
+#define ADCix	instruction_61
+#define ADCiy	instruction_71
+#define ADCz	instruction_65
+#define ADCzx	instruction_75
+#define ADC8	instruction_69
+#define ADCay	instruction_79
+#define ADCa	instruction_6d
+#define ADCax	instruction_7d
+
+#define STAix	instruction_81
+#define STAiy	instruction_91
+#define STAz	instruction_85
+#define STAzx	instruction_95
+#define STAay	instruction_99
+#define STAa	instruction_8d
+#define STAax	instruction_9d
+
+#define LDAix	instruction_a1
+#define LDAiy	instruction_b1
+#define LDAz	instruction_a5
+#define LDAzx	instruction_b5
+#define LDA8	instruction_a9
+#define LDAay	instruction_b9
+#define LDAa	instruction_ad
+#define LDAax	instruction_bd
+
 #endif
 
 /* End of mcs6502.src/decode.h */

@@ -98,6 +98,32 @@ struct dis_entry disass_mcs6502[]=
     { 0x4d, 0xff, ' ', 3, "EOR %a" },
     { 0x5d, 0xff, ' ', 3, "EOR %i" },
 
+    { 0x61, 0xff, ' ', 2, "ADC %x" },
+    { 0x71, 0xff, ' ', 2, "ADC %y" },
+    { 0x65, 0xff, ' ', 2, "ADC %z" },
+    { 0x75, 0xff, ' ', 2, "ADC %X" },
+    { 0x69, 0xff, ' ', 2, "ADC %#" },
+    { 0x79, 0xff, ' ', 2, "ADC %p" },
+    { 0x6d, 0xff, ' ', 3, "ADC %a" },
+    { 0x7d, 0xff, ' ', 3, "ADC %i" },
+
+    { 0x81, 0xff, ' ', 2, "STA %x" },
+    { 0x91, 0xff, ' ', 2, "STA %y" },
+    { 0x85, 0xff, ' ', 2, "STA %z" },
+    { 0x95, 0xff, ' ', 2, "STA %X" },
+    { 0x99, 0xff, ' ', 2, "STA %p" },
+    { 0x8d, 0xff, ' ', 3, "STA %a" },
+    { 0x9d, 0xff, ' ', 3, "STA %i" },
+
+    { 0xa1, 0xff, ' ', 2, "LDA %x" },
+    { 0xb1, 0xff, ' ', 2, "LDA %y" },
+    { 0xa5, 0xff, ' ', 2, "LDA %z" },
+    { 0xb5, 0xff, ' ', 2, "LDA %X" },
+    { 0xa9, 0xff, ' ', 2, "LDA %#" },
+    { 0xb9, 0xff, ' ', 2, "LDA %p" },
+    { 0xad, 0xff, ' ', 3, "LDA %a" },
+    { 0xbd, 0xff, ' ', 3, "LDA %i" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

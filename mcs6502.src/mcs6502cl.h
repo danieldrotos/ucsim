@@ -97,7 +97,7 @@ public:
 
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
-  virtual char *disass(t_addr addr);
+  virtual char *disassc(t_addr addr, chars *comment=NULL);
   virtual t_addr read_addr(class cl_memory *m, t_addr start_addr);
 
   virtual void print_regs(class cl_console_base *con);
@@ -108,6 +108,7 @@ public:
   virtual bool it_enabled(void);
 
   virtual class cl_cell8 &imm8(void);
+  // read operands
   virtual class cl_cell8 &zpg(void);
   virtual class cl_cell8 &zpgX(void);
   virtual class cl_cell8 &abs(void);
@@ -116,14 +117,24 @@ public:
   virtual class cl_cell8 &ind(void);
   virtual class cl_cell8 &indX(void);
   virtual class cl_cell8 &indY(void);
-  virtual class cl_cell8 &dstzpg(void) { vc.rd++;vc.wr++; return zpg(); }
-  virtual class cl_cell8 &dstzpgX(void) { vc.rd++;vc.wr++; return zpgX(); }
-  virtual class cl_cell8 &dstabs(void) { vc.rd++;vc.wr++; return abs(); }
-  virtual class cl_cell8 &dstabsX(void) { vc.rd++;vc.wr++; return absX(); }
-  virtual class cl_cell8 &dstabsY(void) { vc.rd++;vc.wr++; return absY(); }
-  virtual class cl_cell8 &dstind(void) { vc.rd++;vc.wr++; return ind(); }
-  virtual class cl_cell8 &dstindX(void) { vc.rd++;vc.wr++; return indX(); }
-  virtual class cl_cell8 &dstindY(void) { vc.rd++;vc.wr++; return indY(); }
+  // write operands
+  virtual class cl_cell8 &dstzpg(void) { vc.wr++; return zpg(); }
+  virtual class cl_cell8 &dstzpgX(void) { vc.wr++; return zpgX(); }
+  virtual class cl_cell8 &dstabs(void) { vc.wr++; return abs(); }
+  virtual class cl_cell8 &dstabsX(void) { vc.wr++; return absX(); }
+  virtual class cl_cell8 &dstabsY(void) { vc.wr++; return absY(); }
+  virtual class cl_cell8 &dstind(void) { vc.wr++; return ind(); }
+  virtual class cl_cell8 &dstindX(void) { vc.wr++; return indX(); }
+  virtual class cl_cell8 &dstindY(void) { vc.wr++; return indY(); }
+  // read-modify-write operands
+  virtual class cl_cell8 &rmwzpg(void) { vc.rd++;vc.wr++; return zpg(); }
+  virtual class cl_cell8 &rmwzpgX(void) { vc.rd++;vc.wr++; return zpgX(); }
+  virtual class cl_cell8 &rmwabs(void) { vc.rd++;vc.wr++; return abs(); }
+  virtual class cl_cell8 &rmwabsX(void) { vc.rd++;vc.wr++; return absX(); }
+  virtual class cl_cell8 &rmwabsY(void) { vc.rd++;vc.wr++; return absY(); }
+  virtual class cl_cell8 &rmwind(void) { vc.rd++;vc.wr++; return ind(); }
+  virtual class cl_cell8 &rmwindX(void) { vc.rd++;vc.wr++; return indX(); }
+  virtual class cl_cell8 &rmwindY(void) { vc.rd++;vc.wr++; return indY(); }
   virtual u8_t i8(void) { return fetch(); }
   virtual u16_t i16(void) { u8_t h, l; l=fetch(); h= fetch(); return h*256+l; }
 
@@ -181,6 +192,35 @@ public:
   virtual int EORay(t_mem code) { return eor(absY()); }
   virtual int EORa (t_mem code) { return eor(abs()); }
   virtual int EORax(t_mem code) { return eor(absX()); }
+
+  virtual int adc(class cl_cell8 &op);
+  virtual int ADCix(t_mem code) { return adc(indX()); }
+  virtual int ADCiy(t_mem code) { return adc(indY()); }
+  virtual int ADCz (t_mem code) { return adc(zpg()); }
+  virtual int ADCzx(t_mem code) { return adc(zpgX()); }
+  virtual int ADC8 (t_mem code) { return adc(imm8()); }
+  virtual int ADCay(t_mem code) { return adc(absY()); }
+  virtual int ADCa (t_mem code) { return adc(abs()); }
+  virtual int ADCax(t_mem code) { return adc(absX()); }
+
+  virtual int sta(class cl_cell8 &op);
+  virtual int STAix(t_mem code) { return sta(dstindX()); }
+  virtual int STAiy(t_mem code) { return sta(dstindY()); }
+  virtual int STAz (t_mem code) { return sta(dstzpg()); }
+  virtual int STAzx(t_mem code) { return sta(dstzpgX()); }
+  virtual int STAay(t_mem code) { return sta(dstabsY()); }
+  virtual int STAa (t_mem code) { return sta(dstabs()); }
+  virtual int STAax(t_mem code) { return sta(dstabsX()); }
+
+  virtual int lda(class cl_cell8 &op);
+  virtual int LDAix(t_mem code) { return lda(indX()); }
+  virtual int LDAiy(t_mem code) { return lda(indY()); }
+  virtual int LDAz (t_mem code) { return lda(zpg()); }
+  virtual int LDAzx(t_mem code) { return lda(zpgX()); }
+  virtual int LDA8 (t_mem code) { return lda(imm8()); }
+  virtual int LDAay(t_mem code) { return lda(absY()); }
+  virtual int LDAa (t_mem code) { return lda(abs()); }
+  virtual int LDAax(t_mem code) { return lda(absX()); }
 };
 
 
