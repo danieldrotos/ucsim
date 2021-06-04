@@ -244,7 +244,7 @@ cl_mcs6502::disassc(t_addr addr, chars *comment)
 	      break;
 	    case 'Y': // zpg.Y
 	      l= rom->read(addr+1);
-	      work.appendf("0x%04x,Y", l);
+	      work.appendf("$%04x,Y", l);
 	      l+= rY;
 	      a= l;
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
@@ -261,7 +261,7 @@ cl_mcs6502::disassc(t_addr addr, chars *comment)
 	      l= rom->read(addr+1);
 	      h= rom->read(addr+2);
 	      a= h*256+l;
-	      work.appendf("0x%04x,Y", a);
+	      work.appendf("$%04x,Y", a);
 	      a+= rY;
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
@@ -272,7 +272,7 @@ cl_mcs6502::disassc(t_addr addr, chars *comment)
 	      break;
 	    case '#': // imm8
 	      l= rom->read(addr+1);
-	      work.appendf("#$02x", l);
+	      work.appendf("#$%02x", l);
 	      break;
 	    }
 	  if (comment && temp.nempty())
@@ -380,9 +380,9 @@ void
 cl_mcs6502::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("A= 0x%02x %3d %+4d %c  ", A, A, (i8_t)A, isprint(A)?A:'.');
-  con->dd_printf("X= 0x%02x %3d %+4d %c  ", X, X, (i8_t)X, isprint(X)?X:'.');
-  con->dd_printf("Y= 0x%02x %3d %+4d %c  ", Y, Y, (i8_t)Y, isprint(Y)?Y:'.');
+  con->dd_printf("A= $%02x %3d %+4d %c  ", A, A, (i8_t)A, isprint(A)?A:'.');
+  con->dd_printf("X= $%02x %3d %+4d %c  ", X, X, (i8_t)X, isprint(X)?X:'.');
+  con->dd_printf("Y= $%02x %3d %+4d %c  ", Y, Y, (i8_t)Y, isprint(Y)?Y:'.');
   con->dd_printf("\n");
   con->dd_printf("P= "); con->print_bin(CC, 8); con->dd_printf("\n");
   con->dd_printf("   NV BDIZC\n");
