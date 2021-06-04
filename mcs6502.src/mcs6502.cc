@@ -321,6 +321,15 @@ cl_mcs6502::zpgX(void)
 }
 
 class cl_cell8 &
+cl_mcs6502::zpgY(void)
+{
+  t_addr a= fetch() + rY;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  vc.rd++;
+  return *c;
+}
+
+class cl_cell8 &
 cl_mcs6502::abs(void)
 {
   t_addr a= i16();

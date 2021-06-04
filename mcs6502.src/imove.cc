@@ -121,6 +121,14 @@ cl_mcs6502::TSX(t_mem code)
 }
 
 int
+cl_mcs6502::st(u8_t reg, class cl_cell8 &op)
+{
+  op.W(reg);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_mcs6502::sta(class cl_cell8 &op)
 {
   op.W(rA);
@@ -140,5 +148,16 @@ cl_mcs6502::lda(class cl_cell8 &op)
   return resGO;
 }
 
+int
+cl_mcs6502::ld(class cl_cell8 &reg, class cl_cell8 &op)
+{
+  u8_t v, f= rF & ~(flagZ|flagN);
+  reg.W(v= op.R());
+  if (!v) f|= flagZ;
+  if (v & 0x80) f|= flagN;
+  cF.W(f);
+  tick(1);
+  return resGO;
+}
 
 /* End of mcs6502.src/imove.cc */

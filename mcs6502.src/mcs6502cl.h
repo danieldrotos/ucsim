@@ -111,6 +111,7 @@ public:
   // read operands
   virtual class cl_cell8 &zpg(void);
   virtual class cl_cell8 &zpgX(void);
+  virtual class cl_cell8 &zpgY(void);
   virtual class cl_cell8 &abs(void);
   virtual class cl_cell8 &absX(void);
   virtual class cl_cell8 &absY(void);
@@ -241,6 +242,26 @@ public:
   virtual int CMPay(t_mem code) { return cmp(cA, absY()); }
   virtual int CMPa (t_mem code) { return cmp(cA, abs()); }
   virtual int CMPax(t_mem code) { return cmp(cA, absX()); }
+
+  virtual int st(u8_t reg, class cl_cell8 &op);
+  virtual int STYz (t_mem code) { return st(rY, dstzpg()); }
+  virtual int STYzx(t_mem code) { return st(rY, dstzpgX()); }
+  virtual int STYa (t_mem code) { return st(rY, dstabs()); }
+  virtual int STXz (t_mem code) { return st(rX, dstzpg()); }
+  virtual int STXzy(t_mem code) { return st(rX, dstzpgX()); }
+  virtual int STXa (t_mem code) { return st(rX, dstabs()); }
+
+  virtual int ld(class cl_cell8 &reg, class cl_cell8 &op);
+  virtual int LDY8 (t_mem code) { return ld(cY, imm8()); }
+  virtual int LDYz (t_mem code) { return ld(cY, zpg()); }
+  virtual int LDYzx(t_mem code) { return ld(cY, zpgX()); }
+  virtual int LDYa (t_mem code) { return ld(cY, abs()); }
+  virtual int LDYax(t_mem code) { return ld(cY, absX()); }
+  virtual int LDX8 (t_mem code) { return ld(cX, imm8()); }
+  virtual int LDXz (t_mem code) { return ld(cX, zpg()); }
+  virtual int LDXzy(t_mem code) { return ld(cX, zpgY()); }
+  virtual int LDXa (t_mem code) { return ld(cX, abs()); }
+  virtual int LDXay(t_mem code) { return ld(cX, absY()); }
 };
 
 
