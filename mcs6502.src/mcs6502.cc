@@ -230,6 +230,19 @@ cl_mcs6502::disassc(t_addr addr, chars *comment)
 	      work.appendf("$%04x", a);
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
+	    case 'j': // JMP abs
+	      l= rom->read(addr+1);
+	      h= rom->read(addr+2);
+	      a= h*256+1;
+	      work.appendf("$%04x", a);
+	      break;
+	    case 'J': // JMP (ind)
+	      l= rom->read(addr+1);
+	      h= rom->read(addr+2);
+	      a= h*256+1;
+	      work.appendf("($%04x)", a);
+	      temp.appendf("; [$%04x]=$%04x", a, read_addr(rom, a));
+	      break;
 	    case 'z': // zpg
 	      l= rom->read(addr+1);
 	      work.appendf("$%04x", a= l);
@@ -427,14 +440,11 @@ cl_mcs6502::accept_it(class it_level *il)
 
   tick(2);
 
-  rom->write(0x0100 + rSP, (PC>>8)&0xff);
-  rSP--;
-  rom->write(0x0100 + rSP, (PC)&0xff);
-  rSP--;
+  push_addr(PC);
   rom->write(0x0100 + rSP, rF);
   rSP--;
-  tick(3);
-  vc.wr+= 3;
+  tick(1);
+  vc.wr++;
   
   t_addr a= read_addr(rom, is->addr);
   tick(2);
@@ -452,6 +462,30 @@ bool
 cl_mcs6502::it_enabled(void)
 {
   return !(rF & flagI);
+}
+
+void
+cl_mcs6502::push_addr(t_addr a)
+{
+  rom->write(0x0100 + rSP, (a>>8));
+  rSP--;
+  rom->write(0x0100 + rSP, (a));
+  rSP--;
+  tick(2);
+  vc.wr+= 2;
+}
+
+t_addr
+cl_mcs6502::pop_addr(void)
+{
+  u8_t h, l;
+  rSP++;
+  l= rom->read(0x0100 + rSP);
+  rSP++;
+  h= rom->read(0x0100 + rSP);
+  tick(2);
+  vc.rd+= 2;
+  return h*256+l;
 }
 
 

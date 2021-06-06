@@ -106,7 +106,9 @@ public:
   virtual int priority_of(uchar nuof_it) { return nuof_it; }
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void);
-
+  virtual void push_addr(t_addr a);
+  virtual t_addr pop_addr(void);
+  
   virtual class cl_cell8 &imm8(void);
   // read operands
   virtual class cl_cell8 &zpg(void);
@@ -312,6 +314,12 @@ public:
   virtual int bit(class cl_cell8 &op);
   virtual int BITz(t_mem code) { return bit(zpg()); }
   virtual int BITa(t_mem code) { return bit(abs()); }
+
+  virtual int JMPa(t_mem code);
+  virtual int JMPi(t_mem code);
+
+  virtual int JSR(t_mem code);
+  virtual int RTS(t_mem code);
 };
 
 

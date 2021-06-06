@@ -185,6 +185,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define BITz	instruction_24
 #define BITa	instruction_2c
 
+#define JMPa	instruction_4c
+#define JMPi	instruction_6c
+
+#define JSR	instruction_20
+#define RTS	instruction_60
+
 #endif
 
 /* End of mcs6502.src/decode.h */

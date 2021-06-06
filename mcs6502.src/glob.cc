@@ -203,6 +203,12 @@ struct dis_entry disass_mcs6502[]=
     { 0x24, 0xff, ' ', 2, "BIT %z" },
     { 0x2c, 0xff, ' ', 3, "BIT %a" },
 
+    { 0x4c, 0xff, ' ', 3, "JMP %j" },
+    { 0x6c, 0xff, ' ', 3, "JMP %J" },
+    
+    { 0x20, 0xff, ' ', 3, "JSR %j" },
+    { 0x60, 0xff, ' ', 3, "RTS" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 
