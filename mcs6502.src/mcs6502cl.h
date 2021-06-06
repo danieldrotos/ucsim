@@ -320,6 +320,16 @@ public:
 
   virtual int JSR(t_mem code);
   virtual int RTS(t_mem code);
+  
+  virtual int branch(bool cond);
+  virtual int BPL(t_mem code) { return branch(!(rF & flagN)); }
+  virtual int BMI(t_mem code) { return branch( (rF & flagN)); }
+  virtual int BVC(t_mem code) { return branch(!(rF & flagV)); }
+  virtual int BVS(t_mem code) { return branch( (rF & flagV)); }
+  virtual int BCC(t_mem code) { return branch(!(rF & flagC)); }
+  virtual int BCS(t_mem code) { return branch( (rF & flagC)); }
+  virtual int BNE(t_mem code) { return branch(!(rF & flagZ)); }
+  virtual int BEQ(t_mem code) { return branch( (rF & flagZ)); }
 };
 
 

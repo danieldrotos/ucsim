@@ -62,5 +62,15 @@ cl_mcs6502::RTS(t_mem code)
   return resGO;
 }
 
+int
+cl_mcs6502::branch(bool cond)
+{
+  i8_t rel= fetch();
+  t_addr a= (PC+rel) & 0xffff;
+  if (cond)
+    PC= a;
+  return resGO;
+}
+
 
 /* End of mcs6502.src/ibranch.cc */

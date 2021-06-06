@@ -191,6 +191,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JSR	instruction_20
 #define RTS	instruction_60
 
+#define BPL	instruction_10
+#define BMI	instruction_30
+#define BVC	instruction_50
+#define BVS	instruction_70
+#define BCC	instruction_90
+#define BCS	instruction_b0
+#define BNE	instruction_d0
+#define BEQ	instruction_f0
+
 #endif
 
 /* End of mcs6502.src/decode.h */

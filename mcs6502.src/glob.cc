@@ -209,6 +209,15 @@ struct dis_entry disass_mcs6502[]=
     { 0x20, 0xff, ' ', 3, "JSR %j" },
     { 0x60, 0xff, ' ', 3, "RTS" },
 
+    { 0x10, 0xff, ' ', 2, "BPL %r" },
+    { 0x30, 0xff, ' ', 2, "BMI %r" },
+    { 0x50, 0xff, ' ', 2, "BVC %r" },
+    { 0x70, 0xff, ' ', 2, "BVS %r" },
+    { 0x90, 0xff, ' ', 2, "BCC %r" },
+    { 0xb0, 0xff, ' ', 2, "BCS %r" },
+    { 0xd0, 0xff, ' ', 2, "BNE %r" },
+    { 0xf0, 0xff, ' ', 2, "BEQ %r" },
+    
     { 0, 0, 0, 0, 0, 0 }
   };
 
