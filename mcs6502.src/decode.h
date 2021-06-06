@@ -142,6 +142,49 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDXa	instruction_ae
 #define LDXay	instruction_be
 
+#define CPY8	instruction_c0
+#define CPYz	instruction_c4
+#define CPYa	instruction_cc
+#define CPX8	instruction_e0
+#define CPXz	instruction_e4
+#define CPXa	instruction_ec
+
+#define INCz	instruction_e6
+#define INCzx	instruction_f6
+#define INCa	instruction_ee
+#define INCax	instruction_fe
+#define DECz	instruction_c6
+#define DECzx	instruction_d6
+#define DECa	instruction_ce
+#define DECax	instruction_de
+
+#define ASLz	instruction_06
+#define ASLzx	instruction_16
+#define ASL	instruction_0a
+#define ASLa	instruction_0e
+#define ASLax	instruction_1e
+
+#define LSRz	instruction_46
+#define LSRzx	instruction_56
+#define LSR	instruction_4a
+#define LSRa	instruction_4e
+#define LSRax	instruction_5e
+
+#define ROLz	instruction_26
+#define ROLzx	instruction_36
+#define ROL	instruction_2a
+#define ROLa	instruction_2e
+#define ROLax	instruction_3e
+
+#define RORz	instruction_66
+#define RORzx	instruction_76
+#define ROR	instruction_6a
+#define RORa	instruction_6e
+#define RORax	instruction_7e
+
+#define BITz	instruction_24
+#define BITa	instruction_2c
+
 #endif
 
 /* End of mcs6502.src/decode.h */
