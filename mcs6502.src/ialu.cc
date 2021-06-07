@@ -35,6 +35,7 @@ cl_mcs6502::INY(t_mem code)
   if (!rY) rF|= flagZ;
   if (rY & 0x80) rF|= flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 
@@ -46,6 +47,7 @@ cl_mcs6502::INX(t_mem code)
   if (!rX) rF|= flagZ;
   if (rX & 0x80) rF|= flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 
@@ -69,6 +71,7 @@ cl_mcs6502::DEY(t_mem code)
   if (!rY) rF|= flagZ;
   if (rY & 0x80) rF|= flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 
@@ -80,6 +83,7 @@ cl_mcs6502::DEX(t_mem code)
   if (!rX) rF|= flagZ;
   if (rX & 0x80) rF|= flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 

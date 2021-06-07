@@ -40,6 +40,7 @@ cl_mcs6502::TYA(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 
@@ -56,6 +57,7 @@ cl_mcs6502::TAY(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 
@@ -72,6 +74,7 @@ cl_mcs6502::TXA(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 
@@ -79,6 +82,7 @@ int
 cl_mcs6502::TXS(t_mem code)
 {
   cSP.W(rX);
+  tick(1);
   return resGO;
 }
 
@@ -95,6 +99,7 @@ cl_mcs6502::TAX(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 
@@ -111,6 +116,7 @@ cl_mcs6502::TSX(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
+  tick(1);
   return resGO;
 }
 

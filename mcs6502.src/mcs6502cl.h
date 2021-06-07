@@ -214,7 +214,7 @@ public:
   virtual int STAzx(t_mem code) { return sta(dstzpgX()); }
   virtual int STAay(t_mem code) { return sta(dstabsY()); }
   virtual int STAa (t_mem code) { return sta(dstabs()); }
-  virtual int STAax(t_mem code) { return sta(dstabsX()); }
+  virtual int STAax(t_mem code) { tick(1); return sta(dstabsX()); }
 
   virtual int lda(class cl_cell8 &op);
   virtual int LDAix(t_mem code) { return lda(indX()); }
@@ -287,28 +287,28 @@ public:
   virtual int asl(class cl_cell8 &op);
   virtual int ASLz (t_mem code) { return asl(rmwzpg()); }
   virtual int ASLzx(t_mem code) { return asl(rmwzpgX()); }
-  virtual int ASL  (t_mem code) { return asl(cA); }
+  virtual int ASL  (t_mem code) { tick(1); return asl(cA); }
   virtual int ASLa (t_mem code) { return asl(rmwabs()); }
   virtual int ASLax(t_mem code) { return asl(rmwabsX()); }
 
   virtual int lsr(class cl_cell8 &op);
   virtual int LSRz (t_mem code) { return lsr(rmwzpg()); }
   virtual int LSRzx(t_mem code) { return lsr(rmwzpgX()); }
-  virtual int LSR  (t_mem code) { return lsr(cA); }
+  virtual int LSR  (t_mem code) { tick(1); return lsr(cA); }
   virtual int LSRa (t_mem code) { return lsr(rmwabs()); }
   virtual int LSRax(t_mem code) { return lsr(rmwabsX()); }
 
   virtual int rol(class cl_cell8 &op);
   virtual int ROLz (t_mem code) { return rol(rmwzpg()); }
   virtual int ROLzx(t_mem code) { return rol(rmwzpgX()); }
-  virtual int ROL  (t_mem code) { return rol(cA); }
+  virtual int ROL  (t_mem code) { tick(1); return rol(cA); }
   virtual int ROLa (t_mem code) { return rol(rmwabs()); }
   virtual int ROLax(t_mem code) { return rol(rmwabsX()); }
 
   virtual int ror(class cl_cell8 &op);
   virtual int RORz (t_mem code) { return ror(rmwzpg()); }
   virtual int RORzx(t_mem code) { return ror(rmwzpgX()); }
-  virtual int ROR  (t_mem code) { return ror(cA); }
+  virtual int ROR  (t_mem code) { tick(1); return ror(cA); }
   virtual int RORa (t_mem code) { return ror(rmwabs()); }
   virtual int RORax(t_mem code) { return ror(rmwabsX()); }
 

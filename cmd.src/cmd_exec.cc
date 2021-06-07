@@ -238,6 +238,7 @@ CMDHELP(cl_step_cmd,
 	"step [number[unit]]",
 	"Step",
 	"long help of step")
+
 /*
  * Command: next
  *----------------------------------------------------------------------------

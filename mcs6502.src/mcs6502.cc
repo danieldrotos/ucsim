@@ -181,7 +181,7 @@ cl_mcs6502::disassc(t_addr addr, chars *comment)
   int i;
   bool first;
   u8_t h, l;
-  t_addr a;
+  u16_t a;
   
   if (!dt)
     return NULL;
