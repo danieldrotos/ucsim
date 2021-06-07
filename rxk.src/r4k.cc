@@ -86,6 +86,7 @@ cl_r4k_cpu::cl_r4k_cpu(class cl_uc *auc):
   cl_rxk_cpu(auc)
 {
   r4uc= (class cl_r4k *)auc;
+  edmr= new cl_cell8();
 }
 
 int
