@@ -32,6 +32,7 @@ cl_mcs6502::JMPa(t_mem code)
 {
   u16_t a= i16();
   PC= a;
+  tick(2);
   return resGO;
 }
 
@@ -41,8 +42,8 @@ cl_mcs6502::JMPi(t_mem code)
   u16_t a= i16();
   a= read_addr(rom, a);
   PC= a;
-  tick(2);
   vc.rd+= 2;
+  tick(4);
   return resGO;
 }
 

@@ -40,7 +40,6 @@ cl_mcs6502::TYA(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -57,7 +56,6 @@ cl_mcs6502::TAY(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -74,7 +72,6 @@ cl_mcs6502::TXA(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -82,7 +79,6 @@ int
 cl_mcs6502::TXS(t_mem code)
 {
   cSP.W(rX);
-  tick(1);
   return resGO;
 }
 
@@ -99,7 +95,6 @@ cl_mcs6502::TAX(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -116,7 +111,6 @@ cl_mcs6502::TSX(t_mem code)
   else
     rF&= ~flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -124,7 +118,6 @@ int
 cl_mcs6502::st(u8_t reg, class cl_cell8 &op)
 {
   op.W(reg);
-  tick(1);
   return resGO;
 }
 
@@ -132,7 +125,6 @@ int
 cl_mcs6502::sta(class cl_cell8 &op)
 {
   op.W(rA);
-  tick(1);
   return resGO;
 }
 
@@ -144,7 +136,6 @@ cl_mcs6502::lda(class cl_cell8 &op)
   if (!rA) f|= flagZ;
   if (rA & 0x80) f|= flagN;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -156,7 +147,6 @@ cl_mcs6502::ld(class cl_cell8 &reg, class cl_cell8 &op)
   if (!v) f|= flagZ;
   if (v & 0x80) f|= flagN;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 

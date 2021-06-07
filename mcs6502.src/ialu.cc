@@ -35,7 +35,6 @@ cl_mcs6502::INY(t_mem code)
   if (!rY) rF|= flagZ;
   if (rY & 0x80) rF|= flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -47,7 +46,6 @@ cl_mcs6502::INX(t_mem code)
   if (!rX) rF|= flagZ;
   if (rX & 0x80) rF|= flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -60,7 +58,6 @@ cl_mcs6502::inc(class cl_cell8 &op)
   if (!v) rF|= flagZ;
   if (v & 0x80) rF|= flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -72,7 +69,6 @@ cl_mcs6502::DEY(t_mem code)
   if (!rY) rF|= flagZ;
   if (rY & 0x80) rF|= flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -84,7 +80,6 @@ cl_mcs6502::DEX(t_mem code)
   if (!rX) rF|= flagZ;
   if (rX & 0x80) rF|= flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -97,7 +92,6 @@ cl_mcs6502::dec(class cl_cell8 &op)
   if (!v) rF|= flagZ;
   if (v & 0x80) rF|= flagS;
   cF.W(rF);
-  tick(1);
   return resGO;
 }
 
@@ -109,7 +103,6 @@ cl_mcs6502::ora(class cl_cell8 &op)
   if (!rA) f|= flagZ;
   if (rA&0x80) f|= flagS;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -121,7 +114,6 @@ cl_mcs6502::And(class cl_cell8 &op)
   if (!rA) f|= flagZ;
   if (rA&0x80) f|= flagS;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -133,7 +125,6 @@ cl_mcs6502::eor(class cl_cell8 &op)
   if (!rA) f|= flagZ;
   if (rA&0x80) f|= flagS;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -170,8 +161,6 @@ cl_mcs6502::adc(class cl_cell8 &op)
       cA.W((ah << 4) | (al & 0xf));
     }
   cF.W(f);
-  
-  tick(1);
   return resGO;
 }
 
@@ -212,7 +201,6 @@ cl_mcs6502::cmp(class cl_cell8 &op1, class cl_cell8 &op2)
   if (!(res&0xff)) f|= flagZ;
   if (res&0x80) f|= flagN;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -226,7 +214,6 @@ cl_mcs6502::asl(class cl_cell8 &op)
   if (!v) f|= flagZ;
   if (v&0x80) f|= flagN;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -239,7 +226,6 @@ cl_mcs6502::lsr(class cl_cell8 &op)
   op.W(v>>=1);
   if (!v) f|= flagZ;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -255,7 +241,6 @@ cl_mcs6502::rol(class cl_cell8 &op)
   if (!v) f|= flagZ;
   if (v&0x80) f|= flagN;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -271,7 +256,6 @@ cl_mcs6502::ror(class cl_cell8 &op)
   if (!v) f|= flagZ;
   if (v&0x80) f|= flagN;
   cF.W(f);
-  tick(1);
   return resGO;
 }
 
@@ -284,7 +268,6 @@ cl_mcs6502::bit(class cl_cell8 &op)
   if (v&0x40) f|= flagV;
   if (!(rA & v)) f|= flagZ;
   cF.W(f);
-  tick(2);
   return resGO;
 }
 

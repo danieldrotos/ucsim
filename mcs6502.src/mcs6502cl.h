@@ -130,14 +130,15 @@ public:
   virtual class cl_cell8 &dstindX(void) { vc.wr++; return indX(); }
   virtual class cl_cell8 &dstindY(void) { vc.wr++; return indY(); }
   // read-modify-write operands
-  virtual class cl_cell8 &rmwzpg(void) { vc.rd++;vc.wr++; return zpg(); }
-  virtual class cl_cell8 &rmwzpgX(void) { vc.rd++;vc.wr++; return zpgX(); }
-  virtual class cl_cell8 &rmwabs(void) { vc.rd++;vc.wr++; return abs(); }
-  virtual class cl_cell8 &rmwabsX(void) { vc.rd++;vc.wr++; return absX(); }
-  virtual class cl_cell8 &rmwabsY(void) { vc.rd++;vc.wr++; return absY(); }
-  virtual class cl_cell8 &rmwind(void) { vc.rd++;vc.wr++; return ind(); }
-  virtual class cl_cell8 &rmwindX(void) { vc.rd++;vc.wr++; return indX(); }
-  virtual class cl_cell8 &rmwindY(void) { vc.rd++;vc.wr++; return indY(); }
+  virtual class cl_cell8 &rmwzpg(void) { vc.rd++;vc.wr++;tick(2); return zpg(); }
+  virtual class cl_cell8 &rmwzpgX(void) { vc.rd++;vc.wr++;tick(2); return zpgX(); }
+  virtual class cl_cell8 &rmwzpgY(void) { vc.rd++;vc.wr++;tick(2); return zpgY(); }
+  virtual class cl_cell8 &rmwabs(void) { vc.rd++;vc.wr++;tick(2); return abs(); }
+  virtual class cl_cell8 &rmwabsX(void) { vc.rd++;vc.wr++;tick(3); return absX(); }
+  virtual class cl_cell8 &rmwabsY(void) { vc.rd++;vc.wr++;tick(3); return absY(); }
+  virtual class cl_cell8 &rmwind(void) { vc.rd++;vc.wr++;tick(1); return ind(); }
+  virtual class cl_cell8 &rmwindX(void) { vc.rd++;vc.wr++;tick(1); return indX(); }
+  virtual class cl_cell8 &rmwindY(void) { vc.rd++;vc.wr++;tick(1); return indY(); }
   virtual u8_t i8(void) { return fetch(); }
   virtual u16_t i16(void) { u8_t h, l; l=fetch(); h= fetch(); return h*256+l; }
 

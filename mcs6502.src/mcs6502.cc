@@ -312,70 +312,84 @@ cl_mcs6502::imm8(void)
 {
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(PC);
   fetch();
+  tick(1);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::zpg(void)
 {
-  t_addr a= fetch();
+  u8_t a= fetch();
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd++;
+  tick(2);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::zpgX(void)
 {
-  t_addr a= fetch() + rX;
+  u16_t a= fetch() + rX;
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd++;
+  tick(3);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::zpgY(void)
 {
-  t_addr a= fetch() + rY;
+  u16_t a= fetch() + rY;
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd++;
+  tick(3);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::abs(void)
 {
-  t_addr a= i16();
+  u16_t a= i16();
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd++;
+  tick(3);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::absX(void)
 {
-  t_addr a= i16() + rX;
-  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  u16_t a1= i16();
+  u16_t a2= a1 + rX;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a2);
   vc.rd++;
+  tick(3);
+  if ((a1&0xff00) != (a2&0xff00))
+    tick(1);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::absY(void)
 {
-  t_addr a= i16() + rY;
-  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  u16_t a1= i16();
+  u16_t a2= a1 + rY;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a2);
   vc.rd++;
+  tick(3);
+  if ((a1&0xff00) != (a2&0xff00))
+    tick(1);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::ind(void)
 {
-  t_addr a= i16();
+  u16_t a= i16();
   a= read_addr(rom, a);
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd+= 3;
+  tick(3);
   return *c;
 }
 
@@ -383,18 +397,23 @@ class cl_cell8 &
 cl_mcs6502::indX(void)
 {
   u8_t a0= fetch() + rX;
-  t_addr a= read_addr(rom, a0);
+  u16_t a= read_addr(rom, a0);
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd+= 3;
+  tick(5);
   return *c;
 }
 
 class cl_cell8 &
 cl_mcs6502::indY(void)
 {
-  t_addr a= read_addr(rom, fetch()) + rY;
-  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  u16_t a1= read_addr(rom, fetch());
+  u16_t a2= a1 + rY;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a2);
   vc.rd+= 3;
+  tick(4);
+  if ((a1&0xff00) != (a2&0xff00))
+    tick(1);
   return *c;
 }
 
@@ -419,18 +438,13 @@ cl_mcs6502::print_regs(class cl_console_base *con)
 int
 cl_mcs6502::exec_inst(void)
 {
-  t_mem code;
-  int res= resGO;
+  int res;
 
   if ((res= exec_inst_tab(itab)) != resNOT_DONE)
     return res;
 
-  instPC= PC;
-  if (fetch(&code))
-    return(resBREAKPOINT);
-  tick(1);
-  res= inst_unknown(code);
-  return(res);
+  inst_unknown(rom->read(instPC));
+  return(resINV_INST);
 }
 
 int

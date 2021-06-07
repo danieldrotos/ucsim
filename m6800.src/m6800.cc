@@ -407,17 +407,12 @@ cl_m6800::print_regs(class cl_console_base *con)
 int
 cl_m6800::exec_inst(void)
 {
-  t_mem code;
   int res= resGO;
 
   if ((res= exec_inst_tab(itab)) != resNOT_DONE)
     return res;
 
-  instPC= PC;
-  if (fetch(&code))
-    return(resBREAKPOINT);
-  tick(1);
-  res= inst_unknown(code);
+  inst_unknown(rom->read(instPC));
   return(res);
 }
 
