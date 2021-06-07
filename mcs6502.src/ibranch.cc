@@ -60,6 +60,7 @@ int
 cl_mcs6502::RTS(t_mem code)
 {
   PC= pop_addr();
+  tick(3);
   return resGO;
 }
 
@@ -67,9 +68,15 @@ int
 cl_mcs6502::branch(bool cond)
 {
   i8_t rel= fetch();
-  t_addr a= (PC+rel) & 0xffff;
+  u16_t a= PC+rel;
   if (cond)
-    PC= a;
+    {
+      if ((PC&0xff00) != (a&0xff00))
+	tick(1);
+      PC= a;
+      tick(1);
+    }
+  tick(1);
   return resGO;
 }
 

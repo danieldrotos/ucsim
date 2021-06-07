@@ -456,7 +456,7 @@ cl_mcs6502::accept_it(class it_level *il)
 
   push_addr(PC);
   rom->write(0x0100 + rSP, rF);
-  rSP--;
+  cSP.W(rSP-1);
   tick(1);
   vc.wr++;
   
@@ -482,9 +482,9 @@ void
 cl_mcs6502::push_addr(t_addr a)
 {
   rom->write(0x0100 + rSP, (a>>8));
-  rSP--;
+  cSP.W(rSP-1);
   rom->write(0x0100 + rSP, (a));
-  rSP--;
+  cSP.W(rSP-1);
   tick(2);
   vc.wr+= 2;
 }
@@ -493,9 +493,9 @@ t_addr
 cl_mcs6502::pop_addr(void)
 {
   u8_t h, l;
-  rSP++;
+  cSP.W(rSP+1);
   l= rom->read(0x0100 + rSP);
-  rSP++;
+  cSP.W(rSP+1);
   h= rom->read(0x0100 + rSP);
   tick(2);
   vc.rd+= 2;
