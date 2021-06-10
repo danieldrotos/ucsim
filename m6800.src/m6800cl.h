@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef M6800CL_HEADER
 #define M6800CL_HEADER
 
+#include "ddconfig.h"
+
 #include "uccl.h"
 #include "memcl.h"
 #include "itsrccl.h"
