@@ -387,15 +387,33 @@ void
 cl_m6800::analyze(t_addr addr)
 {
   struct dis_entry *di;
-  t_addr pa;
-
+  t_addr pa, ta;
+  
   di= get_dis_entry(addr);
-  while (di && (di->mnemonic!=NULL))
+  while (!inst_at(addr) && di && (di->mnemonic!=NULL))
     {
       pa= addr;
       set_inst_at(addr);
       switch (di->branch)
 	{
+	case 'r': // jump rel
+	  {
+	    i8_t r= rom->read(addr+1);
+	    ta= addr+2+r;
+	    addr= ta;
+	  }
+	  break;
+	case 's': // SWI
+	  ta= read_addr(rom, SWI_AT);
+	  analyze(ta);
+	  break;
+	case 'E': // call extended
+	  ta= read_addr(rom, addr+1);
+	  analyze(ta);
+	  break;
+	case 'e': // jump extended
+	  addr= read_addr(rom, addr+1);
+	  break;
 	case '_':
 	  return;
 	default:
