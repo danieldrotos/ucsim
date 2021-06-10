@@ -32,7 +32,7 @@ PICOPT		= @PICOPT@
 SHAREDLIB	= @SHAREDLIB@
 EXEEXT		= @EXEEXT@
 
-LIBS		= -L$(top_builddir) -lmotorola -lm6800 -lsim -lucsimutil -lguiucsim -lcmd -lsim @LIBS@
+LIBS		= -L$(top_builddir) -lm6800 -lmotorola -lsim -lucsimutil -lguiucsim -lcmd -lsim @LIBS@
 DL		= @DL@
 dl_ok		= @dl_ok@
 
@@ -50,7 +50,7 @@ infodir         = @infodir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-OBJECTS_SHARED	= simm68hc12.o m68hc12.o
+OBJECTS_SHARED	= glob.o simm68hc12.o m68hc11.o m68hc12.o
 
 OBJECTS_EXE	= sm68hc12.o
 OBJECTS		= $(OBJECTS_SHARED) $(OBJECTS_EXE)

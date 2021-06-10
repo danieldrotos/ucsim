@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (m68hc12cl.h)
+ * Simulator of microcontrollers (m68hc11.cc)
  *
  * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
@@ -25,29 +25,44 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef M68HC12CL_HEADER
-#define M68HC12CL_HEADER
+#include <stdlib.h>
+#include <ctype.h>
 
-#include "uccl.h"
-#include "memcl.h"
+#include "globals.h"
+#include "utils.h"
+
+#include "dregcl.h"
 
 #include "m68hc11cl.h"
 
-/*
- * Base of M68HC12 processor
- */
-
-class cl_m68hc12: public cl_m68hc11
+cl_m68hc11::cl_m68hc11(class cl_sim *asim):
+  cl_m6800(asim)
 {
-public:
-  cl_m68hc12(class cl_sim *asim);
-  virtual int init(void);
-  virtual const char *id_string(void);
-  virtual void reset(void);
+}
 
-  virtual int clock_per_cycle(void) { return 1; }
-};
 
-#endif
+int
+cl_m68hc11::init(void)
+{
+  cl_m6800::init();
+  
+  xtal= 1000000;
+  
+  return 0;
+}
 
-/* End of m68hc12.src/m68hc12cl.h */
+
+const char *
+cl_m68hc11::id_string(void)
+{
+  return "M68HC11";
+}
+
+void
+cl_m68hc11::reset(void)
+{
+  cl_m6800::reset();
+}
+
+
+/* End of m68hc12.src/m68hc11.cc */

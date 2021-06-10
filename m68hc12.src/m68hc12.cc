@@ -36,8 +36,33 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "m68hc12cl.h"
 
 cl_m68hc12::cl_m68hc12(class cl_sim *asim):
-  cl_m6000(asim)
+  cl_m68hc11(asim)
 {
 }
+
+
+int
+cl_m68hc12::init(void)
+{
+  cl_m68hc11::init();
+  
+  xtal= 1000000;
+  
+  return 0;
+}
+
+
+const char *
+cl_m68hc12::id_string(void)
+{
+  return "M68HC12";
+}
+
+void
+cl_m68hc12::reset(void)
+{
+  cl_m68hc11::reset();
+}
+
 
 /* End of m68hc12.src/m68hc12.cc */
