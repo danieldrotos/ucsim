@@ -34,8 +34,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "decode.h"
 
 
-#define rA  (A)
-#define rB  (B)
+struct acc_t {
+  union {
+    u16_t Dr;
+    struct {
+#ifdef WORDS_BIGENDIAN
+      u8_t Ar;
+      u8_t Br;
+#else
+      u8_t Br;
+      u8_t Ar;
+#endif
+    } a8;
+  } DAB;
+};
+  
+#define rA  (acc.DAB.a8.Ar)
+#define A   (acc.DAB.a8.Ar)
+#define rB  (acc.DAB.a8.Br)
+#define B   (acc.DAB.a8.Br)
+#define rD  (acc.DAB.Dr)
+#define D   (acc.DAB.Dr)
 #define rCC (CC)
 #define rF  (CC)
 #define rIX (IX)
@@ -101,7 +120,8 @@ enum {
 class cl_m6800: public cl_uc
 {
 public:
-  u8_t A, B, CC;
+  struct acc_t acc;
+  u8_t CC;
   u16_t IX, SP;
   class cl_cell8 cA, cB, cCC;
   class cl_cell16 cIX, cSP;

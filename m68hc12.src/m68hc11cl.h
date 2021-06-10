@@ -33,18 +33,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "m6800cl.h"
 
+
+#define rY   (IY)
+#define rIY  (IY)
+
+#define cY   (cIY)
+
+
 /*
  * Base of M68HC11 processor
  */
 
 class cl_m68hc11: public cl_m6800
 {
+ public:
+  u16_t IY;
+  class cl_cell16 cIY, cD;
 public:
   cl_m68hc11(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void reset(void);
-
+  virtual void print_regs(class cl_console_base *con);
+    
   virtual int clock_per_cycle(void) { return 1; }
 };
 

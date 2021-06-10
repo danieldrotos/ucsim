@@ -46,7 +46,12 @@ cl_m68hc11::init(void)
 {
   cl_m6800::init();
   
-  xtal= 1000000;
+  xtal= 8000000;
+  
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(IY);
+  RCV(D);
+#undef RCV
   
   return 0;
 }
@@ -64,5 +69,31 @@ cl_m68hc11::reset(void)
   cl_m6800::reset();
 }
 
+
+void
+cl_m68hc11::print_regs(class cl_console_base *con)
+{
+  con->dd_color("answer");
+  con->dd_printf("A= $%02x %3d %+4d %c  ", rA, rA, (i8_t)rA, isprint(rA)?rA:'.');
+  con->dd_printf("B= $%02x %3d %+4d %c  ", rB, rB, (i8_t)rB, isprint(rB)?rB:'.');
+  con->dd_printf("D= $%04x %5d %+5d ", rD, rD, (i16_t)rD);
+  con->dd_printf("\n");
+  con->dd_printf("CC= "); con->print_bin(CC, 8); con->dd_printf("\n");
+  con->dd_printf("      HINZVC\n");
+
+  con->dd_printf("IX= ");
+  rom->dump(0, IX, IX+7, 8, con);
+  con->dd_color("answer");
+  
+  con->dd_printf("IY= ");
+  rom->dump(0, IY, IY+7, 8, con);
+  con->dd_color("answer");
+  
+  con->dd_printf("SP= ");
+  rom->dump(0, SP, SP+7, 8, con);
+  con->dd_color("answer");
+  
+  print_disass(PC, con);
+}
 
 /* End of m68hc12.src/m68hc11.cc */
