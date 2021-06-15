@@ -65,6 +65,14 @@ cl_rxk::ld_r_ihl(class cl_cell8 &destr)
   return resGO;
 }
 
+int
+cl_rxk::ld_r_g(class cl_cell8 &destr, u8_t op)
+{
+  destr.W(op);
+  tick(1);
+  return resGO;
+}
+
 
 int
 cl_rxk::LD_iBC_A(t_mem code)

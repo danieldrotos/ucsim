@@ -105,6 +105,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JR_NC		instruction_30
 #define JR_C		instruction_38
 #define ADD_SP_d	instruction_27
+#define INC_iHL		instruction_34
+#define DEC_iHL		instruction_35
+#define LD_iHL_n	instruction_36
+#define LD_B_A		instruction_47
+#define LD_C_A		instruction_4f
+#define LD_D_A		instruction_57
+#define LD_E_E		instruction_5b
+#define LD_E_A		instruction_5f
+#define LD_L_A		instruction_6f
+#define LD_A_B		instruction_78
+#define LD_A_C		instruction_79
+#define LD_A_D		instruction_7a
+#define LD_A_E		instruction_7b
+#define LD_A_H		instruction_7c
+#define LD_A_L		instruction_7d
 
 #endif
 
