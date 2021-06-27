@@ -144,11 +144,26 @@ cl_rxk::rot9right(class cl_cell8 &dest, u8_t op)
 }
 
 int
-cl_rxk::Xor(class cl_cell8 &dest, u8_t op)
+cl_rxk::Xor(class cl_cell8 &dest, u8_t op1, u8_t op2)
 {
   class cl_cell8 &f= destF();
   u8_t forg= f.R() & ~(flagS|flagZ|flagL|flagC);
-  u8_t res= dest.R() ^ op;
+  u8_t res= op1 ^ op2;
+  dest.W(res);
+  if (res & 0x80) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res&0xf0) forg|= flagL;
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::Or(class cl_cell8 &dest, u8_t op1, u8_t op2)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= f.R() & ~(flagS|flagZ|flagL|flagC);
+  u8_t res= op1 | op2;
   dest.W(res);
   if (res & 0x80) forg|= flagS;
   if (!res) forg|= flagZ;

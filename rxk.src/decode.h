@@ -120,6 +120,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_A_E		instruction_7b
 #define LD_A_H		instruction_7c
 #define LD_A_L		instruction_7d
+#define XOR_A		instruction_af
+#define OR_A		instruction_b7
 
 #endif
 

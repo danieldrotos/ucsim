@@ -149,6 +149,7 @@ cl_r4k::mode3k(void)
   itab[0x6b]= instruction_wrapper_6b;
   itab[0x6c]= instruction_wrapper_6c;
   itab[0x80]= instruction_wrapper_80;
+  itab[0x88]= instruction_wrapper_88;
   itab[0x90]= instruction_wrapper_90;
 
   itab[0x45]= instruction_wrapper_45;
@@ -259,6 +260,7 @@ cl_r4k::mode4k(void)
   itab[0x6b]= instruction_wrapper_4knone;
   itab[0x6c]= instruction_wrapper_4knone;
   itab[0x80]= instruction_wrapper_4knone;
+  itab[0x88]= instruction_wrapper_4knone;
   itab[0x90]= instruction_wrapper_4knone;
   
   itab[0x45]= instruction_wrapper_4k45;

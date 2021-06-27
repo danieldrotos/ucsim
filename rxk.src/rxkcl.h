@@ -196,7 +196,8 @@ public:
   virtual int jr_cc(bool cond);
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
-  virtual int Xor(class cl_cell8 &dest, u8_t op);
+  virtual int Xor(class cl_cell8 &dest, u8_t op1, u8_t op2);
+  virtual int Or(class cl_cell8 &dest, u8_t op1, u8_t op2);
   
   virtual int ALTD(t_mem code);
   virtual int IOI(t_mem code);
@@ -290,6 +291,8 @@ public:
   virtual int LD_A_E(t_mem code) { return ld_r_g(destA(), rE); }
   virtual int LD_A_H(t_mem code) { return ld_r_g(destA(), rH); }
   virtual int LD_A_L(t_mem code) { return ld_r_g(destA(), rL); }
+  virtual int XOR_A(t_mem code) { return Xor(destA(), cA.R(), rA); }
+  virtual int OR_A(t_mem code) { return Or(destA(), cA.R(), rA); }
 };
 
 
