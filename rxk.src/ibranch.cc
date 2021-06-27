@@ -49,6 +49,19 @@ cl_rxk::JR(t_mem code)
 }
 
 int
+cl_rxk::LJP(t_mem code)
+{
+  u8_t x, h, l;
+  l= fetch();
+  h= fetch();
+  x= fetch();
+  cpu->cfg_write(rxk_cpu_xpc, x);
+  PC= h*256+l;
+  tick(9);
+  return resGO;
+}
+
+int
 cl_rxk::jr_cc(bool cond)
 {
   i8_t r= fetch();

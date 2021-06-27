@@ -77,14 +77,27 @@ int
 cl_rxk::pop_zz(class cl_cell16 &dest)
 {
   u8_t l, h;
-  l= mem->read(rSP++);
-  h= mem->read(rSP++);
+  l= rom->read(rSP++);
+  h= rom->read(rSP++);
   cSP.W(rSP);
   dest.W(h*256+l);
   vc.rd+= 2;
   tick(6);
   return resGO;
-  
+}
+
+int
+cl_rxk::push_zz(u16_t op)
+{
+  u8_t h, l;
+  h= op>>8;
+  l= op&0xff;
+  rom->write(rSP-1, h);
+  rom->write(rSP-2, l);
+  cSP.W(rSP-2);
+  vc.wr+= 2;
+  tick5p1(9);
+  return resGO;
 }
 
 int
@@ -151,5 +164,18 @@ cl_rxk::EX_AF_aAF(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::LD_HL_iSPn(t_mem code)
+{
+  class cl_cell16 &dest= destHL();
+  u8_t n= fetch(), l, h;
+  l= rom->read(rSP+n);
+  h= rom->read(rSP+n+1);
+  dest.W(h*256+l);
+  vc.rd+= 2;
+  tick5p1(8);
+  return resGO;
+}
 
+  
 /* End of rxk.src/imove.cc */

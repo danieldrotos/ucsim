@@ -144,6 +144,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JP_LO_mn	instruction_ea
 #define JP_P_mn		instruction_f2
 #define JP_M_mn		instruction_fa
+#define JP_mn		instruction_c3
+#define LD_HL_iSPn	instruction_c4
+#define PUSH_AF		instruction_f5
+#define PUSH_BC		instruction_c5
+#define PUSH_DE		instruction_d5
+#define PUSH_HL		instruction_e5
+#define ADD_A_n		instruction_c6
+#define LJP		instruction_c7
 
 #endif
 

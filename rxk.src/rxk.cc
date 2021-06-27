@@ -203,7 +203,7 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   struct dis_entry *dt= dis_tbl();//, *dis_e;
   int i;
   bool first;
-  unsigned int h, l;
+  unsigned int x, h, l;
   if (!dt)
     return NULL;
 
@@ -231,6 +231,12 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	  i++;
 	  switch (b[i])
 	    {
+	    case 'l': // 24 bit unsigned
+	      l= rom->get(++addr);
+	      h= rom->get(++addr);
+	      x= rom->get(++addr);
+	      work.appendf("0x%06x", x*0x10000+h*256+l);
+	      break;
 	    case 'w': // 16 bit unsigned
 	      l= rom->get(++addr);
 	      h= rom->get(++addr);

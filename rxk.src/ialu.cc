@@ -198,6 +198,27 @@ cl_rxk::add_hl_ss(u16_t op)
 }
 
 int
+cl_rxk::add8(u8_t op2)
+{
+  class cl_cell8 &a= destA(), &f= destF();
+  u8_t v1= a.get(), forg;
+  u16_t res= v1+op2;
+  u8_t a7, b7, r7, na7, nb7, nr7;
+  forg= f.get() & ~(flagS|flagZ|flagV|flagC);
+  a7= v1&0x80; na7= a7^0x80;
+  b7= op2&0x80; nb7= b7^0x80;
+  r7= res&0x80; nr7= r7^0x80;
+  if ((a7&b7&nr7) | (na7&nb7&r7)) forg|= flagV;
+  if (res > 0xff) forg|= flagC;
+  if (!(res & 0xff)) forg|= flagZ;
+  if (res & 0x80) forg|= flagS;
+  a.W(res);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
 cl_rxk::ADD_SP_d(t_mem code)
 {
   i8_t d= fetch();

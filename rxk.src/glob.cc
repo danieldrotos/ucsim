@@ -154,6 +154,14 @@ struct dis_entry disass_rxk[]=
     { 0xea, 0xff, ' ', 3, "JP LO,%w" },
     { 0xf2, 0xff, ' ', 3, "JP P,%w" },
     { 0xfa, 0xff, ' ', 3, "JP M,%w" },
+    { 0xc3, 0xff, ' ', 3, "JP %w" },
+    { 0xc4, 0xff, ' ', 2, "LD HL,(SP+%b)" },
+    { 0xf5, 0xff, ' ', 1, "PUSH AF" },
+    { 0xc5, 0xff, ' ', 1, "PUSH BC" },
+    { 0xd5, 0xff, ' ', 1, "PUSH DE" },
+    { 0xe5, 0xff, ' ', 1, "PUSH HL" },
+    { 0xc6, 0xff, ' ', 2, "ADD A,%b" },
+    { 0xc7, 0xff, ' ', 4, "LJP %l" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

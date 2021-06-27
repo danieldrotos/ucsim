@@ -91,6 +91,8 @@ enum {
   flagC = 0x01
 };
 
+#define CPU ((class cl_rxk_cpu *)cpu)
+
 class cl_rxk: public cl_uc  
 {
 public:
@@ -184,6 +186,7 @@ public:
   virtual int ld_r_ihl(class cl_cell8 &destr);			// 0f,5t,1r,0w
   virtual int ld_r_g(class cl_cell8 &destr, u8_t op);		// 0f,2t,0r,0w
   virtual int pop_zz(class cl_cell16 &dest);			// 0f,6t,2r,0w
+  virtual int push_zz(u16_t op);				// 0f,9t,0r,2w
   
   virtual int inc_ss(class cl_cell16 &rp, u16_t op);
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
@@ -194,6 +197,7 @@ public:
   virtual int rot8right(class cl_cell8 &dest, u8_t op);
   virtual int rot9right(class cl_cell8 &dest, u8_t op);
   virtual int add_hl_ss(u16_t op);
+  virtual int add8(u8_t op2);					// 0f,3t,0r,0w
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
   virtual int Xor(class cl_cell8 &dest, u8_t op1, u8_t op2);
@@ -319,6 +323,14 @@ public:
   virtual int JP_LO_mn(t_mem code) { return jp_f_mn( (rF&flagV)); }
   virtual int JP_P_mn (t_mem code) { return jp_f_mn(!(rF&flagS)); }
   virtual int JP_M_mn (t_mem code) { return jp_f_mn( (rF&flagS)); }
+  virtual int JP_mn   (t_mem code) { return jp_f_mn( (true    )); }
+  virtual int LD_HL_iSPn(t_mem code);
+  virtual int PUSH_AF(t_mem code) { return push_zz(rAF); }
+  virtual int PUSH_BC(t_mem code) { return push_zz(rBC); }
+  virtual int PUSH_DE(t_mem code) { return push_zz(rDE); }
+  virtual int PUSH_HL(t_mem code) { return push_zz(rHL); }
+  virtual int ADD_A_n(t_mem code) { return add8(fetch()); }
+  virtual int LJP(t_mem code);
 };
 
 
