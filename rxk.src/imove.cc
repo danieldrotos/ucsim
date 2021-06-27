@@ -73,6 +73,19 @@ cl_rxk::ld_r_g(class cl_cell8 &destr, u8_t op)
   return resGO;
 }
 
+int
+cl_rxk::pop_zz(class cl_cell16 &dest)
+{
+  u8_t l, h;
+  l= mem->read(rSP++);
+  h= mem->read(rSP++);
+  cSP.W(rSP);
+  dest.W(h*256+l);
+  vc.rd+= 2;
+  tick(6);
+  return resGO;
+  
+}
 
 int
 cl_rxk::LD_iBC_A(t_mem code)

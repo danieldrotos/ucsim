@@ -58,5 +58,36 @@ cl_rxk::jr_cc(bool cond)
   return resGO;
 }
 
+int
+cl_rxk::ret_f(bool f)
+{
+  if (f)
+    {
+      u8_t l, h;
+      l= mem->read(rSP);
+      rSP++;
+      h= mem->read(rSP);
+      cSP.W(++rSP);
+      vc.rd+= 2;
+      PC= h*256 + l;
+    }
+  tick(7);
+  return resGO;
+}
+
+int
+cl_rxk::jp_f_mn(bool f)
+{
+  u8_t l, h;
+  l= fetch();
+  h= fetch();
+  if (f)
+    {
+      PC= h*256+l;
+    }
+  tick(6);
+  return resGO;
+}
+
 
 /* End of rxk.src/ibranch.cc */

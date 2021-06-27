@@ -183,6 +183,7 @@ public:
   virtual int ld_ihl_r(u8_t op);				// 0f,6t,0r,1w
   virtual int ld_r_ihl(class cl_cell8 &destr);			// 0f,5t,1r,0w
   virtual int ld_r_g(class cl_cell8 &destr, u8_t op);		// 0f,2t,0r,0w
+  virtual int pop_zz(class cl_cell16 &dest);			// 0f,6t,2r,0w
   
   virtual int inc_ss(class cl_cell16 &rp, u16_t op);
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
@@ -193,11 +194,14 @@ public:
   virtual int rot8right(class cl_cell8 &dest, u8_t op);
   virtual int rot9right(class cl_cell8 &dest, u8_t op);
   virtual int add_hl_ss(u16_t op);
-  virtual int jr_cc(bool cond);
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
   virtual int Xor(class cl_cell8 &dest, u8_t op1, u8_t op2);
   virtual int Or(class cl_cell8 &dest, u8_t op1, u8_t op2);
+  
+  virtual int jr_cc(bool cond);
+  virtual int ret_f(bool f);					// 0f,7t,2r,0w
+  virtual int jp_f_mn(bool f);					// 2f,6t,0r,0w
   
   virtual int ALTD(t_mem code);
   virtual int IOI(t_mem code);
@@ -285,6 +289,7 @@ public:
   virtual int LD_E_E(t_mem code) { return ld_r_g(destE(), rE); }
   virtual int LD_E_A(t_mem code) { return ld_r_g(destE(), rA); }
   virtual int LD_L_A(t_mem code) { return ld_r_g(destL(), rA); }
+  virtual int LD_H_A(t_mem code) { return ld_r_g(destH(), rA); }
   virtual int LD_A_B(t_mem code) { return ld_r_g(destA(), rB); }
   virtual int LD_A_C(t_mem code) { return ld_r_g(destA(), rC); }
   virtual int LD_A_D(t_mem code) { return ld_r_g(destA(), rD); }
@@ -293,6 +298,27 @@ public:
   virtual int LD_A_L(t_mem code) { return ld_r_g(destA(), rL); }
   virtual int XOR_A(t_mem code) { return Xor(destA(), cA.R(), rA); }
   virtual int OR_A(t_mem code) { return Or(destA(), cA.R(), rA); }
+  virtual int RET_NZ(t_mem code) { return ret_f(!(rF&flagZ)); }
+  virtual int RET_Z (t_mem code) { return ret_f( (rF&flagZ)); }
+  virtual int RET   (t_mem code) { return ret_f( (true    )); }
+  virtual int RET_NC(t_mem code) { return ret_f(!(rF&flagC)); }
+  virtual int RET_C (t_mem code) { return ret_f( (rF&flagC)); }
+  virtual int RET_LZ(t_mem code) { return ret_f(!(rF&flagV)); } // NV
+  virtual int RET_LO(t_mem code) { return ret_f( (rF&flagV)); } // V
+  virtual int RET_P (t_mem code) { return ret_f(!(rF&flagS)); }
+  virtual int RET_M (t_mem code) { return ret_f( (rF&flagS)); }
+  virtual int POP_AF(t_mem code) { return pop_zz(destAF()); }
+  virtual int POP_BC(t_mem code) { return pop_zz(destBC()); }
+  virtual int POP_DE(t_mem code) { return pop_zz(destDE()); }
+  virtual int POP_HL(t_mem code) { return pop_zz(destHL()); }
+  virtual int JP_NZ_mn(t_mem code) { return jp_f_mn(!(rF&flagZ)); }
+  virtual int JP_Z_mn (t_mem code) { return jp_f_mn( (rF&flagZ)); }
+  virtual int JP_NC_mn(t_mem code) { return jp_f_mn(!(rF&flagC)); }
+  virtual int JP_C_mn (t_mem code) { return jp_f_mn( (rF&flagC)); }
+  virtual int JP_LZ_mn(t_mem code) { return jp_f_mn(!(rF&flagV)); }
+  virtual int JP_LO_mn(t_mem code) { return jp_f_mn( (rF&flagV)); }
+  virtual int JP_P_mn (t_mem code) { return jp_f_mn(!(rF&flagS)); }
+  virtual int JP_M_mn (t_mem code) { return jp_f_mn( (rF&flagS)); }
 };
 
 

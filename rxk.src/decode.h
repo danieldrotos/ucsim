@@ -114,6 +114,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_E_E		instruction_5b
 #define LD_E_A		instruction_5f
 #define LD_L_A		instruction_6f
+#define LD_H_A		instruction_67
 #define LD_A_B		instruction_78
 #define LD_A_C		instruction_79
 #define LD_A_D		instruction_7a
@@ -122,6 +123,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_A_L		instruction_7d
 #define XOR_A		instruction_af
 #define OR_A		instruction_b7
+#define RET_NZ		instruction_c0
+#define RET_Z		instruction_c8
+#define RET		instruction_c9
+#define RET_NC		instruction_d0
+#define RET_C		instruction_d8
+#define RET_LZ		instruction_e0
+#define RET_LO		instruction_e8
+#define RET_P		instruction_f0
+#define RET_M		instruction_f8
+#define POP_AF		instruction_f1
+#define POP_BC		instruction_c1
+#define POP_DE		instruction_d1
+#define POP_HL		instruction_e1
+#define JP_NZ_mn	instruction_c2
+#define JP_Z_mn		instruction_ca
+#define JP_NC_mn	instruction_d2
+#define JP_C_mn		instruction_da
+#define JP_LZ_mn	instruction_e2
+#define JP_LO_mn	instruction_ea
+#define JP_P_mn		instruction_f2
+#define JP_M_mn		instruction_fa
 
 #endif
 
