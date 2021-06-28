@@ -69,6 +69,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rBC (BC.BC)
 #define rDE (DE.DE)
 #define rHL (HL.HL)
+#define rXPC (mem->xpc)
+#define cXPC (*XPC)
 
 #define raA (aAF.r.A)
 #define raF (aAF.r.F)
@@ -111,6 +113,7 @@ public:
   class cl_cell8 caA, caF, caB, caC, caD, caE, caH, caL;
   class cl_cell16 cAF, cBC, cDE, cHL, cIX, cIY, cSP;
   class cl_cell16 caAF, caBC, caDE, caHL;
+  class cl_memory_cell *XPC;
   class cl_ras *mem;
   class cl_address_space *ioi, *ioe;
   class cl_address_space *rwas;
@@ -197,7 +200,7 @@ public:
   virtual int rot8right(class cl_cell8 &dest, u8_t op);
   virtual int rot9right(class cl_cell8 &dest, u8_t op);
   virtual int add_hl_ss(u16_t op);
-  virtual int add8(u8_t op2);					// 0f,3t,0r,0w
+  virtual int add8(u8_t op2, bool cy);				// 0f,3t,0r,0w
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
   virtual int Xor(class cl_cell8 &dest, u8_t op1, u8_t op2);
@@ -329,22 +332,26 @@ public:
   virtual int PUSH_BC(t_mem code) { return push_zz(rBC); }
   virtual int PUSH_DE(t_mem code) { return push_zz(rDE); }
   virtual int PUSH_HL(t_mem code) { return push_zz(rHL); }
-  virtual int ADD_A_n(t_mem code) { return add8(fetch()); }
+  virtual int ADD_A_n(t_mem code) { return add8(fetch(), false); }
   virtual int LJP(t_mem code);
+  virtual int BOOL_HL(t_mem code);
+  virtual int CALL_mn(t_mem code);
+  virtual int ADC_A_n(t_mem code) { return add8(fetch(), true); }
+  virtual int LCALL_lmn(t_mem code);
 };
 
 
 enum rxkcpu_cfg {
-  rxk_cpu_xpc		= 0,
+  //rxk_cpu_xpc		= 0,
 
-  rxk_cpu_nuof	= 1
+  rxk_cpu_nuof	= 0
 };
 
 class cl_rxk_cpu: public cl_hw
 {
 protected:
   class cl_rxk *ruc;
-  class cl_cell8 *xpc, *segsize, *dataseg, *stackseg;
+  class cl_cell8 *segsize, *dataseg, *stackseg;
 public:
   cl_rxk_cpu(class cl_uc *auc);
   virtual int init(void);

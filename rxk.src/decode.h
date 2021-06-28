@@ -152,6 +152,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PUSH_HL		instruction_e5
 #define ADD_A_n		instruction_c6
 #define LJP		instruction_c7
+#define BOOL_HL		instruction_cc
+#define CALL_mn		instruction_cd
+#define ADC_A_n		instruction_ce
+#define LCALL_lmn	instruction_cf
 
 #endif
 

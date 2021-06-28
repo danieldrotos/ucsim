@@ -88,7 +88,11 @@ cl_rxk::init(void)
   RCV(IIR);
   RCV(EIR);
 #undef RCV
-  
+
+  XPC= new cl_cell8(8);
+  reg_cell_var(XPC, &(mem->xpc),
+	       "XPC", "MMU register: XPC");
+
   return 0;
 }
 
@@ -416,7 +420,6 @@ cl_rxk_cpu::init(void)
   stackseg= (cl_cell8*)ruc->ioi->get_cell(0x11);
   dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
   segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
-  xpc= new cl_cell8(8);
 
   uc->reg_cell_var(stackseg, &(ruc->mem->stackseg),
 		   "STACKSEG", "MMU register: STACKSEG");
@@ -424,8 +427,6 @@ cl_rxk_cpu::init(void)
 		   "DATASEG", "MMU register: DATASEG");
   uc->reg_cell_var(segsize, &(ruc->mem->segsize),
 		   "SEGSIZE", "MMU register: SEGSIZE");
-  uc->reg_cell_var(xpc, &(ruc->mem->xpc),
-		   "XPC", "MMU register: XPC");
 
   return 0;
 }
@@ -435,8 +436,8 @@ cl_rxk_cpu::cfg_help(t_addr addr)
 {
   switch (addr)
     {
-    case rxk_cpu_xpc: return "MMU register: XPC";
-    case rxk_cpu_nuof: return "";
+      //case rxk_cpu_xpc: return "MMU register: XPC";
+      //case rxk_cpu_nuof: return "";
     }
   return "Not used";
 }
@@ -469,7 +470,7 @@ cl_rxk_cpu::print_info(class cl_console_base *con)
   con->dd_printf("SEGSIZE : 0x%02x\n", segsize->read());
   con->dd_printf("DATASEG : 0x%02x\n", dataseg->read());
   con->dd_printf("STACKSEG: 0x%02x\n", stackseg->read());
-  con->dd_printf("XPC     : 0x%02x\n", xpc->read());
+  //con->dd_printf("XPC     : 0x%02x\n", xpc->read());
 }
 
 

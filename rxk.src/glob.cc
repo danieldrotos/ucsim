@@ -162,6 +162,10 @@ struct dis_entry disass_rxk[]=
     { 0xe5, 0xff, ' ', 1, "PUSH HL" },
     { 0xc6, 0xff, ' ', 2, "ADD A,%b" },
     { 0xc7, 0xff, ' ', 4, "LJP %l" },
+    { 0xcc, 0xff, ' ', 1, "BOOL HL" },
+    { 0xcd, 0xff, ' ', 3, "CALL %w" },
+    { 0xce, 0xff, ' ', 2, "ADC A,%b" },
+    { 0xcf, 0xff, ' ', 4, "LCALL %l" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

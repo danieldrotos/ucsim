@@ -55,9 +55,42 @@ cl_rxk::LJP(t_mem code)
   l= fetch();
   h= fetch();
   x= fetch();
-  cpu->cfg_write(rxk_cpu_xpc, x);
+  cXPC.W(x);
   PC= h*256+l;
   tick(9);
+  return resGO;
+}
+
+int
+cl_rxk::CALL_mn(t_mem code)
+{
+  u8_t h, l;
+  rom->write(--rSP, PC>>8);
+  rom->write(--rSP, PC);
+  l= fetch();
+  h= fetch();
+  PC= h*256+l;
+  cSP.W(rSP);
+  tick5p1(11);
+  vc.wr+= 2;
+  return resGO;
+}
+
+int
+cl_rxk::LCALL_lmn(t_mem code)
+{
+  u8_t h, l, x;
+  rom->write(--rSP, rXPC);
+  rom->write(--rSP, PC>>8);
+  rom->write(--rSP, PC);
+  l= fetch();
+  h= fetch();
+  x= fetch();
+  PC= h*256+l;
+  cXPC.W(x);
+  cSP.W(rSP);
+  tick5p1(18);
+  vc.wr+= 3;
   return resGO;
 }
 

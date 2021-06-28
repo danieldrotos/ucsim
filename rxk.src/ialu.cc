@@ -198,13 +198,13 @@ cl_rxk::add_hl_ss(u16_t op)
 }
 
 int
-cl_rxk::add8(u8_t op2)
+cl_rxk::add8(u8_t op2, bool cy)
 {
   class cl_cell8 &a= destA(), &f= destF();
-  u8_t v1= a.get(), forg;
-  u16_t res= v1+op2;
+  u8_t v1= rA, forg;
+  u16_t res= v1+op2+(cy?((rF&flagC)?1:0):0);
   u8_t a7, b7, r7, na7, nb7, nr7;
-  forg= f.get() & ~(flagS|flagZ|flagV|flagC);
+  forg= rF & ~(flagS|flagZ|flagV|flagC);
   a7= v1&0x80; na7= a7^0x80;
   b7= op2&0x80; nb7= b7^0x80;
   r7= res&0x80; nr7= r7^0x80;
@@ -269,6 +269,21 @@ cl_rxk::dec_i8(t_addr addr)
   vc.rd++;
   vc.wr++;
   tick(7);
+  return resGO;
+}
+
+int
+cl_rxk::BOOL_HL(t_mem code)
+{
+  class cl_cell16 &dhl= destHL();
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~(flagS|flagZ|flagL|flagC);
+  if (rHL)
+    dhl.W(1);
+  else
+    forg|= flagZ;
+  f.W(forg);
+  tick(1);
   return resGO;
 }
 
