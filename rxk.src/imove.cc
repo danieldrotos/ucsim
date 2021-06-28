@@ -177,5 +177,15 @@ cl_rxk::LD_HL_iSPn(t_mem code)
   return resGO;
 }
 
-  
+int
+cl_rxk::LD_iSPn_HL(t_mem code)
+{
+  u8_t n= fetch();
+  rom->write(rSP+n, rL);
+  rom->write(rSP+n+1, rH);
+  tick5p1(10);
+  return resGO;
+}
+
+
 /* End of rxk.src/imove.cc */

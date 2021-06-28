@@ -139,6 +139,7 @@ public:
   virtual int exec_inst(void);
   virtual int inst_unknown(t_mem code);
   virtual void tick5p1(int n) { tick(n); }
+  virtual void tick5p3(int n) { tick(n); }
   
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
   class cl_cell16 &destBC(void) { return altd?caBC:cBC; }
@@ -201,6 +202,7 @@ public:
   virtual int rot9right(class cl_cell8 &dest, u8_t op);
   virtual int add_hl_ss(u16_t op);
   virtual int add8(u8_t op2, bool cy);				// 0f,3t,0r,0w
+  virtual int sub8(u8_t op2, bool cy);				// 0f,3t,0r,0w
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
   virtual int Xor(class cl_cell8 &dest, u8_t op1, u8_t op2);
@@ -208,7 +210,8 @@ public:
   
   virtual int jr_cc(bool cond);
   virtual int ret_f(bool f);					// 0f,7t,2r,0w
-  virtual int jp_f_mn(bool f);					// 2f,6t,0r,0w
+  virtual int jp_f_mn(bool f);					// 2f,6t,2r,0w
+  virtual int rst_v(t_mem code);				// 0f,7t,0r,2w
   
   virtual int ALTD(t_mem code);
   virtual int IOI(t_mem code);
@@ -338,6 +341,14 @@ public:
   virtual int CALL_mn(t_mem code);
   virtual int ADC_A_n(t_mem code) { return add8(fetch(), true); }
   virtual int LCALL_lmn(t_mem code);
+  virtual int LD_iSPn_HL(t_mem code);
+  virtual int SUB_A_n(t_mem code) { return sub8(fetch(), false); }
+  virtual int RST_10(t_mem code) { return rst_v(code); }
+  virtual int RST_18(t_mem code) { return rst_v(code); }
+  virtual int RST_20(t_mem code) { return rst_v(code); }
+  virtual int RST_28(t_mem code) { return rst_v(code); }
+  virtual int RST_38(t_mem code) { return rst_v(code); }
+  virtual int EXX(t_mem code);
 };
 
 

@@ -40,10 +40,12 @@ class cl_ras: public cl_address_space
  public:
   virtual t_addr log2phy(t_addr log);
   virtual t_mem read(t_addr addr);
+  virtual t_mem phread(t_addr phaddr) { return phget(phaddr); }
   virtual t_mem get(t_addr addr);
+  virtual t_mem phget(t_addr phaddr);
   virtual t_mem write(t_addr addr, t_mem val);
   virtual void set(t_addr addr, t_mem val);
-  virtual void download(t_addr addr, t_mem val);
+  virtual void download(t_addr phaddr, t_mem val);
 };
 
 #endif

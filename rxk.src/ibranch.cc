@@ -65,10 +65,10 @@ int
 cl_rxk::CALL_mn(t_mem code)
 {
   u8_t h, l;
-  rom->write(--rSP, PC>>8);
-  rom->write(--rSP, PC);
   l= fetch();
   h= fetch();
+  rom->write(--rSP, PC>>8);
+  rom->write(--rSP, PC);
   PC= h*256+l;
   cSP.W(rSP);
   tick5p1(11);
@@ -80,12 +80,12 @@ int
 cl_rxk::LCALL_lmn(t_mem code)
 {
   u8_t h, l, x;
-  rom->write(--rSP, rXPC);
-  rom->write(--rSP, PC>>8);
-  rom->write(--rSP, PC);
   l= fetch();
   h= fetch();
   x= fetch();
+  rom->write(--rSP, rXPC);
+  rom->write(--rSP, PC>>8);
+  rom->write(--rSP, PC);
   PC= h*256+l;
   cXPC.W(x);
   cSP.W(rSP);
@@ -93,6 +93,20 @@ cl_rxk::LCALL_lmn(t_mem code)
   vc.wr+= 3;
   return resGO;
 }
+
+int
+cl_rxk::rst_v(t_mem code)
+{
+  u8_t l= (code&0x38) << 1;
+  rom->write(--rSP, PC>>8);
+  rom->write(--rSP, PC);
+  cSP.W(rSP);
+  PC= rIIR * 256 + l;
+  vc.wr+= 2;
+  tick5p3(7);
+  return resGO;
+}
+
 
 int
 cl_rxk::jr_cc(bool cond)

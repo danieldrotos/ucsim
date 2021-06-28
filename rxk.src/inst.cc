@@ -75,5 +75,25 @@ cl_rxk::CCF(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::EXX(t_mem code)
+{
+  u16_t t;
+  t= rBC;
+  cBC.W(raBC);
+  caBC.W(t);
+
+  t= rDE;
+  cBC.W(raDE);
+  caDE.W(t);
+  
+  t= rHL;
+  cBC.W(raHL);
+  caHL.W(t);
+  
+  tick(1);
+  return resGO;
+}
+
 
 /* End of m6800.src/inst.cc */

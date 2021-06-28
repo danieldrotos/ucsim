@@ -156,6 +156,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CALL_mn		instruction_cd
 #define ADC_A_n		instruction_ce
 #define LCALL_lmn	instruction_cf
+#define LD_iSPn_HL	instruction_d4
+#define SUB_A_n		instruction_d6
+#define RST_10		instruction_d7
+#define RST_18		instruction_df
+#define RST_20		instruction_e7
+#define RST_28		instruction_ef
+#define RST_38		instruction_ff
+#define EXX		instruction_d9
 
 #endif
 

@@ -46,6 +46,22 @@ int
 cl_r4k::init(void)
 {
   cl_r3ka::init();
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(J);
+  RCV(K);
+  RCV(JK);
+  RCV(aJ);
+  RCV(aK);
+  RCV(aJK);
+  RCV(PW);
+  RCV(PX);
+  RCV(PY);
+  RCV(PZ);
+  RCV(aPW);
+  RCV(aPX);
+  RCV(aPY);
+  RCV(aPZ);
+#undef RCV
   //mode2k();
   return 0;
 }
@@ -111,6 +127,9 @@ cl_r4k::print_regs(class cl_console_base *con)
   con->dd_printf("IY= ");
   rom->dump(0, rIY, rIY+7, 8, con);
   con->dd_color("answer");
+  con->dd_printf("JK= ");
+  rom->dump(0, rJK, rJK+7, 8, con);
+  con->dd_color("answer");
   con->dd_printf("SP= ");
   rom->dump(0, rSP, rSP+7, 8, con);
   con->dd_color("answer");
@@ -119,6 +138,7 @@ cl_r4k::print_regs(class cl_console_base *con)
   con->dd_printf("aBC= 0x%02x-0x%02x  ", raB, raC);
   con->dd_printf("aDE= 0x%02x-0x%02x  ", raD, raE);
   con->dd_printf("aHL= 0x%02x-0x%02x  ", raH, raL);
+  con->dd_printf("aJK= 0x%02x-0x%02x  ", raJ, raK);
   con->dd_printf("\n");
   
   print_disass(PC, con);
@@ -407,5 +427,20 @@ cl_r4k_cpu::print_info(class cl_console_base *con)
   cl_rxk_cpu::print_info(con);
   con->dd_printf("EDMR    : 0x%02x\n", edmr->read());
 }
+
+int
+cl_r4k::EXX(t_mem code)
+{
+  u16_t t;
+
+  cl_rxk::EXX(code);
+  
+  t= rJK;
+  cBC.W(raJK);
+  caJK.W(t);
+
+  return resGO;
+}
+
 
 /* End of rxk.src/r4k.cc */

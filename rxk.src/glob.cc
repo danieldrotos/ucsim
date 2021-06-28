@@ -166,6 +166,14 @@ struct dis_entry disass_rxk[]=
     { 0xcd, 0xff, ' ', 3, "CALL %w" },
     { 0xce, 0xff, ' ', 2, "ADC A,%b" },
     { 0xcf, 0xff, ' ', 4, "LCALL %l" },
+    { 0xd4, 0xff, ' ', 2, "LD (SP+%b),HL" },
+    { 0xd6, 0xff, ' ', 2, "SUB A,%b" },
+    { 0xd7, 0xff, ' ', 1, "RST 10" },
+    { 0xdf, 0xff, ' ', 1, "RST 18" },
+    { 0xe7, 0xff, ' ', 1, "RST 20" },
+    { 0xef, 0xff, ' ', 1, "RST 28" },
+    { 0xff, 0xff, ' ', 1, "RST 38" },
+    { 0xd9, 0xff, ' ', 1, "EXX" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

@@ -38,6 +38,7 @@ class cl_r5k: public cl_r4k
   virtual const char *id_string(void);
 
   virtual void tick5p1(int n) { tick(n+1); }
+  virtual void tick5p3(int n) { tick(n+3); }
 };
 
 

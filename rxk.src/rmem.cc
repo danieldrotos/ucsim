@@ -86,6 +86,18 @@ cl_ras::get(t_addr addr)
 }
 
 t_mem
+cl_ras::phget(t_addr phaddr)
+{
+  if (phaddr >= chip->get_size())
+    {
+      err_inv_addr(phaddr);
+      return dummy->read();
+    }
+  u8_t *slot= (u8_t*)(chip->get_slot(phaddr));
+  return *slot;
+}
+
+t_mem
 cl_ras::write(t_addr addr, t_mem val)
 {
   if (addr >= size)
@@ -114,14 +126,14 @@ cl_ras::set(t_addr addr, t_mem val)
 }
 
 void
-cl_ras::download(t_addr addr, t_mem val)
+cl_ras::download(t_addr phaddr, t_mem val)
 {
-  if (addr >= chip->get_size())
+  if (phaddr >= chip->get_size())
     {
-      err_inv_addr(addr);
+      err_inv_addr(phaddr);
       dummy->set(val);
     }
-  chip->set(addr, val);
+  chip->set(phaddr, val);
 }
 
 
