@@ -349,6 +349,8 @@ public:
   virtual int RST_28(t_mem code) { return rst_v(code); }
   virtual int RST_38(t_mem code) { return rst_v(code); }
   virtual int EXX(t_mem code);
+  virtual int AND_HL_DE(t_mem code);
+  virtual int SBC_A_n(t_mem code) { return sub8(fetch(), true); }
 };
 
 

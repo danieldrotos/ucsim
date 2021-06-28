@@ -174,6 +174,7 @@ struct dis_entry disass_rxk[]=
     { 0xef, 0xff, ' ', 1, "RST 28" },
     { 0xff, 0xff, ' ', 1, "RST 38" },
     { 0xd9, 0xff, ' ', 1, "EXX" },
+    { 0xde, 0xff, ' ', 2, "SBC A,%b" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

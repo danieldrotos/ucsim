@@ -39,6 +39,7 @@ class cl_ras: public cl_address_space
   cl_ras(chars id, class cl_memory_chip *achip);
  public:
   virtual t_addr log2phy(t_addr log);
+  virtual t_addr px2phy(u32_t px);
   virtual t_mem read(t_addr addr);
   virtual t_mem phread(t_addr phaddr) { return phget(phaddr); }
   virtual t_mem get(t_addr addr);

@@ -174,6 +174,24 @@ cl_rxk::Or(class cl_cell8 &dest, u8_t op1, u8_t op2)
 }
 
 int
+cl_rxk::AND_HL_DE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  class cl_cell16 &dhl= destHL();
+  u16_t res= rHL & rDE;
+  u8_t forg= rF & ~(flagS|flagZ|flagL|flagC);
+  dhl.W(res);
+  if (res & 0x8000)
+    forg|= flagS;
+  if (!res)
+    forg|= flagZ;
+  // flagL?
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_rxk::CPL(t_mem code)
 {
   destA().W(~rA);

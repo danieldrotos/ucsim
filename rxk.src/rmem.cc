@@ -57,6 +57,16 @@ cl_ras::log2phy(t_addr log)
   return log + (xpc<<12);
 }
 
+t_addr
+cl_ras::px2phy(u32_t px)
+{
+  if ((px & 0xffff0000) == 0xffff0000)
+    {
+      return log2phy(px & 0xffff);
+    }
+  return px;
+}
+
 t_mem
 cl_ras::read(t_addr addr)
 {
