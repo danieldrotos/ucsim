@@ -49,7 +49,7 @@ int
 cl_rxk::init(void)
 {
   cl_uc::init();
-  io_prefix= false;
+  altd= prefix= false;
   fill_def_wrappers(itab);
  
   xtal= 1000000;
@@ -156,17 +156,16 @@ cl_rxk::make_memories(void)
   chip->init();
   memchips->add(chip);
 
-  rom= as= mem= new cl_ras("rom", chip);
+  rwas= rom= as= mem= new cl_ras("rom", chip);
   as->init();
   address_spaces->add(as);
 
   /* IO */
-  ioi= as= new cl_address_space("ioi", 0, 0x10000, 8);
+  ioas= as= new cl_address_space("ioas", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
-  /*
-  chip= new cl_chip8("ioi_chip", 0x10000, 8);
+  chip= new cl_chip8("io_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as,
@@ -174,22 +173,6 @@ cl_rxk::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
-  */
-  
-  ioe= as= new cl_address_space("ioe", 0, 0x10000, 8);
-  as->init();
-  address_spaces->add(as);
-
-  chip= new cl_chip8("ioe_chip", 0x10000, 8);
-  chip->init();
-  memchips->add(chip);
-  ad= new cl_address_decoder(as,
-			     chip, 0, 0xffff, 0);
-  ad->init();
-  as->decoders->add(ad);
-  ad->activate(0);
-
-  rwas= rom;
 }
 
 struct dis_entry *
@@ -323,18 +306,17 @@ cl_rxk::exec_inst(void)
   t_mem code;
   int res= resGO;
 
-  if (!io_prefix)
-    rwas= rom;
-  io_prefix= false;
-  
+  if (!prefix)
+    {
+      rwas= rom;
+      altd= false;
+    }
+  prefix= false;
   if ((res= exec_inst_tab(itab)) == resNOT_DONE)
     {
       fetch(&code);
       res= inst_unknown(code);
     }
-
-  if (altd)
-    altd--;
   
   return res;
 }
@@ -417,9 +399,9 @@ cl_rxk_cpu::init(void)
 {
   cl_hw::init();
 
-  stackseg= (cl_cell8*)ruc->ioi->get_cell(0x11);
-  dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
-  segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
+  stackseg= (cl_cell8*)ruc->ioas->get_cell(0x11);
+  dataseg = (cl_cell8*)ruc->ioas->get_cell(0x12);
+  segsize = (cl_cell8*)ruc->ioas->get_cell(0x13);
 
   uc->reg_cell_var(stackseg, &(ruc->mem->stackseg),
 		   "STACKSEG", "MMU register: STACKSEG");
@@ -471,6 +453,9 @@ cl_rxk_cpu::print_info(class cl_console_base *con)
   con->dd_printf("DATASEG : 0x%02x\n", dataseg->read());
   con->dd_printf("STACKSEG: 0x%02x\n", stackseg->read());
   //con->dd_printf("XPC     : 0x%02x\n", xpc->read());
+  con->dd_printf("Prefix: %s\n", ruc->prefix?"true":"false");
+  con->dd_printf("ALTD  : %s\n", ruc->altd?"true":"false");
+  con->dd_printf("Mem op: %s\n", ruc->rwas->get_name());
 }
 
 

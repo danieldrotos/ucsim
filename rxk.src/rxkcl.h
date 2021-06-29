@@ -116,10 +116,9 @@ public:
   class cl_cell16 caAF, caBC, caDE, caHL;
   class cl_memory_cell *XPC;
   class cl_ras *mem;
-  class cl_address_space *ioi, *ioe;
+  class cl_address_space *ioas;
   class cl_address_space *rwas;
-  bool io_prefix;
-  int altd;
+  bool prefix, altd;
 public:
   cl_rxk(class cl_sim *asim);
   virtual int init(void);

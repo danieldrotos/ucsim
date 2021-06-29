@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 cl_rxk::ALTD(t_mem code)
 {
-  altd= 2;
+  altd= prefix= true;
   tick(1);
   return resGO;
 }
@@ -37,8 +37,8 @@ cl_rxk::ALTD(t_mem code)
 int
 cl_rxk::IOI(t_mem code)
 {
-  io_prefix= true;
-  rwas= ioi;
+  prefix= true;
+  rwas= ioas;
   tick(1);
   return resGO;
 }
@@ -46,8 +46,8 @@ cl_rxk::IOI(t_mem code)
 int
 cl_rxk::IOE(t_mem code)
 {
-  io_prefix= true;
-  rwas= ioe;
+  prefix= true;
+  rwas= ioas;
   tick(1);
   return resGO;
 }
