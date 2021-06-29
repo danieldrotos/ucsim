@@ -27,6 +27,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "rxkcl.h"
 
 
+/*
+ *                                                   Increment, decrement
+ */
+
 int
 cl_rxk::inc_ss(class cl_cell16 &rp, u16_t op)
 {
@@ -114,6 +118,10 @@ cl_rxk::dec_i8(t_addr addr)
 }
 
 /*
+ *                                                             Rotate, shift
+ */
+
+/*
      C <-- 7..<-...0 <--+
         |               |
         +---------------+
@@ -143,6 +151,29 @@ cl_rxk::rot9left(class cl_cell8 &dest, u8_t op)
   a7= op&0x80;
   dest.W((op<<1) | (c?1:0));
   f.W((rF & ~flagC) | (a7?flagC:0));
+  tick(1);
+  return resGO;
+}
+
+/*
+     C <-- 15..<-...0 <--+
+     |                   |
+     +-------------------+
+ */
+int
+cl_rxk::rot17left(class cl_cell16 &dest, u16_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg;
+  u16_t a15, c= rF & flagC, res;
+  forg= rF & ~flagAll;
+  a15= op&0x8000;
+  dest.W(res= (op<<1) | (c?1:0));
+  if (a15) forg|= flagC;
+  if (res & 0x8000) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res & 0xf000) forg|= flagL;
+  f.W(forg);
   tick(1);
   return resGO;
 }
@@ -181,35 +212,33 @@ cl_rxk::rot9right(class cl_cell8 &dest, u8_t op)
   return resGO;
 }
 
+/*
+     C --> 15..->...0 -->+
+     |                   |
+     +<------------------+
+ */
 int
-cl_rxk::Xor(class cl_cell8 &dest, u8_t op1, u8_t op2)
+cl_rxk::rot17right(class cl_cell16 &dest, u16_t op)
 {
   class cl_cell8 &f= destF();
-  u8_t forg= f.R() & ~flagAll;
-  u8_t res= op1 ^ op2;
-  dest.W(res);
-  if (res & 0x80) forg|= flagS;
+  u8_t forg;
+  u16_t a0, c= rF & flagC, res;
+  forg= rF & ~flagAll;
+  a0= op&1;
+  dest.W(res= (c?0x8000:0) | (op>>1));
+  if (a0) forg|= flagC;
+  if (res & 0x8000) forg|= flagS;
   if (!res) forg|= flagZ;
-  if (res&0xf0) forg|= flagL;
+  if (res & 0xf000) forg|= flagL;
   f.W(forg);
   tick(1);
   return resGO;
 }
 
-int
-cl_rxk::Or(class cl_cell8 &dest, u8_t op1, u8_t op2)
-{
-  class cl_cell8 &f= destF();
-  u8_t forg= f.R() & ~flagAll;
-  u8_t res= op1 | op2;
-  dest.W(res);
-  if (res & 0x80) forg|= flagS;
-  if (!res) forg|= flagZ;
-  if (res&0xf0) forg|= flagL;
-  f.W(forg);
-  tick(1);
-  return resGO;
-}
+
+/*
+ *                                                           Bitwise, logical
+ */
 
 int
 cl_rxk::BOOL_HL(t_mem code)
@@ -227,13 +256,43 @@ cl_rxk::BOOL_HL(t_mem code)
 }
 
 int
-cl_rxk::AND_HL_DE(t_mem code)
+cl_rxk::xor8(class cl_cell8 &dest, u8_t op1, u8_t op2)
 {
   class cl_cell8 &f= destF();
-  class cl_cell16 &dhl= destHL();
-  u16_t res= rHL & rDE;
+  u8_t forg= f.R() & ~flagAll;
+  u8_t res= op1 ^ op2;
+  dest.W(res);
+  if (res & 0x80) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res&0xf0) forg|= flagL;
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::or8(class cl_cell8 &dest, u8_t op1, u8_t op2)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= f.R() & ~flagAll;
+  u8_t res= op1 | op2;
+  dest.W(res);
+  if (res & 0x80) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res&0xf0) forg|= flagL;
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::or16(class cl_cell16 &dest, u16_t op1, u16_t op2)
+{
+  class cl_cell8 &f= destF();
+  //class cl_cell16 &dhl= destHL();
+  u16_t res= op1/*rHL*/ | op2/*rDE*/;
   u8_t forg= rF & ~flagAll;
-  dhl.W(res);
+  dest.W(res);
   if (res & 0x8000)
     forg|= flagS;
   if (!res)
@@ -245,6 +304,45 @@ cl_rxk::AND_HL_DE(t_mem code)
   tick(1);
   return resGO;
 }
+
+int
+cl_rxk::and8(class cl_cell8 &dest, u8_t op1, u8_t op2)
+{
+  class cl_cell8 &f= destF();
+  u8_t res= op1 & op2, forg= rF & ~flagAll;
+  if (!res) forg|= flagZ;
+  if (res&0x80) forg|= flagS;
+  if (res&0xf0) forg|= flagL;
+  dest.W(res);
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::and16(class cl_cell16 &dest, u16_t op1, u16_t op2)
+{
+  class cl_cell8 &f= destF();
+  //class cl_cell16 &dhl= destHL();
+  u16_t res= op1/*rHL*/ & op2/*rDE*/;
+  u8_t forg= rF & ~flagAll;
+  dest.W(res);
+  if (res & 0x8000)
+    forg|= flagS;
+  if (!res)
+    forg|= flagZ;
+  // flagL?
+  if (res & 0xf000)
+    forg|= flagL;
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+
+/*
+ *                                                                Arithmetic
+ */
 
 int
 cl_rxk::CPL(t_mem code)
@@ -313,6 +411,20 @@ cl_rxk::sub8(u8_t op2, bool cy)
 }
 
 int
+cl_rxk::cp8(u8_t op1, u8_t op2)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  u8_t res= op1-op2;
+  if (op1<op2) forg|= (flagS|flagC);
+  if (op1==op2) forg|= flagZ;
+  if ( 0x80 & ( (res&op1&~op2) | (~res&~op1&op2) ) ) forg|= flagV;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
 cl_rxk::ADD_SP_d(t_mem code)
 {
   i8_t d= fetch();
@@ -325,6 +437,17 @@ cl_rxk::ADD_SP_d(t_mem code)
   else
     f.W(forg&= ~flagC);
   tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::MUL(t_mem code)
+{
+  i16_t op1= rBC, op2= rDE;
+  i32_t res= op1*op2;
+  cHL.W((res>>16)&0xffff);
+  cBC.W(res);
+  tick(11);
   return resGO;
 }
 

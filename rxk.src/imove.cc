@@ -176,6 +176,17 @@ cl_rxk::EX_aDE_HL(t_mem code)
 }
 
 int
+cl_rxk::EX_DE_HL(t_mem code)
+{
+  class cl_cell16 &dhl= destHL();
+  u16_t t= rDE;
+  cDE.W(dhl.get());
+  dhl.W(t);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_rxk::LD_HL_iSPn(t_mem code)
 {
   class cl_cell16 &dest= destHL();

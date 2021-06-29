@@ -196,17 +196,25 @@ public:
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
   virtual int dec_ss(class cl_cell16 &rp, u16_t op);
   virtual int dec_r(class cl_cell8 &cr, u8_t op);
-  virtual int rot8left(class cl_cell8 &dest, u8_t op);
-  virtual int rot9left(class cl_cell8 &dest, u8_t op);
-  virtual int rot8right(class cl_cell8 &dest, u8_t op);
-  virtual int rot9right(class cl_cell8 &dest, u8_t op);
+  virtual int rot8left(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rot9left(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rot17left(class cl_cell16 &dest, u16_t op);	// 0f,1t,0r,0w
+  virtual int rot8right(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rot9right(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rot17right(class cl_cell16 &dest, u16_t op);	// 0f,1t,0r,0w
   virtual int add_hl_ss(u16_t op);
   virtual int add8(u8_t op2, bool cy);				// 0f,3t,0r,0w
   virtual int sub8(u8_t op2, bool cy);				// 0f,3t,0r,0w
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
-  virtual int Xor(class cl_cell8 &dest, u8_t op1, u8_t op2);
-  virtual int Or(class cl_cell8 &dest, u8_t op1, u8_t op2);
+  virtual int xor8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
+  virtual int or8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
+  virtual int or16(class cl_cell16 &dest,
+		    u16_t op1, u16_t op2);			// 0f,1t,0r,0w
+  virtual int and8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
+  virtual int and16(class cl_cell16 &dest,
+		    u16_t op1, u16_t op2);			// 0f,1t,0r,0w
+  virtual int cp8(u8_t op1, u8_t op2);				// 0f,3t,0r,0w
   
   virtual int jr_cc(bool cond);
   virtual int ret_f(bool f);					// 0f,7t,2r,0w
@@ -306,8 +314,8 @@ public:
   virtual int LD_A_E(t_mem code) { return ld_r_g(destA(), rE); }
   virtual int LD_A_H(t_mem code) { return ld_r_g(destA(), rH); }
   virtual int LD_A_L(t_mem code) { return ld_r_g(destA(), rL); }
-  virtual int XOR_A(t_mem code) { return Xor(destA(), cA.R(), rA); }
-  virtual int OR_A(t_mem code) { return Or(destA(), cA.R(), rA); }
+  virtual int XOR_A(t_mem code) { return xor8(destA(), cA.R(), rA); }
+  virtual int OR_A(t_mem code) { return or8(destA(), cA.R(), rA); }
   virtual int RET_NZ(t_mem code) { return ret_f(!(rF&flagZ)); }
   virtual int RET_Z (t_mem code) { return ret_f( (rF&flagZ)); }
   virtual int RET   (t_mem code) { return ret_f( (true    )); }
@@ -349,10 +357,22 @@ public:
   virtual int RST_28(t_mem code) { return rst_v(code); }
   virtual int RST_38(t_mem code) { return rst_v(code); }
   virtual int EXX(t_mem code);
-  virtual int AND_HL_DE(t_mem code);
+  virtual int AND_HL_DE(t_mem code) { return and16(destHL(), rHL, rDE); }
+  virtual int OR_HL_DE (t_mem code) { return or16 (destHL(), rHL, rDE); }
   virtual int SBC_A_n(t_mem code) { return sub8(fetch(), true); }
   virtual int EX_aDE_HL(t_mem code);
+  virtual int EX_DE_HL(t_mem code);
   virtual int LD_HL_iIXd(t_mem code);
+  virtual int AND_n(t_mem code) { tick(2); return and8(destA(), rA, fetch()); }
+  virtual int JP_HL(t_mem code) { tick(3); PC= rHL; return resGO; }
+  virtual int XOR_n(t_mem code) { tick(3); return xor8(destA(), rA, fetch()); }
+  virtual int RL_DE(t_mem code) { return rot17left(destDE(), rDE); }
+  virtual int OR_n(t_mem code) { tick(3); return or8(destA(), rA, fetch()); }
+  virtual int MUL(t_mem code);
+  virtual int LD_SP_HL(t_mem code) { tick(1); cSP.W(rHL); return resGO; }
+  virtual int RR_DE(t_mem code) { return rot17right(destDE(), rDE); }
+  virtual int RR_HL(t_mem code) { return rot17right(destHL(), rHL); }
+  virtual int CP_n(t_mem code) { return cp8(rA, fetch()); }
 };
 
 

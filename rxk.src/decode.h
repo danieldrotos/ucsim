@@ -165,9 +165,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RST_38		instruction_ff
 #define EXX		instruction_d9
 #define AND_HL_DE	instruction_dc
+#define OR_HL_DE	instruction_ec
 #define SBC_A_n		instruction_de
 #define EX_aDE_HL	instruction_e3
+#define EX_DE_HL	instruction_eb
 #define LD_HL_iIXd	instruction_e4
+#define AND_n		instruction_e6
+#define JP_HL		instruction_e9
+#define XOR_n		instruction_ee
+#define RL_DE		instruction_f3
+#define OR_n		instruction_f6
+#define MUL		instruction_f7
+#define LD_SP_HL	instruction_f9
+#define RR_DE		instruction_fb
+#define RR_HL		instruction_fc
+#define CP_n		instruction_fe
 
 #endif
 
