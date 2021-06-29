@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (r4kcl.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -57,6 +57,8 @@ public:
   virtual void reset(void);
   
   virtual void make_cpu_hw(void);
+
+  virtual struct dis_entry *dis_entry(t_addr addr);
 
   virtual void print_regs(class cl_console_base *con);
 

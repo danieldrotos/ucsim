@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (r3kcl.h)
+ * Simulator of microcontrollers (gp0m3.cc)
  *
- * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,20 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R3KCL_HEADER
-#define R3KCL_HEADER
+#include "gp0m3.h"
 
-#include "r2kcl.h"
-
-
-class cl_r3k: public cl_r2k
-{
- public:
-  cl_r3k(class cl_sim *asim);
-  virtual const char *id_string(void);
-};
-
-
-#endif
-
-/* End of rxk.src/r3kcl.h */
+struct dis_entry disass_p0m3[]=
+  {
+    { 0x40, 0xff, ' ', 1, "LD B,B" },
+    
+    { 0, 0, 0, 0, 0, 0 }
+  };
+  
+/* End of rxk.src/gp0m3.cc */

@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (rxkcl.h)
  *
- * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -131,7 +131,8 @@ public:
   virtual void make_memories(void);
 
   virtual int clock_per_cycle(void) { return 1; }
-  virtual struct dis_entry *dis_tbl(void);
+  //virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment= NULL);
 
   virtual void print_regs(class cl_console_base *con);

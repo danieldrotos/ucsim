@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (rxk.cc)
  *
- * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "glob.h"
+#include "gp0m3.h"
 #include "rmemcl.h"
 
 #include "rxkcl.h"
@@ -175,10 +176,36 @@ cl_rxk::make_memories(void)
   ad->activate(0);
 }
 
+/*
 struct dis_entry *
 cl_rxk::dis_tbl(void)
 {
   return(disass_rxk);
+}
+*/
+
+struct dis_entry *
+cl_rxk::dis_entry(t_addr addr)
+{
+  u8_t code= rom->get(addr);
+  int i;
+  struct dis_entry *dt= disass_rxk;
+  i= 0;
+  while (((code & dt[i].mask) != dt[i].code) &&
+	 dt[i].mnemonic)
+    i++;
+  if (dt[i].mnemonic != NULL)
+    return &dt[i];
+
+  dt= disass_p0m3;
+  i= 0;
+  while (((code & dt[i].mask) != dt[i].code) &&
+	 dt[i].mnemonic)
+    i++;
+  if (dt[i].mnemonic != NULL)
+    return &dt[i];
+  
+  return &dt[i];
 }
 
 char *
@@ -186,22 +213,25 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 {
   chars work, temp;
   const char *b;
-  t_mem code= rom->get(addr);
-  struct dis_entry *dt= dis_tbl();//, *dis_e;
+  //t_mem code= rom->get(addr);
+  struct dis_entry *dt;//= dis_tbl();//, *dis_e;
   int i;
   bool first;
   unsigned int x, h, l;
+
+  dt= dis_entry(addr);
   if (!dt)
     return NULL;
-
+  /*
   i= 0;
   while (((code & dt[i].mask) != dt[i].code) &&
 	 dt[i].mnemonic)
     i++;
   //dis_e= &dt[i];
-  if (dt[i].mnemonic == NULL)
+  */
+  if (dt->mnemonic == NULL)
     return strdup("-- UNKNOWN/INVALID");
-  b= dt[i].mnemonic;
+  b= dt->mnemonic;
 
   first= true;
   work= "";

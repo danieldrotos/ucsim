@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (r4k.cc)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "r4kwrap.h"
 #include "glob.h"
+#include "gp0m3.h"
 
 #include "r4kcl.h"
 
@@ -85,6 +86,38 @@ cl_r4k::make_cpu_hw(void)
 {
   add_hw(cpu= new cl_r4k_cpu(this));
   cpu->init();
+}
+
+struct dis_entry *
+cl_r4k::dis_entry(t_addr addr)
+{
+  u8_t code= rom->get(addr);
+  int i;
+  struct dis_entry *dt= disass_rxk;
+  i= 0;
+  while (((code & dt[i].mask) != dt[i].code) &&
+	 dt[i].mnemonic)
+    i++;
+  if (dt[i].mnemonic != NULL)
+    return &dt[i];
+
+  if (edmr & 0xc0)
+    {
+      // mode: 3k
+      dt= disass_p0m3;
+      i= 0;
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic != NULL)
+	return &dt[i];
+    }
+  else
+    {
+      // mode: 4k
+    }
+  
+  return &dt[i];
 }
 
 void
