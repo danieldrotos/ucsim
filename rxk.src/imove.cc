@@ -165,6 +165,17 @@ cl_rxk::EX_AF_aAF(t_mem code)
 }
 
 int
+cl_rxk::EX_aDE_HL(t_mem code)
+{
+  class cl_cell16 &dhl= destHL();
+  u16_t t= raDE;
+  caDE.W(dhl.get());
+  dhl.W(t);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_rxk::LD_HL_iSPn(t_mem code)
 {
   class cl_cell16 &dest= destHL();
@@ -173,6 +184,20 @@ cl_rxk::LD_HL_iSPn(t_mem code)
   h= rom->read(rSP+n+1);
   dest.W(h*256+l);
   vc.rd+= 2;
+  tick5p1(8);
+  return resGO;
+}
+
+int
+cl_rxk::LD_HL_iIXd(t_mem code)
+{
+  i8_t d= fetch();
+  class cl_cell16 &dhl= destHL();
+  t_addr a= (rIX+d)&0xffff;
+  u8_t h, l;
+  l= rwas->read(a);
+  h= rwas->read(a+1);
+  dhl.W(h*256+l);
   tick5p1(8);
   return resGO;
 }

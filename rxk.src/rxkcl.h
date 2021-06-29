@@ -90,7 +90,8 @@ enum {
   flagZ = 0x40,
   flagL = 0x04,
   flagV = 0x04,
-  flagC = 0x01
+  flagC = 0x01,
+  flagAll= flagS|flagZ|flagL|flagC
 };
 
 #define CPU ((class cl_rxk_cpu *)cpu)
@@ -351,6 +352,8 @@ public:
   virtual int EXX(t_mem code);
   virtual int AND_HL_DE(t_mem code);
   virtual int SBC_A_n(t_mem code) { return sub8(fetch(), true); }
+  virtual int EX_aDE_HL(t_mem code);
+  virtual int LD_HL_iIXd(t_mem code);
 };
 
 

@@ -166,6 +166,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define EXX		instruction_d9
 #define AND_HL_DE	instruction_dc
 #define SBC_A_n		instruction_de
+#define EX_aDE_HL	instruction_e3
+#define LD_HL_iIXd	instruction_e4
 
 #endif
 
