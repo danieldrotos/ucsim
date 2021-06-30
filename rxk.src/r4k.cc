@@ -103,6 +103,10 @@ cl_r4k::dis_entry(t_addr addr)
 
   if (edmr & 0xc0)
     {
+      // mode: 4k
+    }
+  else
+    {
       // mode: 3k
       dt= disass_p0m3;
       i= 0;
@@ -111,10 +115,6 @@ cl_r4k::dis_entry(t_addr addr)
 	i++;
       if (dt[i].mnemonic != NULL)
 	return &dt[i];
-    }
-  else
-    {
-      // mode: 4k
     }
   
   return &dt[i];
@@ -436,9 +436,9 @@ cl_r4k_cpu::write(class cl_memory_cell *cell, t_mem *val)
   if (cell == edmr)
     {
       if (*val & 0xc0)
-	r4uc->mode3k();
-      else
 	r4uc->mode4k();
+      else
+	r4uc->mode3k();
     }
 }
 

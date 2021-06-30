@@ -66,9 +66,9 @@ cl_rxk::ld_r_ihl(class cl_cell8 &destr)
 }
 
 int
-cl_rxk::ld_r_g(class cl_cell8 &destr, u8_t op)
+cl_rxk::ld_r_g(class cl_cell8 &dest, u8_t op)
 {
-  destr.W(op);
+  dest.W(op);
   tick(1);
   return resGO;
 }
