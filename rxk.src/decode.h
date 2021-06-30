@@ -37,6 +37,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_DE_mn	instruction_11
 #define LD_HL_mn	instruction_21
 #define LD_SP_mn	instruction_31
+#define LD_imn_HL	instruction_22
+#define LD_HL_imn	instruction_2a
 #define INC_BC		instruction_03
 #define INC_DE		instruction_13
 #define INC_HL		instruction_23
@@ -170,6 +172,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define EX_aDE_HL	instruction_e3
 #define EX_DE_HL	instruction_eb
 #define LD_HL_iIXd	instruction_e4
+#define LD_iIXd_HL	instruction_f4
 #define AND_n		instruction_e6
 #define JP_HL		instruction_e9
 #define XOR_n		instruction_ee

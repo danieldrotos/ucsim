@@ -39,6 +39,36 @@ cl_rxk::ld_dd_mn(class cl_cell16 &dd)
 }
 
 int
+cl_rxk::LD_imn_HL(t_mem code)
+{
+  u8_t l, h;
+  l= fetch();
+  h= fetch();
+  t_addr a= h*256+l;
+  rwas->write(a, rL);
+  rwas->write(a+1, rH);
+  vc.wr+= 2;
+  tick(12);
+  return resGO;
+}
+
+int
+cl_rxk::LD_HL_imn(t_mem code)
+{
+  u8_t l, h;
+  l= fetch();
+  h= fetch();
+  t_addr a= h*256+l;
+  l= rwas->read(a);
+  h= rwas->read(a+1);
+  vc.rd+= 2;
+  destH().W(h);
+  destL().W(l);
+  tick(10);
+  return resGO;
+}
+
+int
 cl_rxk::ld_r_n(class cl_cell8 &r)
 {
   r.W(fetch());
@@ -209,7 +239,20 @@ cl_rxk::LD_HL_iIXd(t_mem code)
   l= rwas->read(a);
   h= rwas->read(a+1);
   dhl.W(h*256+l);
+  vc.rd+= 2;
   tick5p1(8);
+  return resGO;
+}
+
+int
+cl_rxk::LD_iIXd_HL(t_mem code)
+{
+  i8_t d= fetch();
+  t_addr a= (rIX+d)&0xffff;
+  rwas->write(a, rL);
+  rwas->write(a+1, rH);
+  vc.wr+= 2;
+  tick5p1(10);
   return resGO;
 }
 
@@ -219,6 +262,7 @@ cl_rxk::LD_iSPn_HL(t_mem code)
   u8_t n= fetch();
   rom->write(rSP+n, rL);
   rom->write(rSP+n+1, rH);
+  vc.wr+= 2;
   tick5p1(10);
   return resGO;
 }

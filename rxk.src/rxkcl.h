@@ -255,6 +255,8 @@ public:
   virtual int LD_DE_mn(t_mem code) { return ld_dd_mn(destDE()); }
   virtual int LD_HL_mn(t_mem code) { return ld_dd_mn(destHL()); }
   virtual int LD_SP_mn(t_mem code) { return ld_dd_mn(cSP     ); }
+  virtual int LD_imn_HL(t_mem code);
+  virtual int LD_HL_imn(t_mem code);
   virtual int INC_BC(t_mem code) { return inc_ss(destBC(), rBC); }
   virtual int INC_DE(t_mem code) { return inc_ss(destDE(), rDE); }
   virtual int INC_HL(t_mem code) { return inc_ss(destHL(), rHL); }
@@ -388,6 +390,7 @@ public:
   virtual int EX_aDE_HL(t_mem code);
   virtual int EX_DE_HL(t_mem code);
   virtual int LD_HL_iIXd(t_mem code);
+  virtual int LD_iIXd_HL(t_mem code);
   virtual int AND_n(t_mem code) { tick(2); return and8(destA(), rA, fetch()); }
   virtual int JP_HL(t_mem code) { tick(3); PC= rHL; return resGO; }
   virtual int XOR_n(t_mem code) { tick(3); return xor8(destA(), rA, fetch()); }

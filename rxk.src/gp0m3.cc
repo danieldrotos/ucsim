@@ -108,7 +108,7 @@ struct dis_entry disass_p0m3[]=
     { 0x9e, 0xff, ' ', 1, "SBC A,(HL)" },
     { 0x9f, 0xff, ' ', 1, "SBC A,A" },
     
-    { 0xa1, 0xff, ' ', 1, "AND A,B" },
+    { 0xa0, 0xff, ' ', 1, "AND A,B" },
     { 0xa1, 0xff, ' ', 1, "AND A,C" },
     { 0xa2, 0xff, ' ', 1, "AND A,D" },
     { 0xa3, 0xff, ' ', 1, "AND A,E" },

@@ -47,6 +47,8 @@ struct dis_entry disass_rxk[]=
     { 0x11, 0xff, ' ', 3, "LD DE,%w" },
     { 0x21, 0xff, ' ', 3, "LD HL,%w" },
     { 0x31, 0xff, ' ', 3, "LD SP,%w" },
+    { 0x22, 0xff, ' ', 3, "LD (%w),HL" },
+    { 0x2a, 0xff, ' ', 3, "LD HL,(%w)" },
     { 0x03, 0xff, ' ', 1, "INC BC" },
     { 0x13, 0xff, ' ', 1, "INC DE" },
     { 0x23, 0xff, ' ', 1, "INC HL" },
@@ -180,6 +182,7 @@ struct dis_entry disass_rxk[]=
     { 0xe3, 0xff, ' ', 1, "EX DE',HL" }, // '
     { 0xeb, 0xff, ' ', 1, "EX DE,HL" },
     { 0xe4, 0xff, ' ', 2, "LD HL,(IX+%b)" },
+    { 0xf4, 0xff, ' ', 2, "LD (IX+%b),HL" },
     { 0xe6, 0xff, ' ', 2, "AND A,%b" },
     { 0xe9, 0xff, ' ', 1, "JP HL" },
     { 0xee, 0xff, ' ', 2, "XOR %b" },
