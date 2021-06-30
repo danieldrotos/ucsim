@@ -113,6 +113,7 @@ public:
   class cl_cell8 cIP, cIIR, cEIR;
   class cl_cell8 cA, cF, cB, cC, cD, cE, cH, cL;
   class cl_cell8 caA, caF, caB, caC, caD, caE, caH, caL;
+  class cl_cell8 cRtab[8], caRtab[8];
   class cl_cell16 cAF, cBC, cDE, cHL, cIX, cIY, cSP;
   class cl_cell16 caAF, caBC, caDE, caHL;
   class cl_memory_cell *XPC;
@@ -135,15 +136,21 @@ public:
   //virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment= NULL);
-
+  virtual char *disassc_cb(t_addr addr, chars *comment= NULL);
+  virtual int inst_length(t_addr addr);
+  virtual int longest_inst(void) { return 4; }
+  
   virtual void print_regs(class cl_console_base *con);
 
+  virtual class cl_cell8 &cR(u8_t z);
+  virtual class cl_cell8 &destR(u8_t z);
+  virtual u8_t rR(u8_t z);
   virtual int exec_inst(void);
   virtual int inst_unknown(t_mem code);
   virtual void tick5p1(int n) { tick(n); }
   virtual void tick5p3(int n) { tick(n); }
   virtual void tick5m2(int n) { tick(n+2); }
-  
+
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
   class cl_cell16 &destBC(void) { return altd?caBC:cBC; }
   class cl_cell16 &destDE(void) { return altd?caDE:cDE; }
@@ -201,11 +208,25 @@ public:
   virtual int dec_ss(class cl_cell16 &rp, u16_t op);
   virtual int dec_r(class cl_cell8 &cr, u8_t op);
   virtual int rot8left(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rlc(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int rot9left(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rl(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int rot17left(class cl_cell16 &dest, u16_t op);	// 0f,1t,0r,0w
   virtual int rot8right(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rrc(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int rot9right(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
+  virtual int rr(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int rot17right(class cl_cell16 &dest, u16_t op);	// 0f,1t,0r,0w
+  virtual int sla(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
+  virtual int sra(class cl_cell8 &dest, i8_t op);		// 0f,4t,0r,0w
+  virtual int srl(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
+  virtual int bit_r(u8_t b, u8_t op);				// 0f,4t,0r,0w
+  virtual int bit_iHL(u8_t b);					// 0f,7t,1r,0w
+  virtual int res_r(u8_t b, class cl_cell8 &dest, u8_t op);	// 0f,4t,0r,0w
+  virtual int res_iHL(u8_t b);					// 0f,10t,1r,1w
+  virtual int set_r(u8_t b, class cl_cell8 &dest, u8_t op);	// 0f,4t,0r,0w
+  virtual int set_iHL(u8_t b);					// 0f,10t,1r,1w
+  
   virtual int add_hl_ss(u16_t op);
   virtual int add8(u8_t op2, bool cy);				// 0f,3t,0r,0w
   virtual int sub8(u8_t op2, bool cy);				// 0f,3t,0r,0w
@@ -489,6 +510,8 @@ public:
   virtual int CP_A_L(t_mem code) { return cp8(rA, rL); }
   virtual int CP_A_iHL(t_mem code) { tick(3); return cp8(rA, read8io(rHL)); }
   virtual int CP_A_A(t_mem code) { return cp8(rA, rA); }
+
+  virtual int PAGE_CB(t_mem code);
 };
 
 

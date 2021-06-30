@@ -95,5 +95,53 @@ cl_rxk::EXX(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::PAGE_CB(t_mem code)
+{
+  u8_t x, y, z;
+  code= fetch();
+  x= code>>6;
+  y= (code>>3)&7;
+  z= code&7;
+  switch (x)
+    {
+    case 0:
+      if (z == 6)
+	{
+	  vc.rd++;
+	  vc.wr++;
+	  tick(6);
+	}
+      switch (y)
+	{
+	case 0: return rlc(destR(z), rR(z));
+	case 1: return rrc(destR(z), rR(z));
+	case 2: return rl (destR(z), rR(z));
+	case 3: return rr (destR(z), rR(z));
+	case 4: return sla(destR(z), rR(z));
+	case 5: return sra(destR(z), rR(z));
+	case 6: return resINV_INST;
+	case 7: return srl(destR(z), rR(z));
+	}
+      break;
+    case 1: // BIT y,r
+      if (z == 6)
+	return bit_iHL(y);
+      return bit_r(y, rR(z));
+      break;
+    case 2: // RES y,r
+      if (z == 6)
+	return res_iHL(y);
+      return res_r(y, destR(z), rR(z));
+      break;
+    case 3: // SET y,r
+      if (z == 6)
+	return set_iHL(y);
+      return set_r(y, destR(z), rR(z));
+      break;
+    }
+  return resGO;
+}
+
 
 /* End of m6800.src/inst.cc */

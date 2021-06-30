@@ -138,6 +138,23 @@ cl_rxk::rot8left(class cl_cell8 &dest, u8_t op)
   return resGO;
 }
 
+int
+cl_rxk::rlc(class cl_cell8 &dest, u8_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t a7, res, forg= rF & ~flagAll;
+  a7= op&0x80;
+  dest.W(res= ((op<<1) | (a7?1:0)));
+  if (!res) forg|= flagZ;
+  if (res&0x80) forg|= flagS;
+  if (res&0xf0) forg|= flagL;
+  if (a7) forg|= flagC;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+
 /*
      C <-- 7..<-...0 <--+
      |                  |
@@ -154,6 +171,24 @@ cl_rxk::rot9left(class cl_cell8 &dest, u8_t op)
   tick(1);
   return resGO;
 }
+
+int
+cl_rxk::rl(class cl_cell8 &dest, u8_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t a7, c= rF&flagC, res, forg;
+  a7= op&0x80;
+  dest.W(res= ((op<<1) | (c?1:0)));
+  forg= rF & ~flagAll;
+  if (!res) forg|= flagZ;
+  if (res&0x80) forg|= flagS;
+  if (res&0xf0) forg|= flagL;
+  if (a7) forg|= flagC;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
 
 /*
      C <-- 15..<-...0 <--+
@@ -195,6 +230,23 @@ cl_rxk::rot8right(class cl_cell8 &dest, u8_t op)
   return resGO;
 }
 
+int
+cl_rxk::rrc(class cl_cell8 &dest, u8_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t a0, res, forg= rF & ~flagAll;
+  a0= op&0x01;
+  dest.W(res= ((op>>1) | (a0?0x80:0)));
+  if (!res) forg|= flagZ;
+  if (res&0x80) forg|= flagS;
+  if (res&0xf0) forg|= flagL;
+  if (a0) forg|= flagC;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+
 /*
      7..->...0 --> C
      |             |
@@ -211,6 +263,24 @@ cl_rxk::rot9right(class cl_cell8 &dest, u8_t op)
   tick(1);
   return resGO;
 }
+
+int
+cl_rxk::rr(class cl_cell8 &dest, u8_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t a0, c= rF&flagC, res, forg;
+  a0= op&0x01;
+  dest.W(res= ((op>>1) | (c?0x80:0)));
+  forg= rF & ~flagAll;
+  if (!res) forg|= flagZ;
+  if (res&0x80) forg|= flagS;
+  if (res&0xf0) forg|= flagL;
+  if (a0) forg|= flagC;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
 
 /*
      C --> 15..->...0 -->+
@@ -232,6 +302,137 @@ cl_rxk::rot17right(class cl_cell16 &dest, u16_t op)
   if (res & 0xf000) forg|= flagL;
   f.W(forg);
   tick(1);
+  return resGO;
+}
+
+
+/*
+   C <--  7..<-..0  <-- 0
+*/
+int
+cl_rxk::sla(class cl_cell8 &dest, u8_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t res, forg= rF & ~flagAll;
+  if (op & 0x80) forg|= flagC;
+  dest.W(res= (op<<1));
+  if (res & 0x8000) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res & 0xf000) forg|= flagL;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+
+/*
+  +--> 7..->..0  --> C
+  |    |
+  +----+  
+*/
+int
+cl_rxk::sra(class cl_cell8 &dest, i8_t op)
+{
+  class cl_cell8 &f= destF();
+  i8_t res, forg= rF & ~flagAll;
+  if (op & 1) forg|= flagC;
+  dest.W(res= (op>>1));
+  if (res & 0x8000) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res & 0xf000) forg|= flagL;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+
+/*
+  0-->  7..->..0  --> C
+*/
+int
+cl_rxk::srl(class cl_cell8 &dest, u8_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t res, forg= rF & ~flagAll;
+  if (op & 1) forg|= flagC;
+  dest.W(res= (op>>1));
+  if (res & 0x8000) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res & 0xf000) forg|= flagL;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::bit_r(u8_t b, u8_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagZ, res;
+  res= (1<<b) & op;
+  if (!res) forg|= flagZ;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::bit_iHL(u8_t b)
+{
+  u8_t forg= rF & ~flagZ, res, op;
+  op= rwas->read(rHL);
+  vc.rd++;
+  res= (1<<b) & op;
+  if (!res) forg|= flagZ;
+  cF.W(forg);
+  tick(6);
+  return resGO;
+}
+
+int
+cl_rxk::res_r(u8_t b, class cl_cell8 &dest, u8_t op)
+{
+  u8_t res;
+  res= ~(1<<b) & op;
+  dest.W(res);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::res_iHL(u8_t b)
+{
+  u8_t res, op;
+  op= rwas->read(rHL);
+  vc.rd++;
+  res= ~(1<<b) & op;
+  rwas->write(rHL, res);
+  vc.wr++;
+  tick(9);
+  return resGO;
+}
+
+
+int
+cl_rxk::set_r(u8_t b, class cl_cell8 &dest, u8_t op)
+{
+  u8_t res;
+  res= (1<<b) | op;
+  dest.W(res);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::set_iHL(u8_t b)
+{
+  u8_t res, op;
+  op= rwas->read(rHL);
+  vc.rd++;
+  res= (1<<b) | op;
+  rwas->write(rHL, res);
+  vc.wr++;
+  tick(9);
   return resGO;
 }
 

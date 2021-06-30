@@ -181,6 +181,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RR_HL		instruction_fc
 #define CP_n		instruction_fe
 
+#define PAGE_CB		instruction_cb
+
 #endif
 
 /* End of rxk.src/decode.h */

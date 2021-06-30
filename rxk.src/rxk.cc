@@ -44,6 +44,20 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   cl_uc(asim)
 {
   altd= 0;
+  cRtab[0]= cB;
+  cRtab[1]= cC;
+  cRtab[2]= cD;
+  cRtab[3]= cE;
+  cRtab[4]= cH;
+  cRtab[5]= cL;
+  cRtab[7]= cA;
+  caRtab[0]= caB;
+  caRtab[1]= caC;
+  caRtab[2]= caD;
+  caRtab[3]= caE;
+  caRtab[4]= caH;
+  caRtab[5]= caL;
+  caRtab[7]= caA;
 }
 
 int
@@ -213,12 +227,15 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 {
   chars work, temp;
   const char *b;
-  //t_mem code= rom->get(addr);
+  t_mem code= rom->get(addr);
   struct dis_entry *dt;//= dis_tbl();//, *dis_e;
   int i;
   bool first;
   unsigned int x, h, l;
 
+  if (code == 0xcb)
+    return disassc_cb(addr, comment);
+  
   dt= dis_entry(addr);
   if (!dt)
     return NULL;
@@ -287,6 +304,86 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   return(strdup(work.c_str()));
 }
 
+
+char *
+cl_rxk::disassc_cb(t_addr addr, chars *comment)
+{
+  u8_t code= rom->get(++addr);
+  u8_t x, y, z;
+  chars work, temp;
+  char b[100];
+  bool first= true;
+  int i;
+  const char *r[8]= { "B","C","D","E","H","L","(HL)","A" };
+
+  x= code>>6;
+  y= (code>>3)&7;
+  z= code&7;
+  switch (x)
+    {
+    case 0:
+      switch (y)
+	{
+	case 0: strcpy(b, "RLC %r"); break;
+	case 1: strcpy(b, "RRC %r"); break;
+	case 2: strcpy(b, "RL %r"); break;
+	case 3: strcpy(b, "RR %r"); break;
+	case 4: strcpy(b, "SLA %r"); break;
+	case 5: strcpy(b, "SRA %r"); break;
+	case 6: return strdup("-- UNKNOWN/INVALID");
+	case 7: strcpy(b, "SRL %r"); break;
+	}
+      break;
+    case 1:
+      strcpy(b, "BIT %y,%r");
+      break;
+    case 2:
+      strcpy(b, "RES %y,%r");
+      break;
+    case 3:
+      strcpy(b, "SET %y,%r");
+      break;
+    }
+  temp= "";
+  work= "";
+  for (i= 0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '%')
+	{
+	  temp= "";
+	  i++;
+	  switch (b[i])
+	    {
+	    case 'y': work.appendf("%d", y); break;
+	    case 'r': work.append(r[z]); break;
+	    }
+	  if (comment && temp.nempty())
+	    comment->append(temp);
+	}
+      else
+	work+= b[i];
+    }
+
+  return(strdup(work.c_str()));
+}
+
+int
+cl_rxk::inst_length(t_addr addr)
+{
+  u8_t code= rom->get(addr);
+  if (code == 0xcb)
+    return 2;
+  struct dis_entry *dt= dis_entry(addr);
+  if (!dt) return 1;
+  if (dt->mnemonic == NULL) return 1;
+  return dt->length;
+}
+
 void
 cl_rxk::print_regs(class cl_console_base *con)
 {
@@ -329,6 +426,31 @@ cl_rxk::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
+class cl_cell8 &
+cl_rxk::cR(u8_t z)
+{
+  if (z == 6)
+    return *((cl_cell8*)(rom->get_cell(rHL)));
+  return cRtab[z];
+}
+
+u8_t
+cl_rxk::rR(u8_t z)
+{
+  return cR(z).R();
+}
+
+class cl_cell8 &
+cl_rxk::destR(u8_t z)
+{
+  if (z == 6)
+    {
+      return *((cl_cell8*)(rwas->get_cell(rHL)));
+    }
+  if (altd)
+    return caRtab[z];
+  return cRtab[z];
+}
 
 int
 cl_rxk::exec_inst(void)
