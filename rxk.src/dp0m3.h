@@ -97,6 +97,54 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADC_A_iHL	instruction_8e
 #define ADC_A_A		instruction_8f
 
+#define SUB_A_C		instruction_91
+#define SUB_A_D		instruction_92
+#define SUB_A_E		instruction_93
+#define SUB_A_H		instruction_94
+#define SUB_A_L		instruction_95
+#define SUB_A_iHL	instruction_96
+#define SUB_A_A		instruction_97
+#define SBC_A_B		instruction_98
+#define SBC_A_C		instruction_99
+#define SBC_A_D		instruction_9a
+#define SBC_A_E		instruction_9b
+#define SBC_A_H		instruction_9c
+#define SBC_A_L		instruction_9d
+#define SBC_A_iHL	instruction_9e
+#define SBC_A_A		instruction_9f
+
+#define AND_A_B		instruction_a0
+#define AND_A_C		instruction_a1
+#define AND_A_D		instruction_a2
+#define AND_A_E		instruction_a3
+#define AND_A_H		instruction_a4
+#define AND_A_L		instruction_a5
+#define AND_A_iHL	instruction_a6
+#define AND_A_A		instruction_a7
+#define XOR_A_B		instruction_a8
+#define XOR_A_C		instruction_a9
+#define XOR_A_D		instruction_aa
+#define XOR_A_E		instruction_ab
+#define XOR_A_H		instruction_ac
+#define XOR_A_L		instruction_ad
+#define XOR_A_iHL	instruction_ae
+
+#define OR_A_B		instruction_b0
+#define OR_A_C		instruction_b1
+#define OR_A_D		instruction_b2
+#define OR_A_E		instruction_b3
+#define OR_A_H		instruction_b4
+#define OR_A_L		instruction_b5
+#define OR_A_iHL	instruction_b6
+#define CP_A_B		instruction_b8
+#define CP_A_C		instruction_b9
+#define CP_A_D		instruction_ba
+#define CP_A_E		instruction_bb
+#define CP_A_H		instruction_bc
+#define CP_A_L		instruction_bd
+#define CP_A_iHL	instruction_be
+#define CP_A_A		instruction_bf
+
 #endif
 
 /* End of rxk.src/dp0m3.h */

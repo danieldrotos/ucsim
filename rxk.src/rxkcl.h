@@ -142,6 +142,7 @@ public:
   virtual int inst_unknown(t_mem code);
   virtual void tick5p1(int n) { tick(n); }
   virtual void tick5p3(int n) { tick(n); }
+  virtual void tick5m2(int n) { tick(n+2); }
   
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
   class cl_cell16 &destBC(void) { return altd?caBC:cBC; }
@@ -177,6 +178,7 @@ public:
     rwas->write(a, v); rwas->write(a+1, v>>8);
   }
   u8_t read8(t_addr a) { vc.rd++; return rom->read(a); }
+  u8_t read8io(t_addr a) { vc.rd++; return rwas->read(a); }
   u16_t read16(t_addr a) { u8_t l, h; vc.rd+=2;
     l= rom->read(a); h= rom->read(a+1);
     return h*256+l;
@@ -316,8 +318,8 @@ public:
   virtual int LD_A_E(t_mem code) { return ld_r_g(destA(), rE); }
   virtual int LD_A_H(t_mem code) { return ld_r_g(destA(), rH); }
   virtual int LD_A_L(t_mem code) { return ld_r_g(destA(), rL); }
-  virtual int XOR_A(t_mem code) { return xor8(destA(), cA.R(), rA); }
-  virtual int OR_A(t_mem code) { return or8(destA(), cA.R(), rA); }
+  virtual int XOR_A(t_mem code) { return xor8(destA(), rA, rA); }
+  virtual int OR_A(t_mem code) { return or8(destA(), rA, rA); }
   virtual int RET_NZ(t_mem code) { return ret_f(!(rF&flagZ)); }
   virtual int RET_Z (t_mem code) { return ret_f( (rF&flagZ)); }
   virtual int RET   (t_mem code) { return ret_f( (true    )); }
@@ -430,15 +432,63 @@ public:
   virtual int ADD_A_E(t_mem code) { return add8(rE, false); }
   virtual int ADD_A_H(t_mem code) { return add8(rH, false); }
   virtual int ADD_A_L(t_mem code) { return add8(rL, false); }
-  virtual int ADD_A_iHL(t_mem code) { tick(3); return add8(read8(rHL), false); }
+  virtual int ADD_A_iHL(t_mem code) { tick(3); return add8(read8io(rHL), false); }
   virtual int ADD_A_A(t_mem code) { return add8(rA, false); }
   virtual int ADC_A_C(t_mem code) { return add8(rC, true); }
   virtual int ADC_A_D(t_mem code) { return add8(rD, true); }
   virtual int ADC_A_E(t_mem code) { return add8(rE, true); }
   virtual int ADC_A_H(t_mem code) { return add8(rH, true); }
   virtual int ADC_A_L(t_mem code) { return add8(rL, true); }
-  virtual int ADC_A_iHL(t_mem code) { tick(3); return add8(read8(rHL), true); }
+  virtual int ADC_A_iHL(t_mem code) { tick(3); return add8(read8io(rHL), true); }
   virtual int ADC_A_A(t_mem code) { return add8(rA, true); }
+
+  virtual int SUB_A_C(t_mem code) { return sub8(rC, false); }
+  virtual int SUB_A_D(t_mem code) { return sub8(rD, false); }
+  virtual int SUB_A_E(t_mem code) { return sub8(rE, false); }
+  virtual int SUB_A_H(t_mem code) { return sub8(rH, false); }
+  virtual int SUB_A_L(t_mem code) { return sub8(rL, false); }
+  virtual int SUB_A_iHL(t_mem code) { tick(3); return sub8(read8io(rHL), false); }
+  virtual int SUB_A_A(t_mem code) { return sub8(rA, false); }
+  virtual int SBC_A_B(t_mem code) { return sub8(rB, true); }
+  virtual int SBC_A_C(t_mem code) { return sub8(rC, true); }
+  virtual int SBC_A_D(t_mem code) { return sub8(rD, true); }
+  virtual int SBC_A_E(t_mem code) { return sub8(rE, true); }
+  virtual int SBC_A_H(t_mem code) { return sub8(rH, true); }
+  virtual int SBC_A_L(t_mem code) { return sub8(rL, true); }
+  virtual int SBC_A_iHL(t_mem code) { tick(3); return sub8(read8io(rHL), true); }
+  virtual int SBC_A_A(t_mem code) { return sub8(rA, true); }
+
+  virtual int AND_A_B(t_mem code) { return and8(destA(), rA, rB); }
+  virtual int AND_A_C(t_mem code) { return and8(destA(), rA, rC); }
+  virtual int AND_A_D(t_mem code) { return and8(destA(), rA, rD); }
+  virtual int AND_A_E(t_mem code) { return and8(destA(), rA, rE); }
+  virtual int AND_A_H(t_mem code) { return and8(destA(), rA, rH); }
+  virtual int AND_A_L(t_mem code) { return and8(destA(), rA, rL); }
+  virtual int AND_A_iHL(t_mem code) { tick(3); return and8(destA(), rA, read8io(rHL)); }
+  virtual int AND_A_A(t_mem code) { return and8(destA(), rA, rA); }
+  virtual int XOR_A_B(t_mem code) { return xor8(destA(), rA, rB); }
+  virtual int XOR_A_C(t_mem code) { return xor8(destA(), rA, rC); }
+  virtual int XOR_A_D(t_mem code) { return xor8(destA(), rA, rD); }
+  virtual int XOR_A_E(t_mem code) { return xor8(destA(), rA, rE); }
+  virtual int XOR_A_H(t_mem code) { return xor8(destA(), rA, rH); }
+  virtual int XOR_A_L(t_mem code) { return xor8(destA(), rA, rL); }
+  virtual int XOR_A_iHL(t_mem code) { tick(3); return xor8(destA(), rA, read8io(rHL)); }
+
+  virtual int OR_A_B(t_mem code) { return or8(destA(), rA, rB); }
+  virtual int OR_A_C(t_mem code) { return or8(destA(), rA, rC); }
+  virtual int OR_A_D(t_mem code) { return or8(destA(), rA, rD); }
+  virtual int OR_A_E(t_mem code) { return or8(destA(), rA, rE); }
+  virtual int OR_A_H(t_mem code) { return or8(destA(), rA, rH); }
+  virtual int OR_A_L(t_mem code) { return or8(destA(), rA, rL); }
+  virtual int OR_A_iHL(t_mem code) { tick(3); return or8(destA(), rA, read8io(rHL)); }
+  virtual int CP_A_B(t_mem code) { return cp8(rA, rB); }
+  virtual int CP_A_C(t_mem code) { return cp8(rA, rC); }
+  virtual int CP_A_D(t_mem code) { return cp8(rA, rD); }
+  virtual int CP_A_E(t_mem code) { return cp8(rA, rE); }
+  virtual int CP_A_H(t_mem code) { return cp8(rA, rH); }
+  virtual int CP_A_L(t_mem code) { return cp8(rA, rL); }
+  virtual int CP_A_iHL(t_mem code) { tick(3); return cp8(rA, read8io(rHL)); }
+  virtual int CP_A_A(t_mem code) { return cp8(rA, rA); }
 };
 
 

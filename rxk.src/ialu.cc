@@ -420,7 +420,7 @@ cl_rxk::cp8(u8_t op1, u8_t op2)
   if (op1==op2) forg|= flagZ;
   if ( 0x80 & ( (res&op1&~op2) | (~res&~op1&op2) ) ) forg|= flagV;
   f.W(forg);
-  tick(3);
+  tick5m2(1);
   return resGO;
 }
 
