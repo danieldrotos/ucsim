@@ -29,6 +29,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 instruction_wrapper_fn itab[256];
+instruction_wrapper_fn itab_dd[256];
+instruction_wrapper_fn itab_ed[256];
+instruction_wrapper_fn itab_fd[256];
 
 /* 
 %d - signed compl.,byte jump 

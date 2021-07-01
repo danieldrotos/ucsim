@@ -279,13 +279,13 @@ public:
   virtual int DEC_E(t_mem code) { return dec_r(destE(), rE); }
   virtual int DEC_H(t_mem code) { return dec_r(destH(), rH); }
   virtual int DEC_L(t_mem code) { return dec_r(destL(), rL); }
-  virtual int LD_A_n() { return ld_r_n(destA()); }
-  virtual int LD_B_n() { return ld_r_n(destB()); }
-  virtual int LD_C_n() { return ld_r_n(destC()); }
-  virtual int LD_D_n() { return ld_r_n(destD()); }
-  virtual int LD_E_n() { return ld_r_n(destE()); }
-  virtual int LD_H_n() { return ld_r_n(destH()); }
-  virtual int LD_L_n() { return ld_r_n(destL()); }
+  virtual int LD_A_n(t_mem code) { return ld_r_n(destA()); }
+  virtual int LD_B_n(t_mem code) { return ld_r_n(destB()); }
+  virtual int LD_C_n(t_mem code) { return ld_r_n(destC()); }
+  virtual int LD_D_n(t_mem code) { return ld_r_n(destD()); }
+  virtual int LD_E_n(t_mem code) { return ld_r_n(destE()); }
+  virtual int LD_H_n(t_mem code) { return ld_r_n(destH()); }
+  virtual int LD_L_n(t_mem code) { return ld_r_n(destL()); }
   virtual int RLCA(t_mem code) { return rot8left(destA(), rA); }
   virtual int RLA(t_mem code) { return rot9left(destA(), rA); }
   virtual int RRCA(t_mem code) { return rot8right(destA(), rA); }
