@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (ddwrap.h)
+ * Simulator of microcontrollers (edwrap.h)
  *
  * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
@@ -25,13 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DDWRAP_HEADER
-#define DDWRAP_HEADER
+#ifndef EDWRAP_HEADER
+#define EDWRAP_HEADER
 
 #include "iwrap.h"
 
-extern void fill_dd_wrappers(instruction_wrapper_fn itab[]);
+extern void fill_ed_wrappers(instruction_wrapper_fn itab[]);
 
 #endif
 
-/* End of rxk.src/ddwrap.h */
+/* End of rxk.src/edwrap.h */
