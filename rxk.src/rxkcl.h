@@ -518,6 +518,7 @@ public:
 
 #include "r4kcl_instructions.h"
 #include "dd_instructions.h"
+#include "ed_instructions.h"
 };
 
 
