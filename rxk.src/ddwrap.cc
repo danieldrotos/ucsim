@@ -21,6 +21,17 @@ int instruction_wrapper_dd_1d(class cl_uc *uc, t_mem code) { return ((class cl_r
 int instruction_wrapper_dd_1e(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_1e(code); }
 int instruction_wrapper_dd_1f(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_1f(code); }
 
+int instruction_wrapper_dd_21(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_21(code); }
+int instruction_wrapper_dd_22(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_22(code); }
+int instruction_wrapper_dd_23(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_23(code); }
+int instruction_wrapper_dd_29(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_29(code); }
+int instruction_wrapper_dd_2a(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_2a(code); }
+int instruction_wrapper_dd_2b(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_2b(code); }
+int instruction_wrapper_dd_2c(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_2c(code); }
+int instruction_wrapper_dd_2d(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_2d(code); }
+int instruction_wrapper_dd_2e(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_2e(code); }
+int instruction_wrapper_dd_2f(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_dd_2f(code); }
+
 
 void fill_dd_wrappers(instruction_wrapper_fn itab[])
 {
@@ -45,4 +56,15 @@ void fill_dd_wrappers(instruction_wrapper_fn itab[])
   itab[0x1d]= instruction_wrapper_dd_1d;
   itab[0x1e]= instruction_wrapper_dd_1e;
   itab[0x1f]= instruction_wrapper_dd_1f;
+
+  itab[0x21]= instruction_wrapper_dd_21;
+  itab[0x22]= instruction_wrapper_dd_22;
+  itab[0x23]= instruction_wrapper_dd_23;
+  itab[0x29]= instruction_wrapper_dd_29;
+  itab[0x2a]= instruction_wrapper_dd_2a;
+  itab[0x2b]= instruction_wrapper_dd_2b;
+  itab[0x2c]= instruction_wrapper_dd_2c;
+  itab[0x2d]= instruction_wrapper_dd_2d;
+  itab[0x2e]= instruction_wrapper_dd_2e;
+  itab[0x2f]= instruction_wrapper_dd_2f;
 }

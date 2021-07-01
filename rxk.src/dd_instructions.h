@@ -14,3 +14,14 @@ virtual int instruction_dd_1c(t_mem code) { return resNOT_DONE; }
 virtual int instruction_dd_1d(t_mem code) { return resNOT_DONE; }
 virtual int instruction_dd_1e(t_mem code) { return resNOT_DONE; }
 virtual int instruction_dd_1f(t_mem code) { return resNOT_DONE; }
+
+virtual int instruction_dd_21(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_22(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_23(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_29(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_2a(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_2b(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_2c(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_2d(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_2e(t_mem code) { return resNOT_DONE; }
+virtual int instruction_dd_2f(t_mem code) { return resNOT_DONE; }
