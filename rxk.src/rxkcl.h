@@ -515,6 +515,9 @@ public:
   virtual int CP_A_A(t_mem code) { return cp8(rA, rA); }
 
   virtual int PAGE_CB(t_mem code);
+
+#include "r4kcl_instructions.h"
+#include "dd_instructions.h"
 };
 
 

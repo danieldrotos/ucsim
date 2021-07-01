@@ -36,6 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "gp0m3.h"
 #include "rmemcl.h"
+#include "ddwrap.h"
 
 #include "rxkcl.h"
 
@@ -66,7 +67,8 @@ cl_rxk::init(void)
   cl_uc::init();
   altd= prefix= false;
   fill_def_wrappers(itab);
- 
+  fill_dd_wrappers(itab_dd);
+  
   xtal= 1000000;
 
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")

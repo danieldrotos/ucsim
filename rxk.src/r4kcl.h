@@ -66,7 +66,6 @@ public:
   virtual void mode4k(void);
 
   virtual int EXX(t_mem code);
-#include "r4kcl_instructions.h"
 };
 
 class cl_r4k_cpu: public cl_rxk_cpu
