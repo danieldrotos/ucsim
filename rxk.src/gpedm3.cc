@@ -29,10 +29,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 struct dis_entry disass_pedm3[]=
   {
-    { 0x47, 0xff, ' ', 1, "LD EIR,A" },
-    { 0x4f, 0xff, ' ', 1, "LD IIR,A" },
-    { 0x57, 0xff, ' ', 1, "LD A,EIR" },
-    { 0x5f, 0xff, ' ', 1, "LD A,IIR" },
+    { 0x47, 0xff, ' ', 2, "LD EIR,A" },
+    { 0x4f, 0xff, ' ', 2, "LD IIR,A" },
+    { 0x57, 0xff, ' ', 2, "LD A,EIR" },
+    { 0x5f, 0xff, ' ', 2, "LD A,IIR" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

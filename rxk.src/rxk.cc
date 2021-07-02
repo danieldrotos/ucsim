@@ -270,12 +270,12 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 
   if (code == 0xcb)
     return disassc_cb(addr, comment);
-  if (code == 0xde)
-    code= rom->get(++addr);
   
   dt= dis_entry(addr);
   if (!dt)
     return NULL;
+  if (code == 0xed)
+    code= rom->get(++addr);
   /*
   i= 0;
   while (((code & dt[i].mask) != dt[i].code) &&
