@@ -38,6 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "gpedm3.h"
 #include "rmemcl.h"
 #include "ddwrap.h"
+#include "edwrap.h"
 
 #include "rxkcl.h"
 
@@ -74,6 +75,7 @@ cl_rxk::init(void)
   altd= prefix= false;
   fill_def_wrappers(itab);
   fill_dd_wrappers(itab_dd);
+  fill_ed_wrappers(itab_ed);
   
   xtal= 1000000;
 
@@ -500,9 +502,21 @@ cl_rxk::exec_inst(void)
       altd= false;
     }
   prefix= false;
-  if ((res= exec_inst_tab(itab)) == resNOT_DONE)
+
+  instPC= PC;
+  if (fetch(&code))
+    return resBREAKPOINT;
+  tick(1);
+  if (code == 0xed)
     {
-      fetch(&code);
+      code= fetch();
+      return itab_ed[code](this, code);
+    }
+  res= itab[code](this, code);
+  if (res == resNOT_DONE)
+    {
+      PC= instPC;
+      code= rom->read(PC);
       res= inst_unknown(code);
     }
   

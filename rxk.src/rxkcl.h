@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "rmemcl.h"
 #include "decode.h"
 #include "dp0m3.h"
+#include "dpedm3.h"
 
 
 /*
@@ -172,12 +173,12 @@ public:
   class cl_cell8  &destE(void)  { return altd?caE:cE; }
   class cl_cell8  &destH(void)  { return altd?caH:cH; }
   class cl_cell8  &destL(void)  { return altd?caL:cL; }
-  class cl_cell8  &dest8iBC(void) { return *((cl_cell8*)rom->get_cell(rBC)); }
-  class cl_cell8  &dest8iDE(void) { return *((cl_cell8*)rom->get_cell(rDE)); }
-  class cl_cell8  &dest8iHL(void) { return *((cl_cell8*)rom->get_cell(rHL)); }
+  class cl_cell8  &dest8iBC(void) { return *((cl_cell8*)rwas->get_cell(rBC)); }
+  class cl_cell8  &dest8iDE(void) { return *((cl_cell8*)rwas->get_cell(rDE)); }
+  class cl_cell8  &dest8iHL(void) { return *((cl_cell8*)rwas->get_cell(rHL)); }
   class cl_cell8  &dest8imn(void) { u8_t l, h;
     l= fetch(); h= fetch();
-    return *((cl_cell8*)rom->get_cell(h*256+l));
+    return *((cl_cell8*)rwas->get_cell(h*256+l));
   }
   u8_t op8_BC(void);
   u8_t op8_DE(void);
