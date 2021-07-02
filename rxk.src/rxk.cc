@@ -35,14 +35,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 #include "gp0m3.h"
+#include "gpedm3.h"
 #include "rmemcl.h"
 #include "ddwrap.h"
 
 #include "rxkcl.h"
 
 
-cl_rxk::cl_rxk(class cl_sim *asim):
+cl_rxk_base::cl_rxk_base(class cl_sim *asim):
   cl_uc(asim)
+{
+}
+
+cl_rxk::cl_rxk(class cl_sim *asim):
+  cl_rxk_base(asim)
 {
   altd= 0;
   cRtab[0]= cB;
@@ -218,8 +224,22 @@ cl_rxk::dis_entry(t_addr addr)
 {
   u8_t code= rom->get(addr);
   int i;
-  struct dis_entry *dt= disass_rxk;
+  struct dis_entry *dt;
   i= 0;
+
+  if (code == 0xed)
+    {
+      dt= disass_pedm3;
+      code= rom->get(addr+1);
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic != NULL)
+	return &dt[i];
+      return NULL;
+    }
+  
+  dt= disass_rxk;
   while (((code & dt[i].mask) != dt[i].code) &&
 	 dt[i].mnemonic)
     i++;
@@ -250,6 +270,8 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 
   if (code == 0xcb)
     return disassc_cb(addr, comment);
+  if (code == 0xde)
+    code= rom->get(++addr);
   
   dt= dis_entry(addr);
   if (!dt)
@@ -318,7 +340,6 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 
   return(strdup(work.c_str()));
 }
-
 
 char *
 cl_rxk::disassc_cb(t_addr addr, chars *comment)

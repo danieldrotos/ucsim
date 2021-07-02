@@ -267,5 +267,47 @@ cl_rxk::LD_iSPn_HL(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::LD_EIR_A(t_mem code)
+{
+  cEIR.W(rA);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::LD_IIR_A(t_mem code)
+{
+  cIIR.W(rA);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::LD_A_EIR(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t res= rEIR, forg= rF & ~(flagS|flagZ);
+  destA().W(res);
+  if (!res) forg|= flagZ;
+  if (res&0x80) forg|= flagS;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::LD_A_IIR(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t res= rIIR, forg= rF & ~(flagS|flagZ);
+  destA().W(res);
+  if (!res) forg|= flagZ;
+  if (res&0x80) forg|= flagS;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
 
 /* End of rxk.src/imove.cc */

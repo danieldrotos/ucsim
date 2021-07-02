@@ -97,7 +97,16 @@ enum {
 
 #define CPU ((class cl_rxk_cpu *)cpu)
 
-class cl_rxk: public cl_uc  
+class cl_rxk_base: public cl_uc
+{
+public:
+  cl_rxk_base(class cl_sim *asim);
+#include "r4kcl_instructions.h"
+#include "dd_instructions.h"
+#include "ed_instructions.h"
+};
+  
+class cl_rxk: public cl_rxk_base
 {
 public:
   RP(AF,AF,A,F);
@@ -516,9 +525,11 @@ public:
 
   virtual int PAGE_CB(t_mem code);
 
-#include "r4kcl_instructions.h"
-#include "dd_instructions.h"
-#include "ed_instructions.h"
+  // Page ED, 3k mode
+  virtual int LD_EIR_A(t_mem code);
+  virtual int LD_IIR_A(t_mem code);
+  virtual int LD_A_EIR(t_mem code);
+  virtual int LD_A_IIR(t_mem code);
 };
 
 
