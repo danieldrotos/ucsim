@@ -178,11 +178,24 @@ cl_rxk::make_memories(void)
   address_spaces->add(as);
 
   /* IO */
-  ioas= as= new cl_address_space("ioas", 0, 0x10000, 8);
+  ioi= as= new cl_address_space("ioi", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
-  chip= new cl_chip8("io_chip", 0x10000, 8);
+  chip= new cl_chip8("ioi_chip", 0x10000, 8);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(as,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  ioe= as= new cl_address_space("ioe", 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip= new cl_chip8("ioe_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as,
@@ -553,9 +566,9 @@ cl_rxk_cpu::init(void)
 {
   cl_hw::init();
 
-  stackseg= (cl_cell8*)ruc->ioas->get_cell(0x11);
-  dataseg = (cl_cell8*)ruc->ioas->get_cell(0x12);
-  segsize = (cl_cell8*)ruc->ioas->get_cell(0x13);
+  stackseg= (cl_cell8*)ruc->ioi->get_cell(0x11);
+  dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
+  segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
 
   uc->reg_cell_var(stackseg, &(ruc->mem->stackseg),
 		   "STACKSEG", "MMU register: STACKSEG");

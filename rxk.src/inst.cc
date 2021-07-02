@@ -38,7 +38,7 @@ int
 cl_rxk::IOI(t_mem code)
 {
   prefix= true;
-  rwas= ioas;
+  rwas= ioi;
   tick(1);
   return resGO;
 }
@@ -47,7 +47,7 @@ int
 cl_rxk::IOE(t_mem code)
 {
   prefix= true;
-  rwas= ioas;
+  rwas= ioe;
   tick(1);
   return resGO;
 }
