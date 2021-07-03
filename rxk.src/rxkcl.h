@@ -212,6 +212,7 @@ public:
   virtual int ld_r_g(class cl_cell8 &dest, u8_t op);		// 0f,2t,0r,0w
   virtual int pop_zz(class cl_cell16 &dest);			// 0f,6t,2r,0w
   virtual int push_zz(u16_t op);				// 0f,9t,0r,2w
+  virtual int ld_d_i(int dif);					// 0f,10t,1r,1w
   
   virtual int inc_ss(class cl_cell16 &rp, u16_t op);
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
@@ -531,6 +532,8 @@ public:
   virtual int LD_IIR_A(t_mem code);
   virtual int LD_A_EIR(t_mem code);
   virtual int LD_A_IIR(t_mem code);
+  virtual int LDD(t_mem code) { return ld_d_i(-1); }
+  virtual int LDI(t_mem code) { return ld_d_i(+1); }
 };
 
 

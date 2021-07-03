@@ -275,7 +275,7 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   
   dt= dis_entry(addr);
   if (!dt)
-    return NULL;
+    return strdup("-- unknown");
   if (code == 0xed)
     code= rom->get(++addr);
   /*

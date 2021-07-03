@@ -30,8 +30,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define LD_EIR_A	instruction_ed_47
 #define LD_IIR_A	instruction_ed_4f
+
 #define LD_A_EIR	instruction_ed_57
 #define LD_A_IIR	instruction_ed_5f
+
+#define LDI		instruction_ed_a0
+#define LDD		instruction_ed_a8
 
 #endif
 

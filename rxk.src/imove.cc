@@ -131,6 +131,26 @@ cl_rxk::push_zz(u16_t op)
 }
 
 int
+cl_rxk::ld_d_i(int dif)
+{
+  int t= 9;
+  if (rwas == ioi)
+    t+= 1;
+  else if (rwas == ioe)
+    t+= 2;
+  rwas->write(rDE, rom->read(rHL));
+  vc.rd++;
+  vc.wr++;
+  cBC.W(rBC-1);
+  cDE.W(rDE+dif);
+  cHL.W(rHL+dif);
+  tick(t);
+  if (rBC == 0)
+    cF.W(rF & ~flagV);
+  return resGO;
+}
+
+int
 cl_rxk::LD_iBC_A(t_mem code)
 {
   class cl_cell8 &c= dest8iBC();

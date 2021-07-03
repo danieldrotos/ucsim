@@ -34,6 +34,9 @@ struct dis_entry disass_pedm3[]=
     { 0x57, 0xff, ' ', 2, "LD A,EIR" },
     { 0x5f, 0xff, ' ', 2, "LD A,IIR" },
 
+    { 0xa0, 0xff, ' ', 2, "LDI" },
+    { 0xa8, 0xff, ' ', 2, "LDD" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
   
