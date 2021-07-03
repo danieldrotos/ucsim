@@ -147,6 +147,8 @@ cl_rxk::ld_d_i(int dif)
   tick(t);
   if (rBC == 0)
     cF.W(rF & ~flagV);
+  else
+    cF.W(rF | flagV);
   return resGO;
 }
 
