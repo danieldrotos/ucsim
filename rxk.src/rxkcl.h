@@ -126,6 +126,7 @@ public:
   class cl_cell8 cRtab[8], caRtab[8];
   class cl_cell16 cAF, cBC, cDE, cHL, cIX, cIY, cSP;
   class cl_cell16 caAF, caBC, caDE, caHL;
+  class cl_cell16 &cIR=cIX;
   class cl_memory_cell *XPC;
   class cl_ras *mem;
   class cl_address_space *ioi, *ioe;
