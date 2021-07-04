@@ -331,5 +331,15 @@ cl_rxk::LD_A_IIR(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::LD_IR_mn(t_mem code)
+{
+  u8_t h, l;
+  l= fetch();
+  h= fetch();
+  cIR->W(h*256+l);
+  tick(7);
+  return resGO;
+}
 
 /* End of rxk.src/imove.cc */

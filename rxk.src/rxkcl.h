@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "decode.h"
 #include "dp0m3.h"
 #include "dpedm3.h"
+#include "dpddm3.h"
 
 
 /*
@@ -244,6 +245,7 @@ public:
   virtual int sub8(u8_t op2, bool cy);				// 0f,3t,0r,0w
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
+  virtual int add_ir_xy(u16_t op);				// 0f,4t,0r,0r
   virtual int xor8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
   virtual int or8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
   virtual int or16(class cl_cell16 &dest,
@@ -535,6 +537,13 @@ public:
   virtual int LD_A_IIR(t_mem code);
   virtual int LDD(t_mem code) { return ld_d_i(-1); }
   virtual int LDI(t_mem code) { return ld_d_i(+1); }
+
+  // Page DD/FD, 3k mode
+  virtual int LD_IR_mn(t_mem code);
+  virtual int ADD_IR_BC(t_mem code) { return add_ir_xy(rBC); }
+  virtual int ADD_IR_DE(t_mem code) { return add_ir_xy(rDE); }
+  virtual int ADD_IR_IR(t_mem code) { return add_ir_xy(cIR->get()); }
+  virtual int ADD_IR_SP(t_mem code) { return add_ir_xy(rSP); }
 };
 
 

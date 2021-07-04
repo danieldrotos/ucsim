@@ -117,6 +117,21 @@ cl_rxk::dec_i8(t_addr addr)
   return resGO;
 }
 
+int
+cl_rxk::add_ir_xy(u16_t op)
+{
+  u16_t op1= cIR->get();
+  u32_t res= op1 + op;
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagC;
+  if (res > 0xffff) forg|= flagC;
+  cIR->write(res);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+
 /*
  *                                                             Rotate, shift
  */

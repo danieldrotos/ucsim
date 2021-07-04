@@ -36,6 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "gp0m3.h"
 #include "gpedm3.h"
+#include "gpddm3.h"
 #include "rmemcl.h"
 #include "ddwrap.h"
 #include "edwrap.h"
@@ -242,6 +243,25 @@ cl_rxk::dis_entry(t_addr addr)
 	return &dt[i];
       return NULL;
     }
+  if ((code & 0xdd) == 0xdd)
+    {
+      if (code == 0xdd)
+	{
+	  cIR= &cIX;
+	}
+      else
+	{
+	  cIR= &cIY;
+	}
+      dt= disass_pddm3;
+      code= rom->get(addr+1);
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic != NULL)
+	return &dt[i];
+      return NULL;
+    }
   
   dt= disass_rxk;
   while (((code & dt[i].mask) != dt[i].code) &&
@@ -265,7 +285,7 @@ char *
 cl_rxk::disassc(t_addr addr, chars *comment)
 {
   chars work, temp;
-  const char *b;
+  const char *b, *nIR;
   t_mem code= rom->get(addr);
   struct dis_entry *dt;//= dis_tbl();//, *dis_e;
   int i;
@@ -278,7 +298,7 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   dt= dis_entry(addr);
   if (!dt)
     return strdup("-- unknown");
-  if (code == 0xed)
+  if ((code == 0xed) || (code == 0xdd) || (code == 0xfd))
     code= rom->get(++addr);
   /*
   i= 0;
@@ -291,6 +311,7 @@ cl_rxk::disassc(t_addr addr, chars *comment)
     return strdup("-- UNKNOWN/INVALID");
   b= dt->mnemonic;
 
+  nIR= (cIR==&cIX)?"IX":"IY";
   first= true;
   work= "";
   for (i=0; b[i]; i++)
@@ -333,6 +354,9 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 		t_addr a= addr + 1 + r;
 		work.appendf("0x%04x", AU16(a));
 	      }
+	      break;
+	    case 'I':
+	      work.appendf("%s", nIR);
 	      break;
 	    }
 	  if (comment && temp.nempty())
@@ -513,6 +537,21 @@ cl_rxk::exec_inst(void)
     {
       code= fetch();
       return itab_ed[code](this, code);
+    }
+  if ((code & 0xdd) == 0xdd)
+    {
+      if (code == 0xdd)
+	{
+	  cIR= &cIX;
+	}
+      else
+	{
+	  cIR= &cIY;
+	}
+      {
+      code= fetch();
+      return itab_dd[code](this, code);
+    }
     }
   res= itab[code](this, code);
   if (res == resNOT_DONE)
