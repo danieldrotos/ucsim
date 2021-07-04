@@ -118,6 +118,8 @@ cl_rxk::init(void)
   reg_cell_var(XPC, &(mem->xpc),
 	       "XPC", "MMU register: XPC");
 
+  cIR= &cIX;
+  
   return 0;
 }
 
