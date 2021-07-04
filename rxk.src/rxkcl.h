@@ -160,6 +160,7 @@ public:
   virtual int exec_inst(void);
   virtual int inst_unknown(t_mem code);
   virtual void tick5p1(int n) { tick(n); }
+  virtual void tick5p2(int n) { tick(n); }
   virtual void tick5p3(int n) { tick(n); }
   virtual void tick5m2(int n) { tick(n+2); }
 
@@ -215,6 +216,8 @@ public:
   virtual int pop_zz(class cl_cell16 &dest);			// 0f,6t,2r,0w
   virtual int push_zz(u16_t op);				// 0f,9t,0r,2w
   virtual int ld_d_i(int dif);					// 0f,10t,1r,1w
+  virtual int ld_iIRd_r(u8_t op);				// 1f,10t,0r,1w
+  virtual int ld_r_iIRd(class cl_cell8 &op);			// 1f,9t,1r,0w
   
   virtual int inc_ss(class cl_cell16 &rp, u16_t op);
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
@@ -241,8 +244,10 @@ public:
   virtual int set_iHL(u8_t b);					// 0f,10t,1r,1w
   
   virtual int add_hl_ss(u16_t op);
-  virtual int add8(u8_t op2, bool cy);				// 0f,3t,0r,0w
-  virtual int sub8(u8_t op2, bool cy);				// 0f,3t,0r,0w
+  virtual int add8(u8_t op2, bool cy);				// 0f,4t,0r,0w
+  virtual int sub8(u8_t op2, bool cy);				// 0f,4t,0r,0w
+  virtual int sub16(u16_t op2, bool cy);			// 0f,4t,0r,0w
+  
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);
   virtual int add_ir_xy(u16_t op);				// 0f,4t,0r,0r
@@ -537,6 +542,10 @@ public:
   virtual int LD_A_IIR(t_mem code);
   virtual int LDD(t_mem code) { return ld_d_i(-1); }
   virtual int LDI(t_mem code) { return ld_d_i(+1); }
+  virtual int SBC_HL_BC(t_mem code) { return sub16(rBC, true); }
+  virtual int SBC_HL_DE(t_mem code) { return sub16(rDE, true); }
+  virtual int SBC_HL_HL(t_mem code) { return sub16(rHL, true); }
+  virtual int SBC_HL_SP(t_mem code) { return sub16(rSP, true); }
 
   // Page DD/FD, 3k mode
   virtual int LD_IR_mn(t_mem code);
@@ -544,6 +553,26 @@ public:
   virtual int ADD_IR_DE(t_mem code) { return add_ir_xy(rDE); }
   virtual int ADD_IR_IR(t_mem code) { return add_ir_xy(cIR->get()); }
   virtual int ADD_IR_SP(t_mem code) { return add_ir_xy(rSP); }
+  virtual int OR_A_iIRd(t_mem code);
+  virtual int POP_IR(t_mem code);
+  virtual int PUSH_IR(t_mem code);
+  virtual int LD_iIRd_A(t_mem code) { return ld_iIRd_r(rA); }
+  virtual int LD_iIRd_B(t_mem code) { return ld_iIRd_r(rB); }
+  virtual int LD_iIRd_C(t_mem code) { return ld_iIRd_r(rC); }
+  virtual int LD_iIRd_D(t_mem code) { return ld_iIRd_r(rD); }
+  virtual int LD_iIRd_E(t_mem code) { return ld_iIRd_r(rE); }
+  virtual int LD_iIRd_H(t_mem code) { return ld_iIRd_r(rH); }
+  virtual int LD_iIRd_L(t_mem code) { return ld_iIRd_r(rL); }
+  virtual int LD_A_iIRd(t_mem code) { return ld_r_iIRd(destA()); }
+  virtual int LD_B_iIRd(t_mem code) { return ld_r_iIRd(destB()); }
+  virtual int LD_C_iIRd(t_mem code) { return ld_r_iIRd(destC()); }
+  virtual int LD_D_iIRd(t_mem code) { return ld_r_iIRd(destD()); }
+  virtual int LD_E_iIRd(t_mem code) { return ld_r_iIRd(destE()); }
+  virtual int LD_H_iIRd(t_mem code) { return ld_r_iIRd(destH()); }
+  virtual int LD_L_iIRd(t_mem code) { return ld_r_iIRd(destL()); }
+  virtual int LD_SP_IR(t_mem code);
+  virtual int LD_IR_iSPn(t_mem code);
+  virtual int LD_iSPn_IR(t_mem code);
 };
 
 

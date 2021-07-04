@@ -35,6 +35,30 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADD_IR_IR	instruction_dd_29
 #define ADD_IR_SP	instruction_dd_39
 
+#define OR_A_iIRd	instruction_dd_b6
+
+#define POP_IR		instruction_dd_e1
+#define PUSH_IR		instruction_dd_e5
+
+#define LD_iIRd_A	instruction_dd_77
+#define LD_iIRd_B	instruction_dd_70
+#define LD_iIRd_C	instruction_dd_71
+#define LD_iIRd_D	instruction_dd_72
+#define LD_iIRd_E	instruction_dd_73
+#define LD_iIRd_H	instruction_dd_74
+#define LD_iIRd_L	instruction_dd_75
+#define LD_A_iIRd	instruction_dd_7e
+#define LD_B_iIRd	instruction_dd_46
+#define LD_C_iIRd	instruction_dd_4e
+#define LD_D_iIRd	instruction_dd_56
+#define LD_E_iIRd	instruction_dd_5e
+#define LD_H_iIRd	instruction_dd_66
+#define LD_L_iIRd	instruction_dd_6e
+
+#define LD_SP_IR	instruction_dd_f9
+#define LD_IR_iSPn 	instruction_dd_c4
+#define LD_iSPn_IR 	instruction_dd_d4
+
 #endif
 
 /* End of rxk.src/dpddm3.h */

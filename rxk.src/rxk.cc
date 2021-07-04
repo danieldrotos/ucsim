@@ -451,6 +451,42 @@ cl_rxk::inst_length(t_addr addr)
 void
 cl_rxk::print_regs(class cl_console_base *con)
 {
+  if (jaj)
+    {
+      con->dd_color("answer");
+      con->dd_printf("SZ-A-PNC  Flags= 0x%02x %3d %c  ",
+		     rF, rF, isprint(rF)?rF:'.');
+      con->dd_printf("A= 0x%02x %3d %c\n",
+		     rA, rA, isprint(rA)?rA:'.');
+      con->dd_printf("%c%c-%c-%c%c%c\n",
+		     (rF&flagS)?'1':'0',
+		     (rF&flagZ)?'1':'0',
+		     'x',//(rF&flagA)?'1':'0',
+		     (rF&flagV)?'1':'0',
+		     'x',//(rF&BIT_N)?'1':'0',
+		     (rF&flagC)?'1':'0');
+      con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
+		     rBC, rom->get(rBC), rom->get(rBC),
+		     isprint(rom->get(rBC))?rom->get(rBC):'.');
+      con->dd_printf("DE= 0x%04x [DE]= %02x %3d %c  ",
+		     rDE, rom->get(rDE), rom->get(rDE),
+		     isprint(rom->get(rDE))?rom->get(rDE):'.');
+      con->dd_printf("HL= 0x%04x [HL]= %02x %3d %c\n",
+		     rHL, rom->get(rHL), rom->get(rHL),
+		     isprint(rom->get(rHL))?rom->get(rHL):'.');
+      con->dd_printf("IX= 0x%04x [IX]= %02x %3d %c  ",
+		     rIX, rom->get(rIX), rom->get(rIX),
+		     isprint(rom->get(rIX))?rom->get(rIX):'.');
+      con->dd_printf("IY= 0x%04x [IY]= %02x %3d %c  ",
+		     rIY, rom->get(rIY), rom->get(rIY),
+		     isprint(rom->get(rIY))?rom->get(rIY):'.');
+      con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
+		     rSP, rom->get(rSP), rom->get(rSP),
+		     isprint(rom->get(rSP))?rom->get(rSP):'.');
+      //con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
+      print_disass(PC, con);
+      return;
+    }
   con->dd_color("answer");
   con->dd_printf("A= 0x%02x %3d %c  ",
                  rA, rA, isprint(rA)?rA:'.');

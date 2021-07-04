@@ -31,10 +31,34 @@ struct dis_entry disass_pddm3[]=
   {
     { 0x21, 0xff, ' ', 4, "LD %I,%w" },
     
-    { 0x09, 0xff, ' ', 4, "ADD %I,BC" },
-    { 0x19, 0xff, ' ', 4, "ADD %I,DE" },
-    { 0x29, 0xff, ' ', 4, "ADD %I,%I" },
-    { 0x39, 0xff, ' ', 4, "ADD %I,SP" },
+    { 0x09, 0xff, ' ', 2, "ADD %I,BC" },
+    { 0x19, 0xff, ' ', 2, "ADD %I,DE" },
+    { 0x29, 0xff, ' ', 2, "ADD %I,%I" },
+    { 0x39, 0xff, ' ', 2, "ADD %I,SP" },
+
+    { 0xb6, 0xff, ' ', 3, "OR A,(%I+%b)" },
+
+    { 0xe1, 0xff, ' ', 2, "POP %I" },
+    { 0xe5, 0xff, ' ', 2, "PUSH %I" },
+
+    { 0x77, 0xff, ' ', 3, "LD (%I+%b),A" },
+    { 0x70, 0xff, ' ', 3, "LD (%I+%b),B" },
+    { 0x71, 0xff, ' ', 3, "LD (%I+%b),C" },
+    { 0x72, 0xff, ' ', 3, "LD (%I+%b),D" },
+    { 0x73, 0xff, ' ', 3, "LD (%I+%b),E" },
+    { 0x74, 0xff, ' ', 3, "LD (%I+%b),H" },
+    { 0x75, 0xff, ' ', 3, "LD (%I+%b),L" },
+    { 0x7e, 0xff, ' ', 3, "LD A,(%I+%b)" },
+    { 0x46, 0xff, ' ', 3, "LD B,(%I+%b)" },
+    { 0x4e, 0xff, ' ', 3, "LD C,(%I+%b)" },
+    { 0x56, 0xff, ' ', 3, "LD D,(%I+%b)" },
+    { 0x5e, 0xff, ' ', 3, "LD E,(%I+%b)" },
+    { 0x66, 0xff, ' ', 3, "LD H,(%I+%b)" },
+    { 0x6e, 0xff, ' ', 3, "LD L,(%I+%b)" },
+
+    { 0xf9, 0xff, ' ', 2, "LD SP,%I" },
+    { 0xc4, 0xff, ' ', 3, "LD %I,(SP+%b)" },
+    { 0xd4, 0xff, ' ', 3, "LD (SP+%b),%I" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

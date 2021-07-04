@@ -555,6 +555,22 @@ cl_rxk::and16(class cl_cell16 &dest, u16_t op1, u16_t op2)
   return resGO;
 }
 
+int
+cl_rxk::OR_A_iIRd(t_mem code)
+{
+  i8_t d= fetch();
+  class cl_cell8 &a= destA(), &f= destF();
+  u8_t forg= rF & ~flagAll, res= rA | rwas->read(cIR->get() + d);
+  vc.rd++;
+  if (!res) forg|= flagZ;
+  if (res & 0x80) forg|= flagS;
+  if (res & 0xf0) forg|= flagL;
+  a.W(res);
+  f.W(forg);
+  tick5p1(8);
+  return resGO;
+}
+
 
 /*
  *                                                                Arithmetic
@@ -612,15 +628,52 @@ cl_rxk::sub8(u8_t op2, bool cy)
   u8_t v1= rA, forg;
   u16_t res= v1+(~op2)+(cy?((rF&flagC)?1:0):1);
   u8_t a7, b7, r7, na7, nb7, nr7;
-  forg= rF & ~flagAll;
+  i8_t op1= rA;
+  i8_t o2= op2;
+  i8_t r= op1-o2;
+  if (cy && (rF&flagC)) r--;
+  res= r;
+  forg= rF & ~(flagS|flagZ|flagV);
   a7= v1&0x80; na7= a7^0x80;
   b7= op2&0x80; nb7= b7^0x80;
   r7= res&0x80; nr7= r7^0x80;
   if ((a7&nb7&nr7) | (na7&b7&r7)) forg|= flagV;
-  if (res > 0xff) forg|= flagC;
+  //if (res > 0xff) forg|= flagC;
+  if (rA<op2) forg|= flagC;
+  if ((rA>op2) || (!cy && (rA==op2))) forg&= ~flagC;
   if (!(res & 0xff)) forg|= flagZ;
   if (res & 0x80) forg|= flagS;
   a.W(res);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::sub16(u16_t op2, bool cy)
+{
+  class cl_cell16 &hl= destHL();
+  class cl_cell8 &f= destF();
+  u16_t v1= rHL;
+  u8_t forg;
+  u32_t res;//= //v1+(~op2)+(cy?((rF&flagC)?1:0):1);
+  u16_t a15, b15, r15, na15, nb15, nr15;
+  i16_t op1= rHL;
+  i16_t o2= op2;
+  i16_t r= op1-o2;
+  if (cy && (rF&flagC)) r--;
+  res= r;
+  forg= rF & ~(flagS|flagZ|flagV);
+  a15= v1&0x8000; na15= a15^0x8000;
+  b15= op2&0x8000; nb15= b15^0x8000;
+  r15= res&0x8000; nr15= r15^0x8000;
+  if ((a15&nb15&nr15) | (na15&b15&r15)) forg|= flagV;
+  //if (res > 0xffff) forg|= flagC;
+  if (rHL<op2) forg|= flagC;
+  if ((rHL>op2) || (!cy && (rA==op2))) forg&= ~flagC;
+  if (!(res & 0xffff)) forg|= flagZ;
+  if (res & 0x8000) forg|= flagS;
+  hl.W(res);
   f.W(forg);
   tick(3);
   return resGO;

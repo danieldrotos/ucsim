@@ -486,9 +486,9 @@ cl_r2k::print_regs(class cl_console_base *con)
   con->dd_printf("%c%c-%c-%c%c%c\n",
                  (regs.raf.F&BIT_S)?'1':'0',
                  (regs.raf.F&BIT_Z)?'1':'0',
-                 (regs.raf.F&BIT_A)?'1':'0',
+                 'x',//(regs.raf.F&BIT_A)?'1':'0',
                  (regs.raf.F&BIT_P)?'1':'0',
-                 (regs.raf.F&BIT_N)?'1':'0',
+                 'x',//(regs.raf.F&BIT_N)?'1':'0',
                  (regs.raf.F&BIT_C)?'1':'0');
   con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
                  regs.BC, ram->get(regs.BC), ram->get(regs.BC),
@@ -508,7 +508,7 @@ cl_r2k::print_regs(class cl_console_base *con)
   con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
                  regs.SP, ram->get(regs.SP), ram->get(regs.SP),
                  isprint(ram->get(regs.SP))?ram->get(regs.SP):'.');
-  con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
+  //con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
 
   print_disass(PC, con);
 }

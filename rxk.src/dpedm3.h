@@ -37,6 +37,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDI		instruction_ed_a0
 #define LDD		instruction_ed_a8
 
+#define SBC_HL_BC	instruction_ed_42
+#define SBC_HL_DE	instruction_ed_52
+#define SBC_HL_HL	instruction_ed_62
+#define SBC_HL_SP	instruction_ed_72
+
 #endif
 
 /* End of rxk.src/dpedm3.h */

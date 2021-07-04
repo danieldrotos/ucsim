@@ -97,6 +97,7 @@ cl_rxk::LCALL_lmn(t_mem code)
 int
 cl_rxk::rst_v(t_mem code)
 {
+  if (code == 0xef) return resGO;
   u8_t l= (code&0x38) << 1;
   rom->write(--rSP, PC>>8);
   rom->write(--rSP, PC);

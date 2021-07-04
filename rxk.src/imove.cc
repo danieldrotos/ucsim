@@ -153,6 +153,29 @@ cl_rxk::ld_d_i(int dif)
 }
 
 int
+cl_rxk::ld_iIRd_r(u8_t op)
+{
+  i8_t d= fetch();
+  t_addr a= cIR->get();
+  a+= d;
+  rwas->write(a, op);
+  vc.wr++;
+  tick5p1(9);
+  return resGO;
+}
+
+int
+cl_rxk::ld_r_iIRd(class cl_cell8 &op)
+{
+  i8_t d= fetch();
+  t_addr a= cIR->get() + d;
+  op.W(rwas->read(a));
+  vc.rd++;
+  tick5p1(8);
+  return resGO;
+}
+
+int
 cl_rxk::LD_iBC_A(t_mem code)
 {
   class cl_cell8 &c= dest8iBC();
@@ -341,5 +364,66 @@ cl_rxk::LD_IR_mn(t_mem code)
   tick(7);
   return resGO;
 }
+
+int
+cl_rxk::POP_IR(t_mem code)
+{
+  u8_t h, l;
+  l= rom->read(rSP++);
+  h= rom->read(rSP++);
+  cSP.W(rSP);
+  vc.rd+= 2;
+  cIR->write(h*256+l);
+  tick(8);
+  return resGO;
+}
+
+int
+cl_rxk::PUSH_IR(t_mem code)
+{
+  u16_t v= cIR->get();
+  u8_t h, l;
+  h= v>>8;
+  l= v;
+  rom->write(--rSP, h);
+  rom->write(--rSP, l);
+  cSP.W(rSP);
+  vc.wr+= 2;
+  tick5p1(11);
+  return resGO;
+}
+
+int
+cl_rxk::LD_SP_IR(t_mem code)
+{
+  cSP.W(cIR->get());
+  tick5p2(1);
+  return resGO;
+}
+
+int
+cl_rxk::LD_IR_iSPn(t_mem code)
+{
+  u8_t n= fetch(), h, l;
+  l= rom->read(rSP+n);
+  h= rom->read(rSP+n+1);
+  vc.rd+= 2;
+  cIR->write(h*256+l);
+  tick5p1(10);
+  return resGO;
+}
+
+int
+cl_rxk::LD_iSPn_IR(t_mem code)
+{
+  u16_t v= cIR->get();
+  u8_t n= fetch();
+  rom->write(rSP+n, v>>8);
+  rom->write(rSP+n+1, v);
+  vc.wr+= 2;
+  tick5p1(12);
+  return resGO;
+}
+
 
 /* End of rxk.src/imove.cc */
