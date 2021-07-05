@@ -251,6 +251,7 @@ public:
   virtual int set_iIRd(u8_t b, i8_t d);				// 0f,12t,1r,1w
   
   virtual int add_hl_ss(u16_t op);
+  virtual int adc_hl_ss(u16_t op);
   virtual int add8(u8_t op2, bool cy);				// 0f,4t,0r,0w
   virtual int sub8(u8_t op2, bool cy);				// 0f,4t,0r,0w
   virtual int sub16(u16_t op2, bool cy);			// 0f,4t,0r,0w
@@ -553,6 +554,10 @@ public:
   virtual int SBC_HL_DE(t_mem code) { return sub16(rDE, true); }
   virtual int SBC_HL_HL(t_mem code) { return sub16(rHL, true); }
   virtual int SBC_HL_SP(t_mem code) { return sub16(rSP, true); }
+  virtual int ADC_HL_BC(t_mem code) { return adc_hl_ss(rBC); }
+  virtual int ADC_HL_DE(t_mem code) { return adc_hl_ss(rDE); }
+  virtual int ADC_HL_HL(t_mem code) { return adc_hl_ss(rHL); }
+  virtual int ADC_HL_SP(t_mem code) { return adc_hl_ss(rSP); }
 
   // Page DD/FD, 3k mode
   virtual int LD_IR_mn(t_mem code);

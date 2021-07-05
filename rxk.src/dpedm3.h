@@ -41,6 +41,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SBC_HL_DE	instruction_ed_52
 #define SBC_HL_HL	instruction_ed_62
 #define SBC_HL_SP	instruction_ed_72
+#define ADC_HL_BC	instruction_ed_4a
+#define ADC_HL_DE	instruction_ed_5a
+#define ADC_HL_HL	instruction_ed_6a
+#define ADC_HL_SP	instruction_ed_7a
 
 #endif
 

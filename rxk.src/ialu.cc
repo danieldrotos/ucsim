@@ -642,6 +642,29 @@ cl_rxk::add_hl_ss(u16_t op)
 }
 
 int
+cl_rxk::adc_hl_ss(u16_t op)
+{
+  class cl_cell16 &hl= destHL();
+  class cl_cell8 &f= destF();
+  u32_t res= rHL + op + ((rF&flagC)?1:0);
+  hl.W(res);
+  u8_t forg= f.R() & ~flagAll;
+  u16_t c1= 0, c2;
+  if (res > 0xffff)
+    {
+      forg|= flagC;
+      c1= 0x8000;
+    }
+  if (!res) forg|= flagZ;
+  if (res & 0x8000) forg|= flagS;
+  res= (rHL&0x7fff)+(op&0x7fff)+((rF&flagC)?1:0);
+  c2= res&0x8000;
+  if (c1^c2) forg|= flagV;
+  tick(3);
+  return resGO;
+}
+
+int
 cl_rxk::add8(u8_t op2, bool cy)
 {
   class cl_cell8 &a= destA(), &f= destF();
