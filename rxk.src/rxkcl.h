@@ -163,6 +163,7 @@ public:
   virtual void tick5p1(int n) { tick(n); }
   virtual void tick5p2(int n) { tick(n); }
   virtual void tick5p3(int n) { tick(n); }
+  virtual void tick5m1(int n) { tick(n+2); }
   virtual void tick5m2(int n) { tick(n+2); }
 
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
@@ -184,6 +185,8 @@ public:
     l= fetch(); h= fetch();
     return *((cl_cell8*)rwas->get_cell(h*256+l));
   }
+  class cl_cell8 &dest8iIRd(i8_t d) { return *((cl_cell8*)rwas->get_cell(cIR->get()+d)); }
+  
   u8_t op8_BC(void);
   u8_t op8_DE(void);
   u8_t op8_HL(void);
@@ -239,10 +242,13 @@ public:
   virtual int srl(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int bit_r(u8_t b, u8_t op);				// 0f,4t,0r,0w
   virtual int bit_iHL(u8_t b);					// 0f,7t,1r,0w
+  virtual int bit_iIRd(u8_t b, i8_t d);				// 0f,10t,1r,0w
   virtual int res_r(u8_t b, class cl_cell8 &dest, u8_t op);	// 0f,4t,0r,0w
   virtual int res_iHL(u8_t b);					// 0f,10t,1r,1w
+  virtual int res_iIRd(u8_t b, i8_t d);				// 0f,13t,1r,1w
   virtual int set_r(u8_t b, class cl_cell8 &dest, u8_t op);	// 0f,4t,0r,0w
   virtual int set_iHL(u8_t b);					// 0f,10t,1r,1w
+  virtual int set_iIRd(u8_t b, i8_t d);				// 0f,12t,1r,1w
   
   virtual int add_hl_ss(u16_t op);
   virtual int add8(u8_t op2, bool cy);				// 0f,4t,0r,0w

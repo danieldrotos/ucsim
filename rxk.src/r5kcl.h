@@ -40,6 +40,7 @@ class cl_r5k: public cl_r4k
   virtual void tick5p1(int n) { tick(n+1); }
   virtual void tick5p2(int n) { tick(n+2); }
   virtual void tick5p3(int n) { tick(n+3); }
+  virtual void tick5m1(int n) { tick(n  ); }
   virtual void tick5m2(int n) { tick(n  ); }
 };
 

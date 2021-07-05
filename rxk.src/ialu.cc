@@ -405,6 +405,19 @@ cl_rxk::bit_iHL(u8_t b)
 }
 
 int
+cl_rxk::bit_iIRd(u8_t b, i8_t d)
+{
+  u8_t forg= rF & ~flagZ, res, op;
+  op= rwas->read(cIR->get()+d);
+  vc.rd++;
+  res= (1<<b) & op;
+  if (!res) forg|= flagZ;
+  cF.W(forg);
+  tick5p1(9);
+  return resGO;
+}
+
+int
 cl_rxk::res_r(u8_t b, class cl_cell8 &dest, u8_t op)
 {
   u8_t res;
@@ -424,6 +437,20 @@ cl_rxk::res_iHL(u8_t b)
   rwas->write(rHL, res);
   vc.wr++;
   tick(9);
+  return resGO;
+}
+
+int
+cl_rxk::res_iIRd(u8_t b, i8_t d)
+{
+  u8_t res, op;
+  t_addr a= cIR->get()+d;
+  op= rwas->read(a);
+  vc.rd++;
+  res= ~(1<<b) & op;
+  rwas->write(a, res);
+  vc.wr++;
+  tick5p1(12);
   return resGO;
 }
 
@@ -448,6 +475,20 @@ cl_rxk::set_iHL(u8_t b)
   rwas->write(rHL, res);
   vc.wr++;
   tick(9);
+  return resGO;
+}
+
+int
+cl_rxk::set_iIRd(u8_t b, i8_t d)
+{
+  u8_t res, op;
+  t_addr a= cIR->get()+d;
+  op= rwas->read(a);
+  vc.rd++;
+  res= (1<<b) | op;
+  rwas->write(a, res);
+  vc.wr++;
+  tick5m1(11);
   return resGO;
 }
 

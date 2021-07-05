@@ -146,6 +146,40 @@ cl_rxk::PAGE_CB(t_mem code)
 int
 cl_rxk::PAGE_DD_CB(t_mem code)
 {
+  u8_t x, y, z, d;
+  d= fetch();
+  class cl_cell8 &dest= dest8iIRd(d);
+  code= fetch();
+  x= code>>6;
+  y= (code>>3)&7;
+  z= code&7;
+  if (z != 6)
+    return resINV_INST;
+  switch (x)
+    {
+    case 0:
+      switch (y)
+	{
+	case 0: return rlc(dest, dest.get());
+	case 1: return rrc(dest, dest.get());
+	case 2: return rl (dest, dest.get());
+	case 3: return rr (dest, dest.get());
+	case 4: return sla(dest, dest.get());
+	case 5: return sra(dest, dest.get());
+	case 6: return resINV_INST;
+	case 7: return srl(dest, dest.get());
+	}
+      break;
+    case 1:
+      return bit_iIRd(y, d);
+      break;
+    case 2:
+      return res_iIRd(y, d);
+      break;
+    case 3:
+      return set_iIRd(y, d);
+      break;
+    }
   return resGO;
 }
 
