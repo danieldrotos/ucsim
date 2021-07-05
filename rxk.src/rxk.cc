@@ -254,6 +254,7 @@ cl_rxk::dis_entry(t_addr addr)
 	  cIR= &cIY;
 	}
       dt= disass_pddm3;
+      code= rom->get(addr+1);
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;

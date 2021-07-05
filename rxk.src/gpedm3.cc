@@ -41,6 +41,10 @@ struct dis_entry disass_pedm3[]=
     { 0x52, 0xff, ' ', 2, "SBC HL,DE" },
     { 0x62, 0xff, ' ', 2, "SBC HL,HL" },
     { 0x72, 0xff, ' ', 2, "SBC HL,SP" },
+    { 0x4a, 0xff, ' ', 2, "ADC HL,BC" },
+    { 0x5a, 0xff, ' ', 2, "ADC HL,DE" },
+    { 0x6a, 0xff, ' ', 2, "ADC HL,HL" },
+    { 0x7a, 0xff, ' ', 2, "ADC HL,SP" },
 
     { 0, 0, 0, 0, 0, 0 }
   };
