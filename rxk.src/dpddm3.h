@@ -59,6 +59,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_IR_iSPn 	instruction_dd_c4
 #define LD_iSPn_IR 	instruction_dd_d4
 
+#define PAGE_DD_CB	instruction_dd_cb
+
 #endif
 
 /* End of rxk.src/dpddm3.h */

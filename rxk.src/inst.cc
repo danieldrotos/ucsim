@@ -143,5 +143,10 @@ cl_rxk::PAGE_CB(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::PAGE_DD_CB(t_mem code)
+{
+  return resGO;
+}
 
 /* End of m6800.src/inst.cc */

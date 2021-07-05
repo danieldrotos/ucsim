@@ -149,6 +149,7 @@ public:
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment= NULL);
   virtual char *disassc_cb(t_addr addr, chars *comment= NULL);
+  virtual char *disassc_dd_cb(t_addr addr, chars *comment= NULL);
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
   
@@ -573,6 +574,7 @@ public:
   virtual int LD_SP_IR(t_mem code);
   virtual int LD_IR_iSPn(t_mem code);
   virtual int LD_iSPn_IR(t_mem code);
+  virtual int PAGE_DD_CB(t_mem code);
 };
 
 

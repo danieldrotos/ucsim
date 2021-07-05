@@ -254,7 +254,6 @@ cl_rxk::dis_entry(t_addr addr)
 	  cIR= &cIY;
 	}
       dt= disass_pddm3;
-      code= rom->get(addr+1);
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
@@ -296,17 +295,17 @@ cl_rxk::disassc(t_addr addr, chars *comment)
     return disassc_cb(addr, comment);
   
   dt= dis_entry(addr);
+  if (code == 0xed)
+    code= rom->get(++addr);
+  else if ((code == 0xdd) || (code == 0xfd))
+    {
+      code= rom->get(++addr);
+      if (code == 0xcb)
+	return disassc_dd_cb(addr-1, comment);
+    }
   if (!dt)
     return strdup("-- unknown");
-  if ((code == 0xed) || (code == 0xdd) || (code == 0xfd))
-    code= rom->get(++addr);
-  /*
-  i= 0;
-  while (((code & dt[i].mask) != dt[i].code) &&
-	 dt[i].mnemonic)
-    i++;
-  //dis_e= &dt[i];
-  */
+
   if (dt->mnemonic == NULL)
     return strdup("-- UNKNOWN/INVALID");
   b= dt->mnemonic;
@@ -436,12 +435,103 @@ cl_rxk::disassc_cb(t_addr addr, chars *comment)
   return(strdup(work.c_str()));
 }
 
+char *
+cl_rxk::disassc_dd_cb(t_addr addr, chars *comment)
+{
+  u8_t d, code;
+  u8_t x, y, z;
+  chars work, temp;
+  char b[100];
+  bool first= true;
+  int i;
+  t_addr a;
+  
+  a= addr+2;
+  d= rom->get(a);
+  a++;
+  code= rom->get(a);
+  
+  x= code>>6;
+  y= (code>>3)&7;
+  z= code&7;
+  if ((z != 6) || (code == 0x36))
+    {
+      temp.appendf("-- dd/cb (addr=%x,d=%02x,code=%02x,a=%x) UNKNOWN/INVALID", addr, d, code, a);
+      return strdup(temp.c_str());
+    }
+
+  switch (x)
+    {
+    case 0:
+      switch (y)
+	{
+	case 0: strcpy(b, "RLC (%I+%b)"); break;
+	case 1: strcpy(b, "RRC (%I+%b)"); break;
+	case 2: strcpy(b, "RL (%I+%b)"); break;
+	case 3: strcpy(b, "RR (%I+%d)"); break;
+	case 4: strcpy(b, "SLA (%I+%d)"); break;
+	case 5: strcpy(b, "SRA (%I+%d)"); break;
+	case 6: return strdup("-- dd/cb UNKNOWN/INVALID");
+	case 7: strcpy(b, "SRL (%I+%d)"); break;
+	}
+      break;
+    case 1:
+      strcpy(b, "BIT %y,(%I+%b)");
+      break;
+    case 2:
+      strcpy(b, "RES %y,(%I+%b)");
+      break;
+    case 3:
+      strcpy(b, "SET %y,(%I+%b)");
+      break;
+    }
+  temp= "";
+  work= "";
+  for (i= 0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '%')
+	{
+	  temp= "";
+	  i++;
+	  switch (b[i])
+	    {
+	    case 'y': work.appendf("%d", y); break;
+	    case 'I':
+	      if (cIR == &cIX)
+		work+= "IX";
+	      else
+		work+= "IY";
+	      break;
+	    case 'b':
+	      work.appendf("0x%02x", d);
+	      break;
+	    }
+	  if (comment && temp.nempty())
+	    comment->append(temp);
+	}
+      else
+	work+= b[i];
+    }
+  return strdup(work.c_str());
+}
+
+
 int
 cl_rxk::inst_length(t_addr addr)
 {
   u8_t code= rom->get(addr);
   if (code == 0xcb)
     return 2;
+  if ((code == 0xdd) || (code == 0xfd))
+    {
+      if (rom->get(addr+1) == 0xcb)
+	return 4;
+    }
   struct dis_entry *dt= dis_entry(addr);
   if (!dt) return 1;
   if (dt->mnemonic == NULL) return 1;
