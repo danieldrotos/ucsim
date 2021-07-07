@@ -34,6 +34,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADD_IR_DE	instruction_dd_19
 #define ADD_IR_IR	instruction_dd_29
 #define ADD_IR_SP	instruction_dd_39
+#define INC_iIRd	instruction_dd_34
+#define DEC_iIRd	instruction_dd_35
+#define CP_A_iIRd	instruction_dd_be
+#define SBC_A_iIRd	instruction_dd_9e
 
 #define OR_A_iIRd	instruction_dd_b6
 

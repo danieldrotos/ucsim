@@ -184,8 +184,8 @@ struct dis_entry disass_rxk[]=
     { 0xde, 0xff, ' ', 2, "SBC A,%b" },
     { 0xe3, 0xff, ' ', 1, "EX DE',HL" }, // '
     { 0xeb, 0xff, ' ', 1, "EX DE,HL" },
-    { 0xe4, 0xff, ' ', 2, "LD HL,(IX+%b)" },
-    { 0xf4, 0xff, ' ', 2, "LD (IX+%b),HL" },
+    { 0xe4, 0xff, ' ', 2, "LD HL,(IX%d)" },
+    { 0xf4, 0xff, ' ', 2, "LD (IX%d),HL" },
     { 0xe6, 0xff, ' ', 2, "AND A,%b" },
     { 0xe9, 0xff, ' ', 1, "JP HL" },
     { 0xee, 0xff, ' ', 2, "XOR %b" },

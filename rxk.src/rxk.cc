@@ -53,20 +53,20 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   cl_rxk_base(asim)
 {
   altd= 0;
-  cRtab[0]= cB;
-  cRtab[1]= cC;
-  cRtab[2]= cD;
-  cRtab[3]= cE;
-  cRtab[4]= cH;
-  cRtab[5]= cL;
-  cRtab[7]= cA;
-  caRtab[0]= caB;
-  caRtab[1]= caC;
-  caRtab[2]= caD;
-  caRtab[3]= caE;
-  caRtab[4]= caH;
-  caRtab[5]= caL;
-  caRtab[7]= caA;
+  cRtab[0]= &cB;
+  cRtab[1]= &cC;
+  cRtab[2]= &cD;
+  cRtab[3]= &cE;
+  cRtab[4]= &cH;
+  cRtab[5]= &cL;
+  cRtab[7]= &cA;
+  caRtab[0]= &caB;
+  caRtab[1]= &caC;
+  caRtab[2]= &caD;
+  caRtab[3]= &caE;
+  caRtab[4]= &caH;
+  caRtab[5]= &caL;
+  caRtab[7]= &caA;
 }
 
 int
@@ -345,7 +345,7 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	    case 'd': // 8 bit signed
 	      {
 		i8_t r= rom->read(++addr);
-		work.appendf("%d", r);
+		work.appendf("%+d", r);
 	      }
 	      break;
 	    case 'r': // 8 bit relative jump
@@ -466,9 +466,9 @@ cl_rxk::disassc_dd_cb(t_addr addr, chars *comment)
     case 0:
       switch (y)
 	{
-	case 0: strcpy(b, "RLC (%I+%b)"); break;
-	case 1: strcpy(b, "RRC (%I+%b)"); break;
-	case 2: strcpy(b, "RL (%I+%b)"); break;
+	case 0: strcpy(b, "RLC (%I+%d)"); break;
+	case 1: strcpy(b, "RRC (%I+%d)"); break;
+	case 2: strcpy(b, "RL (%I+%d)"); break;
 	case 3: strcpy(b, "RR (%I+%d)"); break;
 	case 4: strcpy(b, "SLA (%I+%d)"); break;
 	case 5: strcpy(b, "SRA (%I+%d)"); break;
@@ -477,13 +477,13 @@ cl_rxk::disassc_dd_cb(t_addr addr, chars *comment)
 	}
       break;
     case 1:
-      strcpy(b, "BIT %y,(%I+%b)");
+      strcpy(b, "BIT %y,(%I+%d)");
       break;
     case 2:
-      strcpy(b, "RES %y,(%I+%b)");
+      strcpy(b, "RES %y,(%I+%d)");
       break;
     case 3:
-      strcpy(b, "SET %y,(%I+%b)");
+      strcpy(b, "SET %y,(%I+%d)");
       break;
     }
   temp= "";
@@ -510,6 +510,9 @@ cl_rxk::disassc_dd_cb(t_addr addr, chars *comment)
 	      break;
 	    case 'b':
 	      work.appendf("0x%02x", d);
+	      break;
+	    case 'd':
+	      work.appendf("%d", d);
 	      break;
 	    }
 	  if (comment && temp.nempty())
@@ -617,26 +620,28 @@ cl_rxk::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
-class cl_cell8 &
+class cl_cell8 *
 cl_rxk::cR(u8_t z)
 {
   if (z == 6)
-    return *((cl_cell8*)(rom->get_cell(rHL)));
+    return ((cl_cell8*)(rom->get_cell(rHL)));
   return cRtab[z];
 }
 
 u8_t
 cl_rxk::rR(u8_t z)
 {
-  return cR(z).R();
+  class cl_cell8 *c= cR(z);
+  u8_t v= c->get();
+  return v;//cR(z).get();
 }
 
-class cl_cell8 &
+class cl_cell8 *
 cl_rxk::destR(u8_t z)
 {
   if (z == 6)
     {
-      return *((cl_cell8*)(rwas->get_cell(rHL)));
+      return ((cl_cell8*)(rwas->get_cell(rHL)));
     }
   if (altd)
     return caRtab[z];

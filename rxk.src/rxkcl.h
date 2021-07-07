@@ -124,7 +124,7 @@ public:
   class cl_cell8 cIP, cIIR, cEIR;
   class cl_cell8 cA, cF, cB, cC, cD, cE, cH, cL;
   class cl_cell8 caA, caF, caB, caC, caD, caE, caH, caL;
-  class cl_cell8 cRtab[8], caRtab[8];
+  class cl_cell8 *cRtab[8], *caRtab[8];
   class cl_cell16 cAF, cBC, cDE, cHL, cIX, cIY, cSP;
   class cl_cell16 caAF, caBC, caDE, caHL;
   class cl_cell16 *cIR;
@@ -155,8 +155,8 @@ public:
   
   virtual void print_regs(class cl_console_base *con);
 
-  virtual class cl_cell8 &cR(u8_t z);
-  virtual class cl_cell8 &destR(u8_t z);
+  virtual class cl_cell8 *cR(u8_t z);
+  virtual class cl_cell8 *destR(u8_t z);
   virtual u8_t rR(u8_t z);
   virtual int exec_inst(void);
   virtual int inst_unknown(t_mem code);
@@ -565,6 +565,10 @@ public:
   virtual int ADD_IR_DE(t_mem code) { return add_ir_xy(rDE); }
   virtual int ADD_IR_IR(t_mem code) { return add_ir_xy(cIR->get()); }
   virtual int ADD_IR_SP(t_mem code) { return add_ir_xy(rSP); }
+  virtual int INC_iIRd(t_mem code);
+  virtual int DEC_iIRd(t_mem code);
+  virtual int CP_A_iIRd(t_mem code) { tick5p1(7); return cp8(rA, dest8iIRd(fetch()).R()); }
+  virtual int SBC_A_iIRd(t_mem code) { tick5p1(5); return sub8(dest8iIRd(fetch()).R(), true); }
   virtual int OR_A_iIRd(t_mem code);
   virtual int POP_IR(t_mem code);
   virtual int PUSH_IR(t_mem code);

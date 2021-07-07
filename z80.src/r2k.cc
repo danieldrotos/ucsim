@@ -447,18 +447,18 @@ cl_r2k::disass(t_addr addr)
           switch (*(b++))
             {
             case 'd': // d    jump relative target, signed? byte immediate operand
-              temp.format("#%d", (char)rom->get(addr+immed_offset));
+              temp.format("%d", (char)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             case 'w': // w    word immediate operand
-              temp.format("#0x%04x",
+              temp.format("0x%04x",
 			  (uint)((rom->get(addr+immed_offset)) |
 				 (rom->get(addr+immed_offset+1)<<8)) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'b': // b    byte immediate operand
-              temp.format("#0x%02x", (uint)rom->get(addr+immed_offset));
+              temp.format("0x%02x", (uint)rom->get(addr+immed_offset));
               ++immed_offset;
               break;
             default:

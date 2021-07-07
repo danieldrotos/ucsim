@@ -56,6 +56,18 @@ cl_rxk::inc_r(class cl_cell8 &cr, u8_t op)
 }
 
 int
+cl_rxk::INC_iIRd(t_mem code)
+{
+  i8_t d= fetch();
+  class cl_cell8 &dest= dest8iIRd(d);
+  u8_t op= dest.read();
+  vc.wr++;
+  vc.rd++;
+  tick5p1(10);
+  return inc_r(dest, op);
+}
+
+int
 cl_rxk::dec_ss(class cl_cell16 &rp, u16_t op)
 {
   rp.W(op-1);
@@ -77,6 +89,19 @@ cl_rxk::dec_r(class cl_cell8 &cr, u8_t op)
   rf.W(f);
   tick(1);
   return resGO;
+}
+
+
+int
+cl_rxk::DEC_iIRd(t_mem code)
+{
+  i8_t d= fetch();
+  class cl_cell8 &dest= dest8iIRd(d);
+  u8_t op= dest.read();
+  vc.wr++;
+  vc.rd++;
+  tick5p1(10);
+  return dec_r(dest, op);
 }
 
 int
