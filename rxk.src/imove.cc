@@ -122,9 +122,10 @@ cl_rxk::push_zz(u16_t op)
   u8_t h, l;
   h= op>>8;
   l= op&0xff;
-  rom->write(rSP-1, h);
-  rom->write(rSP-2, l);
-  cSP.W(rSP-2);
+  cSP.W(rSP-1);
+  rom->write(rSP, h);
+  cSP.W(rSP-1);
+  rom->write(rSP, l);
   vc.wr+= 2;
   tick5p1(9);
   return resGO;
@@ -422,6 +423,51 @@ cl_rxk::LD_iSPn_IR(t_mem code)
   rom->write(rSP+n+1, v);
   vc.wr+= 2;
   tick5p1(12);
+  return resGO;
+}
+
+int
+cl_rxk::LD_HL_iIRd(t_mem code)
+{
+  class cl_cell16 *ir= cIR;
+  if (cIR == &cIX)
+    ir= &cHL;
+  i8_t d= fetch();
+  t_addr a= ir->get() + d;
+  destHL().W(read16io(a));
+  tick5p1(10);
+  return resGO;
+}
+
+int
+cl_rxk::LD_iIRd_n(t_mem code)
+{
+  i8_t d= fetch();
+  u8_t n= fetch();
+  t_addr a= cIR->get()+d;
+  rwas->write(a, n);
+  tick5p1(10);
+  vc.wr++;
+  return resGO;
+}
+
+int
+cl_rxk::ld_dd_imn(class cl_cell16 &dest)
+{
+  u16_t a= fetch16();
+  dest.W(read16io(a));
+  tick(12);
+  return resGO;
+}
+
+int
+cl_rxk::EXX_iSP_HL(t_mem code)
+{
+  class cl_cell16 &hl= destHL();
+  u16_t temp= read16(rSP);
+  write16(rSP, rHL);
+  hl.W(temp);
+  tick(14);
   return resGO;
 }
 

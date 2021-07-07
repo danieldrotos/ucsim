@@ -39,8 +39,12 @@ struct dis_entry disass_pddm3[]=
     { 0x35, 0xff, ' ', 3, "DEC (%I%d)" },
     { 0xbe, 0xff, ' ', 3, "CP (%I%d)" },
     { 0x9e, 0xff, ' ', 3, "SBC A,(%I%d)" },
+    { 0x96, 0xff, ' ', 3, "SUB A,(%I%d)" },
+    { 0x86, 0xff, ' ', 3, "ADD A,(%I%d)" },
+    { 0x8e, 0xff, ' ', 3, "ADC A,(%I%d)" },
 
-    { 0xb6, 0xff, ' ', 3, "OR A,(%I+%b)" },
+    { 0xb6, 0xff, ' ', 3, "AND A,(%I%d)" },
+    { 0xb6, 0xff, ' ', 3, "OR A,(%I%d)" },
 
     { 0xe1, 0xff, ' ', 2, "POP %I" },
     { 0xe5, 0xff, ' ', 2, "PUSH %I" },
@@ -63,6 +67,8 @@ struct dis_entry disass_pddm3[]=
     { 0xf9, 0xff, ' ', 2, "LD SP,%I" },
     { 0xc4, 0xff, ' ', 3, "LD %I,(SP+%b)" },
     { 0xd4, 0xff, ' ', 3, "LD (SP+%b),%I" },
+    { 0xe4, 0xff, ' ', 3, "LD HL,(%J%d)" },
+    { 0x36, 0xff, ' ', 4, "LD (%I%d),%b" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

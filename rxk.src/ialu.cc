@@ -637,6 +637,22 @@ cl_rxk::OR_A_iIRd(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::AND_A_iIRd(t_mem code)
+{
+  i8_t d= fetch();
+  class cl_cell8 &a= destA(), &f= destF();
+  u8_t forg= rF & ~flagAll, res= rA & rwas->read(cIR->get() + d);
+  vc.rd++;
+  if (!res) forg|= flagZ;
+  if (res & 0x80) forg|= flagS;
+  if (res & 0xf0) forg|= flagL;
+  a.W(res);
+  f.W(forg);
+  tick5p1(8);
+  return resGO;
+}
+
 
 /*
  *                                                                Arithmetic

@@ -358,6 +358,12 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	    case 'I':
 	      work.appendf("%s", nIR);
 	      break;
+	    case 'J':
+	      if (cIR == &cIX)
+		work.append("HL");
+	      else
+		work.append("IY");
+	      break;
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);

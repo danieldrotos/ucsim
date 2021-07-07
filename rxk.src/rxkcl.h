@@ -207,6 +207,10 @@ public:
     l= rom->read(a); h= rom->read(a+1);
     return h*256+l;
   }
+  u16_t read16io(t_addr a) { u8_t l, h; vc.rd+=2;
+    l= rwas->read(a); h= rwas->read(a+1);
+    return h*256+l;
+  }
   u16_t fetch16(void) { u8_t l, h;
     l= fetch(); h= fetch();
     return h*256 + l;
@@ -222,6 +226,7 @@ public:
   virtual int ld_d_i(int dif);					// 0f,10t,1r,1w
   virtual int ld_iIRd_r(u8_t op);				// 1f,10t,0r,1w
   virtual int ld_r_iIRd(class cl_cell8 &op);			// 1f,9t,1r,0w
+  virtual int ld_dd_imn(class cl_cell16 &dest);			// 2f,13t,2r,0w
   
   virtual int inc_ss(class cl_cell16 &rp, u16_t op);
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
@@ -550,6 +555,11 @@ public:
   virtual int LD_A_IIR(t_mem code);
   virtual int LDD(t_mem code) { return ld_d_i(-1); }
   virtual int LDI(t_mem code) { return ld_d_i(+1); }
+  virtual int EXX_iSP_HL(t_mem code);
+  virtual int LD_BC_imn(t_mem code) { return ld_dd_imn(destBC()); }
+  virtual int LD_DE_imn(t_mem code) { return ld_dd_imn(destDE()); }
+  virtual int LD_HL_imn_ped(t_mem code) { return ld_dd_imn(destHL()); }
+  virtual int LD_SP_imn(t_mem code) { return ld_dd_imn(cSP); }
   virtual int SBC_HL_BC(t_mem code) { return sub16(rBC, true); }
   virtual int SBC_HL_DE(t_mem code) { return sub16(rDE, true); }
   virtual int SBC_HL_HL(t_mem code) { return sub16(rHL, true); }
@@ -558,7 +568,7 @@ public:
   virtual int ADC_HL_DE(t_mem code) { return adc_hl_ss(rDE); }
   virtual int ADC_HL_HL(t_mem code) { return adc_hl_ss(rHL); }
   virtual int ADC_HL_SP(t_mem code) { return adc_hl_ss(rSP); }
-
+  
   // Page DD/FD, 3k mode
   virtual int LD_IR_mn(t_mem code);
   virtual int ADD_IR_BC(t_mem code) { return add_ir_xy(rBC); }
@@ -567,9 +577,13 @@ public:
   virtual int ADD_IR_SP(t_mem code) { return add_ir_xy(rSP); }
   virtual int INC_iIRd(t_mem code);
   virtual int DEC_iIRd(t_mem code);
-  virtual int CP_A_iIRd(t_mem code) { tick5p1(7); return cp8(rA, dest8iIRd(fetch()).R()); }
-  virtual int SBC_A_iIRd(t_mem code) { tick5p1(5); return sub8(dest8iIRd(fetch()).R(), true); }
+  virtual int CP_A_iIRd(t_mem code) { tick5p1(7); vc.rd++; return cp8(rA, dest8iIRd(fetch()).R()); }
+  virtual int SBC_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return sub8(dest8iIRd(fetch()).R(), true); }
+  virtual int SUB_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return sub8(dest8iIRd(fetch()).R(), false); }
+  virtual int ADD_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return add8(dest8iIRd(fetch()).R(), false); }
+  virtual int ADC_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return add8(dest8iIRd(fetch()).R(), true); }
   virtual int OR_A_iIRd(t_mem code);
+  virtual int AND_A_iIRd(t_mem code);
   virtual int POP_IR(t_mem code);
   virtual int PUSH_IR(t_mem code);
   virtual int LD_iIRd_A(t_mem code) { return ld_iIRd_r(rA); }
@@ -589,6 +603,8 @@ public:
   virtual int LD_SP_IR(t_mem code);
   virtual int LD_IR_iSPn(t_mem code);
   virtual int LD_iSPn_IR(t_mem code);
+  virtual int LD_HL_iIRd(t_mem code);
+  virtual int LD_iIRd_n(t_mem code);
   virtual int PAGE_DD_CB(t_mem code);
 };
 

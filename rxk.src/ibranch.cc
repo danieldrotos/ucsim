@@ -24,6 +24,8 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
+#include "appcl.h"
+
 #include "rxkcl.h"
 
 
@@ -34,7 +36,7 @@ cl_rxk::DJNZ(t_mem code)
   i8_t r= fetch();
   destB().W(v);
   if (v)
-    PC+= r;
+    PC= (PC + r) & 0xffff;
   tick5p1(4);
   return resGO;
 }
@@ -43,7 +45,7 @@ int
 cl_rxk::JR(t_mem code)
 {
   i8_t r= fetch();
-  PC+= r;
+  PC= (PC + r) & 0xffff;
   tick5p1(4);
   return resGO;
 }
@@ -83,12 +85,14 @@ cl_rxk::LCALL_lmn(t_mem code)
   l= fetch();
   h= fetch();
   x= fetch();
-  rom->write(--rSP, rXPC);
-  rom->write(--rSP, PC>>8);
-  rom->write(--rSP, PC);
+  cSP.W(rSP-1);
+  rom->write(rSP, rXPC);
+  cSP.W(rSP-1);
+  rom->write(rSP, PC>>8);
+  cSP.W(rSP-1);
+  rom->write(rSP, PC);
   PC= h*256+l;
   cXPC.W(x);
-  cSP.W(rSP);
   tick5p1(18);
   vc.wr+= 3;
   return resGO;
@@ -97,11 +101,12 @@ cl_rxk::LCALL_lmn(t_mem code)
 int
 cl_rxk::rst_v(t_mem code)
 {
-  if (code == 0xef) return resGO;
+  if (jaj && (code == 0xef)) return resGO;
   u8_t l= (code&0x38) << 1;
-  rom->write(--rSP, PC>>8);
-  rom->write(--rSP, PC);
-  cSP.W(rSP);
+  cSP.W(rSP-1);
+  rom->write(rSP, PC>>8);
+  cSP.W(rSP-1);
+  rom->write(rSP, PC);
   PC= rIIR * 256 + l;
   vc.wr+= 2;
   tick5p3(7);
@@ -114,7 +119,7 @@ cl_rxk::jr_cc(bool cond)
 {
   i8_t r= fetch();
   if (cond)
-    PC+= r;
+    PC= (PC + r) & 0xffff;
   tick5p1(4);
   return resGO;
 }
