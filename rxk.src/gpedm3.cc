@@ -40,6 +40,18 @@ struct dis_entry disass_pedm3[]=
     { 0x5b, 0xff, ' ', 4, "LD DE,(%w)" },
     { 0x6b, 0xff, ' ', 4, "LD HL,(%w)" },
     { 0x7b, 0xff, ' ', 4, "LD SP,(%w)" },
+    { 0x49, 0xff, ' ', 2, "LD BC',BC" }, // '
+    { 0x59, 0xff, ' ', 2, "LD DE',BC" }, // '
+    { 0x69, 0xff, ' ', 2, "LD HL',BC" }, // '
+    { 0x41, 0xff, ' ', 2, "LD BC',DE" }, // '
+    { 0x51, 0xff, ' ', 2, "LD DE',DE" }, // '
+    { 0x61, 0xff, ' ', 2, "LD HL',DE" }, // '
+    { 0x43, 0xff, ' ', 4, "LD (%w),BC" },
+    { 0x53, 0xff, ' ', 4, "LD (%w),DE" },
+    { 0x63, 0xff, ' ', 4, "LD (%w),HL" },
+    { 0x73, 0xff, ' ', 4, "LD (%w),SP" },
+    { 0x44, 0xff, ' ', 2, "NEG" },
+    { 0x45, 0xff, ' ', 2, "LRET" },
     
     { 0x42, 0xff, ' ', 2, "SBC HL,BC" },
     { 0x52, 0xff, ' ', 2, "SBC HL,DE" },

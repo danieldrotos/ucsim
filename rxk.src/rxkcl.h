@@ -163,9 +163,10 @@ public:
   virtual void tick5p1(int n) { tick(n); }
   virtual void tick5p2(int n) { tick(n); }
   virtual void tick5p3(int n) { tick(n); }
+  virtual void tick5p9(int n) { tick(n); }
   virtual void tick5m1(int n) { tick(n+2); }
   virtual void tick5m2(int n) { tick(n+2); }
-
+  
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
   class cl_cell16 &destBC(void) { return altd?caBC:cBC; }
   class cl_cell16 &destDE(void) { return altd?caDE:cDE; }
@@ -227,6 +228,8 @@ public:
   virtual int ld_iIRd_r(u8_t op);				// 1f,10t,0r,1w
   virtual int ld_r_iIRd(class cl_cell8 &op);			// 1f,9t,1r,0w
   virtual int ld_dd_imn(class cl_cell16 &dest);			// 2f,13t,2r,0w
+  virtual int ld_add_BC_DE(class cl_cell16 &dest, u16_t src);	// 0f,4t,0r,0w
+  virtual int ld_imn_ss(u16_t src);				// 2f,15t,0r,2w
   
   virtual int inc_ss(class cl_cell16 &rp, u16_t op);
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
@@ -568,6 +571,18 @@ public:
   virtual int ADC_HL_DE(t_mem code) { return adc_hl_ss(rDE); }
   virtual int ADC_HL_HL(t_mem code) { return adc_hl_ss(rHL); }
   virtual int ADC_HL_SP(t_mem code) { return adc_hl_ss(rSP); }
+  virtual int LD_aBC_BC(t_mem code) { return ld_add_BC_DE(caBC, rBC); }
+  virtual int LD_aDE_BC(t_mem code) { return ld_add_BC_DE(caDE, rBC); }
+  virtual int LD_aHL_BC(t_mem code) { return ld_add_BC_DE(caHL, rBC); }
+  virtual int LD_aBC_DE(t_mem code) { return ld_add_BC_DE(caBC, rDE); }
+  virtual int LD_aDE_DE(t_mem code) { return ld_add_BC_DE(caDE, rDE); }
+  virtual int LD_aHL_DE(t_mem code) { return ld_add_BC_DE(caHL, rDE); }
+  virtual int LD_imn_BC(t_mem code) { return ld_imn_ss(rBC); }
+  virtual int LD_imn_DE(t_mem code) { return ld_imn_ss(rDE); }
+  virtual int LD_imn_HL_ed(t_mem code) { return ld_imn_ss(rHL); }
+  virtual int LD_imn_SP(t_mem code) { return ld_imn_ss(rSP); }
+  virtual int NEG(t_mem code);
+  virtual int LRET(t_mem code);
   
   // Page DD/FD, 3k mode
   virtual int LD_IR_mn(t_mem code);

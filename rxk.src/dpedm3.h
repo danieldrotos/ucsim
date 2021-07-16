@@ -39,6 +39,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_DE_imn	instruction_ed_5b
 #define LD_HL_imn_ped	instruction_ed_6b
 #define LD_SP_imn	instruction_ed_7b
+#define LD_aBC_BC	instruction_ed_49
+#define LD_aDE_BC	instruction_ed_59
+#define LD_aHL_BC	instruction_ed_69
+#define LD_aBC_DE	instruction_ed_41
+#define LD_aDE_DE	instruction_ed_51
+#define LD_aHL_DE	instruction_ed_61
+#define LD_imn_BC	instruction_ed_43
+#define LD_imn_DE	instruction_ed_53
+#define LD_imn_HL_ed	instruction_ed_63
+#define LD_imn_SP	instruction_ed_73
+#define NEG		instruction_ed_44
+#define LRET		instruction_ed_45
 
 #define SBC_HL_BC	instruction_ed_42
 #define SBC_HL_DE	instruction_ed_52

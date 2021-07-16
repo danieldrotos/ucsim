@@ -756,6 +756,16 @@ cl_rxk::sub8(u8_t op2, bool cy)
 }
 
 int
+cl_rxk::NEG(t_mem code)
+{
+  u8_t org= destA().get();
+  destA().set(0);
+  sub8(org, false);
+  tick5p9(0);
+  return resGO;
+}
+
+int
 cl_rxk::sub16(u16_t op2, bool cy)
 {
   class cl_cell16 &hl= destHL();

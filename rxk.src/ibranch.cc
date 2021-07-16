@@ -131,7 +131,7 @@ cl_rxk::ret_f(bool f)
     {
       u8_t l, h;
       l= mem->read(rSP);
-      rSP++;
+      cSP.W(++rSP);
       h= mem->read(rSP);
       cSP.W(++rSP);
       vc.rd+= 2;
@@ -152,6 +152,22 @@ cl_rxk::jp_f_mn(bool f)
       PC= h*256+l;
     }
   tick(6);
+  return resGO;
+}
+
+int
+cl_rxk::LRET(t_mem code)
+{
+  u8_t l, h, x;
+  l= mem->read(rSP);
+  cSP.W(++rSP);
+  h= mem->read(rSP);
+  cSP.W(++rSP);
+  PC= h*256+l;
+  x= mem->read(rSP);
+  cSP.W(++rSP);
+  cXPC.W(x);
+  tick(12);
   return resGO;
 }
 

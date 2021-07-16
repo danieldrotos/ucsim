@@ -471,5 +471,29 @@ cl_rxk::EXX_iSP_HL(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::ld_add_BC_DE(class cl_cell16 &dest, u16_t src)
+{
+  dest.W(src);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::ld_imn_ss(u16_t src)
+{
+  u8_t l, h;
+  l= fetch();
+  h= fetch();
+  t_addr a= h*256+l;
+  l= src;
+  h= src>>8;
+  rwas->write(a, l);
+  rwas->write(a+1, h);
+  vc.wr+= 2;
+  tick(14);
+  return resGO;
+}
+
 
 /* End of rxk.src/imove.cc */
