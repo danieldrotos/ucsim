@@ -51,6 +51,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_imn_SP	instruction_ed_73
 #define NEG		instruction_ed_44
 #define LRET		instruction_ed_45
+#define IPSET_0		instruction_ed_46
+#define IPSET_1		instruction_ed_56
+#define IPSET_2		instruction_ed_4e
+#define IPSET_3		instruction_ed_5e
+#define RETI		instruction_ed_4d
+#define IPRES		instruction_ed_5d
+#define LDP_iHL_HL	instruction_ed_64
+#define LDP_imn_HL	instruction_ed_65
+#define LDP_HL_iHL	instruction_ed_6c
+#define LDP_HL_imn	instruction_ed_6d
+#define LD_XPC_A	instruction_ed_67
+#define LD_A_XPC	instruction_ed_77
 
 #define SBC_HL_BC	instruction_ed_42
 #define SBC_HL_DE	instruction_ed_52

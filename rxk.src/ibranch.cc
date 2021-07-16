@@ -171,5 +171,21 @@ cl_rxk::LRET(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::RETI(t_mem code)
+{
+  u8_t l, h, x;
+  x= mem->read(rSP);
+  cSP.W(++rSP);
+  l= mem->read(rSP);
+  cSP.W(++rSP);
+  h= mem->read(rSP);
+  cSP.W(++rSP);
+  PC= h*256+l;
+  cIP.W(x);
+  tick(11);
+  return resGO;
+}
+
 
 /* End of rxk.src/ibranch.cc */

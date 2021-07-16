@@ -69,6 +69,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_HL_iIRd	instruction_dd_e4
 #define LD_iIRd_n	instruction_dd_36
 
+#define LDP_iIR_HL	instruction_dd_64
+#define LDP_imn_IR	instruction_dd_65
+#define LDP_HL_iIR	instruction_dd_6c
+#define LDP_IR_imn	instruction_dd_6d
+
 #define PAGE_DD_CB	instruction_dd_cb
 
 #endif

@@ -666,7 +666,8 @@ cl_rxk::exec_inst(void)
       altd= false;
     }
   prefix= false;
-
+  atomic= false;
+  
   instPC= PC;
   if (fetch(&code))
     return resBREAKPOINT;

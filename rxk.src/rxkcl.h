@@ -132,7 +132,7 @@ public:
   class cl_ras *mem;
   class cl_address_space *ioi, *ioe;
   class cl_address_space *rwas;
-  bool prefix, altd;
+  bool prefix, altd, atomic;
 public:
   cl_rxk(class cl_sim *asim);
   virtual int init(void);
@@ -216,6 +216,8 @@ public:
     l= fetch(); h= fetch();
     return h*256 + l;
   }
+
+  virtual int ipset(u8_t n);					// 0f,4t,0r,0w
   
   virtual int ld_dd_mn(class cl_cell16 &dd);			// 2f,6t,0r,0w
   virtual int ld_r_n(class cl_cell8 &r);			// 1f,4t,0r,0w
@@ -230,6 +232,8 @@ public:
   virtual int ld_dd_imn(class cl_cell16 &dest);			// 2f,13t,2r,0w
   virtual int ld_add_BC_DE(class cl_cell16 &dest, u16_t src);	// 0f,4t,0r,0w
   virtual int ld_imn_ss(u16_t src);				// 2f,15t,0r,2w
+  virtual int ldp_irp_rp(u16_t addr, u16_t src);		// 0f,12t,0r,2w
+  virtual int ldp_rp_irp(class cl_cell16 &dest, u16_t addr);	// 0f,10t,2r,0w
   
   virtual int inc_ss(class cl_cell16 &rp, u16_t op);
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
@@ -583,6 +587,18 @@ public:
   virtual int LD_imn_SP(t_mem code) { return ld_imn_ss(rSP); }
   virtual int NEG(t_mem code);
   virtual int LRET(t_mem code);
+  virtual int IPSET_0(t_mem code) { return ipset(0); }
+  virtual int IPSET_1(t_mem code) { return ipset(1); }
+  virtual int IPSET_2(t_mem code) { return ipset(2); }
+  virtual int IPSET_3(t_mem code) { return ipset(3); }
+  virtual int RETI(t_mem code);
+  virtual int IPRES(t_mem code);
+  virtual int LDP_iHL_HL(t_mem code) { return ldp_irp_rp(rHL, rHL); }
+  virtual int LDP_imn_HL(t_mem code) { tick(3); return ldp_irp_rp(fetch16(), rHL); }
+  virtual int LDP_HL_iHL(t_mem code) { return ldp_rp_irp(cHL, rHL); }
+  virtual int LDP_HL_imn(t_mem code) { tick(3); return ldp_rp_irp(cHL, fetch16()); }
+  virtual int LD_XPC_A(t_mem code);
+  virtual int LD_A_XPC(t_mem code);
   
   // Page DD/FD, 3k mode
   virtual int LD_IR_mn(t_mem code);
@@ -620,6 +636,10 @@ public:
   virtual int LD_iSPn_IR(t_mem code);
   virtual int LD_HL_iIRd(t_mem code);
   virtual int LD_iIRd_n(t_mem code);
+  virtual int LDP_iIR_HL(t_mem code) { return ldp_irp_rp(cIR->get(), rHL); }
+  virtual int LDP_imn_IR(t_mem code) { tick(3); return ldp_irp_rp(fetch16(), cIR->get()); }
+  virtual int LDP_HL_iIR(t_mem code) { return ldp_rp_irp(cHL, cIR->get()); }
+  virtual int LDP_IR_imn(t_mem code) { tick(3); return ldp_rp_irp(*cIR, fetch16()); }
   virtual int PAGE_DD_CB(t_mem code);
 };
 

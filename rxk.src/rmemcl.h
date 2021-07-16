@@ -45,7 +45,9 @@ class cl_ras: public cl_address_space
   virtual t_mem get(t_addr addr);
   virtual t_mem phget(t_addr phaddr);
   virtual t_mem write(t_addr addr, t_mem val);
+  virtual t_mem phwrite(t_addr phaddr, t_mem val) { set(phaddr, val); return val; }
   virtual void set(t_addr addr, t_mem val);
+  virtual void phset(t_addr phaddr, t_mem val);
   virtual void download(t_addr phaddr, t_mem val);
 };
 
