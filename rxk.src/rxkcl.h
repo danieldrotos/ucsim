@@ -645,6 +645,8 @@ public:
   virtual int LD_iIRd_n(t_mem code);
   virtual int LD_imn_IR(t_mem code);
   virtual int LD_IR_imn(t_mem code);
+  virtual int LD_HL_IR(t_mem code);
+  virtual int LD_IR_HL(t_mem code);
   virtual int LDP_iIR_HL(t_mem code) { return ldp_irp_rp(cIR->get(), rHL); }
   virtual int LDP_imn_IR(t_mem code) { tick(3); return ldp_irp_rp(fetch16(), cIR->get()); }
   virtual int LDP_HL_iIR(t_mem code) { return ldp_rp_irp(cHL, cIR->get()); }

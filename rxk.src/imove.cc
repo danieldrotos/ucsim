@@ -618,6 +618,22 @@ cl_rxk::LD_IR_imn(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::LD_HL_IR(t_mem code)
+{
+  destHL().W(cIR->get());
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::LD_IR_HL(t_mem code)
+{
+  cIR->write(rHL);
+  tick(3);
+  return resGO;
+}
+
 
 /*
  *                                                     Rabbit 4000, 5000

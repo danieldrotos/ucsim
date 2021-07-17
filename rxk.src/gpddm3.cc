@@ -74,6 +74,8 @@ struct dis_entry disass_pddm3[]=
     { 0x06, 0xff, ' ', 2, "LD A,(%I+A)" },
     { 0x22, 0xff, ' ', 4, "LD (%w),%I" },
     { 0x2a, 0xff, ' ', 4, "LD %I,(%w)" },
+    { 0x7c, 0xff, ' ', 2, "LD HL,%I" },
+    { 0x7d, 0xff, ' ', 2, "LD %I,HL" },
     
     { 0x64, 0xff, ' ', 2, "LDP (%I),HL" },
     { 0x64, 0xff, ' ', 4, "LDP (%w),%I" },
