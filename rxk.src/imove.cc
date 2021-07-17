@@ -154,6 +154,30 @@ cl_rxk::ld_d_i(int dif)
 }
 
 int
+cl_rxk::LDxR(int dif)
+{
+  int t= 7;
+  if (rwas == ioi)
+    t+= 1;
+  else if (rwas == ioe)
+    t+= 2;
+  tick(5);
+  do
+    {
+      rwas->write(rDE, rom->read(rHL));
+      vc.rd++;
+      vc.wr++;
+      cBC.W(rBC-1);
+      cDE.W(rDE+dif);
+      cHL.W(rHL+dif);
+      tick(t);
+    }
+  while (rBC != 0);
+  cF.W(rF & ~flagV);
+  return resGO;
+}
+
+int
 cl_rxk::ld_iIRd_r(u8_t op)
 {
   i8_t d= fetch();
@@ -540,5 +564,26 @@ cl_rxk::LD_A_XPC(t_mem code)
   return resGO;
 }
 
-  
+int
+cl_rxk::PUSH_IP(t_mem code)
+{
+  cSP.W(rSP-1);
+  rom->write(rSP, rIP);
+  vc.wr++;
+  tick5p1(8);
+  return resGO;
+}
+
+int
+cl_rxk::POP_IP(t_mem code)
+{
+  cIP.W(rom->read(rSP));
+  cSP.W(rSP+1);
+  vc.rd++;
+  tick(6);
+  atomic= true;
+  return resGO;
+}
+
+
 /* End of rxk.src/imove.cc */

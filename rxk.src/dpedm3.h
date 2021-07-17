@@ -34,6 +34,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_A_IIR	instruction_ed_5f
 #define LDI		instruction_ed_a0
 #define LDD		instruction_ed_a8
+#define LDDR		instruction_ed_b8
+#define LDIR		instruction_ed_b0
 #define EXX_iSP_HL	instruction_ed_54
 #define LD_BC_imn	instruction_ed_4b
 #define LD_DE_imn	instruction_ed_5b
@@ -63,6 +65,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDP_HL_imn	instruction_ed_6d
 #define LD_XPC_A	instruction_ed_67
 #define LD_A_XPC	instruction_ed_77
+#define PUSH_IP		instruction_ed_76
+#define POP_IP		instruction_ed_7e
 
 #define SBC_HL_BC	instruction_ed_42
 #define SBC_HL_DE	instruction_ed_52

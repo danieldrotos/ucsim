@@ -227,6 +227,7 @@ public:
   virtual int pop_zz(class cl_cell16 &dest);			// 0f,6t,2r,0w
   virtual int push_zz(u16_t op);				// 0f,9t,0r,2w
   virtual int ld_d_i(int dif);					// 0f,10t,1r,1w
+  virtual int LDxR(int dif);					// 0f,6t,1r,1w
   virtual int ld_iIRd_r(u8_t op);				// 1f,10t,0r,1w
   virtual int ld_r_iIRd(class cl_cell8 &op);			// 1f,9t,1r,0w
   virtual int ld_dd_imn(class cl_cell16 &dest);			// 2f,13t,2r,0w
@@ -562,6 +563,8 @@ public:
   virtual int LD_A_IIR(t_mem code);
   virtual int LDD(t_mem code) { return ld_d_i(-1); }
   virtual int LDI(t_mem code) { return ld_d_i(+1); }
+  virtual int LDDR(t_mem code) { return LDxR(-1); }
+  virtual int LDIR(t_mem code) { return LDxR(+1); }
   virtual int EXX_iSP_HL(t_mem code);
   virtual int LD_BC_imn(t_mem code) { return ld_dd_imn(destBC()); }
   virtual int LD_DE_imn(t_mem code) { return ld_dd_imn(destDE()); }
@@ -599,7 +602,9 @@ public:
   virtual int LDP_HL_imn(t_mem code) { tick(3); return ldp_rp_irp(cHL, fetch16()); }
   virtual int LD_XPC_A(t_mem code);
   virtual int LD_A_XPC(t_mem code);
-  
+  virtual int PUSH_IP(t_mem code);
+  virtual int POP_IP(t_mem code);
+    
   // Page DD/FD, 3k mode
   virtual int LD_IR_mn(t_mem code);
   virtual int ADD_IR_BC(t_mem code) { return add_ir_xy(rBC); }
