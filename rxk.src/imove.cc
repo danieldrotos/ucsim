@@ -25,6 +25,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
 #include "rxkcl.h"
+#include "r4kcl.h"
 
 
 int
@@ -585,5 +586,52 @@ cl_rxk::POP_IP(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::LD_imn_IR(t_mem code)
+{
+  u8_t h, l;
+  l= fetch();
+  h= fetch();
+  u16_t addr= h*256+l;
+  u16_t v= cIR->get();
+  h= v>>8;
+  l= v;
+  rwas->write(addr, l);
+  rwas->write(addr+1, h);
+  vc.wr+= 2;
+  tick(14);
+  return resGO;
+}
+
+int
+cl_rxk::LD_IR_imn(t_mem code)
+{
+  u8_t h, l;
+  l= fetch();
+  h= fetch();
+  u16_t addr= h*256+l;
+  l= rwas->read(addr);
+  h= rwas->read(addr+1);
+  cIR->write(h*256+l);
+  vc.rd+= 2;
+  tick(12);
+  return resGO;
+}
+
+
+/*
+ *                                                     Rabbit 4000, 5000
+ */
+
+int
+cl_r4k::LD_A_iIRA(t_mem code)
+{
+  class cl_cell8 &a= destA();
+  u16_t addr= cIR->get() + rA;
+  a.W(rwas->read(addr));
+  vc.rd++;
+  tick5p1(7);
+  return resGO;
+}
 
 /* End of rxk.src/imove.cc */

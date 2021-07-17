@@ -124,6 +124,24 @@ cl_rxk::inc_i8(t_addr addr)
 }
 
 int
+cl_rxk::INC_IR(t_mem code)
+{
+  u16_t v= cIR->get();
+  cIR->write(v+1);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::DEC_IR(t_mem code)
+{
+  u16_t v= cIR->get();
+  cIR->write(v-1);
+  tick(3);
+  return resGO;
+}
+
+int
 cl_rxk::dec_i8(t_addr addr)
 {
   class cl_cell8 &f= destF();

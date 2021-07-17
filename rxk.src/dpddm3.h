@@ -41,6 +41,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SUB_A_iIRd	instruction_dd_96
 #define ADD_A_iIRd	instruction_dd_86
 #define ADC_A_iIRd	instruction_dd_8e
+#define INC_IR		instruction_dd_23
+#define DEC_IR		instruction_dd_2b
 
 #define AND_A_iIRd	instruction_dd_a6
 #define OR_A_iIRd	instruction_dd_b6
@@ -68,6 +70,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_iSPn_IR 	instruction_dd_d4
 #define LD_HL_iIRd	instruction_dd_e4
 #define LD_iIRd_n	instruction_dd_36
+#define LD_imn_IR	instruction_dd_22
+#define LD_IR_imn	instruction_dd_2a
 
 #define LDP_iIR_HL	instruction_dd_64
 #define LDP_imn_IR	instruction_dd_65

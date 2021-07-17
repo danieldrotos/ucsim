@@ -618,6 +618,8 @@ public:
   virtual int SUB_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return sub8(dest8iIRd(fetch()).R(), false); }
   virtual int ADD_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return add8(dest8iIRd(fetch()).R(), false); }
   virtual int ADC_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return add8(dest8iIRd(fetch()).R(), true); }
+  virtual int INC_IR(t_mem code);
+  virtual int DEC_IR(t_mem code);
   virtual int OR_A_iIRd(t_mem code);
   virtual int AND_A_iIRd(t_mem code);
   virtual int POP_IR(t_mem code);
@@ -641,6 +643,8 @@ public:
   virtual int LD_iSPn_IR(t_mem code);
   virtual int LD_HL_iIRd(t_mem code);
   virtual int LD_iIRd_n(t_mem code);
+  virtual int LD_imn_IR(t_mem code);
+  virtual int LD_IR_imn(t_mem code);
   virtual int LDP_iIR_HL(t_mem code) { return ldp_irp_rp(cIR->get(), rHL); }
   virtual int LDP_imn_IR(t_mem code) { tick(3); return ldp_irp_rp(fetch16(), cIR->get()); }
   virtual int LDP_HL_iIR(t_mem code) { return ldp_rp_irp(cHL, cIR->get()); }
