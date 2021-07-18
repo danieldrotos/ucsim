@@ -640,6 +640,22 @@ cl_rxk::and16(class cl_cell16 &dest, u16_t op1, u16_t op2)
 }
 
 int
+cl_rxk::XOR_A_iIRd(t_mem code)
+{
+  i8_t d= fetch();
+  class cl_cell8 &a= destA(), &f= destF();
+  u8_t forg= rF & ~flagAll, res= rA ^ rwas->read(cIR->get() + d);
+  vc.rd++;
+  if (!res) forg|= flagZ;
+  if (res & 0x80) forg|= flagS;
+  if (res & 0xf0) forg|= flagL;
+  a.W(res);
+  f.W(forg);
+  tick5p1(8);
+  return resGO;
+}
+
+int
 cl_rxk::OR_A_iIRd(t_mem code)
 {
   i8_t d= fetch();
@@ -668,6 +684,50 @@ cl_rxk::AND_A_iIRd(t_mem code)
   a.W(res);
   f.W(forg);
   tick5p1(8);
+  return resGO;
+}
+
+int
+cl_rxk::BOOL_IR(t_mem code)
+{
+  u16_t v= cIR->get();
+  if (v)
+    cIR->W(v=1);
+  u8_t f= rF & ~flagAll;
+  //if (v&0x8000) f|= flagS;
+  if (!v) f|= flagZ;
+  cF.W(f);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::AND_IR_DE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  u16_t v;
+  cIR->W(v= cIR->get() & rDE);
+  if (!v) forg|= flagZ;
+  if (v&0x8000) forg|= flagS;
+  if (v^0xf000) forg|= flagL;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::OR_IR_DE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  u16_t v;
+  cIR->W(v= cIR->get() | rDE);
+  if (!v) forg|= flagZ;
+  if (v&0x8000) forg|= flagS;
+  if (v^0xf000) forg|= flagL;
+  f.W(forg);
+  tick(3);
   return resGO;
 }
 

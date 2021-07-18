@@ -620,8 +620,13 @@ public:
   virtual int ADC_A_iIRd(t_mem code) { tick5p1(5); vc.rd++; return add8(dest8iIRd(fetch()).R(), true); }
   virtual int INC_IR(t_mem code);
   virtual int DEC_IR(t_mem code);
+  virtual int RR_IR(t_mem code) { tick(2); return rot17right(*cIR, cIR->get()); }
+  virtual int XOR_A_iIRd(t_mem code);
   virtual int OR_A_iIRd(t_mem code);
   virtual int AND_A_iIRd(t_mem code);
+  virtual int BOOL_IR(t_mem code);
+  virtual int AND_IR_DE(t_mem code);
+  virtual int OR_IR_DE(t_mem code);
   virtual int POP_IR(t_mem code);
   virtual int PUSH_IR(t_mem code);
   virtual int LD_iIRd_A(t_mem code) { return ld_iIRd_r(rA); }
@@ -647,10 +652,12 @@ public:
   virtual int LD_IR_imn(t_mem code);
   virtual int LD_HL_IR(t_mem code);
   virtual int LD_IR_HL(t_mem code);
+  virtual int LD_iHLd_HL(t_mem code);
   virtual int LDP_iIR_HL(t_mem code) { return ldp_irp_rp(cIR->get(), rHL); }
   virtual int LDP_imn_IR(t_mem code) { tick(3); return ldp_irp_rp(fetch16(), cIR->get()); }
   virtual int LDP_HL_iIR(t_mem code) { return ldp_rp_irp(cHL, cIR->get()); }
   virtual int LDP_IR_imn(t_mem code) { tick(3); return ldp_rp_irp(*cIR, fetch16()); }
+  virtual int JP_IR(t_mem code) { tick(5); PC= cIR->get(); return resGO; }
   virtual int PAGE_DD_CB(t_mem code);
 };
 

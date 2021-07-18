@@ -634,6 +634,18 @@ cl_rxk::LD_IR_HL(t_mem code)
   return resGO;
 }
 
+int
+cl_rxk::LD_iHLd_HL(t_mem code)
+{
+  i8_t d= fetch();
+  u16_t addr= rHL+d;
+  rwas->write(addr, rL);
+  addr++;
+  rwas->write(addr, rH);
+  tick5p1(12);
+  return resGO;
+}
+
 
 /*
  *                                                     Rabbit 4000, 5000
