@@ -47,7 +47,7 @@ struct dis_entry disass_pddm3[]=
     { 0xfc, 0xff, ' ', 2, "RR %I" },
 
     { 0xae, 0xff, ' ', 3, "XOR A,(%I%d)" },
-    { 0xb6, 0xff, ' ', 3, "AND A,(%I%d)" },
+    { 0xa6, 0xff, ' ', 3, "AND A,(%I%d)" },
     { 0xb6, 0xff, ' ', 3, "OR A,(%I%d)" },
     { 0xcc, 0xff, ' ', 2, "BOOL %I" },
     { 0xdc, 0xff, ' ', 2, "AND %I,DE" },

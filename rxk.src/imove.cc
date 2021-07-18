@@ -108,9 +108,10 @@ int
 cl_rxk::pop_zz(class cl_cell16 &dest)
 {
   u8_t l, h;
-  l= rom->read(rSP++);
-  h= rom->read(rSP++);
-  cSP.W(rSP);
+  l= rom->read(rSP);
+  cSP.W(rSP+1);
+  h= rom->read(rSP);
+  cSP.W(rSP+1);
   dest.W(h*256+l);
   vc.rd+= 2;
   tick(6);
@@ -292,8 +293,10 @@ cl_rxk::LD_HL_iSPn(t_mem code)
 {
   class cl_cell16 &dest= destHL();
   u8_t n= fetch(), l, h;
-  l= rom->read(rSP+n);
-  h= rom->read(rSP+n+1);
+  u16_t addr= rSP+n;
+  l= rom->read(addr);
+  addr++;
+  h= rom->read(addr);
   dest.W(h*256+l);
   vc.rd+= 2;
   tick5p1(8);
@@ -305,7 +308,7 @@ cl_rxk::LD_HL_iIXd(t_mem code)
 {
   i8_t d= fetch();
   class cl_cell16 &dhl= destHL();
-  t_addr a= (rIX+d)&0xffff;
+  u16_t a= rIX+d;
   u8_t h, l;
   l= rwas->read(a);
   h= rwas->read(a+1);
@@ -319,7 +322,7 @@ int
 cl_rxk::LD_iIXd_HL(t_mem code)
 {
   i8_t d= fetch();
-  t_addr a= (rIX+d)&0xffff;
+  u16_t a= rIX+d;
   rwas->write(a, rL);
   rwas->write(a+1, rH);
   vc.wr+= 2;
@@ -331,8 +334,10 @@ int
 cl_rxk::LD_iSPn_HL(t_mem code)
 {
   u8_t n= fetch();
-  rom->write(rSP+n, rL);
-  rom->write(rSP+n+1, rH);
+  u16_t addr= rSP+n;
+  rom->write(addr, rL);
+  addr++;
+  rom->write(addr, rH);
   vc.wr+= 2;
   tick5p1(10);
   return resGO;
@@ -395,9 +400,10 @@ int
 cl_rxk::POP_IR(t_mem code)
 {
   u8_t h, l;
-  l= rom->read(rSP++);
-  h= rom->read(rSP++);
-  cSP.W(rSP);
+  l= rom->read(rSP);
+  cSP.W(rSP+1);
+  h= rom->read(rSP);
+  cSP.W(rSP+1);
   vc.rd+= 2;
   cIR->write(h*256+l);
   tick(8);
@@ -411,9 +417,10 @@ cl_rxk::PUSH_IR(t_mem code)
   u8_t h, l;
   h= v>>8;
   l= v;
-  rom->write(--rSP, h);
-  rom->write(--rSP, l);
-  cSP.W(rSP);
+  cSP.W(rSP-1);
+  rom->write(rSP, h);
+  cSP.W(rSP-1);
+  rom->write(rSP, l);
   vc.wr+= 2;
   tick5p1(11);
   return resGO;
@@ -431,8 +438,10 @@ int
 cl_rxk::LD_IR_iSPn(t_mem code)
 {
   u8_t n= fetch(), h, l;
-  l= rom->read(rSP+n);
-  h= rom->read(rSP+n+1);
+  u16_t addr= rSP+n;
+  l= rom->read(addr);
+  addr++;
+  h= rom->read(addr);
   vc.rd+= 2;
   cIR->write(h*256+l);
   tick5p1(10);
@@ -444,8 +453,10 @@ cl_rxk::LD_iSPn_IR(t_mem code)
 {
   u16_t v= cIR->get();
   u8_t n= fetch();
-  rom->write(rSP+n, v>>8);
-  rom->write(rSP+n+1, v);
+  u16_t addr= rSP+n;
+  rom->write(addr, v);
+  addr++;
+  rom->write(addr, v>>8);
   vc.wr+= 2;
   tick5p1(12);
   return resGO;
@@ -510,11 +521,12 @@ cl_rxk::ld_imn_ss(u16_t src)
   u8_t l, h;
   l= fetch();
   h= fetch();
-  t_addr a= h*256+l;
+  u16_t a= h*256+l;
   l= src;
   h= src>>8;
   rwas->write(a, l);
-  rwas->write(a+1, h);
+  a++;
+  rwas->write(a, h);
   vc.wr+= 2;
   tick(14);
   return resGO;
@@ -597,7 +609,8 @@ cl_rxk::LD_imn_IR(t_mem code)
   h= v>>8;
   l= v;
   rwas->write(addr, l);
-  rwas->write(addr+1, h);
+  addr++;
+  rwas->write(addr, h);
   vc.wr+= 2;
   tick(14);
   return resGO;
@@ -611,7 +624,8 @@ cl_rxk::LD_IR_imn(t_mem code)
   h= fetch();
   u16_t addr= h*256+l;
   l= rwas->read(addr);
-  h= rwas->read(addr+1);
+  addr++;
+  h= rwas->read(addr);
   cIR->write(h*256+l);
   vc.rd+= 2;
   tick(12);
