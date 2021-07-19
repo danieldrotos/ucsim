@@ -152,7 +152,8 @@ public:
   virtual char *disassc_dd_cb(t_addr addr, chars *comment= NULL);
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
-  
+
+  virtual void save_hist();
   virtual void print_regs(class cl_console_base *con);
 
   virtual class cl_cell8 *cR(u8_t z);

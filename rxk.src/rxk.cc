@@ -548,6 +548,28 @@ cl_rxk::inst_length(t_addr addr)
   return dt->length;
 }
 
+
+static FILE *log_file= NULL;
+static unsigned int cyc= 0;
+
+void
+cl_rxk::save_hist()
+{
+  cl_uc::save_hist();
+  if (juj&2)
+    {
+      if (log_file==NULL && PC==0x16) log_file= fopen("log.txt","w");
+      if (log_file!=NULL) {
+	fprintf(log_file, "%6u %06x ", cyc, AU(PC));
+	fprintf(log_file, "%02x %02x ", rA, rF&0xc1);
+	fprintf(log_file, "%04x %04x %04x ", rBC, rDE, rHL);
+	fprintf(log_file, "%04x %04x %04x ", rIX, rIY, rSP);
+	fprintf(log_file, "\n");
+	cyc++;
+      }
+    }
+}
+
 void
 cl_rxk::print_regs(class cl_console_base *con)
 {
