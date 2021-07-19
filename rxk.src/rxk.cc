@@ -180,7 +180,7 @@ cl_rxk::make_memories(void)
   class cl_address_space *as;
   class cl_address_decoder *ad;
 
-  chip= new cl_chip8("rom_chip", 0x100000, 8);
+  chip= new cl_chip8("rom_chip", 0x100000, 8, 0);
   chip->init();
   memchips->add(chip);
 
