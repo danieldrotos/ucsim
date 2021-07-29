@@ -551,15 +551,18 @@ cl_rxk::inst_length(t_addr addr)
 
 static FILE *log_file= NULL;
 static unsigned int cyc= 0;
-volatile int dumm;
+volatile int dumm[10];
 
 void
 cl_rxk::save_hist()
 {
   cl_uc::save_hist();
-  dumm= rom->get(rHL);
-  dumm= rom->get(rIX);
-  dumm= rom->get(rIY);
+  dumm[0]= rom->get(rHL);
+  dumm[1]= rom->get(rIX);
+  dumm[2]= rom->get(rIY);
+  dumm[3]= rom->get(rBC);
+  dumm[4]= rom->get(rDE);
+  dumm[4]= rom->get(rSP);
   if (juj&2)
     {
       if (log_file==NULL && PC==0x16) log_file= fopen("log.txt","w");
