@@ -116,8 +116,8 @@ cl_rxk::init(void)
 #undef RCV
 
   XPC= new cl_cell8(8);
-  reg_cell_var(XPC, &(mem->xpc),
-	       "XPC", "MMU register: XPC");
+  reg_cell_var(XPC, mem->aof_xpc(),
+  	       "XPC", "MMU register: XPC");
 
   cIR= &cIX;
   
@@ -137,10 +137,10 @@ cl_rxk::reset(void)
   cl_uc::reset();
 
   // MMU reset
-  mem->dataseg= 0;
-  mem->segsize= 0xff;
-  mem->stackseg= 0;
-  mem->xpc= 0;
+  mem->set_dataseg(0);
+  mem->set_segsize(0xff);
+  mem->set_stackseg(0);
+  mem->set_xpc(0);
 
   rIP= 0xff;
   rIIR= 0;
@@ -551,18 +551,11 @@ cl_rxk::inst_length(t_addr addr)
 
 static FILE *log_file= NULL;
 static unsigned int cyc= 0;
-volatile int dumm[10];
 
 void
 cl_rxk::save_hist()
 {
   cl_uc::save_hist();
-  dumm[0]= rom->get(rHL);
-  dumm[1]= rom->get(rIX);
-  dumm[2]= rom->get(rIY);
-  dumm[3]= rom->get(rBC);
-  dumm[4]= rom->get(rDE);
-  dumm[4]= rom->get(rSP);
   if (juj&2)
     {
       if (log_file==NULL && PC==0x16) log_file= fopen("log.txt","w");
@@ -625,7 +618,7 @@ cl_rxk::print_regs(class cl_console_base *con)
   con->dd_printf("                  SZxxxVxC\n");
 
   con->dd_printf("XPC= 0x%02x IP= 0x%02x IIR= 0x%02x EIR= 0x%02x\n",
-		 mem->xpc, rIP, rIIR, rEIR);
+		 mem->get_xpc(), rIP, rIIR, rEIR);
   
   con->dd_printf("BC= ");
   rom->dump(0, rBC, rBC+7, 8, con);
@@ -814,11 +807,11 @@ cl_rxk_cpu::init(void)
   dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
   segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
 
-  uc->reg_cell_var(stackseg, &(ruc->mem->stackseg),
+  uc->reg_cell_var(stackseg, ruc->mem->aof_stackseg(),
 		   "STACKSEG", "MMU register: STACKSEG");
-  uc->reg_cell_var(dataseg, &(ruc->mem->dataseg),
+  uc->reg_cell_var(dataseg, ruc->mem->aof_dataseg(),
 		   "DATASEG", "MMU register: DATASEG");
-  uc->reg_cell_var(segsize, &(ruc->mem->segsize),
+  uc->reg_cell_var(segsize, ruc->mem->aof_segsize(),
 		   "SEGSIZE", "MMU register: SEGSIZE");
 
   return 0;

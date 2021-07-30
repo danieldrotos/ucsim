@@ -185,7 +185,7 @@ cl_r4k::print_regs(class cl_console_base *con)
   con->dd_printf("                  SZxxxVxC\n");
 
   con->dd_printf("XPC= 0x%02x IP= 0x%02x IIR= 0x%02x EIR= 0x%02x\n",
-		 mem->xpc, rIP, rIIR, rEIR);
+		 mem->get_xpc(), rIP, rIIR, rEIR);
   
   con->dd_printf("BC= ");
   rom->dump(0, rBC, rBC+7, 8, con);

@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (r3kacl.h)
+ * Simulator of microcontrollers (dpedm3a.h)
  *
  * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
@@ -25,29 +25,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R3KACL_HEADER
-#define R3KACL_HEADER
+#ifndef DPEDM3A_HEADER
+#define DPEDM3A_HEADER
 
-#include "dpedm3a.h"
-
-#include "r3kcl.h"
-
-
-class cl_r3ka: public cl_r3k
-{
- public:
-  cl_r3ka(class cl_sim *asim);
-  virtual const char *id_string(void);
-
-  virtual struct dis_entry *dis_entry(t_addr addr);
-
-  virtual int LSxDR(int dif);
-
-  virtual int LSDDR(t_mem code) { return LSxDR(-1); }
-  virtual int LSIDR(t_mem code) { return LSxDR(+1); }
-};
-
+#define LSDDR		instruction_ed_d8
+#define LSIDR		instruction_ed_d0
 
 #endif
 
-/* End of rxk.src/r3kacl.h */
+/* End of rxk.src/dpedm3a.h */

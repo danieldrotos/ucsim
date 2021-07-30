@@ -72,7 +72,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rBC (BC.BC)
 #define rDE (DE.DE)
 #define rHL (HL.HL)
-#define rXPC (mem->xpc)
+#define rXPC (mem->get_xpc())
 #define cXPC (*XPC)
 
 #define raA (aAF.r.A)

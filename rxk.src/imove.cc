@@ -662,6 +662,35 @@ cl_rxk::LD_iHLd_HL(t_mem code)
 
 
 /*
+ * Rabbit 3000A,4000,5000
+ */
+
+int
+cl_r3ka::LSxDR(int dif)
+{
+  int t= 7;
+  if (rwas == ioi)
+    t+= 1;
+  else if (rwas == ioe)
+    t+= 2;
+  tick(5);
+  do
+    {
+      rom->write(rDE, rwas->read(rHL));
+      vc.rd++;
+      vc.wr++;
+      cBC.W(rBC-1);
+      cDE.W(rDE+dif);
+      cHL.W(rHL+dif);
+      tick(t);
+    }
+  while (rBC != 0);
+  cF.W(rF & ~flagV);
+  return resGO;
+}
+
+
+/*
  *                                                     Rabbit 4000, 5000
  */
 

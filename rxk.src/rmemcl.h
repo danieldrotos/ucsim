@@ -31,13 +31,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_ras: public cl_address_space
 {
- public:
+public:
   class cl_memory_chip *chip;
- public:
-  u8_t xpc, segsize, dataseg, stackseg;
- public:
+protected:
+  u8_t xpc;
+protected:
+  u8_t segsize, dataseg, stackseg;
+public:
   cl_ras(chars id, class cl_memory_chip *achip);
- public:
+  virtual int init(void);
+public:
   virtual t_addr log2phy(t_addr log);
   virtual t_addr px2phy(u32_t px);
   virtual t_mem read(t_addr addr);
@@ -49,6 +52,17 @@ class cl_ras: public cl_address_space
   virtual void set(t_addr addr, t_mem val);
   virtual void phset(t_addr phaddr, t_mem val);
   virtual void download(t_addr phaddr, t_mem val);
+
+  virtual void re_decode(void);
+  virtual u8_t *aof_xpc(void) { return &xpc; }
+  virtual u8_t *aof_segsize(void) { return &segsize; }
+  virtual u8_t *aof_dataseg(void) { return &dataseg; }
+  virtual u8_t *aof_stackseg(void) { return &stackseg; }
+  virtual u8_t get_xpc() { return xpc; }
+  virtual void set_xpc(u8_t val);
+  virtual void set_segsize(u8_t val);
+  virtual void set_dataseg(u8_t val);
+  virtual void set_stackseg(u8_t val);
 };
 
 #endif
