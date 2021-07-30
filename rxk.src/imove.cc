@@ -681,7 +681,6 @@ cl_r3ka::LSxDR(int dif)
       vc.wr++;
       cBC.W(rBC-1);
       cDE.W(rDE+dif);
-      cHL.W(rHL+dif);
       tick(t);
     }
   while (rBC != 0);
