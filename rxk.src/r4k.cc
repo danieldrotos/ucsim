@@ -517,5 +517,11 @@ cl_r4k::EXX(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::PAGE_4K6D(t_mem code)
+{
+  return resGO;
+}
+
 
 /* End of rxk.src/r4k.cc */
