@@ -35,10 +35,50 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "gp0m3.h"
 #include "gpddm3.h"
+#include "gpedm3a.h"
 #include "gpddm4.h"
 #include "gpedm3.h"
 
 #include "r4kcl.h"
+
+
+inline u32_t
+px8(u32_t px, u8_t offset)
+{
+  bool log= ((px & 0xffff0000) == 0xffff0000);
+  px+= offset;
+  if (log) px|= 0xffff0000;
+  return px;
+}
+
+inline u32_t
+px8se(u32_t px, u8_t offset)
+{
+  bool log= ((px & 0xffff0000) == 0xffff0000);
+  i32_t o= (i8_t)offset;
+  px+= o;
+  if (log) px|= 0xffff0000;
+  return px;
+}
+
+inline u32_t
+px16(u32_t px, u16_t offset)
+{
+  bool log= ((px & 0xffff0000) == 0xffff0000);
+  px+= offset;
+  if (log) px|= 0xffff0000;
+  return px;
+}
+
+inline u32_t
+px16se(u32_t px, u16_t offset)
+{
+  bool log= ((px & 0xffff0000) == 0xffff0000);
+  i32_t o= (i16_t)offset;
+  px+= o;
+  if (log) px|= 0xffff0000;
+  return px;
+}
 
 
 cl_r4k::cl_r4k(class cl_sim *asim):
@@ -97,17 +137,27 @@ cl_r4k::dis_entry(t_addr addr)
   u8_t code= rom->get(addr);
   int i;
   struct dis_entry *dt;
-  i= 0;
   
   if (code == 0xed)
     {
-      dt= disass_pedm3;
       code= rom->get(addr+1);
+      
+      dt= disass_pedm3;
+      i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
       if (dt[i].mnemonic != NULL)
 	return &dt[i];
+      
+      dt= disass_pedm3a;
+      i= 0;
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic != NULL)
+	return &dt[i];
+      
       return NULL;
     }
   if ((code & 0xdd) == 0xdd)
@@ -122,12 +172,14 @@ cl_r4k::dis_entry(t_addr addr)
 	}
       code= rom->get(addr+1);
       dt= disass_pddm3;
+      i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
       if (dt[i].mnemonic != NULL)
 	return &dt[i];
       dt= disass_pddm4;
+      i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
@@ -137,6 +189,7 @@ cl_r4k::dis_entry(t_addr addr)
     }
 
   dt= disass_rxk;
+  i= 0;
   while (((code & dt[i].mask) != dt[i].code) &&
 	 dt[i].mnemonic)
     i++;
@@ -522,7 +575,6 @@ cl_r4k::PAGE_4K6D(t_mem code)
 {
   u8_t h, l;
   class cl_memory_cell *op, *idx;
-  u16_t offset;
   t_addr addr;
   
   code= fetch();
@@ -560,35 +612,64 @@ cl_r4k::PAGE_4K6D(t_mem code)
     case 0x8: if (l<=3) op= &cIX; else op= &cPY; break;
     case 0xc: if (l<=3) op= &cIY; else op= &cPZ; break;
     }
+  addr= idx->get();
   switch (l&6)
     {
-    case 0: offset= fetch(); break;
-    case 2: offset= rHL; break;
-    case 4: offset= (l&1)?rIY:rIX; break;
-    case 6: offset= 0;
+    case 0:
+      {
+	u8_t d= fetch();
+	if (l&1)
+	  {
+	    u8_t offset= d;
+	    addr= px8(addr, offset);
+	  }
+	else
+	  {
+	    i8_t offset= d;
+	    addr= px8se(addr, offset);
+	  }
+	break;
+      }
+    case 2: addr= px16(addr, rHL); break;
+    case 4: addr= px16(addr, (l&1)?rIY:rIX); break;
+    case 6: break;
     }
 
-  bool log;
   if (l&4)
     {
       // reg->reg
-      log= (idx->get() & 0xffff0000) == 0xffff0000;
-      addr= idx->get() + offset;
-      if (log) addr|= 0xffff0000;
       op->W(addr);
     }
   else
     {
       // mem rd/wr
-      if ((l&6)==0)
+      u32_t v;
+      if (l&1)
 	{
-	  i8_t ioff= offset;
-	  addr= idx->get() + ioff;
+	  v= op->get();
+	  // Write
+	  mem->pxwrite(addr, v); addr++; v>>= 8; vc.wr++;
+	  mem->pxwrite(addr, v); addr++; v>>= 8; vc.wr++;
+	  if (op->get_width() > 16)
+	    {
+	      mem->pxwrite(addr, v); addr++; v>>= 8; vc.wr++;
+	      mem->pxwrite(addr, v); addr++; v>>= 8; vc.wr++;
+	    }
 	}
       else
-	addr= idx->get() + offset;
-      log= (addr & 0xffff0000) == 0xffff0000;
-      
+	{
+	  // Read
+	  u8_t b;
+	  v= 0;
+	  b= mem->pxread(addr); addr++; v= (v<<8)|b; vc.rd++;
+	  b= mem->pxread(addr); addr++; v= (v<<8)|b; vc.rd++;
+	  if (op->get_width() > 16)
+	    {
+	      b= mem->pxread(addr); addr++; v= (v<<8)|b; vc.rd++;
+	      b= mem->pxread(addr); addr++; v= (v<<8)|b; vc.rd++;
+	    }
+	  op->W(v);
+	}
     }
   
   return resGO;

@@ -32,6 +32,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dp0m4.h"
 #include "dpddm4.h"
 
+
+extern inline u32_t px8(u32_t px, u8_t offset);
+extern inline u32_t px8se(u32_t px, u8_t offset);
+extern inline u32_t px16(u32_t px, u16_t offset);
+extern inline u32_t px16se(u32_t px, u16_t offset);
+
 #define rJ  (JK.r.J)
 #define rK  (JK.r.K)
 #define rJK (JK.JK)
