@@ -520,6 +520,77 @@ cl_r4k::EXX(t_mem code)
 int
 cl_r4k::PAGE_4K6D(t_mem code)
 {
+  u8_t h, l;
+  class cl_memory_cell *op, *idx;
+  u16_t offset;
+  t_addr addr;
+  
+  code= fetch();
+  if (code == 0x6d)
+    return ld_r_g(destL(), rL);
+  if (code == 0x7f)
+    return ld_r_g(destA(), rA);
+  
+  h= code>>4;
+  l= code&0xf;
+  if ((l == 0xd) || (l == 0xf))
+    return resINV;
+  
+  switch (h&3)
+    {
+    case 0: idx= &cPW; break;
+    case 1: idx= &cPX; break;
+    case 2: idx= &cPY; break;
+    case 3: idx= &cPZ; break;
+    }
+  switch (h&0xc)
+    {
+    case 0x0:
+      if (l<=3)
+	op= (l&1)?(&cBC):&destBC();
+      else
+	op= &cPW;
+      break;
+    case 0x4:
+      if (l<=3)
+	op= (l&1)?(&cDE):&destDE();
+      else
+	op= &cPX;
+      break;
+    case 0x8: if (l<=3) op= &cIX; else op= &cPY; break;
+    case 0xc: if (l<=3) op= &cIY; else op= &cPZ; break;
+    }
+  switch (l&6)
+    {
+    case 0: offset= fetch(); break;
+    case 2: offset= rHL; break;
+    case 4: offset= (l&1)?rIY:rIX; break;
+    case 6: offset= 0;
+    }
+
+  bool log;
+  if (l&4)
+    {
+      // reg->reg
+      log= (idx->get() & 0xffff0000) == 0xffff0000;
+      addr= idx->get() + offset;
+      if (log) addr|= 0xffff0000;
+      op->W(addr);
+    }
+  else
+    {
+      // mem rd/wr
+      if ((l&6)==0)
+	{
+	  i8_t ioff= offset;
+	  addr= idx->get() + ioff;
+	}
+      else
+	addr= idx->get() + offset;
+      log= (addr & 0xffff0000) == 0xffff0000;
+      
+    }
+  
   return resGO;
 }
 
