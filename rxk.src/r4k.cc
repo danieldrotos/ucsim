@@ -188,6 +188,12 @@ cl_r4k::dis_entry(t_addr addr)
       return NULL;
     }
 
+  if ((code == 0x6d) && (edmr & 0xc0))
+    {
+      // 6d page exists in 4k mode only!
+      return dis_6d_entry(addr);
+    }
+  
   dt= disass_rxk;
   i= 0;
   while (((code & dt[i].mask) != dt[i].code) &&
@@ -213,6 +219,99 @@ cl_r4k::dis_entry(t_addr addr)
     }
   
   return &dt[i];
+}
+
+struct dis_entry disass_6d[]= {
+  /* 0 */ { 0, 0, 0, 0, 0, NULL },
+  /* 1 */ { 0x6d, 0xff, ' ', 2, "LD L,L" },
+  /* 2 */ { 0x7f, 0xff, ' ', 2, "LD A,A" },
+  /* 3 */ { 0, 0, 0, 0, 0, 0 }
+};
+char mnemo[100];
+
+struct dis_entry *
+cl_r4k::dis_6d_entry(t_addr addr)
+{
+  u8_t h, l, code= rom->get(addr+1);
+  chars op, idx, offset;
+  
+  if (code == 0x6d)
+    return &disass_6d[1];
+  if (code == 0x7f)
+    return &disass_6d[2];
+  
+  h= code >> 4;
+  l= code & 15;
+  if ((l == 0xd) || (l == 0xf))
+    return &disass_6d[3];
+
+  disass_6d[0].length= 2;
+  switch (h&3)
+    {
+    case 0: idx= "PW"; break;
+    case 1: idx= "PX"; break;
+    case 2: idx= "PY"; break;
+    case 3: idx= "PZ"; break;
+    }
+  switch (h&0xc)
+    {
+    case 0x0:
+      if (l<=3)
+	op= "BC";
+      else
+	op= "PW";
+      break;
+    case 0x4:
+      if (l<=3)
+	op= "DE";
+      else
+	op= "PX";
+      break;
+    case 0x8: if (l<=3) op= "IX"; else op= "PY"; break;
+    case 0xc: if (l<=3) op= "IY"; else op= "PZ"; break;
+    }
+  switch (l&6)
+    {
+    case 0:
+      {
+	u8_t d= rom->get(addr+2);
+	disass_6d[0].length= 3;
+	if (l&1)
+	  offset.format("+%u", d);
+	else
+	  {
+	    i8_t io= d;
+	    //offset= (io<0)?"-":"+";
+	    offset.format("%+d", io);
+	  }
+	break;
+      }
+    case 2: offset= "+HL"; break;
+    case 3: offset= (l&1)?"IY":"IX"; break;
+    case 6: offset= "";
+    }
+
+  chars mn= "LD ";
+  if (l&4)
+    {
+      mn+= op+","+idx+offset;
+    }
+  else
+    {
+      if (l&1)
+	{
+	  mn+= "(";
+	  mn+= idx+offset+"),"+op;
+	}
+      else
+	{
+	  mn+= op+",("+idx+offset+")";
+	}
+    }
+  strcpy(mnemo, mn.c_str());
+  disass_6d[0].mnemonic= mnemo;
+  
+  return &disass_6d[0];
 }
 
 void

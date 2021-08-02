@@ -66,7 +66,8 @@ public:
   virtual void make_cpu_hw(void);
 
   virtual struct dis_entry *dis_entry(t_addr addr);
-
+  virtual struct dis_entry *dis_6d_entry(t_addr addr);
+  
   virtual void print_regs(class cl_console_base *con);
 
   virtual void mode3k(void);
