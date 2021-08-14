@@ -70,6 +70,8 @@ public:
   
   virtual void print_regs(class cl_console_base *con);
 
+  virtual int subhl(class cl_cell16 &dest, u16_t op);
+  
   virtual void mode3k(void);
   virtual void mode4k(void);
 
@@ -78,6 +80,8 @@ public:
   // Page 0, m4 mode
   virtual int RL_HL(t_mem code) { return rot17left(destHL(), rHL); }
   virtual int RL_BC(t_mem code) { return rot17left(destBC(), rBC); }
+  virtual int SUB_HL_JK(t_mem code) { return subhl(destHL(), rJK); }
+  virtual int SUB_HL_DE(t_mem code) { return subhl(destHL(), rDE); }
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);

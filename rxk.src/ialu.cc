@@ -26,6 +26,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "rxkcl.h"
 #include "r3kacl.h"
+#include "r4kcl.h"
 
 
 /*
@@ -954,6 +955,21 @@ cl_r3ka::UMx(bool add)
     tick(8);
   }
   while (rBC);
+  return resGO;
+}
+
+int
+cl_r4k::subhl(class cl_cell16 &dest, u16_t op)
+{
+  i32_t v, o;
+  u8_t forg= rF & ~flagC;
+  v= rHL;
+  o= op;
+  v= v - o;
+  if (v & 0xffff0000) forg|= flagC;
+  destF().W(forg);
+  dest.W(v);
+  tick(1);
   return resGO;
 }
 
