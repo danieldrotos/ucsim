@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "r4kwrap.h"
 #include "glob.h"
 #include "gp0m3.h"
+#include "gp0m4.h"
 #include "gpddm3.h"
 #include "gpedm3a.h"
 #include "gpddm4.h"
@@ -205,6 +206,13 @@ cl_r4k::dis_entry(t_addr addr)
   if (edmr & 0xc0)
     {
       // mode: 4k
+      dt= disass_p0m4;
+      i= 0;
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic != NULL)
+	return &dt[i];
     }
   else
     {

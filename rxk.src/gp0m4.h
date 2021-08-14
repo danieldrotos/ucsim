@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (dp0m4.h)
+ * Simulator of microcontrollers (gp0m4.h)
  *
- * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,19 +25,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DP0M4_HEADER
-#define DP0M4_HEADER
+#ifndef GP0M4_HEADER
+#define GP0M4_HEADER
 
-// opcodes valid in 4k mode only
+#include "stypes.h"
 
-// opcodes mean different insts in 3k/4k modes
-// meaning of 4k mode follows
 
-#define PAGE_4K6D	instruction_4k6d
+extern struct dis_entry disass_p0m4[];
 
-#define RL_HL		instruction_4k42
-#define RL_BC		instruction_4k62
 
 #endif
 
-/* End of rxk.src/dp0m4.h */
+/* End of rxk.src/gp0m4.h */

@@ -74,6 +74,10 @@ public:
   virtual void mode4k(void);
 
   virtual int EXX(t_mem code);
+
+  // Page 0, m4 mode
+  virtual int RL_HL(t_mem code) { return rot17left(destHL(), rHL); }
+  virtual int RL_BC(t_mem code) { return rot17left(destBC(), rBC); }
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);
