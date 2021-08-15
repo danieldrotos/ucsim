@@ -33,6 +33,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_PX_iHTR_HL	instruction_ed_11
 #define LD_PY_iHTR_HL	instruction_ed_21
 #define LD_PZ_iHTR_HL	instruction_ed_31
+#define SBOX_A		instruction_ed_02
+#define IBOX_A		instruction_ed_12
+#define DWJNZ		instruction_ed_10
+#define CP_HL_DE	instruction_ed_48
+#define TEST_BC		instruction_ed_4c
 
 #endif
 

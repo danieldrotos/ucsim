@@ -34,6 +34,11 @@ struct dis_entry disass_pedm4[]=
     { 0x11, 0xff, ' ', 2, "LD PX,(HTR+HL)" },
     { 0x21, 0xff, ' ', 2, "LD PY,(HTR+HL)" },
     { 0x31, 0xff, ' ', 2, "LD PZ,(HTR+HL)" },
+    { 0x02, 0xff, ' ', 2, "SBOX A" },
+    { 0x12, 0xff, ' ', 2, "IBOX A" },
+    { 0x10, 0xff, ' ', 3, "DWJNZ %r" },
+    { 0x48, 0xff, ' ', 2, "CP HL,DE" },
+    { 0x4c, 0xff, ' ', 2, "TEST BC" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

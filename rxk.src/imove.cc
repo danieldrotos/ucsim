@@ -24,6 +24,7 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
+#include "glob.h"
 #include "rxkcl.h"
 #include "r4kcl.h"
 
@@ -790,6 +791,30 @@ cl_r4k::CBM_N(t_mem code)
   vc.wr++;
 
   tick(14);
+  return resGO;
+}
+
+int
+cl_r4k::ld_pd_ihtr_hl(class cl_cell32 &dest)
+{
+  dest.W(read32(rHTR+rHL));
+  tick5p1(13);
+  return resGO;
+}
+
+int
+cl_r4k::SBOX_A(t_mem code)
+{
+  destA().W(sbox_tab[rA]);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::IBOX_A(t_mem code)
+{
+  destA().W(ibox_tab[rA]);
+  tick(3);
   return resGO;
 }
 

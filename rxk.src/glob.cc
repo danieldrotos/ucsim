@@ -36,8 +36,8 @@ instruction_wrapper_fn itab_ed[256];
 instruction_wrapper_fn itab_fd[256];
 instruction_wrapper_fn itab_7f[256];
 
-u8_t sbox[256];
-u8_t ibox[256];
+u8_t sbox_tab[256];
+u8_t ibox_tab[256];
 
 /* 
 %d - signed compl.,byte jump 
@@ -230,14 +230,14 @@ void init_sbox()
       /* compute the affine transformation */
       uint8_t xformed = q ^ ROTL8(q, 1) ^ ROTL8(q, 2) ^ ROTL8(q, 3) ^ ROTL8(q, 4);
       u8_t val= xformed ^ 0x63;
-      sbox[p] = val;
-      ibox[val]= p;
+      sbox_tab[p] = val;
+      ibox_tab[val]= p;
     }
   while (p != 1);
   
   /* 0 is a special case since it has no inverse */
-  sbox[0] = 0x63;
-  ibox[0x63]= 0;
+  sbox_tab[0] = 0x63;
+  ibox_tab[0x63]= 0;
 }
 
 /* End of rxk.src/glob.cc */

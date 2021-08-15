@@ -2,11 +2,11 @@ and iy, de		+ fd dc
 or iy, de		+ fd ec
 
 cbm 			+ ed 00 n
-sbox a 			ed 02
-dwjnz label		ed 10 e
-ibox a	 		ed 12
-cp hl, de		ed 48
-test bc			ed 4c
+sbox a 			+ ed 02
+dwjnz label		+ ed 10 e
+ibox a	 		+ ed 12
+cp hl, de		+ ed 48
+test bc			+ ed 4c
 lljp cx, lxpc, mn	ed a2,aa,b2,ba n m
 jre cx, label		ed a3,b3,ab,bb n m
 push mn			ed a5 n m

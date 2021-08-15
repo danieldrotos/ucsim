@@ -38,8 +38,8 @@ extern instruction_wrapper_fn itab_ed[256];
 extern instruction_wrapper_fn itab_fd[256];
 extern instruction_wrapper_fn itab_7f[256];
 
-extern u8_t sbox[256];
-extern u8_t ibox[256];
+extern u8_t sbox_tab[256];
+extern u8_t ibox_tab[256];
 
 extern struct dis_entry disass_rxk[];
 

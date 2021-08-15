@@ -289,6 +289,7 @@ public:
   virtual int and16(class cl_cell16 &dest,
 		    u16_t op1, u16_t op2);			// 0f,1t,0r,0w
   virtual int cp8(u8_t op1, u8_t op2);				// 0f,3t,0r,0w
+  virtual int cp16(u16_t op1, u16_t op2);			// 0f,4t,0r,0w
   
   virtual int jr_cc(bool cond);
   virtual int ret_f(bool f);					// 0f,7t,2r,0w

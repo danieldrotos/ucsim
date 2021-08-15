@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RL_BC		instruction_4k62
 #define SUB_HL_JK	instruction_4k45
 #define SUB_HL_DE	instruction_4k55
+#define TEST_HL		instruction_4k4c
 
 #endif
 
