@@ -32,6 +32,7 @@ instruction_wrapper_fn itab[256];
 instruction_wrapper_fn itab_dd[256];
 instruction_wrapper_fn itab_ed[256];
 instruction_wrapper_fn itab_fd[256];
+instruction_wrapper_fn itab_7f[256];
 
 /* 
 %d - signed compl.,byte jump 
@@ -136,6 +137,7 @@ struct dis_entry disass_rxk[]=
     { 0x7b, 0xff, ' ', 1, "LD A,E" },
     { 0x7c, 0xff, ' ', 1, "LD A,H" },
     { 0x7d, 0xff, ' ', 1, "LD A,L" },
+    { 0x7f, 0xff, ' ', 1, "LD A,A" },
     { 0xaf, 0xff, ' ', 1, "XOR A" },
     { 0xb7, 0xff, ' ', 1, "OR A" },
     { 0xc0, 0xff, ' ', 1, "RET NZ" },

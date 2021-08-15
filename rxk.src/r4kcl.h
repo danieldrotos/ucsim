@@ -86,8 +86,9 @@ public:
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);
 
-  // Starter of page 6D
+  // Starter of extra pages
   virtual int PAGE_4K6D(t_mem code);
+  virtual int PAGE_4K7F(t_mem code);
 };
 
 class cl_r4k_cpu: public cl_rxk_cpu

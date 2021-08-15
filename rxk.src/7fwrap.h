@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (dp0m4.h)
+ * Simulator of microcontrollers (7fwrap.h)
  *
  * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
@@ -25,22 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DP0M4_HEADER
-#define DP0M4_HEADER
+#ifndef _7FWRAP_HEADER
+#define _7FWRAP_HEADER
 
-// opcodes valid in 4k mode only
+#include "iwrap.h"
 
-// opcodes mean different insts in 3k/4k modes
-// meaning of 4k mode follows
-
-#define PAGE_4K6D	instruction_4k6d
-#define PAGE_4K7F	instruction_4k7f
-
-#define RL_HL		instruction_4k42
-#define RL_BC		instruction_4k62
-#define SUB_HL_JK	instruction_4k45
-#define SUB_HL_DE	instruction_4k55
+extern void fill_7f_wrappers(instruction_wrapper_fn itab[]);
 
 #endif
 
-/* End of rxk.src/dp0m4.h */
+/* End of rxk.src/7fwrap.h */

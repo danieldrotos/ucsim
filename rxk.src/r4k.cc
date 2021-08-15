@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 #include "r4kwrap.h"
+#include "7fwrap.h"
 #include "glob.h"
 #include "gp0m3.h"
 #include "gp0m4.h"
@@ -108,6 +109,7 @@ cl_r4k::init(void)
   RCV(aPZ);
 #undef RCV
   //mode2k();
+  fill_7f_wrappers(itab_7f);
   return 0;
 }
 
@@ -194,6 +196,35 @@ cl_r4k::dis_entry(t_addr addr)
       // 6d page exists in 4k mode only!
       return dis_6d_entry(addr);
     }
+
+  if ((code == 0x7f) && (edmr & 0xc0))
+    {
+      // 7f page is special in 4k mode
+      code= rom->get(addr+1);
+      if ((code <= 0x3f) || (code >= 0xc0))
+	return NULL;
+      if ((code >= 0x40) && (code <= 0x6f))
+	{
+	  if ((code & 0x0f) == 0x06)
+	    return NULL;
+	  if ((code & 0x0f) == 0x0e)
+	    return NULL;
+	}
+      if ((code & 0xf0) == 0x70)
+	{
+	  if ((code == 0x7e) || (code <= 0x77))
+	    return NULL;
+	}
+      // pick from standard page0 table
+      dt= disass_rxk;
+      i= 0;
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic != NULL)
+	return &dt[i];
+      return NULL;
+    }
   
   dt= disass_rxk;
   i= 0;
@@ -226,7 +257,7 @@ cl_r4k::dis_entry(t_addr addr)
 	return &dt[i];
     }
   
-  return &dt[i];
+  return NULL;
 }
 
 struct dis_entry disass_6d[]= {
@@ -675,6 +706,13 @@ cl_r4k::EXX(t_mem code)
   caJK.W(t);
 
   return resGO;
+}
+
+int
+cl_r4k::PAGE_4K7F(t_mem code)
+{
+  code= fetch();
+  return itab_7f[code](this, code);
 }
 
 int
