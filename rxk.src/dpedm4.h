@@ -29,6 +29,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DPEDM4_HEADER
 
 #define CBM_N		instruction_ed_00
+#define LD_PW_iHTR_HL	instruction_ed_01
+#define LD_PX_iHTR_HL	instruction_ed_11
+#define LD_PY_iHTR_HL	instruction_ed_21
+#define LD_PZ_iHTR_HL	instruction_ed_31
 
 #endif
 

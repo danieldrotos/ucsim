@@ -30,6 +30,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 struct dis_entry disass_pedm4[]=
   {
     { 0x00, 0xff, ' ', 3, "CBM %b" },
+    { 0x01, 0xff, ' ', 2, "LD PW,(HTR+HL)" },
+    { 0x11, 0xff, ' ', 2, "LD PX,(HTR+HL)" },
+    { 0x21, 0xff, ' ', 2, "LD PY,(HTR+HL)" },
+    { 0x31, 0xff, ' ', 2, "LD PZ,(HTR+HL)" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

@@ -91,6 +91,10 @@ public:
 
   // Page ED, m4 mode
   virtual int CBM_N(t_mem code);
+  virtual int LD_PW_iHTR_HL(t_mem code) { cPW.W(read32(rHTR+rHL)); return resGO; }
+  virtual int LD_PX_iHTR_HL(t_mem code) { cPX.W(read32(rHTR+rHL)); return resGO; }
+  virtual int LD_PY_iHTR_HL(t_mem code) { cPY.W(read32(rHTR+rHL)); return resGO; }
+  virtual int LD_PZ_iHTR_HL(t_mem code) { cPZ.W(read32(rHTR+rHL)); return resGO; }
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);
