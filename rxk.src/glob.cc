@@ -130,6 +130,7 @@ struct dis_entry disass_rxk[]=
     { 0x5b, 0xff, ' ', 1, "LD E,E" },
     { 0x5f, 0xff, ' ', 1, "LD E,A" },
     { 0x6f, 0xff, ' ', 1, "LD L,A" },
+    { 0x6d, 0xff, ' ', 1, "LD L,L" },
     { 0x67, 0xff, ' ', 1, "LD H,A" },
     { 0x78, 0xff, ' ', 1, "LD A,B" },
     { 0x79, 0xff, ' ', 1, "LD A,C" },

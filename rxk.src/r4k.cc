@@ -134,6 +134,8 @@ cl_r4k::make_cpu_hw(void)
   cpu->init();
 }
 
+static struct dis_entry de7f;
+
 struct dis_entry *
 cl_r4k::dis_entry(t_addr addr)
 {
@@ -216,13 +218,17 @@ cl_r4k::dis_entry(t_addr addr)
 	    return NULL;
 	}
       // pick from standard page0 table
-      dt= disass_rxk;
+      dt= disass_p0m3;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
       if (dt[i].mnemonic != NULL)
-	return &dt[i];
+	{
+	  memcpy(&de7f, &dt[i], sizeof(struct dis_entry));
+	  de7f.length++;
+	  return &de7f;
+	}
       return NULL;
     }
   
