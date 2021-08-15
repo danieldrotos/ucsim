@@ -38,13 +38,17 @@ extern inline u32_t px8se(u32_t px, u8_t offset);
 extern inline u32_t px16(u32_t px, u16_t offset);
 extern inline u32_t px16se(u32_t px, u16_t offset);
 
-#define rJ  (JK.r.J)
-#define rK  (JK.r.K)
-#define rJK (JK.JK)
+#define rJ	(JK.r.J)
+#define rK	(JK.r.K)
+#define rJK	(JK.JK)
+#define rJKHL	(((u32_t)JK.JK<<16)+HL.HL)
+#define rBCDE	(((u32_t)BC.BC<<16)+DE.DE)
 
-#define raJ  (aJK.r.J)
-#define raK  (aJK.r.K)
-#define raJK (aJK.JK)
+#define raJ	(aJK.r.J)
+#define raK	(aJK.r.K)
+#define raJK	(aJK.JK)
+#define raJKHL	(((u32_t)aJK.JK<<16)+aHL.HL)
+#define raBCDE	(((u32_t)aBC.BC<<16)+aDE.DE)
 
 class cl_r4k: public cl_r3ka
 {
@@ -53,10 +57,12 @@ public:
   RP(aJK,JK,J,K);
   u32_t rPW, rPX, rPY, rPZ;
   u32_t raPW, raPX, raPY, raPZ;
+  u8_t rHTR;
   class cl_cell8 cJ, caJ, cK, caK;
   class cl_cell16 cJK, caJK;
   class cl_cell32 cPW, cPX, cPY, cPZ;
   class cl_cell32 caPW, caPX, caPY, caPZ;
+  class cl_cell8 cHTR;
  public:
   cl_r4k(class cl_sim *asim);
   virtual int init();
@@ -82,6 +88,9 @@ public:
   virtual int RL_BC(t_mem code) { return rot17left(destBC(), rBC); }
   virtual int SUB_HL_JK(t_mem code) { return subhl(destHL(), rJK); }
   virtual int SUB_HL_DE(t_mem code) { return subhl(destHL(), rDE); }
+
+  // Page ED, m4 mode
+  virtual int CBM_N(t_mem code);
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);

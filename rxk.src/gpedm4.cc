@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (srxk.cc)
+ * Simulator of microcontrollers (gpedm4.cc)
  *
- * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,33 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-// prj
-#include "globals.h"
+#include "gpedm4.h"
 
-// local
-#include "glob.h"
-#include "simrxkcl.h"
+struct dis_entry disass_pedm4[]=
+  {
+    { 0x00, 0xff, ' ', 3, "CBM %b" },
 
-
-int
-main(int argc, char *argv[])
-{
-  class cl_sim *sim;
-
-  init_sbox();
-  cpus= cpus_rxk;
-  application= new cl_app();
-  application->set_name("srxk");
-  application->init(argc, argv);
-  sim= new cl_simrxk(application);
-  if (sim->init())
-    sim->state|= SIM_QUIT;
-  application->set_simulator(sim);
-  //sim->main();
-  application->run();
-  application->done();
-  delete application;
-  return(0);
-}
-
-/* End of rxk.src/srxk.cc */
+    { 0, 0, 0, 0, 0, 0 }
+  };
+  
+/* End of rxk.src/gpedm4.cc */

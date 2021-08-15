@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "gpedm3a.h"
 #include "gpddm4.h"
 #include "gpedm3.h"
+#include "gpedm4.h"
 
 #include "r4kcl.h"
 
@@ -107,6 +108,7 @@ cl_r4k::init(void)
   RCV(aPX);
   RCV(aPY);
   RCV(aPZ);
+  RCV(HTR);
 #undef RCV
   //mode2k();
   fill_7f_wrappers(itab_7f);
@@ -156,6 +158,14 @@ cl_r4k::dis_entry(t_addr addr)
 	return &dt[i];
       
       dt= disass_pedm3a;
+      i= 0;
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic != NULL)
+	return &dt[i];
+      
+      dt= disass_pedm4;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)

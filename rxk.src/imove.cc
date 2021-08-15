@@ -773,4 +773,25 @@ cl_r4k::LD_A_iIRA(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::CBM_N(t_mem code)
+{
+  u8_t n= fetch();
+  u8_t temp;
+
+  temp= rom->read(rHL);
+  vc.rd++;
+  temp&= ~n;
+  temp|= (rA & n);
+  rom->write(rHL, temp);
+  vc.wr++;
+
+  rwas->write(rDE, temp);
+  vc.wr++;
+
+  tick(14);
+  return resGO;
+}
+
+
 /* End of rxk.src/imove.cc */

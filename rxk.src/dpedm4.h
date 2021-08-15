@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (srxk.cc)
+ * Simulator of microcontrollers (dpedm4.h)
  *
  * Copyright (C) 2020,2021 Drotos Daniel, Talker Bt.
  * 
@@ -25,33 +25,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-// prj
-#include "globals.h"
+#ifndef DPEDM4_HEADER
+#define DPEDM4_HEADER
 
-// local
-#include "glob.h"
-#include "simrxkcl.h"
+#define CBM_N		instruction_ed_00
 
+#endif
 
-int
-main(int argc, char *argv[])
-{
-  class cl_sim *sim;
-
-  init_sbox();
-  cpus= cpus_rxk;
-  application= new cl_app();
-  application->set_name("srxk");
-  application->init(argc, argv);
-  sim= new cl_simrxk(application);
-  if (sim->init())
-    sim->state|= SIM_QUIT;
-  application->set_simulator(sim);
-  //sim->main();
-  application->run();
-  application->done();
-  delete application;
-  return(0);
-}
-
-/* End of rxk.src/srxk.cc */
+/* End of rxk.src/dpedm4.h */
