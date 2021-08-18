@@ -94,6 +94,10 @@ cl_r4k::init(void)
 {
   cl_r3ka::init();
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(BCDE);
+  RCV(JKHL);
+  RCV(aBCDE);
+  RCV(aJKHL);
   RCV(J);
   RCV(K);
   RCV(JK);
@@ -391,7 +395,7 @@ cl_r4k::print_regs(class cl_console_base *con)
   con->dd_color("answer");
   con->dd_printf("                  SZxxxVxC\n");
 
-  con->dd_printf("XPC= 0x%02x IP= 0x%02x IIR= 0x%02x EIR= 0x%02x\n",
+  con->dd_printf("XPC= 0x%03x IP= 0x%02x IIR= 0x%02x EIR= 0x%02x\n",
 		 mem->get_xpc(), rIP, rIIR, rEIR);
   
   con->dd_printf("BC= ");
@@ -416,13 +420,24 @@ cl_r4k::print_regs(class cl_console_base *con)
   rom->dump(0, rSP, rSP+7, 8, con);
   con->dd_color("answer");
 
-  con->dd_printf("aAF= 0x%02x-0x%02x  ", raA, raF);
-  con->dd_printf("aBC= 0x%02x-0x%02x  ", raB, raC);
-  con->dd_printf("aDE= 0x%02x-0x%02x  ", raD, raE);
-  con->dd_printf("aHL= 0x%02x-0x%02x  ", raH, raL);
-  con->dd_printf("aJK= 0x%02x-0x%02x  ", raJ, raK);
+  con->dd_printf("aAF= 0x%02x-%02x  ", raA, raF);
+  con->dd_printf("aBC= 0x%02x-%02x  ", raB, raC);
+  con->dd_printf("aDE= 0x%02x-%02x  ", raD, raE);
+  con->dd_printf("aHL= 0x%02x-%02x  ", raH, raL);
+  con->dd_printf("aJK= 0x%02x-%02x  ", raJ, raK);
   con->dd_printf("\n");
-  
+
+  con->dd_printf(" PW= 0x%04x-%04x  ", rPW>>16, rPW&0xffff);
+  con->dd_printf(" PX= 0x%04x-%04x  ", rPX>>16, rPX&0xffff);
+  con->dd_printf(" PY= 0x%04x-%04x  ", rPY>>16, rPY&0xffff);
+  con->dd_printf(" PZ= 0x%04x-%04x  ", rPZ>>16, rPZ&0xffff);
+  con->dd_printf("\n");
+  con->dd_printf("aPW= 0x%04x-%04x  ", raPW>>16, raPW&0xffff);
+  con->dd_printf("aPX= 0x%04x-%04x  ", raPX>>16, raPX&0xffff);
+  con->dd_printf("aPY= 0x%04x-%04x  ", raPY>>16, raPY&0xffff);
+  con->dd_printf("aPZ= 0x%04x-%04x  ", raPZ>>16, raPZ&0xffff);
+  con->dd_printf("\n");
+    
   print_disass(PC, con);
 }
 

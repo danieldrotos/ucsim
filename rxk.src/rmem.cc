@@ -53,7 +53,7 @@ cl_ras::log2phy(t_addr log)
   y= segsize&0xf;
   if (log >= 0xe000)
     // extended program space
-    return log + (xpc<<12);
+    return log + (xpc.lxpc<<12);
   else if (log >= (x<<12))
     // stack space
     return log + (stackseg<<12);
@@ -240,7 +240,14 @@ cl_ras::re_decode(void)
 void
 cl_ras::set_xpc(u8_t val)
 {
-  xpc= val;
+  xpc.r.xpc= val;
+  re_decode();
+}
+
+void
+cl_ras::set_lxpc(u16_t val)
+{
+  xpc.lxpc= val;
   re_decode();
 }
 
