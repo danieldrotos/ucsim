@@ -120,6 +120,14 @@ cl_rxk::init(void)
   	       "XPC", "MMU register: XPC");
 
   cIR= &cIX;
+
+  reg_cell_var(&crBCDE, &(BCDE.BCDE), "rBCDE", "Reg BCDE");
+  reg_cell_var(&crBC, &(BCDE.r32.r16h.BC), "rBC", "BC part of BCDE");
+  reg_cell_var(&crDE, &(BCDE.r32.r16l.DE), "rDE", "DE part of BCDE");
+  reg_cell_var(&crB, &(BCDE.r32.r16h.r.B), "rB", "B part of BCDE");
+  reg_cell_var(&crC, &(BCDE.r32.r16h.r.C), "rC", "B part of BCDE");
+  reg_cell_var(&crD, &(BCDE.r32.r16l.r.D), "rD", "B part of BCDE");
+  reg_cell_var(&crE, &(BCDE.r32.r16l.r.E), "rE", "B part of BCDE");
   
   return 0;
 }
@@ -644,6 +652,9 @@ cl_rxk::print_regs(class cl_console_base *con)
   con->dd_printf("aDE= 0x%02x-0x%02x  ", raD, raE);
   con->dd_printf("aHL= 0x%02x-0x%02x  ", raH, raL);
   con->dd_printf("\n");
+
+  con->dd_printf("BCDE=%08x rBC=%04x rDE=%04x\n", rBCDE, rrBC, rrDE);
+  con->dd_printf("rB=%02x rC=%02x rD=%02x rE=%02x\n", rrB,rrC,rrD,rrE);
   
   print_disass(PC, con);
 }

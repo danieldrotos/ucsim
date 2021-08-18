@@ -42,7 +42,7 @@ extern inline u32_t px16se(u32_t px, u16_t offset);
 #define rK	(JK.r.K)
 #define rJK	(JK.JK)
 #define rJKHL	(((u32_t)JK.JK<<16)+HL.HL)
-#define rBCDE	(((u32_t)BC.BC<<16)+DE.DE)
+//#define rBCDE	(((u32_t)BC.BC<<16)+DE.DE)
 
 #define raJ	(aJK.r.J)
 #define raK	(aJK.r.K)

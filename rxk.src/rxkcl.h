@@ -49,6 +49,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 			  u8_t NL;		\
 			} r;			\
   } N
+#define R32(N,N32,N16H,N16L,NHH,NHL,NLH,NLL)	\
+  union						\
+  {						\
+  u32_t N32;					\
+  struct {					\
+    RP(r16h,N16H,NHH,NHL);			\
+    RP(r16l,N16L,NLH,NLL);			\
+  } r32;					\
+  } N
 #else
 #define RP(N,N16,NH,NL) union			\
 		      {				\
@@ -57,6 +66,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 			  u8_t NL;		\
 			  u8_t NH;		\
 			} r;			\
+  } N
+#define R32(N,N32,N16H,N16L,NHH,NHL,NLH,NLL)	\
+  union						\
+  {						\
+  u32_t N32;					\
+  struct {					\
+    RP(r16l,N16L,NLH,NLL);			\
+    RP(r16h,N16H,NHH,NHL);			\
+  } r32;					\
   } N
 #endif
 
@@ -74,6 +92,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rHL (HL.HL)
 #define rXPC (mem->get_xpc())
 #define cXPC (*XPC)
+
+#define rBCDE (BCDE.BCDE)
+#define rrBC  (BCDE.r32.r16h.BC)
+#define rrDE  (BCDE.r32.r16l.DE)
+#define rrB   (BCDE.r32.r16h.r.B)
+#define rrC   (BCDE.r32.r16h.r.C)
+#define rrD   (BCDE.r32.r16l.r.D)
+#define rrE   (BCDE.r32.r16l.r.E)
 
 #define raA (aAF.r.A)
 #define raF (aAF.r.F)
@@ -119,6 +145,10 @@ public:
   RP(aBC,BC,B,C);
   RP(aDE,DE,D,E);
   RP(aHL,HL,H,L);
+  R32(BCDE,BCDE,BC,DE,B,C,D,E);
+  class cl_cell8 crB, crC, crD, crE;
+  class cl_cell16 crBC, crDE;
+  class cl_cell32 crBCDE;
   u8_t rIP, rIIR, rEIR;
   u16_t rIX, rIY, rSP;
   class cl_cell8 cIP, cIIR, cEIR;
