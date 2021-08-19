@@ -117,10 +117,10 @@ cl_r4k::init(void)
   //mode2k();
   fill_7f_wrappers(itab_7f);
 
-  XPC= new cl_cell16(12);
-  reg_cell_var(XPC, mem->aof_lxpc(),
-  	       "XPC", "MMU register: XPC");
-  cpu->register_cell(XPC);
+  LXPC= new cl_cell16(12);
+  reg_cell_var(LXPC, mem->aof_lxpc(),
+  	       "LXPC", "MMU register: LXPC");
+  cpu->register_cell(LXPC);
   
   return 0;
 }
@@ -889,6 +889,11 @@ cl_r4k_cpu::write(class cl_memory_cell *cell, t_mem *val)
     }
 
   else if (cell == ruc->XPC)
+    {
+      (*val)&= 0xff;
+      ruc->mem->set_xpc(*val);
+    }
+  else if (cell == r4uc->LXPC)
     {
       (*val)&= 0xfff;
       ruc->mem->set_lxpc(*val);

@@ -894,16 +894,21 @@ cl_rxk_cpu::print_info(class cl_console_base *con)
   y= ss&0x0f;
   con->dd_color("answer");
   con->dd_printf("%s[%d]\n", id_string, id);
-  con->dd_printf("XPC     : 0x%03x\n", ruc->mem->get_xpc());
+  con->dd_printf("(L)XPC  : 0x%03x\n", ruc->mem->get_xpc());
   con->dd_printf("SEGSIZE : 0x%03x\n", segsize->read());
   con->dd_printf("DATASEG : 0x%03x\n", ruc->mem->get_dataseg());
   con->dd_printf("STACKSEG: 0x%03x\n", ruc->mem->get_stackseg());
   //con->dd_printf("XPC     : 0x%02x\n", xpc->read());
-  con->dd_printf("Prefix: %s\n", ruc->prefix?"true":"false");
-  con->dd_printf("ALTD  : %s\n", ruc->altd?"true":"false");
-  con->dd_printf("Mem op: %s\n", ruc->rwas->get_name());
+  con->dd_printf("Prefix  : %s\n", ruc->prefix?"true":"false");
+  con->dd_printf("ALTD    : %s\n", ruc->altd?"true":"false");
+  con->dd_printf("Mem op  : %s\n", ruc->rwas->get_name());
 
-  con->dd_printf("\n");
+  con->dd_printf("Segments: ");
+  con->dd_cprintf("answer", "C=code ");
+  con->dd_cprintf("dump_label", "D=data ");
+  con->dd_cprintf("ui_title", "S=stack ");
+  con->dd_cprintf("error", "X=xmem");
+  con->dd_cprintf("answer", "\n");
   int l, r;
   t_addr la, pa;
   class cl_memory_cell *c;
@@ -911,22 +916,23 @@ cl_rxk_cpu::print_info(class cl_console_base *con)
   for (l= 0, r= 8; l<8; l++, r++)
     {
       la= l*0x1000;
-      if (la >= 0xe000) t= 'X';
-      else if (la >= (x<<12)) t= 'S';
-      else if (la >= (y<<12)) t= 'D';
-      else t= ' ';
+      if (la >= 0xe000) t= 'X', con->dd_color("error");
+      else if (la >= (x<<12)) t= 'S', con->dd_color("ui_title");
+      else if (la >= (y<<12)) t= 'D', con->dd_color("dump_label");
+      else t= 'C', con->dd_color("answer");
       c= ruc->mem->get_cell(la);
       pa= ruc->mem->chip->is_slot(c->get_data());
-      con->dd_printf("0x%xxxx -> 0x%06x %c", l, pa, t);
+      con->dd_printf("0x%xxxx -> 0x%03xxxx %c", l, pa>>12, t);
       con->dd_printf("   ");
       la= r*0x1000;
-      if (la >= 0xe000) t= 'X';
-      else if (la >= (x<<12)) t= 'S';
-      else if (la >= (y<<12)) t= 'D';
-      else t= ' ';
+      if (la >= 0xe000) t= 'X', con->dd_color("error");
+      else if (la >= (x<<12)) t= 'S', con->dd_color("ui_title");
+      else if (la >= (y<<12)) t= 'D', con->dd_color("dump_label");
+      else t= 'C', con->dd_color("answer");
       c= ruc->mem->get_cell(la);
       pa= ruc->mem->chip->is_slot(c->get_data());
-      con->dd_printf("0x%xxxx -> 0x%06x %c", r, pa, t);
+      con->dd_printf("0x%xxxx -> 0x%03xxxx %c", r, pa>>12, t);
+      con->dd_color("answer");
       con->dd_printf("\n");
     }
   

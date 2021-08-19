@@ -56,6 +56,7 @@ public:
   class cl_cell32 cJKHL, cPW, cPX, cPY, cPZ;
   class cl_cell32 caJKHL, caPW, caPX, caPY, caPZ;
   class cl_cell8 cHTR;
+  class cl_cell16 *LXPC;
  public:
   cl_r4k(class cl_sim *asim);
   virtual int init();
