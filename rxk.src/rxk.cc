@@ -118,9 +118,15 @@ cl_rxk::init(void)
   XPC= new cl_cell8(8);
   reg_cell_var(XPC, mem->aof_xpc(),
   	       "XPC", "MMU register: XPC");
-
+  cpu->register_cell(XPC);
+  
   cIR= &cIX;
 
+  ioi->set(0x11, 0); // stackseg
+  ioi->set(0x12, 0); // dataseg
+  ioi->set(0x13, 0xff); // segsize
+  mem->re_decode();
+  
   return 0;
 }
 
@@ -801,18 +807,26 @@ cl_rxk_cpu::cl_rxk_cpu(class cl_uc *auc):
 int
 cl_rxk_cpu::init(void)
 {
+  class cl_cvar *v;
   cl_hw::init();
+  
+  //stackseg= (cl_cell8*)ruc->ioi->get_cell(0x11);
+  //dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
+  //segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
 
-  stackseg= (cl_cell8*)ruc->ioi->get_cell(0x11);
-  dataseg = (cl_cell8*)ruc->ioi->get_cell(0x12);
-  segsize = (cl_cell8*)ruc->ioi->get_cell(0x13);
-
-  uc->reg_cell_var(stackseg, ruc->mem->aof_stackseg(),
-		   "STACKSEG", "MMU register: STACKSEG");
-  uc->reg_cell_var(dataseg, ruc->mem->aof_dataseg(),
-		   "DATASEG", "MMU register: DATASEG");
-  uc->reg_cell_var(segsize, ruc->mem->aof_segsize(),
-		   "SEGSIZE", "MMU register: SEGSIZE");
+  stackseg= register_cell(ruc->ioi, 0x11);
+  dataseg = register_cell(ruc->ioi, 0x12);
+  segsize = register_cell(ruc->ioi, 0x13);
+  
+  uc->vars->add(v= new cl_cvar("STACKSEG", stackseg,
+			       "MMU register: STACKSEG"));
+  v->init();
+  uc->vars->add(v= new cl_cvar("DATASEG", dataseg,
+			       "MMU register: DATASEG"));
+  v->init();
+  uc->vars->add(v= new cl_cvar("SEGSIZE", segsize,
+			       "MMU register: SEGSIZE"));
+  v->init();
 
   return 0;
 }
@@ -826,6 +840,29 @@ cl_rxk_cpu::cfg_help(t_addr addr)
       //case rxk_cpu_nuof: return "";
     }
   return "Not used";
+}
+
+void
+cl_rxk_cpu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (cell == segsize)
+    {
+      ruc->mem->set_segsize(*val);
+    }
+  else if (cell == dataseg)
+    {
+      ruc->mem->set_dataseg(*val);
+    }
+  else if (cell == stackseg)
+    {
+      ruc->mem->set_stackseg(*val);
+    }
+  
+  else if (cell == ruc->XPC)
+    {
+      (*val)&= 0xfff;
+      ruc->mem->set_lxpc(*val);
+    }
 }
 
 /*
@@ -851,15 +888,48 @@ cl_rxk_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 void
 cl_rxk_cpu::print_info(class cl_console_base *con)
 {
+  u8_t ss= ruc->mem->get_segsize();
+  u8_t x, y;
+  x= ss>>4;
+  y= ss&0x0f;
   con->dd_color("answer");
   con->dd_printf("%s[%d]\n", id_string, id);
-  con->dd_printf("SEGSIZE : 0x%02x\n", segsize->read());
-  con->dd_printf("DATASEG : 0x%02x\n", dataseg->read());
-  con->dd_printf("STACKSEG: 0x%02x\n", stackseg->read());
+  con->dd_printf("XPC     : 0x%03x\n", ruc->mem->get_xpc());
+  con->dd_printf("SEGSIZE : 0x%03x\n", segsize->read());
+  con->dd_printf("DATASEG : 0x%03x\n", ruc->mem->get_dataseg());
+  con->dd_printf("STACKSEG: 0x%03x\n", ruc->mem->get_stackseg());
   //con->dd_printf("XPC     : 0x%02x\n", xpc->read());
   con->dd_printf("Prefix: %s\n", ruc->prefix?"true":"false");
   con->dd_printf("ALTD  : %s\n", ruc->altd?"true":"false");
   con->dd_printf("Mem op: %s\n", ruc->rwas->get_name());
+
+  con->dd_printf("\n");
+  int l, r;
+  t_addr la, pa;
+  class cl_memory_cell *c;
+  char t;
+  for (l= 0, r= 8; l<8; l++, r++)
+    {
+      la= l*0x1000;
+      if (la >= 0xe000) t= 'X';
+      else if (la >= (x<<12)) t= 'S';
+      else if (la >= (y<<12)) t= 'D';
+      else t= ' ';
+      c= ruc->mem->get_cell(la);
+      pa= ruc->mem->chip->is_slot(c->get_data());
+      con->dd_printf("0x%xxxx -> 0x%06x %c", l, pa, t);
+      con->dd_printf("   ");
+      la= r*0x1000;
+      if (la >= 0xe000) t= 'X';
+      else if (la >= (x<<12)) t= 'S';
+      else if (la >= (y<<12)) t= 'D';
+      else t= ' ';
+      c= ruc->mem->get_cell(la);
+      pa= ruc->mem->chip->is_slot(c->get_data());
+      con->dd_printf("0x%xxxx -> 0x%06x %c", r, pa, t);
+      con->dd_printf("\n");
+    }
+  
 }
 
 

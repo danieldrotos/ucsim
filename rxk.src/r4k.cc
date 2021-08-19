@@ -116,6 +116,12 @@ cl_r4k::init(void)
 #undef RCV
   //mode2k();
   fill_7f_wrappers(itab_7f);
+
+  XPC= new cl_cell16(12);
+  reg_cell_var(XPC, mem->aof_lxpc(),
+  	       "XPC", "MMU register: XPC");
+  cpu->register_cell(XPC);
+  
   return 0;
 }
 
@@ -663,68 +669,6 @@ cl_r4k::mode4k(void)
   itab[0xbf]= instruction_wrapper_4kbf;
 }
 
-
-/*
- * CPU peripheral for r4k
- */
-
-cl_r4k_cpu::cl_r4k_cpu(class cl_uc *auc):
-  cl_rxk_cpu(auc)
-{
-  r4uc= (class cl_r4k *)auc;
-  edmr= new cl_cell8();
-}
-
-int
-cl_r4k_cpu::init(void)
-{
-  cl_rxk_cpu::init();
-
-  uc->reg_cell_var(edmr, &(r4uc->edmr),
-		   "EDMR", "Enable dual-mode register");
-  edmr->add_hw(this);
-  return 0;
-}
-
-t_mem
-cl_r4k_cpu::read(class cl_memory_cell *cell)
-{
-  if (cell == edmr)
-    return edmr->get();
-  return cell->get();
-}
-
-void
-cl_r4k_cpu::write(class cl_memory_cell *cell, t_mem *val)
-{
-  if (cell == edmr)
-    {
-      if (*val & 0xc0)
-	r4uc->mode4k();
-      else
-	r4uc->mode3k();
-    }
-}
-
-const char *
-cl_r4k_cpu::cfg_help(t_addr addr)
-{
-  switch (addr)
-    {
-      //case rxk_cpu_xpc: return "MMU register: XPC";
-      //case rxk_cpu_nuof: return "";
-    }
-  return "Not used";
-}
-
-
-void
-cl_r4k_cpu::print_info(class cl_console_base *con)
-{
-  cl_rxk_cpu::print_info(con);
-  con->dd_printf("EDMR    : 0x%02x\n", edmr->read());
-}
-
 int
 cl_r4k::EXX(t_mem code)
 {
@@ -849,6 +793,125 @@ cl_r4k::PAGE_4K6D(t_mem code)
     }
   
   return resGO;
+}
+
+
+/*
+ * CPU peripheral for r4k
+ */
+
+cl_r4k_cpu::cl_r4k_cpu(class cl_uc *auc):
+  cl_rxk_cpu(auc)
+{
+  r4uc= (class cl_r4k *)auc;
+  edmr= new cl_cell8();
+}
+
+int
+cl_r4k_cpu::init(void)
+{
+  cl_rxk_cpu::init();
+
+  uc->reg_cell_var(edmr, &(r4uc->edmr),
+		   "EDMR", "Enable dual-mode register");
+  edmr->add_hw(this);
+
+  stacksegl= register_cell(ruc->ioi, 0x1a,
+			   "STACKSEGL", "MMU register STACKSEGL");
+  stacksegh= register_cell(ruc->ioi, 0x1b,
+			   "STACKSEGH", "MMU register STACKSEGH");
+  datasegl= register_cell(ruc->ioi, 0x1e,
+			  "DATASEGL", "MMU register DATASEGL");
+  datasegh= register_cell(ruc->ioi, 0x1f,
+			  "DATASEGH", "MMU register DATASEGH");
+  return 0;
+}
+
+t_mem
+cl_r4k_cpu::read(class cl_memory_cell *cell)
+{
+  if (cell == edmr)
+    return edmr->get();
+  return cell->get();
+}
+
+void
+cl_r4k_cpu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (cell == edmr)
+    {
+      if (*val & 0xc0)
+	r4uc->mode4k();
+      else
+	r4uc->mode3k();
+    }
+  
+  if (cell == dataseg)
+    {
+      (*val)&= 0xff;
+      datasegl->set(*val);
+      ruc->mem->set_dataseg(datasegh->read() * 256 + *val);
+    }
+  else if (cell == datasegl)
+    {
+      (*val)&= 0xff;
+      dataseg->set(*val);
+      ruc->mem->set_dataseg(datasegh->read() * 256 + *val);
+    }
+  else if (cell == datasegh)
+    {
+      (*val)&= 0x0f;
+      ruc->mem->set_dataseg((*val) * 256 + datasegl->read());
+    }
+  
+  else if (cell == stackseg)
+    {
+      (*val)&= 0xff;
+      stacksegl->set(*val);
+      ruc->mem->set_stackseg(stacksegh->read() * 256 + *val);
+    }
+  else if (cell == stacksegl)
+    {
+      (*val)&= 0xff;
+      stackseg->set(*val);
+      ruc->mem->set_stackseg(stacksegh->read() * 256 + *val);
+    }
+  else if (cell == stacksegh)
+    {
+      (*val)&= 0x0f;
+      ruc->mem->set_stackseg((*val) * 256 + stacksegl->read());
+    }
+
+  else if (cell == segsize)
+    {
+      (*val)&= 0xff;
+      ruc->mem->set_segsize(*val);
+    }
+
+  else if (cell == ruc->XPC)
+    {
+      (*val)&= 0xfff;
+      ruc->mem->set_lxpc(*val);
+    }
+}
+
+const char *
+cl_r4k_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+      //case rxk_cpu_xpc: return "MMU register: XPC";
+      //case rxk_cpu_nuof: return "";
+    }
+  return "Not used";
+}
+
+
+void
+cl_r4k_cpu::print_info(class cl_console_base *con)
+{
+  cl_rxk_cpu::print_info(con);
+  con->dd_printf("EDMR    : 0x%02x\n", edmr->read());
 }
 
 

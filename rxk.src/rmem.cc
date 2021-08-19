@@ -31,6 +31,9 @@ cl_ras::cl_ras(chars id, class cl_memory_chip *achip):
   cl_address_space(id, 0, 0x10000, 8)
 {
   chip= achip;
+  segsize= 0xff;
+  dataseg= 0;
+  stackseg= 0;
 }
 
 int
@@ -254,22 +257,33 @@ cl_ras::set_lxpc(u16_t val)
 void
 cl_ras::set_segsize(u8_t val)
 {
-  segsize= val;
-  re_decode();
+  if (segsize != val)
+    {
+      segsize= val;
+      re_decode();
+    }
 }
 
 void
-cl_ras::set_dataseg(u8_t val)
+cl_ras::set_dataseg(u16_t val)
 {
-  dataseg= val;
-  re_decode();
+  val&= 0xfff;
+  if (dataseg != val)
+    {
+      dataseg= val&0xfff;
+      re_decode();
+    }
 }
 
 void
-cl_ras::set_stackseg(u8_t val)
+cl_ras::set_stackseg(u16_t val)
 {
-  stackseg= val;
-  re_decode();
+  val&= 0xfff;
+  if (stackseg != val)
+    {
+      stackseg= val;
+      re_decode();
+    }
 }
 
 /* End of rxk.src/rmem.cc */
