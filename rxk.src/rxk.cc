@@ -370,6 +370,14 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	      else
 		work.append("IY");
 	      break;
+	    case 'X': // LXPC 0 1 2 3 xpl xph
+	      {
+		u16_t x;
+		x= rom->read(addr+4) * 256;
+		x+= rom->read(addr+3);
+		work.appendf("0x%03x", x);
+		break;
+	      }
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);

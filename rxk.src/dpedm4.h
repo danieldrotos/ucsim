@@ -38,6 +38,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DWJNZ		instruction_ed_10
 #define CP_HL_DE	instruction_ed_48
 #define TEST_BC		instruction_ed_4c
+#define LLJP_GT_LXPC_MN	instruction_ed_a2
+#define LLJP_GTU_LXPC_MN instruction_ed_aa
+#define LLJP_LT_LXPC_MN	instruction_ed_b2
+#define LLJP_V_LXPC_MN	instruction_ed_ba
 
 #endif
 

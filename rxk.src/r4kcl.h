@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "r3kacl.h"
 #include "dp0m4.h"
+#include "dpedm4.h"
 #include "dpddm4.h"
 
 
@@ -68,7 +69,8 @@ public:
 
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual struct dis_entry *dis_6d_entry(t_addr addr);
-  
+    virtual int longest_inst(void) { return 6; }
+
   virtual void print_regs(class cl_console_base *con);
 
   // move
@@ -79,6 +81,9 @@ public:
   virtual int test8(u8_t op);					// 0f,2t,0w,0r
   virtual int test16(u16_t op);					// 0f,2t,0w,0r
   virtual int test32(u32_t op);					// 0f,2t,0w,0r
+
+  // brach
+  virtual int lljp_cx(t_mem code);				// 4f,14t,0w,0r
   
   virtual void mode3k(void);
   virtual void mode4k(void);
@@ -103,6 +108,10 @@ public:
   virtual int DWJNZ(t_mem code);
   virtual int CP_HL_DE(t_mem code) { return cp16(rHL, rDE); }
   virtual int TEST_BC(t_mem code) { tick(2); return test16(rBC); }
+  virtual int LLJP_GT_LXPC_MN(t_mem code)  { return lljp_cx(code); }
+  virtual int LLJP_GTU_LXPC_MN(t_mem code) { return lljp_cx(code); }
+  virtual int LLJP_LT_LXPC_MN(t_mem code)  { return lljp_cx(code); }
+  virtual int LLJP_V_LXPC_MN(t_mem code)   { return lljp_cx(code); }
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);

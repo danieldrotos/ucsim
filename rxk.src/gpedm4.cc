@@ -39,6 +39,10 @@ struct dis_entry disass_pedm4[]=
     { 0x10, 0xff, ' ', 3, "DWJNZ %r" },
     { 0x48, 0xff, ' ', 2, "CP HL,DE" },
     { 0x4c, 0xff, ' ', 2, "TEST BC" },
+    { 0xa2, 0xff, ' ', 6, "LLJP GT,%X,%w" },
+    { 0xaa, 0xff, ' ', 6, "LLJP GTU,%X,%w" },
+    { 0xb2, 0xff, ' ', 6, "LLJP LT,%X,%w" },
+    { 0xba, 0xff, ' ', 6, "LLJP V,%X,%w" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

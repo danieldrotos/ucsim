@@ -7,7 +7,7 @@ dwjnz label		+ ed 10 e
 ibox a	 		+ ed 12
 cp hl, de		+ ed 48
 test bc			+ ed 4c
-lljp cx, lxpc, mn	ed a2,aa,b2,ba n m
+lljp cx, lxpc, mn	+ ed a2,aa,b2,ba n m
 jre cx, label		ed a3,b3,ab,bb n m
 push mn			ed a5 n m
 lljp cc, lxpc, mn	ed c2,ca,d2,da n m
