@@ -259,5 +259,42 @@ cl_r4k::lljp_cx(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::lljp_cc(t_mem code)
+{
+  u8_t cc= (code>>3) & 0x3;
+  bool cond= false, z, c;
+  z= rF & flagZ;
+  c= rF & flagC;
+  switch (cc)
+    {
+    case 0: // NZ
+      cond= !z;
+      break;
+    case 1: // Z
+      cond= z;
+      break;
+    case 2: // NC
+      cond= !c;
+      break;
+    case 3: // C
+      cond= c;
+      break;
+    }
+  u16_t mn, lxpc;
+  mn= fetch();
+  mn+= fetch() * 256;
+  lxpc= fetch();
+  lxpc+= fetch() * 256;
+  lxpc&= 0xfff;
+  if (cond)
+    {
+      PC= mn;
+      LXPC->W(lxpc);
+    }
+  tick(13);
+  return resGO;
+}
+
 
 /* End of rxk.src/ibranch.cc */

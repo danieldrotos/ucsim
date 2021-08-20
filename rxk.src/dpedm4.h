@@ -42,6 +42,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LLJP_GTU_LXPC_MN instruction_ed_aa
 #define LLJP_LT_LXPC_MN	instruction_ed_b2
 #define LLJP_V_LXPC_MN	instruction_ed_ba
+#define LLJP_NZ_LXPC_MN	instruction_ed_c2
+#define LLJP_Z_LXPC_MN	instruction_ed_ca
+#define LLJP_NC_LXPC_MN	instruction_ed_d2
+#define LLJP_C_LXPC_MN	instruction_ed_da
+#define PUSH_MN		instruction_ed_a5
 
 #endif
 

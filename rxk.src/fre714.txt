@@ -9,8 +9,8 @@ cp hl, de		+ ed 48
 test bc			+ ed 4c
 lljp cx, lxpc, mn	+ ed a2,aa,b2,ba n m
 jre cx, label		ed a3,b3,ab,bb n m
-push mn			ed a5 n m
-lljp cc, lxpc, mn	ed c2,ca,d2,da n m
+push mn			+ ed a5 n m
+lljp cc, lxpc, mn	+ ed c2,ca,d2,da n m
 jre cc, label		ed c3,cb,d3,db n m
 flag cc, hl		ed c4,cc,d4,dc,a4,b4,ac,bc
 

@@ -84,6 +84,7 @@ public:
 
   // brach
   virtual int lljp_cx(t_mem code);				// 4f,14t,0w,0r
+  virtual int lljp_cc(t_mem code);				// 4f,14t,0w,0r
   
   virtual void mode3k(void);
   virtual void mode4k(void);
@@ -112,6 +113,11 @@ public:
   virtual int LLJP_GTU_LXPC_MN(t_mem code) { return lljp_cx(code); }
   virtual int LLJP_LT_LXPC_MN(t_mem code)  { return lljp_cx(code); }
   virtual int LLJP_V_LXPC_MN(t_mem code)   { return lljp_cx(code); }
+  virtual int LLJP_NZ_LXPC_MN(t_mem code)  { return lljp_cc(code); }
+  virtual int LLJP_Z_LXPC_MN(t_mem code)   { return lljp_cc(code); }
+  virtual int LLJP_NC_LXPC_MN(t_mem code)  { return lljp_cc(code); }
+  virtual int LLJP_C_LXPC_MN(t_mem code)   { return lljp_cc(code); }
+  virtual int PUSH_MN(t_mem code);
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);
