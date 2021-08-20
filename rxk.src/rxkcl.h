@@ -92,7 +92,13 @@ enum {
   flagAll= flagS|flagZ|flagL|flagC
 };
 
+#define cond_GT(f)	( !(( ((f) ^ ((f)<<5)) | ((f)<<1)) & 0x80) )
+#define cond_GTU(f)	( !((f)&flagC) && !((f)&flagZ) )
+#define cond_LT(f)	( ((f) ^ ((f)<<5)) & 0x80 )
+#define cond_LTU(f)	( (f)&flagC) )
+
 #define CPU ((class cl_rxk_cpu *)cpu)
+
 
 class cl_rxk_base: public cl_uc
 {
@@ -150,7 +156,8 @@ public:
   virtual char *disassc_dd_cb(t_addr addr, chars *comment= NULL);
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
-
+  virtual void disass_irr(chars *work, bool dd) {}
+  
   virtual void save_hist();
   virtual void print_regs(class cl_console_base *con);
 
@@ -165,6 +172,7 @@ public:
   virtual void tick5p9(int n) { tick(n); }
   virtual void tick5m1(int n) { tick(n+2); }
   virtual void tick5m2(int n) { tick(n+2); }
+  virtual void select_IRR(bool dd) {}
   
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
   class cl_cell16 &destBC(void) { return altd?caBC:cBC; }

@@ -8,20 +8,20 @@ ibox a	 		+ ed 12
 cp hl, de		+ ed 48
 test bc			+ ed 4c
 lljp cx, lxpc, mn	+ ed a2,aa,b2,ba n m
-jre cx, label		ed a3,b3,ab,bb n m
+jre cx, label		+ ed a3,b3,ab,bb n m
 push mn			+ ed a5 n m
 lljp cc, lxpc, mn	+ ed c2,ca,d2,da n m
-jre cc, label		ed c3,cb,d3,db n m
-flag cc, hl		ed c4,cc,d4,dc,a4,b4,ac,bc
+jre cc, label		+ ed c3,cb,d3,db n m
+flag cc, hl		+ ed c4,cc,d4,dc,a4,b4,ac,bc
 
-ld bcde, (hl)		dd 1a
-ld bcde, d(ix)		dd ce d
-ld bcde, d(iy)		dd de d
-ld bcde, n(sp)		dd ee n
-ld (hl), bcde		dd 1b
-ld d(ix), bcde		dd cf d
-ld d(iy), bcde		fd cf d
-ld n(sp), bcde		dd ef n
+ld bcde, (hl)		+ dd 1a
+ld bcde, d(ix)		+ dd ce d
+ld bcde, d(iy)		+ dd de d
+ld bcde, n(sp)		+ dd ee n
+ld (hl), bcde		+ dd 1b
+ld d(ix), bcde		+ dd cf d
+ld d(iy), bcde		+ dd df d
+ld n(sp), bcde		+ dd ef n
 neg bcde       		dd 4d
 pop bcde		dd f1
 push bcde		dd f5

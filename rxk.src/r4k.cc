@@ -121,6 +121,7 @@ cl_r4k::init(void)
   reg_cell_var(LXPC, mem->aof_lxpc(),
   	       "LXPC", "MMU register: LXPC");
   cpu->register_cell(LXPC);
+  cIRR= &cBCDE;
   
   return 0;
 }
@@ -377,6 +378,19 @@ cl_r4k::dis_6d_entry(t_addr addr)
   disass_6d[0].mnemonic= mnemo;
   
   return &disass_6d[0];
+}
+
+void
+cl_r4k::disass_irr(chars *work, bool dd)
+{
+  work->appendf("%s", dd?"BCDE":"JKHL");
+}
+
+void
+cl_r4k::select_IRR(bool dd)
+{
+  cIRR = dd?&cBCDE :&cJKHL;
+  caIRR= dd?&caBCDE:&caJKHL;
 }
 
 void

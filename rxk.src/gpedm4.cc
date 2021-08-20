@@ -48,6 +48,22 @@ struct dis_entry disass_pedm4[]=
     { 0xd2, 0xff, ' ', 6, "LLJP NC,%X,%w" },
     { 0xda, 0xff, ' ', 6, "LLJP C,%X,%w" },
     { 0xa5, 0xff, ' ', 4, "PUSH %w" },
+    { 0xa3, 0xff, ' ', 4, "JRE GT,%R" },
+    { 0xb3, 0xff, ' ', 4, "JRE LT,%R" },
+    { 0xab, 0xff, ' ', 4, "JRE GTU,%R" },
+    { 0xbb, 0xff, ' ', 4, "JRE V,%R" },
+    { 0xc3, 0xff, ' ', 4, "JRE NZ,%R" },
+    { 0xcb, 0xff, ' ', 4, "JRE Z,%R" },
+    { 0xd3, 0xff, ' ', 4, "JRE NC,%R" },
+    { 0xdb, 0xff, ' ', 4, "JRE C,%R" },
+    { 0xc4, 0xff, ' ', 2, "FLAG NZ,HL" },
+    { 0xcc, 0xff, ' ', 2, "FLAG Z,HL" },
+    { 0xd4, 0xff, ' ', 2, "FLAG NC,HL" },
+    { 0xdc, 0xff, ' ', 2, "FLAG C,HL" },
+    { 0xa4, 0xff, ' ', 2, "FLAG GT,HL" },
+    { 0xb4, 0xff, ' ', 2, "FLAG LT,HL" },
+    { 0xac, 0xff, ' ', 2, "FLAG GTU,HL" },
+    { 0xbc, 0xff, ' ', 2, "FLAG V,HL" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

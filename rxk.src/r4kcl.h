@@ -58,6 +58,7 @@ public:
   class cl_cell32 caJKHL, caPW, caPX, caPY, caPZ;
   class cl_cell8 cHTR;
   class cl_cell16 *LXPC;
+  class cl_cell32 *cIRR, *caIRR;
  public:
   cl_r4k(class cl_sim *asim);
   virtual int init();
@@ -69,22 +70,30 @@ public:
 
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual struct dis_entry *dis_6d_entry(t_addr addr);
-    virtual int longest_inst(void) { return 6; }
-
+  virtual int longest_inst(void) { return 6; }
+  virtual void disass_irr(chars *work, bool dd);
+  
+  virtual void select_IRR(bool dd);
+  virtual class cl_cell32 *destIRR(void) { return altd?caIRR:cIRR; }
+  
   virtual void print_regs(class cl_console_base *con);
 
   // move
   virtual int ld_pd_ihtr_hl(class cl_cell32 &dest);
+  virtual int ld_irr_iird(class cl_cell16 &ir);			// 1f,14t,0w,4r
+  virtual int ld_iird_irr(class cl_cell16 &ir);			// 1f,19t,4w,0r
   
   // arith
   virtual int subhl(class cl_cell16 &dest, u16_t op);
   virtual int test8(u8_t op);					// 0f,2t,0w,0r
   virtual int test16(u16_t op);					// 0f,2t,0w,0r
   virtual int test32(u32_t op);					// 0f,2t,0w,0r
-
+  virtual int flag_cc_hl(t_mem code);				// 0f,4t,0w,0r
+  
   // brach
   virtual int lljp_cx(t_mem code);				// 4f,14t,0w,0r
   virtual int lljp_cc(t_mem code);				// 4f,14t,0w,0r
+  virtual int jre_cx_cc(bool cond);				// 2f,9t,0w,0r
   
   virtual void mode3k(void);
   virtual void mode4k(void);
@@ -118,10 +127,34 @@ public:
   virtual int LLJP_NC_LXPC_MN(t_mem code)  { return lljp_cc(code); }
   virtual int LLJP_C_LXPC_MN(t_mem code)   { return lljp_cc(code); }
   virtual int PUSH_MN(t_mem code);
+  virtual int JRE_GT_EE(t_mem code)  { return jre_cx_cc(cond_GT(rF)); }
+  virtual int JRE_LT_EE(t_mem code)  { return jre_cx_cc(cond_LT(rF)); }
+  virtual int JRE_GTU_EE(t_mem code) { return jre_cx_cc(cond_GTU(rF)); }
+  virtual int JRE_V_EE(t_mem code)   { return jre_cx_cc(rF&flagV); }
+  virtual int JRE_NZ_EE(t_mem code)  { return jre_cx_cc(!(rF&flagZ)); }
+  virtual int JRE_Z_EE(t_mem code)   { return jre_cx_cc(rF&flagZ); }
+  virtual int JRE_NC_EE(t_mem code)  { return jre_cx_cc(!(rF&flagC)); }
+  virtual int JRE_C_EE(t_mem code)   { return jre_cx_cc(rF&flagC); }
+  virtual int FLAG_NZ_HL(t_mem code) { return flag_cc_hl(code); }
+  virtual int FLAG_Z_HL(t_mem code)   { return flag_cc_hl(code); }
+  virtual int FLAG_NC_HL(t_mem code)  { return flag_cc_hl(code); }
+  virtual int FLAG_C_HL(t_mem code)   { return flag_cc_hl(code); }
+  virtual int FLAG_GT_HL(t_mem code)  { return flag_cc_hl(code); }
+  virtual int FLAG_LT_HL(t_mem code)  { return flag_cc_hl(code); }
+  virtual int FLAG_GTU_HL(t_mem code) { return flag_cc_hl(code); }
+  virtual int FLAG_V_HL(t_mem code)   { return flag_cc_hl(code); }
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);
   virtual int TEST_IR(t_mem code) { tick(2); return test16(cIR->get()); }
+  virtual int LD_IRR_iHL(t_mem code);
+  virtual int LD_IRR_iIXd(t_mem code) { return ld_irr_iird(cIX); }
+  virtual int LD_IRR_iIYd(t_mem code) { return ld_irr_iird(cIY); }
+  virtual int LD_IRR_iSPn(t_mem code);
+  virtual int LD_iHL_IRR(t_mem code);
+  virtual int LD_iIXd_IRR(t_mem code) { return ld_iird_irr(cIX); }
+  virtual int LD_iIYd_IRR(t_mem code) { return ld_iird_irr(cIY); }
+  virtual int LD_iSPn_IRR(t_mem code);
   
   // Starter of extra pages
   virtual int PAGE_4K6D(t_mem code);

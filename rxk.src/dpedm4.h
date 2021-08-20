@@ -47,6 +47,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LLJP_NC_LXPC_MN	instruction_ed_d2
 #define LLJP_C_LXPC_MN	instruction_ed_da
 #define PUSH_MN		instruction_ed_a5
+#define JRE_GT_EE	instruction_ed_a3
+#define JRE_LT_EE	instruction_ed_b3
+#define JRE_GTU_EE	instruction_ed_ab
+#define JRE_V_EE	instruction_ed_bb
+#define JRE_NZ_EE	instruction_ed_c3
+#define JRE_Z_EE	instruction_ed_cb
+#define JRE_NC_EE	instruction_ed_d3
+#define JRE_C_EE	instruction_ed_db
+#define FLAG_NZ_HL	instruction_ed_c4
+#define FLAG_Z_HL	instruction_ed_cc
+#define FLAG_NC_HL	instruction_ed_d4
+#define FLAG_C_HL	instruction_ed_dc
+#define FLAG_GT_HL	instruction_ed_a4
+#define FLAG_LT_HL	instruction_ed_b4
+#define FLAG_GTU_HL	instruction_ed_ac
+#define FLAG_V_HL	instruction_ed_bc
 
 #endif
 

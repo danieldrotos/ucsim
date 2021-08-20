@@ -296,5 +296,18 @@ cl_r4k::lljp_cc(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::jre_cx_cc(bool cond)
+{
+  u8_t el, eh;
+  el= fetch();
+  eh= fetch();
+  i16_t ee= eh*256+el;
+  if (cond)
+    PC= (PC + ee) & 0xffff;
+  tick5p1(8);
+  return resGO;
+}
+
 
 /* End of rxk.src/ibranch.cc */

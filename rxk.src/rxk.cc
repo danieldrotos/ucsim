@@ -121,7 +121,7 @@ cl_rxk::init(void)
   cpu->register_cell(XPC);
   
   cIR= &cIX;
-
+  
   ioi->set(0x11, 0); // stackseg
   ioi->set(0x12, 0); // dataseg
   ioi->set(0x13, 0xff); // segsize
@@ -295,9 +295,10 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   t_mem code= rom->get(addr);
   struct dis_entry *dt;//= dis_tbl();//, *dis_e;
   int i;
-  bool first;
+  bool first, dd;
   unsigned int x, h, l;
-
+  //t_addr start_at= addr;
+  
   if (code == 0xcb)
     return disassc_cb(addr, comment);
   
@@ -318,6 +319,7 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   b= dt->mnemonic;
 
   nIR= (cIR==&cIX)?"IX":"IY";
+  dd = (cIR==&cIX);
   first= true;
   work= "";
   for (i=0; b[i]; i++)
@@ -361,8 +363,21 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 		work.appendf("0x%04x", AU16(a));
 	      }
 	      break;
+	    case 'R': // 16 bit signed PC relative
+	      {
+		u8_t el, eh;
+		el= rom->get(++addr);
+		eh= rom->get(++addr);
+		i16_t ee= eh*256+el;
+		t_addr a= (addr+1 + ee) & 0xffff;
+		work.appendf("0x%04x", a);
+		break;
+	      }
 	    case 'I':
 	      work.appendf("%s", nIR);
+	      break;
+	    case '3':
+	      disass_irr(&work, dd);
 	      break;
 	    case 'J':
 	      if (cIR == &cIX)
@@ -718,10 +733,12 @@ cl_rxk::exec_inst(void)
       if (code == 0xdd)
 	{
 	  cIR= &cIX;
+	  select_IRR(true);
 	}
       else
 	{
 	  cIR= &cIY;
+	  select_IRR(false);
 	}
       {
       code= fetch();
