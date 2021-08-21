@@ -1,5 +1,6 @@
 and iy, de		+ fd dc
 or iy, de		+ fd ec
+test iy			+ fd 4c
 
 cbm 			+ ed 00 n
 sbox a 			+ ed 02
@@ -22,9 +23,9 @@ ld (hl), bcde		+ dd 1b
 ld d(ix), bcde		+ dd cf d
 ld d(iy), bcde		+ dd df d
 ld n(sp), bcde		+ dd ef n
-neg bcde       		dd 4d
-pop bcde		dd f1
-push bcde		dd f5
+neg bcde       		+ dd 4d
+pop bcde		+ dd f1
+push bcde		+ dd f5
 rl bb, bcde		dd 68,69,6b
 rlb a, bcde		dd 6f
 rlc bb, bcde		dd 68,69,6b
@@ -38,4 +39,3 @@ sll bb, bcde		dd a8,a9,ab
 sra bb, bcde		dd 98,99,9b
 srl bb, bcde		dd b8,b9,bb
 test bcde		dd 5c
-test iy			fd 4c

@@ -876,6 +876,33 @@ cl_rxk::sub16(u16_t op2, bool cy)
 }
 
 int
+cl_rxk::sub32(u32_t op1, u32_t op2, class cl_cell32 &cRes, bool cy)
+{
+  class cl_cell8 &f= destF();
+  u32_t v1= op1;
+  u8_t forg;
+  u32_t res;
+  u32_t a31, b31, r31, na31, nb31, nr31;
+  i32_t o2= op2;
+  i32_t r= op1-o2;
+  if (cy && (rF&flagC)) r--;
+  res= r;
+  forg= rF & ~(flagZ|flagS|flagV);
+  a31=  v1&0x80000000; na31= a31^0x80000000;
+  b31= op2&0x80000000; nb31= b31^0x80000000;
+  r31= res&0x80000000; nr31= r31^0x80000000;
+  if ((a31&nb31&nr31) | (na31&b31&r31)) forg|= flagV;
+  if (op1<op2) forg|= flagC;
+  if ((op1>op2) || (!cy && (op1==op2))) forg&= ~flagC;
+  if (!res) forg|= flagZ;
+  if (res & 0x80000000) forg|= flagS;
+  cRes.W(res);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
 cl_rxk::cp8(u8_t op1, u8_t op2)
 {
   class cl_cell8 &f= destF();

@@ -38,6 +38,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_iIXd_IRR	instruction_dd_cf
 #define LD_iIYd_IRR	instruction_dd_df
 #define LD_iSPn_IRR	instruction_dd_ef
+#define NEG_IRR		instruction_dd_4d
+#define POP_IRR		instruction_dd_f1
+#define PUSH_IRR	instruction_dd_f5
 
 #endif
 

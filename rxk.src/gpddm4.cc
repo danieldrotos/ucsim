@@ -39,6 +39,9 @@ struct dis_entry disass_pddm4[]=
     { 0xcf, 0xff, ' ', 3, "LD (IX%d),%3" },
     { 0xdf, 0xff, ' ', 3, "LD (IY%d),%3" },
     { 0xef, 0xff, ' ', 3, "LD (SP+%b),%3" },
+    { 0x4d, 0xff, ' ', 2, "NEG %3" },
+    { 0xf1, 0xff, ' ', 2, "POP %3" },
+    { 0xf5, 0xff, ' ', 2, "PUSH %3" },
     
     { 0, 0, 0, 0, 0, 0 }
   };
