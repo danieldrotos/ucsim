@@ -159,7 +159,34 @@ public:
 						 *cIRR, false); }
   virtual int POP_IRR(t_mem code);
   virtual int PUSH_IRR(t_mem code);
-    
+  virtual int RL_1_IRR(t_mem code) { tick(2); return rot33left(*destIRR(),
+							       cIRR->get(),
+							       1); }
+  virtual int RL_2_IRR(t_mem code) { tick(2); return rot33left(*destIRR(),
+							       cIRR->get(),
+							       2); }
+  virtual int RL_4_IRR(t_mem code) { tick(2); return rot33left(*destIRR(),
+							       cIRR->get(),
+							       4); }
+  virtual int RLC_1_IRR(t_mem code) { tick(2); return rot32left(*destIRR(),
+								cIRR->get(),
+								1); }
+  virtual int RLC_2_IRR(t_mem code) { tick(2); return rot32left(*destIRR(),
+								cIRR->get(),
+								2); }
+  virtual int RLC_4_IRR(t_mem code) { tick(2); return rot32left(*destIRR(),
+								cIRR->get(),
+								4); }
+  virtual int RLC_8_IRR(t_mem code);
+  virtual int RLB_A_IRR(t_mem code);
+  virtual int SLA_1_IRR(t_mem code) { return sla32(*destIRR(), cIRR->get(), 1); }
+  virtual int SLA_2_IRR(t_mem code) { return sla32(*destIRR(), cIRR->get(), 2); }
+  virtual int SLA_4_IRR(t_mem code) { return sla32(*destIRR(), cIRR->get(), 4); }
+  virtual int SLL_1_IRR(t_mem code) { return sla32(*destIRR(), cIRR->get(), 1); }
+  virtual int SLL_2_IRR(t_mem code) { return sla32(*destIRR(), cIRR->get(), 2); }
+  virtual int SLL_4_IRR(t_mem code) { return sla32(*destIRR(), cIRR->get(), 4); }
+  virtual int TEST_IRR(t_mem code) { tick(2); return test32(cIRR->get()); }
+  
   // Starter of extra pages
   virtual int PAGE_4K6D(t_mem code);
   virtual int PAGE_4K7F(t_mem code);

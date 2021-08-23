@@ -42,8 +42,23 @@ struct dis_entry disass_pddm4[]=
     { 0x4d, 0xff, ' ', 2, "NEG %3" },
     { 0xf1, 0xff, ' ', 2, "POP %3" },
     { 0xf5, 0xff, ' ', 2, "PUSH %3" },
+    { 0x68, 0xff, ' ', 2, "RL 1,%3" },
+    { 0x69, 0xff, ' ', 2, "RL 2,%3" },
+    { 0x6b, 0xff, ' ', 2, "RL 4,%3" },
+    { 0x48, 0xff, ' ', 2, "RLC 1,%3" },
+    { 0x49, 0xff, ' ', 2, "RLC 2,%3" },
+    { 0x4b, 0xff, ' ', 2, "RLC 4,%3" },
+    { 0x4f, 0xff, ' ', 2, "RLC 8,%3" },
+    { 0x6f, 0xff, ' ', 2, "RLB A,%3" },
+    { 0x88, 0xff, ' ', 2, "SLA 1,%3" },
+    { 0x89, 0xff, ' ', 2, "SLA 2,%3" },
+    { 0x8b, 0xff, ' ', 2, "SLA 4,%3" },
+    { 0xa8, 0xff, ' ', 2, "SLL 1,%3" },
+    { 0xa9, 0xff, ' ', 2, "SLL 2,%3" },
+    { 0xab, 0xff, ' ', 2, "SLL 4,%3" },
+    { 0x5c, 0xff, ' ', 2, "TEST %3" },
     
-    { 0, 0, 0, 0, 0, 0 }
+    { 0, 0, 0, 0, 0, 0, 0 }
   };
   
 /* End of rxk.src/gpddm4.cc */

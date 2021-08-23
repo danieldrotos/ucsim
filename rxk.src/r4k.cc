@@ -288,10 +288,10 @@ cl_r4k::dis_entry(t_addr addr)
 }
 
 struct dis_entry disass_6d[]= {
-  /* 0 */ { 0, 0, 0, 0, 0, NULL },
+  /* 0 */ {    0,    0, ' ', 0, NULL },
   /* 1 */ { 0x6d, 0xff, ' ', 2, "LD L,L" },
   /* 2 */ { 0x7f, 0xff, ' ', 2, "LD A,A" },
-  /* 3 */ { 0, 0, 0, 0, 0, 0 }
+  /* 3 */ {    0,    0, ' ', 0, 0, 0, 0 }
 };
 char mnemo[100];
 

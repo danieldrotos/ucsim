@@ -257,15 +257,18 @@ public:
   virtual int dec_r(class cl_cell8 &cr, u8_t op);
   virtual int rot8left(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
   virtual int rlc(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
+  virtual int rot32left(class cl_cell32 &dest, u32_t op, int nr);//0f,2t,0r,0w
   virtual int rot9left(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
   virtual int rl(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int rot17left(class cl_cell16 &dest, u16_t op);	// 0f,1t,0r,0w
+  virtual int rot33left(class cl_cell32 &dest, u32_t op, int nr);//0f,2t,0r,0w
   virtual int rot8right(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
   virtual int rrc(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int rot9right(class cl_cell8 &dest, u8_t op);		// 0f,1t,0r,0w
   virtual int rr(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int rot17right(class cl_cell16 &dest, u16_t op);	// 0f,1t,0r,0w
-  virtual int sla(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
+  virtual int sla8(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
+  virtual int sla32(class cl_cell32 &dest, u32_t op, int nr);	// 0f,4t,0r,0w
   virtual int sra(class cl_cell8 &dest, i8_t op);		// 0f,4t,0r,0w
   virtual int srl(class cl_cell8 &dest, u8_t op);		// 0f,4t,0r,0w
   virtual int bit_r(u8_t b, u8_t op);				// 0f,4t,0r,0w

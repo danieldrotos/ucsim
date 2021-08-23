@@ -26,16 +26,19 @@ ld n(sp), bcde		+ dd ef n
 neg bcde       		+ dd 4d
 pop bcde		+ dd f1
 push bcde		+ dd f5
-rl bb, bcde		dd 68,69,6b
-rlb a, bcde		dd 6f
-rlc bb, bcde		dd 68,69,6b
-rlc 8, bcde		dd 4f
+
+rl bb, bcde		+ dd 68,69,6b
+rlc bb, bcde		+ dd 48,49,4b
+rlc 8, bcde		+ dd 4f
+rlb a, bcde		+ dd 6f
+sla bb, bcde		+ dd 88,89,8b
+sll bb, bcde		+ dd a8,a9,ab
+
 rr bb, bcde		dd 78,79,7b
-rrb a, bcde		dd 7f
 rrc bb, bcde		dd 58,59,5b
 rrc 8, bcde		dd 5f
-sla bb, bcde		dd 88,89,8b
-sll bb, bcde		dd a8,a9,ab
+rrb a, bcde		dd 7f
 sra bb, bcde		dd 98,99,9b
 srl bb, bcde		dd b8,b9,bb
-test bcde		dd 5c
+
+test bcde		+ dd 5c

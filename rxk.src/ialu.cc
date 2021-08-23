@@ -216,6 +216,35 @@ cl_rxk::rlc(class cl_cell8 &dest, u8_t op)
 
 
 /*
+     C <-- 31..<-...0 <--+
+         |               |
+         +---------------+
+ */
+int
+cl_rxk::rot32left(class cl_cell32 &dest, u32_t op, int nr)
+{
+  u32_t cf;
+  while (nr)
+    {
+      cf= op & 0x8000000;
+      op<<= 1;
+      if (cf) op|= 1;
+      nr--;
+    }
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  if (op & 0x8000000) forg|= flagS;
+  if (!op) forg|= flagZ;
+  if (op & 0xf0000000) forg|= flagL;
+  if (cf) forg|= flagC;
+  f.W(forg);
+  dest.W(op);
+  tick(1);
+  return resGO;
+}
+
+
+/*
      C <-- 7..<-...0 <--+
      |                  |
      +------------------+
@@ -269,6 +298,36 @@ cl_rxk::rot17left(class cl_cell16 &dest, u16_t op)
   if (!res) forg|= flagZ;
   if (res & 0xf000) forg|= flagL;
   f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+/*
+     C <-- 31..<-...0 <--+
+     |                   |
+     +-------------------+
+ */
+int
+cl_rxk::rot33left(class cl_cell32 &dest, u32_t op, int nr)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF;
+  bool cf= forg & flagC;;
+  while (nr)
+    {
+      bool msb= op & 0x80000000;
+      op<<= 1;
+      if (cf) op|= 1;
+      cf= msb;
+      nr--;
+    }
+  forg&= ~flagAll;
+  if (cf) forg|= flagC;
+  if (!op) forg|= flagZ;
+  if (op & 0x80000000) forg|= flagS;
+  if (op & 0xf0000000) forg|= flagL;
+  f.W(forg);
+  dest.W(op);
   tick(1);
   return resGO;
 }
@@ -370,15 +429,39 @@ cl_rxk::rot17right(class cl_cell16 &dest, u16_t op)
    C <--  7..<-..0  <-- 0
 */
 int
-cl_rxk::sla(class cl_cell8 &dest, u8_t op)
+cl_rxk::sla8(class cl_cell8 &dest, u8_t op)
 {
   class cl_cell8 &f= destF();
   u8_t res, forg= rF & ~flagAll;
   if (op & 0x80) forg|= flagC;
   dest.W(res= (op<<1));
-  if (res & 0x8000) forg|= flagS;
+  if (res & 0x80) forg|= flagS;
   if (!res) forg|= flagZ;
-  if (res & 0xf000) forg|= flagL;
+  if (res & 0xf0) forg|= flagL;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+/*
+   C <--  31..<-..0  <-- 0
+*/
+int
+cl_rxk::sla32(class cl_cell32 &dest, u32_t op, int nr)
+{
+  class cl_cell8 &f= destF();
+  u32_t forg= rF & ~flagAll;
+  u32_t cf;
+  while (nr)
+    {
+      cf= op & 0x80000000;
+      op<<= 1;
+      nr--;
+    }
+  if (cf) forg|= flagC;
+  if (op & 0x80000000) forg|= flagS;
+  if (!op) forg|= flagZ;
+  if (op & 0xf0000000) forg|= flagL;
   f.W(forg);
   tick(3);
   return resGO;
@@ -1078,5 +1161,31 @@ cl_r4k::flag_cc_hl(t_mem code)
   tick(3);
   return resGO;
 }
+
+int
+cl_r4k::RLC_8_IRR(t_mem code)
+{
+  u32_t op= cIRR->get();
+  u32_t msb= op >> 24;
+  op<<= 8;
+  op|= msb;
+  cIRR->write(op);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::RLB_A_IRR(t_mem code)
+{
+  u32_t op= cIRR->get();
+  u32_t msb= op >> 24;
+  op<<= 8;
+  op|= rA;
+  cA.W(msb);
+  cIRR->write(op);
+  tick(3);
+  return resGO;
+}
+
 
 /* End of rxk.src/ialu.cc */
