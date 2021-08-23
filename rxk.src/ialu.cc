@@ -223,7 +223,7 @@ cl_rxk::rlc(class cl_cell8 &dest, u8_t op)
 int
 cl_rxk::rot32left(class cl_cell32 &dest, u32_t op, int nr)
 {
-  u32_t cf;
+  u32_t cf= 0;
   while (nr)
     {
       cf= op & 0x8000000;
@@ -451,7 +451,7 @@ cl_rxk::sla32(class cl_cell32 &dest, u32_t op, int nr)
 {
   class cl_cell8 &f= destF();
   u32_t forg= rF & ~flagAll;
-  u32_t cf;
+  u32_t cf= 0;
   while (nr)
     {
       cf= op & 0x80000000;
@@ -1136,7 +1136,7 @@ cl_r4k::test32(u32_t op)
 int
 cl_r4k::flag_cc_hl(t_mem code)
 {
-  bool cond;
+  bool cond= false;
   if ((code & 0x60) == 0x40)
     {
       switch ((code >> 3) & 3)
