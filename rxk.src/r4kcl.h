@@ -158,6 +158,9 @@ public:
   virtual int FLAG_V_HL(t_mem code)   { return flag_cc_hl(code); }
   virtual int CALL_iHL(t_mem code);
   virtual int LLRET(t_mem code);
+  virtual int EXP(t_mem code);
+  virtual int LD_HTR_A(t_mem code);
+  virtual int LD_A_HTR(t_mem code);
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);
