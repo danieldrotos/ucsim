@@ -161,6 +161,11 @@ public:
   virtual int EXP(t_mem code);
   virtual int LD_HTR_A(t_mem code);
   virtual int LD_A_HTR(t_mem code);
+  virtual int FSYSCALL(t_mem code);
+  virtual int SYSRET(t_mem code);
+  virtual int SETUSRP(t_mem code);
+  virtual int SETSYSP(t_mem code);
+  virtual int LLCALL_iJKHL(t_mem code);
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);

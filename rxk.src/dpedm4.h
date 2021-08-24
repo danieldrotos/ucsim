@@ -68,6 +68,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define EXP		instruction_ed_d9
 #define LD_HTR_A	instruction_ed_40
 #define LD_A_HTR	instruction_ed_50
+#define FSYSCALL	instruction_ed_55
+#define SYSRET		instruction_ed_83
+#define SETUSRP		instruction_ed_b5
+#define SETSYSP		instruction_ed_b1
+#define LLCALL_iJKHL	instruction_ed_fa
 
 #endif
 
