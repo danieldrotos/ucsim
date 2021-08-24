@@ -71,6 +71,43 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SRL_2_IRR	instruction_dd_b9
 #define SRL_4_IRR	instruction_dd_bb
 
+#define LDF_IRR_iLMN	instruction_dd_0a
+#define LDF_iLMN_IRR	instruction_dd_0b
+#define LD_IRR_iPW_HL	instruction_dd_0c
+#define LD_IRR_iPX_HL	instruction_dd_1c
+#define LD_IRR_iPY_HL	instruction_dd_2c
+#define LD_IRR_iPZ_HL	instruction_dd_3c
+#define LD_iPW_HL_IRR	instruction_dd_0d
+#define LD_iPX_HL_IRR	instruction_dd_1d
+#define LD_iPY_HL_IRR	instruction_dd_2d
+#define LD_iPZ_HL_IRR	instruction_dd_3d
+#define LD_IRR_iPW_D	instruction_dd_0e
+#define LD_IRR_iPX_D	instruction_dd_1e
+#define LD_IRR_iPY_D	instruction_dd_2e
+#define LD_IRR_iPZ_D	instruction_dd_3e
+#define LD_iPW_D_IRR	instruction_dd_0f
+#define LD_iPX_D_IRR	instruction_dd_1f
+#define LD_iPY_D_IRR	instruction_dd_2f
+#define LD_iPZ_D_IRR	instruction_dd_3f
+#define LDL_PW_IR	instruction_dd_8c
+#define LDL_PX_IR	instruction_dd_9c
+#define LDL_PY_IR	instruction_dd_ac
+#define LDL_PZ_IR	instruction_dd_bc
+#define LD_PW_IRR	instruction_dd_8d
+#define LD_PX_IRR	instruction_dd_9d
+#define LD_PY_IRR	instruction_dd_ad
+#define LD_PZ_IRR	instruction_dd_bd
+#define LDL_PW_IRRL	instruction_dd_8f
+#define LDL_PX_IRRL	instruction_dd_9f
+#define LDL_PY_IRRL	instruction_dd_af
+#define LDL_PZ_IRRL	instruction_dd_bf
+#define LD_IRR_PW	instruction_dd_cd
+#define LD_IRR_PX	instruction_dd_dd
+#define LD_IRR_PY	instruction_dd_ed
+#define LD_IRR_PZ	instruction_dd_fd
+#define LD_iSP_HL_IRR	instruction_dd_ff
+#define CALL_iIR	instruction_dd_ea
+
 #endif
 
 /* End of rxk.src/dpddm4.h */

@@ -160,6 +160,7 @@ public:
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
   virtual void disass_irr(chars *work, bool dd) {}
+  virtual void disass_irrl(chars *work, bool dd) {}
   
   virtual void save_hist();
   virtual void print_regs(class cl_console_base *con);
@@ -656,6 +657,7 @@ public:
   virtual int OR_IR_DE(t_mem code);
   virtual int POP_IR(t_mem code);
   virtual int PUSH_IR(t_mem code);
+  virtual int EX_iSP_IR(t_mem code);
   virtual int LD_iIRd_A(t_mem code) { return ld_iIRd_r(rA); }
   virtual int LD_iIRd_B(t_mem code) { return ld_iIRd_r(rB); }
   virtual int LD_iIRd_C(t_mem code) { return ld_iIRd_r(rC); }
