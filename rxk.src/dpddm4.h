@@ -56,6 +56,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SLL_2_IRR	instruction_dd_a9
 #define SLL_4_IRR	instruction_dd_ab
 #define TEST_IRR	instruction_dd_5c
+#define RR_1_IRR	instruction_dd_78
+#define RR_2_IRR	instruction_dd_79
+#define RR_4_IRR	instruction_dd_7b
+#define RRC_1_IRR	instruction_dd_58
+#define RRC_2_IRR	instruction_dd_59
+#define RRC_4_IRR	instruction_dd_5b
+#define RRC_8_IRR	instruction_dd_5f
+#define RRB_A_IRR	instruction_dd_7f
+#define SRA_1_IRR	instruction_dd_98
+#define SRA_2_IRR	instruction_dd_99
+#define SRA_4_IRR	instruction_dd_9b
+#define SRL_1_IRR	instruction_dd_b8
+#define SRL_2_IRR	instruction_dd_b9
+#define SRL_4_IRR	instruction_dd_bb
 
 #endif
 
