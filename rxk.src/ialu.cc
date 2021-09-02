@@ -216,6 +216,32 @@ cl_rxk::rlc(class cl_cell8 &dest, u8_t op)
 
 
 /*
+     C <-- 15..<-...0 <--+
+         |               |
+         +---------------+
+ */
+int
+cl_rxk::rot16left(class cl_cell16 &dest, u16_t op)
+{
+  u32_t cf;
+  cf= op & 0x8000;
+  op<<= 1;
+  if (cf) op|= 1;
+  
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  if (op & 0x8000) forg|= flagS;
+  if (!op) forg|= flagZ;
+  if (op & 0xf000) forg|= flagL;
+  if (cf) forg|= flagC;
+  f.W(forg);
+  dest.W(op);
+  tick(1);
+  return resGO;
+}
+
+
+/*
      C <-- 31..<-...0 <--+
          |               |
          +---------------+
@@ -226,14 +252,14 @@ cl_rxk::rot32left(class cl_cell32 &dest, u32_t op, int nr)
   u32_t cf= 0;
   while (nr)
     {
-      cf= op & 0x8000000;
+      cf= op & 0x80000000;
       op<<= 1;
       if (cf) op|= 1;
       nr--;
     }
   class cl_cell8 &f= destF();
   u8_t forg= rF & ~flagAll;
-  if (op & 0x8000000) forg|= flagS;
+  if (op & 0x80000000) forg|= flagS;
   if (!op) forg|= flagZ;
   if (op & 0xf0000000) forg|= flagL;
   if (cf) forg|= flagC;
@@ -344,6 +370,32 @@ cl_rxk::rot8right(class cl_cell8 &dest, u8_t op)
   a0= op&0x01;
   dest.W((op>>1) | (a0?0x80:0));
   f.W((rF & ~flagC) | (a0?flagC:0));
+  tick(1);
+  return resGO;
+}
+
+
+/*   15...->.....0 --> C
+     |           |
+     +-----------+
+ */
+int
+cl_rxk::rot16right(class cl_cell16 &dest, u16_t op)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg;
+  bool cf= false;
+  cf= op & 1;
+  op>>= 1;
+  if (cf) op|= 0x8000;
+    
+  forg= rF & ~flagAll;
+  if (cf) forg|= flagC;
+  if (!op) forg|= flagZ;
+  if (op & 0x8000) forg|= flagS;
+  if (op & 0xf000) forg|= flagL;
+  f.W(forg);
+  dest.W(op);
   tick(1);
   return resGO;
 }
@@ -761,6 +813,21 @@ cl_rxk::xor8(class cl_cell8 &dest, u8_t op1, u8_t op2)
   if (res&0xf0) forg|= flagL;
   f.W(forg);
   tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::xor16(class cl_cell16 &dest, u16_t op1, u16_t op2)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= f.R() & ~flagAll;
+  u16_t res= op1 ^ op2;
+  dest.W(res);
+  if (res & 0x8000) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res&0xf000) forg|= flagL;
+  f.W(forg);
+  tick5m2(3);
   return resGO;
 }
 

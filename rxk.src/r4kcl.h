@@ -120,6 +120,13 @@ public:
   virtual int SUB_HL_DE(t_mem code) { return subhl(destHL(), rDE); }
   virtual int TEST_HL(t_mem code) { return test16(rHL); }
   virtual int CP_HL_D(t_mem code);
+  virtual int RLC_BC(t_mem code) { return rot16left(destBC(), rBC); }
+  virtual int RLC_DE(t_mem code) { return rot16left(destDE(), rDE); }
+  virtual int RRC_BC(t_mem code) { return rot16right(destBC(), rBC); }
+  virtual int RRC_DE(t_mem code) { return rot16right(destDE(), rDE); }
+  virtual int XOR_HL_DE(t_mem code) { return xor16(destHL(), rHL, rDE); }
+  virtual int RR_BC(t_mem code) { return rot17right(destBC(), rBC); }
+  virtual int ADD_HL_JK(t_mem code) { return add_hl_ss(rJK); }
   
   // Page ED, m4 mode
   virtual int CBM_N(t_mem code);
