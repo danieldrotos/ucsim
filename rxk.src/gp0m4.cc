@@ -42,6 +42,15 @@ struct dis_entry disass_p0m4[]=
     { 0x54, 0xff, ' ', 1, "XOR HL,DE" },
     { 0x63, 0xff, ' ', 1, "RR BC" },
     { 0x65, 0xff, ' ', 1, "ADD HL,JK" },
+    { 0x81, 0xff, ' ', 1, "LD HL,BC" },
+    { 0x91, 0xff, ' ', 1, "LD BC,HL" },
+    { 0xa1, 0xff, ' ', 1, "LD HL,DE" },
+    { 0x82, 0xff, ' ', 4, "LD (%l),HL" },
+    { 0x82, 0xff, ' ', 4, "LD HL,(%l)" },
+    { 0x83, 0xff, ' ', 3, "LD (%w),BCDE" },
+    { 0x84, 0xff, ' ', 3, "LD (%w),JKHL" },
+    { 0x93, 0xff, ' ', 3, "LD BCDE,(%w)" },
+    { 0x94, 0xff, ' ', 3, "LD JKHL,(%w)" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };

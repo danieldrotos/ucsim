@@ -204,6 +204,14 @@ cl_rxk::ld_r_iIRd(class cl_cell8 &op)
 }
 
 int
+cl_rxk::ld_hl_op(u16_t op)
+{
+  destHL().W(op);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_rxk::LD_iBC_A(t_mem code)
 {
   class cl_cell8 &c= dest8iBC();
@@ -979,10 +987,10 @@ cl_r4k::LDF_IRR_iLMN(t_mem code)
   t_addr a= fetch();
   a<<= 8; a+= fetch();
   a<<= 8; a+= fetch();
-  v+= rom->read(a); a= (a+1)&0xffffff;
-  v<<= 8; v+= rom->read(a); a= (a+1)&0xffffff;
-  v<<= 8; v+= rom->read(a); a= (a+1)&0xffffff;
-  v<<= 8; v+= rom->read(a);
+  v+= mem->phread(a); a= (a+1)&0xffffff;
+  v<<= 8; v+= mem->phread(a); a= (a+1)&0xffffff;
+  v<<= 8; v+= mem->phread(a); a= (a+1)&0xffffff;
+  v<<= 8; v+= mem->phread(a);
   vc.rd+= 4;
   destIRR()->write(v);
   tick(18);
@@ -996,12 +1004,41 @@ cl_r4k::LDF_iLMN_IRR(t_mem code)
   t_addr a= fetch();
   a<<= 8; a+= fetch();
   a<<= 8; a+= fetch();
-  rom->write(a++, v>>24); a&= 0xffffff;
-  rom->write(a++, v>>16); a&= 0xffffff;
-  rom->write(a++, v>>8 ); a&= 0xffffff;
-  rom->write(a  , v    );
+  mem->phwrite(a++, v>>24); a&= 0xffffff;
+  mem->phwrite(a++, v>>16); a&= 0xffffff;
+  mem->phwrite(a++, v>>8 ); a&= 0xffffff;
+  mem->phwrite(a  , v    );
   vc.wr+= 4;
   tick(22);
+  return resGO;
+}
+
+int
+cl_r4k::LDF_iLMN_HL(t_mem code)
+{
+  u16_t v= rHL;
+  t_addr a= fetch();
+  a<<= 8; a+= fetch();
+  a<<= 8; a+= fetch();
+  mem->phwrite(a++, v>>8 ); a&= 0xffffff;
+  mem->phwrite(a  , v    );
+  vc.wr+= 2;
+  tick5m2(14);
+  return resGO;
+}
+
+int
+cl_r4k::LDF_HL_iLMN(t_mem code)
+{
+  u16_t v= 0;
+  t_addr a= fetch();
+  a<<= 8; a+= fetch();
+  a<<= 8; a+= fetch();
+  v+= mem->phread(a); a= (a+1)&0xffffff;
+  v<<= 8; v+= mem->phread(a);
+  vc.rd+= 2;
+  destHL().W(v);
+  tick(12);
   return resGO;
 }
 
@@ -1191,6 +1228,45 @@ cl_r4k::LD_A_HTR(t_mem code)
 {
   cA.W(rHTR);
   tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::LD_BC_HL(t_mem code)
+{
+  destBC().W(rHL);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_r4k::ld32_imn(u32_t op)
+{
+  u16_t a= fetch();
+  a+= 256*fetch();
+  rwas->write(a++, op); op>>= 8;
+  rwas->write(a++, op); op>>= 8;
+  rwas->write(a++, op); op>>= 8;
+  rwas->write(a  , op);
+  vc.wr+= 4;
+  tick(18);
+  return resGO;
+}
+
+int
+cl_r4k::ld_r32_imn(class cl_cell32 &dest)
+{
+  u16_t a= fetch();
+  a+= 256*fetch();
+  u32_t v= 0;
+  u8_t b;
+  b= rwas->read(a++); v|= b<<0;
+  b= rwas->read(a++); v|= b<<8;
+  b= rwas->read(a++); v|= b<<16;
+  b= rwas->read(a  ); v|= b<<24;
+  dest.write(v);
+  vc.rd+= 4;
+  tick(14);
   return resGO;
 }
 
