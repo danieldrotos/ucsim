@@ -34,7 +34,8 @@ struct dis_entry disass_p0m4[]=
     { 0x45, 0xff, ' ', 1, "SUB HL,JK" },
     { 0x55, 0xff, ' ', 1, "SUB HL,DE" },
     { 0x4c, 0xff, ' ', 1, "TEST HL" },
-
+    { 0x48, 0xff, ' ', 2, "CP HL,%d" },
+    
     { 0, 0, 0, 0, 0, 0, 0 }
   };
   

@@ -1102,7 +1102,7 @@ cl_rxk::cp8(u8_t op1, u8_t op2)
   u8_t res= op1-op2;
   if (op1<op2) forg|= (flagS|flagC);
   if (op1==op2) forg|= flagZ;
-  if ( 0x80 & ( (res&op1&~op2) | (~res&~op1&op2) ) ) forg|= flagV;
+  if ( 0x80 & ( (~res&op1&~op2) | (res&~op1&op2) ) ) forg|= flagV;
   f.W(forg);
   tick5m2(1);
   return resGO;
@@ -1116,7 +1116,7 @@ cl_rxk::cp16(u16_t op1, u16_t op2)
   u16_t res= op1-op2;
   if (op1<op2) forg|= (flagS|flagC);
   if (op1==op2) forg|= flagZ;
-  if ( 0x8000 & ( (res&op1&~op2) | (~res&~op1&op2) ) ) forg|= flagV;
+  if ( 0x8000 & ( (~res&op1&~op2) | (res&~op1&op2) ) ) forg|= flagV;
   f.W(forg);
   tick(3);
   return resGO;
@@ -1308,7 +1308,6 @@ cl_r4k::RRC_8_IRR(t_mem code)
   return resGO;
 }
 
-
 int
 cl_r4k::RRB_A_IRR(t_mem code)
 {
@@ -1321,5 +1320,15 @@ cl_r4k::RRB_A_IRR(t_mem code)
   tick(3);
   return resGO;
 }
+
+int
+cl_r4k::CP_HL_D(t_mem code)
+{
+  i8_t d= fetch();
+  i16_t d16;
+  d16= d;
+  return cp16(rHL, d16);
+}
+
 
 /* End of rxk.src/ialu.cc */

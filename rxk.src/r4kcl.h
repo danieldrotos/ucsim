@@ -119,6 +119,7 @@ public:
   virtual int SUB_HL_JK(t_mem code) { return subhl(destHL(), rJK); }
   virtual int SUB_HL_DE(t_mem code) { return subhl(destHL(), rDE); }
   virtual int TEST_HL(t_mem code) { return test16(rHL); }
+  virtual int CP_HL_D(t_mem code);
   
   // Page ED, m4 mode
   virtual int CBM_N(t_mem code);
