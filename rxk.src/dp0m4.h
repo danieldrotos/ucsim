@@ -59,6 +59,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_iMN_JKHL	instruction_4k84
 #define LD_BCDE_iMN	instruction_4k93
 #define LD_JKHL_iMN	instruction_4k94
+#define LD_HL_iPWd	instruction_4k85
+#define LD_HL_iPXd	instruction_4k95
+#define LD_HL_iPYd	instruction_4ka5
+#define LD_HL_iPZd	instruction_4kb5
+#define LD_iPWd_HL	instruction_4k86
+#define LD_iPXd_HL	instruction_4k96
+#define LD_iPYd_HL	instruction_4ka6
+#define LD_iPZd_HL	instruction_4kb6
 
 #endif
 

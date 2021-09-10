@@ -1270,5 +1270,33 @@ cl_r4k::ld_r32_imn(class cl_cell32 &dest)
   return resGO;
 }
 
+int
+cl_r4k::ld_hl_ipsd(u32_t ps)
+{
+  u8_t d= fetch();
+  u32_t a= px8se(ps, d);
+  u8_t h, l;
+  l= mem->pxread(a);
+  a= px8se(ps, d+1);
+  h= mem->pxread(a);
+  destHL().W(h*256+l);
+  vc.rd+= 2;
+  tick5p1(8);
+  return resGO;
+}
+
+int
+cl_r4k::ld_ipsd_hl(u32_t ps)
+{
+  u8_t d= fetch();
+  u32_t a= px8se(ps, d);
+  mem->pxwrite(a, rHL);
+  a= px8se(ps, d+1);
+  mem->pxwrite(a, rHL>>8);
+  vc.wr+= 2;
+  tick5p1(10);
+  return resGO;
+}
+
 
 /* End of rxk.src/imove.cc */
