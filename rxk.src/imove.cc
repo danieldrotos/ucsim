@@ -1043,6 +1043,17 @@ cl_r4k::LDF_HL_iLMN(t_mem code)
 }
 
 int
+cl_r4k::LDF_ilmn_A(t_mem code)
+{
+  u32_t a= fetch();
+  a+= fetch()*256;
+  a+= fetch()*256*256;
+  mem->phwrite(a, rA);
+  tick(11);
+  return resGO;
+}
+
+int
 cl_r4k::ld_irr_ips_hl(t_mem code)
 {
   class cl_cell32 *ps= &cPW;
@@ -1298,5 +1309,61 @@ cl_r4k::ld_ipsd_hl(u32_t ps)
   return resGO;
 }
 
+int
+cl_r4k::LD_imn_JK(t_mem code)
+{
+  u16_t a= fetch();
+  a+= fetch()*256;
+  rwas->write(a, rK);
+  a++;
+  rwas->write(a, rJ);
+  vc.wr+= 2;
+  tick(12);
+  return resGO;
+}
+
+int
+cl_r4k::ld_a_ipshl(u32_t ps)
+{
+  u32_t a= px16se(ps, rHL);
+  u8_t v= mem->pxread(a);
+  vc.rd++;
+  destA().W(v);
+  tick5p1(5);
+  return resGO;
+}
+
+int
+cl_r4k::ld_ipshl_a(u32_t ps)
+{
+  u32_t a= px16se(ps, rHL);
+  mem->pxwrite(a, rA);
+  vc.wr++;
+  tick5p1(6);
+  return resGO;
+}
+
+int
+cl_r4k::ld_a_ipsd(u32_t ps)
+{
+  u8_t d= fetch();
+  u32_t a= px8se(ps, d);
+  u8_t v= mem->pxread(a);
+  vc.rd++;
+  destA().W(v);
+  tick5p1(6);
+  return resGO;
+}
+
+int
+cl_r4k::ld_ipsd_a(u32_t ps)
+{
+  u8_t d= fetch();
+  u32_t a= px8se(ps, d);
+  mem->pxwrite(a, rA);
+  vc.wr++;
+  tick5p1(7);
+  return resGO;
+}
 
 /* End of rxk.src/imove.cc */

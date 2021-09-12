@@ -101,6 +101,10 @@ public:
   virtual int ld_r32_imn(class cl_cell32 &dest);		// 2f,15t,4r,0w
   virtual int ld_hl_ipsd(u32_t ps);				// 1f,9t,2r,0w
   virtual int ld_ipsd_hl(u32_t ps);				// 1f,10t,0r,2w
+  virtual int ld_a_ipshl(u32_t ps);				// 0f,6t,1r,0w
+  virtual int ld_ipshl_a(u32_t ps);				// 0f,7t,0r,1w
+  virtual int ld_a_ipsd(u32_t ps);				// 1f,6t,1r,0w
+  virtual int ld_ipsd_a(u32_t ps);				// 1f,8t,0r,1w
   
   // arith
   virtual int subhl(class cl_cell16 &dest, u16_t op);
@@ -150,6 +154,26 @@ public:
   virtual int LD_iPXd_HL(t_mem code) { return ld_ipsd_hl(rPX); }
   virtual int LD_iPYd_HL(t_mem code) { return ld_ipsd_hl(rPY); }
   virtual int LD_iPZd_HL(t_mem code) { return ld_ipsd_hl(rPZ); }
+  virtual int LLJP_lxpcmn(t_mem code);
+  virtual int LD_imn_JK(t_mem code);
+  virtual int LDF_ilmn_A(t_mem code);
+  virtual int LD_A_iPWHL(t_mem code) { return ld_a_ipshl(rPW); }
+  virtual int LD_A_iPXHL(t_mem code) { return ld_a_ipshl(rPX); }
+  virtual int LD_A_iPYHL(t_mem code) { return ld_a_ipshl(rPY); }
+  virtual int LD_A_iPZHL(t_mem code) { return ld_a_ipshl(rPZ); }
+  virtual int LD_iPWHL_HL(t_mem code) { return ld_ipshl_a(rPW); }
+  virtual int LD_iPXHL_HL(t_mem code) { return ld_ipshl_a(rPX); }
+  virtual int LD_iPYHL_HL(t_mem code) { return ld_ipshl_a(rPY); }
+  virtual int LD_iPZHL_HL(t_mem code) { return ld_ipshl_a(rPZ); }
+  virtual int LD_A_iPWd(t_mem code) { return ld_a_ipsd(rPW); }
+  virtual int LD_A_iPXd(t_mem code) { return ld_a_ipsd(rPX); }
+  virtual int LD_A_iPYd(t_mem code) { return ld_a_ipsd(rPY); }
+  virtual int LD_A_iPZd(t_mem code) { return ld_a_ipsd(rPZ); }
+  virtual int LD_iPWd_A(t_mem code) { return ld_ipsd_a(rPW); }
+  virtual int LD_iPXd_A(t_mem code) { return ld_ipsd_a(rPX); }
+  virtual int LD_iPYd_A(t_mem code) { return ld_ipsd_a(rPY); }
+  virtual int LD_iPZd_A(t_mem code) { return ld_ipsd_a(rPZ); }
+  virtual int LLCALL_lxpcmn(t_mem code);
   
   // Page ED, m4 mode
   virtual int CBM_N(t_mem code);

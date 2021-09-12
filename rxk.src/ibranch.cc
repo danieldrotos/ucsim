@@ -397,5 +397,47 @@ cl_r4k::LLCALL_iJKHL(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::LLJP_lxpcmn(t_mem code)
+{
+  u16_t mn, lxpc;
+  mn= fetch();
+  mn+= fetch()*256;
+  lxpc= fetch();
+  lxpc+= fetch()*256;
+  mem->set_lxpc(lxpc&0xffff);
+  PC= mn;
+  tick(11);
+  return resGO;
+}
+
+int
+cl_r4k::LLCALL_lxpcmn(t_mem code)
+{
+  u16_t mn, lxpc;
+
+  lxpc= rXPC;
+  cSP.W(rSP-1);
+  rom->write(rSP, lxpc>>8);
+  cSP.W(rSP-1);
+  rom->write(rSP, lxpc);
+  mn= PC;
+  cSP.W(rSP-1);
+  rom->write(rSP, mn>>8);
+  cSP.W(rSP-1);
+  rom->write(rSP, mn);
+  vc.wr+= 4;
+  
+  mn= fetch();
+  mn+= fetch()*256;
+  lxpc= fetch();
+  lxpc+= fetch()*256;
+
+  mem->set_lxpc(lxpc&0xffff);
+  PC= mn;
+  tick(11);
+  return resGO;
+}
+
 
 /* End of rxk.src/ibranch.cc */
