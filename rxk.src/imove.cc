@@ -1066,6 +1066,64 @@ cl_r4k::LDF_A_ilmn(t_mem code)
 }
 
 int
+cl_r4k::ldf_pd_ilmn(class cl_cell32 &pd)
+{
+  u32_t a= fetch();
+  a+= fetch()*256;
+  a+= fetch()*256*256;
+  u32_t v= mem->phread(a++);
+  v+= mem->phread(a++)<<8;
+  v+= mem->phread(a++)<<16;
+  v+= mem->phread(a  )<<24;
+  vc.rd+= 4;
+  pd.W(v);
+  tick(18);
+  return resGO;
+}
+
+int
+cl_r4k::ldf_ilmn_ps(u32_t ps)
+{
+  u32_t a= fetch();
+  a+= fetch()*256;
+  a+= fetch()*256*256;
+  mem->phwrite(a++, ps);
+  mem->phwrite(a++, ps>>8);
+  mem->phwrite(a++, ps>>16);
+  mem->phwrite(a  , ps>>24);
+  vc.wr+= 4;
+  tick(22);
+  return resGO;
+}
+
+int
+cl_r4k::ldf_rr_ilmn(class cl_cell16 &rr)
+{
+  u32_t a= fetch();
+  a+= fetch()*256;
+  a+= fetch()*256*256;
+  u16_t v= mem->phread(a++);
+  v+= mem->phread(a++)<<8;
+  vc.rd+= 2;
+  rr.W(v);
+  tick(14);
+  return resGO;
+}
+
+int
+cl_r4k::ldf_ilmn_rr(u16_t rr)
+{
+  u32_t a= fetch();
+  a+= fetch()*256;
+  a+= fetch()*256*256;
+  mem->phwrite(a++, rr);
+  mem->phwrite(a  , rr>>8);
+  vc.wr+= 2;
+  tick(16);
+  return resGO;
+}
+
+int
 cl_r4k::ld_irr_ips_hl(t_mem code)
 {
   class cl_cell32 *ps= &cPW;
@@ -1489,6 +1547,85 @@ cl_r4k::CLR_HL(t_mem code)
 {
   destHL().W(0);
   tick(1);
+  return resGO;
+}
+
+int
+cl_r4k::LD_IRR_iSP_HL(t_mem code)
+{
+  u32_t v;
+  u16_t a= rSP+rHL;
+  v= rom->read(a++);
+  v+= rom->read(a++)*256;
+  v+= rom->read(a++)*256*256;
+  v+= rom->read(a)*256*256*256;
+  destIRR()->W(v);
+  tick5p1(13);
+  return resGO;
+}
+
+int
+cl_r4k::ldl_pd_ispn(class cl_cell32 &pd)
+{
+  u16_t a= rSP+fetch();
+  u16_t v= rom->read(a++);
+  v+= rom->read(a)*256;
+  vc.rd+= 2;
+  pd.W(0xffff0000 + v);
+  tick5p1(10);
+  return resGO;
+}
+
+int
+cl_r4k::ld_pd_ispn(class cl_cell32 &pd)
+{
+  u16_t a= rSP+fetch();
+  u32_t v= rom->read(a++);
+  v+= rom->read(a++)*256;
+  v+= rom->read(a++)*256*256;
+  v+= rom->read(a++)*256*256*256;
+  vc.rd+= 4;
+  pd.W(v);
+  tick5p1(14);
+  return resGO;
+}
+
+int
+cl_r4k::ld_ispn_ps(u32_t ps)
+{
+  u16_t a= rSP + fetch();
+  rom->write(a++, ps);
+  rom->write(a++, ps>>8);
+  rom->write(a++, ps>>16);
+  rom->write(a  , ps>>24);
+  vc.wr+= 4;
+  tick5p1(18);
+  return resGO;
+}
+
+int
+cl_r4k::ld_hl_ipsbc(u32_t ps)
+{
+  u16_t v;
+  u32_t a= px16(ps, rBC);
+  v= mem->pxread(a);
+  a= px16(ps, rBC+1);
+  v+= mem->pxread(a)*256;
+  vc.rd+= 2;
+  destHL().W(v);
+  tick5p1(9);
+  return resGO;
+}
+
+int
+cl_r4k::ld_ipdbc_hl(u32_t pd)
+{
+  u32_t a= px16(pd, rBC);
+  mem->pxwrite(a, rHL);
+  a= px16(pd, rBC+1);
+  mem->pxwrite(a, rHL>>8);
+  vc.wr+= 2;
+  tick5p1(11);
   return resGO;
 }
 

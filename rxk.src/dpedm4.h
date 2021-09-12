@@ -73,6 +73,42 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SETUSRP		instruction_ed_b5
 #define SETSYSP		instruction_ed_b1
 #define LLCALL_iJKHL	instruction_ed_fa
+#define LDL_PW_iSPn	instruction_ed_03
+#define LDL_PX_iSPn	instruction_ed_13
+#define LDL_PY_iSPn	instruction_ed_23
+#define LDL_PZ_iSPn	instruction_ed_33
+#define LD_PW_iSPn	instruction_ed_04
+#define LD_PX_iSPn	instruction_ed_14
+#define LD_PY_iSPn	instruction_ed_24
+#define LD_PZ_iSPn	instruction_ed_34
+#define LD_iSPn_PW	instruction_ed_05
+#define LD_iSPn_PX	instruction_ed_15
+#define LD_iSPn_PY	instruction_ed_25
+#define LD_iSPn_PZ	instruction_ed_35
+#define LD_HL_iPWBC	instruction_ed_06
+#define LD_HL_iPXBC	instruction_ed_16
+#define LD_HL_iPYBC	instruction_ed_26
+#define LD_HL_iPZBC	instruction_ed_36
+#define LD_iPWBC_HL	instruction_ed_07
+#define LD_iPXBC_HL	instruction_ed_17
+#define LD_iPYBC_HL	instruction_ed_27
+#define LD_iPZBC_HL	instruction_ed_37
+#define LDF_PW_ilmn	instruction_ed_08
+#define LDF_PX_ilmn	instruction_ed_18
+#define LDF_PY_ilmn	instruction_ed_28
+#define LDF_PZ_ilmn	instruction_ed_38
+#define LDF_ilmn_PW	instruction_ed_09
+#define LDF_ilmn_PX	instruction_ed_19
+#define LDF_ilmn_PY	instruction_ed_29
+#define LDF_ilmn_PZ	instruction_ed_39
+#define LDF_BC_ilmn	instruction_ed_0a
+#define LDF_DE_ilmn	instruction_ed_1a
+#define LDF_IX_ilmn	instruction_ed_2a
+#define LDF_IY_ilmn	instruction_ed_3a
+#define LDF_ilmn_BC	instruction_ed_0b
+#define LDF_ilmn_DE	instruction_ed_1b
+#define LDF_ilmn_IX	instruction_ed_2b
+#define LDF_ilmn_IY	instruction_ed_3b
 
 #endif
 
