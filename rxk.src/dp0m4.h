@@ -92,6 +92,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_LXPC_HL	instruction_4k97
 #define LD_HL_LXPC	instruction_4k9f
 #define JRE_ee		instruction_4k98
+#define JR_GT_e		instruction_4ka0
+#define JR_LT_e		instruction_4kb0
+#define JR_GTU_e	instruction_4ka8
+#define JR_V_e		instruction_4kb8
 
 #endif
 

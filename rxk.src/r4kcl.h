@@ -118,6 +118,7 @@ public:
   virtual int lljp_cx(t_mem code);				// 4f,14t,0w,0r
   virtual int lljp_cc(t_mem code);				// 4f,14t,0w,0r
   virtual int jre_cx_cc(bool cond);				// 2f,9t,0w,0r
+  virtual int jr_cx_e(bool cond);				// 1f,4t,0w,0r
   
   virtual void mode3k(void);
   virtual void mode4k(void);
@@ -180,7 +181,11 @@ public:
   virtual int LD_LXPC_HL(t_mem code);
   virtual int LD_HL_LXPC(t_mem code);
   virtual int JRE_ee(t_mem code);
-  
+  virtual int JR_GT_e(t_mem code) { return jr_cx_e(cond_GT(rF)); }
+  virtual int JR_LT_e(t_mem code) { return jr_cx_e(cond_LT(rF)); }
+  virtual int JR_GTU_e(t_mem code) { return jr_cx_e(cond_GTU(rF)); }
+  virtual int JR_V_e(t_mem code) { return jr_cx_e(cond_V(rF)); }
+
   // Page ED, m4 mode
   virtual int CBM_N(t_mem code);
   virtual int LD_PW_iHTR_HL(t_mem code) { return ld_pd_ihtr_hl(cPW); }

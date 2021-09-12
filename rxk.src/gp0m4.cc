@@ -84,6 +84,10 @@ struct dis_entry disass_p0m4[]=
     { 0x97, 0xff, ' ', 1, "LD LXPC,HL" },
     { 0x9f, 0xff, ' ', 1, "LD HL,LXPC" },
     { 0x98, 0xff, ' ', 3, "JRE %R" },
+    { 0xa0, 0xff, ' ', 2, "JR GT,%r" },
+    { 0xb0, 0xff, ' ', 2, "JR LT,%r" },
+    { 0xa8, 0xff, ' ', 2, "JR GTU,%r" },
+    { 0xb8, 0xff, ' ', 2, "JR V,%r" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };
