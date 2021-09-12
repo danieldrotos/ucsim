@@ -405,7 +405,7 @@ cl_r4k::LLJP_lxpcmn(t_mem code)
   mn+= fetch()*256;
   lxpc= fetch();
   lxpc+= fetch()*256;
-  mem->set_lxpc(lxpc&0xffff);
+  LXPC->W(lxpc);
   PC= mn;
   tick(11);
   return resGO;
@@ -415,17 +415,15 @@ int
 cl_r4k::LLCALL_lxpcmn(t_mem code)
 {
   u16_t mn, lxpc;
-
+  u16_t a= rSP;
+  
   lxpc= rXPC;
-  cSP.W(rSP-1);
-  rom->write(rSP, lxpc>>8);
-  cSP.W(rSP-1);
-  rom->write(rSP, lxpc);
+  rom->write(--a, lxpc>>8);
+  rom->write(--a, lxpc);
   mn= PC;
-  cSP.W(rSP-1);
-  rom->write(rSP, mn>>8);
-  cSP.W(rSP-1);
-  rom->write(rSP, mn);
+  rom->write(--a, mn>>8);
+  rom->write(--a, mn);
+  cSP.W(a);
   vc.wr+= 4;
   
   mn= fetch();
@@ -433,7 +431,7 @@ cl_r4k::LLCALL_lxpcmn(t_mem code)
   lxpc= fetch();
   lxpc+= fetch()*256;
 
-  mem->set_lxpc(lxpc&0xffff);
+  LXPC->W(lxpc);
   PC= mn;
   tick(11);
   return resGO;
