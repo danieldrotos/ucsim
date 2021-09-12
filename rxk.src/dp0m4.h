@@ -104,7 +104,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_JKHL_d	instruction_4ka4
 #define MULU		instruction_4ka7
 #define LD_JK_mn	instruction_4ka9
-
+#define LD_DE_HL	instruction_4kb1
+#define EX_BC_HL	instruction_4kb3
+#define EX_JKHL_BCDE	instruction_4kb4
+#define EX_JK_HL	instruction_4kb9
+#define CLR_HL		instruction_4kbf
 
 #endif
 

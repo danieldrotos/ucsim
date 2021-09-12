@@ -194,6 +194,11 @@ public:
   virtual int LD_JKHL_d(t_mem code);
   virtual int MULU(t_mem code);
   virtual int LD_JK_mn(t_mem code);
+  virtual int LD_DE_HL(t_mem code);
+  virtual int EX_BC_HL(t_mem code);
+  virtual int EX_JKHL_BCDE(t_mem code);
+  virtual int EX_JK_HL(t_mem code);
+  virtual int CLR_HL(t_mem code);
   
   // Page ED, m4 mode
   virtual int CBM_N(t_mem code);

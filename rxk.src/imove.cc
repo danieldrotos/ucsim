@@ -1441,5 +1441,56 @@ cl_r4k::LD_JK_mn(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::LD_DE_HL(t_mem code)
+{
+  destDE().W(rHL);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_r4k::EX_BC_HL(t_mem code)
+{
+  class cl_cell16 &hl= destHL();
+  u16_t t;
+  t= rBC;
+  cBC.W(hl.read());
+  hl.W(t);
+  tick5p12(1);
+  return resGO;
+}
+
+int
+cl_r4k::EX_JKHL_BCDE(t_mem code)
+{
+  u32_t t;
+  t= rJKHL;
+  cJKHL.W(rBCDE);
+  cBCDE.W(t);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_r4k::EX_JK_HL(t_mem code)
+{
+  class cl_cell16 &hl= destHL();
+  u16_t t;
+  t= rJK;
+  cJK.W(hl.read());
+  hl.W(t);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_r4k::CLR_HL(t_mem code)
+{
+  destHL().W(0);
+  tick(1);
+  return resGO;
+}
+
 
 /* End of rxk.src/imove.cc */
