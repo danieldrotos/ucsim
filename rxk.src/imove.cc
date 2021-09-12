@@ -1409,5 +1409,37 @@ cl_r4k::LD_HL_LXPC(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::LD_BCDE_d(t_mem code)
+{
+  i8_t d= fetch();
+  i32_t v;
+  v= d;
+  destBCDE().W(v);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::LD_JKHL_d(t_mem code)
+{
+  i8_t d= fetch();
+  i32_t v;
+  v= d;
+  destJKHL().W(v);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::LD_JK_mn(t_mem code)
+{
+  u16_t v= fetch();
+  v+= fetch()*256;
+  destJK().W(v);
+  tick(5);
+  return resGO;
+}
+
 
 /* End of rxk.src/imove.cc */

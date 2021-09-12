@@ -96,6 +96,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JR_LT_e		instruction_4kb0
 #define JR_GTU_e	instruction_4ka8
 #define JR_V_e		instruction_4kb8
+#define JP_GT_mn	instruction_4ka2
+#define JP_LT_mn	instruction_4kb2
+#define JP_GTU_mn	instruction_4kaa
+#define JP_V_mn		instruction_4kba
+#define LD_BCDE_d	instruction_4ka3
+#define LD_JKHL_d	instruction_4ka4
+#define MULU		instruction_4ka7
+#define LD_JK_mn	instruction_4ka9
+
 
 #endif
 
