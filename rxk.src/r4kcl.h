@@ -82,6 +82,7 @@ public:
   virtual class cl_cell32 &destPZ(void) { return altd?caPZ:cPZ; }
   virtual class cl_cell32 &destBCDE(void) { return altd?caBCDE:cBCDE; }
   virtual class cl_cell32 &destJKHL(void) { return altd?caJKHL:cJKHL; }
+  virtual class cl_cell16 &destJK(void) { return altd?caJK:cJK; }
   
   virtual void print_regs(class cl_console_base *con);
 
@@ -156,7 +157,9 @@ public:
   virtual int LD_iPZd_HL(t_mem code) { return ld_ipsd_hl(rPZ); }
   virtual int LLJP_lxpcmn(t_mem code);
   virtual int LD_imn_JK(t_mem code);
+  virtual int LD_JK_imn(t_mem code);
   virtual int LDF_ilmn_A(t_mem code);
+  virtual int LDF_A_ilmn(t_mem code);
   virtual int LD_A_iPWHL(t_mem code) { return ld_a_ipshl(rPW); }
   virtual int LD_A_iPXHL(t_mem code) { return ld_a_ipshl(rPX); }
   virtual int LD_A_iPYHL(t_mem code) { return ld_a_ipshl(rPY); }
@@ -174,6 +177,9 @@ public:
   virtual int LD_iPYd_A(t_mem code) { return ld_ipsd_a(rPY); }
   virtual int LD_iPZd_A(t_mem code) { return ld_ipsd_a(rPZ); }
   virtual int LLCALL_lxpcmn(t_mem code);
+  virtual int LD_LXPC_HL(t_mem code);
+  virtual int LD_HL_LXPC(t_mem code);
+  virtual int JRE_ee(t_mem code);
   
   // Page ED, m4 mode
   virtual int CBM_N(t_mem code);
