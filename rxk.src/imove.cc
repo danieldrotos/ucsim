@@ -1725,5 +1725,16 @@ cl_r4k::push_ps(u32_t ps)
   return resGO; 
 }
 
+int
+cl_r4k::LD_HL_iSPHL(t_mem code)
+{
+  u16_t a= rSP + rHL;
+  u16_t v= rom->read(a++);
+  v+= rom->read(a)*256;
+  destHL().W(v);
+  tick5p1(9);
+  return resGO;
+}
+
 
 /* End of rxk.src/imove.cc */

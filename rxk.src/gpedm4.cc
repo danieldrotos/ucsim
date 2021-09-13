@@ -139,6 +139,12 @@ struct dis_entry disass_pedm4[]=
     { 0xd5, 0xff, ' ', 2, "PUSH PX" },
     { 0xe5, 0xff, ' ', 2, "PUSH PY" },
     { 0xf5, 0xff, ' ', 2, "PUSH PZ" },
+    { 0xc6, 0xff, ' ', 2, "ADD JKHL,BCDE" },
+    { 0xd6, 0xff, ' ', 2, "SUB JKHL,BCDE" },
+    { 0xe6, 0xff, ' ', 2, "AND JKHL,BCDE" },
+    { 0xf6, 0xff, ' ', 2, "OR JKHL,BCDE" },
+    { 0xee, 0xff, ' ', 2, "XOR JKHL,BCDE" },
+    { 0xfe, 0xff, ' ', 2, "LD HL,(SP+HL)" },
 
     { 0, 0, 0, 0, 0, 0, 0 }
   };

@@ -328,6 +328,12 @@ public:
   virtual int PUSH_PX(t_mem code) { return push_ps(rPX); }
   virtual int PUSH_PY(t_mem code) { return push_ps(rPY); }
   virtual int PUSH_PZ(t_mem code) { return push_ps(rPZ); }
+  virtual int ADD_JKHL_BCDE(t_mem code);
+  virtual int SUB_JKHL_BCDE(t_mem code);
+  virtual int AND_JKHL_BCDE(t_mem code);
+  virtual int OR_JKHL_BCDE(t_mem code);
+  virtual int XOR_JKHL_BCDE(t_mem code);
+  virtual int LD_HL_iSPHL(t_mem code);
   
   // Page DD/FD
   virtual int LD_A_iIRA(t_mem code);

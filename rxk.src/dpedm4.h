@@ -138,6 +138,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PUSH_PX		instruction_ed_d5
 #define PUSH_PY		instruction_ed_e5
 #define PUSH_PZ		instruction_ed_f5
+#define ADD_JKHL_BCDE	instruction_ed_c6
+#define SUB_JKHL_BCDE	instruction_ed_d6
+#define AND_JKHL_BCDE	instruction_ed_e6
+#define OR_JKHL_BCDE	instruction_ed_f6
+#define XOR_JKHL_BCDE	instruction_ed_ee
+#define LD_HL_iSPHL	instruction_ed_fe
+
 
 #endif
 

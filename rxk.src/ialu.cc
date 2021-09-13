@@ -1421,5 +1421,78 @@ cl_r4k::MULU(t_mem code)
   return resGO;
 }
 
+int
+cl_r4k::ADD_JKHL_BCDE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagC;
+  u64_t v= rJKHL + rBCDE;
+  destJKHL().W(v);
+  if (v > 0xffffffff)
+    forg|= flagC;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::SUB_JKHL_BCDE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagC;
+  u32_t v= rJKHL - rBCDE;
+  if (rJKHL < rBCDE)
+    forg|= flagC;
+  destJKHL().W(v);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::AND_JKHL_BCDE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  u32_t v= rJKHL & rBCDE;
+  if (v & 0x80000000) forg|= flagS;
+  if (v & 0xf0000000) forg|= flagL;
+  if (!v) forg|= flagZ;
+  destJKHL().W(v);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+  
+int
+cl_r4k::OR_JKHL_BCDE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  u32_t v= rJKHL | rBCDE;
+  if (v & 0x80000000) forg|= flagS;
+  if (v & 0xf0000000) forg|= flagL;
+  if (!v) forg|= flagZ;
+  destJKHL().W(v);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+  
+int
+cl_r4k::XOR_JKHL_BCDE(t_mem code)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  u32_t v= rJKHL ^ rBCDE;
+  if (v & 0x80000000) forg|= flagS;
+  if (v & 0xf0000000) forg|= flagL;
+  if (!v) forg|= flagZ;
+  destJKHL().W(v);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+  
 
 /* End of rxk.src/ialu.cc */
