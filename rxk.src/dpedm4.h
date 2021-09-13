@@ -109,6 +109,35 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDF_ilmn_DE	instruction_ed_1b
 #define LDF_ilmn_IX	instruction_ed_2b
 #define LDF_ilmn_IY	instruction_ed_3b
+#define LD_PW_klmn	instruction_ed_0c
+#define LD_PX_klmn	instruction_ed_1c
+#define LD_PY_klmn	instruction_ed_2c
+#define LD_PZ_klmn	instruction_ed_3c
+#define LDL_PW_mn	instruction_ed_0d
+#define LDL_PX_mn	instruction_ed_1d
+#define LDL_PY_mn	instruction_ed_2d
+#define LDL_PZ_mn	instruction_ed_3d
+#define CONVC_PW	instruction_ed_0e
+#define CONVC_PX	instruction_ed_1e
+#define CONVC_PY	instruction_ed_2e
+#define CONVC_PZ	instruction_ed_3e
+#define CONVD_PW	instruction_ed_0f
+#define CONVD_PX	instruction_ed_1f
+#define CONVD_PY	instruction_ed_2f
+#define CONVD_PZ	instruction_ed_3f
+#define CP_JKHL_BCDE	instruction_ed_58
+#define EX_aBC_HL	instruction_ed_74
+#define EX_aJK_HL	instruction_ed_7c
+#define COPY		instruction_ed_80
+#define COPYR		instruction_ed_88
+#define POP_PW		instruction_ed_c1
+#define POP_PX		instruction_ed_d1
+#define POP_PY		instruction_ed_e1
+#define POP_PZ		instruction_ed_f1
+#define PUSH_PW		instruction_ed_c5
+#define PUSH_PX		instruction_ed_d5
+#define PUSH_PY		instruction_ed_e5
+#define PUSH_PZ		instruction_ed_f5
 
 #endif
 

@@ -1190,6 +1190,20 @@ cl_rxk::cp16(u16_t op1, u16_t op2)
 }
 
 int
+cl_rxk::cp32(u32_t op1, u32_t op2)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= rF & ~flagAll;
+  u32_t res= op1-op2;
+  if (op1<op2) forg|= (flagS|flagC);
+  if (op1==op2) forg|= flagZ;
+  if ( 0x80000000 & ( (~res&op1&~op2) | (res&~op1&op2) ) ) forg|= flagV;
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
 cl_rxk::ADD_SP_d(t_mem code)
 {
   i8_t d= fetch();

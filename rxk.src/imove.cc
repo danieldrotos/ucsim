@@ -1629,5 +1629,101 @@ cl_r4k::ld_ipdbc_hl(u32_t pd)
   return resGO;
 }
 
+int
+cl_r4k::ld_pd_klmn(class cl_cell32 &pd)
+{
+  u32_t v= fetch();
+  v+= fetch()<<8;
+  v+= fetch()<<16;
+  v+= fetch()<<24;
+  pd.W(v);
+  tick(11);
+  return resGO;
+}
+
+int
+cl_r4k::ldl_pd_mn(class cl_cell32 &pd)
+{
+  u32_t v= fetch();
+  v+= fetch()<<8;
+  pd.W(0xffff+v);
+  tick(7);
+  return resGO;
+}
+
+int
+cl_r4k::EX_aBC_HL(t_mem code)
+{
+  class cl_cell16 &hl= destHL();
+  u16_t t;
+  t= raBC;
+  caBC.W(hl.read());
+  hl.W(t);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::EX_aJK_HL(t_mem code)
+{
+  class cl_cell16 &hl= destHL();
+  u16_t t;
+  t= raJK;
+  caJK.W(hl.read());
+  hl.W(t);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r4k::copy(int dir)
+{
+  u8_t v;
+  do
+    {
+      v= mem->phread(rPX);
+      mem->phwrite(rPY, v);
+      vc.rd++;
+      vc.wr++;
+      tick(7);
+      cPX.W(rPX+dir);
+      cPY.W(rPY+dir);
+      cBC.W(rBC-1);
+    }
+  while (rBC);
+  tick(5);
+  return resGO;
+}
+
+int
+cl_r4k::pop_pd(class cl_cell32 &pd)
+{
+  u16_t a= rSP;
+  u32_t v;
+  v= rom->read(a++);
+  v+= rom->read(a++)>>8;
+  v+= rom->read(a++)>>16;
+  v+= rom->read(a++)>>24;
+  vc.rd+= 4;
+  pd.W(v);
+  cSP.W(a);
+  tick(12);
+  return resGO;
+}
+
+int
+cl_r4k::push_ps(u32_t ps)
+{
+  u16_t a= rSP;
+  rom->write(--a, ps>>24);
+  rom->write(--a, ps>>16);
+  rom->write(--a, ps>>8);
+  rom->write(--a, ps);
+  vc.wr+= 4;
+  cSP.W(a);
+  tick5p1(17);
+  return resGO; 
+}
+
 
 /* End of rxk.src/imove.cc */
