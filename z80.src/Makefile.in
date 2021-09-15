@@ -83,12 +83,16 @@ tests: $(TEST_OBJ)
 install: all installdirs
 	$(INSTALL) sz80$(EXEEXT) $(DESTDIR)$(bindir)/`echo sz80|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo sz80|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_z80$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_z80|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_z80|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
+	rm -f $(DESTDIR)$(bindir)/sz80$(EXEEXT) $(DESTDIR)$(bindir)/ucsim_z80$(EXEEXT)
 	rm -f $(DESTDIR)$(bindir)/`echo sz80|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_z80|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

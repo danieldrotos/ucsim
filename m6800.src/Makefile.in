@@ -72,13 +72,16 @@ all: checkconf otherlibs m6800.src
 install: all installdirs
 	$(INSTALL) sm6800$(EXEEXT) $(DESTDIR)$(bindir)/`echo sm6800|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo sm6800|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_m6800$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_m6800|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_m6800|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/sm6800
+	rm -f $(DESTDIR)$(bindir)/sm6800 $(DESTDIR)$(bindir)/ucsim_m6800
 	rm -f $(DESTDIR)$(bindir)/`echo sm6800|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_m6800|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

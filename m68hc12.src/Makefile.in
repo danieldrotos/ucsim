@@ -72,13 +72,16 @@ all: checkconf otherlibs m68hc12.src
 install: all installdirs
 	$(INSTALL) sm68hc12$(EXEEXT) $(DESTDIR)$(bindir)/`echo sm68hc12|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo sm68hc12|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_m68hc12$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_m68hc12|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_m68hc12|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/sm68hc12
+	rm -f $(DESTDIR)$(bindir)/sm68hc12 $(DESTDIR)$(bindir)/ucsim_m68hc12
 	rm -f $(DESTDIR)$(bindir)/`echo sm68hc12|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_m68hc12|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

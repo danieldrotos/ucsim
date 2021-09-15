@@ -71,13 +71,16 @@ all: checkconf otherlibs tlcs.src
 install: all installdirs
 	$(INSTALL) stlcs$(EXEEXT) $(DESTDIR)$(bindir)/`echo stlcs|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo stlcs|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_tlcs$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_tlcs|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_tlcs|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/stlcs
+	rm -f $(DESTDIR)$(bindir)/stlcs$(EXEEXT) $(DESTDIR)$(bindir)/ucsim_tlcs$(EXEEXT)
 	rm -f $(DESTDIR)$(bindir)/`echo stlcs|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_tlcs|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

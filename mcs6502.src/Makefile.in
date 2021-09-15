@@ -72,13 +72,16 @@ all: checkconf otherlibs mcs6502.src
 install: all installdirs
 	$(INSTALL) smcs6502$(EXEEXT) $(DESTDIR)$(bindir)/`echo smcs6502|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo smcs6502|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_mcs6502$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_mcs6502|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_mcs6502|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/smcs6502
+	rm -f $(DESTDIR)$(bindir)/smcs6502 $(DESTDIR)$(bindir)/ucsim_mcs6502
 	rm -f $(DESTDIR)$(bindir)/`echo smcs6502|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_mcs6502|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

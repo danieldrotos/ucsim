@@ -42,6 +42,7 @@ install: all installdirs
 	cp $(srcdir)/*.svg $(DESTDIR)$(docdir)
 	cp $(srcdir)/*.jpg $(DESTDIR)$(docdir)
 	cp $(srcdir)/*.fig $(DESTDIR)$(docdir)
+	cp ucsim.1 $(man1dir)
 
 
 # Deleting all the installed files

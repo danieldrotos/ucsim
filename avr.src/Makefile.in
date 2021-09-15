@@ -74,13 +74,16 @@ all: checkconf otherlibs avr.src
 install: all installdirs
 	$(INSTALL) savr$(EXEEXT) $(DESTDIR)$(bindir)/`echo savr|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo savr|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_avr$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_avr|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_avr|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/savr
+	rm -f $(DESTDIR)$(bindir)/savr $(DESTDIR)$(bindir)/ucsim_avr
 	rm -f $(DESTDIR)$(bindir)/`echo savr|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_avr|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

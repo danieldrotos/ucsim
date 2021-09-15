@@ -87,12 +87,15 @@ tests: $(TEST_OBJ)
 install: all installdirs
 	$(INSTALL) spblaze$(EXEEXT) $(DESTDIR)$(bindir)/spblaze$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/spblaze$(EXEEXT)
+	$(INSTALL) ucsim_pblaze$(EXEEXT) $(DESTDIR)$(bindir)/ucsim_pblaze$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/ucsim_pblaze$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
 	rm -f $(DESTDIR)$(bindir)/spblaze$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/ucsim_pblaze$(EXEEXT)
 
 
 # Performing self-test

@@ -68,12 +68,16 @@ tests: $(TEST_OBJ)
 install: all installdirs
 	$(INSTALL) sxa$(EXEEXT) $(DESTDIR)$(bindir)/`echo sxa|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo sxa|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_xa$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_xa|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_xa|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
+	rm -f $(DESTDIR)$(bindir)/sxa$(EXEEXT) $(DESTDIR)$(bindir)/ucsim_xa$(EXEEXT)
 	rm -f $(DESTDIR)$(bindir)/`echo sxa|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_xa|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

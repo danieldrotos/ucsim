@@ -71,13 +71,15 @@ all: checkconf otherlibs p1516.src
 install: all installdirs
 	$(INSTALL) sp1516$(EXEEXT) $(DESTDIR)$(bindir)/`echo sp1516|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo sp1516|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_p1516$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_p1516|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_p1516|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/sp1516
-	rm -f $(DESTDIR)$(bindir)/`echo sp1516|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/sp1516 $(DESTDIR)$(bindir)/ucsim_p1516
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_p1516|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

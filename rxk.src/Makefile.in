@@ -77,13 +77,16 @@ all: checkconf otherlibs rxk.src
 install: all installdirs
 	$(INSTALL) srxk$(EXEEXT) $(DESTDIR)$(bindir)/`echo srxk|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo srxk|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_rxk$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_rxk|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_rxk|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/srxk
+	rm -f $(DESTDIR)$(bindir)/srxk $(DESTDIR)$(bindir)/ucsim_rxk
 	rm -f $(DESTDIR)$(bindir)/`echo srxk|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_rxk|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

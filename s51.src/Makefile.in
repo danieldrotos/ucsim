@@ -77,12 +77,16 @@ all: checkconf otherlibs s51.src
 install: all installdirs
 	$(INSTALL) s51$(EXEEXT) $(DESTDIR)$(bindir)/`echo s51|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo s51|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_51$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_51|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_51|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
+	rm -f $(DESTDIR)$(bindir)/s51$(EXEEXT) $(DESTDIR)$(bindir)/ucsim_51$(EXEEXT)
 	rm -f $(DESTDIR)$(bindir)/`echo s51|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_51|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test

@@ -74,6 +74,8 @@ tests: $(TEST_OBJ)
 install: all installdirs
 	$(INSTALL) spdk$(EXEEXT) $(DESTDIR)$(bindir)/`echo spdk|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo spdk|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_pdk$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_pdk|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_pdk|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files

@@ -71,13 +71,16 @@ all: checkconf otherlibs m6809.src
 install: all installdirs
 	$(INSTALL) sm6809$(EXEEXT) $(DESTDIR)$(bindir)/`echo sm6809|sed '$(transform)'`$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/`echo sm6809|sed '$(transform)'`$(EXEEXT)
+	$(INSTALL) ucsim_m6809$(EXEEXT) $(DESTDIR)$(bindir)/`echo ucsim_m6809|sed '$(transform)'`$(EXEEXT)
+	$(STRIP) $(DESTDIR)$(bindir)/`echo ucsim_m6809|sed '$(transform)'`$(EXEEXT)
 
 
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/sm6809
+	rm -f $(DESTDIR)$(bindir)/sm6809 $(DESTDIR)$(bindir)/ucsim_m6809
 	rm -f $(DESTDIR)$(bindir)/`echo sm6809|sed '$(transform)'`$(EXEEXT)
+	rm -f $(DESTDIR)$(bindir)/`echo ucsim_m6809|sed '$(transform)'`$(EXEEXT)
 
 
 # Performing self-test
