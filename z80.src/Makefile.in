@@ -132,10 +132,13 @@ include $(srcdir)/clean.mk
 # --------
 .SUFFIXES: .asm .hex
 
-z80.src: sz80$(EXEEXT) shared_lib
+z80.src: sz80$(EXEEXT) ucsim_z80$(EXEEXT) shared_lib
 
 sz80$(EXEEXT): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(LIBS) -o $@
+
+ucsim_z80$(EXEEXT): sz80$(EXEEXT)
+	cp $< $@
 
 ifeq ($(dlso_ok),yes)
 shared_lib: $(top_builddir)/sz80.so
