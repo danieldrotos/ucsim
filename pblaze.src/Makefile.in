@@ -130,7 +130,7 @@ include $(srcdir)/clean.mk
 # --------
 .SUFFIXES: .asm .hex
 
-pblaze.src: spblaze$(EXEEXT) shared_lib
+pblaze.src: spblaze$(EXEEXT) ucsim_spblaze$(EXEEXT) shared_lib
 
 spblaze$(EXEEXT): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(LIBS) -o $@
