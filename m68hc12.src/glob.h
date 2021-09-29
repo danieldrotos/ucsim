@@ -31,7 +31,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // prj
 #include "stypes.h"
 
+// sim
+#include "iwrap.h"
+
+
 extern struct cpu_entry cpus_hc12[];
+
+// defined in m6800.src/glob.cc
+extern instruction_wrapper_fn itab[256];
+
+extern struct dis_entry disass_m68hc11[];
 
 #endif
 

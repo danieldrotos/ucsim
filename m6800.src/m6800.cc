@@ -81,7 +81,7 @@ cl_m6800::reset(void)
 {
   cl_uc::reset();
 
-  CC= 0xc0;
+  cCC.W(0xc0);
   PC= rom->read(0xfffe)*256 + rom->read(0xffff);
   tick(6);
 }
@@ -449,7 +449,7 @@ cl_m6800::print_regs(class cl_console_base *con)
   con->dd_printf("A= $%02x %3d %+4d %c  ", A, A, (i8_t)A, isprint(A)?A:'.');
   con->dd_printf("B= $%02x %3d %+4d %c  ", B, B, (i8_t)B, isprint(B)?B:'.');
   con->dd_printf("\n");
-  con->dd_printf("CC= "); con->print_bin(CC, 8); con->dd_printf("\n");
+  con->dd_printf("CC= "); con->print_bin(rF, 8); con->dd_printf("\n");
   con->dd_printf("      HINZVC\n");
 
   con->dd_printf("IX= ");

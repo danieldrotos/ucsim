@@ -31,7 +31,7 @@ int
 cl_m6800::sub(class cl_cell8 &dest, u8_t op, bool c)
 {
   u8_t orgc= rF&flagC;
-  u8_t f= CC & ~(flagN|flagZ|flagV|flagC);
+  u8_t f= rF & ~(flagN|flagZ|flagV|flagC);
   u8_t a= dest.read(), b= op, r;
   u8_t a7, b7, r7, na7, nb7, nr7;
   r= a-b;
@@ -52,7 +52,7 @@ cl_m6800::sub(class cl_cell8 &dest, u8_t op, bool c)
 int
 cl_m6800::cmp(u8_t op1, u8_t op2)
 {
-  u8_t f= CC & ~(flagN|flagZ|flagV|flagC);
+  u8_t f= rF & ~(flagN|flagZ|flagV|flagC);
   u8_t a= op1, b= op2, r;
   u8_t a7, b7, r7, na7, nb7, nr7;
   r= a-b;
@@ -72,7 +72,7 @@ int
 cl_m6800::add(class cl_cell8 &dest, u8_t op, bool c)
 {
   u8_t orgc= rF&flagC;
-  u8_t f= CC & ~(flagN|flagZ|flagV|flagC|flagH);
+  u8_t f= rF & ~(flagN|flagZ|flagV|flagC|flagH);
   u8_t a= dest.read(), b= op, r;
   u8_t a7, b7, r7, na7, nb7, nr7;
   r= a+b;

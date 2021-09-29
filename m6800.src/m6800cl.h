@@ -50,15 +50,30 @@ struct acc_t {
     } a8;
   } DAB;
 };
-  
+
+struct cc_t {
+  union {
+    u16_t cc16;
+    struct {
+#ifdef WORDS_BIGENDIAN
+      u8_t cch;
+      u8_t ccl;
+#else
+      u8_t ccl;
+      u8_t cch;
+#endif
+    } cc8;
+  } cc16;
+};
+
 #define rA  (acc.DAB.a8.Ar)
 #define A   (acc.DAB.a8.Ar)
 #define rB  (acc.DAB.a8.Br)
 #define B   (acc.DAB.a8.Br)
 #define rD  (acc.DAB.Dr)
 #define D   (acc.DAB.Dr)
-#define rCC (CC)
-#define rF  (CC)
+#define rCC (CC.cc16.cc8.ccl)
+#define rF  (CC.cc16.cc8.ccl)
 #define rIX (IX)
 #define rX  (IX)
 #define rSP (SP)
@@ -123,7 +138,7 @@ class cl_m6800: public cl_uc
 {
 public:
   struct acc_t acc;
-  u8_t CC;
+  struct cc_t CC;
   u16_t IX, SP;
   class cl_cell8 cA, cB, cCC;
   class cl_cell16 cIX, cSP;

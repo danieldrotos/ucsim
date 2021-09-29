@@ -37,4 +37,10 @@ struct cpu_entry cpus_hc12[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+struct dis_entry disass_m68hc11[]= {
+
+  { 0, 0, 0, 0, 0, 0 }
+};
+
+
 /* End of m68hc12.src/glob.cc */
