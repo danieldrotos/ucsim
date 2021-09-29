@@ -52,6 +52,7 @@ public:
 /*
  * Base of M68HC11 processor
  */
+#define CL11 cl_m68hc11
 
 class cl_m68hc11: public cl_m68hcbase
 {
