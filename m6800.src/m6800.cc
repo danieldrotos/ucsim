@@ -41,6 +41,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "m6800cl.h"
 
 
+instruction_wrapper_fn itab[256];
+
 cl_m6800::cl_m6800(class cl_sim *asim):
   cl_uc(asim)
 {

@@ -40,18 +40,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define cY   (cIY)
 
 
-/*
- * Base of M68HC11 processor
- */
-
 class cl_m68hcbase: public cl_m6800
 {
 public:
   cl_m68hcbase(class cl_sim *asim): cl_m6800(asim) {}
 public:
 #include "hc_insts.h"
-};
-  
+};  
+
+
+/*
+ * Base of M68HC11 processor
+ */
+
 class cl_m68hc11: public cl_m68hcbase
 {
  public:
@@ -65,7 +66,7 @@ public:
   virtual void print_regs(class cl_console_base *con);
     
   virtual int clock_per_cycle(void) { return 1; }
-  virtual struct dis_entry *dis_tbl(void);
+  //virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
 };

@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "dregcl.h"
 
+#include "wraps.h"
 #include "m68hc12cl.h"
 
 cl_m68hc12::cl_m68hc12(class cl_sim *asim):
@@ -47,6 +48,8 @@ cl_m68hc12::init(void)
   cl_m68hc11::init();
   
   xtal= 8000000;
+
+  fill_def_hc_wrappers(itab);
   
   return 0;
 }

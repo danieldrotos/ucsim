@@ -33,7 +33,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "dregcl.h"
 #include "glob.h"
-#include "wraps.h"
+#include "glob11.h"
+//#include "wraps.h"
 
 #include "m68hc11cl.h"
 
@@ -55,8 +56,6 @@ cl_m68hc11::init(void)
   RCV(IY);
   RCV(D);
 #undef RCV
-
-  fill_def_hc_wrappers(itab);
   
   return 0;
 }
@@ -74,11 +73,13 @@ cl_m68hc11::reset(void)
   cl_m6800::reset();
 }
 
+/*
 struct dis_entry *
 cl_m68hc11::dis_tbl(void)
 {
   return disass_m68hc11;
 }
+*/
 
 struct dis_entry *
 cl_m68hc11::get_dis_entry(t_addr addr)

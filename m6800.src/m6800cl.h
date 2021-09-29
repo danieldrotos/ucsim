@@ -34,7 +34,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "memcl.h"
 #include "itsrccl.h"
 #include "decode.h"
+#include "iwrap.h"
 
+
+extern instruction_wrapper_fn itab[256];
 
 struct acc_t {
   union {
