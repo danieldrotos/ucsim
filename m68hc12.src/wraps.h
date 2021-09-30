@@ -3,7 +3,7 @@
 
 #include "uccl.h"
 
-extern void fill_def_hc_wrappers(instruction_wrapper_fn itab[]);
+extern void fill_def_18_wrappers(instruction_wrapper_fn itab[]);
 
 
 #endif

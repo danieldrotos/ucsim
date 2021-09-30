@@ -34,9 +34,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 #include "glob.h"
 #include "glob11.h"
+#include "wraps.h"
 
 #include "m68hc11cl.h"
 
+
+instruction_wrapper_fn itab18[256];
 
 cl_m68hc11::cl_m68hc11(class cl_sim *asim):
   cl_m68hcbase(asim)
@@ -55,6 +58,8 @@ cl_m68hc11::init(void)
   RCV(IY);
   RCV(D);
 #undef RCV
+
+  fill_def_18_wrappers(itab18);
   
   return 0;
 }

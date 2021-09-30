@@ -40,12 +40,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define cY   (cIY)
 
 
+extern instruction_wrapper_fn itab18[256];
+
 class cl_m68hcbase: public cl_m6800
 {
 public:
   cl_m68hcbase(class cl_sim *asim): cl_m6800(asim) {}
 public:
-#include "hc_insts.h"
+#include "hc18.h"
 };  
 
 

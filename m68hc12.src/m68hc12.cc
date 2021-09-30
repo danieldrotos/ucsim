@@ -47,11 +47,14 @@ cl_m68hc12::cl_m68hc12(class cl_sim *asim):
 int
 cl_m68hc12::init(void)
 {
+  int i;
+  
   cl_m68hc11::init();
   
   xtal= 8000000;
 
-  fill_def_hc_wrappers(itab);
+  for (i= 0; i<=255; i++)
+    itab[i]= instruction_wrapper_invalid;
   
   return 0;
 }
