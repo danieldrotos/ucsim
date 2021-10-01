@@ -60,7 +60,7 @@ cl_m6800::branch(t_addr a, bool cond)
 {
   if (cond)
     PC= a&0xffff;
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 

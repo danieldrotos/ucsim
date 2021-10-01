@@ -132,6 +132,8 @@ enum {
   RESET_AT	= 0xfffe,
 };
 
+extern int8_t ticks[256];
+
 
 /*
  * Base of M6800 processor
@@ -158,6 +160,7 @@ public:
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
 
+  virtual void tickm1(int t) { tick(t+1); }
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);

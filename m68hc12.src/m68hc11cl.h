@@ -67,7 +67,8 @@ public:
   virtual const char *id_string(void);
   virtual void reset(void);
   virtual void print_regs(class cl_console_base *con);
-    
+
+  virtual void tickm1(int t) { tick(t); }
   virtual int clock_per_cycle(void) { return 1; }
   //virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);

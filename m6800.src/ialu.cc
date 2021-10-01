@@ -319,7 +319,7 @@ cl_m6800::INX(t_mem code)
     rF&= ~mZ;
   else
     rF|= mZ;
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 
@@ -330,7 +330,7 @@ cl_m6800::DEX(t_mem code)
     rF&= ~mZ;
   else
     rF|= mZ;
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 
@@ -417,7 +417,7 @@ int
 cl_m6800::INS(t_mem code)
 {
   cSP.W(rSP+1);
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 
@@ -425,7 +425,7 @@ int
 cl_m6800::DES(t_mem code)
 {
   cSP.W(rSP-1);
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 

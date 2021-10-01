@@ -127,7 +127,7 @@ int
 cl_m6800::TSX(t_mem code)
 {
   cIX.W(rSP+1);
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 
@@ -155,7 +155,7 @@ int
 cl_m6800::TXS(t_mem code)
 {
   cSP.W(rIX-1);
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 
@@ -165,7 +165,7 @@ cl_m6800::PSHA(t_mem code)
   rom->write(rSP, rA);
   cSP.W(rSP-1);
   vc.wr++;
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 
@@ -175,7 +175,7 @@ cl_m6800::PSHB(t_mem code)
   rom->write(rSP, rB);
   cSP.W(rSP-1);
   vc.wr++;
-  tick(3);
+  tickm1(2);
   return resGO;
 }
 
