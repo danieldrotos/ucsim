@@ -2347,6 +2347,18 @@ cl_uc::tick(int cycles)
   return(0);
 }
 
+int
+cl_uc::tickt(t_mem code)
+{
+  int8_t *tt= tick_tab(code);
+  if (tt == NULL)
+    return tick(1);
+  int t= tt[code];
+  if (t)
+    return tick(t);
+  return 0;
+}
+
 class cl_ticker *
 cl_uc::get_counter(int nr)
 {
@@ -2577,7 +2589,8 @@ cl_uc::exec_inst_tab(instruction_wrapper_fn itab[])
       PC= instPC;
       return res;
     }
-  tick(1);
+  //tick(1);
+  tickt(c);
   return res;
 }
 
