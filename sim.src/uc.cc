@@ -2583,6 +2583,7 @@ cl_uc::exec_inst_tab(instruction_wrapper_fn itab[])
       PC= instPC;
       return resNOT_DONE;
     }
+  tickt(c);
   res= itab[c](this, c);
   if (res == resNOT_DONE)
     {
@@ -2590,7 +2591,6 @@ cl_uc::exec_inst_tab(instruction_wrapper_fn itab[])
       return res;
     }
   //tick(1);
-  tickt(c);
   return res;
 }
 

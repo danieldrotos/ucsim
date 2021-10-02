@@ -43,7 +43,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 instruction_wrapper_fn itab[256];
 
-int8_t ticks[256]= {
+int8_t p0ticks[256]= {
   /*      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  */
   /* 0 */ 0, 2, 0, 0, 0, 0, 2, 2, 4, 4, 2, 2, 2, 2, 2, 2,
   /* 1 */ 2, 2, 0, 0, 0, 0, 2, 2, 0, 2, 0, 2, 0, 0, 0, 0,
@@ -503,7 +503,7 @@ cl_m6800::accept_it(class it_level *il)
   class cl_it_src *is= il->source;
 
   if (!wai)
-    push_regs();
+      push_regs();
   wai= false;
   
   if ((is == src_irq) ||
@@ -554,7 +554,6 @@ cl_m6800::idx(void)
   t_addr a= fetch();
   a+= rX;
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
-  tick(3);
   return *c;
 }
 
@@ -567,7 +566,6 @@ cl_m6800::ext(void)
   l= fetch();
   a= h*256 + l;
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
-  tick(2);
   return *c;
 }
 

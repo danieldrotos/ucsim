@@ -132,7 +132,7 @@ enum {
   RESET_AT	= 0xfffe,
 };
 
-extern int8_t ticks[256];
+extern int8_t p0ticks[256];
 
 
 /*
@@ -160,7 +160,7 @@ public:
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
 
-  virtual void tickm1(int t) { tick(t+1); }
+  virtual int8_t *tick_tab(t_mem code) { return p0ticks; }
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
