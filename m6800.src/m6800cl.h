@@ -174,8 +174,8 @@ public:
   virtual int priority_of(uchar nuof_it) { return nuof_it; }
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void) { return true; }
-  virtual void push_regs(void);
-  virtual void pull_regs(void);
+  virtual void push_regs(bool inst_part);
+  virtual void pull_regs(bool inst_part);
   
   virtual class cl_cell8 &idx(void);
   virtual class cl_cell8 &ext(void);

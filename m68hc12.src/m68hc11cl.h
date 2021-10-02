@@ -41,6 +41,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 extern instruction_wrapper_fn itab18[256];
+extern int8_t p0ticks11[256];
 
 class cl_m68hcbase: public cl_m6800
 {
@@ -68,7 +69,7 @@ public:
   virtual void reset(void);
   virtual void print_regs(class cl_console_base *con);
 
-  virtual void tickm1(int t) { tick(t); }
+  virtual int8_t *tick_tab(t_mem code);
   virtual int clock_per_cycle(void) { return 1; }
   //virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);

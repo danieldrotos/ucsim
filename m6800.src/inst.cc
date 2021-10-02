@@ -35,14 +35,14 @@ cl_m6800::NOP(t_mem code)
 int
 cl_m6800::RTI(t_mem code)
 {
-  pull_regs();
+  pull_regs(true);
   return resGO;
 }
 
 int
 cl_m6800::WAI(t_mem code)
 {
-  push_regs();
+  push_regs(true);
   wai= true;
   state= stIDLE;
   return resGO;
