@@ -38,9 +38,4 @@ struct cpu_entry cpus_hc11[]=
   };
 
 
-struct dis_entry disass11[]= {
-
-  { 0, 0, 0, 0, 0, 0 }
-};
-
 /* End of m68hc12.src/glob11.cc */

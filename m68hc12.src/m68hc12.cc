@@ -39,7 +39,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_m68hc12::cl_m68hc12(class cl_sim *asim):
-  cl_m68hc11(asim)
+  cl_m68hcbase(asim)
 {
 }
 
@@ -49,7 +49,7 @@ cl_m68hc12::init(void)
 {
   int i;
   
-  cl_m68hc11::init();
+  cl_m68hcbase::init();
   
   xtal= 8000000;
 
@@ -69,7 +69,7 @@ cl_m68hc12::id_string(void)
 void
 cl_m68hc12::reset(void)
 {
-  cl_m68hc11::reset();
+  cl_m68hcbase::reset();
 }
 
 

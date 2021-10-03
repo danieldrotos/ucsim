@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 #include "glob.h"
 #include "glob11.h"
+#include "g11p0.h"
 #include "wraps.h"
 
 #include "m68hc11cl.h"
@@ -62,6 +63,48 @@ int8_t p0ticks11[256]= {
 };
 
 
+int
+cl_m68hcbase::init(void)
+{
+  cl_m6800::init();
+  
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(IY);
+  RCV(D);
+#undef RCV
+
+  fill_def_18_wrappers(itab18);
+  
+  return 0;
+}
+
+void
+cl_m68hcbase::print_regs(class cl_console_base *con)
+{
+  con->dd_color("answer");
+  con->dd_printf("A= $%02x %3d %+4d %c  ", rA, rA, (i8_t)rA, isprint(rA)?rA:'.');
+  con->dd_printf("B= $%02x %3d %+4d %c  ", rB, rB, (i8_t)rB, isprint(rB)?rB:'.');
+  con->dd_printf("D= $%04x %5d %+5d ", rD, rD, (i16_t)rD);
+  con->dd_printf("\n");
+  con->dd_printf("CC= "); con->print_bin(rF, 8); con->dd_printf("\n");
+  con->dd_printf("      HINZVC\n");
+
+  con->dd_printf("IX= ");
+  rom->dump(0, IX, IX+7, 8, con);
+  con->dd_color("answer");
+  
+  con->dd_printf("IY= ");
+  rom->dump(0, IY, IY+7, 8, con);
+  con->dd_color("answer");
+  
+  con->dd_printf("SP= ");
+  rom->dump(0, SP, SP+7, 8, con);
+  con->dd_color("answer");
+  
+  print_disass(PC, con);
+}
+
+
 cl_m68hc11::cl_m68hc11(class cl_sim *asim):
   cl_m68hcbase(asim)
 {
@@ -71,16 +114,9 @@ cl_m68hc11::cl_m68hc11(class cl_sim *asim):
 int
 cl_m68hc11::init(void)
 {
-  cl_m6800::init();
+  cl_m68hcbase::init();
   
   xtal= 8000000;
-  
-#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
-  RCV(IY);
-  RCV(D);
-#undef RCV
-
-  fill_def_18_wrappers(itab18);
   
   return 0;
 }
@@ -95,7 +131,7 @@ cl_m68hc11::id_string(void)
 void
 cl_m68hc11::reset(void)
 {
-  cl_m6800::reset();
+  cl_m68hcbase::reset();
 }
 
 int8_t *
@@ -131,8 +167,18 @@ cl_m68hc11::get_dis_entry(t_addr addr)
   while (((code & dt[i].mask) != dt[i].code) &&
 	 dt[i].mnemonic)
     i++;
-  return &dt[i];
+  if (dt[i].mnemonic)
+    return &dt[i];
 
+  i= 0;
+  dt= disass11p0;
+  while (((code & dt[i].mask) != dt[i].code) &&
+	 dt[i].mnemonic)
+    i++;
+  if (dt[i].mnemonic)
+    return &dt[i];
+
+  return &dt[i];
 }
 
 char *
@@ -225,30 +271,59 @@ cl_m68hc11::disassc(t_addr addr, chars *comment)
 }
 
 
-void
-cl_m68hc11::print_regs(class cl_console_base *con)
+int
+CL11::TEST(t_mem code)
 {
-  con->dd_color("answer");
-  con->dd_printf("A= $%02x %3d %+4d %c  ", rA, rA, (i8_t)rA, isprint(rA)?rA:'.');
-  con->dd_printf("B= $%02x %3d %+4d %c  ", rB, rB, (i8_t)rB, isprint(rB)?rB:'.');
-  con->dd_printf("D= $%04x %5d %+5d ", rD, rD, (i16_t)rD);
-  con->dd_printf("\n");
-  con->dd_printf("CC= "); con->print_bin(rF, 8); con->dd_printf("\n");
-  con->dd_printf("      HINZVC\n");
-
-  con->dd_printf("IX= ");
-  rom->dump(0, IX, IX+7, 8, con);
-  con->dd_color("answer");
-  
-  con->dd_printf("IY= ");
-  rom->dump(0, IY, IY+7, 8, con);
-  con->dd_color("answer");
-  
-  con->dd_printf("SP= ");
-  rom->dump(0, SP, SP+7, 8, con);
-  con->dd_color("answer");
-  
-  print_disass(PC, con);
+  return resGO;
 }
+
+
+int
+CL11::IDIV(t_mem code)
+{
+  u16_t q, r;
+  u8_t f= rF & ~(flagZ|flagV|flagC);
+  if (rX == 0)
+    {
+      q= 0xffff;
+      r= rX;
+      f|= flagC;
+    }
+  else
+    {
+      cX.W(q= rD/rX);
+      cD.W(r= rD%rX);
+    }
+  if (!q) f|= flagZ;
+  cF.W(f);
+  tick(40);
+  return resGO;
+}
+
+
+int
+CL11::FDIV(t_mem code)
+{
+  u32_t n= rD << 16;
+  u16_t q, r;
+  u8_t f= rF & ~(flagZ|flagV|flagC);
+  if( rX <= rD) f|= flagV;
+  if (rX == 0)
+    {
+      q= 0xffff;
+      r= rX;
+      f|= flagC;
+    }
+  else
+    {
+      cX.W(q= n/rX);
+      cD.W(r= n%rX);
+    }
+  if (!q) f|= flagZ;
+  cF.W(f);
+  tick(40);
+  return resGO;
+}
+
 
 /* End of m68hc12.src/m68hc11.cc */

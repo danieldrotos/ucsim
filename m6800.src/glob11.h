@@ -36,7 +36,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 extern struct cpu_entry cpus_hc11[];
-extern struct dis_entry disass11[];
 
 
 #endif
