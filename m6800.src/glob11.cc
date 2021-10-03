@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob11.h)
+ * Simulator of microcontrollers (glob11.cc)
  *
  * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
@@ -25,19 +25,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef HC12GLOB11_HEADER
-#define HC12GLOB11_HEADER
+#include <stdio.h>
 
-// prj
-#include "stypes.h"
-
-// sim
-//#include "iwrap.h"
+#include "glob11.h"
 
 
-extern struct dis_entry disass11[];
+struct cpu_entry cpus_hc11[]=
+  {
+    {"HC11"  , CPU_HC11, CPU_CMOS	, "hc11"	, "cmos"},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
 
 
-#endif
+struct dis_entry disass11[]= {
 
-/* End of m68hc12.src/glob11.h */
+  { 0, 0, 0, 0, 0, 0 }
+};
+
+/* End of m68hc12.src/glob11.cc */

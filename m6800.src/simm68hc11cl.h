@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (glob11.cc)
+ * Simulator of microcontrollers (simm68hc11cl.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,14 +25,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include <stdio.h>
+#ifndef SIMM68HC11CL_HEADER
+#define SIMM68HC11CL_HEADER
 
-#include "glob11.h"
+#include "simcl.h"
 
 
-struct dis_entry disass11[]= {
+class cl_simm68hc11: public cl_sim
+{
+public:
+  cl_simm68hc11(class cl_app *the_app);
 
-  { 0, 0, 0, 0, 0, 0 }
+  virtual class cl_uc *mk_controller(void);
 };
 
-/* End of m68hc12.src/glob11.cc */
+
+#endif
+
+/* End of m6800.src/simm68hc11cl.h */

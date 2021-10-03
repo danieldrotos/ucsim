@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (glob.cc)
+ * Simulator of microcontrollers (sm68hc11.cc)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,16 +25,32 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include <stdio.h>
+// prj
+#include "globals.h"
 
-#include "glob.h"
-
-struct cpu_entry cpus_hc12[]=
-  {
-    {"HC12"  , CPU_HC12, CPU_CMOS	, "hc12"	, "cmos"},
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
+// local
+#include "glob11.h"
+#include "simm68hc11cl.h"
 
 
-/* End of m68hc12.src/glob.cc */
+int
+main(int argc, char *argv[])
+{
+  class cl_sim *sim;
+
+  cpus= cpus_hc11;
+  application= new cl_app();
+  application->set_name("sm68hc11");
+  application->init(argc, argv);
+  sim= new cl_simm68hc11(application);
+  if (sim->init())
+    sim->state|= SIM_QUIT;
+  application->set_simulator(sim);
+  //sim->main();
+  application->run();
+  application->done();
+  delete application;
+  return(0);
+}
+
+/* End of m6800.src/sm68hc11.cc */
