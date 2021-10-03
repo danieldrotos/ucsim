@@ -91,7 +91,11 @@ public:
   virtual int ABX(t_mem code);
   virtual int PSHX(t_mem code);
   virtual int MUL(t_mem code);
-  virtual int SUBDi(t_mem code) { return sub16(cD, i16(), false); }
+  virtual int SUBD16(t_mem code) { return sub16(cD, i16(), false); }
+  virtual int SUBDd(t_mem code) { return sub16(cD, dop16(), false); }
+  virtual int SUBDi(t_mem code) { return sub16(cD, iop16(), false); }
+  virtual int SUBDe(t_mem code) { return sub16(cD, eop16(), false); }
+  virtual int XGDX(t_mem code);
 };
 
 

@@ -43,6 +43,10 @@ struct dis_entry disass11p0[]= {
   { 0x3c, 0xff, ' ', 1, "PSHX" },
   { 0x3d, 0xff, ' ', 1, "MUL" },
   { 0x83, 0xff, ' ', 3, "SUBD %B" },
+  { 0x93, 0xff, ' ', 2, "SUBD %D" },
+  { 0xa3, 0xff, ' ', 2, "SUBD %X" },
+  { 0xb3, 0xff, ' ', 2, "SUBD %E" },
+  { 0x8f, 0xff, ' ', 1, "XGDX" },
   
   { 0, 0, 0, 0, 0, 0 }
 };

@@ -40,7 +40,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ABX	instruction_3a
 #define PSHX	instruction_3c
 #define MUL	instruction_3d
-#define SUBDi	instruction_83
+#define SUBD16	instruction_83
+#define SUBDd	instruction_93
+#define SUBDi	instruction_a3
+#define SUBDe	instruction_b3
+#define XGDX	instruction_8f
 
 
 #endif
