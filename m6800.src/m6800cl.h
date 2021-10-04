@@ -134,6 +134,14 @@ enum {
 
 extern int8_t p0ticks[256];
 
+class cl_idx16: public cl_cell16
+{
+public:
+  chars name;
+public:
+  cl_idx16(): cl_cell16() { name= ""; }
+};
+
 
 /*
  * Base of M6800 processor
@@ -146,9 +154,10 @@ public:
   struct cc_t CC;
   u16_t IX, SP;
   class cl_cell8 cA, cB, cCC;
-  class cl_cell16 cIX, cSP;
+  class cl_cell16 cSP;
+  class cl_idx16 cIX;
   class cl_it_src *src_irq, *src_nmi, *src_swi;
-  class cl_cell16 *cI;
+  class cl_idx16 *cI;
   bool wai;
 public:
   cl_m6800(class cl_sim *asim);

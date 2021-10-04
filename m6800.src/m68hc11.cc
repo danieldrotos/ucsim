@@ -69,9 +69,9 @@ int8_t p18ticks11[256]= {
   /* 3 */ 4, 0, 0, 0, 0, 4, 0, 0, 6, 0, 4, 0, 5, 0, 0, 0,
   /* 4 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* 5 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* 6 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 6 */ 7, 0, 0, 7, 7, 0, 7, 7, 7, 7, 7, 0, 7, 7, 4, 7,
   /* 7 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* 8 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 8 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 4,
   /* 9 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* a */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* b */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -92,11 +92,17 @@ cl_m68hcbase::init(void)
   RCV(D);
 #undef RCV
 
-  fill_def_18_wrappers(itab18);
-  itab18[0x38]= instruction_wrapper_38;
-  itab18[0x3a]= instruction_wrapper_3a;
-  itab18[0x3c]= instruction_wrapper_3c;
+  cIY.name= "Y";
   
+  fill_def_18_wrappers(itab18);
+  // un-wrap some codes, where m6800 version is capable to handle
+  // indexing with IY
+#define UW(code) itab18[0x ## code ]= instruction_wrapper_ ## code
+  UW(38); UW(3a); UW(3c);
+  UW(60); UW(63); UW(64); UW(66); UW(67); UW(68);
+  UW(69); UW(6a); UW(6c); UW(6d); UW(6e); UW(6f);
+  UW(8c);
+#undef UW
   return 0;
 }
 
@@ -202,6 +208,7 @@ cl_m68hc11::get_dis_entry(t_addr addr)
 
   if (code == 0x18)
     {
+      cI= &cY;
       i= 0;
       code= rom->get(addr+1);
       dt= disass11p18;
@@ -407,11 +414,11 @@ CL11::PSHxy(t_mem code)
 
 
 int
-CL11::XGDX(t_mem code)
+CL11::XGDxy(t_mem code)
 {
   u16_t t= rD;
-  cD.W(rX);
-  cX.W(t);
+  cD.W(cI->get());
+  cI->W(t);
   return resGO;
 }
 

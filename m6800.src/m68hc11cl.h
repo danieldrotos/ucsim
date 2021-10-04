@@ -50,7 +50,8 @@ class cl_m68hcbase: public cl_m6800
 {
 public:
   u16_t IY;
-  class cl_cell16 cIY, cD;
+  class cl_cell16 cD;
+  class cl_idx16 cIY;
 public:
   cl_m68hcbase(class cl_sim *asim): cl_m6800(asim) {}
   virtual int init(void);
@@ -110,7 +111,7 @@ public:
   virtual int SUBDd(t_mem code) { return sub16(cD, dop16(), false); }
   virtual int SUBDi(t_mem code) { return sub16(cD, iop16(), false); }
   virtual int SUBDe(t_mem code) { return sub16(cD, eop16(), false); }
-  virtual int XGDX(t_mem code);
+  virtual int XGDxy(t_mem code);
   virtual int JSRd(t_mem code) { return call(daddr()); }
   virtual int ADDD16(t_mem code) { return add16(cD, i16(), false); }
   virtual int ADDDd(t_mem code) { return add16(cD, dop16(), false); }

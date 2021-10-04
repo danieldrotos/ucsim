@@ -39,6 +39,20 @@ struct dis_entry disass11p18[]= {
   { 0x38, 0xff, ' ', 2, "PULY" },
   { 0x3a, 0xff, ' ', 2, "ABY" },
   { 0x3c, 0xff, ' ', 2, "PSHY" },
+  { 0x60, 0xff, ' ', 3, "NEG %x" },
+  { 0x63, 0xff, ' ', 3, "COM %x" },
+  { 0x64, 0xff, ' ', 3, "LSR %x" },
+  { 0x66, 0xff, ' ', 3, "ROR %x" },
+  { 0x67, 0xff, ' ', 3, "ASR %x" },
+  { 0x68, 0xff, ' ', 3, "ASL %x" },
+  { 0x69, 0xff, ' ', 3, "ROL %x" },
+  { 0x6a, 0xff, ' ', 3, "DEC %x" },
+  { 0x6c, 0xff, ' ', 3, "INC %x" },
+  { 0x6d, 0xff, ' ', 3, "TST %x" },
+  { 0x6e, 0xff, '_', 3, "JMP %x" },
+  { 0x6f, 0xff, ' ', 3, "CLR %x" },
+  { 0x8c, 0xff, ' ', 4, "CPX %B" },
+  { 0x8f, 0xff, ' ', 2, "XGDY" },
   
   { 0, 0, 0, 0, 0, 0 }
 };

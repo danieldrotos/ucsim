@@ -44,7 +44,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SUBDd	instruction_93
 #define SUBDi	instruction_a3
 #define SUBDe	instruction_b3
-#define XGDX	instruction_8f
+#define XGDxy	instruction_8f
 #define JSRd	instruction_9d
 #define ADDD16	instruction_c3
 #define ADDDd	instruction_d3
