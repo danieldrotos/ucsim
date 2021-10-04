@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "m6800cl.h"
 #include "d11p0.h"
+#include "d11p18.h"
 
 
 #define rY   (IY)
@@ -43,6 +44,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 extern instruction_wrapper_fn itab18[256];
 extern int8_t p0ticks11[256];
+extern int8_t p18ticks11[256];
 
 class cl_m68hcbase: public cl_m6800
 {
@@ -74,6 +76,7 @@ public:
   virtual void reset(void);
 
   virtual int8_t *tick_tab(t_mem code);
+  virtual int tickt(t_mem code);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   //virtual char *disassc(t_addr addr, chars *comment=NULL);
   virtual int longest_inst(void) { return 6; }
@@ -99,9 +102,9 @@ public:
   virtual int LSRD(t_mem code);
   virtual int ASLD(t_mem code);
   virtual int BRN(t_mem code);
-  virtual int PULX(t_mem code);
-  virtual int ABX(t_mem code);
-  virtual int PSHX(t_mem code);
+  virtual int PULxy(t_mem code);
+  virtual int ABxy(t_mem code);
+  virtual int PSHxy(t_mem code);
   virtual int MUL(t_mem code);
   virtual int SUBD16(t_mem code) { return sub16(cD, i16(), false); }
   virtual int SUBDd(t_mem code) { return sub16(cD, dop16(), false); }
@@ -129,6 +132,14 @@ public:
   virtual int BSETi(t_mem code) { return bset(idst()); }
   virtual int BCLRd(t_mem code) { return bclr(ddst()); }
   virtual int BCLRi(t_mem code) { return bclr(idst()); }
+
+  virtual int PAGE18(t_mem code);
+  
+  // Page 0x18
+  virtual int INY(t_mem code);
+  virtual int DEY(t_mem code);
+  virtual int TSY(t_mem code);
+  virtual int TYS(t_mem code);
 };
 
 

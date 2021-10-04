@@ -88,6 +88,7 @@ cl_m6800::init(void)
   cCC.append_operator(op);
 
   wai= false;
+  cI= &cIX;
   
   return 0;
 }
@@ -505,8 +506,11 @@ int
 cl_m6800::exec_inst(void)
 {
   int res= resGO;
-
-  if ((res= exec_inst_tab(itab)) != resNOT_DONE)
+  
+  res= exec_inst_tab(itab);
+  cI= &cIX;
+  post_inst();
+  if (res != resNOT_DONE)
     return res;
 
   inst_unknown(rom->read(instPC));

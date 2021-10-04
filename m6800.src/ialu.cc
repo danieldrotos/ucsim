@@ -306,6 +306,8 @@ cl_m6800::INX(t_mem code)
     rF&= ~mZ;
   else
     rF|= mZ;
+  cX.W(rX);
+  cF.W(rF);
   return resGO;
 }
 
@@ -316,6 +318,8 @@ cl_m6800::DEX(t_mem code)
     rF&= ~mZ;
   else
     rF|= mZ;
+  cX.W(rX);
+  cF.W(rF);
   return resGO;
 }
 

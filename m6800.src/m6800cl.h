@@ -148,6 +148,7 @@ public:
   class cl_cell8 cA, cB, cCC;
   class cl_cell16 cIX, cSP;
   class cl_it_src *src_irq, *src_nmi, *src_swi;
+  class cl_cell16 *cI;
   bool wai;
 public:
   cl_m6800(class cl_sim *asim);

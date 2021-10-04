@@ -32,9 +32,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 #include "dregcl.h"
-#include "glob.h"
-#include "glob11.h"
 #include "g11p0.h"
+#include "g11p18.h"
 #include "wraps.h"
 
 #include "m68hc11cl.h"
@@ -62,6 +61,26 @@ int8_t p0ticks11[256]= {
   /* f */ 4, 4, 4, 6, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5
 };
 
+int8_t p18ticks11[256]= {
+  /*      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  */
+  /* 0 */ 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0,
+  /* 1 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 2 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 3 */ 4, 0, 0, 0, 0, 4, 0, 0, 6, 0, 4, 0, 5, 0, 0, 0,
+  /* 4 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 5 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 6 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 7 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 8 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 9 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* a */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* b */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* c */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* d */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* e */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* f */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
 
 int
 cl_m68hcbase::init(void)
@@ -74,6 +93,9 @@ cl_m68hcbase::init(void)
 #undef RCV
 
   fill_def_18_wrappers(itab18);
+  itab18[0x38]= instruction_wrapper_38;
+  itab18[0x3a]= instruction_wrapper_3a;
+  itab18[0x3c]= instruction_wrapper_3c;
   
   return 0;
 }
@@ -138,12 +160,28 @@ int8_t *
 CL11::tick_tab(t_mem code)
 {
   if (code == 0x18)
-    ;
+    return p18ticks11;
   else if (code == 0x1a)
     ;
   else if (code == 0xcd)
     ;
   return p0ticks11;
+}
+
+int
+CL11::tickt(t_mem code)
+{
+  int8_t *tt= tick_tab(code);
+  if ((code == 0x18) ||
+      (code == 0x1a) ||
+      (code == 0xcd))
+    code= rom->read(PC);
+  if (tt == NULL)
+    return tick(1);
+  int t= tt[code];
+  if (t)
+    return tick(t);
+  return 0;
 }
 
 
@@ -162,6 +200,19 @@ cl_m68hc11::get_dis_entry(t_addr addr)
   int i= 0;
   t_mem code= rom->get(addr);
 
+  if (code == 0x18)
+    {
+      i= 0;
+      code= rom->get(addr+1);
+      dt= disass11p18;
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic)
+	return &dt[i];
+      return &dt[i];
+    }
+  
   if (dt == NULL)
     return NULL;
   while (((code & dt[i].mask) != dt[i].code) &&
@@ -271,6 +322,15 @@ cl_m68hc11::disassc(t_addr addr, chars *comment)
 }
 */
 
+int
+CL11::PAGE18(t_mem code)
+{
+  cI= &cIY;
+  code= fetch();
+  return itab18[code](this, code);
+}
+
+
 /* 
  * OTHER instructions
  */
@@ -322,23 +382,24 @@ CL11::std16(t_addr addr)
 
 
 int
-CL11::PULX(t_mem code)
+CL11::PULxy(t_mem code)
 {
   u8_t h, l;
   h= rom->read(++rSP);
   l= rom->read(++rSP);
   cSP.W(rSP);
-  cX.W(h*256+l);
+  cI->W(h*256+l);
   vc.rd+= 2;
   return resGO;
 }
 
 
 int
-CL11::PSHX(t_mem code)
+CL11::PSHxy(t_mem code)
 {
-  rom->write(rSP--, rX);
-  rom->write(rSP--, rX>>8);
+  u16_t r= cI->get();
+  rom->write(rSP--, r);
+  rom->write(rSP--, r>>8);
   cSP.W(rSP);
   vc.wr+= 2;
   return resGO;
@@ -351,6 +412,22 @@ CL11::XGDX(t_mem code)
   u16_t t= rD;
   cD.W(rX);
   cX.W(t);
+  return resGO;
+}
+
+
+int
+CL11::TSY(t_mem code)
+{
+  cIY.W(rSP+1);
+  return resGO;
+}
+
+
+int
+CL11::TYS(t_mem code)
+{
+  cSP.W(rIY-1);
   return resGO;
 }
 
@@ -500,9 +577,9 @@ CL11::ASLD(t_mem code)
 
 
 int
-CL11::ABX(t_mem code)
+CL11::ABxy(t_mem code)
 {
-  cX.W(rX+rB);
+  cI->W(rX+rB);
   return resGO;
 }
 
@@ -515,6 +592,32 @@ CL11::MUL(t_mem code)
   cD.W(r);
   if (rB & 0x80) f|= flagC;
   cF.W(f);
+  return resGO;
+}
+
+
+int
+CL11::INY(t_mem code)
+{
+  if (++rY)
+    rF&= ~mZ;
+  else
+    rF|= mZ;
+  cY.W(rY);
+  cF.W(rF);
+  return resGO;
+}
+
+
+int
+CL11::DEY(t_mem code)
+{
+  if (--rY)
+    rF&= ~mZ;
+  else
+    rF|= mZ;
+  cY.W(rY);
+  cF.W(rF);
   return resGO;
 }
 
