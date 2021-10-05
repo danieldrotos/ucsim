@@ -35,6 +35,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TSY	i_18_30
 #define TYS	i_18_35
 
+#define CPY16	i_18_8c
+#define CPYd	i_18_9c
+#define CPYi	i_18_ac
+#define CPYe	i_18_bc
+
+#define LDY16	i_18_ce
+#define LDYd	i_18_de
+#define LDYi	i_18_ee
+#define LDYe	i_18_fe
+
+#define STYd	i_18_df
+#define STYi	i_18_ef
+#define STYe	i_18_ff
+
 
 #endif
 

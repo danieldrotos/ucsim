@@ -284,14 +284,14 @@ int
 cl_m6800::cpx(u16_t op)
 {
   u32_t r;
-  u16_t x= cI->get(), r2;
+  u16_t x= rX, r2;
   u8_t f= rF & ~(flagN|flagZ|flagV);
   op= ~op+1;
   r= x+op;
   r2= (x&0x7fff) + (op&0x7fff);
   if (r&0x8000) f|= flagN;
   if (!(r&0xffff)) f|= flagZ;
-  r&= ~0xffff;
+  r &= ~0xffff;
   r2&= ~0x7fff;
   if ((r && !r2) ||
       (!r && r2)) f|= flagV;
