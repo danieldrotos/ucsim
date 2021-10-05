@@ -68,6 +68,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define BCLRi	instruction_1d
 
 #define PAGE18	instruction_18
+#define PAGE1A	instruction_1a
+#define PAGECD	instruction_cd
 
 
 #endif

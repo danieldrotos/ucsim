@@ -95,11 +95,11 @@ int8_t pcdticks11[256]= {
   /* 7 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* 8 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* 9 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* a */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* a */ 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0,
   /* b */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* c */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* d */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* e */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* e */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6,
   /* f */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
@@ -113,14 +113,14 @@ int8_t p1aticks11[256]= {
   /* 5 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* 6 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* 7 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* 8 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* 9 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* a */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* b */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 8 */ 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* 9 */ 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  /* a */ 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0,
+  /* b */ 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* c */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   /* d */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* e */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  /* f */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  /* e */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0,
+  /* f */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0
 };
 
 
@@ -412,6 +412,41 @@ CL11::PAGE18(t_mem code)
   return itab18[code](this, code);
 }
 
+int
+CL11::PAGE1A(t_mem code)
+{
+  cI= &cX;
+  code= fetch();
+  switch (code)
+    {
+    case 0x83: return cp16(cD, i16()); break;
+    case 0x93: return cp16(cD, dop16()); break;
+    case 0xa3: return cp16(cD, iop16()); break;
+    case 0xb3: return cp16(cD, eop16()); break;
+
+    case 0xad: return cp16(cY, iop16()); break;
+    case 0xee: return ldsx(cY, iop16()); break;
+    case 0xef: return stsx(iaddr(), rY); break;
+    }
+  return resINV;
+}
+
+int
+CL11::PAGECD(t_mem code)
+{
+  cI= &cY;
+  code= fetch();
+  switch (code)
+    {
+    case 0xa3: return cp16(cD, iop16()); break;
+
+    case 0xad: return cp16(cX, iop16()); break;
+    case 0xee: return ldsx(cX, iop16()); break;
+    case 0xef: return stsx(iaddr(), rX); break;
+    }
+  return resINV;
+}
+
 
 /* 
  * OTHER instructions
@@ -585,20 +620,15 @@ CL11::bclr(class cl_cell8 &dest)
 
 
 int
-CL11::cpy(u16_t op)
+CL11::cp16(class cl_cell16 &dest, u16_t op)
 {
-  u32_t r;
-  u16_t y= rY, r2;
-  u8_t f= rF & ~(flagN|flagZ|flagV);
-  op= ~op+1;
-  r= y+op;
-  r2= (y&0x7fff) + (op&0x7fff);
+  u16_t a= dest.get(), b= op, r;
+  u8_t f= rF & ~(flagC|flagN|flagZ|flagV);
+  r= a-b;
   if (r&0x8000) f|= flagN;
-  if (!(r&0xffff)) f|= flagZ;
-  r &= ~0xffff;
-  r2&= ~0x7fff;
-  if ((r && !r2) ||
-      (!r && r2)) f|= flagV;
+  if (!r) f|= flagZ;
+  if (( (a&~b&~r)|(~a&b&r) ) & 0x8000) f|= flagV;
+  if (( (~a&b)|(b&r)|(~a&r) ) & 0x8000) f|= flagC;
   cCC.W(f);
   return resGO;
 }

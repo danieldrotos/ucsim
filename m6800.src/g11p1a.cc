@@ -32,14 +32,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // code, mask, branch, len, mnem, iscall, ticks
 struct dis_entry disass11p1a[]= {
 
-  { 0x83, 0xff, ' ', 3, "CPD %X" },  
-  { 0x93, 0xff, ' ', 3, "CPD %X" },  
+  { 0x83, 0xff, ' ', 3, "CPD %B" },  
+  { 0x93, 0xff, ' ', 3, "CPD %D" },  
   { 0xa3, 0xff, ' ', 3, "CPD %X" },  
-  { 0xb3, 0xff, ' ', 3, "CPD %X" },  
+  { 0xb3, 0xff, ' ', 3, "CPD %E" },  
 
-  { 0xad, 0xff, ' ', 3, "CPX %X" },
-  { 0xee, 0xff, ' ', 2, "LDX %x" },
-  { 0xef, 0xff, ' ', 2, "STX %x" },
+  { 0xad, 0xff, ' ', 3, "CPY %X" },
+  { 0xee, 0xff, ' ', 2, "LDY %x" },
+  { 0xef, 0xff, ' ', 2, "STY %x" },
 
   { 0, 0, 0, 0, 0, 0 }
 };

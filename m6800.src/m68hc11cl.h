@@ -91,8 +91,8 @@ public:
   virtual int add16(class cl_cell16 &dest, u16_t op, bool c);
   virtual int bset(class cl_cell8 &dest);
   virtual int bclr(class cl_cell8 &dest);
-  virtual int cpy(u16_t op);
-
+  virtual int cp16(class cl_cell16 &dest, u16_t op);
+  
   // BRANCH
   virtual int brset(u8_t op);
   virtual int brclr(u8_t op);
@@ -136,16 +136,18 @@ public:
   virtual int BCLRi(t_mem code) { return bclr(idst()); }
 
   virtual int PAGE18(t_mem code);
+  virtual int PAGE1A(t_mem code);
+  virtual int PAGECD(t_mem code);
   
   // Page 0x18
   virtual int INY(t_mem code);
   virtual int DEY(t_mem code);
   virtual int TSY(t_mem code);
   virtual int TYS(t_mem code);
-  virtual int CPY16(t_mem code) { return cpy(i16()); }
-  virtual int CPYd(t_mem code) { return cpy(dop16()); }
-  virtual int CPYi(t_mem code) { return cpy(iop16()); }
-  virtual int CPYe(t_mem code) { return cpy(eop16()); }
+  virtual int CPY16(t_mem code) { return cp16(cY, i16()); }
+  virtual int CPYd(t_mem code) { return cp16(cY, dop16()); }
+  virtual int CPYi(t_mem code) { return cp16(cY, iop16()); }
+  virtual int CPYe(t_mem code) { return cp16(cY, eop16()); }
   virtual int LDY16(t_mem code) { return ldsx(cY, i16()); }
   virtual int LDYd(t_mem code) { return ldsx(cY, dop16()); }
   virtual int LDYi(t_mem code) { return ldsx(cY, iop16()); }

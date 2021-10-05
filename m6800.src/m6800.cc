@@ -335,10 +335,9 @@ cl_m6800::disassc(t_addr addr, chars *comment)
     return strdup("-- UNKNOWN/INVALID");
   b= dis_e->mnemonic;
   u8_t code= rom->read(addr);
-  if ((code == 0x18) ||
-      (code == 0x1a) ||
-      (code == 0xcd))
-    addr++;
+  if (code == 0x18) { addr++; }
+  if (code == 0x1a) { addr++; }
+  if (code == 0xcd) { addr++; }
   
   first= true;
   work= "";
