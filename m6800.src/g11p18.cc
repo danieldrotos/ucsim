@@ -27,7 +27,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include <stdio.h>
 
-#include "glob11.h"
+#include "g11p18.h"
 
 // code, mask, branch, len, mnem, iscall, ticks
 struct dis_entry disass11p18[]= {
