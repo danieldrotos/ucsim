@@ -64,10 +64,10 @@ struct dis_entry disass11p0[]= {
   { 0x1e, 0xff, 'R', 4, "BRSET %x,%b,%r" },
   { 0x13, 0xff, 'R', 4, "BRCLR %d,%b,%r" },
   { 0x1f, 0xff, 'R', 4, "BRCLR %x,%b,%r" },
-  { 0x14, 0xff, ' ', 3, "BRSET %d,%b" },
-  { 0x1c, 0xff, ' ', 3, "BRSET %x,%b" },
-  { 0x15, 0xff, ' ', 3, "BRCLR %d,%b" },
-  { 0x1d, 0xff, ' ', 3, "BRCLR %x,%b" },
+  { 0x14, 0xff, ' ', 3, "BSET %d,%b" },
+  { 0x1c, 0xff, ' ', 3, "BSET %x,%b" },
+  { 0x15, 0xff, ' ', 3, "BCLR %d,%b" },
+  { 0x1d, 0xff, ' ', 3, "BCLR %x,%b" },
   
   { 0, 0, 0, 0, 0, 0 }
 };

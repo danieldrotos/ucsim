@@ -93,6 +93,11 @@ struct dis_entry disass11p18[]= {
   { 0xec, 0xff, ' ', 3, "LDD %X" },
   { 0xed, 0xff, ' ', 3, "STD %X" },
 
+  { 0x1c, 0xff, ' ', 3, "BSET %x,%b" },
+  { 0x1e, 0xff, 'R', 4, "BRSET %x,%b,%r" },
+  { 0x1d, 0xff, ' ', 3, "BCLR %x,%b" },
+  { 0x1f, 0xff, 'R', 4, "BRCLR %x,%b,%r" },
+
   { 0, 0, 0, 0, 0, 0 }
 };
 
