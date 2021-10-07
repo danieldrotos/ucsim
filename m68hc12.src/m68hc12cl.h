@@ -33,10 +33,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "m68hc11cl.h"
 
+#define CL12 cl_m68hc12
+
+class CL12;
+
+typedef int (*hcwrapper_fn)(class CL12 *uc, t_mem code);
+
+extern hcwrapper_fn page0[256];
+
 /*
  * Base of M68HC12 processor
  */
-#define CL12 cl_m68hc12
 
 class cl_m68hc12: public cl_m68hcbase
 {
@@ -46,7 +53,8 @@ public:
   virtual const char *id_string(void);
   virtual void reset(void);
 
-  virtual int proba(int);
+  virtual int proba(int,t_mem);
+  virtual int prob1(int,t_mem) {return 1;}
   
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);

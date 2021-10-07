@@ -34,23 +34,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "wraps.h"
+#include "hcwrapcl.h"
 #include "glob12.h"
 #include "m68hc12cl.h"
 
 class cl_m68hc12 *uc;
-
-int _w_proba(int i)
-{
-  return uc->proba(i);
-}
-
-void _i_proba(int tab_idx)
-{
-  // tab[tab_idx]= _w_proba;
-}
+hcwrapper_fn page0[256];
 
 int
-cl_m68hc12::proba(int i)
+cl_m68hc12::proba(int i, t_mem code)
 {
   return i;
 }
@@ -68,6 +60,8 @@ cl_m68hc12::init(void)
   int i;
   
   cl_m68hcbase::init();
+  hc12wrap= new cl_12wrap();
+  hc12wrap->init();
   
   xtal= 8000000;
 
