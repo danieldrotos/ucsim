@@ -46,6 +46,8 @@ public:
   virtual const char *id_string(void);
   virtual void reset(void);
 
+  virtual int proba(int);
+  
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment=NULL);

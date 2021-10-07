@@ -37,12 +37,30 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob12.h"
 #include "m68hc12cl.h"
 
+class cl_m68hc12 *uc;
+
+int _w_proba(int i)
+{
+  return uc->proba(i);
+}
+
+void _i_proba(int tab_idx)
+{
+  // tab[tab_idx]= _w_proba;
+}
+
+int
+cl_m68hc12::proba(int i)
+{
+  return i;
+}
+
+
 
 cl_m68hc12::cl_m68hc12(class cl_sim *asim):
   cl_m68hcbase(asim)
 {
 }
-
 
 int
 cl_m68hc12::init(void)
