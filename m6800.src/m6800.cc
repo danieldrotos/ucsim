@@ -602,7 +602,7 @@ cl_m6800::pull_regs(bool inst_part)
     tick(7);
 }
 
-class cl_cell8 &
+class cl_memory_cell &
 cl_m6800::idx(void)
 {
   u16_t a= cI->get();
@@ -612,7 +612,7 @@ cl_m6800::idx(void)
   return *c;//= rom->get_cell(a);
 }
 
-class cl_cell8 &
+class cl_memory_cell &
 cl_m6800::ext(void)
 {
   t_addr a;
@@ -624,7 +624,7 @@ cl_m6800::ext(void)
   return *c;
 }
 
-class cl_cell8 &
+class cl_memory_cell &
 cl_m6800::dir(void)
 {
   t_addr a= fetch();

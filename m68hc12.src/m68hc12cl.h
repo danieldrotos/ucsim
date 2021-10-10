@@ -48,6 +48,9 @@ extern hcwrapper_fn page0[256];
 class cl_m68hc12: public cl_m68hcbase
 {
 public:
+  i8_t post_inc_dec;
+  class cl_cell16 *post_idx_reg;
+public:
   cl_m68hc12(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
@@ -55,10 +58,15 @@ public:
 
   virtual int proba(int,t_mem);
   virtual int prob1(int,t_mem) {return 1;}
-  
+
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
+  virtual int longest_inst(void) { return 6; }
+
+  virtual void post_inst(void);
+  virtual i16_t s8_16(u8_t op);
+  virtual t_addr naddr(void);
 };
 
 #endif

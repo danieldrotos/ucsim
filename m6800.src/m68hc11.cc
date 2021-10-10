@@ -590,7 +590,7 @@ CL11::add16(class cl_cell16 &dest, u16_t op, bool c)
 
 
 int
-CL11::bset(class cl_cell8 &dest)
+CL11::bset(class cl_memory_cell &dest)
 {
   u8_t m= fetch();
   u8_t r= dest.R();
@@ -605,7 +605,7 @@ CL11::bset(class cl_cell8 &dest)
 
 
 int
-CL11::bclr(class cl_cell8 &dest)
+CL11::bclr(class cl_memory_cell &dest)
 {
   u8_t m= fetch();
   u8_t r= dest.R();

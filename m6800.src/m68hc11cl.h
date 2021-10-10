@@ -89,8 +89,8 @@ public:
   // ALU
   virtual int sub16(class cl_cell16 &dest, u16_t op, bool c);
   virtual int add16(class cl_cell16 &dest, u16_t op, bool c);
-  virtual int bset(class cl_cell8 &dest);
-  virtual int bclr(class cl_cell8 &dest);
+  virtual int bset(class cl_memory_cell &dest);
+  virtual int bclr(class cl_memory_cell &dest);
   virtual int cp16(class cl_cell16 &dest, u16_t op);
   
   // BRANCH
