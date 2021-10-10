@@ -49,6 +49,18 @@ cl_m6800::sub(class cl_cell8 &dest, u8_t op, bool c)
 }
 
 int
+cl_m6800::sub(class cl_cell8 &dest, u8_t op)
+{
+  return sub(dest, op, false);
+}
+
+int
+cl_m6800::sbc(class cl_cell8 &dest, u8_t op)
+{
+  return sub(dest, op, true);
+}
+
+int
 cl_m6800::cmp(u8_t op1, u8_t op2)
 {
   u8_t f= rF & ~(flagN|flagZ|flagV|flagC);
@@ -86,6 +98,18 @@ cl_m6800::add(class cl_cell8 &dest, u8_t op, bool c)
   dest.W(r);
   cCC.W(f);
   return resGO;
+}
+
+int
+cl_m6800::add(class cl_cell8 &dest, u8_t op)
+{
+  return add(dest, op, false);
+}
+
+int
+cl_m6800::adc(class cl_cell8 &dest, u8_t op)
+{
+  return add(dest, op, true);
 }
 
 int

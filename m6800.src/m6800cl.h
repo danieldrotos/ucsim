@@ -143,6 +143,25 @@ public:
 };
 
 
+class cl_mop16: public cl_cell16
+{
+protected:
+  cl_memory_cell *l, *h;
+  u16_t addr;
+  class cl_address_space *as;
+  class cl_uc *uc;
+public:
+  cl_mop16(): cl_cell16() {}
+  virtual void set_uc(class cl_uc *iuc);
+  virtual void a(u16_t iaddr);
+  virtual void r(u16_t iaddr);
+  virtual t_mem read(void) { return h->R()*256 + l->R(); }
+  virtual t_mem get(void)  { return h->get()*256 + l->get(); }
+  virtual t_mem write(t_mem val) { return (h->W(val>>8))*256 + l->W(val); }
+  virtual t_mem set(t_mem val) { h->set(val>>8); l->set(val); return val; }
+};
+
+  
 /*
  * Base of M6800 processor
  */
@@ -158,6 +177,7 @@ public:
   class cl_idx16 cIX;
   class cl_it_src *src_irq, *src_nmi, *src_swi;
   class cl_idx16 *cI;
+  class cl_mop16 mop16;
   bool wai;
 public:
   cl_m6800(class cl_sim *asim);
@@ -209,8 +229,12 @@ public:
   virtual class cl_cell8 &ddst(void) { vc.rd++; vc.wr++; return dir(); }
   
   virtual int sub(class cl_cell8 &dest, u8_t op, bool c);
+  virtual int sub(class cl_cell8 &dest, u8_t op);
+  virtual int sbc(class cl_cell8 &dest, u8_t op);
   virtual int cmp(u8_t op1, u8_t op2);
   virtual int add(class cl_cell8 &dest, u8_t op, bool c);
+  virtual int add(class cl_cell8 &dest, u8_t op);
+  virtual int adc(class cl_cell8 &dest, u8_t op);
   virtual int neg(class cl_cell8 &dest);
   virtual int com(class cl_cell8 &dest);
   virtual int lsr(class cl_cell8 &dest);

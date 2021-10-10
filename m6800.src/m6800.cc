@@ -63,6 +63,30 @@ int8_t p0ticks[256]= {
   /* f */ 4, 4, 4, 0, 4, 4, 4, 5, 4, 4, 4, 4, 0, 0, 5, 6
 };
 
+void
+cl_mop16::a(u16_t iaddr)
+{
+  addr= iaddr++;
+  h= as->get_cell(addr);
+  l= as->get_cell(iaddr);
+}
+
+void
+cl_mop16::r(u16_t iaddr)
+{
+  addr= iaddr++;
+  l= as->get_cell(addr);
+  h= as->get_cell(iaddr);
+}
+
+void
+cl_mop16::set_uc(class cl_uc *iuc)
+{
+  uc= iuc;;
+  as= uc->rom;
+}
+
+
 cl_m6800::cl_m6800(class cl_sim *asim):
   cl_uc(asim)
 {
@@ -72,6 +96,8 @@ int
 cl_m6800::init(void)
 {
   cl_uc::init();
+  mop16.init();
+  mop16.set_uc(this);
   fill_def_wrappers(itab);
   
   xtal= 1000000;
@@ -583,7 +609,7 @@ cl_m6800::idx(void)
   u8_t r= fetch();
   a+= r;
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
-  return *c;
+  return *c;//= rom->get_cell(a);
 }
 
 class cl_cell8 &
