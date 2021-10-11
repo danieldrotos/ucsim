@@ -3,7 +3,10 @@
 
 #include "m68hc12cl.h"
 
-#define _II 1
+#define _A_B	uc->cA,uc->rB
+#define _A_i8	uc->cA,uc->i8()
+#define _A_dop	uc->cA,uc->dop()
+#define _A_eop	uc->cA,uc->eop()
 
 extern int wrap_INV(class CL12 *uc, t_mem code);
 

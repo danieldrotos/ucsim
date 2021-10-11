@@ -246,7 +246,8 @@ CL12::naddr(void)
 	case 0x18: ival= PC&0xffff; break;
 	}
       offset= rD;
-      return ival+offset;
+      a= ival+offset;
+      return read_addr(rom, a);
     }
   
   else if ((p&0xe7) == 0xe3)
@@ -262,7 +263,8 @@ CL12::naddr(void)
       h= fetch();
       l= fetch();
       offset= h*256+l;
-      return ival+offset;
+      a= ival+offset;
+      return read_addr(rom, a);
     }
   
   else if ((p&0xc0) != 0xc0)
