@@ -217,8 +217,8 @@ t_addr
 CL12::naddr(void)
 {
   u8_t p= fetch(), h, l;
-  i16_t offset;
-  u16_t ival, a= 0;
+  i16_t offset= 0;
+  u16_t ival= 0, a= 0;
 
   if ((p & 0x20) == 0)
     {
