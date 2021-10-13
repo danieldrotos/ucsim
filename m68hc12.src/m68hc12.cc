@@ -39,7 +39,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "m68hc12cl.h"
 
 class cl_m68hc12 *uc;
-hcwrapper_fn page0[256];
 
 int
 cl_m68hc12::proba(int i, t_mem code)
@@ -52,6 +51,8 @@ cl_m68hc12::proba(int i, t_mem code)
 cl_m68hc12::cl_m68hc12(class cl_sim *asim):
   cl_m68hcbase(asim)
 {
+  hc12wrap= new cl_12wrap();
+  hc12wrap->init();
 }
 
 int
@@ -60,8 +61,6 @@ cl_m68hc12::init(void)
   int i;
   
   cl_m68hcbase::init();
-  hc12wrap= new cl_12wrap();
-  hc12wrap->init();
   
   xtal= 8000000;
 
@@ -88,7 +87,7 @@ cl_m68hc12::reset(void)
 struct dis_entry *
 cl_m68hc12::dis_tbl(void)
 {
-  return disass12;
+  return disass12p0;
 }
 
 

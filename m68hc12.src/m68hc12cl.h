@@ -39,7 +39,6 @@ class CL12;
 
 typedef int (*hcwrapper_fn)(class CL12 *uc, t_mem code);
 
-extern hcwrapper_fn page0[256];
 
 /*
  * Base of M68HC12 processor
@@ -50,6 +49,7 @@ class cl_m68hc12: public cl_m68hcbase
 public:
   i8_t post_inc_dec;
   class cl_cell16 *post_idx_reg;
+  class cl_wrap *hc12wrap;
 public:
   cl_m68hc12(class cl_sim *asim);
   virtual int init(void);

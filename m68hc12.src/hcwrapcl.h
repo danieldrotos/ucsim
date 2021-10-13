@@ -1,3 +1,30 @@
+/*
+ * Simulator of microcontrollers (hcwrapcl.h)
+ *
+ * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
+ * 
+ * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
+ *
+ */
+
+/* This file is part of microcontroller simulator: ucsim.
+
+UCSIM is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+UCSIM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with UCSIM; see the file COPYING.  If not, write to the Free
+Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+02111-1307, USA. */
+/*@1@*/
+
 #ifndef HCWRAPCL_HEADER
 #define HCWRAPCL_HEADER
 
@@ -11,11 +38,14 @@
 extern int wrap_INV(class CL12 *uc, t_mem code);
 
 
-class cl_wrap
+class cl_wrap: public cl_base
 {
- public:
-  cl_wrap() {}
-  virtual void init()
+public:
+  hcwrapper_fn page0[256];
+public:
+  cl_wrap();
+  virtual void set_disass(int page, int code, const char *mnemo, char branch, int len);
+  virtual int init()
   {
     fill_0_00();
     fill_0_01();
@@ -273,6 +303,7 @@ class cl_wrap
     fill_0_fd();
     fill_0_fe();
     fill_0_ff();
+    return 0;
   }
   virtual void fill_0_00() { page0[0x00]= wrap_INV; }
   virtual void fill_0_01() { page0[0x01]= wrap_INV; }
@@ -532,8 +563,6 @@ class cl_wrap
   virtual void fill_0_ff() { page0[0xff]= wrap_INV; }
 };
 
-extern class cl_wrap *hc12wrap;
-
 #include "wdecls.h"
 
 class cl_12wrap: public cl_wrap
@@ -546,3 +575,5 @@ public:
 
 
 #endif
+
+/* End of m68hc12.src/hcwrap.cc */
