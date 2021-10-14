@@ -245,7 +245,7 @@ dnl dnl AC_LIBTOOL_WIN32_DLL
 dnl AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
-AC_PROG_LEX(yywrap)
+AC_PROG_LEX(noyywrap)
 if test ${LEX} = "flex"; then
         AC_DEFINE(HAVE_FLEX, 1, [XXX])
 fi

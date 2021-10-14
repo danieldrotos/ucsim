@@ -30,6 +30,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "ddconfig.h"
 
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
+
 //typedef int8_t TYPE_BYTE;
 //typedef uint8_t TYPE_UBYTE;
 //typedef int16_t TYPE_WORD;
