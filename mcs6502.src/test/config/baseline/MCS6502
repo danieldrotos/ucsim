@@ -15,11 +15,11 @@ P= 00100100
 S= 0x0100 95 aa 82 ca 6c 49 ae 90 ....lI..
  ? 0xf719 bd e0 7e LDA    $7ee0,X       ; [$7ee0]=$68[0K
 Memory chips:
-  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02lx)
-  0x000000-0x00ffff    65536 rom_chip (8,%02x,0x%04lx)
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
+  0x000000-0x00ffff    65536 rom_chip (8,%02x,0x%04x)
 Address spaces:
-  0x000000-0x0000ff      256 variables (32,%08x,0x%02lx)
-  0x000000-0x00ffff    65536 rom (8,%02x,0x%04lx)
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
+  0x000000-0x00ffff    65536 rom (8,%02x,0x%04x)
 Address decoders:
   variables 0x00 0xff -> variable_storage 0x00 activated
   rom 0x0000 0xffff -> rom_chip 0x0000 activated
