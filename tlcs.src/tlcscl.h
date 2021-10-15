@@ -375,7 +375,7 @@ class cl_tlcs_cpu: public cl_hw
 public:
   cl_tlcs_cpu(class cl_uc *auc);
   virtual int init(void);
-  virtual int cfg_size(void) { return tlcscpu_nuof; }
+  virtual unsigned int cfg_size(void) { return tlcscpu_nuof; }
   virtual const char *cfg_help(t_addr addr);
 
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);

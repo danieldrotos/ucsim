@@ -716,11 +716,6 @@ AC_DEFINE_UNQUOTED(SPEC_QWORD, [$SPEC_QWORD], [XXX])
 
 AH_TOP([#ifndef DDCONFIG_HEADER
 #define DDCONFIG_HEADER])
-AH_BOTTOM([/* ucsim custom defines */
-#define DD_TRUE     1
-#define DD_FALSE    0
-#define NIL         0
-#endif /* DDCONFIG_HEADER */])
 
 if echo $TYPE_DWORD|grep short >/dev/null; then
     A="h"
