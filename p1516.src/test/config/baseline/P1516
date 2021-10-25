@@ -28,12 +28,12 @@ R12= 0x00000000 [R12]= 0x5d888a08 R13= 0x00000000 [R13]= 0x5d888a08
 R14= 0x00000000 [R14]= 0x5d888a08 R15= 0x00000000 [R15]= 0x5d888a08
  ? 0x0000 5d888a08 C0 call  0x5888a08[0K
 Memory chips:
-  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
-  0x000000-0x003fff    16384 rom_chip (32,%08x,0x%04x)
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02lx)
+  0x000000-0x003fff    16384 rom_chip (32,%08x,0x%04lx)
 Address spaces:
-  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
-  0x000000-0x00ffff    65536 rom (32,%08x,0x%04x)
-  0x000000-0x00000f       16 regs (32,%08x,0x%01x)
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02lx)
+  0x000000-0x00ffff    65536 rom (32,%08x,0x%04lx)
+  0x000000-0x00000f       16 regs (32,%08x,0x%01lx)
 Address decoders:
   variables 0x00 0xff -> variable_storage 0x00 activated
   rom 0x0000 0x3fff -> rom_chip 0x0000 activated

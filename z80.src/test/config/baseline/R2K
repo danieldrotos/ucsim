@@ -15,13 +15,13 @@ BC= 0x0000 [BC]= 08   8 .  DE= 0x0000 [DE]= 08   8 .  HL= 0x0000 [HL]= 08   8 .
 IX= 0x0000 [IX]= 08   8 .  IY= 0x0000 [IY]= 08   8 .  SP= 0x0000 [SP]= 08   8 .
  ? 0x00000 08          EX     AF,AF'[0K
 Memory chips:
-  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
-  0x000000-0x0fffff  1048576 rom_chip (8,%02x,0x%05x)
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02lx)
+  0x000000-0x0fffff  1048576 rom_chip (8,%02x,0x%05lx)
 Address spaces:
-  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
-  0x000000-0x0fffff  1048576 rom (8,%02x,0x%05x)
-  0x000000-0x000011       18 regs8 (8,%02x,0x%02x)
-  0x000000-0x00000a       11 regs16 (16,%04x,0x%01x)
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02lx)
+  0x000000-0x0fffff  1048576 rom (8,%02x,0x%05lx)
+  0x000000-0x000011       18 regs8 (8,%02x,0x%02lx)
+  0x000000-0x00000a       11 regs16 (16,%04x,0x%01lx)
 Address decoders:
   variables 0x00 0xff -> variable_storage 0x00 activated
   rom 0x00000 0xfffff -> rom_chip 0x00000 activated
