@@ -716,7 +716,8 @@ AC_DEFINE_UNQUOTED(SPEC_QWORD, [$SPEC_QWORD], [XXX])
 
 AH_TOP([#ifndef DDCONFIG_HEADER
 #define DDCONFIG_HEADER])
-
+AH_BOTTOM([#endif])
+	
 if echo $TYPE_DWORD|grep short >/dev/null; then
     A="h"
 elif echo $TYPE_DWORD|grep long >/dev/null; then

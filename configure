@@ -7471,6 +7471,7 @@ printf "%s\n" "#define SPEC_QWORD $SPEC_QWORD" >>confdefs.h
 
 
 
+
 if echo $TYPE_DWORD|grep short >/dev/null; then
     A="h"
 elif echo $TYPE_DWORD|grep long >/dev/null; then
