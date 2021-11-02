@@ -576,14 +576,14 @@ if test "$ac_cv_cxx_compiler_gnu" = "yes"; then
   if test "$sdcc_cv_cxx_pipe" = "yes"; then
     CXXFLAGS="$CXXFLAGS -pipe"
   fi
-
-  sdcc_IS_VALID_OPTION(-Wno-overloaded-virtual)
-  if test "$sdcc_cv_cxx_Wno_overloaded_virtual" = "yes"; then
-      CXXFLAGS="$CXXFLAGS -Wno-overloaded-virtual"
-  fi
   
   MAKEDEP="$CXX $ucsim_cv_MM"
   WALL_FLAG="-Wall"
+
+  sdcc_IS_VALID_OPTION(-Wno-overloaded-virtual)
+  if test "$sdcc_cv_cxx_Wno_overloaded_virtual" = "yes"; then
+      WALL_FLAG="$WALL_FLAG -Wno-overloaded-virtual"
+  fi
 else
   sdcc_IS_SUNPRO
   if test "$sdcc_cv_cxx_compiler_sunpro" = "yes"; then

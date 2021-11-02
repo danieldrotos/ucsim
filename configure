@@ -7111,6 +7111,9 @@ printf "%s\n" "$ac_res" >&6; }
     CXXFLAGS="$CXXFLAGS -pipe"
   fi
 
+  MAKEDEP="$CXX $ucsim_cv_MM"
+  WALL_FLAG="-Wall"
+
   arg1=`echo -Wno-overloaded-virtual | sed -e"s/^-*//" -e"s/-/_/g"`
 ac_test_CXXFLAGS=${CXXFLAGS+set}
 sdcc_save_CXXFLAGS=$CXXFLAGS
@@ -7150,11 +7153,8 @@ printf "%s\n" "$ac_res" >&6; }
    CXXFLAGS=$sdcc_save_CXXFLAGS
 
   if test "$sdcc_cv_cxx_Wno_overloaded_virtual" = "yes"; then
-      CXXFLAGS="$CXXFLAGS -Wno-overloaded-virtual"
+      WALL_FLAG="$WALL_FLAG -Wno-overloaded-virtual"
   fi
-
-  MAKEDEP="$CXX $ucsim_cv_MM"
-  WALL_FLAG="-Wall"
 else
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether we are using the SunPRO C++ compiler" >&5
 printf %s "checking whether we are using the SunPRO C++ compiler... " >&6; }
