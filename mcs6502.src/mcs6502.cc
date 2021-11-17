@@ -280,7 +280,7 @@ cl_mcs6502::disassc(t_addr addr, chars *comment)
 	      break;
 	    case 'r': // rel
 	      l= rom->read(addr+1);
-	      a= PC + (i8_t)l + 2;
+	      a= addr + (i8_t)l + 2;
 	      work.appendf("$%04x", a);
 	      break;
 	    case '#': // imm8
