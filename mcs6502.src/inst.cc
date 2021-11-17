@@ -35,8 +35,9 @@ cl_mcs6502::NOP(t_mem code)
 int
 cl_mcs6502::BRK(t_mem code)
 {
+  cF.W(rF|flagB);
   src_brk->request();
-  cF.W(flagB);
+  cF.W(rF&~flagB);
   return resGO;
 }
 
@@ -75,7 +76,7 @@ cl_mcs6502::SEI(t_mem code)
 int
 cl_mcs6502::PHP(t_mem code)
 {
-  rom->write(0x0100 + rSP, rF);
+  rom->write(0x0100 + rSP, rF|flagB);
   vc.wr++;
   cSP.W(rSP-1);
   tick(2);
