@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include <stdlib.h>
 //#include "i_string.h"
 
+#include "globals.h"
+
 #include "itsrccl.h"
 //#include "pobjcl.h"
 //#include "stypes.h"
@@ -148,8 +150,10 @@ cl_it_src::pending(void)
 void
 cl_it_src::request(void)
 {
+  if (check) printf("req %s\n", get_name());
   if (!src_cell)
     return;
+  printf("IRQ %s\n", get_name());
   if (src_value)
     src_cell->set(src_cell->get() | src_mask);
   else

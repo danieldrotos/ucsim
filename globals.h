@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 #include "appcl.h"
 
+extern bool check;
 
 extern class cl_app *application;
 
