@@ -437,7 +437,8 @@ cl_mcs6502::print_regs(class cl_console_base *con)
   rom->dump(0, 0x100+SP, 0x100+SP+7, 8, con);
   con->dd_color("answer");
   
-  //print_disass(PC, con);
+  print_disass(PC, con);
+  /*
   con->dd_printf(" ? 0x%04x ", PC);
   {
     int i, j, code= rom->read(PC), l= inst_length(PC);
@@ -458,6 +459,7 @@ cl_mcs6502::print_regs(class cl_console_base *con)
       }
   }
   con->dd_printf("\n");
+  */
 }
 
 int
@@ -479,7 +481,6 @@ cl_mcs6502::accept_it(class it_level *il)
   class cl_it_src *is= il->source;
 
   tick(2);
-  printf("Accept PC=%04x F=%02x\n",uint16_t(PC),rF);
   push_addr(PC);
   rom->write(0x0100 + rSP, rF|0x20);
   if (set_b)
