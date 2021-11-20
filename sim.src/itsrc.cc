@@ -150,7 +150,6 @@ cl_it_src::pending(void)
 void
 cl_it_src::request(void)
 {
-  if (check) printf("req %s\n", get_name());
   if (!src_cell)
     return;
   printf("IRQ %s\n", get_name());

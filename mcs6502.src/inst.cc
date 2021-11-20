@@ -38,7 +38,7 @@ int
 cl_mcs6502::BRK(t_mem code)
 {
   printf("PC=%04x BRK\n",uint16_t(PC));
-  set_b= check= true;
+  set_b= true;
   fetch();
   cF.W(rF|flagB);
   src_brk->request();

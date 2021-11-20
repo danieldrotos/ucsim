@@ -466,7 +466,6 @@ cl_mcs6502::exec_inst(void)
   int res;
 
   set_b= false;
-  check= false;
   if ((res= exec_inst_tab(itab)) != resNOT_DONE)
     return res;
 

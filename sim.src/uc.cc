@@ -2641,35 +2641,28 @@ cl_uc::do_interrupt(void)
   class it_level *il= (class it_level *)(it_levels->top()), *IL= 0;
 
   irq= false;
-  if (check) printf("Checking IRQs...\n");
   for (i= 0; i < it_sources->count; i++)
     {
       class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
       is->pass_over();
     }
-  if (check) printf("Checking IRQs passed...\n");
   for (i= 0; i < it_sources->count; i++)
     {
       class cl_it_src *is= (class cl_it_src *)(it_sources->at(i));
-      if (check) printf("Chk %s\n", is->get_name());
-      if (check) printf(" E=%d P=%d\n",is->enabled(),is->pending());
       if (is->is_slave())
 	{
-	  if (check) printf("Slave...\n");
 	  continue;
 	}
       if (!is->is_nmi())
 	{
 	  if (!is_en)
 	    {
-	      if (check) printf("%s Not NMI, not EN...\n",is->get_name());
 	      continue;
 	    }
 	}
       bool A= is->is_active();
       bool E= is->enabled();
       bool P= is->pending();
-      if (check) printf("IRQ %s A=%d E=%d P=%d\n", is->get_name(), A,E,P);
       if (A && E && P)
 	{
 	  int pr= priority_of(is->nuof);
@@ -2679,20 +2672,15 @@ cl_uc::do_interrupt(void)
 	      il->level >= 0)
 	    {
 	      ap= il->level;
-	      if (check) printf("ap=%d il-level\n",ap);
 	    }
 	  else
 	    {
 	      ap= priority_main();
-	      if (check) printf("ap=%d main\n",ap);
 	    }
-	  if (check) printf("Prio check: ap=%d >= pr=%d\n",ap,pr);
 	  if (ap >= pr)
 	    {
-	      if (check) printf("Deny ap=%d >= pr=%d\n",ap,pr);
 	      continue;
 	    }
-	  if (check) printf("Prio accept\n");
 	  if (state == stIDLE)
 	    state= stGO;
 	  is->clear();
