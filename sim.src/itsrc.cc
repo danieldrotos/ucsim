@@ -152,7 +152,6 @@ cl_it_src::request(void)
 {
   if (!src_cell)
     return;
-  printf("IRQ %s\n", get_name());
   if (src_value)
     src_cell->set(src_cell->get() | src_mask);
   else
@@ -182,12 +181,10 @@ cl_it_src::write(class cl_memory_cell *cell, t_mem *val)
   
   if (cell == ie_cell)
     {
-      //printf("ITSRC ie=%x\n", *val);
       iev= *val;
     }
   if (cell == src_cell)
     {
-      //printf("ITSRC src=%x\n", *val);
       srcv= *val;
     }
   ier= (iev&ie_mask) == ie_value;
@@ -199,7 +196,6 @@ cl_it_src::write(class cl_memory_cell *cell, t_mem *val)
 	{
 	  if (srcr)
 	    {
-	      //printf("%2d IRQ\n", nuof);
 	      uc->irq= true;
 	    }
 	}
