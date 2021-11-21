@@ -74,12 +74,15 @@ enum {
   IRQ_AT	= 0xfffe
 };
 
+
 class cl_c65: public cl_cell8
 {
+#ifdef DEVEL
   virtual t_mem read(void);
   virtual t_mem get(void);
   virtual t_mem write(t_mem val);
   virtual t_mem set(t_mem val);
+#endif
 };
 
 class cl_as65: public cl_address_space
@@ -88,11 +91,8 @@ public:
   cl_as65(const char *id, t_addr astart, t_addr asize, int awidth):
     cl_address_space(id, astart, asize, awidth) {}
   virtual class cl_memory_cell *cell_template();
-  //virtual t_mem read(t_addr addr);
-  //virtual t_mem get(t_addr addr);
-  //virtual t_mem write(t_addr addr, t_mem val);
-  //virtual void set(t_addr addr, t_mem val);
 };
+
 
 /*
  * Base of MCS6502 processor

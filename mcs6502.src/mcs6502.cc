@@ -71,6 +71,7 @@ cl_as65::cell_template()
   return &c65_tmpl;
 }
 
+#ifdef DEVEL
 t_mem
 cl_c65::read(void)
 {
@@ -78,7 +79,9 @@ cl_c65::read(void)
   if (ccn(this)) c->dd_printf("R[%04x]-> %02x\n", dbg_a, u8_t(v));
   return v;
 }
+#endif
 
+#ifdef DEVEL
 t_mem
 cl_c65::get(void)
 {
@@ -86,7 +89,9 @@ cl_c65::get(void)
   if (ccn(this)) c->dd_printf("R[%04x]-> %02x\n", dbg_a, u8_t(v));
   return v;
 }
+#endif
 
+#ifdef DEVEL
 t_mem
 cl_c65::write(t_mem val)
 {
@@ -95,7 +100,9 @@ cl_c65::write(t_mem val)
   v= cl_cell8::write(val);
   return v;
 }
+#endif
 
+#ifdef DEVEL
 t_mem
 cl_c65::set(t_mem val)
 {
@@ -104,42 +111,7 @@ cl_c65::set(t_mem val)
   v= cl_cell8::set(val);
   return v;
 }
-/*
-t_mem
-cl_as65::read(t_addr addr)
-{
-  t_mem v= cl_address_space::read(addr);
-  //if (con()) c->dd_printf("R[%04x]-> %02x\n", u16_t(addr), v);
-  return v;
-}
-*/
-/*
-t_mem
-cl_as65::get(t_addr addr)
-{
-  t_mem v= cl_address_space::get(addr);
-  //if (con()) c->dd_printf("R[%04x]-> %02x\n", u16_t(addr), v);
-  return v;
-}
-*/
-/*
-t_mem
-cl_as65::write(t_addr addr, t_mem val)
-{
-  t_mem v= cl_address_space::get(addr);
-  //if (con()) c->dd_printf("W[%04x] %02x <- %02x\n", u16_t(addr), u8_t(v), u8_t(val));
-  return cl_address_space::write(addr, val);
-}
-*/
-/*
-void
-cl_as65::set(t_addr addr, t_mem val)
-{
-  t_mem v= cl_address_space::get(addr);
-  //if (con()) c->dd_printf("W[%04x] %02x <- %02x\n", u16_t(addr), u8_t(v), u8_t(val));
-  cl_address_space::set(addr, val);
-}
-*/
+#endif
 
 cl_mcs6502::cl_mcs6502(class cl_sim *asim):
   cl_uc(asim)
