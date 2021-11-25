@@ -24,6 +24,8 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
+#include "appcl.h"
+
 #include "mcs6502cl.h"
 
 
@@ -50,8 +52,10 @@ cl_mcs6502::JMPi(t_mem code)
 int
 cl_mcs6502::JSR(t_mem code)
 {
-  u16_t a= i16();
-  push_addr(PC);
+  u16_t a= fetch(); // low
+  t_addr pc= PC;
+  a+= (fetch()*256); // high
+  push_addr(pc);
   PC= a;
   return resGO;
 }
@@ -59,7 +63,7 @@ cl_mcs6502::JSR(t_mem code)
 int
 cl_mcs6502::RTS(t_mem code)
 {
-  PC= pop_addr();
+  PC= pop_addr()+1;
   tick(3);
   return resGO;
 }
@@ -67,15 +71,22 @@ cl_mcs6502::RTS(t_mem code)
 int
 cl_mcs6502::branch(bool cond)
 {
-  i8_t rel= fetch();
-  u16_t a= PC+rel;
+  i8_t rel;
+  u16_t a;
+  if (!jaj)
+    rel= fetch();
   if (cond)
     {
+      if (jaj)
+	rel= fetch();
+      a= PC+rel;
       if ((PC&0xff00) != (a&0xff00))
 	tick(1);
       PC= a;
       tick(1);
     }
+  else if (jaj)
+    PC++;
   tick(1);
   return resGO;
 }
