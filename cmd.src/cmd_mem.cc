@@ -539,6 +539,8 @@ COMMAND_DO_WORK_UC(cl_memory_remove_chip_cmd)
 
   if (!chip)
     con->dd_printf("Wrong id\n");
+  else if (!chip->is_chip())
+    con->dd_printf("Not chip\n");
   else
     {
       /*
@@ -546,6 +548,7 @@ COMMAND_DO_WORK_UC(cl_memory_remove_chip_cmd)
       uc->memchips->add(mem);
       mem->set_uc(uc);
       */
+      uc->remove_chip(chip);
     }
   return(false);
 }

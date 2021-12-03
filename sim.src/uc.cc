@@ -1157,6 +1157,40 @@ cl_uc::memory(const char *id)
   return(0);
 }
 
+void
+cl_uc::remove_chip(class cl_memory *chip)
+{
+  class cl_address_space *as;
+  class cl_address_decoder *ad;
+  int i, j;
+  t_index idx;
+  i= memchips->index_of(chip, &idx);
+  if (!i)
+    return;
+  for (i= 0; i < address_spaces->get_count(); i++)
+    {
+      as= (class cl_address_space *)(address_spaces->at(i));
+      j= 0;
+      while (j < as->decoders->get_count())
+	{
+	  for (j= 0; j < as->decoders->get_count(); j++)
+	    {
+	      t_addr as_start, as_end;
+	      ad= (class cl_address_decoder *)(as->decoders->at(j));
+	      as_start= ad->as_begin;
+	      as_end= ad->as_end;
+	      if (ad->memchip == chip)
+		{
+		  as->undecode_area(NULL, as_start, as_end, NULL);
+		  break;
+		}
+	    }
+	}
+    }
+  memchips->disconn(chip);
+  delete chip;
+}
+
 
 static long
 ReadInt(cl_f *f, bool *ok, int bytes)
