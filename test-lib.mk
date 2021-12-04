@@ -59,6 +59,7 @@ define run-sim =
 		2>&1 < /dev/null \
 		| sed -E $(ELIDE) \
 		> 'out/$@'
+	-for file in out/*.vcd; do sed -E -i $(ELIDE) "$$file"; done
 endef
 
 
