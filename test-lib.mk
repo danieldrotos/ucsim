@@ -59,7 +59,7 @@ define run-sim =
 		2>&1 < /dev/null \
 		| sed -E $(ELIDE) \
 		> 'out/$@'; \
-	for file in out/*.vcd; do [[ -r "$$file" ]] && sed -E -i $(ELIDE) "$$file"; done
+	for file in out/*.vcd; do [ -r "$$file" ] && sed -E -i $(ELIDE) "$$file"; done
 endef
 
 
