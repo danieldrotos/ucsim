@@ -1022,19 +1022,19 @@ cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, int c, bool store, bool i
   u16_t r;
   unsigned int d= *acc;
   unsigned int o= op;
-  signed int res= (i16_t)d + (i16_t)o;
-
-  if (c) { ++res, ++o; }
+  u32_t res= d + o + (c)?1:0;
+  r= res;
   
   reg.CC= ~(flagV|flagS|flagZ|flagC);
-  if ((res < (int)(0x8000)) || (res > (int)(0x7fff)))
+  //if ((res < (int)(0x8000)) || (res > (int)(0x7fff)))
+  if (0x8000 & ((d&o&~r) | (~d&~o&r)))
     reg.CC|= flagV;
-  if (d + o > 0xffff)
+  if (res > 0xffff)
     reg.CC|= flagC;
   if (invert_c)
     reg.CC^= flagC;
 
-  r= res & 0xffff;
+  //r= res & 0xffff;
   if (r == 0)     reg.CC|= flagZ;
   if (r & 0x8000) reg.CC|= flagS;
 
@@ -1394,7 +1394,7 @@ cl_m6809::inst_10(t_mem code)
 	r2= op8&0xf;
 	if (((r1^r2)&0x08)!=0)
 	  return resINV_INST;
-	if (r1>=8)
+	if (r1<8)
 	  {
 	    u16_t *R1= reg16_ptr[r1&7];
 	    u16_t *R2= reg16_ptr[r2&7];
