@@ -1364,7 +1364,8 @@ cl_m6809::inst_10(t_mem code)
     case 0x09: // DAA
       {
 	u8_t cf= 0;
-	if ((reg.CC & flagC) || ((A&0x0f) > 9))
+	int r;
+	if ((reg.CC & flagH) || ((A&0x0f) > 9))
 	  cf|= 0x06;
 	if ((reg.CC & flagC) ||
 	    ((A&0xf0) > 0x90) ||
@@ -1374,9 +1375,12 @@ cl_m6809::inst_10(t_mem code)
 	     )
 	    )
 	  cf|= 0x60;
-	A= A + cf;
+	r= A + cf;
+	A= r;
 	SET_Z(A);
 	SET_S(A & 0x80);
+	if (r>0xff)
+	  reg.CC|= flagC;
 	tick(1);
 	break;
       }
