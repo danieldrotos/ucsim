@@ -145,7 +145,7 @@ public:
 
   virtual int inst_low(t_mem code);
   
-  virtual int inst_pg1(t_mem code);
+  virtual int inst_page1(t_mem code);
 
   virtual int inst_page2(t_mem code);
     
