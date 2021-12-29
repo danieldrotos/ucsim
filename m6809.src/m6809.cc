@@ -989,7 +989,7 @@ cl_m6809::pull_regs(bool do_cc)
 }
 
 int
-cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store, bool invert_c)
+cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, bool c, bool store, bool invert_c)
 {
   u8_t r;
   unsigned int d= *acc;
@@ -1017,13 +1017,15 @@ cl_m6809::inst_add8(t_mem code, u8_t *acc, u8_t op, int c, bool store, bool inve
 
 
 int
-cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, int c,
+cl_m6809::inst_add16(t_mem code, u16_t *acc, u16_t op, bool c,
 		     bool store, bool invert_c, bool is_sub)
 {
   u16_t r;
   unsigned int d= *acc;
   unsigned int o= op;
-  u32_t res= d + o + (c)?1:0;
+  u32_t res= d + o;
+  if (c)
+    res++;
   r= res;
   
   reg.CC= ~(flagV|flagS|flagZ|flagC);
