@@ -2143,12 +2143,12 @@ cl_m6809::inst_low(t_mem code)
 
 
 int
-cl_m6809::inst_page1(t_mem code)
+cl_m6809::inst_pg1(t_mem code)
 {
   t_addr ea;
   u8_t op8, idx;
   u16_t op16;
-  
+  printf("2 this=%p\n",this);
   if ((code & 0xf0) == 0x20)
     return inst_branch(code, true);
   if (code == 0x3f)
@@ -2373,7 +2373,8 @@ cl_m6809::exec_inst(void)
 	{
 	  tick(1);
 	  code= fetch();
-	  int ret= inst_page1(code);
+	  printf("1 this=%p\n",this);
+	  int ret= inst_pg1(code);
 	  return ret;
 	}
       if (code == 0x11)
