@@ -2365,7 +2365,6 @@ cl_m6809::exec_inst(void)
   bool fe;
 
   fe= fetch(&code);
-  code&= 0xff;
   tick(1);
   if (fe)
     return(resBREAKPOINT);
@@ -2374,20 +2373,10 @@ cl_m6809::exec_inst(void)
     return inst_alu(code);
   else
     {
-      //u8_t b;
       if (code == 0x10)
-	{
-	  tick(1);
-	  code= fetch();
-	  int ret= inst_page1(code);
-	  return ret;
-	}
+	return tick(1), inst_page1(fetch());
       if (code == 0x11)
-	{
-	  tick(1);
-	  code= fetch();
-	  return inst_page2(code);
-	}
+	return tick(1), inst_page2(fetch());
       return inst_low(code);
     }
   
