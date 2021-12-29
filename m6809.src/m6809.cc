@@ -2368,18 +2368,19 @@ cl_m6809::exec_inst(void)
     return inst_alu(code);
   else
     {
-      u8_t b;
+      //u8_t b;
       if (code == 0x10)
 	{
 	  tick(1);
-	  b= fetch();
-	  return inst_page1(b);
+	  code= fetch();
+	  int ret= inst_page1(code);
+	  return ret;
 	}
       if (code == 0x11)
 	{
 	  tick(1);
-	  b= fetch();
-	  return inst_page2(b);
+	  code= fetch();
+	  return inst_page2(code);
 	}
       return inst_low(code);
     }
