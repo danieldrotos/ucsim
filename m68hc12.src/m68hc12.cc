@@ -64,6 +64,9 @@ cl_m68hc12::init(void)
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(TMP2);
   RCV(TMP3);
+  RCV(PPAGE);
+  RCV(DPAGE);
+  RCV(EPAGE);
   
   xtal= 8000000;
 
@@ -84,6 +87,13 @@ void
 cl_m68hc12::reset(void)
 {
   cl_m68hcbase::reset();
+}
+
+void
+cl_m68hc12::make_cpu_hw(void)
+{
+  add_hw(cpu= new cl_hc12_cpu(this));
+  cpu->init();
 }
 
 
@@ -374,5 +384,24 @@ cl_m68hc12::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
+
+/*
+ * CPU peripheral for HC12 cpu
+ */
+
+cl_hc12_cpu::cl_hc12_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_CPU, 0, "cpu")
+{
+  muc= (class cl_m68hc12 *)auc;
+}
+
+void
+cl_hc12_cpu::print_info(class cl_console_base *con)
+{
+  con->dd_color("answer");
+  con->dd_printf("PPAGE= $%02x\n", muc->PPAGE);
+  con->dd_printf("DPAGE= $%02x\n", muc->DPAGE);
+  con->dd_printf("EPAGE= $%02x\n", muc->EPAGE);
+}
 
 /* End of m68hc12.src/m68hc12.cc */
