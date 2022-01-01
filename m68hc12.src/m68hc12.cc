@@ -90,6 +90,27 @@ cl_m68hc12::reset(void)
 }
 
 void
+cl_m68hc12::make_memories(void)
+{
+  class cl_address_space *as;
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+  
+  rom= as= new cl_address_space("rom", 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip= new cl_chip8("rom_chip", 0x400000, 8);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(as= rom,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+}
+
+void
 cl_m68hc12::make_cpu_hw(void)
 {
   add_hw(cpu= new cl_hc12_cpu(this));

@@ -65,6 +65,7 @@ public:
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void reset(void);
+  virtual void make_memories(void);
   virtual void make_cpu_hw(void);
   
   virtual int proba(int,t_mem);
