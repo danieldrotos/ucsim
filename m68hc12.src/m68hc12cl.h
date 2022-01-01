@@ -40,6 +40,9 @@ class CL12;
 typedef int (*hcwrapper_fn)(class CL12 *uc, t_mem code);
 
 
+#define rTMP2 (TMP2)
+#define rTMP3 (TMP3)
+
 /*
  * Base of M68HC12 processor
  */
@@ -50,12 +53,14 @@ public:
   i8_t post_inc_dec;
   class cl_cell16 *post_idx_reg;
   class cl_wrap *hc12wrap;
+  u16_t TMP2, TMP3;
+  class cl_cell16 cTMP2, cTMP3;
 public:
   cl_m68hc12(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void reset(void);
-
+  
   virtual int proba(int,t_mem);
   virtual int prob1(int,t_mem) {return 1;}
 
@@ -67,6 +72,8 @@ public:
   virtual void post_inst(void);
   virtual i16_t s8_16(u8_t op);
   virtual t_addr naddr(void);
+
+  virtual void print_regs(class cl_console_base *con);
 };
 
 #endif
