@@ -64,9 +64,6 @@ cl_m68hc12::init(void)
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(TMP2);
   RCV(TMP3);
-  RCV(PPAGE);
-  RCV(DPAGE);
-  RCV(EPAGE);
   
   xtal= 8000000;
 
@@ -416,13 +413,52 @@ cl_hc12_cpu::cl_hc12_cpu(class cl_uc *auc):
   muc= (class cl_m68hc12 *)auc;
 }
 
+int
+cl_hc12_cpu::init(void)
+{
+  class cl_cvar *v;
+  cl_hw::init();
+  
+  ppage= register_cell(muc->rom, 0x0035);
+  dpage= register_cell(muc->rom, 0x0034);
+  epage= register_cell(muc->rom, 0x0036);
+  windef= register_cell(muc->rom, 0x0037);
+
+  uc->vars->add(v= new cl_var("PPAGE", muc->rom, 0x0035,
+			      "Program page register"));
+  v->init();
+  uc->vars->add(v= new cl_var("DPAGE", muc->rom, 0x0034,
+			      "Data page register"));
+  v->init();
+  uc->vars->add(v= new cl_var("EPAGE", muc->rom, 0x0036,
+			      "Extra page register"));
+  v->init();
+  uc->vars->add(v= new cl_var("WINDEF", muc->rom, 0x0037,
+			      "Window definition register"));
+  v->init();
+  return 0;
+}
+
+void
+cl_hc12_cpu::reset(void)
+{
+  ppage->write(0);
+  dpage->write(0);
+  epage->write(0);
+  windef->write(0);
+}
+
 void
 cl_hc12_cpu::print_info(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("PPAGE= $%02x\n", muc->PPAGE);
-  con->dd_printf("DPAGE= $%02x\n", muc->DPAGE);
-  con->dd_printf("EPAGE= $%02x\n", muc->EPAGE);
+  con->dd_printf("PPAGE= $%02x\n", ppage->read());
+  con->dd_printf("DPAGE= $%02x\n", dpage->read());
+  con->dd_printf("EPAGE= $%02x\n", epage->read());
+  u8_t w= windef->read();
+  con->dd_printf("PWEN= %d\n", (w&0x40)?1:0);
+  con->dd_printf("DWEN= %d\n", (w&0x80)?1:0);
+  con->dd_printf("EWEN= %d\n", (w&0x20)?1:0);
 }
 
 /* End of m68hc12.src/m68hc12.cc */

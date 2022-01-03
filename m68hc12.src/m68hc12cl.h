@@ -42,9 +42,6 @@ typedef int (*hcwrapper_fn)(class CL12 *uc, t_mem code);
 
 #define rTMP2 (TMP2)
 #define rTMP3 (TMP3)
-#define rPPAGE (PPAGE)
-#define rDPAGE (DPAGE)
-#define rEPAGE (EPAGE)
 
 /*
  * Base of M68HC12 processor
@@ -58,8 +55,6 @@ public:
   class cl_wrap *hc12wrap;
   u16_t TMP2, TMP3;
   class cl_cell16 cTMP2, cTMP3;
-  u8_t PPAGE, DPAGE, EPAGE;
-  class cl_cell8 cPPAGE, cDPAGE, cEPAGE;
 public:
   cl_m68hc12(class cl_sim *asim);
   virtual int init(void);
@@ -92,9 +87,11 @@ class cl_hc12_cpu: public cl_hw
 {
 protected:
   class cl_m68hc12 *muc;
+  class cl_memory_cell *dpage, *ppage, *epage, *windef;
 public:
   cl_hc12_cpu(class cl_uc *auc);
-  
+  virtual int init(void);
+  virtual void reset(void);
   virtual void print_info(class cl_console_base *con);
 };
 
