@@ -267,9 +267,14 @@ cl_p1516::disassc(t_addr addr, chars *comment)
 	      data= (code & 0x000f0000)>>16;
 	      work.appendf("r%d", data);
 	      if (comment)
-		comment->format("; [%08x]= %08x",
-				R[data],
-				rom->get(R[data]));
+		{
+		  chars n= "";
+		  addr_name(R[data], rom, &n);
+		  comment->format("; [%08x%s]= %08x",
+				  R[data],
+				  n.c_str(),
+				  rom->get(R[data]));
+		}
 	      break;
 	    case 'b': // Rb
 	      data= (code & 0x0000f000)>>12;
@@ -278,6 +283,7 @@ cl_p1516::disassc(t_addr addr, chars *comment)
 	    case '0': // LDL0
 	      data= (code & 0x0000ffff);
 	      work.appendf("0x0000%04x", data);
+	      addr_name(data, rom, &work);
 	      break;
 	    case 'O': // LDL0 -> jump
 	      data= (code & 0x0000ffff);
