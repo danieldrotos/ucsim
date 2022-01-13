@@ -561,20 +561,10 @@ if test "$ac_cv_cxx_compiler_gnu" = "yes"; then
   # This is the first time when CFLAGS are set/modified!!
 
   sdcc_IS_VALID_OPTION(-ggdb)
-  sdcc_IS_VALID_OPTION(-gstabs)
-  if test "$sdcc_cv_cxx_gstabs" = "yes"; then
-    gopt="-gstabs+ -g3"
-  elif test "$sdcc_cv_cxx_ggdb" = "yes"; then
-    gopt="-ggdb -g3"
-  else
-    gopt="-g"
+  if test "$sdcc_cv_cxx_ggdb" = "yes"; then
+      CXXFLAGS="$CXXFLAGS -ggdb"
   fi
-  if test "$CXXFLAGS"x = x ;then
-    CXXFLAGS="$gopt"
-  else
-    CXXFLAGS="$CXXFLAGS $gopt"
-  fi
-
+dnl  sdcc_IS_VALID_OPTION(-gstabs)
   sdcc_IS_VALID_OPTION(-pipe)
   if test "$sdcc_cv_cxx_pipe" = "yes"; then
     CXXFLAGS="$CXXFLAGS -pipe"
@@ -633,10 +623,6 @@ else
     else
         : # FIXME
     fi
-    if echo $CXX|grep "x86"|grep "mingw" >/dev/null 2>&1; then
-	LDFLAGS="$LDFLAGS -Wl,--image-base -Wl,0x10000000"
-    fi
-#echo
 fi
 
 type_name()
