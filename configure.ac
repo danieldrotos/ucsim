@@ -633,6 +633,9 @@ else
     else
         : # FIXME
     fi
+    if echo $CXX|grep "x86"|grep "mingw" >/dev/null 2>&1; then
+	LDFLAGS="$LDFLAGS -Wl,--image-base -Wl,0x10000000"
+    fi
 #echo
 fi
 
