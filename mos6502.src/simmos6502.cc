@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simmos6502cl.h"
 #include "mos6502cl.h"
 #include "mos65c02cl.h"
+#include "mos6510cl.h"
 #include "glob.h"
 
 
@@ -63,6 +64,8 @@ cl_simmos6502::mk_controller(void)
       return(new cl_mos6502(this));
     case CPU_65C02:
       return(new cl_mos65c02(this));
+    case CPU_6510:
+      return(new cl_mos6510(this));
     default:
       fprintf(stderr, "Unknown processor type\n");
       return NULL;
