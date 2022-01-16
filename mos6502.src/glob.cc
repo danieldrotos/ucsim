@@ -221,4 +221,15 @@ struct dis_entry disass_mos6502[]=
     { 0, 0, 0, 0, 0, 0 }
   };
 
+
+struct cpu_entry cpus_6502[]=
+  {
+    {"6502"	, CPU_6502, 0		, "MOS6502", ""},
+    {"02"	, CPU_6502, 0		, "MOS6502", ""},
+    {"65C02"	, CPU_65C02, 0		, "MOS65C02", ""},
+    {"C02"	, CPU_65C02, 0		, "MOS65C02", ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
 /* End of mos6502.src/glob.cc */
