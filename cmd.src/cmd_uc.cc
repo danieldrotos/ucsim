@@ -56,8 +56,6 @@ static struct id_element cpu_states[]= {
 //		      class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_state_cmd)
 {
-  const char *prefix;
-
   con->dd_printf("CPU state= %s PC= 0x%06x frequency= %.0f HZ\n",
 		 get_id_string(cpu_states, uc->state),
 		 AU(uc->PC), 

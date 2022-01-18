@@ -994,7 +994,7 @@ cl_pblaze::do_interrupt(void)
 
   if (interrupt->interrupt_request) {
     printf("%g sec (%ld clks): Accepting interrupt, PC= 0x%06x\n",
-	   ticks->get_rtime(), ticks->get_ticks(), AU(PC));
+	   ticks->get_rtime(), (long int)(ticks->get_ticks()), AU(PC));
 
     tick(1);
 
