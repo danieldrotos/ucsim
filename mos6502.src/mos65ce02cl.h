@@ -30,13 +30,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "mos65c02cl.h"
 
+#define rB (B)
+#define rZ (Z)
+
 
 class cl_mos65ce02: public cl_mos65c02
 {
- public:
+public:
+  u8_t B, Z;
+  class cl_cell8 cB, cZ;
+public:
   cl_mos65ce02(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
+
+  virtual void print_regs(class cl_console_base *con);
 };
 
 

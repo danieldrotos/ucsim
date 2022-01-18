@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "appcl.h"
+
 #include "mos65ce02cl.h"
 
 
@@ -40,6 +42,10 @@ int
 cl_mos65ce02::init(void)
 {
   cl_mos65c02::init();
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(B);
+  RCV(Z);
+#undef RCV
   return 0;
 }
 
@@ -47,6 +53,55 @@ const char *
 cl_mos65ce02::id_string(void)
 {
   return "MOS65CE02";
+}
+
+
+void
+cl_mos65ce02::print_regs(class cl_console_base *con)
+{
+  int ojaj= jaj;
+  jaj= 0;
+  con->dd_color("answer");
+  con->dd_printf("A= $%02x %3d %+4d %c  ", A, A, (i8_t)A, isprint(A)?A:'.');
+  con->dd_printf("X= $%02x %3d %+4d %c  ", X, X, (i8_t)X, isprint(X)?X:'.');
+  con->dd_printf("Y= $%02x %3d %+4d %c  ", Y, Y, (i8_t)Y, isprint(Y)?Y:'.');
+  con->dd_printf("Z= $%02x %3d %+4d %c  ", Z, Z, (i8_t)Z, isprint(Z)?Z:'.');
+  con->dd_printf("\n");
+  con->dd_printf("P= "); con->print_bin(CC, 8);
+  con->dd_printf("        B= $%02x", B);
+  con->dd_printf("\n");
+  con->dd_printf("   NV BDIZC\n");
+
+  con->dd_printf("S= ");
+  rom->dump(0, 0x100+SP, 0x100+SP+7, 8, con);
+  con->dd_color("answer");
+  
+  if (!ojaj)
+    print_disass(PC, con);
+  else
+    {
+      con->dd_printf(" ? 0x%04x ", PC);
+      {
+	int i, j, code= rom->read(PC), l= inst_length(PC);
+	struct dis_entry *dt= dis_tbl();
+	for (i=0;i<3;i++)
+	  if (i<l)
+	    con->dd_printf("%02x ",rom->get(PC+i));
+	  else
+	    con->dd_printf("   ");
+	i= 0;
+	while (((code & dt[i].mask) != dt[i].code) &&
+	       dt[i].mnemonic)
+	  i++;
+	if (dt[i].mnemonic)
+	  {
+	    for (j=0;j<3;j++)
+	      con->dd_printf("%c", dt[i].mnemonic[j]);
+	  }
+      }
+      con->dd_printf("\n");
+    }
+  jaj= ojaj;
 }
 
 

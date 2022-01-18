@@ -897,8 +897,6 @@ cl_stm8::inst_div(t_mem code, unsigned char prefix)
     if (divisor == 0x00) {
       FLAG_SET(BIT_C);
       return resGO;
-    } else if (divisor == 0x01) {
-      return resGO;
     }
 
     div_cycle = 16;
@@ -1122,6 +1120,9 @@ cl_stm8::inst_jr(t_mem code, unsigned char prefix)
       PC += ofs;
       pipeline_flush(true);
     }
+  else
+    exec_cycle();
+
   return(resGO);
 }
 
