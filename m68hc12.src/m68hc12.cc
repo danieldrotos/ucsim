@@ -240,7 +240,8 @@ const char *rr_names[4]= { "X", "Y", "SP", "PC" };
 void
 CL12::disass_xb(t_addr *addr, chars *work, chars *comment)
 {
-  u8_t p, h, l, rr;
+  u8_t p, h, l;
+  int rr= -1;
   i16_t offset= 0;
   t_addr aof_xb= *addr, a;
   
@@ -365,8 +366,17 @@ CL12::disass_xb(t_addr *addr, chars *work, chars *comment)
   */
   a= naddr(&aof_xb);
   if (comment)
-    comment->appendf("; [%s%+d=%04x]=%02x", rr_names[rr], offset,
-		     a, rom->read(a));
+    {
+      bool b= false;
+      comment->append("; [");
+      if (rr >= 0)
+	comment->appendf("%s", rr_names[rr]), b= true;
+      if (offset)
+	comment->appendf("%+d", offset), b= true;
+      if (b)
+	comment->append("=");
+      comment->appendf("%04x]=%02x", a, rom->read(a));
+    }
   *addr= aof_xb;
 }
 
