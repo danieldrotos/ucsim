@@ -49,7 +49,9 @@ class cl_m68hc12 *uc;
 t_mem
 cl_ccr::write(t_mem val)
 {
-  if ((d() & flagX) == 0)
+  u8_t act= d();
+  act&= flagX;
+  if (act == 0)
     val&= ~flagX;
   return cl_cell8::write(val);
 }
@@ -105,7 +107,8 @@ void
 cl_m68hc12::reset(void)
 {
   cl_m68hcbase::reset();
-  post_inc_dec= 0;
+  rCC= 0x80;
+  //post_inc_dec= 0;
 }
 
 void
@@ -430,9 +433,11 @@ CL12::exec_inst(void)
 void
 CL12::post_inst(void)
 {
+  /*
   if (post_inc_dec)
     post_idx_reg->W(post_idx_reg->R() + post_inc_dec);
   post_inc_dec= 0;
+  */
 }
 
 i16_t
@@ -449,6 +454,8 @@ CL12::naddr(t_addr *addr /* of xb */)
   u8_t p, h, l;
   i16_t offset= 0;
   u16_t ival= 0, a= 0;
+  //i8_t post_inc_dec= 0;
+  class cl_cell16 *post_idx_reg= NULL;
 
   if (addr)
     {
@@ -545,7 +552,10 @@ CL12::naddr(t_addr *addr /* of xb */)
 	{
 	  // post +-
 	  if (!addr)
-	    post_inc_dec= n;
+	    {
+	      //post_inc_dec= n;
+	      post_idx_reg->W(post_idx_reg->R() + n);
+	    }
 	}
       else
 	{
@@ -650,7 +660,7 @@ cl_m68hc12::print_regs(class cl_console_base *con)
   con->dd_printf("                          TMP2= $%04x %5d %+5d",
 		 rTMP2, rTMP2, rTMP2);
   con->dd_printf("\n");
-  con->dd_printf("      HINZVC");
+  con->dd_printf("    SXHINZVC");
   con->dd_printf("                          TMP3= $%04x %5d %+5d",
 		 rTMP3, rTMP3, rTMP3);
   con->dd_printf("\n");

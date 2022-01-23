@@ -110,8 +110,7 @@ cl_m6800::init(void)
   RCV(SP);
 #undef RCV
     
-  class cl_memory_operator *op= new cl_cc_operator(&cCC);
-  cCC.append_operator(op);
+  setup_ccr();
 
   wai= false;
   cI= &cIX;
@@ -321,6 +320,13 @@ cl_m6800::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+}
+
+void
+cl_m6800::setup_ccr(void)
+{
+  class cl_memory_operator *op= new cl_cc_operator(&cCC);
+  cCC.append_operator(op);
 }
 
 struct dis_entry *

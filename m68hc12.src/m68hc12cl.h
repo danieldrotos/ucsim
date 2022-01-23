@@ -68,8 +68,8 @@ public:
 class cl_m68hc12: public cl_m68hcbase
 {
 public:
-  i8_t post_inc_dec;
-  class cl_cell16 *post_idx_reg;
+  //i8_t post_inc_dec;
+  //class cl_cell16 *post_idx_reg;
   class cl_wrap *hc12wrap;
   u16_t TMP2, TMP3;
   class cl_cell16 cTMP2, cTMP3;
@@ -79,6 +79,7 @@ public:
   virtual const char *id_string(void);
   virtual void reset(void);
   virtual void make_memories(void);
+  virtual void setup_ccr(void) {}
   virtual void make_cpu_hw(void);
   
   virtual int proba(int,t_mem);
