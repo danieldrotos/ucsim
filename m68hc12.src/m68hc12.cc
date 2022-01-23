@@ -27,6 +27,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "globals.h"
 #include "utils.h"
@@ -40,6 +41,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_m68hc12 *uc;
 
+
+/*
+ * CCR
+ */
+
+t_mem
+cl_ccr::write(t_mem val)
+{
+  if ((d() & flagX) == 0)
+    val&= ~flagX;
+  return cl_cell8::write(val);
+}
+
+
+/*
+ * M68HC12 processor
+ */
+
 int
 cl_m68hc12::proba(int i, t_mem code)
 {
@@ -51,6 +70,8 @@ cl_m68hc12::proba(int i, t_mem code)
 cl_m68hc12::cl_m68hc12(class cl_sim *asim):
   cl_m68hcbase(asim)
 {
+  class cl_ccr c;
+  memcpy((void*)&cCC, (void*)&c, sizeof(class cl_cell8));
   hc12wrap= new cl_12wrap();
   hc12wrap->init();
 }
