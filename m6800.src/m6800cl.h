@@ -195,6 +195,7 @@ public:
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
   virtual t_addr read_addr(class cl_memory *m, t_addr start_addr);
+  virtual void analyze_start(void);
   virtual void analyze(t_addr addr);
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
