@@ -396,7 +396,7 @@ CL12::naddr(t_addr *addr /* of xb */)
 u8_t
 CL12::xbop8()
 {
-  t_addr a= naddr(NULL);
+  u16_t a= naddr(NULL);
   return rom->read(a);
 }
 

@@ -159,8 +159,9 @@ CL12::disass_xb(t_addr *addr, chars *work, chars *comment)
 {
   u8_t p, h, l;
   int rr= -1;
-  i16_t ival= 0, offset= 0;
-  t_addr aof_xb= *addr, a;
+  i16_t offset= 0;
+  t_addr aof_xb= *addr;
+  u16_t a;
   
   p= rom->read(aof_xb);
   (*addr)++;
@@ -180,108 +181,70 @@ CL12::disass_xb(t_addr *addr, chars *work, chars *comment)
     {
       // 6. 111r r111 [D,r] rr={X,Y,SP,PC}
       work->appendf("[D,%s]", rr_names[(p&0x18)>>3]);
-      switch (p & 0x18)
-	{
-	case 0x00: ival= rX; break;
-	case 0x10: ival= rY; break;
-	case 0x08: ival= rSP; break;
-	case 0x18: ival= PC&0xffff; break;
-	}
-      offset= rD;
-      a= ival+offset;
-      //return read_addr(rom, a);
     }
   
-  /*
   else if ((p&0xe7) == 0xe3)
     {
       // 5. 111r r011 [n16,r] rr={X,Y,SP,PC}
-      switch (p & 0x18)
-	{
-	case 0x00: ival= rX; break;
-	case 0x10: ival= rY; break;
-	case 0x08: ival= rSP; break;
-	case 0x18: ival= PC&0xffff; break;
-	}
-      h= fetch();
-      l= fetch();
-      offset= h*256+l;
-      a= ival+offset;
-      return read_addr(rom, a);
+      h= rom->read(aof_xb+1);
+      l= rom->read(aof_xb+2);
+      work->appendf("[$%04x,%s]", h*256+l,rr_names[(p&0x18)>>3]);
     }
-  */
-  /*
+
   else if ((p&0xc0) != 0xc0)
     {
       // 3. rr1p nnnn n4,+-r+- rr={X,Y,SP}
-      switch (p & 0xc0)
-	{
-	case 0x00: ival= rX; post_idx_reg= &cX; break;
-	case 0x40: ival= rY; post_idx_reg= &cY; break;
-	case 0x80: ival= rSP; post_idx_reg= &cSP; break;
-	}
       i8_t n= p&0xf;
       if (n&0x08) n|= 0xf0;
       if (p&0x10)
 	{
 	  // post +-
-	  post_inc_dec= n;
+	  work->appendf("%+d,%s%c",
+			(int)n,
+			rr_names[(p&0xc0)>>6],
+			(n<0)?'-':'+');
 	}
       else
 	{
 	  // pre +-
-	  post_idx_reg->W(ival= (post_idx_reg->R() + n));
+	  work->appendf("%+d,%c%s",
+			(int)n,
+			(n<0)?'-':'+',
+			rr_names[(p&0xc0)>>6]);
 	}
-      return ival;
     }
-  */
-  /*
+  
   else if ((p&0xe4) == 0xe0)
     {
       // 2. 111r r0zs n9/16,r rr={X,Y,SP,PC}
-      switch (p & 0x18)
-	{
-	case 0x00: ival= rX; break;
-	case 0x10: ival= rY; break;
-	case 0x08: ival= rSP; break;
-	case 0x18: ival= PC&0xffff; break;
-	}
       if ((p&0x02) == 0x00)
 	{
 	  // 9 bit
-	  offset= fetch();
+	  offset= rom->read(aof_xb+1);
 	  if (p&0x01) offset|= 0xff00;
 	}
       else
 	{
 	  // 16 bit
-	  h= fetch();
-	  l= fetch();
+	  h= rom->read(aof_xb+1);
+	  l= rom->read(aof_xb+2);
 	  offset= h*256+l;
 	}
-      return ival+offset;
+      work->appendf("$%+d,%s", offset, rr_names[(p&0x18)>>3]);
     }
-  */
-  /*
+  
   else // if ((p&0xe4) == 0xe4)
     {
       // 4. 111r r1aa {A,B,D},r rr={X,Y,SP,PC}
-      switch (p & 0x18)
-	{
-	case 0x00: ival= rX; break;
-	case 0x10: ival= rY; break;
-	case 0x08: ival= rSP; break;
-	case 0x18: ival= PC&0xffff; break;
-	}
       switch (p&0x03)
 	{
-	case 0x00: offset= s8_16(rA); break;
-	case 0x01: offset= s8_16(rB); break;
-	case 0x02: offset= rD; break;
+	case 0x00: work->append("A,"); break;
+	case 0x01: work->append("B,"); break;
+	case 0x02: work->append("D,"); break;
 	}
-      return ival+offset;
+      work->appendf("%s", rr_names[(p&0x18)>>3]);
     }
-  */
+
   a= naddr(&aof_xb);
   if (comment)
     {
@@ -293,7 +256,7 @@ CL12::disass_xb(t_addr *addr, chars *work, chars *comment)
 	comment->appendf("%+d", offset), b= true;
       if (b)
 	comment->append("=");
-      comment->appendf("%04x]=%02x", a, rom->read(a));
+      comment->appendf("%04x]=%02x %02x", a, rom->read(a), rom->read(a+1));
     }
   *addr= aof_xb;
 }
@@ -318,6 +281,53 @@ CL12::disass_b7(t_addr *addr, chars *work, chars *comment)
       work->append(",");
       work->appendf("%s", tex_names[ls]);
     }
+}
+
+int
+CL12::inst_length(t_addr addr)
+{
+  struct dis_entry *di= get_dis_entry(addr);
+  if (di && di->mnemonic)
+    {
+      if (di->length >= 0)
+	return di->length;
+      int l= -(di->length);
+      u16_t a= (u16_t)addr+l-1;
+      u8_t p= rom->read(a);
+      if ((p & 0x20) == 0)
+	{
+	  // 1. rr0n nnnn n5,r rr={X,Y,SP,PC}
+	  return l;
+	}
+      else if ((p&0xe7) == 0xe7)
+	{
+	  // 6. 111r r111 [D,r] rr={X,Y,SP,PC}
+	  return l;
+	}
+      else if ((p&0xe7) == 0xe3)
+	{
+	  // 5. 111r r011 [n16,r] rr={X,Y,SP,PC}
+	  return l+2;
+	}
+      else if ((p&0xc0) != 0xc0)
+	{
+	  // 3. rr1p nnnn n4,+-r+- rr={X,Y,SP}
+	  return l;
+	}
+      else if ((p&0xe4) == 0xe0)
+	{
+	  // 2. 111r r0zs n9/16,r rr={X,Y,SP,PC}
+	  if ((p & 0x02) == 0)
+	    return l+1;
+	  return l+2;
+	}
+      else // if ((p&0xe4) == 0xe4)
+	{
+	  // 4. 111r r1aa {A,B,D},r rr={X,Y,SP,PC}
+	  return l;
+	}
+    }
+  return 1;
 }
 
 
