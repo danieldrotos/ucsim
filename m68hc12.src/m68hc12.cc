@@ -400,6 +400,14 @@ CL12::xbop8()
   return rom->read(a);
 }
 
+int
+CL12::trap(t_mem code)
+{
+  // TODO
+  return resGO;
+}
+
+
 void
 cl_m68hc12::print_regs(class cl_console_base *con)
 {

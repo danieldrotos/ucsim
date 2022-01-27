@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 int wrap_INV(class CL12 *uc, t_mem code) { return resINV; }
+int wrap_TRAP(class CL12 *uc, t_mem code) { return uc->trap(code); }
 
 cl_wrap::cl_wrap():
   cl_base()
