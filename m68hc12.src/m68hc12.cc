@@ -167,6 +167,8 @@ CL12::exec_inst(void)
   code= fetch();
   if (code==0x18)
     {
+      code= fetch();
+      fn= hc12wrap->page0x18[code];
     }
   else
     {

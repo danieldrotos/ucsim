@@ -983,7 +983,7 @@ return(PTOK_LESS);
 case 41:
 YY_RULE_SETUP
 #line 60 "cmdlex.l"
-return(PTOK_GREATHER);
+return(PTOK_GREATER);
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
