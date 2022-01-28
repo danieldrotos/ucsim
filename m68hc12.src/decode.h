@@ -150,6 +150,18 @@ DEC(0, df,	ld16	, _S_dop16	, "LDS %D"	, ' ', 2	, 3)
 DEC(0, ef,	ld16	, _S_xbop16	, "LDS %p"	, ' ', -2	, 0x66433)
 DEC(0, ff,	ld16	, _S_eop16 	, "LDS %E"	, ' ', 3	, 3)
 
+DEC(0, 87,	clr	, _A	 	, "CLRA"	, ' ', 1	, 1)
+DEC(0, c7,	clr	, _B	 	, "CLRB"	, ' ', 1	, 1)
+DEC(0, 69,	clr	, _xb	 	, "CLR %p"	, ' ', -2	, 0x55322)
+DEC(0, 79,	clr	, _e	 	, "CLR %e"	, ' ', 3	, 3)
+
+DEC(0, 97,	tst	, _Aop	 	, "TSTA"	, ' ', 1	, 1)
+DEC(0, d7,	tst	, _Bop	 	, "TSTB"	, ' ', 1	, 1)
+DEC(0, e7,	tst	, _xbop8 	, "TST %p"	, ' ', -2	, 0x55322)
+DEC(0, f7,	tst	, _eop	 	, "TST %e"	, ' ', 3	, 3)
+
+DEC(0, a7,	NOP	, 0xa7		, "NOP"		, ' ', 1	, 1)
+
 DEC(0, b7,	exec_b7	, _NONE		, "%T"		, ' ', 2	, 0)
 
 DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)

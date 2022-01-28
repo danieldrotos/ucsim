@@ -118,5 +118,14 @@
  int wrap_0_df(class CL12 *uc, t_mem code) { return uc-> ld16 ( _S_dop16 ); } 
  int wrap_0_ef(class CL12 *uc, t_mem code) { return uc-> ld16 ( _S_xbop16 ); } 
  int wrap_0_ff(class CL12 *uc, t_mem code) { return uc-> ld16 ( _S_eop16 ); } 
+ int wrap_0_87(class CL12 *uc, t_mem code) { return uc-> clr ( _A ); } 
+ int wrap_0_c7(class CL12 *uc, t_mem code) { return uc-> clr ( _B ); } 
+ int wrap_0_69(class CL12 *uc, t_mem code) { return uc-> clr ( _xb ); } 
+ int wrap_0_79(class CL12 *uc, t_mem code) { return uc-> clr ( _e ); } 
+ int wrap_0_97(class CL12 *uc, t_mem code) { return uc-> tst ( _Aop ); } 
+ int wrap_0_d7(class CL12 *uc, t_mem code) { return uc-> tst ( _Bop ); } 
+ int wrap_0_e7(class CL12 *uc, t_mem code) { return uc-> tst ( _xbop8 ); } 
+ int wrap_0_f7(class CL12 *uc, t_mem code) { return uc-> tst ( _eop ); } 
+ int wrap_0_a7(class CL12 *uc, t_mem code) { return uc-> NOP ( 0xa7 ); } 
  int wrap_0_b7(class CL12 *uc, t_mem code) { return uc-> exec_b7 ( _NONE ); } 
  int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); } 

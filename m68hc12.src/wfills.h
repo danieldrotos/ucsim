@@ -118,5 +118,14 @@
  virtual void fill_0_df() { page0[0xdf ]= wrap_0_df; set_disass(0, 0xdf, "LDS %D", ' ', 2); set_ticks(0, 0xdf, 3); }
  virtual void fill_0_ef() { page0[0xef ]= wrap_0_ef; set_disass(0, 0xef, "LDS %p", ' ', -2); set_ticks(0, 0xef, 0x66433); }
  virtual void fill_0_ff() { page0[0xff ]= wrap_0_ff; set_disass(0, 0xff, "LDS %E", ' ', 3); set_ticks(0, 0xff, 3); }
+ virtual void fill_0_87() { page0[0x87 ]= wrap_0_87; set_disass(0, 0x87, "CLRA", ' ', 1); set_ticks(0, 0x87, 1); }
+ virtual void fill_0_c7() { page0[0xc7 ]= wrap_0_c7; set_disass(0, 0xc7, "CLRB", ' ', 1); set_ticks(0, 0xc7, 1); }
+ virtual void fill_0_69() { page0[0x69 ]= wrap_0_69; set_disass(0, 0x69, "CLR %p", ' ', -2); set_ticks(0, 0x69, 0x55322); }
+ virtual void fill_0_79() { page0[0x79 ]= wrap_0_79; set_disass(0, 0x79, "CLR %e", ' ', 3); set_ticks(0, 0x79, 3); }
+ virtual void fill_0_97() { page0[0x97 ]= wrap_0_97; set_disass(0, 0x97, "TSTA", ' ', 1); set_ticks(0, 0x97, 1); }
+ virtual void fill_0_d7() { page0[0xd7 ]= wrap_0_d7; set_disass(0, 0xd7, "TSTB", ' ', 1); set_ticks(0, 0xd7, 1); }
+ virtual void fill_0_e7() { page0[0xe7 ]= wrap_0_e7; set_disass(0, 0xe7, "TST %p", ' ', -2); set_ticks(0, 0xe7, 0x55322); }
+ virtual void fill_0_f7() { page0[0xf7 ]= wrap_0_f7; set_disass(0, 0xf7, "TST %e", ' ', 3); set_ticks(0, 0xf7, 3); }
+ virtual void fill_0_a7() { page0[0xa7 ]= wrap_0_a7; set_disass(0, 0xa7, "NOP", ' ', 1); set_ticks(0, 0xa7, 1); }
  virtual void fill_0_b7() { page0[0xb7 ]= wrap_0_b7; set_disass(0, 0xb7, "%T", ' ', 2); set_ticks(0, 0xb7, 0); }
  virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }
