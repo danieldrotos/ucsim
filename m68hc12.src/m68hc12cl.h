@@ -99,13 +99,18 @@ public:
   virtual void post_inst(void);
   virtual i16_t s8_16(u8_t op); // sex 8->16
   virtual t_addr naddr(t_addr *addr); // xb -> post_inc_dec,post_idx_reg
-
   virtual u8_t xbop8();
+  virtual u16_t xbop16();
   
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_b7(void);
   virtual int trap(t_mem code);
+
+  // ALU
+  virtual int sub16(class cl_cell16 &dest, u16_t op);
+  virtual int add16(class cl_cell16 &dest, u16_t op);
+
 };
 
 

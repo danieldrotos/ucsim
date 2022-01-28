@@ -33,10 +33,31 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define _NONE
 #define _A_B		uc->cA,uc->acc.DAB.a8.Br
+
 #define _A_i8		uc->cA,uc->i8()
 #define _A_dop		uc->cA,uc->dop()
 #define _A_eop		uc->cA,uc->eop()
 #define _A_xbop8	uc->cA,uc->xbop8()
+
+#define _D_i16		uc->cD,uc->i16()
+#define _D_dop16	uc->cD,uc->dop16()
+#define _D_eop16	uc->cD,uc->eop16()
+#define _D_xbop16	uc->cD,uc->xbop16()
+
+#define _Aop_i8		uc->acc.DAB.a8.Ar,uc->i8()
+#define _Aop_dop	uc->acc.DAB.a8.Ar,uc->dop()
+#define _Aop_eop	uc->acc.DAB.a8.Ar,uc->eop()
+#define _Aop_xbop8	uc->acc.DAB.a8.Ar,uc->xbop8()
+
+#define _B_i8		uc->cB,uc->i8()
+#define _B_dop		uc->cB,uc->dop()
+#define _B_eop		uc->cB,uc->eop()
+#define _B_xbop8	uc->cB,uc->xbop8()
+
+#define _Bop_i8		uc->acc.DAB.a8.Br,uc->i8()
+#define _Bop_dop	uc->acc.DAB.a8.Br,uc->dop()
+#define _Bop_eop	uc->acc.DAB.a8.Br,uc->eop()
+#define _Bop_xbop8	uc->acc.DAB.a8.Br,uc->xbop8()
 
 extern int wrap_INV(class CL12 *uc, t_mem code);
 extern int wrap_TRAP(class CL12 *uc, t_mem code);
