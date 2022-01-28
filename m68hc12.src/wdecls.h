@@ -106,5 +106,17 @@
  extern int wrap_0_dc (class CL12 *uc, t_mem code); 
  extern int wrap_0_ec (class CL12 *uc, t_mem code); 
  extern int wrap_0_fc (class CL12 *uc, t_mem code); 
+ extern int wrap_0_ce (class CL12 *uc, t_mem code); 
+ extern int wrap_0_de (class CL12 *uc, t_mem code); 
+ extern int wrap_0_ee (class CL12 *uc, t_mem code); 
+ extern int wrap_0_fe (class CL12 *uc, t_mem code); 
+ extern int wrap_0_cd (class CL12 *uc, t_mem code); 
+ extern int wrap_0_dd (class CL12 *uc, t_mem code); 
+ extern int wrap_0_ed (class CL12 *uc, t_mem code); 
+ extern int wrap_0_fd (class CL12 *uc, t_mem code); 
+ extern int wrap_0_cf (class CL12 *uc, t_mem code); 
+ extern int wrap_0_df (class CL12 *uc, t_mem code); 
+ extern int wrap_0_ef (class CL12 *uc, t_mem code); 
+ extern int wrap_0_ff (class CL12 *uc, t_mem code); 
  extern int wrap_0_b7 (class CL12 *uc, t_mem code); 
  extern int wrap_0x18_06 (class CL12 *uc, t_mem code); 

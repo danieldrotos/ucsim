@@ -106,5 +106,17 @@
  virtual void fill_0_dc() { page0[0xdc ]= wrap_0_dc; set_disass(0, 0xdc, "LDD %D", ' ', 2); set_ticks(0, 0xdc, 3); }
  virtual void fill_0_ec() { page0[0xec ]= wrap_0_ec; set_disass(0, 0xec, "LDD %p", ' ', -2); set_ticks(0, 0xec, 0x66433); }
  virtual void fill_0_fc() { page0[0xfc ]= wrap_0_fc; set_disass(0, 0xfc, "LDD %E", ' ', 3); set_ticks(0, 0xfc, 3); }
+ virtual void fill_0_ce() { page0[0xce ]= wrap_0_ce; set_disass(0, 0xce, "LDX %B", ' ', 3); set_ticks(0, 0xce, 2); }
+ virtual void fill_0_de() { page0[0xde ]= wrap_0_de; set_disass(0, 0xde, "LDX %D", ' ', 2); set_ticks(0, 0xde, 3); }
+ virtual void fill_0_ee() { page0[0xee ]= wrap_0_ee; set_disass(0, 0xee, "LDX %p", ' ', -2); set_ticks(0, 0xee, 0x66433); }
+ virtual void fill_0_fe() { page0[0xfe ]= wrap_0_fe; set_disass(0, 0xfe, "LDX %E", ' ', 3); set_ticks(0, 0xfe, 3); }
+ virtual void fill_0_cd() { page0[0xcd ]= wrap_0_cd; set_disass(0, 0xcd, "LDY %B", ' ', 3); set_ticks(0, 0xcd, 2); }
+ virtual void fill_0_dd() { page0[0xdd ]= wrap_0_dd; set_disass(0, 0xdd, "LDY %D", ' ', 2); set_ticks(0, 0xdd, 3); }
+ virtual void fill_0_ed() { page0[0xed ]= wrap_0_ed; set_disass(0, 0xed, "LDY %p", ' ', -2); set_ticks(0, 0xed, 0x66433); }
+ virtual void fill_0_fd() { page0[0xfd ]= wrap_0_fd; set_disass(0, 0xfd, "LDY %E", ' ', 3); set_ticks(0, 0xfd, 3); }
+ virtual void fill_0_cf() { page0[0xcf ]= wrap_0_cf; set_disass(0, 0xcf, "LDS %B", ' ', 3); set_ticks(0, 0xcf, 2); }
+ virtual void fill_0_df() { page0[0xdf ]= wrap_0_df; set_disass(0, 0xdf, "LDS %D", ' ', 2); set_ticks(0, 0xdf, 3); }
+ virtual void fill_0_ef() { page0[0xef ]= wrap_0_ef; set_disass(0, 0xef, "LDS %p", ' ', -2); set_ticks(0, 0xef, 0x66433); }
+ virtual void fill_0_ff() { page0[0xff ]= wrap_0_ff; set_disass(0, 0xff, "LDS %E", ' ', 3); set_ticks(0, 0xff, 3); }
  virtual void fill_0_b7() { page0[0xb7 ]= wrap_0_b7; set_disass(0, 0xb7, "%T", ' ', 2); set_ticks(0, 0xb7, 0); }
  virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }

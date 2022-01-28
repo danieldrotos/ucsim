@@ -135,6 +135,21 @@ DEC(0, dc,	ld16	, _D_dop16	, "LDD %D"	, ' ', 2	, 3)
 DEC(0, ec,	ld16	, _D_xbop16	, "LDD %p"	, ' ', -2	, 0x66433)
 DEC(0, fc,	ld16	, _D_eop16 	, "LDD %E"	, ' ', 3	, 3)
 
+DEC(0, ce,	ld16	, _X_i16  	, "LDX %B"	, ' ', 3	, 2)
+DEC(0, de,	ld16	, _X_dop16	, "LDX %D"	, ' ', 2	, 3)
+DEC(0, ee,	ld16	, _X_xbop16	, "LDX %p"	, ' ', -2	, 0x66433)
+DEC(0, fe,	ld16	, _X_eop16 	, "LDX %E"	, ' ', 3	, 3)
+
+DEC(0, cd,	ld16	, _Y_i16  	, "LDY %B"	, ' ', 3	, 2)
+DEC(0, dd,	ld16	, _Y_dop16	, "LDY %D"	, ' ', 2	, 3)
+DEC(0, ed,	ld16	, _Y_xbop16	, "LDY %p"	, ' ', -2	, 0x66433)
+DEC(0, fd,	ld16	, _Y_eop16 	, "LDY %E"	, ' ', 3	, 3)
+
+DEC(0, cf,	ld16	, _S_i16  	, "LDS %B"	, ' ', 3	, 2)
+DEC(0, df,	ld16	, _S_dop16	, "LDS %D"	, ' ', 2	, 3)
+DEC(0, ef,	ld16	, _S_xbop16	, "LDS %p"	, ' ', -2	, 0x66433)
+DEC(0, ff,	ld16	, _S_eop16 	, "LDS %E"	, ' ', 3	, 3)
+
 DEC(0, b7,	exec_b7	, _NONE		, "%T"		, ' ', 2	, 0)
 
 DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)
