@@ -105,6 +105,36 @@ DEC(0, 93,	sub16	, _D_dop16	, "SUBD %D"	, ' ', 2	, 3)
 DEC(0, a3,	sub16	, _D_xbop16	, "SUBD %p"	, ' ', -2	, 0x66433)
 DEC(0, b3,	sub16	, _D_eop16 	, "SUBD %E"	, ' ', 3	, 3)
 
+DEC(0, 8c,	cp16	, _Dop_i16  	, "CPD %B"	, ' ', 3	, 2)
+DEC(0, 9c,	cp16	, _Dop_dop16	, "CPD %D"	, ' ', 2	, 3)
+DEC(0, ac,	cp16	, _Dop_xbop16	, "CPD %p"	, ' ', -2	, 0x66433)
+DEC(0, bc,	cp16	, _Dop_eop16 	, "CPD %E"	, ' ', 3	, 3)
+
+DEC(0, 8d,	cp16	, _Yop_i16  	, "CPY %B"	, ' ', 3	, 2)
+DEC(0, 9d,	cp16	, _Yop_dop16	, "CPY %D"	, ' ', 2	, 3)
+DEC(0, ad,	cp16	, _Yop_xbop16	, "CPY %p"	, ' ', -2	, 0x66433)
+DEC(0, bd,	cp16	, _Yop_eop16 	, "CPY %E"	, ' ', 3	, 3)
+
+DEC(0, 8e,	cp16	, _Xop_i16  	, "CPX %B"	, ' ', 3	, 2)
+DEC(0, 9e,	cp16	, _Xop_dop16	, "CPX %D"	, ' ', 2	, 3)
+DEC(0, ae,	cp16	, _Xop_xbop16	, "CPX %p"	, ' ', -2	, 0x66433)
+DEC(0, be,	cp16	, _Xop_eop16 	, "CPX %E"	, ' ', 3	, 3)
+
+DEC(0, 8f,	cp16	, _Sop_i16  	, "CPS %B"	, ' ', 3	, 2)
+DEC(0, 9f,	cp16	, _Sop_dop16	, "CPS %D"	, ' ', 2	, 3)
+DEC(0, af,	cp16	, _Sop_xbop16	, "CPS %p"	, ' ', -2	, 0x66433)
+DEC(0, bf,	cp16	, _Sop_eop16 	, "CPS %E"	, ' ', 3	, 3)
+
+DEC(0, c3,	add16	, _D_i16  	, "ADDD %B"	, ' ', 3	, 2)
+DEC(0, d3,	add16	, _D_dop16	, "ADDD %D"	, ' ', 2	, 3)
+DEC(0, e3,	add16	, _D_xbop16	, "ADDD %p"	, ' ', -2	, 0x66433)
+DEC(0, f3,	add16	, _D_eop16 	, "ADDD %E"	, ' ', 3	, 3)
+
+DEC(0, cc,	ld16	, _D_i16  	, "LDD %B"	, ' ', 3	, 2)
+DEC(0, dc,	ld16	, _D_dop16	, "LDD %D"	, ' ', 2	, 3)
+DEC(0, ec,	ld16	, _D_xbop16	, "LDD %p"	, ' ', -2	, 0x66433)
+DEC(0, fc,	ld16	, _D_eop16 	, "LDD %E"	, ' ', 3	, 3)
+
 DEC(0, b7,	exec_b7	, _NONE		, "%T"		, ' ', 2	, 0)
 
 DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)

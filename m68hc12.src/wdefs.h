@@ -82,5 +82,29 @@
  int wrap_0_93(class CL12 *uc, t_mem code) { return uc-> sub16 ( _D_dop16 ); } 
  int wrap_0_a3(class CL12 *uc, t_mem code) { return uc-> sub16 ( _D_xbop16 ); } 
  int wrap_0_b3(class CL12 *uc, t_mem code) { return uc-> sub16 ( _D_eop16 ); } 
+ int wrap_0_8c(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Dop_i16 ); } 
+ int wrap_0_9c(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Dop_dop16 ); } 
+ int wrap_0_ac(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Dop_xbop16 ); } 
+ int wrap_0_bc(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Dop_eop16 ); } 
+ int wrap_0_8d(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Yop_i16 ); } 
+ int wrap_0_9d(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Yop_dop16 ); } 
+ int wrap_0_ad(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Yop_xbop16 ); } 
+ int wrap_0_bd(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Yop_eop16 ); } 
+ int wrap_0_8e(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Xop_i16 ); } 
+ int wrap_0_9e(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Xop_dop16 ); } 
+ int wrap_0_ae(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Xop_xbop16 ); } 
+ int wrap_0_be(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Xop_eop16 ); } 
+ int wrap_0_8f(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Sop_i16 ); } 
+ int wrap_0_9f(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Sop_dop16 ); } 
+ int wrap_0_af(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Sop_xbop16 ); } 
+ int wrap_0_bf(class CL12 *uc, t_mem code) { return uc-> cp16 ( _Sop_eop16 ); } 
+ int wrap_0_c3(class CL12 *uc, t_mem code) { return uc-> add16 ( _D_i16 ); } 
+ int wrap_0_d3(class CL12 *uc, t_mem code) { return uc-> add16 ( _D_dop16 ); } 
+ int wrap_0_e3(class CL12 *uc, t_mem code) { return uc-> add16 ( _D_xbop16 ); } 
+ int wrap_0_f3(class CL12 *uc, t_mem code) { return uc-> add16 ( _D_eop16 ); } 
+ int wrap_0_cc(class CL12 *uc, t_mem code) { return uc-> ld16 ( _D_i16 ); } 
+ int wrap_0_dc(class CL12 *uc, t_mem code) { return uc-> ld16 ( _D_dop16 ); } 
+ int wrap_0_ec(class CL12 *uc, t_mem code) { return uc-> ld16 ( _D_xbop16 ); } 
+ int wrap_0_fc(class CL12 *uc, t_mem code) { return uc-> ld16 ( _D_eop16 ); } 
  int wrap_0_b7(class CL12 *uc, t_mem code) { return uc-> exec_b7 ( _NONE ); } 
  int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); } 

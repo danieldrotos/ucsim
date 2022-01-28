@@ -110,7 +110,8 @@ public:
   // ALU
   virtual int sub16(class cl_cell16 &dest, u16_t op);
   virtual int add16(class cl_cell16 &dest, u16_t op);
-
+  virtual int cp16(u16_t op1, u16_t op2);
+#define ld16 ldsx
 };
 
 

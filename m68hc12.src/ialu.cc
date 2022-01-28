@@ -42,7 +42,6 @@ CL12::sub16(class cl_cell16 &dest, u16_t op)
   return resGO;
 }
 
-
 int
 CL12::add16(class cl_cell16 &dest, u16_t op)
 {
@@ -54,6 +53,20 @@ CL12::add16(class cl_cell16 &dest, u16_t op)
   if (( (a&b)|(b&~r)|(~r&a) ) & 0x8000) f|= flagC;
   if (( (a&b&~r)|(~a&~b&r) ) & 0x8000) f|= flagV;
   dest.W(r);
+  cF.W(f);
+  return resGO;
+}
+
+int
+CL12::cp16(u16_t op1, u16_t op2)
+{
+  u8_t f= rF & ~(flagN|flagZ|flagV|flagC);
+  u16_t a= op1, b= op2, r;
+  r= a-b;
+  if (r&0x8000) f|= flagN;
+  if (!r) f|= flagZ;
+  if (( (~a&b)|(b&r)|(r&~a) ) & 0x8000) f|= flagC;
+  if (( (a&~b&~r)|(~a&b&r) ) & 0x8000) f|= flagV;
   cF.W(f);
   return resGO;
 }
