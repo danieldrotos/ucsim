@@ -101,7 +101,9 @@ public:
   virtual int exec_inst(void);
   virtual void post_inst(void);
   virtual i16_t s8_16(u8_t op); // sex 8->16
-  virtual t_addr naddr(t_addr *addr); // xb -> post_inc_dec,post_idx_reg
+  virtual int xb_type(u8_t p);
+  virtual bool xb_indirect(u8_t p);
+  virtual t_addr naddr(t_addr *addr, u8_t *pg);
   virtual u8_t xbop8();
   virtual u16_t xbop16();
   virtual class cl_memory_cell &xb(void);
@@ -126,6 +128,7 @@ public:
 
   // BRANCH
   virtual int call_e(void);
+  virtual int call_id(void);
   
   // OTHER
   

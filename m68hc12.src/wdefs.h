@@ -165,6 +165,7 @@
  int wrap_0_49(class CL12 *uc, t_mem code) { return uc-> lsr16 ( _D ); } 
  int wrap_0_59(class CL12 *uc, t_mem code) { return uc-> asl16 ( _D ); } 
  int wrap_0_4a(class CL12 *uc, t_mem code) { return uc-> call_e ( _NONE ); } 
+ int wrap_0_4b(class CL12 *uc, t_mem code) { return uc-> call_id ( _NONE ); } 
  int wrap_0_a7(class CL12 *uc, t_mem code) { return uc-> NOP ( 0xa7 ); } 
  int wrap_0_b7(class CL12 *uc, t_mem code) { return uc-> exec_b7 ( _NONE ); } 
  int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); } 

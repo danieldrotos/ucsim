@@ -51,5 +51,29 @@ CL12::call_e(void)
   return resGO;
 }
 
+int
+CL12::call_id(void)
+{
+  u8_t p, xb, h, l;
+  xb= rom->read(PC);
+  u16_t a= naddr(NULL, &p);
+  if (!xb_indirect(xb))
+    p= fetch();
+  
+  h= PC>>8;
+  l= PC&0xff;
+  cSP.W(rSP-1);
+  rom->write(rSP, l);
+  cSP.W(rSP-1);
+  rom->write(rSP, h);
+  cSP.W(rSP-1);
+  rom->write(rSP, cpu12->ppage_read());
+  
+  cpu12->ppage_write(p);
+  PC= a;
+  
+  return resGO;
+}
+
 
 /* ENd of m68hc12.src/ibranch.cc */
