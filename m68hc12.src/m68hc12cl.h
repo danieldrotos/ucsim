@@ -75,6 +75,7 @@ public:
   class cl_cell16 cTMP2, cTMP3;
   class cl_memory_cell *tex_cells[8];
   const char *tex_names[8];
+  u16_t XIRQ_AT, COP_AT, TRAP_AT, CMR_AT;
 public:
   cl_m68hc12(class cl_sim *asim);
   virtual int init(void);
@@ -106,6 +107,8 @@ public:
   
   virtual void print_regs(class cl_console_base *con);
 
+  virtual void push_regs(bool inst_part);
+  virtual void pull_regs(bool inst_part);
   virtual int exec_b7(void);
   virtual int trap(t_mem code);
 

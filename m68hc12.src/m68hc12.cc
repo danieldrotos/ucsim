@@ -72,6 +72,13 @@ cl_m68hc12::proba(int i, t_mem code)
 cl_m68hc12::cl_m68hc12(class cl_sim *asim):
   cl_m68hcbase(asim)
 {
+  IRQ_AT	= 0xfff2;
+  XIRQ_AT	= 0xfff4;
+  SWI_AT	= 0xfff6;
+  TRAP_AT	= 0xfff8;
+  COP_AT	= 0xfffa;
+  CMR_AT	= 0xfffc;
+  RESET_AT	= 0xfffe;
   class cl_ccr c;
   memcpy((void*)&cCC, (void*)&c, sizeof(class cl_cell8));
   hc12wrap= new cl_12wrap();
@@ -420,10 +427,43 @@ CL12::xb(void)
   return *c;
 }
 
+void
+CL12::push_regs(bool inst_part)
+{
+  rom->write(--rSP, PC&0xff);
+  rom->write(--rSP, PC>>8);
+  rom->write(--rSP, rIY&0xff);
+  rom->write(--rSP, rIY>>8);
+  rom->write(--rSP, rIX&0xff);
+  rom->write(--rSP, rIX>>8);
+  rom->write(--rSP, rA);
+  rom->write(--rSP, rB);
+  rom->write(--rSP, rCC);
+}
+
+void
+CL12::pull_regs(bool inst_part)
+{
+  u8_t l, h;
+  rCC= rom->read(rSP++);
+  rB= rom->read(rSP++);
+  rA= rom->read(rSP++);
+  h= rom->read(rSP++);
+  l= rom->read(rSP++);
+  rIX= h*256+l;
+  h= rom->read(rSP++);
+  l= rom->read(rSP++);
+  rIY= h*256+l;
+  h= rom->read(rSP++);
+  l= rom->read(rSP++);
+  PC= h*256+l;
+}
+
 int
 CL12::trap(t_mem code)
 {
-  // TODO
+  push_regs(true);
+  PC= read_addr(rom, TRAP_AT);
   return resGO;
 }
 
