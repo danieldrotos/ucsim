@@ -36,6 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CL12 cl_m68hc12
 
 class CL12;
+class cl_hc12_cpu;
 
 typedef int (*hcwrapper_fn)(class CL12 *uc, t_mem code);
 
@@ -76,6 +77,7 @@ public:
   class cl_memory_cell *tex_cells[8];
   const char *tex_names[8];
   u16_t XIRQ_AT, COP_AT, TRAP_AT, CMR_AT;
+  class cl_hc12_cpu *cpu12;
 public:
   cl_m68hc12(class cl_sim *asim);
   virtual int init(void);
@@ -116,10 +118,15 @@ public:
   virtual int sub16(class cl_cell16 &dest, u16_t op);
   virtual int add16(class cl_cell16 &dest, u16_t op);
   virtual int cp16(u16_t op1, u16_t op2);
+  virtual int lsr16(class cl_memory_cell &dest);
+  virtual int asl16(class cl_memory_cell &dest);
 
   // MOVE
 #define ld16 ldsx
 
+  // BRANCH
+  virtual int call_e(void);
+  
   // OTHER
   
 };
@@ -139,6 +146,8 @@ public:
   virtual int init(void);
   virtual void reset(void);
   virtual void print_info(class cl_console_base *con);
+  virtual t_mem ppage_write(u8_t val);
+  virtual u8_t ppage_read(void) { return ppage->R(); }
 };
 
 

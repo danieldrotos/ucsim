@@ -160,8 +160,9 @@ cl_m68hc12::make_memories(void)
 void
 cl_m68hc12::make_cpu_hw(void)
 {
-  add_hw(cpu= new cl_hc12_cpu(this));
-  cpu->init();
+  add_hw(cpu12= new cl_hc12_cpu(this));
+  cpu12->init();
+  cpu= cpu12;
 }
 
 int
@@ -558,5 +559,12 @@ cl_hc12_cpu::print_info(class cl_console_base *con)
   con->dd_printf("DWEN= %d\n", (w&0x80)?1:0);
   con->dd_printf("EWEN= %d\n", (w&0x20)?1:0);
 }
+
+t_mem
+cl_hc12_cpu::ppage_write(u8_t val)
+{
+  return ppage->write(val);
+}
+
 
 /* End of m68hc12.src/m68hc12.cc */
