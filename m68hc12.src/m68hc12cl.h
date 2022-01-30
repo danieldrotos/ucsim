@@ -129,6 +129,14 @@ public:
   // BRANCH
   virtual int call_e(void);
   virtual int call_id(void);
+  virtual int brset(class cl_memory_cell &m);
+  virtual int brset_d(void);
+  virtual int brset_id(void);
+  virtual int brset_e(void);
+  virtual int brclr(class cl_memory_cell &m);
+  virtual int brclr_d(void);
+  virtual int brclr_id(void);
+  virtual int brclr_e(void);
   
   // OTHER
   

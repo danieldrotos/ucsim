@@ -236,7 +236,20 @@ DEC(0, 6f,	stsx	, _xba_Sop	, "STS %p"	, ' ', -2	, 0x55332)
 DEC(0, 7f,	stsx	, _ea_Sop 	, "STS %e"	, ' ', 3	, 3)
 
 DEC(0, 4c,	Or	, _d_i8		, "BSET %d,%b"	, ' ', 3	, 4)
+DEC(0, 0c,	Or	, _xb_i8	, "BSET %p,%b"	, ' ', -4	, 4)
+DEC(0, 1c,	Or	, _e_i8		, "BSET %e,%b"	, ' ', 4	, 4)
+
 DEC(0, 4d,	And	, _d_i8n	, "BCLR %d,%b"	, ' ', 3	, 4)
+DEC(0, 0d,	And	, _xb_i8n	, "BCLR %p,%b"	, ' ', -4	, 4)
+DEC(0, 1d,	And	, _e_i8n	, "BCLR %e,%b"	, ' ', 4	, 4)
+
+DEC(0, 4e,	brset_d	, _NONE		, "BRSET %d,%b,%r", ' ', 4	, 5)
+DEC(0, 0e,	brset_id, _NONE		, "BRSET %p,%b,%r", ' ', -4	, 5)
+DEC(0, 1e,	brset_e	, _NONE		, "BRSET %e,%b,%r", ' ', 5	, 5)
+
+DEC(0, 4f,	brclr_d	, _NONE		, "BRCLR %d,%b,%r", ' ', 4	, 5)
+DEC(0, 0f,	brclr_id, _NONE		, "BRCLR %p,%b,%r", ' ', -4	, 5)
+DEC(0, 1f,	brclr_e	, _NONE		, "BRCLR %e,%b,%r", ' ', 5	, 5)
 
 DEC(0, a7,	NOP	, 0xa7		, "NOP"		, ' ', 1	, 1)
 

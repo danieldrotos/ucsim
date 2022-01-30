@@ -185,7 +185,17 @@
  virtual void fill_0_6f() { page0[0x6f ]= wrap_0_6f; set_disass(0, 0x6f, "STS %p", ' ', -2); set_ticks(0, 0x6f, 0x55332); }
  virtual void fill_0_7f() { page0[0x7f ]= wrap_0_7f; set_disass(0, 0x7f, "STS %e", ' ', 3); set_ticks(0, 0x7f, 3); }
  virtual void fill_0_4c() { page0[0x4c ]= wrap_0_4c; set_disass(0, 0x4c, "BSET %d,%b", ' ', 3); set_ticks(0, 0x4c, 4); }
+ virtual void fill_0_0c() { page0[0x0c ]= wrap_0_0c; set_disass(0, 0x0c, "BSET %p,%b", ' ', -4); set_ticks(0, 0x0c, 4); }
+ virtual void fill_0_1c() { page0[0x1c ]= wrap_0_1c; set_disass(0, 0x1c, "BSET %e,%b", ' ', 4); set_ticks(0, 0x1c, 4); }
  virtual void fill_0_4d() { page0[0x4d ]= wrap_0_4d; set_disass(0, 0x4d, "BCLR %d,%b", ' ', 3); set_ticks(0, 0x4d, 4); }
+ virtual void fill_0_0d() { page0[0x0d ]= wrap_0_0d; set_disass(0, 0x0d, "BCLR %p,%b", ' ', -4); set_ticks(0, 0x0d, 4); }
+ virtual void fill_0_1d() { page0[0x1d ]= wrap_0_1d; set_disass(0, 0x1d, "BCLR %e,%b", ' ', 4); set_ticks(0, 0x1d, 4); }
+ virtual void fill_0_4e() { page0[0x4e ]= wrap_0_4e; set_disass(0, 0x4e, "BRSET %d,%b,%r", ' ', 4); set_ticks(0, 0x4e, 5); }
+ virtual void fill_0_0e() { page0[0x0e ]= wrap_0_0e; set_disass(0, 0x0e, "BRSET %p,%b,%r", ' ', -4); set_ticks(0, 0x0e, 5); }
+ virtual void fill_0_1e() { page0[0x1e ]= wrap_0_1e; set_disass(0, 0x1e, "BRSET %e,%b,%r", ' ', 5); set_ticks(0, 0x1e, 5); }
+ virtual void fill_0_4f() { page0[0x4f ]= wrap_0_4f; set_disass(0, 0x4f, "BRCLR %d,%b,%r", ' ', 4); set_ticks(0, 0x4f, 5); }
+ virtual void fill_0_0f() { page0[0x0f ]= wrap_0_0f; set_disass(0, 0x0f, "BRCLR %p,%b,%r", ' ', -4); set_ticks(0, 0x0f, 5); }
+ virtual void fill_0_1f() { page0[0x1f ]= wrap_0_1f; set_disass(0, 0x1f, "BRCLR %e,%b,%r", ' ', 5); set_ticks(0, 0x1f, 5); }
  virtual void fill_0_a7() { page0[0xa7 ]= wrap_0_a7; set_disass(0, 0xa7, "NOP", ' ', 1); set_ticks(0, 0xa7, 1); }
  virtual void fill_0_b7() { page0[0xb7 ]= wrap_0_b7; set_disass(0, 0xb7, "%T", ' ', 2); set_ticks(0, 0xb7, 0); }
  virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }

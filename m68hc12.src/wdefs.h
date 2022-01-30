@@ -185,7 +185,17 @@
  int wrap_0_6f(class CL12 *uc, t_mem code) { return uc-> stsx ( _xba_Sop ); } 
  int wrap_0_7f(class CL12 *uc, t_mem code) { return uc-> stsx ( _ea_Sop ); } 
  int wrap_0_4c(class CL12 *uc, t_mem code) { return uc-> Or ( _d_i8 ); } 
+ int wrap_0_0c(class CL12 *uc, t_mem code) { return uc-> Or ( _xb_i8 ); } 
+ int wrap_0_1c(class CL12 *uc, t_mem code) { return uc-> Or ( _e_i8 ); } 
  int wrap_0_4d(class CL12 *uc, t_mem code) { return uc-> And ( _d_i8n ); } 
+ int wrap_0_0d(class CL12 *uc, t_mem code) { return uc-> And ( _xb_i8n ); } 
+ int wrap_0_1d(class CL12 *uc, t_mem code) { return uc-> And ( _e_i8n ); } 
+ int wrap_0_4e(class CL12 *uc, t_mem code) { return uc-> brset_d ( _NONE ); } 
+ int wrap_0_0e(class CL12 *uc, t_mem code) { return uc-> brset_id ( _NONE ); } 
+ int wrap_0_1e(class CL12 *uc, t_mem code) { return uc-> brset_e ( _NONE ); } 
+ int wrap_0_4f(class CL12 *uc, t_mem code) { return uc-> brclr_d ( _NONE ); } 
+ int wrap_0_0f(class CL12 *uc, t_mem code) { return uc-> brclr_id ( _NONE ); } 
+ int wrap_0_1f(class CL12 *uc, t_mem code) { return uc-> brclr_e ( _NONE ); } 
  int wrap_0_a7(class CL12 *uc, t_mem code) { return uc-> NOP ( 0xa7 ); } 
  int wrap_0_b7(class CL12 *uc, t_mem code) { return uc-> exec_b7 ( _NONE ); } 
  int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); } 

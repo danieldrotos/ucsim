@@ -51,6 +51,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define _e		uc->edst()
 #define _e_Aop		uc->edst(),uc->acc.DAB.a8.Ar
 #define _e_Bop		uc->edst(),uc->acc.DAB.a8.Br
+#define _e_i8		uc->edst(),uc->i8()
+#define _e_i8n		uc->edst(),~(uc->i8())
 
 #define _ea		uc->eaddr()
 #define _ea_Dop		uc->eaddr(),uc->acc.DAB.Dr
@@ -61,6 +63,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define _xb		uc->xbdst()
 #define _xb_Aop		uc->xbdst(),uc->acc.DAB.a8.Ar
 #define _xb_Bop		uc->xbdst(),uc->acc.DAB.a8.Br
+#define _xb_i8		uc->xbdst(),uc->i8()
+#define _xb_i8n		uc->xbdst(),~(uc->i8())
 
 #define _xba		uc->xbaddr()
 #define _xba_Dop	uc->xbaddr(),uc->acc.DAB.Dr
