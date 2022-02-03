@@ -944,9 +944,14 @@ cl_commander_base::debug(const char *format, va_list ap)
       if (c->get_flag(CONS_DEBUG) && !c->get_flag(CONS_INACTIVE))
         {
           va_list aq;
+#ifdef va_copy
           va_copy(aq, ap);
           ret= c->cmd_do_cprint("debug", format, aq);
           va_end(aq);
+#else
+	  memcpy(&aq, &ap, sizeof(va_list));
+          ret= c->cmd_do_cprint("debug", format, aq);
+#endif	  
         }
     }
   return(ret);
