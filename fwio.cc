@@ -346,6 +346,13 @@ cl_io::check(void)
     input_avail();
 }
 
+bool
+cl_io::writable(void)
+{
+  // TODO
+  return true;
+}
+
 void
 cl_io::changed(void)
 {

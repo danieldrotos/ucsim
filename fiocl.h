@@ -179,6 +179,7 @@ class cl_f: public cl_base
 
   virtual int check_dev(void)= 0;
   virtual int read_dev(int *buf, int max);
+  virtual bool writable(void)= 0;
   virtual int write(const char *buf, int count);
   virtual int write_str(const char *s);
   virtual int vprintf(const char *format, va_list ap);
