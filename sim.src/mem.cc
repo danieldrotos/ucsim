@@ -36,6 +36,7 @@
 
 // prj
 #include "globals.h"
+#include "utils.h"
 
 // sim
 //#include "simcl.h"
@@ -1391,14 +1392,14 @@ cl_dummy_cell::write(t_mem val)
 #ifdef STATISTIC
   nuof_writes++;
 #endif
-  *((u32_t*)data)= rand() & mask;
+  *((u32_t*)data)= urnd() & mask;
   return(*((u32_t*)data));
 }
 
 t_mem
 cl_dummy_cell::set(t_mem val)
 {
-  *((u32_t*)data)= rand() & mask;
+  *((u32_t*)data)= urnd() & mask;
   return(*((u32_t*)data));
 }
 
@@ -1962,7 +1963,7 @@ cl_memory_chip::init(void)
     {
       for (i= 0; i < size; i++)
 	set(i,
-	    (init_value<0)?rand():(init_value)
+	    (init_value<0)?urnd():(init_value)
 	    );
     }
   return(0);

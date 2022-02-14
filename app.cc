@@ -360,7 +360,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	startup_command+= chars("\n");
 	break;
       case 'R':
-        srand(atoi(optarg));
+        srnd(atoi(optarg));
         break;
 #ifdef SOCKET_AVAIL
       case 'Z': case 'r':
