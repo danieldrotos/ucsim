@@ -44,7 +44,7 @@ step 3
 
 Stop at 0x008095: (109) stepped 12 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
-0-101010  X= 0x0014  20 .    Y= 0x0000   0 .
+0-101010  X= 0x281f 10271 .    Y= 0x0000   0 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x08095  ? 20 01          jra    0x8098[0K
 F 0x008095
@@ -56,7 +56,7 @@ step
 
 Stop at 0x008098: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
-0-101010  X= 0x0014  20 .    Y= 0x0000   0 .
+0-101010  X= 0x281f 10271 .    Y= 0x0000   0 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x08098  ? 40             neg    A[0K
 F 0x008098
@@ -65,8 +65,8 @@ set hw cpu pipetrace start "out/test.table6.html"
 step 12
 
 Stop at 0x0080b0: (109) stepped 13 ticks
-V-IHINZC  Flags= 0x2d  45 -  A= 0xf0 240 .
-0-101101  X= 0x001e  30 .    Y= 0x0000   0 .
+V-IHINZC  Flags= 0x29  41 )  A= 0x17  23 .
+0-101001  X= 0x28e3 10467 .    Y= 0x0000   0 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x080b0  ? ae 00 15       ldw    X,#0x0015[0K
 F 0x0080b0
@@ -101,8 +101,8 @@ set hw cpu pipetrace start "out/test.table8.html"
 step 10
 
 Stop at 0x000114: (109) stepped 20 ticks
-V-IHINZC  Flags= 0x2d  45 -  A= 0xf0 240 .
-0-101101  X= 0x001e  30 .    Y= 0x0000   0 .
+V-IHINZC  Flags= 0x29  41 )  A= 0x17  23 .
+0-101001  X= 0x00e3 227 .    Y= 0x0000   0 .
 SP= 0x17fd [SP+1]= 80 128 .  Limit= 0x1500
 0x00114  ? 81             ret[0K
 F 0x000114
@@ -112,8 +112,8 @@ set hw cpu pipetrace stop
 step
 
 Stop at 0x0080c0: (109) stepped 6 ticks
-V-IHINZC  Flags= 0x2d  45 -  A= 0xf0 240 .
-0-101101  X= 0x001e  30 .    Y= 0x0000   0 .
+V-IHINZC  Flags= 0x29  41 )  A= 0x17  23 .
+0-101001  X= 0x00e3 227 .    Y= 0x0000   0 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x080c0  ? 20 02          jra    0x80c4[0K
 F 0x0080c0
@@ -122,8 +122,8 @@ F 0x0080c0
 step
 
 Stop at 0x0080c4: (109) stepped 3 ticks
-V-IHINZC  Flags= 0x2d  45 -  A= 0xf0 240 .
-0-101101  X= 0x001e  30 .    Y= 0x0000   0 .
+V-IHINZC  Flags= 0x29  41 )  A= 0x17  23 .
+0-101001  X= 0x00e3 227 .    Y= 0x0000   0 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x080c4  ? 4c             inc    A[0K
 F 0x0080c4
@@ -144,8 +144,8 @@ set hw cpu pipetrace data "stall cycle that follows it.</p>"
 step 5
 
 Stop at 0x0080d9: (109) stepped 10 ticks
-V-IHINZC  Flags= 0x29  41 )  A= 0x0f  15 .
-0-101001  X= 0x001f  31 .    Y= 0x0000   0 .
+V-IHINZC  Flags= 0x29  41 )  A= 0xe8 232 .
+0-101001  X= 0x00e4 228 .    Y= 0x0000   0 .
 SP= 0x17fd [SP+1]= 80 128 .  Limit= 0x1500
 0x080d9  ? 4f             clr    A[0K
 F 0x0080d9
@@ -158,7 +158,7 @@ step 4
 
 Stop at 0x0080e0: (109) stepped 4 ticks
 V-IHINZC  Flags= 0x2b  43 +  A= 0x00   0 .
-0-101011  X= 0x001f  31 .    Y= 0x0000   0 .
+0-101011  X= 0x00e4 228 .    Y= 0x0000   0 .
 SP= 0x17fd [SP+1]= 80 128 .  Limit= 0x1500
 0x080e0  ? 52 14          sub    SP,#0x14[0K
 F 0x0080e0
@@ -182,9 +182,9 @@ set hw cpu pipetrace data "</ul>"
 step 7
 
 Stop at 0x0080fb: (109) stepped 11 ticks
-V-IHINZC  Flags= 0x2c  44 ,  A= 0xcd 205 .
-0-101100  X= 0x001f  31 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+V-IHINZC  Flags= 0x2c  44 ,  A= 0xcb 203 .
+0-101100  X= 0x00e4 228 .    Y= 0x0001   1 .
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x080fb  ? 20 03          jra    0x8100[0K
 F 0x0080fb
 Simulated 11 ticks [ELIDED]
@@ -210,9 +210,9 @@ set hw cpu pipetrace pause
 step
 
 Stop at 0x008100: (109) stepped 1 ticks
-V-IHINZC  Flags= 0x2c  44 ,  A= 0xcd 205 .
-0-101100  X= 0x001f  31 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+V-IHINZC  Flags= 0x2c  44 ,  A= 0xcb 203 .
+0-101100  X= 0x00e4 228 .    Y= 0x0001   1 .
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08100  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008100
 set hw cpu pipetrace resume
@@ -221,7 +221,7 @@ step 3
 Stop at 0x008106: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0100 256 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08106  ? 20 00          jra    0x8108[0K
 F 0x008106
 Simulated 7 ticks [ELIDED]
@@ -232,7 +232,7 @@ step
 Stop at 0x008108: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0100 256 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08108  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008108
 set hw cpu pipetrace resume
@@ -241,7 +241,7 @@ step 3
 Stop at 0x00810e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0200 512 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0810e  ? 20 00          jra    0x8110[0K
 F 0x00810e
 Simulated 7 ticks [ELIDED]
@@ -252,7 +252,7 @@ step
 Stop at 0x008110: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0200 512 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08110  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008110
 set hw cpu pipetrace resume
@@ -261,7 +261,7 @@ step 3
 Stop at 0x008116: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0400 1024 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08116  ? 20 00          jra    0x8118[0K
 F 0x008116
 Simulated 7 ticks [ELIDED]
@@ -272,7 +272,7 @@ step
 Stop at 0x008118: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0400 1024 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08118  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008118
 set hw cpu pipetrace resume
@@ -281,7 +281,7 @@ step 3
 Stop at 0x00811e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0800 2048 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0811e  ? 20 00          jra    0x8120[0K
 F 0x00811e
 Simulated 7 ticks [ELIDED]
@@ -292,7 +292,7 @@ step
 Stop at 0x008120: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0800 2048 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08120  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008120
 set hw cpu pipetrace resume
@@ -301,7 +301,7 @@ step 3
 Stop at 0x008126: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x1000 4096 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08126  ? 20 00          jra    0x8128[0K
 F 0x008126
 Simulated 7 ticks [ELIDED]
@@ -312,7 +312,7 @@ step
 Stop at 0x008128: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x1000 4096 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08128  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008128
 set hw cpu pipetrace resume
@@ -321,7 +321,7 @@ step 3
 Stop at 0x00812e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x2000 8192 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0812e  ? 20 00          jra    0x8130[0K
 F 0x00812e
 Simulated 7 ticks [ELIDED]
@@ -332,7 +332,7 @@ step
 Stop at 0x008130: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x2000 8192 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08130  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008130
 set hw cpu pipetrace resume
@@ -341,7 +341,7 @@ step 3
 Stop at 0x008136: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x4000 16384 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08136  ? 20 00          jra    0x8138[0K
 F 0x008136
 Simulated 7 ticks [ELIDED]
@@ -352,7 +352,7 @@ step
 Stop at 0x008138: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x4000 16384 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08138  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008138
 set hw cpu pipetrace resume
@@ -361,7 +361,7 @@ step 3
 Stop at 0x00813e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x8000 32768 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0813e  ? 20 00          jra    0x8140[0K
 F 0x00813e
 Simulated 7 ticks [ELIDED]
@@ -373,7 +373,7 @@ step
 Stop at 0x008140: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x8000 32768 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08140  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x008140
 set hw cpu pipetrace resume
@@ -382,7 +382,7 @@ step 3
 Stop at 0x008146: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0100 256 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08146  ? 20 00          jra    0x8148[0K
 F 0x008146
 Simulated 7 ticks [ELIDED]
@@ -393,7 +393,7 @@ step
 Stop at 0x008148: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0100 256 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08148  ? ae 40 00       ldw    X,#0x4000[0K
 F 0x008148
 set hw cpu pipetrace resume
@@ -402,7 +402,7 @@ step 3
 Stop at 0x00814e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0080 128 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0814e  ? 20 00          jra    0x8150[0K
 F 0x00814e
 Simulated 7 ticks [ELIDED]
@@ -413,7 +413,7 @@ step
 Stop at 0x008150: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0080 128 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08150  ? ae 20 00       ldw    X,#0x2000[0K
 F 0x008150
 set hw cpu pipetrace resume
@@ -422,7 +422,7 @@ step 3
 Stop at 0x008156: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0040  64 @    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08156  ? 20 00          jra    0x8158[0K
 F 0x008156
 Simulated 7 ticks [ELIDED]
@@ -433,7 +433,7 @@ step
 Stop at 0x008158: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0040  64 @    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08158  ? ae 10 00       ldw    X,#0x1000[0K
 F 0x008158
 set hw cpu pipetrace resume
@@ -442,7 +442,7 @@ step 3
 Stop at 0x00815e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0020  32      Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0815e  ? 20 00          jra    0x8160[0K
 F 0x00815e
 Simulated 7 ticks [ELIDED]
@@ -453,7 +453,7 @@ step
 Stop at 0x008160: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0020  32      Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08160  ? ae 08 00       ldw    X,#0x0800[0K
 F 0x008160
 set hw cpu pipetrace resume
@@ -462,7 +462,7 @@ step 3
 Stop at 0x008166: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0010  16 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08166  ? 20 00          jra    0x8168[0K
 F 0x008166
 Simulated 7 ticks [ELIDED]
@@ -473,7 +473,7 @@ step
 Stop at 0x008168: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0010  16 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08168  ? ae 04 00       ldw    X,#0x0400[0K
 F 0x008168
 set hw cpu pipetrace resume
@@ -482,7 +482,7 @@ step 3
 Stop at 0x00816e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0008   8 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0816e  ? 20 00          jra    0x8170[0K
 F 0x00816e
 Simulated 7 ticks [ELIDED]
@@ -493,7 +493,7 @@ step
 Stop at 0x008170: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0008   8 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08170  ? ae 02 00       ldw    X,#0x0200[0K
 F 0x008170
 set hw cpu pipetrace resume
@@ -502,7 +502,7 @@ step 3
 Stop at 0x008176: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0004   4 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08176  ? 20 00          jra    0x8178[0K
 F 0x008176
 Simulated 7 ticks [ELIDED]
@@ -513,7 +513,7 @@ step
 Stop at 0x008178: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0004   4 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08178  ? ae 01 00       ldw    X,#0x0100[0K
 F 0x008178
 set hw cpu pipetrace resume
@@ -522,7 +522,7 @@ step 3
 Stop at 0x00817e: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0002   2 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0817e  ? 20 00          jra    0x8180[0K
 F 0x00817e
 Simulated 7 ticks [ELIDED]
@@ -533,7 +533,7 @@ step
 Stop at 0x008180: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0002   2 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08180  ? ae 00 80       ldw    X,#0x0080[0K
 F 0x008180
 set hw cpu pipetrace resume
@@ -542,7 +542,7 @@ step 3
 Stop at 0x008186: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0001   1 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08186  ? 20 00          jra    0x8188[0K
 F 0x008186
 Simulated 6 ticks [ELIDED]
@@ -553,7 +553,7 @@ step
 Stop at 0x008188: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0001   1 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08188  ? ae 00 40       ldw    X,#0x0040[0K
 F 0x008188
 set hw cpu pipetrace resume
@@ -562,7 +562,7 @@ step 3
 Stop at 0x00818e: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x40  64 @
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0818e  ? 20 00          jra    0x8190[0K
 F 0x00818e
 Simulated 6 ticks [ELIDED]
@@ -573,7 +573,7 @@ step
 Stop at 0x008190: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x40  64 @
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08190  ? ae 00 20       ldw    X,#0x0020[0K
 F 0x008190
 set hw cpu pipetrace resume
@@ -582,7 +582,7 @@ step 3
 Stop at 0x008196: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x20  32  
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08196  ? 20 00          jra    0x8198[0K
 F 0x008196
 Simulated 6 ticks [ELIDED]
@@ -593,7 +593,7 @@ step
 Stop at 0x008198: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x20  32  
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08198  ? ae 00 10       ldw    X,#0x0010[0K
 F 0x008198
 set hw cpu pipetrace resume
@@ -602,7 +602,7 @@ step 3
 Stop at 0x00819e: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x10  16 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0819e  ? 20 00          jra    0x81a0[0K
 F 0x00819e
 Simulated 6 ticks [ELIDED]
@@ -613,7 +613,7 @@ step
 Stop at 0x0081a0: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x10  16 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081a0  ? ae 00 08       ldw    X,#0x0008[0K
 F 0x0081a0
 set hw cpu pipetrace resume
@@ -622,7 +622,7 @@ step 3
 Stop at 0x0081a6: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x08   8 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081a6  ? 20 00          jra    0x81a8[0K
 F 0x0081a6
 Simulated 6 ticks [ELIDED]
@@ -633,7 +633,7 @@ step
 Stop at 0x0081a8: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x08   8 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081a8  ? ae 00 04       ldw    X,#0x0004[0K
 F 0x0081a8
 set hw cpu pipetrace resume
@@ -642,7 +642,7 @@ step 3
 Stop at 0x0081ae: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x04   4 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081ae  ? 20 00          jra    0x81b0[0K
 F 0x0081ae
 Simulated 6 ticks [ELIDED]
@@ -653,7 +653,7 @@ step
 Stop at 0x0081b0: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x04   4 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081b0  ? ae 00 02       ldw    X,#0x0002[0K
 F 0x0081b0
 set hw cpu pipetrace resume
@@ -662,7 +662,7 @@ step 3
 Stop at 0x0081b6: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x02   2 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081b6  ? 20 00          jra    0x81b8[0K
 F 0x0081b6
 Simulated 6 ticks [ELIDED]
@@ -673,7 +673,7 @@ step
 Stop at 0x0081b8: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x02   2 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081b8  ? ae 00 01       ldw    X,#0x0001[0K
 F 0x0081b8
 set hw cpu pipetrace resume
@@ -682,7 +682,7 @@ step 3
 Stop at 0x0081be: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x01   1 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081be  ? 20 00          jra    0x81c0[0K
 F 0x0081be
 Simulated 6 ticks [ELIDED]
@@ -693,7 +693,7 @@ step
 Stop at 0x0081c0: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x01   1 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081c0  ? ae 00 00       ldw    X,#0x0000[0K
 F 0x0081c0
 set hw cpu pipetrace resume
@@ -702,7 +702,7 @@ step 3
 Stop at 0x0081c6: (109) stepped 6 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x00   0 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081c6  ? 20 00          jra    0x81c8[0K
 F 0x0081c6
 Simulated 6 ticks [ELIDED]
@@ -714,7 +714,7 @@ step
 Stop at 0x0081c8: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x00   0 .
 0-101000  X= 0x0000   0 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081c8  ? ae 00 3f       ldw    X,#0x003f[0K
 F 0x0081c8
 set hw cpu pipetrace resume
@@ -723,7 +723,7 @@ step 3
 Stop at 0x0081ce: (109) stepped 8 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x07   7 .
 0-101010  X= 0x0007   7 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081ce  ? 20 00          jra    0x81d0[0K
 F 0x0081ce
 Simulated 8 ticks [ELIDED]
@@ -734,7 +734,7 @@ step
 Stop at 0x0081d0: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x07   7 .
 0-101010  X= 0x0007   7 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081d0  ? ae 00 40       ldw    X,#0x0040[0K
 F 0x0081d0
 set hw cpu pipetrace resume
@@ -743,7 +743,7 @@ step 3
 Stop at 0x0081d6: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0008   8 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081d6  ? 20 00          jra    0x81d8[0K
 F 0x0081d6
 Simulated 7 ticks [ELIDED]
@@ -754,7 +754,7 @@ step
 Stop at 0x0081d8: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 0-101010  X= 0x0008   8 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081d8  ? ae 00 41       ldw    X,#0x0041[0K
 F 0x0081d8
 set hw cpu pipetrace resume
@@ -763,7 +763,7 @@ step 3
 Stop at 0x0081de: (109) stepped 7 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x01   1 .
 0-101010  X= 0x0008   8 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081de  ? 20 00          jra    0x81e0[0K
 F 0x0081de
 Simulated 7 ticks [ELIDED]
@@ -775,7 +775,7 @@ step
 Stop at 0x0081e0: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x01   1 .
 0-101010  X= 0x0008   8 .    Y= 0x0001   1 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081e0  ? ae 80 00       ldw    X,#0x8000[0K
 F 0x0081e0
 set hw cpu pipetrace resume
@@ -784,7 +784,7 @@ step 3
 Stop at 0x0081e8: (109) stepped 8 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x01   1 .
 0-101010  X= 0x8000 32768 .    Y= 0x0000   0 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081e8  ? 20 02          jra    0x81ec[0K
 F 0x0081e8
 Simulated 8 ticks [ELIDED]
@@ -798,7 +798,7 @@ step 7
 Stop at 0x008201: (109) stepped 10 ticks
 V-IHINZC  Flags= 0x28  40 (  A= 0x0a  10 .
 0-101000  X= 0x00ff 255 .    Y= 0x0000   0 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08201  ? 62             div    X,A[0K
 F 0x008201
 Simulated 10 ticks [ELIDED]
@@ -815,7 +815,7 @@ step
 Stop at 0x008202: (109) stepped 4 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x05   5 .
 0-101010  X= 0x0019  25 .    Y= 0x0000   0 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08202  ? 20 00          jra    0x8204[0K
 F 0x008202
 set hw cpu pipetrace stop
@@ -825,7 +825,7 @@ step
 Stop at 0x008204: (109) stepped 1 ticks
 V-IHINZC  Flags= 0x2a  42 *  A= 0x05   5 .
 0-101010  X= 0x0019  25 .    Y= 0x0000   0 .
-SP= 0x17e9 [SP+1]= 9d 157 .  Limit= 0x1500
+SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08204  ? a9 55          adc    A,#0x55[0K
 F 0x008204
 
@@ -843,6 +843,6 @@ Simulation started, PC=0x008204
 
 Stop at 0x008e53: (101) Halted
 F 0x008e53
-Simulated 2352 ticks [ELIDED]
+Simulated 2351 ticks [ELIDED]
 Host usage: [ELIDED]
 set hw cpu pipetrace stop

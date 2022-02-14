@@ -11,7 +11,7 @@ $upscope $end
 $enddefinitions $end
 #0
 $dumpvars
-b10010101 !
+b10000011 !
 $end
 b00000000 !
 #500
