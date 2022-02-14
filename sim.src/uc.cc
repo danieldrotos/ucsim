@@ -1210,6 +1210,8 @@ cl_uc::remove_chip(class cl_memory *chip)
     {
       as= (class cl_address_space *)(address_spaces->at(i));
       j= 0;
+      class cl_list bankers;
+      bankers.init();
       while (j < as->decoders->get_count())
 	{
 	  for (j= 0; j < as->decoders->get_count(); j++)
@@ -1223,7 +1225,26 @@ cl_uc::remove_chip(class cl_memory *chip)
 		  as->undecode_area(NULL, as_start, as_end, NULL);
 		  break;
 		}
+	      if (ad->is_banker())
+		{
+		  if (ad->uses_chip(chip))
+		    {
+		      bankers.add(ad);
+		    }
+		}
 	    }
+	}
+      if (bankers.count > 0)
+	{
+	  int i;
+	  for (i= 0; i < bankers.count; i++)
+	    {
+	      class cl_address_decoder *ad;
+	      ad= (class cl_address_decoder *)(bankers.at(i));
+	      as->decoders->disconn(ad);
+	      delete ad;
+	    }
+	  bankers.disconn_all();
 	}
     }
   memchips->disconn(chip);

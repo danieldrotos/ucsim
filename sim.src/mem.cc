@@ -2414,6 +2414,8 @@ cl_banker::cl_banker(class cl_address_space *the_banker_as,
   banks= 0;
   //bank_ptrs= 0;
   bank= -1;
+  op1= NULL;
+  op2= NULL;
 }
 
 cl_banker::cl_banker(class cl_address_space *the_banker_as,
@@ -2441,6 +2443,8 @@ cl_banker::cl_banker(class cl_address_space *the_banker_as,
   banks= 0;
   //bank_ptrs= 0;
   bank= -1;
+  op1= NULL;
+  op2= NULL;
 }
 
 int
@@ -2496,6 +2500,7 @@ cl_banker::init()
       class cl_bank_switcher_operator *o=
 	new cl_bank_switcher_operator(c/*, banker_addr*/, this);
       c->prepend_operator(o);
+      op1= o;
     }
   if (banker2_as &&
       banker2_mask)
@@ -2506,6 +2511,7 @@ cl_banker::init()
 	  class cl_bank_switcher_operator *o=
 	    new cl_bank_switcher_operator(c/*, banker_addr*/, this);
 	  c->prepend_operator(o);
+	  op2= o;
 	}
     }
   return 0;
@@ -2514,6 +2520,26 @@ cl_banker::init()
 cl_banker::~cl_banker()
 {
   int i;
+  class cl_memory_cell *c;
+  if (banker_as)
+    {
+      c= banker_as->get_cell(banker_addr);
+      if (c)
+	{
+	  if (op1) c->remove_operator(op1);
+	  if (op2) c->remove_operator(op2);
+	}
+    }
+  if (banker2_as)
+    {
+      c= banker2_as->get_cell(banker2_addr);
+      if (c)
+	{
+	  if (op1) c->remove_operator(op1);
+	  if (op2) c->remove_operator(op2);
+	}
+    }
+    
   if (banks)
     {
       for (i= 0; i < nuof_banks; i++)
@@ -2629,6 +2655,23 @@ cl_banker::switch_to(int bank_nr, class cl_console_base *con)
   bank= b;
 
   return true;
+}
+
+bool
+cl_banker::uses_chip(class cl_memory *chip)
+{
+  int i;
+  for (i= 0; i < nuof_banks; i++)
+    {
+      if (banks[i])
+	{
+	  class cl_address_decoder *ad=
+	    (class cl_address_decoder *)(banks[i]);
+	  if (ad->memchip == chip)
+	    return true;
+	}
+    }
+  return false;
 }
 
 void

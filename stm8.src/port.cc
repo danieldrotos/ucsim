@@ -138,7 +138,7 @@ cl_port::high_bits_are_port_interrupt(const struct state *s)
 bool
 cl_port::low_bits_are_port_interrupt(const struct state *s)
 {
-  class cl_stm8 *stm8 = static_cast<class cl_stm8 *>(uc);
+  //class cl_stm8 *stm8 = static_cast<class cl_stm8 *>(uc);
 
   if (uc->type->type != CPU_STM8S)
     {
