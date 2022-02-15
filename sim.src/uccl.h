@@ -267,6 +267,7 @@ public:
   class cl_ticker *idle_ticks;	// Time in idle mode
   class cl_ticker *halt_ticks;	// Time in power down mode
   class cl_list *counters;	// User definable timers (tickers)
+  int inst_ticks;		// Ticks of an instruction
   struct vcounter_t vc;		// Virtual clk counter
   bool stop_selfjump;		// Whether it should stop on selfjump
   bool analyzer;		// Whether the code analyzer is enabled

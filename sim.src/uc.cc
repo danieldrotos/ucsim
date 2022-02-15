@@ -2550,8 +2550,8 @@ cl_uc::tick(int cycles)
         }
     }
 
-  tick_hw(cycles);
-
+  //tick_hw(cycles);
+  inst_ticks+= cycles;
   return(0);
 }
 
@@ -2817,6 +2817,8 @@ cl_uc::exec_inst_tab(instruction_wrapper_fn itab[])
 void
 cl_uc::post_inst(void)
 {
+  tick_hw(inst_ticks);
+  inst_ticks= 0;
   if (errors->count)
     check_errors();
   if (events->count)
