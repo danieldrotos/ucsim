@@ -331,7 +331,7 @@ cl_serial_hw::proc_input(void)
 
   fin= io->get_fin();
   fout= io->get_fout();
-  
+
   if (fin->eof())
     {
       if (fout &&
