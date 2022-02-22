@@ -38,8 +38,6 @@ SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x0800c    <.loop$0>:
 0x0800c F  72 10 00 00    bset   0x0000 <loc1>,#0[0K
 F 0x00800c
-Simulated 8 ticks [ELIDED]
-Host usage: [ELIDED]
 
 # Set up a vcd to monitor the bit changes in loc1 and the value of loc2.
 set hw vcd output "out/test.vcd"
@@ -90,8 +88,6 @@ SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x0800c    <.loop$0>:
 0x0800c F  72 10 00 00    bset   0x0000 <loc1>,#0[0K
 F 0x00800c
-Simulated 49 ticks [ELIDED]
-Host usage: [ELIDED]
 
 # Remove the probe from every second bit.
 # Removing probes while started is ok - we just stop logging changes.
@@ -117,8 +113,6 @@ SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x0800c    <.loop$0>:
 0x0800c F  72 10 00 00    bset   0x0000 <loc1>,#0[0K
 F 0x00800c
-Simulated 49 ticks [ELIDED]
-Host usage: [ELIDED]
 
 # Don't forget to close the vcd properly!
 set hw vcd stop

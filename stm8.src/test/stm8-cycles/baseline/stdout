@@ -48,8 +48,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x08095  ? 20 01          jra    0x8098[0K
 F 0x008095
-Simulated 12 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace stop
 
 step
@@ -70,8 +68,6 @@ V-IHINZC  Flags= 0x29  41 )  A= 0x17  23 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x080b0  ? ae 00 15       ldw    X,#0x0015[0K
 F 0x0080b0
-Simulated 13 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace stop
 
 break 0x0100
@@ -85,8 +81,6 @@ V-IHINZC  Flags= 0x2b  43 +  A= 0x20  32
 SP= 0x17fd [SP+1]= 80 128 .  Limit= 0x1500
 0x00100 F? 20 02          jra    0x0104[0K
 F 0x000100
-Simulated 130 ticks [ELIDED]
-Host usage: [ELIDED]
 
 step
 
@@ -106,8 +100,6 @@ V-IHINZC  Flags= 0x29  41 )  A= 0x17  23 .
 SP= 0x17fd [SP+1]= 80 128 .  Limit= 0x1500
 0x00114  ? 81             ret[0K
 F 0x000114
-Simulated 20 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace stop
 step
 
@@ -149,8 +141,6 @@ V-IHINZC  Flags= 0x29  41 )  A= 0xe8 232 .
 SP= 0x17fd [SP+1]= 80 128 .  Limit= 0x1500
 0x080d9  ? 4f             clr    A[0K
 F 0x0080d9
-Simulated 10 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace stop
 
 
@@ -162,8 +152,6 @@ V-IHINZC  Flags= 0x2b  43 +  A= 0x00   0 .
 SP= 0x17fd [SP+1]= 80 128 .  Limit= 0x1500
 0x080e0  ? 52 14          sub    SP,#0x14[0K
 F 0x0080e0
-Simulated 4 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace title "PM0044 5.4.4 Pipeline stalled, table 12"
 set hw cpu pipetrace start "out/test.table12.html"
 set hw cpu pipetrace data "<h2>Errata</h2>"
@@ -187,8 +175,6 @@ V-IHINZC  Flags= 0x2c  44 ,  A= 0xcb 203 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x080fb  ? 20 03          jra    0x8100[0K
 F 0x0080fb
-Simulated 11 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace stop
 
 
@@ -224,8 +210,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08106  ? 20 00          jra    0x8108[0K
 F 0x008106
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -244,8 +228,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0810e  ? 20 00          jra    0x8110[0K
 F 0x00810e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -264,8 +246,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08116  ? 20 00          jra    0x8118[0K
 F 0x008116
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -284,8 +264,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0811e  ? 20 00          jra    0x8120[0K
 F 0x00811e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -304,8 +282,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08126  ? 20 00          jra    0x8128[0K
 F 0x008126
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -324,8 +300,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0812e  ? 20 00          jra    0x8130[0K
 F 0x00812e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -344,8 +318,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08136  ? 20 00          jra    0x8138[0K
 F 0x008136
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -364,8 +336,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0813e  ? 20 00          jra    0x8140[0K
 F 0x00813e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 
 set hw cpu pipetrace pause
 step
@@ -385,8 +355,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08146  ? 20 00          jra    0x8148[0K
 F 0x008146
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -405,8 +373,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0814e  ? 20 00          jra    0x8150[0K
 F 0x00814e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -425,8 +391,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08156  ? 20 00          jra    0x8158[0K
 F 0x008156
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -445,8 +409,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0815e  ? 20 00          jra    0x8160[0K
 F 0x00815e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -465,8 +427,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08166  ? 20 00          jra    0x8168[0K
 F 0x008166
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -485,8 +445,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0816e  ? 20 00          jra    0x8170[0K
 F 0x00816e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -505,8 +463,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08176  ? 20 00          jra    0x8178[0K
 F 0x008176
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -525,8 +481,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0817e  ? 20 00          jra    0x8180[0K
 F 0x00817e
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -545,8 +499,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08186  ? 20 00          jra    0x8188[0K
 F 0x008186
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -565,8 +517,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x40  64 @
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0818e  ? 20 00          jra    0x8190[0K
 F 0x00818e
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -585,8 +535,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x20  32
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08196  ? 20 00          jra    0x8198[0K
 F 0x008196
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -605,8 +553,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x10  16 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x0819e  ? 20 00          jra    0x81a0[0K
 F 0x00819e
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -625,8 +571,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x08   8 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081a6  ? 20 00          jra    0x81a8[0K
 F 0x0081a6
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -645,8 +589,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x04   4 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081ae  ? 20 00          jra    0x81b0[0K
 F 0x0081ae
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -665,8 +607,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x02   2 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081b6  ? 20 00          jra    0x81b8[0K
 F 0x0081b6
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -685,8 +625,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x01   1 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081be  ? 20 00          jra    0x81c0[0K
 F 0x0081be
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -705,8 +643,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081c6  ? 20 00          jra    0x81c8[0K
 F 0x0081c6
-Simulated 6 ticks [ELIDED]
-Host usage: [ELIDED]
 
 set hw cpu pipetrace pause
 step
@@ -726,8 +662,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x07   7 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081ce  ? 20 00          jra    0x81d0[0K
 F 0x0081ce
-Simulated 8 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -746,8 +680,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x00   0 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081d6  ? 20 00          jra    0x81d8[0K
 F 0x0081d6
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace pause
 step
 
@@ -766,8 +698,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x01   1 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081de  ? 20 00          jra    0x81e0[0K
 F 0x0081de
-Simulated 7 ticks [ELIDED]
-Host usage: [ELIDED]
 
 set hw cpu pipetrace pause
 step
@@ -787,8 +717,6 @@ V-IHINZC  Flags= 0x2a  42 *  A= 0x01   1 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x081e8  ? 20 02          jra    0x81ec[0K
 F 0x0081e8
-Simulated 8 ticks [ELIDED]
-Host usage: [ELIDED]
 
 set hw cpu pipetrace stop
 
@@ -801,8 +729,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x0a  10 .
 SP= 0x17e9 [SP+1]= 41  65 A  Limit= 0x1500
 0x08201  ? 62             div    X,A[0K
 F 0x008201
-Simulated 10 ticks [ELIDED]
-Host usage: [ELIDED]
 
 set hw cpu pipetrace title "Interrupted div"
 set hw cpu pipetrace start "out/test.int_div.html"
@@ -843,6 +769,4 @@ Simulation started, PC=0x008204
 
 Stop at 0x008e53: (101) Halted
 F 0x008e53
-Simulated 2351 ticks [ELIDED]
-Host usage: [ELIDED]
 set hw cpu pipetrace stop

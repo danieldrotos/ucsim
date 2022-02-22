@@ -364,8 +364,6 @@ V-IHINZC  Flags= 0x28  40 (  A= 0x00   0 .
 SP= 0x17ff [SP+1]= 00   0 .  Limit= 0x1500
 0x08049    35 00 50 c6    mov    0x50c6 <CLK_CKDIVR>,#0x00[0K
 F 0x008049
-Simulated 1152 ticks [ELIDED]
-Host usage: [ELIDED]
 
 timer get
 timer #1("time") ON 0.002067375000000 sec (1288 clks)
