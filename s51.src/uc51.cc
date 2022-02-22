@@ -739,13 +739,16 @@ cl_51core::mk_hw_elements(void)
 
   acc= sfr->get_cell(ACC);
   psw= sfr->get_cell(PSW);
-
-  add_hw(h= new cl_timer0(this, 0, "timer0"));
+  
+  h= new cl_timer0(this, 0, "timer0");
   h->init();
-  add_hw(h= new cl_timer1(this, 1, "timer1"));
+  add_hw(h);
+  h= new cl_timer1(this, 1, "timer1");
   h->init();
-  add_hw(h= new cl_serial(this));
+  add_hw(h);
+  h= new cl_serial(this);
   h->init();
+  add_hw(h);
 
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
