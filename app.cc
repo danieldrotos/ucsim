@@ -118,7 +118,7 @@ cl_app::run(void)
   //unsigned int cyc= 0, period= 10000;
   enum run_states rs= rs_config;
 
-  cperiod.set(1000000);
+  cperiod.set(cperiod_value());
   while (!done)
     {
       if ((rs == rs_config) &&

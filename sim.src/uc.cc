@@ -598,6 +598,12 @@ cl_uc::init(void)
   analyzer_option->option->set_value(analyzer);
   vars= new cl_var_list();
   make_variables();
+  // Some app level vars:
+  reg_cell_var(&(application->cperiod), NULL, "cperiod",
+	       "Cycles between input checks");
+  reg_cell_var(&(application->ccyc), NULL, "ccyc",
+	       "Nr of cycles executed during simulation");
+  // Memories
   make_memories();
   if (rom == NULL)
     rom= address_space("rom"/*MEM_ROM_ID*/);

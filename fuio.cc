@@ -423,4 +423,6 @@ sigpipe_off()
   sigaction(SIGPIPE, &sa, NULL);
 }
 
+unsigned int cperiod_value() { return 1000000; }
+
 /* End of fuio.cc */

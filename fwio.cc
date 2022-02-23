@@ -607,5 +607,6 @@ sigpipe_off()
 {
 }
 
+unsigned int cperiod_value() { return 50000; }
 
 /* End of fwio.cc */
