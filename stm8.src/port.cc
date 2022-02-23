@@ -469,7 +469,7 @@ cl_port::print_info(class cl_console_base *con)
   for (m= 0x80; m; m>>= 1)
     con->dd_printf("%c", (i & m)?'1':'0');
   con->dd_printf("\n");
-  print_cfg_info(con);
+  //print_cfg_info(con);
 }
 
 
