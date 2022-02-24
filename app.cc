@@ -169,6 +169,7 @@ cl_app::run(void)
 		  input_last_checked= ccyc.get();
 		  if (sim->uc)
 		    sim->uc->touch();
+		  printf("check input\n");
 		  if (commander->input_avail())
 		    done= commander->proc_input();
 		}
