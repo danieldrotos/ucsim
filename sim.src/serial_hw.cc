@@ -242,7 +242,7 @@ cl_serial_hw::cfg_help(t_addr addr)
   switch (addr)
     {
     case serconf_on:
-      return "Turn simulation of UART on or off (bool, RW)";
+      return "Turn ticking of UART on/off (bool, RW)";
     case serconf_check_often:
       return "Check input file at every cycle (bool, RW)";
     case serconf_escape:

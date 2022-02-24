@@ -360,6 +360,7 @@ public:
 
   // manipulating hw elements
   virtual void add_hw(class cl_hw *hw);
+  virtual void init_add_hw(class cl_hw *hw);
   virtual int nuof_hws(void);
   virtual class cl_hw *get_hw(int idx);
   virtual class cl_hw *get_hw(enum hw_cath cath, int *idx);

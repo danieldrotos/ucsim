@@ -217,7 +217,7 @@ const char *
 cl_hw::cfg_help(t_addr addr)
 {
   if (addr == 0)
-    return "Turn simulation of this peripheral on/off (bool, RW)";
+    return "Turn ticking of this peripheral on/off (bool, RW)";
   return "N/A";
 }
 
