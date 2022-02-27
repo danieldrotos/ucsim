@@ -1403,8 +1403,7 @@ cl_stm8::tick(int cycles_cpu)
     }
 
   cl_uc::tick(cycles_cpu);
-  tick_hw(cycles_cpu);
-  inst_ticks= 0;
+  return 0;
 }
 
 t_mem
