@@ -288,11 +288,17 @@ void
 cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 {
   char esc= (char)cfg_get(serconf_escape);
-  cl_hw::new_io(f_in, f_out);
+  make_io();
+  if (!io)
+    return;
+  io->replace_files(true, f_in, f_out);
   if (io && f_in && f_in->tty)
-    io->dd_printf("%s[%d] terminal display, press ^%c to access control menu\n",
-		  id_string, id,
-		  'a'+esc-1);
+    {
+      io->tu_reset();
+      io->dd_printf("%s[%d] terminal display, press ^%c to access control menu\n",
+		    id_string, id,
+		    'a'+esc-1);
+    }
   menu= 0;
 }
 
