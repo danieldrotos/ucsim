@@ -421,7 +421,7 @@ cl_io::prepare_terminal()
       write(s, 7);
     }
 }
- 
+
 
 int
 mk_srv_socket(int port)
