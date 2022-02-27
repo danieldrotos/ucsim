@@ -90,7 +90,7 @@ vcd[0] value change dump
     rom[0x00000].7    loc1.7
     rom[0x00001]      loc2
 Configuration memory of vcd
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 
 # Continue until an event stops us then dump the locations
 # that the vcd is driving according to the input file.

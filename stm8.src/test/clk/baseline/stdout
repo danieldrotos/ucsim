@@ -32,7 +32,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008008: (109) stepped 2 ticks
@@ -61,7 +61,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x00800c: (109) stepped 1 ticks
@@ -90,7 +90,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008010: (109) stepped 1 ticks
@@ -119,7 +119,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008014: (109) stepped 1 ticks
@@ -148,7 +148,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008018: (109) stepped 1 ticks
@@ -177,7 +177,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x00801c: (109) stepped 1 ticks
@@ -206,7 +206,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008020: (109) stepped 2 ticks
@@ -235,7 +235,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008024: (109) stepped 4 ticks
@@ -264,7 +264,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008028: (109) stepped 8 ticks
@@ -293,7 +293,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x00802c: (109) stepped 16 ticks
@@ -322,7 +322,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008030: (109) stepped 32 ticks
@@ -351,7 +351,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008034: (109) stepped 64 ticks
@@ -380,7 +380,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 
 step 5
 
@@ -411,7 +411,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x00804d: (109) stepped 128 ticks
@@ -440,7 +440,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008051: (109) stepped 1 ticks
@@ -469,7 +469,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008055: (109) stepped 1 ticks
@@ -498,7 +498,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008059: (109) stepped 1 ticks
@@ -527,7 +527,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x00805d: (109) stepped 1 ticks
@@ -556,7 +556,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008061: (109) stepped 1 ticks
@@ -585,7 +585,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008065: (109) stepped 2 ticks
@@ -614,7 +614,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008069: (109) stepped 4 ticks
@@ -643,7 +643,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x00806d: (109) stepped 8 ticks
@@ -672,7 +672,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008071: (109) stepped 16 ticks
@@ -701,7 +701,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008075: (109) stepped 32 ticks
@@ -730,7 +730,7 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
 step
 
 Stop at 0x008079: (109) stepped 64 ticks
@@ -759,4 +759,4 @@ clk[0] at 0x0050c0
   PCKENR1:  0xff
   PCKENR2:  0xff
 Configuration memory of clk
-0x00 00000001 . Turn simulation of this peripheral on/off (bool, RW)
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
