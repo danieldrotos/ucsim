@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.8b -->
-<!-- CreationDate: 2022-02-27 18:42:46 -->
+<!-- CreationDate: 2022-02-27 19:00:14 -->
 <!-- Magnification: 1 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -91,8 +91,6 @@
 <!-- Text -->
 <text xml:space="preserve" x="3225" y="3975" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="bold" font-size="144" text-anchor="start">App</text>
 <!-- Text -->
-<text xml:space="preserve" x="3225" y="4500" fill="#0000ff" font-family="Courier" font-style="normal" font-weight="bold" font-size="144" text-anchor="start">s51 -s/dev/ttyS1</text>
-<!-- Text -->
 <text xml:space="preserve" x="4350" y="5175" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">/dev/ttyS1</text>
 <!-- Text -->
 <g transform="translate(7650,6750) rotate(-90)" >
@@ -104,5 +102,9 @@
 <!-- Text -->
 <g transform="translate(5550,6000) rotate(-90)" >
 <text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">UART</text>
-</g></g>
+</g><!-- Text -->
+<text xml:space="preserve" x="3225" y="4275" fill="#0000ff" font-family="Courier" font-style="normal" font-weight="bold" font-size="144" text-anchor="start">ucsim_51 \</text>
+<!-- Text -->
+<text xml:space="preserve" x="3300" y="4500" fill="#0000ff" font-family="Courier" font-style="normal" font-weight="bold" font-size="144" text-anchor="start">-s/dev/ttyS1</text>
+</g>
 </svg>
