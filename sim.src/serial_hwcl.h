@@ -82,6 +82,8 @@ public:
 
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
+  virtual void new_i(class cl_f *f_in);
+  virtual void new_o(class cl_f *f_out);
   virtual bool proc_input(void);
   virtual void refresh_display(bool force) {}
   virtual void draw_state_time(bool force) {}

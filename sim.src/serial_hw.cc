@@ -287,19 +287,54 @@ cl_serial_hw::make_io()
 void
 cl_serial_hw::new_io(class cl_f *f_in, class cl_f *f_out)
 {
-  char esc= (char)cfg_get(serconf_escape);
+  bool raw= false;
+
+  serial_raw_option->get_value(&raw);
   make_io();
   if (!io)
     return;
-  io->replace_files(true, f_in, f_out);
-  if (io && f_in && f_in->tty)
+  new_o(f_out);
+  new_i(f_in);
+}
+
+void
+cl_serial_hw::new_i(class cl_f *f_in)
+{
+  bool raw= false;
+
+  serial_raw_option->get_value(&raw);
+  io->replace_files(true, f_in, io->get_fout());
+  if (!f_in)
+    return;
+  if (!raw)
+    f_in->interactive(NULL);
+  f_in->set_telnet(!raw);
+  f_in->raw();
+  if (f_in->tty)
     {
+      char esc= (char)cfg_get(serconf_escape);
       io->tu_reset();
       io->dd_printf("%s[%d] terminal display, press ^%c to access control menu\n",
 		    id_string, id,
 		    'a'+esc-1);
     }
   menu= 0;
+}
+
+void
+cl_serial_hw::new_o(class cl_f *f_out)
+{
+  bool raw= false;
+
+  serial_raw_option->get_value(&raw);
+  io->replace_files(true, io->get_fin(), f_out);
+  if (!f_out)
+    return;
+  f_out->set_telnet(!raw);
+  if (!raw)
+    {
+      io->tu_reset();
+    }
 }
 
 bool
@@ -498,18 +533,10 @@ cl_serial_listener::proc_input(class cl_cmdset *cmdset)
     {
     case sl_io:
       srv_accept(fin, &i, &o);
-      if (!raw)
-	i->set_telnet(true);
-      else
-	i->tty= false;
       serial_hw->new_io(i, o);
       break;
     case sl_i:
       srv_accept(fin, &i, NULL);
-      if (!raw)
-	i->set_telnet(true);
-      else
-	i->tty= false;
       serial_hw->new_i(i);
       break;
     case sl_o:
