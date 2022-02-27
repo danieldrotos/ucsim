@@ -1,6 +1,7 @@
 0.7
 
--
+New sub-option for -S option: raw, serial input will be
+non-interactive even on tty.
 
 
 0.6.x
