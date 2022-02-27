@@ -3,16 +3,18 @@
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
     <title>&#956;Csim: Serial Interfaces</title>
   </head>
-  <body bgcolor="white">
+  <body style="background-color: white;">
     <h1>Using serial interfaces</h1>
     <h3>Connecting a terminal</h3>
     You can easily connect a terminal to the serial interface of the simulated
     microcontroller. This terminal is just a file so it can be anything which is
     represented as a file. It can be a real serial line of the computer:
     <pre><font color="blue">$</font> ucsim_51 -s/dev/ttyS1
-</pre> Of course you must use the actual device name of your operating system.
-    Device name <tt>ttyS1</tt> above is used in Linux systems. Your system can
-    use other names.
+</pre>
+    <p><img src="serial_comport.svg"></p>
+    <p>Of course you must use the actual device name of your operating system.
+      Device name <tt>ttyS1</tt> above is used in Linux systems. Your system
+      can use other names. </p>
     <p>You can use a terminal of your system. It can be a virtual console if
       your system provides such as Linux does for example. On X Windows you can
       use <b>xterm</b> windows as terminals, one for running the simulator and
@@ -51,9 +53,11 @@
         This option specifies ID of the uart that following options will be
         attached to. Default is 0.</li>
       <li>in=filename<br>
-        Specified file will be used in as input for the uart.</li>
+        Specified file will be used as input for the uart. When simulated uart
+        is able to receive, it will get content of this file.</li>
       <li>out=filename<br>
-        Specified file will be used as output for the uart.</li>
+        Specified file will be used as output for the uart. When simulated uart
+        sends a byte, it will be written into this file.</li>
       <li>port=nr<br>
         Specified port number will be listened for incoming connections (TCP
         server) and if connected, the socket will be used as both input and
@@ -68,7 +72,7 @@
         Raw, non-interactive communication will be performed on both input and
         output files. Default is interactive (non-raw) mode.</li>
     </ul>
-    Input or output file can be a regular file or a special one, for example
+    Input and output file can be a regular file or a special one, for example
     pipe (fifo) or a TCP socket. If a file is a tty, the simulator will assume
     that a terminal is connected and will start an interactive session. TCP
     socket is treated as a tty, and telnet protocol is used to control the
@@ -91,9 +95,9 @@
       <li>Start two simulators and specify the FIFOs as input and output of
         serial interface:
         <pre><font color="blue">term1 $</font> <font color="magenta"># start sim "1"</font>
-<font color="blue">term1 $</font> ucsim_51 -Sin=2-1,out=1-2 program_1_.hex
+<font color="blue">term1 $</font> ucsim_51 -Sin=2-1,out=1-2,raw program_1_.hex
 <font color="blue">term2 $</font> <font color="magenta"># start sim "2"</font>
-<font color="blue">term2 $</font> ucsim_51 -Sout=2-1,in=1-2 program_2_.hex
+<font color="blue">term2 $</font> ucsim_51 -Sout=2-1,in=1-2,raw program_2_.hex
 </pre> Because opening a pipe blocks the program until other direction is
         opened, the order of arguments above is <b>important</b>!
         <p> </p>
@@ -112,8 +116,8 @@
 <font color="blue">xterm2 $</font> cat 2_tee|tee /dev/tty &gt;tee_1 # monitor 2-&gt;1
 </pre> </li>
       <li>Now you can start simulators (on two other terminals:)
-        <pre><font color="blue">xterm3 $</font> ucsim_51 -Sin=tee_1,out=1_tee program_1_.hex
-<font color="blue">xterm4 $</font> ucsim_51 -Sin=tee_2,out=2_tee program_2_.hex
+        <pre><font color="blue">xterm3 $</font> ucsim_51 -Sin=tee_1,out=1_tee,raw program_1_.hex
+<font color="blue">xterm4 $</font> ucsim_51 -Sin=tee_2,out=2_tee,raw program_2_.hex
 </pre> </li>
       <li>Start your apps and listen what they are talking about. </li>
     </ol>
