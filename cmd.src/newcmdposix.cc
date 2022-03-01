@@ -561,6 +561,7 @@ cl_commander::init(void)
       con->set_startup(app->startup_command);
       add_console(con);
     }
+  printf("Config console=%p\n",config_console);
   return(0);
 }
 
