@@ -1,3 +1,8 @@
+0.7.x
+
+Bugfix releases.
+
+
 0.7
 
 New sub-option for -S option: raw, serial input will be
@@ -6,7 +11,7 @@ non-interactive even on tty.
 
 0.6.x
 
-Bugfixe releases
+Bugfix releases.
 
 
 0.6
