@@ -223,12 +223,15 @@ cl_z80::make_memories(void)
 
   vars->add("A", regs8, 0, 7, 0, "Accumulator");
   vars->add("F", regs8, 1, 7, 0, "Flags");
+  /*
+  flag bit positions are family dependent
   vars->add("F_C", regs8, 1, BITPOS_C, BITPOS_C, "Carry");
   vars->add("F_SUB", regs8, 1, BITPOS_SUB, BITPOS_SUB, "");
   vars->add("F_P", regs8, 1, BITPOS_P, BITPOS_P, "");
   vars->add("F_A", regs8, 1, BITPOS_A, BITPOS_A, "");
   vars->add("F_Z", regs8, 1, BITPOS_Z, BITPOS_Z, "Zero");
   vars->add("F_S", regs8, 1, BITPOS_S, BITPOS_S, "");
+  */
   vars->add("B", regs8, 2, 7, 0, "");
   vars->add("C", regs8, 3, 7, 0, "");
   vars->add("D", regs8, 4, 7, 0, "");
@@ -238,12 +241,15 @@ cl_z80::make_memories(void)
 
   vars->add("ALT_A", regs8, 8, 7, 0, "Alt Accumulator");
   vars->add("ALT_F", regs8, 9, 7, 0, "Alt Flags");
+  /*
+  flag bit positions are family dependent
   vars->add("ALT_F_C", regs8, 9, BITPOS_C, BITPOS_C, "Carry");
   vars->add("ALT_F_SUB", regs8, 9, BITPOS_SUB, BITPOS_SUB, "");
   vars->add("ALT_F_P", regs8, 9, BITPOS_P, BITPOS_P, "");
   vars->add("ALT_F_A", regs8, 9, BITPOS_A, BITPOS_A, "");
   vars->add("ALT_F_Z", regs8, 9, BITPOS_Z, BITPOS_Z, "Zero");
   vars->add("ALT_F_S", regs8, 9, BITPOS_S, BITPOS_S, "");
+  */
   vars->add("ALT_B", regs8, 10, 7, 0, "");
   vars->add("ALT_C", regs8, 11, 7, 0, "");
   vars->add("ALT_D", regs8, 12, 7, 0, "");

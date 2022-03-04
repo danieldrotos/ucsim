@@ -84,7 +84,11 @@ public:
                                       int *immed_offset,
                                       struct dis_entry **dentry);
   virtual bool is_call(t_addr addr);
-  
+
+  /* made into virtual function in z80_cl class to make integrating
+   * banking and/or memory mapped devices easier
+   *  -Leland Morrison 2011-09-29 
+   */
   virtual void store1( u16_t addr, t_mem val );
   virtual void store2( u16_t addr, u16_t val );
 

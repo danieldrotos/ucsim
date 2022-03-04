@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // prj
 //#include "pobjcl.h"
+#include "utils.h"
 
 // sim
 #include "simcl.h"
@@ -438,20 +439,12 @@ void
 cl_gb80::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("ZNHC---  Flags= 0x%02x %3d %c  ",
+  con->dd_printf("ZNHC----  Flags= 0x%02x %3d %c  ",
                  regs.raf.F, regs.raf.F, isprint(regs.raf.F)?regs.raf.F:'.');
   con->dd_printf("A= 0x%02x %3d %c\n",
                  regs.raf.A, regs.raf.A, isprint(regs.raf.A)?regs.raf.A:'.');
-  con->dd_printf("%c%c%c%c%c%c%c%c\n",
-                 (regs.raf.F&BIT_Z)?'1':'0',
-                 (regs.raf.F&BIT_N)?'1':'0',
-                 (regs.raf.F&BIT_A)?'1':'0',
-                 (regs.raf.F&BIT_C)?'1':'0',
-                 (regs.raf.F& 0x08)?'1':'0',
-                 (regs.raf.F& 0x04)?'1':'0',
-                 (regs.raf.F& 0x03)?'1':'0',
-                 (regs.raf.F& 0x08)?'1':'0'
-		 );
+  con->dd_printf("%s\n", cbin(regs.raf.F,8).c_str());
+		 
   con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
                  regs.BC, ram->get(regs.BC), ram->get(regs.BC),
                  isprint(ram->get(regs.BC))?ram->get(regs.BC):'.');
