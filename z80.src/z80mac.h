@@ -266,6 +266,7 @@
 #define and_A_bytereg(br) {                                 \
    regs.raf.A &= (br);                                          \
    regs.raf.F &= ~(BIT_ALL);  /* clear these */                 \
+   regs.raf.F |= BIT_A;                                             \
    if (regs.raf.A == 0)    regs.raf.F |= BIT_Z;                     \
    if (regs.raf.A & 0x80)  regs.raf.F |= BIT_S;                     \
    if (parity(regs.raf.A)) regs.raf.F |= BIT_P;                     \
