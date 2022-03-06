@@ -62,13 +62,14 @@ public:
 public:
   cl_z80(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
+  virtual void reset(void);
   virtual const char *id_string(void);
-
+  
   //virtual t_addr get_mem_size(enum mem_class type);
   virtual void make_cpu_hw(void);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
-
+  
   virtual struct dis_entry *dis_tbl(void);
   virtual int inst_length(t_addr addr);
   virtual int inst_branch(t_addr addr);

@@ -38,6 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // prj
 //#include "pobjcl.h"
 #include "globals.h"
+#include "utils.h"
 
 // sim
 //#include "simcl.h"
@@ -88,10 +89,16 @@ cl_z80::init(void)
   }
   sp_limit= 0xf000;
   
+  return(0);
+}
+
+void
+cl_z80::reset(void)
+{
+  regs.SP= 0xffff;
+  regs.AF= 0xffff;
   IFF1= false;
   IFF2= false;
-
-  return(0);
 }
 
 const char *
@@ -549,13 +556,7 @@ cl_z80::print_regs(class cl_console_base *con)
                  regs.raf.F, regs.raf.F, isprint(regs.raf.F)?regs.raf.F:'.');
   con->dd_printf("A= 0x%02x %3d %c\n",
                  regs.raf.A, regs.raf.A, isprint(regs.raf.A)?regs.raf.A:'.');
-  con->dd_printf("%c%c-%c-%c%c%c\n",
-                 (regs.raf.F&BIT_S)?'1':'0',
-                 (regs.raf.F&BIT_Z)?'1':'0',
-                 (regs.raf.F&BIT_A)?'1':'0',
-                 (regs.raf.F&BIT_P)?'1':'0',
-                 (regs.raf.F&BIT_N)?'1':'0',
-                 (regs.raf.F&BIT_C)?'1':'0');
+  con->dd_printf("%s\n", cbin(regs.raf.F, 8).c_str());
   con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
                  regs.BC, ram->get(regs.BC), ram->get(regs.BC),
                  isprint(ram->get(regs.BC))?ram->get(regs.BC):'.');
@@ -571,10 +572,28 @@ cl_z80::print_regs(class cl_console_base *con)
   con->dd_printf("IY= 0x%04x [IY]= %02x %3d %c  ",
                  regs.IY, ram->get(regs.IY), ram->get(regs.IY),
                  isprint(ram->get(regs.IY))?ram->get(regs.IY):'.');
-  con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
+  con->dd_printf("AF= 0x%04x [AF]= %02x %3d %c\n",
+                 regs.AF, ram->get(regs.AF), ram->get(regs.AF),
+                 isprint(ram->get(regs.AF))?ram->get(regs.AF):'.');
+  con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
+  
+  /*con->dd_printf("SP= 0x%04x ",
                  regs.SP, ram->get(regs.SP), ram->get(regs.SP),
                  isprint(ram->get(regs.SP))?ram->get(regs.SP):'.');
-  con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
+  */
+  int i;
+  con->dd_cprintf("answer", "SP= ");
+  con->dd_cprintf("dump_address", "0x%04x ->", regs.SP);
+  for (i= 0; i < 2*12; i+= 2)
+    {
+      t_addr al, ah;
+      al= (regs.SP+i)&0xffff;
+      ah= (al+1)&0xffff;
+      con->dd_cprintf("dump_number", " %02x%02x",
+		      (u8_t)(ram->read(al)),
+		      (u8_t)(ram->read(ah)));
+    }
+  con->dd_printf("\n");
   
   print_disass(PC, con);
 }
@@ -593,7 +612,12 @@ cl_z80::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
-
+  {
+    u8_t r7= regs.R&0x7f;
+    r7= (r7+1)&0x7f;
+    regs.R= (regs.R&0x80)|r7;
+  }
+  
   switch (code)
     {
     case 0x00: return(inst_nop(code));

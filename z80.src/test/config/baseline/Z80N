@@ -9,10 +9,11 @@ Controller has 4 hardware element(s).
   off vcd[0]
    on dreg[0]
 SZ-A-PNC  Flags= 0x00   0 .  A= 0x00   0 .
-00-0-000
+00000000
 BC= 0x0000 [BC]= 41  65 A  DE= 0x0000 [DE]= 41  65 A  HL= 0x0000 [HL]= 41  65 A
-IX= 0x0000 [IX]= 41  65 A  IY= 0x0000 [IY]= 41  65 A  SP= 0x0000 [SP]= 41  65 A
+IX= 0x0000 [IX]= 41  65 A  IY= 0x0000 [IY]= 41  65 A  AF= 0x0000 [AF]= 41  65 A
 SP limit= 0xf000
+SP= 0x0000 -> 4158 fcc9 8bbc 956b 7226 6bc5 5eaf 858c d865 dfa8 d99f a6f2
 0x0000  ? 41          LD     B,C[0K
 Memory chips:
   0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02lx)
