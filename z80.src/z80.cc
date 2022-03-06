@@ -618,12 +618,7 @@ cl_z80::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
-
-  {
-    u8_t r7= regs.R&0x7f;
-    r7= (r7+1)&0x7f;
-    regs.R= (regs.R&0x80)|r7;
-  }
+  inc_R();
   
   switch (code)
     {
@@ -994,6 +989,21 @@ cl_z80::inst_ldix(t_mem code)
   return resGO;
 }
 
+void
+cl_z80::inc_R()
+{
+  u8_t r7= regs.R&0x7f;
+  r7= (r7+1)&0x7f;
+  regs.R= (regs.R&0x80)|r7;
+}
+
+// set undocumented flags 3 (x), and 5 (y)
+void
+cl_z80::xy(u8_t v)
+{
+  regs.raf.F= (regs.raf.F & ~(0x28)) | (v & 0x28);
+}
+
 // Z80N
 int
 cl_z80::inst_lddx(t_mem code)
@@ -1120,6 +1130,7 @@ cl_z80::stack_check_overflow(class cl_stack_op *op)
 cl_z80_cpu::cl_z80_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
 {
+  zuc= (class cl_z80 *)auc;
 }
 
 int
@@ -1162,6 +1173,16 @@ cl_z80_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case z80cpu_nuof: break;
     }
   return cell->get();
+}
+
+void
+cl_z80_cpu::print_info(class cl_console_base *con)
+{
+  con->dd_printf("R= 0x%02x\n", zuc->regs.R);
+  con->dd_printf("I= 0x%02x\n", zuc->regs.iv);
+  con->dd_printf("IFF1= %d IFF2= %d\n",
+		 (zuc->IFF1)?1:0,
+		 (zuc->IFF2)?1:0);
 }
 
 

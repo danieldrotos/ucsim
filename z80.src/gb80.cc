@@ -475,6 +475,8 @@ cl_gb80::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
+  inc_R();
+  
   switch (code)
     {
     case 0x00: return(inst_nop(code));

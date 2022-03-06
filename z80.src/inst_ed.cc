@@ -124,7 +124,9 @@ int  cl_z80::inst_ed_(t_mem code)
       
     case 0x45: // RETN (return from non-maskable interrupt)
       pop2(PC);
-      vc.rd+= 2;
+      IFF1= IFF2;
+      IFF2= false;
+      vc.rd+= 2;      
       tick(13);
       return(resGO);
 
@@ -172,6 +174,8 @@ int  cl_z80::inst_ed_(t_mem code)
       
     case 0x4D: // RETI (return from interrupt)
       pop2(PC);
+      IFF1= IFF2;
+      IFF2= false;
       vc.rd+= 2;
       tick(13);
       return(resGO);
