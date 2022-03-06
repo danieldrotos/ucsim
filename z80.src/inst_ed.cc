@@ -132,6 +132,7 @@ int  cl_z80::inst_ed_(t_mem code)
 
     case 0x46: // IM 0
       /* interrupt device puts opcode on data bus */
+      imode= 0;
       tick(7);
       return(resGO);
 
@@ -212,6 +213,7 @@ int  cl_z80::inst_ed_(t_mem code)
       return(resGO);
 
     case 0x56: // IM 1
+      imode= 1;
       tick(7);
       return(resGO);
 
@@ -257,6 +259,7 @@ int  cl_z80::inst_ed_(t_mem code)
       return(resGO);
 
     case 0x5E: // IM 2
+      imode= 2;
       tick(7);
       return(resGO);
 

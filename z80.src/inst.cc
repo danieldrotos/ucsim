@@ -1748,6 +1748,7 @@ cl_z80::inst_di(t_mem code)
 {
   /* disable interrupts */
   IFF1= IFF2= false;
+  iblock= true;
   tick(3);
   return(resGO);
 }
@@ -1757,6 +1758,7 @@ cl_z80::inst_ei(t_mem code)
 {
   /* enable interrupts */
   IFF1= IFF2= true;
+  iblock= true;
   tick(3);
   return(resGO);
 }

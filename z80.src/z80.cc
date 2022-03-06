@@ -88,6 +88,7 @@ cl_z80::init(void)
     ram->set((t_addr) i, 0);
   }
   sp_limit= 0xf000;
+  iblock= false;
   
   return(0);
 }
@@ -99,6 +100,7 @@ cl_z80::reset(void)
   regs.AF= 0xffff;
   IFF1= false;
   IFF2= false;
+  imode= 0;
 }
 
 const char *
@@ -619,6 +621,7 @@ cl_z80::exec_inst(void)
     return(resBREAKPOINT);
   tick(1);
   inc_R();
+  iblock= false;
   
   switch (code)
     {
