@@ -190,7 +190,7 @@ cl_z80::make_memories(void)
   outputs->decoders->add(ad);
   address_spaces->add(outputs);
   
-  regs8= new cl_address_space("regs8", 0, 16, 8);
+  regs8= new cl_address_space("regs8", 0, 18, 8);
   regs8->init();
   regs8->get_cell(0)->decode((t_mem*)&regs.raf.A);
   regs8->get_cell(1)->decode((t_mem*)&regs.raf.F);
@@ -210,6 +210,9 @@ cl_z80::make_memories(void)
   regs8->get_cell(14)->decode((t_mem*)&regs.a_hl.h);
   regs8->get_cell(15)->decode((t_mem*)&regs.a_hl.l);
 
+  regs8->get_cell(16)->decode((t_mem*)&regs.R);
+  regs8->get_cell(17)->decode((t_mem*)&regs.iv);
+  
   regs16= new cl_address_space("regs16", 0, 11, 16);
   regs16->init();
 
@@ -239,12 +242,12 @@ cl_z80::make_memories(void)
   vars->add("F_Z", regs8, 1, BITPOS_Z, BITPOS_Z, "Zero");
   vars->add("F_S", regs8, 1, BITPOS_S, BITPOS_S, "");
   */
-  vars->add("B", regs8, 2, 7, 0, "");
-  vars->add("C", regs8, 3, 7, 0, "");
-  vars->add("D", regs8, 4, 7, 0, "");
-  vars->add("E", regs8, 5, 7, 0, "");
-  vars->add("H", regs8, 6, 7, 0, "");
-  vars->add("L", regs8, 7, 7, 0, "");
+  vars->add("B", regs8, 2, 7, 0, "B register");
+  vars->add("C", regs8, 3, 7, 0, "C register");
+  vars->add("D", regs8, 4, 7, 0, "D register");
+  vars->add("E", regs8, 5, 7, 0, "E register");
+  vars->add("H", regs8, 6, 7, 0, "H register");
+  vars->add("L", regs8, 7, 7, 0, "L register");
 
   vars->add("ALT_A", regs8, 8, 7, 0, "Alt Accumulator");
   vars->add("ALT_F", regs8, 9, 7, 0, "Alt Flags");
@@ -257,24 +260,27 @@ cl_z80::make_memories(void)
   vars->add("ALT_F_Z", regs8, 9, BITPOS_Z, BITPOS_Z, "Zero");
   vars->add("ALT_F_S", regs8, 9, BITPOS_S, BITPOS_S, "");
   */
-  vars->add("ALT_B", regs8, 10, 7, 0, "");
-  vars->add("ALT_C", regs8, 11, 7, 0, "");
-  vars->add("ALT_D", regs8, 12, 7, 0, "");
-  vars->add("ALT_E", regs8, 13, 7, 0, "");
-  vars->add("ALT_H", regs8, 14, 7, 0, "");
-  vars->add("ALT_L", regs8, 15, 7, 0, "");
+  vars->add("ALT_B", regs8, 10, 7, 0, "Alt B register");
+  vars->add("ALT_C", regs8, 11, 7, 0, "Alt C register");
+  vars->add("ALT_D", regs8, 12, 7, 0, "Alt D register");
+  vars->add("ALT_E", regs8, 13, 7, 0, "Alt E register");
+  vars->add("ALT_H", regs8, 14, 7, 0, "Alt H register");
+  vars->add("ALT_L", regs8, 15, 7, 0, "Alt L register");
 
   vars->add("AF", regs16, 0, 15, 0, "Accumulator/Flags");
-  vars->add("BC", regs16, 1, 15, 0, "");
-  vars->add("DE", regs16, 2, 15, 0, "");
-  vars->add("HL", regs16, 3, 15, 0, "");
-  vars->add("IX", regs16, 4, 15, 0, "");
-  vars->add("IY", regs16, 5, 15, 0, "");
-  vars->add("SP", regs16, 6, 15, 0, "");
+  vars->add("BC", regs16, 1, 15, 0, "BC register pair");
+  vars->add("DE", regs16, 2, 15, 0, "DE register pair");
+  vars->add("HL", regs16, 3, 15, 0, "HL register pair");
+  vars->add("IX", regs16, 4, 15, 0, "IX register");
+  vars->add("IY", regs16, 5, 15, 0, "IY register");
+  vars->add("SP", regs16, 6, 15, 0, "Stack Pointer");
   vars->add("ALT_AF", regs16, 7, 15, 0, "Alt Accumulator/Flags");
-  vars->add("ALT_BC", regs16, 8, 15, 0, "");
-  vars->add("ALT_DE", regs16, 9, 15, 0, "");
-  vars->add("ALT_HL", regs16, 10, 15, 0, "");
+  vars->add("ALT_BC", regs16, 8, 15, 0, "Alt BC register pair");
+  vars->add("ALT_DE", regs16, 9, 15, 0, "Alt DE register pair");
+  vars->add("ALT_HL", regs16, 10, 15, 0, "Alt HL register pair");
+
+  vars->add("R", regs8, 16, "R register");
+  vars->add("I", regs8, 17, "I register");
 }
 
 
@@ -612,6 +618,7 @@ cl_z80::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
+
   {
     u8_t r7= regs.R&0x7f;
     r7= (r7+1)&0x7f;

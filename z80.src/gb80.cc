@@ -585,11 +585,7 @@ cl_gb80::exec_inst(void)
       return(inst_cp(code));
 
     case 0xc0: return(inst_ret(code));
-    case 0xc1: {
-      int ret= (inst_pop(code));
-      regs.raf.F&= 0xf0;
-      return ret;
-    }
+    case 0xc1: return(inst_pop(code));
     case 0xc2: case 0xc3: return(inst_jp(code));
     case 0xc4: return(inst_call(code));
     case 0xc5: return(inst_push(code));
@@ -644,7 +640,11 @@ cl_gb80::exec_inst(void)
     case 0xef: return(inst_rst(code));
       
     case 0xf0: return(inst_ldh(code));
-    case 0xf1: return(inst_pop(code));
+    case 0xf1: {
+      int ret= (inst_pop(code));
+      regs.raf.F&= 0xf0;
+      return ret;
+    };
  case 0xf2: return(inst_ldh(code));
     case 0xf3: return(inst_di(code));
     case 0xf4: break;
