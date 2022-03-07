@@ -126,19 +126,25 @@ int cl_gb80::inst_ldd   (t_mem code) {
   return resINV_INST;
 }
 
-// TODO: 0xE2 0xF2 missing? ld (c), a
 int cl_gb80::inst_ldh   (t_mem code) {
-  u16_t addr = 0xFF00 + fetch1( );
+  u16_t addr = 0xFF00;
+
+  if (code & 0x2) {
+    addr += regs.bc.l;
+  } else {
+    addr += fetch1( );
+    tick(4);
+  }
   
-  if (code == 0xE0) {
+  if ((code & 0xFD) == 0xE0) {
     store1( addr, regs.raf.A );
     vc.wr++;
-    tick(11);
+    tick(7);
     return resGO;
-  } else if (code == 0xF0) {
+  } else if ((code & 0xFD) == 0xF0) {
     regs.raf.A = get1( addr );
     vc.rd++;
-    tick(11);
+    tick(7);
     return resGO;
   }
   
@@ -171,7 +177,7 @@ int cl_gb80::inst_add_sp_d(t_mem code) {
   
   regs.SP = (regs.SP + d) & 0xffff;
 
-  tick(16);
+  tick(15);
   return(resGO);
 }
 
@@ -180,12 +186,12 @@ int cl_gb80::inst_ld16  (t_mem code) {
   if (code == 0xEA) {
     store1( addr, regs.raf.A );
     vc.wr++;
-    tick(16);
+    tick(15);
     return resGO;
   } else if (code == 0xFA) {
     regs.raf.A = get1( addr );
     vc.rd++;
-    tick(16);
+    tick(15);
     return resGO;
   }
   
@@ -204,7 +210,7 @@ int cl_gb80::inst_ldhl_sp (t_mem code) {
     regs.raf.F |= BIT_C;
   
   regs.HL = (regs.SP + d) & 0xffff;
-  tick(12);
+  tick(11);
   return resGO;
 }
 
