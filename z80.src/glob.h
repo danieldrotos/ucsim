@@ -43,6 +43,8 @@ extern struct dis_entry disass_z80_fdcb[];
 extern struct dis_entry disass_gb80[];
 extern struct dis_entry disass_gb80_cb[];
 
+extern struct cpu_entry cpus_z80[];
+
 #endif
 
 /* End of z80.src/glob.h */

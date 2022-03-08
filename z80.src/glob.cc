@@ -1303,4 +1303,21 @@ struct dis_entry DISASS_NAME(_fdcb)[]= {
   { 0, 0, 0, 0, NULL }
 };
 
+struct cpu_entry cpus_z80[]=
+  {
+    {"Z80"    , CPU_Z80,     0			, ""		, ""},
+
+    {"Z180"   , CPU_Z180,    0			, ""		, ""},
+
+    {"GB80"   , CPU_GB80,    0			, ""		, ""},
+    {"LR35902", CPU_LR35902, 0			, ""		, ""},
+
+    {"EZ80"   , CPU_EZ80,    0			, ""		, ""},
+
+    {"Z80N"   , CPU_Z80N,    0                  , ""            , ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+
 /* glob.cc */

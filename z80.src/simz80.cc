@@ -32,8 +32,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "globals.h"
 
 // local
+#include "glob.h"
 #include "simz80cl.h"
-//#include "z80cl.h"
 #include "gb80cl.h"
 #include "lr35902cl.h"
 #include "ez80cl.h"
