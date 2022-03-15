@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // No other global variable should exists!
 class cl_app *application;
+double app_start_at= 0;
 
 
 /* Delimiters to split up command line */
@@ -395,24 +396,6 @@ struct cpu_entry cpus_51[]=
     // F type should go to subtype...
     {"DS390" , CPU_DS390, CPU_CMOS		, "Dallas DS80C390" , "cmos"},
     {"DS390F", CPU_DS390F, CPU_CMOS		, "Dallas DS80C390F", "cmos"},
-    
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
-struct cpu_entry cpus_z80[]=
-  {
-    {"Z80"    , CPU_Z80,     0			, ""		, ""},
-
-    {"Z180"   , CPU_Z180,    0			, ""		, ""},
-    {"R2K"    , CPU_R2K,     0			, ""		, ""},
-    {"R3KA"   , CPU_R3KA,    0			, ""		, ""},
-
-    {"GB80"   , CPU_GB80,    0			, ""		, ""},
-    {"LR35902", CPU_LR35902, 0			, ""		, ""},
-
-    {"EZ80"   , CPU_EZ80,    0			, ""		, ""},
-
-    {"Z80N"   , CPU_Z80N,    0                  , ""            , ""},
     
     {NULL, CPU_NONE, 0, "", ""}
   };

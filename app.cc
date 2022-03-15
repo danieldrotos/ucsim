@@ -71,7 +71,8 @@ cl_app::cl_app(void)
   in_files= new cl_ustrings(2, 2, "input files");
   options= new cl_options();
   quiet= false;
-  app_start_at= dnow();
+  if (app_start_at == 0)
+    app_start_at= dnow();
 }
 
 cl_app::~cl_app(void)

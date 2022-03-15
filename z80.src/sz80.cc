@@ -27,12 +27,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   
 // prj
 #include "globals.h"
+#include "utils.h"
 
 // sim.src
 //#include "appcl.h"
 
 // local
 #include "simz80cl.h"
+#include "glob.h"
 
 
 int
@@ -40,6 +42,7 @@ main(int argc, char *argv[])
 {
   class cl_sim *sim;
 
+  app_start_at= dnow();
   cpus= cpus_z80;
   application= new cl_app();
   application->set_name("sz80");

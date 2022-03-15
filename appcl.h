@@ -95,7 +95,6 @@ public:
   chars startup_command;
   class cl_mc32 cperiod, ccyc;
   bool quiet;
-  double app_start_at;
   
 public:
   cl_app(void);
