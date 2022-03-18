@@ -292,6 +292,11 @@ int wrap_0_a7(class CL12 *uc, t_mem code) { return uc-> NOP ( 0xa7 ); }
 
 int wrap_0_b7(class CL12 *uc, t_mem code) { return uc-> exec_b7 ( _NONE ); }
 
-int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }
-
 int wrap_0_10(class CL12 *uc, t_mem code) { return uc-> andcc ( _i8 ); }
+int wrap_0_14(class CL12 *uc, t_mem code) { return uc-> andcc ( _i8 ); }
+int wrap_0_02(class CL12 *uc, t_mem code) { return uc-> inxy ( _cY ); }
+int wrap_0_08(class CL12 *uc, t_mem code) { return uc-> inxy ( _cX ); }
+int wrap_0_03(class CL12 *uc, t_mem code) { return uc-> dexy ( _cY ); }
+int wrap_0_09(class CL12 *uc, t_mem code) { return uc-> dexy ( _cX ); }
+
+int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }

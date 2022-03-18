@@ -285,6 +285,11 @@ DEC(0, a7,	NOP	, 0xa7		, "NOP"		, ' ', 1	, 1)
 
 DEC(0, b7,	exec_b7	, _NONE		, "%T"		, ' ', 2	, 0)
 
+DEC(0, 10,	andcc	, _i8		, "ANDCC %b"	, ' ', 2	, 1)
+DEC(0, 14,	andcc	, _i8		, "ORCC %b"	, ' ', 2	, 1)
+DEC(0, 02,	inxy	, _cY		, "INY"		, ' ', 1	, 1)
+DEC(0, 08,	inxy	, _cX		, "INX"		, ' ', 1	, 1)
+DEC(0, 03,	dexy	, _cY		, "INY"		, ' ', 1	, 1)
+DEC(0, 09,	dexy	, _cX		, "INX"		, ' ', 1	, 1)
+    
 DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)
-
-DEC(0, 10,	andcc	, _i8		, "ANDCC %b"	, ' ', 1	, 2)

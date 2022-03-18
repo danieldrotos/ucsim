@@ -124,7 +124,9 @@ public:
   virtual int cp16(u16_t op1, u16_t op2);
   virtual int lsr16(class cl_memory_cell &dest);
   virtual int asl16(class cl_memory_cell &dest);
-
+  virtual int inxy(class cl_memory_cell &dest);
+  virtual int dexy(class cl_memory_cell &dest);
+  
   // MOVE
 #define ld16 ldsx
   virtual int i_psh8(u8_t op);
@@ -147,6 +149,7 @@ public:
 
   // OTHER
   virtual int andcc(u8_t op);
+  virtual int orcc(u8_t op);
 };
 
 

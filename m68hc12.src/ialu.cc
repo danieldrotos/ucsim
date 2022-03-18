@@ -99,4 +99,27 @@ CL12::asl16(class cl_memory_cell &dest)
   return resGO;
 }
 
+int
+CL12::inxy(class cl_memory_cell &dest)
+{
+  u8_t f= rF & ~flagZ, v;
+  dest.W(v= dest.R()+1);
+  if (!v)
+    f|= flagZ;
+  cF.W(f);
+  return resGO;
+}
+
+int
+CL12::dexy(class cl_memory_cell &dest)
+{
+  u8_t f= rF & ~flagZ, v;
+  dest.W(v= dest.R()-1);
+  if (!v)
+    f|= flagZ;
+  cF.W(f);
+  return resGO;
+}
+
+
 /* End of m68hc12.src/ialu.cc */
