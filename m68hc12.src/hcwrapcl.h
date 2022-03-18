@@ -39,6 +39,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define _cX		uc->cIX
 #define _cY		uc->cIY
 
+#define _i8		uc->i8()
+
 #define _d		uc->ddst()
 #define _d_Aop		uc->ddst(),uc->acc.DAB.a8.Ar
 #define _d_Bop		uc->ddst(),uc->acc.DAB.a8.Br

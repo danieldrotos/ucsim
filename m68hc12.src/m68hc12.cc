@@ -172,6 +172,7 @@ CL12::exec_inst(void)
   int res= resGO;
   t_mem code;
   hcwrapper_fn fn= NULL;
+  block_irq= false;
   cI= &cIX;
   code= fetch();
   if (code==0x18)

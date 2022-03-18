@@ -293,3 +293,5 @@ virtual void fill_0_a7() { page0[0xa7 ]= wrap_0_a7; set_disass(0, 0xa7, "NOP", '
 virtual void fill_0_b7() { page0[0xb7 ]= wrap_0_b7; set_disass(0, 0xb7, "%T", ' ', 2); set_ticks(0, 0xb7, 0); }
 
 virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }
+
+virtual void fill_0_10() { page0[0x10 ]= wrap_0_10; set_disass(0, 0x10, "ANDCC %b", ' ', 1); set_ticks(0, 0x10, 2); }

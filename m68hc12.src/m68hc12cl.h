@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (m68hc12cl.h)
  *
- * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,2022 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -79,6 +79,7 @@ public:
   u16_t XIRQ_AT, COP_AT, TRAP_AT, CMR_AT;
   class cl_hc12_cpu *cpu12;
   int extra_ticks;
+  bool block_irq;
 public:
   cl_m68hc12(class cl_sim *asim);
   virtual int init(void);
@@ -145,7 +146,7 @@ public:
   virtual int branch(t_addr a, bool cond);
 
   // OTHER
-  
+  virtual int andcc(u8_t op);
 };
 
 
