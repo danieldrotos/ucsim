@@ -299,4 +299,7 @@ int wrap_0_08(class CL12 *uc, t_mem code) { return uc-> inxy ( _cX ); }
 int wrap_0_03(class CL12 *uc, t_mem code) { return uc-> dexy ( _cY ); }
 int wrap_0_09(class CL12 *uc, t_mem code) { return uc-> dexy ( _cX ); }
 
-int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }
+int wrap_0_05(class CL12 *uc, t_mem code) { return uc-> jump ( _xba ); }
+int wrap_0_06(class CL12 *uc, t_mem code) { return uc-> jump ( _ea ); }
+
+int wrap_0x18_05(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }

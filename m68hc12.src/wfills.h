@@ -299,4 +299,7 @@ virtual void fill_0_08() { page0[0x08 ]= wrap_0_08; set_disass(0, 0x08, "INX", '
 virtual void fill_0_03() { page0[0x03 ]= wrap_0_03; set_disass(0, 0x03, "INY", ' ', 1); set_ticks(0, 0x03, 1); }
 virtual void fill_0_09() { page0[0x09 ]= wrap_0_09; set_disass(0, 0x09, "INX", ' ', 1); set_ticks(0, 0x09, 1); }
 
-virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }
+virtual void fill_0_05() { page0[0x05 ]= wrap_0_05; set_disass(0, 0x05, "JMP %p", ' ', -2); set_ticks(0, 0x05, 0x66433); }
+virtual void fill_0_06() { page0[0x06 ]= wrap_0_06; set_disass(0, 0x06, "JMP %e", ' ', 2); set_ticks(0, 0x06, 4); }
+
+virtual void fill_0x18_05() { page0x18[0x05 ]= wrap_0x18_05; set_disass(0x18, 0x05, "ABA", ' ', 2); set_ticks(0x18, 0x05, 2); }

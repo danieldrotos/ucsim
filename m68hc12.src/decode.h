@@ -291,5 +291,8 @@ DEC(0, 02,	inxy	, _cY		, "INY"		, ' ', 1	, 1)
 DEC(0, 08,	inxy	, _cX		, "INX"		, ' ', 1	, 1)
 DEC(0, 03,	dexy	, _cY		, "INY"		, ' ', 1	, 1)
 DEC(0, 09,	dexy	, _cX		, "INX"		, ' ', 1	, 1)
-    
-DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)
+
+DEC(0, 05,	jump	, _xba		, "JMP %p"	, ' ', -2	, 0x66433)
+DEC(0, 06,	jump	, _ea		, "JMP %e"	, ' ', 2	, 4)
+
+DEC(0x18, 05,	add	, _A_B		, "ABA"		, ' ', 2	, 2)

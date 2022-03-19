@@ -100,6 +100,7 @@ public:
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 6; }
 
+  virtual void pre_inst(void);
   virtual int exec_inst(void);
   virtual void post_inst(void);
   virtual i16_t s8_16(u8_t op); // sex 8->16
@@ -146,7 +147,8 @@ public:
   virtual int brclr_id(void);
   virtual int brclr_e(void);
   virtual int branch(t_addr a, bool cond);
-
+  virtual int jump(t_addr a);
+  
   // OTHER
   virtual int andcc(u8_t op);
   virtual int orcc(u8_t op);

@@ -154,5 +154,12 @@ CL12::branch(t_addr a, bool cond)
   return resGO;
 }
 
+int
+CL12::jump(t_addr a)
+{
+  PC= a&0xffff;
+  return resGO;
+}
+
 
 /* ENd of m68hc12.src/ibranch.cc */
