@@ -301,5 +301,13 @@ virtual void fill_0_09() { page0[0x09 ]= wrap_0_09; set_disass(0, 0x09, "INX", '
 
 virtual void fill_0_05() { page0[0x05 ]= wrap_0_05; set_disass(0, 0x05, "JMP %p", ' ', -2); set_ticks(0, 0x05, 0x66433); }
 virtual void fill_0_06() { page0[0x06 ]= wrap_0_06; set_disass(0, 0x06, "JMP %e", ' ', 2); set_ticks(0, 0x06, 4); }
+virtual void fill_0_07() { page0[0x07 ]= wrap_0_07; set_disass(0, 0x07, "BSR %r", ' ', 2); set_ticks(0, 0x07, 4); }
+virtual void fill_0_15() { page0[0x15 ]= wrap_0_15; set_disass(0, 0x15, "JSR %p", ' ', -2); set_ticks(0, 0x15, 0x77644); }
+virtual void fill_0_16() { page0[0x16 ]= wrap_0_16; set_disass(0, 0x16, "JSR %e", ' ', 3); set_ticks(0, 0x16, 4); }
+virtual void fill_0_17() { page0[0x17 ]= wrap_0_17; set_disass(0, 0x17, "JSR %d", ' ', 2); set_ticks(0, 0x17, 4); }
+virtual void fill_0_0a() { page0[0x0a ]= wrap_0_0a; set_disass(0, 0x0a, "RTC", ' ', 1); set_ticks(0, 0x0a, 7); }
+virtual void fill_0_3d() { page0[0x3d ]= wrap_0_3d; set_disass(0, 0x3d, "RTS", ' ', 1); set_ticks(0, 0x3d, 5); }
+virtual void fill_0_0b() { page0[0x0b ]= wrap_0_0b; set_disass(0, 0x0b, "RTI", ' ', 1); set_ticks(0, 0x0b, 8); }
+virtual void fill_0_3f() { page0[0x3f ]= wrap_0_3f; set_disass(0, 0x3f, "SWI", ' ', 1); set_ticks(0, 0x3f, 9); }
 
-virtual void fill_0x18_05() { page0x18[0x05 ]= wrap_0x18_05; set_disass(0x18, 0x05, "ABA", ' ', 2); set_ticks(0x18, 0x05, 2); }
+virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }

@@ -301,5 +301,13 @@ int wrap_0_09(class CL12 *uc, t_mem code) { return uc-> dexy ( _cX ); }
 
 int wrap_0_05(class CL12 *uc, t_mem code) { return uc-> jump ( _xba ); }
 int wrap_0_06(class CL12 *uc, t_mem code) { return uc-> jump ( _ea ); }
+int wrap_0_07(class CL12 *uc, t_mem code) { return uc-> bsr ( _NONE ); }
+int wrap_0_15(class CL12 *uc, t_mem code) { return uc-> jsr ( _xba ); }
+int wrap_0_16(class CL12 *uc, t_mem code) { return uc-> jsr ( _ea ); }
+int wrap_0_17(class CL12 *uc, t_mem code) { return uc-> jsr ( _da ); }
+int wrap_0_0a(class CL12 *uc, t_mem code) { return uc-> rtc ( _NONE ); }
+int wrap_0_3d(class CL12 *uc, t_mem code) { return uc-> rts ( _NONE ); }
+int wrap_0_0b(class CL12 *uc, t_mem code) { return uc-> rti ( _NONE ); }
+int wrap_0_3f(class CL12 *uc, t_mem code) { return uc-> swi ( _NONE ); }
 
-int wrap_0x18_05(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }
+int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }

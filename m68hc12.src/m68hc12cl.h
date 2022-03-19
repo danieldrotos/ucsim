@@ -148,6 +148,12 @@ public:
   virtual int brclr_e(void);
   virtual int branch(t_addr a, bool cond);
   virtual int jump(t_addr a);
+  virtual int bsr(void);
+  virtual int jsr(t_addr a);
+  virtual int rtc(void);
+  virtual int rts(void);
+  virtual int swi(void);
+  virtual int rti(void);
   
   // OTHER
   virtual int andcc(u8_t op);
