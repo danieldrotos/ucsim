@@ -45,5 +45,17 @@ CL12::orcc(u8_t op)
   return resGO;
 }
 
+int
+CL12::lea(class cl_memory_cell *dest)
+{
+  u8_t p= rom->read(PC);
+  t_addr a= naddr(NULL, NULL);
+  if (!xb_indirect(p))
+    {
+      dest->W(a&0xffff);
+    }
+  return resGO;
+}
+
 
 /* End of m68hc12.src/iother.cc */
