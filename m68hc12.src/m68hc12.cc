@@ -177,7 +177,7 @@ CL12::pre_inst(void)
 int
 CL12::exec_inst(void)
 {
-  int res= resGO;
+  int res= resINV;
   t_mem code;
   hcwrapper_fn fn= NULL;
 
@@ -192,7 +192,7 @@ CL12::exec_inst(void)
       fn= hc12wrap->page0[code];
     }
   if (fn)
-    fn(this, code);
+    res= fn(this, code);
   post_inst();
   if (res != resNOT_DONE)
     return res;
