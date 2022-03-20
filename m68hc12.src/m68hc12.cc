@@ -133,7 +133,7 @@ void
 cl_m68hc12::reset(void)
 {
   cl_m68hcbase::reset();
-  rCC= 0x80;
+  rCC= flagStop|flagX|flagI;
   //post_inc_dec= 0;
 }
 

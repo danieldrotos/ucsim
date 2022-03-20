@@ -314,4 +314,6 @@ int wrap_0_19(class CL12 *uc, t_mem code) { return uc-> lea ( _cY ); }
 int wrap_0_1a(class CL12 *uc, t_mem code) { return uc-> lea ( _cX ); }
 int wrap_0_1b(class CL12 *uc, t_mem code) { return uc-> lea ( _cS ); }
 
+int wrap_0_11(class CL12 *uc, t_mem code) { return uc-> ediv ( _NONE ); }
+
 int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }

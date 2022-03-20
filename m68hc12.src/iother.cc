@@ -41,7 +41,7 @@ int
 CL12::orcc(u8_t op)
 {
   u8_t f= rF;
-  cF.W(f | op);
+  cF.W(f | (op&~flagX));
   return resGO;
 }
 

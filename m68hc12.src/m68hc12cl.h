@@ -41,8 +41,8 @@ class cl_hc12_cpu;
 typedef int (*hcwrapper_fn)(class CL12 *uc, t_mem code);
 
 enum {
-  flagS	= 0x80,
-  flagX	= 0x40
+  flagStop	= 0x80,
+  flagX		= 0x40
 };
 
 #define rTMP2 (TMP2)
@@ -127,6 +127,7 @@ public:
   virtual int asl16(class cl_memory_cell &dest);
   virtual int inxy(class cl_memory_cell &dest);
   virtual int dexy(class cl_memory_cell &dest);
+  virtual int ediv(void);
   
   // MOVE
 #define ld16 ldsx

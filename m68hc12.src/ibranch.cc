@@ -244,7 +244,7 @@ CL12::rti(void)
   u8_t f, fx, h, l;
 
   f= rom->read(s++);
-  rF&= ~(flagS|flagH|flagI|flagN|flagZ|flagV|flagC);
+  rF&= ~(flagStop|flagH|flagI|flagN|flagZ|flagV|flagC);
   fx= f&flagX;
   f&= ~flagX;
   rF&= fx;
