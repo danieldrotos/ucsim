@@ -310,4 +310,8 @@ virtual void fill_0_3d() { page0[0x3d ]= wrap_0_3d; set_disass(0, 0x3d, "RTS", '
 virtual void fill_0_0b() { page0[0x0b ]= wrap_0_0b; set_disass(0, 0x0b, "RTI", ' ', 1); set_ticks(0, 0x0b, 8); }
 virtual void fill_0_3f() { page0[0x3f ]= wrap_0_3f; set_disass(0, 0x3f, "SWI", ' ', 1); set_ticks(0, 0x3f, 9); }
 
+virtual void fill_0_19() { page0[0x19 ]= wrap_0_19; set_disass(0, 0x19, "LEAY %p", ' ', -2); set_ticks(0, 0x19, 0x55322); }
+virtual void fill_0_1a() { page0[0x1a ]= wrap_0_1a; set_disass(0, 0x1a, "LEAX %p", ' ', -2); set_ticks(0, 0x1a, 0x55322); }
+virtual void fill_0_1b() { page0[0x1b ]= wrap_0_1b; set_disass(0, 0x1b, "LEAS %p", ' ', -2); set_ticks(0, 0x1b, 0x55322); }
+
 virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }

@@ -310,4 +310,8 @@ int wrap_0_3d(class CL12 *uc, t_mem code) { return uc-> rts ( _NONE ); }
 int wrap_0_0b(class CL12 *uc, t_mem code) { return uc-> rti ( _NONE ); }
 int wrap_0_3f(class CL12 *uc, t_mem code) { return uc-> swi ( _NONE ); }
 
+int wrap_0_19(class CL12 *uc, t_mem code) { return uc-> lea ( _cY ); }
+int wrap_0_1a(class CL12 *uc, t_mem code) { return uc-> lea ( _cX ); }
+int wrap_0_1b(class CL12 *uc, t_mem code) { return uc-> lea ( _cS ); }
+
 int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }

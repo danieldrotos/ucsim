@@ -46,13 +46,13 @@ CL12::orcc(u8_t op)
 }
 
 int
-CL12::lea(class cl_memory_cell *dest)
+CL12::lea(class cl_memory_cell &dest)
 {
   u8_t p= rom->read(PC);
   t_addr a= naddr(NULL, NULL);
   if (!xb_indirect(p))
     {
-      dest->W(a&0xffff);
+      dest.W(a&0xffff);
     }
   return resGO;
 }

@@ -38,6 +38,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define _cC		uc->cCC
 #define _cX		uc->cIX
 #define _cY		uc->cIY
+#define _cS		uc->cSP
+#define _cSP		uc->cSP
 
 #define _i8		uc->i8()
 

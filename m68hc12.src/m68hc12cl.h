@@ -158,7 +158,7 @@ public:
   // OTHER
   virtual int andcc(u8_t op);
   virtual int orcc(u8_t op);
-  virtual int lea(class cl_memory_cell *dest);
+  virtual int lea(class cl_memory_cell &dest);
 };
 
 

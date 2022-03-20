@@ -303,4 +303,8 @@ DEC(0, 3d,	rts	, _NONE	 	, "RTS"		, ' ', 1	, 5)
 DEC(0, 0b,	rti	, _NONE	 	, "RTI"		, ' ', 1	, 8)
 DEC(0, 3f,	swi	, _NONE	 	, "SWI"		, ' ', 1	, 9)
 
+DEC(0, 19,	lea	, _cY		, "LEAY %p"	, ' ', -2	, 0x55322)
+DEC(0, 1a,	lea	, _cX		, "LEAX %p"	, ' ', -2	, 0x55322)
+DEC(0, 1b,	lea	, _cS		, "LEAS %p"	, ' ', -2	, 0x55322)
+
 DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)
