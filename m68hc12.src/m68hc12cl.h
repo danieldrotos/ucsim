@@ -128,6 +128,8 @@ public:
   virtual int inxy(class cl_memory_cell &dest);
   virtual int dexy(class cl_memory_cell &dest);
   virtual int ediv(void);
+  virtual int mul(void);
+  virtual int emul(void);
   
   // MOVE
 #define ld16 ldsx

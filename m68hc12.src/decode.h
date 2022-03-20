@@ -308,5 +308,7 @@ DEC(0, 1a,	lea	, _cX		, "LEAX %p"	, ' ', -2	, 0x55322)
 DEC(0, 1b,	lea	, _cS		, "LEAS %p"	, ' ', -2	, 0x55322)
 
 DEC(0, 11,	ediv	, _NONE		, "EDIV"	, ' ', 1	, 11)
+DEC(0, 12,	mul	, _NONE		, "MUL"		, ' ', 1	, 1)
+DEC(0, 13,	emul	, _NONE		, "EMUL"	, ' ', 1	, 3)
 
 DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)
