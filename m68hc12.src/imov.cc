@@ -128,5 +128,17 @@ CL12::i_pul16(class cl_memory_cell &dest)
   return resGO;
 }
 
+int
+CL12::movw_imid(void)
+{
+  t_addr a= naddr(NULL, NULL);
+  u8_t ih= fetch();
+  u8_t il= fetch();
+  rom->write(a, ih);
+  rom->write((a+1)&0xffff, il);
+  vc.wr+= 2;
+  return resGO;
+}
+
 
 /* End of m68hc12.src/imov.cc */

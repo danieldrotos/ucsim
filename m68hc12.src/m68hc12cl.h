@@ -137,6 +137,7 @@ public:
   virtual int i_pul8(class cl_memory_cell &dest);
   virtual int i_psh16(u16_t op);
   virtual int i_pul16(class cl_memory_cell &dest);
+  virtual int movw_imid(void);
   
   // BRANCH
   virtual int call_e(void);

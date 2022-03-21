@@ -119,6 +119,17 @@ cl_m68hc12::disassc(t_addr addr, chars *comment)
 		  work.appendf("$%02x", p);
 		}
 	    }
+	  if (strcmp(fmt.c_str(), "imid") == 0)
+	    {
+	      t_addr a= (addr+=2);
+	      u8_t h, l;
+	      addr++;
+	      h= rom->read(addr++);
+	      l= rom->read(addr++);
+	      work.appendf("#$%04x", h*256+l);
+	      work.append(" : ");
+	      disass_xb(&a, &work, comment);
+	    }
 	  continue;
 	}
       if (b[i] == '%')
