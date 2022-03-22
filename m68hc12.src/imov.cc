@@ -131,9 +131,13 @@ CL12::i_pul16(class cl_memory_cell &dest)
 int
 CL12::movw_imid(void)
 {
-  t_addr a= naddr(NULL, NULL);
+  t_addr aof_xb= PC;
+  u8_t xb= fetch();
   u8_t ih= fetch();
   u8_t il= fetch();
+  t_addr a= naddr(&aof_xb, NULL, PC);
+  if (xb_PC(xb))
+    a+= 2;
   rom->write(a, ih);
   rom->write((a+1)&0xffff, il);
   vc.wr+= 2;

@@ -253,8 +253,24 @@ CL12::xb_indirect(u8_t p)
   return false;
 }
 
+bool
+CL12::xb_PC(u8_t p)
+{
+  int t= xb_type(p);
+  switch (t)
+    {
+    case 1: return (p&0xc0)==0xc0;
+    case 6: return (p&0x18)==0x18;
+    case 5: return (p&0x18)==0x18;
+    case 3: return false;
+    case 2: return (p&0x18)==0x18;
+    case 4: return (p&0x18)==0x18;
+    }
+  return false;
+}
+
 t_addr
-CL12::naddr(t_addr *addr /* of xb */, u8_t *pg)
+CL12::naddr(t_addr *addr /* of xb */, u8_t *pg, u32_t use_PC)
 {
   u8_t p, h, l, n;
   i16_t offset= 0;
@@ -269,6 +285,7 @@ CL12::naddr(t_addr *addr /* of xb */, u8_t *pg)
     }
   else
     p= fetch();
+  use_PC&= 0xffff;
   
   switch (xb_type(p))
     {
@@ -279,7 +296,9 @@ CL12::naddr(t_addr *addr /* of xb */, u8_t *pg)
 	case 0x40: ival= rY; break;
 	case 0x80: ival= rSP; break;
 	case 0xc0:
-	  if (addr)
+	  if (use_PC)
+	    ival= use_PC;
+	  else if (addr)
 	    ival= (*addr)&0xffff;
 	  else
 	    ival= PC&0xffff;
@@ -297,7 +316,9 @@ CL12::naddr(t_addr *addr /* of xb */, u8_t *pg)
 	case 0x10: ival= rY; break;
 	case 0x08: ival= rSP; break;
 	case 0x18:
-	  if (addr)
+	  if (use_PC)
+	    ival= use_PC;
+	  else if (addr)
 	    ival= (*addr)&0xffff;
 	  else
 	    ival= PC&0xffff;
@@ -317,7 +338,9 @@ CL12::naddr(t_addr *addr /* of xb */, u8_t *pg)
 	case 0x10: ival= rY; break;
 	case 0x08: ival= rSP; break;
 	case 0x18:
-	  if (addr)
+	  if (use_PC)
+	    ival= use_PC;
+	  else if (addr)
 	    ival= (*addr)&0xffff;
 	  else
 	    ival= PC&0xffff;
@@ -377,7 +400,9 @@ CL12::naddr(t_addr *addr /* of xb */, u8_t *pg)
 	case 0x10: ival= rY; break;
 	case 0x08: ival= rSP; break;
 	case 0x18:
-	  if (addr)
+	  if (use_PC)
+	    ival= use_PC;
+	  else if (addr)
 	    ival= (*addr)&0xffff;
 	  else
 	    ival= PC&0xffff;
@@ -422,7 +447,9 @@ CL12::naddr(t_addr *addr /* of xb */, u8_t *pg)
 	case 0x10: ival= rY; break;
 	case 0x08: ival= rSP; break;
 	case 0x18:
-	  if (addr)
+	  if (use_PC)
+	    ival= use_PC;
+	  else if (addr)
 	    ival= (*addr)&0xffff;
 	  else
 	    ival= PC&0xffff;

@@ -311,5 +311,5 @@ DEC(0, 11,	ediv	, _NONE		, "EDIV"	, ' ', 1	, 11)
 DEC(0, 12,	mul	, _NONE		, "MUL"		, ' ', 1	, 1)
 DEC(0, 13,	emul	, _NONE		, "EMUL"	, ' ', 1	, 3)
 
-DEC(0x18, 00,	movw_imid,_NONE		, "MOVW 'imid'"	, ' ', 5	, 4)
+DEC(0x18, 00,	movw_imid,_NONE		, "MOVW 'IMID'"	, ' ', 5	, 4)
 DEC(0x18, 06,	add	, _A_B		, "ABA"		, ' ', 2	, 2)
