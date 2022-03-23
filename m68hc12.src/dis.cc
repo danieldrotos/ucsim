@@ -130,6 +130,19 @@ cl_m68hc12::disassc(t_addr addr, chars *comment)
 	      work.append(", ");
 	      disass_xb(&a, &work, comment, xb_PC(xb)?2:0);
 	    }
+	  if (strcmp(fmt.c_str(), "EXID") == 0)
+	    {
+	      t_addr aof_xb= (addr+=2), asrc;
+	      u8_t h, l, xb= rom->read(aof_xb);
+	      addr++;
+	      h= rom->read(addr++);
+	      l= rom->read(addr++);
+	      asrc= h*256+l;
+	      work.appendf("$%04x", asrc);
+	      work.append(", ");
+	      comment->appendf(";[%04x]=%04x",asrc,rom->read(asrc)*256+rom->read(asrc+1));
+	      disass_xb(&aof_xb, &work, comment, xb_PC(xb)?2:0);
+	    }
 	  continue;
 	}
       if (b[i] == '%')

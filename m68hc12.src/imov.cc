@@ -135,12 +135,41 @@ CL12::movw_imid(void)
   u8_t xb= fetch();
   u8_t ih= fetch();
   u8_t il= fetch();
-  t_addr a= naddr(&aof_xb, NULL, PC);
-  if (xb_PC(xb))
-    a+= 2;
-  rom->write(a, ih);
-  rom->write((a+1)&0xffff, il);
-  vc.wr+= 2;
+  int xt= xb_type(xb);
+  if ((xt==1) || (xt==3) || (xt==4))
+    {
+      t_addr a= naddr(&aof_xb, NULL, PC);
+      if (xb_PC(xb))
+	a+= 2;
+      rom->write(a, ih);
+      rom->write((a+1)&0xffff, il);
+      vc.wr+= 2;
+    }
+  return resGO;
+}
+
+int
+CL12::movw_exid(void)
+{
+  t_addr aof_xb= PC;
+  u8_t xb= fetch();
+  u8_t eh= fetch();
+  u8_t el= fetch();
+  int xt= xb_type(xb);
+  if ((xt==1) || (xt==3) || (xt==4))
+    {
+      u8_t h, l;
+      u16_t ea= eh*256+l;
+      t_addr a= naddr(&aof_xb, NULL, PC);
+      if (xb_PC(xb))
+	a+= 2;
+      h= rom->read(ea);
+      l= rom->read(ea+1);
+      vc.rd+= 2;
+      rom->write(a, h);
+      rom->write((a+1)&0xffff, l);
+      vc.wr+= 2;
+    }
   return resGO;
 }
 

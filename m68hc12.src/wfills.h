@@ -1,8 +1,8 @@
-# 1 "decode.h"
-# 1 "<built-in>"
-# 1 "<command-line>"
+# 0 "decode.h"
+# 0 "<built-in>"
+# 0 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
-# 1 "<command-line>" 2
+# 0 "<command-line>" 2
 # 1 "decode.h"
 # 1 "gen.h" 1
 # 2 "decode.h" 2
@@ -319,4 +319,5 @@ virtual void fill_0_12() { page0[0x12 ]= wrap_0_12; set_disass(0, 0x12, "MUL", '
 virtual void fill_0_13() { page0[0x13 ]= wrap_0_13; set_disass(0, 0x13, "EMUL", ' ', 1); set_ticks(0, 0x13, 3); }
 
 virtual void fill_0x18_00() { page0x18[0x00 ]= wrap_0x18_00; set_disass(0x18, 0x00, "MOVW 'IMID'", ' ', 5); set_ticks(0x18, 0x00, 4); }
+virtual void fill_0x18_01() { page0x18[0x01 ]= wrap_0x18_01; set_disass(0x18, 0x01, "MOVW 'EXID'", ' ', 5); set_ticks(0x18, 0x01, 5); }
 virtual void fill_0x18_06() { page0x18[0x06 ]= wrap_0x18_06; set_disass(0x18, 0x06, "ABA", ' ', 2); set_ticks(0x18, 0x06, 2); }

@@ -1,8 +1,8 @@
-# 1 "decode.h"
-# 1 "<built-in>"
-# 1 "<command-line>"
+# 0 "decode.h"
+# 0 "<built-in>"
+# 0 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
-# 1 "<command-line>" 2
+# 0 "<command-line>" 2
 # 1 "decode.h"
 # 1 "gen.h" 1
 # 2 "decode.h" 2
@@ -319,4 +319,5 @@ int wrap_0_12(class CL12 *uc, t_mem code) { return uc-> mul ( _NONE ); }
 int wrap_0_13(class CL12 *uc, t_mem code) { return uc-> emul ( _NONE ); }
 
 int wrap_0x18_00(class CL12 *uc, t_mem code) { return uc-> movw_imid ( _NONE ); }
+int wrap_0x18_01(class CL12 *uc, t_mem code) { return uc-> movw_exid ( _NONE ); }
 int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }
