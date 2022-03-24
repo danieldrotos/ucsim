@@ -272,7 +272,8 @@ CL12::xb_PC(u8_t p)
 t_addr
 CL12::naddr(t_addr *addr /* of xb */, u8_t *pg, u32_t use_PC)
 {
-  u8_t p, h, l, n;
+  u8_t p, h, l;
+  i8_t n;
   i16_t offset= 0;
   u16_t ival= 0, a= 0;
   //i8_t post_inc_dec= 0;
@@ -373,22 +374,23 @@ CL12::naddr(t_addr *addr /* of xb */, u8_t *pg, u32_t use_PC)
 	case 0x80: ival= rSP; post_idx_reg= &cSP; break;
 	}
       n= p&0xf;
-      if (n&0x08) n|= 0xf0;
+      if (n&0x08) n|= 0xf0; else n++;
       if (p&0x10)
 	{
 	  // post +-
+	  ival= (post_idx_reg->R() + (int)n);
 	  if (!addr)
 	    {
 	      //post_inc_dec= n;
-	      post_idx_reg->W(post_idx_reg->R() + n);
+	      post_idx_reg->W(ival);
 	    }
 	}
       else
 	{
 	  // pre +-
-	  ival= (post_idx_reg->R() + n);
 	  if (!addr)
 	    post_idx_reg->W(ival);
+	  ival= (post_idx_reg->R() + (int)n);
 	}
       return (u16_t)ival;
       break;

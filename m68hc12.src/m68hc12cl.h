@@ -140,6 +140,7 @@ public:
   virtual int i_pul16(class cl_memory_cell &dest);
   virtual int movw_imid(void);
   virtual int movw_exid(void);
+  virtual int movw_idid(void);
   
   // BRANCH
   virtual int call_e(void);

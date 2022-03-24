@@ -159,7 +159,7 @@ CL12::movw_exid(void)
   if ((xt==1) || (xt==3) || (xt==4))
     {
       u8_t h, l;
-      u16_t ea= eh*256+l;
+      u16_t ea= eh*256+el;
       t_addr a= naddr(&aof_xb, NULL, PC);
       if (xb_PC(xb))
 	a+= 2;
@@ -173,5 +173,34 @@ CL12::movw_exid(void)
   return resGO;
 }
 
+int
+CL12::movw_idid(void)
+{
+  t_addr aof_xbsrc= PC;
+  u8_t xbsrc= fetch();
+  t_addr aof_xbdst= PC;
+  u8_t xbdst= fetch();
+  int xtsrc= xb_type(xbsrc), xtdst= xb_type(xbdst);
+  if ((xtsrc==1) || (xtsrc==3) || (xtsrc==4))
+    {
+      if ((xtdst==1) || (xtdst==3) || (xtdst==4))
+	{
+	  u8_t v;
+	  u16_t asrc= naddr(&aof_xbsrc, NULL, PC);
+	  u16_t adst= naddr(&aof_xbdst, NULL, PC);
+	  if (xb_PC(xbsrc))
+	    asrc+= -1;
+	  if (xb_PC(xbdst))
+	    adst+= 1;
+	  v= rom->read(asrc);
+	  rom->write(adst, v);
+	  v= rom->read(asrc+1);
+	  rom->write(adst+1, v);
+	  vc.rd+= 2;
+	  vc.wr+= 2;
+	}
+    }
+  return resGO;
+}
 
 /* End of m68hc12.src/imov.cc */

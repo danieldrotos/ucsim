@@ -143,6 +143,18 @@ cl_m68hc12::disassc(t_addr addr, chars *comment)
 	      comment->appendf(";[%04x]=%04x",asrc,rom->read(asrc)*256+rom->read(asrc+1));
 	      disass_xb(&aof_xb, &work, comment, xb_PC(xb)?2:0);
 	    }
+	  if (strcmp(fmt.c_str(), "IDID") == 0)
+	    {
+	      t_addr aof_xbsrc= (addr+=2);
+	      t_addr aof_xbdst= (addr+=1);
+	      u8_t xbsrc, xbdst;
+	      xbsrc= rom->read(aof_xbsrc);
+	      xbdst= rom->read(aof_xbdst);
+	      disass_xb(&aof_xbsrc, &work, comment, xb_PC(xbsrc)?-1:0);
+	      work.append(", ");
+	      disass_xb(&aof_xbdst, &work, comment, xb_PC(xbdst)?1:0);
+	      //comment->appendf(";[%04x]=%04x",asrc,rom->read(asrc)*256+rom->read(asrc+1));
+	    }	 
 	  continue;
 	}
       if (b[i] == '%')
@@ -223,7 +235,8 @@ const char *rr_names[4]= { "X", "Y", "SP", "PC" };
 void
 CL12::disass_xb(t_addr *addr, chars *work, chars *comment, int corr, u32_t use_PC)
 {
-  u8_t p, h, l, n;
+  u8_t p, h, l;
+  i8_t n;
   int rr= -1;
   i16_t offset= 0;
   t_addr aof_xb= *addr;
@@ -255,7 +268,7 @@ CL12::disass_xb(t_addr *addr, chars *work, chars *comment, int corr, u32_t use_P
 
     case 3: // 3. rr1p nnnn n4,+-r+- rr={X,Y,SP}
       n= p&0xf;
-      if (n&0x08) n|= 0xf0;
+      if (n&0x08) n|= 0xf0; else n++;
       if (p&0x10)
 	{
 	  // post +-
