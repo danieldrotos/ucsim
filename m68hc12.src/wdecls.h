@@ -325,3 +325,6 @@ extern int wrap_0x18_03 (class CL12 *uc, t_mem code);
 extern int wrap_0x18_04 (class CL12 *uc, t_mem code);
 extern int wrap_0x18_05 (class CL12 *uc, t_mem code);
 extern int wrap_0x18_06 (class CL12 *uc, t_mem code);
+extern int wrap_0x18_08 (class CL12 *uc, t_mem code);
+extern int wrap_0x18_09 (class CL12 *uc, t_mem code);
+extern int wrap_0x18_0a (class CL12 *uc, t_mem code);
