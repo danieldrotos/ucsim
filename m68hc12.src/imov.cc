@@ -136,5 +136,211 @@ CL12::i_pul16(class cl_memory_cell &dest)
   return resGO;
 }
 
+int
+CL12::movw_imid(void)
+{
+  t_addr aof_xb= PC;
+  u8_t xb= fetch();
+  u8_t ih= fetch();
+  u8_t il= fetch();
+  int xt= xb_type(xb);
+  if ((xt==1) || (xt==3) || (xt==4))
+    {
+      t_addr a= naddr(&aof_xb, NULL, PC);
+      if (xb_PC(xb))
+	a+= 2;
+      rom->write(a, ih);
+      rom->write((a+1)&0xffff, il);
+      vc.wr+= 2;
+    }
+  return resGO;
+}
+
+int
+CL12::movb_imid(void)
+{
+  t_addr aof_xb= PC;
+  u8_t xb= fetch();
+  u8_t i= fetch();
+  int xt= xb_type(xb);
+  if ((xt==1) || (xt==3) || (xt==4))
+    {
+      t_addr a= naddr(&aof_xb, NULL, PC);
+      if (xb_PC(xb))
+	a+= 1;
+      rom->write(a, i);
+      vc.wr+= 1;
+    }
+  return resGO;
+}
+
+int
+CL12::movw_exid(void)
+{
+  t_addr aof_xb= PC;
+  u8_t xb= fetch();
+  u8_t eh= fetch();
+  u8_t el= fetch();
+  int xt= xb_type(xb);
+  if ((xt==1) || (xt==3) || (xt==4))
+    {
+      u8_t h, l;
+      u16_t ea= eh*256+el;
+      t_addr a= naddr(&aof_xb, NULL, PC);
+      if (xb_PC(xb))
+	a+= 2;
+      h= rom->read(ea);
+      l= rom->read(ea+1);
+      vc.rd+= 2;
+      rom->write(a, h);
+      rom->write((a+1)&0xffff, l);
+      vc.wr+= 2;
+    }
+  return resGO;
+}
+
+int
+CL12::movb_exid(void)
+{
+  t_addr aof_xb= PC;
+  u8_t xb= fetch();
+  u8_t eh= fetch();
+  u8_t el= fetch();
+  int xt= xb_type(xb);
+  if ((xt==1) || (xt==3) || (xt==4))
+    {
+      u8_t v;
+      u16_t ea= eh*256+el;
+      t_addr a= naddr(&aof_xb, NULL, PC);
+      if (xb_PC(xb))
+	a+= 2;
+      v= rom->read(ea);
+      vc.rd++;
+      rom->write(a, v);
+      vc.wr++;
+    }
+  return resGO;
+}
+
+int
+CL12::movw_idid(void)
+{
+  t_addr aof_xbsrc= PC;
+  u8_t xbsrc= fetch();
+  t_addr aof_xbdst= PC;
+  u8_t xbdst= fetch();
+  int xtsrc= xb_type(xbsrc), xtdst= xb_type(xbdst);
+  if ((xtsrc==1) || (xtsrc==3) || (xtsrc==4))
+    {
+      if ((xtdst==1) || (xtdst==3) || (xtdst==4))
+	{
+	  u8_t v;
+	  u16_t asrc= naddr(&aof_xbsrc, NULL, PC);
+	  u16_t adst= naddr(&aof_xbdst, NULL, PC);
+	  if (xb_PC(xbsrc))
+	    asrc+= -1;
+	  if (xb_PC(xbdst))
+	    adst+= 1;
+	  v= rom->read(asrc);
+	  rom->write(adst, v);
+	  v= rom->read(asrc+1);
+	  rom->write(adst+1, v);
+	  vc.rd+= 2;
+	  vc.wr+= 2;
+	}
+    }
+  return resGO;
+}
+
+int
+CL12::movb_idid(void)
+{
+  t_addr aof_xbsrc= PC;
+  u8_t xbsrc= fetch();
+  t_addr aof_xbdst= PC;
+  u8_t xbdst= fetch();
+  int xtsrc= xb_type(xbsrc), xtdst= xb_type(xbdst);
+  if ((xtsrc==1) || (xtsrc==3) || (xtsrc==4))
+    {
+      if ((xtdst==1) || (xtdst==3) || (xtdst==4))
+	{
+	  u8_t v;
+	  u16_t asrc= naddr(&aof_xbsrc, NULL, PC);
+	  u16_t adst= naddr(&aof_xbdst, NULL, PC);
+	  if (xb_PC(xbsrc))
+	    asrc+= -1;
+	  if (xb_PC(xbdst))
+	    adst+= 1;
+	  v= rom->read(asrc);
+	  rom->write(adst, v);
+	  vc.rd++;
+	  vc.wr++;
+	}
+    }
+  return resGO;
+}
+
+int
+CL12::movw_imex(void)
+{
+  u8_t ih= fetch();
+  u8_t il= fetch();
+  u8_t eh= fetch();
+  u8_t el= fetch();
+  u16_t a= eh*256+el;
+  
+  rom->write(a, ih);
+  rom->write(a+1, il);
+  vc.wr+= 2;
+  
+  return resGO;
+}
+
+int
+CL12::movw_exex(void)
+{
+  u8_t sh= fetch();
+  u8_t sl= fetch();
+  u8_t dh= fetch();
+  u8_t dl= fetch();
+  u16_t sa= sh*256+sl;
+  u16_t da= dh*256+dl;
+  u8_t v;
+  
+  v= rom->read(sa);
+  rom->write(da, v);
+  v= rom->read(sa+1);
+  rom->write(da+1, v);
+  vc.rd+= 2;
+  vc.wr+= 2;
+  
+  return resGO;
+}
+
+int
+CL12::movw_idex(void)
+{
+  t_addr aof_xb= PC;
+  u8_t xb= fetch();
+  u8_t eh= fetch();
+  u8_t el= fetch();
+  int xt= xb_type(xb);
+  if ((xt==1) || (xt==3) || (xt==4))
+    {
+      u8_t h, l;
+      u16_t ea= eh*256+el;
+      u16_t a= naddr(&aof_xb, NULL, PC);
+      if (xb_PC(xb))
+	a+= -2;
+      h= rom->read(a);
+      l= rom->read(a+1);
+      vc.rd+= 2;
+      rom->write(ea, h);
+      rom->write(ea+1, l);
+      vc.wr+= 2;
+    }
+  return resGO;
+}
+
 
 /* End of m68hc12.src/imov.cc */
