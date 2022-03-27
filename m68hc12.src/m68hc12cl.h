@@ -131,6 +131,7 @@ public:
   virtual int ediv(void);
   virtual int mul(void);
   virtual int emul(void);
+  virtual int daa(void);
   
   // MOVE
 #define ld16 ldsx
