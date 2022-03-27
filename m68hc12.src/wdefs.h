@@ -289,3 +289,6 @@ int wrap_0x18_06(class CL12 *uc, t_mem code) { return uc-> add ( _A_B ); }
 int wrap_0x18_08(class CL12 *uc, t_mem code) { return uc-> movb_imid ( _NONE ); }
 int wrap_0x18_09(class CL12 *uc, t_mem code) { return uc-> movb_exid ( _NONE ); }
 int wrap_0x18_0a(class CL12 *uc, t_mem code) { return uc-> movb_idid ( _NONE ); }
+int wrap_0x18_0b(class CL12 *uc, t_mem code) { return uc-> movb_imex ( _NONE ); }
+int wrap_0x18_0c(class CL12 *uc, t_mem code) { return uc-> movb_exex ( _NONE ); }
+int wrap_0x18_0d(class CL12 *uc, t_mem code) { return uc-> movb_idex ( _NONE ); }
