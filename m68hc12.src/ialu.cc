@@ -291,5 +291,67 @@ CL12::emacs(void)
   return resGO;
 }
 
+int
+CL12::emuls(void)
+{
+  i32_t r= (i16_t)rD*(i16_t)rY;
+  u8_t f= rF&~(flagN|flagZ|flagC);
+  if (r & 0x80000000) f|= flagN;
+  if (!r) f|= flagZ;
+  if (r & 0x8000) f|= flagC;
+  cY.W(r>>16);
+  cD.W(r);
+  cF.W(f);
+  return resGO;
+}
+
+int
+CL12::edivs(void)
+{
+  i32_t op1= (rY<<16)+rD, q;
+  i16_t r;
+  u8_t f= rF&~(flagN|flagZ|flagV|flagC);
+  if (rX != 0)
+    {
+      q= op1 / (i16_t)rX;
+      r= op1 % (i16_t)rX;
+      if (q&0x8000) f|= flagN;
+      if (!q) f|= flagZ;
+      if ((q > 32767) || (q < -32768))
+	f|= flagV;
+      cY.W(q);
+      cD.W(r);
+    }
+  else
+    f|= flagC;
+  cF.W(f);
+  return resGO;
+}
+
+int
+CL12::idivs(void)
+{
+  i32_t q;
+  i16_t r;
+  u8_t f= rF&~(flagN|flagZ|flagV|flagC);
+  if (rX == 0)
+    {
+      f|= flagC;
+    }
+  else
+    {
+      q= (i16_t)rD / (i16_t)rX;
+      r= (i16_t)rD % (i16_t)rX;
+      if ((q > 32767) || (q < -32768))
+	f|= flagV;
+      if (!q) f|= flagZ;
+      if (q & 0x8000) f|= flagN;
+    }
+  cX.W(q);
+  cD.W(r);
+  cF.W(f);
+  return resGO;
+}
+
 
 /* End of m68hc12.src/ialu.cc */

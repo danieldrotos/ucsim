@@ -135,6 +135,9 @@ public:
   virtual int idiv(void);
   virtual int fdiv(void);
   virtual int emacs(void);
+  virtual int emuls(void);
+  virtual int edivs(void);
+  virtual int idivs(void);
   
   // MOVE
 #define ld16 ldsx
