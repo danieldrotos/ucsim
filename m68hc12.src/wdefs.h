@@ -302,3 +302,6 @@ int wrap_0x18_12(class CL12 *uc, t_mem code) { return uc-> emacs ( _NONE ); }
 int wrap_0x18_13(class CL12 *uc, t_mem code) { return uc-> emuls ( _NONE ); }
 int wrap_0x18_14(class CL12 *uc, t_mem code) { return uc-> edivs ( _NONE ); }
 int wrap_0x18_15(class CL12 *uc, t_mem code) { return uc-> idivs ( _NONE ); }
+int wrap_0x18_16(class CL12 *uc, t_mem code) { return uc-> sub ( _A_B ); }
+int wrap_0x18_17(class CL12 *uc, t_mem code) { return uc-> cmp ( _Aop_Bop ); }
+int wrap_0x18_18(class CL12 *uc, t_mem code) { return uc-> maxa ( _NONE ); }

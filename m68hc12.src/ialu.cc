@@ -353,5 +353,17 @@ CL12::idivs(void)
   return resGO;
 }
 
+int
+CL12::maxa(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u8_t op= rom->read(a);
+  vc.rd++;
+  cmp(rA, op);
+  if (rF&flagC)
+    cA.W(op);
+  return resGO;
+}
+
 
 /* End of m68hc12.src/ialu.cc */

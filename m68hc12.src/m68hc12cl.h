@@ -138,6 +138,7 @@ public:
   virtual int emuls(void);
   virtual int edivs(void);
   virtual int idivs(void);
+  virtual int maxa(void);
   
   // MOVE
 #define ld16 ldsx
