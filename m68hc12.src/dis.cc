@@ -254,6 +254,16 @@ cl_m68hc12::disassc(t_addr addr, chars *comment)
 	      work.appendf("$%04x", adst= h*256+l);
 	      comment->appendf(" [%04x]=%02x", adst, rom->read(adst));
 	    }
+	  if (strcmp(fmt.c_str(), "em") == 0) // EMACS
+	    {
+	      u16_t a= read_addr(rom, addr+2);
+	      u32_t m= (read_addr(rom, a)<<16) + (read_addr(rom, a+2));
+	      work.appendf("$%04x", a);
+	      comment->appendf("; [X=%04x]=%04x,%+d [Y=%04x]=%04x,%+d [%04x]=%08x,%+d",
+			       rX, read_addr(rom, rX), (int)read_addr(rom, rX),
+			       rY, read_addr(rom, rY), (int)read_addr(rom, rY),
+			       a, m, int(m));
+	    }
 	  continue;
 	}
       if (b[i] == '%')

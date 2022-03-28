@@ -207,5 +207,89 @@ CL12::daa(void)
   return resGO;
 }
 
+int
+CL12::idiv(void)
+{
+  u8_t f= rF&~(flagZ|flagV|flagC);
+  if (rX == 0)
+    {
+      cX.W(0xffff);
+      f|= flagC;
+    }
+  else
+    {
+      u16_t q, r;
+      q= rD/rX;
+      r= rD%rX;
+      if (!q)
+	f|= flagZ;
+      cX.W(q);
+      cD.W(r);
+    }
+  cF.W(f);
+  return resGO;
+}
+
+int
+CL12::fdiv(void)
+{
+  u8_t f= rF&~(flagZ|flagV|flagC);
+  if (rX == 0)
+    {
+      cX.W(0xffff);
+      f|= flagC;
+    }
+  else if (rX <= rD)
+    {
+      cX.W(0xffff);
+      f|= flagV;
+    }
+  else
+    {
+      u32_t n;
+      u16_t d, q, r;
+      n= rD<<16;
+      d= rX;
+      q= n/d;
+      r= n%d;
+      if (!q)
+	f|= flagZ;
+      cX.W(q);
+      cD.W(r);
+    }
+  cF.W(f);
+  return resGO;
+}
+
+int
+CL12::emacs(void)
+{
+  i16_t mx= read_addr(rom, rX);
+  i16_t my= read_addr(rom, rY);
+  u8_t h, l;
+  h= fetch();
+  l= fetch();
+  u16_t a= h*256+l;
+  i32_t m;
+  m= read_addr(rom, a);
+  m<<= 16;
+  m+= read_addr(rom, a+2);
+  vc.rd+= 8;
+  i32_t i= mx*my;
+  i32_t r= i + m;
+  u8_t f= rF&~(flagN|flagZ|flagV|flagC);
+  if (r & 0x80000000) f|= flagN;
+  if (!r) f|= flagZ;
+  if (0x80000000 & ((m&i&~r)|(~m|~i|~r))) f|= flagV;
+  if (0x8000 & ((m&i)|(i&~r)|(~r&m))) f|= flagC;
+  rom->write(a+0, r>>24);
+  rom->write(a+1, r>>16);
+  rom->write(a+2, r>> 8);
+  rom->write(a+3, r    );
+  vc.wr+= 4;
+  cF.W(f);
+  return resGO;
+}
+
 
 /* End of m68hc12.src/ialu.cc */

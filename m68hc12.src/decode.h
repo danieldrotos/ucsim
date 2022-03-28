@@ -288,3 +288,7 @@ DEC(0x18, 0c,	movb_exex,_NONE		, "MOVB 'exex'"	, ' ', 6	, 6)
 DEC(0x18, 0d,	movb_idex,_NONE		, "MOVB 'idex'"	, ' ', 5	, 5)
 DEC(0x18, 0e,	TAB	, code		, "TAB"		, ' ', 2	, 2)
 DEC(0x18, 0f,	TBA	, code		, "TBA"		, ' ', 2	, 2)
+
+DEC(0x18, 10,	idiv	, _NONE		, "IDIV"	, ' ', 2	, 12)
+DEC(0x18, 11,	fdiv	, _NONE		, "FDIV"	, ' ', 2	, 12)
+DEC(0x18, 12,	emacs	, _NONE		, "EMACS 'em'"	, ' ', 4	, 13)

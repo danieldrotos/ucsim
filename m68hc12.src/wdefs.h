@@ -295,3 +295,7 @@ int wrap_0x18_0c(class CL12 *uc, t_mem code) { return uc-> movb_exex ( _NONE ); 
 int wrap_0x18_0d(class CL12 *uc, t_mem code) { return uc-> movb_idex ( _NONE ); }
 int wrap_0x18_0e(class CL12 *uc, t_mem code) { return uc-> TAB ( code ); }
 int wrap_0x18_0f(class CL12 *uc, t_mem code) { return uc-> TBA ( code ); }
+
+int wrap_0x18_10(class CL12 *uc, t_mem code) { return uc-> idiv ( _NONE ); }
+int wrap_0x18_11(class CL12 *uc, t_mem code) { return uc-> fdiv ( _NONE ); }
+int wrap_0x18_12(class CL12 *uc, t_mem code) { return uc-> emacs ( _NONE ); }
