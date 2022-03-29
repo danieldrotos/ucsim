@@ -365,5 +365,103 @@ CL12::maxa(void)
   return resGO;
 }
 
+int
+CL12::mina(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u8_t op= rom->read(a);
+  vc.rd++;
+  cmp(rA, op);
+  if (!(rF&flagC))
+    cA.W(op);
+  return resGO;
+}
+
+int
+CL12::emaxd(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u16_t op= read_addr(rom, a);
+  vc.rd+= 2;
+  cp16(rD, op);
+  if (rF&flagC)
+    cD.W(op);
+  return resGO;
+}
+
+int
+CL12::emind(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u16_t op= read_addr(rom, a);
+  vc.rd+= 2;
+  cp16(rD, op);
+  if (!(rF&flagC))
+    cD.W(op);
+  return resGO;
+}
+
+int
+CL12::maxm(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u8_t op= rom->read(a);
+  vc.rd++;
+  cmp(rA, op);
+  if (!(rF&flagC))
+    {
+      rom->write(a, rA);
+      vc.wr++;
+    }
+  return resGO;
+}
+
+int
+CL12::minm(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u8_t op= rom->read(a);
+  vc.rd++;
+  cmp(rA, op);
+  if (rF&flagC)
+    {
+      rom->write(a, rA);
+      vc.wr++;
+    }
+  return resGO;
+}
+
+int
+CL12::emaxm(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u16_t op= read_addr(rom, a);
+  vc.rd+= 2;
+  cp16(rD, op);
+  if (!(rF&flagC))
+    {
+      rom->write(a, rD>>8);
+      rom->write(a+1, rD);
+      vc.wr+= 2;
+    }
+  return resGO;
+}
+
+int
+CL12::eminm(void)
+{
+  u16_t a= naddr(NULL, NULL, 0);
+  u16_t op= read_addr(rom, a);
+  vc.rd+= 2;
+  cp16(rD, op);
+  if (rF&flagC)
+    {
+      rom->write(a, rD>>8);
+      rom->write(a+1, rD);
+      vc.wr+= 2;
+    }
+  return resGO;
+}
+
 
 /* End of m68hc12.src/ialu.cc */

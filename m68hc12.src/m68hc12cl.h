@@ -139,6 +139,13 @@ public:
   virtual int edivs(void);
   virtual int idivs(void);
   virtual int maxa(void);
+  virtual int mina(void);
+  virtual int emaxd(void);
+  virtual int emind(void);
+  virtual int maxm(void);
+  virtual int minm(void);
+  virtual int emaxm(void);
+  virtual int eminm(void);
   
   // MOVE
 #define ld16 ldsx
