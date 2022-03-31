@@ -346,9 +346,9 @@ CL12::idivs(void)
 	f|= flagV;
       if (!q) f|= flagZ;
       if (q & 0x8000) f|= flagN;
+      cX.W(q);
+      cD.W(r);
     }
-  cX.W(q);
-  cD.W(r);
   cF.W(f);
   return resGO;
 }

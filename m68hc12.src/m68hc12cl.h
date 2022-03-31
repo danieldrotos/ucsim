@@ -78,7 +78,7 @@ public:
   const char *tex_names[8];
   u16_t XIRQ_AT, COP_AT, TRAP_AT, CMR_AT;
   class cl_hc12_cpu *cpu12;
-  int extra_ticks;
+  int extra_ticks, xb_tick_shift;
   bool block_irq;
 public:
   cl_m68hc12(class cl_sim *asim);
