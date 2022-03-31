@@ -1,8 +1,8 @@
-# 0 "decode.h"
-# 0 "<built-in>"
-# 0 "<command-line>"
+# 1 "decode.h"
+# 1 "<built-in>"
+# 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
-# 0 "<command-line>" 2
+# 1 "<command-line>" 2
 # 1 "decode.h"
 # 1 "gen.h" 1
 # 2 "decode.h" 2
@@ -327,3 +327,6 @@ extern int wrap_0x18_2c (class CL12 *uc, t_mem code);
 extern int wrap_0x18_2d (class CL12 *uc, t_mem code);
 extern int wrap_0x18_2e (class CL12 *uc, t_mem code);
 extern int wrap_0x18_2f (class CL12 *uc, t_mem code);
+
+extern int wrap_0x18_3d (class CL12 *uc, t_mem code);
+extern int wrap_0x18_3f (class CL12 *uc, t_mem code);

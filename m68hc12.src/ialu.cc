@@ -463,5 +463,57 @@ CL12::eminm(void)
   return resGO;
 }
 
+int
+CL12::tbl(void)
+{
+  u8_t xb= rom->read(PC);
+  int t= xb_type(xb);
+  u16_t a= naddr(NULL, NULL, 0);
+  if ((t==1) || (t==3) || (t==4))
+    {
+      u8_t y1, y2;
+      int diff;
+      double b= rB/256.0;
+      y1= rom->read(a);
+      y2= rom->read(a+1);
+      vc.rd+= 2;
+      diff= y2-y1;
+      cA.W(y1 + b*diff);
+      u8_t f= rF&~(flagN|flagZ);
+      if (rA & 0x80) f|= flagN;
+      if (!rA) f|= flagZ;
+      cF.W(f);
+    }
+  else
+    return resINV;
+  return resGO;
+}
+
+int
+CL12::etbl(void)
+{
+  u8_t xb= rom->read(PC);
+  int t= xb_type(xb);
+  u16_t a= naddr(NULL, NULL, 0);
+  if ((t==1) || (t==3) || (t==4))
+    {
+      u16_t y1, y2;
+      long int diff;
+      double b= rB/256.0;
+      y1= read_addr(rom, a);
+      y2= read_addr(rom, a+2);
+      vc.rd+= 4;
+      diff= y2-y1;
+      cD.W(y1 + b*diff);
+      u8_t f= rF&~(flagN|flagZ);
+      if (rD & 0x8000) f|= flagN;
+      if (!rD) f|= flagZ;
+      cF.W(f);
+    }
+  else
+    return resINV;
+  return resGO;
+}
+
 
 /* End of m68hc12.src/ialu.cc */

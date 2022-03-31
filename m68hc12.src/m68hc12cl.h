@@ -148,6 +148,8 @@ public:
   virtual int minm(void);
   virtual int emaxm(void);
   virtual int eminm(void);
+  virtual int tbl(void);
+  virtual int etbl(void);
   
   // MOVE
 #define ld16 ldsx

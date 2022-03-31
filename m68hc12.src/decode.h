@@ -320,3 +320,6 @@ DEC(0x18, 2c,	lbranch	, code		, "LBGE %R"	, ' ', 4	, 3)
 DEC(0x18, 2d,	lbranch	, code		, "LBLT %R"	, ' ', 4	, 3)
 DEC(0x18, 2e,	lbranch	, code		, "LBGT %R"	, ' ', 4	, 3)
 DEC(0x18, 2f,	lbranch	, code		, "LBLE %R"	, ' ', 4	, 3)
+
+DEC(0x18, 3d,	tbl	, _NONE		, "TBL"		, ' ', 3	, 6)
+DEC(0x18, 3f,	etbl	, _NONE		, "ETBL"	, ' ', 3	, 10)
