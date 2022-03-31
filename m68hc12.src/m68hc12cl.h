@@ -185,6 +185,7 @@ public:
   virtual int rts(void);
   virtual int swi(void);
   virtual int rti(void);
+  virtual int lbranch(u8_t code);
   
   // OTHER
   virtual int andcc(u8_t op);

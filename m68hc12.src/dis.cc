@@ -314,10 +314,19 @@ cl_m68hc12::disassc(t_addr addr, chars *comment)
 	      work.appendf("#$%04x",
 			   read_addr(rom, addr+1));
 	      break;
-	    case 'r': // relative
+	    case 'r': // relative 8 bit offset
 	      work.appendf("$%04x",
 			   (addr+2+(i8_t)(rom->read(addr+1))) & 0xffff );
 	      break;
+	    case 'R': // relative 16 bit offset
+	      {
+		u16_t a= addr+4;
+		i16_t r= rom->read(addr+2)*256;
+		r+= rom->read(addr+3);
+		a+= r;
+		work.appendf("$%04x", a);
+		break;
+	      }
 	    case 'p': case 'P':// xb postbyte for 8/16 bit operand
 	      {
 		t_addr a= addr+1;

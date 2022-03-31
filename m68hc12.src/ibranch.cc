@@ -270,5 +270,61 @@ CL12::rti(void)
   return resGO;
 }
 
+typedef bool (*cond_t)(u8_t);
+
+#undef rF
+bool cond_a (u8_t rF) { return ifA ; }
+bool cond_n (u8_t rF) { return ifN ; }
+bool cond_hi(u8_t rF) { return ifHI; }
+bool cond_ls(u8_t rF) { return ifLS; }
+bool cond_cc(u8_t rF) { return ifCC; }
+bool cond_cs(u8_t rF) { return ifCS; }
+bool cond_ne(u8_t rF) { return ifNE; }
+bool cond_eq(u8_t rF) { return ifEQ; }
+bool cond_vc(u8_t rF) { return ifVC; }
+bool cond_vs(u8_t rF) { return ifVS; }
+bool cond_pl(u8_t rF) { return ifPL; }
+bool cond_mi(u8_t rF) { return ifMI; }
+bool cond_ge(u8_t rF) { return ifGE; }
+bool cond_lt(u8_t rF) { return ifLT; }
+bool cond_gt(u8_t rF) { return ifGT; }
+bool cond_le(u8_t rF) { return ifLE; }
+#define rF  (CC.cc16.cc8.ccl)
+
+cond_t cond_tab[16]= {
+  cond_a,
+  cond_n,
+  cond_hi,
+  cond_ls,
+  cond_cc,
+  cond_cs,
+  cond_ne,
+  cond_eq,
+  cond_vc,
+  cond_vs,
+  cond_pl,
+  cond_mi,
+  cond_ge,
+  cond_lt,
+  cond_gt,
+  cond_le
+};
+  
+int
+CL12::lbranch(u8_t code)
+{
+  bool cond= cond_tab[code&0xf](rF);
+  i16_t r= fetch()*256;
+  r+= fetch();
+  if (cond)
+    {
+      extra_ticks= 1;
+      u16_t n= PC;
+      n+= r;
+      PC= n;
+    }
+  return resGO;
+}
+
 
 /* ENd of m68hc12.src/ibranch.cc */

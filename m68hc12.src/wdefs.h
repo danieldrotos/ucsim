@@ -310,3 +310,20 @@ int wrap_0x18_1a(class CL12 *uc, t_mem code) { return uc-> emaxd ( _NONE ); }
 int wrap_0x18_1b(class CL12 *uc, t_mem code) { return uc-> emind ( _NONE ); }
 int wrap_0x18_1c(class CL12 *uc, t_mem code) { return uc-> maxm ( _NONE ); }
 int wrap_0x18_1d(class CL12 *uc, t_mem code) { return uc-> minm ( _NONE ); }
+
+int wrap_0x18_20(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_21(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_22(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_23(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_24(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_25(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_26(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_27(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_28(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_29(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_2a(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_2b(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_2c(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_2d(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_2e(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
+int wrap_0x18_2f(class CL12 *uc, t_mem code) { return uc-> lbranch ( code ); }
