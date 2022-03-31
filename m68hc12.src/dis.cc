@@ -476,6 +476,8 @@ CL12::disass_b7(t_addr *addr, chars *work, chars *comment)
       if (pb == 0x76) work->append("TSY"), spec= true;
       if (pb == 0x57) work->append("TXS"), spec= true;
       if (pb == 0x67) work->append("TYS"), spec= true;
+      if (pb == 0xc5) work->append("XGDX"), spec= true;
+      if (pb == 0xc6) work->append("XGDY"), spec= true;
       if (spec) return;
       if (!(pb & 0x80))
 	work->append("TFR");

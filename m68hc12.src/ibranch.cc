@@ -318,7 +318,7 @@ CL12::lbranch(u8_t code)
   r+= fetch();
   if (cond)
     {
-      extra_ticks= 1;
+      extra_ticks= 2;
       u16_t n= PC;
       n+= r;
       PC= n;
