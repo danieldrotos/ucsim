@@ -463,12 +463,20 @@ CL12::disass_xb(t_addr *addr, chars *work, chars *comment, int len, int corr, u3
 void
 CL12::disass_b7(t_addr *addr, chars *work, chars *comment)
 {
+  bool spec= false;
   (*addr)++;
   u8_t pb= rom->read(*addr);
   if (pb & 0x08)
     work->append("TFR/EXG INVALID");
   else
     {
+      if (pb == 0x02) work->append("TAP"), spec= true;
+      if (pb == 0x20) work->append("TPA"), spec= true;
+      if (pb == 0x75) work->append("TSX"), spec= true;
+      if (pb == 0x76) work->append("TSY"), spec= true;
+      if (pb == 0x57) work->append("TXS"), spec= true;
+      if (pb == 0x67) work->append("TYS"), spec= true;
+      if (spec) return;
       if (!(pb & 0x80))
 	work->append("TFR");
       else
