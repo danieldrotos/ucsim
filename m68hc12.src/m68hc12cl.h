@@ -74,8 +74,8 @@ public:
   class cl_wrap *hc12wrap;
   u16_t TMP2, TMP3;
   class cl_cell16 cTMP2, cTMP3;
-  class cl_memory_cell *tex_cells[8];
-  const char *tex_names[8];
+  class cl_memory_cell *tex_cells[8], *loop_cells[8];
+  const char *tex_names[8], *loop_names[8];
   u16_t XIRQ_AT, COP_AT, TRAP_AT, CMR_AT;
   class cl_hc12_cpu *cpu12;
   int extra_ticks, xb_tick_shift;
@@ -186,6 +186,7 @@ public:
   virtual int swi(void);
   virtual int rti(void);
   virtual int lbranch(u8_t code);
+  virtual int loop(u8_t code);
   
   // OTHER
   virtual int andcc(u8_t op);

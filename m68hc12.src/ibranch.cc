@@ -326,5 +326,32 @@ CL12::lbranch(u8_t code)
   return resGO;
 }
 
+int
+CL12::loop(u8_t code)
+{
+  i16_t r= fetch();
+  if ((code & 0xc0) == 0xc0)
+    return resINV;
+  
+  class cl_memory_cell *c= loop_cells[code&0x7];
+  if (c == NULL)
+    return resINV;
+
+  if (code & 0x80) c->W(c->R() + 1);
+  if (code & 0x40) c->W(c->R() - 1);
+  bool brz= !(code & 0x20);
+  bool isz= c->R() == 0;
+  if ((brz && isz) || (!brz && !isz))
+    {
+      u16_t a= PC;
+      if (code & 0x10)
+	r|= 0xff00;
+      a+= r;
+      PC= a;
+    }
+
+  return resGO;
+}
+
 
 /* ENd of m68hc12.src/ibranch.cc */

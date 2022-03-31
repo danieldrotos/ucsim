@@ -118,6 +118,24 @@ cl_m68hc12::init(void)
   tex_names[5]= "X";
   tex_names[6]= "Y";
   tex_names[7]= "SP";
+
+  loop_cells[0]= &cA;
+  loop_cells[1]= &cB;
+  loop_cells[2]= NULL;
+  loop_cells[3]= NULL;
+  loop_cells[4]= &cD;
+  loop_cells[5]= &cX;
+  loop_cells[6]= &cY;
+  loop_cells[7]= &cSP;
+
+  loop_names[0]= "A";
+  loop_names[1]= "B";
+  loop_names[2]= "";
+  loop_names[3]= "";
+  loop_names[4]= "D";
+  loop_names[5]= "X";
+  loop_names[6]= "Y";
+  loop_names[7]= "SP";
   
   return 0;
 }
@@ -184,11 +202,17 @@ CL12::exec_inst(void)
   hcwrapper_fn fn= NULL;
 
   code= fetch();
-  if (code==0x18)
+  if (code == 0x18)
     {
       code= fetch();
       fn= hc12wrap->page0x18[code];
       inst_ticks= ticks12p18[code];
+    }
+  else if (code == 0x04)
+    {
+      code= fetch();
+      res= loop(code);
+      fn= NULL;
     }
   else
     {
