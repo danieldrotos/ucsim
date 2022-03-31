@@ -74,6 +74,12 @@ cl_m68hc12::disassc(t_addr addr, chars *comment)
   struct dis_entry *dis_e;
   int i;
   bool first;
+
+  if (rom->read(addr) == 0x04)
+    {
+      addr++;
+      return disass_loop(&addr, &work, comment);
+    }
   
   if ((dis_e= get_dis_entry(addr)) == NULL)
     return NULL;
@@ -476,9 +482,44 @@ CL12::disass_b7(t_addr *addr, chars *work, chars *comment)
     }
 }
 
+char *
+CL12::disass_loop(t_addr *addr, chars *work, chars *comment)
+{
+  u8_t code;
+  i16_t r;
+
+  code= rom->read(*addr);
+  *addr= *addr + 1;
+  r= rom->read(*addr);
+  *addr= *addr + 1;
+  if ((code & 0xc0) == 0) work->append("D");
+  else if ((code & 0xc0) == 0x40) work->append("T");
+  else if ((code & 0xc0) == 0x80) work->append("I");
+  else
+    return strdup("-- invalid");
+  work->append("B");
+  if (code & 0x20)
+    work->append("NE");
+  else
+    work->append("EQ");
+  while (work->len() < 6) work->append(' ');
+
+  work->append(loop_names[code & 0x7]);
+  work->append(",");
+  if (code & 0x10)
+    r|= 0xff00;      
+  u16_t a= *addr + r;
+  work->appendf("$%04x", a);
+  
+  return strdup(work->c_str());
+}
+
 int
 CL12::inst_length(t_addr addr)
 {
+  u8_t code= rom->read(addr);
+  if (code == 0x04)
+    return 3;
   struct dis_entry *di= get_dis_entry(addr);
   if (di && di->mnemonic)
     {

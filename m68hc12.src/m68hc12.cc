@@ -130,8 +130,8 @@ cl_m68hc12::init(void)
 
   loop_names[0]= "A";
   loop_names[1]= "B";
-  loop_names[2]= "";
-  loop_names[3]= "";
+  loop_names[2]= "-";
+  loop_names[3]= "-";
   loop_names[4]= "D";
   loop_names[5]= "X";
   loop_names[6]= "Y";

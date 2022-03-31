@@ -97,6 +97,8 @@ public:
   virtual char *disassc(t_addr addr, chars *comment=NULL);
   virtual void disass_xb(t_addr *addr, chars *work, chars *comment, int len, int corr= 0, u32_t use_PC=0);
   virtual void disass_b7(t_addr *addr, chars *work, chars *comment);
+  virtual char *disass_loop(t_addr *addr, chars *work, chars *comment);
+  
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 6; }
 
