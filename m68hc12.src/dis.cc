@@ -507,7 +507,8 @@ CL12::disass_loop(t_addr *addr, chars *work, chars *comment)
   work->append(loop_names[code & 0x7]);
   work->append(",");
   if (code & 0x10)
-    r|= 0xff00;      
+    r|= 0xff00;
+  
   u16_t a= *addr + r;
   work->appendf("$%04x", a);
   
