@@ -274,7 +274,7 @@ cl_m68hc12::disassc(t_addr addr, chars *comment)
 	}
       if (b[i] == '%')
 	{
-	  t_addr a;
+	  t_addr a= addr;
 	  u8_t h, l;
 	  i++;
 	  temp= "";
@@ -473,9 +473,12 @@ CL12::disass_b7(t_addr *addr, chars *work, chars *comment)
 	work->append("TFR");
       else
 	work->append("EXG");
-      while (work->len() < 6) work->append(' ');
+      while (work->len() < 7) work->append(' ');
       u8_t ls= pb&7, ms= (pb>>4)&7;
-      const char *nd= (ms==3)?("TEMP2"):(tex_names[ms]);
+      const char *nd;
+      nd= tex_names[ms];
+      if (ms==3)
+	nd= "TMP2";
       work->appendf("%s", nd);
       work->append(",");
       work->appendf("%s", tex_names[ls]);
@@ -502,7 +505,7 @@ CL12::disass_loop(t_addr *addr, chars *work, chars *comment)
     work->append("NE");
   else
     work->append("EQ");
-  while (work->len() < 6) work->append(' ');
+  while (work->len() < 7) work->append(' ');
 
   work->append(loop_names[code & 0x7]);
   work->append(",");
