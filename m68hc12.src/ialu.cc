@@ -196,7 +196,7 @@ CL12::daa(void)
 
   if ( C && /*(ah>=0x0) &&*/ (ah<=0x2) && !H && /*(al>=0x0) &&*/ (al<=0x9)) { rA+= 0x60; nc= 1; }
   if ( C && /*(ah>=0x0) &&*/ (ah<=0x2) && !H && (al>=0xa) && (al<=0xf)) { rA+= 0x66; nc= 1; }
-  if ( C && /*(ah>=0x0) &&*/ (ah<=0x3) &&  H && (al>=0x0) && (al<=0x3)) { rA+= 0x66; nc= 1; }
+  if ( C && /*(ah>=0x0) &&*/ (ah<=0x3) &&  H && /*(al>=0x0) &&*/ (al<=0x3)) { rA+= 0x66; nc= 1; }
 
   rF&= ~(flagN|flagZ|flagC);
   if (nc) rF|= flagC;
