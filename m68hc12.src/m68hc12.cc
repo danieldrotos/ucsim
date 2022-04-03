@@ -201,7 +201,8 @@ CL12::exec_inst(void)
   t_mem code;
   hcwrapper_fn fn= NULL;
 
-  code= fetch();
+  if (fetch(&code))
+    return resBREAKPOINT;
   if (code == 0x18)
     {
       code= fetch();
