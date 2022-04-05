@@ -102,7 +102,8 @@ CL12::asl16(class cl_memory_cell &dest)
 int
 CL12::inxy(class cl_memory_cell &dest)
 {
-  u8_t f= rF & ~flagZ, v;
+  u8_t f= rF & ~flagZ;
+  u16_t v;
   dest.W(v= dest.R()+1);
   if (!v)
     f|= flagZ;
