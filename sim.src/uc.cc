@@ -1735,9 +1735,21 @@ cl_uc::read_s19_file(cl_f *f)
       switch (s[1])
 	{
 	case '0': break;
-	case '1': a= a16(s, 4); p=  8; written+= s19(this, a, s, p, cnt-2-1); break;
-	case '2': a= a24(s, 4); p= 10; written+= s19(this, a, s, p, cnt-3-1); break;
-	case '3': a= a32(s, 4); p= 12; written+= s19(this, a, s, p, cnt-4-1); break;
+	case '1':
+	  a= a16(s, 4);
+	  p=  8;
+	  written+= s19(this, a, s, p, cnt-2-1);
+	  break;
+	case '2':
+	  a= a24(s, 4);
+	  p= 10;
+	  written+= s19(this, a, s, p, cnt-3-1);
+	  break;
+	case '3':
+	  a= a32(s, 4);
+	  p= 12;
+	  written+= s19(this, a, s, p, cnt-4-1);
+	  break;
 	case '4': break;
 	case '5': break;
 	case '6': break;
