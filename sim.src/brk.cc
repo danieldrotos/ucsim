@@ -90,6 +90,8 @@ cl_brk::activate(void)
 {
   if (mem)
     mem->set_brk(addr, this);
+  else if (cell)
+    cell->set_brk(application->get_uc(), this);
 }
 
 void
@@ -97,6 +99,8 @@ cl_brk::inactivate(void)
 {
   if (mem)
     mem->del_brk(addr, this);
+  else if (cell)
+    cell->del_brk(this);
 }
 
 bool
