@@ -537,7 +537,9 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
       add_var(con, params[0]->value.cell, -1, -1);
       return;
     }
-  else if (cmdline->syntax_match(uc, STRING BIT)) // DEL|ADD
+  else
+  */
+  if (cmdline->syntax_match(uc, STRING BIT)) // DEL|ADD
     {
       char *p1= params[0]->value.string.string;
       if (p1 && *p1)
@@ -567,9 +569,7 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
             }
         }
     }
-  else
-  */
-  if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS NUMBER NUMBER)) // DEL|ADD
+  else if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS NUMBER NUMBER)) // DEL|ADD
     {
       char *p1= params[0]->value.string.string;
       if (p1 && *p1)
