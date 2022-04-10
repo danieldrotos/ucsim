@@ -427,6 +427,9 @@ public:
   virtual class cl_ev_brk *mk_ebrk(enum brk_perm perm,
 				   class cl_address_space *mem,
 				   char op, t_addr addr, int hit);
+  virtual class cl_ev_brk *mk_ebrk(enum brk_perm perm,
+				   class cl_memory_cell *cell,
+				   char op, int hit);
   virtual void check_events(void);
   virtual void stop_when(class cl_time_measurer *t);
   

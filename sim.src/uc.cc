@@ -3377,6 +3377,18 @@ cl_uc::mk_ebrk(enum brk_perm perm, class cl_address_space *mem,
   return(b);
 }
 
+class cl_ev_brk *
+cl_uc::mk_ebrk(enum brk_perm perm, class cl_memory_cell *cell,
+	       char op, int hit)
+{
+  class cl_ev_brk *b;
+  op= toupper(op);
+
+  b= new cl_ev_brk(cell, make_new_brknr(), perm, hit, op);
+  b->init();
+  return(b);
+}
+
 void
 cl_uc::check_events(void)
 {
