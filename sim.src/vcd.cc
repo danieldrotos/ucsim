@@ -501,6 +501,7 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
     cmdline->param(4)
   };
 
+  /*
   if (cmdline->syntax_match(uc, BIT)) // ADD
     {
       add_var(con, params[0]->value.bit.mem, params[0]->value.bit.mem_address, params[0]->value.bit.bitnr_high, params[0]->value.bit.bitnr_low);
@@ -566,7 +567,9 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
             }
         }
     }
-  else if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS NUMBER NUMBER)) // DEL|ADD
+  else
+  */
+  if (cmdline->syntax_match(uc, STRING MEMORY ADDRESS NUMBER NUMBER)) // DEL|ADD
     {
       char *p1= params[0]->value.string.string;
       if (p1 && *p1)
