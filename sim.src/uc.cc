@@ -2464,6 +2464,30 @@ cl_uc::symbol2address(char *sym,
   return false;
 }
 
+bool
+cl_uc::symbol2cell(char *sym,
+		   class cl_memory_cell **cell)
+{
+  t_index i;
+
+  if (!sym ||
+      !*sym)
+    return false;
+  if (vars->by_name.search(sym, i))
+    {
+      class cl_cvar *v= vars->by_name.at(i);
+      class cl_memory_cell *c= v->get_cell();
+      if (c)
+	{
+	  if (cell)
+	    *cell= c;
+	  return true;
+	}
+    }
+  return false;
+}
+
+
 /*
  * Searching for a name in the specified table
  */

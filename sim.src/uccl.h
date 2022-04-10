@@ -467,6 +467,7 @@ public:
   virtual bool symbol2address(char *sym,
 			      class cl_memory **mem,
 			      t_addr *addr);
+  virtual bool symbol2cell(char *sym, class cl_memory_cell **cell);
   virtual name_entry *get_name_entry(struct name_entry tabl[],
 				     char *name);
   virtual chars cell_name(class cl_memory_cell *cell, int bitnr_high, int bitnr_low);
