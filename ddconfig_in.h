@@ -117,6 +117,9 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define to 1 if you have the <wincon.h> header file. */
+#undef HAVE_WINCON_H
+
 /* Define to 1 if you have a working `fork' function. */
 #undef HAVE_WORKING_FORK
 

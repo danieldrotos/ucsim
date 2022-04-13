@@ -278,7 +278,8 @@ AC_CHECK_HEADERS(inttypes.h)
 AC_CHECK_HEADERS(cstdint.h)
 AC_CHECK_HEADERS(stdint.h)
 AC_CHECK_HEADERS(sys/wait.h)
-		     
+AC_CHECK_HEADERS(wincon.h)
+
 AC_CHECK_HEADER(curses.h,
   AC_DEFINE(HAVE_CURSES_H, 1, [XXX])
   curses_h_ok=yes,
