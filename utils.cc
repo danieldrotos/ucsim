@@ -125,8 +125,13 @@ vformat_string(const char *format, va_list ap)
     msg = NULL;
   return(msg);
 #else
+#ifdef HAVE_VSNPRINTF
   msg = (char*)malloc(80*25);
   vsnprintf(msg, 80*25, format, ap);
+#else
+  msg= (char*)malloc(80*25);
+  vsprintf(msg, format, ap);
+#endif
 #endif
   return(msg);
 }
