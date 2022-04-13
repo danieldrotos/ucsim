@@ -17,9 +17,14 @@
 #ifdef HAVE_WINCON_H
 #include <wincon.h>
 #endif
+#ifdef HAVE_WINSOCK2_H
+#include <winsock2.h>
+#endif
 #include <io.h>
 #include <fcntl.h>
 #include <stdarg.h>
+#include <sys/time.h>
+#include <time.h>
 
 #include "fwiocl.h"
 
@@ -688,6 +693,15 @@ set_console_mode()
     }
   
   return 0;
+}
+
+
+double
+dnow(void)
+{
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return (double)tv.tv_sec + ((double)tv.tv_usec/1000000.0);
 }
 
 
