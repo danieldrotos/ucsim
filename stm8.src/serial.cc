@@ -102,19 +102,19 @@ cl_serial::init(void)
 					regs[cr2], 0x80,
 					regs[sr], 0x80,
 					0x8008+txit*4, false, false,
-					chars("", "USART%d_TXE", id), 20*10+1));
+					chars("", "usart%d transmit register empty", id), 20*10+1));
   is->init();
   uc->it_sources->add(is= new cl_it_src(uc, txit,
 					regs[cr2], 0x40,
 					regs[sr], 0x40,
 					0x8008+txit*4, false, false,
-					chars("", "USART%d_TC", id), 20*10+2));
+					chars("", "usart%d transmit complete", id), 20*10+2));
   is->init();
   uc->it_sources->add(is= new cl_it_src(uc, rxit,
 					regs[cr2], 0x20,
 					regs[sr], 0x20,
 					0x8008+rxit*4, false, false,
-					chars("", "USART%d_RX", id), 20*10+3));
+					chars("", "usart%d receive", id), 20*10+3));
   is->init();
 
   sr_read= false;
@@ -255,16 +255,13 @@ cl_serial::tick(int cycles)
 	finish_send();
     }
   if ((ren) &&
-      //io->get_fin() &&
+      io->get_fin() &&
       !s_receiving)
     {
       if (cfg_get(serconf_check_often))
 	{
-	  if (io->get_fin())
-	    {
-	      if (io->input_avail())
-		io->proc_input(0);
-	    }
+	  if (io->input_avail())
+	    io->proc_input(0);
 	}
       if (input_avail)
 	{

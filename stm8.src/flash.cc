@@ -101,20 +101,19 @@ cl_flash::init(void)
 {
   cl_hw::init();
   registration();
+  reset();
   return 0;
 }
 
-/*
 const char *
 cl_flash::cfg_help(t_addr addr)
 {
   switch (addr)
     {
-    case stm8_flash_on: return "Turn ticking of flash on/off (bool, RW)";
+    case stm8_flash_on: return "Turn simulation of flash on/off (bool, RW)";
     }
   return "Not used";
 }
-*/
 
 int
 cl_flash::tick(int cycles)
@@ -196,12 +195,8 @@ cl_flash::reset(void)
 t_mem
 cl_flash::read(class cl_memory_cell *cell)
 {
-  t_mem v;
+  t_mem v= cell->get();
 
-  if (conf(cell, NULL))
-    return cell->get();
-
-  v= cell->get();
   if (cell == pukr)
     v= 0;
   else if (cell == dukr)
@@ -226,6 +221,9 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
   if (conf(cell, val))
     return;
 
+  if (conf(cell, NULL))
+    return;
+  
   if (cell == pukr)
     {
       uc->sim->app->debug("FLASH write-pukr %02x\n",*val);
@@ -317,7 +315,6 @@ cl_flash::write(class cl_memory_cell *cell, t_mem *val)
     }
 }
 
-/*
 t_mem
 cl_flash::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
@@ -339,7 +336,6 @@ cl_flash::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     }
   return cell->get();
 }
-*/
 
 void
 cl_flash::flash_write(t_addr a, t_mem val)
@@ -570,12 +566,12 @@ cl_saf_flash::registration(void)
 					cr1r,0x02,
 					iapsr,0x04,
 					0x8008+24*4, false, false,
-					"FLASH_EOP", 20*20+0));
+					chars("end of flash programming"), 20*20+0));
   uc->it_sources->add(is= new cl_it_src(uc, 24,
 					cr1r,0x02,
 					iapsr,0x01,
 					0x8008+24*4, false, false,
-					"FLASH_RO", 20*20+1));
+					chars("write attempted to protected page"), 20*20+1));
   is->init();
 }
 
@@ -603,12 +599,12 @@ cl_l_flash::registration(void)
 					cr1r,0x02,
 					iapsr,0x04,
 					0x8008+1*4, false, false,
-					"FLASH_EOP", 20*20+0));
+					chars("end of flash programming"), 20*20+0));
   uc->it_sources->add(is= new cl_it_src(uc, 1,
 					cr1r,0x02,
 					iapsr,0x01,
 					0x8008+1*4, false, false,
-					"FLASH_RO", 20*20+1));
+					chars("write attempted to protected page"), 20*20+1));
   is->init();
 }
 
