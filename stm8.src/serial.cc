@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 //#include <stdio.h>
 //#include <stdlib.h>
-//#include <ctype.h>
+#include <ctype.h>
 //#include <errno.h>
 //#include <fcntl.h>
 //#include <sys/time.h>
@@ -140,8 +140,10 @@ cl_serial::read(class cl_memory_cell *cell)
     {
       if (sr_read)
 	regs[sr]->set(regs[sr]->get() | 0x1f);
-      regs[sr]->set(regs[sr]->get() & ~0x20);
+      //regs[sr]->set(regs[sr]->get() & ~0x20);
+      show_readable(false);
       cfg_set(serconf_able_receive, 1);
+      printf("Read:0x%2x,%d,%c\n",s_in,s_in,isprint(s_in)?s_in:' ');
       return s_in;
     }
   sr_read= (cell == regs[sr]);
@@ -246,8 +248,8 @@ cl_serial::tick(int cycles)
       (s_tr_bit >= bits))
     {
       s_sending= false;
-      //io->dd_printf("%c", s_out);
       io->write((char*)&s_out, 1);
+      printf("Sent:0x%02x,%d,%c\n",s_out,s_out,isprint(s_out)?s_out:' ');
       s_tr_bit-= bits;
       if (s_tx_written)
 	restart_send();
@@ -292,6 +294,7 @@ cl_serial::start_send()
 {
   if (ten)
     {
+      printf("start send %c\n",s_txd);
       s_out= s_txd;
       s_tx_written= false;
       s_sending= true;
@@ -305,6 +308,7 @@ cl_serial::restart_send()
 {
   if (ten)
     {
+      printf("restart send %c\n",s_txd);
       s_out= s_txd;
       s_tx_written= false;
       s_sending= true;
@@ -316,6 +320,7 @@ cl_serial::restart_send()
 void
 cl_serial::finish_send()
 {
+  printf("finish send\n");
   show_writable(true);
   show_tx_complete(true);
 }
@@ -334,7 +339,9 @@ void
 cl_serial::reset(void)
 {
   int i;
-  regs[sr]->set(0xc0);
+  regs[sr]->set(0x00);
+  show_writable(true);
+  show_tx_complete(true);
   for (i= 2; i < 12; i++)
     regs[i]->set(0);
 }
@@ -380,38 +387,56 @@ void
 cl_serial::show_writable(bool val)
 {
   if (val)
-    // TXE=1
-    regs[sr]->write(regs[sr]->read() | 0x80);
+    {
+      // TXE=1
+      regs[sr]->set/*write*/(regs[sr]->read() | 0x80);
+      printf("TXE=1 writable\n");
+    }
   else
-    // TXE=0
-    regs[sr]->write(regs[sr]->read() & ~0x80);
+    {
+      // TXE=0
+      regs[sr]->set/*write*/(regs[sr]->read() & ~0x80);
+      printf("TXE=0 non-writable\n");
+    }
 }
 
 void
 cl_serial::show_readable(bool val)
 {
   if (val)
-    regs[sr]->write(regs[sr]->read() | 0x20);
+    {
+      regs[sr]->set/*write*/(regs[sr]->read() | 0x20);
+      printf("RXNE=1 readable\n");
+    }
   else
-    regs[sr]->write(regs[sr]->read() & ~0x20);
+    {
+      regs[sr]->set/*write*/(regs[sr]->read() & ~0x20);
+      printf("RXNE=0 non-readable\n");
+    }
 }
 
 void
 cl_serial::show_tx_complete(bool val)
 {
   if (val)
-    regs[sr]->write(regs[sr]->read() | 0x40);
+    {
+      regs[sr]->set/*write*/(regs[sr]->read() | 0x40);
+      printf("TC=1 complete\n");
+    }
   else
-    regs[sr]->write(regs[sr]->read() & ~0x40);
+    {
+      regs[sr]->set/*write*/(regs[sr]->read() & ~0x40);
+      printf("TC=0 non-complete\n");
+    }
 }
 
 void
 cl_serial::show_idle(bool val)
 {
   if (val)
-    regs[sr]->write(regs[sr]->read() | 0x10);
+    regs[sr]->set/*write*/(regs[sr]->read() | 0x10);
   else
-    regs[sr]->write(regs[sr]->read() & ~0x10);
+    regs[sr]->set/*write*/(regs[sr]->read() & ~0x10);
 }
 
 void
@@ -425,6 +450,15 @@ cl_serial::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on":"off");
   con->dd_printf("clk %s\n", clk_enabled?"enabled":"disabled");
+  con->dd_printf("mcnt=%d/div=%d\n", mcnt, div);
+  con->dd_printf("ting=%d ten=%d,tbit=%d/%d s_out=0x%02x,%d,%c\n",
+		 s_sending?1:0, ten?1:0,s_tr_bit, bits,
+		 s_out, s_out, isprint(s_out)?s_out:' ');
+  con->dd_printf("sing=%d ren=%d,rbit=%d/%d in=0x%02x,%d,%c(av=%d) sr_read=%d\n",
+		 s_receiving?1:0, ren?1:0, s_rec_bit, bits,
+		 input, input, isprint(input)?input:' ',
+		 input_avail?1:0,
+		 sr_read?1:0);
   con->dd_printf("Input: ");
   class cl_f *fin= io->get_fin(), *fout= io->get_fout();
   if (fin)
@@ -432,6 +466,10 @@ cl_serial::print_info(class cl_console_base *con)
   con->dd_printf("Output: ");
   if (fout)
     con->dd_printf("%s/%d", fout->get_file_name(), fout->file_id);
+  con->dd_printf("\n");
+  con->dd_printf("TXE=%d ", (regs[sr]->get() & 0x80)?1:0);
+  con->dd_printf("TC=%d ", (regs[sr]->get() & 0x40)?1:0);
+  con->dd_printf("RXNE=%d ", (regs[sr]->get() & 0x20)?1:0);
   con->dd_printf("\n");
   //print_cfg_info(con);
 }
