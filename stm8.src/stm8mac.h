@@ -28,8 +28,10 @@
 #define fetch1() fetch()
 #define push2(val) {							\
     t_addr sp_before= regs.SP;						\
-    store2(regs.SP-1,(val));						\
-    regs.SP-=2;								\
+    store1(regs.SP,(val));						\
+    cSP.W(regs.SP-1);							\
+    store1(regs.SP,(val)>>8);						\
+    cSP.W(regs.SP-1);							\
     class cl_stack_op *so=						\
       new cl_stack_push(instPC,val,sp_before,regs.SP);			\
     so->init();								\

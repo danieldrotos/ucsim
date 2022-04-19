@@ -109,7 +109,7 @@ cl_stm8::reset(void)
 {
   cl_uc::reset();
 
-  cSP.W(0x17ff);
+  cSP.W(sp_start= 0x17ff);
   regs.A = 0;
   regs.X = 0;
   regs.Y = 0;

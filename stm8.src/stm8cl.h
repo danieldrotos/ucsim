@@ -69,7 +69,7 @@ public:
   class cl_itc *itc;
   class cl_it_src *trap_src;
   class cl_flash *flash_ctrl;
-  t_addr sp_limit;
+  t_addr sp_limit, sp_start;
   class cl_sp cSP;
 public:
   cl_stm8(struct cpu_entry *IType, class cl_sim *asim);
