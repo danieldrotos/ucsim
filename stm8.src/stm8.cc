@@ -1992,6 +1992,7 @@ int
 cl_stm8_cpu::init(void)
 {
   int i;
+  cl_stm8 *u= (cl_stm8*)uc;
   cl_hw::init();
   for (i= 0; i < 11; i++)
     {
@@ -2001,6 +2002,7 @@ cl_stm8_cpu::init(void)
   uc->vars->add(v= new cl_var(chars("sp_limit"), cfg, cpuconf_sp_limit,
 			      cfg_help(cpuconf_sp_limit)));
   v->init();
+  v->write(u->sp_limit);
   
   return 0;
 }
@@ -2071,7 +2073,7 @@ cl_stm8_cpu::read(class cl_memory_cell *cell)
   cl_stm8 *u= (cl_stm8*)uc;
   
   if (conf(cell, NULL))
-    return v;
+    return cell->get();
   if (!uc->rom->is_owned(cell, &a))
     return v;
   if ((a < 0x7f00) ||
@@ -2122,15 +2124,17 @@ t_mem
 cl_stm8_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
   class cl_stm8 *u= (class cl_stm8 *)uc;
-  if (val)
-    cell->set(*val);
   switch ((enum stm8_cpu_cfg)addr)
     {
     case cpuconf_sp_limit:
       if (val)
 	u->sp_limit= *val & 0xffff;
-      else
-	cell->set(u->sp_limit);
+      cell->set(u->sp_limit);
+      return u->sp_limit;
+      break;
+    default:
+      if (val)
+	cell->set(*val);
       break;
     }
   return cell->get();
