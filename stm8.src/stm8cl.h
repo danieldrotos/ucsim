@@ -43,6 +43,7 @@ protected:
   class cl_stm8 *u;
 public:
   void set_uc(class cl_uc *uc) { u= (class cl_stm8*)uc; }
+  virtual t_mem write(t_mem val);
 };
 
   

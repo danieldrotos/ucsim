@@ -59,6 +59,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "bl.h"
 #include "flashcl.h"
 
+
+/*******************************************************************/
+
+t_mem
+cl_sp::write(t_mem val)
+{
+  t_mem l, h;
+  l= u->sp_limit;
+  h= u->sp_start;
+  if (val < u->sp_most)
+    u->sp_most= val;
+  if ((val < l) ||
+      (val > h))
+    {
+      val= val % (h-l+1);
+      val+= l;
+    }
+  return cl_cell16::write(val);
+}
+
+
 /*******************************************************************/
 
 
@@ -109,7 +130,7 @@ cl_stm8::reset(void)
 {
   cl_uc::reset();
 
-  cSP.W(sp_start= 0x17ff);
+  cSP.W(sp_start= sp_most= 0x17ff);
   regs.A = 0;
   regs.X = 0;
   regs.Y = 0;
@@ -997,8 +1018,8 @@ cl_stm8::print_regs(class cl_console_base *con)
   con->dd_printf("Y= 0x%04x %3d %c\n",
                  regs.Y, regs.Y, isprint(regs.Y)?regs.Y:'.');
   con->dd_printf("SP= 0x%04x [SP+1]= %02x %3d %c  Limit= 0x%04x\n",
-                 regs.SP, ram->get(regs.SP+1), ram->get(regs.SP+1),
-                 isprint(ram->get(regs.SP+1))?ram->get(regs.SP+1):'.',
+                 regs.SP, ram->read(regs.SP+1), ram->read(regs.SP+1),
+                 isprint(ram->read(regs.SP+1))?ram->read(regs.SP+1):'.',
 		 AU(sp_limit));
 
   print_disass(PC, con);
@@ -1251,10 +1272,10 @@ cl_stm8::exec_inst(void)
                FLAG_CLEAR(BIT_C);
                return(resGO);
                break;
-            case 0x50: // sub sp,#val
-               regs.SP -= fetch();
-               return(resGO);
-               break;            
+	 case 0x50: // sub sp,#val
+	   cSP.W(regs.SP - fetch());
+	   return(resGO);
+	   break;            
             case 0x60: //div
                return(inst_div(code, cprefix));
                break;
@@ -1328,9 +1349,9 @@ cl_stm8::exec_inst(void)
                return(resGO);
             case 0x90:
                if(cprefix==0x90) {
-                  regs.SP = regs.Y;
+		 cSP.W(regs.Y);
                } else if(cprefix==0x00) {
-                  regs.SP = regs.X;
+		 cSP.W(regs.X);
                } else {
                   return(resHALT);
                }
@@ -1623,10 +1644,10 @@ cl_stm8::exec_inst(void)
 		push1(v);
 		return(resGO);
 	      }
-            case 0x50: // addw sp,#val
-               regs.SP += fetch1();
-               return(resGO);
-               break;
+	 case 0x50: // addw sp,#val
+	   cSP.W(regs.SP + fetch1());
+	   return(resGO);
+	   break;
             case 0x60: // ld (shortoff,SP),A
                store1(fetch1()+regs.SP, regs.A);
                FLAG_NZ(regs.A);
@@ -2056,10 +2077,10 @@ cl_stm8_cpu::write(class cl_memory_cell *cell, t_mem *val)
       u->regs.Y= (u->regs.Y & 0xff00) | (*val);
       break;
     case 8:
-      u->regs.SP= (u->regs.SP & 0xff) | (*val << 8);
+      u->cSP.W((u->regs.SP & 0xff) | (*val << 8));
       break;
     case 9:
-      u->regs.SP= (u->regs.SP & 0xff00) | (*val);
+      u->cSP.W((u->regs.SP & 0xff00) | (*val));
       break;
     case 0xa:
       u->regs.CC= (u->regs.CC & 0xff00) | (*val);

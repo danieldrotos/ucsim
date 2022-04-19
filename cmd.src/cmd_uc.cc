@@ -84,8 +84,10 @@ COMMAND_DO_WORK_UC(cl_state_cmd)
 		 (uc->ticks->get_ticks() == 0 ? 0.0 :
 		   (100.0 * uc->idle_ticks->get_rtime() / uc->ticks->get_rtime())));
 
-  con->dd_printf("Max value of stack pointer= 0x%06x, avg= 0x%06x\n",
-		 AU(uc->sp_max), AU(uc->sp_avg));
+  con->dd_printf("Most value of stack pointer= 0x%06x",
+		 AU(uc->sp_most));
+  //con->dd_printf(", avg= 0x%06x", AU(uc->sp_avg));
+  con->dd_printf("\n");
   con->dd_printf("Simulation: %s\n",
 		 (uc->sim->state & SIM_GO)?"running":"stopped");
   con->dd_printf("Runtime: %f sec\n", dnow()-app_start_at);
