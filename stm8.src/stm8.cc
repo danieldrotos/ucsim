@@ -71,6 +71,8 @@ cl_stm8::cl_stm8(struct cpu_entry *IType, class cl_sim *asim):
 {
   type= IType;
   flash_ctrl= NULL;
+  cSP.set_uc(this);
+  cSP.decode(&regs.SP);
 }
 
 int
@@ -107,7 +109,7 @@ cl_stm8::reset(void)
 {
   cl_uc::reset();
 
-  regs.SP = 0x17ff;
+  cSP.W(0x17ff);
   regs.A = 0;
   regs.X = 0;
   regs.Y = 0;

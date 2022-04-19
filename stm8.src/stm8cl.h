@@ -35,6 +35,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itccl.h"
 
 
+class cl_stm8;
+
+class cl_sp: public cl_cell16
+{
+protected:
+  class cl_stm8 *u;
+public:
+  void set_uc(class cl_uc *uc) { u= (class cl_stm8*)uc; }
+};
+
+  
 /*
  * Base type of STM8 microcontrollers
  */
@@ -59,6 +70,7 @@ public:
   class cl_it_src *trap_src;
   class cl_flash *flash_ctrl;
   t_addr sp_limit;
+  class cl_sp cSP;
 public:
   cl_stm8(struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
