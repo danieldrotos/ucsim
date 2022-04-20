@@ -104,6 +104,27 @@ cl_flash::init(void)
   return 0;
 }
 
+void
+cl_flash::reset(void)
+{
+  uc->sim->app->debug("FLASH reset\n");
+  puk1st= false;
+  duk1st= false;
+  p_unlocked= false;
+  d_unlocked= false;
+  p_failed= false;
+  d_failed= false;
+
+  state= fs_wait_mode;
+  mode= fm_unknown;
+  
+  cr1r->set/*write*/(0);
+  iapsr->set/*write*/(0x40);
+  cr2r->set/*write*/(0);
+  if (ncr2r)
+    ncr2r->set/*write*/(0xff);
+}
+
 
 const char *
 cl_flash::cfg_help(t_addr addr)
@@ -170,27 +191,6 @@ cl_flash::finish_program(bool ok)
   else
     iapsr->set(iapsr->get() | 0x01);
   state= fs_wait_mode;
-}
-
-void
-cl_flash::reset(void)
-{
-  uc->sim->app->debug("FLASH reset\n");
-  puk1st= false;
-  duk1st= false;
-  p_unlocked= false;
-  d_unlocked= false;
-  p_failed= false;
-  d_failed= false;
-
-  state= fs_wait_mode;
-  mode= fm_unknown;
-  
-  cr1r->write(0);
-  iapsr->write(0x40);
-  cr2r->write(0);
-  if (ncr2r)
-    ncr2r->write(0xff);
 }
 
 t_mem
