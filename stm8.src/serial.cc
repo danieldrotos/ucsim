@@ -90,13 +90,10 @@ cl_serial::init(void)
   
   set_name("stm8_uart");
   cl_serial_hw::init();
-  clk_enabled= false;
   for (i= 0; i < 12; i++)
     {
       regs[i]= register_cell(uc->rom, base+i);
     }
-  pick_div();
-  pick_ctrl();
 
   uc->it_sources->add(is= new cl_it_src(uc, txit,
 					regs[cr2], 0x80,
@@ -122,6 +119,23 @@ cl_serial::init(void)
   return(0);
 }
 
+void
+cl_serial::reset(void)
+{
+  int i;
+  regs[sr]->set(0x00);
+  show_writable(true);
+  show_tx_complete(true);
+  for (i= 2; i < 12; i++)
+    regs[i]->set(0);
+
+  s_sending= s_receiving= false;
+  clk_enabled= false;
+  pick_div();
+  pick_ctrl();
+
+}
+
 
 void
 cl_serial::new_hw_added(class cl_hw *new_hw)
@@ -143,7 +157,6 @@ cl_serial::read(class cl_memory_cell *cell)
       //regs[sr]->set(regs[sr]->get() & ~0x20);
       show_readable(false);
       cfg_set(serconf_able_receive, 1);
-      printf("Read:0x%2x,%d,%c\n",s_in,s_in,isprint(s_in)?s_in:' ');
       return s_in;
     }
   sr_read= (cell == regs[sr]);
@@ -249,7 +262,6 @@ cl_serial::tick(int cycles)
     {
       s_sending= false;
       io->write((char*)&s_out, 1);
-      printf("Sent:0x%02x,%d,%c\n",s_out,s_out,isprint(s_out)?s_out:' ');
       s_tr_bit-= bits;
       if (s_tx_written)
 	restart_send();
@@ -294,7 +306,6 @@ cl_serial::start_send()
 {
   if (ten)
     {
-      printf("start send %c\n",s_txd);
       s_out= s_txd;
       s_tx_written= false;
       s_sending= true;
@@ -308,7 +319,6 @@ cl_serial::restart_send()
 {
   if (ten)
     {
-      printf("restart send %c\n",s_txd);
       s_out= s_txd;
       s_tx_written= false;
       s_sending= true;
@@ -320,7 +330,6 @@ cl_serial::restart_send()
 void
 cl_serial::finish_send()
 {
-  printf("finish send\n");
   show_writable(true);
   show_tx_complete(true);
 }
@@ -333,17 +342,6 @@ cl_serial::received()
   if (regs[sr]->get() & 0x20)
     regs[sr]->set(regs[sr]->get() | 0x08); // overrun
   show_readable(true);
-}
-
-void
-cl_serial::reset(void)
-{
-  int i;
-  regs[sr]->set(0x00);
-  show_writable(true);
-  show_tx_complete(true);
-  for (i= 2; i < 12; i++)
-    regs[i]->set(0);
 }
 
 void
@@ -387,56 +385,38 @@ void
 cl_serial::show_writable(bool val)
 {
   if (val)
-    {
-      // TXE=1
-      regs[sr]->set/*write*/(regs[sr]->read() | 0x80);
-      printf("TXE=1 writable\n");
-    }
+    // TXE=1
+    regs[sr]->set(regs[sr]->read() | 0x80);
   else
-    {
-      // TXE=0
-      regs[sr]->set/*write*/(regs[sr]->read() & ~0x80);
-      printf("TXE=0 non-writable\n");
-    }
+    // TXE=0
+    regs[sr]->set(regs[sr]->read() & ~0x80);
 }
 
 void
 cl_serial::show_readable(bool val)
 {
   if (val)
-    {
-      regs[sr]->set/*write*/(regs[sr]->read() | 0x20);
-      printf("RXNE=1 readable\n");
-    }
+    regs[sr]->set(regs[sr]->read() | 0x20);
   else
-    {
-      regs[sr]->set/*write*/(regs[sr]->read() & ~0x20);
-      printf("RXNE=0 non-readable\n");
-    }
+    regs[sr]->set(regs[sr]->read() & ~0x20);
 }
 
 void
 cl_serial::show_tx_complete(bool val)
 {
   if (val)
-    {
-      regs[sr]->set/*write*/(regs[sr]->read() | 0x40);
-      printf("TC=1 complete\n");
-    }
+    regs[sr]->set(regs[sr]->read() | 0x40);
   else
-    {
-      regs[sr]->set/*write*/(regs[sr]->read() & ~0x40);
-      printf("TC=0 non-complete\n");
-    }
+    regs[sr]->set(regs[sr]->read() & ~0x40);
 }
 
 void
 cl_serial::show_idle(bool val)
 {
   if (val)
-    regs[sr]->set/*write*/(regs[sr]->read() | 0x10);
+    regs[sr]->set(regs[sr]->read() | 0x10);
   else
-    regs[sr]->set/*write*/(regs[sr]->read() & ~0x10);
+    regs[sr]->set(regs[sr]->read() & ~0x10);
 }
 
 void
