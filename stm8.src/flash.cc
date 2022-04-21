@@ -190,6 +190,7 @@ cl_flash::finish_program(bool ok)
     iapsr->set(iapsr->get() | 0x04);
   else
     iapsr->set(iapsr->get() | 0x01);
+  uc->sim->app->debug("FLASH prg finish\n");
   state= fs_wait_mode;
 }
 
@@ -479,6 +480,7 @@ cl_flash::set_flash_mode(t_mem cr2val)
       wbuf_size= 4;
     }
   state= fs_wait_data;
+  uc->sim->app->debug("FLASH state=wait_data\n");
   wbuf_started= false;
   wbuf_start= 0;
 }
