@@ -41,8 +41,13 @@ class cl_sp: public cl_cell16
 {
 protected:
   class cl_stm8 *u;
+  bool rollover;
 public:
-  void set_uc(class cl_uc *uc) { u= (class cl_stm8*)uc; }
+  cl_sp(): cl_cell16() {  u=NULL; rollover= true; }
+public:
+  virtual void set_uc(class cl_uc *uc) { u= (class cl_stm8*)uc; }
+  virtual void set_rollover(bool val) { rollover= val; }
+  virtual bool get_rollover(void) { return rollover; }
   virtual t_mem write(t_mem val);
 };
 
@@ -116,6 +121,7 @@ public:
 enum stm8_cpu_cfg
   {
    cpuconf_sp_limit	= 0,
+   cpuconf_rollover	= 1
   };
 
 class cl_stm8_cpu: public cl_hw

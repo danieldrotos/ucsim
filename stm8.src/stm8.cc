@@ -70,12 +70,8 @@ cl_sp::write(t_mem val)
   h= u->sp_start;
   if (val < u->sp_most)
     u->sp_most= val;
-  if ((val < l) ||
-      (val > h))
-    {
-      val= val % (h-l+1);
-      val+= l;
-    }
+  if (rollover && (val == l))
+    val= h;
   return cl_cell16::write(val);
 }
 
@@ -100,7 +96,7 @@ int
 cl_stm8::init(void)
 {
   cl_uc::init(); /* Memories now exist */
-  sp_limit= 0x1500;
+  sp_limit= 0x14ff;
 
   set_xtal(8000000);
 
@@ -1273,7 +1269,7 @@ cl_stm8::exec_inst(void)
                return(resGO);
                break;
 	 case 0x50: // sub sp,#val
-	   cSP.W(regs.SP - fetch());
+	   cSP.set(regs.SP - fetch());
 	   return(resGO);
 	   break;            
             case 0x60: //div
@@ -1349,9 +1345,9 @@ cl_stm8::exec_inst(void)
                return(resGO);
             case 0x90:
                if(cprefix==0x90) {
-		 cSP.W(regs.Y);
+		 cSP.set(regs.Y);
                } else if(cprefix==0x00) {
-		 cSP.W(regs.X);
+		 cSP.set(regs.X);
                } else {
                   return(resHALT);
                }
@@ -1645,7 +1641,7 @@ cl_stm8::exec_inst(void)
 		return(resGO);
 	      }
 	 case 0x50: // addw sp,#val
-	   cSP.W(regs.SP + fetch1());
+	   cSP.set(regs.SP + fetch1());
 	   return(resGO);
 	   break;
             case 0x60: // ld (shortoff,SP),A
@@ -2077,10 +2073,10 @@ cl_stm8_cpu::write(class cl_memory_cell *cell, t_mem *val)
       u->regs.Y= (u->regs.Y & 0xff00) | (*val);
       break;
     case 8:
-      u->cSP.W((u->regs.SP & 0xff) | (*val << 8));
+      u->cSP.set((u->regs.SP & 0xff) | (*val << 8));
       break;
     case 9:
-      u->cSP.W((u->regs.SP & 0xff00) | (*val));
+      u->cSP.set((u->regs.SP & 0xff00) | (*val));
       break;
     case 0xa:
       u->regs.CC= (u->regs.CC & 0xff00) | (*val);
@@ -2155,6 +2151,11 @@ cl_stm8_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       cell->set(u->sp_limit);
       return u->sp_limit;
       break;
+    case cpuconf_rollover:
+      if (val)
+	u->cSP.set_rollover(*val);
+      cell->set((u->cSP.get_rollover())?1:0);
+      break;
     default:
       if (val)
 	cell->set(*val);
@@ -2170,6 +2171,8 @@ cl_stm8_cpu::cfg_help(t_addr addr)
     {
     case cpuconf_sp_limit:
       return "Stack overflows when SP is below this limit";
+    case cpuconf_rollover:
+      return "Use hw roll-over of stack pointer";
     }
   return "Not used";
 }
