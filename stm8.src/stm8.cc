@@ -2022,6 +2022,10 @@ cl_stm8_cpu::init(void)
 			      cfg_help(cpuconf_sp_limit)));
   v->init();
   v->write(u->sp_limit);
+
+  uc->vars->add(v= new cl_var(chars("rollover"), cfg, cpuconf_rollover,
+			      cfg_help(cpuconf_rollover)));
+  v->init();
   
   return 0;
 }
@@ -2170,7 +2174,7 @@ cl_stm8_cpu::cfg_help(t_addr addr)
   switch (addr)
     {
     case cpuconf_sp_limit:
-      return "Stack overflows when SP is below this limit";
+      return "Stack overflows when SP reaches this limit";
     case cpuconf_rollover:
       return "Use hw roll-over of stack pointer";
     }
