@@ -299,8 +299,8 @@ public:
   class cl_list *errors;	// Errors of instruction execution
   class cl_list *events;	// Events happened during inst exec
 
-  t_addr sp_max;
-  t_addr sp_avg;
+  t_addr sp_most;
+  //t_addr sp_avg;
 
   bool vcd_break;
 

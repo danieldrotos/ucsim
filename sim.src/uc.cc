@@ -547,8 +547,8 @@ cl_uc::cl_uc(class cl_sim *asim):
   stack_ops= new cl_list(2, 2, "stack operations");
   errors= new cl_list(2, 2, "errors in uc");
   events= new cl_list(2, 2, "events in uc");
-  sp_max= 0;
-  sp_avg= 0;
+  sp_most= 0;
+  //sp_avg= 0;
   inst_exec= false;
   hist= new cl_exec_hist(this);
 }
@@ -662,8 +662,8 @@ cl_uc::reset(void)
       delete il;
       il= (class it_level *)(it_levels->top());
     }
-  sp_max= 0;
-  sp_avg= 0;
+  sp_most= 0;
+  //sp_avg= 0;
 
   stack_ops->free_all();
 

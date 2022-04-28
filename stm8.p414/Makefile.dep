@@ -1,0 +1,126 @@
+bl.o: bl.cc ../stypes.h ../ddconfig.h bl.h
+bl_head.o: bl_head.cc bl.h
+bl_l15x46.o: bl_l15x46.cc
+bl_s105.o: bl_s105.cc
+clk.o: clk.cc ../utils.h ../stypes.h ../ddconfig.h ../charscl.h \
+ ../fiocl.h ../pobjcl.h ../pobjt.h ../eventcl.h stm8cl.h \
+ ../sim.src/uccl.h ../stypes.h ../pobjcl.h ../pobjt.h ../sim.src/hwcl.h \
+ ../sim.src/guiobjcl.h ../ddconfig.h ../cmd.src/newcmdcl.h ../optioncl.h \
+ ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h ../cmd.src/newcmdposixcl.h \
+ ../fiocl.h ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h \
+ ../errorcl.h ../sim.src/uccl.h ../sim.src/brkcl.h ../sim.src/stackcl.h \
+ ../sim.src/varcl.h ../sim.src/uccl_instructions.h ../sim.src/itsrccl.h \
+ ../sim.src/itsrccl.h regsstm8.h itccl.h instcl.h clkcl.h \
+ ../sim.src/hwcl.h
+flash.o: flash.cc ../globals.h ../ddconfig.h ../stypes.h ../appcl.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../optioncl.h \
+ ../sim.src/argcl.h ../pobjcl.h ../stypes.h ../sim.src/simcl.h \
+ ../cmd.src/newcmdcl.h ../ddconfig.h ../optioncl.h ../cmd.src/commandcl.h \
+ ../cmd.src/newcmdcl.h ../gui.src/guicl.h ../gui.src/ifcl.h \
+ ../sim.src/guiobjcl.h ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h \
+ ../sim.src/guiobjcl.h ../cmd.src/newcmdposixcl.h ../fiocl.h \
+ ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h ../errorcl.h \
+ ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/argcl.h stm8cl.h \
+ ../sim.src/uccl.h ../sim.src/itsrccl.h ../sim.src/itsrccl.h regsstm8.h \
+ itccl.h instcl.h flashcl.h ../sim.src/hwcl.h ../sim.src/memcl.h
+glob.o: glob.cc ../stypes.h ../ddconfig.h
+inst.o: inst.cc stm8cl.h ../sim.src/uccl.h ../stypes.h ../ddconfig.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../pobjt.h \
+ ../sim.src/hwcl.h ../sim.src/guiobjcl.h ../ddconfig.h \
+ ../cmd.src/newcmdcl.h ../optioncl.h ../pobjcl.h ../stypes.h \
+ ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h ../cmd.src/newcmdposixcl.h \
+ ../fiocl.h ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h \
+ ../errorcl.h ../sim.src/uccl.h ../sim.src/brkcl.h ../sim.src/stackcl.h \
+ ../sim.src/varcl.h ../sim.src/uccl_instructions.h ../sim.src/itsrccl.h \
+ ../sim.src/itsrccl.h regsstm8.h itccl.h instcl.h stm8mac.h
+itc.o: itc.cc ../utils.h ../stypes.h ../ddconfig.h ../charscl.h \
+ ../fiocl.h ../pobjcl.h ../pobjt.h ../eventcl.h ../sim.src/itsrccl.h \
+ ../pobjcl.h ../stypes.h ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h \
+ ../sim.src/guiobjcl.h ../ddconfig.h ../cmd.src/newcmdcl.h ../optioncl.h \
+ ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h ../cmd.src/newcmdposixcl.h \
+ ../fiocl.h ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h \
+ ../errorcl.h ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/itsrccl.h itccl.h \
+ ../sim.src/uccl.h
+port.o: port.cc stm8cl.h ../sim.src/uccl.h ../stypes.h ../ddconfig.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../pobjt.h \
+ ../sim.src/hwcl.h ../sim.src/guiobjcl.h ../ddconfig.h \
+ ../cmd.src/newcmdcl.h ../optioncl.h ../pobjcl.h ../stypes.h \
+ ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h ../cmd.src/newcmdposixcl.h \
+ ../fiocl.h ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h \
+ ../errorcl.h ../sim.src/uccl.h ../sim.src/brkcl.h ../sim.src/stackcl.h \
+ ../sim.src/varcl.h ../sim.src/uccl_instructions.h ../sim.src/itsrccl.h \
+ ../sim.src/itsrccl.h regsstm8.h itccl.h instcl.h portcl.h \
+ ../sim.src/port_hwcl.h
+rst.o: rst.cc rstcl.h ../sim.src/hwcl.h ../stypes.h ../ddconfig.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../sim.src/guiobjcl.h \
+ ../ddconfig.h ../cmd.src/newcmdcl.h ../optioncl.h ../pobjcl.h \
+ ../stypes.h ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h \
+ ../cmd.src/newcmdposixcl.h ../fiocl.h ../cmd.src/cmdutil.h \
+ ../sim.src/memcl.h ../eventcl.h ../errorcl.h ../sim.src/uccl.h \
+ ../pobjt.h ../sim.src/hwcl.h ../sim.src/brkcl.h ../sim.src/stackcl.h \
+ ../sim.src/varcl.h ../sim.src/uccl_instructions.h
+serial.o: serial.cc ../ddconfig.h ../sim.src/itsrccl.h ../pobjcl.h \
+ ../ddconfig.h ../pobjt.h ../eventcl.h ../charscl.h ../stypes.h \
+ ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h ../sim.src/guiobjcl.h \
+ ../cmd.src/newcmdcl.h ../optioncl.h ../pobjcl.h ../stypes.h \
+ ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h ../cmd.src/newcmdposixcl.h \
+ ../fiocl.h ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h \
+ ../errorcl.h ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/itsrccl.h clkcl.h \
+ ../sim.src/hwcl.h serialcl.h ../sim.src/uccl.h ../sim.src/serial_hwcl.h
+simstm8.o: simstm8.cc ../globals.h ../ddconfig.h ../stypes.h ../appcl.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../optioncl.h \
+ ../sim.src/argcl.h ../pobjcl.h ../stypes.h ../sim.src/simcl.h \
+ ../cmd.src/newcmdcl.h ../ddconfig.h ../optioncl.h ../cmd.src/commandcl.h \
+ ../cmd.src/newcmdcl.h ../gui.src/guicl.h ../gui.src/ifcl.h \
+ ../sim.src/guiobjcl.h ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h \
+ ../sim.src/guiobjcl.h ../cmd.src/newcmdposixcl.h ../fiocl.h \
+ ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h ../errorcl.h \
+ ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/argcl.h simstm8cl.h stm8cl.h \
+ ../sim.src/uccl.h ../sim.src/itsrccl.h ../sim.src/itsrccl.h regsstm8.h \
+ itccl.h instcl.h
+sstm8.o: sstm8.cc ../globals.h ../ddconfig.h ../stypes.h ../appcl.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../optioncl.h \
+ ../sim.src/argcl.h ../pobjcl.h ../stypes.h ../sim.src/simcl.h \
+ ../cmd.src/newcmdcl.h ../ddconfig.h ../optioncl.h ../cmd.src/commandcl.h \
+ ../cmd.src/newcmdcl.h ../gui.src/guicl.h ../gui.src/ifcl.h \
+ ../sim.src/guiobjcl.h ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h \
+ ../sim.src/guiobjcl.h ../cmd.src/newcmdposixcl.h ../fiocl.h \
+ ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h ../errorcl.h \
+ ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/argcl.h ../utils.h ../fiocl.h \
+ simstm8cl.h
+stm8.o: stm8.cc ../globals.h ../ddconfig.h ../stypes.h ../appcl.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../optioncl.h \
+ ../sim.src/argcl.h ../pobjcl.h ../stypes.h ../sim.src/simcl.h \
+ ../cmd.src/newcmdcl.h ../ddconfig.h ../optioncl.h ../cmd.src/commandcl.h \
+ ../cmd.src/newcmdcl.h ../gui.src/guicl.h ../gui.src/ifcl.h \
+ ../sim.src/guiobjcl.h ../sim.src/uccl.h ../pobjt.h ../sim.src/hwcl.h \
+ ../sim.src/guiobjcl.h ../cmd.src/newcmdposixcl.h ../fiocl.h \
+ ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h ../errorcl.h \
+ ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/argcl.h ../sim.src/dregcl.h \
+ stm8cl.h ../sim.src/uccl.h ../sim.src/itsrccl.h ../sim.src/itsrccl.h \
+ regsstm8.h itccl.h instcl.h glob.h stm8mac.h serialcl.h \
+ ../sim.src/serial_hwcl.h rstcl.h ../sim.src/hwcl.h timercl.h portcl.h \
+ ../sim.src/port_hwcl.h clkcl.h uidcl.h bl.h flashcl.h ../sim.src/memcl.h
+timer.o: timer.cc ../sim.src/itsrccl.h ../pobjcl.h ../ddconfig.h \
+ ../pobjt.h ../eventcl.h ../charscl.h ../stypes.h ../sim.src/uccl.h \
+ ../pobjt.h ../sim.src/hwcl.h ../sim.src/guiobjcl.h ../ddconfig.h \
+ ../cmd.src/newcmdcl.h ../optioncl.h ../pobjcl.h ../stypes.h \
+ ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h ../cmd.src/newcmdposixcl.h \
+ ../fiocl.h ../cmd.src/cmdutil.h ../sim.src/memcl.h ../eventcl.h \
+ ../errorcl.h ../sim.src/brkcl.h ../sim.src/stackcl.h ../sim.src/varcl.h \
+ ../sim.src/uccl_instructions.h ../sim.src/itsrccl.h clkcl.h \
+ ../sim.src/hwcl.h timercl.h
+uid.o: uid.cc uidcl.h ../sim.src/hwcl.h ../stypes.h ../ddconfig.h \
+ ../pobjcl.h ../pobjt.h ../eventcl.h ../charscl.h ../sim.src/guiobjcl.h \
+ ../ddconfig.h ../cmd.src/newcmdcl.h ../optioncl.h ../pobjcl.h \
+ ../stypes.h ../cmd.src/commandcl.h ../cmd.src/newcmdcl.h \
+ ../cmd.src/newcmdposixcl.h ../fiocl.h ../cmd.src/cmdutil.h \
+ ../sim.src/memcl.h ../eventcl.h ../errorcl.h ../sim.src/uccl.h \
+ ../pobjt.h ../sim.src/hwcl.h ../sim.src/brkcl.h ../sim.src/stackcl.h \
+ ../sim.src/varcl.h ../sim.src/uccl_instructions.h
