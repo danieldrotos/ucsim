@@ -80,7 +80,7 @@ all: checkconf otherlibs $(TN).src
 # Compiling and installing everything and runing test
 # ---------------------------------------------------
 install: all installdirs install_shared_lib
-	$(INSTALL) $(SEN) $(DESTDIR)$(bindir)/$(LEN)
+	$(INSTALL) $(LEN) $(DESTDIR)$(bindir)/$(LEN)
 	$(STRIP) $(DESTDIR)$(bindir)/$(LEN)
 	rm -f $(DESTDIR)$(bindir)/$(SEN)
 
