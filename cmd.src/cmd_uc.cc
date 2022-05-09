@@ -97,7 +97,7 @@ COMMAND_DO_WORK_UC(cl_state_cmd)
 CMDHELP(cl_state_cmd,
 	"state",
 	"State of microcontroller",
-	"long help of state")
+	"")
 
 /*
  * Command: file
@@ -130,7 +130,7 @@ COMMAND_DO_WORK_UC(cl_file_cmd)
 CMDHELP(cl_file_cmd,
 	"file \"FILE\"",
         "Load FILE into ROM",
-	"long help of file")
+	"")
 
 /*
  * Command: download
@@ -153,7 +153,7 @@ COMMAND_DO_WORK_UC(cl_dl_cmd)
 CMDHELP(cl_dl_cmd,
 	"download",
 	"Load (intel.hex) data",
-	"long help of download")
+	"")
 
 /*
  * Command: pc
@@ -192,7 +192,7 @@ COMMAND_DO_WORK_UC(cl_pc_cmd)
 CMDHELP(cl_pc_cmd,
 	"pc [addr]",
 	"Set/get PC",
-	"long help of pc")
+	"")
 
 /*
  * Command: reset
@@ -211,7 +211,7 @@ COMMAND_DO_WORK_UC(cl_reset_cmd)
 CMDHELP(cl_reset_cmd,
 	"reset",
 	"Reset processor to start state",
-	"long help of reset")
+	"")
 
 /*
  * Command: tick
@@ -393,7 +393,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
 CMDHELP(cl_dump_cmd,
 	"dump [/format] memory_type [start [stop [bytes_per_line]]] | dump bit...",
 	"Dump memory of specified type or bit(s)",
-	"long help of dump")
+	"")
 
 /*
  * Command: di
@@ -414,7 +414,7 @@ COMMAND_DO_WORK_UC(cl_di_cmd)
 CMDHELP(cl_di_cmd,
 	"di [start [stop]]",
 	"Dump Internal RAM",
-	"long help of di")
+	"")
 
 /*
  * Command: dx
@@ -435,7 +435,7 @@ COMMAND_DO_WORK_UC(cl_dx_cmd)
 CMDHELP(cl_dx_cmd,
 	"dx [start [stop]]",
 	"Dump External RAM",
-	"long help of dx")
+	"")
 
 /*
  * Command: dch
@@ -456,7 +456,7 @@ COMMAND_DO_WORK_UC(cl_dch_cmd)
 CMDHELP(cl_dch_cmd,
 	"dch [start [stop]]",
 	"Dump code in hex form",
-	"long help of dch")
+	"")
 
 /*
  * Command: ds
@@ -477,7 +477,7 @@ COMMAND_DO_WORK_UC(cl_ds_cmd)
 CMDHELP(cl_ds_cmd,
 	"ds [start [stop]]",
 	"Dump SFR",
-	"long help of ds")
+	"")
 
 /*
  * Command: dc
@@ -528,7 +528,7 @@ COMMAND_DO_WORK_UC(cl_dc_cmd)
 CMDHELP(cl_dc_cmd,
 	"dc [start [stop]]",
 	"Dump code in disass form",
-	"long help of dc")
+	"")
 
 /*
  * Command: disassemble
@@ -634,7 +634,7 @@ COMMAND_DO_WORK_UC(cl_disassemble_cmd)
 CMDHELP(cl_disassemble_cmd,
 	"disassemble [start [offset [lines]]]",
 	"Disassemble code",
-	"long help of disassemble")
+	"")
 
 /*
  * Command: fill
@@ -676,7 +676,7 @@ COMMAND_DO_WORK_UC(cl_fill_cmd)
 CMDHELP(cl_fill_cmd,
 	"fill memory_type start end data",
 	"Fill memory region with data",
-	"long help of fill")
+	"")
 
 /*
  * Command: where
@@ -728,7 +728,7 @@ COMMAND_DO_WORK_UC(cl_where_cmd)
 CMDHELP(cl_where_cmd,
 	"where memory_type data...",
 	"Case unsensitive search for data",
-	"long help of where")
+	"")
 
 //int
 //cl_Where_cmd::do_work(class cl_sim *sim,
@@ -741,7 +741,7 @@ COMMAND_DO_WORK_UC(cl_Where_cmd)
 CMDHELP(cl_Where_cmd,
 	"Where memory_type data...",
 	"Case sensitive search for data",
-	"long help of Where")
+	"")
 
 
 /*
@@ -839,7 +839,7 @@ COMMAND_DO_WORK_UC(cl_hole_cmd)
 CMDHELP(cl_hole_cmd,
 	"hole [memory [length [value]]]",
 	"search area in memory (min length), filled with value",
-	"long help of hole")
+	"")
 
 
 /*
@@ -944,7 +944,7 @@ COMMAND_DO_WORK_UC(cl_var_cmd)
 CMDHELP(cl_var_cmd,
 	"var name [memory addr [bit_nr]]",
 	"Create new variable",
-	"long help of var")
+	"")
 
 /*
  * Command: rmvar
@@ -1008,6 +1008,6 @@ COMMAND_DO_WORK_UC(cl_analyze_cmd)
 CMDHELP(cl_analyze_cmd,
 	"analyze [addr...]",
 	"Analyze reachable code globally or from the address(es) given",
-	"long help of analyze")
+	"")
 
 /* End of cmd.src/cmd_uc.cc */

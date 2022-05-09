@@ -1087,8 +1087,8 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
   cmdset->add(cmd= new cl_rmvar_cmd("rmvar", 0));
   cmd->init();
 
-  cmdset->add(cmd= new cl_analyze_cmd("analyze", 0));
-  cmd->add_name("analyse");
+  cmdset->add(cmd= new cl_analyze_cmd("analyse", 0));
+  cmd->add_name("analyze");
   cmd->init();
 }
 
