@@ -594,7 +594,7 @@ cl_uc::init(void)
     set_xtal(11059200);
   stop_selfjump= false;
   stop_selfjump_option->option->set_value(stop_selfjump);
-  analyzer= true;
+  analyzer= false;
   analyzer_option->option->set_value(analyzer);
   vars= new cl_var_list();
   make_variables();

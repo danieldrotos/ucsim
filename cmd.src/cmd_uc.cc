@@ -606,16 +606,23 @@ COMMAND_DO_WORK_UC(cl_disassemble_cmd)
 	}
     }
   
-  
+  i64_t a, n;
+  a= realstart;
   while (lines)
     {
       int len;
-      uc->print_disass(realstart, con);
+      t_addr ta, tn;
+      ta= (t_addr)a;
+      uc->print_disass(ta, con);
       /* fix for #2383: start search next instruction after the actual one */
-      len= uc->inst_length(realstart);
-      realstart= rom->inc_address(realstart, /*+1*/len) + rom->start_address;
-      while (!uc->inst_at(realstart))
-        realstart= rom->inc_address(realstart, +1) + rom->start_address;
+      len= uc->inst_length(ta);
+      tn= rom->inc_address(ta, /*+1*/len) + rom->start_address;
+      while (!uc->inst_at(tn))
+        tn= rom->inc_address(tn, +1) + rom->start_address;
+      n= (i64_t)tn;
+      if (n <= a)
+	break;
+      a= n;
       lines--;
     }
 
@@ -974,7 +981,7 @@ COMMAND_DO_WORK_UC(cl_analyze_cmd)
         class cl_cmd_arg *param = cmdline->param(i);
         if (param)
           {
-            if (param->as_bit(uc))
+            /*if (param->as_bit(uc))
               {
                 if (param->value.bit.mem == uc->rom)
                   uc->analyze(param->value.bit.mem_address);
@@ -986,7 +993,12 @@ COMMAND_DO_WORK_UC(cl_analyze_cmd)
                   }
               }
             else
-              con->dd_printf("%s cannot be interpreted as a rom address\n", cmdline->tokens->at(i));
+	    con->dd_printf("%s cannot be interpreted as a rom address\n", cmdline->tokens->at(i));*/
+	    t_addr addr;
+	    if (param->get_address(uc, &addr))
+	      {
+		uc->analyze(addr);
+	      }
           }
       }
 

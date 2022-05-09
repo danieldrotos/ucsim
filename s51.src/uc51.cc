@@ -1599,6 +1599,7 @@ cl_51core::analyze(t_addr addr)
 	    analyze_jump(addr, a, 'j');
 	    return;
 	  }
+	case ' ': break;
 	case '_':
 	  return;
 	default:
