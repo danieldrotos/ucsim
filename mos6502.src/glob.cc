@@ -41,6 +41,8 @@ instruction_wrapper_fn itab[256];
 	p abs.Y
 	r rel
 	# imm8
+	3 (ind)
+	4 (zind)
 */
 
 // code mask branch len mn call tick
@@ -223,13 +225,20 @@ struct dis_entry disass_mos6502[]=
 
 struct dis_entry disass_mos65c02[]=
   {
+    { 0x02, 0xff, ' ', 2, "NOP %#" },
     { 0x12, 0xff, ' ', 2, "ORA %4" },
+    { 0x22, 0xff, ' ', 2, "NOP %#" },
     { 0x32, 0xff, ' ', 2, "AND %4" },
+    { 0x42, 0xff, ' ', 2, "NOP %#" },
     { 0x52, 0xff, ' ', 2, "EOR %4" },
+    { 0x62, 0xff, ' ', 2, "NOP %#" },
     { 0x72, 0xff, ' ', 2, "ADC %4" },
+    { 0x82, 0xff, ' ', 2, "NOP %#" },
     { 0x92, 0xff, ' ', 2, "STA %4" },
-    { 0xa2, 0xff, ' ', 2, "LDA %4" },
+    { 0xb2, 0xff, ' ', 2, "LDA %4" },
+    { 0xc2, 0xff, ' ', 2, "NOP %#" },
     { 0xd2, 0xff, ' ', 2, "CMP %4" },
+    { 0xe2, 0xff, ' ', 2, "NOP %#" },
     { 0xf2, 0xff, ' ', 2, "SBC %4" },
     
     { 0, 0, 0, 0, 0, 0 }

@@ -77,4 +77,13 @@ cl_mos65c02::inst_length(t_addr addr)
 }
 
 
+int
+cl_mos65c02::nop2(void)
+{
+  fetch();
+  tick(1);
+  return resGO;
+}
+
+
 /* End of mos6502.src/mos65c02.cc */

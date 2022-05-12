@@ -41,6 +41,9 @@ class cl_mos65c02: public cl_mos6502
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual int inst_length(t_addr addr);
 
+  virtual int nop2();
+
+  // New insts in column 2
   virtual int ORAzi(t_mem code) { return ora(zind()); }
   virtual int ANDzi(t_mem code) { return And(zind()); }
   virtual int EORzi(t_mem code) { return eor(zind()); }
@@ -49,6 +52,14 @@ class cl_mos65c02: public cl_mos6502
   virtual int LDAzi(t_mem code) { return lda(zind()); }
   virtual int CMPzi(t_mem code) { return cmp(cA, zind()); }
   virtual int SBCzi(t_mem code) { return sbc(zind()); }
+  // NOPs of column 2
+  virtual int instruction_02(t_mem code) { return nop2(); }
+  virtual int instruction_22(t_mem code) { return nop2(); }
+  virtual int instruction_42(t_mem code) { return nop2(); }
+  virtual int instruction_62(t_mem code) { return nop2(); }
+  virtual int instruction_82(t_mem code) { return nop2(); }
+  virtual int instruction_c2(t_mem code) { return nop2(); }
+  virtual int instruction_e2(t_mem code) { return nop2(); }
 };
 
 
