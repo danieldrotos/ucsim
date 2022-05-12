@@ -43,6 +43,12 @@ class cl_mos65c02: public cl_mos6502
 
   virtual int ORAzi(t_mem code) { return ora(zind()); }
   virtual int ANDzi(t_mem code) { return And(zind()); }
+  virtual int EORzi(t_mem code) { return eor(zind()); }
+  virtual int ADCzi(t_mem code) { return adc(zind()); }
+  virtual int STAzi(t_mem code) { return sta(dstzind()); }
+  virtual int LDAzi(t_mem code) { return lda(zind()); }
+  virtual int CMPzi(t_mem code) { return cmp(cA, zind()); }
+  virtual int SBCzi(t_mem code) { return sbc(zind()); }
 };
 
 

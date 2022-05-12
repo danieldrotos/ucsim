@@ -225,6 +225,12 @@ struct dis_entry disass_mos65c02[]=
   {
     { 0x12, 0xff, ' ', 2, "ORA %4" },
     { 0x32, 0xff, ' ', 2, "AND %4" },
+    { 0x52, 0xff, ' ', 2, "EOR %4" },
+    { 0x72, 0xff, ' ', 2, "ADC %4" },
+    { 0x92, 0xff, ' ', 2, "STA %4" },
+    { 0xa2, 0xff, ' ', 2, "LDA %4" },
+    { 0xd2, 0xff, ' ', 2, "CMP %4" },
+    { 0xf2, 0xff, ' ', 2, "SBC %4" },
     
     { 0, 0, 0, 0, 0, 0 }
   };
