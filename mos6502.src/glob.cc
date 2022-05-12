@@ -240,6 +240,9 @@ struct dis_entry disass_mos65c02[]=
     { 0xd2, 0xff, ' ', 2, "CMP %4" },
     { 0xe2, 0xff, ' ', 2, "NOP %#" },
     { 0xf2, 0xff, ' ', 2, "SBC %4" },
+
+    { 0x03, 0x0f, ' ', 1, "NOP" },
+    { 0x0b, 0x0f, ' ', 1, "NOP" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

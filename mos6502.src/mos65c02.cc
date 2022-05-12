@@ -41,7 +41,14 @@ cl_mos65c02::cl_mos65c02(class cl_sim *asim):
 int
 cl_mos65c02::init(void)
 {
+  int i;
   cl_mos6502::init();
+  // Map all 0x_3 into NOP
+  for (i=0x03; i<=0xf3; i+= 0x10)
+    itab[i]= instruction_wrapper_ea;
+  // Map all 0x_b into NOP
+  for (i=0x0b; i<=0xfb; i+= 0x10)
+    itab[i]= instruction_wrapper_ea;
   return 0;
 }
 
