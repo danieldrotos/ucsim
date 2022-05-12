@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "mos6502cl.h"
 
+#include "decc02.h"
 
 class cl_mos65c02: public cl_mos6502
 {
@@ -41,6 +42,7 @@ class cl_mos65c02: public cl_mos6502
   virtual int inst_length(t_addr addr);
 
   virtual int ORAzi(t_mem code) { return ora(zind()); }
+  virtual int ANDzi(t_mem code) { return And(zind()); }
 };
 
 

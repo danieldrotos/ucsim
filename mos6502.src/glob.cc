@@ -224,6 +224,7 @@ struct dis_entry disass_mos6502[]=
 struct dis_entry disass_mos65c02[]=
   {
     { 0x12, 0xff, ' ', 2, "ORA %4" },
+    { 0x32, 0xff, ' ', 2, "AND %4" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

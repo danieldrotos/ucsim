@@ -585,7 +585,7 @@ cl_mos6502::zind(void)
   a= read_addr(rom, a);
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd+= 2;
-  tick(3);
+  tick(4);
   return *c;
 }
 
