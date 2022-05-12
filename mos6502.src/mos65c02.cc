@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "glob.h"
+
 #include "mos65c02cl.h"
 
 
@@ -47,6 +49,31 @@ const char *
 cl_mos65c02::id_string(void)
 {
   return "MOS65C02";
+}
+
+struct dis_entry *
+cl_mos65c02::get_dis_entry(t_addr addr)
+{
+  struct dis_entry *de= cl_mos6502::get_dis_entry(addr);
+  if (de != NULL)
+    return de;
+
+  t_mem code= rom->get(addr);
+  for (de = disass_mos65c02; de && de->mnemonic; de++)
+    {
+      if ((code & de->mask) == de->code)
+        return de;
+    }
+  return NULL;
+}
+
+int
+cl_mos65c02::inst_length(t_addr addr)
+{
+  struct dis_entry *de= get_dis_entry(addr);
+  if (!de)
+    return 1;
+  return (de->mnemonic)?(de->length):1;
 }
 
 

@@ -459,6 +459,19 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      l= rom->read(addr+1);
 	      work.appendf("#$%02x", l);
 	      break;
+	    case '3': // (ind16)
+	      a= read_addr(rom, addr+1);
+	      a= read_addr(rom, a);
+	      work.appendf("($%04x)", a);
+	      addr_name(a, rom, &work);
+	      break;
+	    case '4': // (zind)
+	      a= rom->read(addr+1);
+	      work.appendf("($%04x)", a);
+	      a= read_addr(rom, a);
+	      addr_name(a, rom, &work);
+	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
+	      break;	      
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);
@@ -561,6 +574,17 @@ cl_mos6502::ind(void)
   a= read_addr(rom, a);
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd+= 3;
+  tick(3);
+  return *c;
+}
+
+class cl_cell8 &
+cl_mos6502::zind(void)
+{
+  u16_t a= fetch();
+  a= read_addr(rom, a);
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  vc.rd+= 2;
   tick(3);
   return *c;
 }

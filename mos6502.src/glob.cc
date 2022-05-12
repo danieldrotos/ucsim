@@ -221,7 +221,13 @@ struct dis_entry disass_mos6502[]=
     { 0, 0, 0, 0, 0, 0 }
   };
 
-
+struct dis_entry disass_mos65c02[]=
+  {
+    { 0x12, 0xff, ' ', 2, "ORA %4" },
+    
+    { 0, 0, 0, 0, 0, 0 }
+  };
+  
 struct cpu_entry cpus_6502[]=
   {
     {"6502"	, CPU_6502, 0		, "MOS6502", ""},
