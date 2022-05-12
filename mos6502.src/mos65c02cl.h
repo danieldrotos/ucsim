@@ -38,6 +38,8 @@ class cl_mos65c02: public cl_mos6502
   cl_mos65c02(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
+  virtual void reset(void);
+
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual int inst_length(t_addr addr);
 

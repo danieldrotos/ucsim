@@ -155,7 +155,7 @@ cl_mos6502::reset(void)
 {
   cl_uc::reset();
 
-  CC= 0x00 | flagI;
+  cF.W(CC= 0x00 | flagI);
   PC= read_addr(rom, RESET_AT);
   rSP= 0xfd;
   

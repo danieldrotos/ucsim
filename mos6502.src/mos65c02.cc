@@ -58,6 +58,13 @@ cl_mos65c02::id_string(void)
   return "MOS65C02";
 }
 
+void
+cl_mos65c02::reset(void)
+{
+  cl_mos6502::reset();
+  CC&= ~flagD;
+}
+
 struct dis_entry *
 cl_mos65c02::get_dis_entry(t_addr addr)
 {
