@@ -429,6 +429,14 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      a= l;
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
+	    case 'I': // (abs,X)
+	      l= rom->read(addr+1);
+	      h= rom->read(addr+2);
+	      a= h*256+l;
+	      work.appendf("($%04x,X)", a);
+	      a+= rX;
+	      temp.appendf("; [$%04x]=$%04x", a, read_addr(rom, a));
+	      break;
 	    case 'i': // abs,X
 	      l= rom->read(addr+1);
 	      h= rom->read(addr+2);

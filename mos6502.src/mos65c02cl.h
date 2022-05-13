@@ -62,6 +62,16 @@ class cl_mos65c02: public cl_mos6502
   virtual int instruction_82(t_mem code) { return nop2(); }
   virtual int instruction_c2(t_mem code) { return nop2(); }
   virtual int instruction_e2(t_mem code) { return nop2(); }
+  // New insts in column 4
+  virtual int BITzx(t_mem code) { return bit(zpgX()); }
+  // New insts in column 8
+  virtual int BIT8(t_mem code) { return bit(imm8()); }
+  // New insts in column A
+  virtual int INA(t_mem code);
+  virtual int DEA(t_mem code);
+  // New insts in column C
+  virtual int BITax(t_mem code) { return bit(absX()); }
+  virtual int JMP7c(t_mem code);
 };
 
 

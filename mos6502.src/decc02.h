@@ -36,6 +36,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CMPzi	instruction_d2
 #define SBCzi	instruction_f2
 
+#define BITzx	instruction_34
+
+#define BIT8	instruction_88
+
+#define BITax	instruction_3c
+#define JMP7c	instruction_7c
+
+#define INA	instruction_1a
+#define DEA	instruction_3a
+
 #endif
 
 /* End of mos6502.src/decc02.h */

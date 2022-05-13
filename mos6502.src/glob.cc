@@ -241,6 +241,16 @@ struct dis_entry disass_mos65c02[]=
     { 0xe2, 0xff, ' ', 2, "NOP %#" },
     { 0xf2, 0xff, ' ', 2, "SBC %4" },
 
+    { 0x34, 0xff, ' ', 2, "BIT %X" },
+
+    { 0x88, 0xff, ' ', 2, "BIT %#" },
+
+    { 0x1a, 0xff, ' ', 1, "INA" },
+    { 0x3a, 0xff, ' ', 1, "DEA" },
+    
+    { 0x3c, 0xff, ' ', 3, "BIT %i" },
+    { 0x7c, 0xff, ' ', 3, "JMP %I" },
+    
     { 0x03, 0x0f, ' ', 1, "NOP" },
     { 0x0b, 0x0f, ' ', 1, "NOP" },
     

@@ -99,5 +99,40 @@ cl_mos65c02::nop2(void)
   return resGO;
 }
 
+int
+cl_mos65c02::DEA(t_mem code)
+{
+  cA.W(rA-1);
+  rF&= ~(flagZ|flagS);
+  if (!rA) rF|= flagZ;
+  if (rA & 0x80) rF|= flagS;
+  cF.W(rF);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_mos65c02::INA(t_mem code)
+{
+  cA.W(rA+1);
+  rF&= ~(flagZ|flagS);
+  if (!rA) rF|= flagZ;
+  if (rA & 0x80) rF|= flagS;
+  cF.W(rF);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_mos65c02::JMP7c(t_mem code)
+{
+  u16_t a1= i16();
+  u16_t a2= a1 + rX;
+  u16_t a= read_addr(rom, a2);
+  PC= a;
+  tick(5);
+  return resGO;
+}
+
 
 /* End of mos6502.src/mos65c02.cc */
