@@ -225,6 +225,8 @@ struct dis_entry disass_mos6502[]=
 
 struct dis_entry disass_mos65c02[]=
   {
+    { 0x80, 0xff, 'b', 2, "BRA %r" },
+    
     { 0x02, 0xff, ' ', 2, "NOP %#" },
     { 0x12, 0xff, ' ', 2, "ORA %4" },
     { 0x22, 0xff, ' ', 2, "NOP %#" },
@@ -241,13 +243,18 @@ struct dis_entry disass_mos65c02[]=
     { 0xe2, 0xff, ' ', 2, "NOP %#" },
     { 0xf2, 0xff, ' ', 2, "SBC %4" },
 
+    { 0x04, 0xff, ' ', 2, "TSB %z" },
+    { 0x14, 0xff, ' ', 2, "TRB %z" },
     { 0x34, 0xff, ' ', 2, "BIT %X" },
 
     { 0x88, 0xff, ' ', 2, "BIT %#" },
 
     { 0x1a, 0xff, ' ', 1, "INA" },
     { 0x3a, 0xff, ' ', 1, "DEA" },
-    
+
+    { 0x0b, 0xff, ' ', 3, "TSB %a" },
+    { 0x1b, 0xff, ' ', 3, "TRB %a" },
+
     { 0x3c, 0xff, ' ', 3, "BIT %i" },
     { 0x5c, 0xff, ' ', 3, "NOP %a" },
     { 0x7c, 0xff, 'x', 3, "JMP %I" },

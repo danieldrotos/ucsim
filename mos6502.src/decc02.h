@@ -27,6 +27,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef DECC02_HEADER
 #define DECC02_HEADER
 
+
+// New addressing modes and NOPS
+
 #define ORAzi	instruction_12
 #define ANDzi	instruction_32
 #define EORzi	instruction_52
@@ -48,6 +51,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define INA	instruction_1a
 #define DEA	instruction_3a
+
+
+// New instructions
+
+#define BRA	instruction_80
+
+#define TSBz	instruction_04
+#define TSBa	instruction_0b
+#define TRBz	instruction_14
+#define TRBa	instruction_1b
+
 
 #endif
 

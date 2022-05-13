@@ -136,5 +136,31 @@ cl_mos65c02::JMP7c(t_mem code)
   return resGO;
 }
 
+int
+cl_mos65c02::tsb(class cl_cell8 &op)
+{
+  u8_t o= op.R();
+  u8_t r1= o & rA, r2= o | rA;
+  u8_t f= rF & ~flagZ;
+  if (!r1) f|= flagZ;
+  op.W(r2);
+  cF.W(rF);
+  tick(2);
+  return resGO;
+}
+
+int
+cl_mos65c02::trb(class cl_cell8 &op)
+{
+  u8_t o= op.R();
+  u8_t r1= o & rA, r2= o & ~rA;
+  u8_t f= rF & ~flagZ;
+  if (!r1) f|= flagZ;
+  op.W(r2);
+  cF.W(rF);
+  tick(2);
+  return resGO;
+}
+
 
 /* End of mos6502.src/mos65c02.cc */
