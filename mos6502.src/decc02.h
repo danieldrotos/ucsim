@@ -41,7 +41,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define BIT8	instruction_88
 
 #define BITax	instruction_3c
+#define NOP5c	instruction_5c
 #define JMP7c	instruction_7c
+#define NOPdc	instruction_dc
+#define NOPfc	instruction_fc
 
 #define INA	instruction_1a
 #define DEA	instruction_3a

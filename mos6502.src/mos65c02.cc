@@ -92,12 +92,14 @@ cl_mos65c02::inst_length(t_addr addr)
 
 
 int
-cl_mos65c02::nop2(void)
+cl_mos65c02::nopft(int nuof_fetches, int nuof_ticks)
 {
-  fetch();
-  tick(1);
+  while (nuof_fetches--)
+    fetch();
+  if (nuof_ticks) tick(nuof_ticks);
   return resGO;
 }
+
 
 int
 cl_mos65c02::DEA(t_mem code)

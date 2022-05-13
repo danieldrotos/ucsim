@@ -43,8 +43,8 @@ class cl_mos65c02: public cl_mos6502
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual int inst_length(t_addr addr);
 
-  virtual int nop2();
-
+  virtual int nopft(int nuof_fetches, int nuof_ticks);
+  
   // New insts in column 2
   virtual int ORAzi(t_mem code) { return ora(zind()); }
   virtual int ANDzi(t_mem code) { return And(zind()); }
@@ -55,13 +55,13 @@ class cl_mos65c02: public cl_mos6502
   virtual int CMPzi(t_mem code) { return cmp(cA, zind()); }
   virtual int SBCzi(t_mem code) { return sbc(zind()); }
   // NOPs of column 2
-  virtual int instruction_02(t_mem code) { return nop2(); }
-  virtual int instruction_22(t_mem code) { return nop2(); }
-  virtual int instruction_42(t_mem code) { return nop2(); }
-  virtual int instruction_62(t_mem code) { return nop2(); }
-  virtual int instruction_82(t_mem code) { return nop2(); }
-  virtual int instruction_c2(t_mem code) { return nop2(); }
-  virtual int instruction_e2(t_mem code) { return nop2(); }
+  virtual int instruction_02(t_mem code) { return nopft(1,1); }
+  virtual int instruction_22(t_mem code) { return nopft(1,1); }
+  virtual int instruction_42(t_mem code) { return nopft(1,1); }
+  virtual int instruction_62(t_mem code) { return nopft(1,1); }
+  virtual int instruction_82(t_mem code) { return nopft(1,1); }
+  virtual int instruction_c2(t_mem code) { return nopft(1,1); }
+  virtual int instruction_e2(t_mem code) { return nopft(1,1); }
   // New insts in column 4
   virtual int BITzx(t_mem code) { return bit(zpgX()); }
   // New insts in column 8
@@ -72,6 +72,9 @@ class cl_mos65c02: public cl_mos6502
   // New insts in column C
   virtual int BITax(t_mem code) { return bit(absX()); }
   virtual int JMP7c(t_mem code);
+  virtual int NOP5c(t_mem code) { return nopft(2,7); }
+  virtual int NOPdc(t_mem code) { return nopft(2,3); }
+  virtual int NOPfc(t_mem code) { return nopft(2,3); }
 };
 
 
