@@ -249,7 +249,7 @@ struct dis_entry disass_mos65c02[]=
     { 0x3a, 0xff, ' ', 1, "DEA" },
     
     { 0x3c, 0xff, ' ', 3, "BIT %i" },
-    { 0x7c, 0xff, ' ', 3, "JMP %I" },
+    { 0x7c, 0xff, 'x', 3, "JMP %I" },
     
     { 0x03, 0x0f, ' ', 1, "NOP" },
     { 0x0b, 0x0f, ' ', 1, "NOP" },
