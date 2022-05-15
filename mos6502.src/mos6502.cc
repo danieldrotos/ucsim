@@ -304,20 +304,23 @@ cl_mos6502::analyze(t_addr addr)
 
           switch (de->branch)
             {
-              case 'x': // Returns or indirect jumps that end this execution path immediately
-                return;
-
-              case 's': // Subroutine calls
-              case 'j': // Unconditional jumps
-                target= rom->read(addr+1) + (rom->read(addr+2) << 8);
-                break;
-
-              case 'b': // Conditional branches
-                target= addr + 2 + (i8_t)rom->read(addr+1);
-                break;
-
-              default:
-                break;
+	    case 'x': // Returns or indirect jumps that end this execution path immediately
+	      return;
+		
+	    case 's': // Subroutine calls
+	    case 'j': // Unconditional jumps
+	      target= rom->read(addr+1) + (rom->read(addr+2) << 8);
+	      break;
+	      
+	    case 'b': // Conditional branches
+	      target= addr + 2 + (i8_t)rom->read(addr+1);
+	      break;
+	    case 'B': // BBR/BBS in 65c02
+	      target= addr + 3 + (i8_t)rom->read(addr+2);
+	      break;
+	      
+	    default:
+	      break;
             }
 
           analyze_jump(addr, target, de->branch);
@@ -460,6 +463,12 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	    case 'r': // rel
 	      l= rom->read(addr+1);
 	      a= addr + (i8_t)l + 2;
+	      work.appendf("$%04x", a);
+	      addr_name(a, rom, &work);
+	      break;
+	    case 'R': // rel in BBR/BBS
+	      l= rom->read(addr+2);
+	      a= addr + (i8_t)l + 3;
 	      work.appendf("$%04x", a);
 	      addr_name(a, rom, &work);
 	      break;

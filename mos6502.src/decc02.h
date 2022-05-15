@@ -90,6 +90,25 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SMB6	instruction_e7
 #define SMB7	instruction_f7
 
+#define BBR0	instruction_0f
+#define BBR1	instruction_1f
+#define BBR2	instruction_2f
+#define BBR3	instruction_3f
+#define BBR4	instruction_4f
+#define BBR5	instruction_5f
+#define BBR6	instruction_6f
+#define BBR7	instruction_7f
+
+#define BBS0	instruction_8f
+#define BBS1	instruction_9f
+#define BBS2	instruction_af
+#define BBS3	instruction_bf
+#define BBS4	instruction_cf
+#define BBS5	instruction_df
+#define BBS6	instruction_ef
+#define BBS7	instruction_ff
+
+
 #endif
 
 /* End of mos6502.src/decc02.h */
