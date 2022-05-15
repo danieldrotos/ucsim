@@ -162,5 +162,12 @@ cl_mos65c02::trb(class cl_cell8 &op)
   return resGO;
 }
 
+int
+cl_mos65c02::stz(class cl_cell8 &op)
+{
+  op.W(0);
+  return resGO;
+}
+
 
 /* End of mos6502.src/mos65c02.cc */

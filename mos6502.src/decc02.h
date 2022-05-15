@@ -62,6 +62,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TRBz	instruction_14
 #define TRBa	instruction_1b
 
+#define STZz	instruction_64
+#define STZzx	instruction_74
+#define STZa	instruction_9c
+#define STZax	instruction_9e
+
 
 #endif
 

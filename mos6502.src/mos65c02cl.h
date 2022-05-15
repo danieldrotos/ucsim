@@ -46,6 +46,7 @@ class cl_mos65c02: public cl_mos6502
   virtual int nopft(int nuof_fetches, int nuof_ticks);
   virtual int tsb(class cl_cell8 &op);
   virtual int trb(class cl_cell8 &op);
+  virtual int stz(class cl_cell8 &op);
   
   // New insts in column 0
   virtual int BRA(t_mem code) { return branch(true); tick(1); }
@@ -70,8 +71,13 @@ class cl_mos65c02: public cl_mos6502
   virtual int TSBz(t_mem code) { return tsb(rmwzpg()); }
   virtual int TRBz(t_mem code) { return trb(rmwzpg()); }
   virtual int BITzx(t_mem code) { return bit(zpgX()); }
+  virtual int STZz(t_mem code) { return stz(dstzpg()); }
+  virtual int STZzx(t_mem code) { return stz(dstzpgX()); }
   // New insts in column 8
   virtual int BIT8(t_mem code) { return bit(imm8()); }
+  // New insts in column 9
+  virtual int STZa(t_mem code) { return stz(dstabs()); }
+  virtual int STZax(t_mem code) { return stz(dstabsX()); }
   // New insts in column A
   virtual int INA(t_mem code);
   virtual int DEA(t_mem code);
