@@ -81,6 +81,10 @@ class cl_mos65c02: public cl_mos6502
   // New insts in column A
   virtual int INA(t_mem code);
   virtual int DEA(t_mem code);
+  virtual int PHY(t_mem code);
+  virtual int PLY(t_mem code);
+  virtual int PHX(t_mem code);
+  virtual int PLX(t_mem code);
   // New insts in column B
   virtual int TSBa(t_mem code) { return tsb(rmwabs()); }
   virtual int TRBa(t_mem code) { return trb(rmwabs()); }

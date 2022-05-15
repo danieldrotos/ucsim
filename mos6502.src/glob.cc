@@ -246,6 +246,8 @@ struct dis_entry disass_mos65c02[]=
     { 0x04, 0xff, ' ', 2, "TSB %z" },
     { 0x14, 0xff, ' ', 2, "TRB %z" },
     { 0x34, 0xff, ' ', 2, "BIT %X" },
+    { 0x64, 0xff, ' ', 2, "STZ %z" },
+    { 0x74, 0xff, ' ', 2, "STZ %X" },
 
     { 0x88, 0xff, ' ', 2, "BIT %#" },
 
@@ -260,6 +262,9 @@ struct dis_entry disass_mos65c02[]=
     { 0x7c, 0xff, 'x', 3, "JMP %I" },
     { 0xdc, 0xff, ' ', 3, "NOP %a" },
     { 0xfc, 0xff, ' ', 3, "NOP %a" },
+    { 0x9c, 0xff, ' ', 3, "STZ %a" },
+
+    { 0x9e, 0xff, ' ', 3, "STZ %i" },
     
     { 0x03, 0x0f, ' ', 1, "NOP" },
     { 0x0b, 0x0f, ' ', 1, "NOP" },

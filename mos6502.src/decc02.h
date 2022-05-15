@@ -67,6 +67,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define STZa	instruction_9c
 #define STZax	instruction_9e
 
+#define PHY	instruction_5a
+#define PLY	instruction_7a
+#define PHX	instruction_da
+#define PLX	instruction_fa
+
 
 #endif
 

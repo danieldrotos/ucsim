@@ -169,5 +169,69 @@ cl_mos65c02::stz(class cl_cell8 &op)
   return resGO;
 }
 
+int
+cl_mos65c02::PHY(t_mem code)
+{
+  rom->write(0x0100 + rSP, rY);
+  vc.wr++;
+  t_addr spbef= rSP;
+  cSP.W(rSP-1);
+  class cl_stack_push *op= new cl_stack_push(instPC, rY, spbef, rSP);
+  op->init();
+  stack_write(op);
+  tick(2);
+  return resGO;
+}
+
+int
+cl_mos65c02::PLY(t_mem code)
+{
+  t_addr spbef= rSP;
+  cSP.W(rSP+1);
+  cY.W(rom->read(0x0100 + rSP));
+  class cl_stack_pop *op= new cl_stack_pop(instPC, rY, spbef, rSP);
+  op->init();
+  stack_read(op);
+  u8_t f= rF & ~(flagN|flagZ);
+  if (!rY) f|= flagZ;
+  if (rY&0x80) f|= flagN;
+  cF.W(f);
+  vc.rd++;
+  tick(3);
+  return resGO;
+}
+
+int
+cl_mos65c02::PHX(t_mem code)
+{
+  rom->write(0x0100 + rSP, rX);
+  vc.wr++;
+  t_addr spbef= rSP;
+  cSP.W(rSP-1);
+  class cl_stack_push *op= new cl_stack_push(instPC, rX, spbef, rSP);
+  op->init();
+  stack_write(op);
+  tick(2);
+  return resGO;
+}
+
+int
+cl_mos65c02::PLX(t_mem code)
+{
+  t_addr spbef= rSP;
+  cSP.W(rSP+1);
+  cX.W(rom->read(0x0100 + rSP));
+  class cl_stack_pop *op= new cl_stack_pop(instPC, rX, spbef, rSP);
+  op->init();
+  stack_read(op);
+  u8_t f= rF & ~(flagN|flagZ);
+  if (!rX) f|= flagZ;
+  if (rX&0x80) f|= flagN;
+  cF.W(f);
+  vc.rd++;
+  tick(3);
+  return resGO;
+}
+
 
 /* End of mos6502.src/mos65c02.cc */
