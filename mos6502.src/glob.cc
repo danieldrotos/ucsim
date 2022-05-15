@@ -265,6 +265,9 @@ struct dis_entry disass_mos65c02[]=
     { 0x9c, 0xff, ' ', 3, "STZ %a" },
 
     { 0x9e, 0xff, ' ', 3, "STZ %i" },
+
+    { 0x07, 0x8f, ' ', 2, "RMB%B %z" },
+    { 0x17, 0x8f, ' ', 2, "SMB%B %z" },
     
     { 0x03, 0x0f, ' ', 1, "NOP" },
     { 0x0b, 0x0f, ' ', 1, "NOP" },

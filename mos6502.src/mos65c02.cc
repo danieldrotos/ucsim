@@ -233,5 +233,25 @@ cl_mos65c02::PLX(t_mem code)
   return resGO;
 }
 
+int
+cl_mos65c02::rmb(t_mem code, class cl_cell8 &op)
+{
+  u8_t v= op.R();
+  u8_t mask= 1<<((code>>4)&0x7);
+  v&= ~mask;
+  op.W(v);
+  return resGO;
+}
+
+int
+cl_mos65c02::smb(t_mem code, class cl_cell8 &op)
+{
+  u8_t v= op.R();
+  u8_t mask= 1<<((code>>4)&0x7);
+  v|= mask;
+  op.W(v);
+  return resGO;
+}
+
 
 /* End of mos6502.src/mos65c02.cc */

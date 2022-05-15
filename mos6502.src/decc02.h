@@ -72,6 +72,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PHX	instruction_da
 #define PLX	instruction_fa
 
+#define RMB0	instruction_07
+#define RMB1	instruction_17
+#define RMB2	instruction_27
+#define RMB3	instruction_37
+#define RMB4	instruction_47
+#define RMB5	instruction_57
+#define RMB6	instruction_67
+#define RMB7	instruction_77
+
+#define SMB0	instruction_87
+#define SMB1	instruction_97
+#define SMB2	instruction_a7
+#define SMB3	instruction_b7
+#define SMB4	instruction_c7
+#define SMB5	instruction_d7
+#define SMB6	instruction_e7
+#define SMB7	instruction_f7
 
 #endif
 

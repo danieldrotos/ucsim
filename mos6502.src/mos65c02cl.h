@@ -47,6 +47,8 @@ class cl_mos65c02: public cl_mos6502
   virtual int tsb(class cl_cell8 &op);
   virtual int trb(class cl_cell8 &op);
   virtual int stz(class cl_cell8 &op);
+  virtual int rmb(t_mem code, class cl_cell8 &op);
+  virtual int smb(t_mem code, class cl_cell8 &op);
   
   // New insts in column 0
   virtual int BRA(t_mem code) { return branch(true); tick(1); }
@@ -73,6 +75,23 @@ class cl_mos65c02: public cl_mos6502
   virtual int BITzx(t_mem code) { return bit(zpgX()); }
   virtual int STZz(t_mem code) { return stz(dstzpg()); }
   virtual int STZzx(t_mem code) { return stz(dstzpgX()); }
+  // New insts in column 7
+  virtual int RMB0(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int RMB1(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int RMB2(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int RMB3(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int RMB4(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int RMB5(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int RMB6(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int RMB7(t_mem code) { return rmb(code, rmwzpg()); }
+  virtual int SMB0(t_mem code) { return smb(code, rmwzpg()); }
+  virtual int SMB1(t_mem code) { return smb(code, rmwzpg()); }
+  virtual int SMB2(t_mem code) { return smb(code, rmwzpg()); }
+  virtual int SMB3(t_mem code) { return smb(code, rmwzpg()); }
+  virtual int SMB4(t_mem code) { return smb(code, rmwzpg()); }
+  virtual int SMB5(t_mem code) { return smb(code, rmwzpg()); }
+  virtual int SMB6(t_mem code) { return smb(code, rmwzpg()); }
+  virtual int SMB7(t_mem code) { return smb(code, rmwzpg()); }
   // New insts in column 8
   virtual int BIT8(t_mem code) { return bit(imm8()); }
   // New insts in column 9
