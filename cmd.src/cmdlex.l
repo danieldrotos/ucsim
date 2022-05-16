@@ -99,13 +99,12 @@ static int uc_yy_input(char *buf, int max_size);
 }
 
 [1-9][0-9]* {
-  //printf("\nlexer found a nr: %s\n",yytext);
   yylval.number = 0;
   for (int i= 0; yytext[i]; i++)
   {
   char c= yytext[i];
   int val= c-'0';
-  yylval.number = (yylval.number * 10) | (val&0xf);
+  yylval.number = (yylval.number * 10) + (val&0xf);
   }
   return PTOK_NUMBER;
 }

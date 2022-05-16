@@ -1043,25 +1043,24 @@ case 47:
 YY_RULE_SETUP
 #line 101 "cmdlex.l"
 {
-  //printf("\nlexer found a nr: %s\n",yytext);
   yylval.number = 0;
   for (int i= 0; yytext[i]; i++)
   {
   char c= yytext[i];
   int val= c-'0';
-  yylval.number = (yylval.number * 10) | (val&0xf);
+  yylval.number = (yylval.number * 10) + (val&0xf);
   }
   return PTOK_NUMBER;
 }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 113 "cmdlex.l"
+#line 112 "cmdlex.l"
 return(uc_yy_check_id(yytext));
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 115 "cmdlex.l"
+#line 114 "cmdlex.l"
 {
   char *s, *p;
   int l= strlen(&yytext[1]);
@@ -1080,15 +1079,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 131 "cmdlex.l"
+#line 130 "cmdlex.l"
 return(yytext[0]);
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 133 "cmdlex.l"
+#line 132 "cmdlex.l"
 ECHO;
 	YY_BREAK
-#line 1092 "<stdout>"
+#line 1091 "<stdout>"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2056,7 +2055,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 133 "cmdlex.l"
+#line 132 "cmdlex.l"
 
 
 int
