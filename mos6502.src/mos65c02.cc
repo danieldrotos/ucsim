@@ -99,9 +99,10 @@ cl_mos65c02::accept_it(class it_level *il)
   tick(2);
   push_addr(PC);
   rom->write(0x0100 + rSP, rF|0x20);
-  // BRK clears D flag
   if (set_b)
-    rF&= ~(flagB|flagD);
+    rF&= ~flagB;
+  // All interrupts (incl BRK) clear D flag
+  rF&= ~flagD;
   cSP.W(rSP-1);
   tick(1);
   vc.wr++;
