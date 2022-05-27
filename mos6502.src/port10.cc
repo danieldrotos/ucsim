@@ -79,15 +79,13 @@ cl_port10::read(class cl_memory_cell *cell)
 {
   if (conf(cell, NULL))
     return cell->get();
-  if (cell == cddr)
-    return cddr->R();
   if (cell == cdr)
     {
       if (!on)
 	return uc->rom->get(1);
       return val();
     }
-  return cell->R();
+  return cell->get();
 }
 
 t_mem
