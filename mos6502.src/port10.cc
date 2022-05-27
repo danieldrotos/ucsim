@@ -40,6 +40,7 @@ cl_port10::init(void)
   // 1= output, 0= input
   cddr= (class cl_cell8 *)register_cell(uc->rom, 0);
   cdr= (class cl_cell8 *)register_cell(uc->rom, 1);
+  cpin= (class cl_cell8 *)cfg->get_cell(port10_pin);
   return 0;
 }
 
@@ -78,6 +79,13 @@ cl_port10::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 void
 cl_port10::print_info(class cl_console_base *con)
 {
+  con->dd_printf("%s[%d] %s\n", id_string, id, on?"ON":"OFF");
+  con->dd_printf("Dir : 0x%02x ", cddr->get());
+  con->dd_printf("\n");
+  con->dd_printf("Pin : 0x%02x ", cpin->get());
+  con->dd_printf("\n");
+  con->dd_printf("Data: 0x%02x ", cdr->get());
+  con->dd_printf("\n");
 }
 
 

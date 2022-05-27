@@ -43,6 +43,7 @@ class cl_port10: public cl_hw
 public:
   class cl_cell8 *cdr; // Data reg;
   class cl_cell8 *cddr; // Data direction reg
+  class cl_cell8 *cpin; // Pins in cfg
 public:
   cl_port10(class cl_uc *auc, const char *aname);
   virtual unsigned int cfg_size(void) { return port10_nuof; }

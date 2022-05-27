@@ -30,6 +30,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "mos6510cl.h"
 
+#include "port10cl.h"
+
 
 cl_mos6510::cl_mos6510(class cl_sim *asim):
   cl_mos6502(asim)
@@ -47,6 +49,17 @@ const char *
 cl_mos6510::id_string(void)
 {
   return "MOS6510";
+}
+
+void
+cl_mos6510::mk_hw_elements(void)
+{
+  class cl_hw *h;
+
+  cl_mos6502::mk_hw_elements();
+
+  add_hw(h= new cl_port10(this, "port"));
+  h->init();
 }
 
 

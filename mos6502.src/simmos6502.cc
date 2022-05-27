@@ -65,7 +65,7 @@ cl_simmos6502::mk_controller(void)
     case CPU_6502:
       return(new cl_mos6502(this));
     case CPU_6510:
-      printf("Not implemented yet.\n"); return(NULL);
+      //printf("Not implemented yet.\n"); return(NULL);
       return(new cl_mos6510(this));
     case CPU_65C02:
       return(new cl_mos65c02(this));
