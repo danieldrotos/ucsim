@@ -42,7 +42,6 @@ public:
 public:
   cl_mos65ce02(class cl_sim *asim);
   virtual int init(void);
-  virtual const char *id_string(void);
 
   virtual void print_regs(class cl_console_base *con);
 };
