@@ -35,24 +35,27 @@ enum port10_cfg
   {
     port10_on	= 0, // RW
     port10_pin	= 1, // RW
-    port10_nuof	= 2
+    port10_port	= 2, // RO
+    port10_nuof	= 3
   };
 
 class cl_port10: public cl_hw
 {
 public:
-  class cl_cell8 *cdr; // Data reg;
-  class cl_cell8 *cddr; // Data direction reg
+  class cl_cell8 *cdr; // Data reg, address= 1
+  class cl_cell8 *cddr; // Data direction reg, address= 0
   class cl_cell8 *cpin; // Pins in cfg
 public:
   cl_port10(class cl_uc *auc, const char *aname);
   virtual unsigned int cfg_size(void) { return port10_nuof; }
   virtual int init(void);
   virtual void reset(void);
-
+  virtual u8_t val(void);
+  
   virtual t_mem read(class cl_memory_cell *cell);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
-  
+  virtual const char *cfg_help(t_addr addr);
+
   virtual void print_info(class cl_console_base *con);
 };
 
