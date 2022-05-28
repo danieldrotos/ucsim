@@ -67,9 +67,9 @@ cl_mos6510::mk_hw_elements(void)
   d.cell_dir= p->cddr;
   d.width= 8;
   d.set_name("port");
-  d.cell_p = p->cpin;
-  d.cell_in= p->cdr;
-  d.keyset = chars("12345678");
+  d.cell_p = p->cdr;
+  d.cell_in= p->cpin;
+  d.keyset = keysets[0];
   d.basx   = 5;
   d.basy   = 5;
   u->add_port(&d, 0);
