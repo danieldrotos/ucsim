@@ -149,7 +149,9 @@ public:
 
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip) { return(read()); }
+  virtual t_mem read(class cl_memory_cell *owner);
   virtual t_mem write(t_mem val);
+  virtual t_mem write(class cl_memory_cell *owner, t_mem val);
 
   virtual class cl_banker *get_banker(void) { return NULL; }
 };
@@ -178,7 +180,9 @@ public:
 
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip);
+  virtual t_mem read(class cl_memory_cell *owner);
   virtual t_mem write(t_mem val);
+  virtual t_mem write(class cl_memory_cell *owner, t_mem val);
 };
 
 class cl_event_break_operator: public cl_memory_operator

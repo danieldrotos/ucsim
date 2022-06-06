@@ -736,12 +736,28 @@ cl_memory_operator::read(void)
 }
 
 t_mem
+cl_memory_operator::read(class cl_memory_cell *owner)
+{
+  if (owner)
+    return owner->get();
+  return 0;
+}
+
+t_mem
 cl_memory_operator::write(t_mem val)
 {
   if (next_operator)
     return(next_operator->write(val));
   else if (cell)
     return(cell->set(val));
+  return val;
+}
+
+t_mem
+cl_memory_operator::write(class cl_memory_cell *owner, t_mem val)
+{
+  if (owner)
+    return owner->set(val);
   return val;
 }
 
@@ -800,6 +816,21 @@ cl_hw_operator::read(void)
 }
 
 t_mem
+cl_hw_operator::read(class cl_memory_cell *owner)
+{
+  t_mem d1= 0, d2= owner->get();
+
+  if (hw && !hw->active)
+    {
+      hw->active = true;
+      d1= hw->read(cell);
+      hw->active = false;
+    }
+
+  return(hw && !hw->active ? d1 : d2);
+}
+
+t_mem
 cl_hw_operator::read(enum hw_cath skip)
 {
   t_mem d1= 0, d2= d1;
@@ -835,6 +866,18 @@ cl_hw_operator::write(t_mem val)
 
   if (next_operator)
     val= next_operator->write(val);
+  return val;
+}
+
+t_mem
+cl_hw_operator::write(class cl_memory_cell *owner, t_mem val)
+{
+  if (hw && !hw->active)
+    {
+      hw->active= true;
+      hw->write(cell, &val);
+      hw->active= false;
+    }
   return val;
 }
 
