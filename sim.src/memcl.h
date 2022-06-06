@@ -243,6 +243,7 @@ class cl_memory_cell: public cl_cell_data
   uchar width;
   uchar flags;
   class cl_memory_operator *operators;
+  class cl_memory_operator **ops;
  public:
   cl_memory_cell();
   cl_memory_cell(uchar awidth);
@@ -272,7 +273,8 @@ class cl_memory_cell: public cl_cell_data
   virtual t_mem W(t_mem val) { return write(val); }
   virtual t_mem set(t_mem val);
   virtual t_mem download(t_mem val);
-  
+
+  virtual int nuof_ops(void);
   virtual void append_operator(class cl_memory_operator *op);
   virtual void prepend_operator(class cl_memory_operator *op);
   virtual void remove_operator(class cl_memory_operator *op);

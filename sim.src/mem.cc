@@ -1033,6 +1033,8 @@ cl_memory_cell::cl_memory_cell()
   width= 8;
   def_data= 0;
   operators= NULL;
+  ops= (cl_memory_operator**)malloc(sizeof(void*) * 1);
+  ops[0]= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
 #endif
@@ -1052,6 +1054,8 @@ cl_memory_cell::cl_memory_cell(uchar awidth)
   width= awidth;
   def_data= 0;
   operators= NULL;
+  ops= (cl_memory_operator**)malloc(sizeof(void*) * 1);
+  ops[0]= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
 #endif
@@ -1066,6 +1070,7 @@ cl_memory_cell::cl_memory_cell(uchar awidth)
 
 cl_memory_cell::~cl_memory_cell(void)
 {
+  free(ops);
 }
 
 int
@@ -1237,6 +1242,15 @@ cl_memory_cell::download(t_mem val)
   return d();
 }
 
+// Number of operator, NULL termination is not included
+int
+cl_memory_cell::nuof_ops(void)
+{
+  int i;
+  for (i=0; ops[i]!=NULL; i++) ;
+  return i;
+}
+
 void
 cl_memory_cell::append_operator(class cl_memory_operator *op)
 {
@@ -1246,6 +1260,13 @@ cl_memory_cell::append_operator(class cl_memory_operator *op)
     ;
   op->next_operator = NULL;
   *op_p = op;
+
+  //
+  int i= nuof_ops()+2;
+  ops= (cl_memory_operator**)realloc(ops, sizeof(void*) * i);
+  for (i=0; ops[i]!=NULL; i++) ;
+  ops[i]= op;
+  ops[i+1]= NULL;
 }
 
 void
@@ -1256,6 +1277,15 @@ cl_memory_cell::prepend_operator(class cl_memory_operator *op)
       op->next_operator = operators;
       operators = op;
     }
+
+  //
+  int i= nuof_ops();
+  class cl_memory_operator **p=
+    (cl_memory_operator**)malloc(sizeof(void*) * i+2);
+  p[0]= op;
+  for (i=0; ops[i]!=NULL; i++)
+    p[i+1]= ops[i];
+  p[i]= NULL;
 }
 
 void
@@ -1269,6 +1299,18 @@ cl_memory_cell::remove_operator(class cl_memory_operator *op)
           op->next_operator = NULL;
           break;
         }
+    }
+
+  //
+  int src, dst;
+  for (src=dst=0; ops[src]!=NULL; src++)
+    {
+      if (ops[src]!=op)
+	{
+	  if (src!=dst)
+	    ops[dst]= ops[src];
+	  dst++;
+	}
     }
 }
 
@@ -1285,6 +1327,8 @@ cl_memory_cell::del_operator(class cl_brk *brk)
           break;
         }
     }
+
+  //
 }
 
 void 	 
