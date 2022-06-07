@@ -756,8 +756,8 @@ cl_memory_operator::write(t_mem val)
 t_mem
 cl_memory_operator::write(class cl_memory_cell *owner, t_mem val)
 {
-  if (owner)
-    return owner->set(val);
+  if (cell)
+    return cell->set(val);
   return val;
 }
 
@@ -785,6 +785,16 @@ cl_bank_switcher_operator::write(t_mem val)
   return 0;  
 }
 
+t_mem
+cl_bank_switcher_operator::write(class cl_memory_cell *owner, t_mem val)
+{
+  if (cell)
+    cell->set(val);
+  banker->activate(NULL);
+  if (cell)
+    return cell->get();
+  return val;
+}
 
 /* Memory operator for hw callbacks */
 
@@ -818,15 +828,20 @@ cl_hw_operator::read(void)
 t_mem
 cl_hw_operator::read(class cl_memory_cell *owner)
 {
-  t_mem d1= 0, d2= owner->get();
+  t_mem d1= 0, d2= 0;
 
-  if (hw && !hw->active)
+  if (cell) d2= cell->get();
+  if (hw)
     {
-      hw->active = true;
-      d1= hw->read(cell);
-      hw->active = false;
+      if (hw->active)
+	d1= hw->read(cell);
+      else
+	{
+	  hw->active = true;
+	  d1= hw->read(cell);
+	  hw->active = false;
+	}
     }
-
   return(hw && !hw->active ? d1 : d2);
 }
 
@@ -872,12 +887,18 @@ cl_hw_operator::write(t_mem val)
 t_mem
 cl_hw_operator::write(class cl_memory_cell *owner, t_mem val)
 {
-  if (hw && !hw->active)
+  if (hw)
     {
-      hw->active= true;
-      hw->write(cell, &val);
-      hw->active= false;
+      if (hw->active)
+	hw->write(cell, &val);
+      else
+	{
+	  hw->active= true;
+	  hw->write(cell, &val);
+	  hw->active= false;
+	}      
     }
+  //if (cell) return cell->get();
   return val;
 }
 
@@ -905,6 +926,15 @@ cl_write_operator::write(t_mem val)
   return val;
 }
 
+t_mem
+cl_write_operator::write(class cl_memory_cell *owner, t_mem val)
+{
+  if (bp->do_hit())
+    uc->events->add(bp);
+  if (cell)
+    return(cell->set(val));
+  return val;
+}
 
 /* Read event break on cell */
 
@@ -926,6 +956,16 @@ cl_read_operator::read(void)
     return(next_operator->read());
   else if (cell)
     return(cell->get());
+  return 0;
+}
+
+t_mem
+cl_read_operator::read(class cl_memory_cell *owner)
+{
+  if (bp->do_hit())
+    uc->events->add(bp);
+  if (cell)
+    return cell->get();
   return 0;
 }
 

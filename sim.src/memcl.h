@@ -165,6 +165,7 @@ class cl_bank_switcher_operator: public cl_memory_operator
 			    class cl_banker *the_banker);
   
   virtual t_mem write(t_mem val);
+  virtual t_mem write(class cl_memory_cell *owner, t_mem val);
   virtual class cl_banker *get_banker(void) { return banker; }
 };
 
@@ -209,6 +210,7 @@ public:
 		    class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem write(t_mem val);
+  virtual t_mem write(class cl_memory_cell *owner, t_mem val);
 };
 
 class cl_read_operator: public cl_event_break_operator
@@ -218,6 +220,7 @@ public:
 		   class cl_uc *auc, class cl_brk *the_bp);
 
   virtual t_mem read(void);
+  virtual t_mem read(class cl_memory_cell *owner);
 };
 
 
