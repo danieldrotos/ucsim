@@ -1268,8 +1268,20 @@ cl_memory_cell::read(void)
 #ifdef STATISTIC
   nuof_reads++;
 #endif
+  /*
   if (operators)
     return(operators->read());
+  */
+  if (ops)
+    {
+      t_mem r;
+      int i;
+      for (i=0; ops[i]; i++)
+	{
+	  r= ops[i]->read(this);
+	}
+      return r;
+    }
   return d();
 }
 
