@@ -149,6 +149,8 @@ public:
 
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip) { return(read()); }
+  virtual t_mem read(class cl_memory_cell *owner, enum hw_cath skip)
+  { return read(owner); }
   virtual t_mem read(class cl_memory_cell *owner);
   virtual t_mem write(t_mem val);
   virtual t_mem write(class cl_memory_cell *owner, t_mem val);
@@ -182,6 +184,7 @@ public:
   virtual t_mem read(void);
   virtual t_mem read(enum hw_cath skip);
   virtual t_mem read(class cl_memory_cell *owner);
+  virtual t_mem read(class cl_memory_cell *owner, enum hw_cath skip);
   virtual t_mem write(t_mem val);
   virtual t_mem write(class cl_memory_cell *owner, t_mem val);
 };

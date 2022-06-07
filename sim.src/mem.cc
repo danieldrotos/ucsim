@@ -835,14 +835,10 @@ cl_hw_operator::read(class cl_memory_cell *owner)
   if (cell) d2= cell->get();
   if (hw)
     {
-      if (hw->active)
-	d1= hw->read(cell);
-      else
-	{
-	  hw->active = true;
-	  d1= hw->read(cell);
-	  hw->active = false;
-	}
+      bool act= hw->active;
+      hw->active = true;
+      d1= hw->read(cell);
+      hw->active = act;
       return d1;
     }
   return d2;
@@ -851,35 +847,51 @@ cl_hw_operator::read(class cl_memory_cell *owner)
 t_mem
 cl_hw_operator::read(enum hw_cath skip)
 {
-  t_mem d1= 0, d2= d1;
-  bool use= false;
+  t_mem d1= 0, d2= 0;
 
-  if (hw && hw->category != skip && !hw->active)
+  if (cell) d2= cell->get();
+  if (hw && (hw->category != skip))
     {
-      use= true;
+      bool act= hw->active;
       hw->active= true;
       d1= hw->read(cell);
-      hw->active= false;
+      hw->active= act;
+      return d1;
     }
 
   if (next_operator)
     d2= next_operator->read();
-  else if (cell)
-    d2= cell->get();
-  else
-    return use= true;
+  return d2;
+}
 
-  return(use?d1:d2);
+t_mem
+cl_hw_operator::read(class cl_memory_cell *owner, enum hw_cath skip)
+{
+  t_mem d1= 0, d2= 0;
+
+  if (cell) d2= cell->get();
+  if (hw && (hw->category != skip))
+    {
+      bool act= hw->active;
+      hw->active= true;
+      d1= hw->read(cell);
+      hw->active= act;
+      return d1;
+    }
+
+  return d2;
 }
 
 t_mem
 cl_hw_operator::write(t_mem val)
 {
-  if (hw && !hw->active)
+  if (hw)
     {
+      bool act= hw->active;
       hw->active= true;
       hw->write(cell, &val);
-      hw->active= false;
+      hw->active= act;
+      return val;
     }
 
   if (next_operator)
@@ -892,16 +904,11 @@ cl_hw_operator::write(class cl_memory_cell *owner, t_mem val)
 {
   if (hw)
     {
-      if (hw->active)
-	hw->write(cell, &val);
-      else
-	{
-	  hw->active= true;
-	  hw->write(cell, &val);
-	  hw->active= false;
-	}      
+      bool act= hw->active;
+      hw->active= true;
+      hw->write(cell, &val);
+      hw->active= act;
     }
-  //if (cell) return cell->get();
   return val;
 }
 
@@ -1275,12 +1282,9 @@ cl_memory_cell::read(void)
     {
       t_mem r= 0;
       for (int i=0; ops[i]; i++)
-	{
-	  r= ops[i]->read(this);
-	}
+	r= ops[i]->read(this);
       return r;
     }
-  
   return d();
 }
 
@@ -1290,8 +1294,14 @@ cl_memory_cell::read(enum hw_cath skip)
 #ifdef STATISTIC
   nuof_reads++;
 #endif
-  if (operators)
-    return(operators->read(skip));
+  //if (operators) return(operators->read(skip));
+  if (ops && ops[0])
+    {
+      t_mem r;
+      for (int i=0; ops[i]; i++)
+	r= ops[i]->read(this, skip);
+      return r;
+    }
   return d();
 }
 
@@ -1307,8 +1317,12 @@ cl_memory_cell::write(t_mem val)
 #ifdef STATISTIC
   nuof_writes++;
 #endif
-  if (operators)
-    val= operators->write(val);
+  //if (operators) val= operators->write(val);
+  if (ops && ops[0])
+    {
+      for (int i=0; ops[i]; i++)
+	val= ops[i]->write(this, val);
+    }
   if (flags & CELL_READ_ONLY)
     return d();
   if (width == 1)
@@ -1374,7 +1388,6 @@ cl_memory_cell::append_operator(class cl_memory_operator *op)
   for (i=0; ops[i]!=NULL; i++) ;
   ops[i]= op;
   ops[i+1]= NULL;
-  printf("APPEND %p %s\n",op,op->get_name());print_operators(" ",NULL);
 }
 
 void
@@ -1397,7 +1410,6 @@ cl_memory_cell::prepend_operator(class cl_memory_operator *op)
   if (ops)
     free(ops);
   ops= p;
-  printf("PREPEND %p %s\n",op,op->get_name());print_operators(" ",NULL);
 }
 
 void
@@ -1425,8 +1437,6 @@ cl_memory_cell::remove_operator(class cl_memory_operator *op)
 	}
     }
   ops[dst]= NULL;
-  printf("op=%p %s removed from %p\n", op, op->get_name(), this);
-  printf("REMOVED %p %s\n",op,op->get_name());print_operators(" ",NULL);
   if (dst == 0)
     free(ops), ops= NULL;
 }
@@ -1444,6 +1454,7 @@ cl_memory_cell::del_operator(class cl_brk *brk)
           break;
         }
     }
+  if (old1) delete old1;
 
   //
   int src, dst;
@@ -1460,8 +1471,6 @@ cl_memory_cell::del_operator(class cl_brk *brk)
 	old2= ops[src];
     }
   ops[dst]= NULL;
-  printf("DEL %p,%p %s\n",old1,old2,old1->get_name());print_operators(" ",NULL);
-  if (old1) delete old1;
   if (old2 && (old1!=old2)) delete old2;
   if (dst==0)
     free(ops), ops= NULL;
@@ -1481,6 +1490,7 @@ cl_memory_cell::del_operator(class cl_hw *hw)
           break;
         }
     }
+  if (old1) delete old1;
 
   //
   int src, dst;
@@ -1496,7 +1506,6 @@ cl_memory_cell::del_operator(class cl_hw *hw)
       else
 	old2= ops[src];
     }
-  if (old1) delete old1;
   if (old2 && (old1!=old2)) delete old2;
 }
 
