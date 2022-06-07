@@ -252,7 +252,7 @@ class cl_memory_cell: public cl_cell_data
  protected:
   uchar width;
   uchar flags;
-  class cl_memory_operator *operators;
+  //class cl_memory_operator *operators;
   class cl_memory_operator **ops;
  public:
   cl_memory_cell();
