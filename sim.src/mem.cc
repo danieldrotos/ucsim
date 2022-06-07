@@ -1125,7 +1125,6 @@ cl_memory_cell::cl_memory_cell()
   flags= CELL_NON_DECODED;
   width= 8;
   def_data= 0;
-  //operators= NULL;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
@@ -1145,7 +1144,6 @@ cl_memory_cell::cl_memory_cell(uchar awidth)
   flags= CELL_NON_DECODED;
   width= awidth;
   def_data= 0;
-  //operators= NULL;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
@@ -1294,7 +1292,6 @@ cl_memory_cell::read(enum hw_cath skip)
 #ifdef STATISTIC
   nuof_reads++;
 #endif
-  //if (operators) return(operators->read(skip));
   if (ops && ops[0])
     {
       t_mem r;
@@ -1317,7 +1314,6 @@ cl_memory_cell::write(t_mem val)
 #ifdef STATISTIC
   nuof_writes++;
 #endif
-  //if (operators) val= operators->write(val);
   if (ops && ops[0])
     {
       for (int i=0; ops[i]; i++)
@@ -1369,13 +1365,6 @@ void
 cl_memory_cell::append_operator(class cl_memory_operator *op)
 {
   class cl_memory_operator **op_p;
-  /*
-  for (op_p = &operators; *op_p; op_p = &(*op_p)->next_operator)
-    ;
-  op->next_operator = NULL;
-  *op_p = op;
-  */
-  //
   int i= nuof_ops()+2;
   if (!ops)
     {
@@ -1393,14 +1382,6 @@ cl_memory_cell::append_operator(class cl_memory_operator *op)
 void
 cl_memory_cell::prepend_operator(class cl_memory_operator *op)
 {
-  /*
-  if (op)
-    {
-      op->next_operator = operators;
-      operators = op;
-    }
-  */
-  //
   if (!op)
     return;
   int i= nuof_ops() + 2;
@@ -1418,18 +1399,6 @@ cl_memory_cell::prepend_operator(class cl_memory_operator *op)
 void
 cl_memory_cell::remove_operator(class cl_memory_operator *op)
 {
-  /*
-  for (class cl_memory_operator **op_p = &operators; *op_p; op_p = &(*op_p)->next_operator)
-    {
-      if (*op_p == op)
-        {
-          *op_p = op->next_operator;
-          op->next_operator = NULL;
-          break;
-        }
-    }
-  */
-  //
   int src, dst;
   for (src=dst=0; ops && ops[src]!=NULL; src++)
     {
@@ -1448,22 +1417,9 @@ cl_memory_cell::remove_operator(class cl_memory_operator *op)
 void
 cl_memory_cell::del_operator(class cl_brk *brk)
 {
-  class cl_memory_operator *old1=NULL, *old2;
-  /*
-  for (class cl_memory_operator **op_p = &operators; *op_p; op_p = &(*op_p)->next_operator)
-    {
-      if ((*op_p)->match(brk))
-        {
-          old1 = *op_p;
-          *op_p = (*op_p)->next_operator;
-          break;
-        }
-    }
-  if (old1) delete old1;
-  */
-  //
+  class cl_memory_operator *old;
   int src, dst;
-  old2= NULL;
+  old= NULL;
   for (src=dst=0; ops && ops[src]!=NULL; src++)
     {
       if (!(ops[src]->match(brk)))
@@ -1473,10 +1429,11 @@ cl_memory_cell::del_operator(class cl_brk *brk)
 	  dst++;
 	}
       else
-	old2= ops[src];
+	old= ops[src];
     }
   ops[dst]= NULL;
-  if (old2 && (old1!=old2)) delete old2;
+  if (old)
+    delete old;
   if (dst==0)
     free(ops), ops= NULL;
 }
@@ -1484,23 +1441,9 @@ cl_memory_cell::del_operator(class cl_brk *brk)
 void 	 
 cl_memory_cell::del_operator(class cl_hw *hw)
 {
-  class cl_memory_operator *old1, *old2;
-  old1= NULL;
-  /*
-  for (class cl_memory_operator **op_p = &operators; *op_p; op_p = &(*op_p)->next_operator)
-    {
-      if ((*op_p)->match(hw))
-        {
-          old1 = *op_p;
-          *op_p = (*op_p)->next_operator;
-          break;
-        }
-    }
-  if (old1) delete old1;
-  */
-  //
+  class cl_memory_operator *old;
   int src, dst;
-  old2= NULL;
+  old= NULL;
   for (src=dst=0; ops && ops[src]!=NULL; src++)
     {
       if (!(ops[src]->match(hw)))
@@ -1510,25 +1453,19 @@ cl_memory_cell::del_operator(class cl_hw *hw)
 	  dst++;
 	}
       else
-	old2= ops[src];
+	old= ops[src];
     }
-  if (old2 && (old1!=old2)) delete old2;
+  ops[dst]= NULL;
+  if (old)
+    delete old;
+  if (dst==0)
+    free(ops), ops= NULL;
 }
 
 class cl_banker *
 cl_memory_cell::get_banker(void)
 {
-  //class cl_memory_operator *op= operators;
   class cl_banker *b= NULL;
-  /*
-  while (op)
-    {
-      b= op->get_banker();
-      if (b)
-	return b;
-      op= op->get_next();
-    }
-  */
   for (int i=0; ops && ops[i]; i++)
     if ((b= ops[i]->get_banker())!=NULL)
       return b;
@@ -1621,19 +1558,6 @@ cl_memory_cell::print_info(const char *pre, class cl_console_base *con)
 void
 cl_memory_cell::print_operators(const char *pre, class cl_console_base *con)
 {
-  /*
-  class cl_memory_operator *o= operators;
-  if (!operators)
-    return;
-  int i= 0;
-  while (o)
-    {
-      if (con) con->dd_printf("%s %02d. %s\n", pre, i, o->get_name("?"));
-      else printf("%s %02d. %s\n", pre, i, o->get_name("?"));
-      i++;
-      o= o->get_next();
-    }
-  */
   for (int i=0; ops && ops[i]!=NULL; i++)
     {
       if (con) con->dd_printf("%s [%d] %s\n", pre, i, (ops[i])->get_name("?"));
