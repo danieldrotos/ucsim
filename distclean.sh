@@ -1,5 +1,13 @@
 #!/bin/sh
 
+if [ -x /bin/test ]; then
+	TEST=/bin/test
+elif [ -x /usr/bin/test ]; then
+	TEST=/usr/bin/test
+else
+	TEST=test
+fi
+
 echo "Make distclean of main directory..."
 make -f clean.mk distclean
 
@@ -13,7 +21,7 @@ for pkg in cmd.src sim.src gui.src motorola.src \
 do
     echo "Make distclean of package ${pkg} directory..."
     make -C $pkg -f clean.mk distclean
-    test -L ${pkg}/dtest && rm -f ${pkg}/dtest
+    $TEST -L ${pkg}/dtest && rm -f ${pkg}/dtest
 done
 
 echo "Make clean of example directory..."
