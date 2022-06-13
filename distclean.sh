@@ -20,7 +20,7 @@ for pkg in cmd.src sim.src gui.src motorola.src \
 	   doc
 do
     echo "Make distclean of package ${pkg} directory..."
-    make -C $pkg -f clean.mk distclean
+    make -C $pkg -f clean.mk top_srcdir=$(pwd) distclean
     $TEST -L ${pkg}/dtest && rm -f ${pkg}/dtest
 done
 
@@ -28,3 +28,14 @@ echo "Make clean of example directory..."
 make -C example clean
 echo "Make clean of test directory..."
 make -C test clean
+
+echo "Cleanup compiled files..."
+find . -name '*.d' -exec rm {} \;
+find . -name '*.lk' -exec rm {} \;
+find . -name '*.lst' -exec rm {} \;
+find . -name '*.map' -exec rm {} \;
+find . -name '*.noi' -exec rm {} \;
+find . -name '*.rel' -exec rm {} \;
+find . -name '*.sym' -exec rm {} \;
+find . -name '*.cdb' -exec rm {} \;
+find . -name '*.rst' -exec rm {} \;
