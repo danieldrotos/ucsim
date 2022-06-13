@@ -5,7 +5,7 @@ clean:
 	rm -f .[a-z]*~
 	rm -f sst7 sst7.exe
 	rm -f ucsim_st7 ucsim_st7.exe
-ifneq ($(shell test test/Makefile && echo ok), )
+ifneq ($(shell test -f test/Makefile && echo ok), )
 	$(MAKE) -C test clean
 endif
 

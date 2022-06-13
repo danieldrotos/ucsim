@@ -5,7 +5,7 @@ clean:
 	rm -f .[a-z]*~
 	rm -f spdk spdk.exe
 	rm -f ucsim_pdk ucsim_pdk.exe
-ifneq ($(shell test test/Makefile && echo ok), )
+ifneq ($(shell test -f test/Makefile && echo ok), )
 	$(MAKE) -C test clean
 endif
 

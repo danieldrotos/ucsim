@@ -7,7 +7,7 @@ clean:
 	rm -f .[a-z]*~
 	rm -f sp1516$(EXEEXT) sp1516.exe
 	rm -f ucsim_p1516$(EXEEXT) ucsim_p1516.exe
-ifneq ($(shell test test/Makefile && echo ok), )
+ifneq ($(shell test -f test/Makefile && echo ok), )
 	$(MAKE) -C test clean
 endif
 

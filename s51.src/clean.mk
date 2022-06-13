@@ -8,7 +8,7 @@ clean:
 	rm -f .[a-z]*~
 	rm -f s51 s51.exe
 	rm -f ucsim_51 ucsim_51.exe
-ifneq ($(shell test test/Makefile && echo ok), )
+ifneq ($(shell test -f test/Makefile && echo ok), )
 	$(MAKE) -C test clean
 endif
 

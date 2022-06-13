@@ -9,7 +9,7 @@ clean:
 	rm -f .[a-z]*~
 	rm -f stlcs stlcs.exe
 	rm -f ucsim_tlcs ucsim_tlcs.exe
-ifneq ($(shell test test/Makefile && echo ok), )
+ifneq ($(shell test -f test/Makefile && echo ok), )
 	$(MAKE) -C test clean
 endif
 
