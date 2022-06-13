@@ -3,7 +3,9 @@
 clean:
 	rm -f *core *[%~] *.[oa] test_mem_speed
 	rm -f .[a-z]*~
+ifneq ($(shell test test/Makefile && echo ok), )
 	$(MAKE) -C test clean
+endif
 
 
 # Deleting all files created by configuring or building the program

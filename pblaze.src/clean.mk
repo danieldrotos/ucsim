@@ -7,7 +7,9 @@ clean:
 	rm -f spblaze spblaze.exe
 	rm -f ucsim_pblaze ucsim_pblaze.exe
 	rm -f ucsim_spblaze ucsim_spblaze.exe
+ifneq ($(shell test test/Makefile && echo ok), )
 	$(MAKE) -C test clean
+endif
 
 
 # Deleting all files created by configuring or building the program

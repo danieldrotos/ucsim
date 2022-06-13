@@ -5,7 +5,9 @@ clean:
 	rm -f .[a-z]*~
 	rm -f sz80 sz80.exe
 	rm -f ucsim_z80 ucsim_z80.exe
+ifneq ($(shell test test/Makefile && echo ok), )
 	$(MAKE) -C test clean
+endif
 
 
 # Deleting all files created by configuring or building the program

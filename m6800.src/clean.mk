@@ -9,7 +9,9 @@ clean:
 	rm -f sm68hc11$(EXEEXT) sm68hc11.exe
 	rm -f ucsim_m6800$(EXEEXT) ucsim_m6800.exe
 	rm -f ucsim_m68hc11$(EXEEXT) ucsim_m68hc11.exe
+ifneq ($(shell test test/Makefile && echo ok), )
 	$(MAKE) -C test clean
+endif
 
 
 # Deleting all files created by configuring or building the program
