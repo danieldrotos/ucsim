@@ -7,7 +7,7 @@ clean:
 	rm -f .[a-z]*~
 	rm -f sp1516$(EXEEXT) sp1516.exe
 	rm -f ucsim_p1516$(EXEEXT) ucsim_p1516.exe
-	$(MAKE) -C test -f clean.mk clean
+	$(MAKE) -C test clean
 
 
 # Deleting all files created by configuring or building the program
@@ -16,7 +16,7 @@ distclean: clean
 	rm -f config.cache config.log config.status
 	rm -f Makefile *.dep
 	rm -f *.obj *.list *.lst *.hex
-	$(MAKE) -C test -f clean.mk distclean
+	rm -f test/Makefile
 
 
 # Like clean but some files may still exist

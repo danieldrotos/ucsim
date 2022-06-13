@@ -7,7 +7,7 @@ clean:
 	rm -f .[a-z]*~
 	rm -f savr$(EXEEXT) savr.exe
 	rm -f ucsim_avr$(EXEEXT) ucsim_avr.exe
-	$(MAKE) -C test -f clean.mk clean
+	$(MAKE) -C test clean
 
 
 # Deleting all files created by configuring or building the program
@@ -16,7 +16,8 @@ distclean: clean
 	rm -f config.cache config.log config.status
 	rm -f Makefile *.dep
 	rm -f *.obj *.list *.lst *.hex
-	$(MAKE) -C test -f clean.mk distclean
+	rm -f test/Makefile
+
 
 # Like clean but some files may still exist
 # -----------------------------------------

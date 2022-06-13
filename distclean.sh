@@ -20,8 +20,3 @@ echo "Make clean of example directory..."
 make -C example clean
 echo "Make clean of test directory..."
 make -C test clean
-
-echo "Make clean of outside tests..."
-for d in $(ls ../test); do
-    make -C ../test/$d clean
-done

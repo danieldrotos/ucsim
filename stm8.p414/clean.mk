@@ -13,7 +13,7 @@ clean:
 distclean: clean
 	rm -f config.cache config.log config.status
 	rm -f Makefile *.dep
-	$(MAKE) -C test -f clean.mk distclean
+	rm -f test/Makefile
 
 
 # Like clean but some files may still exist
