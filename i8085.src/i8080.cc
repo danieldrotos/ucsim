@@ -24,4 +24,11 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
+#include "i8080cl.h"
+
+cl_i8080::cl_i8080(class cl_sim *asim):
+  cl_uc(asim)
+{
+}
+
 /* End of i8085.src/i8080.cc */

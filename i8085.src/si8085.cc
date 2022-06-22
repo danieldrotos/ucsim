@@ -24,9 +24,32 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
+// prj
+#include "globals.h"
+#include "utils.h"
+
+// local
+#include "simi8085cl.h"
+#include "glob.h"
+
 int
 main(int argc, char *argv[])
 {
+  class cl_sim *sim;
+
+  app_start_at= dnow();
+  cpus= cpus_8085;
+  application= new cl_app();
+  application->set_name("si8085");
+  application->init(argc, argv);
+  sim= new cl_simi8085(application);
+  if (sim->init())
+    sim->state|= SIM_QUIT;
+  application->set_simulator(sim);
+  //sim->main();
+  application->run();
+  application->done();
+  delete application;
   return 0;
 }
 

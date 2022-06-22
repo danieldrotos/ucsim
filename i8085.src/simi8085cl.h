@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (i8085.cc)
+ * Simulator of microcontrollers (simi8085cl.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -23,14 +23,23 @@ You should have received a copy of the GNU General Public License
 along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
+/*@1@*/
 
-#include "i8085cl.h"
+#ifndef SIMI8085CL_HEADER
+#define SIMI8085CL_HEADER
+
+#include "simcl.h"
 
 
-cl_i8085::cl_i8085(class cl_sim *asim):
-  cl_i8080(asim)
+class cl_simi8085: public cl_sim
 {
-}
+public:
+  cl_simi8085(class cl_app *the_app);
+
+  virtual class cl_uc *mk_controller(void);
+};
 
 
-/* End of i8085.src/i8085.cc */
+#endif
+
+/* End of i8085.src/simi8085cl.h */

@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (i8085.cc)
+ * Simulator of microcontrollers (i8080cl.h)
  *
  * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
@@ -24,13 +24,23 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
-#include "i8085cl.h"
+#ifndef I8080CL_HEADER
+#define I8080CL_HEADER
+
+#include "uccl.h"
 
 
-cl_i8085::cl_i8085(class cl_sim *asim):
-  cl_i8080(asim)
+/*
+ * Base of i8080 processor
+ */
+
+class cl_i8080: public cl_uc
 {
-}
+ public:
+  cl_i8080(class cl_sim *asim);
+};
 
 
-/* End of i8085.src/i8085.cc */
+#endif
+
+/* End of i8085.src/i8080cl.h */
