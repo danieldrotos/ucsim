@@ -29,6 +29,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "uccl.h"
 
+#include "glob.h"
+#include "decode.h"
+
 
 /*
  * Base of i8080 processor
@@ -38,6 +41,25 @@ class cl_i8080: public cl_uc
 {
  public:
   cl_i8080(class cl_sim *asim);
+  virtual int init(void);
+  virtual const char *id_string(void);
+  virtual void reset(void);
+  virtual void set_PC(t_addr addr);
+
+  virtual void mk_hw_elements(void);
+  virtual void make_cpu_hw(void);
+  virtual void make_memories(void);
+
+  virtual int clock_per_cycle(void) { return 1; }
+  virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual char *disassc(t_addr addr, chars *comment=NULL);
+
+  virtual void print_regs(class cl_console_base *con);
+
+  virtual int exec_inst(void);
+
+  virtual int NOP(t_mem code) { return resGO; }
 };
 
 

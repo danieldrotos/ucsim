@@ -31,4 +31,148 @@ cl_i8080::cl_i8080(class cl_sim *asim):
 {
 }
 
+int
+cl_i8080::init(void)
+{
+  cl_uc::init();
+  fill_def_wrappers(itab);
+  set_xtal(1000000);
+  return 0;
+}
+
+const char *
+cl_i8080::id_string(void)
+{
+  return "i8080";
+}
+
+void
+cl_i8080::reset(void)
+{
+  cl_uc::reset();
+  PC= 0;
+}
+
+void
+cl_i8080::set_PC(t_addr addr)
+{
+  PC= addr;
+}
+
+void
+cl_i8080::mk_hw_elements(void)
+{
+  cl_uc::mk_hw_elements();
+}
+
+void
+cl_i8080::make_cpu_hw(void)
+{
+}
+
+void
+cl_i8080::make_memories(void)
+{
+  class cl_address_space *as;
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+  
+  rom= as= new cl_address_space("rom", 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip= new cl_chip8("rom_chip", 0x10000, 8);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(as= rom,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+}
+
+
+struct dis_entry *
+cl_i8080::dis_tbl(void)
+{
+  return(disass_i8080);
+}
+
+struct dis_entry *
+cl_i8080::get_dis_entry(t_addr addr)
+{
+  t_mem code= rom->get(addr);
+
+  for (struct dis_entry *de = dis_tbl(); de && de->mnemonic; de++)
+    {
+      if ((code & de->mask) == de->code)
+        return de;
+    }
+
+  return NULL;
+}
+
+char *
+cl_i8080::disassc(t_addr addr, chars *comment)
+{
+  chars work= chars(), temp= chars();
+  const char *b;
+  struct dis_entry *de;
+  int i;
+  bool first;
+  u8_t h, l;
+  u16_t a;
+
+  de= get_dis_entry(addr);
+
+  if (!de || !de->mnemonic)
+    return strdup("-- UNKNOWN/INVALID");
+
+  b= de->mnemonic;
+
+  first= true;
+  work= "";
+  for (i=0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '%')
+	{
+	  i++;
+	  temp= "";
+	  switch (b[i])
+	    {
+	    }
+	  if (comment && temp.nempty())
+	    comment->append(temp);
+	}
+      else
+	work+= b[i];
+    }
+
+  return(strdup(work.c_str()));
+}
+
+void
+cl_i8080::print_regs(class cl_console_base *con)
+{
+  print_disass(PC, con);
+}
+
+
+int
+cl_i8080::exec_inst(void)
+{
+  int res;
+
+  if ((res= exec_inst_tab(itab)) != resNOT_DONE)
+    return res;
+
+  inst_unknown(rom->read(instPC));
+  return(resINV_INST);
+}
+
 /* End of i8085.src/i8080.cc */

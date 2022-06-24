@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (glob.h)
+ * Simulator of microcontrollers (decode.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -23,20 +23,13 @@ You should have received a copy of the GNU General Public License
 along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
+/*@1@*/
 
-#ifndef I8085_GLOB_HEADER
-#define I8085_GLOB_HEADER
+#ifndef DECODE_HEADER
+#define DECODE_HEADER
 
-#include "stypes.h"
-#include "iwrap.h"
-
-
-extern instruction_wrapper_fn itab[256];
-
-extern struct cpu_entry cpus_8085[];
-extern struct dis_entry disass_i8080[];
-
+#define NOP	instruction_00
 
 #endif
 
-/* End of i8085.src/glob.h */
+/* End of i8085.src/decode.h */

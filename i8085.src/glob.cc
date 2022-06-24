@@ -26,6 +26,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
+instruction_wrapper_fn itab[256];
+
+// code mask branch len mn call tick
+struct dis_entry disass_i8080[]=
+  {  
+    { 0x00, 0xff, ' ', 1, "NOP" },
+    
+    { 0, 0, 0, 0, 0, 0 }
+  };
+
 struct cpu_entry cpus_8085[]=
   {
     {"I8080"	, CPU_I8080, 0		, "I8080", ""},
