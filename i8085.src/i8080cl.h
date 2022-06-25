@@ -33,13 +33,42 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "decode.h"
 
 
+#ifdef WORDS_BIGENDIAN
+#define RP(N,N16,NH,NL) union			\
+		      {				\
+			u16_t N16;		\
+			struct {		\
+			  u8_t NH;		\
+			  u8_t NL;		\
+			} r;			\
+  } N
+#else
+#define RP(N,N16,NH,NL) union			\
+		      {				\
+			u16_t N16;		\
+			struct {		\
+			  u8_t NL;		\
+			  u8_t NH;		\
+			} r;			\
+  } N
+#endif
+
+#define rA (rpAF.r.A)
+#define rF (rpAF.r.F)
+#define rAF (rpAF.AF)
+
+
 /*
  * Base of i8080 processor
  */
 
 class cl_i8080: public cl_uc
 {
- public:
+public:
+  RP(rpAF, AF, A, F);
+  class cl_cell8 cA, cF;
+  class cl_cell16 cAF;
+public:
   cl_i8080(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);

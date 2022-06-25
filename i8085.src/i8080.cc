@@ -37,6 +37,12 @@ cl_i8080::init(void)
   cl_uc::init();
   fill_def_wrappers(itab);
   set_xtal(1000000);
+
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(A);
+  RCV(F);
+#undef RCV
+  
   return 0;
 }
 
