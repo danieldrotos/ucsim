@@ -24,6 +24,10 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
+#include <ctype.h>
+
+#include "utils.h"
+
 #include "i8080cl.h"
 
 cl_i8080::cl_i8080(class cl_sim *asim):
@@ -39,8 +43,10 @@ cl_i8080::init(void)
   set_xtal(1000000);
 
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
-  RCV(A);
-  RCV(F);
+  RCV(AF); RCV(A); RCV(F);
+  RCV(BC); RCV(B); RCV(C);
+  RCV(DE); RCV(D); RCV(E);
+  RCV(HL); RCV(H); RCV(L);
 #undef RCV
   
   return 0;
@@ -165,6 +171,21 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 void
 cl_i8080::print_regs(class cl_console_base *con)
 {
+  con->dd_color("answer");
+  con->dd_printf("SZ-A-PNC  Flags= 0x%02x %3d %c  ",
+                 rF, rF, isprint(rF)?rF:'.');
+  con->dd_printf("A= 0x%02x %3d %c\n",
+                 rA, rA, isprint(rA)?rA:'.');
+  con->dd_printf("%s\n", cbin(rF, 8).c_str());
+  con->dd_printf("BC= 0x%04x [BC]= 0x%02x %3d %c\n",
+                 rBC, rom->get(rBC), rom->get(rBC),
+                 isprint(rom->get(rBC))?rom->get(rBC):'.');
+  con->dd_printf("DE= 0x%04x [DE]= 0x%02x %3d %c\n",
+                 rDE, rom->get(rDE), rom->get(rDE),
+                 isprint(rom->get(rDE))?rom->get(rDE):'.');
+  con->dd_printf("HL= 0x%04x [HL]= 0x%02x %3d %c\n",
+                 rHL, rom->get(rHL), rom->get(rHL),
+                 isprint(rom->get(rHL))?rom->get(rHL):'.');
   print_disass(PC, con);
 }
 

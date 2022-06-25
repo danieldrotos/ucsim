@@ -53,9 +53,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   } N
 #endif
 
-#define rA (rpAF.r.A)
-#define rF (rpAF.r.F)
 #define rAF (rpAF.AF)
+#define rA  (rpAF.r.A)
+#define rF  (rpAF.r.F)
+
+#define rBC (rpBC.BC)
+#define rB  (rpBC.r.B)
+#define rC  (rpBC.r.C)
+
+#define rDE (rpDE.DE)
+#define rD  (rpDE.r.D)
+#define rE  (rpDE.r.E)
+
+#define rHL (rpHL.HL)
+#define rH  (rpHL.r.H)
+#define rL  (rpHL.r.L)
 
 
 /*
@@ -65,9 +77,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_i8080: public cl_uc
 {
 public:
-  RP(rpAF, AF, A, F);
-  class cl_cell8 cA, cF;
-  class cl_cell16 cAF;
+  RP(rpAF, AF, A, F);  class cl_cell8 cA, cF;  class cl_cell16 cAF;
+  RP(rpBC, BC, B, C);  class cl_cell8 cB, cC;  class cl_cell16 cBC;
+  RP(rpDE, DE, D, E);  class cl_cell8 cD, cE;  class cl_cell16 cDE;
+  RP(rpHL, HL, H, L);  class cl_cell8 cH, cL;  class cl_cell16 cHL;
 public:
   cl_i8080(class cl_sim *asim);
   virtual int init(void);
