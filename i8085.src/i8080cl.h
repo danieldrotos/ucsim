@@ -71,16 +71,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /*
+ * Special handling of flags
+ */
+
+class cl_flags: public cl_cell8
+{
+public:
+  virtual t_mem write(t_mem val);
+};
+
+
+/*
  * Base of i8080 processor
  */
 
 class cl_i8080: public cl_uc
 {
 public:
-  RP(rpAF, AF, A, F);  class cl_cell8 cA, cF;  class cl_cell16 cAF;
+  class cl_flags cF;
+  RP(rpAF, AF, A, F);  class cl_cell8 cA    ;  class cl_cell16 cAF;
   RP(rpBC, BC, B, C);  class cl_cell8 cB, cC;  class cl_cell16 cBC;
   RP(rpDE, DE, D, E);  class cl_cell8 cD, cE;  class cl_cell16 cDE;
   RP(rpHL, HL, H, L);  class cl_cell8 cH, cL;  class cl_cell16 cHL;
+  u16_t rSP; class cl_cell16 cSP;
 public:
   cl_i8080(class cl_sim *asim);
   virtual int init(void);

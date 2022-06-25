@@ -30,6 +30,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "i8080cl.h"
 
+
+/*
+ * Flags
+ */
+
+t_mem
+cl_flags::write(t_mem val)
+{
+  val&= 0xd7;
+  val|= 0x02;
+  return cl_cell8::write(val);
+}
+
+
 cl_i8080::cl_i8080(class cl_sim *asim):
   cl_uc(asim)
 {
@@ -47,8 +61,10 @@ cl_i8080::init(void)
   RCV(BC); RCV(B); RCV(C);
   RCV(DE); RCV(D); RCV(E);
   RCV(HL); RCV(H); RCV(L);
+  RCV(SP);
 #undef RCV
-  
+
+  reset();
   return 0;
 }
 
@@ -62,6 +78,12 @@ void
 cl_i8080::reset(void)
 {
   cl_uc::reset();
+  cF.W(urnd());
+  cA.W(urnd());
+  cBC.W(urnd());
+  cDE.W(urnd());
+  cHL.W(urnd());
+  cSP.W(urnd());
   PC= 0;
 }
 
@@ -172,7 +194,7 @@ void
 cl_i8080::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("SZ-A-PNC  Flags= 0x%02x %3d %c  ",
+  con->dd_printf("SZ-A-P-C  Flags= 0x%02x %3d %c  ",
                  rF, rF, isprint(rF)?rF:'.');
   con->dd_printf("A= 0x%02x %3d %c\n",
                  rA, rA, isprint(rA)?rA:'.');
@@ -186,6 +208,21 @@ cl_i8080::print_regs(class cl_console_base *con)
   con->dd_printf("HL= 0x%04x [HL]= 0x%02x %3d %c\n",
                  rHL, rom->get(rHL), rom->get(rHL),
                  isprint(rom->get(rHL))?rom->get(rHL):'.');
+
+  int i;
+  con->dd_cprintf("answer", "SP= ");
+  con->dd_cprintf("dump_address", "0x%04x ->", rSP);
+  for (i= 0; i < 2*12; i+= 2)
+    {
+      t_addr al, ah;
+      al= (rSP+i)&0xffff;
+      ah= (al+1)&0xffff;
+      con->dd_cprintf("dump_number", " %02x%02x",
+		      (u8_t)(rom->read(al)),
+		      (u8_t)(rom->read(ah)));
+    }
+  con->dd_printf("\n");
+  
   print_disass(PC, con);
 }
 
