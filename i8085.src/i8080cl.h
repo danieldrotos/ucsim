@@ -69,6 +69,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rH  (rpHL.r.H)
 #define rL  (rpHL.r.L)
 
+#define rM  (rom->read(rHL))
+
+
+enum {
+  flagC	= 0x01,
+  flagP	= 0x04,
+  flagA	= 0x10,
+  flagZ	= 0x40,
+  flagS	= 0x80
+};
+
 
 /*
  * Special handling of flags
@@ -108,6 +119,7 @@ public:
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual void dis_M(chars *comment);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
 
   virtual void print_regs(class cl_console_base *con);
@@ -115,6 +127,8 @@ public:
   virtual int exec_inst(void);
 
   virtual int NOP(t_mem code) { return resGO; }
+  virtual int HLT(t_mem code);
+#include "imovrr.h"
 };
 
 

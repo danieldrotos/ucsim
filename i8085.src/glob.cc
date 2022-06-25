@@ -32,6 +32,8 @@ instruction_wrapper_fn itab[256];
 struct dis_entry disass_i8080[]=
   {  
     { 0x00, 0xff, ' ', 1, "NOP" },
+    { 0x76, 0xff, ' ', 1, "HLT" },
+    { 0x40, 0xc0, ' ', 1, "MOV 'rm5','rm2'" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

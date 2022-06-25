@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (decode.h)
+ * Simulator of microcontrollers (dcmovrr.h)
  *
  * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
  * 
@@ -25,14 +25,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DECODE_HEADER
-#define DECODE_HEADER
+#ifndef DCMOVRR_HEADER
+#define DCMOVRR_HEADER
 
-#include "dcmovrr.h"
-
-#define NOP	instruction_00
-#define HLT	instruction_76
+#define MOV_AA	instruction_7f
+#define MOV_AB	instruction_78
+#define MOV_AC	instruction_79
+#define MOV_AD	instruction_7a
+#define MOV_AE	instruction_7b
+#define MOV_AH	instruction_7c
+#define MOV_AL	instruction_7d
+#define MOV_AM	instruction_7e
 
 #endif
 
-/* End of i8085.src/decode.h */
+/* End of i8085.src/dcmovrr.h */

@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (decode.h)
+ * Simulator of microcontrollers (ialu.cc)
  *
- * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
+ * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -23,16 +23,8 @@ You should have received a copy of the GNU General Public License
 along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
-/*@1@*/
 
-#ifndef DECODE_HEADER
-#define DECODE_HEADER
+#include "i8080cl.h"
 
-#include "dcmovrr.h"
 
-#define NOP	instruction_00
-#define HLT	instruction_76
-
-#endif
-
-/* End of i8085.src/decode.h */
+/* End of i8085.src/ialu.cc */

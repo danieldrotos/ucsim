@@ -146,19 +146,40 @@ cl_i8080::get_dis_entry(t_addr addr)
   return NULL;
 }
 
+char rm_names[8]= {
+  'B',
+  'C',
+  'D',
+  'E',
+  'H',
+  'L',
+  'M',
+  'A'
+};
+
+void
+cl_i8080::dis_M(chars *comment)
+{
+  u8_t m= rM;
+  if (comment->empty())
+    *comment= "; ";
+  comment->appendf("[%04x]= 0x%02x", rHL, m);
+}
+
 char *
 cl_i8080::disassc(t_addr addr, chars *comment)
 {
-  chars work= chars(), temp= chars();
+  chars work= chars(), temp= chars(), fmt= chars();
   const char *b;
   struct dis_entry *de;
   int i;
   bool first;
-  u8_t h, l;
+  u8_t h, l, r, code;
   u16_t a;
 
   de= get_dis_entry(addr);
-
+  code= rom->read(addr);
+  
   if (!de || !de->mnemonic)
     return strdup("-- UNKNOWN/INVALID");
 
@@ -172,6 +193,27 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	{
 	  first= false;
 	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '\'')
+	{
+	  fmt= "";
+	  i++;
+	  while (b[i] && (b[i]!='\''))
+	    fmt.append(b[i++]);
+	  if (!b[i]) i--;
+	  if (fmt.empty())
+	    work.append("'");
+	  if (strcmp(fmt.c_str(), "rm5") == 0)
+	    {
+	      work.appendf("%c", rm_names[r= (code>>3)&7]);
+	      if (r==6) dis_M(comment);
+	    }
+	  if (strcmp(fmt.c_str(), "rm2") == 0)
+	    {
+	      work.appendf("%c", rm_names[r= (code)&7]);
+	      if (r==6) dis_M(comment);
+	    }
+	  continue;
 	}
       if (b[i] == '%')
 	{
