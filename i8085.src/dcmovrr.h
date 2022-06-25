@@ -37,6 +37,60 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define MOV_AL	instruction_7d
 #define MOV_AM	instruction_7e
 
+#define MOV_BA	instruction_47
+#define MOV_BB	instruction_40
+#define MOV_BC	instruction_41
+#define MOV_BD	instruction_42
+#define MOV_BE	instruction_43
+#define MOV_BH	instruction_44
+#define MOV_BL	instruction_45
+#define MOV_BM	instruction_46
+
+#define MOV_CA	instruction_4f
+#define MOV_CB	instruction_48
+#define MOV_CC	instruction_49
+#define MOV_CD	instruction_4a
+#define MOV_CE	instruction_4b
+#define MOV_CH	instruction_4c
+#define MOV_CL	instruction_4d
+#define MOV_CM	instruction_4e
+
+#define MOV_DA	instruction_57
+#define MOV_DB	instruction_50
+#define MOV_DC	instruction_51
+#define MOV_DD	instruction_52
+#define MOV_DE	instruction_53
+#define MOV_DH	instruction_54
+#define MOV_DL	instruction_55
+#define MOV_DM	instruction_56
+
+#define MOV_EA	instruction_5f
+#define MOV_EB	instruction_58
+#define MOV_EC	instruction_59
+#define MOV_ED	instruction_5a
+#define MOV_EE	instruction_5b
+#define MOV_EH	instruction_5c
+#define MOV_EL	instruction_5d
+#define MOV_EM	instruction_5e
+
+#define MOV_HA	instruction_67
+#define MOV_HB	instruction_60
+#define MOV_HC	instruction_61
+#define MOV_HD	instruction_62
+#define MOV_HE	instruction_63
+#define MOV_HH	instruction_64
+#define MOV_HL	instruction_65
+#define MOV_HM	instruction_66
+
+#define MOV_LA	instruction_6f
+#define MOV_LB	instruction_68
+#define MOV_LC	instruction_69
+#define MOV_LD	instruction_6a
+#define MOV_LE	instruction_6b
+#define MOV_LH	instruction_6c
+#define MOV_LL	instruction_6d
+#define MOV_LM	instruction_6e
+
 #endif
 
 /* End of i8085.src/dcmovrr.h */

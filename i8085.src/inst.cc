@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 cl_i8080::HLT(t_mem code)
 {
+  return resHALT;
 }
 
 
