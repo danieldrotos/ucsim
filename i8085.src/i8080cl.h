@@ -174,6 +174,7 @@ public:
   virtual int ADD_H(t_mem code) { return add8(rH, false); }
   virtual int ADD_L(t_mem code) { return add8(rL, false); }
   virtual int ADD_M(t_mem code) { return add8(rM, false); }
+  virtual int ADI(t_mem code) { return add8(fetch(), false); }
   virtual int ADC_A(t_mem code) { return add8(rA, true); }
   virtual int ADC_B(t_mem code) { return add8(rB, true); }
   virtual int ADC_C(t_mem code) { return add8(rC, true); }
@@ -182,6 +183,7 @@ public:
   virtual int ADC_H(t_mem code) { return add8(rH, true); }
   virtual int ADC_L(t_mem code) { return add8(rL, true); }
   virtual int ADC_M(t_mem code) { return add8(rM, true); }
+  virtual int ACI(t_mem code) { return add8(fetch(), true); }
   
   virtual int SUB_A(t_mem code) { return sub8(rA, false); }
   virtual int SUB_B(t_mem code) { return sub8(rB, false); }
@@ -191,6 +193,7 @@ public:
   virtual int SUB_H(t_mem code) { return sub8(rH, false); }
   virtual int SUB_L(t_mem code) { return sub8(rL, false); }
   virtual int SUB_M(t_mem code) { return sub8(rM, false); }
+  virtual int SUI(t_mem code) { return sub8(fetch(), false); }
   virtual int SBB_A(t_mem code) { return sub8(rA, true); }
   virtual int SBB_B(t_mem code) { return sub8(rB, true); }
   virtual int SBB_C(t_mem code) { return sub8(rC, true); }
@@ -199,6 +202,7 @@ public:
   virtual int SBB_H(t_mem code) { return sub8(rH, true); }
   virtual int SBB_L(t_mem code) { return sub8(rL, true); }
   virtual int SBB_M(t_mem code) { return sub8(rM, true); }
+  virtual int SBI(t_mem code) { return sub8(fetch(), true); }
 };
 
 

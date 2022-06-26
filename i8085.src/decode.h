@@ -65,6 +65,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADD_H		instruction_84
 #define ADD_L		instruction_85
 #define ADD_M		instruction_86
+#define ADI		instruction_c6
 
 #define ADC_A		instruction_8f
 #define ADC_B		instruction_88
@@ -74,6 +75,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADC_H		instruction_8c
 #define ADC_L		instruction_8d
 #define ADC_M		instruction_8e
+#define ACI		instruction_ce
 
 #define SUB_A		instruction_97
 #define SUB_B		instruction_90
@@ -83,6 +85,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SUB_H		instruction_94
 #define SUB_L		instruction_95
 #define SUB_M		instruction_96
+#define SUI		instruction_d6
 
 #define SBB_A		instruction_9f
 #define SBB_B		instruction_98
@@ -92,6 +95,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SBB_H		instruction_9c
 #define SBB_L		instruction_9d
 #define SBB_M		instruction_9e
+#define SBI		instruction_de
 
 
 #endif
