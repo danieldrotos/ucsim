@@ -42,6 +42,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define MVI_Li8	instruction_2e
 #define MVI_Mi8	instruction_36
 
+#define LXI_Bi16	instruction_01
+#define LXI_Di16	instruction_11
+#define LXI_Hi16	instruction_21
+#define LXI_Si16	instruction_31
+
 #endif
 
 /* End of i8085.src/decode.h */

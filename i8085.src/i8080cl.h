@@ -128,6 +128,7 @@ public:
   virtual int exec_inst(void);
 
   virtual int mvi8(class cl_memory_cell *dst);
+  virtual int lxi16(class cl_memory_cell &dst);
   
   virtual int NOP(t_mem code) { return resGO; }
   virtual int HLT(t_mem code);
@@ -142,6 +143,11 @@ public:
   virtual int MVI_Hi8(t_mem code) { return mvi8(&cH); }
   virtual int MVI_Li8(t_mem code) { return mvi8(&cL); }
   virtual int MVI_Mi8(t_mem code) { return mvi8(cM()); }
+
+  virtual int LXI_Bi16(t_mem code) { return lxi16(cBC); }
+  virtual int LXI_Di16(t_mem code) { return lxi16(cDE); }
+  virtual int LXI_Hi16(t_mem code) { return lxi16(cHL); }
+  virtual int LXI_Si16(t_mem code) { return lxi16(cSP); }
 };
 
 

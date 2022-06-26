@@ -35,5 +35,15 @@ cl_i8080::mvi8(class cl_memory_cell *dst)
   return resGO;
 }
 
+int
+cl_i8080::lxi16(class cl_memory_cell &dst)
+{
+  u8_t h, l;
+  l= fetch();
+  h= fetch();
+  dst.W(h*256+l);
+  return resGO;
+}
+
 
 /* End of i8085.src/imove.cc */
