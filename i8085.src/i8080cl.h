@@ -161,6 +161,7 @@ public:
   virtual int LDAX_D(t_mem code) { return ldax(rDE); }
   virtual int STAX_B(t_mem code) { return stax(rBC); }
   virtual int STAX_D(t_mem code) { return stax(rDE); }
+  virtual int XCHG(t_mem code);
 };
 
 

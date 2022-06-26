@@ -45,6 +45,7 @@ struct dis_entry disass_i8080[]=
     { 0x1a, 0xff, ' ', 1, "LDAX 'rp5_8'" },
     { 0x02, 0xff, ' ', 1, "STAX 'rp5_8'" },
     { 0x12, 0xff, ' ', 1, "STAX 'rp5_8'" },
+    { 0xeb, 0xff, ' ', 1, "XCHG" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

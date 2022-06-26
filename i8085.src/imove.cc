@@ -92,5 +92,14 @@ cl_i8080::stax(u16_t a)
   return resGO;
 }
 
+int
+cl_i8080::XCHG(t_mem code)
+{
+  u16_t t= rHL;
+  cHL.W(rDE);
+  cDE.W(t);
+  return resGO;
+}
+
 
 /* End of i8085.src/imove.cc */

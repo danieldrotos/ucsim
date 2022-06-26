@@ -55,6 +55,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDAX_D		instruction_1a
 #define STAX_B		instruction_02
 #define STAX_D		instruction_12
+#define XCHG		instruction_eb
 
 
 #endif
