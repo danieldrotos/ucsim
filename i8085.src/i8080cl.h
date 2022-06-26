@@ -120,6 +120,7 @@ public:
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual void dis_M(chars *comment);
+  virtual void dis_rp8(chars *comment, int rp);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
 
   virtual void print_regs(class cl_console_base *con);
@@ -130,6 +131,8 @@ public:
   
   virtual int mvi8(class cl_memory_cell *dst);
   virtual int lxi16(class cl_memory_cell &dst);
+  virtual int ldax(u16_t a);
+  virtual int stax(u16_t a);
   
   virtual int NOP(t_mem code) { return resGO; }
   virtual int HLT(t_mem code);
@@ -154,6 +157,10 @@ public:
   virtual int STA_a16(t_mem code);
   virtual int LHLD_a16(t_mem code);
   virtual int SHLD_a16(t_mem code);
+  virtual int LDAX_B(t_mem code) { return ldax(rBC); }
+  virtual int LDAX_D(t_mem code) { return ldax(rDE); }
+  virtual int STAX_B(t_mem code) { return stax(rBC); }
+  virtual int STAX_D(t_mem code) { return stax(rDE); }
 };
 
 

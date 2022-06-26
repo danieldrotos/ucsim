@@ -51,6 +51,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define STA_a16		instruction_32
 #define LHLD_a16	instruction_2a
 #define SHLD_a16	instruction_22
+#define LDAX_B		instruction_0a
+#define LDAX_D		instruction_1a
+#define STAX_B		instruction_02
+#define STAX_D		instruction_12
 
 
 #endif
