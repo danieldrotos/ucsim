@@ -102,6 +102,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DAD_H		instruction_29
 #define DAD_S		instruction_39
 
+#define INR_A		instruction_3c
+#define INR_B		instruction_04
+#define INR_C		instruction_0c
+#define INR_D		instruction_14
+#define INR_E		instruction_1c
+#define INR_H		instruction_24
+#define INR_L		instruction_2c
+#define INR_M		instruction_34
+
 
 #endif
 

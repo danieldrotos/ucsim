@@ -78,7 +78,8 @@ enum {
   flagA	= 0x10,
   flagZ	= 0x40,
   flagS	= 0x80,
-  fAll= flagC|flagP|flagA|flagZ|flagS
+  fAll= flagC|flagP|flagA|flagZ|flagS,
+  fAll_C= flagP|flagA|flagZ|flagS
 };
 
 
@@ -127,7 +128,7 @@ public:
 
   virtual void print_regs(class cl_console_base *con);
 
-  virtual class cl_memory_cell *cM(void);
+  virtual class cl_memory_cell &cM(void);
   virtual u16_t fetch16(void);
   virtual int exec_inst(void);
   
@@ -135,18 +136,18 @@ public:
   virtual int HLT(t_mem code);
 
   // Data transfer
-  virtual int mvi8(class cl_memory_cell *dst);
+  virtual int mvi8(class cl_memory_cell &dst);
   virtual int lxi16(class cl_memory_cell &dst);
   virtual int ldax(u16_t a);
   virtual int stax(u16_t a);
 #include "imovrr.h"
-  virtual int MVI_Ai8(t_mem code) { return mvi8(&cA); }
-  virtual int MVI_Bi8(t_mem code) { return mvi8(&cB); }
-  virtual int MVI_Ci8(t_mem code) { return mvi8(&cC); }
-  virtual int MVI_Di8(t_mem code) { return mvi8(&cD); }
-  virtual int MVI_Ei8(t_mem code) { return mvi8(&cE); }
-  virtual int MVI_Hi8(t_mem code) { return mvi8(&cH); }
-  virtual int MVI_Li8(t_mem code) { return mvi8(&cL); }
+  virtual int MVI_Ai8(t_mem code) { return mvi8(cA); }
+  virtual int MVI_Bi8(t_mem code) { return mvi8(cB); }
+  virtual int MVI_Ci8(t_mem code) { return mvi8(cC); }
+  virtual int MVI_Di8(t_mem code) { return mvi8(cD); }
+  virtual int MVI_Ei8(t_mem code) { return mvi8(cE); }
+  virtual int MVI_Hi8(t_mem code) { return mvi8(cH); }
+  virtual int MVI_Li8(t_mem code) { return mvi8(cL); }
   virtual int MVI_Mi8(t_mem code) { return mvi8(cM()); }
 
   virtual int LXI_Bi16(t_mem code) { return lxi16(cBC); }
@@ -209,6 +210,15 @@ public:
   virtual int DAD_D(t_mem code) { return dad(rDE); }
   virtual int DAD_H(t_mem code) { return dad(rHL); }
   virtual int DAD_S(t_mem code) { return dad(rSP); }
+  virtual int inr(class cl_memory_cell &op);
+  virtual int INR_A(t_mem code) { return inr(cA); }
+  virtual int INR_B(t_mem code) { return inr(cB); }
+  virtual int INR_C(t_mem code) { return inr(cC); }
+  virtual int INR_D(t_mem code) { return inr(cD); }
+  virtual int INR_E(t_mem code) { return inr(cE); }
+  virtual int INR_H(t_mem code) { return inr(cH); }
+  virtual int INR_L(t_mem code) { return inr(cL); }
+  virtual int INR_M(t_mem code) { vc.rd++; return inr(cM()); }
 };
 
 

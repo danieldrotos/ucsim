@@ -73,5 +73,18 @@ cl_i8080::dad(u16_t op)
   return resGO;
 }
 
+int
+cl_i8080::inr(class cl_memory_cell &op)
+{
+  rF&= ~fAll_C;
+  u8_t res= op.get()+1;
+  if (!res) rF|= flagZ;
+  if (res&0x80) rF|= flagS;
+  if ((op.get()&0xf) == 0xf) rF|= flagA;
+  op.W(res);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of i8085.src/ialu.cc */

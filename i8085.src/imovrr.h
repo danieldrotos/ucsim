@@ -61,10 +61,10 @@ virtual int	instruction_6c(t_mem code) { cL.W(rH); return resGO; }
 virtual int	instruction_6d(t_mem code) { cL.W(rL); return resGO; }
 virtual int	instruction_6e(t_mem code) { cL.W(rM); return resGO; }
 
-virtual int	instruction_77(t_mem code) { cM()->W(rA); return resGO; }
-virtual int	instruction_70(t_mem code) { cM()->W(rB); return resGO; }
-virtual int	instruction_71(t_mem code) { cM()->W(rC); return resGO; }
-virtual int	instruction_72(t_mem code) { cM()->W(rD); return resGO; }
-virtual int	instruction_73(t_mem code) { cM()->W(rE); return resGO; }
-virtual int	instruction_74(t_mem code) { cM()->W(rH); return resGO; }
-virtual int	instruction_75(t_mem code) { cM()->W(rL); return resGO; }
+virtual int	instruction_77(t_mem code) { cM().W(rA); return resGO; }
+virtual int	instruction_70(t_mem code) { cM().W(rB); return resGO; }
+virtual int	instruction_71(t_mem code) { cM().W(rC); return resGO; }
+virtual int	instruction_72(t_mem code) { cM().W(rD); return resGO; }
+virtual int	instruction_73(t_mem code) { cM().W(rE); return resGO; }
+virtual int	instruction_74(t_mem code) { cM().W(rH); return resGO; }
+virtual int	instruction_75(t_mem code) { cM().W(rL); return resGO; }

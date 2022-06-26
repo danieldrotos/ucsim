@@ -28,10 +28,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 int
-cl_i8080::mvi8(class cl_memory_cell *dst)
+cl_i8080::mvi8(class cl_memory_cell &dst)
 {
   u8_t d= fetch();
-  dst->W(d);
+  dst.W(d);
   return resGO;
 }
 
