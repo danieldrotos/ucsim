@@ -77,7 +77,8 @@ enum {
   flagP	= 0x04,
   flagA	= 0x10,
   flagZ	= 0x40,
-  flagS	= 0x80
+  flagS	= 0x80,
+  fAll= flagC|flagP|flagA|flagZ|flagS
 };
 
 
@@ -129,15 +130,14 @@ public:
   virtual u16_t fetch16(void);
   virtual int exec_inst(void);
   
-  virtual int mvi8(class cl_memory_cell *dst);
-  virtual int lxi16(class cl_memory_cell &dst);
-  virtual int ldax(u16_t a);
-  virtual int stax(u16_t a);
-  
   virtual int NOP(t_mem code) { return resGO; }
   virtual int HLT(t_mem code);
 
   // Data transfer
+  virtual int mvi8(class cl_memory_cell *dst);
+  virtual int lxi16(class cl_memory_cell &dst);
+  virtual int ldax(u16_t a);
+  virtual int stax(u16_t a);
 #include "imovrr.h"
   virtual int MVI_Ai8(t_mem code) { return mvi8(&cA); }
   virtual int MVI_Bi8(t_mem code) { return mvi8(&cB); }
@@ -162,6 +162,25 @@ public:
   virtual int STAX_B(t_mem code) { return stax(rBC); }
   virtual int STAX_D(t_mem code) { return stax(rDE); }
   virtual int XCHG(t_mem code);
+
+  // Arithmetic
+  virtual int add8(u8_t op, bool add_c);
+  virtual int ADD_A(t_mem code) { return add8(rA, false); }
+  virtual int ADD_B(t_mem code) { return add8(rB, false); }
+  virtual int ADD_C(t_mem code) { return add8(rC, false); }
+  virtual int ADD_D(t_mem code) { return add8(rD, false); }
+  virtual int ADD_E(t_mem code) { return add8(rE, false); }
+  virtual int ADD_H(t_mem code) { return add8(rH, false); }
+  virtual int ADD_L(t_mem code) { return add8(rL, false); }
+  virtual int ADD_M(t_mem code) { return add8(rM, false); }
+  virtual int ADC_A(t_mem code) { return add8(rA, true); }
+  virtual int ADC_B(t_mem code) { return add8(rB, true); }
+  virtual int ADC_C(t_mem code) { return add8(rC, true); }
+  virtual int ADC_D(t_mem code) { return add8(rD, true); }
+  virtual int ADC_E(t_mem code) { return add8(rE, true); }
+  virtual int ADC_H(t_mem code) { return add8(rH, true); }
+  virtual int ADC_L(t_mem code) { return add8(rL, true); }
+  virtual int ADC_M(t_mem code) { return add8(rM, true); }
 };
 
 

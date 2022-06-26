@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 // local
+#include "i8080cl.h"
 #include "simi8085cl.h"
 #include "glob.h"
 
@@ -39,6 +40,9 @@ main(int argc, char *argv[])
 
   app_start_at= dnow();
   cpus= cpus_8085;
+  for (int i= 0; i<256; i++)
+    if (ptab[i])
+      ptab[i]= flagP;
   application= new cl_app();
   application->set_name("si8085");
   application->init(argc, argv);

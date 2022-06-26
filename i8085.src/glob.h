@@ -35,6 +35,7 @@ extern instruction_wrapper_fn itab[256];
 
 extern struct cpu_entry cpus_8085[];
 extern struct dis_entry disass_i8080[];
+extern u8_t ptab[256];
 
 
 #endif

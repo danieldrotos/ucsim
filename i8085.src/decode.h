@@ -33,14 +33,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define NOP	instruction_00
 #define HLT	instruction_76
 
-#define MVI_Ai8	instruction_3e
-#define MVI_Bi8	instruction_06
-#define MVI_Ci8	instruction_0e
-#define MVI_Di8	instruction_16
-#define MVI_Ei8	instruction_1e
-#define MVI_Hi8	instruction_26
-#define MVI_Li8	instruction_2e
-#define MVI_Mi8	instruction_36
+#define MVI_Ai8		instruction_3e
+#define MVI_Bi8		instruction_06
+#define MVI_Ci8		instruction_0e
+#define MVI_Di8		instruction_16
+#define MVI_Ei8		instruction_1e
+#define MVI_Hi8		instruction_26
+#define MVI_Li8		instruction_2e
+#define MVI_Mi8		instruction_36
 
 #define LXI_Bi16	instruction_01
 #define LXI_Di16	instruction_11
@@ -56,6 +56,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define STAX_B		instruction_02
 #define STAX_D		instruction_12
 #define XCHG		instruction_eb
+
+#define ADD_A		instruction_87
+#define ADD_B		instruction_80
+#define ADD_C		instruction_81
+#define ADD_D		instruction_82
+#define ADD_E		instruction_83
+#define ADD_H		instruction_84
+#define ADD_L		instruction_85
+#define ADD_M		instruction_86
+
+#define ADC_A		instruction_8f
+#define ADC_B		instruction_88
+#define ADC_C		instruction_89
+#define ADC_D		instruction_8a
+#define ADC_E		instruction_8b
+#define ADC_H		instruction_8c
+#define ADC_L		instruction_8d
+#define ADC_M		instruction_8e
 
 
 #endif

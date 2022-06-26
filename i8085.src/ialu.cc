@@ -27,4 +27,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8080cl.h"
 
 
+int
+cl_i8080::add8(u8_t op, bool add_c)
+{
+  u16_t res= rA+op;
+  if (add_c && (rF & flagC))
+    res++;
+  rF&= ~fAll;
+  if (res>0xff) rF|= flagC;
+  if (res&0x80) rF|= flagS;
+  if (!(res&=0xff)) rF|= flagZ;
+  if ((rA&0xf)+(op&0xf) > 0xf) rF|= flagA;
+  rF|= ptab[res];
+  cA.W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+
 /* End of i8085.src/ialu.cc */

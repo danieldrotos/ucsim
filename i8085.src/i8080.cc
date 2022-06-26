@@ -236,13 +236,17 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	      work.appendf("%c", rm_names[r= (code)&7]);
 	      if (r==6) dis_M(comment);
 	    }
-	  if (strcmp(fmt.c_str(), "i8_2") == 0)
+	  if (strcmp(fmt.c_str(), "i8") == 0)
 	    {
 	      work.appendf("0x%02x", rom->read(addr+1));
 	    }
+	  if (strcmp(fmt.c_str(), "i16") == 0)
+	    {
+	      work.appendf("0x%04x", read_addr(rom, addr+1));
+	    }
 	  if (strcmp(fmt.c_str(), "rp5") == 0)
 	    {
-	      work.appendf("%s", rp_names[(code>>4)&3]);
+	      work.appendf("%s", rp_names[h= (code>>4)&3]);
 	    }
 	  if (strcmp(fmt.c_str(), "rp5_8") == 0)
 	    {
@@ -250,9 +254,10 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	      work.appendf("%s", rp_names[l]);
 	      dis_rp8(comment, l);
 	    }
-	  if (strcmp(fmt.c_str(), "i16_2") == 0)
+	  if (strcmp(fmt.c_str(), "a16") == 0)
 	    {
-	      work.appendf("0x%04x", read_addr(rom, addr+1));
+	      a= read_addr(rom, addr+1);
+	      work.appendf("0x%04x", a);
 	    }
 	  if (strcmp(fmt.c_str(), "a16_8") == 0)
 	    {
