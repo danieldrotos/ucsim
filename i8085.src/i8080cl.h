@@ -228,6 +228,14 @@ public:
   virtual int DCR_H(t_mem code) { return dcr(cH); }
   virtual int DCR_L(t_mem code) { return dcr(cL); }
   virtual int DCR_M(t_mem code) { vc.rd++; return dcr(cM()); }
+  virtual int INX_B(t_mem code) { cBC.W(rBC+1); return resGO; }
+  virtual int INX_D(t_mem code) { cDE.W(rDE+1); return resGO; }
+  virtual int INX_H(t_mem code) { cHL.W(rHL+1); return resGO; }
+  virtual int INX_S(t_mem code) { cSP.W(rSP+1); return resGO; }
+  virtual int DCX_B(t_mem code) { cBC.W(rBC-1); return resGO; }
+  virtual int DCX_D(t_mem code) { cDE.W(rDE-1); return resGO; }
+  virtual int DCX_H(t_mem code) { cHL.W(rHL-1); return resGO; }
+  virtual int DCX_S(t_mem code) { cSP.W(rSP-1); return resGO; }
 };
 
 

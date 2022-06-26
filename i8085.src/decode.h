@@ -120,6 +120,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DRC_L		instruction_2d
 #define DRC_M		instruction_35
 
+#define INX_B		instruction_03
+#define INX_D		instruction_13
+#define INX_H		instruction_23
+#define INX_S		instruction_33
+#define DCX_B		instruction_0b
+#define DCX_D		instruction_1b
+#define DCX_H		instruction_2b
+#define DCX_S		instruction_3b
+
 
 #endif
 
