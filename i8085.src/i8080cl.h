@@ -152,6 +152,8 @@ public:
 
   virtual int LDA_a16(t_mem code);
   virtual int STA_a16(t_mem code);
+  virtual int LHLD_a16(t_mem code);
+  virtual int SHLD_a16(t_mem code);
 };
 
 

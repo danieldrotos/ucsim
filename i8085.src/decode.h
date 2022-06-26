@@ -49,6 +49,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define LDA_a16		instruction_3a
 #define STA_a16		instruction_32
+#define LHLD_a16	instruction_2a
+#define SHLD_a16	instruction_22
+
 
 #endif
 

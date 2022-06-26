@@ -39,6 +39,8 @@ struct dis_entry disass_i8080[]=
     { 0x01, 0xcf, ' ', 3, "LXI 'rp5',#'i16_2'" },
     { 0x3a, 0xff, ' ', 3, "LDA 'a16_8'" },
     { 0x32, 0xff, ' ', 3, "STA 'a16_8'" },
+    { 0x2a, 0xff, ' ', 3, "LHLD 'a16_16'" },
+    { 0x22, 0xff, ' ', 3, "SHLD 'a16_16'" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

@@ -58,5 +58,23 @@ cl_i8080::STA_a16(t_mem code)
   return resGO;
 }
 
+int
+cl_i8080::LHLD_a16(t_mem code)
+{
+  cHL.W(read_addr(rom, fetch16()));
+  vc.rd+= 2;
+  return resGO;
+}
+
+int
+cl_i8080::SHLD_a16(t_mem code)
+{
+  u16_t a= fetch16();
+  rom->write(a, rL);
+  rom->write(a+1, rH);
+  vc.wr+= 2;
+  return resGO;
+}
+
 
 /* End of i8085.src/imove.cc */
