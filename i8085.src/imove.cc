@@ -42,5 +42,21 @@ cl_i8080::lxi16(class cl_memory_cell &dst)
   return resGO;
 }
 
+int
+cl_i8080::LDA_a16(t_mem code)
+{
+  cA.W(rom->read(fetch16()));
+  vc.rd++;
+  return resGO;
+}
+
+int
+cl_i8080::STA_a16(t_mem code)
+{
+  rom->write(fetch16(), rA);
+  vc.wr++;
+  return resGO;
+}
+
 
 /* End of i8085.src/imove.cc */

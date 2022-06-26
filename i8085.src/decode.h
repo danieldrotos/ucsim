@@ -47,6 +47,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LXI_Hi16	instruction_21
 #define LXI_Si16	instruction_31
 
+#define LDA_a16		instruction_3a
+#define STA_a16		instruction_32
+
 #endif
 
 /* End of i8085.src/decode.h */

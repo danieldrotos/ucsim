@@ -149,6 +149,9 @@ public:
   virtual int LXI_Di16(t_mem code) { return lxi16(cDE); }
   virtual int LXI_Hi16(t_mem code) { return lxi16(cHL); }
   virtual int LXI_Si16(t_mem code) { return lxi16(cSP); }
+
+  virtual int LDA_a16(t_mem code);
+  virtual int STA_a16(t_mem code);
 };
 
 
