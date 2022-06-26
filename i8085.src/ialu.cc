@@ -62,5 +62,16 @@ cl_i8080::sub8(u8_t op, bool sub_c)
   return 0;
 }
 
+int
+cl_i8080::dad(u16_t op)
+{
+  u32_t res= rHL + op;
+  rF&= ~flagC;
+  if (res > 0xffff) rF|= flagC;
+  cHL.W(res);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of i8085.src/ialu.cc */

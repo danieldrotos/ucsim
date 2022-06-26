@@ -122,6 +122,7 @@ public:
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual void dis_M(chars *comment);
   virtual void dis_rp8(chars *comment, int rp);
+  virtual void dis_rp16(chars *comment, int rp);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
 
   virtual void print_regs(class cl_console_base *con);
@@ -203,6 +204,11 @@ public:
   virtual int SBB_L(t_mem code) { return sub8(rL, true); }
   virtual int SBB_M(t_mem code) { return sub8(rM, true); }
   virtual int SBI(t_mem code) { return sub8(fetch(), true); }
+  virtual int dad(u16_t op);
+  virtual int DAD_B(t_mem code) { return dad(rBC); }
+  virtual int DAD_D(t_mem code) { return dad(rDE); }
+  virtual int DAD_H(t_mem code) { return dad(rHL); }
+  virtual int DAD_S(t_mem code) { return dad(rSP); }
 };
 
 

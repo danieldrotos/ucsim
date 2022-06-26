@@ -189,6 +189,22 @@ cl_i8080::dis_rp8(chars *comment, int rp)
   comment->appendf("[0x%04x]= 0x%02x", a, rom->read(a));
 }
 
+void
+cl_i8080::dis_rp16(chars *comment, int rp)
+{
+  u16_t a;
+  switch (rp)
+    {
+    case 0: a= rBC; break;
+    case 1: a= rDE; break;
+    case 2: a= rHL; break;
+    case 3: a= rSP; break;
+    }
+  if (comment->empty())
+    *comment= "; ";
+  comment->appendf("[0x%04x]= 0x%04x", a, read_addr(rom, a));
+}
+
 char *
 cl_i8080::disassc(t_addr addr, chars *comment)
 {
@@ -253,6 +269,12 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	      l= (code>>4)&3;
 	      work.appendf("%s", rp_names[l]);
 	      dis_rp8(comment, l);
+	    }
+	  if (strcmp(fmt.c_str(), "rp5_16") == 0)
+	    {
+	      l= (code>>4)&3;
+	      work.appendf("%s", rp_names[l]);
+	      dis_rp16(comment, l);
 	    }
 	  if (strcmp(fmt.c_str(), "a16") == 0)
 	    {

@@ -97,6 +97,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SBB_M		instruction_9e
 #define SBI		instruction_de
 
+#define DAD_B		instruction_09
+#define DAD_D		instruction_19
+#define DAD_H		instruction_29
+#define DAD_S		instruction_39
+
 
 #endif
 
