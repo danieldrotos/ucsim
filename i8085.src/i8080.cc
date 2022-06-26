@@ -232,6 +232,18 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	    {
 	      work.appendf("0x%04x", read_addr(rom, addr+1));
 	    }
+	  if (strcmp(fmt.c_str(), "a16_8") == 0)
+	    {
+	      a= read_addr(rom, addr+1);
+	      work.appendf("0x%04x", a);
+	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
+	  if (strcmp(fmt.c_str(), "a16_16") == 0)
+	    {
+	      a= read_addr(rom, addr+1);
+	      work.appendf("0x%04x", a);
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom, a));
+	    }
 	  continue;
 	}
       if (b[i] == '%')
