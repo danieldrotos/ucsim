@@ -77,10 +77,10 @@ int
 cl_i8080::inr(class cl_memory_cell &op)
 {
   rF&= ~fAll_C;
-  u8_t res= op.get()+1;
+  u8_t res= op.read()+1;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
-  if ((op.get()&0xf) == 0xf) rF|= flagA;
+  if ((op.read()&0xf) == 0xf) rF|= flagA;
   rF|= ptab[res];
   op.W(res);
   cF.W(rF);
@@ -92,12 +92,51 @@ cl_i8080::dcr(class cl_memory_cell &op)
 {
   rF&= ~fAll_C;
   u8_t m1= ~1 + 1;
-  u8_t res= op.get()+m1;
+  u8_t res= op.read()+m1;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
-  if (((op.get()&0xf)+(m1&0xf)) > 0xf) rF|= flagA;
+  if (((op.read()&0xf)+(m1&0xf)) > 0xf) rF|= flagA;
   rF|= ptab[res];
   op.W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_i8080::ana(u8_t op)
+{
+  u8_t res= rA & op;
+  rF&= ~fAll_A;
+  if (!res) rF|= flagZ;
+  if (res&0x80) rF|= flagS;
+  rF|= ptab[res];
+  cA.W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_i8080::ora(u8_t op)
+{
+  u8_t res= rA | op;
+  rF&= ~fAll_A;
+  if (!res) rF|= flagZ;
+  if (res&0x80) rF|= flagS;
+  rF|= ptab[res];
+  cA.W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_i8080::xra(u8_t op)
+{
+  u8_t res= rA ^ op;
+  rF&= ~fAll_A;
+  if (!res) rF|= flagZ;
+  if (res&0x80) rF|= flagS;
+  rF|= ptab[res];
+  cA.W(res);
   cF.W(rF);
   return resGO;
 }

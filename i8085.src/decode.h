@@ -139,6 +139,36 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DCX_H		instruction_2b
 #define DCX_S		instruction_3b
 
+#define ANA_A		instruction_a7
+#define ANA_B		instruction_a0
+#define ANA_C		instruction_a1
+#define ANA_D		instruction_a2
+#define ANA_E		instruction_a3
+#define ANA_H		instruction_a4
+#define ANA_L		instruction_a5
+#define ANA_M		instruction_a6
+#define ANI		instruction_e6
+
+#define ORA_A		instruction_b7
+#define ORA_B		instruction_b0
+#define ORA_C		instruction_b1
+#define ORA_D		instruction_b2
+#define ORA_E		instruction_b3
+#define ORA_H		instruction_b4
+#define ORA_L		instruction_b5
+#define ORA_M		instruction_b6
+#define ORI		instruction_f6
+
+#define XRA_A		instruction_af
+#define XRA_B		instruction_a8
+#define XRA_C		instruction_a9
+#define XRA_D		instruction_aa
+#define XRA_E		instruction_ab
+#define XRA_H		instruction_ac
+#define XRA_L		instruction_ad
+#define XRA_M		instruction_ae
+#define XRI		instruction_ee
+
 
 #endif
 

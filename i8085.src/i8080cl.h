@@ -79,7 +79,8 @@ enum {
   flagZ	= 0x40,
   flagS	= 0x80,
   fAll= flagC|flagP|flagA|flagZ|flagS,
-  fAll_C= flagP|flagA|flagZ|flagS
+  fAll_C= flagP|flagA|flagZ|flagS,
+  fAll_A= flagC|flagP|flagZ|flagS
 };
 
 
@@ -168,6 +169,9 @@ public:
   // Arithmetic
   virtual int add8(u8_t op, bool add_c);
   virtual int sub8(u8_t op, bool sub_c, bool cmp);
+  virtual int ana(u8_t op);
+  virtual int ora(u8_t op);
+  virtual int xra(u8_t op);
   virtual int ADD_A(t_mem code) { return add8(rA, false); }
   virtual int ADD_B(t_mem code) { return add8(rB, false); }
   virtual int ADD_C(t_mem code) { return add8(rC, false); }
@@ -245,6 +249,34 @@ public:
   virtual int DCX_D(t_mem code) { cDE.W(rDE-1); return resGO; }
   virtual int DCX_H(t_mem code) { cHL.W(rHL-1); return resGO; }
   virtual int DCX_S(t_mem code) { cSP.W(rSP-1); return resGO; }
+
+  virtual int ANA_A(t_mem code) { return ana(rA); }
+  virtual int ANA_B(t_mem code) { return ana(rB); }
+  virtual int ANA_C(t_mem code) { return ana(rC); }
+  virtual int ANA_D(t_mem code) { return ana(rD); }
+  virtual int ANA_E(t_mem code) { return ana(rE); }
+  virtual int ANA_H(t_mem code) { return ana(rH); }
+  virtual int ANA_L(t_mem code) { return ana(rL); }
+  virtual int ANA_M(t_mem code) { return ana(rM); }
+  virtual int ANI(t_mem code) { return ana(fetch()); }
+  virtual int ORA_A(t_mem code) { return ora(rA); }
+  virtual int ORA_B(t_mem code) { return ora(rB); }
+  virtual int ORA_C(t_mem code) { return ora(rC); }
+  virtual int ORA_D(t_mem code) { return ora(rD); }
+  virtual int ORA_E(t_mem code) { return ora(rE); }
+  virtual int ORA_H(t_mem code) { return ora(rH); }
+  virtual int ORA_L(t_mem code) { return ora(rL); }
+  virtual int ORA_M(t_mem code) { return ora(rM); }
+  virtual int ORI(t_mem code) { return ora(fetch()); }
+  virtual int XRA_A(t_mem code) { return xra(rA); }
+  virtual int XRA_B(t_mem code) { return xra(rB); }
+  virtual int XRA_C(t_mem code) { return xra(rC); }
+  virtual int XRA_D(t_mem code) { return xra(rD); }
+  virtual int XRA_E(t_mem code) { return xra(rE); }
+  virtual int XRA_H(t_mem code) { return xra(rH); }
+  virtual int XRA_L(t_mem code) { return xra(rL); }
+  virtual int XRA_M(t_mem code) { return xra(rM); }
+  virtual int XRI(t_mem code) { return xra(fetch()); }
 };
 
 
