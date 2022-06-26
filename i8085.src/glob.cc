@@ -62,6 +62,12 @@ struct dis_entry disass_i8080[]=
     { 0x05, 0xc7, ' ', 1, "DCR 'rm5'" },
     { 0x03, 0xcf, ' ', 1, "INX 'rp5'" },
     { 0x0b, 0xcf, ' ', 1, "DCX 'rp5'" },
+    { 0xa0, 0xf8, ' ', 1, "ANA 'rm2'" },
+    { 0xe6, 0xff, ' ', 2, "ANI #'i8'" },
+    { 0xb0, 0xf8, ' ', 1, "ORA 'rm2'" },
+    { 0xf6, 0xff, ' ', 2, "ORI #'i8'" },
+    { 0xa8, 0xf8, ' ', 1, "XOR 'rm2'" },
+    { 0xee, 0xff, ' ', 2, "XRI #'i8'" },
     
     { 0, 0, 0, 0, 0, 0 }
   };
