@@ -81,6 +81,22 @@ cl_i8080::inr(class cl_memory_cell &op)
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
   if ((op.get()&0xf) == 0xf) rF|= flagA;
+  rF|= ptab[res];
+  op.W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_i8080::dcr(class cl_memory_cell &op)
+{
+  rF&= ~fAll_C;
+  u8_t m1= ~1 + 1;
+  u8_t res= op.get()+m1;
+  if (!res) rF|= flagZ;
+  if (res&0x80) rF|= flagS;
+  if (((op.get()&0xf)+(m1&0xf)) > 0xf) rF|= flagA;
+  rF|= ptab[res];
   op.W(res);
   cF.W(rF);
   return resGO;

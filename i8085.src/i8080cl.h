@@ -219,6 +219,15 @@ public:
   virtual int INR_H(t_mem code) { return inr(cH); }
   virtual int INR_L(t_mem code) { return inr(cL); }
   virtual int INR_M(t_mem code) { vc.rd++; return inr(cM()); }
+  virtual int dcr(class cl_memory_cell &op);
+  virtual int DCR_A(t_mem code) { return dcr(cA); }
+  virtual int DCR_B(t_mem code) { return dcr(cB); }
+  virtual int DCR_C(t_mem code) { return dcr(cC); }
+  virtual int DCR_D(t_mem code) { return dcr(cD); }
+  virtual int DCR_E(t_mem code) { return dcr(cE); }
+  virtual int DCR_H(t_mem code) { return dcr(cH); }
+  virtual int DCR_L(t_mem code) { return dcr(cL); }
+  virtual int DCR_M(t_mem code) { vc.rd++; return dcr(cM()); }
 };
 
 
