@@ -157,6 +157,13 @@ char rm_names[8]= {
   'A'
 };
 
+const char *rp_names[4]= {
+  "B",
+  "D",
+  "H",
+  "SP"
+};
+  
 void
 cl_i8080::dis_M(chars *comment)
 {
@@ -212,6 +219,18 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	    {
 	      work.appendf("%c", rm_names[r= (code)&7]);
 	      if (r==6) dis_M(comment);
+	    }
+	  if (strcmp(fmt.c_str(), "i8_2") == 0)
+	    {
+	      work.appendf("0x%02x", rom->read(addr+1));
+	    }
+	  if (strcmp(fmt.c_str(), "rp5") == 0)
+	    {
+	      work.appendf("%s", rp_names[(code>>4)&3]);
+	    }
+	  if (strcmp(fmt.c_str(), "i16_2") == 0)
+	    {
+	      work.appendf("0x%04x", read_addr(rom, addr+1));
 	    }
 	  continue;
 	}
@@ -273,6 +292,15 @@ cl_i8080::cM(void)
 {
   vc.wr++;
   return rom->get_cell(rHL);
+}
+
+u16_t
+cl_i8080::fetch16()
+{
+  u8_t h, l;
+  l= fetch();
+  h= fetch();
+  return h*256+l;
 }
 
 int

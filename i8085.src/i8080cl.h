@@ -125,8 +125,9 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual class cl_memory_cell *cM(void);
+  virtual u16_t fetch16(void);
   virtual int exec_inst(void);
-
+  
   virtual int mvi8(class cl_memory_cell *dst);
   virtual int lxi16(class cl_memory_cell &dst);
   
