@@ -49,6 +49,8 @@ struct dis_entry disass_i8080[]=
 
     { 0x80, 0xf8, ' ', 1, "ADD 'rm2'" },
     { 0x88, 0xf8, ' ', 1, "ADC 'rm2'" },
+    { 0x90, 0xf8, ' ', 1, "SUB 'rm2'" },
+    { 0x98, 0xf8, ' ', 1, "SBB 'rm2'" },
     
     { 0, 0, 0, 0, 0, 0 }
   };
