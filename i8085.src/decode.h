@@ -33,6 +33,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define NOP	instruction_00
 #define HLT	instruction_76
 
+#define MVI_Ai8	instruction_3e
+#define MVI_Bi8	instruction_06
+#define MVI_Ci8	instruction_0e
+#define MVI_Di8	instruction_16
+#define MVI_Ei8	instruction_1e
+#define MVI_Hi8	instruction_26
+#define MVI_Li8	instruction_2e
+#define MVI_Mi8	instruction_36
+
 #endif
 
 /* End of i8085.src/decode.h */

@@ -91,6 +91,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define MOV_LL	instruction_6d
 #define MOV_LM	instruction_6e
 
+#define MOV_MA	instruction_77
+#define MOV_MB	instruction_70
+#define MOV_MC	instruction_71
+#define MOV_MD	instruction_72
+#define MOV_ME	instruction_73
+#define MOV_MH	instruction_74
+#define MOV_ML	instruction_75
+
 #endif
 
 /* End of i8085.src/dcmovrr.h */

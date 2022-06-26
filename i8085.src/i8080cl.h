@@ -69,7 +69,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rH  (rpHL.r.H)
 #define rL  (rpHL.r.L)
 
-#define rM  (rom->read(rHL))
+#define rM  (vc.rd++,rom->read(rHL))
 
 
 enum {
@@ -124,11 +124,24 @@ public:
 
   virtual void print_regs(class cl_console_base *con);
 
+  virtual class cl_memory_cell *cM(void);
   virtual int exec_inst(void);
 
+  virtual int mvi8(class cl_memory_cell *dst);
+  
   virtual int NOP(t_mem code) { return resGO; }
   virtual int HLT(t_mem code);
+
+  // Data transfer
 #include "imovrr.h"
+  virtual int MVI_Ai8(t_mem code) { return mvi8(&cA); }
+  virtual int MVI_Bi8(t_mem code) { return mvi8(&cB); }
+  virtual int MVI_Ci8(t_mem code) { return mvi8(&cC); }
+  virtual int MVI_Di8(t_mem code) { return mvi8(&cD); }
+  virtual int MVI_Ei8(t_mem code) { return mvi8(&cE); }
+  virtual int MVI_Hi8(t_mem code) { return mvi8(&cH); }
+  virtual int MVI_Li8(t_mem code) { return mvi8(&cL); }
+  virtual int MVI_Mi8(t_mem code) { return mvi8(cM()); }
 };
 
 

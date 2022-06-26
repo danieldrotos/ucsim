@@ -268,6 +268,12 @@ cl_i8080::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
+class cl_memory_cell *
+cl_i8080::cM(void)
+{
+  vc.wr++;
+  return rom->get_cell(rHL);
+}
 
 int
 cl_i8080::exec_inst(void)
