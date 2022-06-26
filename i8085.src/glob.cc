@@ -55,6 +55,8 @@ struct dis_entry disass_i8080[]=
     { 0xd6, 0xff, ' ', 2, "SUI #'i8'" },
     { 0x98, 0xf8, ' ', 1, "SBB 'rm2'" },
     { 0xde, 0xff, ' ', 2, "SBI #'i8'" },
+    { 0xb8, 0xf8, ' ', 1, "CMP 'rm2'" },
+    { 0xfe, 0xff, ' ', 2, "CPI #'i8'" },
     { 0x09, 0xcf, ' ', 1, "DAD 'rp5_16'" },
     { 0x04, 0xc7, ' ', 1, "INR 'rm5'" },
     { 0x05, 0xc7, ' ', 1, "DCR 'rm5'" },

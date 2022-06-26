@@ -167,7 +167,7 @@ public:
 
   // Arithmetic
   virtual int add8(u8_t op, bool add_c);
-  virtual int sub8(u8_t op, bool sub_c);
+  virtual int sub8(u8_t op, bool sub_c, bool cmp);
   virtual int ADD_A(t_mem code) { return add8(rA, false); }
   virtual int ADD_B(t_mem code) { return add8(rB, false); }
   virtual int ADD_C(t_mem code) { return add8(rC, false); }
@@ -187,24 +187,33 @@ public:
   virtual int ADC_M(t_mem code) { return add8(rM, true); }
   virtual int ACI(t_mem code) { return add8(fetch(), true); }
   
-  virtual int SUB_A(t_mem code) { return sub8(rA, false); }
-  virtual int SUB_B(t_mem code) { return sub8(rB, false); }
-  virtual int SUB_C(t_mem code) { return sub8(rC, false); }
-  virtual int SUB_D(t_mem code) { return sub8(rD, false); }
-  virtual int SUB_E(t_mem code) { return sub8(rE, false); }
-  virtual int SUB_H(t_mem code) { return sub8(rH, false); }
-  virtual int SUB_L(t_mem code) { return sub8(rL, false); }
-  virtual int SUB_M(t_mem code) { return sub8(rM, false); }
-  virtual int SUI(t_mem code) { return sub8(fetch(), false); }
-  virtual int SBB_A(t_mem code) { return sub8(rA, true); }
-  virtual int SBB_B(t_mem code) { return sub8(rB, true); }
-  virtual int SBB_C(t_mem code) { return sub8(rC, true); }
-  virtual int SBB_D(t_mem code) { return sub8(rD, true); }
-  virtual int SBB_E(t_mem code) { return sub8(rE, true); }
-  virtual int SBB_H(t_mem code) { return sub8(rH, true); }
-  virtual int SBB_L(t_mem code) { return sub8(rL, true); }
-  virtual int SBB_M(t_mem code) { return sub8(rM, true); }
-  virtual int SBI(t_mem code) { return sub8(fetch(), true); }
+  virtual int SUB_A(t_mem code) { return sub8(rA, false, false); }
+  virtual int SUB_B(t_mem code) { return sub8(rB, false, false); }
+  virtual int SUB_C(t_mem code) { return sub8(rC, false, false); }
+  virtual int SUB_D(t_mem code) { return sub8(rD, false, false); }
+  virtual int SUB_E(t_mem code) { return sub8(rE, false, false); }
+  virtual int SUB_H(t_mem code) { return sub8(rH, false, false); }
+  virtual int SUB_L(t_mem code) { return sub8(rL, false, false); }
+  virtual int SUB_M(t_mem code) { return sub8(rM, false, false); }
+  virtual int SUI(t_mem code) { return sub8(fetch(), false, false); }
+  virtual int SBB_A(t_mem code) { return sub8(rA, true, false); }
+  virtual int SBB_B(t_mem code) { return sub8(rB, true, false); }
+  virtual int SBB_C(t_mem code) { return sub8(rC, true, false); }
+  virtual int SBB_D(t_mem code) { return sub8(rD, true, false); }
+  virtual int SBB_E(t_mem code) { return sub8(rE, true, false); }
+  virtual int SBB_H(t_mem code) { return sub8(rH, true, false); }
+  virtual int SBB_L(t_mem code) { return sub8(rL, true, false); }
+  virtual int SBB_M(t_mem code) { return sub8(rM, true, false); }
+  virtual int SBI(t_mem code) { return sub8(fetch(), true, false); }
+  virtual int CMP_A(t_mem code) { return sub8(rA, false, true); }
+  virtual int CMP_B(t_mem code) { return sub8(rB, false, true); }
+  virtual int CMP_C(t_mem code) { return sub8(rC, false, true); }
+  virtual int CMP_D(t_mem code) { return sub8(rD, false, true); }
+  virtual int CMP_E(t_mem code) { return sub8(rE, false, true); }
+  virtual int CMP_H(t_mem code) { return sub8(rH, false, true); }
+  virtual int CMP_L(t_mem code) { return sub8(rL, false, true); }
+  virtual int CMP_M(t_mem code) { return sub8(rM, false, true); }
+  virtual int CPI(t_mem code) { return sub8(fetch(), false, true); }
   virtual int dad(u16_t op);
   virtual int DAD_B(t_mem code) { return dad(rBC); }
   virtual int DAD_D(t_mem code) { return dad(rDE); }

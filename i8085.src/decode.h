@@ -97,6 +97,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SBB_M		instruction_9e
 #define SBI		instruction_de
 
+#define CMP_A		instruction_bf
+#define CMP_B		instruction_b8
+#define CMP_C		instruction_b9
+#define CMP_D		instruction_ba
+#define CMP_E		instruction_bb
+#define CMP_H		instruction_bc
+#define CMP_L		instruction_bd
+#define CMP_M		instruction_be
+#define CPI		instruction_fe
+
 #define DAD_B		instruction_09
 #define DAD_D		instruction_19
 #define DAD_H		instruction_29

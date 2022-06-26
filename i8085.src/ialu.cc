@@ -45,7 +45,7 @@ cl_i8080::add8(u8_t op, bool add_c)
 }
 
 int
-cl_i8080::sub8(u8_t op, bool sub_c)
+cl_i8080::sub8(u8_t op, bool sub_c, bool cmp)
 {
   if (sub_c && (rF & flagC))
     op+= 1;
@@ -57,7 +57,7 @@ cl_i8080::sub8(u8_t op, bool sub_c)
   if (!(res&=0xff)) rF|= flagZ;
   if ((rA&0xf)+(op&0xf) > 0xf) rF|= flagA;
   rF|= ptab[res];
-  cA.W(res);
+  if (!cmp) cA.W(res);
   cF.W(rF);
   return 0;
 }
