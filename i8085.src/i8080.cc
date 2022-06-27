@@ -369,10 +369,19 @@ int
 cl_i8080::exec_inst(void)
 {
   int res;
+  u16_t *ttab= tick_tab();
 
+  tick_shift= 0;
   if ((res= exec_inst_tab(itab)) != resNOT_DONE)
-    return res;
-
+    {
+      u8_t code= rom->read(instPC);
+      u16_t t= ttab[code];
+      t>>= tick_shift;
+      t&= 0xff;
+      tick(t-1);
+      return res;
+    }
+  
   inst_unknown(rom->read(instPC));
   return(resINV_INST);
 }

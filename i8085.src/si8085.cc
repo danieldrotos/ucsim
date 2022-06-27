@@ -40,6 +40,7 @@ main(int argc, char *argv[])
 
   app_start_at= dnow();
   cpus= cpus_8085;
+  /* Replace 1s to flagP in p table */
   for (int i= 0; i<256; i++)
     if (ptab[i])
       ptab[i]= flagP;

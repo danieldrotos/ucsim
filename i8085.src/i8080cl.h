@@ -108,6 +108,7 @@ public:
   RP(rpDE, DE, D, E);  class cl_cell8 cD, cE;  class cl_cell16 cDE;
   RP(rpHL, HL, H, L);  class cl_cell8 cH, cL;  class cl_cell16 cHL;
   u16_t rSP; class cl_cell16 cSP;
+  int tick_shift;
 public:
   cl_i8080(class cl_sim *asim);
   virtual int init(void);
@@ -129,6 +130,7 @@ public:
 
   virtual void print_regs(class cl_console_base *con);
 
+  virtual u16_t *tick_tab(void) { return tick_tab_8080; }
   virtual class cl_memory_cell &cM(void);
   virtual u16_t fetch16(void);
   virtual int exec_inst(void);
