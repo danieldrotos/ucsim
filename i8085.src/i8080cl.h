@@ -290,6 +290,18 @@ public:
   virtual int CMA(t_mem code);
   virtual int CMC(t_mem code);
   virtual int STC(t_mem code);
+
+  // Branches
+  virtual int jmp_if(bool cond);
+  virtual int JMP(t_mem code);
+  virtual int JNZ(t_mem code) { return jmp_if(!(rF&flagZ)); }
+  virtual int JZ (t_mem code) { return jmp_if(  rF&flagZ); }
+  virtual int JNC(t_mem code) { return jmp_if(!(rF&flagC)); }
+  virtual int JC (t_mem code) { return jmp_if(  rF&flagC); }
+  virtual int JPO(t_mem code) { return jmp_if(!(rF&flagP)); }
+  virtual int JPE(t_mem code) { return jmp_if(  rF&flagP); }
+  virtual int JP (t_mem code) { return jmp_if(!(rF&flagS)); }
+  virtual int JM (t_mem code) { return jmp_if(  rF&flagS); }
 };
 
 

@@ -27,4 +27,25 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8080cl.h"
 
 
+int
+cl_i8080::JMP(t_mem code)
+{
+  u16_t a= fetch16();
+  PC= a;
+  return resGO;
+}
+
+int
+cl_i8080::jmp_if(bool cond)
+{
+  u16_t a= fetch16();
+  if (cond)
+    {
+      PC= a;
+      tick_shift= 8;
+    }
+  return resGO;
+}
+
+
 /* End of i8085.src/ibranch.cc */

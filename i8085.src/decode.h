@@ -179,6 +179,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CMC		instruction_3f
 #define STC		instruction_37
 
+#define JMP		instruction_c3
+#define JNZ		instruction_c2
+#define JZ		instruction_ca
+#define JNC		instruction_d2
+#define JC		instruction_da
+#define JPO		instruction_e2
+#define JPE		instruction_ea
+#define JP		instruction_f2
+#define JM		instruction_fa
 
 #endif
 
