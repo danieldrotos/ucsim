@@ -199,5 +199,38 @@ cl_i8080::RAR(t_mem code)
   return resGO;
 }
 
+int
+cl_i8080::DAA(t_mem code)
+{
+  if (((rA & 0xf) > 0x9) || (rF & flagA))
+    {
+      add8(6, false);
+      if (((rA & 0xf0) > 0x90) || (rF & flagC))
+	add8(0x60, false);
+    }
+  return resGO;
+}
+
+int
+cl_i8080::CMA(t_mem code)
+{
+  cA.W(~rA);
+  return resGO;
+}
+
+int
+cl_i8080::CMC(t_mem code)
+{
+  cF.W(rF ^ flagC);
+  return resGO;
+}
+
+int
+cl_i8080::STC(t_mem code)
+{
+  cF.W(rF | flagC);
+  return resGO;
+}
+
 
 /* End of i8085.src/ialu.cc */

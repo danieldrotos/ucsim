@@ -174,6 +174,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RAL		instruction_17
 #define RAR		instruction_1f
 
+#define DAA		instruction_27
+#define CMA		instruction_2f
+#define CMC		instruction_3f
+#define STC		instruction_37
+
 
 #endif
 

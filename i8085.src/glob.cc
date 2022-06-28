@@ -74,6 +74,11 @@ struct dis_entry disass_i8080[]=
     { 0x17, 0xff, ' ', 1, "RAL" },
     { 0x1f, 0xff, ' ', 1, "RAR" },
     
+    { 0x27, 0xff, ' ', 1, "DAA" },
+    { 0x2f, 0xff, ' ', 1, "CMA" },
+    { 0x3f, 0xff, ' ', 1, "CMC" },
+    { 0x37, 0xff, ' ', 1, "STC" },
+    
     { 0, 0, 0, 0, 0, 0 }
   };
 

@@ -285,6 +285,11 @@ public:
   virtual int RRC(t_mem code);
   virtual int RAL(t_mem code);
   virtual int RAR(t_mem code);
+
+  virtual int DAA(t_mem code);
+  virtual int CMA(t_mem code);
+  virtual int CMC(t_mem code);
+  virtual int STC(t_mem code);
 };
 
 
