@@ -68,6 +68,11 @@ struct dis_entry disass_i8080[]=
     { 0xf6, 0xff, ' ', 2, "ORI #'i8'" },
     { 0xa8, 0xf8, ' ', 1, "XOR 'rm2'" },
     { 0xee, 0xff, ' ', 2, "XRI #'i8'" },
+
+    { 0x07, 0xff, ' ', 1, "RLC" },
+    { 0x0f, 0xff, ' ', 1, "RRC" },
+    { 0x17, 0xff, ' ', 1, "RAL" },
+    { 0x1f, 0xff, ' ', 1, "RAR" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

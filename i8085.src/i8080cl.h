@@ -280,6 +280,11 @@ public:
   virtual int XRA_L(t_mem code) { return xra(rL); }
   virtual int XRA_M(t_mem code) { return xra(rM); }
   virtual int XRI(t_mem code) { return xra(fetch()); }
+
+  virtual int RLC(t_mem code);
+  virtual int RRC(t_mem code);
+  virtual int RAL(t_mem code);
+  virtual int RAR(t_mem code);
 };
 
 

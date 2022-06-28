@@ -169,6 +169,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define XRA_M		instruction_ae
 #define XRI		instruction_ee
 
+#define RLC		instruction_07
+#define RRC		instruction_0f
+#define RAL		instruction_17
+#define RAR		instruction_1f
+
 
 #endif
 
