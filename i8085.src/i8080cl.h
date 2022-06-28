@@ -109,6 +109,7 @@ public:
   RP(rpHL, HL, H, L);  class cl_cell8 cH, cL;  class cl_cell16 cHL;
   u16_t rSP; class cl_cell16 cSP;
   int tick_shift;
+  t_addr sp_limit;
 public:
   cl_i8080(class cl_sim *asim);
   virtual int init(void);
@@ -279,6 +280,24 @@ public:
   virtual int XRA_L(t_mem code) { return xra(rL); }
   virtual int XRA_M(t_mem code) { return xra(rM); }
   virtual int XRI(t_mem code) { return xra(fetch()); }
+};
+
+
+enum i8080cpu_confs
+  {
+   i8080cpu_sp_limit	= 0,
+   i8080cpu_nuof	= 1
+  };
+
+class cl_i8080_cpu: public cl_hw
+{
+public:
+  cl_i8080_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return i8080cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 

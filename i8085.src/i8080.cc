@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "utils.h"
 
+#include "dregcl.h"
+
 #include "i8080cl.h"
 
 
@@ -63,7 +65,8 @@ cl_i8080::init(void)
   RCV(HL); RCV(H); RCV(L);
   RCV(SP);
 #undef RCV
-
+  sp_limit= 0;
+  
   reset();
   return 0;
 }
@@ -96,12 +99,19 @@ cl_i8080::set_PC(t_addr addr)
 void
 cl_i8080::mk_hw_elements(void)
 {
+  class cl_hw *h;
   cl_uc::mk_hw_elements();
+
+  add_hw(h= new cl_dreg(this, 0, "dreg"));
+  h->init();
 }
 
 void
 cl_i8080::make_cpu_hw(void)
 {
+  cpu= new cl_i8080_cpu(this);
+  add_hw(cpu);
+  cpu->init();
 }
 
 void
@@ -384,6 +394,55 @@ cl_i8080::exec_inst(void)
   
   inst_unknown(rom->read(instPC));
   return(resINV_INST);
+}
+
+
+cl_i8080_cpu::cl_i8080_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_CPU, 0, "cpu")
+{
+}
+
+int
+cl_i8080_cpu::init(void)
+{
+  cl_hw::init();
+
+  cl_var *v;
+  uc->vars->add(v= new cl_var("sp_limit", cfg, i8080cpu_sp_limit,
+			      cfg_help(i8080cpu_sp_limit)));
+  v->init();
+
+  return 0;
+}
+
+const char *
+cl_i8080_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case i8080cpu_sp_limit:
+      return "Stack overflows when SP is below this limit";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_i8080_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  class cl_i8080 *u= (class cl_i8080 *)uc;
+  if (val)
+    cell->set(*val);
+  switch ((enum i8080cpu_confs)addr)
+    {
+    case i8080cpu_sp_limit:
+      if (val)
+	u->sp_limit= *val & 0xffff;
+      else
+	cell->set(u->sp_limit);
+      break;
+    case i8080cpu_nuof: break;
+    }
+  return cell->get();
 }
 
 
