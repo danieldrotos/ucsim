@@ -57,6 +57,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define STAX_D		instruction_12
 #define XCHG		instruction_eb
 
+#define PUSH_B		instruction_c5
+#define PUSH_D		instruction_d5
+#define PUSH_H		instruction_e5
+#define PUSH_PSW	instruction_f5
+#define POP_B		instruction_c1
+#define POP_D		instruction_d1
+#define POP_H		instruction_e1
+#define POP_PSW		instruction_f1
+
 #define ADD_A		instruction_87
 #define ADD_B		instruction_80
 #define ADD_C		instruction_81

@@ -135,7 +135,10 @@ public:
   virtual class cl_memory_cell &cM(void);
   virtual u16_t fetch16(void);
   virtual int exec_inst(void);
-  
+
+  virtual void push2(u16_t v);
+  virtual u16_t pop2(void);
+  virtual void stack_check_overflow(t_addr sp_before);
   virtual int NOP(t_mem code) { return resGO; }
   virtual int HLT(t_mem code);
 
@@ -168,7 +171,15 @@ public:
   virtual int STAX_B(t_mem code) { return stax(rBC); }
   virtual int STAX_D(t_mem code) { return stax(rDE); }
   virtual int XCHG(t_mem code);
-
+  virtual int PUSH_B(t_mem code) { push2(rBC); return resGO; }
+  virtual int PUSH_D(t_mem code) { push2(rDE); return resGO; }
+  virtual int PUSH_H(t_mem code) { push2(rHL); return resGO; }
+  virtual int PUSH_PSW(t_mem code) { push2(rAF); return resGO; }
+  virtual int POP_B(t_mem code) { cBC.W(pop2()); return resGO; }
+  virtual int POP_D(t_mem code) { cDE.W(pop2()); return resGO; }
+  virtual int POP_H(t_mem code) { cHL.W(pop2()); return resGO; }
+  virtual int POP_PSW(t_mem code) { cAF.W(pop2()); return resGO; }
+  
   // Arithmetic
   virtual int add8(u8_t op, bool add_c);
   virtual int sub8(u8_t op, bool sub_c, bool cmp);

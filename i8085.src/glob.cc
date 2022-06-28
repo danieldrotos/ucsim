@@ -46,7 +46,9 @@ struct dis_entry disass_i8080[]=
     { 0x02, 0xff, ' ', 1, "STAX 'rp5_8'" },
     { 0x12, 0xff, ' ', 1, "STAX 'rp5_8'" },
     { 0xeb, 0xff, ' ', 1, "XCHG" },
-
+    { 0xc5, 0xcf, ' ', 1, "PUSH 'srp'" },
+    { 0xc1, 0xcf, ' ', 1, "POP 'srp'" },
+    
     { 0x80, 0xf8, ' ', 1, "ADD 'rm2'" },
     { 0xc6, 0xff, ' ', 2, "ADI #'i8'" },
     { 0x88, 0xf8, ' ', 1, "ADC 'rm2'" },

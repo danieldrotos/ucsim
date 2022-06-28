@@ -174,6 +174,13 @@ const char *rp_names[4]= {
   "SP"
 };
   
+const char *srp_names[4]= {
+  "B",
+  "D",
+  "H",
+  "PSW"
+};
+  
 void
 cl_i8080::dis_M(chars *comment)
 {
@@ -286,6 +293,10 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	      work.appendf("%s", rp_names[l]);
 	      dis_rp16(comment, l);
 	    }
+	  if (strcmp(fmt.c_str(), "srp") == 0)
+	    {
+	      work.appendf("%s", srp_names[h= (code>>4)&3]);
+	    }
 	  if (strcmp(fmt.c_str(), "a16") == 0)
 	    {
 	      a= read_addr(rom, addr+1);
@@ -394,6 +405,42 @@ cl_i8080::exec_inst(void)
   
   inst_unknown(rom->read(instPC));
   return(resINV_INST);
+}
+
+void
+cl_i8080::push2(u16_t v)
+{
+  t_addr sp_before= rSP;
+  cSP.W(rSP-1);
+  rom->write(rSP, v>>8);
+  cSP.W(rSP-1);
+  rom->write(rSP, v);
+  vc.wr+= 2;
+  stack_write(sp_before);
+}
+
+u16_t
+cl_i8080::pop2(void)
+{
+  u8_t h, l;
+  l= rom->read(rSP);
+  cSP.W(rSP+1);
+  h= rom->read(rSP);
+  cSP.W(rSP+1);
+  vc.rd+= 2;
+  return h*256+l;
+}
+
+void
+cl_i8080::stack_check_overflow(t_addr sp_before)
+{
+  if (rSP < sp_limit)
+    {
+      class cl_error_stack_overflow *e=
+	new cl_error_stack_overflow(instPC, sp_before, rSP);
+      e->init();
+      error(e);
+    }
 }
 
 
