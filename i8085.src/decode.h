@@ -218,6 +218,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RP		instruction_f0
 #define RM		instruction_f8
 
+#define RST_0		instruction_c7
+#define RST_1		instruction_cf
+#define RST_2		instruction_d7
+#define RST_3		instruction_df
+#define RST_4		instruction_e7
+#define RST_5		instruction_ef
+#define RST_6		instruction_f7
+#define RST_7		instruction_ff
+
+#define PCHL		instruction_e9
+
 #endif
 
 /* End of i8085.src/decode.h */

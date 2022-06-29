@@ -101,16 +101,19 @@ struct dis_entry disass_i8080[]=
     { 0xf4, 0xff, ' ', 3, "CP 'a16'" },
     { 0xfc, 0xff, ' ', 3, "CM 'a16'" },
     
-    { 0xc9, 0xff, ' ', 1, "RET 'a16'" },
-    { 0xc0, 0xff, ' ', 1, "RNZ 'a16'" },
-    { 0xc8, 0xff, ' ', 1, "RZ 'a16'" },
-    { 0xd0, 0xff, ' ', 1, "RNC 'a16'" },
-    { 0xd8, 0xff, ' ', 1, "RC 'a16'" },
-    { 0xe0, 0xff, ' ', 1, "RPO 'a16'" },
-    { 0xe8, 0xff, ' ', 1, "RPE 'a16'" },
-    { 0xf0, 0xff, ' ', 1, "RP 'a16'" },
-    { 0xf8, 0xff, ' ', 1, "RM 'a16'" },
-    
+    { 0xc9, 0xff, ' ', 1, "RET" },
+    { 0xc0, 0xff, ' ', 1, "RNZ" },
+    { 0xc8, 0xff, ' ', 1, "RZ" },
+    { 0xd0, 0xff, ' ', 1, "RNC" },
+    { 0xd8, 0xff, ' ', 1, "RC" },
+    { 0xe0, 0xff, ' ', 1, "RPO" },
+    { 0xe8, 0xff, ' ', 1, "RPE" },
+    { 0xf0, 0xff, ' ', 1, "RP" },
+    { 0xf8, 0xff, ' ', 1, "RM" },
+
+    { 0xc7, 0xc7, ' ', 1, "RST 'rst'" },
+    { 0xe9, 0xff, ' ', 1, "PCHL" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

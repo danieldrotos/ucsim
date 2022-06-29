@@ -306,6 +306,7 @@ public:
   virtual int jmp_if(bool cond);
   virtual int call_if(bool cond);
   virtual int ret_if(bool cond);
+  virtual int rst(t_mem code);
   virtual int JMP(t_mem code);
   virtual int JNZ(t_mem code) { return jmp_if(!(rF&flagZ)); }
   virtual int JZ (t_mem code) { return jmp_if(  rF&flagZ); }
@@ -335,6 +336,17 @@ public:
   virtual int RPE(t_mem code) { return ret_if(  rF&flagP); }
   virtual int RP (t_mem code) { return ret_if(!(rF&flagS)); }
   virtual int RM (t_mem code) { return ret_if(  rF&flagS); }
+
+  virtual int RST_0(t_mem code) { return rst(code); }
+  virtual int RST_1(t_mem code) { return rst(code); }
+  virtual int RST_2(t_mem code) { return rst(code); }
+  virtual int RST_3(t_mem code) { return rst(code); }
+  virtual int RST_4(t_mem code) { return rst(code); }
+  virtual int RST_5(t_mem code) { return rst(code); }
+  virtual int RST_6(t_mem code) { return rst(code); }
+  virtual int RST_7(t_mem code) { return rst(code); }
+
+  virtual int PCHL(t_mem code);
 };
 
 

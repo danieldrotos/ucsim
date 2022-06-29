@@ -87,5 +87,21 @@ cl_i8080::ret_if(bool cond)
   return resGO;
 }
 
+int
+cl_i8080::PCHL(t_mem code)
+{
+  PC= rHL;
+  return resGO;
+}
+
+int
+cl_i8080::rst(t_mem code)
+{
+  u16_t a= code & 0x28;
+  push2(PC);
+  PC= a;
+  return resGO;
+}
+
 
 /* End of i8085.src/ibranch.cc */
