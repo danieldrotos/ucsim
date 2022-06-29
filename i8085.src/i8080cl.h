@@ -171,6 +171,8 @@ public:
   virtual int STAX_B(t_mem code) { return stax(rBC); }
   virtual int STAX_D(t_mem code) { return stax(rDE); }
   virtual int XCHG(t_mem code);
+  virtual int IN(t_mem code);
+  virtual int OUT(t_mem code);
   virtual int PUSH_B(t_mem code) { push2(rBC); return resGO; }
   virtual int PUSH_D(t_mem code) { push2(rDE); return resGO; }
   virtual int PUSH_H(t_mem code) { push2(rHL); return resGO; }
@@ -179,6 +181,8 @@ public:
   virtual int POP_D(t_mem code) { cDE.W(pop2()); return resGO; }
   virtual int POP_H(t_mem code) { cHL.W(pop2()); return resGO; }
   virtual int POP_PSW(t_mem code) { cAF.W(pop2()); return resGO; }
+  virtual int XTHL(t_mem code);
+  virtual int SPHL(t_mem code);
   
   // Arithmetic
   virtual int add8(u8_t op, bool add_c);

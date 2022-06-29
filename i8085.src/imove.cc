@@ -101,5 +101,40 @@ cl_i8080::XCHG(t_mem code)
   return resGO;
 }
 
+int
+cl_i8080::IN(t_mem code)
+{
+  u8_t a= fetch();
+  // TODO
+  return resGO;
+}
+
+int
+cl_i8080::OUT(t_mem code)
+{
+  u8_t a= fetch();
+  // TODO
+  return resGO;
+}
+
+int
+cl_i8080::XTHL(t_mem code)
+{
+  u16_t temp= read_addr(rom, rSP);
+  vc.rd+= 2;
+  rom->write(rSP, rL);
+  rom->write(rSP+1, rH);
+  vc.wr+= 2;
+  cHL.W(temp);
+  return resGO;
+}
+
+int
+cl_i8080::SPHL(t_mem code)
+{
+  cSP.W(rHL);
+  return resGO;
+}
+
 
 /* End of i8085.src/imove.cc */
