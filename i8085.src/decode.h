@@ -198,6 +198,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JP		instruction_f2
 #define JM		instruction_fa
 
+#define CALL		instruction_cd
+#define CNZ		instruction_c4
+#define CZ		instruction_cc
+#define CNC		instruction_d4
+#define CC		instruction_dc
+#define CPO		instruction_e4
+#define CPE		instruction_ec
+#define CP		instruction_f4
+#define CM		instruction_fc
+
 #endif
 
 /* End of i8085.src/decode.h */

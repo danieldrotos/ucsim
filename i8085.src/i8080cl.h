@@ -304,6 +304,7 @@ public:
 
   // Branches
   virtual int jmp_if(bool cond);
+  virtual int call_if(bool cond);
   virtual int JMP(t_mem code);
   virtual int JNZ(t_mem code) { return jmp_if(!(rF&flagZ)); }
   virtual int JZ (t_mem code) { return jmp_if(  rF&flagZ); }
@@ -313,6 +314,16 @@ public:
   virtual int JPE(t_mem code) { return jmp_if(  rF&flagP); }
   virtual int JP (t_mem code) { return jmp_if(!(rF&flagS)); }
   virtual int JM (t_mem code) { return jmp_if(  rF&flagS); }
+
+  virtual int CALL(t_mem code);
+  virtual int CNZ(t_mem code) { return call_if(!(rF&flagZ)); }
+  virtual int CZ (t_mem code) { return call_if(  rF&flagZ); }
+  virtual int CNC(t_mem code) { return call_if(!(rF&flagC)); }
+  virtual int CC (t_mem code) { return call_if(  rF&flagC); }
+  virtual int CPO(t_mem code) { return call_if(!(rF&flagP)); }
+  virtual int CPE(t_mem code) { return call_if(  rF&flagP); }
+  virtual int CP (t_mem code) { return call_if(!(rF&flagS)); }
+  virtual int CM (t_mem code) { return call_if(  rF&flagS); }
 };
 
 

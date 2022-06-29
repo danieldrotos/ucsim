@@ -47,5 +47,27 @@ cl_i8080::jmp_if(bool cond)
   return resGO;
 }
 
+int
+cl_i8080::CALL(t_mem code)
+{
+  u16_t a= fetch16();
+  push2(PC);
+  PC= a;
+  return resGO;
+}
+
+int
+cl_i8080::call_if(bool cond)
+{
+  u16_t a= fetch16();
+  if (cond)
+    {
+      push2(PC);
+      PC= a;
+      tick_shift= 8;
+    }
+  return resGO;
+}
+
 
 /* End of i8085.src/ibranch.cc */

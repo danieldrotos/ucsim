@@ -91,6 +91,16 @@ struct dis_entry disass_i8080[]=
     { 0xf2, 0xff, ' ', 3, "JP 'a16'" },
     { 0xfa, 0xff, ' ', 3, "JM 'a16'" },
     
+    { 0xcd, 0xff, ' ', 3, "CALL 'a16'" },
+    { 0xc4, 0xff, ' ', 3, "CNZ 'a16'" },
+    { 0xcc, 0xff, ' ', 3, "CZ 'a16'" },
+    { 0xd4, 0xff, ' ', 3, "CNC 'a16'" },
+    { 0xdc, 0xff, ' ', 3, "CC 'a16'" },
+    { 0xe4, 0xff, ' ', 3, "CPO 'a16'" },
+    { 0xec, 0xff, ' ', 3, "CPE 'a16'" },
+    { 0xf4, 0xff, ' ', 3, "CP 'a16'" },
+    { 0xfc, 0xff, ' ', 3, "CM 'a16'" },
+    
     { 0, 0, 0, 0, 0, 0 }
   };
 
