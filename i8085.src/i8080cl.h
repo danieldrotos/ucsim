@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 #ifdef WORDS_BIGENDIAN
-#define RP(N,N16,NH,NL) union			\
+#define REGPAIR(N,N16,NH,NL) union			\
 		      {				\
 			u16_t N16;		\
 			struct {		\
@@ -43,7 +43,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 			} r;			\
   } N
 #else
-#define RP(N,N16,NH,NL) union			\
+#define REGPAIR(N,N16,NH,NL) union			\
 		      {				\
 			u16_t N16;		\
 			struct {		\
@@ -103,10 +103,10 @@ class cl_i8080: public cl_uc
 {
 public:
   class cl_flags cF;
-  RP(rpAF, AF, A, F);  class cl_cell8 cA    ;  class cl_cell16 cAF;
-  RP(rpBC, BC, B, C);  class cl_cell8 cB, cC;  class cl_cell16 cBC;
-  RP(rpDE, DE, D, E);  class cl_cell8 cD, cE;  class cl_cell16 cDE;
-  RP(rpHL, HL, H, L);  class cl_cell8 cH, cL;  class cl_cell16 cHL;
+  REGPAIR(rpAF, AF, A, F);  class cl_cell8 cA    ;  class cl_cell16 cAF;
+  REGPAIR(rpBC, BC, B, C);  class cl_cell8 cB, cC;  class cl_cell16 cBC;
+  REGPAIR(rpDE, DE, D, E);  class cl_cell8 cD, cE;  class cl_cell16 cDE;
+  REGPAIR(rpHL, HL, H, L);  class cl_cell8 cH, cL;  class cl_cell16 cHL;
   u16_t rSP; class cl_cell16 cSP;
   int tick_shift;
   t_addr sp_limit;
@@ -305,6 +305,7 @@ public:
   // Branches
   virtual int jmp_if(bool cond);
   virtual int call_if(bool cond);
+  virtual int ret_if(bool cond);
   virtual int JMP(t_mem code);
   virtual int JNZ(t_mem code) { return jmp_if(!(rF&flagZ)); }
   virtual int JZ (t_mem code) { return jmp_if(  rF&flagZ); }
@@ -324,6 +325,16 @@ public:
   virtual int CPE(t_mem code) { return call_if(  rF&flagP); }
   virtual int CP (t_mem code) { return call_if(!(rF&flagS)); }
   virtual int CM (t_mem code) { return call_if(  rF&flagS); }
+
+  virtual int RET(t_mem code);
+  virtual int RNZ(t_mem code) { return ret_if(!(rF&flagZ)); }
+  virtual int RZ (t_mem code) { return ret_if(  rF&flagZ); }
+  virtual int RNC(t_mem code) { return ret_if(!(rF&flagC)); }
+  virtual int RC (t_mem code) { return ret_if(  rF&flagC); }
+  virtual int RPO(t_mem code) { return ret_if(!(rF&flagP)); }
+  virtual int RPE(t_mem code) { return ret_if(  rF&flagP); }
+  virtual int RP (t_mem code) { return ret_if(!(rF&flagS)); }
+  virtual int RM (t_mem code) { return ret_if(  rF&flagS); }
 };
 
 

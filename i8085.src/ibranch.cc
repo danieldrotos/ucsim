@@ -69,5 +69,23 @@ cl_i8080::call_if(bool cond)
   return resGO;
 }
 
+int
+cl_i8080::RET(t_mem code)
+{
+  PC= pop2();
+  return resGO;
+}
+
+int
+cl_i8080::ret_if(bool cond)
+{
+  if (cond)
+    {
+      PC= pop2();
+      tick_shift= 8;
+    }
+  return resGO;
+}
+
 
 /* End of i8085.src/ibranch.cc */

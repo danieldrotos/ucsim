@@ -208,6 +208,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CP		instruction_f4
 #define CM		instruction_fc
 
+#define RET		instruction_c9
+#define RNZ		instruction_c0
+#define RZ		instruction_c8
+#define RNC		instruction_d0
+#define RC		instruction_d8
+#define RPO		instruction_e0
+#define RPE		instruction_e8
+#define RP		instruction_f0
+#define RM		instruction_f8
+
 #endif
 
 /* End of i8085.src/decode.h */
