@@ -365,6 +365,11 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	      work.appendf("0x%04x", a);
 	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom, a));
 	    }
+	  if (strcmp(fmt.c_str(), "de16") == 0)
+	    {
+	      a= rDE;
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom, a));
+	    }
 	  if (strcmp(fmt.c_str(), "rst") == 0)
 	    {
 	      l= (code>>3)&7;

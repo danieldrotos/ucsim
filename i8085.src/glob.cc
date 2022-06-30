@@ -150,6 +150,7 @@ struct dis_entry disass_8085[]=
     { 0xfd, 0xff, ' ', 3, "JX5 'a16'" },
     { 0x28, 0xff, ' ', 2, "LDHI 'hli8'" },
     { 0x38, 0xff, ' ', 2, "LDSI 'spi8'" },
+    { 0xed, 0xff, ' ', 1, "LHLX 'de16'" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JX5	instruction_fd
 #define LDHI	instruction_28
 #define LDSI	instruction_38
+#define LHLX	instruction_ed
 
 
 /*
@@ -89,6 +90,7 @@ class cl_i8085: public cl_i8080
   virtual int JX5(t_mem code);
   virtual int LDHI(t_mem code);
   virtual int LDSI(t_mem code);
+  virtual int LHLX(t_mem code);
 };
 
 
