@@ -223,6 +223,15 @@ cl_i8085::JX5(t_mem code)
   return jmp_if(!(rF & flagX5));
 }
 
+int
+cl_i8085::LDHI(t_mem code)
+{
+  u16_t a= rHL + fetch();
+  cDE.W(read_addr(rom, a));
+  vc.rd+= 2;
+  return resGO;
+}
+
 
 cl_i8085_cpu::cl_i8085_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
