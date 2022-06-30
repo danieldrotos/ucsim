@@ -31,6 +31,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8080cl.h"
 
 
+/*
+ * Special handling of flags
+ */
+
+class cl_flags85: public cl_cell8
+{
+public:
+  virtual t_mem write(t_mem val);
+};
+
+
+/*
+ * i8085 processor
+ */
+
 class cl_i8085: public cl_i8080
 {
  public:
@@ -47,6 +62,7 @@ class cl_i8085: public cl_i8080
   virtual int clock_per_cycle(void) { return 1; }
   //virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual char *disassc(t_addr addr, chars *comment=NULL);
 
   virtual void print_regs(class cl_console_base *con);
 

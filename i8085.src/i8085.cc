@@ -31,6 +31,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8085cl.h"
 
 
+/*
+ * Flags
+ */
+
+t_mem
+cl_flags85::write(t_mem val)
+{
+  val&= ~0x08;
+  return cl_cell8::write(val);
+}
+
+
 cl_i8085::cl_i8085(class cl_sim *asim):
   cl_i8080(asim)
 {
@@ -111,6 +123,12 @@ cl_i8085::get_dis_entry(t_addr addr)
     }
 
   return NULL;
+}
+
+char *
+cl_i8085::disassc(t_addr addr, chars *comment)
+{
+  return cl_i8080::disassc(addr, comment);
 }
 
 void

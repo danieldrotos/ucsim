@@ -78,9 +78,15 @@ enum {
   flagA	= 0x10,
   flagZ	= 0x40,
   flagS	= 0x80,
-  fAll= flagC|flagP|flagA|flagZ|flagS,
-  fAll_C= flagP|flagA|flagZ|flagS,
-  fAll_A= flagC|flagP|flagZ|flagS
+  /* 8085 extra flags */
+  flagK = 0x20,
+  flagX = flagK,
+  flagX5= flagK,
+  flagV = 0x02,
+
+  fAll= flagC|flagP|flagA|flagZ|flagS|flagK|flagV,
+  fAll_C= flagP|flagA|flagZ|flagS|flagK|flagV,
+  fAll_A= flagC|flagP|flagZ|flagS|flagK|flagV,
 };
 
 
