@@ -119,6 +119,7 @@ cl_i8085::make_flag_op(void)
   c= (class cl_memory_cell *)c8;
   o= new cl_flag85_op(c);
   o->init();
+  o->set_name("8085_flag_operator");
   return o;
 }
 

@@ -61,7 +61,8 @@ cl_i8080::init(void)
   cl_uc::init();
   fill_def_wrappers(itab);
   set_xtal(1000000);
-  cF.append_operator(make_flag_op());
+  class cl_memory_operator *o= make_flag_op();
+  cF.append_operator(o);
   
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(AF); RCV(A); RCV(F);
@@ -165,6 +166,7 @@ cl_i8080::make_flag_op(void)
   c= (class cl_memory_cell *)c8;
   o= new cl_flag80_op(c);
   o->init();
+  o->set_name("8080_flag_operator");
   return o;
 }
 
