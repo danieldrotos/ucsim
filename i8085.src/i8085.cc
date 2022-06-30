@@ -199,6 +199,18 @@ cl_i8085::SIM(t_mem code)
   return resGO;
 }
 
+int
+cl_i8085::ARHL(t_mem code)
+{
+  rF&= ~flagC;
+  if (rL&1) rF|= flagC;
+  i16_t v= rHL;
+  v>>= 1;
+  cHL.W(v);
+  cF.W(rF);
+  return resGO;
+}
+
 
 cl_i8085_cpu::cl_i8085_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")

@@ -30,8 +30,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "i8080cl.h"
 
+/* 8085 only */
 #define RIM	instruction_20
 #define SIM	instruction_30
+
+/* Undocumented */
+#define ARHL	instruction_10
 
 
 /*
@@ -75,6 +79,8 @@ class cl_i8085: public cl_i8080
 
   virtual int RIM(t_mem code);
   virtual int SIM(t_mem code);
+
+  virtual int ARHL(t_mem code);
 };
 
 
