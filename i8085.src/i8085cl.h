@@ -35,9 +35,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Special handling of flags
  */
 
-class cl_flags85: public cl_cell8
+class cl_flag85_op: public cl_memory_operator
 {
 public:
+  cl_flag85_op(class cl_memory_cell *acell): cl_memory_operator(acell) {}
   virtual t_mem write(t_mem val);
 };
 
@@ -58,6 +59,7 @@ class cl_i8085: public cl_i8080
   virtual void mk_hw_elements(void);
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
+  virtual class cl_memory_operator *make_flag_op(void);
 
   virtual int clock_per_cycle(void) { return 1; }
   //virtual struct dis_entry *dis_tbl(void);

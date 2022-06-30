@@ -38,13 +38,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 t_mem
-cl_flags::write(t_mem val)
+cl_flag80_op::write(t_mem val)
 {
   val&= 0xd7;
   val|= 0x02;
-  return cl_cell8::write(val);
+  return val;
 }
 
+
+/*
+ * CPU
+ */
 
 cl_i8080::cl_i8080(class cl_sim *asim):
   cl_uc(asim)
@@ -57,7 +61,8 @@ cl_i8080::init(void)
   cl_uc::init();
   fill_def_wrappers(itab);
   set_xtal(1000000);
-
+  cF.append_operator(make_flag_op());
+  
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(AF); RCV(A); RCV(F);
   RCV(BC); RCV(B); RCV(C);
@@ -150,6 +155,18 @@ cl_i8080::make_memories(void)
   ad->activate(0);
 }
 
+class cl_memory_operator *
+cl_i8080::make_flag_op(void)
+{
+  class cl_memory_operator *o;
+  class cl_cell8 *c8;
+  class cl_memory_cell *c;
+  c8= &cF;
+  c= (class cl_memory_cell *)c8;
+  o= new cl_flag80_op(c);
+  o->init();
+  return o;
+}
 
 struct dis_entry *
 cl_i8080::dis_tbl(void)

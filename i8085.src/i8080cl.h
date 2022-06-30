@@ -94,9 +94,10 @@ enum {
  * Special handling of flags
  */
 
-class cl_flags: public cl_cell8
+class cl_flag80_op: public cl_memory_operator
 {
 public:
+  cl_flag80_op(class cl_memory_cell *acell): cl_memory_operator(acell) {}
   virtual t_mem write(t_mem val);
 };
 
@@ -108,8 +109,7 @@ public:
 class cl_i8080: public cl_uc
 {
 public:
-  class cl_flags cF;
-  REGPAIR(rpAF, AF, A, F);  class cl_cell8 cA    ;  class cl_cell16 cAF;
+  REGPAIR(rpAF, AF, A, F);  class cl_cell8 cA, cF;  class cl_cell16 cAF;
   REGPAIR(rpBC, BC, B, C);  class cl_cell8 cB, cC;  class cl_cell16 cBC;
   REGPAIR(rpDE, DE, D, E);  class cl_cell8 cD, cE;  class cl_cell16 cDE;
   REGPAIR(rpHL, HL, H, L);  class cl_cell8 cH, cL;  class cl_cell16 cHL;
@@ -126,7 +126,8 @@ public:
   virtual void mk_hw_elements(void);
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
-
+  virtual class cl_memory_operator *make_flag_op(void);
+  
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);

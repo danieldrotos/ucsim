@@ -36,12 +36,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 t_mem
-cl_flags85::write(t_mem val)
+cl_flag85_op::write(t_mem val)
 {
   val&= ~0x08;
-  return cl_cell8::write(val);
+  return val;
 }
 
+
+/*
+ * CPU
+ */
 
 cl_i8085::cl_i8085(class cl_sim *asim):
   cl_i8080(asim)
@@ -105,6 +109,18 @@ cl_i8085::make_memories(void)
   cl_i8080::make_memories();
 }
 
+class cl_memory_operator *
+cl_i8085::make_flag_op(void)
+{
+  class cl_memory_operator *o;
+  class cl_cell8 *c8;
+  class cl_memory_cell *c;
+  c8= &cF;
+  c= (class cl_memory_cell *)c8;
+  o= new cl_flag85_op(c);
+  o->init();
+  return o;
+}
 
 struct dis_entry *
 cl_i8085::get_dis_entry(t_addr addr)
@@ -135,7 +151,7 @@ void
 cl_i8085::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("SZ-A-P-C  Flags= 0x%02x %3d %c  ",
+  con->dd_printf("SZXA-PVC  Flags= 0x%02x %3d %c  ",
                  rF, rF, isprint(rF)?rF:'.');
   con->dd_printf("A= 0x%02x %3d %c\n",
                  rA, rA, isprint(rA)?rA:'.');
