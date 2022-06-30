@@ -33,5 +33,19 @@ cl_i8080::HLT(t_mem code)
   return resHALT;
 }
 
+int
+cl_i8080::EI(t_mem code)
+{
+  // TODO
+  return resGO;
+}
+
+int
+cl_i8080::DI(t_mem code)
+{
+  // TODO
+  return resGO;
+}
+
 
 /* End of i8085.src/inst.cc */

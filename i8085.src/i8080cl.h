@@ -141,6 +141,8 @@ public:
   virtual void stack_check_overflow(t_addr sp_before);
   virtual int NOP(t_mem code) { return resGO; }
   virtual int HLT(t_mem code);
+  virtual int EI(t_mem code);
+  virtual int DI(t_mem code);
 
   // Data transfer
   virtual int mvi8(class cl_memory_cell &dst);

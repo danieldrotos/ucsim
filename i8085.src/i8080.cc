@@ -66,6 +66,21 @@ cl_i8080::init(void)
   RCV(SP);
 #undef RCV
   sp_limit= 0;
+
+  /* According to https://pastraiser.com/cpu/i8080/i8080_opcodes.html
+     invalid opcodes execute some existing instructions */
+  itab[0x10]= instruction_wrapper_00; // NOP
+  itab[0x20]= instruction_wrapper_00; // NOP
+  itab[0x30]= instruction_wrapper_00; // NOP
+  itab[0x08]= instruction_wrapper_00; // NOP
+  itab[0x18]= instruction_wrapper_00; // NOP
+  itab[0x28]= instruction_wrapper_00; // NOP
+  itab[0x38]= instruction_wrapper_00; // NOP
+  itab[0xd9]= instruction_wrapper_c9; // RET
+  itab[0xcb]= instruction_wrapper_c3; // JMP
+  itab[0xdd]= instruction_wrapper_cd; // CALL
+  itab[0xed]= instruction_wrapper_cd; // CALL
+  itab[0xfd]= instruction_wrapper_cd; // CALL
   
   reset();
   return 0;
@@ -139,7 +154,7 @@ cl_i8080::make_memories(void)
 struct dis_entry *
 cl_i8080::dis_tbl(void)
 {
-  return(disass_i8080);
+  return(disass_common);
 }
 
 struct dis_entry *
@@ -147,7 +162,12 @@ cl_i8080::get_dis_entry(t_addr addr)
 {
   t_mem code= rom->get(addr);
 
-  for (struct dis_entry *de = dis_tbl(); de && de->mnemonic; de++)
+  for (struct dis_entry *de = disass_8080; de && de->mnemonic; de++)
+    {
+      if ((code & de->mask) == de->code)
+        return de;
+    }
+  for (struct dis_entry *de = disass_common; de && de->mnemonic; de++)
     {
       if ((code & de->mask) == de->code)
         return de;

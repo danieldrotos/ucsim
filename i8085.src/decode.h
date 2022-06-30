@@ -32,6 +32,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define NOP	instruction_00
 #define HLT	instruction_76
+#define EI	instruction_fb
+#define DI	instruction_f3
 
 #define MVI_Ai8		instruction_3e
 #define MVI_Bi8		instruction_06

@@ -104,7 +104,7 @@ cl_i8080::XCHG(t_mem code)
 int
 cl_i8080::IN(t_mem code)
 {
-  u8_t a= fetch();
+  /*u8_t a=*/ fetch();
   // TODO
   return resGO;
 }
@@ -112,7 +112,7 @@ cl_i8080::IN(t_mem code)
 int
 cl_i8080::OUT(t_mem code)
 {
-  u8_t a= fetch();
+  /*u8_t a=*/ fetch();
   // TODO
   return resGO;
 }

@@ -29,10 +29,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 instruction_wrapper_fn itab[256];
 
 // code mask branch len mn call tick
-struct dis_entry disass_i8080[]=
+struct dis_entry disass_common[]=
   {  
     { 0x00, 0xff, ' ', 1, "NOP" },
     { 0x76, 0xff, ' ', 1, "HLT" },
+    { 0xfb, 0xff, ' ', 1, "EI" },
+    { 0xf3, 0xff, ' ', 1, "DI" },
     
     { 0x40, 0xc0, ' ', 1, "MOV 'rm5','rm2'" },
     { 0x06, 0xc7, ' ', 2, "MVI 'rm5',#'i8'" },
@@ -118,6 +120,28 @@ struct dis_entry disass_i8080[]=
     { 0xc7, 0xc7, ' ', 1, "RST 'rst'" },
     { 0xe9, 0xff, ' ', 1, "PCHL" },
 
+    { 0, 0, 0, 0, 0, 0 }
+  };
+
+struct dis_entry disass_8080[]=
+  {
+    { 0x10, 0xff, ' ', 1, "*NOP" },
+    { 0x20, 0xff, ' ', 1, "*NOP" },
+    { 0x30, 0xff, ' ', 1, "*NOP" },
+    { 0x08, 0xff, ' ', 1, "*NOP" },
+    { 0x18, 0xff, ' ', 1, "*NOP" },
+    { 0x28, 0xff, ' ', 1, "*NOP" },
+    { 0x38, 0xff, ' ', 1, "*NOP" },
+    { 0xd9, 0xff, ' ', 1, "*RET" },
+    { 0xcb, 0xff, ' ', 3, "*JMP 'a16'" },
+    { 0xdd, 0xff, ' ', 3, "*CALL 'a16'" },
+    { 0xed, 0xff, ' ', 3, "*CALL 'a16'" },
+    { 0xfd, 0xff, ' ', 3, "*CALL 'a16'" },
+    { 0, 0, 0, 0, 0, 0 }
+  };
+
+struct dis_entry disass_8085[]=
+  {
     { 0, 0, 0, 0, 0, 0 }
   };
 
