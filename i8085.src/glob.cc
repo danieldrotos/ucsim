@@ -142,6 +142,8 @@ struct dis_entry disass_8080[]=
 
 struct dis_entry disass_8085[]=
   {
+    { 0x20, 0xff, ' ', 1, "RIM" },
+    { 0x30, 0xff, ' ', 1, "SIM" },
     { 0, 0, 0, 0, 0, 0 }
   };
 

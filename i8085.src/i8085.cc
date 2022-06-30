@@ -185,6 +185,21 @@ cl_i8085::print_regs(class cl_console_base *con)
 }
 
 
+int
+cl_i8085::RIM(t_mem code)
+{
+  // TODO
+  return resGO;
+}
+
+int
+cl_i8085::SIM(t_mem code)
+{
+  // TODO
+  return resGO;
+}
+
+
 cl_i8085_cpu::cl_i8085_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
 {

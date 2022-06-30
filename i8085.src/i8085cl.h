@@ -30,6 +30,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "i8080cl.h"
 
+#define RIM	instruction_20
+#define SIM	instruction_30
+
 
 /*
  * Special handling of flags
@@ -69,6 +72,9 @@ class cl_i8085: public cl_i8080
   virtual void print_regs(class cl_console_base *con);
 
   virtual u16_t *tick_tab(void) { return tick_tab_8085; }
+
+  virtual int RIM(t_mem code);
+  virtual int SIM(t_mem code);
 };
 
 
