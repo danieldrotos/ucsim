@@ -211,6 +211,18 @@ cl_i8085::ARHL(t_mem code)
   return resGO;
 }
 
+int
+cl_i8085::JNX5(t_mem code)
+{
+  return jmp_if(rF & flagX5);
+}
+
+int
+cl_i8085::JX5(t_mem code)
+{
+  return jmp_if(!(rF & flagX5));
+}
+
 
 cl_i8085_cpu::cl_i8085_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")

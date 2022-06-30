@@ -146,6 +146,8 @@ struct dis_entry disass_8085[]=
     { 0x30, 0xff, ' ', 1, "SIM" },
 
     { 0x10, 0xff, ' ', 1, "ARHL" },
+    { 0xdd, 0xff, ' ', 3, "JNX5 'a16'" },
+    { 0xfd, 0xff, ' ', 3, "JX5 'a16'" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

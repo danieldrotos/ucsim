@@ -36,6 +36,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /* Undocumented */
 #define ARHL	instruction_10
+#define JNX5	instruction_dd
+#define JX5	instruction_fd
 
 
 /*
@@ -81,6 +83,8 @@ class cl_i8085: public cl_i8080
   virtual int SIM(t_mem code);
 
   virtual int ARHL(t_mem code);
+  virtual int JNX5(t_mem code);
+  virtual int JX5(t_mem code);
 };
 
 
