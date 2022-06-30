@@ -35,6 +35,40 @@ class cl_i8085: public cl_i8080
 {
  public:
   cl_i8085(class cl_sim *asim);
+  virtual int init(void);
+  virtual const char *id_string(void);
+  virtual void reset(void);
+  virtual void set_PC(t_addr addr);
+
+  virtual void mk_hw_elements(void);
+  virtual void make_cpu_hw(void);
+  virtual void make_memories(void);
+
+  virtual int clock_per_cycle(void) { return 1; }
+  //virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
+
+  virtual void print_regs(class cl_console_base *con);
+
+  virtual u16_t *tick_tab(void) { return tick_tab_8085; }
+};
+
+
+enum i8085cpu_confs
+  {
+   i8085cpu_sp_limit	= 0,
+   i8085cpu_nuof	= 1
+  };
+
+class cl_i8085_cpu: public cl_hw
+{
+public:
+  cl_i8085_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return i8085cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 
