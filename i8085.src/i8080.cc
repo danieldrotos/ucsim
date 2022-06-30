@@ -318,6 +318,12 @@ cl_i8080::disassc(t_addr addr, chars *comment)
 	      work.appendf("0x%02x", l);
 	      comment->appendf("; [0x%04x]= 0x%02x", rHL+l, rom->read(rHL+l));
 	    }
+	  if (strcmp(fmt.c_str(), "spi8") == 0)
+	    {
+	      l= rom->read(addr+1);
+	      work.appendf("0x%02x", l);
+	      comment->appendf("; [0x%04x]= 0x%02x", rSP+l, rom->read(rSP+l));
+	    }
 	  if (strcmp(fmt.c_str(), "i16") == 0)
 	    {
 	      work.appendf("0x%04x", read_addr(rom, addr+1));
