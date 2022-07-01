@@ -36,11 +36,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /* Undocumented */
 #define ARHL	instruction_10
+#define RDEL	instruction_18
 #define JNX5	instruction_dd
 #define JX5	instruction_fd
 #define LDHI	instruction_28
 #define LDSI	instruction_38
 #define LHLX	instruction_ed
+#define SHLX	instruction_d9
 
 
 /*
@@ -86,11 +88,13 @@ class cl_i8085: public cl_i8080
   virtual int SIM(t_mem code);
 
   virtual int ARHL(t_mem code);
+  virtual int RDEL(t_mem code);
   virtual int JNX5(t_mem code);
-  virtual int JX5(t_mem code);
+  virtual int JX5 (t_mem code);
   virtual int LDHI(t_mem code);
   virtual int LDSI(t_mem code);
   virtual int LHLX(t_mem code);
+  virtual int SHLX(t_mem code);
 };
 
 

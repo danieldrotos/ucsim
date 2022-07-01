@@ -212,6 +212,20 @@ cl_i8085::ARHL(t_mem code)
 }
 
 int
+cl_i8085::RDEL(t_mem code)
+{
+  u8_t oldC= rF&flagC;
+  u8_t newC= (rD&0x80)?flagC:0;
+  rF&= ~flagC;
+  if (newC) rF|= flagC;
+  rDE<<= 1;
+  if (oldC) rE|= 1;
+  cDE.W(rDE);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_i8085::JNX5(t_mem code)
 {
   return jmp_if(rF & flagX5);
@@ -247,6 +261,16 @@ cl_i8085::LHLX(t_mem code)
   u16_t a= rDE;
   cHL.W(read_addr(rom, a));
   vc.rd+= 2;
+  return resGO;
+}
+
+int
+cl_i8085::SHLX(t_mem code)
+{
+  u16_t a= rDE;
+  rom->write(a++, rL);
+  rom->write(a  , rH);
+  vc.wr+= 2;
   return resGO;
 }
 
