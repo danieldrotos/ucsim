@@ -106,7 +106,8 @@ int
 cl_i8080::ana(u8_t op)
 {
   u8_t res= rA & op;
-  rF&= ~fAll_A;
+  rF&= ~fAll;
+  rF|= flagA;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
   rF|= ptab[res];
@@ -119,7 +120,7 @@ int
 cl_i8080::ora(u8_t op)
 {
   u8_t res= rA | op;
-  rF&= ~fAll_A;
+  rF&= ~fAll;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
   rF|= ptab[res];
