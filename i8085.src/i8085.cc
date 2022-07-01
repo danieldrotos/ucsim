@@ -185,6 +185,31 @@ cl_i8085::print_regs(class cl_console_base *con)
 }
 
 
+
+int
+cl_i8085::inx(class cl_memory_cell &op)
+{
+  u16_t r= op.get();
+  rF&= ~flagK;
+  if (r == 0xffff) rF|= flagK;
+  r++;
+  op.W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_i8085::dcx(class cl_memory_cell &op)
+{
+  u16_t r= op.get();
+  rF&= ~flagK;
+  if (!r) rF|= flagK;
+  r--;
+  op.W(r);
+  cF.W(rF);
+  return resGO;
+}
+
 int
 cl_i8085::RIM(t_mem code)
 {

@@ -86,6 +86,9 @@ class cl_i8085: public cl_i8080
 
   virtual u16_t *tick_tab(void) { return tick_tab_8085; }
 
+  virtual int inx(class cl_memory_cell &op);
+  virtual int dcx(class cl_memory_cell &op);
+
   virtual int RIM(t_mem code);
   virtual int SIM(t_mem code);
 

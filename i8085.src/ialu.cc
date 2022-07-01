@@ -103,6 +103,24 @@ cl_i8080::dcr(class cl_memory_cell &op)
 }
 
 int
+cl_i8080::inx(class cl_memory_cell &op)
+{
+  u32_t r= op.get();
+  r++;
+  op.W(r);
+  return resGO;
+}
+
+int
+cl_i8080::dcx(class cl_memory_cell &op)
+{
+  u32_t r= op.get();
+  r--;
+  op.W(r);
+  return resGO;
+}
+
+int
 cl_i8080::ana(u8_t op)
 {
   u8_t res= rA & op;

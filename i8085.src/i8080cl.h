@@ -268,14 +268,16 @@ public:
   virtual int DCR_H(t_mem code) { return dcr(cH); }
   virtual int DCR_L(t_mem code) { return dcr(cL); }
   virtual int DCR_M(t_mem code) { vc.rd++; return dcr(cM()); }
-  virtual int INX_B(t_mem code) { cBC.W(rBC+1); return resGO; }
-  virtual int INX_D(t_mem code) { cDE.W(rDE+1); return resGO; }
-  virtual int INX_H(t_mem code) { cHL.W(rHL+1); return resGO; }
-  virtual int INX_S(t_mem code) { cSP.W(rSP+1); return resGO; }
-  virtual int DCX_B(t_mem code) { cBC.W(rBC-1); return resGO; }
-  virtual int DCX_D(t_mem code) { cDE.W(rDE-1); return resGO; }
-  virtual int DCX_H(t_mem code) { cHL.W(rHL-1); return resGO; }
-  virtual int DCX_S(t_mem code) { cSP.W(rSP-1); return resGO; }
+  virtual int inx(class cl_memory_cell &op);
+  virtual int dcx(class cl_memory_cell &op);
+  virtual int INX_B(t_mem code) { return inx(cBC); }
+  virtual int INX_D(t_mem code) { return inx(cDE); }
+  virtual int INX_H(t_mem code) { return inx(cHL); }
+  virtual int INX_S(t_mem code) { return inx(cSP); }
+  virtual int DCX_B(t_mem code) { return dcx(cBC); }
+  virtual int DCX_D(t_mem code) { return dcx(cDE); }
+  virtual int DCX_H(t_mem code) { return dcx(cHL); }
+  virtual int DCX_S(t_mem code) { return dcx(cSP); }
 
   virtual int ANA_A(t_mem code) { return ana(rA); }
   virtual int ANA_B(t_mem code) { return ana(rB); }
