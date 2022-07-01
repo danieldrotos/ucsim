@@ -26,18 +26,26 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "i8080cl.h"
 
+#define ADDV(  a,b,r) (((a&b&~r)|(~a&~b&r))?flagV:0)
+#define ADDV8( a,b,c) ((ADDV(a,b,c)&0x80)?flagV:0)
+#define ADDV16(a,b,c) ((ADDV(a,b,c)&0x8000)?flagV:0)
+#define X5(r) (((rF&flagV)?flagK:0)^((r&0x80)?flagK:0))
 
 int
 cl_i8080::add8(u8_t op, bool add_c)
 {
-  u16_t res= rA+op;
+  u16_t res;
   if (add_c && (rF & flagC))
-    res++;
+    op++;
+  res= rA+op;
   rF&= ~fAll;
   if (res>0xff) rF|= flagC;
   if (res&0x80) rF|= flagS;
-  if (!(res&=0xff)) rF|= flagZ;
+  res&= 0xff;
+  if (!res) rF|= flagZ;
   if ((rA&0xf)+(op&0xf) > 0xf) rF|= flagA;
+  rF|= ADDV8(rA,op,res);
+  rF|= X5(res);
   rF|= ptab[res];
   cA.W(res);
   cF.W(rF);
@@ -54,8 +62,11 @@ cl_i8080::sub8(u8_t op, bool sub_c, bool cmp)
   rF&= ~fAll;
   if (res<=0xff) rF|= flagC;
   if (res&0x80) rF|= flagS;
-  if (!(res&=0xff)) rF|= flagZ;
+  res&= 0xff;
+  if (!res) rF|= flagZ;
   if ((rA&0xf)+(op&0xf) > 0xf) rF|= flagA;
+  rF|= ADDV8(rA,op,res);
+  rF|= X5(res);
   rF|= ptab[res];
   if (!cmp) cA.W(res);
   cF.W(rF);
@@ -66,8 +77,9 @@ int
 cl_i8080::dad(u16_t op)
 {
   u32_t res= rHL + op;
-  rF&= ~flagC;
+  rF&= ~(flagC|flagV);
   if (res > 0xffff) rF|= flagC;
+  rF|= ADDV16(rHL,op,res);
   cHL.W(res);
   cF.W(rF);
   return resGO;
@@ -77,10 +89,14 @@ int
 cl_i8080::inr(class cl_memory_cell &op)
 {
   rF&= ~fAll_C;
-  u8_t res= op.read()+1;
+  u8_t a, res;
+  a= op.read();
+  res= a+1;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
-  if ((op.read()&0xf) == 0xf) rF|= flagA;
+  if ((a&0xf) == 0xf) rF|= flagA;
+  rF|= ADDV8(a,1,res);
+  rF|= X5(res);
   rF|= ptab[res];
   op.W(res);
   cF.W(rF);
@@ -90,12 +106,14 @@ cl_i8080::inr(class cl_memory_cell &op)
 int
 cl_i8080::dcr(class cl_memory_cell &op)
 {
+  u8_t a= op.read(), m1= ~1 + 1;
+  u8_t res= a+m1;
   rF&= ~fAll_C;
-  u8_t m1= ~1 + 1;
-  u8_t res= op.read()+m1;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
-  if (((op.read()&0xf)+(m1&0xf)) > 0xf) rF|= flagA;
+  if (((a&0xf)+(m1&0xf)) > 0xf) rF|= flagA;
+  rF|= ADDV8(a, m1, res);
+  rF|= X5(res);
   rF|= ptab[res];
   op.W(res);
   cF.W(rF);
@@ -128,6 +146,7 @@ cl_i8080::ana(u8_t op)
   rF|= flagA;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
+  rF|= X5(res);
   rF|= ptab[res];
   cA.W(res);
   cF.W(rF);
@@ -141,6 +160,7 @@ cl_i8080::ora(u8_t op)
   rF&= ~fAll;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
+  rF|= X5(res);
   rF|= ptab[res];
   cA.W(res);
   cF.W(rF);
@@ -154,6 +174,7 @@ cl_i8080::xra(u8_t op)
   rF&= ~fAll;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
+  rF|= X5(res);
   rF|= ptab[res];
   cA.W(res);
   cF.W(rF);
@@ -168,6 +189,7 @@ cl_i8080::RLC(t_mem code)
   if (newc)
     newa|= 1;
   rF&= ~flagC;
+  rF|= ADDV8(rA, rA, newa);
   rF|= newc;
   cA.W(newa);
   cF.W(rF);
@@ -197,6 +219,7 @@ cl_i8080::RAL(t_mem code)
   if (oldc)
     newa|= 1;
   rF&= ~flagC;
+  rF|= ADDV8(rA, rA, newa);
   rF|= newc;
   cA.W(newa);
   cF.W(rF);
