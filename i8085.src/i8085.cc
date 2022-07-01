@@ -238,6 +238,18 @@ cl_i8085::JX5(t_mem code)
 }
 
 int
+cl_i8085::RSTV(t_mem code)
+{
+  if (rF & flagV)
+    {
+      push2(PC);
+      PC= 0x40;
+      tick_shift= 8;
+    }
+  return resGO;
+}
+
+int
 cl_i8085::LDHI(t_mem code)
 {
   u16_t a= rHL + fetch();
