@@ -203,11 +203,9 @@ int
 cl_i8080::DAA(t_mem code)
 {
   if (((rA & 0xf) > 0x9) || (rF & flagA))
-    {
-      add8(6, false);
-      if (((rA & 0xf0) > 0x90) || (rF & flagC))
-	add8(0x60, false);
-    }
+    add8(6, false);
+  if (((rA & 0xf0) > 0x90) || (rF & flagC))
+    add8(0x60, false);
   return resGO;
 }
 

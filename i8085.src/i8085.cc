@@ -216,8 +216,9 @@ cl_i8085::RDEL(t_mem code)
 {
   u8_t oldC= rF&flagC;
   u8_t newC= (rD&0x80)?flagC:0;
-  rF&= ~flagC;
+  rF&= ~(flagC|flagV);
   if (newC) rF|= flagC;
+  // TODO: V=?
   rDE<<= 1;
   if (oldC) rE|= 1;
   cDE.W(rDE);
