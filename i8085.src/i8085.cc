@@ -227,6 +227,25 @@ cl_i8085::RDEL(t_mem code)
 }
 
 int
+cl_i8085::DSUB(t_mem code)
+{
+  u16_t a= rHL, b= rBC;
+  u32_t r;
+  b= ~b+1;
+  r= a+b;
+  rF&= ~fAll;
+  if (r <= 0xffff) rF|= flagC;
+  if (r & 0x8000) rF|= flagS;
+  r&= 0xffff;
+  if (!r) rF|= flagZ;
+  if (((a&0xfff) + (b&0xfff)) > 0xfff) rF|= flagA;
+  rF|= ptab[r>>8];
+  cHL.W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_i8085::JNX5(t_mem code)
 {
   return jmp_if(rF & flagX5);

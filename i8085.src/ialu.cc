@@ -48,7 +48,7 @@ int
 cl_i8080::sub8(u8_t op, bool sub_c, bool cmp)
 {
   if (sub_c && (rF & flagC))
-    op+= 1;
+    op++;
   op= ~op+1;
   u16_t res= rA+op;
   rF&= ~fAll;
@@ -133,7 +133,7 @@ int
 cl_i8080::xra(u8_t op)
 {
   u8_t res= rA ^ op;
-  rF&= ~fAll_A;
+  rF&= ~fAll;
   if (!res) rF|= flagZ;
   if (res&0x80) rF|= flagS;
   rF|= ptab[res];

@@ -37,6 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Undocumented */
 #define ARHL	instruction_10
 #define RDEL	instruction_18
+#define DSUB	instruction_08
 #define JNX5	instruction_dd
 #define JX5	instruction_fd
 #define RSTV	instruction_cb
@@ -90,6 +91,7 @@ class cl_i8085: public cl_i8080
 
   virtual int ARHL(t_mem code);
   virtual int RDEL(t_mem code);
+  virtual int DSUB(t_mem code);
   virtual int JNX5(t_mem code);
   virtual int JX5 (t_mem code);
   virtual int RSTV(t_mem code);
