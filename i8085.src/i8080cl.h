@@ -200,7 +200,7 @@ public:
   virtual int SPHL(t_mem code);
   
   // Arithmetic
-  virtual int add8(u8_t op, bool add_c);
+  virtual int add8(u8_t op, bool add_c, bool is_daa= false);
   virtual int sub8(u8_t op, bool sub_c, bool cmp);
   virtual int ana(u8_t op);
   virtual int ora(u8_t op);

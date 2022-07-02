@@ -27,18 +27,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8080cl.h"
 
 int
-cl_i8080::add8(u8_t op, bool add_c)
+cl_i8080::add8(u8_t op, bool add_c, bool is_daa)
 {
   u16_t res;
   if (add_c && (rF & flagC))
     op++;
   res= rA+op;
-  rF&= ~fAll;
+  rF&= ~fAll_A;
+  if (!is_daa) rF&= ~flagA;
   if (res>0xff) rF|= flagC;
   if (res&0x80) rF|= flagS;
   res&= 0xff;
   if (!res) rF|= flagZ;
-  if ((rA&0xf)+(op&0xf) > 0xf) rF|= flagA;
+  if (!is_daa)
+    if ((rA&0xf)+(op&0xf) > 0xf)
+      rF|= flagA;
   rF|= ADDV8(rA,op,res);
   rF|= X5(res);
   rF|= ptab[res];
@@ -239,10 +242,11 @@ cl_i8080::RAR(t_mem code)
 int
 cl_i8080::DAA(t_mem code)
 {
-  if (((rA & 0xf) > 0x9) || (rF & flagA))
+  if (((rA & 0xf) > 9) || (rF & flagA))
     add8(6, false);
-  if (((rA & 0xf0) > 0x90) || (rF & flagC))
-    add8(0x60, false);
+  u8_t v= rA>>4;
+  if ((v > 9) || (rF & flagC))
+    add8(0x60, false, true);
   return resGO;
 }
 

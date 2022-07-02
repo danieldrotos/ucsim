@@ -137,14 +137,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define INR_L		instruction_2c
 #define INR_M		instruction_34
 
-#define DRC_A		instruction_3d
-#define DRC_B		instruction_05
-#define DRC_C		instruction_0d
-#define DRC_D		instruction_15
-#define DRC_E		instruction_1d
-#define DRC_H		instruction_25
-#define DRC_L		instruction_2d
-#define DRC_M		instruction_35
+#define DCR_A		instruction_3d
+#define DCR_B		instruction_05
+#define DCR_C		instruction_0d
+#define DCR_D		instruction_15
+#define DCR_E		instruction_1d
+#define DCR_H		instruction_25
+#define DCR_L		instruction_2d
+#define DCR_M		instruction_35
 
 #define INX_B		instruction_03
 #define INX_D		instruction_13
