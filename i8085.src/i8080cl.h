@@ -89,6 +89,12 @@ enum {
   fAll_A= flagC|flagP|flagZ|flagS|flagK|flagV,
 };
 
+#define ADDV(  a,b,r) (((a)&(b)&~(r))|(~(a)&~(b)&(r)))
+#define ADDV8( a,b,c) ((ADDV(a,b,c)&0x80)?flagV:0)
+#define ADDV16(a,b,c) ((ADDV(a,b,c)&0x8000)?flagV:0)
+#define X5(r)         (((rF&flagV)?flagK:0)^(((r)&0x80)?flagK:0))
+#define X516(r)       (((rF&flagV)?flagK:0)^(((r)&0x8000)?flagK:0))
+
 
 /*
  * Special handling of flags

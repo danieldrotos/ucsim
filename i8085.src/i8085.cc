@@ -244,6 +244,7 @@ cl_i8085::RDEL(t_mem code)
   rF&= ~(flagC|flagV);
   if (newC) rF|= flagC;
   // TODO: V=?
+  rF|= ADDV16(rDE, rDE, rDE<<1);
   rDE<<= 1;
   if (oldC) rE|= 1;
   cDE.W(rDE);

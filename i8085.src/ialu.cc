@@ -26,11 +26,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "i8080cl.h"
 
-#define ADDV(  a,b,r) (((a&b&~r)|(~a&~b&r))?flagV:0)
-#define ADDV8( a,b,c) ((ADDV(a,b,c)&0x80)?flagV:0)
-#define ADDV16(a,b,c) ((ADDV(a,b,c)&0x8000)?flagV:0)
-#define X5(r) (((rF&flagV)?flagK:0)^((r&0x80)?flagK:0))
-
 int
 cl_i8080::add8(u8_t op, bool add_c)
 {
