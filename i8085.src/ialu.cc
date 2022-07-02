@@ -242,11 +242,27 @@ cl_i8080::RAR(t_mem code)
 int
 cl_i8080::DAA(t_mem code)
 {
+  u8_t org= rA, corr= 0;
   if (((rA & 0xf) > 9) || (rF & flagA))
-    add8(6, false);
-  u8_t v= rA>>4;
-  if ((v > 9) || (rF & flagC))
-    add8(0x60, false, true);
+    corr= 6;
+  u8_t v= rA>>4, c= 10;
+  if (corr==6)
+    c= 9;
+  if ((v >= c) || (rF & flagC))
+    corr|= 0x60;
+  if (corr)
+    {
+      /*rF&= ~(flagS|flagZ|flagV|flagP|flagK);
+      rA+= corr;
+      if (rA&0x80) rF|= flagS;
+      if (!rA) rF|= flagZ;
+      rF|= ADDV8(org, corr, rA);
+      rF|= X5(rA);
+      rF|= ptab[rA];
+      cF.W(rF);
+      cA.W(rA);*/
+      add8(corr, false, true);
+    }
   return resGO;
 }
 
