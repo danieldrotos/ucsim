@@ -53,12 +53,13 @@ cl_i8080::add8(u8_t op, bool add_c, bool is_daa)
 int
 cl_i8080::sub8(u8_t op, bool sub_c, bool cmp)
 {
+  u16_t orga= rA, orgb= op;
   if (sub_c && (rF & flagC))
     op++;
   op= ~op+1;
   u16_t res= rA+op;
   rF&= ~fAll;
-  if (res<=0xff) rF|= flagC;
+  if (/*res<=0xff*/orga<orgb) rF|= flagC;
   if (res&0x80) rF|= flagS;
   res&= 0xff;
   if (!res) rF|= flagZ;
