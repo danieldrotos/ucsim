@@ -59,15 +59,6 @@ public:
   virtual void option_changed(void);
 };
 
-class cl_setp_opacc: public cl_memory_operator
-{
-public:
-  class cl_memory_cell *psw;
-public:
-  cl_setp_opacc(class cl_memory_cell *acell, class cl_memory_cell *apsw);
-  virtual t_mem write(t_mem val);
-};
-
 class cl_51core: public cl_uc
 {
 public:
