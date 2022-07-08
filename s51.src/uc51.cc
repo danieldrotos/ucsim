@@ -489,6 +489,23 @@ cl_irq_stop_option::option_changed(void)
   uc51->stop_at_it= b;
 }
 
+
+cl_setp_opacc::cl_setp_opacc(class cl_memory_cell *acell,
+			     class cl_memory_cell *apsw):
+  cl_memory_operator(acell)
+{
+  psw= apsw;
+}
+
+t_mem
+cl_setp_opacc::write(t_mem val)
+{
+  u8_t p= psw->get() & ~bmP;
+  psw->set(p | ptab51[val&0xff]);
+  return val;
+}
+
+
 instruction_wrapper_fn itab51[256];
 
 /*
@@ -702,7 +719,9 @@ cl_51core::init(void)
   reset();
 
   make_vars();
-
+  class cl_memory_operator *paop= new cl_setp_opacc(acc, psw);
+  paop->init();
+  acc->append_operator(paop);
   return(0);
 }
 
@@ -1978,7 +1997,7 @@ cl_uc51_cpu::init(void)
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
     }
   cell_psw= sfr->get_cell(PSW);//use_cell(sfr, PSW);
-  cell_acc= register_cell(sfr, ACC);
+  cell_acc= sfr->get_cell(ACC);//register_cell(sfr, ACC);
   cell_sp= register_cell(sfr, SP);
   for (i= 0; i < 8; i++)
     acc_bits[i]= register_cell(bas, ACC+i);
@@ -2041,33 +2060,15 @@ cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
     {
       if (*val > uc->sp_most)
 	uc->sp_most= *val;
-      //uc->sp_avg= (uc->sp_avg+(*val))/2;
     }
   else 
     {
-      //bool p;
-      //int i;
       uchar uc, n= *val;
-
-      if (cell != cell_acc)
+      /*if (cell != cell_acc)*/
 	{
 	  cell->set(*val);
 	  n= cell_acc->get();
 	}
-      /*
-      p = false;
-      uc= n;
-      for (i= 0; i < 8; i++)
-	{
-	  if (uc & 1)
-	    p= !p;
-	  uc>>= 1;
-	}
-      if (p)
-	cell_psw->set(cell_psw->get() | bmP);
-      else
-	cell_psw->set(cell_psw->get() & ~bmP);
-      */
       uc= cell_psw->get() & ~bmP;
       cell_psw->set(uc | ptab51[n]);
     }
