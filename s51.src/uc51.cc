@@ -2045,8 +2045,8 @@ cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
     }
   else 
     {
-      bool p;
-      int i;
+      //bool p;
+      //int i;
       uchar uc, n= *val;
 
       if (cell != cell_acc)
@@ -2054,6 +2054,7 @@ cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
 	  cell->set(*val);
 	  n= cell_acc->get();
 	}
+      /*
       p = false;
       uc= n;
       for (i= 0; i < 8; i++)
@@ -2066,6 +2067,9 @@ cl_uc51_cpu::write(class cl_memory_cell *cell, t_mem *val)
 	cell_psw->set(cell_psw->get() | bmP);
       else
 	cell_psw->set(cell_psw->get() & ~bmP);
+      */
+      uc= cell_psw->get() & ~bmP;
+      cell_psw->set(uc | ptab51[n]);
     }
   /*else if (cell == cell_pcon)
     {
