@@ -74,20 +74,23 @@ char *
 cl_f8::disassc(t_addr addr, chars *comment)
 {
   chars work= chars(), temp= chars(), fmt= chars();
+  chars words[10];
+  chars *word= NULL;
+  int wi= 0;
   const char *b;
   struct dis_entry *de;
   int i, prefs= P_NONE;
   bool first;
-  u8_t /*h, l, r,*/ code;
-  u16_t a;
+  u8_t /*h,*/ l, /*r,*/ code;
+  u16_t a, nn;
   
-  code= rom->get(addr);
+  code= rom->read(addr);
   while ((code & PREF)==PREF)
     {
       code&= ~PREF;
       code>>= PREF_SHIFT;
       prefs|= (1 << code);
-      code= rom->get(++addr);
+      code= rom->read(++addr);
     }
   de= get_dis_entry(addr);
   //code= rom->read(addr);
@@ -105,8 +108,13 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	{
 	  first= false;
 	  while (work.len() < 6) work.append(' ');
+	  word= &words[wi=1];
 	}
-      if (b[i] == '\'')
+      else if (b[i] == ',')
+	{
+	  word= &words[++wi];
+	}
+      else if (b[i] == '\'')
 	{
 	  fmt= "";
 	  i++;
@@ -114,35 +122,66 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	    fmt.append(b[i++]);
 	  if (!b[i]) i--;
 	  if (fmt.empty())
-	    work.append("'");
+	    word->append("'");
 	  if (strcmp(fmt.c_str(), "i8") == 0)
 	    {
-	      work.appendf("0x%02x", rom->read(addr+1));
+	      word->appendf("0x%02x", rom->read(addr+1));
 	    }
 	  if (strcmp(fmt.c_str(), "i16") == 0)
 	    {
-	      work.appendf("0x%04x", read_addr(rom, addr+1));
+	      word->appendf("0x%04x", read_addr(rom, addr+1));
 	    }
 	  if (strcmp(fmt.c_str(), "a16") == 0)
 	    {
 	      a= read_addr(rom, addr+1);
-	      work.appendf("0x%04x", a);
+	      word->appendf("0x%04x", a);
 	    }
 	  if (strcmp(fmt.c_str(), "a16_8") == 0)
 	    {
 	      a= read_addr(rom, addr+1);
-	      work.appendf("0x%04x", a);
+	      word->appendf("0x%04x", a);
 	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
 	    }
 	  if (strcmp(fmt.c_str(), "a16_16") == 0)
 	    {
 	      a= read_addr(rom, addr+1);
-	      work.appendf("0x%04x", a);
+	      word->appendf("0x%04x", a);
 	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom, a));
 	    }
+	  if (strcmp(fmt.c_str(), "nsp_8") == 0)
+	    {
+	      l= rom->read(addr+1);
+	      a= rSP+l;
+	      a&= 0xffff;
+	      word->appendf("0x%02x,sp", l);
+	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
+	  if (strcmp(fmt.c_str(), "nnz_8") == 0)
+	    {
+	      nn= read_addr(rom, addr+1);
+	      a= nn+rZ;
+	      a&= 0xffff;
+	      word->appendf("0x%04x,z", nn);
+	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
+	  if (strcmp(fmt.c_str(), "y_8") == 0)
+	    {
+	      a= rY;
+	      word->appendf("y");
+	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
+	  if (strcmp(fmt.c_str(), "ny_8") == 0)
+	    {
+	      l= rom->read(addr+1);
+	      a= rY+l;
+	      a&= 0xffff;
+	      word->appendf("0x%02x,sp", l);
+	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
+
 	  continue;
 	}
-      if (b[i] == '%')
+      else if (b[i] == '%')
 	{
 	  i++;
 	  temp= "";
@@ -150,31 +189,52 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	    {
 	    case 'a': // 8 bit accumulator, selected by prefix
 	      if (prefs & P_ALT0)
-		work.append("XH");
+		word->append("xh");
 	      else if (prefs & P_ALT1)
-		work.append("YL");
+		word->append("yl");
 	      else if (prefs & P_ALT2)
-		work.append("ZL");
+		word->append("zl");
 	      else
-		work.append("XL");
+		word->append("xl");
 	      break;
 
 	    case 'A': // 16 bit accumulator, selected by prefix
 	      if (prefs & P_ALT1)
-		work.append("X");
+		word->append("x");
 	      else if (prefs & P_ALT2)
-		work.append("Z");
+		word->append("z");
 	      else
-		work.append("Y");
+		word->append("y");
 	      break;
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);
 	}
       else
-	work+= b[i];
+	{
+	  if (word == NULL)
+	      work+= b[i];
+	  else
+	    word->append(b[i]);
+	}
     }
 
+  if (prefs & ~allowed_prefs[code])
+    work+= '!';
+  prefs&= allowed_prefs[code];
+  if (prefs & P_SWAP)
+    {
+      chars t;
+      t= words[1];
+      words[1]= words[2];
+      words[2]= t;
+    }
+  for (l= 1; l<=wi; l++)
+    {
+      if (l>1)
+	work.append(",");
+      work.append(words[l]);
+    }
   return(strdup(work.c_str()));
 }
 

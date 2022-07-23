@@ -37,6 +37,20 @@ struct dis_entry disass_f8[]=
     // move
     { 0x80, 0xff, ' ', 2, "ld %a,#'i8'" },
     { 0x81, 0xff, ' ', 3, "ld %a,'a16_8'" },
+    { 0x82, 0xff, ' ', 2, "ld %a,('nsp_8')" },
+    { 0x83, 0xff, ' ', 3, "ld %a,('nnz_8')" },
+    { 0x84, 0xff, ' ', 1, "ld %a,('y_8')" },
+    { 0x85, 0xff, ' ', 2, "ld %a,('ny_8')" },
+    { 0x86, 0xff, ' ', 1, "ld %a,xh" },
+    { 0x87, 0xff, ' ', 1, "ld %a,yl" },
+    { 0x88, 0xff, ' ', 1, "ld %a,yh" },
+    { 0x89, 0xff, ' ', 1, "ld %a,zl" },
+    { 0x8a, 0xff, ' ', 1, "ld %a,zh" },
+    { 0x8b, 0xff, ' ', 3, "ld 'a16_8',%a" },
+    { 0x8c, 0xff, ' ', 2, "ld ('nsp_8'),%a" },
+    { 0x8d, 0xff, ' ', 3, "ld ('nnz_8'),%a" },
+    { 0x8e, 0xff, ' ', 1, "ld ('y_8'),%a" },
+    { 0x8f, 0xff, ' ', 2, "ld ('ny_8'),%a" },
     
     // alu
 
@@ -79,6 +93,7 @@ u16_t tick_tab_f8[256]= {
 
 // Bitmasks of P_XXXX
 u8_t allowed_prefs[256]= {
+  /*          _0  _1  _2  _3    _4  _5  _6  _7    _8  _9  _a  _b    _c  _d  _e  _f */
   /* 0_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 1_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 2_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
@@ -87,7 +102,7 @@ u8_t allowed_prefs[256]= {
   /* 5_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 6_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 7_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 8_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
+  /* 8_ */    PD, PD, PD, PD,   PD, PD, PA, PA,   PA, PA, PA, PD,   PD, PD, PD, PD, 
   /* 9_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* a_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* b_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
