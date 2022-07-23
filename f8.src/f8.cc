@@ -236,26 +236,42 @@ cl_f8::exec_inst(void)
 	  break;
 	case PREF_ALT0: // altacc
 	  prefixes|= P_ALT0;
-	  acc8= &cXH;
 	  break;
 	case PREF_ALT1: // altacc'
 	  prefixes|= P_ALT1;
-	  acc8= &cYL;
-	  acc16= &cX;
 	  break;
 	case PREF_ALT2: // altacc''
 	  prefixes|= P_ALT2;
-	  acc8= &cZL;
-	  acc16= &cZ;
 	  break;
 	}
       if (fetch(&code))
 	return resBREAKPOINT;
     }
   prefixes&= allowed_prefs[code]; // drop swap if not allowed!
-  // still use last altacc prefix
-  // 8 bit altacc prefix can not alter 16 bit operations
-  // when (1) /ALT0/ is allowed, (2) /ALT{1,2}/ is allowed too
+  // select accumulators according to prefixes
+  if (prefixes & P_ALT0)
+    {
+      acc8 = &cXH;
+      acc16= &cY;
+    }
+  else if (prefixes & P_ALT1)
+    {
+      acc8 = &cYL;
+      acc16= &cX;
+    }
+  else if (prefixes & P_ALT2)
+    {
+      acc8 = &cZL;
+      acc16= &cY;
+    }
+  /*
+    // clear_prefixes() prepares this state
+    else
+    {
+      acc8 = &cXL;
+      acc16= &cY;
+    }
+  */
   if (itab[code] == NULL)
     {
       PC= instPC;
