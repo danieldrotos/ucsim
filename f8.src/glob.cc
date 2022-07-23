@@ -35,6 +35,8 @@ instruction_wrapper_fn itab[256];
 struct dis_entry disass_f8[]=
   {
     // move
+    { 0x80, 0xff, ' ', 2, "ld %a,#'i8'" },
+    { 0x81, 0xff, ' ', 3, "ld %a,'a16_8'" },
     
     // alu
 

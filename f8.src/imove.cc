@@ -46,7 +46,7 @@ cl_f8::ld8_a_m(class cl_cell8 &m)
 int
 cl_f8::ld8_m_a(class cl_cell8 &m)
 {
-  m.W(acc8->R());
+  m.W(acc8->get());
   vc.wr++;
   return resGO;
 }

@@ -30,6 +30,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define PREF		0x9c
 #define PREF_SHIFT	0
+
+// Opcodes of prefixes
 #define PREF_SWAPOP	0x9c
 #define PREF_ALT0	0x9d
 #define PREF_ALT1	0x9e
@@ -37,6 +39,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 // data moves
+#define LD8_A_I		instruction_80
+#define LD8_A_M		instruction_81
+#define LD8_A_NSP	instruction_82
+#define LD8_A_NNZ	instruction_83
+#define LD8_A_Y		instruction_84
+#define LD8_A_NY	instruction_85
+#define LD8_A_XH	instruction_86
+#define LD8_A_YL	instruction_87
+#define LD8_A_YH	instruction_88
+#define LD8_A_ZL	instruction_89
+#define LD8_A_ZH	instruction_8a
+#define LD8_M_A		instruction_8b
+#define LD8_NSP_A	instruction_8c
+#define LD8_NNZ_A	instruction_8d
+#define LD8_Y_A		instruction_8e
+#define LD8_NY_A	instruction_8f
 
 // arithmetic instructions
 

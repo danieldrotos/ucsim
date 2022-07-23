@@ -53,6 +53,23 @@ cl_f8::get_dis_entry(t_addr addr)
   return NULL;
 }
 
+int
+cl_f8::inst_length(t_addr addr)
+{
+  t_addr a= addr;
+  int s= 0;
+  u8_t c= rom->get(a);
+  while ((c & PREF) == PREF)
+    {
+      s++;
+      c= rom->get(++a);
+    }
+  struct dis_entry *de= get_dis_entry(a);
+  if (de == NULL)
+    return 1 + s;
+  return de->length + s;
+}
+
 char *
 cl_f8::disassc(t_addr addr, chars *comment)
 {
@@ -63,7 +80,7 @@ cl_f8::disassc(t_addr addr, chars *comment)
   bool first;
   u8_t /*h, l, r,*/ code;
   u16_t a;
-
+  
   code= rom->get(addr);
   while ((code & PREF)==PREF)
     {
@@ -131,6 +148,25 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	  temp= "";
 	  switch (b[i])
 	    {
+	    case 'a': // 8 bit accumulator, selected by prefix
+	      if (prefs & P_ALT0)
+		work.append("XH");
+	      else if (prefs & P_ALT1)
+		work.append("YL");
+	      else if (prefs & P_ALT2)
+		work.append("ZL");
+	      else
+		work.append("XL");
+	      break;
+
+	    case 'A': // 16 bit accumulator, selected by prefix
+	      if (prefs & P_ALT1)
+		work.append("X");
+	      else if (prefs & P_ALT2)
+		work.append("Z");
+	      else
+		work.append("Y");
+	      break;
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);

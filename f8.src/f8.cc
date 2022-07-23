@@ -177,7 +177,7 @@ cl_f8::m_mm(void)
 class cl_cell8 &
 cl_f8::m_n_sp(void)
 {
-  i8_t n= fetch();
+  u8_t n= fetch();
   u16_t a= rSP+n;
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   return *c;

@@ -127,6 +127,7 @@ public:
   virtual int clock_per_cycle(void) { return 1; }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual int inst_length(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
   virtual int longest_inst(void) { return 5; }
 
@@ -148,6 +149,22 @@ public:
   int ld8_a_m(class cl_cell8 &m);
   int ld8_m_a(class cl_cell8 &m);
   int ld8_a_r(class cl_cell8 &r);
+  int LD8_A_I(t_mem code)   { return ld8_a_i(fetch()); }
+  int LD8_A_M(t_mem code)   { return ld8_a_m(m_mm()); }
+  int LD8_A_NSP(t_mem code) { return ld8_a_m(m_n_sp()); }
+  int LD8_A_NNZ(t_mem code) { return ld8_a_m(m_nn_z()); }
+  int LD8_A_Y(t_mem code)   { return ld8_a_m(m_y()); }
+  int LD8_A_NY(t_mem code)  { return ld8_a_m(m_n_y()); }
+  int LD8_A_XH(t_mem code)  { return ld8_a_r(cXH); }
+  int LD8_A_YL(t_mem code)  { return ld8_a_r(cYL); }
+  int LD8_A_YH(t_mem code)  { return ld8_a_r(cYH); }
+  int LD8_A_ZL(t_mem code)  { return ld8_a_r(cZL); }
+  int LD8_A_ZH(t_mem code)  { return ld8_a_r(cZH); }
+  int LD8_M_A(t_mem code)   { return ld8_m_a(m_mm()); }
+  int LD8_NSP_A(t_mem code) { return ld8_m_a(m_n_sp()); }
+  int LD8_NNZ_A(t_mem code) { return ld8_m_a(m_nn_z()); }
+  int LD8_Y_A(t_mem code)   { return ld8_m_a(m_y()); }
+  int LD8_NY_A(t_mem code)  { return ld8_m_a(m_n_y()); }
   
   // aritmetic (ALU) instuctions: ialu.cc
 
