@@ -76,5 +76,41 @@ cl_f8::LD8_YL_I(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::ldw_a_i(u16_t op2)
+{
+  acc16->W(op2);
+  return resGO;
+}
 
+int
+cl_f8::ldw_a_m(u16_t addr)
+{
+  u16_t v= rom->read(addr);
+  v+= (rom->read(addr+1))*256;
+  acc16->W(v);
+  vc.rd+= 2;
+  return resGO;
+}
+
+int
+cl_f8::ldw_m_a(u16_t addr)
+{
+  u16_t v= acc16->get();
+  rom->write(addr, v);
+  rom->write(addr+1, v>>8);
+  vc.wr+= 2;
+  return resGO;
+}
+
+int
+cl_f8::ldw_m_r(u16_t addr, u16_t r)
+{
+  rom->write(addr, r);
+  rom->write(addr+1, r>>8);
+  vc.wr+= 2;
+  return resGO;
+}
+
+    
 /* End of f8.src/imove.cc */

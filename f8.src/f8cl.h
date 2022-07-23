@@ -128,22 +128,34 @@ public:
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual int inst_length(t_addr addr);
+  virtual u8_t a8(u8_t prefs);
+  virtual u16_t a16(u8_t prefs);
+  virtual const char *a8_name(u8_t prefs);
+  virtual const char *a16_name(u8_t prefs);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
   virtual int longest_inst(void) { return 5; }
 
   virtual void print_regs(class cl_console_base *con);
 
+  virtual u16_t fetch16(void) { u16_t v= fetch(); v+= fetch()*256; return v; }
+  virtual i8_t d(void) { return fetch(); }
+  virtual i16_t sexd(void);
+  
   // memory cells addressed by 8 bit addressing modes
-  // calls necessary fetches
+  // call necessary fetches
   virtual class cl_cell8 &m_mm(void);
   virtual class cl_cell8 &m_n_sp(void);
   virtual class cl_cell8 &m_nn_z(void);
   virtual class cl_cell8 &m_y(void);
   virtual class cl_cell8 &m_n_y(void);
 
+  // memory addresses by addressing modes
+  // call necessary fetches
   virtual u16_t a_mm(void);
   virtual u16_t a_n_sp(void);
   virtual u16_t a_nn_z(void);
+  virtual u16_t a_y(void);
+  virtual u16_t a_n_y();
   virtual u16_t a_acc16(void);
   virtual u16_t a_n_acc16(void);
   virtual u16_t a_nn_acc16(void);
@@ -152,6 +164,7 @@ public:
   virtual int exec_inst(void);
 
   // data moves: imove.cc
+  // 8 bit moves
   int ld8_a_i(u8_t op2);
   int ld8_a_m(class cl_cell8 &m);
   int ld8_m_a(class cl_cell8 &m);
@@ -173,6 +186,27 @@ public:
   int LD8_Y_A(t_mem code)   { return ld8_m_a(m_y()); }
   int LD8_NY_A(t_mem code)  { return ld8_m_a(m_n_y()); }
   int LD8_YL_I(t_mem code);
+  // 16 bit moves
+  int ldw_a_i(u16_t op2);
+  int ldw_a_m(u16_t addr);
+  int ldw_m_a(u16_t addr);
+  int ldw_m_r(u16_t addr, u16_t r);
+  int LDW_A_I(t_mem code)    { return ldw_a_i(fetch16()); }
+  int LDW_A_M(t_mem code)    { return ldw_a_m(a_mm()); }
+  int LDW_A_NSP(t_mem code)  { return ldw_a_m(a_n_sp()); }
+  int LDW_A_NNZ(t_mem code)  { return ldw_a_m(a_nn_z()); }
+  int LDW_A_NY(t_mem code)   { return ldw_a_m(a_n_y()); }
+  int LDW_A_Y(t_mem code)    { return ldw_a_m(rY); }
+  int LDW_A_X(t_mem code)    { return ldw_a_m(a_n_y()); }
+  int LDW_A_D(t_mem code)    { return ldw_a_i(sexd()); }
+  int LDW_M_A(t_mem code)    { return ldw_m_a(a_mm()); }
+  int LDW_NSP_A(t_mem code)  { return ldw_m_a(a_n_sp()); }
+  int LDW_NNZ_A(t_mem code)  { return ldw_m_a(a_nn_z()); }
+  int LDW_X_A(t_mem code)    { cX.W(acc16->get()); return resGO; }
+  int LDW_Z_A(t_mem code)    { cZ.W(acc16->get()); return resGO; }
+  int LDW_AM_X(t_mem code)   { return ldw_m_r(a_acc16(), rX); }
+  int LDW_NAM_X(t_mem code)  { return ldw_m_r(a_n_acc16(), rX); }
+  int LDW_NNAM_X(t_mem code) { return ldw_m_r(a_nn_acc16(), rX); }
   
   // aritmetic (ALU) instuctions: ialu.cc
 

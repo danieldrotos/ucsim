@@ -163,6 +163,15 @@ cl_f8::print_regs(class cl_console_base *con)
 }
 
 
+i16_t
+cl_f8::sexd(void)
+{
+  i16_t v= fetch();
+  if (v & 0x80) v|= 0xff00;
+  return v;
+}
+
+
 // Memory cells according to 8 bit addressing modes
 
 class cl_cell8 &
@@ -230,6 +239,19 @@ cl_f8::a_nn_z(void)
   u16_t nn= fetch();
   nn+= fetch()*256;
   return nn + rZ;
+}
+
+u16_t
+cl_f8::a_y(void)
+{
+  return rY;
+}
+
+u16_t
+cl_f8::a_n_y(void)
+{
+  u8_t n= fetch();
+  return n + rY;
 }
 
 u16_t

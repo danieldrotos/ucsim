@@ -53,6 +53,23 @@ struct dis_entry disass_f8[]=
     { 0x8f, 0xff, ' ', 2, "ld ('ny_8'),%a" },
     { 0x94, 0xff, ' ', 2, "ld yl,#'i8'" },
     
+    { 0xc0, 0xff, ' ', 3, "ld %A,#'i16'" },
+    { 0xc1, 0xff, ' ', 3, "ld %A,'a16_16'" },
+    { 0xc2, 0xff, ' ', 2, "ld %A,('nsp_16')" },
+    { 0xc3, 0xff, ' ', 3, "ld %A,('nnz_16')" },
+    { 0xc4, 0xff, ' ', 2, "ld %A,('ny_16')" },
+    { 0xc5, 0xff, ' ', 1, "ld %A,('y_16')" },
+    { 0xc6, 0xff, ' ', 1, "ld %A,x" },
+    { 0xc7, 0xff, ' ', 2, "ld %A,#%d" },
+    { 0xc8, 0xff, ' ', 3, "ld 'a16_16',%A" },
+    { 0xc9, 0xff, ' ', 2, "ld ('nsp_16'),%A" },
+    { 0xca, 0xff, ' ', 3, "ld ('nnz_16'),%A" },
+    { 0xcb, 0xff, ' ', 1, "ld x,%A" },
+    { 0xcc, 0xff, ' ', 1, "ld z,%A" },
+    { 0xcd, 0xff, ' ', 1, "ld (%A),x" },
+    { 0xce, 0xff, ' ', 2, "ld ('nA_16'),x" },
+    { 0xcf, 0xff, ' ', 3, "ld ('nnA_16'),x" },
+
     // alu
 
     // branch
@@ -107,7 +124,7 @@ u8_t allowed_prefs[256]= {
   /* 9_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* a_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* b_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* c_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
+  /* c_ */    P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6, 
   /* d_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* e_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* f_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN

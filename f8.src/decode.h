@@ -57,6 +57,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD8_NY_A	instruction_8f
 #define LD8_YL_I	instruction_94
 
+#define LDW_A_I		instruction_d0
+#define LDW_A_M		instruction_d1
+#define LDW_A_NSP	instruction_d2
+#define LDW_A_NNZ	instruction_d3
+#define LDW_A_NY	instruction_d4
+#define LDW_A_Y		instruction_d5
+#define LDW_A_X		instruction_d6
+#define LDW_A_D		instruction_d7
+#define LDW_M_A		instruction_d8
+#define LDW_NSP_A	instruction_d9
+#define LDW_NNZ_A	instruction_da
+#define LDW_X_A		instruction_db
+#define LDW_Z_A		instruction_dc
+#define LDW_AM_X	instruction_dd
+#define LDW_NAM_X	instruction_de
+#define LDW_NNAM_X	instruction_df
+
 // arithmetic instructions
 
 // branches

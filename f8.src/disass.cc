@@ -70,6 +70,50 @@ cl_f8::inst_length(t_addr addr)
   return de->length + s;
 }
 
+u8_t
+cl_f8::a8(u8_t prefs)
+{
+  if (prefs & P_ALT0)
+    return rXH;
+  else if (prefs & P_ALT1)
+    return rYL;
+  else if (prefs & P_ALT2)
+    return rZL;
+  return rXL;
+}
+
+u16_t
+cl_f8::a16(u8_t prefs)
+{
+  if (prefs & P_ALT1)
+    return rX;
+  else if (prefs & P_ALT2)
+    return rZ;
+  return rY;
+}
+
+const char *
+cl_f8::a8_name(u8_t prefs)
+{
+  if (prefs & P_ALT0)
+    return "xh";
+  else if (prefs & P_ALT1)
+    return "yl";
+  else if (prefs & P_ALT2)
+    return "zl";
+  return "xl";
+}
+
+const char *
+cl_f8::a16_name(u8_t prefs)
+{
+  if (prefs & P_ALT1)
+    return "x";
+  else if (prefs & P_ALT2)
+    return "z";
+  return "y";
+}
+
 char *
 cl_f8::disassc(t_addr addr, chars *comment)
 {
@@ -83,6 +127,7 @@ cl_f8::disassc(t_addr addr, chars *comment)
   bool first;
   u8_t /*h,*/ l, /*r,*/ code;
   u16_t a, nn;
+  i16_t d;
   
   code= rom->read(addr);
   while ((code & PREF)==PREF)
@@ -156,6 +201,14 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      word->appendf("0x%02x,sp", l);
 	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
 	    }
+	  if (strcmp(fmt.c_str(), "nsp_16") == 0)
+	    {
+	      l= rom->read(addr+1);
+	      a= rSP+l;
+	      a&= 0xffff;
+	      word->appendf("0x%02x,sp", l);
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
+	    }
 	  if (strcmp(fmt.c_str(), "nnz_8") == 0)
 	    {
 	      nn= read_addr(rom, addr+1);
@@ -164,11 +217,25 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      word->appendf("0x%04x,z", nn);
 	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
 	    }
+	  if (strcmp(fmt.c_str(), "nnz_16") == 0)
+	    {
+	      nn= read_addr(rom, addr+1);
+	      a= nn+rZ;
+	      a&= 0xffff;
+	      word->appendf("0x%04x,z", nn);
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
+	    }
 	  if (strcmp(fmt.c_str(), "y_8") == 0)
 	    {
 	      a= rY;
 	      word->appendf("y");
 	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
+	  if (strcmp(fmt.c_str(), "y_16") == 0)
+	    {
+	      a= rY;
+	      word->appendf("y");
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
 	    }
 	  if (strcmp(fmt.c_str(), "ny_8") == 0)
 	    {
@@ -177,6 +244,30 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      a&= 0xffff;
 	      word->appendf("0x%02x,sp", l);
 	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
+	  if (strcmp(fmt.c_str(), "ny_16") == 0)
+	    {
+	      l= rom->read(addr+1);
+	      a= rY+l;
+	      a&= 0xffff;
+	      word->appendf("0x%02x,sp", l);
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
+	    }
+	  if (strcmp(fmt.c_str(), "nA_16") == 0)
+	    {
+	      l= rom->read(addr+1);
+	      a= a16(prefs)+l;
+	      a&= 0xffff;
+	      word->appendf("0x%02x,%s", l, a16_name(prefs));
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
+	    }
+	  if (strcmp(fmt.c_str(), "nnA_16") == 0)
+	    {
+	      nn= read_addr(rom, addr+1);
+	      a= a16(prefs)+nn;
+	      a&= 0xffff;
+	      word->appendf("0x%04x,%s", nn, a16_name(prefs));
+	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
 	    }
 
 	  continue;
@@ -188,24 +279,19 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	  switch (b[i])
 	    {
 	    case 'a': // 8 bit accumulator, selected by prefix
-	      if (prefs & P_ALT0)
-		word->append("xh");
-	      else if (prefs & P_ALT1)
-		word->append("yl");
-	      else if (prefs & P_ALT2)
-		word->append("zl");
-	      else
-		word->append("xl");
+	      word->append(a8_name(prefs));
 	      break;
 
 	    case 'A': // 16 bit accumulator, selected by prefix
-	      if (prefs & P_ALT1)
-		word->append("x");
-	      else if (prefs & P_ALT2)
-		word->append("z");
-	      else
-		word->append("y");
+	      word->append(a16_name(prefs));
 	      break;
+
+	    case 'd':
+	      d= rom->read(addr+1);
+	      if (d&0x80) d|= 0xff00;
+	      word->appendf("%+d", d);
+	      break;
+	      
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);
