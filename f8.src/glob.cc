@@ -51,6 +51,7 @@ struct dis_entry disass_f8[]=
     { 0x8d, 0xff, ' ', 3, "ld ('nnz_8'),%a" },
     { 0x8e, 0xff, ' ', 1, "ld ('y_8'),%a" },
     { 0x8f, 0xff, ' ', 2, "ld ('ny_8'),%a" },
+    { 0x94, 0xff, ' ', 2, "ld yl,#'i8'" },
     
     // alu
 

@@ -69,5 +69,12 @@ cl_f8::ld8_a_r(class cl_cell8 &r)
   return resGO;
 }
 
+int
+cl_f8::LD8_YL_I(t_mem code)
+{
+  cYL.W(fetch());
+  return resGO;
+}
+
 
 /* End of f8.src/imove.cc */

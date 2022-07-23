@@ -55,6 +55,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD8_NNZ_A	instruction_8d
 #define LD8_Y_A		instruction_8e
 #define LD8_NY_A	instruction_8f
+#define LD8_YL_I	instruction_94
 
 // arithmetic instructions
 

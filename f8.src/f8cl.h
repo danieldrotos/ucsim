@@ -140,6 +140,13 @@ public:
   virtual class cl_cell8 &m_nn_z(void);
   virtual class cl_cell8 &m_y(void);
   virtual class cl_cell8 &m_n_y(void);
+
+  virtual u16_t a_mm(void);
+  virtual u16_t a_n_sp(void);
+  virtual u16_t a_nn_z(void);
+  virtual u16_t a_acc16(void);
+  virtual u16_t a_n_acc16(void);
+  virtual u16_t a_nn_acc16(void);
   
   virtual void clear_prefixes();
   virtual int exec_inst(void);
@@ -165,6 +172,7 @@ public:
   int LD8_NNZ_A(t_mem code) { return ld8_m_a(m_nn_z()); }
   int LD8_Y_A(t_mem code)   { return ld8_m_a(m_y()); }
   int LD8_NY_A(t_mem code)  { return ld8_m_a(m_n_y()); }
+  int LD8_YL_I(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 
