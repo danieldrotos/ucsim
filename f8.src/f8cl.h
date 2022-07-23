@@ -103,6 +103,31 @@ public:
   virtual void mk_hw_elements(void);
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
+  
+  virtual int clock_per_cycle(void) { return 1; }
+  virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual char *disassc(t_addr addr, chars *comment=NULL);
+
+  virtual void print_regs(class cl_console_base *con);
+};
+
+
+enum f8cpu_confs
+  {
+   f8cpu_sp_limit	= 0,
+   f8cpu_nuof		= 1
+  };
+
+class cl_f8_cpu: public cl_hw
+{
+public:
+  cl_f8_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return f8cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 

@@ -89,6 +89,13 @@ cl_i8080::init(void)
   itab[0xed]= instruction_wrapper_cd; // CALL
   itab[0xfd]= instruction_wrapper_cd; // CALL
   
+  cF.W(urnd());
+  cA.W(urnd());
+  cBC.W(urnd());
+  cDE.W(urnd());
+  cHL.W(urnd());
+  cSP.W(urnd());
+
   reset();
   return 0;
 }
@@ -103,12 +110,6 @@ void
 cl_i8080::reset(void)
 {
   cl_uc::reset();
-  cF.W(urnd());
-  cA.W(urnd());
-  cBC.W(urnd());
-  cDE.W(urnd());
-  cHL.W(urnd());
-  cSP.W(urnd());
   PC= 0;
 }
 
