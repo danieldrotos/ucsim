@@ -53,12 +53,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   } N
 #endif
 
+#define rX (rpX.X)
+#define rXL (rpX.r.XL)
+#define rXH (rpX.r.XH)
+#define rY (rpY.Y)
+#define rYL (rpY.r.YL)
+#define rYH (rpY.r.YH)
+#define rZ (rpZ.Z)
+#define rZL (rpZ.r.ZL)
+#define rZH (rpZ.r.ZH)
+
+
 enum {
-  flagC	= 0x01,
-  flagP	= 0x04,
-  flagA	= 0x10,
-  flagZ	= 0x40,
-  flagS	= 0x80,
+  flagO	= 0x01,
+  flagZ	= 0x02,
+  flagN	= 0x04,
+  flagC	= 0x08,
+  flagH	= 0x10,
+
+  flagS = flagN,
+  flagV = flagO,
+  
+  fAll  = flagO|flagZ|flagN|flagC|flagH,
+  fAll_H= flagO|flagZ|flagN|flagC
 };
 
 
@@ -74,8 +91,18 @@ public:
   u16_t rSP; class cl_cell16 cSP;
   u8_t rF; class cl_cell8 cF;
   t_addr sp_limit;
+  class cl_cell8 *acc8;
+  class cl_cell16 *acc16;
 public:
   cl_f8(class cl_sim *asim);
+  virtual int init(void);
+  virtual const char *id_string(void);
+  virtual void reset(void);
+  virtual void set_PC(t_addr addr);
+
+  virtual void mk_hw_elements(void);
+  virtual void make_cpu_hw(void);
+  virtual void make_memories(void);
 };
 
 

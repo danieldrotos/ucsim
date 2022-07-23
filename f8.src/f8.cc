@@ -43,5 +43,86 @@ cl_f8::cl_f8(class cl_sim *asim):
 {
 }
 
+int
+cl_f8::init(void)
+{
+  cl_uc::init();
+  fill_def_wrappers(itab);
+  set_xtal(25000000);
+
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  RCV(X); RCV(XH); RCV(XL);
+  RCV(Y); RCV(YH); RCV(YL);
+  RCV(Z); RCV(ZH); RCV(ZL);
+  RCV(SP);
+  RCV(F);
+#undef RCV
+  sp_limit= 0;
+
+  reset();
+  return 0;
+}
+
+const char *
+cl_f8::id_string(void)
+{
+  return "F8";
+}
+
+void
+cl_f8::reset(void)
+{
+  cl_uc::reset();
+  PC= 0;
+}
+
+void
+cl_f8::set_PC(t_addr addr)
+{
+  PC= addr&0xffff;
+}
+
+
+void
+cl_f8::mk_hw_elements(void)
+{
+  class cl_hw *h;
+  cl_uc::mk_hw_elements();
+
+  add_hw(h= new cl_dreg(this, 0, "dreg"));
+  h->init();
+}
+
+void
+cl_f8::make_cpu_hw(void)
+{
+  /*
+  cpu= new cl_f8_cpu(this);
+  add_hw(cpu);
+  cpu->init();
+  */
+}
+
+void
+cl_f8::make_memories(void)
+{
+  class cl_address_space *as;
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+  
+  rom= as= new cl_address_space("rom", 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip= new cl_chip8("rom_chip", 0x10000, 8);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(as= rom,
+			     chip, 0, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+}
+
 
 /* End of f8.src/i8080.cc */
