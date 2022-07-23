@@ -79,6 +79,23 @@ enum {
 };
 
 
+enum {
+  P_NONE	= 0,
+  P_SWAP	= 0x01, // (0) swapop
+  P_ALT0	= 0x02, // (1) altacc    XH
+  P_ALT1	= 0x04, // (2) altacc'   YL  X
+  P_ALT2	= 0x08, // (2) altacc''  ZL  Z
+
+  // shorts for allowed prefixes
+  PN		= P_NONE,                      // none
+  PA		= P_SWAP|P_ALT0|P_ALT1|P_ALT2, // 012
+  P8		= P_ALT0,                      // 1
+  P6		= P_ALT1|P_ALT2,               // 2
+  PD		= P8|P6,                       // 12
+  P1		= P_SWAP|P8,                   // 01
+  P2		= P_SWAP|P6,                   // 02
+};
+
 /*
  * Base of f8 processor
  */
@@ -93,6 +110,7 @@ public:
   t_addr sp_limit;
   class cl_cell8 *acc8;
   class cl_cell16 *acc16;
+  int prefixes;
 public:
   cl_f8(class cl_sim *asim);
   virtual int init(void);
@@ -108,8 +126,22 @@ public:
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
+  virtual int longest_inst(void) { return 5; }
 
   virtual void print_regs(class cl_console_base *con);
+
+  virtual void clear_prefixes();
+  virtual int exec_inst(void);
+
+  // data moves: imove.cc
+  
+  // aritmetic (ALU) instuctions: ialu.cc
+
+  // branches: ibranch.cc
+  
+  // other instructions: inst.cc
+  virtual int NOP(t_mem code);
+  virtual int TRAP(t_mem code);
 };
 
 

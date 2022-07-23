@@ -28,6 +28,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef F8_DECODE_HEADER
 #define F8_DECODE_HEADER
 
+#define PREF		0x9c
+#define PREF_SHIFT	0
+#define PREF_SWAPOP	0x9c
+#define PREF_ALT0	0x9d
+#define PREF_ALT1	0x9e
+#define PREF_ALT2	0x9f
+
+
+// data moves
+
+// arithmetic instructions
+
+// branches
+
+// other instructions
+#define NOP		instruction_08
+#define TRAP		instruction_00
+
 #endif
 
 /* End of f8.src/decode.h */

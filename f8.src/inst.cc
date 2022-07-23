@@ -27,4 +27,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "f8cl.h"
 
+
+int
+cl_f8::NOP(t_mem code)
+{
+  return resGO;
+}
+
+int
+cl_f8::TRAP(t_mem code)
+{
+  return resHALT;
+}
+
+
 /* End of f8.src/inst.cc */

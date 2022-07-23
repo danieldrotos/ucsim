@@ -58,7 +58,8 @@ cl_f8::init(void)
   RCV(F);
 #undef RCV
   sp_limit= 0;
-
+  prefixes= P_NONE;
+  
   cF.W(urnd());
   cX.W(urnd());
   cY.W(urnd());
@@ -79,6 +80,7 @@ void
 cl_f8::reset(void)
 {
   cl_uc::reset();
+  clear_prefixes();
   PC= 0;
 }
 
@@ -129,114 +131,11 @@ cl_f8::make_memories(void)
 }
 
 
-
-struct dis_entry *
-cl_f8::dis_tbl(void)
-{
-  return(disass_f8);
-}
-
-struct dis_entry *
-cl_f8::get_dis_entry(t_addr addr)
-{
-  t_mem code= rom->get(addr);
-
-  for (struct dis_entry *de = disass_f8; de && de->mnemonic; de++)
-    {
-      if ((code & de->mask) == de->code)
-        return de;
-    }
-
-  return NULL;
-}
-
-char *
-cl_f8::disassc(t_addr addr, chars *comment)
-{
-  chars work= chars(), temp= chars(), fmt= chars();
-  const char *b;
-  struct dis_entry *de;
-  int i;
-  bool first;
-  u8_t h, l, r, code;
-  u16_t a;
-
-  de= get_dis_entry(addr);
-  code= rom->read(addr);
-  
-  if (!de || !de->mnemonic)
-    return strdup("-- UNKNOWN/INVALID");
-
-  b= de->mnemonic;
-
-  first= true;
-  work= "";
-  for (i=0; b[i]; i++)
-    {
-      if ((b[i] == ' ') && first)
-	{
-	  first= false;
-	  while (work.len() < 6) work.append(' ');
-	}
-      if (b[i] == '\'')
-	{
-	  fmt= "";
-	  i++;
-	  while (b[i] && (b[i]!='\''))
-	    fmt.append(b[i++]);
-	  if (!b[i]) i--;
-	  if (fmt.empty())
-	    work.append("'");
-	  if (strcmp(fmt.c_str(), "i8") == 0)
-	    {
-	      work.appendf("0x%02x", rom->read(addr+1));
-	    }
-	  if (strcmp(fmt.c_str(), "i16") == 0)
-	    {
-	      work.appendf("0x%04x", read_addr(rom, addr+1));
-	    }
-	  if (strcmp(fmt.c_str(), "a16") == 0)
-	    {
-	      a= read_addr(rom, addr+1);
-	      work.appendf("0x%04x", a);
-	    }
-	  if (strcmp(fmt.c_str(), "a16_8") == 0)
-	    {
-	      a= read_addr(rom, addr+1);
-	      work.appendf("0x%04x", a);
-	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
-	    }
-	  if (strcmp(fmt.c_str(), "a16_16") == 0)
-	    {
-	      a= read_addr(rom, addr+1);
-	      work.appendf("0x%04x", a);
-	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom, a));
-	    }
-	  continue;
-	}
-      if (b[i] == '%')
-	{
-	  i++;
-	  temp= "";
-	  switch (b[i])
-	    {
-	    }
-	  if (comment && temp.nempty())
-	    comment->append(temp);
-	}
-      else
-	work+= b[i];
-    }
-
-  return(strdup(work.c_str()));
-}
-
 void
 cl_f8::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("---HCNZO  Flags= 0x%02x %3d %c\n",
-                 rF, rF, isprint(rF)?rF:'.');
+  con->dd_printf("---HCNZO  Flags= 0x%02x\n", rF);
   con->dd_printf("%s\n", cbin(rF, 8).c_str());
   con->dd_printf("X= 0x%04x [X]= 0x%02x %3d %c\n",
                  rX, rom->get(rX), rom->get(rX),
@@ -251,18 +150,77 @@ cl_f8::print_regs(class cl_console_base *con)
   int i;
   con->dd_cprintf("answer", "SP= ");
   con->dd_cprintf("dump_address", "0x%04x ->", rSP);
-  for (i= 0; i < 2*12; i+= 2)
+  for (i= 0; i < 18; i++)
     {
-      t_addr al, ah;
+      t_addr al;
       al= (rSP+i)&0xffff;
-      ah= (al+1)&0xffff;
-      con->dd_cprintf("dump_number", " %02x%02x",
-		      (u8_t)(rom->read(al)),
-		      (u8_t)(rom->read(ah)));
+      con->dd_cprintf("dump_number", " %02x",
+		      (u8_t)(rom->read(al)));
     }
   con->dd_printf("\n");
   
   print_disass(PC, con);
+}
+
+
+void
+cl_f8::clear_prefixes()
+{
+  prefixes= P_NONE;
+  acc8= &cXL;
+  acc16= &cY;
+}
+
+int
+cl_f8::exec_inst(void)
+{
+  int res= resGO;
+  t_mem code;
+
+  instPC= PC;
+  if (fetch(&code))
+    return resBREAKPOINT;
+  while ((code & PREF) == PREF)
+    {
+      switch (code)
+	{
+	case PREF_SWAPOP: // swapop
+	  prefixes|= P_SWAP;
+	  break;
+	case PREF_ALT0: // altacc
+	  prefixes|= P_ALT0;
+	  acc8= &cXH;
+	  break;
+	case PREF_ALT1: // altacc'
+	  prefixes|= P_ALT1;
+	  acc8= &cYL;
+	  acc16= &cX;
+	  break;
+	case PREF_ALT2: // altacc''
+	  prefixes|= P_ALT2;
+	  acc8= &cZL;
+	  acc16= &cZ;
+	  break;
+	}
+      if (fetch(&code))
+	return resBREAKPOINT;
+    }
+  if (itab[code] == NULL)
+    {
+      PC= instPC;
+      clear_prefixes();
+      return resNOT_DONE;
+    }
+  tick(1);
+  res= itab[code](this, code);
+  if (res == resNOT_DONE)
+    {
+      //PC= instPC;
+      clear_prefixes();
+      return res;
+    }
+  clear_prefixes();
+  return res;
 }
 
 
@@ -284,7 +242,7 @@ cl_f8_cpu::init(void)
   uc->vars->add(v= new cl_var("sp_limit", cfg, f8cpu_sp_limit,
 			      cfg_help(f8cpu_sp_limit)));
   v->init();
-
+  
   return 0;
 }
 

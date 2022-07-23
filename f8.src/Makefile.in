@@ -52,7 +52,7 @@ infodir         = @infodir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-OBJECTS_SHARED	= sim$(TN).o $(TN).o glob.o \
+OBJECTS_SHARED	= sim$(TN).o $(TN).o glob.o disass.o \
 		  inst.o ialu.o ibranch.o imove.o
 #		  irq.o port10.o
 
