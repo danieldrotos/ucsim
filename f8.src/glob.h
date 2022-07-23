@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (si8085.cc)
+ * Simulator of microcontrollers (glob.h)
  *
  * Copyright (C) 2022 Drotos Daniel, Talker Bt.
  * 
@@ -24,38 +24,20 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
-// prj
-#include "globals.h"
-#include "utils.h"
+#ifndef F8_GLOB_HEADER
+#define F8_GLOB_HEADER
 
-// local
-#include "i8080cl.h"
-#include "simi8085cl.h"
-#include "glob.h"
+#include "stypes.h"
+#include "iwrap.h"
 
-int
-main(int argc, char *argv[])
-{
-  class cl_sim *sim;
 
-  app_start_at= dnow();
-  cpus= cpus_8085;
-  /* Replace 1s to flagP in p table */
-  for (int i= 0; i<256; i++)
-    if (ptab[i])
-      ptab[i]= flagP;
-  application= new cl_app();
-  application->set_name("si8085");
-  application->init(argc, argv);
-  sim= new cl_simi8085(application);
-  if (sim->init())
-    sim->state|= SIM_QUIT;
-  application->set_simulator(sim);
-  //sim->main();
-  application->run();
-  application->done();
-  delete application;
-  return 0;
-}
+extern instruction_wrapper_fn itab[256];
 
-/* End of i8085.src/si8085.cc */
+extern struct cpu_entry cpus_f8[];
+extern struct dis_entry disass_f8[];
+extern u16_t tick_tab_f8[256];
+
+
+#endif
+
+/* End of f8.src/glob.h */

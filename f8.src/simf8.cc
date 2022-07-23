@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (ibranch.cc)
+ * Simulator of microcontrollers (simf8.cc)
  *
  * Copyright (C) 2022 Drotos Daniel, Talker Bt.
  * 
@@ -24,84 +24,48 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
-#include "i8080cl.h"
+#include "simf8cl.h"
+#include "f8cl.h"
+#include "glob.h"
 
 
-int
-cl_i8080::JMP(t_mem code)
+cl_simf8::cl_simf8(class cl_app *the_app):
+  cl_sim(the_app)
+{}
+
+class cl_uc *
+cl_simf8::mk_controller(void)
 {
-  u16_t a= fetch16();
-  PC= a;
-  return resGO;
-}
+  int i;
+  const char *typ= 0;
+  class cl_optref type_option(this);
+  class cl_f8 *uc;
 
-int
-cl_i8080::jmp_if(bool cond)
-{
-  u16_t a= fetch16();
-  if (cond)
+  type_option.init();
+  type_option.use("cpu_type");
+  i= 0;
+  if ((typ= type_option.get_value(typ)) == 0)
+    typ= "F8";
+  while ((cpus_f8[i].type_str != NULL) &&
+	 (strcasecmp(typ, cpus_f8[i].type_str) != 0))
+    i++;
+  if (cpus_f8[i].type_str == NULL)
     {
-      PC= a;
-      tick_shift= 8;
+      fprintf(stderr, "Unknown processor type. "
+	      "Use -H option to see known types.\n");
+      return(NULL);
     }
-  return resGO;
-}
-
-int
-cl_i8080::CALL(t_mem code)
-{
-  u16_t a= fetch16();
-  push2(PC);
-  PC= a;
-  return resGO;
-}
-
-int
-cl_i8080::call_if(bool cond)
-{
-  u16_t a= fetch16();
-  if (cond)
+  switch (cpus_f8[i].type)
     {
-      push2(PC);
-      PC= a;
-      tick_shift= 8;
+    case CPU_F8:
+      uc= new cl_f8(this);
+      return uc;
+    default:
+      fprintf(stderr, "Unknown processor type\n");
+      return NULL;
     }
-  return resGO;
-}
-
-int
-cl_i8080::RET(t_mem code)
-{
-  PC= pop2();
-  return resGO;
-}
-
-int
-cl_i8080::ret_if(bool cond)
-{
-  if (cond)
-    {
-      PC= pop2();
-      tick_shift= 8;
-    }
-  return resGO;
-}
-
-int
-cl_i8080::PCHL(t_mem code)
-{
-  PC= rHL;
-  return resGO;
-}
-
-int
-cl_i8080::rst(t_mem code)
-{
-  u16_t a= code & 0x28;
-  push2(PC);
-  PC= a;
-  return resGO;
+  return NULL;
 }
 
 
-/* End of i8085.src/ibranch.cc */
+/* End of f8.src/simf8.cc */

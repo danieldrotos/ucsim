@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (si8085.cc)
+ * Simulator of microcontrollers (sf8.cc)
  *
  * Copyright (C) 2022 Drotos Daniel, Talker Bt.
  * 
@@ -29,8 +29,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 // local
-#include "i8080cl.h"
-#include "simi8085cl.h"
+#include "f8cl.h"
+#include "simf8cl.h"
 #include "glob.h"
 
 int
@@ -39,15 +39,11 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_8085;
-  /* Replace 1s to flagP in p table */
-  for (int i= 0; i<256; i++)
-    if (ptab[i])
-      ptab[i]= flagP;
+  cpus= cpus_f8;
   application= new cl_app();
-  application->set_name("si8085");
+  application->set_name("sf8");
   application->init(argc, argv);
-  sim= new cl_simi8085(application);
+  sim= new cl_simf8(application);
   if (sim->init())
     sim->state|= SIM_QUIT;
   application->set_simulator(sim);
@@ -58,4 +54,4 @@ main(int argc, char *argv[])
   return 0;
 }
 
-/* End of i8085.src/si8085.cc */
+/* End of f8.src/sf8.cc */
