@@ -76,7 +76,7 @@ u16_t tick_tab_f8[256]= {
 };
 
 // Bitmasks of P_XXXX
-u8_t f8_allowed_prefs[256]= {
+u8_t allowed_prefs[256]= {
   /* 0_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 1_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 2_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 

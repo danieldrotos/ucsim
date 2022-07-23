@@ -96,6 +96,8 @@ enum {
   P2		= P_SWAP|P6,                   // 02
 };
 
+#define IFSWAP if (prefixes&P_SWAP)
+
 /*
  * Base of f8 processor
  */
@@ -130,10 +132,22 @@ public:
 
   virtual void print_regs(class cl_console_base *con);
 
+  // memory cells addressed by 8 bit addressing modes
+  // calls necessary fetches
+  virtual class cl_cell8 &m_mm(void);
+  virtual class cl_cell8 &m_n_sp(void);
+  virtual class cl_cell8 &m_nn_z(void);
+  virtual class cl_cell8 &m_y(void);
+  virtual class cl_cell8 &m_n_y(void);
+  
   virtual void clear_prefixes();
   virtual int exec_inst(void);
 
   // data moves: imove.cc
+  int ld8_a_i(u8_t op2);
+  int ld8_a_m(class cl_cell8 &m);
+  int ld8_m_a(class cl_cell8 &m);
+  int ld8_a_r(class cl_cell8 &r);
   
   // aritmetic (ALU) instuctions: ialu.cc
 

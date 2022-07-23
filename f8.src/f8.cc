@@ -163,6 +163,53 @@ cl_f8::print_regs(class cl_console_base *con)
 }
 
 
+// Memory cells according to 8 bit addressing modes
+
+class cl_cell8 &
+cl_f8::m_mm(void)
+{
+  u16_t a= fetch();
+  a+= fetch()*256;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  return *c;
+}
+
+class cl_cell8 &
+cl_f8::m_n_sp(void)
+{
+  i8_t n= fetch();
+  u16_t a= rSP+n;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  return *c;
+}
+
+class cl_cell8 &
+cl_f8::m_nn_z(void)
+{
+  u16_t nn= fetch();
+  nn+= fetch()*256;
+  u16_t a= nn+rZ;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  return *c;
+}
+
+class cl_cell8 &
+cl_f8::m_y(void)
+{
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(rY);
+  return *c;
+}
+
+class cl_cell8 &
+cl_f8::m_n_y(void)
+{
+  i8_t n= fetch();
+  u16_t a= rY+n;
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
+  return *c;
+}
+
+
 void
 cl_f8::clear_prefixes()
 {
@@ -205,6 +252,10 @@ cl_f8::exec_inst(void)
       if (fetch(&code))
 	return resBREAKPOINT;
     }
+  prefixes&= allowed_prefs[code]; // drop swap if not allowed!
+  // still use last altacc prefix
+  // 8 bit altacc prefix can not alter 16 bit operations
+  // when (1) /ALT0/ is allowed, (2) /ALT{1,2}/ is allowed too
   if (itab[code] == NULL)
     {
       PC= instPC;
