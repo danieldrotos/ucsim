@@ -39,7 +39,7 @@ cl_f8::get_dis_entry(t_addr addr)
 {
   t_mem code= rom->get(addr);
   int i= 0;
-  while ((code & PREF)==PREF)
+  while ((code & PREF_MASK)==PREF)
     {
       i++;
       code= rom->get(addr+i);
@@ -59,7 +59,7 @@ cl_f8::inst_length(t_addr addr)
   t_addr a= addr;
   int s= 0;
   u8_t c= rom->get(a);
-  while ((c & PREF) == PREF)
+  while ((c & PREF_MASK) == PREF)
     {
       s++;
       c= rom->get(++a);
@@ -150,9 +150,9 @@ cl_f8::disassc(t_addr addr, chars *comment)
   i16_t d;
   
   code= rom->read(addr);
-  while ((code & PREF)==PREF)
+  while ((code & PREF_MASK)==PREF)
     {
-      code&= ~PREF;
+      code&= ~PREF_MASK;
       code>>= PREF_SHIFT;
       prefs|= (1 << code);
       code= rom->read(++addr);

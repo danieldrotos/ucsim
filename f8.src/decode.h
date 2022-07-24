@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define F8_DECODE_HEADER
 
 #define PREF		0x9c
+#define PREF_MASK	0xfc
 #define PREF_SHIFT	0
 
 // Opcodes of prefixes

@@ -357,7 +357,7 @@ cl_f8::exec_inst(void)
   instPC= PC;
   if (fetch(&code))
     return resBREAKPOINT;
-  while ((code & PREF) == PREF)
+  while ((code & PREF_MASK) == PREF)
     {
       switch (code)
 	{
