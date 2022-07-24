@@ -80,11 +80,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PUSH_NSP	instruction_61
 #define PUSH_A		instruction_62
 #define PUSH_ZH		instruction_63
+#define PUSH_I		instruction_90
 
 #define PUSHW_M		instruction_b0
 #define PUSHW_NSP	instruction_b1
 #define PUSHW_NNZ	instruction_b2
 #define PUSHW_A		instruction_b3
+#define PUSHW_I		instruction_e8
 
 #define POP_A		instruction_99
 #define POPW_A		instruction_e9

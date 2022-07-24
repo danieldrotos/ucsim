@@ -167,6 +167,13 @@ cl_f8::PUSH_ZH(t_mem code)
 }
 
 int
+cl_f8::PUSH_I(t_mem code)
+{
+  push1(fetch());
+  return resGO;
+}
+
+int
 cl_f8::PUSHW_M(t_mem code)
 {
   u16_t a= a_mm();
@@ -201,6 +208,16 @@ cl_f8::PUSHW_A(t_mem code)
 {
   u16_t v= acc16->get();
   push2(v);
+  return resGO;
+}
+
+int
+cl_f8::PUSHW_I(t_mem code)
+{
+  u8_t l, h;
+  l= fetch();
+  h= fetch();
+  push2(h, l);
   return resGO;
 }
 
