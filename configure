@@ -1451,8 +1451,8 @@ Optional Features:
   --disable-mos6502-port  do not compile simulator for mos6502
   --disable-rxk-port      do not compile simulator for Rabbit rXk
   --disable-pblaze-port   do not compile simulator for Xilinx PicoBlaze
-  --enable-i8085-port     compile simulator for i8085
-  --enable-f8-port        compile simulator for f8
+  --disable-i8085-port    do not compile simulator for i8085
+  --disable-f8-port       do not compile simulator for f8
   --disable-serio         do not compile serio GUI tool (needs curses)
   --enable-statistic      compile statistical features (slower simulation)
 
@@ -3513,7 +3513,7 @@ then :
     enable_i8085_port="yes"
 fi
 else $as_nop
-  enable_i8085_port="no"
+  enable_i8085_port="yes"
 fi
 
 # Check whether --enable-f8-port was given.
@@ -3523,7 +3523,7 @@ then :
     enable_f8_port="yes"
 fi
 else $as_nop
-  enable_f8_port="no"
+  enable_f8_port="yes"
 fi
 
 # Check whether --enable-serio was given.

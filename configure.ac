@@ -195,17 +195,17 @@ if test $enable_pblaze_port  != "no"; then
 fi,
 enable_pblaze_port="yes")
 AC_ARG_ENABLE(i8085-port,
-[  --enable-i8085-port     compile simulator for i8085],
+[  --disable-i8085-port    do not compile simulator for i8085],
 if test $enable_i8085_port  != "no"; then
     enable_i8085_port="yes"
 fi,
-enable_i8085_port="no")
+enable_i8085_port="yes")
 AC_ARG_ENABLE(f8-port,
-[  --enable-f8-port        compile simulator for f8],
+[  --disable-f8-port       do not compile simulator for f8],
 if test $enable_f8_port  != "no"; then
     enable_f8_port="yes"
 fi,
-enable_f8_port="no")
+enable_f8_port="yes")
 AC_ARG_ENABLE(serio,
 [  --disable-serio         do not compile serio GUI tool (needs curses)],
 if test $enable_serio != "no"; then
