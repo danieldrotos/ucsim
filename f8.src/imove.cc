@@ -295,5 +295,42 @@ cl_f8::XCHW_Z_NSP(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::CAX(t_mem code)
+{
+  // if ((y) == xh) (z) = xl; else xh = (y);
+  u8_t my= rom->read(rY);
+  vc.rd++;
+  if (my == rXH)
+    {
+      rom->write(rZ, rXL);
+      vc.wr++;
+    }
+  else
+    {
+      cXH.W(my);
+    }
+  return 0;
+}
+
+int
+cl_f8::CAXW(t_mem code)
+{
+  // if ((y) == z) (y) = x; else x = (y);
+  u16_t my= read_addr(rom, rY);
+  vc.rd+= 2;
+  if (my == rZ)
+    {
+      rom->write(rY  , rX);
+      rom->write(rY+1, rX>>8);
+      vc.wr+= 2;
+    }
+  else
+    {
+      cX.W(my);
+    }
+  return 0;
+}
+
 
 /* End of f8.src/imove.cc */

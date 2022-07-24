@@ -97,6 +97,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define XCHW_Y_Z	instruction_f4
 #define XCHW_Z_NSP	instruction_f5
 
+#define CAX		instruction_9b
+#define CAXW		instruction_f9
+
 // arithmetic instructions
 
 // branches
