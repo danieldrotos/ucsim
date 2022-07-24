@@ -143,6 +143,9 @@ public:
   virtual void push1(u8_t v);
   virtual void push2(u16_t v);
   virtual void push2(u8_t h, u8_t l);
+  virtual u8_t pop1(void);
+  virtual u16_t pop2(void);
+  virtual void stack_check_overflow(t_addr sp_before);
   
   // memory cells addressed by 8 bit addressing modes
   // call necessary fetches
@@ -213,6 +216,10 @@ public:
   int LDW_SP_A(t_mem code);
   int LDW_DSP_A(t_mem code);
   // other moves
+  int PUSH_M(t_mem code);
+  int PUSH_NSP(t_mem code);
+  int PUSH_XL(t_mem code);
+  int PUSH_ZH(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 

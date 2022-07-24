@@ -174,16 +174,65 @@ cl_f8::sexd(void)
 void
 cl_f8::push1(u8_t v)
 {
+  t_addr sp_before= rSP;
+  rom->write(--rSP, v);
+  cSP.W(rSP);
+  vc.wr++;
+  stack_write(sp_before);
 }
 
 void
 cl_f8::push2(u16_t v)
 {
+  t_addr sp_before= rSP;
+  rom->write(--rSP, v>>8);
+  rom->write(--rSP, v);
+  vc.wr+= 2;
+  cSP.W(rSP);
+  stack_write(sp_before);
 }
 
 void
 cl_f8::push2(u8_t h, u8_t l)
 {
+  t_addr sp_before= rSP;
+  rom->write(--rSP, h);
+  rom->write(--rSP, l);
+  vc.wr+= 2;
+  cSP.W(rSP);
+  stack_write(sp_before);
+}
+
+u8_t
+cl_f8::pop1(void)
+{
+  u8_t v= rom->read(rSP++);
+  cSP.W(rSP);
+  vc.rd++;
+  return v;
+}
+
+u16_t
+cl_f8::pop2(void)
+{
+  u8_t h, l;
+  l= rom->read(rSP++);
+  h= rom->read(rSP++);
+  cSP.W(rSP);
+  vc.rd+= 2;
+  return h*256+l;
+}
+
+void
+cl_f8::stack_check_overflow(t_addr sp_before)
+{
+  if (rSP < sp_limit)
+    {
+      class cl_error_stack_overflow *e=
+	new cl_error_stack_overflow(instPC, sp_before, rSP);
+      e->init();
+      error(e);
+    }
 }
 
 

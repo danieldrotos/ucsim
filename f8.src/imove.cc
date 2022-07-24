@@ -134,4 +134,37 @@ cl_f8::LDW_DSP_A(t_mem code)
 }
 
 
+int
+cl_f8::PUSH_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  push1(c.R());
+  vc.rd++;
+  return resGO;
+}
+
+int
+cl_f8::PUSH_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  push1(c.R());
+  vc.rd++;
+  return resGO;
+}
+
+int
+cl_f8::PUSH_XL(t_mem code)
+{
+  push1(acc8->get()); // TODO?
+  return resGO;
+}
+
+int
+cl_f8::PUSH_ZH(t_mem code)
+{
+  push1(rZH); // TODO?
+  return resGO;
+}
+
+
 /* End of f8.src/imove.cc */
