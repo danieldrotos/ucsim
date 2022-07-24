@@ -171,6 +171,21 @@ cl_f8::sexd(void)
   return v;
 }
 
+void
+cl_f8::push1(u8_t v)
+{
+}
+
+void
+cl_f8::push2(u16_t v)
+{
+}
+
+void
+cl_f8::push2(u8_t h, u8_t l)
+{
+}
+
 
 // Memory cells according to 8 bit addressing modes
 

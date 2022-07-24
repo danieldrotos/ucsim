@@ -72,6 +72,11 @@ struct dis_entry disass_f8[]=
     { 0x70, 0xff, ' ', 1, "ldw sp,%A" },
     { 0x74, 0xff, ' ', 1, "ldw ('dsp_16'),%A" },
 
+    { 0x60, 0xff, ' ', 3, "push 'a16_8'" },
+    { 0x60, 0xff, ' ', 2, "push 'nsp_8'" },
+    { 0x60, 0xff, ' ', 1, "push xl" },
+    { 0x60, 0xff, ' ', 1, "push zh" },
+
     // alu
 
     // branch
@@ -120,7 +125,7 @@ u8_t allowed_prefs[256]= {
   /* 3_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 4_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 5_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 6_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
+  /* 6_ */    PD, PD, PD, PD,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 7_ */    PD, PN, PN, PN,   PD, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
   /* 8_ */    PD, PD, PD, PD,   PD, PD, PA, PA,   PA, PA, PA, PD,   PD, PD, PD, PD, 
   /* 9_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 

@@ -76,6 +76,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDW_SP_A	instruction_70
 #define LDW_DSP_A	instruction_74
 
+#define PUSH_M		instruction_60
+#define PUSH_NSP	instruction_61
+#define PUSH_XL		instruction_62
+#define PUSH_ZH		instruction_63
+
 // arithmetic instructions
 
 // branches

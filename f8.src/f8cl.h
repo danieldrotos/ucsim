@@ -140,6 +140,9 @@ public:
   virtual u16_t fetch16(void) { u16_t v= fetch(); v+= fetch()*256; return v; }
   virtual i8_t d(void) { return fetch(); }
   virtual i16_t sexd(void);
+  virtual void push1(u8_t v);
+  virtual void push2(u16_t v);
+  virtual void push2(u8_t h, u8_t l);
   
   // memory cells addressed by 8 bit addressing modes
   // call necessary fetches
@@ -209,6 +212,7 @@ public:
   int LDW_NNAM_X(t_mem code) { return ldw_m_r(a_nn_acc16(), rX); }
   int LDW_SP_A(t_mem code);
   int LDW_DSP_A(t_mem code);
+  // other moves
   
   // aritmetic (ALU) instuctions: ialu.cc
 
