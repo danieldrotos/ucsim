@@ -114,6 +114,26 @@ cl_f8::a16_name(u8_t prefs)
   return "y";
 }
 
+const char *
+cl_f8::a16h_name(u8_t prefs)
+{
+  if (prefs & P_ALT1)
+    return "xh";
+  else if (prefs & P_ALT2)
+    return "zh";
+  return "yh";
+}
+
+const char *
+cl_f8::a16l_name(u8_t prefs)
+{
+  if (prefs & P_ALT1)
+    return "xl";
+  else if (prefs & P_ALT2)
+    return "zl";
+  return "yl";
+}
+
 char *
 cl_f8::disassc(t_addr addr, chars *comment)
 {
@@ -293,6 +313,14 @@ cl_f8::disassc(t_addr addr, chars *comment)
 
 	    case 'A': // 16 bit accumulator, selected by prefix
 	      word->append(a16_name(prefs));
+	      break;
+
+	    case 'H': // upper half of 16 bit accumulator, selected by prefix
+	      word->append(a16h_name(prefs));
+	      break;
+
+	    case 'L': // lower half of 16 bit accumulator, selected by prefix
+	      word->append(a16l_name(prefs));
 	      break;
 
 	    case 'd':

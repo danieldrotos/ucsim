@@ -132,6 +132,8 @@ public:
   virtual u16_t a16(u8_t prefs);
   virtual const char *a8_name(u8_t prefs);
   virtual const char *a16_name(u8_t prefs);
+  virtual const char *a16h_name(u8_t prefs);
+  virtual const char *a16l_name(u8_t prefs);
   virtual char *disassc(t_addr addr, chars *comment=NULL);
   virtual int longest_inst(void) { return 5; }
 
@@ -228,6 +230,9 @@ public:
   int PUSHW_I(t_mem code);
   int POP_A(t_mem code);
   int POPW_A(t_mem code);
+  int XCH_A_NSP(t_mem code);
+  int XCH_A_Y(t_mem code);
+  int XCH_A_A(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 

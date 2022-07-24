@@ -91,6 +91,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define POP_A		instruction_99
 #define POPW_A		instruction_e9
 
+#define XCH_A_NSP	instruction_91
+#define XCH_A_Y		instruction_92
+#define XCH_A_A		instruction_93
+
 // arithmetic instructions
 
 // branches

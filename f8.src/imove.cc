@@ -235,5 +235,40 @@ cl_f8::POPW_A(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::XCH_A_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t t= acc8->get();
+  acc8->W(c.R());
+  vc.rd++;
+  c.W(t);
+  vc.wr++;
+  return resGO;
+}
+
+int
+cl_f8::XCH_A_Y(t_mem code)
+{
+  class cl_cell8 &c= m_y();
+  u8_t t= acc8->get();
+  acc8->W(c.R());
+  vc.rd++;
+  c.W(t);
+  vc.wr++;
+  return resGO;
+}
+
+int
+cl_f8::XCH_A_A(t_mem code)
+{
+  u16_t t= acc16->get();
+  u8_t h, l;
+  h= t>>8;
+  l= t;
+  acc16->W(l*256+h);
+  return resGO;
+}
+
 
 /* End of f8.src/imove.cc */

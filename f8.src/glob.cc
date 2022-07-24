@@ -73,19 +73,23 @@ struct dis_entry disass_f8[]=
     { 0x74, 0xff, ' ', 1, "ldw ('dsp_16'),%A" },
 
     { 0x60, 0xff, ' ', 3, "push 'a16_8'" },
-    { 0x60, 0xff, ' ', 2, "push 'nsp_8'" },
+    { 0x60, 0xff, ' ', 2, "push ('nsp_8')" },
     { 0x60, 0xff, ' ', 1, "push %a" },
     { 0x60, 0xff, ' ', 1, "push zh" },
     { 0x90, 0xff, ' ', 2, "push #'i8'" },
 
     { 0xb0, 0xff, ' ', 3, "pushw 'a16_16'" },
-    { 0xb1, 0xff, ' ', 2, "pushw 'nsp_16'" },
-    { 0xb2, 0xff, ' ', 3, "pushw 'nnz_16'" },
+    { 0xb1, 0xff, ' ', 2, "pushw ('nsp_16')" },
+    { 0xb2, 0xff, ' ', 3, "pushw ('nnz_16')" },
     { 0xb3, 0xff, ' ', 1, "pushw %A" },
     { 0xe8, 0xff, ' ', 3, "pushw #'i16'" },
 
     { 0x99, 0xff, ' ', 1, "pop %a" },
     { 0xe9, 0xff, ' ', 1, "popw %A" },
+
+    { 0x91, 0xff, ' ', 2, "xch %a,('nsp_8')" },
+    { 0x92, 0xff, ' ', 1, "xch %a,('y_8')" },
+    { 0x93, 0xff, ' ', 1, "xch %L,%H," },
 
     // alu
 
