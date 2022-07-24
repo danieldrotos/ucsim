@@ -112,5 +112,26 @@ cl_f8::ldw_m_r(u16_t addr, u16_t r)
   return resGO;
 }
 
-    
+int
+cl_f8::LDW_SP_A(t_mem code)
+{
+  cSP.W(acc16->get());
+  return resGO;
+}
+
+int
+cl_f8::LDW_DSP_A(t_mem code)
+{
+  i8_t d= fetch();
+  u16_t pa= rSP+d;
+  u16_t a= read_addr(rom, pa);
+  vc.rd+= 2;
+  u16_t v= acc16->get();
+  rom->write(a++, v);
+  rom->write(a, v>>8);
+  vc.wr+= 2;
+  return resGO;
+}
+
+
 /* End of f8.src/imove.cc */

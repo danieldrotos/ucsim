@@ -207,6 +207,8 @@ public:
   int LDW_AM_X(t_mem code)   { return ldw_m_r(a_acc16(), rX); }
   int LDW_NAM_X(t_mem code)  { return ldw_m_r(a_n_acc16(), rX); }
   int LDW_NNAM_X(t_mem code) { return ldw_m_r(a_nn_acc16(), rX); }
+  int LDW_SP_A(t_mem code);
+  int LDW_DSP_A(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 

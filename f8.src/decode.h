@@ -73,6 +73,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDW_AM_X	instruction_dd
 #define LDW_NAM_X	instruction_de
 #define LDW_NNAM_X	instruction_df
+#define LDW_SP_A	instruction_70
+#define LDW_DSP_A	instruction_74
 
 // arithmetic instructions
 
