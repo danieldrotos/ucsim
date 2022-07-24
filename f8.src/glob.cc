@@ -90,6 +90,8 @@ struct dis_entry disass_f8[]=
     { 0x91, 0xff, ' ', 2, "xch %a,('nsp_8')" },
     { 0x92, 0xff, ' ', 1, "xch %a,('y_8')" },
     { 0x93, 0xff, ' ', 1, "xch %L,%H," },
+    { 0xf4, 0xff, ' ', 1, "xch y,('z_16')" },
+    { 0xf5, 0xff, ' ', 1, "xch z,('nsp_16')" },
 
     // alu
 
@@ -133,22 +135,22 @@ u16_t tick_tab_f8[256]= {
 // Bitmasks of P_XXXX
 u8_t allowed_prefs[256]= {
   /*          _0  _1  _2  _3    _4  _5  _6  _7    _8  _9  _a  _b    _c  _d  _e  _f */
-  /* 0_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 1_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 2_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 3_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 4_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 5_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 6_ */    PD, PD, PD, PD,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* 7_ */    PD, PN, PN, PN,   PD, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
+  /* 0_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* 1_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* 2_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* 3_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* 4_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0, PN, 
+  /* 5_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0, PN, 
+  /* 6_ */    PD, PD, PD, PD,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* 7_ */    PD,  0,  0,  0,   PD,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* 8_ */    PD, PD, PD, PD,   PD, PD, PA, PA,   PA, PA, PA, PD,   PD, PD, PD, PD, 
-  /* 9_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PD, PN, PN,   PN, PN, P6, PN, 
-  /* a_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* b_ */    P6, P6, P6, P6,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
+  /* 9_ */    PN, PD, PD, P6,    0,  0,  0,  0,    0, PD,  0,  0,    0,  0, P6,  0, 
+  /* a_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* b_ */    P6, P6, P6, P6,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* c_ */    P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6, 
-  /* d_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* e_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN, 
-  /* f_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN
+  /* d_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* e_ */     0,  0,  0,  0,    0,  0,  0,  0,   PN,  0,  0,  0,    0,  0,  0,  0, 
+  /* f_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0
 };
 
 

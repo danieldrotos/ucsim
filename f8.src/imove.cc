@@ -270,5 +270,30 @@ cl_f8::XCH_A_A(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::XCHW_Y_Z(t_mem code)
+{
+  u16_t t= read_addr(rom, rZ);
+  vc.rd+= 2;
+  rom->write(rZ  , rYL);
+  rom->write(rZ+1, rYH);
+  vc.wr+= 2;
+  cY.W(t);
+  return resGO;
+}
+
+int
+cl_f8::XCHW_Z_NSP(t_mem code)
+{
+  u16_t a= a_n_sp();
+  u16_t t= read_addr(rom, a);
+  vc.rd+= 2;
+  rom->write(a  , rZL);
+  rom->write(a+1, rZH);
+  vc.wr+= 2;
+  cZ.W(t);
+  return resGO;
+}
+
 
 /* End of f8.src/imove.cc */

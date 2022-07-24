@@ -233,6 +233,8 @@ public:
   int XCH_A_NSP(t_mem code);
   int XCH_A_Y(t_mem code);
   int XCH_A_A(t_mem code);
+  int XCHW_Y_Z(t_mem code);
+  int XCHW_Z_NSP(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 
