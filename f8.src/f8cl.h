@@ -84,16 +84,7 @@ enum {
   P_SWAP	= 0x01, // (0) swapop
   P_ALT0	= 0x02, // (1) altacc    XH
   P_ALT1	= 0x04, // (2) altacc'   YL  X
-  P_ALT2	= 0x08, // (2) altacc''  ZL  Z
-
-  // shorts for allowed prefixes
-  PN		= P_NONE,                      // none
-  PA		= P_SWAP|P_ALT0|P_ALT1|P_ALT2, // 012
-  P8		= P_ALT0,                      // 1
-  P6		= P_ALT1|P_ALT2,               // 2
-  PD		= P8|P6,                       // 12
-  P1		= P_SWAP|P8,                   // 01
-  P2		= P_SWAP|P6,                   // 02
+  P_ALT2	= 0x08  // (2) altacc''  ZL  Z
 };
 
 #define IFSWAP if (prefixes&P_SWAP)

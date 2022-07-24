@@ -145,6 +145,17 @@ u16_t tick_tab_f8[256]= {
 };
 
 // Bitmasks of P_XXXX
+enum {
+  // shorts for allowed prefixes
+  PN		= P_NONE,                      // none
+  PA		= P_SWAP|P_ALT0|P_ALT1|P_ALT2, // 012
+  P8		= P_ALT0,                      // 1
+  P6		= P_ALT1|P_ALT2,               // 2
+  PD		= P8|P6,                       // 12
+  P1		= P_SWAP|P8,                   // 01
+  P2		= P_SWAP|P6                    // 02
+};
+
 u8_t allowed_prefs[256]= {
   /*          _0  _1  _2  _3    _4  _5  _6  _7    _8  _9  _a  _b    _c  _d  _e  _f */
   /* 0_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
