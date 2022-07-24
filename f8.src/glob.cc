@@ -82,6 +82,9 @@ struct dis_entry disass_f8[]=
     { 0xb2, 0xff, ' ', 3, "pushw 'nnz_16'" },
     { 0xb3, 0xff, ' ', 1, "pushw %A" },
 
+    { 0x99, 0xff, ' ', 1, "pop %a" },
+    { 0xe9, 0xff, ' ', 1, "popw %A" },
+
     // alu
 
     // branch

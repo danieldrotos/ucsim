@@ -86,6 +86,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PUSHW_NNZ	instruction_b2
 #define PUSHW_A		instruction_b3
 
+#define POP_A		instruction_99
+#define POPW_A		instruction_e9
+
 // arithmetic instructions
 
 // branches

@@ -204,5 +204,19 @@ cl_f8::PUSHW_A(t_mem code)
   return resGO;
 }
 
-    
+int
+cl_f8::POP_A(t_mem code)
+{
+  acc8->W(pop1());
+  return resGO;
+}
+
+int
+cl_f8::POPW_A(t_mem code)
+{
+  acc16->W(pop2());
+  return resGO;
+}
+
+
 /* End of f8.src/imove.cc */

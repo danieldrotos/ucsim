@@ -224,6 +224,8 @@ public:
   int PUSHW_NSP(t_mem code);
   int PUSHW_NNZ(t_mem code);
   int PUSHW_A(t_mem code);
+  int POP_A(t_mem code);
+  int POPW_A(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 
