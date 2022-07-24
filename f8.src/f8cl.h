@@ -237,6 +237,14 @@ public:
   int XCHW_Z_NSP(t_mem code);
   int CAX(t_mem code);
   int CAXW(t_mem code);
+  int CLR_M(t_mem code);
+  int CLR_NSP(t_mem code);
+  int CLR_A(t_mem code);
+  int CLR_ZH(t_mem code);
+  int CLRW_M(t_mem code);
+  int CLRW_NSP(t_mem code);
+  int CLRW_NNZ(t_mem code);
+  int CLRW_A(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 

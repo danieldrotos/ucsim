@@ -332,5 +332,74 @@ cl_f8::CAXW(t_mem code)
   return 0;
 }
 
+int
+cl_f8::CLR_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  c.W(0);
+  vc.wr++;
+  return resGO;
+}
+
+int
+cl_f8::CLR_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  c.W(0);
+  vc.wr++;
+  return resGO;
+}
+
+int
+cl_f8::CLR_A(t_mem code)
+{
+  acc8->W(0);
+  return resGO;
+}
+
+int
+cl_f8::CLR_ZH(t_mem code)
+{
+  cZH.W(0);
+  return resGO;
+}
+
+int
+cl_f8::CLRW_M(t_mem code)
+{
+  u16_t a= a_mm();
+  rom->write(a  , 0);
+  rom->write(a+1, 0);
+  vc.wr+= 2;
+  return resGO;
+}
+
+int
+cl_f8::CLRW_NSP(t_mem code)
+{
+  u16_t a= a_n_sp();
+  rom->write(a  , 0);
+  rom->write(a+1, 0);
+  vc.wr+= 2;
+  return resGO;
+}
+
+int
+cl_f8::CLRW_NNZ(t_mem code)
+{
+  u16_t a= a_nn_z();
+  rom->write(a  , 0);
+  rom->write(a+1, 0);
+  vc.wr+= 2;
+  return resGO;
+}
+
+int
+cl_f8::CLRW_A(t_mem code)
+{
+  acc16->write(0);
+  return resGO;
+}
+
 
 /* End of f8.src/imove.cc */

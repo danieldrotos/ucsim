@@ -100,6 +100,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CAX		instruction_9b
 #define CAXW		instruction_f9
 
+#define CLR_M		instruction_58
+#define CLR_NSP		instruction_59
+#define CLR_A		instruction_5a
+#define CLR_ZH		instruction_5b
+#define CLRW_M		instruction_a0
+#define CLRW_NSP	instruction_a1
+#define CLRW_NNZ	instruction_a2
+#define CLRW_A		instruction_a3
+
 // arithmetic instructions
 
 // branches
