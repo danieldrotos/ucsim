@@ -78,8 +78,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define PUSH_M		instruction_60
 #define PUSH_NSP	instruction_61
-#define PUSH_XL		instruction_62
+#define PUSH_A		instruction_62
 #define PUSH_ZH		instruction_63
+
+#define PUSHW_M		instruction_b0
+#define PUSHW_NSP	instruction_b1
+#define PUSHW_NNZ	instruction_b2
+#define PUSHW_A		instruction_b3
 
 // arithmetic instructions
 

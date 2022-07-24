@@ -153,7 +153,7 @@ cl_f8::PUSH_NSP(t_mem code)
 }
 
 int
-cl_f8::PUSH_XL(t_mem code)
+cl_f8::PUSH_A(t_mem code)
 {
   push1(acc8->get()); // TODO?
   return resGO;
@@ -166,5 +166,43 @@ cl_f8::PUSH_ZH(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::PUSHW_M(t_mem code)
+{
+  u16_t a= a_mm();
+  u16_t v= read_addr(rom, a);
+  vc.rd+= 2;
+  push2(v);
+  return resGO;
+}
 
+int
+cl_f8::PUSHW_NSP(t_mem code)
+{
+  u16_t a= a_n_sp();
+  u16_t v= read_addr(rom, a);
+  vc.rd+= 2;
+  push2(v);
+  return resGO;
+}
+
+int
+cl_f8::PUSHW_NNZ(t_mem code)
+{
+  u16_t a= a_nn_z();
+  u16_t v= read_addr(rom, a);
+  vc.rd+= 2;
+  push2(v);
+  return resGO;
+}
+
+int
+cl_f8::PUSHW_A(t_mem code)
+{
+  u16_t v= acc16->get();
+  push2(v);
+  return resGO;
+}
+
+    
 /* End of f8.src/imove.cc */

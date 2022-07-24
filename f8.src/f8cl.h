@@ -218,8 +218,12 @@ public:
   // other moves
   int PUSH_M(t_mem code);
   int PUSH_NSP(t_mem code);
-  int PUSH_XL(t_mem code);
+  int PUSH_A(t_mem code);
   int PUSH_ZH(t_mem code);
+  int PUSHW_M(t_mem code);
+  int PUSHW_NSP(t_mem code);
+  int PUSHW_NNZ(t_mem code);
+  int PUSHW_A(t_mem code);
   
   // aritmetic (ALU) instuctions: ialu.cc
 
