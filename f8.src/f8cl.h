@@ -265,7 +265,8 @@ public:
   int XCHB_7(t_mem code) { return xchb(7); }
   
   // aritmetic (ALU) instuctions: ialu.cc
-
+  int add8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc);
+  
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
   virtual int JP_A(t_mem code);
