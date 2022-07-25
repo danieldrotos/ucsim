@@ -110,6 +110,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CLRW_NNZ	instruction_a2
 #define CLRW_A		instruction_a3
 
+#define XCHB_0		instruction_68
+#define XCHB_1		instruction_69
+#define XCHB_2		instruction_6a
+#define XCHB_3		instruction_6b
+#define XCHB_4		instruction_6c
+#define XCHB_5		instruction_6d
+#define XCHB_6		instruction_6e
+#define XCHB_7		instruction_6f
+
 // arithmetic instructions
 
 // branches

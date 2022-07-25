@@ -236,6 +236,15 @@ public:
   int CLRW_NSP(t_mem code);
   int CLRW_NNZ(t_mem code);
   int CLRW_A(t_mem code);
+  int xchb(int b);
+  int XCHB_0(t_mem code) { return xchb(0); }
+  int XCHB_1(t_mem code) { return xchb(1); }
+  int XCHB_2(t_mem code) { return xchb(2); }
+  int XCHB_3(t_mem code) { return xchb(3); }
+  int XCHB_4(t_mem code) { return xchb(4); }
+  int XCHB_5(t_mem code) { return xchb(5); }
+  int XCHB_6(t_mem code) { return xchb(6); }
+  int XCHB_7(t_mem code) { return xchb(7); }
   
   // aritmetic (ALU) instuctions: ialu.cc
 
