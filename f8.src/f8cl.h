@@ -65,17 +65,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 enum {
-  flagO	= 0x01,
-  flagZ	= 0x02,
-  flagN	= 0x04,
-  flagC	= 0x08,
-  flagH	= 0x10,
+  flagO	 = 0x01,
+  flagZ	 = 0x02,
+  flagN	 = 0x04,
+  flagC	 = 0x08,
+  flagH	 = 0x10,
 
-  flagS = flagN,
-  flagV = flagO,
+  flagS  = flagN,
+  flagV  = flagO,
+
+  flagCZ = flagC|flagZ,
+  flagZN = flagZ|flagN,
+  flagOZN= flagO|flagZ|flagN,
   
-  fAll  = flagO|flagZ|flagN|flagC|flagH,
-  fAll_H= flagO|flagZ|flagN|flagC
+  fAll   = flagO|flagZ|flagN|flagC|flagH,
+  fAll_H = flagO|flagZ|flagN|flagC
 };
 
 #define COND_Z		(rF&flagZ)
