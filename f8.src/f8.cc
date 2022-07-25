@@ -239,6 +239,14 @@ cl_f8::stack_check_overflow(t_addr sp_before)
 // Memory cells according to 8 bit addressing modes
 
 class cl_cell8 &
+cl_f8::m_i(void)
+{
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(PC);
+  fetch();
+  return *c;
+}
+
+class cl_cell8 &
 cl_f8::m_mm(void)
 {
   u16_t a= fetch();

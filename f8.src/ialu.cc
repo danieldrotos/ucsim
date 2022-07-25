@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 int
-cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc)
+cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc, bool memop)
 {
   u8_t c= 0;
   if (addc)
@@ -39,6 +39,13 @@ cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc)
       class cl_cell8 *t= op1;
       op1= op2;
       op2= t;
+      if (memop)
+	vc.wr++, vc.rd++;
+    }
+  else
+    {
+      if (memop)
+	vc.rd++;	
     }
   u8_t a= op1->read(), b= op2->read();
   u16_t r= a+b+c;
@@ -49,6 +56,39 @@ cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc)
   if (r>0xff) rF|= flagC;
   if (((a&b&~r8)|(~a&~b&r8))&0x80) rF|= flagO;
   if (((a&0xf)+(b&0xf)+c)>0xf) rF|= flagH;
+  cF.W(rF);
+  op1->write(r8);
+  return resGO;
+}
+
+int
+cl_f8::sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc, bool memop)
+{
+  u8_t c= 1;
+  if (addc)
+    c= (rF&flagC)?1:0;
+  IFSWAP
+    {
+      class cl_cell8 *t= op1;
+      op1= op2;
+      op2= t;
+      if (memop)
+	vc.wr++, vc.rd++;
+    }
+  else
+    {
+      if (memop)
+	vc.rd++;	
+    }
+  u8_t a= op1->read(), b= op2->read();
+  u16_t r= a+~b+c;
+  u8_t r8= r;
+  rF&= ~fAll;
+  if (r8==0) rF|= flagZ;
+  if (r8&0x80) rF|= flagN;
+  if (r>0xff) rF|= flagC;
+  if (((a&~b&~r8)|(~a&b&r8))&0x80) rF|= flagO;
+  if (((a&0xf)+(~b&0xf)+c)>0xf) rF|= flagH;
   cF.W(rF);
   op1->write(r8);
   return resGO;
