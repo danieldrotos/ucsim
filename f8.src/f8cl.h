@@ -267,7 +267,7 @@ public:
   
   // aritmetic (ALU) instuctions: ialu.cc
   int add8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop);
-  int sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop);
+  int sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop, bool cmp);
   int ADD_I  (t_mem code) { return add8(acc8, &m_i()   , false, false); }
   int ADD_M  (t_mem code) { return add8(acc8, &m_mm()  , false, true ); }
   int ADD_NSP(t_mem code) { return add8(acc8, &m_n_sp(), false, true ); }
@@ -276,28 +276,28 @@ public:
   int ADD_XH (t_mem code) { return add8(acc8, &cXH     , false, false); }
   int ADD_YL (t_mem code) { return add8(acc8, &cYL     , false, false); }
   int ADD_YH (t_mem code) { return add8(acc8, &cYH     , false, false); }
-  int ADC_I  (t_mem code) { return add8(acc8, &m_i()   , true, false); }
-  int ADC_M  (t_mem code) { return add8(acc8, &m_mm()  , true, true ); }
-  int ADC_NSP(t_mem code) { return add8(acc8, &m_n_sp(), true, true ); }
-  int ADC_NNZ(t_mem code) { return add8(acc8, &m_nn_z(), true, true ); }
-  int ADC_ZL (t_mem code) { return add8(acc8, &cZL     , true, false); }
-  int ADC_XH (t_mem code) { return add8(acc8, &cXH     , true, false); }
-  int ADC_YL (t_mem code) { return add8(acc8, &cYL     , true, false); }
-  int ADC_YH (t_mem code) { return add8(acc8, &cYH     , true, false); }
-  int SUB_M  (t_mem code) { return sub8(acc8, &m_mm()  , false, true ); }
-  int SUB_NSP(t_mem code) { return sub8(acc8, &m_n_sp(), false, true ); }
-  int SUB_NNZ(t_mem code) { return sub8(acc8, &m_nn_z(), false, true ); }
-  int SUB_ZL (t_mem code) { return sub8(acc8, &cZL     , false, false); }
-  int SUB_XH (t_mem code) { return sub8(acc8, &cXH     , false, false); }
-  int SUB_YL (t_mem code) { return sub8(acc8, &cYL     , false, false); }
-  int SUB_YH (t_mem code) { return sub8(acc8, &cYH     , false, false); }
-  int SBC_M  (t_mem code) { return sub8(acc8, &m_mm()  , true, true ); }
-  int SBC_NSP(t_mem code) { return sub8(acc8, &m_n_sp(), true, true ); }
-  int SBC_NNZ(t_mem code) { return sub8(acc8, &m_nn_z(), true, true ); }
-  int SBC_ZL (t_mem code) { return sub8(acc8, &cZL     , true, false); }
-  int SBC_XH (t_mem code) { return sub8(acc8, &cXH     , true, false); }
-  int SBC_YL (t_mem code) { return sub8(acc8, &cYL     , true, false); }
-  int SBC_YH (t_mem code) { return sub8(acc8, &cYH     , true, false); }
+  int ADC_I  (t_mem code) { return add8(acc8, &m_i()   , true , false); }
+  int ADC_M  (t_mem code) { return add8(acc8, &m_mm()  , true , true ); }
+  int ADC_NSP(t_mem code) { return add8(acc8, &m_n_sp(), true , true ); }
+  int ADC_NNZ(t_mem code) { return add8(acc8, &m_nn_z(), true , true ); }
+  int ADC_ZL (t_mem code) { return add8(acc8, &cZL     , true , false); }
+  int ADC_XH (t_mem code) { return add8(acc8, &cXH     , true , false); }
+  int ADC_YL (t_mem code) { return add8(acc8, &cYL     , true , false); }
+  int ADC_YH (t_mem code) { return add8(acc8, &cYH     , true , false); }
+  int SUB_M  (t_mem code) { return sub8(acc8, &m_mm()  , false, true , false); }
+  int SUB_NSP(t_mem code) { return sub8(acc8, &m_n_sp(), false, true , false); }
+  int SUB_NNZ(t_mem code) { return sub8(acc8, &m_nn_z(), false, true , false); }
+  int SUB_ZL (t_mem code) { return sub8(acc8, &cZL     , false, false, false); }
+  int SUB_XH (t_mem code) { return sub8(acc8, &cXH     , false, false, false); }
+  int SUB_YL (t_mem code) { return sub8(acc8, &cYL     , false, false, false); }
+  int SUB_YH (t_mem code) { return sub8(acc8, &cYH     , false, false, false); }
+  int SBC_M  (t_mem code) { return sub8(acc8, &m_mm()  , true , true , false); }
+  int SBC_NSP(t_mem code) { return sub8(acc8, &m_n_sp(), true , true , false); }
+  int SBC_NNZ(t_mem code) { return sub8(acc8, &m_nn_z(), true , true , false); }
+  int SBC_ZL (t_mem code) { return sub8(acc8, &cZL     , true , false, false); }
+  int SBC_XH (t_mem code) { return sub8(acc8, &cXH     , true , false, false); }
+  int SBC_YL (t_mem code) { return sub8(acc8, &cYL     , true , false, false); }
+  int SBC_YH (t_mem code) { return sub8(acc8, &cYH     , true , false, false); }
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

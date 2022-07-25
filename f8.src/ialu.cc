@@ -62,7 +62,7 @@ cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop)
 }
 
 int
-cl_f8::sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop)
+cl_f8::sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop, bool cmp)
 {
   u8_t c= 1;
   if (usec)
@@ -90,7 +90,8 @@ cl_f8::sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop)
   if (((a&~b&~r8)|(~a&b&r8))&0x80) rF|= flagO;
   if (((a&0xf)+(~b&0xf)+c)>0xf) rF|= flagH;
   cF.W(rF);
-  op1->write(r8);
+  if (!cmp)
+    op1->write(r8);
   return resGO;
 }
 
