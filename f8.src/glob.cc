@@ -125,6 +125,21 @@ struct dis_entry disass_f8[]=
     { 0xbb, 0xff, ' ', 1, "reti" },
 
     { 0xd0, 0xff, ' ', 2, "jr %r" },
+    { 0xd1, 0xff, ' ', 2, "dnjnz yh,%r" },
+    { 0xd2, 0xff, ' ', 2, "jrz %r" },
+    { 0xd3, 0xff, ' ', 2, "jrnz %r" },
+    { 0xd4, 0xff, ' ', 2, "jrc %r" },
+    { 0xd5, 0xff, ' ', 2, "jrnc %r" },
+    { 0xd6, 0xff, ' ', 2, "jrn %r" },
+    { 0xd7, 0xff, ' ', 2, "jrnn %r" },
+    { 0xd8, 0xff, ' ', 2, "jro %r" },
+    { 0xd9, 0xff, ' ', 2, "jrno %r" },
+    { 0xda, 0xff, ' ', 2, "jrsge %r" },
+    { 0xdb, 0xff, ' ', 2, "jrslt %r" },
+    { 0xdc, 0xff, ' ', 2, "jrsgt %r" },
+    { 0xdd, 0xff, ' ', 2, "jrsle %r" },
+    { 0xde, 0xff, ' ', 2, "jrgt %r" },
+    { 0xdf, 0xff, ' ', 2, "jrle %r" },
     
     // other
     { 0x00, 0xff, ' ', 1, "TRAP" },

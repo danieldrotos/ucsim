@@ -89,5 +89,20 @@ cl_f8::jr(bool cond)
   return resGO;
 }
 
+int
+cl_f8::DNJNZ(t_mem code)
+{
+  i8_t d= fetch();
+  u16_t a= PC;
+  cYH.W(rYH-1);
+  rF&= ~(flagZ|flagN);
+  if (rYH==0) rF|= flagZ;
+  if (rYH&0x80) rF|= flagN;
+  cF.W(rF);
+  if (rYH)
+    set_PC(a+d);
+  return resGO;
+}
+
 
 /* End of f8.src/ibranch.cc */

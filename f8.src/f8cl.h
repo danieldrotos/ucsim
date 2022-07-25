@@ -78,6 +78,20 @@ enum {
   fAll_H= flagO|flagZ|flagN|flagC
 };
 
+#define COND_Z		(rF&flagZ)
+#define COND_NZ		(!(rF&flagZ))
+#define COND_C		(rF&flagC)
+#define COND_NC		(!(rF&flagC))
+#define COND_N		(rF&flagN)
+#define COND_NN		(!(rF&flagN))
+#define COND_O		(rF&flagO)
+#define COND_NO		(!(rF&flagO))
+#define COND_SGE	((COND_N&&COND_O)||(!COND_N&&!COND_O))
+#define COND_SLT	((COND_N&&!COND_O)||(!COND_N&&COND_O))
+#define COND_SGT	(!(COND_Z||(COND_SLT)))
+#define COND_SLE	(!COND_SGT)
+#define COND_GT		(COND_C&&!COND_Z)
+#define COND_LE		(!COND_C||COND_Z)
 
 enum {
   P_NONE	= 0,
@@ -256,7 +270,22 @@ public:
   virtual int RET(t_mem code);
   virtual int RETI(t_mem code);
   virtual int jr(bool cond);
-  virtual int JR(t_mem code) { return jr(true); }
+  virtual int JR(t_mem code)    { return jr(true); }
+  virtual int DNJNZ(t_mem code);
+  virtual int JRZ(t_mem code)   { return jr(COND_Z); }
+  virtual int JRNZ(t_mem code)  { return jr(COND_NZ); }
+  virtual int JRC(t_mem code)   { return jr(COND_C); }
+  virtual int JRNC(t_mem code)  { return jr(COND_NC); }
+  virtual int JRN(t_mem code)   { return jr(COND_N); }
+  virtual int JRNN(t_mem code)  { return jr(COND_NN); }
+  virtual int JRO(t_mem code)   { return jr(COND_O); }
+  virtual int JRNO(t_mem code)  { return jr(COND_NO); }
+  virtual int JRSGE(t_mem code) { return jr(COND_SGE); }
+  virtual int JRSLT(t_mem code) { return jr(COND_SLT); }
+  virtual int JRSGT(t_mem code) { return jr(COND_SGT); }
+  virtual int JRSLE(t_mem code) { return jr(COND_SLE); }
+  virtual int JRGT(t_mem code)  { return jr(COND_GT); }
+  virtual int JRLE(t_mem code)  { return jr(COND_LE); }
   
   // other instructions: inst.cc
   virtual int NOP(t_mem code);

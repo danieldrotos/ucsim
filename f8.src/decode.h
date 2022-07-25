@@ -130,6 +130,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RETI		instruction_bb
 
 #define JR		instruction_d0
+#define DNJNZ		instruction_d1
+#define JRZ		instruction_d2
+#define JRNZ		instruction_d3
+#define JRC		instruction_d4
+#define JRNC		instruction_d5
+#define JRN		instruction_d6
+#define JRNN		instruction_d7
+#define JRO		instruction_d8
+#define JRNO		instruction_d9
+#define JRSGE		instruction_da
+#define JRSLT		instruction_db
+#define JRSGT		instruction_dc
+#define JRSLE		instruction_dd
+#define JRGT		instruction_de
+#define JRLE		instruction_df
 
 // other instructions
 #define NOP		instruction_08
