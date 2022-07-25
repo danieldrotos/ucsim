@@ -276,6 +276,14 @@ public:
   int ADD_XH (t_mem code) { return add8(acc8, &cXH     , false, false); }
   int ADD_YL (t_mem code) { return add8(acc8, &cYL     , false, false); }
   int ADD_YH (t_mem code) { return add8(acc8, &cYH     , false, false); }
+  int ADC_I  (t_mem code) { return add8(acc8, &m_i()   , true, false); }
+  int ADC_M  (t_mem code) { return add8(acc8, &m_mm()  , true, true ); }
+  int ADC_NSP(t_mem code) { return add8(acc8, &m_n_sp(), true, true ); }
+  int ADC_NNZ(t_mem code) { return add8(acc8, &m_nn_z(), true, true ); }
+  int ADC_ZL (t_mem code) { return add8(acc8, &cZL     , true, false); }
+  int ADC_XH (t_mem code) { return add8(acc8, &cXH     , true, false); }
+  int ADC_YL (t_mem code) { return add8(acc8, &cYL     , true, false); }
+  int ADC_YH (t_mem code) { return add8(acc8, &cYH     , true, false); }
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

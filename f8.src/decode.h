@@ -121,13 +121,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // arithmetic instructions
 #define ADD_I		instruction_10
-#define ADD_M		instruction_12
-#define ADD_NSP		instruction_13
-#define ADD_NNZ		instruction_14
-#define ADD_ZL		instruction_15
-#define ADD_XH		instruction_16
-#define ADD_YL		instruction_17
-#define ADD_YH		instruction_18
+#define ADD_M		instruction_11
+#define ADD_NSP		instruction_12
+#define ADD_NNZ		instruction_13
+#define ADD_ZL		instruction_14
+#define ADD_XH		instruction_15
+#define ADD_YL		instruction_16
+#define ADD_YH		instruction_17
+
+#define ADC_I		instruction_18
+#define ADC_M		instruction_19
+#define ADC_NSP		instruction_1a
+#define ADC_NNZ		instruction_1b
+#define ADC_ZL		instruction_1c
+#define ADC_XH		instruction_1d
+#define ADC_YL		instruction_1e
+#define ADC_YH		instruction_1f
 
 // branches
 #define JP_I		instruction_64
