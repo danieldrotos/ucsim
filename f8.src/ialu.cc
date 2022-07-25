@@ -95,5 +95,83 @@ cl_f8::sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop, boo
   return resGO;
 }
 
+int
+cl_f8::Or8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop)
+{
+  IFSWAP
+    {
+      class cl_cell8 *t= op1;
+      op1= op2;
+      op2= t;
+      if (memop)
+	vc.wr++, vc.rd++;
+    }
+  else
+    {
+      if (memop)
+	vc.rd++;	
+    }
+  u8_t a= op1->read(), b= op2->read();
+  u8_t r= a|b;
+  rF&= ~flagZN;
+  if (r==0) rF|= flagZ;
+  if (r&0x80) rF|= flagN;
+  cF.W(rF);
+  op1->write(r);
+  return resGO;
+}
+
+int
+cl_f8::Xor8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop)
+{
+  IFSWAP
+    {
+      class cl_cell8 *t= op1;
+      op1= op2;
+      op2= t;
+      if (memop)
+	vc.wr++, vc.rd++;
+    }
+  else
+    {
+      if (memop)
+	vc.rd++;	
+    }
+  u8_t a= op1->read(), b= op2->read();
+  u8_t r= a^b;
+  rF&= ~flagZN;
+  if (r==0) rF|= flagZ;
+  if (r&0x80) rF|= flagN;
+  cF.W(rF);
+  op1->write(r);
+  return resGO;
+}
+
+int
+cl_f8::And8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop)
+{
+  IFSWAP
+    {
+      class cl_cell8 *t= op1;
+      op1= op2;
+      op2= t;
+      if (memop)
+	vc.wr++, vc.rd++;
+    }
+  else
+    {
+      if (memop)
+	vc.rd++;	
+    }
+  u8_t a= op1->read(), b= op2->read();
+  u8_t r= a&b;
+  rF&= ~flagZN;
+  if (r==0) rF|= flagZ;
+  if (r&0x80) rF|= flagN;
+  cF.W(rF);
+  op1->write(r);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

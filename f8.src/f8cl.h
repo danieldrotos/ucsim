@@ -268,6 +268,9 @@ public:
   // aritmetic (ALU) instuctions: ialu.cc
   int add8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop);
   int sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop, bool cmp);
+  int Or8 (class cl_cell8 *op1, class cl_cell8 *op2, bool memop);
+  int And8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop);
+  int Xor8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop);
   int ADD_I  (t_mem code) { return add8(acc8, &m_i()   , false, false); }
   int ADD_M  (t_mem code) { return add8(acc8, &m_mm()  , false, true ); }
   int ADD_NSP(t_mem code) { return add8(acc8, &m_n_sp(), false, true ); }
@@ -298,7 +301,7 @@ public:
   int SBC_XH (t_mem code) { return sub8(acc8, &cXH     , true , false, false); }
   int SBC_YL (t_mem code) { return sub8(acc8, &cYL     , true , false, false); }
   int SBC_YH (t_mem code) { return sub8(acc8, &cYH     , true , false, false); }
-  int CP_I   (t_mem code) { return sub8(acc8, &m_i()  , false, true , true ); }
+  int CP_I   (t_mem code) { return sub8(acc8, &m_i()   , false, true , true ); }
   int CP_M   (t_mem code) { return sub8(acc8, &m_mm()  , false, true , true ); }
   int CP_NSP (t_mem code) { return sub8(acc8, &m_n_sp(), false, true , true ); }
   int CP_NNZ (t_mem code) { return sub8(acc8, &m_nn_z(), false, true , true ); }
@@ -306,7 +309,31 @@ public:
   int CP_XH  (t_mem code) { return sub8(acc8, &cXH     , false, false, true ); }
   int CP_YL  (t_mem code) { return sub8(acc8, &cYL     , false, false, true ); }
   int CP_YH  (t_mem code) { return sub8(acc8, &cYH     , false, false, true ); }
-  
+  int OR_I   (t_mem code) { return Or8 (acc8, &m_i()   , true  ); }
+  int OR_M   (t_mem code) { return Or8 (acc8, &m_mm()  , true  ); }
+  int OR_NSP (t_mem code) { return Or8 (acc8, &m_n_sp(), true  ); }
+  int OR_NNZ (t_mem code) { return Or8 (acc8, &m_nn_z(), true  ); }
+  int OR_ZL  (t_mem code) { return Or8 (acc8, &cZL     , false ); }
+  int OR_XH  (t_mem code) { return Or8 (acc8, &cXH     , false ); }
+  int OR_YL  (t_mem code) { return Or8 (acc8, &cYL     , false ); }
+  int OR_YH  (t_mem code) { return Or8 (acc8, &cYH     , false ); }
+  int AND_I  (t_mem code) { return And8(acc8, &m_i()   , true  ); }
+  int AND_M  (t_mem code) { return And8(acc8, &m_mm()  , true  ); }
+  int AND_NSP(t_mem code) { return And8(acc8, &m_n_sp(), true  ); }
+  int AND_NNZ(t_mem code) { return And8(acc8, &m_nn_z(), true  ); }
+  int AND_ZL (t_mem code) { return And8(acc8, &cZL     , false ); }
+  int AND_XH (t_mem code) { return And8(acc8, &cXH     , false ); }
+  int AND_YL (t_mem code) { return And8(acc8, &cYL     , false ); }
+  int AND_YH (t_mem code) { return And8(acc8, &cYH     , false ); }
+  int XOR_I  (t_mem code) { return Xor8(acc8, &m_i()   , true  ); }
+  int XOR_M  (t_mem code) { return Xor8(acc8, &m_mm()  , true  ); }
+  int XOR_NSP(t_mem code) { return Xor8(acc8, &m_n_sp(), true  ); }
+  int XOR_NNZ(t_mem code) { return Xor8(acc8, &m_nn_z(), true  ); }
+  int XOR_ZL (t_mem code) { return Xor8(acc8, &cZL     , false ); }
+  int XOR_XH (t_mem code) { return Xor8(acc8, &cXH     , false ); }
+  int XOR_YL (t_mem code) { return Xor8(acc8, &cYL     , false ); }
+  int XOR_YH (t_mem code) { return Xor8(acc8, &cYH     , false ); }
+
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
   virtual int JP_A(t_mem code);

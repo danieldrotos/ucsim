@@ -163,6 +163,33 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CP_YL		instruction_26
 #define CP_YH		instruction_27
 
+#define OR_I		instruction_28
+#define OR_M		instruction_29
+#define OR_NSP		instruction_2a
+#define OR_NNZ		instruction_2b
+#define OR_ZL		instruction_2c
+#define OR_XH		instruction_2d
+#define OR_YL		instruction_2e
+#define OR_YH		instruction_2f
+
+#define AND_I		instruction_30
+#define AND_M		instruction_31
+#define AND_NSP		instruction_32
+#define AND_NNZ		instruction_33
+#define AND_ZL		instruction_34
+#define AND_XH		instruction_35
+#define AND_YL		instruction_36
+#define AND_YH		instruction_37
+
+#define XOR_I		instruction_38
+#define XOR_M		instruction_39
+#define XOR_NSP		instruction_3a
+#define XOR_NNZ		instruction_3b
+#define XOR_ZL		instruction_3c
+#define XOR_XH		instruction_3d
+#define XOR_YL		instruction_3e
+#define XOR_YH		instruction_3f
+
 // branches
 #define JP_I		instruction_64
 #define JP_A		instruction_65
