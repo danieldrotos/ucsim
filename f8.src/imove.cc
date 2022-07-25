@@ -70,9 +70,9 @@ cl_f8::ld8_a_r(class cl_cell8 &r)
 }
 
 int
-cl_f8::LD8_YL_I(t_mem code)
+cl_f8::LD8_YH_I(t_mem code)
 {
-  cYL.W(fetch());
+  cYH.W(fetch());
   return resGO;
 }
 

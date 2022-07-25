@@ -51,7 +51,7 @@ struct dis_entry disass_f8[]=
     { 0x8d, 0xff, ' ', 3, "ld ('nnz_8'),%a" },
     { 0x8e, 0xff, ' ', 1, "ld ('y_8'),%a" },
     { 0x8f, 0xff, ' ', 2, "ld ('ny_8'),%a" },
-    { 0x94, 0xff, ' ', 2, "ld yl,#'i8'" },
+    { 0x94, 0xff, ' ', 2, "ld yh,#'i8'" },
     
     { 0xc0, 0xff, ' ', 3, "ldw %A,#'i16'" },
     { 0xc1, 0xff, ' ', 3, "ldw %A,'a16_16'" },
@@ -182,7 +182,7 @@ u8_t allowed_prefs[256]= {
   /* 6_ */    PD, PD, PD, PD,   PN, P6, PN, P6,   PD, PD, PD, PD,   PD, PD, PD, PD, 
   /* 7_ */    PD,  0,  0,  0,   PD,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* 8_ */    PD, PD, PD, PD,   PD, PD, PA, PA,   PA, PA, PA, PD,   PD, PD, PD, PD, 
-  /* 9_ */    PN, PD, PD, P6,    0,  0,  0,  0,    0, PD,  0, PN,    0,  0, P6,  0, 
+  /* 9_ */    PN, PD, PD, P6,   PN,  0,  0,  0,    0, PD,  0, PN,    0,  0, P6,  0, 
   /* a_ */    P6, P6, P6, P6,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* b_ */    P6, P6, P6, P6,    0,  0,  0,  0,    0,  0, PN, PN,    0,  0,  0,  0, 
   /* c_ */    P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6, 

@@ -56,7 +56,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD8_NNZ_A	instruction_8d
 #define LD8_Y_A		instruction_8e
 #define LD8_NY_A	instruction_8f
-#define LD8_YL_I	instruction_94
+#define LD8_YH_I	instruction_94
 
 #define LDW_A_I		instruction_d0
 #define LDW_A_M		instruction_d1
@@ -122,8 +122,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // arithmetic instructions
 
 // branches
-#define JMP_I		instruction_64
-#define JMP_A		instruction_65
+#define JP_I		instruction_64
+#define JP_A		instruction_65
 #define CALL_I		instruction_66
 #define CALL_A		instruction_67
 #define RET		instruction_ba
