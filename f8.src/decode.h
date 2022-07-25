@@ -122,6 +122,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // arithmetic instructions
 
 // branches
+#define CALL_I		instruction_66
+#define CALL_A		instruction_67
+#define RET		instruction_ba
+#define RETI		instruction_bb
 
 // other instructions
 #define NOP		instruction_08
