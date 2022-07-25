@@ -1,0 +1,302 @@
+A good (for SDCC) 8-bit architecture:
+
+Little-endian. Stack grows downward. 16-bit flat address space.
+
+Registers (total 88 bits):
+
+16-bit:
+pc
+sp
+x - lower half xl is default 8-bit-accu.
+y - default 16-bit accu
+z
+
+8-bit:
+f - upper 3 bits for internal use (e.g. prefix handling) + lower 5 for
+    user: o (overflow), z (zero), n (negative), c (carry), h (half-carry)
+xl - default 8-bit accu
+xh
+yl
+yh
+zl
+zh
+
+Instructions have up to 3 source and 2 destination operands. At most
+one source and one destination operand are in memory.
+
+Instruction format:
+[optional prefix byte(s)] [opcode byte] [1 or 2 optional operand byte(s)]
+
+Instruction documentation syntax:
+menmonic [flags] (prefixes) ; explanation
+menmonic: Menmonic of opcode
+[flags]: flags written according to result of operation
+(prefixes): valid prefix bytes
+explanation: additional explanation
+
+Prefixes:
+
+swapped operands (0)
+
+altacc use alternative accu - xh instead of xl for 8-bit (1)
+
+altacc' use other alternative accu - yl instead of xl for 8-bit, x
+instead of y for 16-bit (2)
+
+altacc'' use yet another alternative accu - zl instead of xl for
+8-bit, z instead of y for 16-bit (2)
+
+Semantics: From the plain instruction, first apply the effect on a
+alternative accu prefix, then the effect of a swap prefix: Example:
+add xl, mm with both swap prefix and alternative accu xh prefix: add
+mm, xh.
+
+8 8-bit adressing modes (2-op-insts): MMM below, as ordered
+here. Arbitrary, except for #i, which is meant to be 0, so the
+00000000 is not a valid instruction (sub doesn't have an #i operand).
+
+#i ; immediate
+mm ; direct
+(n, sp) ; indexed
+(nn, z) ; indexed
+zl
+xh
+yl
+yh
+
+4 16-bit adressing modes (2-op-insts):
+
+#ii ; immediate
+mm ; direct
+(n, sp) ; indexed
+x
+
+8-bit adressing modes (1-op-insts):
+
+mm ; direct
+(n, sp) ; indexed
+xl
+zh
+
+16-bit adressing modes (1-op-insts):
+
+mm ; direct
+(n, sp) ; indexed
+(nn, z) ; indexed
+y
+
+8-bit 2-op-inst (8 -> 62)
+
+Encoding: 00 OOO MMM. Followed by optional bytes, depending on
+addressing modes. OOO: Operation, as ordered below. MMM: Adressing
+mode.
+
+sub xl, op [OZNCH] (012) ; xl = xl + ~op + 1 (except for immd op - saves 1 opcode)
+sbc xl, op [OZNCH] (012) ; xl = xl + ~op + c (except for immd op - saves 1 opcode)
+add xl, op [OZNCH] (012) ; xl = xl + op
+adc op, xl [OZNCH] (012) ; xl = xl + op + c
+cp xl, op [OZNCH] (012) ; xl + ~op + 1
+or xl, op [ZN] (012) ; xl = xl | op
+and xl, op [ZN] (012) ; xl = xl & op
+xor xl, op [ZN] (012) ; xl = xl ^ op
+
+8-bit 1-op-inst (9 -> 36)
+
+Encoding: 010 OOO MM. 011000 MM. OOO: Operation, as ordered below. MM:
+Adressing mode.
+
+srl op [CZ] (12)
+sll op [CZ] (12)
+rrc op [CZ] (12)
+rlc op [CZ] (12)
+inc op [CZ] (12) ; op = op + 1 ? - wenig genutzt
+dec op [CZ] (12) ; op = op + -1 ? - wenig genutzt
+clr op (12) ; op = 0
+tst op [OZN] (12) ; set n and z flags according to value of op, o flag
+bys parity, resets c.
+push op [] (12)
+
+16-bit 2-op-inst (5 -> 18)
+
+Encoding: 0111 OO MM. 111100 MM. OO: Operation, as ordered below. MM:
+Adressing mode.
+
+subw y, op [OCZN] (02) ; y = y + ~op + 1 (except for immd op - saves 1 opcode)
+sbcw y, op [OCZN] (02) ; y = y + ~op + c (except for immd op - saves 1 opcode)
+addw y, op [OCZN] (02) ; y = y + op
+adcw y, op [OCZN] (02) ; y = y + op + c
+orw y, op [OZN] (02)
+
+16-bit 1-op-inst (6 -> 24)
+
+1010 OO MM
+1011 0 O MM
+
+clrw op (2) ; op = 0
+incw op [OCZN] (2) ; op = op + 1
+adcw op [OCZN] (2) ; op = op + c
+sbcw op [OCZN] (2) ; op = op + 0xffff + c
+pushw op [] (2)
+tstw [OZN] (2) ; set n and z flags according to value of op, o flag
+bys parity, sets c.
+
+8-bit-loads (17)
+
+1000 OOOO
+
+ld xl, #i (12)
+ld xl, mm (12)
+ld xl, (n, sp) (12)
+ld xl, (nn, z) (12)
+ld xl, (y) (12)
+ld xl, (n, y) (12)
+ld xl, xh (012)
+ld xl, yl (012)
+ld xl, yh (012)
+ld xl, zl (012)
+ld xl, zh (012)
+ld mm, xl (012)
+ld (n, sp), xl (12)
+ld (nn, z), xl (12)
+ld (y), xl (12)
+ld (n, y), xl (12)
+
+ld yh, #i
+
+16-bit loads (19)
+
+1100 OOOO
+
+ldw y, #ii (2)
+ldw y, mm (2)
+ldw y, (n, sp) (2)
+ldw y, (nn, z) (2)
+ldw y, (nn, y) (2)
+ldw y, (n, y) (2)
+ldw y, (y) (2)
+ldw y, x (2)
+ldw y, #d (2)
+ldw mm, y (2)
+ldw (n, sp), y (2)
+ldw (nn, z), y (2)
+ldw x, y
+ldw z, y
+ldw (y), x (2)
+ldw (n, y), x (2)
+ldw (nn, y), x (2)
+
+ldw sp, y (2)
+ldw ((d, sp)), y (2) - remove if it makes hardware too complex - only
+instruction that reads a different address than it writes
+
+8-bit 0-op-inst (16)
+
+bool xl [Z] (12) ; cast to bool
+sra xl [CZ] (12)
+daa xl (12) ; decimal adjust accumulator - BCD semantics
+pop xl (12)
+xch xl, (n, sp) (12)
+xch xl, (y) (12)
+xch yl, yh (2) ; exchange yl with yh - really a 16-bit inst
+msk yl, yh, #i (2) ; yl = (yl & i) | (yh & ~i) - really a 16-bit inst
+? todo: remove this? or change to msk (y), xl, #i?
+cax (y), xh, xl [?] ; if ((y) == xh) (z) = xl; else xh = (y);
+compare-and-exchange
+mad x, mm, yl [C] ; x <- m * yl + xh + c
+mad x, (n, sp), yl [C]; x <- (n, sp) * yl + xh + c
+mad x, (nn, z), yl [C]
+mad x, (z), yl [C]
+rot xl, #i (12) ; rotate xl left by i
+thrd xl (12) ; get current hardware thread number
+push #i []
+
+16-bit 0-op-inst (22)
+
+negw y [OCZN] (2) ; y = ~y + 1
+boolw y [Z] (2)
+srlw y [CZ] (2)
+sllw y [CZ] (2)
+rrcw y [CZ] (2)
+rlcw y [CZ] (2)
+sraw y [CZ] (2)
+mul y [CZN] ; y <- yl * yh , clears carry (2)
+popw y (2)
+xchw y, (z)
+xchw z, (n, sp) ?
+caxw (y), z, x [?] ; if ((y) == z) (y) = x; else x = (y); compare-and-exchange
+addw sp, #d
+addw y, #d [OCZN] (2)
+cpw y, #ii [OCZN] (2)
+incnw y (2); Increment that does not update flags
+decw (n, sp)
+pushw #ii []
+sllw y, xl [CZ] (2) - check hardware complexity, check if multiplier
+hardware can do this on the side
+rlcw (n, sp) [CZ]
+rrcw (n, sp) [CZ]
+sex y, xl (2) [ZN]; sign-extend xl to y
+zex y, xl (2) [Z]; zero-extend xl to y
+addw y, sp
+
+bit instructions (8)
+
+xchb xl, mm, #b [Z] (12); exchange xl with bit b at mm
+
+relative jumps (16)
+
+1101 OOOO
+
+jr #d ; jump relative to pc
+dnjnz yh, #d [ZN] ; decrement yh, without updating carry, jump if
+result is not zero.
+jrz/jreq #d ; jump relative to pc if z flag is set
+jrnz/jrneq #d ; if !z
+jrc #d ; if c
+jrnc #d ; if !c
+jrn #d ; if n
+jrnn #d ; if !n
+jro #d ; if o
+jrno #d ; if !o
+jrsge #d ; if n xnor o
+jrslt #d ; if n xor o
+jrsgt #d ; if !(z or (n xor o))
+jrsle #d ; if (z or (n xor o)) - todo: remove via swapping operands
+(which we can do via prefix)
+jrgt #d ; if c and !z
+jrle #d ; if !c or z
+
+other instructions (7)
+call #ii
+call y (2)
+jp #ii
+jp y (2)
+ret
+reti
+nop []
+
+Prefixes (4)
+
+Invalid instructions (1)
+
+trap (opcode 0x00)
+
+0xff (kann entfallen, wenn gelöschte Flash-Zellen 0x00 sind (wie bei
+Infineon) statt den üblichen 0xff).  (can be omitted if erased flash
+cells are 0x00 (as with Infineon) instead of the usual 0xff)
+
+Remaining: 4 opcodes.
+
+Todo: Reservierte für zukünftige Erw.
+clr(y) ?,
+clr (n, y)?
+clrw (y) ?
+clrw (n, y)?
+ld (y), #d,
+ldw (y), #ii?
+xorw?
+ld ((d, sp)),xl?
+ldw++(y), #ii?
+ldw++ x, (z)?
+ld yh, xl?
+addw y, sp ersetzen durch
+ldw y,sp?
