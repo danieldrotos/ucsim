@@ -255,6 +255,8 @@ public:
   virtual int CALL_A(t_mem code);
   virtual int RET(t_mem code);
   virtual int RETI(t_mem code);
+  virtual int jr(bool cond);
+  virtual int JR(t_mem code) { return jr(true); }
   
   // other instructions: inst.cc
   virtual int NOP(t_mem code);

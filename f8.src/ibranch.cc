@@ -77,5 +77,17 @@ cl_f8::RETI(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::jr(bool cond)
+{
+  i8_t d= fetch();
+  u16_t a= PC;
+  if (cond)
+    {
+      set_PC(a+d);
+    }
+  return resGO;
+}
+
 
 /* End of f8.src/ibranch.cc */

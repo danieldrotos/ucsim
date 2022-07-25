@@ -352,6 +352,13 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      if (d&0x80) d|= 0xff00;
 	      word->appendf("%+d", d);
 	      break;
+
+	    case 'r':
+	      d= rom->read(addr+1);
+	      if (d&0x80) d|= 0xff00;
+	      a= addr+2+d;
+	      word->appendf("0x%04x", a);
+	      break;
 	      
 	    }
 	  if (comment && temp.nempty())

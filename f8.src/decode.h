@@ -58,22 +58,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD8_NY_A	instruction_8f
 #define LD8_YH_I	instruction_94
 
-#define LDW_A_I		instruction_d0
-#define LDW_A_M		instruction_d1
-#define LDW_A_NSP	instruction_d2
-#define LDW_A_NNZ	instruction_d3
-#define LDW_A_NY	instruction_d4
-#define LDW_A_Y		instruction_d5
-#define LDW_A_X		instruction_d6
-#define LDW_A_D		instruction_d7
-#define LDW_M_A		instruction_d8
-#define LDW_NSP_A	instruction_d9
-#define LDW_NNZ_A	instruction_da
-#define LDW_X_A		instruction_db
-#define LDW_Z_A		instruction_dc
-#define LDW_AM_X	instruction_dd
-#define LDW_NAM_X	instruction_de
-#define LDW_NNAM_X	instruction_df
+#define LDW_A_I		instruction_c0
+#define LDW_A_M		instruction_c1
+#define LDW_A_NSP	instruction_c2
+#define LDW_A_NNZ	instruction_c3
+#define LDW_A_NY	instruction_c4
+#define LDW_A_Y		instruction_c5
+#define LDW_A_X		instruction_c6
+#define LDW_A_D		instruction_c7
+#define LDW_M_A		instruction_c8
+#define LDW_NSP_A	instruction_c9
+#define LDW_NNZ_A	instruction_ca
+#define LDW_X_A		instruction_cb
+#define LDW_Z_A		instruction_cc
+#define LDW_AM_X	instruction_cd
+#define LDW_NAM_X	instruction_ce
+#define LDW_NNAM_X	instruction_cf
 #define LDW_SP_A	instruction_70
 #define LDW_DSP_A	instruction_74
 
@@ -128,6 +128,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CALL_A		instruction_67
 #define RET		instruction_ba
 #define RETI		instruction_bb
+
+#define JR		instruction_d0
 
 // other instructions
 #define NOP		instruction_08
