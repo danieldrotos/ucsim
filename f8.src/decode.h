@@ -122,6 +122,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // arithmetic instructions
 
 // branches
+#define JMP_I		instruction_64
+#define JMP_A		instruction_65
 #define CALL_I		instruction_66
 #define CALL_A		instruction_67
 #define RET		instruction_ba

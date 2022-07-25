@@ -29,6 +29,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 int
+cl_f8::JMP_I(t_mem code)
+{
+  u16_t a= fetch();
+  a+= fetch()*256;
+  PC= a;
+  return resGO;
+}
+
+int
+cl_f8::JMP_A(t_mem code)
+{
+  PC= acc16->get();
+  return resGO;
+}
+
+int
 cl_f8::CALL_I(t_mem code)
 {
   u16_t a= fetch();

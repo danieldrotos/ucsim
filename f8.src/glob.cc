@@ -117,6 +117,8 @@ struct dis_entry disass_f8[]=
     // alu
 
     // branch
+    { 0x64, 0xff, ' ', 3, "jp #'a16'" },
+    { 0x65, 0xff, ' ', 1, "jp %A" },
     { 0x66, 0xff, ' ', 3, "call #'a16'" },
     { 0x67, 0xff, ' ', 1, "call %A" },
     { 0xba, 0xff, ' ', 1, "ret" },
@@ -177,7 +179,7 @@ u8_t allowed_prefs[256]= {
   /* 3_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* 4_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0, PN, 
   /* 5_ */     0,  0,  0,  0,    0,  0,  0,  0,   PD, PD, PD, PD,    0,  0,  0, PN, 
-  /* 6_ */    PD, PD, PD, PD,    0,  0, PN, P6,   PD, PD, PD, PD,   PD, PD, PD, PD, 
+  /* 6_ */    PD, PD, PD, PD,   PN, P6, PN, P6,   PD, PD, PD, PD,   PD, PD, PD, PD, 
   /* 7_ */    PD,  0,  0,  0,   PD,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* 8_ */    PD, PD, PD, PD,   PD, PD, PA, PA,   PA, PA, PA, PD,   PD, PD, PD, PD, 
   /* 9_ */    PN, PD, PD, P6,    0,  0,  0,  0,    0, PD,  0, PN,    0,  0, P6,  0, 

@@ -414,6 +414,9 @@ cl_f8::xchb(int b)
   if (a & 1) t|= mask;
   acc8->W(mbit?1:0);
   c.write(t);
+  rF&= ~flagZ;
+  if (!mbit) rF|= flagZ;
+  cF.W(rF);
   vc.wr++;
   return resGO;
 }

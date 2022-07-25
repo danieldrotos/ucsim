@@ -249,6 +249,8 @@ public:
   // aritmetic (ALU) instuctions: ialu.cc
 
   // branches: ibranch.cc
+  virtual int JMP_I(t_mem code);
+  virtual int JMP_A(t_mem code);
   virtual int CALL_I(t_mem code);
   virtual int CALL_A(t_mem code);
   virtual int RET(t_mem code);
