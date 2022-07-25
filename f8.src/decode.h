@@ -138,6 +138,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADC_YL		instruction_1e
 #define ADC_YH		instruction_1f
 
+#define SUB_M		instruction_01
+#define SUB_NSP		instruction_02
+#define SUB_NNZ		instruction_03
+#define SUB_ZL		instruction_04
+#define SUB_XH		instruction_05
+#define SUB_YL		instruction_06
+#define SUB_YH		instruction_07
+
+#define SBC_M		instruction_09
+#define SBC_NSP		instruction_0a
+#define SBC_NNZ		instruction_0b
+#define SBC_ZL		instruction_0c
+#define SBC_XH		instruction_0d
+#define SBC_YL		instruction_0e
+#define SBC_YH		instruction_0f
+
 // branches
 #define JP_I		instruction_64
 #define JP_A		instruction_65

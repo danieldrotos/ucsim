@@ -132,6 +132,21 @@ struct dis_entry disass_f8[]=
     { 0x1e, 0xff, ' ', 1, "adc %a,yl" },
     { 0x1f, 0xff, ' ', 1, "adc %a,yh" },
 
+    { 0x01, 0xff, ' ', 3, "sub %a,'a16_8'" },
+    { 0x02, 0xff, ' ', 2, "sub %a,('nsp_8')" },
+    { 0x03, 0xff, ' ', 3, "sub %a,('nnz_8')" },
+    { 0x04, 0xff, ' ', 1, "sub %a,zl" },
+    { 0x05, 0xff, ' ', 1, "sub %a,xh" },
+    { 0x06, 0xff, ' ', 1, "sub %a,yl" },
+    { 0x07, 0xff, ' ', 1, "sub %a,yh" },
+    { 0x09, 0xff, ' ', 3, "sbc %a,'a16_8'" },
+    { 0x0a, 0xff, ' ', 2, "sbc %a,('nsp_8')" },
+    { 0x0b, 0xff, ' ', 3, "sbc %a,('nnz_8')" },
+    { 0x0c, 0xff, ' ', 1, "sbc %a,zl" },
+    { 0x0d, 0xff, ' ', 1, "sbc %a,xh" },
+    { 0x0e, 0xff, ' ', 1, "sbc %a,yl" },
+    { 0x0f, 0xff, ' ', 1, "sbc %a,yh" },
+
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
     { 0x65, 0xff, ' ', 1, "jp %A" },
@@ -206,7 +221,7 @@ enum {
 
 u8_t allowed_prefs[256]= {
   /*          _0  _1  _2  _3    _4  _5  _6  _7    _8  _9  _a  _b    _c  _d  _e  _f */
-  /* 0_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* 0_ */    PN, PA, PA, PA,   PA, PA, PA, PA,   PN, PA, PA, PA,   PA, PA, PA, PA, 
   /* 1_ */    PD, PA, PA, PA,   PA, PA, PA, PA,   PD, PA, PA, PA,   PA, PA, PA, PA, 
   /* 2_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* 3_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 

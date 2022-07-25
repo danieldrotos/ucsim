@@ -29,10 +29,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 int
-cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc, bool memop)
+cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop)
 {
   u8_t c= 0;
-  if (addc)
+  if (usec)
     c= (rF&flagC)?1:0;
   IFSWAP
     {
@@ -62,10 +62,10 @@ cl_f8::add8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc, bool memop)
 }
 
 int
-cl_f8::sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool addc, bool memop)
+cl_f8::sub8(class cl_cell8 *op1, class cl_cell8 *op2, bool usec, bool memop)
 {
   u8_t c= 1;
-  if (addc)
+  if (usec)
     c= (rF&flagC)?1:0;
   IFSWAP
     {
