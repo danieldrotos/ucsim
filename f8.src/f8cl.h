@@ -298,6 +298,14 @@ public:
   int SBC_XH (t_mem code) { return sub8(acc8, &cXH     , true , false, false); }
   int SBC_YL (t_mem code) { return sub8(acc8, &cYL     , true , false, false); }
   int SBC_YH (t_mem code) { return sub8(acc8, &cYH     , true , false, false); }
+  int CP_I   (t_mem code) { return sub8(acc8, &m_i()  , false, true , true ); }
+  int CP_M   (t_mem code) { return sub8(acc8, &m_mm()  , false, true , true ); }
+  int CP_NSP (t_mem code) { return sub8(acc8, &m_n_sp(), false, true , true ); }
+  int CP_NNZ (t_mem code) { return sub8(acc8, &m_nn_z(), false, true , true ); }
+  int CP_ZL  (t_mem code) { return sub8(acc8, &cZL     , false, false, true ); }
+  int CP_XH  (t_mem code) { return sub8(acc8, &cXH     , false, false, true ); }
+  int CP_YL  (t_mem code) { return sub8(acc8, &cYL     , false, false, true ); }
+  int CP_YH  (t_mem code) { return sub8(acc8, &cYH     , false, false, true ); }
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

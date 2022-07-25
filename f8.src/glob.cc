@@ -147,6 +147,15 @@ struct dis_entry disass_f8[]=
     { 0x0e, 0xff, ' ', 1, "sbc %a,yl" },
     { 0x0f, 0xff, ' ', 1, "sbc %a,yh" },
 
+    { 0x20, 0xff, ' ', 2, "cp %a,#'i8'" },
+    { 0x21, 0xff, ' ', 3, "cp %a,'a16_8'" },
+    { 0x22, 0xff, ' ', 2, "cp %a,('nsp_8')" },
+    { 0x23, 0xff, ' ', 3, "cp %a,('nnz_8')" },
+    { 0x24, 0xff, ' ', 1, "cp %a,zl" },
+    { 0x25, 0xff, ' ', 1, "cp %a,xh" },
+    { 0x26, 0xff, ' ', 1, "cp %a,yl" },
+    { 0x27, 0xff, ' ', 1, "cp %a,yh" },
+
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
     { 0x65, 0xff, ' ', 1, "jp %A" },
@@ -223,7 +232,7 @@ u8_t allowed_prefs[256]= {
   /*          _0  _1  _2  _3    _4  _5  _6  _7    _8  _9  _a  _b    _c  _d  _e  _f */
   /* 0_ */    PN, PA, PA, PA,   PA, PA, PA, PA,   PN, PA, PA, PA,   PA, PA, PA, PA, 
   /* 1_ */    PD, PA, PA, PA,   PA, PA, PA, PA,   PD, PA, PA, PA,   PA, PA, PA, PA, 
-  /* 2_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
+  /* 2_ */    PN, PA, PA, PA,   PA, PA, PA, PA,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* 3_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0, 
   /* 4_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0, PN, 
   /* 5_ */     0,  0,  0,  0,    0,  0,  0,  0,   PD, PD, PD, PD,    0,  0,  0, PN, 
