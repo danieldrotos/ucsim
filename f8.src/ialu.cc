@@ -173,5 +173,42 @@ cl_f8::And8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop)
   return resGO;
 }
 
+u16_t
+cl_f8::add16(u16_t a, u16_t b, int c)
+{
+  u16_t r= a+b+c;
+  return r;
+}
+
+int
+cl_f8::add16(u16_t opaddr, bool usec)
+{
+  u16_t op2= read_addr(rom, opaddr);
+  vc.rd+= 2;
+  IFSWAP
+    {
+      // Mem= Mem+acc
+      vc.wr+= 2;
+    }
+  else
+    {
+      // Acc= Mem+acc
+    }
+  return resGO;
+}
+  
+int
+cl_f8::add16(/*op2=x*/bool usec)
+{
+  class cl_cell16 *op1= acc16, *op2= &cX;
+  IFSWAP
+    {
+      op1= &cX;
+      op2= acc16;
+    }
+  
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */
