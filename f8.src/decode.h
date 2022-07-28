@@ -211,6 +211,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ORW_NSP		instruction_f2
 #define ORW_X		instruction_f3
 
+#define SRL_M		instruction_40
+#define SRL_NSP		instruction_41
+#define SRL_A		instruction_42
+#define SRL_ZH		instruction_43
+#define SLL_M		instruction_44
+#define SLL_NSP		instruction_45
+#define SLL_A		instruction_46
+#define SLL_ZH		instruction_47
+#define RRC_M		instruction_48
+#define RRC_NSP		instruction_49
+#define RRC_A		instruction_4a
+#define RRC_ZH		instruction_4b
+#define RLC_M		instruction_4c
+#define RLC_NSP		instruction_4d
+#define RLC_A		instruction_4e
+#define RLC_ZH		instruction_4f
+
 // branches
 #define JP_I		instruction_64
 #define JP_A		instruction_65

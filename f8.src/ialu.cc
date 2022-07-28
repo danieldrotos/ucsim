@@ -318,4 +318,265 @@ cl_f8::or16(void)
 }
 
 
+/* 0->XXXXXXXX->C */
+
+int
+cl_f8::SRL_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  u8_t v= c.read();
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::SRL_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t v= c.read();
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::SRL_A(t_mem code)
+{
+  u8_t v= acc8->read();
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  if (!v) rF|= flagZ;
+  acc8->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::SRL_ZH(t_mem code)
+{
+  u8_t v= rZH;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  if (!v) rF|= flagZ;
+  cZH.W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+/* C<-XXXXXXXX<-0 */
+
+int
+cl_f8::SLL_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  u8_t v= c.read();
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::SLL_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t v= c.read();
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::SLL_A(t_mem code)
+{
+  u8_t v= acc8->read();
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  if (!v) rF|= flagZ;
+  acc8->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::SLL_ZH(t_mem code)
+{
+  u8_t v= rZH;
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  if (!v) rF|= flagZ;
+  cZH.W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+/* +->XXXXXXXX->C
+   |____________|
+*/
+
+int
+cl_f8::RRC_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  u8_t v= c.read();
+  vc.rd++;
+  u8_t oldc= (rF&flagC)?0x80:0;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::RRC_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t v= c.read();
+  vc.rd++;
+  u8_t oldc= (rF&flagC)?0x80:0;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::RRC_A(t_mem code)
+{
+  u8_t v= acc8->read();
+  u8_t oldc= (rF&flagC)?0x80:0;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  acc8->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::RRC_ZH(t_mem code)
+{
+  u8_t v= rZH;
+  u8_t oldc= (rF&flagC)?0x80:0;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  cZH.W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+/* C<-XXXXXXXX<-+
+   |____________|
+*/
+
+int
+cl_f8::RLC_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  u8_t v= c.read();
+  vc.rd++;
+  u8_t oldc= (rF&flagC)?1:0;
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::RLC_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t v= c.read();
+  vc.rd++;
+  u8_t oldc= (rF&flagC)?1:0;
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::RLC_A(t_mem code)
+{
+  u8_t v= acc8->read();
+  u8_t oldc= (rF&flagC)?1:0;
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  acc8->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::RLC_ZH(t_mem code)
+{
+  u8_t v= rZH;
+  u8_t oldc= (rF&flagC)?1:0;
+  rF&= ~flagCZ;
+  if (v&0x80) rF|= flagC;
+  v<<= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  cZH.W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+
 /* End of f8.src/ialu.cc */
