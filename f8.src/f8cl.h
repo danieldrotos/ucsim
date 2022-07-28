@@ -340,6 +340,14 @@ public:
   virtual u16_t add16(u16_t a, u16_t b, int c, bool sub);
   virtual int add16(u16_t opaddr, bool usec);
   virtual int add16(/*op2=x*/bool usec);
+  virtual int sub16(u16_t opaddr, bool usec);
+  virtual int sub16(/*op2=x*/bool usec);
+  int SUBW_M  (t_mem code) { return sub16(a_mm()  , false); }
+  int SUBW_NSP(t_mem code) { return sub16(a_n_sp(), false); }
+  int SUBW_X  (t_mem code) { return sub16(          false); }
+  int SBCW_M  (t_mem code) { return sub16(a_mm()  , true); }
+  int SBCW_NSP(t_mem code) { return sub16(a_n_sp(), true); }
+  int SBCW_X  (t_mem code) { return sub16(          true); }
   int ADDW_I  (t_mem code) { return add16(a_i()   , false); }
   int ADDW_M  (t_mem code) { return add16(a_mm()  , false); }
   int ADDW_NSP(t_mem code) { return add16(a_n_sp(), false); }

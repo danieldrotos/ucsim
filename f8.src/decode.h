@@ -190,6 +190,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define XOR_YL		instruction_3e
 #define XOR_YH		instruction_3f
 
+#define SUBW_M		instruction_71
+#define SUBW_NSP	instruction_72
+#define SUBW_X		instruction_73
+#define SBCW_M		instruction_75
+#define SBCW_NSP	instruction_76
+#define SBCW_X		instruction_77
+
 #define ADDW_I		instruction_78
 #define ADDW_M		instruction_79
 #define ADDW_NSP	instruction_7a

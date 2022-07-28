@@ -232,5 +232,43 @@ cl_f8::add16(/*op2=x*/bool usec)
   return resGO;
 }
 
+int
+cl_f8::sub16(u16_t opaddr, bool usec)
+{
+  u16_t op2= read_addr(rom, opaddr);
+  vc.rd+= 2;
+  int c= 1;
+  if (usec && !(rF&flagC)) c= 0;
+  u16_t r= add16(acc16->get(), op2, c, true);
+  IFSWAP
+    {
+      // Mem= Mem+acc
+      rom->write(opaddr, r);
+      rom->write(opaddr+1, r>>8);
+      vc.wr+= 2;
+    }
+  else
+    {
+      // Acc= Mem+acc
+      acc16->W(r);
+    }
+  return resGO;
+}
+  
+int
+cl_f8::sub16(/*op2=x*/bool usec)
+{
+  class cl_cell16 *op1= acc16, *op2= &cX;
+  IFSWAP
+    {
+      op1= &cX;
+      op2= acc16;
+    }
+  int c= 1;
+  if (usec && !(rF&flagC)) c= 0;
+  op1->W(add16(op1->get(), op2->get(), c, true));
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */
