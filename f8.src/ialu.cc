@@ -174,9 +174,23 @@ cl_f8::And8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop)
 }
 
 u16_t
-cl_f8::add16(u16_t a, u16_t b, int c)
+cl_f8::add16(u16_t a, u16_t b, int c, bool sub)
 {
-  u16_t r= a+b+c;
+  u32_t rb= a+b+c;
+  u16_t r= rb;
+  rF&= ~fAll_H;
+  if (rb>0xffff) rF|= flagC;
+  if (r&0x8000) rF|= flagC;
+  if (!r) rF|= flagZ;
+  if (sub)
+    {
+      if (((a&~b&~r)|(~a&b&r))&0x8000) rF|= flagO;
+    }
+  else
+    {
+      if (((a&b&~r)|(~a&~b&r))&0x8000) rF|= flagO;
+    }
+  cF.W(rF);
   return r;
 }
 
@@ -185,14 +199,20 @@ cl_f8::add16(u16_t opaddr, bool usec)
 {
   u16_t op2= read_addr(rom, opaddr);
   vc.rd+= 2;
+  int c= 0;
+  if (usec && (rF&flagC)) c= 1;
+  u16_t r= add16(acc16->get(), op2, c, false);
   IFSWAP
     {
       // Mem= Mem+acc
+      rom->write(opaddr, r);
+      rom->write(opaddr+1, r>>8);
       vc.wr+= 2;
     }
   else
     {
       // Acc= Mem+acc
+      acc16->W(r);
     }
   return resGO;
 }
@@ -206,7 +226,9 @@ cl_f8::add16(/*op2=x*/bool usec)
       op1= &cX;
       op2= acc16;
     }
-  
+  int c= 0;
+  if (usec && (rF&flagC)) c= 1;
+  op1->W(add16(op1->get(), op2->get(), c, false));
   return resGO;
 }
 

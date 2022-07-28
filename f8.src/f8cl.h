@@ -169,6 +169,7 @@ public:
 
   // memory addresses by addressing modes
   // call necessary fetches
+  virtual u16_t a_i(void);
   virtual u16_t a_mm(void);
   virtual u16_t a_n_sp(void);
   virtual u16_t a_nn_z(void);
@@ -336,9 +337,17 @@ public:
   int XOR_YH (t_mem code) { return Xor8(acc8, &cYH     , false ); }
   // 8-bit 1-op-inst
   // 16-bit 2-op-inst
-  virtual u16_t add16(u16_t a, u16_t b, int c);
+  virtual u16_t add16(u16_t a, u16_t b, int c, bool sub);
   virtual int add16(u16_t opaddr, bool usec);
   virtual int add16(/*op2=x*/bool usec);
+  int ADDW_I  (t_mem code) { return add16(a_i()   , false); }
+  int ADDW_M  (t_mem code) { return add16(a_mm()  , false); }
+  int ADDW_NSP(t_mem code) { return add16(a_n_sp(), false); }
+  int ADDW_X  (t_mem code) { return add16(          false); }
+  int ADCW_I  (t_mem code) { return add16(a_i()   , true); }
+  int ADCW_M  (t_mem code) { return add16(a_mm()  , true); }
+  int ADCW_NSP(t_mem code) { return add16(a_n_sp(), true); }
+  int ADCW_X  (t_mem code) { return add16(          true); }
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

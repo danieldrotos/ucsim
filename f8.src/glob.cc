@@ -182,7 +182,16 @@ struct dis_entry disass_f8[]=
     { 0x3d, 0xff, ' ', 1, "xor %a,xh" },
     { 0x3e, 0xff, ' ', 1, "xor %a,yl" },
     { 0x3f, 0xff, ' ', 1, "xor %a,yh" },
-    
+
+    { 0x78, 0xff, ' ', 3, "addw %A,#'i16'" },
+    { 0x79, 0xff, ' ', 3, "addw %A,'a16_16'" },
+    { 0x7a, 0xff, ' ', 2, "addw %A,('nsp_16')" },
+    { 0x7b, 0xff, ' ', 1, "addw %A,x" },
+    { 0x7c, 0xff, ' ', 3, "adcw %A,#'i16'" },
+    { 0x7d, 0xff, ' ', 3, "adcw %A,'a16_16'" },
+    { 0x7e, 0xff, ' ', 2, "adcw %A,('nsp_16')" },
+    { 0x7f, 0xff, ' ', 1, "adcw %A,x" },
+
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
     { 0x65, 0xff, ' ', 1, "jp %A" },
@@ -264,7 +273,7 @@ u8_t allowed_prefs[256]= {
   /* 4_ */     0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0, PN,
   /* 5_ */     0,  0,  0,  0,    0,  0,  0,  0,   PD, PD, PD, PD,    0,  0,  0, PN,
   /* 6_ */    PD, PD, PD, PD,   PN, P6, PN, P6,   PD, PD, PD, PD,   PD, PD, PD, PD,
-  /* 7_ */    PD,  0,  0,  0,   PD,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,
+  /* 7_ */    PD,  0,  0,  0,   PD,  0,  0,  0,   P6, P2, P2, P2,   P6, P2, P2, P2,
   /* 8_ */    PD, PD, PD, PD,   PD, PD, PA, PA,   PA, PA, PA, PD,   PD, PD, PD, PD,
   /* 9_ */    PN, PD, PD, P6,   PN,  0,  0,  0,    0, PD,  0, PN,    0,  0, P6,  0,
   /* a_ */    P6, P6, P6, P6,    0,  0,  0,  0,    0,  0,  0,  0,    0,  0,  0,  0,

@@ -291,6 +291,15 @@ cl_f8::m_n_y(void)
 }
 
 u16_t
+cl_f8::a_i()
+{
+  u16_t a= PC;
+  fetch();
+  fetch();
+  return a;
+}
+
+u16_t
 cl_f8::a_mm(void)
 {
   u16_t a= fetch();
