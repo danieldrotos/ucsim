@@ -199,6 +199,11 @@ struct dis_entry disass_f8[]=
     { 0x7e, 0xff, ' ', 2, "adcw %A,('nsp_16')" },
     { 0x7f, 0xff, ' ', 1, "adcw %A,x" },
 
+    { 0xf0, 0xff, ' ', 3, "orw %A,#'i16'" },
+    { 0xf1, 0xff, ' ', 3, "orw %A,'a16_16'" },
+    { 0xf2, 0xff, ' ', 2, "orw %A,('nsp_16')" },
+    { 0xf3, 0xff, ' ', 1, "orw %A,x" },
+
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
     { 0x65, 0xff, ' ', 1, "jp %A" },
@@ -288,7 +293,7 @@ u8_t allowed_prefs[256]= {
   /* c_ */    P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6,   P6, P6, P6, P6,
   /* d_ */    PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,   PN, PN, PN, PN,
   /* e_ */     0,  0,  0,  0,    0,  0,  0,  0,   PN,  0,  0,  0,    0,  0,  0,  0,
-  /* f_ */     0,  0,  0,  0,    0,  0,  0,  0,    0, PN,  0,  0,    0,  0,  0,  0
+  /* f_ */    PN, P2, P2, P2,    0,  0,  0,  0,    0, PN,  0,  0,    0,  0,  0,  0
 };
 
 

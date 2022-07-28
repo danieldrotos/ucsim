@@ -270,5 +270,52 @@ cl_f8::sub16(/*op2=x*/bool usec)
   return resGO;
 }
 
+u16_t
+cl_f8::or16(u16_t a, u16_t b)
+{
+  u16_t r= a|b;
+  rF&= flagOZN;
+  if (!r) rF|= flagZ;
+  if (r&0x8000) rF|= flagN;
+  // TODO flagO ?
+  cF.W(rF);
+  return r;
+}
+
+int
+cl_f8::or16(u16_t opaddr)
+{
+  u16_t op2= read_addr(rom, opaddr);
+  vc.rd+= 2;
+  u16_t r= or16(acc16->get(), op2);
+  IFSWAP
+    {
+      // Mem= Mem | acc;
+      rom->write(opaddr, r);
+      rom->write(opaddr+1, r>>8);
+      vc.wr+= 2;
+    }
+  else
+    {
+      // Acc= Mem | acc
+      acc16->W(r);
+    }
+  return resGO;
+}
+
+int
+cl_f8::or16(void)
+{
+  // op2=x
+  class cl_cell16 *op1= acc16, *op2= &cX;
+  IFSWAP
+    {
+      op1= &cX;
+      op2= acc16;
+    }
+  op1->W(or16(op1->get(), op2->get()));
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

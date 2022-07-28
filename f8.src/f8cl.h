@@ -342,6 +342,9 @@ public:
   virtual int add16(/*op2=x*/bool usec);
   virtual int sub16(u16_t opaddr, bool usec);
   virtual int sub16(/*op2=x*/bool usec);
+  virtual u16_t or16(u16_t a, u16_t b);
+  virtual int or16(u16_t opaddr);
+  virtual int or16(void);
   int SUBW_M  (t_mem code) { return sub16(a_mm()  , false); }
   int SUBW_NSP(t_mem code) { return sub16(a_n_sp(), false); }
   int SUBW_X  (t_mem code) { return sub16(          false); }
@@ -356,6 +359,10 @@ public:
   int ADCW_M  (t_mem code) { return add16(a_mm()  , true); }
   int ADCW_NSP(t_mem code) { return add16(a_n_sp(), true); }
   int ADCW_X  (t_mem code) { return add16(          true); }
+  int ORW_I   (t_mem code) { return or16(a_i()   ); }
+  int ORW_M   (t_mem code) { return or16(a_mm()  ); }
+  int ORW_NSP (t_mem code) { return or16(a_n_sp()); }
+  int ORW_X   (t_mem code) { return or16(        ); }
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

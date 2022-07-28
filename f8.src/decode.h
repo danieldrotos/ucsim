@@ -206,6 +206,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADCW_NSP	instruction_7e
 #define ADCW_X		instruction_7f
 
+#define ORW_I		instruction_f0
+#define ORW_M		instruction_f1
+#define ORW_NSP		instruction_f2
+#define ORW_X		instruction_f3
+
 // branches
 #define JP_I		instruction_64
 #define JP_A		instruction_65
