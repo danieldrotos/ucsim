@@ -31,6 +31,25 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 instruction_wrapper_fn itab[256];
 
+u8_t ptab[256]= {
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+ 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+};
+
 // code mask branch len mn call tick
 struct dis_entry disass_f8[]=
   {
@@ -229,6 +248,10 @@ struct dis_entry disass_f8[]=
     { 0x55, 0xff, ' ', 2, "dec ('nsp_8')" },
     { 0x56, 0xff, ' ', 1, "dec %a" },
     { 0x57, 0xff, ' ', 1, "dec zh" },
+    { 0x5c, 0xff, ' ', 3, "tst 'a16_8'" },
+    { 0x5d, 0xff, ' ', 2, "tst ('nsp_8')" },
+    { 0x5e, 0xff, ' ', 1, "tst %a" },
+    { 0x5f, 0xff, ' ', 1, "tst zh" },
 
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
@@ -309,7 +332,7 @@ u8_t allowed_prefs[256]= {
   /* 2_ */    PN,PA,PA,PA,  PA,PA,PA,PA,  PN,PA,PA,PA,  PA,PA,PA,PA,
   /* 3_ */    PN,PA,PA,PA,  PA,PA,PA,PA,  PN,PA,PA,PA,  PA,PA,PA,PA,
   /* 4_ */    PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,
-  /* 5_ */    PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,   0, 0, 0, 0,
+  /* 5_ */    PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 6_ */    PD,PD,PD,PD,  PN,P6,PN,P6,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 7_ */    PD,P2,P2,P2,  PD,P2,P2,P2,  P6,P2,P2,P2,  P6,P2,P2,P2,
   /* 8_ */    PD,PD,PD,PD,  PD,PD,PA,PA,  PA,PA,PA,PD,  PD,PD,PD,PD,

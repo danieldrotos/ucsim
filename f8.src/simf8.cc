@@ -42,6 +42,10 @@ cl_simf8::mk_controller(void)
   class cl_optref type_option(this);
   class cl_f8 *uc;
 
+  /* Replace 1s to flagO in p table */
+  for (int i= 0; i<256; i++)
+    if (ptab[i])
+      ptab[i]= flagO;
   type_option.init();
   type_option.use("cpu_type");
   i= 0;

@@ -360,6 +360,11 @@ public:
   int DEC_NSP(t_mem code);
   int DEC_A(t_mem code);
   int DEC_ZH(t_mem code);
+  int TST_M(t_mem code);
+  int TST_NSP(t_mem code);
+  int TST_A(t_mem code);
+  int TST_ZH(t_mem code);
+  
   // 16-bit 2-op-inst
   virtual u16_t add16(u16_t a, u16_t b, int c, bool sub);
   virtual int add16(u16_t opaddr, bool usec);

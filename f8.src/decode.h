@@ -127,6 +127,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DEC_NSP		instruction_55
 #define DEC_A		instruction_56
 #define DEC_ZH		instruction_57
+#define TST_M		instruction_5c
+#define TST_NSP		instruction_5d
+#define TST_A		instruction_5e
+#define TST_ZH		instruction_5f
 
 // arithmetic instructions
 #define ADD_I		instruction_10

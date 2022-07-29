@@ -682,5 +682,57 @@ cl_f8::DEC_ZH(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::TST_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  u8_t v= c.read();
+  vc.rd++;
+  rF&= ~fAll_H;
+  if (v&0x80) rF|= flagN;
+  if (!v) rF|= flagZ;
+  rF|= ptab[v];
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::TST_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t v= c.read();
+  vc.rd++;
+  rF&= ~fAll_H;
+  if (v&0x80) rF|= flagN;
+  if (!v) rF|= flagZ;
+  rF|= ptab[v];
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::TST_A(t_mem code)
+{
+  u8_t v= acc8->read();
+  rF&= ~fAll_H;
+  if (v&0x80) rF|= flagN;
+  if (!v) rF|= flagZ;
+  rF|= ptab[v];
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::TST_ZH(t_mem code)
+{
+  u8_t v= rZH;
+  rF&= ~fAll_H;
+  if (v&0x80) rF|= flagN;
+  if (!v) rF|= flagZ;
+  rF|= ptab[v];
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */
