@@ -578,5 +578,109 @@ cl_f8::RLC_ZH(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::INC_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  u8_t v= c.read()+1;
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (!v) rF|= flagCZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::INC_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t v= c.read()+1;
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (!v) rF|= flagCZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::INC_A(t_mem code)
+{
+  u8_t v= acc8->read()+1;
+  rF&= ~flagCZ;
+  if (!v) rF|= flagCZ;
+  acc8->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::INC_ZH(t_mem code)
+{
+  u8_t v= rZH+1;
+  rF&= ~flagCZ;
+  if (!v) rF|= flagCZ;
+  cZH.W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::DEC_M(t_mem code)
+{
+  class cl_cell8 &c= m_mm();
+  u8_t v= c.read()-1;
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (v==0xff) rF|= flagC;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::DEC_NSP(t_mem code)
+{
+  class cl_cell8 &c= m_n_sp();
+  u8_t v= c.read()-1;
+  vc.rd++;
+  rF&= ~flagCZ;
+  if (v==0xff) rF|= flagC;
+  if (!v) rF|= flagZ;
+  c.W(v);
+  vc.wr++;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::DEC_A(t_mem code)
+{
+  u8_t v= acc8->read()-1;
+  rF&= ~flagCZ;
+  if (v==0xff) rF|= flagC;
+  if (!v) rF|= flagZ;
+  acc8->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::DEC_ZH(t_mem code)
+{
+  u8_t v= rZH-1;
+  rF&= ~flagCZ;
+  if (v==0xff) rF|= flagC;
+  if (!v) rF|= flagZ;
+  cZH.W(v);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */
