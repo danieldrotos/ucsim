@@ -392,7 +392,13 @@ public:
   int ORW_M   (t_mem code) { return or16(a_mm()  ); }
   int ORW_NSP (t_mem code) { return or16(a_n_sp()); }
   int ORW_X   (t_mem code) { return or16(        ); }
-  
+
+  // 16-bit 1-op-inst
+  int INCW_M(t_mem code);
+  int INCW_NSP(t_mem code);
+  int INCW_NNZ(t_mem code);
+  int INCW_A(t_mem code);
+
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
   virtual int JP_A(t_mem code);

@@ -241,6 +241,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RLC_A		instruction_4e
 #define RLC_ZH		instruction_4f
 
+#define INCW_M		instruction_a4
+#define INCW_NSP	instruction_a5
+#define INCW_NNZ	instruction_a6
+#define INCW_A		instruction_a7
+
 // branches
 #define JP_I		instruction_64
 #define JP_A		instruction_65
