@@ -245,6 +245,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define INCW_NSP	instruction_a5
 #define INCW_NNZ	instruction_a6
 #define INCW_A		instruction_a7
+#define ADCW1_M		instruction_a8
+#define ADCW1_NSP	instruction_a9
+#define ADCW1_NNZ	instruction_aa
+#define ADCW1_A		instruction_ab
 
 // branches
 #define JP_I		instruction_64

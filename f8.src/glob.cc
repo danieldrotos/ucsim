@@ -257,6 +257,10 @@ struct dis_entry disass_f8[]=
     { 0xa5, 0xff, ' ', 2, "incw ('nsp_16')" },
     { 0xa6, 0xff, ' ', 3, "incw ('nnz_16')" },
     { 0xa7, 0xff, ' ', 1, "incw %A" },
+    { 0xa8, 0xff, ' ', 3, "adcw 'a16_16'" },
+    { 0xa9, 0xff, ' ', 2, "adcw ('nsp_16')" },
+    { 0xaa, 0xff, ' ', 3, "adcw ('nnz_16')" },
+    { 0xab, 0xff, ' ', 1, "adcw %A" },
 
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
@@ -342,7 +346,7 @@ u8_t allowed_prefs[256]= {
   /* 7_ */    PD,P2,P2,P2,  PD,P2,P2,P2,  P6,P2,P2,P2,  P6,P2,P2,P2,
   /* 8_ */    PD,PD,PD,PD,  PD,PD,PA,PA,  PA,PA,PA,PD,  PD,PD,PD,PD,
   /* 9_ */    PN,PD,PD,P6,  PN, 0, 0, 0,   0,PD, 0,PN,   0, 0,P6, 0,
-  /* a_ */    P6,P6,P6,P6,  P6,P6,P6,P6,   0, 0, 0, 0,   0, 0, 0, 0,
+  /* a_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,   0, 0, 0, 0,
   /* b_ */    P6,P6,P6,P6,   0, 0, 0, 0,   0, 0,PN,PN,   0, 0, 0, 0,
   /* c_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* d_ */    PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,

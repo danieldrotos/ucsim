@@ -398,6 +398,10 @@ public:
   int INCW_NSP(t_mem code);
   int INCW_NNZ(t_mem code);
   int INCW_A(t_mem code);
+  int ADCW1_M(t_mem code);
+  int ADCW1_NSP(t_mem code);
+  int ADCW1_NNZ(t_mem code);
+  int ADCW1_A(t_mem code);
 
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
