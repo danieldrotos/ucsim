@@ -939,6 +939,21 @@ cl_f8::TSTW1_A(t_mem code)
 
 
 int
+cl_f8::ROT(t_mem code)
+{
+  u8_t i= fetch(), v= acc8->get();
+  while (i--)
+    {
+      u8_t u= v&0x80;
+      v<<= 1;
+      if (u)
+	v|= 1;
+    }
+  acc8->W(v);
+  return resGO;
+}
+
+int
 cl_f8::BOOL_A(t_mem code)
 {
   u8_t v= acc8->get();
