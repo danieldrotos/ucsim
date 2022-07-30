@@ -258,6 +258,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TSTW1_NNZ	instruction_b6
 #define TSTW1_A		instruction_b7
 
+#define BOOL_A		instruction_98
+
 // branches
 #define JP_I		instruction_64
 #define JP_A		instruction_65

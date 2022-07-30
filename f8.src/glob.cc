@@ -270,6 +270,8 @@ struct dis_entry disass_f8[]=
     { 0xb6, 0xff, ' ', 3, "tstw ('nnz_16')" },
     { 0xb7, 0xff, ' ', 1, "tstw %A" },
 
+    { 0x98, 0xff, ' ', 1, "bool %a" },
+
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
     { 0x65, 0xff, ' ', 1, "jp %A" },
@@ -353,7 +355,7 @@ u8_t allowed_prefs[256]= {
   /* 6_ */    PD,PD,PD,PD,  PN,P6,PN,P6,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 7_ */    PD,P2,P2,P2,  PD,P2,P2,P2,  P6,P2,P2,P2,  P6,P2,P2,P2,
   /* 8_ */    PD,PD,PD,PD,  PD,PD,PA,PA,  PA,PA,PA,PD,  PD,PD,PD,PD,
-  /* 9_ */    PN,PD,PD,P6,  PN, 0, 0, 0,   0,PD, 0,PN,   0, 0,P6, 0,
+  /* 9_ */    PN,PD,PD,P6,  PN, 0, 0, 0,  PD,PD, 0,PN,   0, 0,P6, 0,
   /* a_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* b_ */    P6,P6,P6,P6,  P6,P6,P6,P6,   0, 0,PN,PN,   0, 0, 0, 0,
   /* c_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,

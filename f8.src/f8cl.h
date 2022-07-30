@@ -411,6 +411,9 @@ public:
   int TSTW1_NNZ(t_mem code);
   int TSTW1_A(t_mem code);
 
+  // 8-bit 0-op-inst
+  int BOOL_A(t_mem code);
+  
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
   virtual int JP_A(t_mem code);

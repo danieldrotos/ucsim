@@ -938,4 +938,19 @@ cl_f8::TSTW1_A(t_mem code)
 }
 
 
+int
+cl_f8::BOOL_A(t_mem code)
+{
+  u8_t v= acc8->get();
+  if (v==0) // TODO: what is TRUE?
+    rF|= flagZ; // TODO: need negate?
+  else
+    rF&= ~flagZ;
+  cF.W(rF);
+  v= v?1:0;
+  acc8->W(v); // TODO: needed?
+  return resGO;
+}
+
+
 /* End of f8.src/ialu.cc */
