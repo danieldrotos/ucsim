@@ -260,6 +260,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define ROT		instruction_95
 #define SRA		instruction_96
+#define DAA		instruction_97
 #define BOOL_A		instruction_98
 
 // branches
@@ -290,6 +291,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // other instructions
 #define NOP		instruction_08
 #define TRAP		instruction_00
+#define THRD		instruction_9a
 
 #endif
 

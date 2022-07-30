@@ -965,6 +965,28 @@ cl_f8::SRA(t_mem code)
   return resGO;
 }
 
+// TODO: ?
+int
+cl_f8::DAA(t_mem code)
+{
+  // Method of 8080...
+  u8_t rA= acc8->get();
+  u8_t corr= 0;
+  if (((rA & 0xf) > 9) || (rF & flagA))
+    corr= 6;
+  u8_t v= rA>>4, c= 10;
+  if (corr==6)
+    c= 9;
+  if ((v >= c) || (rF & flagC))
+    corr|= 0x60;
+  if (corr)
+    {
+      rA+= corr;
+      acc8->W(rA);
+    }
+  return resGO;
+}
+
 int
 cl_f8::BOOL_A(t_mem code)
 {

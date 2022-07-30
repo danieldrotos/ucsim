@@ -71,6 +71,7 @@ enum {
   flagC	 = 0x08,
   flagH	 = 0x10,
 
+  flagA  = flagH,
   flagS  = flagN,
   flagV  = flagO,
 
@@ -414,6 +415,7 @@ public:
   // 8-bit 0-op-inst
   int ROT(t_mem code);
   int SRA(t_mem code);
+  int DAA(t_mem code);
   int BOOL_A(t_mem code);
   
   // branches: ibranch.cc
@@ -444,6 +446,7 @@ public:
   // other instructions: inst.cc
   virtual int NOP(t_mem code);
   virtual int TRAP(t_mem code);
+  virtual int THRD(t_mem code);
 };
 
 
