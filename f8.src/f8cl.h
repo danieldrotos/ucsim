@@ -413,6 +413,7 @@ public:
 
   // 8-bit 0-op-inst
   int ROT(t_mem code);
+  int SRA(t_mem code);
   int BOOL_A(t_mem code);
   
   // branches: ibranch.cc

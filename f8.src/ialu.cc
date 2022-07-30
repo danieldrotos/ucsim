@@ -954,6 +954,18 @@ cl_f8::ROT(t_mem code)
 }
 
 int
+cl_f8::SRA(t_mem code)
+{
+  i8_t v= acc8->get();
+  rF&= ~flagC;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  cF.W(rF);
+  acc8->W(v);
+  return resGO;
+}
+
+int
 cl_f8::BOOL_A(t_mem code)
 {
   u8_t v= acc8->get();
