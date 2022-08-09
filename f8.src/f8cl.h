@@ -167,6 +167,7 @@ public:
   virtual class cl_cell8 &m_nn_z(void);
   virtual class cl_cell8 &m_y(void);
   virtual class cl_cell8 &m_n_y(void);
+  virtual class cl_cell8 &m_z(void);
 
   // memory addresses by addressing modes
   // call necessary fetches
@@ -413,11 +414,16 @@ public:
   int TSTW1_A(t_mem code);
 
   // 8-bit 0-op-inst
+  int mad(class cl_cell8 &op);
   int ROT(t_mem code);
   int SRA(t_mem code);
   int DAA(t_mem code);
   int BOOL_A(t_mem code);
   int MSK(t_mem code);
+  int MAD_M(t_mem code)   { return mad(m_mm()); }
+  int MAD_NSP(t_mem code) { return mad(m_n_sp()); }
+  int MAD_NNZ(t_mem code) { return mad(m_nn_z()); }
+  int MAD_Z(t_mem code)   { return mad(m_z()); }
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

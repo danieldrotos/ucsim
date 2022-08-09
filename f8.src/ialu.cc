@@ -1014,5 +1014,20 @@ cl_f8::MSK(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::mad(class cl_cell8 &op)
+{
+  // x <- m * yl + xh + c
+  u32_t r= op.read();
+  r*= rYL;
+  r+= rXH;
+  if (rF&flagC) r++;
+  rF&= ~flagC;
+  if (r>0xffff) rF|= flagC;
+  cF.W(rF);
+  cX.W(r);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

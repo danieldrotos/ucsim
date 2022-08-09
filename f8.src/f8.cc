@@ -290,6 +290,13 @@ cl_f8::m_n_y(void)
   return *c;
 }
 
+class cl_cell8 &
+cl_f8::m_z(void)
+{
+  class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(rZ);
+  return *c;
+}
+
 u16_t
 cl_f8::a_i()
 {

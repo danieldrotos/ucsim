@@ -256,6 +256,13 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      word->appendf("0x%04x,z", nn);
 	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
 	    }
+	  if (strcmp(fmt.c_str(), "z_8") == 0)
+	    {
+	      a= rZ;
+	      a&= 0xffff;
+	      word->appendf("z");
+	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
+	    }
 	  if (strcmp(fmt.c_str(), "z_16") == 0)
 	    {
 	      a= rZ;
