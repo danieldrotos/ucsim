@@ -1001,5 +1001,18 @@ cl_f8::BOOL_A(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::MSK(t_mem code)
+{
+  // yl = (yl & i) | (yh & ~i) - really a 16-bit inst
+  REGPAIR(a,A,h,l);
+  a.A= acc16->get();
+  u8_t i= fetch();
+  u8_t r= (a.r.l & i) | (a.r.h & ~i);
+  a.r.l= r;
+  acc16->W(a.A);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

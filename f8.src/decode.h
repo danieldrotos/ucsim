@@ -262,6 +262,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SRA		instruction_96
 #define DAA		instruction_97
 #define BOOL_A		instruction_98
+#define MSK		instruction_b8
 
 // branches
 #define JP_I		instruction_64

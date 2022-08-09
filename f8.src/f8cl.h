@@ -417,6 +417,7 @@ public:
   int SRA(t_mem code);
   int DAA(t_mem code);
   int BOOL_A(t_mem code);
+  int MSK(t_mem code);
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
