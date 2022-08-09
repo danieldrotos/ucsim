@@ -428,6 +428,7 @@ public:
 
   // 16-bit 0-op-inst
   int MUL(t_mem code);
+  int NEGW(t_mem code);
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

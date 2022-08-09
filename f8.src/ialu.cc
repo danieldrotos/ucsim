@@ -1044,5 +1044,14 @@ cl_f8::MUL(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::NEGW(t_mem code)
+{
+  u16_t a= acc16->get();
+  u16_t r= add16(~a, 1, 0, 0);
+  acc16->W(r);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */
