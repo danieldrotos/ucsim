@@ -279,6 +279,8 @@ struct dis_entry disass_f8[]=
     { 0xbd, 0xff, ' ', 2, "mad x,('nsp_8'),yl" },
     { 0xbe, 0xff, ' ', 3, "mad x,('nnz_8'),yl" },
     { 0xbf, 0xff, ' ', 1, "mad x,('z_8'),yl" },
+    
+    { 0xb9, 0xff, ' ', 1, "mul %A"},
 
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
@@ -366,7 +368,7 @@ u8_t allowed_prefs[256]= {
   /* 8_ */    PD,PD,PD,PD,  PD,PD,PA,PA,  PA,PA,PA,PD,  PD,PD,PD,PD,
   /* 9_ */    PN,PD,PD,P6,  PN,PD,PD,PD,  PD,PD, 0,PN,   0, 0,P6, 0,
   /* a_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
-  /* b_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6, 0,PN,PN,  PN,PN,PN,PN,
+  /* b_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,PN,PN,  PN,PN,PN,PN,
   /* c_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* d_ */    PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,
   /* e_ */     0, 0, 0, 0,   0, 0, 0, 0,  PN, 0, 0, 0,   0, 0, 0, 0,

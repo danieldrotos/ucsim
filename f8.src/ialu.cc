@@ -1030,4 +1030,19 @@ cl_f8::mad(class cl_cell8 &op)
 }
 
 
+int
+cl_f8::MUL(t_mem code)
+{
+  REGPAIR(a,A,h,l);
+  a.A= acc16->get();
+  u16_t r= a.r.l * a.r.h;
+  rF&= ~flagCZN;
+  if (!r) rF|= flagZ;
+  if (r&0x8000) rF|= flagN;
+  cF.W(rF);
+  acc16->W(r);
+  return resGO;
+}
+
+
 /* End of f8.src/ialu.cc */

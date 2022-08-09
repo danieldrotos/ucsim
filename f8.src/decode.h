@@ -268,6 +268,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define MAD_NNZ		instruction_be
 #define MAD_Z		instruction_bf
 
+#define MUL		instruction_b9
+
 // branches
 #define JP_I		instruction_64
 #define JP_A		instruction_65

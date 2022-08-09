@@ -77,6 +77,7 @@ enum {
 
   flagCZ = flagC|flagZ,
   flagZN = flagZ|flagN,
+  flagCZN= flagC|flagZ|flagN,
   flagOZN= flagO|flagZ|flagN,
   
   fAll   = flagO|flagZ|flagN|flagC|flagH,
@@ -424,6 +425,9 @@ public:
   int MAD_NSP(t_mem code) { return mad(m_n_sp()); }
   int MAD_NNZ(t_mem code) { return mad(m_nn_z()); }
   int MAD_Z(t_mem code)   { return mad(m_z()); }
+
+  // 16-bit 0-op-inst
+  int MUL(t_mem code);
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
