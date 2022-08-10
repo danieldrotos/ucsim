@@ -1079,5 +1079,20 @@ cl_f8::SRLW(t_mem code)
   return resGO;
 }
 
+/* C<-XXXXXXXX<-0 */
+
+int
+cl_f8::SLLW(t_mem code)
+{
+  u16_t v= acc16->get();
+  rF&= ~flagCZ;
+  if (v&0x8000) rF|= flagC;
+  v<<= 1;
+  if (!v) rF|= flagZ;
+  acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */
