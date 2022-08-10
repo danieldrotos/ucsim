@@ -1260,5 +1260,32 @@ cl_f8::SLLW_A_XL(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::SEX(t_mem code)
+{
+  u16_t v= rXL;
+  rF&= ~flagZN;
+  if (v&0x80)
+    {
+      v|= 0xff00;
+      rF|= flagN;
+    }
+  if (!v) rF|= flagZ;
+  acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::ZEX(t_mem code)
+{
+  u16_t v= rXL;
+  rF&= ~flagZ;
+  if (!v) rF|= flagZ;
+  acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

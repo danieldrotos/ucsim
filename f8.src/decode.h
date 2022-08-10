@@ -285,6 +285,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define INCNW		instruction_f6
 #define DECW_NSP	instruction_f7
 #define SLLW_A_XL	instruction_e5
+#define SEX		instruction_ee
+#define ZEX		instruction_ef
 
 // branches
 #define JP_I		instruction_64

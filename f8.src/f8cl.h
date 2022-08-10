@@ -444,6 +444,8 @@ public:
   int INCNW(t_mem code);
   int DECW_NSP(t_mem code);
   int SLLW_A_XL(t_mem code);
+  int SEX(t_mem code);
+  int ZEX(t_mem code);
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
