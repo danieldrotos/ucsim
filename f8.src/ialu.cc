@@ -1119,7 +1119,7 @@ cl_f8::RRCW(t_mem code)
 */
 
 int
-cl_f8::RLCW(t_mem code)
+cl_f8::RLCW_A(t_mem code)
 {
   u16_t v= acc16->get();
   u16_t oldc= (rF&flagC)?1:0;
@@ -1143,6 +1143,25 @@ cl_f8::SRAW(t_mem code)
   if (!v) rF|= flagZ;
   cF.W(rF);
   acc16->W(v);
+  return resGO;
+}
+
+int
+cl_f8::ADDW_SP_D(t_mem code)
+{
+  i8_t d= fetch();
+  cSP.W(rSP+d);
+  return resGO;
+}
+
+int
+cl_f8::ADDW_A_D(t_mem code)
+{
+  u16_t v= fetch();
+  if (v&0x80)
+    v|= 0xff00;
+  u16_t r= add16(acc16->get(), v, 0, false);
+  acc16->W(r);
   return resGO;
 }
 

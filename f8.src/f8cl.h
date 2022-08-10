@@ -433,8 +433,10 @@ public:
   int SRLW(t_mem code);
   int SLLW(t_mem code);
   int RRCW(t_mem code);
-  int RLCW(t_mem code);
+  int RLCW_A(t_mem code);
   int SRAW(t_mem code);
+  int ADDW_SP_D(t_mem code);
+  int ADDW_A_D(t_mem code);
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
