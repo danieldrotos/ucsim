@@ -1114,6 +1114,25 @@ cl_f8::RRCW(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::RRCW_NSP(t_mem code)
+{
+  u16_t a= a_n_sp();
+  u16_t v= read_addr(rom, a);
+  vc.rd+= 2;
+  u16_t oldc= (rF&flagC)?0x8000:0;
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  rom->write(a, v);
+  rom->write(a+1, v>>8);
+  vc.wr+= 2;
+  cF.W(rF);
+  return resGO;
+}
+
 /* C<-XXXXXXXX<-+
    |____________|
 */
@@ -1129,6 +1148,25 @@ cl_f8::RLCW_A(t_mem code)
   v|= oldc;
   if (!v) rF|= flagZ;
   acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::RLCW_NSP(t_mem code)
+{
+  u16_t a= a_n_sp();
+  u16_t v= read_addr(rom, a);
+  vc.rd+= 2;
+  u16_t oldc= (rF&flagC)?1:0;
+  rF&= ~flagCZ;
+  if (v&0x8000) rF|= flagC;
+  v<<= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  rom->write(a, v);
+  rom->write(a+1, v>>8);
+  vc.wr+= 2;
   cF.W(rF);
   return resGO;
 }

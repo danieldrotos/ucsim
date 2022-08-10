@@ -434,6 +434,8 @@ public:
   int SLLW(t_mem code);
   int RRCW(t_mem code);
   int RLCW_A(t_mem code);
+  int RLCW_NSP(t_mem code);
+  int RRCW_NSP(t_mem code);
   int SRAW(t_mem code);
   int ADDW_SP_D(t_mem code);
   int ADDW_A_D(t_mem code);
