@@ -270,6 +270,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define MUL		instruction_b9
 #define NEGW		instruction_fa
+#define BOOLW		instruction_fb
+#define SRLW		instruction_e0
 
 // branches
 #define JP_I		instruction_64

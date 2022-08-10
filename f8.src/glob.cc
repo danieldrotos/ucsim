@@ -282,6 +282,8 @@ struct dis_entry disass_f8[]=
     
     { 0xb9, 0xff, ' ', 1, "mul %A"},
     { 0xfa, 0xff, ' ', 1, "neg %A"},
+    { 0xfb, 0xff, ' ', 1, "boolw %A"},
+    { 0xfb, 0xff, ' ', 1, "srlw %A"},
 
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
@@ -367,13 +369,13 @@ u8_t allowed_prefs[256]= {
   /* 6_ */    PD,PD,PD,PD,  PN,P6,PN,P6,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 7_ */    PD,P2,P2,P2,  PD,P2,P2,P2,  P6,P2,P2,P2,  P6,P2,P2,P2,
   /* 8_ */    PD,PD,PD,PD,  PD,PD,PA,PA,  PA,PA,PA,PD,  PD,PD,PD,PD,
-  /* 9_ */    PN,PD,PD,P6,  PN,PD,PD,PD,  PD,PD, 0,PN,   0, 0,P6, 0,
+  /* 9_ */    PN,PD,PD,P6,  PN,PD,PD,PD,  PD,PD,PD,PN,   0, 0, 0, 0,
   /* a_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* b_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,PN,PN,  PN,PN,PN,PN,
   /* c_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* d_ */    PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,
-  /* e_ */     0, 0, 0, 0,   0, 0, 0, 0,  PN, 0, 0, 0,   0, 0, 0, 0,
-  /* f_ */    PN,P2,P2,P2,   0, 0, 0, 0,   0,PN,P6, 0,   0, 0, 0, 0
+  /* e_ */    P6, 0, 0, 0,   0, 0, 0, 0,  PN, 0, 0, 0,   0, 0, 0, 0,
+  /* f_ */    PN,P2,P2,P2,   0, 0, 0, 0,   0,PN,P6,P6,   0, 0, 0, 0
 };
 
 

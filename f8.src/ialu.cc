@@ -1053,5 +1053,31 @@ cl_f8::NEGW(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::BOOLW(t_mem code)
+{
+  u16_t v= (acc16->get())?1:0;
+  rF&= ~flagZ;
+  if (!v) rF|= flagZ; // TODO, need negate?
+  acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+/* 0->XXXXXXXX->C */
+
+int
+cl_f8::SRLW(t_mem code)
+{
+  u16_t v= acc16->get();
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  if (!v) rF|= flagZ;
+  acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */
