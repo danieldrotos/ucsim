@@ -1165,5 +1165,12 @@ cl_f8::ADDW_A_D(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::ADDW_Y_SP(t_mem code)
+{
+  cY.W(rY+rSP);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

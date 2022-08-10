@@ -278,6 +278,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SRAW		instruction_e4
 #define ADDW_SP_D	instruction_ea
 #define ADDW_A_D	instruction_eb
+#define ADDW_Y_SP	instruction_ec
 
 // branches
 #define JP_I		instruction_64
