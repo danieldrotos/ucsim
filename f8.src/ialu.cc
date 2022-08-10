@@ -1101,11 +1101,30 @@ cl_f8::SLLW(t_mem code)
 int
 cl_f8::RRCW(t_mem code)
 {
-  u16_t v= acc16->read();
+  u16_t v= acc16->get();
   u16_t oldc= (rF&flagC)?0x8000:0;
   rF&= ~flagCZ;
   if (v&1) rF|= flagC;
   v>>= 1;
+  v|= oldc;
+  if (!v) rF|= flagZ;
+  acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+/* C<-XXXXXXXX<-+
+   |____________|
+*/
+
+int
+cl_f8::RLCW(t_mem code)
+{
+  u16_t v= acc16->get();
+  u16_t oldc= (rF&flagC)?1:0;
+  rF&= ~flagCZ;
+  if (v&0x8000) rF|= flagC;
+  v<<= 1;
   v|= oldc;
   if (!v) rF|= flagZ;
   acc16->W(v);
