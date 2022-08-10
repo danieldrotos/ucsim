@@ -957,9 +957,10 @@ int
 cl_f8::SRA(t_mem code)
 {
   i8_t v= acc8->get();
-  rF&= ~flagC;
+  rF&= ~flagCZ;
   if (v&1) rF|= flagC;
   v>>= 1;
+  if (!v) rF|= flagZ;
   cF.W(rF);
   acc8->W(v);
   return resGO;
@@ -1129,6 +1130,19 @@ cl_f8::RLCW(t_mem code)
   if (!v) rF|= flagZ;
   acc16->W(v);
   cF.W(rF);
+  return resGO;
+}
+
+int
+cl_f8::SRAW(t_mem code)
+{
+  i16_t v= acc16->get();
+  rF&= ~flagCZ;
+  if (v&1) rF|= flagC;
+  v>>= 1;
+  if (!v) rF|= flagZ;
+  cF.W(rF);
+  acc16->W(v);
   return resGO;
 }
 
