@@ -44,8 +44,10 @@ cl_simf8::mk_controller(void)
 
   /* Replace 1s to flagO in p table */
   for (int i= 0; i<256; i++)
-    if (ptab[i]) // TODO: is negation needed?
+    if (!ptab[i]) // odd=1, even=0
       ptab[i]= flagO;
+    else
+      ptab[i]= 0;
   type_option.init();
   type_option.use("cpu_type");
   i= 0;
