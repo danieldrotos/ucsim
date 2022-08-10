@@ -1172,5 +1172,18 @@ cl_f8::ADDW_Y_SP(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::CPW(t_mem code)
+{
+  u16_t a, b;
+  a= acc16->get();
+  b= fetch();
+  b+= fetch()*256;
+  b= ~b;
+  b++;
+  add16(a, b, 0, true);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

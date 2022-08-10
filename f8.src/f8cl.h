@@ -438,6 +438,7 @@ public:
   int ADDW_SP_D(t_mem code);
   int ADDW_A_D(t_mem code);
   int ADDW_Y_SP(t_mem code);
+  int CPW(t_mem code);
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);
