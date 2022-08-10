@@ -439,6 +439,9 @@ public:
   int ADDW_A_D(t_mem code);
   int ADDW_Y_SP(t_mem code);
   int CPW(t_mem code);
+  int INCNW(t_mem code);
+  int DECW_NSP(t_mem code);
+  int SLLW_A_XL(t_mem code);
   
   // branches: ibranch.cc
   virtual int JP_I(t_mem code);

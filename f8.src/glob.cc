@@ -109,8 +109,8 @@ struct dis_entry disass_f8[]=
     { 0x91, 0xff, ' ', 2, "xch %a,('nsp_8')" },
     { 0x92, 0xff, ' ', 1, "xch %a,('y_8')" },
     { 0x93, 0xff, ' ', 1, "xch %L,%H," },
-    { 0xf4, 0xff, ' ', 1, "xch y,('z_16')" },
-    { 0xf5, 0xff, ' ', 1, "xch z,('nsp_16')" },
+    { 0xf4, 0xff, ' ', 1, "xchw y,('z_16')" },
+    { 0xf5, 0xff, ' ', 1, "xchw z,('nsp_16')" },
 
     { 0x9b, 0xff, ' ', 1, "cax ('y_8'),xh,yl" },
     { 0xf9, 0xff, ' ', 1, "caxw ('y_16'),z,x" },
@@ -292,6 +292,9 @@ struct dis_entry disass_f8[]=
     { 0xeb, 0xff, ' ', 2, "addw %A,#%d"},
     { 0xec, 0xff, ' ', 2, "addw y,sp"},
     { 0xf8, 0xff, ' ', 3, "cpw %A,#'i16'"},
+    { 0xf6, 0xff, ' ', 1, "incnw %A"},
+    { 0xf7, 0xff, ' ', 2, "decw 'nsp_16'"},
+    { 0xe5, 0xff, ' ', 1, "sllw %A,xl"},
 
     // branch
     { 0x64, 0xff, ' ', 3, "jp #'a16'" },
@@ -382,8 +385,8 @@ u8_t allowed_prefs[256]= {
   /* b_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,PN,PN,  PN,PN,PN,PN,
   /* c_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* d_ */    PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,
-  /* e_ */    P6,P6,P6,P6,  P6, 0, 0, 0,  PN, 0,PN,P6,  PN, 0, 0, 0,
-  /* f_ */    PN,P2,P2,P2,   0, 0, 0, 0,  P6,PN,P6,P6,   0, 0, 0, 0
+  /* e_ */    P6,P6,P6,P6,  P6,P6, 0, 0,  PN, 0,PN,P6,  PN, 0, 0, 0,
+  /* f_ */    PN,P2,P2,P2,  PN,PN,P6,PN,  P6,PN,P6,P6,   0, 0, 0, 0
 };
 
 

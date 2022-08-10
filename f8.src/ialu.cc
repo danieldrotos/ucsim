@@ -1185,5 +1185,42 @@ cl_f8::CPW(t_mem code)
   return resGO;
 }
 
+int
+cl_f8::INCNW(t_mem code)
+{
+  acc16->W(acc16->get() + 1);
+  return resGO;
+}
+
+int
+cl_f8::DECW_NSP(t_mem code)
+{
+  // TODO: flags untuched?
+  u16_t a= a_n_sp();
+  u16_t v= read_addr(rom, a);
+  vc.rd+= 2;
+  v--;
+  rom->write(a, v);
+  rom->write(a+1, v>>8);
+  vc.wr+= 2;
+  return resGO;
+}
+
+/* C<-XXXXXXXX<-0 */
+
+int
+cl_f8::SLLW_A_XL(t_mem code)
+{
+  u32_t v= acc16->get();
+  rF&= ~flagCZ;
+  v<<= rXL;
+  if (v & 0x10000) rF|= flagC;
+  v&= 0xffff;
+  if (!v) rF|= flagZ;
+  acc16->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of f8.src/ialu.cc */

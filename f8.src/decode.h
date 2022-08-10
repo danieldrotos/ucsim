@@ -280,6 +280,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADDW_A_D	instruction_eb
 #define ADDW_Y_SP	instruction_ec
 #define CPW		instruction_f8
+#define INCNW		instruction_f6
+#define DECW_NSP	instruction_f7
+#define SLLW_A_XL	instruction_e5
 
 // branches
 #define JP_I		instruction_64
