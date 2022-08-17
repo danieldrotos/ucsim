@@ -81,7 +81,7 @@ cl_f8::reset(void)
 {
   cl_uc::reset();
   clear_prefixes();
-  PC= 0;
+  PC= 0x4000;
 }
 
 void
