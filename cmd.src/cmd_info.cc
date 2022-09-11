@@ -266,7 +266,7 @@ COMMAND_DO_WORK_UC(cl_info_var_cmd)
   class cl_cvar *v;
   int i;
   //class cl_cmd_arg *params[2]= { cmdline->param(0), cmdline->param(1) };
-  char *s= NULL;
+  chars src;
   chars filter_by;
 
   i= 0;
@@ -277,42 +277,19 @@ COMMAND_DO_WORK_UC(cl_info_var_cmd)
       if (ps && *ps)
 	{
 	  if (ps[0] == '/')
-	    filter_by+= ps[1];
+	    filter_by= &ps[1];
 	  else
-	    s= ps;
+	    src= ps;
 	}	
       i++;
       a= cmdline->param(i);
     }
-  /*
-  if (cmdline->syntax_match(uc, STRING))
-    {
-      s= params[0]->get_svalue();
-      if (!s ||
-	  !*s)
-	s= NULL;
-    }
-  if (cmdline->syntax_match(uc, STRING STRING))
-    {
-      s= params[0]->get_svalue();
-      if (!s ||
-	  !*s)
-	s= NULL;
-      if (s && s[0]=='/')
-	{
-	  filter_by+= &s[1];
-	}
-      s= params[1]->get_svalue();
-      if (!s ||
-	  !*s)
-	s= NULL;
-    }
-  */
+
   for (i= 0; i < uc->vars->by_name.count; i++)
     {
       v= uc->vars->by_name.at(i);
-      if ((s == NULL && *(v->get_name()) != '.') ||
-          (s != NULL && strstr(v->get_name(), s) != NULL))
+      if ((src.empty() && *(v->get_name()) != '.') ||
+          (src.nempty() && strstr(v->get_name(), src.c_str()) != NULL))
 	{
 	  if (filter_by.nempty())
 	    {
