@@ -265,9 +265,26 @@ COMMAND_DO_WORK_UC(cl_info_var_cmd)
 {
   class cl_cvar *v;
   int i;
-  class cl_cmd_arg *params[1]= { cmdline->param(0) };
+  //class cl_cmd_arg *params[2]= { cmdline->param(0), cmdline->param(1) };
   char *s= NULL;
-  
+  chars filter_by;
+
+  i= 0;
+  class cl_cmd_arg *a= cmdline->param(i);
+  while (a != NULL)
+    {
+      char *ps= a->get_svalue();
+      if (ps && *ps)
+	{
+	  if (ps[0] == '/')
+	    filter_by+= ps[1];
+	  else
+	    s= ps;
+	}	
+      i++;
+      a= cmdline->param(i);
+    }
+  /*
   if (cmdline->syntax_match(uc, STRING))
     {
       s= params[0]->get_svalue();
@@ -275,20 +292,52 @@ COMMAND_DO_WORK_UC(cl_info_var_cmd)
 	  !*s)
 	s= NULL;
     }
+  if (cmdline->syntax_match(uc, STRING STRING))
+    {
+      s= params[0]->get_svalue();
+      if (!s ||
+	  !*s)
+	s= NULL;
+      if (s && s[0]=='/')
+	{
+	  filter_by+= &s[1];
+	}
+      s= params[1]->get_svalue();
+      if (!s ||
+	  !*s)
+	s= NULL;
+    }
+  */
   for (i= 0; i < uc->vars->by_name.count; i++)
     {
       v= uc->vars->by_name.at(i);
       if ((s == NULL && *(v->get_name()) != '.') ||
           (s != NULL && strstr(v->get_name(), s) != NULL))
-      v->print_info(con);
+	{
+	  if (filter_by.nempty())
+	    {
+	      if (strchr(filter_by.c_str(), (char)(v->defined_by)) == NULL)
+		continue;
+	    }
+	  v->print_info(con);
+	}
     }
   return 0;
 }
 
 CMDHELP(cl_info_var_cmd,
-	"info variables [filter]",
+	"info variables [[/filter] search]",
 	"Information about variables",
-	"")
+	"This command prints info about all or selected variables.\n"
+	"To select some variables, \"search\" string can be used,\n"
+	"in this case those variables will be printed which name\n"
+	"contains the specified search string.\n"
+	"Filter option can be used to select variables according to\n"
+	"place where the variable is defined.\n"
+	" /p list predefined variables,\n"
+	" /u list user defined variables (by var command),\n"
+	" /d list variables read from debug info (cdb) file,\n" 
+	)
 
 
 /* End of cmd.src/cmd_info.cc */
