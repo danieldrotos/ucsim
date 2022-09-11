@@ -313,7 +313,7 @@ CMDHELP(cl_info_var_cmd,
 	"place where the variable is defined.\n"
 	" /p list predefined variables,\n"
 	" /u list user defined variables (by var command),\n"
-	" /d list variables read from debug info (cdb) file,\n" 
+	" /d list variables read from debug info (cdb) file.\n" 
 	)
 
 
