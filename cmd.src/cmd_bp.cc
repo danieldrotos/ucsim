@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdlib.h>
 
 //#include "ddconfig.h"
+#include "globals.h"
 
 // sim
 //#include "brkcl.h"
@@ -433,6 +434,57 @@ COMMAND_DO_WORK_UC(cl_commands_cmd)
 CMDHELP(cl_commands_cmd,
 	"commands [breakpoint-nr]",
 	"command_string",
+	"")
+
+
+/*
+ * DISPLAY [[/fmt] expr]
+ */
+
+COMMAND_DO_WORK_UC(cl_display_cmd)
+{
+  int i= 0;
+  chars fmt, exp;
+  const char *s;
+
+  for (i=0;i<cmdline->tokens->get_count();i++)
+    {
+      s= cmdline->tokens->at(i);
+      if (s && *s)
+	{
+	  if (s[0] == '/')
+	    fmt= s;
+	  else
+	    exp= s;
+	}
+    }
+  
+  if (exp.nempty())
+    {
+      // add new expr
+      class cl_display *d= new cl_display(fmt, exp);
+      uc->displays->add(d);
+    }
+  else
+    {
+      // print all exprs values
+      for (i= 0; i<uc->displays->get_count(); i++)
+	{
+	  class cl_display *d= (cl_display*)(uc->displays->at(i));
+	  con->dd_printf("%d:", d->nr);
+	  if (d->fmt.nempty())
+	    con->dd_printf("%s", d->fmt.c_str());
+	  con->dd_printf(" %s = ", d->c_str());
+	  t_mem v= application->eval(*d);
+	  con->print_expr_result(v, d->fmt);
+	}
+    }
+  return false;
+}
+
+CMDHELP(cl_display_cmd,
+	"display [[/fmt] expr",
+	"Print value of expression when simulation stops on breakpoint",
 	"")
 
 /* End of cmd.src/cmd_bp.cc */

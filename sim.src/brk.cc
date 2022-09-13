@@ -386,11 +386,6 @@ brk_coll::bp_at(t_addr addr)
 }
 
 
-cl_display::cl_display(char *s):
-  chars(s)
-{
-}
-
 t_index
 cl_display_list::add(void *item)
 {

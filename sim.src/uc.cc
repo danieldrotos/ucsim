@@ -858,6 +858,9 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
 
   cmdset->add(cmd= new cl_commands_cmd("commands", 0));
   cmd->init();
+
+  cmdset->add(cmd= new cl_display_cmd("display", 0));
+  cmd->init();
   
   {
     super_cmd= (class cl_super_cmd *)(cmdset->get_cmd("get"));

@@ -159,8 +159,9 @@ class cl_display: public chars
 {
 public:
   int nr;
+  chars fmt;
 public:
-  cl_display(char *s);
+  cl_display(const chars &f, const chars &e): chars(e) { nr=0; fmt= f; }
 };
 
 class cl_display_list: public cl_list
