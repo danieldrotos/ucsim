@@ -386,4 +386,21 @@ brk_coll::bp_at(t_addr addr)
 }
 
 
+cl_display::cl_display(char *s):
+  chars(s)
+{
+}
+
+t_index
+cl_display_list::add(void *item)
+{
+  t_index r= cl_list::add(item);
+  class cl_display *d;
+  d= (cl_display*)item;
+  if (d)
+    d->nr= ++cnt;
+  return r;
+}
+
+
 /* End of brk.cc */

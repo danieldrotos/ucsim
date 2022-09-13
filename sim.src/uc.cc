@@ -578,6 +578,7 @@ cl_uc::~cl_uc(void)
   delete events;
   delete fbrk;
   delete ebrk;
+  delete displays;
   delete it_levels;
   delete it_sources;
   delete stack_ops;
@@ -626,6 +627,7 @@ cl_uc::init(void)
     rom= address_space("rom"/*MEM_ROM_ID*/);
   ebrk= new brk_coll(2, 2, rom);
   fbrk= new brk_coll(2, 2, rom);
+  displays= new cl_display_list(2, 2, "displays");
   fbrk->Duplicates= false;
   brk_counter= 0;
   stop_at_time= 0;
