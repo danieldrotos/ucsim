@@ -180,6 +180,7 @@ public:
   }
 public:
   virtual t_index  add(void *item);
+  virtual void undisplay(int nr);
 };
 
 

@@ -397,5 +397,21 @@ cl_display_list::add(void *item)
   return r;
 }
 
+void
+cl_display_list::undisplay(int nr)
+{
+  class cl_display *d;
+  int i;
+  for (i= 0; i < count; i++)
+    {
+      d= (cl_display*)(at(i));
+      if (d->nr == nr)
+	{
+	  free_at(i);
+	  return;
+	}
+    }
+}
+
 
 /* End of brk.cc */

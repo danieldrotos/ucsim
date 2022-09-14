@@ -73,6 +73,9 @@ COMMAND_ON(uc,cl_commands_cmd);
 // DISPLAY
 COMMAND_ON(uc,cl_display_cmd);
 
+// UNDISPLAY
+COMMAND_ON(uc,cl_undisplay_cmd);
+
 
 #endif
 

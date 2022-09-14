@@ -487,4 +487,35 @@ CMDHELP(cl_display_cmd,
 	"Print value of expression when simulation stops on breakpoint",
 	"")
 
+
+/*
+ * UNDISPLAY [num]
+ */
+
+COMMAND_DO_WORK_UC(cl_undisplay_cmd)
+{
+  class cl_cmd_arg *params[1]= { cmdline->param(0) };
+
+  if (params[0]==NULL)
+    {
+      uc->displays->free_all();
+    }
+  else if (cmdline->syntax_match(uc, NUMBER))
+    {
+      uc->displays->undisplay(params[0]->value.number);
+    }
+  else
+    con->dd_printf("Syntax error.\n");
+  return false;
+}
+
+CMDHELP(cl_undisplay_cmd,
+	"undisplay [num]",
+	"Remove some expression to be displayed at breakpoint stop",
+	"Argument is number of expression to be removed,\n"
+	"\"display\" command can be used without argument to\n"
+	"check id number of the expressions.\n"
+	"No argument means remove all expressions.\n")
+
+
 /* End of cmd.src/cmd_bp.cc */
