@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ANSI-C Compiler
-; Version 4.0.0 #11528 (Linux)
+; File Created by SDCC : free open source ISO C Compiler 
+; Version 4.2.2 #13388 (Linux)
 ;--------------------------------------------------------
 	.module test
 	.optsdcc -mpdk15
@@ -24,10 +24,10 @@
 ;--------------------------------------------------------
 	.area DATA
 ;--------------------------------------------------------
-; overlayable items in ram 
+; overlayable items in ram
 ;--------------------------------------------------------
 ;--------------------------------------------------------
-; Stack segment in internal ram 
+; Stack segment in internal ram
 ;--------------------------------------------------------
 	.area	SSEG
 __start__stack:
@@ -38,7 +38,7 @@ __start__stack:
 ;--------------------------------------------------------
 	.area DABS (ABS)
 ;--------------------------------------------------------
-; interrupt vector 
+; interrupt vector
 ;--------------------------------------------------------
 	.area HOME
 __interrupt_vect:
@@ -63,11 +63,10 @@ p::
 	mov	a, #s_OSEG
 	add	a, #l_OSEG + 1
 	and	a, #0xfe
-	mov	sp, a
+	mov.io	sp, a
 	call	__sdcc_external_startup
-	goto	__sdcc_gs_init_startup
+	goto	s_GSINIT
 	.area GSINIT
-__sdcc_gs_init_startup:
 __sdcc_init_data:
 	mov	a, #s_DATA
 	mov	p, a
