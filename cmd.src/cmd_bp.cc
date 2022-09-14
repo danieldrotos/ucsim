@@ -467,17 +467,6 @@ COMMAND_DO_WORK_UC(cl_display_cmd)
     }
   else
     {
-      // print all exprs values
-      /*for (i= 0; i<uc->displays->get_count(); i++)
-	{
-	  class cl_display *d= (cl_display*)(uc->displays->at(i));
-	  con->dd_printf("%d:", d->nr);
-	  if (d->fmt.nempty())
-	    con->dd_printf("%s", d->fmt.c_str());
-	  con->dd_printf(" %s = ", d->c_str());
-	  t_mem v= application->eval(*d);
-	  con->print_expr_result(v, d->fmt);
-	  }*/
       uc->displays->do_display(con);
     }
   return false;
