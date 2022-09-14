@@ -468,7 +468,7 @@ COMMAND_DO_WORK_UC(cl_display_cmd)
   else
     {
       // print all exprs values
-      for (i= 0; i<uc->displays->get_count(); i++)
+      /*for (i= 0; i<uc->displays->get_count(); i++)
 	{
 	  class cl_display *d= (cl_display*)(uc->displays->at(i));
 	  con->dd_printf("%d:", d->nr);
@@ -477,15 +477,17 @@ COMMAND_DO_WORK_UC(cl_display_cmd)
 	  con->dd_printf(" %s = ", d->c_str());
 	  t_mem v= application->eval(*d);
 	  con->print_expr_result(v, d->fmt);
-	}
+	  }*/
+      uc->displays->do_display(con);
     }
   return false;
 }
 
 CMDHELP(cl_display_cmd,
-	"display [[/fmt] expr",
-	"Print value of expression when simulation stops on breakpoint",
-	"")
+	"display [[/fmt] expr]",
+	"Set expression to be displayed on breakpoint",
+	"/fmt can specify format as in \"expr\" command.\n"
+	"If no argument, print all expressions and their values.\n")
 
 
 /*

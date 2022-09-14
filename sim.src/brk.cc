@@ -413,5 +413,33 @@ cl_display_list::undisplay(int nr)
     }
 }
 
+void
+cl_display_list::do_display(class cl_console_base *con)
+{
+  class cl_commander_base *cmd= application->get_commander();
+  int i;
+  class cl_display *d;
+  if (!con)
+    {
+      if (!cmd)
+	return;
+      if ((con= cmd->frozen_console)==NULL)
+	con= cmd->actual_console;
+    }
+  if (!con)
+    return;
+  con->dd_color("answer");
+  for (i=0; i<count; i++)
+    {
+      d= (cl_display*)(at(i));
+      con->dd_printf("%d:", d->nr);
+      if (d->fmt.nempty())
+	con->dd_printf("%s", d->fmt.c_str());
+      con->dd_printf(" %s = ", d->c_str());
+      t_mem v= application->eval(*d);
+      con->print_expr_result(v, d->fmt);
+    }
+}
+
 
 /* End of brk.cc */
