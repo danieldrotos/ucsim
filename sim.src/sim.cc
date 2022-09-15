@@ -212,7 +212,6 @@ cl_sim::stop(int reason)
 	  if (con) {
 	    con->dd_printf("Event break\n");
 	    uc->print_regs(con);
-	    uc->print_disass(uc->instPC, con);
 	  }
 	  steps_done= 0;
 	  break;
