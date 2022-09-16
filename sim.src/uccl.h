@@ -501,7 +501,7 @@ public:
 					  int *bitnr_low);
   virtual t_addr bit_address(class cl_memory *mem,
                              t_addr mem_address,
-                             int bit_number) { return(-1); }
+                             int bit_number) { return(AU(-1)); }
 
   // messages from app to handle and broadcast
   virtual bool handle_event(class cl_event &event);
