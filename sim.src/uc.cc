@@ -621,6 +621,7 @@ cl_uc::init(void)
 	       "Cycles between input checks");
   reg_cell_var(&(application->ccyc), NULL, "ccyc",
 	       "Nr of cycles executed during simulation");
+  reg_cell_var(&cPC, &PC, "PC", "Program counter");
   // Memories
   make_memories();
   if (rom == NULL)

@@ -273,6 +273,7 @@ public:
   class cl_analyser_opt *analyser_opt;
   
   t_addr PC, instPC;		// Program Counter
+  class cl_cell32 cPC;		// Cell of PC
   bool inst_exec;		// Instruction is executed
   class cl_ticker *ticks;	// Nr of XTAL clocks
   class cl_ticker *isr_ticks;	// Time in ISRs
