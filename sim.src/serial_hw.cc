@@ -283,17 +283,34 @@ cl_serial_hw::set_cmd(class cl_cmdline *cmdline,
     }
   else if (cmdline->syntax_match(uc, STRING STRING))
     {
+      class cl_f *fi, *fo;
       char *p1= params[0]->value.string.string;
       const char *p2= params[1]->value.string.string;
       printf("==2 \"%s\" \"%s\"\n",p1,p2);
       if (strcmp(p1, "file")==0)
 	{
+	  if (p2 && *p2)
+	    {
+	      fi= mk_io(p2, "r");
+	      fo= mk_io(p2, "w");
+	      new_io(fi, fo);
+	    }
 	}
       if (strcmp(p1, "in")==0)
 	{
+	  if (p2 && *p2)
+	    {
+	      fi= mk_io(p2, "r");
+	      new_i(fi);
+	    }
 	}
       if (strcmp(p1, "out")==0)
 	{
+	  if (p2 && *p2)
+	    {
+	      fo= mk_io(p2, "w");
+	      new_o(fo);
+	    }
 	}
       if (strcmp(p1, "raw")==0)
 	{
