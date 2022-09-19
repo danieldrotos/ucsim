@@ -238,7 +238,7 @@ cl_serial_hw::cfg_help(t_addr addr)
 
 void
 cl_serial_hw::set_cmd(class cl_cmdline *cmdline,
-				class cl_console_base *con)
+		      class cl_console_base *con)
 {
   class cl_cmd_arg *params[2]= {
     cmdline->param(0),
@@ -286,7 +286,6 @@ cl_serial_hw::set_cmd(class cl_cmdline *cmdline,
       class cl_f *fi, *fo;
       char *p1= params[0]->value.string.string;
       const char *p2= params[1]->value.string.string;
-      printf("==2 \"%s\" \"%s\"\n",p1,p2);
       if (strcmp(p1, "file")==0)
 	{
 	  if (p2 && *p2)
@@ -301,7 +300,10 @@ cl_serial_hw::set_cmd(class cl_cmdline *cmdline,
 	  if (p2 && *p2)
 	    {
 	      fi= mk_io(p2, "r");
-	      new_i(fi);
+	      if (fi->opened())
+		new_i(fi);
+	      else
+		con->dd_cprintf("error", "Error opening file \"%s\"\n",p2);
 	    }
 	}
       if (strcmp(p1, "out")==0)
@@ -319,7 +321,13 @@ cl_serial_hw::set_cmd(class cl_cmdline *cmdline,
     }
   else
     {
-      con->dd_printf("set hardware uart[%d] in \"file\"\n", id);
+      con->dd_printf("set hardware uart[%d] raw   0|1\n", id);
+      con->dd_printf("set hardware uart[%d] file  \"file\"\n", id);
+      con->dd_printf("set hardware uart[%d] in    \"file\"\n", id);
+      con->dd_printf("set hardware uart[%d] out   \"file\"\n", id);
+      con->dd_printf("set hardware uart[%d] port  nr\n", id);
+      con->dd_printf("set hardware uart[%d] iport nr\n", id);
+      con->dd_printf("set hardware uart[%d] oport nr\n", id);
     }
 }
 
@@ -416,10 +424,14 @@ cl_serial_hw::new_o(class cl_f *f_out)
   io->replace_files(true, io->get_fin(), f_out);
   if (!f_out)
     return;
-  f_out->set_telnet(!raw);
-  if (!raw)
+  enum file_type ft= f_out->determine_type();
+  if ((ft != F_FILE) && (ft != F_CHAR))
     {
-      io->tu_reset();
+      f_out->set_telnet(!raw);
+      if (!raw)
+	{
+	  io->tu_reset();
+	}
     }
 }
 
