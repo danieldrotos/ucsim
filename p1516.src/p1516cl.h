@@ -54,7 +54,7 @@ public:
   class cl_porto *pa, *pb, *pc, *pd;
   class cl_porti *pi, *pj;
 public:
-  class cl_address_space *rom;
+  //class cl_address_space *rom;
  public:
   cl_p1516(class cl_sim *asim);
   virtual int init(void);
