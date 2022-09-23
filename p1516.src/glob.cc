@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <stdio.h>
+
 #include "glob.h"
 
 
@@ -69,6 +71,19 @@ struct dis_entry disass_p1516[]=
    { 0x07000900, 0x0f000f80, ' ', 1, "clrc", false },
    
    { 0, 0, 0, 0, 0, 0 }
+  };
+
+struct cpu_entry cpus_p1516[]=
+  {
+    { "P1516"		, CPU_P1516, 0, "P1516", "" },
+    { "1"		, CPU_P1516, 0, "P1516", "" },
+    { "5"		, CPU_P1516, 0, "P1516", "" },
+    { "6"		, CPU_P1516, 0, "P1516", "" },
+    { "P2223"		, CPU_P2223, 0, "P2223", "" },
+    { "2"		, CPU_P2223, 0, "P2223", "" },
+    { "3"		, CPU_P2223, 0, "P2223", "" },
+
+    {NULL, CPU_NONE, 0, "", ""}
   };
 
 /* End of p1516.src/glob.cc */
