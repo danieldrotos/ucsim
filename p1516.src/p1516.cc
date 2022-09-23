@@ -387,6 +387,28 @@ cl_p1516::print_regs(class cl_console_base *con)
 }
 
 
+bool
+cl_p1516::cond(t_mem code)
+{
+  t_mem cond= (code & 0xf0000000) >> 28;
+  if ((cond&1) == 1)
+    {
+      u8_t flag= 0, fv, v;
+      switch (cond>>2)
+	{
+	case 0: flag= F&S; break;
+	case 1: flag= F&C; break;
+	case 2: flag= F&Z; break;
+	case 3: flag= F&O; break;
+	}
+      fv= flag?1:0;
+      v= (cond&2)?1:0;
+      if (fv != v)
+	return false;
+    }
+  return true;
+}
+
 t_mem
 cl_p1516::inst_ad(t_mem ra, t_mem rb, u32_t c)
 {
@@ -524,7 +546,6 @@ cl_p1516::exec_inst(void)
 {
   t_mem code;
   u8_t inst;
-  u8_t cond;
   bool fe;
   
   PC= R[15];
@@ -535,6 +556,7 @@ cl_p1516::exec_inst(void)
   if (fe)
     return(resBREAKPOINT);
 
+  /*
   cond= (code & 0xf0000000) >> 28;
   if ((cond&1) == 1)
     {
@@ -551,6 +573,9 @@ cl_p1516::exec_inst(void)
       if (fv != v)
 	return resGO;
     }
+  */
+  if (!cond(code))
+    return resGO;
   
   inst= (code & 0x0f000000) >> 24;
   if (code & 0x08000000)

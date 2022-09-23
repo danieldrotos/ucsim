@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "simp1516cl.h"
 #include "p1516cl.h"
+#include "p2223cl.h"
 #include "glob.h"
 
 
@@ -61,7 +62,9 @@ cl_simp1516::mk_controller(void)
     {
     case CPU_P1516:
       uc= new cl_p1516(this);
-      uc->init();
+      return uc;
+    case CPU_P2223:
+      uc= new cl_p2223(this);
       return uc;
     default:
       fprintf(stderr, "Unknown processor type\n");

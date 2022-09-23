@@ -73,6 +73,12 @@ struct dis_entry disass_p1516[]=
    { 0, 0, 0, 0, 0, 0 }
   };
 
+struct dis_entry disass_p2223[]=
+  {
+   
+   { 0, 0, 0, 0, 0, 0 }
+  };
+
 struct cpu_entry cpus_p1516[]=
   {
     { "P1516"		, CPU_P1516, 0, "P1516", "" },

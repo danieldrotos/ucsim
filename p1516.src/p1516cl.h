@@ -39,9 +39,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 enum flags
   {
    S= 1,
+   N= 1,
    C= 2,
    Z= 4,
-   O= 8
+   O= 8,
+   V= 8
   };
 
 class cl_p1516: public cl_uc
@@ -62,7 +64,7 @@ public:
   virtual const char *id_string(void);
   virtual void reset(void);
   virtual void set_PC(t_addr addr);
-
+  
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
   virtual int clock_per_cycle(void) { return 4; }
@@ -73,6 +75,7 @@ public:
   virtual void analyze(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
 
+  virtual bool cond(t_mem code);
   virtual t_mem inst_ad(t_mem ra, t_mem rb, u32_t c);
   virtual int inst_alu(t_mem code);
   virtual int exec_inst(void);
@@ -84,4 +87,4 @@ public:
 
 #endif
 
-/* End of p1516.src/p1516.cc */
+/* End of p1516.src/p1516cl.h */
