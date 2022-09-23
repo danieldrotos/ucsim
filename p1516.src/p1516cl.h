@@ -50,6 +50,7 @@ public:
   u8_t F;
   u32_t R[16];
   cl_memory_cell *RC[16];
+  cl_cell8 cF;
   cl_address_space *regs;
   class cl_porto *pa, *pb, *pc, *pd;
   class cl_porti *pi, *pj;
@@ -77,9 +78,9 @@ public:
   virtual int exec_inst(void);
 };
 
-#define SET_C(v) ( F= (F&~C) | ((v)?C:0) )
-#define SET_Z(v) ( F= (F&~Z) | ((v==0)?Z:0) )
-#define SET_S(v) ( F= (F&~S) | ((v)?S:0) )
+#define SET_C(v) ( cF.W( (F&~C) | ((v)?C:0) ))
+#define SET_Z(v) ( cF.W( (F&~Z) | ((v==0)?Z:0) ))
+#define SET_S(v) ( cF.W( (F&~S) | ((v)?S:0) ))
 
 #endif
 
