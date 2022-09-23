@@ -1,0 +1,55 @@
+/*
+ * Simulator of microcontrollers (p2223cl.h)
+ *
+ * Copyright (C) 2020,20 Drotos Daniel, Talker Bt.
+ * 
+ * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
+ *
+ */
+
+/* This file is part of microcontroller simulator: ucsim.
+
+UCSIM is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+UCSIM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with UCSIM; see the file COPYING.  If not, write to the Free
+Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+02111-1307, USA. */
+/*@1@*/
+
+#ifndef P2223CL_HEADER
+#define P2223CL_HEADER
+
+#include "p1516cl.h"
+
+
+#define CLP2 cl_p2223
+
+class cl_p2223: public cl_p1516
+{
+public:
+  cl_p2223(class cl_sim *asim);
+  virtual int init(void);
+  virtual const char *id_string(void);
+
+  virtual struct dis_entry *dis_tbl(void);
+  virtual char *disassc(t_addr addr, chars *comment);
+  //virtual void analyze_start(void);
+  virtual void analyze(t_addr addr);
+
+  virtual bool cond(t_mem code);
+  virtual int exec_inst(void);
+};
+
+
+#endif
+
+/* End of p1516.src/p2223cl.h */
