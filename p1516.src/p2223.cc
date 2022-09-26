@@ -57,11 +57,12 @@ CLP2::dis_tbl(void)
 char *
 CLP2::disassc(t_addr addr, chars *comment)
 {
-  chars work= chars(), temp= chars();
+  chars work= chars(), temp= chars(), fmt;
   const char *b;
   t_mem code, data= 0;
   int i;
-
+  bool first= true;
+  
   code= rom->get(addr);
   
   i= 0;
@@ -74,30 +75,61 @@ CLP2::disassc(t_addr addr, chars *comment)
     }
   b= dis_tbl()[i].mnemonic;
 
+  work= "";
+  
   data= (code&0xf0000000)>>28;
-  if (((data & 1) == 0) || (dis_tbl()[i].branch == 'M'))
+  if ((dis_tbl()[i].branch == 'M'))
     work.append("   ");
   else
     {
-      switch (data>>2)
+      switch (data)
 	{
-	case 0: work.append("S"); break;
-	case 1: work.append("C"); break;
-	case 2: work.append("Z"); break;
-	case 3: work.append("O"); break;
+	case   0: work.append("   "); break;
+	case   1: work.append("EQ "); break;
+	case   2: work.append("NE "); break;
+	case   3: work.append("CS "); break;
+	case   4: work.append("CC "); break;
+	case   5: work.append("MI "); break;
+	case   6: work.append("PL "); break;
+	case   7: work.append("VS "); break;
+	case   8: work.append("VC "); break;
+	case 0x9: work.append("HI "); break;
+	case 0xA: work.append("LS "); break;
+	case 0xB: work.append("GE "); break;
+	case 0xC: work.append("LT "); break;
+	case 0xD: work.append("GT "); break;
+	case 0xE: work.append("LE "); break;
+	case 0xF: work.append("   "); break;
 	}
-      if (data&2)
-	work.append("1 ");
-      else
-	work+= "0 ";
     }
 
-  while (*b)
+  first= true;
+  for (i=0; b[i]; i++)
     {
-      if (*b == '%')
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '\'')
+	{
+	  fmt= "";
+	  i++;
+	  while (b[i] && (b[i]!='\''))
+	    fmt.append(b[i++]);
+	  if (!b[i]) i--;
+	  if (fmt.empty())
+	    work.append("'");
+	  if (strcmp(fmt.c_str(), "*Ra") == 0)
+	    {
+	      data= (code & 0x000f0000)>>16;
+	      work.appendf("*r%d", data);
+	    }
+	} 
+      if (b[i] == '%')
 	{
 	  b++;
-	  switch (*(b++))
+	  switch (b[i])
 	    {
 	    case 'd': // Rd
 	      data= (code & 0x00f00000)>>20;
@@ -121,7 +153,7 @@ CLP2::disassc(t_addr addr, chars *comment)
 		}
 	      break;
 	    case 'b': // Rb
-	      data= (code & 0x0000f000)>>12;
+	      data= (code & 0x00000f00)>>8;
 	      work.appendf("r%d", data);
 	      break;
 	    case '0': // LDL0
@@ -155,7 +187,7 @@ CLP2::disassc(t_addr addr, chars *comment)
 	    comment->append(temp);
 	}
       else
-	work.append(*(b++));
+	work+= b[i];
     }
 
   return strdup(work.c_str());
