@@ -62,7 +62,8 @@ CLP2::disassc(t_addr addr, chars *comment)
   t_mem code, data= 0;
   int i;
   bool first= true;
-  
+  t_addr a;
+    
   code= rom->get(addr);
   
   i= 0;
@@ -124,6 +125,25 @@ CLP2::disassc(t_addr addr, chars *comment)
 	    {
 	      data= (code & 0x000f0000)>>16;
 	      work.appendf("*r%d", data);
+	    }
+	  if (strcmp(fmt.c_str(), "ar") == 0)
+	    {
+	      // CALL abs/rel
+	      if (F & A)
+		{
+		  work.appendf("0x%x", a= (code & 0x03ffffff));
+		}
+	      else
+		{
+		  i32_t ia;
+		  ia= (code & 0x03ffffff);
+		  if (ia    & 0x02000000)
+		    ia|= 0xfc000000;
+		  a= addr+1+ia;
+		  work.appendf("pc%+d", ia);
+		  if (comment)
+		    comment->format("; 0x%x", a);
+		}
 	    }
 	} 
       if (b[i] == '%')

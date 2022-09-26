@@ -89,6 +89,8 @@ struct dis_entry disass_p2223[]=
    { 0x0500c000, 0x0f00e000, ' ', 1, "ld %d=mem[%a+,%b]", false },
    { 0x0500e000, 0x0f00e000, ' ', 1, "ld %d=mem[+%a,%b]", false },
 
+   { 0x08000000, 0x0c000000, ' ', 1, "call 'ar', false", false },
+   
    { 0, 0, 0, 0, 0, 0 }
   };
 
