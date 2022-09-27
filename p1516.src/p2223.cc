@@ -140,12 +140,25 @@ CLP2::disassc(t_addr addr, chars *comment)
 		  if (ia    & 0x02000000)
 		    ia|= 0xfc000000;
 		  a= addr+1+ia;
-		  work.appendf("pc%+d", ia);
+		  work.appendf("pc%c0x%x", (ia<0)?'-':'+', (ia<0)?-ia:ia);
 		  if (comment)
 		    comment->format("; 0x%x", a);
 		}
 	    }
-	} 
+	  if (strcmp(fmt.c_str(), "s20") == 0)
+	    {
+	      // CALL Rd,s20 ; indexed
+	      i32_t ia= (code & 0x000fffff);
+	      if (ia & 0x00080000) ia|= 0xfff00000;
+	      data= (code & 0x00f00000)>>20;
+	      work.appendf("r%d,%c0x%x", data, (ia<0)?'-':'+', (ia<0)?-ia:ia);
+	      a= R[data]+ia;
+	      if (comment)
+		comment->format("; 0x%x%c0x%x=0x%x", R[data],
+				(ia<0)?'-':'+',
+				(ia<0)?-ia:ia, a);
+	    }
+	}
       if (b[i] == '%')
 	{
 	  b++;

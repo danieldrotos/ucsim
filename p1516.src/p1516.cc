@@ -271,7 +271,7 @@ cl_p1516::disassc(t_addr addr, chars *comment)
 		{
 		  chars n= "";
 		  addr_name(R[data], rom, &n);
-		  comment->format("; [%08x%s]= %08x",
+		  comment->format("; [0x%08x%s]= 0x%08x",
 				  R[data],
 				  n.c_str(),
 				  rom->get(R[data]));

@@ -77,19 +77,20 @@ struct dis_entry disass_p2223[]=
   {
    { 0x00000000, 0x0fffffff, ' ', 1, "nop", false },
 
-   { 0x04000000, 0x0f008000, ' ', 1, "st mem[%a,%b]=%d", false },
-   { 0x04008000, 0x0f00e000, ' ', 1, "st mem[%a-,%b]=%d", false },
-   { 0x0400a000, 0x0f00e000, ' ', 1, "st mem[-%a,%b]=%d", false },
-   { 0x0400c000, 0x0f00e000, ' ', 1, "st mem[%a+,%b]=%d", false },
-   { 0x0400e000, 0x0f00e000, ' ', 1, "st mem[+%a,%b]=%d", false },
+   { 0x04000000, 0x0f008000, ' ', 1, "st mem[%a,%b]:=%d", false },
+   { 0x04008000, 0x0f00e000, ' ', 1, "st mem[%a-,%b]:=%d", false },
+   { 0x0400a000, 0x0f00e000, ' ', 1, "st mem[-%a,%b]:=%d", false },
+   { 0x0400c000, 0x0f00e000, ' ', 1, "st mem[%a+,%b]:=%d", false },
+   { 0x0400e000, 0x0f00e000, ' ', 1, "st mem[+%a,%b]:=%d", false },
 
-   { 0x05000000, 0x0f008000, ' ', 1, "ld %d=mem[%a,%b]", false },
-   { 0x05008000, 0x0f00e000, ' ', 1, "ld %d=mem[%a-,%b]", false },
-   { 0x0500a000, 0x0f00e000, ' ', 1, "ld %d=mem[-%a,%b]", false },
-   { 0x0500c000, 0x0f00e000, ' ', 1, "ld %d=mem[%a+,%b]", false },
-   { 0x0500e000, 0x0f00e000, ' ', 1, "ld %d=mem[+%a,%b]", false },
+   { 0x05000000, 0x0f008000, ' ', 1, "ld %d:=mem[%a,%b]", false },
+   { 0x05008000, 0x0f00e000, ' ', 1, "ld %d:=mem[%a-,%b]", false },
+   { 0x0500a000, 0x0f00e000, ' ', 1, "ld %d:=mem[-%a,%b]", false },
+   { 0x0500c000, 0x0f00e000, ' ', 1, "ld %d:=mem[%a+,%b]", false },
+   { 0x0500e000, 0x0f00e000, ' ', 1, "ld %d:=mem[+%a,%b]", false },
 
-   { 0x08000000, 0x0c000000, ' ', 1, "call 'ar', false", false },
+   { 0x0c000000, 0x0c000000, ' ', 1, "call 's20'", false },
+   { 0x08000000, 0x0c000000, ' ', 1, "call 'ar'", false },
    
    { 0, 0, 0, 0, 0, 0 }
   };
