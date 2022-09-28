@@ -158,11 +158,19 @@ CLP2::disassc(t_addr addr, chars *comment)
 				(ia<0)?'-':'+',
 				(ia<0)?-ia:ia, a);
 	    }
+	  if (strcmp(fmt.c_str(), "s16") == 0)
+	    {
+	      i32_t s16= code&0x0000ffff;
+	      if (code & 0x00008000)
+		s16|= 0xffff0000;
+	      work.appendf("%c0x%x", (s16<0)?'-':'+',
+			   (s16<0)?-s16:s16);
+	    }
 	  if (strcmp(fmt.c_str(), "s15") == 0)
 	    {
-	      i32_t s15= code&0x0000ffff;
-	      if (code & 0x00008000)
-		s15|= 0xffff0000;
+	      i32_t s15= code&0x00007fff;
+	      if (code & 0x00004000)
+		s15|= 0xffff8000;
 	      work.appendf("%c0x%x", (s15<0)?'-':'+',
 			   (s15<0)?-s15:s15);
 	    }
