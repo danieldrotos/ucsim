@@ -91,7 +91,20 @@ struct dis_entry disass_p2223[]=
 
    { 0x0c000000, 0x0c000000, ' ', 1, "call 's20'", false },
    { 0x08000000, 0x0c000000, ' ', 1, "call 'ar'", false },
-   
+
+   { 0x02000000, 0x0f0f0000, ' ', 1, "mov %d:=%b", false },
+   { 0x02040000, 0x0f0f0000, ' ', 1, "add %d:=%d+%b", false },
+   { 0x02050000, 0x0f0f0000, ' ', 1, "adc %d:=%d+%b", false },
+   { 0x02060000, 0x0f0f0000, ' ', 1, "sub %d:=%d-%b", false },
+   { 0x02070000, 0x0f0f0000, ' ', 1, "sbb %d:=%d-%b", false },
+   { 0x02080000, 0x0f0f0000, ' ', 1, "cmp F:=%d-%b", false },
+   { 0x02090000, 0x0f0f0000, ' ', 1, "mul %d:=%d*%b", false },
+   { 0x020a0000, 0x0f0f0000, ' ', 1, "and %d:=%d&%b", false },
+   { 0x020b0000, 0x0f0f0000, ' ', 1, "or %d:=%d&%b", false },
+   { 0x020c0000, 0x0f0f0000, ' ', 1, "xor %d:=%d^%b", false },
+   { 0x020d0000, 0x0f0f0000, ' ', 1, "plus %d:=%d+%b", false },
+   { 0x020e0000, 0x0f0f0000, ' ', 1, "test F:=%d&~%b", false },
+     
    { 0, 0, 0, 0, 0, 0 }
   };
 

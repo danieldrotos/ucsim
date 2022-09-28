@@ -158,6 +158,7 @@ CLP2::disassc(t_addr addr, chars *comment)
 				(ia<0)?'-':'+',
 				(ia<0)?-ia:ia, a);
 	    }
+	  
 	}
       if (b[i] == '%')
 	{
