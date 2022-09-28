@@ -385,6 +385,27 @@ CLP2::inst_alu_1op(t_mem code)
       SET_C(c2);
       setZSw(R[d]);
       break;
+    case 0x8: // SHL
+      SET_C(R[d] & 0x80000000);
+      RC[d]->W(R[d] << 1);
+      setZSw(R[d]);
+      break;
+    case 0x9: // SHR
+      SET_C(R[d] & 1);
+      RC[d]->W(R[d] >> 1);
+      setZSw(R[d]);
+      break;
+    case 0xa: //SHA      
+      SET_C(R[d] & 1);
+      RC[d]->W(((i32_t)(R[d])) >> 1);
+      setZSw(R[d]);
+      break;
+    case 0xe: // GETF
+      RC[d]->W(F);
+      break;
+    case 0xf: // SETF
+      cF.W(R[d] & 0x7f);
+      break;
     }
   return resGO;
 }
