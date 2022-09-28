@@ -330,28 +330,60 @@ CLP2::inst_alu_1op(t_mem code)
 {
   u8_t  d= (code & 0x00f00000) >> 20;
   u8_t op= (code & 0x000f0000) >> 16;
+  u8_t c1, c2;
   switch (op)
     {
     case 0x0: // ZEXB
       RC[d]->W(R[d] & 0x000000ff);
+      setZSw(R[d]);
       break;
     case 0x1: // ZEXW
       RC[d]->W(R[d] & 0x0000ffff);
+      setZSw(R[d]);
       break;
     case 0x2: // SEXB
       R[d]= R[d] & 0x000000ff;
       if (R[d] & 0x00000080)
 	R[d]|= 0xffffff00;
       RC[d]->W(R[d]);
+      setZSw(R[d]);
       break;
     case 0x3: // SEXW
       R[d]= R[d] & 0x0000ffff;
       if (R[d] & 0x00008000)
 	R[d]|= 0xffff0000;
       RC[d]->W(R[d]);
+      setZSw(R[d]);
       break;
     case 0x4: // NOT
       RC[d]->W(~R[d]);
+      setZSw(R[d]);
+      break;
+    case 0x5: // NEG
+      {
+	/*i32_t i32= R[d];
+	i32= -i32;
+	RC[d]->W(i32);
+	setZSw(R[d]);*/
+	RC[d]->W(inst_ad(0, ~R[d], 1));
+      }
+      break;
+    case 0x6: // ROR
+      c1= (F&C)?1:0;
+      c2= R[d] & 1;
+      R[d]= R[d] >> 1;
+      if (c1)
+	R[d]|= 0x80000000;
+      RC[d]->W(R[d]);
+      SET_C(c2);
+      setZSw(R[d]);
+      break;
+    case 0x7: // ROL
+      c1= (F&C)?1:0;
+      c2= (R[d] & 0x80000000)?1:0;
+      R[d]= (R[d]<<1) + c1;
+      SET_C(c2);
+      setZSw(R[d]);
       break;
     }
   return resGO;

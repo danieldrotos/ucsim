@@ -45,7 +45,6 @@ cl_p1516::init(void)
 {
   int i;
   cl_uc::init();
-  F= 0;
   for (i=0; i<16; i++)
     R[i]= 0;
   reg_cell_var(&cF, &F, "F", "Flag register");
@@ -62,6 +61,7 @@ void
 cl_p1516::reset(void)
 {
   PC= R[15]= 0;
+  F&= ~(A|U|P);
 }
   
 void
@@ -416,7 +416,7 @@ cl_p1516::inst_ad(t_mem ra, t_mem rb, u32_t c)
   u32_t rd;
   
   big= ra + rb + c;
-  F= 0;
+  F&= C|S|Z|O;
   if (big > 0xffffffff)
     F|= C;
   rd= big;
@@ -454,7 +454,7 @@ cl_p1516::inst_alu(t_mem code)
       RC[d]->W(inst_ad(R[a], R[b], (F&C)?1:0));
       break;
     case 2: // SUB
-      RC[d]->W(inst_ad(R[a], ~(RC[b]->R()), 1));
+      RC[d]->W(inst_ad(R[a], ~(R[b]), 1));
       break;
     case 3: // SBB
       RC[d]->W(inst_ad(R[a], ~(R[b]), (F&C)?1:0));
@@ -505,9 +505,10 @@ cl_p1516::inst_alu(t_mem code)
     case 12: // ROR
       c1= (F&C)?1:0;
       c2= R[a] & 1;
-      RC[d]->W(R[a] >> 1);
+      R[d]= R[a] >> 1;
       if (c1)
 	R[d]|= 0x80000000;
+      RC[d]->W(R[d]);
       SET_C(c2);
       SET_Z(R[d]);
       break;

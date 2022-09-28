@@ -33,6 +33,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define CLP2 cl_p2223
 
+#define setZSw(v)  { F&= (Z|S); if (!v) F|=Z; if (v&0x80000000) F|=S; cF.W(F); }
+#define setZSnw(v) { F&= (Z|S); if (!v) F|=Z; if (v&0x80000000) F|=S; }
+
 class cl_p2223: public cl_p1516
 {
 public:
