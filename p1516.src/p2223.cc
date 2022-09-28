@@ -540,6 +540,48 @@ CLP2::inst_alu(t_mem code)
 }
 
 int
+CLP2::inst_mem(t_mem code)
+{
+  u8_t d, a, b;
+  i32_t offset;
+  bool w= (code&0x00008000), u, p;
+  d= (code & 0x00f00000) >> 20;
+  a= (code & 0x000f0000) >> 16;
+  b= (code & 0x00000f00) >> 8;
+  if (code & 0x02000000)
+    {
+      offset= code & 0x00007fff;
+      if (offset & 0x00004000)
+	offset|= 0xffff8000;
+      u= F&U;
+      p= F&P;
+    }
+  else
+    {
+      offset= R[b];
+      u= code & 0x00004000;
+      p= code & 0x00002000;
+    }
+  
+  t_addr org= R[a]+offset;
+  t_addr chg, addr;
+  chg= org+(u?+1:-1);
+  addr= p?chg:chg;
+  
+  if (code & 0x01000000)
+    // LD
+    RC[d]->W(rom->read(addr));
+  else
+    // ST
+    rom->write(addr, R[d]);
+  
+  if (w)
+    RC[a]->W(chg);
+  
+  return resGO;
+}
+
+int
 CLP2::exec_inst(void)
 {
   t_mem code;
@@ -601,8 +643,11 @@ CLP2::exec_inst(void)
     {
     case 0: // nop
       break;
-    case 0x1: case 0x2: case 0x3:
+    case 1: case 2: case 3:
       ret= inst_alu(code);
+      break;
+    case 4: case 5: case 6: case 7:
+      ret= inst_mem(code);
       break;
     }
   PC= R[15];

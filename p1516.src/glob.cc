@@ -123,11 +123,11 @@ struct dis_entry disass_p2223[]=
    { 0x03070000, 0x0f0f0000, ' ', 1, "sbb %d:=%d-#'s16'", false },
    { 0x03080000, 0x0f0f0000, ' ', 1, "cmp F:=%d-#'s16'", false },
    { 0x03090000, 0x0f0f0000, ' ', 1, "mul %d:=%d*#'s16'", false },
-   { 0x030a0000, 0x0f0f0000, ' ', 1, "plus %d:=%d&#'s16'", false },
-   { 0x030c0000, 0x0f0f0000, ' ', 1, "test %d:=%d|#'u16'", false },
-   { 0x030d0000, 0x0f0f0000, ' ', 1, "or %d:=%d^#'u16'", false },
-   { 0x030e0000, 0x0f0f0000, ' ', 1, "xor %d:=%d+#'u16'", false },
-   { 0x030f0000, 0x0f0f0000, ' ', 1, "and %d:=%d&~#'and16'", false },
+   { 0x030a0000, 0x0f0f0000, ' ', 1, "plus %d:=%d+#'s16'", false },
+   { 0x030c0000, 0x0f0f0000, ' ', 1, "test %d:=%d&~#'u16'", false },
+   { 0x030d0000, 0x0f0f0000, ' ', 1, "or %d:=%d|#'u16'", false },
+   { 0x030e0000, 0x0f0f0000, ' ', 1, "xor %d:=%d^#'u16'", false },
+   { 0x030f0000, 0x0f0f0000, ' ', 1, "and %d:=%d&#'and16'", false },
 
    // ALU 1op
    { 0x01000000, 0x0f0f0000, ' ', 1, "zexb %d", false },

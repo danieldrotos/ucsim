@@ -51,6 +51,7 @@ public:
   virtual bool cond(t_mem code);
   virtual int inst_alu_1op(t_mem code);
   virtual int inst_alu(t_mem code);
+  virtual int inst_mem(t_mem code);
   virtual int exec_inst(void);
 };
 
