@@ -110,7 +110,7 @@ CLP2::disassc(t_addr addr, chars *comment)
       if ((b[i] == ' ') && first)
 	{
 	  first= false;
-	  while (work.len() < 6) work.append(' ');
+	  while (work.len() < 8) work.append(' ');
 	}
       if (b[i] == '\'')
 	{
@@ -326,11 +326,50 @@ CLP2::cond(t_mem code)
 }
 
 int
+CLP2::inst_alu_1op(t_mem code)
+{
+  u8_t  d= (code & 0x00f00000) >> 20;
+  u8_t op= (code & 0x000f0000) >> 16;
+  switch (op)
+    {
+    case 0x0: // ZEXB
+      RC[d]->W(R[d] & 0x000000ff);
+      break;
+    case 0x1: // ZEXW
+      RC[d]->W(R[d] & 0x0000ffff);
+      break;
+    case 0x2: // SEXB
+      R[d]= R[d] & 0x000000ff;
+      if (R[d] & 0x00000080)
+	R[d]|= 0xffffff00;
+      RC[d]->W(R[d]);
+      break;
+    case 0x3: // SEXW
+      R[d]= R[d] & 0x0000ffff;
+      if (R[d] & 0x00008000)
+	R[d]|= 0xffff0000;
+      RC[d]->W(R[d]);
+      break;
+    case 0x4: // NOT
+      RC[d]->W(~R[d]);
+      break;
+    }
+  return resGO;
+}
+
+int
+CLP2::inst_alu(t_mem code)
+{
+  if ((code & 0x0f000000) == 0x01000000)
+    return inst_alu_1op(code);
+  return resGO;
+}
+
+int
 CLP2::exec_inst(void)
 {
   t_mem code;
   u8_t inst;
-  u8_t cond;
   bool fe;
   
   PC= R[15];
@@ -341,44 +380,60 @@ CLP2::exec_inst(void)
   if (fe)
     return(resBREAKPOINT);
 
-  cond= (code & 0xf0000000) >> 28;
-  if ((cond&1) == 1)
-    {
-      u8_t flag= 0, fv, v;
-      switch (cond>>2)
-	{
-	case 0: flag= F&S; break;
-	case 1: flag= F&C; break;
-	case 2: flag= F&Z; break;
-	case 3: flag= F&O; break;
-	}
-      fv= flag?1:0;
-      v= (cond&2)?1:0;
-      if (fv != v)
-	return resGO;
-    }
+  if (!cond(code))
+    return resGO;
   
+  u8_t d;
+  d= (code & 0x00f00000) >> 20;
+
   inst= (code & 0x0f000000) >> 24;
   if (code & 0x08000000)
     {
+      t_addr call_a;
+      i32_t i32;
       // CALL
-      t_addr data= (code & 0x07ffffff);
+      if (code & 0x04000000)
+	{
+	  // CALL Rd,s20
+	  i32= (code & 0x000fffff);
+	  if (i32 & 0x00080000)
+	    i32|= 0xfff00000;
+	  call_a= R[d]+i32;
+	}
+      else
+	{
+	  // CALL abs/rel
+	  if (F&A)
+	    {
+	      // CALL abs
+	      call_a= code & 0x03ffffff;
+	    }
+	  else
+	    {
+	      // CALL rel
+	      i32= code & 0x03ffffff;
+	      if (i32 & 0x02000000)
+		i32|= 0xfc000000;
+	      call_a= PC+i32;
+	    }
+	}
       RC[14]->W(R[15]);
-      RC[15]->W(PC= data);
+      RC[15]->W(PC= call_a);
       return resGO;
     }
 
-  /*u8_t d, a;
-  d= (code & 0x00f00000) >> 20;
-  a= (code & 0x000f0000) >> 16;*/
+  int ret= resGO;
   switch (inst)
     {
     case 0: // nop
       break;
+    case 0x1: case 0x2: case 0x3:
+      ret= inst_alu(code);
+      break;
     }
   PC= R[15];
   
-  return resGO;
+  return ret;
 }
 
 /* End of p1516.src/p2223.cc */

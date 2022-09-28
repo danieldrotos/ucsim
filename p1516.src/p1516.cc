@@ -556,24 +556,6 @@ cl_p1516::exec_inst(void)
   if (fe)
     return(resBREAKPOINT);
 
-  /*
-  cond= (code & 0xf0000000) >> 28;
-  if ((cond&1) == 1)
-    {
-      u8_t flag= 0, fv, v;
-      switch (cond>>2)
-	{
-	case 0: flag= F&S; break;
-	case 1: flag= F&C; break;
-	case 2: flag= F&Z; break;
-	case 3: flag= F&O; break;
-	}
-      fv= flag?1:0;
-      v= (cond&2)?1:0;
-      if (fv != v)
-	return resGO;
-    }
-  */
   if (!cond(code))
     return resGO;
   
