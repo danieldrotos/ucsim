@@ -158,7 +158,14 @@ CLP2::disassc(t_addr addr, chars *comment)
 				(ia<0)?'-':'+',
 				(ia<0)?-ia:ia, a);
 	    }
-	  
+	  if (strcmp(fmt.c_str(), "s15") == 0)
+	    {
+	      i32_t s15= code&0x0000ffff;
+	      if (code & 0x00008000)
+		s15|= 0xffff0000;
+	      work.appendf("%c0x%x", (s15<0)?'-':'+',
+			   (s15<0)?-s15:s15);
+	    }
 	}
       if (b[i] == '%')
 	{
