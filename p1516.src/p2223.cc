@@ -566,7 +566,7 @@ CLP2::inst_mem(t_mem code)
   t_addr org= R[a]+offset;
   t_addr chg, addr;
   chg= org+(u?+1:-1);
-  addr= p?chg:chg;
+  addr= p?chg:org;
   
   if (code & 0x01000000)
     // LD
