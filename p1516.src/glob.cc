@@ -97,7 +97,9 @@ struct dis_entry disass_p2223[]=
    { 0x0c000000, 0x0c000000, ' ', 1, "call 's20'", false },
    { 0x08000000, 0x0c000000, ' ', 1, "call 'ar'", false },
 
+   // ALU R
    { 0x02000000, 0x0f0f0000, ' ', 1, "mov %d:=%b", false },
+   { 0x02030000, 0x0f0f0000, ' ', 1, "sexd %d:=s(%b)", false },
    { 0x02040000, 0x0f0f0000, ' ', 1, "add %d:=%d+%b", false },
    { 0x02050000, 0x0f0f0000, ' ', 1, "adc %d:=%d+%b", false },
    { 0x02060000, 0x0f0f0000, ' ', 1, "sub %d:=%d-%b", false },
@@ -110,6 +112,7 @@ struct dis_entry disass_p2223[]=
    { 0x020d0000, 0x0f0f0000, ' ', 1, "plus %d:=%d+%b", false },
    { 0x020e0000, 0x0f0f0000, ' ', 1, "test F:=%d&~%b", false },
 
+   // ALU #immed
    { 0x03000000, 0x0f0f0000, ' ', 1, "mvl %d:=%l", false },
    { 0x03010000, 0x0f0f0000, ' ', 1, "mvh %d:=%h", false },
    { 0x03020000, 0x0f0f0000, ' ', 1, "mvl0 %d:=%0", false },
@@ -120,12 +123,13 @@ struct dis_entry disass_p2223[]=
    { 0x03070000, 0x0f0f0000, ' ', 1, "sbb %d:=%d-#'s16'", false },
    { 0x03080000, 0x0f0f0000, ' ', 1, "cmp F:=%d-#'s16'", false },
    { 0x03090000, 0x0f0f0000, ' ', 1, "mul %d:=%d*#'s16'", false },
-   { 0x030a0000, 0x0f0f0000, ' ', 1, "and %d:=%d&#'s16'", false },
-   { 0x030b0000, 0x0f0f0000, ' ', 1, "or %d:=%d|#'s16'", false },
-   { 0x030c0000, 0x0f0f0000, ' ', 1, "xor %d:=%d^#'s16'", false },
-   { 0x030d0000, 0x0f0f0000, ' ', 1, "plus %d:=%d+#'s16'", false },
-   { 0x030e0000, 0x0f0f0000, ' ', 1, "test %d:=%d&~#'s16'", false },
+   { 0x030a0000, 0x0f0f0000, ' ', 1, "plus %d:=%d&#'s16'", false },
+   { 0x030c0000, 0x0f0f0000, ' ', 1, "test %d:=%d|#'u16'", false },
+   { 0x030d0000, 0x0f0f0000, ' ', 1, "or %d:=%d^#'u16'", false },
+   { 0x030e0000, 0x0f0f0000, ' ', 1, "xor %d:=%d+#'u16'", false },
+   { 0x030f0000, 0x0f0f0000, ' ', 1, "and %d:=%d&~#'and16'", false },
 
+   // ALU 1op
    { 0x01000000, 0x0f0f0000, ' ', 1, "zexb %d", false },
    { 0x01010000, 0x0f0f0000, ' ', 1, "zexw %d", false },
    { 0x01020000, 0x0f0f0000, ' ', 1, "sexb %d", false },
@@ -137,6 +141,9 @@ struct dis_entry disass_p2223[]=
    { 0x01080000, 0x0f0f0000, ' ', 1, "shl %d:=u(%d)<<1", false },
    { 0x01090000, 0x0f0f0000, ' ', 1, "shr %d:=u(%d)>>1", false },
    { 0x010a0000, 0x0f0f0000, ' ', 1, "sha %d:=s(%d)>>1", false },
+   { 0x010b0000, 0x0f0f0000, ' ', 1, "sz F.SZ=%d", false },
+   { 0x010c0000, 0x0f0f0000, ' ', 1, "sec F.C=1", false },
+   { 0x010d0000, 0x0f0f0000, ' ', 1, "clc F.C=0", false },
    { 0x010e0000, 0x0f0f0000, ' ', 1, "getf %d:=F", false },
    { 0x010f0000, 0x0f0f0000, ' ', 1, "setf F:=%d", false },
    

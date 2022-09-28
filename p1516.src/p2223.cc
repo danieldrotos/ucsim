@@ -166,6 +166,16 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      work.appendf("%c0x%x", (s16<0)?'-':'+',
 			   (s16<0)?-s16:s16);
 	    }
+	  if (strcmp(fmt.c_str(), "u16") == 0)
+	    {
+	      u32_t u16= code&0x0000ffff;
+	      work.appendf("0x%x", u16);
+	    }
+	  if (strcmp(fmt.c_str(), "and16") == 0)
+	    {
+	      i32_t s16= (code&0x0000ffff)|0xffff0000;
+	      work.appendf("0x%08x", s16);
+	    }
 	  if (strcmp(fmt.c_str(), "s15") == 0)
 	    {
 	      i32_t s15= code&0x00007fff;
@@ -400,6 +410,15 @@ CLP2::inst_alu_1op(t_mem code)
       RC[d]->W(((i32_t)(R[d])) >> 1);
       setZSw(R[d]);
       break;
+    case 0xb: // SZ
+      setZSw(R[d]);
+      break;
+    case 0xc: // SEC
+      cF.W(F|C);
+      break;
+    case 0xd: // CLC
+      cF.W(F&~C);
+      break;
     case 0xe: // GETF
       RC[d]->W(F);
       break;
@@ -415,6 +434,108 @@ CLP2::inst_alu(t_mem code)
 {
   if ((code & 0x0f000000) == 0x01000000)
     return inst_alu_1op(code);
+  u32_t uop, op2;
+  i32_t iop;
+  u8_t  d= (code & 0x00f00000) >> 20;
+  u8_t op= (code & 0x000f0000) >> 16;
+  if (code & 0x01000000)
+    {
+      // #u16
+      op2= uop= iop= code & 0x0000ffff;
+      if (iop & 0x00008000)
+	iop|= 0xffff0000;
+      switch (op)
+	{
+	case 0: // MVL
+	  R[d]&= 0xffff0000;
+	  RC[d]->W(R[d] | uop);
+	  return resGO;
+	case 1: // MVH
+	  R[d]&= 0x0000ffff;
+	  op2<<= 16;
+	  RC[d]->W(R[d] | uop);
+	  return resGO;
+	case 2: // MVL0
+	  RC[d]->W(uop);
+	  return resGO;
+	case 3: // MVS
+	  RC[d]->W(iop);
+	  return resGO;
+	case 0xf: // AND
+	  op2|= 0xffff0000;
+	  RC[d]->W(R[d] & op2);
+	  setZSw(R[d]);
+	  return resGO;
+	case 0xb:
+	  return resINV;
+	}
+    }
+  else
+    {
+      // Rb
+      u8_t b= (code & 0x00000f00) >> 8;
+      op2= uop= iop= R[b];
+      switch (op)
+	{
+	case 0: // MOV
+	  RC[d]->W(R[b]);
+	  return resGO;
+	case 1: // 
+	  return resINV;
+	case 2: // 
+	  return resINV;
+	case 3: // SEXD
+	  op2= 0;
+	  if (R[b] & 0x80000000)
+	    op2= -1;
+	  RC[d]->W(op2);
+	  return resGO;
+	case 0xf: // AND
+	  RC[d]->W(R[d] & op2);
+	  setZSw(R[d]);
+	  return resGO;
+	case 0xb:
+	  return resINV;
+	}
+    }
+  switch (op)
+    {
+    case 0x4: // ADD
+      RC[d]->W(inst_ad(R[d], iop, 0));
+      break;
+    case 0x5: // ADC
+      RC[d]->W(inst_ad(R[d], iop, (F&C)?1:0));
+      break;
+    case 0x6: // SUB
+      RC[d]->W(inst_ad(R[d], ~iop, 1));
+      break;
+    case 0x7: // SBB
+      RC[d]->W(inst_ad(R[d], ~iop, (F&C)?1:0));
+      break;
+    case 0x8: // CMP
+      inst_ad(R[d], ~iop, 1);
+      break;
+    case 0x9: // MUL
+      RC[d]->W(R[d] * iop);
+      setZSw(R[d]);
+      break;
+    case 0xa: // PLUS
+      RC[d]->W(R[d]+iop);
+      break;
+    case 0xb: //
+      return resINV;
+    case 0xc: // TEST
+      setZSw(R[d] & ~uop);
+      break;
+    case 0xd: // OR
+      RC[d]->W(R[d] | uop);
+      setZSw(R[d]);
+      break;
+    case 0xe: // XOR
+      RC[d]->W(R[d] ^ uop);
+      setZSw(R[d]);
+      break;
+    }
   return resGO;
 }
 

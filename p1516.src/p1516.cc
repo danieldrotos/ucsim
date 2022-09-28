@@ -416,7 +416,7 @@ cl_p1516::inst_ad(t_mem ra, t_mem rb, u32_t c)
   u32_t rd;
   
   big= ra + rb + c;
-  F&= C|S|Z|O;
+  F&= ~(C|S|Z|O);
   if (big > 0xffffffff)
     F|= C;
   rd= big;
