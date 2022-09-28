@@ -48,6 +48,7 @@ CLP2::id_string(void)
   return "p2223";
 }
 
+
 struct dis_entry *
 CLP2::dis_tbl(void)
 {
