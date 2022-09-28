@@ -174,6 +174,22 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      work.appendf("%c0x%x", (s15<0)?'-':'+',
 			   (s15<0)?-s15:s15);
 	    }
+	  if (strcmp(fmt.c_str(), "*ra") == 0)
+	    {
+	      int ra= (code & 0x000f0000)>>16;
+	      work.appendf("*r%d", ra);
+	      if (comment)
+		{
+		  comment->appendf("; ");
+		  bool u= F&U, p= F&P;
+		  char c= u?'+':'-';
+		  if (p)
+		    comment->appendf("%cr%d", c, ra);
+		  else
+		    comment->appendf("r%d%c", ra, c);
+		}
+	    }
+	  continue;
 	}
       if (b[i] == '%')
 	{
