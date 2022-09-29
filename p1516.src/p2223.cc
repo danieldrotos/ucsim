@@ -526,7 +526,7 @@ CLP2::inst_alu(t_mem code)
     case 0xb: //
       return resINV;
     case 0xc: // TEST
-      setZSw(R[d] & ~uop);
+      setZSw(R[d] & uop);
       break;
     case 0xd: // OR
       RC[d]->W(R[d] | uop);

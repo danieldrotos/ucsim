@@ -110,7 +110,7 @@ struct dis_entry disass_p2223[]=
    { 0x020b0000, 0x0f0f0000, ' ', 1, "or %d:=%d&%b", false },
    { 0x020c0000, 0x0f0f0000, ' ', 1, "xor %d:=%d^%b", false },
    { 0x020d0000, 0x0f0f0000, ' ', 1, "plus %d:=%d+%b", false },
-   { 0x020e0000, 0x0f0f0000, ' ', 1, "test F:=%d&~%b", false },
+   { 0x020e0000, 0x0f0f0000, ' ', 1, "test F:=%d&%b", false },
 
    // ALU #immed
    { 0x03000000, 0x0f0f0000, ' ', 1, "mvl %d:=%l", false },
@@ -124,7 +124,7 @@ struct dis_entry disass_p2223[]=
    { 0x03080000, 0x0f0f0000, ' ', 1, "cmp F:=%d-#'s16'", false },
    { 0x03090000, 0x0f0f0000, ' ', 1, "mul %d:=%d*#'s16'", false },
    { 0x030a0000, 0x0f0f0000, ' ', 1, "plus %d:=%d+#'s16'", false },
-   { 0x030c0000, 0x0f0f0000, ' ', 1, "test %d:=%d&~#'u16'", false },
+   { 0x030c0000, 0x0f0f0000, ' ', 1, "test %d:=%d&#'u16'", false },
    { 0x030d0000, 0x0f0f0000, ' ', 1, "or %d:=%d|#'u16'", false },
    { 0x030e0000, 0x0f0f0000, ' ', 1, "xor %d:=%d^#'u16'", false },
    { 0x030f0000, 0x0f0f0000, ' ', 1, "and %d:=%d&#'and16'", false },
