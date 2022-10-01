@@ -46,8 +46,7 @@ enum flags
    V= 8,
    // p2223 flags
    P= 0x10, // 1:Pre 0:Post
-   U= 0x20, // 1:Up  0:Down
-   A= 0x40  // 1:Abs 0:Rel
+   U= 0x20 // 1:Up  0:Down
   };
 
 class cl_p1516: public cl_uc

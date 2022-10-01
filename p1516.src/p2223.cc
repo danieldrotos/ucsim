@@ -129,22 +129,11 @@ CLP2::disassc(t_addr addr, chars *comment)
 	    }
 	  if (strcmp(fmt.c_str(), "ar") == 0)
 	    {
-	      // CALL abs/rel
-	      if (F & A)
-		{
-		  work.appendf("0x%x", a= (code & 0x03ffffff));
-		}
-	      else
-		{
-		  i32_t ia;
-		  ia= (code & 0x03ffffff);
-		  if (ia    & 0x02000000)
-		    ia|= 0xfc000000;
-		  a= addr+1+ia;
-		  work.appendf("pc%c0x%x", (ia<0)?'-':'+', (ia<0)?-ia:ia);
-		  if (comment)
-		    comment->format("; 0x%x", a);
-		}
+	      // CALL abs
+	      u32_t ua;
+	      ua= (code & 0x00ffffff);
+	      a= addr+1+ua;
+	      work.appendf("0x%x", a);
 	    }
 	  if (strcmp(fmt.c_str(), "s20") == 0)
 	    {
@@ -152,7 +141,7 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      i32_t ia= (code & 0x000fffff);
 	      if (ia & 0x00080000) ia|= 0xfff00000;
 	      data= (code & 0x00f00000)>>20;
-	      work.appendf("r%d,%c0x%x", data, (ia<0)?'-':'+', (ia<0)?-ia:ia);
+	      work.appendf("%c0x%x", (ia<0)?'-':'+', (ia<0)?-ia:ia);
 	      a= R[data]+ia;
 	      if (comment)
 		comment->format("; 0x%x%c0x%x=0x%x", R[data],
@@ -250,11 +239,6 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      data= (code & 0x0000ffff);
 	      work.appendf("0x%04x....", data);
 	      break;
-	    case 'A': // CALL
-	      data= (code & 0x07ffffff);
-	      work.appendf("0x%x", data);
-	      addr_name(data, rom, &work);
-	      break;
 	    default:
 	      temp= "?";
 	      break;
@@ -317,7 +301,7 @@ CLP2::cond(t_mem code)
   u8_t n= (F&N)?1:0, v= (F&V)?1:0;
   switch (cond)
     {
-    case 0x0: return true;		// AL
+      //case 0x0: return true;		// uncond
     case 0x1: return F&Z;		// EQ
     case 0x2: return !(F&Z);		// NE
     case 0x3: return F&C;		// CS HS
@@ -332,6 +316,7 @@ CLP2::cond(t_mem code)
     case 0xc: return n^v;		// LT
     case 0xd: return !(F&Z) && !(n^v);	// GT
     case 0xe: return (F&Z) || (n^v);	// LE
+      //case 0xf: return true;		// always
     }
   return true;
 }
@@ -433,7 +418,7 @@ CLP2::inst_alu_1op(t_mem code)
 int
 CLP2::inst_alu(t_mem code)
 {
-  if ((code & 0x0f000000) == 0x01000000)
+  if ((code & 0x0e000000) == 0x02000000)
     return inst_alu_1op(code);
   u32_t uop, op2;
   i32_t iop;
@@ -545,23 +530,23 @@ CLP2::inst_mem(t_mem code)
 {
   u8_t d, a, b;
   i32_t offset;
-  bool w= (code&0x00008000), u, p;
+  bool w= (code&0x01000000), u, p;
   d= (code & 0x00f00000) >> 20;
   a= (code & 0x000f0000) >> 16;
   b= (code & 0x00000f00) >> 8;
-  if (code & 0x02000000)
+  if (code & 0x04000000)
     {
-      offset= code & 0x00007fff;
-      if (offset & 0x00004000)
-	offset|= 0xffff8000;
+      offset= code & 0x0000ffff;
+      if (offset & 0x00008000)
+	offset|= 0xffff0000;
       u= F&U;
       p= F&P;
     }
   else
     {
       offset= R[b];
-      u= code & 0x00004000;
-      p= code & 0x00002000;
+      u= code & 0x00008000;
+      p= code & 0x00004000;
     }
   
   t_addr org= R[a]+offset;
@@ -569,7 +554,7 @@ CLP2::inst_mem(t_mem code)
   chg= org+(u?+1:-1);
   addr= p?chg:org;
   
-  if (code & 0x01000000)
+  if (code & 0x02000000)
     // LD
     RC[d]->W(rom->read(addr));
   else
@@ -602,50 +587,37 @@ CLP2::exec_inst(void)
   
   u8_t d;
   d= (code & 0x00f00000) >> 20;
-
-  inst= (code & 0x0f000000) >> 24;
-  if (code & 0x08000000)
-    {
-      t_addr call_a;
-      i32_t i32;
-      // CALL
-      if (code & 0x04000000)
-	{
-	  // CALL Rd,s20
-	  i32= (code & 0x000fffff);
-	  if (i32 & 0x00080000)
-	    i32|= 0xfff00000;
-	  call_a= R[d]+i32;
-	}
-      else
-	{
-	  // CALL abs/rel
-	  if (F&A)
-	    {
-	      // CALL abs
-	      call_a= code & 0x03ffffff;
-	    }
-	  else
-	    {
-	      // CALL rel
-	      i32= code & 0x03ffffff;
-	      if (i32 & 0x02000000)
-		i32|= 0xfc000000;
-	      call_a= PC+i32;
-	    }
-	}
-      RC[14]->W(R[15]);
-      RC[15]->W(PC= call_a);
-      return resGO;
-    }
-
+  inst= (code & 0x0e000000) >> 25;
   int ret= resGO;
   switch (inst)
     {
-    case 0: // nop
-      break;
-    case 1: case 2: case 3:
+    case 0:
+      {
+	t_addr call_a;
+	i32_t i32;
+	// CALL
+	if (code & 0x01000000)
+	  {
+	    // CALL Rd,s20
+	    i32= (code & 0x000fffff);
+	    if (i32 & 0x00080000)
+	      i32|= 0xfff00000;
+	    call_a= R[d]+i32;
+	  }
+	else
+	  {
+	    // CALL abs
+	    call_a= code & 0x00ffffff;
+	  }
+	RC[14]->W(R[15]);
+	RC[15]->W(PC= call_a);
+	return resGO;
+      }
+    case 1: case 2:
       ret= inst_alu(code);
+      break;
+    case 3:
+      ret= inst_ext(code);
       break;
     case 4: case 5: case 6: case 7:
       ret= inst_mem(code);

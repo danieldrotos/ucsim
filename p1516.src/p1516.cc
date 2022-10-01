@@ -61,7 +61,7 @@ void
 cl_p1516::reset(void)
 {
   PC= R[15]= 0;
-  F&= ~(A|U|P);
+  F&= ~(U|P);
 }
   
 void
