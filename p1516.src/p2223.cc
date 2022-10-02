@@ -591,7 +591,10 @@ CLP2::exec_inst(void)
   int ret= resGO;
   switch (inst)
     {
-    case 0:
+    case 0: case 1:
+      ret= inst_alu(code);
+      break;
+    case 2:
       {
 	t_addr call_a;
 	i32_t i32;
@@ -613,9 +616,6 @@ CLP2::exec_inst(void)
 	RC[15]->W(PC= call_a);
 	return resGO;
       }
-    case 1: case 2:
-      ret= inst_alu(code);
-      break;
     case 3:
       ret= inst_ext(code);
       break;
