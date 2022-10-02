@@ -76,7 +76,7 @@ struct dis_entry disass_p1516[]=
 struct dis_entry disass_p2223[]=
   {
     // CALL
-   { 0x02000000, 0x0f000000, ' ', 1, "call 'ar'", false },
+   { 0x04000000, 0x0f000000, ' ', 1, "call 'ar'", false },
    { 0x05000000, 0x0f000000, ' ', 1, "call %d,'s20'", false },
 
    // ALU 1op
@@ -124,7 +124,7 @@ struct dis_entry disass_p2223[]=
    { 0x01080000, 0x0f0f0000, ' ', 1, "cmp F:=%d-#'s16'", false },
    { 0x01090000, 0x0f0f0000, ' ', 1, "mul %d:=%d*#'s16'", false },
    { 0x010a0000, 0x0f0f0000, ' ', 1, "plus %d:=%d+#'s16'", false },
-   { 0x010c0000, 0x0f0f0000, ' ', 1, "test %d:=%d&#'u16'", false },
+   { 0x010c0000, 0x0f0f0000, ' ', 1, "test F:=%d&#'u16'", false },
    { 0x010d0000, 0x0f0f0000, ' ', 1, "or %d:=%d|#'u16'", false },
    { 0x010e0000, 0x0f0f0000, ' ', 1, "xor %d:=%d^#'u16'", false },
    { 0x010f0000, 0x0f0f0000, ' ', 1, "and %d:=%d&#'and16'", false },
@@ -142,10 +142,10 @@ struct dis_entry disass_p2223[]=
    { 0x0b008000, 0x0f00c000, ' ', 1, "ld %d:=mem[%a+,%b]", false },
    { 0x0b00c000, 0x0f00c000, ' ', 1, "ld %d:=mem[+%a,%b]", false },
 
-   { 0x0c000000, 0x0f000000, ' ', 1, "st mem[%a,'s15']:=%d", false },
-   { 0x0d000000, 0x0f000000, ' ', 1, "st mem['*ra','s15']:=%d", false },
-   { 0x0e000000, 0x0f000000, ' ', 1, "ld %d:=mem[%a,'s15']", false },
-   { 0x0f008000, 0x0f000000, ' ', 1, "ld %d:=mem['*ra','s15']", false },
+   { 0x0c000000, 0x0f000000, ' ', 1, "st mem[%a,'s16']:=%d", false },
+   { 0x0d000000, 0x0f000000, ' ', 1, "st mem['*ra','s16']:=%d", false },
+   { 0x0e000000, 0x0f000000, ' ', 1, "ld %d:=mem[%a,'s16']", false },
+   { 0x0f000000, 0x0f000000, ' ', 1, "ld %d:=mem['*ra','s16']", false },
    
    { 0, 0, 0, 0, 0, 0 }
   };
