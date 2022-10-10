@@ -148,6 +148,21 @@ CLP2::disassc(t_addr addr, chars *comment)
 				(ia<0)?'-':'+',
 				(ia<0)?-ia:ia, a);
 	    }
+	  if (strcmp(fmt.c_str(), "j") == 0)
+	    {
+	      // Macro jump
+	      u32_t u16= code&0x0000ffff;
+	      work.appendf("0x%x", u16);
+	    }
+	  if (strcmp(fmt.c_str(), "jp") == 0)
+	    {
+	      // Macro jump: mov r15,rb
+	      data= (code & 0x00000f00)>>8;
+	      u32_t u32= R[data];
+	      work.appendf("r%d", data);
+	      if (comment)
+		comment->appendf("; 0x%x", u32);
+	    }
 	  if (strcmp(fmt.c_str(), "s16") == 0)
 	    {
 	      i32_t s16= code&0x0000ffff;
