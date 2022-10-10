@@ -132,8 +132,9 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      // CALL abs
 	      u32_t ua;
 	      ua= (code & 0x00ffffff);
-	      a= addr+1+ua;
+	      a= ua;
 	      work.appendf("0x%x", a);
+	      addr_name(a, rom, &work);
 	    }
 	  if (strcmp(fmt.c_str(), "s20") == 0)
 	    {
@@ -153,6 +154,7 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      // Macro jump
 	      u32_t u16= code&0x0000ffff;
 	      work.appendf("0x%x", u16);
+	      addr_name(u16, rom, &work);
 	    }
 	  if (strcmp(fmt.c_str(), "jp") == 0)
 	    {
@@ -162,6 +164,7 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      work.appendf("r%d", data);
 	      if (comment)
 		comment->appendf("; 0x%x", u32);
+	      addr_name(u32, rom, &work);
 	    }
 	  if (strcmp(fmt.c_str(), "s16") == 0)
 	    {
@@ -563,11 +566,20 @@ CLP2::inst_mem(t_mem code)
       u= code & 0x00008000;
       p= code & 0x00004000;
     }
-  
+  if ((code & 0x02000000) &&
+      (code & 0x04000000))
+    {
+      // LD #im offset
+      u= !u;
+      p= !p;
+    }
   t_addr org= R[a]+offset;
   t_addr chg, addr;
   chg= org+(u?+1:-1);
-  addr= p?chg:org;
+  if (w)
+    addr= p?chg:org;
+  else
+    addr= org;
   
   if (code & 0x02000000)
     // LD
