@@ -457,7 +457,7 @@ CLP2::inst_alu(t_mem code)
 	case 1: // MVH
 	  R[d]&= 0x0000ffff;
 	  op2<<= 16;
-	  RC[d]->W(R[d] | uop);
+	  RC[d]->W(R[d] | op2);
 	  return resGO;
 	case 2: // MVL0
 	  RC[d]->W(uop);
