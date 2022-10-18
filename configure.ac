@@ -631,22 +631,36 @@ AC_SUBST(dlso_ok)
 # ===========================================================================
 
 dnl AC_TYPE_SIGNAL
-if test "$cross_compiling" = "no"; then
-AC_CHECK_SIZEOF(char)
-AC_CHECK_SIZEOF(short)
-AC_CHECK_SIZEOF(int)
-AC_CHECK_SIZEOF(long)
-AC_CHECK_SIZEOF(long long)
+dnl if test "$cross_compiling" = "no"; then
+dnl AC_CHECK_SIZEOF(char)
+dnl AC_CHECK_SIZEOF(short)
+dnl AC_CHECK_SIZEOF(int)
+dnl AC_CHECK_SIZEOF(long)
+dnl AC_CHECK_SIZEOF(long long)
+dnl else
+dnl     if $CXX -v 2>&1|grep "mingw" >/dev/null 2>&1; then
+dnl         ac_cv_sizeof_char=1
+dnl         ac_cv_sizeof_short=2
+dnl         ac_cv_sizeof_int=4
+dnl         ac_cv_sizeof_long=4
+dnl         ac_cv_sizeof_long_long=4
+dnl     else
+dnl         : # FIXME
+dnl     fi
+dnl fi
+
+if $CXX -v 2>&1|grep "mingw" >/dev/null 2>&1; then
+    ac_cv_sizeof_char=1
+    ac_cv_sizeof_short=2
+    ac_cv_sizeof_int=4
+    ac_cv_sizeof_long=4
+    ac_cv_sizeof_long_long=4
 else
-    if $CXX -v 2>&1|grep "mingw" >/dev/null 2>&1; then
-        ac_cv_sizeof_char=1
-        ac_cv_sizeof_short=2
-        ac_cv_sizeof_int=4
-        ac_cv_sizeof_long=4
-        ac_cv_sizeof_long_long=4
-    else
-        : # FIXME
-    fi
+    AC_CHECK_SIZEOF(char)
+    AC_CHECK_SIZEOF(short)
+    AC_CHECK_SIZEOF(int)
+    AC_CHECK_SIZEOF(long)
+    AC_CHECK_SIZEOF(long long)
 fi
 
 type_name()
