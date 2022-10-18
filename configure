@@ -7593,7 +7593,6 @@ fi
 # Checks for typedefs, structures, and compiler characteristics.
 # ===========================================================================
 
-
 if $CXX -v 2>&1|grep "mingw" >/dev/null 2>&1; then
     ac_cv_sizeof_char=1
     ac_cv_sizeof_short=2

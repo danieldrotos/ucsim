@@ -423,14 +423,10 @@ cl_tlcs::disass(t_addr addr)
             case 'd': /*  d in 2nd byte */ s.appendf("%+d",(int)(i8_t((c>>8)&0xff))); break;
 
             case '1': /*  PC+2+d in 2nd byte */
-	      {i8_t off= ((c>>8)&0xff);
-	      printf("off=%d (%x)\n", off, off);
-	      u16_t b= addr+2;
-	      printf("b=%x (pc=%x)\n", b, PC);
               operand= (u16_t)(addr+2 + (i8_t)((c>>8)&0xff));
               s.appendf("0x%04x", operand);
               addr_name(operand, rom, &s);
-              break;}
+              break;
             case 'D': /* cd in 2,3 byte */
               operand= (u16_t)(addr+3 + (i16_t)((c>>8)&0xffff));
               s.appendf("0x%04x", operand);
