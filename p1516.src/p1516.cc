@@ -79,18 +79,18 @@ cl_p1516::mk_hw_elements(void)
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
   
-  add_hw(pa= new cl_porto(this, 0xf000, "pa"));
+  add_hw(pa= new cl_porto(this, 0xff00, "pa"));
   pa->init();
-  add_hw(pb= new cl_porto(this, 0xf001, "pb"));
+  add_hw(pb= new cl_porto(this, 0xff01, "pb"));
   pb->init();
-  add_hw(pc= new cl_porto(this, 0xf002, "pc"));
+  add_hw(pc= new cl_porto(this, 0xff02, "pc"));
   pc->init();
-  add_hw(pd= new cl_porto(this, 0xf003, "pd"));
+  add_hw(pd= new cl_porto(this, 0xff03, "pd"));
   pd->init();
 
-  add_hw(pi= new cl_porti(this, 0xe000, "pi"));
+  add_hw(pi= new cl_porti(this, 0xff20, "pi"));
   pi->init();
-  add_hw(pj= new cl_porti(this, 0xd000, "pj"));
+  add_hw(pj= new cl_porti(this, 0xff10, "pj"));
   pj->init();
 
   class cl_port_ui *u= new cl_port_ui(this, 0, "dport");
@@ -171,17 +171,21 @@ cl_p1516::make_memories(void)
   class cl_address_space *as;
   int i;
   
-  rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x10000, 32);
+  rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x20000, 32);
   as->init();
   address_spaces->add(as);
 
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_chip32("rom_chip", 0xd000, 32);
+  chip= new cl_chip32("rom_chip", 0x10000, 32);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as= rom, chip, 0, 0xcfff, 0);
+  ad= new cl_address_decoder(as= rom, chip, 0, 0xfeff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  ad= new cl_address_decoder(as= rom, chip, 0x10000, 0x1ffff, 0x10000);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
