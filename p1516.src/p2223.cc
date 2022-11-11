@@ -574,13 +574,16 @@ CLP2::inst_mem(t_mem code)
       u= !u;
       p= !p;
     }
-  t_addr org= R[a]+offset;
-  t_addr chg, addr;
-  chg= org+(u?+1:-1);
+  t_addr addr, opa= R[a];
+  t_addr opa_chg, base;
+  opa_chg= opa+(u?+1:-1);
+  base= p?opa_chg:opa;
+  t_addr opa_offset= opa+offset;
+  t_addr base_offset= base+offset;
   if (w)
-    addr= p?chg:org;
+    addr= base_offset;
   else
-    addr= org;
+    addr= opa_offset;
   
   if (code & 0x02000000)
     // LD
@@ -590,7 +593,7 @@ CLP2::inst_mem(t_mem code)
     rom->write(addr, R[d]);
   
   if (w)
-    RC[a]->W(chg);
+    RC[a]->W(opa_chg);
   
   return resGO;
 }
