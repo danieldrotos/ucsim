@@ -470,8 +470,6 @@ CLP2::inst_alu(t_mem code)
 	  RC[d]->W(R[d] & op2);
 	  setZSw(R[d]);
 	  return resGO;
-	case 0xb:
-	  return resINV;
 	}
     }
   else
@@ -526,8 +524,11 @@ CLP2::inst_alu(t_mem code)
     case 0xa: // PLUS
       RC[d]->W(R[d]+iop);
       break;
-    case 0xb: //
-      return resINV;
+    case 0xb: // BTST
+      {
+	u32_t r= R[d] & uop;
+	setZSw(r);
+      }
     case 0xc: // TEST
       setZSw(R[d] & uop);
       break;
@@ -604,7 +605,7 @@ CLP2::exec_inst(void)
   PC= R[15];
   instPC= PC;
   fe= fetch(&code);
-  tick(1);
+  tick(4);
   R[15]= PC;
   if (fe)
     return(resBREAKPOINT);

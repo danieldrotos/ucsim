@@ -109,10 +109,10 @@ cl_uart::write(class cl_memory_cell *cell, t_mem *val)
     return;
   if (cell == regs[ctrl])
     {
-      //r_cr->set(*val);
+      regs[ctrl]->set(*val);
       pick_div();
       pick_ctrl();
-      //*val= cell->get();
+      *val= cell->get();
     }
   if (cell == regs[stat])
     {
@@ -123,7 +123,7 @@ cl_uart::write(class cl_memory_cell *cell, t_mem *val)
       cell->set(*val);
       if (cell == regs[dr])
 	{
-	  s_txd= *val;
+	  s_txd= *val & 0xff;
 	  s_tx_written= true;
 	  show_writable(false);
 	  if (!s_sending)
