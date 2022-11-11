@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 #include "portcl.h"
+#include "uartcl.h"
 
 #include "p1516cl.h"
 
@@ -92,6 +93,9 @@ cl_p1516::mk_hw_elements(void)
   pi->init();
   add_hw(pj= new cl_porti(this, 0xff10, "pj"));
   pj->init();
+
+  add_hw(h= new cl_uart(this, 0, 0xff40));
+  h->init();
 
   class cl_port_ui *u= new cl_port_ui(this, 0, "dport");
   u->init();
