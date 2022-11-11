@@ -53,8 +53,6 @@ cl_uart::init(void)
   
   for (i= 0; i < 16; i++)
     regs[i]= register_cell(uc->rom, base+i);
-  regs[ctrl]->W(0);
-  regs[cpb]->W(217);
 
   ten= false;
   ren= false;
@@ -332,6 +330,10 @@ cl_uart::reset(void)
 {
   show_writable(true);
   show_readable(false);
+  regs[ctrl]->set(0);
+  regs[cpb]->set(div= 217);
+  pick_div();
+  pick_ctrl();
 }
 
 void
@@ -360,25 +362,13 @@ cl_uart::pick_div()
 void
 cl_uart::pick_ctrl()
 {
-  /*
-  switch ((r_cr->get() >> 2) & 7)
-    {
-    case 0: bits= 10; break;
-    case 1: bits= 10; break;
-    case 2: bits=  9; break;
-    case 3: bits=  9; break;
-    case 4: bits= 10; break;
-    case 5: bits=  9; break;
-    case 6: bits= 10; break;
-    case 7: bits= 10; break;
-    }
-  */
   u32_t r= regs[ctrl]->get();
   ren= r & 1;
   ten= r & 2;
   s_rec_bit= s_tr_bit= 0;
   s_receiving= false;
   s_tx_written= false;
+  bits= 8;
 }
 
 

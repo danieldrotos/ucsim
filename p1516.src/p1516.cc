@@ -61,6 +61,8 @@ cl_p1516::id_string(void)
 void
 cl_p1516::reset(void)
 {
+  cl_uc::reset();
+  
   PC= R[15]= 0;
   F&= ~(U|P);
 }
