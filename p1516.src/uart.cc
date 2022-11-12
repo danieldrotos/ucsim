@@ -114,9 +114,13 @@ cl_uart::write(class cl_memory_cell *cell, t_mem *val)
       pick_ctrl();
       *val= cell->get();
     }
-  if (cell == regs[stat])
+  if (cell == regs[rstat])
     {
-      *val= regs[stat]->get();
+      *val= regs[rstat]->get();
+    }
+  if (cell == regs[tstat])
+    {
+      *val= regs[tstat]->get();
     }
   else
     {
@@ -375,23 +379,23 @@ cl_uart::pick_ctrl()
 void
 cl_uart::show_writable(bool val)
 {
-  u32_t r= regs[stat]->get();
+  u32_t r= regs[tstat]->get();
   if (val)
-    r|= 2;
+    r|= 1;
   else
-    r&= ~2;
-  regs[stat]->set(r);
+    r&= ~1;
+  regs[tstat]->set(r);
 }
 
 void
 cl_uart::show_readable(bool val)
 {
-  u32_t r= regs[stat]->get();
+  u32_t r= regs[rstat]->get();
   if (val)
     r|= 1;
   else
     r&= ~1;
-  regs[stat]->set(r);
+  regs[rstat]->set(r);
 }
 
 void
@@ -414,7 +418,8 @@ cl_uart::set_dr(t_mem val)
 void
 cl_uart::print_info(class cl_console_base *con)
 {
-  u8_t u8= regs[stat]->get();
+  u8_t ru8= regs[rstat]->get();
+  u8_t tu8= regs[tstat]->get();
   con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on ":"off");
   con->dd_printf("Input: ");
   class cl_f *fin= io->get_fin(), *fout= io->get_fout();
@@ -437,12 +442,15 @@ cl_uart::print_info(class cl_console_base *con)
   con->print_bin(regs[ctrl]->get(), 8);
   con->dd_printf(" 0x%02x", regs[ctrl]->get());
   con->dd_printf(" div=%8d bits=%2d\n", div, bits);
-  con->dd_printf("SR: ");
-  con->print_bin(u8, 8);
-  con->dd_printf(" 0x%02x", u8);
+  con->dd_printf("RXSR: ");
+  con->print_bin(ru8, 8);
+  con->dd_printf(" 0x%02x", ru8);
+  con->dd_printf(" TXSR: ");
+  con->print_bin(tu8, 8);
+  con->dd_printf(" 0x%02x", tu8);
   con->dd_printf(" RXNE=%d TC=%d\n",
-		 (u8&1)?1:0,
-		 (u8&2)?1:0);
+		 (ru8&1)?1:0,
+		 (tu8&1)?1:0);
   //print_cfg_info(con);
 }
 
