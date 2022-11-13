@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 struct dis_entry disass_p1516[]=
   {
-   { 0x08000000, 0x08000000, 'c', 1, "call  %A", false },
+   { 0x08000000, 0x08000000, 'c', 1, "call  %A", true },
 
    { 0xb4f00000, 0xfff00000, 'M', 1, "jz    %O", false },
    { 0x94f00000, 0xfff00000, 'M', 1, "jnz   %O", false },
@@ -86,8 +86,8 @@ struct dis_entry disass_p2223[]=
    { 0x00f00000, 0x00f00000, ' ', 1, "jp 'jp'", false },
     
     // CALL
-   { 0x04000000, 0x0f000000, ' ', 1, "call 'ar'", false },
-   { 0x05000000, 0x0f000000, ' ', 1, "call %d,'s20'", false },
+   { 0x04000000, 0x0f000000, ' ', 1, "call 'ar'", true },
+   { 0x05000000, 0x0f000000, ' ', 1, "call %d,'s20'", true },
 
    // ALU 1op
    { 0x02000000, 0x0e0f0000, ' ', 1, "zeb %d", false },
