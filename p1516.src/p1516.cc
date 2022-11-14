@@ -425,7 +425,7 @@ cl_p1516::inst_ad(t_mem ra, t_mem rb, u32_t c)
   u64_t big;
   u32_t rd;
   
-  big= ra + rb + c;
+  big= (u64_t)ra + (u64_t)rb + (u64_t)c;
   F&= ~(C|S|Z|O);
   if (big > 0xffffffff)
     F|= C;
@@ -529,7 +529,7 @@ cl_p1516::inst_alu(t_mem code)
       SET_S(R[d] & 0x80000000);
       break;
     case 19: // MUH
-      big= R[a] * R[b];
+      big= (u64_t)R[a] * (u64_t)R[b];
       RC[d]->W(big >> 32);
       SET_Z(R[d]);
       SET_S(R[d] & 0x80000000);
