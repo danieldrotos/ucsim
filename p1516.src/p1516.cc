@@ -184,7 +184,7 @@ cl_p1516::make_memories(void)
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_chip32("rom_chip", 0x10000, 32);
+  chip= new cl_chip32("rom_chip", 0x10000, 32, 0);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as= rom, chip, 0, 0xfeff, 0);
