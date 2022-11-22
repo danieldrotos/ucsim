@@ -49,6 +49,17 @@ enum flags
    U= 0x20 // 1:Up  0:Down
   };
 
+
+class cl_pc_write: public cl_memory_operator
+{
+protected:
+  class cl_uc *uc;
+public:
+  cl_pc_write(class cl_memory_cell *acell, class cl_uc *the_uc);
+  virtual t_mem write(t_mem val);
+};
+
+
 class cl_p1516: public cl_uc
 {
 public:

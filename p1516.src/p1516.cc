@@ -36,6 +36,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "p1516cl.h"
 
 
+cl_pc_write::cl_pc_write(class cl_memory_cell *acell, class cl_uc *the_uc):
+  cl_memory_operator(acell)
+{
+  uc= the_uc;
+}
+
+t_mem
+cl_pc_write::write(t_mem val)
+{
+  uc->set_PC(val);
+  return uc->PC;
+}
+
+
 cl_p1516::cl_p1516(class cl_sim *asim):
   cl_uc(asim)
 {
@@ -49,6 +63,9 @@ cl_p1516::init(void)
   for (i=0; i<16; i++)
     R[i]= 0;
   reg_cell_var(&cF, &F, "F", "Flag register");
+  class cl_pc_write *pcw= new cl_pc_write(&cPC, this);
+  pcw->init();
+  cPC.append_operator(pcw);
   return 0;
 }
 
