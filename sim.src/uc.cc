@@ -596,13 +596,15 @@ int
 cl_uc::init(void)
 {
   int i;
-
+  double x= 0;
+  
   set_name("controller");
   cl_base::init();
   if (xtal_option->use("xtal"))
-    set_xtal(xtal_option->get_value(xtal));
-  else
-    set_xtal(11059200);
+    x= xtal_option->get_value(xtal);
+  if (x==0)
+    x= def_xtal();
+  set_xtal(x);
   stop_selfjump= false;
   stop_selfjump_option->option->set_value(stop_selfjump);
   analyzer= false;

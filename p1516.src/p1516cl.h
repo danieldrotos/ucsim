@@ -82,6 +82,7 @@ public:
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
   virtual int clock_per_cycle(void) { return 1; }
+  virtual double def_xtal(void) { return 25000000; }
   
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);

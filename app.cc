@@ -1054,7 +1054,7 @@ cl_app::mk_options(void)
   options->new_option(o= new cl_float_option(this, "xtal",
 					     "Frequency of XTAL in Hz"));
   o->init();
-  o->set_value(11059200.0);
+  o->set_value(0.0);
 
   options->new_option(o= new cl_string_option(this, "cpu_type",
 					      "Type of controller (-t)"));

@@ -126,7 +126,7 @@ cl_mos6502::init(void)
   cl_uc::init();
   fill_def_wrappers(itab);
 
-  set_xtal(1000000);
+  //set_xtal(1000000);
     
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(A);
