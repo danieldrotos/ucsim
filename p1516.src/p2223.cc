@@ -26,6 +26,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 #include "glob.h"
+#include "pmon.h"
 
 #include "p2223cl.h"
 
@@ -39,6 +40,21 @@ int
 CLP2::init(void)
 {
   cl_p1516::init();
+
+  class cl_memory_chip *chip= rom_chip;
+  t_addr a;
+  t_mem v;
+  int i;
+  i= 0;
+  a= pmon[i++];
+  v= pmon[i++];
+  while ((a!=0xffffffff) || (v!=0xffffffff))
+    {
+      chip->d(a, v);
+      a= pmon[i++];
+      v= pmon[i++];	
+    }
+
   return 0;
 }
   
