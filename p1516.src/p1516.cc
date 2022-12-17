@@ -395,10 +395,10 @@ cl_p1516::print_regs(class cl_console_base *con)
   int i;
   con->dd_color("answer");
   con->dd_printf("  F= 0x%x  ", F);
-  con->dd_printf("S=%c ", (F&S)?'1':'0');
+  con->dd_printf("O=%c ", (F&O)?'1':'0');
   con->dd_printf("C=%c ", (F&C)?'1':'0');
   con->dd_printf("Z=%c ", (F&Z)?'1':'0');
-  con->dd_printf("O=%c ", (F&O)?'1':'0');
+  con->dd_printf("S=%c ", (F&S)?'1':'0');
   con->dd_printf("\n");
   for (i= 0; i<16; i++)
     {

@@ -55,6 +55,10 @@ CLP2::init(void)
       v= pmon[i++];	
     }
 
+  class cl_f_write *fw= new cl_f_write(&cF);
+  fw->init();
+  cF.append_operator(fw);
+  
   return 0;
 }
   
@@ -328,6 +332,33 @@ CLP2::analyze(t_addr addr)
 }
 
 
+void
+CLP2::print_regs(class cl_console_base *con)
+{
+  int i;
+  con->dd_color("answer");
+  con->dd_printf("  F= 0x%02x  ", F);
+  con->dd_printf("U=%c ", (F&U)?'1':'0');
+  con->dd_printf("P=%c ", (F&P)?'1':'0');
+  con->dd_printf("O=%c ", (F&O)?'1':'0');
+  con->dd_printf("C=%c ", (F&C)?'1':'0');
+  con->dd_printf("Z=%c ", (F&Z)?'1':'0');
+  con->dd_printf("S=%c ", (F&S)?'1':'0');
+  con->dd_printf("\n");
+  for (i= 0; i<16; i++)
+    {
+      if (i<10) con->dd_printf(" ");
+      con->dd_printf("R%d= 0x%08x ", i, R[i]);
+      if (i<10) con->dd_printf(" ");
+      con->dd_printf("[R%d]= 0x%08x", i, rom->get(R[i]));
+      if (i%2)
+	con->dd_printf("\n");
+      else
+	con->dd_printf(" ");
+    }
+  print_disass(PC, con);
+}
+
 bool
 CLP2::cond(t_mem code)
 {
@@ -443,7 +474,7 @@ CLP2::inst_alu_1op(t_mem code)
       RC[d]->W(F);
       break;
     case 0xf: // SETF
-      cF.W(R[d] & 0x7f);
+      cF.W(R[d] & 0x3f);
       break;
     }
   return resGO;
