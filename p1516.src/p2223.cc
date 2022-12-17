@@ -646,6 +646,32 @@ CLP2::inst_mem(t_mem code)
 }
 
 int
+CLP2::inst_ext(t_mem code)
+{
+  t_mem cod= (code & 0x000f000)>>16;
+  int d;
+  t_addr addr;
+  switch (cod)
+    {
+    case 0:
+      d= (code & 0x00f00000) >> 20;
+      addr= code&0xffff;
+      if (code & 0x01000000)
+	{
+	  // LD direct
+	  RC[d]->W(rom->read(addr));
+	}
+      else
+	{
+	  // ST direct
+	  rom->write(addr, R[d]);
+	}
+      return resGO;
+    }
+  return resINV;
+}
+
+int
 CLP2::exec_inst(void)
 {
   t_mem code;

@@ -158,6 +158,10 @@ struct dis_entry disass_p2223[]=
    { 0x0d000000, 0x0f000000, ' ', 1, "st mem['*ra','s16']:=%d", false },
    { 0x0e000000, 0x0f000000, ' ', 1, "ld %d:=mem[%a,'s16']", false },
    { 0x0f000000, 0x0f000000, ' ', 1, "ld %d:=mem['*ra','s16']", false },
+
+   // EXT
+   { 0x06000000, 0x0f0f0000, ' ', 1, "st mem['u16']:=%d", false },
+   { 0x07000000, 0x0f0f0000, ' ', 1, "ld %d:=mem['u16']", false },
    
    { 0, 0, 0, 0, 0, 0 }
   };
