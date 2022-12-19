@@ -972,6 +972,8 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
     cset->add(cmd= new cl_timer_value_cmd("set", 0));
     cmd->init();
     cmd->add_name("value");
+    cset->add(cmd= new cl_timer_list_cmd("list", 0));
+    cmd->init();
     if (!super_cmd) {
       cmdset->add(cmd= new cl_super_cmd("timer", 0, cset));
       cmd->init();
@@ -3493,14 +3495,14 @@ void
 cl_uc::check_events(void)
 {
   int i;
+  if (events->count)
+    sim->stop(resEVENTBREAK);
   for (i= 0; i < events->count; i++)
     {
       class cl_ev_brk *brk=
 	dynamic_cast<class cl_ev_brk *>(events->object_at(i));
       brk->breaking();
     }
-  if (events->count)
-    sim->stop(resEVENTBREAK);
 }
 
 void
