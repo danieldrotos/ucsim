@@ -2691,7 +2691,7 @@ cl_uc::check_errors(void)
 	      class cl_console_base *con;
 	      con= c->actual_console;
 	      if (!con)
-		con= c->frozen_console;
+		con= c->frozen_or_actual();
 	      if (con)
 		{
 		  con->dd_printf("Erroneous instruction: ");

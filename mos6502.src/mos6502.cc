@@ -47,7 +47,7 @@ static int
 con()
 {
   if (!jaj) return 0;
-  c= application->get_commander()->frozen_console;
+  c= application->get_commander()->frozen_or_actual();
   return c!=NULL;
 }
 

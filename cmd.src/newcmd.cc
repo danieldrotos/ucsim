@@ -747,6 +747,18 @@ cl_console_base::set_cooked(bool new_val)
 }
 
 
+cl_console_stdout::cl_console_stdout(void):
+  cl_console_base()
+{
+  f_stdout= mk_io("-", "w");
+}
+
+cl_console_stdout::~cl_console_stdout(void)
+{
+  delete f_stdout;
+}
+
+
 /*
  * Command interpreter
  *____________________________________________________________________________
@@ -758,6 +770,9 @@ cl_commander_base::cl_commander_base(class cl_app *the_app, class cl_cmdset *acm
   app= the_app;
   cons= new cl_list(1, 1, "consoles");
   actual_console= frozen_console= config_console= 0;
+  //stdout_console= new cl_console_stdout();
+  //stdout_console->init();
+  //stdout_console->dd_cprintf("debug", "OK\n");
   cmdset= acmdset;
 }
 
@@ -766,6 +781,7 @@ cl_commander_base::~cl_commander_base(void)
   cons->free_all();
   delete cons;
   delete cmdset;
+  //delete stdout_console;
 }
 
 void
@@ -815,6 +831,19 @@ cl_commander_base::consoles_prevent_quit(void)
 	r++;
     }
   return r;
+}
+
+
+class cl_console_base *
+cl_commander_base::frozen_or_actual(void)
+{
+  if (frozen_console)
+    {
+      printf("--** FROZEN %p\n", frozen_console);
+    return frozen_console;
+    }
+  printf("--** ACTUAL %p\n", actual_console);
+  return actual_console;
 }
 
 

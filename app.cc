@@ -176,10 +176,10 @@ cl_app::run(void)
 		    done= commander->proc_input();
 		}
 	      sim->step();
-	      if (jaj && commander->frozen_console)
+	      if (jaj && commander->frozen_or_actual())
 		{
-		  sim->uc->print_regs(commander->frozen_console),
-		    commander->frozen_console->dd_printf("\n");
+		  sim->uc->print_regs(commander->frozen_or_actual()),
+		    commander->frozen_or_actual()->dd_printf("\n");
 		}
             }
 	  else
@@ -832,7 +832,7 @@ cl_app::eval(chars expr)
 void
 cl_app::exec(chars line)
 {
-  class cl_console_base *c= commander->frozen_console;
+  class cl_console_base *c= commander->frozen_or_actual();
   if (c == NULL)
     {
       c= new cl_console_dummy();
@@ -862,7 +862,7 @@ cl_app::exec(chars line)
       delete cmdline;
     }
   while (!line.empty());
-  if (c != commander->frozen_console)
+  if (c != commander->frozen())
     delete c;
 }
 
