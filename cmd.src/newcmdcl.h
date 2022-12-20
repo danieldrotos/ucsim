@@ -207,8 +207,9 @@ class cl_console_stdout: public cl_console_base
 public:
   class cl_f *f_stdout;
 public:
-  cl_console_stdout(void);
+  cl_console_stdout(class cl_app *the_app);
   virtual ~cl_console_stdout(void);
+  virtual int init(void);
   virtual class cl_f *get_fout(void) { return f_stdout; }
   virtual class cl_f *get_fin(void) { return NULL; }
   virtual class cl_console_base *clone_for_exec(char *fin) { return NULL; }
@@ -223,7 +224,7 @@ public:
   virtual void replace_files(bool close_old, cl_f *new_in, cl_f *new_out) {}
 };
 
-  
+
 class cl_console_dummy: public cl_console_base
 {
  public:

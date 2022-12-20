@@ -266,7 +266,6 @@ cl_sim::stop(int reason)
       if ((reason == resBREAKPOINT) ||
 	  (reason == resEVENTBREAK))
 	uc->displays->do_display(NULL);	  
-      //if (cmd->actual_console != cmd->frozen_console)
       if (con == cmd->frozen()) {
 	con->set_flag(CONS_FROZEN, false);
 	con->print_prompt();

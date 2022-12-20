@@ -82,6 +82,7 @@ cl_app::~cl_app(void)
   remove_simulator();
   delete commander;
   delete in_files;
+  delete ocon;
   delete options;
 }
 
@@ -97,6 +98,8 @@ cl_app::init(int argc, char *argv[])
   class cl_cmdset *cmdset= new cl_cmdset();
   cmdset->init();
   build_cmdset(cmdset);
+  ocon= new cl_console_stdout(this);
+  ocon->init();
   commander= new cl_commander(this, cmdset/*, sim*/);
   commander->init();
   return(0);
@@ -176,6 +179,7 @@ cl_app::run(void)
 		    done= commander->proc_input();
 		}
 	      sim->step();
+	      if (jaj) ocon->dd_printf("** %d\n",ccyc.get());
 	      if (jaj && commander->frozen_or_actual())
 		{
 		  sim->uc->print_regs(commander->frozen_or_actual()),
@@ -833,11 +837,6 @@ void
 cl_app::exec(chars line)
 {
   class cl_console_base *c= commander->frozen_or_actual();
-  if (c == NULL)
-    {
-      c= new cl_console_dummy();
-      c->init();
-    }
   do
     {
       c->un_redirect();
@@ -862,8 +861,6 @@ cl_app::exec(chars line)
       delete cmdline;
     }
   while (!line.empty());
-  if (c != commander->frozen())
-    delete c;
 }
 
 /*
