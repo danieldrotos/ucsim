@@ -100,7 +100,7 @@ CLP2::disassc(t_addr addr, chars *comment)
   work= "";
   
   data= (code&0xf0000000)>>28;
-  if ((dis_tbl()[i].branch == 'M'))
+  if (dis_tbl()[i].branch == 'M')
     work.append("   ");
   else
     {
