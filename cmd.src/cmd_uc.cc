@@ -351,6 +351,7 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS)) {
     mem  = params[0]->value.memory.memory;
     start= params[1]->value.address;
+    end  = start+64;
   }
   else if (cmdline->syntax_match(uc, MEMORY ADDRESS ADDRESS)) {
     mem  = params[0]->value.memory.memory;
