@@ -536,7 +536,7 @@ CLP2::inst_alu(t_mem code)
 	case 3: // SEXD
 	  op2= 0;
 	  if (R[b] & 0x80000000)
-	    op2= -1;
+	    op2= 0xffffffff;
 	  RC[d]->W(op2);
 	  return resGO;
 	case 0xf: // AND
