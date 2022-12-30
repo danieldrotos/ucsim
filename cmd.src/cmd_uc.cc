@@ -934,10 +934,8 @@ COMMAND_DO_WORK_UC(cl_var_cmd)
 	      t_index i;
 	      for (addr= 0; addr < uc->variables->get_size(); addr++)
 		{
-		  printf("checking %d...\n", addr);
 		  if (!uc->vars->by_addr.search(uc->variables, addr, i))
 		    {
-		      printf("  found one slot %d\n", addr);
 		      addr_set= true;
 		      break;
 		    }
