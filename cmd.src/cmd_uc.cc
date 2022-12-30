@@ -250,7 +250,7 @@ CMDHELP(cl_tick_cmd,
 COMMAND_DO_WORK_UC(cl_dump_cmd)
 {
   class cl_memory *mem= uc->rom;
-  t_addr start = -1, end = -1;
+  /*t_addr*/long long int start = -1, end = -1;
   long bpl= -1;
 
   class cl_cmd_arg *params[4]= { cmdline->param(0),
