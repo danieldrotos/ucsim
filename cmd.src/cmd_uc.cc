@@ -369,6 +369,8 @@ COMMAND_DO_WORK_UC(cl_dump_cmd)
     return false;
   }
 
+  if (!mem)
+    return false;
   switch (fmt)
     {
     case 0: // default
