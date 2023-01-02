@@ -2,6 +2,10 @@ uCsim, Copyright (C)  Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
+uCsim, Copyright (C)  Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
 var _main rom[0x020a]
 dc 0x0100 0x0210 
 0x0100  ? 31 00 00    LD     SP,0x0000[0K

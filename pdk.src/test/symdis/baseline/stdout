@@ -2,6 +2,10 @@ uCsim, Copyright (C)  Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
+uCsim, Copyright (C)  Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
 var __interrupt_vect rom[0x20]
 var __sdcc_external_startup rom[0x1f]
 var __sdcc_program_startup rom[0x11]
