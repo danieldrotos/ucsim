@@ -2992,7 +2992,7 @@ cl_uc::fetch(t_mem *code)
 int
 cl_uc::do_inst(int step)
 {
-  t_addr PCsave= PC;
+  //t_addr PCsave;
   int res= resGO;
 
   if (step < 0)
@@ -3007,19 +3007,19 @@ cl_uc::do_inst(int step)
       if (state == stGO)
 	{
 	  pre_inst();
-	  PCsave = PC;
+	  /*PCsave*/instPC = PC;
 	  res= exec_inst();
 	  if (res == resINV_INST)
 	    /* backup to start of instruction */
-	    PC = PCsave;
-	  else if (res == resGO && !inst_at(PCsave) && analyzer)
+	    PC = instPC/*PCsave*/;
+	  else if (res == resGO && !inst_at(instPC/*PCsave*/) && analyzer)
 	    {
-	      analyze(PCsave);
+	      analyze(instPC/*PCsave*/);
 	    }
 	}
       post_inst();
 
-      if ((res == resGO) && (PC == PCsave) && stop_selfjump)
+      if ((res == resGO) && (PC == instPC/*PCsave*/) && stop_selfjump)
 	{
 	  res= resSELFJUMP;
 	  sim->stop(res);
@@ -3059,7 +3059,7 @@ cl_uc::pre_inst(void)
 int
 cl_uc::exec_inst(void)
 {
-  instPC= PC;
+  //instPC= PC;
   return(resGO);
 }
 
@@ -3068,7 +3068,7 @@ cl_uc::exec_inst_tab(instruction_wrapper_fn itab[])
 {
   t_mem c;
   int res= resGO;
-  instPC= PC;
+  //instPC= PC;
   if (fetch(&c))
     return resBREAKPOINT;
   if (itab[c] == NULL)

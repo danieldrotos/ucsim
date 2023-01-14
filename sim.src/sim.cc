@@ -222,7 +222,7 @@ cl_sim::stop(int reason)
 	    if (con) con->dd_printf("Invalid instruction");
 	    if (uc->rom)
 	      if (con) con->dd_printf(" 0x%04x\n",
-				      MU32(uc->rom->get(uc->PC)));
+				      MU32(uc->rom->get(uc->instPC)));
 	  }
          break;
 	case resSTEP:

@@ -408,21 +408,22 @@ void cl_pdk::print_regs(class cl_console_base *con) {
  * Execution
  */
 
-int cl_pdk::exec_inst(void) {
+int cl_pdk::exec_inst(void)
+{
   t_mem code;
 
+  instPC= PC;
   if (fetch(&code)) {
     return (resBREAKPOINT);
   }
   tick(1);
 
   int status = execute(code);
-  if (status == resINV_INST) {
-    PC = rom->inc_address(PC, -1);
-
-    sim->stop(resINV_INST);
-    return (resINV_INST);
-  }
+  if (status == resINV_INST)
+    {
+      //PC = instPC;//rom->inc_address(PC, -1);
+      return (resINV_INST);
+    }
   return (status);
 }
 

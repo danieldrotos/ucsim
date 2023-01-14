@@ -979,9 +979,6 @@ cl_pblaze::exec_inst(void)
     }
 
   // this shouldnt be executed. If so, something bad happend in simulated program
-  PC = rom->inc_address(PC, -1);
-
-  sim->stop(resINV_INST);
   return(resINV_INST);
 }
 
