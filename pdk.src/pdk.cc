@@ -57,6 +57,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 cl_pdk::cl_pdk(struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim) {
   type = IType;
+  if (type->type == CPU_PDK13)
+    PCmask= 0x3ff;
+  if (type->type == CPU_PDK14)
+    PCmask= 0x7ff;
+  if (type->type == CPU_PDK15)
+    PCmask= 0xfff;
 }
 
 int cl_pdk::init(void) {

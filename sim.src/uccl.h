@@ -272,7 +272,7 @@ public:
   class cl_analyzer_opt *analyzer_opt;
   class cl_analyser_opt *analyser_opt;
   
-  t_addr PC, instPC;		// Program Counter
+  t_addr PC, instPC, PCmask;	// Program Counter
   class cl_cell32 cPC;		// Cell of PC
   bool inst_exec;		// Instruction is executed
   class cl_ticker *ticks;	// Nr of XTAL clocks

@@ -69,6 +69,7 @@ using namespace std;
 cl_pblaze::cl_pblaze(struct cpu_entry *cputype, class cl_sim *asim):
   cl_uc(asim)
 {
+  PCmask= 0x3ff;
   type = cputype;
 }
 

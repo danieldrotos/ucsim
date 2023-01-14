@@ -523,6 +523,7 @@ cl_exec_hist::get_insts()
 cl_uc::cl_uc(class cl_sim *asim):
   cl_base()
 {
+  PCmask= 0xffff;
   type= NULL;
   //int i;
   sim = asim;
@@ -2781,8 +2782,8 @@ cl_uc::tick_hw(int cycles)
   // tick hws
   while (c-- > 0)
     {
-      //printf("31 c=%d\n",c);
-      for (i= 0; i < hws->count; i++)
+      int hc= hws->count;
+      for (i= 0; i < hc; i++)
         {
           hw= (class cl_hw *)(hws->at(i));
           if ((hw->flags & HWF_INSIDE) &&
@@ -2936,7 +2937,9 @@ cl_uc::fetch(void)
     return(0);
 
   code= rom->read(PC);
-  PC= rom->inc_address(PC);
+  //PC= ++PC & PCmask;//rom->inc_address(PC);
+  PC++;
+  PC&= PCmask;
   vc.fetch++;
   return(code);
 }
