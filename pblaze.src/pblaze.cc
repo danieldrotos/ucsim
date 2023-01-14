@@ -836,7 +836,7 @@ cl_pblaze::load_state(class cl_console_base *con, char *file_name)
  */
 
 
-
+/*
 int
 cl_pblaze::do_inst(int step)
 {
@@ -853,7 +853,6 @@ cl_pblaze::do_inst(int step)
       post_inst();
 
       if (result == resINV_INST)
-        /* backup to start of instruction */
         PC = PCsave;
       else if (result == resGO) {
           if (!inst_at(PCsave))
@@ -868,7 +867,7 @@ cl_pblaze::do_inst(int step)
     sim->stop(result);
   return(result);
 }
-
+*/
 
 int
 cl_pblaze::exec_inst(void)

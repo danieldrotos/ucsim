@@ -89,18 +89,33 @@ cl_sim::mk_controller(void)
 int
 cl_sim::step(void)
 {
+  int res;
   if (state & SIM_GO)
     {
       if (steps_done == 0)
-	{
-	  start_at= dnow();
-	}
-      uc->save_hist();
-      if (uc->do_inst(1) == resGO)
+	start_at= dnow();
+
+      res= uc->do_inst(); 
+
+      if (res < resSTOP)
 	steps_done++;
+      else
+	{
+	  if (res >= resSTOP)
+	    stop(res);
+	}
+      
       if ((steps_todo > 0) &&
 	  (steps_done >= steps_todo))
 	stop(resSTEP);
+      
+      if (uc->stop_at_time &&
+	  uc->stop_at_time->reached())
+	{
+	  delete uc->stop_at_time;
+	  uc->stop_at_time= NULL;
+	  stop(resBREAKPOINT);
+	}
     }
   return(0);
 }

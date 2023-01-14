@@ -2990,60 +2990,40 @@ cl_uc::fetch(t_mem *code)
 }
 
 int
-cl_uc::do_inst(int step)
+cl_uc::do_inst(void)
 {
-  //t_addr PCsave;
   int res= resGO;
 
-  if (step < 0)
-    step= 1;
-  while (step-- &&
-         res == resGO &&
-	 (
-	  (state == stGO) || (state == stIDLE)
-	  )
-	 )
+  save_hist();
+  if (state == stGO)
     {
-      if (state == stGO)
-	{
-	  pre_inst();
-	  /*PCsave*/instPC = PC;
-	  res= exec_inst();
-	  if (res == resINV_INST)
-	    /* backup to start of instruction */
-	    PC = instPC/*PCsave*/;
-	  else if (res == resGO && !inst_at(instPC/*PCsave*/) && analyzer)
-	    {
-	      analyze(instPC/*PCsave*/);
-	    }
-	}
-      post_inst();
-
-      if ((res == resGO) && (PC == instPC/*PCsave*/) && stop_selfjump)
-	{
-	  res= resSELFJUMP;
-	  sim->stop(res);
-	  break;
-	}
-      
-      if ((res == resGO || res == resNOT_DONE) &&
-	  1/*irq*/)
-	{
-	  int r= do_interrupt();
-	  if (r != resGO)
-	    res= r;
-	}
-
-      if (stop_at_time &&
-	  stop_at_time->reached())
-	{
-	  delete stop_at_time;
-	  stop_at_time= NULL;
-	  res= resBREAKPOINT;
-	}
+      pre_inst();
+      instPC= PC;
+      res= exec_inst();
+      if (res == resINV_INST)
+	/* backup to start of instruction */
+	PC= instPC;
+      else
+	if (res == resGO && !inst_at(instPC) && analyzer)
+	  {
+	    analyze(instPC);
+	  }
     }
-  if (res != resGO && res != resNOT_DONE)
-    sim->stop(res);
+  post_inst();
+
+  if ((res == resGO) && (PC == instPC) && stop_selfjump)
+    {
+      res= resSELFJUMP;
+      return res;
+    }
+      
+  if ((res == resGO || res == resNOT_DONE))
+    {
+      int r= do_interrupt();
+      if (r != resGO)
+	res= r;
+    }
+
   return(res);
 }
 
@@ -3059,7 +3039,6 @@ cl_uc::pre_inst(void)
 int
 cl_uc::exec_inst(void)
 {
-  //instPC= PC;
   return(resGO);
 }
 
@@ -3068,7 +3047,6 @@ cl_uc::exec_inst_tab(instruction_wrapper_fn itab[])
 {
   t_mem c;
   int res= resGO;
-  //instPC= PC;
   if (fetch(&c))
     return resBREAKPOINT;
   if (itab[c] == NULL)
