@@ -1014,10 +1014,9 @@ cl_bit_cell32::d(t_mem v)
 
 cl_memory_cell::cl_memory_cell()
 {
-  data= &nd_store;//0;
+  data= &nd_store;
   flags= CELL_NON_DECODED;
   width= 8;
-  //def_data= 0;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
@@ -1033,10 +1032,9 @@ cl_memory_cell::cl_memory_cell()
 
 cl_memory_cell::cl_memory_cell(uchar awidth)
 {
-  data= &nd_store;//0;
+  data= &nd_store;
   flags= CELL_NON_DECODED;
   width= awidth;
-  //def_data= 0;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
@@ -1054,9 +1052,6 @@ cl_memory_cell::~cl_memory_cell(void)
 {
   if (ops)
     {
-      /*int i;
-      for (i=0; ops[i]; i++)
-      delete ops[i];*/
       free(ops);
     }
 }
@@ -1064,7 +1059,7 @@ cl_memory_cell::~cl_memory_cell(void)
 int
 cl_memory_cell::init(void)
 {
-  data= &nd_store;//0;//&def_data;
+  data= &nd_store;
   return(0);
 }
 
@@ -1114,7 +1109,7 @@ cl_memory_cell::un_decode(void)
 {
   if ((flags & CELL_NON_DECODED) == 0)
     {
-      data= &nd_store;//0;//&def_data;
+      data= &nd_store;
       flags|= CELL_NON_DECODED;
     }
 }
@@ -1125,7 +1120,7 @@ cl_memory_cell::decode(class cl_memory_chip *chip, t_addr addr)
   data= chip->get_slot(addr);
   if (!data)
     {
-      data= &nd_store;//&def_data;
+      data= &nd_store;
       flags|= CELL_NON_DECODED;
     }
   else
@@ -1137,7 +1132,7 @@ cl_memory_cell::decode(void *data_ptr)
 {
   if (data_ptr == NULL)
     {
-      data= &nd_store;//&def_data;
+      data= &nd_store;
       flags|= CELL_NON_DECODED;
     }
   else
@@ -1152,7 +1147,7 @@ cl_memory_cell::decode(void *data_ptr, t_mem bit_mask)
 {
   if (data_ptr == NULL)
     {
-      data= &nd_store;//&def_data;
+      data= &nd_store;
       flags|= CELL_NON_DECODED;
     }
   else
@@ -1173,7 +1168,7 @@ cl_memory_cell::read(void)
     {
       t_mem r= 0;
       for (int i=0; ops[i]; i++)
-	r= ops[i]->read(/*this*/);
+	r= ops[i]->read();
       return r;
     }
   return d();
@@ -1189,7 +1184,7 @@ cl_memory_cell::read(enum hw_cath skip)
     {
       t_mem r;
       for (int i=0; ops[i]; i++)
-	r= ops[i]->read(/*this,*/ skip);
+	r= ops[i]->read(skip);
       return r;
     }
   return d();
@@ -1210,7 +1205,7 @@ cl_memory_cell::write(t_mem val)
   if (ops && ops[0])
     {
       for (int i=0; ops[i]; i++)
-	val= ops[i]->write(/*this,*/ val);
+	val= ops[i]->write(val);
     }
   if (flags & CELL_READ_ONLY)
     return d();

@@ -92,7 +92,7 @@ cl_hw::init(void)
       cfg->init();
       cfg->hidden= true;
       uc->address_spaces->add(cfg);
-      cfg_chip= new cl_chip8(n+"_chip", cfg_size(), 8);
+      cfg_chip= new cl_chip8(n+"_chip", cfg_size(), sizeof(t_mem)*8);
       cfg_chip->init();
       
       for (a= 0; a < cfg_size(); a++)

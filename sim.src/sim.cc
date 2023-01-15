@@ -90,16 +90,16 @@ int
 cl_sim::step(void)
 {
   int res;
-  if (state & SIM_GO)
+  //if (state & SIM_GO)
     {
       if (steps_done == 0)
 	start_at= dnow();
 
       res= uc->do_inst(); 
 
-      if (res < resSTOP)
+      //if (res < resSTOP)
 	steps_done++;
-      else
+	//else
 	{
 	  if (res >= resSTOP)
 	    stop(res);
