@@ -173,7 +173,25 @@ void cl_pdk::make_memories(void) {
     chip->init();
     memchips->add(chip);
 
-    ad = new cl_address_decoder(as = address_space("rom"), chip, 0, rom_storage, 0);
+    ad = new cl_address_decoder(as = address_space("rom"), chip, 0, rom_storage-1, 0);
+    ad->init();
+    as->decoders->add(ad);
+    ad->activate(0);
+
+    chip = new cl_chip16("ram_chip", ram_storage, 8);
+    chip->init();
+    memchips->add(chip);
+
+    ad = new cl_address_decoder(as = address_space("ram"), chip, 0, ram_storage-1, 0);
+    ad->init();
+    as->decoders->add(ad);
+    ad->activate(0);
+
+    chip = new cl_chip16("io_chip", io_size, 8);
+    chip->init();
+    memchips->add(chip);
+
+    ad = new cl_address_decoder(as = address_space("regs8"), chip, 0, io_size-1, 0);
     ad->init();
     as->decoders->add(ad);
     ad->activate(0);
