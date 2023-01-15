@@ -877,7 +877,7 @@ cl_read_operator::read(void)
 t_mem
 cl_cell8::d()
 {
-  return data?(*((u8_t*)data)):0;
+  return data?(*((u8_t*)data)):urnd8();
 }
 
 void
@@ -898,7 +898,7 @@ t_mem
 cl_bit_cell8::d()
 {
   if (!data)
-    return 0;
+    return urnd()&1;
   u8_t x= *((u8_t*)data);
   x&= mask;
   return x?1:0;
@@ -921,7 +921,7 @@ cl_bit_cell8::d(t_mem v)
 t_mem
 cl_cell16::d()
 {
-  return data?(*((u16_t*)data)):0;
+  return data?(*((u16_t*)data)):urnd16();
 }
 
 void
@@ -942,7 +942,7 @@ t_mem
 cl_bit_cell16::d()
 {
   if (!data)
-    return 0;
+    return urnd()&1;
   u16_t x= *((u16_t*)data);
   x&= mask;
   return x?1:0;
@@ -964,7 +964,7 @@ cl_bit_cell16::d(t_mem v)
 t_mem
 cl_cell32::d()
 {
-  return data?(*((u32_t*)data)):0;
+  return data?(*((u32_t*)data)):urnd32();
 }
 
 void
@@ -985,7 +985,7 @@ t_mem
 cl_bit_cell32::d()
 {
   if (!data)
-    return 0;
+    return urnd()&1;
   u32_t x= *((u32_t*)data);
   x&= mask;
   return x?1:0;
@@ -1059,7 +1059,7 @@ cl_memory_cell::~cl_memory_cell(void)
 int
 cl_memory_cell::init(void)
 {
-  data= &def_data;
+  //data= 0;//&def_data;
   return(0);
 }
 
@@ -1109,7 +1109,7 @@ cl_memory_cell::un_decode(void)
 {
   if ((flags & CELL_NON_DECODED) == 0)
     {
-      data= &def_data;
+      data= 0;//&def_data;
       flags|= CELL_NON_DECODED;
     }
 }
