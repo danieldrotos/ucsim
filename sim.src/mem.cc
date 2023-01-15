@@ -51,6 +51,8 @@
 
 static class cl_mem_error_registry mem_error_registry;
 static unsigned int mem_uids= 0;
+static t_mem nd_store;
+
 
 /*
  *                                                3rd version of memory system
@@ -877,19 +879,22 @@ cl_read_operator::read(void)
 t_mem
 cl_cell8::d()
 {
-  return data?(*((u8_t*)data)):urnd8();
+  //return data?(*((u8_t*)data)):urnd8();
+  return *((u8_t*)data);
 }
 
 void
 cl_cell8::d(t_mem v)
 {
-  data?(*((u8_t*)data)=(u8_t)v):0;
+  //data?(*((u8_t*)data)=(u8_t)v):0;
+  *((u8_t*)data)=(u8_t)v;
 }
 
 void
 cl_cell8::dl(t_mem v)
 {
-  data?(*((u8_t*)data)=(u8_t)v):0;
+  //data?(*((u8_t*)data)=(u8_t)v):0;
+  *((u8_t*)data)=(u8_t)v;
 }
 
 // 8 bit cell for bit spaces
@@ -897,8 +902,7 @@ cl_cell8::dl(t_mem v)
 t_mem
 cl_bit_cell8::d()
 {
-  if (!data)
-    return urnd()&1;
+  //if (!data) return urnd()&1;
   u8_t x= *((u8_t*)data);
   x&= mask;
   return x?1:0;
@@ -907,8 +911,7 @@ cl_bit_cell8::d()
 void
 cl_bit_cell8::d(t_mem v)
 {
-  if (!data)
-    return;
+  //if (!data) return;
   if (v)
     *((u8_t*)data) |= (u8_t)mask;
   else
@@ -921,19 +924,22 @@ cl_bit_cell8::d(t_mem v)
 t_mem
 cl_cell16::d()
 {
-  return data?(*((u16_t*)data)):urnd16();
+  //return data?(*((u16_t*)data)):urnd16();
+  return *((u16_t*)data);
 }
 
 void
 cl_cell16::d(t_mem v)
 {
-  data?(*((u16_t*)data)=(u16_t)v):0;
+  //data?(*((u16_t*)data)=(u16_t)v):0;
+  *((u16_t*)data)=(u16_t)v;
 }
 
 void
 cl_cell16::dl(t_mem v)
 {
-  data?(*((u16_t*)data)=(u16_t)v):0;
+  //data?(*((u16_t*)data)=(u16_t)v):0;
+  *((u16_t*)data)=(u16_t)v;
 }
 
 // 16 bit cell for bit spaces
@@ -941,8 +947,7 @@ cl_cell16::dl(t_mem v)
 t_mem
 cl_bit_cell16::d()
 {
-  if (!data)
-    return urnd()&1;
+  //if (!data) return urnd()&1;
   u16_t x= *((u16_t*)data);
   x&= mask;
   return x?1:0;
@@ -951,8 +956,7 @@ cl_bit_cell16::d()
 void
 cl_bit_cell16::d(t_mem v)
 {
-  if (!data)
-    return;
+  //if (!data) return;
   if (v)
     *((u16_t*)data) |= (u16_t)mask;
   else
@@ -964,19 +968,22 @@ cl_bit_cell16::d(t_mem v)
 t_mem
 cl_cell32::d()
 {
-  return data?(*((u32_t*)data)):urnd32();
+  //return data?(*((u32_t*)data)):urnd32();
+  return *((u32_t*)data);
 }
 
 void
 cl_cell32::d(t_mem v)
 {
-  data?(*((u32_t*)data)=(u32_t)v):0;
+  //data?(*((u32_t*)data)=(u32_t)v):0;
+  *((u32_t*)data)=(u32_t)v;
 }
 
 void
 cl_cell32::dl(t_mem v)
 {
-  data?(*((u32_t*)data)=(u32_t)v):0;
+  //data?(*((u32_t*)data)=(u32_t)v):0;
+  *((u32_t*)data)=(u32_t)v;
 }
 
 // 32 bit cell for bit spaces
@@ -984,8 +991,7 @@ cl_cell32::dl(t_mem v)
 t_mem
 cl_bit_cell32::d()
 {
-  if (!data)
-    return urnd()&1;
+  //if (!data) return urnd()&1;
   u32_t x= *((u32_t*)data);
   x&= mask;
   return x?1:0;
@@ -994,8 +1000,7 @@ cl_bit_cell32::d()
 void
 cl_bit_cell32::d(t_mem v)
 {
-  if (!data)
-    return;
+  //if (!data) return;
   if (v)
     *((u32_t*)data) |= (u32_t)mask;
   else
@@ -1009,10 +1014,10 @@ cl_bit_cell32::d(t_mem v)
 
 cl_memory_cell::cl_memory_cell()
 {
-  data= 0;
+  data= &nd_store;//0;
   flags= CELL_NON_DECODED;
   width= 8;
-  def_data= 0;
+  //def_data= 0;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
@@ -1028,10 +1033,10 @@ cl_memory_cell::cl_memory_cell()
 
 cl_memory_cell::cl_memory_cell(uchar awidth)
 {
-  data= 0;
+  data= &nd_store;//0;
   flags= CELL_NON_DECODED;
   width= awidth;
-  def_data= 0;
+  //def_data= 0;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
@@ -1059,7 +1064,7 @@ cl_memory_cell::~cl_memory_cell(void)
 int
 cl_memory_cell::init(void)
 {
-  //data= 0;//&def_data;
+  data= &nd_store;//0;//&def_data;
   return(0);
 }
 
@@ -1109,7 +1114,7 @@ cl_memory_cell::un_decode(void)
 {
   if ((flags & CELL_NON_DECODED) == 0)
     {
-      data= 0;//&def_data;
+      data= &nd_store;//0;//&def_data;
       flags|= CELL_NON_DECODED;
     }
 }
@@ -1120,7 +1125,7 @@ cl_memory_cell::decode(class cl_memory_chip *chip, t_addr addr)
   data= chip->get_slot(addr);
   if (!data)
     {
-      data= &def_data;
+      data= &nd_store;//&def_data;
       flags|= CELL_NON_DECODED;
     }
   else
@@ -1132,7 +1137,7 @@ cl_memory_cell::decode(void *data_ptr)
 {
   if (data_ptr == NULL)
     {
-      data= &def_data;
+      data= &nd_store;//&def_data;
       flags|= CELL_NON_DECODED;
     }
   else
@@ -1147,7 +1152,7 @@ cl_memory_cell::decode(void *data_ptr, t_mem bit_mask)
 {
   if (data_ptr == NULL)
     {
-      data= &def_data;
+      data= &nd_store;//&def_data;
       flags|= CELL_NON_DECODED;
     }
   else

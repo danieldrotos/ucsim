@@ -234,7 +234,7 @@ class cl_memory_cell: public cl_cell_data
 #endif
  public:
   t_mem mask;
-  t_mem def_data;
+  //t_mem def_data;
  protected:
   uchar width;
   uchar flags;
@@ -355,15 +355,17 @@ class cl_cell32: public cl_memory_cell
 
 class cl_mc32: public cl_cell32
 {
+private:
+  u32_t my_data;
 public:
   cl_mc32(uchar awidth): cl_cell32(awidth)
   {
-    data= &def_data;
+    data= &my_data;
     flags&= ~CELL_NON_DECODED;
   }
   cl_mc32(): cl_cell32(32)
   {
-    data= &def_data;
+    data= &my_data;
     flags&= ~CELL_NON_DECODED;
   }
 };
