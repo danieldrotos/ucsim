@@ -92,14 +92,11 @@ cl_hw::init(void)
       cfg->init();
       cfg->hidden= true;
       uc->address_spaces->add(cfg);
-      cfg_chip= new cl_chip8(n+"_chip", cfg_size(), sizeof(t_mem)*8);
-      cfg_chip->init();
-      
+
       for (a= 0; a < cfg_size(); a++)
         {
 	  class cl_memory_cell *c= cfg->get_cell(a);
-	  //c->decode(&(c->def_data));
-	  c->decode(cfg_chip->get_slot(a));
+	  c->decode(&(c->def_data));
           cfg->register_hw(a, this, false);
         }
     }
