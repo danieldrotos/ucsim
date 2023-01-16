@@ -167,7 +167,9 @@ cl_app::run(void)
         {
           if (sim->state & SIM_GO)
             {
-	      if (ccyc.get() - input_last_checked > cperiod.get())
+	      t_mem c= ccyc.get();
+	      t_mem p= cperiod.get();
+	      if (c/*ccyc.get()*/ - input_last_checked > p/*cperiod.get()*/)
 		{
 		  input_last_checked= ccyc.get();
 		  if (sim->uc)

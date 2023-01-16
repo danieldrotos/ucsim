@@ -368,6 +368,11 @@ public:
     data= &my_data;
     flags&= ~CELL_NON_DECODED;
   }
+  virtual int init(void)
+  {
+    data= &my_data;
+    return 0;
+  }
 };
 
 class cl_bit_cell32: public cl_memory_cell
