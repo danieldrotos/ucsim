@@ -34,10 +34,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 t_mem
 cl_f_write::write(t_mem val)
 {
-  if (val&0x80)
-    uc->dbg_reg= true;
-  else if (val&0x40)
-    uc->dbg_reg= false;
+  /*
+  if (val&0x80) uc->dbg_reg= true;
+  else if (val&0x40) uc->dbg_reg= false;
+  */
   return val&0x3f;
 }
 
@@ -52,7 +52,7 @@ CLP2::init(void)
 {
   cl_p1516::init();
 
-  dbg_reg= false;
+  //dbg_reg= false;
   class cl_memory_chip *chip= rom_chip;
   t_addr a;
   t_mem v;
@@ -693,10 +693,7 @@ CLP2::exec_inst(void)
   PC= R[15];
   instPC= PC;
   fe= fetch(&code);
-  if (dbg_reg)
-    {
-      fprintf(stderr, "F: %08x %08x %08x\n", instPC, code, F);
-    }
+  //if (dbg_reg) fprintf(stderr, "F: %08x %08x %08x\n", instPC, code, F);
   tick(4);
   R[15]= PC;
   if (fe)

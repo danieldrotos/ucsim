@@ -56,7 +56,7 @@ public:
 class cl_p2223: public cl_p1516
 {
 public:
-  bool dbg_reg;
+  //bool dbg_reg;
 public:
   cl_p2223(class cl_sim *asim);
   virtual int init(void);
