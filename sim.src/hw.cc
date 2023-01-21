@@ -451,6 +451,9 @@ cl_hw::handle_input(int c)
 	  }
 	break;
       }
+    case 'p'-'a'+1:
+      uc->sim->step();
+      break;
     default:
       return false;
       break;

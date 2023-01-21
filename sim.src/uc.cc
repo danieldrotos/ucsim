@@ -620,9 +620,13 @@ cl_uc::init(void)
   vars= new cl_var_list();
   make_variables();
   // Some app level vars:
-  reg_cell_var(&(application->cperiod), NULL, "cperiod",
+  reg_cell_var(&(application->cperiod),
+	       &(application->period),
+	       "cperiod",
 	       "Cycles between input checks");
-  reg_cell_var(&(application->ccyc), NULL, "ccyc",
+  reg_cell_var(&(application->ccyc),
+	       &(application->cyc),
+	       "ccyc",
 	       "Nr of cycles executed during simulation");
   reg_cell_var(&cPC, &PC, "PC", "Program counter");
   // Memories

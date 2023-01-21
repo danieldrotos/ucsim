@@ -75,6 +75,9 @@ cl_app::cl_app(void)
     app_start_at= dnow();
   srnd(0);
   set_console_mode();
+  period= 0;
+  cyc= 0;
+  acyc= 0;
 }
 
 cl_app::~cl_app(void)
@@ -118,10 +121,9 @@ int
 cl_app::run(void)
 {
   int done= 0;
-  double input_last_checked= 0;
+  //double input_last_checked= 0;
   class cl_option *o= options->get_option("go");
   bool g_opt= false;
-  //unsigned int cyc= 0, period= 10000;
   enum run_states rs= rs_config;
 
   cperiod.set(cperiod_value());
@@ -157,7 +159,6 @@ cl_app::run(void)
 	    sim->start(0, 0);
 	  rs= rs_run;
 	}
-      ccyc.set(ccyc.get()+1);
       if (!sim)
 	{
 	  commander->wait_input();
@@ -165,20 +166,19 @@ cl_app::run(void)
 	}
       else
         {
+	  acyc++;
           if (sim->state & SIM_GO)
             {
-	      t_mem c= ccyc.get();
-	      t_mem p= cperiod.get();
-	      if (c/*ccyc.get()*/ - input_last_checked > p/*cperiod.get()*/)
+	      if (++cyc > period)
 		{
-		  input_last_checked= ccyc.get();
+		  cyc= 0;
 		  if (sim->uc)
 		    sim->uc->touch();
 		  if (commander->input_avail())
 		    done= commander->proc_input();
 		}
 	      sim->step();
-	      if (jaj) ocon->dd_printf("** %d\n",ccyc.get());
+	      if (jaj) ocon->dd_printf("** %u\n",MU(acyc));
 	      if (jaj && commander->frozen_or_actual())
 		{
 		  sim->uc->print_regs(commander->frozen_or_actual()),
