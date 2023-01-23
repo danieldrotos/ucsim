@@ -1697,6 +1697,76 @@ cl_uc::read_cdb_file(cl_f *f)
   return cnt;
 }
 
+static bool is_area(chars w1, chars w2, chars w3)
+{
+  if (w1.empty() || w2.empty() || w3.empty())
+    return false;
+  if (w1 != "Area")
+    return false;
+  if (w2 != "Addr")
+    return false;
+  if (w3 != "Size")
+    return false;
+  return true;
+}
+
+static bool is_code_seg(chars wlast)
+{
+  return wlast == "(REL,CON,CODE)";
+}
+
+long
+cl_uc::read_map_file(cl_f *f)
+{
+  chars ln;
+  chars s, w1, w2, w3, wlast, w;
+  enum { s_wait_area, s_wait_seginfo, s_wait_sym } stat;
+  stat= s_wait_area;
+  ln= f->get_s();
+  while (ln.nempty())
+    {
+      ln= f->get_s();
+      s= ln.c_str();
+      ln.start_parse();
+      w1= ln.token(" \t\v");
+      if (w1.nempty()) wlast= w1;
+      w2= ln.token(" \t\v");
+      if (w2.nempty()) wlast= w2;
+      w3= ln.token(" \t\v");
+      if (w3.nempty()) wlast= w3;
+      w= ln.token(" \t\v");
+      while (w.nempty())
+	{
+	  wlast= w;
+	  w= ln.token(" \t\v");
+	}
+      switch (stat)
+	{
+	case s_wait_area:
+	  if (is_area(w1, w2, w3))
+	    stat= s_wait_seginfo;
+	  break;
+	case s_wait_seginfo:
+	  if (is_code_seg(wlast))
+	    stat= s_wait_sym;
+	  break;
+	case s_wait_sym:
+	  if (is_area(w1, w2, w3))
+	    stat= s_wait_seginfo;
+	  else
+	    {
+	      if (w1 == "C:")
+		{
+		  t_addr a= strtol(w2.c_str(), NULL, 16);
+		  printf("%s %u\n", w3.c_str(), AU(a));
+		}
+	    }
+	  break;
+	}
+    }
+  return 0;
+}
+
 static int h1(const char *s, int p)
 {
   int r= 0;
@@ -1941,6 +2011,12 @@ cl_uc::read_file(chars nam, class cl_console_base *con)
       if (!application->quiet)
 	printf("%ld symbols read from %s\n", l, f->get_fname());
     }
+  else if (is_map_file(f))
+    {
+      l= read_map_file(f);
+      if (!application->quiet)
+	printf("%ld symbols read from %s\n", l, f->get_fname());
+    }
   if (strcmp(nam, f->get_fname()) != 0)
     {
       chars n= nam;
@@ -1949,6 +2025,19 @@ cl_uc::read_file(chars nam, class cl_console_base *con)
       if (c->opened())
 	{
 	  l= read_cdb_file(c);
+	  if (!application->quiet)
+	    printf("%ld symbols read from %s\n", l, c->get_fname());
+	}
+      delete c;
+    }
+  if (strcmp(nam, f->get_fname()) != 0)
+    {
+      chars n= nam;
+      n+= ".map";
+      cl_f *c= mk_io(n, "r");
+      if (c->opened())
+	{
+	  l= read_map_file(c);
 	  if (!application->quiet)
 	    printf("%ld symbols read from %s\n", l, c->get_fname());
 	}

@@ -383,6 +383,23 @@ is_s19_file(class cl_f *f)
   return false;
 }
 
+bool
+is_map_file(class cl_f *f)
+{
+  const char *n;
+  if (!f)
+    return false;
+  n= f->get_file_name();
+  if (!n ||
+      !*n)
+    return false;
+
+  if (strend(n, ".map"))
+    return true;
+
+  return false;
+}
+
 /*
   option_name=col_opt:col_opt
 
