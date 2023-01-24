@@ -120,6 +120,16 @@ chars::deallocate_string(void)
 }
 
 
+char
+chars::c(int idx)
+{
+  if (!chars_string)
+    return 0;
+  if (idx>=chars_length)
+    return 0;
+  return chars_string[idx];
+}
+
 chars
 chars::token(const char *delims) const
 {

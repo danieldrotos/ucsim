@@ -1715,12 +1715,36 @@ static bool is_code_seg(chars wlast)
   return wlast == "(REL,CON,CODE)";
 }
 
+static bool is_ncode_seg(chars w1, chars wlast)
+{
+  return (wlast == "(REL,CON)")
+    &&
+    (
+     (w1 == "CODE") ||
+     (w1 == "_CODE")
+     );
+}
+
+static bool is_addr(chars w)
+{
+  int l= w.len();
+  if (l != 8) return false;
+  const char *s= w.c_str();
+  int i;
+  for (i= 0; i<l; i++)
+    if (!isxdigit(s[i])) return false;
+  return true;
+}
+
 long
 cl_uc::read_map_file(cl_f *f)
 {
+  int cnt= 0;
   chars ln;
   chars s, w1, w2, w3, wlast, w;
-  enum { s_wait_area, s_wait_seginfo, s_wait_sym } stat;
+  enum { s_wait_area, s_wait_seginfo, s_wait_sym, s_wait_nsym } stat;
+  class cl_cvar *v;
+  
   stat= s_wait_area;
   ln= f->get_s();
   while (ln.nempty())
@@ -1749,22 +1773,44 @@ cl_uc::read_map_file(cl_f *f)
 	case s_wait_seginfo:
 	  if (is_code_seg(wlast))
 	    stat= s_wait_sym;
+	  else if (is_ncode_seg(w1, wlast))
+	    stat= s_wait_nsym;
 	  break;
 	case s_wait_sym:
 	  if (is_area(w1, w2, w3))
 	    stat= s_wait_seginfo;
 	  else
 	    {
-	      if (w1 == "C:")
+	      if ((w1 == "C:") && is_addr(w2) && (w3.c(0) == '_'))
 		{
+		  w3= &(w3.c_str()[1]);
 		  t_addr a= strtol(w2.c_str(), NULL, 16);
-		  printf("%s %u\n", w3.c_str(), AU(a));
+		  //printf("%s %08x\n", w3.c_str(), AU(a));
+		  v= vars->add(w3, rom, a, "");
+		  v->set_by(VBY_DEBUG);
+		  cnt++;
+		}
+	    }
+	  break;
+	case s_wait_nsym:
+	  if (is_area(w1, w2, w3))
+	    stat= s_wait_seginfo;
+	  else
+	    {
+	      if (is_addr(w1) && (w2.c(0) == '_'))
+		{
+		  w2= &(w2.c_str()[1]);
+		  t_addr a= strtol(w1.c_str(), NULL, 16);
+		  //printf("%s %08x\n", w2.c_str(), AU(a));
+		  v= vars->add(w2, rom, a, "");
+		  v->set_by(VBY_DEBUG);
+		  cnt++;
 		}
 	    }
 	  break;
 	}
     }
-  return 0;
+  return cnt;
 }
 
 static int h1(const char *s, int p)
