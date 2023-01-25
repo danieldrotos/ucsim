@@ -187,10 +187,12 @@ chars::rtrim(void)
   if (*p == 0)
     return;
   p= p+len()-1;
-  while ((p!=chars_string) && isspace(*p))
-    p--;
-  if (isspace(*p))
-    *p= 0;
+  while (p!=chars_string)
+    {
+      if (isspace(*p))
+	*p= 0;
+      p--;
+    }
 }
 
 
