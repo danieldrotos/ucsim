@@ -479,6 +479,44 @@ cl_cmdline::get_token(char *start)
 bool
 cl_cmdline::expand_commands(char *param_str)
 {
+  int start= -1, end= -1;
+  int i, level= 0;
+  if (!param_str || !*param_str)
+    return false;
+  for (i= 0; param_str[i]; i++)
+    {
+      if (param_str[i] == '\\')
+	{
+	  i++;
+	}
+      else if (param_str[i] == '$')
+	{
+	  if (param_str[++i] == '(')
+	    {
+	      if ((level == 0) && param_str[i+1])
+		start= ++i;
+	      level++;
+	    }
+	}
+      else if (param_str[i] == ')')
+	{
+	  level--;
+	  if (level == 0)
+	    end= i-1;
+	}
+    }
+  //printf("S:%d E:%d L:%d\n",start,end,level);
+  if ((start < 0) && (end < 0))
+    return true;
+  if ((start < 0) || (end < 0) || (level != 0))
+    {
+      con->dd_cprintf("error", "Syntax error: unbalanced command expansion\n");
+      return false;
+    }
+  chars cmd;
+  for (i= start; i<=end; i++)
+    cmd+= param_str[i];
+  //printf("OK |%s|\n", cmd.c_str());
   return true;
 }
 
