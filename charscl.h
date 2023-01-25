@@ -53,6 +53,7 @@ public:
   chars &append(const char *s);
   chars &append(char c);
   chars &appendf(const char *format, ...);
+  chars &appendn(const char *src, int n);
   chars &format(const char *format, ...);
   bool empty() const { return chars_length == 0; }
   bool nempty() const { return !empty(); }

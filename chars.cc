@@ -286,6 +286,27 @@ chars::appendf(const char *format, ...)
 }
 
 chars &
+chars::appendn(const char *src, int n)
+{
+  char *temp= (char*)malloc(chars_length + n + 1);
+  if (chars_string)
+    {
+      strcpy(temp, chars_string);
+      if (dynamic)
+	free(chars_string);
+    }
+  else
+    temp[0]= 0;
+  int s= 0;
+  while (src[s] && (s<n))
+    temp[chars_length++]= src[s++];
+  temp[chars_length]= '\0';
+  chars_string= temp;
+  dynamic= true;
+  return *this;
+}
+
+chars &
 chars::format(const char *format, ...)
 {
   deallocate_string();

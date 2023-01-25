@@ -157,11 +157,15 @@ cl_cmdline::split(void)
 	  char *dot;
           i= strcspn(start, " \t\v\r,#;");
           end= start+i;
-          param_str= (char *)malloc(i+1);
+          /*param_str= (char *)malloc(i+1);
           strncpy(param_str, start, i);
 	  param_str[i]= '\0';
-	  expand_commands(param_str);
-	  tokens->add(strdup(param_str));
+	  */
+	  chars ps;
+	  ps.appendn(start, i);
+	  expand_commands(/*param_str*/(char*)ps.c_str());
+	  tokens->add(strdup(/*param_str*/ps.c_str()));
+	  param_str= (char*)ps.c_str();
 	  if ((dot= strchr(param_str, '[')) != NULL)
             {
               char *p;
@@ -194,7 +198,7 @@ cl_cmdline::split(void)
 	      params->add(arg= new cl_cmd_sym_arg(param_str));
 	      arg->init();
 	    }
-	  free(param_str);
+	  //free(param_str);
 	}
       start= end;
       start= skip_delims(start);
@@ -224,15 +228,14 @@ cl_cmdline::split_out_string(char **_start, char **_end)
     end--;
   else
     con->dd_cprintf("error", "Unterminated string\n");
-  char *param_str= (char *)malloc(end-start+2);
-  strncpy(param_str, start, 1+end-start);
-  param_str[1+end-start]= '\0';
-  expand_commands(param_str);
-  tokens->add(strdup(param_str));
+  chars ps;
+  ps.appendn(start, 1+end-start);
+  expand_commands((char*)ps.c_str());
+  tokens->add(strdup(ps.c_str()));
   class cl_cmd_arg *arg;
-  params->add(arg= new cl_cmd_str_arg(param_str));
+  params->add(arg= new cl_cmd_str_arg(ps.c_str()));
   arg->init();
-  free(param_str);
+  //free(param_str);
   if (*end)
     end++;
   if (*end == '"')
