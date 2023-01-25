@@ -544,7 +544,8 @@ COMMAND_DO_WORK_APP(cl_echo_cmd)
 {
   class cl_cmd_arg *parm;
   int i;
-  con->dd_color("result");
+  bool printed= false;
+  con->dd_color("answer");
   for (i= 0; true; i++)
     {
       parm= cmdline->param(i);
@@ -556,8 +557,10 @@ COMMAND_DO_WORK_APP(cl_echo_cmd)
       if (i)
 	con->dd_printf(" ");
       con->dd_printf("%s", s);
+      printed= true;
     }
-  con->dd_printf("\n");
+  if (printed)
+    con->dd_printf("\n");
   return false;
 }
 
