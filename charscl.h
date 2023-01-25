@@ -49,6 +49,8 @@ private:
 
 public:
   const char *c_str(void) const { return chars_string; }
+  const char *cstr(void) const { return chars_string; }
+  char *str(void) { return chars_string; }
   char c(int idx);
   chars &append(const char *s);
   chars &append(char c);

@@ -163,7 +163,7 @@ cl_cmdline::split(void)
 	  */
 	  chars ps;
 	  ps.appendn(start, i);
-	  expand_commands(/*param_str*/(char*)ps.c_str());
+	  expand_commands(&ps);
 	  tokens->add(strdup(/*param_str*/ps.c_str()));
 	  param_str= (char*)ps.c_str();
 	  if ((dot= strchr(param_str, '[')) != NULL)
@@ -230,7 +230,7 @@ cl_cmdline::split_out_string(char **_start, char **_end)
     con->dd_cprintf("error", "Unterminated string\n");
   chars ps;
   ps.appendn(start, 1+end-start);
-  expand_commands((char*)ps.c_str());
+  expand_commands(&ps);
   tokens->add(strdup(ps.c_str()));
   class cl_cmd_arg *arg;
   params->add(arg= new cl_cmd_str_arg(ps.c_str()));
@@ -480,28 +480,29 @@ cl_cmdline::get_token(char *start)
 }
 
 bool
-cl_cmdline::expand_commands(char *param_str)
+cl_cmdline::expand_commands(chars *params)
 {
   int start= -1, end= -1;
   int i, level= 0;
-  if (!param_str || !*param_str)
+  char *s= params->str();
+  if (params->empty())
     return false;
-  for (i= 0; param_str[i]; i++)
+  for (i= 0; s[i]; i++)
     {
-      if (param_str[i] == '\\')
+      if (s[i] == '\\')
 	{
 	  i++;
 	}
-      else if (param_str[i] == '$')
+      else if (s[i] == '$')
 	{
-	  if (param_str[++i] == '(')
+	  if (s[++i] == '(')
 	    {
-	      if ((level == 0) && param_str[i+1])
+	      if ((level == 0) && s[i+1])
 		start= ++i;
 	      level++;
 	    }
 	}
-      else if (param_str[i] == ')')
+      else if (s[i] == ')')
 	{
 	  level--;
 	  if (level == 0)
@@ -517,9 +518,8 @@ cl_cmdline::expand_commands(char *param_str)
       return false;
     }
   chars cmd;
-  for (i= start; i<=end; i++)
-    cmd+= param_str[i];
-  //printf("OK |%s|\n", cmd.c_str());
+  cmd.appendn(&s[start], end-start+1);
+  printf("OK |%s|\n", cmd.c_str());
   return true;
 }
 
