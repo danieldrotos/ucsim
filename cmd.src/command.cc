@@ -222,7 +222,7 @@ cl_cmdline::split_out_string(char **_start, char **_end)
   if (*end == '"')
     end--;
   else
-    con->dd_printf("Unterminated string\n");
+    con->dd_cprintf("error", "Unterminated string\n");
   char *param_str= (char *)malloc(end-start+2);
   strncpy(param_str, start, 1+end-start);
   param_str[1+end-start]= '\0';
@@ -277,7 +277,7 @@ cl_cmdline::add_bit(char *dot, char *colon, class cl_cmd_arg *sfr)
           *end = '\0';
       else
         {
-          con->dd_printf("Incomplete bit address\n");
+          con->dd_cprintf("error", "Incomplete bit address\n");
           delete sfr;
           return;
         }
@@ -285,7 +285,7 @@ cl_cmdline::add_bit(char *dot, char *colon, class cl_cmd_arg *sfr)
 
   if (*dot == '\0')
     {
-      con->dd_printf("Incomplete bit address\n");
+      con->dd_cprintf("error", "Incomplete bit address\n");
       delete sfr;
       return;
     }
@@ -359,14 +359,14 @@ cl_cmdline::split_out_array(char *dot, char *param_str)
   if (*dot == '\0')
     {
       aname= 0;
-      con->dd_printf("Incomplete array\n");
+      con->dd_cprintf("error", "Incomplete array\n");
     }
   else
     {
       char *p = strchr(dot, ']');
       if (!p)
         {
-          con->dd_printf("Missing ']' in array index\n");
+          con->dd_cprintf("error", "Missing ']' in array index\n");
           delete aname;
         }
       else
@@ -374,7 +374,7 @@ cl_cmdline::split_out_array(char *dot, char *param_str)
           *(p++)= '\0';
           if (strlen(dot) == 0)
             {
-              con->dd_printf("Incomplete array index\n");
+              con->dd_cprintf("error", "Incomplete array index\n");
               delete aname;
             }
           else
@@ -392,9 +392,9 @@ cl_cmdline::split_out_array(char *dot, char *param_str)
               class cl_cmd_arg *arg= new cl_cmd_array_arg(aname, aindex);
               arg->init();
               if (*p == '.' || *p == '[')
-                  add_bit(p+1, strchr(p+1, ':'), arg);
+		add_bit(p+1, strchr(p+1, ':'), arg);
               else
-                  params->add(arg);
+		params->add(arg);
             }
         }
     }
@@ -802,21 +802,21 @@ cl_cmd::work(class cl_app *app,
     case operate_on_app:
       if (!app)
 	{
-	  con->dd_printf("There is no application to work on!\n");
+	  con->dd_cprintf("error", "There is no application to work on!\n");
 	  return(false);
 	}
       return(do_work(app, cmdline, con));
     case operate_on_sim:
       if (!sim)
 	{
-	  con->dd_printf("There is no simulator to work on!\n");
+	  con->dd_cprintf("error", "There is no simulator to work on!\n");
 	  return(false);
 	}
       return(do_work(sim, cmdline, con));
     case operate_on_uc:
       if (!sim)
 	{
-	  con->dd_printf("There is no microcontroller to work on!\n");
+	  con->dd_cprintf("error", "There is no microcontroller to work on!\n");
 	  return(false);
 	}
       return(do_work(uc, cmdline, con));
@@ -828,7 +828,7 @@ cl_cmd::work(class cl_app *app,
 int
 cl_cmd::do_work(class cl_cmdline *cmdline, class cl_console_base *con)
 {
-  con->dd_printf("Command \"%s\" does nothing.\n",
+  con->dd_cprintf("answer", "Command \"%s\" does nothing.\n",
 		 names->at(0));
   return(0);
 }
@@ -837,7 +837,7 @@ int
 cl_cmd::do_work(class cl_app *app,
 		class cl_cmdline *cmdline, class cl_console_base *con)
 {
-  con->dd_printf("Command \"%s\" does nothing on application.\n",
+  con->dd_cprintf("answer", "Command \"%s\" does nothing on application.\n",
 		 names->at(0));
   return(0);
 }
@@ -846,7 +846,7 @@ int
 cl_cmd::do_work(class cl_sim *sim,
 		class cl_cmdline *cmdline, class cl_console_base *con)
 {
-  con->dd_printf("Command \"%s\" does nothing on simulator.\n",
+  con->dd_cprintf("answer", "Command \"%s\" does nothing on simulator.\n",
 		 names->at(0));
   return(0);
 }
@@ -855,7 +855,7 @@ int
 cl_cmd::do_work(class cl_uc *uc,
 		class cl_cmdline *cmdline, class cl_console_base *con)
 {
-  con->dd_printf("Command \"%s\" does nothing on microcontroller.\n",
+  con->dd_cprintf("answer", "Command \"%s\" does nothing on microcontroller.\n",
 		 names->at(0));
   return(0);
 }
@@ -897,7 +897,7 @@ cl_cmd::syntax_error(class cl_console_base *con)
       if (short_help.nempty())
 	print_short(con);
       else
-	con->dd_printf("Error: wrong syntax\n");
+	con->dd_cprintf("error", "Error: wrong syntax\n");
     }
 }
 
