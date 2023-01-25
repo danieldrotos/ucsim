@@ -160,6 +160,7 @@ cl_cmdline::split(void)
           param_str= (char *)malloc(i+1);
           strncpy(param_str, start, i);
 	  param_str[i]= '\0';
+	  expand_commands(param_str);
 	  tokens->add(strdup(param_str));
 	  if ((dot= strchr(param_str, '[')) != NULL)
             {
@@ -226,6 +227,7 @@ cl_cmdline::split_out_string(char **_start, char **_end)
   char *param_str= (char *)malloc(end-start+2);
   strncpy(param_str, start, 1+end-start);
   param_str[1+end-start]= '\0';
+  expand_commands(param_str);
   tokens->add(strdup(param_str));
   class cl_cmd_arg *arg;
   params->add(arg= new cl_cmd_str_arg(param_str));
@@ -472,6 +474,12 @@ cl_cmdline::get_token(char *start)
 	cs+= start[i];
     }
   return cs;
+}
+
+bool
+cl_cmdline::expand_commands(char *param_str)
+{
+  return true;
 }
 
 int
