@@ -53,7 +53,7 @@ COMMAND(cl_quit_cmd);
 COMMAND_ON(app,cl_kill_cmd);
 COMMAND_ON(app,cl_exec_cmd);
 COMMAND_ON(app,cl_expression_cmd);
-
+COMMAND_ON(app,cl_echo_cmd);
 
 // History
 COMMAND_ON(uc,cl_hist_cmd);

@@ -536,6 +536,38 @@ CMDHELP(cl_expression_cmd,
 
 
 /*
+ * ECHO command
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_APP(cl_echo_cmd)
+{
+  class cl_cmd_arg *parm;
+  int i;
+  con->dd_color("result");
+  for (i= 0; true; i++)
+    {
+      parm= cmdline->param(i);
+      if (!parm)
+	break;
+      if (!parm->as_string())
+	continue;
+      char *s= parm->value.string.string;
+      if (i)
+	con->dd_printf(" ");
+      con->dd_printf("%s", s);
+    }
+  con->dd_printf("\n");
+  return false;
+}
+
+CMDHELP(cl_echo_cmd,
+	"echo params...",
+	"Print parameters",
+	"");
+
+
+/*
  * HISTORY command
  *----------------------------------------------------------------------------
  */

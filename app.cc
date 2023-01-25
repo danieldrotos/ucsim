@@ -924,6 +924,10 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
   cmdset->add(cmd= new cl_exec_cmd("exec", 0));
   cmd->init();
 
+  cmdset->add(cmd= new cl_echo_cmd("echo", 0));
+  cmd->init();
+  cmd->add_name("print");
+  
   cmdset->add(cmd= new cl_expression_cmd("expression", 0));
   cmd->init();
   cmd->add_name("let");
