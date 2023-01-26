@@ -71,6 +71,9 @@ public:
   void ltrim(void);
   void rtrim(void);
   void trim() { ltrim(); rtrim(); }
+  void lrip(const char *cset);
+  void rrip(const char *cset);
+  void rip(const char *cset) { lrip(cset); rrip(cset); }
   // search
   bool starts_with(const char *x) const;
 public:

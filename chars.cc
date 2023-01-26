@@ -171,7 +171,7 @@ void
 chars::ltrim(void)
 {
   char *p= chars_string;
-  if (!p)
+  if (empty())
     return;
   while (*p && isspace(*p))
     p++;
@@ -181,20 +181,50 @@ chars::ltrim(void)
 void
 chars::rtrim(void)
 {
-  char *p= chars_string;
-  if (!p)
+  int i;
+  if (empty())
     return;
-  if (*p == 0)
-    return;
-  p= p+len()-1;
-  while (p!=chars_string)
+  i= chars_length-1;
+  while (i>=0)
     {
-      if (isspace(*p))
-	*p= 0;
-      p--;
+      if (isspace(chars_string[i]))
+	chars_string[i]= 0;
+      else
+	break;
+      i--;
     }
 }
 
+void
+chars::lrip(const char *cset)
+{
+  int skip;
+  if (empty())
+    return;
+  if (!cset || !*cset)
+    return;
+  skip= strspn(chars_string, cset);
+  if (skip > 0)
+    allocate_string(chars_string+skip);
+}
+void
+chars::rrip(const char *cset)
+{
+  if (empty())
+    return;
+  if (!cset || !*cset)
+    return;
+  int i= chars_length-1;
+  while (i>=0)
+    {
+      char c= chars_string[i];
+      if (strchr(cset, c) != NULL)
+	chars_string[i]= 0;
+      else
+	break;
+      i--;
+    }
+}
 
 bool
 chars::starts_with(const char *x) const
