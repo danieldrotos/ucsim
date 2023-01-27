@@ -877,19 +877,22 @@ cl_read_operator::read(void)
 t_mem
 cl_cell8::d()
 {
+  return *((u8_t*)data);
   return data?(*((u8_t*)data)):0;
 }
 
 void
 cl_cell8::d(t_mem v)
 {
-  data?(*((u8_t*)data)=(u8_t)v):0;
+  *((u8_t*)data)=(u8_t)v;
+  //data?(*((u8_t*)data)=(u8_t)v):0;
 }
 
 void
 cl_cell8::dl(t_mem v)
 {
-  data?(*((u8_t*)data)=(u8_t)v):0;
+  *((u8_t*)data)=(u8_t)v;
+  //data?(*((u8_t*)data)=(u8_t)v):0;
 }
 
 // 8 bit cell for bit spaces
@@ -897,8 +900,7 @@ cl_cell8::dl(t_mem v)
 t_mem
 cl_bit_cell8::d()
 {
-  if (!data)
-    return 0;
+  //if (!data) return 0;
   u8_t x= *((u8_t*)data);
   x&= mask;
   return x?1:0;
@@ -907,8 +909,7 @@ cl_bit_cell8::d()
 void
 cl_bit_cell8::d(t_mem v)
 {
-  if (!data)
-    return;
+  //if (!data) return;
   if (v)
     *((u8_t*)data) |= (u8_t)mask;
   else
@@ -964,19 +965,22 @@ cl_bit_cell16::d(t_mem v)
 t_mem
 cl_cell32::d()
 {
+  return *((u32_t*)data);
   return data?(*((u32_t*)data)):0;
 }
 
 void
 cl_cell32::d(t_mem v)
 {
-  data?(*((u32_t*)data)=(u32_t)v):0;
+  *((u32_t*)data)=(u32_t)v;
+  //data?(*((u32_t*)data)=(u32_t)v):0;
 }
 
 void
 cl_cell32::dl(t_mem v)
 {
-  data?(*((u32_t*)data)=(u32_t)v):0;
+  *((u32_t*)data)=(u32_t)v;
+  //data?(*((u32_t*)data)=(u32_t)v):0;
 }
 
 // 32 bit cell for bit spaces
@@ -984,8 +988,7 @@ cl_cell32::dl(t_mem v)
 t_mem
 cl_bit_cell32::d()
 {
-  if (!data)
-    return 0;
+  //if (!data) return 0;
   u32_t x= *((u32_t*)data);
   x&= mask;
   return x?1:0;
@@ -994,8 +997,7 @@ cl_bit_cell32::d()
 void
 cl_bit_cell32::d(t_mem v)
 {
-  if (!data)
-    return;
+  //if (!data) return;
   if (v)
     *((u32_t*)data) |= (u32_t)mask;
   else
@@ -1012,7 +1014,7 @@ cl_memory_cell::cl_memory_cell()
   data= 0;
   flags= CELL_NON_DECODED;
   width= 8;
-  def_data= 0;
+  //def_data= 0;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;
@@ -1031,7 +1033,7 @@ cl_memory_cell::cl_memory_cell(uchar awidth)
   data= 0;
   flags= CELL_NON_DECODED;
   width= awidth;
-  def_data= 0;
+  //def_data= 0;
   ops= NULL;
 #ifdef STATISTIC
   nuof_writes= nuof_reads= 0;

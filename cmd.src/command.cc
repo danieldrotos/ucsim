@@ -519,7 +519,7 @@ cl_cmdline::expand_commands(chars *params)
     }
   chars cmd;
   cmd.appendn(&s[start], end-start+1);
-  printf("OK |%s|\n", cmd.c_str());
+  //printf("OK |%s|\n", cmd.c_str());
   return true;
 }
 
