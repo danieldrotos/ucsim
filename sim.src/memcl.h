@@ -231,6 +231,7 @@ class cl_memory_cell: public cl_cell_data
 #ifdef STATISTIC
  public:
   unsigned long nuof_writes, nuof_reads;
+  class cl_memory *as;
 #endif
  public:
   t_mem mask;
