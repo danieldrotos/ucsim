@@ -1170,11 +1170,9 @@ cl_memory_cell::read(void)
     {
       t_mem r= 0;
       for (int i=0; ops[i]; i++)
-	r= ops[i]->read(/*this*/);
-      //if (flags & CELL_NON_DECODED) return urnd() & mask;
+	r= ops[i]->read();
       return r;
     }
-  //if (flags & CELL_NON_DECODED) return urnd() & mask;
   return d();
 }
 
@@ -1188,11 +1186,9 @@ cl_memory_cell::read(enum hw_cath skip)
     {
       t_mem r;
       for (int i=0; ops[i]; i++)
-	r= ops[i]->read(/*this,*/ skip);
-      //if (flags & CELL_NON_DECODED) return urnd() & mask;
+	r= ops[i]->read(skip);
       return r;
     }
-  //if (flags & CELL_NON_DECODED) return urnd() & mask;
   return d();
 }
 
@@ -1208,19 +1204,10 @@ cl_memory_cell::write(t_mem val)
 #ifdef STATISTIC
   nuof_writes++;
 #endif
-  if (flags & CELL_NON_DECODED)
-    {
-      //val= urnd() & mask;
-      class cl_address_space *AS= (cl_address_space*)(as);
-      t_addr a=0;
-      bool ow= AS->is_owned(this, &a);
-      printf("NDW %p val=%08x as=%s ow=%d a=%08x\n",this,val,as->get_name(),
-	     ow, a);
-    }
   if (ops && ops[0])
     {
       for (int i=0; ops[i]; i++)
-	val= ops[i]->write(/*this,*/ val);
+	val= ops[i]->write(val);
     }
   if (flags & CELL_READ_ONLY)
     return d();
@@ -2604,7 +2591,7 @@ cl_banker::init()
   if (c)
     {
       class cl_bank_switcher_operator *o=
-	new cl_bank_switcher_operator(c/*, banker_addr*/, this);
+	new cl_bank_switcher_operator(c, this);
       c->prepend_operator(o);
       op1= o;
     }
@@ -2615,7 +2602,7 @@ cl_banker::init()
       if (c)
 	{
 	  class cl_bank_switcher_operator *o=
-	    new cl_bank_switcher_operator(c/*, banker_addr*/, this);
+	    new cl_bank_switcher_operator(c, this);
 	  c->prepend_operator(o);
 	  op2= o;
 	}

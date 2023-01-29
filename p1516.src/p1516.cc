@@ -206,14 +206,14 @@ cl_p1516::make_memories(void)
   chip->init();
   memchips->add(chip);
   rom_chip= chip;
-  ad= new cl_address_decoder(as= rom, chip, 0, 0xfeff, 0);
+  ad= new cl_address_decoder(as= rom, chip, 0, /*0xfeff*/0x1ffff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
-  ad= new cl_address_decoder(as= rom, chip, 0x10000, 0x1ffff, 0x10000);
+  /*ad= new cl_address_decoder(as= rom, chip, 0x10000, 0x1ffff, 0x10000);
   ad->init();
   as->decoders->add(ad);
-  ad->activate(0);
+  ad->activate(0);*/
 
   regs= new cl_address_space("regs", 0, 16, 32);
   regs->init();
