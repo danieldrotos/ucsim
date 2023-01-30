@@ -123,12 +123,12 @@ cl_mos6502::cl_mos6502(class cl_sim *asim):
 int
 cl_mos6502::init(void)
 {
+#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   cl_uc::init();
   fill_def_wrappers(itab);
 
   //set_xtal(1000000);
     
-#define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(A);
   RCV(X);
   RCV(Y);
@@ -136,7 +136,7 @@ cl_mos6502::init(void)
   RCV(P);
 #undef RCV
   ci8.decode(&i8d);
-  
+
   class cl_memory_operator *op= new cl_cc_operator(&cCC);
   cCC.append_operator(op);
 
@@ -157,7 +157,7 @@ cl_mos6502::reset(void)
 {
   cl_uc::reset();
 
-  cF.W(CC= 0x00 | flagI);
+  /*cF.W*/(CC= 0x00 | flagI);
   PC= read_addr(rom, RESET_AT);
   rSP= 0xfd;
   
