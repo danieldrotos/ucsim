@@ -124,6 +124,7 @@ int
 cl_mos6502::init(void)
 {
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
+  cCC.init();
   cl_uc::init();
   fill_def_wrappers(itab);
 
@@ -157,7 +158,7 @@ cl_mos6502::reset(void)
 {
   cl_uc::reset();
 
-  /*cF.W*/(CC= 0x00 | flagI);
+  cF.W(CC= 0x00 | flagI);
   PC= read_addr(rom, RESET_AT);
   rSP= 0xfd;
   
