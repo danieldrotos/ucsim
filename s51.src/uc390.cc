@@ -362,7 +362,8 @@ cl_uc390::make_memories(void)
   decode_bits();
   decode_dptr();
   
-  ad= new cl_address_decoder(ixram, ixram_chip, 0, 0xfff, 0);
+  //ad= new cl_address_decoder(ixram, ixram_chip, 0, 0xfff, 0);
+  ad= new cl_address_decoder(ixram, xram_chip, 0, 0xfff, 0x400000);
   ad->init();
   ixram->decoders->add(ad);
   ad->activate(0);
@@ -383,7 +384,7 @@ cl_uc390::make_address_spaces(void)
   sfr->init();
   address_spaces->add(sfr);
 
-  xram= new cl_address_space("xram", 0, 0x100000+128, 8);
+  xram= new cl_address_space("xram", 0, 0x400000+128+4096, 8);
   xram->init();
   address_spaces->add(xram);
 
@@ -411,7 +412,7 @@ cl_uc390::make_chips(void)
   iram_chip->init();
   memchips->add(iram_chip);
 
-  xram_chip= new cl_chip8("xram_chip", 0x100000+128, 8, 0);
+  xram_chip= new cl_chip8("xram_chip", 0x400000+128+4096, 8, 0);
   xram_chip->init();
   memchips->add(xram_chip);
 
@@ -439,7 +440,7 @@ cl_uc390::decode_xram(void)
 {
   class cl_address_decoder *ad;
   
-  ad= new cl_address_decoder(xram, xram_chip, 0, 0x10007f, 0);
+  ad= new cl_address_decoder(xram, xram_chip, 0, 0x400000+128+4096-1, 0);
   ad->init();
   xram->decoders->add(ad);
   ad->activate(0);
@@ -581,7 +582,7 @@ cl_uc390::pop_byte (void)
     {
       sp = sfr->read (SP);
       sp += (sfr->read (R51_ESP) & 0x3) * 256;
-      temp = ixram->read(sp);//read_mem (MEM_IXRAM_ID, sp); // fixme
+      temp = ixram->read(sp);
       sp = sfr->write(SP, sfr->read(SP) - 1);
       if (sp == 0xff) // underflow SP
         sfr->write(R51_ESP, sfr->read(R51_ESP) - 1);
@@ -829,14 +830,24 @@ cl_uc390::instruction_e0/*inst_movx_a_Sdptr*/ (t_mem/*uchar*/ code)
       ph = DPH;
       px = DPX;
     }
-
+  t_addr a;
   if (sfr->get (ACON) & 0x02) /* AM1 set: 24-bit flat? */
+    a= sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl);
+  /*
     acc->write (read_mem (MEM_XRAM_ID,
                 sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl)));
+  */
   else
-    acc->write (read_mem (MEM_XRAM_ID,
+    a= sfr->read (ph) * 256 + sfr->read (pl);
+    /*
+      acc->write (read_mem (MEM_XRAM_ID,
                 sfr->read (ph) * 256 + sfr->read (pl)));
-
+    */
+  u8_t v;
+  //v= read_mem (MEM_XRAM_ID,a);
+  v= xram->read(a);
+  acc->W(v);
+  
   if (dps & 0x20)                      /* auto-switch dptr */
     sfr->write (DPS, dps ^ 1);   /* toggle dual-dptr switch */
 
@@ -868,16 +879,20 @@ cl_uc390::instruction_f0/*inst_movx_Sdptr_a*/ (t_mem/*uchar*/ code)
       ph = DPH;
       px = DPX;
     }
-
+  t_addr a;
   if (sfr->get (ACON) & 0x02) /* AM1 set: 24-bit flat? */
-    write_mem (MEM_XRAM_ID,
+    a= sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl);
+    /*write_mem (MEM_XRAM_ID,
                sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl),
-               acc->read());
+               acc->read());*/
   else
-    write_mem (MEM_XRAM_ID,
+    a= sfr->read (ph) * 256 + sfr->read (pl);
+    /*write_mem (MEM_XRAM_ID,
                sfr->read (ph) * 256 + sfr->read (pl),
-               acc->read());
-
+               acc->read());*/
+  xram->write(a, acc->read());
+  //write_mem (MEM_XRAM_ID, a, acc->read());
+  
   if (dps & 0x20)                      /* auto-switch dptr */
     sfr->write (DPS, dps ^ 1);   /* toggle dual-dptr switch */
 
