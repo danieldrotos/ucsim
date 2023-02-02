@@ -1248,59 +1248,89 @@ cl_uc390::print_regs (class cl_console_base *con)
   con->dd_printf("     R0 R1 R2 R3 R4 R5 R6 R7\n    ");
   for (t_addr i= 0; i < 8; i++)
     con->dd_cprintf("dump_number", " %02x", iram->get(start + i));
-  data = iram->get (iram->get (start));
   con->dd_printf ("\n");
+
+  data = iram->get (iram->get (start));
   con->dd_printf ("@R0 %02x %c", data, isprint (data) ? data : '.');
   con->dd_printf ("  ACC= 0x%02x %3d %c  B= 0x%02x",
                   sfr->get (ACC), sfr->get (ACC),
                   isprint (sfr->get (ACC)) ?
                   (sfr->get (ACC)) : '.', sfr->get (B));
+  con->dd_printf("\n");
+  
   eram2xram ();
+    
+  data = iram->get (iram->get (start + 1));
+  con->dd_printf ("@R1 %02x %c", data, isprint (data) ? data : '.');
+  con->dd_printf ("  AP= 0x%02x", sfr->get (AP));
+
+  data= sfr->get (PSW);
+  con->dd_printf ("  PSW= 0x%02x CY=%c AC=%c OV=%c P=%c    ",
+                  data,
+                  (data & bmCY) ? '1' : '0', (data & bmAC) ? '1' : '0',
+                  (data & bmOV) ? '1' : '0', (data & bmP ) ? '1' : '0');
+  con->dd_printf("\n");
+
   dps = sfr->get(DPS);
+  
   data = get_mem (MEM_XRAM_ID,
                   sfr->get (DPX) * 256*256 + sfr->get (DPH) * 256 + sfr->get (DPL));
   con->dd_printf ("  %cDPTR0= 0x%02x%02x%02x @DPTR0= 0x%02x %3d %c",
                   dps & 0x01 ? ' ' : dps & 0x20 ? 't' : '*',
                   sfr->get (DPX), sfr->get (DPH), sfr->get (DPL),
                   data, data, isprint (data) ? data : '.');
+  con->dd_printf("\n");
+
   data = get_mem (MEM_XRAM_ID,
                   sfr->get (DPX1) * 256*256 + sfr->get (DPH1) * 256 + sfr->get (DPL1));
-  con->dd_printf ("  %cDPTR1= 0x%02x%02x%02x @DPTR1= 0x%02x %3d %c\n",
+  con->dd_printf ("  %cDPTR1= 0x%02x%02x%02x @DPTR1= 0x%02x %3d %c",
                   dps & 0x01 ? dps & 0x20 ? 't' : '*' : ' ',
                   sfr->get (DPX1), sfr->get (DPH1), sfr->get (DPL1),
                   data, data, isprint (data) ? data : '.');
-  data = iram->get (iram->get (start + 1));
-  con->dd_printf ("@R1 %02x %c", data, isprint (data) ? data : '.');
-  con->dd_printf ("  AP= 0x%02x", sfr->get (AP));
-  data= sfr->get (PSW);
-  con->dd_printf ("  PSW= 0x%02x CY=%c AC=%c OV=%c P=%c    ",
-                  data,
-                  (data & bmCY) ? '1' : '0', (data & bmAC) ? '1' : '0',
-                  (data & bmOV) ? '1' : '0', (data & bmP ) ? '1' : '0');
+  con->dd_printf("\n");
+  
   /* show stack pointer */
-  if (sfr->get (ACON) & 0x04)
-    {
-      /* SA: 10 bit stack */
+
+  long int s, e;
+  bool sp10= sfr->get (ACON) & 0x04;
+  con->dd_printf("SP%s ", sp10?"10":"");
+  if (sp10)
       start = (sfr->get (R51_ESP) & 3) * 256 + sfr->get (SP);
-      con->dd_printf ("SP10 ", start);
-      long int s, e;
+  else
+      start = sfr->get (SP);  
+  con->dd_cprintf("dump_address", sp10?"0x%03x":"0x%02x", start);
+  class cl_address_space *spm= sp10?ixram:iram;
+  s= start;
+  e= (start<7)?0:start-7;
+  for (; s>=e; s--)
+    con->dd_cprintf("dump_number", " %02x", spm->get(s));
+  /*
+  if (sp10)
+    {
+      // SA: 10 bit stack 
+      start = (sfr->get (R51_ESP) & 3) * 256 + sfr->get (SP);
+      con->dd_printf ("SP10 ");
+      con->dd_cprintf("dump_address", "0x%03x", start);
       s= start;
       e= s - 7;
       if (s<7)
 	e= 0;
-      ixram->dump ((t_addr)s/*tart*/, (t_addr)e/*start - 7*/, 8, con);
+      ixram->dump ((t_addr)s, (t_addr)e, 8, con);
     }
   else
     {
       start = sfr->get (SP);
-      con->dd_printf ("SP ", start);
+      con->dd_printf ("SP ");
+      con->dd_cprintf("dump_address", "0x%02x", start);
       long int s, e;
       s= start;
       e= s - 7;
       if (s<7)
 	e= 0;
-      iram->dump ((t_addr)s/*tart*/, (t_addr)e/*start - 7*/, 8, con);
+      iram->dump ((t_addr)s, (t_addr)e, 8, con);
     }
+  */
+  con->dd_printf("\n");
 
   print_disass (PC, con);
 }
