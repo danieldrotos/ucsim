@@ -362,8 +362,8 @@ cl_uc390::make_memories(void)
   decode_bits();
   decode_dptr();
   
-  //ad= new cl_address_decoder(ixram, ixram_chip, 0, 0xfff, 0);
-  ad= new cl_address_decoder(ixram, xram_chip, 0, 0xfff, 0x400000);
+  ad= new cl_address_decoder(ixram, ixram_chip, 0, 0xfff, 0);
+  //ad= new cl_address_decoder(ixram, xram_chip, 0, 0xfff, 0x400000);
   ad->init();
   ixram->decoders->add(ad);
   ad->activate(0);
@@ -384,7 +384,7 @@ cl_uc390::make_address_spaces(void)
   sfr->init();
   address_spaces->add(sfr);
 
-  xram= new cl_address_space("xram", 0, 0x400000+128+4096, 8);
+  xram= new cl_address_space("xram", 0, 0x200000+128/*+4096*/, 8);
   xram->init();
   address_spaces->add(xram);
 
@@ -412,7 +412,7 @@ cl_uc390::make_chips(void)
   iram_chip->init();
   memchips->add(iram_chip);
 
-  xram_chip= new cl_chip8("xram_chip", 0x400000+128+4096, 8, 0);
+  xram_chip= new cl_chip8("xram_chip", 0x400000+128/*+4096*/, 8, 0);
   xram_chip->init();
   memchips->add(xram_chip);
 
@@ -440,7 +440,7 @@ cl_uc390::decode_xram(void)
 {
   class cl_address_decoder *ad;
   
-  ad= new cl_address_decoder(xram, xram_chip, 0, 0x400000+128+4096-1, 0);
+  ad= new cl_address_decoder(xram, xram_chip, 0, 0x100000+128/*+4096*/-1, 0);
   ad->init();
   xram->decoders->add(ad);
   ad->activate(0);
@@ -492,7 +492,7 @@ cl_uc390::clear_sfr(void)
   sfr->write(0xe3, 0x09); /* C1C    */
 }
 
-
+/*
 t_mem
 cl_uc390::read_mem(const char *id, t_addr addr)
 {
@@ -506,7 +506,9 @@ cl_uc390::read_mem(const char *id, t_addr addr)
     }
   return cl_51core::read_mem(id, addr); // 24 bit
 }
+*/
 
+/*
 t_mem
 cl_uc390::get_mem (const char *id, t_addr addr)
 {
@@ -519,7 +521,9 @@ cl_uc390::get_mem (const char *id, t_addr addr)
     }
   return cl_51core::get_mem (id, addr);
 }
+*/
 
+/*
 void
 cl_uc390::write_mem (const char *id, t_addr addr, t_mem val)
 {
@@ -532,7 +536,9 @@ cl_uc390::write_mem (const char *id, t_addr addr, t_mem val)
     }
   cl_51core::write_mem (id, addr, val);
 }
+*/
 
+/*
 void
 cl_uc390::set_mem (const char *id, t_addr addr, t_mem val)
 {
@@ -545,6 +551,8 @@ cl_uc390::set_mem (const char *id, t_addr addr, t_mem val)
     }
   cl_51core::set_mem (id, addr, val);
 }
+*/
+
 
 /*
  *____________________________________________________________________________
@@ -816,7 +824,8 @@ int
 cl_uc390::instruction_e0/*inst_movx_a_Sdptr*/ (t_mem/*uchar*/ code)
 {
   uchar pl, ph, px, dps;
-
+  u8_t acon= sfr->get(ACON);
+  
   dps = sfr->get (DPS);
   if (dps & 0x01)
     {
@@ -831,21 +840,20 @@ cl_uc390::instruction_e0/*inst_movx_a_Sdptr*/ (t_mem/*uchar*/ code)
       px = DPX;
     }
   t_addr a;
-  if (sfr->get (ACON) & 0x02) /* AM1 set: 24-bit flat? */
+  if (acon & 0x02) /* AM1 set: 24-bit flat? */
     a= sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl);
-  /*
-    acc->write (read_mem (MEM_XRAM_ID,
-                sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl)));
-  */
   else
     a= sfr->read (ph) * 256 + sfr->read (pl);
-    /*
-      acc->write (read_mem (MEM_XRAM_ID,
-                sfr->read (ph) * 256 + sfr->read (pl)));
-    */
+
   u8_t v;
   //v= read_mem (MEM_XRAM_ID,a);
-  v= xram->read(a);
+  //v= xram->read(a);
+  if ((a >= 0x400000) &&
+      (acon & 0x02))
+    v= ixram->read(a-0x400000);
+  else
+    v= xram->read(a);
+  
   acc->W(v);
   
   if (dps & 0x20)                      /* auto-switch dptr */
@@ -865,7 +873,8 @@ int
 cl_uc390::instruction_f0/*inst_movx_Sdptr_a*/ (t_mem/*uchar*/ code)
 {
   uchar pl, ph, px, dps;
-
+  u8_t acon= sfr->get(ACON);
+  
   dps = sfr->get (DPS);
   if (dps & 0x01)
     {
@@ -882,15 +891,15 @@ cl_uc390::instruction_f0/*inst_movx_Sdptr_a*/ (t_mem/*uchar*/ code)
   t_addr a;
   if (sfr->get (ACON) & 0x02) /* AM1 set: 24-bit flat? */
     a= sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl);
-    /*write_mem (MEM_XRAM_ID,
-               sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl),
-               acc->read());*/
   else
     a= sfr->read (ph) * 256 + sfr->read (pl);
-    /*write_mem (MEM_XRAM_ID,
-               sfr->read (ph) * 256 + sfr->read (pl),
-               acc->read());*/
-  xram->write(a, acc->read());
+
+  if ((a >=  0x400000) &&
+      (acon & 0x02))
+    ixram->write(a-0x400000, acc->read());
+  else
+    xram->write(a, acc->read());
+  //xram->write(a, acc->read());
   //write_mem (MEM_XRAM_ID, a, acc->read());
   
   if (dps & 0x20)                      /* auto-switch dptr */
