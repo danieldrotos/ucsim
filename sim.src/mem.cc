@@ -52,8 +52,6 @@
 static class cl_mem_error_registry mem_error_registry;
 static unsigned int mem_uids= 0;
 
-t_mem def_data;
-
 /*
  *                                                3rd version of memory system
  */
@@ -1515,14 +1513,12 @@ cl_address_space::init(void)
   unsigned int i, s= sizeof(class cl_cell32);
   cell->as= this;
   u8_t *p1= (u8_t*)cella;
-  //cella->decode(&def_data);
-  cell->init();
   //void *p1;
   for (i= 0; i < size; i++)
     {
       //p1= &(cella[i]);
       memcpy(p1, (void*)cell, s);
-      //cella[i].init();
+      cella[i].init();
       p1+= s;
     }
   return 0;

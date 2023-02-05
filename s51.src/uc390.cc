@@ -384,7 +384,7 @@ cl_uc390::make_address_spaces(void)
   sfr->init();
   address_spaces->add(sfr);
 
-  xram= new cl_address_space("xram", 0, 0x100000+128/*+4096*/, 8);
+  xram= new cl_address_space("xram", 0, 0x200000+128/*+4096*/, 8);
   xram->init();
   address_spaces->add(xram);
 
@@ -412,7 +412,7 @@ cl_uc390::make_chips(void)
   iram_chip->init();
   memchips->add(iram_chip);
 
-  xram_chip= new cl_chip8("xram_chip", 0x100000+128/*+4096*/, 8, 0);
+  xram_chip= new cl_chip8("xram_chip", 0x400000+128/*+4096*/, 8, 0);
   xram_chip->init();
   memchips->add(xram_chip);
 
@@ -846,11 +846,11 @@ cl_uc390::instruction_e0/*inst_movx_a_Sdptr*/ (t_mem/*uchar*/ code)
     a= sfr->read (ph) * 256 + sfr->read (pl);
 
   u8_t v;
+  //v= read_mem (MEM_XRAM_ID,a);
+  //v= xram->read(a);
   if ((a >= 0x400000) &&
       (acon & 0x02))
-    {
-      v= ixram->read(a-0x400000);
-    }
+    v= ixram->read(a-0x400000);
   else
     v= xram->read(a);
   
@@ -889,18 +889,18 @@ cl_uc390::instruction_f0/*inst_movx_Sdptr_a*/ (t_mem/*uchar*/ code)
       px = DPX;
     }
   t_addr a;
-  if (acon & 0x02) /* AM1 set: 24-bit flat? */
+  if (sfr->get (ACON) & 0x02) /* AM1 set: 24-bit flat? */
     a= sfr->read (px) * 256*256 + sfr->read (ph) * 256 + sfr->read (pl);
   else
     a= sfr->read (ph) * 256 + sfr->read (pl);
-  
+
   if ((a >=  0x400000) &&
       (acon & 0x02))
-    {
-      ixram->write(a-0x400000, acc->read());
-    }
+    ixram->write(a-0x400000, acc->read());
   else
     xram->write(a, acc->read());
+  //xram->write(a, acc->read());
+  //write_mem (MEM_XRAM_ID, a, acc->read());
   
   if (dps & 0x20)                      /* auto-switch dptr */
     sfr->write (DPS, dps ^ 1);   /* toggle dual-dptr switch */

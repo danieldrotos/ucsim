@@ -3228,7 +3228,7 @@ cl_uc::save_hist()
       if (pc_dump==NULL) pc_dump= fopen("addr.txt","w");
       if (pc_dump!=NULL)
 	{
-	  fprintf(pc_dump,"0x%06x\n",AU(PC));
+	  fprintf(pc_dump,"%x 0x%06x\n", MU(application->cyc), AU(PC));
 	  fflush(pc_dump);
 	}
     }
