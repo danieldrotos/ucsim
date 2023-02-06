@@ -49,11 +49,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /*******************************************************************/
 
-lr35902_memory::lr35902_memory( cl_uc &uc_parent_ref ):uc_r(uc_parent_ref) { }
-
 cl_gb80::cl_gb80(struct cpu_entry *Itype, class cl_sim *asim):
-  cl_z80(Itype, asim),
-  mem(*this)
+  cl_z80(Itype, asim)
 {
   type= Itype;
   BIT_C= 0x10;
@@ -72,11 +69,6 @@ cl_gb80::init(void)
 {
   cl_uc::init(); /* Memories now exist */
 
-  // zero out ram(this is assumed in regression tests)
-  for (int i=0xA000; i<0xFF80; i++) {
-    ram->set((t_addr) i, 0);
-  }
-  
   return(0);
 }
 
@@ -90,63 +82,40 @@ cl_gb80::id_string(void)
 void
 cl_gb80::mk_hw_elements(void)
 {
-  //class cl_base *o;
   cl_uc::mk_hw_elements();
 }
 
-void lr35902_memory::init(void) {
-  cl_address_space *as_rom;
-  cl_address_space *as_ram;
+void
+cl_gb80::make_memories(void)
+{
   class cl_memory_chip *chip;
   class cl_address_decoder *ad;
   class cl_address_space *as;
 
   chip= new cl_chip8("rom_chip", 0x10000, 8, 0);
   chip->init();
-  uc_r.memchips->add(chip);
+  memchips->add(chip);
 
-  as_rom = new cl_address_space("rom",
-				lr35902_rom_start,
-				lr35902_rom_size,
-				8);
-  as_rom->init();
-  uc_r.address_spaces->add(as_rom);
-  rom = as_rom;
+  rom= new cl_address_space("rom",
+			    0,//lr35902_rom_start,
+			    0x10000,//lr35902_rom_size,
+			    8);
+  rom->init();
+  address_spaces->add(rom);
 
-  ad= new cl_address_decoder(as= uc_r.address_space("rom"),
+  ad= new cl_address_decoder(as= address_space("rom"),
 			     chip,
-			     lr35902_rom_start,
-			     lr35902_rom_size-1,
-			     lr35902_rom_start);
+			     0,//lr35902_rom_start,
+			     0xffff,//lr35902_rom_size-1,
+			     0//lr35902_rom_start
+			     );
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
 
-  as_ram = new cl_address_space("xram",
-				lr35902_ram_start,
-				lr35902_ram_size,
-				8);
-  as_ram->init();
-  uc_r.address_spaces->add(as_ram);
-  ram = as_ram;
-
-  ad= new cl_address_decoder(as= uc_r.address_space("xram"),
-			     chip,
-			     lr35902_ram_start,
-			     lr35902_ram_start+lr35902_ram_size+128-1,
-			     lr35902_ram_start);
-  ad->init();
-  as->decoders->add(ad);
-  ad->activate(0);
-}
-
-void
-cl_gb80::make_memories(void)
-{
-  mem.init( );
-  rom= mem.rom;
-  ram= mem.ram;
-  
+  ram= rom;
+  rom->altname= "xram";
+    
   regs8= new cl_address_space("regs8", 0, 16, 8);
   regs8->init();
   regs8->get_cell(0)->decode((t_mem*)&regs.raf.A);
@@ -202,24 +171,7 @@ cl_gb80::make_memories(void)
   v->init();
   vars->add(v= new cl_var("L", regs8, 7, ""));
   v->init();
-  /*
-  vars->add(v= new cl_var("ALT_A", regs8, 8, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_F", regs8, 9, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_B", regs8, 10, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_C", regs8, 11, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_D", regs8, 12, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_E", regs8, 13, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_H", regs8, 14, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_L", regs8, 15, ""));
-  v->init();
-  */
+
   vars->add(v= new cl_var("AF", regs16, 0, ""));
   v->init();
   vars->add(v= new cl_var("BC", regs16, 1, ""));
@@ -234,77 +186,35 @@ cl_gb80::make_memories(void)
   v->init();
   vars->add(v= new cl_var("SP", regs16, 6, ""));
   v->init();
-  /*
-  vars->add(v= new cl_var("ALT_AF", regs16, 7, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_BC", regs16, 8, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_DE", regs16, 9, ""));
-  v->init();
-  vars->add(v= new cl_var("ALT_HL", regs16, 10, ""));
-  v->init();
-  */
 }
 
-void cl_gb80::store1( u16_t addr, t_mem val ) {
-  mem.store1( addr, val );
+void
+cl_gb80::store1(u16_t addr, t_mem val)
+{
+  rom->write(addr, val);
 }
 
-void cl_gb80::store2( u16_t addr, u16_t val ) {
-  mem.store2( addr, val );
+void
+cl_gb80::store2(u16_t addr, u16_t val)
+{
+  rom->write(addr, val);
+  rom->write(addr+1, val>>8);
 }
 
-u8_t  cl_gb80::get1( u16_t addr ) {
-  return mem.get1( addr );
+u8_t
+cl_gb80::get1(u16_t addr)
+{
+  return rom->read(addr);
 }
 
-u16_t  cl_gb80::get2( u16_t addr ) {
-  return mem.get2( addr );
+u16_t
+cl_gb80::get2(u16_t addr)
+{
+  u8_t l= rom->read(addr);
+  u8_t h= rom->read(addr+1);
+  return (h<<8)|l;
 }
 
-void lr35902_memory::store1( u16_t addr, t_mem val ) {
-  if (addr < lr35902_ram_start) {
-    /* flag illegal operation ? */
-    printf("Illegal write at 0x%04x 0x%02x PC=%04x\n", addr, val,uc_r.instPC);
-    return;
-  }
-  
-  if ((addr- lr35902_ram_start) < lr35902_ram_size) {
-    ram->write(addr, val);
-  }
-}
-
-void lr35902_memory::store2( u16_t addr, u16_t val ) {
-  store1(addr,   val & 0xff);
-  store1(addr+1, (val >> 8) & 0xff);
-}
-
-u8_t  lr35902_memory::get1( u16_t addr ) {
-  if (addr < lr35902_rom_size) {
-    return rom->read(addr);    
-  }
-  
-  if (addr < lr35902_ram_start) {
-    /* flag illegal operation ? */
-    printf("Illegal read from 0x%04x (0x%02x) PC=%04x\n", addr, addr&0xff, uc_r.instPC);
-    return (addr & 0xff);
-  }
-  
-  if ((addr-lr35902_ram_start) < lr35902_ram_size) {
-    return ram->read(addr);
-  }
-  
-  return (addr & 0xff);
-}
-
-u16_t  lr35902_memory::get2( u16_t addr ) {
-  u16_t  l, h;
-  
-  l = get1(addr  );
-  h = get1(addr+1);
-  
-  return (h << 8) | l;
-}
 
 /*
  * Help command interpreter
@@ -474,17 +384,17 @@ cl_gb80::print_regs(class cl_console_base *con)
   con->dd_printf("%s\n", cbin(regs.raf.F,8).c_str());
 		 
   con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
-                 regs.BC, mem.get1(regs.BC), mem.get1(regs.BC),
-                 isprint(mem.get1(regs.BC))?mem.get1(regs.BC):'.');
+                 regs.BC, get1(regs.BC), get1(regs.BC),
+                 isprint(get1(regs.BC))?get1(regs.BC):'.');
   con->dd_printf("DE= 0x%04x [DE]= %02x %3d %c  ",
-                 regs.DE, mem.get1(regs.DE), mem.get1(regs.DE),
-                 isprint(mem.get1(regs.DE))?mem.get1(regs.DE):'.');
+                 regs.DE, get1(regs.DE), get1(regs.DE),
+                 isprint(get1(regs.DE))?get1(regs.DE):'.');
   con->dd_printf("HL= 0x%04x [HL]= %02x %3d %c\n",
-                 regs.HL, mem.get1(regs.HL), mem.get1(regs.HL),
-                 isprint(mem.get1(regs.HL))?mem.get1(regs.HL):'.');
+                 regs.HL, get1(regs.HL), get1(regs.HL),
+                 isprint(get1(regs.HL))?get1(regs.HL):'.');
   con->dd_printf("SP= 0x%04x [SP]= %02x %3d %c\n",
-                 regs.SP, mem.get1(regs.SP), mem.get1(regs.SP),
-                 isprint(mem.get1(regs.SP))?mem.get1(regs.SP):'.');
+                 regs.SP, get1(regs.SP), get1(regs.SP),
+                 isprint(get1(regs.SP))?get1(regs.SP):'.');
 
   print_disass(PC, con);
 }

@@ -78,6 +78,30 @@ cl_memory::~cl_memory(void)
     free(data_format);
 }
 
+bool
+cl_memory::is_named(const char *the_name) const
+{
+  bool b1= cl_base::is_named(the_name);
+  if (!the_name || !*the_name)
+    return false;
+  if (b1 || altname.empty())
+    return b1;
+  bool b2= altname==the_name;
+  return b2;
+}
+
+bool
+cl_memory::is_inamed(const char *the_name) const
+{
+  bool b1= cl_base::is_inamed(the_name);
+  if (!the_name || !*the_name)
+    return false;
+  if (b1 || altname.empty())
+    return b1;
+  bool b2= strcasecmp(altname.c_str(), the_name) == 0;
+  return b2;
+}
+
 int
 cl_memory::init(void)
 {
