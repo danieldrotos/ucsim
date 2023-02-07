@@ -44,31 +44,12 @@ cl_general_uc::make_memories(void)
   class cl_address_space *as;
   class cl_memory_chip *ch;
   class cl_address_decoder *ad;
-  double s, e;
 
-  s= dnow();
-  as= new cl_address_space("as", 0, 0x400000+128+4096, 8);
+  as= new cl_address_space("nas", 0, 0x100000, 8);
   as->init();
   address_spaces->add(as);
 
-  ch= new cl_chip8("ch", 0x400000+128+4096, 8, 0);
-  ch->init();
-  memchips->add(ch);
-  
-  ad= new cl_address_decoder(as, ch, 0, 0x400000+128+4096-1, 0);
-  ad->init();
-  as->decoders->add(ad);
-  ad->activate(0);
-  e= dnow();
-  e-= s;
-  printf("BIG: %f\n", e);
-
-  s= dnow();
-  as= new cl_address_space("as2", 0, 0x100000, 8);
-  as->init();
-  address_spaces->add(as);
-
-  ch= new cl_chip8("ch2", 0x100000, 8, 0);
+  ch= new cl_chip8("chip", 0x100000, 8, 0);
   ch->init();
   memchips->add(ch);
   
@@ -76,9 +57,6 @@ cl_general_uc::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
-  e= dnow();
-  e-= s;
-  printf("SMALL: %f\n", e);
 }
 
 class cl_general_sim: public cl_sim
