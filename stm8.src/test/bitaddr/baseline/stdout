@@ -2,10 +2,6 @@ uCsim, Copyright (C)  Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-uCsim, Copyright (C)  Daniel Drotos.
-uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-This is free software, and you are welcome to redistribute it
-under certain conditions; type `show c' for details.
 # Memory contents are random initially so set some recognizable content.
 set mem rom 0x1000 0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80
 0x01000                      01 02 04 08 10 20 40 80 ..... @.
@@ -2311,7 +2307,7 @@ dump 0x1004
 0x05213                      9f a7 01 b6 27 a1 2d 23 ....'.-#
 0x0521b                      5c 86 2a 9a 13 cc 51 ce \.*...Q.
 0x05223                      57 bb 0e 87 3f d4 21 da W...?.!.
-0x0522b                      4f a3 1d c4 69 c0 98 00 O...i...
+0x0522b                      4f a3 1d c4 69 c0 78 00 O...i.x.
 0x05233                      00 00 00 00 00 00 00 00 ........
 0x0523b                      00 bc 61 00 a9 c0 00 00 ..a.....
 0x05243                      00 00 00 00 00 00 00 00 ........
