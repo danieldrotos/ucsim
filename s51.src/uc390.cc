@@ -384,7 +384,7 @@ cl_uc390::make_address_spaces(void)
   sfr->init();
   address_spaces->add(sfr);
 
-  xram= new cl_address_space("xram", 0, 0x200000+128/*+4096*/, 8);
+  xram= new cl_address_space("xram", 0, 0x100000+128/*+4096*/, 8);
   xram->init();
   address_spaces->add(xram);
 
@@ -412,7 +412,7 @@ cl_uc390::make_chips(void)
   iram_chip->init();
   memchips->add(iram_chip);
 
-  xram_chip= new cl_chip8("xram_chip", 0x400000+128/*+4096*/, 8, 0);
+  xram_chip= new cl_chip8("xram_chip", 0x100000+128/*+4096*/, 8, 0);
   xram_chip->init();
   memchips->add(xram_chip);
 
