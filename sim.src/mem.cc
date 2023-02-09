@@ -1878,7 +1878,7 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
 	    }
 	  else
 	    {
-	      D("    Shrinked to 0x%lx-0x%lx -> %s[0x%lx]\n",
+	      D("    Shrunk to 0x%lx-0x%lx -> %s[0x%lx]\n",
 		d->as_begin, d->as_end, (d->memchip)?(d->memchip->get_name()):"(none)", d->chip_begin);
 	    }
 	}
