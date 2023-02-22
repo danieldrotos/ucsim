@@ -408,25 +408,21 @@ CLP2::inst_alu_1op(t_mem code)
     {
     case 0x0: // ZEXB
       RC[d]->W(R[d] & 0x000000ff);
-      setZSw(R[d]);
       break;
     case 0x1: // ZEXW
       RC[d]->W(R[d] & 0x0000ffff);
-      setZSw(R[d]);
       break;
     case 0x2: // SEXB
       R[d]= R[d] & 0x000000ff;
       if (R[d] & 0x00000080)
 	R[d]|= 0xffffff00;
       RC[d]->W(R[d]);
-      setZSw(R[d]);
       break;
     case 0x3: // SEXW
       R[d]= R[d] & 0x0000ffff;
       if (R[d] & 0x00008000)
 	R[d]|= 0xffff0000;
       RC[d]->W(R[d]);
-      setZSw(R[d]);
       break;
     case 0x4: // NOT
       RC[d]->W(~R[d]);
