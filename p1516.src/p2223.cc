@@ -67,9 +67,9 @@ CLP2::init(void)
       v= pmon[i++];	
     }
 
-  class cl_f_write *fw= new cl_f_write(&cF, this);
-  fw->init();
-  cF.append_operator(fw);
+  //class cl_f_write *fw= new cl_f_write(&cF, this);
+  //fw->init();
+  //cF.append_operator(fw);
   
   return 0;
 }
