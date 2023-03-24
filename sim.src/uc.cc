@@ -521,7 +521,7 @@ cl_exec_hist::get_insts()
  */
 
 cl_uc::cl_uc(class cl_sim *asim):
-  cl_base()
+  cl_itab()
 {
   PCmask= 0xffff;
   type= NULL;
@@ -3195,6 +3195,30 @@ cl_uc::exec_inst_tab(instruction_wrapper_fn itab[])
     }
   tickt(c);
   res= itab[c](this, c);
+  if (res == resNOT_DONE)
+    {
+      PC= instPC;
+      return res;
+    }
+  //tick(1);
+  return res;
+}
+
+
+int
+cl_uc::exec_inst_uctab()
+{
+  t_mem c;
+  int res= resGO;
+  if (fetch(&c))
+    return resBREAKPOINT;
+  if (uc_itab[c] == NULL)
+    {
+      PC= instPC;
+      return resNOT_DONE;
+    }
+  tickt(c);
+  res= (this->*uc_itab[c])(c);
   if (res == resNOT_DONE)
     {
       PC= instPC;
