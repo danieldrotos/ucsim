@@ -1661,7 +1661,8 @@ cl_51core::exec_inst(void)
   t_mem code;
   int res= resGO;
 
-  if ((res= exec_inst_tab(itab51)) == resNOT_DONE)
+  //if ((res= exec_inst_tab(itab51)) == resNOT_DONE)
+  if ((res= exec_inst_uctab()) == resNOT_DONE)
     {
       fetch(&code);
       res= inst_unknown(code);
