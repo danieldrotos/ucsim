@@ -282,12 +282,6 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      word->appendf("y");
 	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
 	    }
-	  if (strcmp(fmt.c_str(), "y_8") == 0)
-	    {
-	      a= rY;
-	      word->appendf("y");
-	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
-	    }
 	  if (strcmp(fmt.c_str(), "ny_8") == 0)
 	    {
 	      l= rom->read(addr+1);
