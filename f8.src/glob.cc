@@ -92,9 +92,9 @@ struct dis_entry disass_f8[]=
     { 0x74, 0xff, ' ', 1, "ldw ('dsp_16'),%A" },
 
     { 0x60, 0xff, ' ', 3, "push 'a16_8'" },
-    { 0x60, 0xff, ' ', 2, "push ('nsp_8')" },
-    { 0x60, 0xff, ' ', 1, "push %a" },
-    { 0x60, 0xff, ' ', 1, "push zh" },
+    { 0x61, 0xff, ' ', 2, "push ('nsp_8')" },
+    { 0x62, 0xff, ' ', 1, "push %a" },
+    { 0x63, 0xff, ' ', 1, "push zh" },
     { 0x90, 0xff, ' ', 2, "push #'i8'" },
 
     { 0xb0, 0xff, ' ', 3, "pushw 'a16_16'" },
