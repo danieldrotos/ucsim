@@ -416,7 +416,7 @@ cl_f8::exec_inst(void)
   else if (prefixes & P_ALT2)
     {
       acc8 = &cZL;
-      acc16= &cY;
+      acc16= &cZ;
     }
   /*
     // clear_prefixes() prepares this state

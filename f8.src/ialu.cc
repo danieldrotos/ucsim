@@ -741,9 +741,9 @@ cl_f8::INCW_M(t_mem code)
   u16_t a= a_mm();
   u16_t v= read_addr(rom, a);
   vc.rd+= 2;
-  add16(v, 1, 0, false);
-  rom->write(a  , v);
-  rom->write(a+1, v>>8);
+  u16_t r= add16(v, 1, 0, false);
+  rom->write(a  , r);
+  rom->write(a+1, r>>8);
   vc.wr+= 2;
   return resGO;
 }
@@ -754,9 +754,9 @@ cl_f8::INCW_NSP(t_mem code)
   u16_t a= a_n_sp();
   u16_t v= read_addr(rom, a);
   vc.rd+= 2;
-  add16(v, 1, 0, false);
-  rom->write(a  , v);
-  rom->write(a+1, v>>8);
+  u16_t r= add16(v, 1, 0, false);
+  rom->write(a  , r);
+  rom->write(a+1, r>>8);
   vc.wr+= 2;
   return resGO;
 }
@@ -767,9 +767,9 @@ cl_f8::INCW_NNZ(t_mem code)
   u16_t a= a_nn_z();
   u16_t v= read_addr(rom, a);
   vc.rd+= 2;
-  add16(v, 1, 0, false);
-  rom->write(a  , v);
-  rom->write(a+1, v>>8);
+  u16_t r= add16(v, 1, 0, false);
+  rom->write(a  , r);
+  rom->write(a+1, r>>8);
   vc.wr+= 2;
   return resGO;
 }
@@ -778,8 +778,8 @@ int
 cl_f8::INCW_A(t_mem code)
 {
   u16_t v= acc16->get();
-  add16(v, 1, 0, false);
-  acc16->write(v);
+  u16_t r= add16(v, 1, 0, false);
+  acc16->write(r);
   return resGO;
 }
 
