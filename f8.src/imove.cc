@@ -113,6 +113,13 @@ cl_f8::ldw_m_r(u16_t addr, u16_t r)
 }
 
 int
+cl_f8::ldw_a_r(u16_t r)
+{
+  acc16->W(r);
+  return resGO;
+}
+
+int
 cl_f8::LDW_SP_A(t_mem code)
 {
   cSP.W(acc16->get());
