@@ -377,8 +377,8 @@ u8_t allowed_prefs[256]= {
   /*          _0 _1 _2 _3   _4 _5 _6 _7   _8 _9 _a _b   _c _d _e _f */
   /* 0_ */    PN,PA,PA,PA,  PA,PA,PA,PA,  PN,PA,PA,PA,  PA,PA,PA,PA,
   /* 1_ */    PD,PA,PA,PA,  PA,PA,PA,PA,  PD,PA,PA,PA,  PA,PA,PA,PA,
-  /* 2_ */    PN,PA,PA,PA,  PA,PA,PA,PA,  PN,PA,PA,PA,  PA,PA,PA,PA,
-  /* 3_ */    PN,PA,PA,PA,  PA,PA,PA,PA,  PN,PA,PA,PA,  PA,PA,PA,PA,
+  /* 2_ */    PD,PA,PA,PA,  PA,PA,PA,PA,  PD,PA,PA,PA,  PA,PA,PA,PA,
+  /* 3_ */    PD,PA,PA,PA,  PA,PA,PA,PA,  PD,PA,PA,PA,  PA,PA,PA,PA,
   /* 4_ */    PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 5_ */    PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 6_ */    PD,PD,PD,PD,  PN,P6,PN,P6,  PD,PD,PD,PD,  PD,PD,PD,PD,

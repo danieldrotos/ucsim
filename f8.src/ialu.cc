@@ -176,20 +176,15 @@ cl_f8::And8(class cl_cell8 *op1, class cl_cell8 *op2, bool memop)
 u16_t
 cl_f8::add16(u16_t a, u16_t b, int c, bool sub)
 {
+  if (sub)
+    b = ~b;
   u32_t rb= a+b+c;
   u16_t r= rb;
   rF&= ~fAll_H;
   if (rb>0xffff) rF|= flagC;
   if (r&0x8000) rF|= flagC;
   if (!r) rF|= flagZ;
-  if (sub)
-    {
-      if (((a&~b&~r)|(~a&b&r))&0x8000) rF|= flagO;
-    }
-  else
-    {
-      if (((a&b&~r)|(~a&~b&r))&0x8000) rF|= flagO;
-    }
+  if (((a&b&~r)|(~a&~b&r))&0x8000) rF|= flagO;
   cF.W(rF);
   return r;
 }
