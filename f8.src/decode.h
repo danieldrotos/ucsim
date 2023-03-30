@@ -275,8 +275,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SLLW		instruction_e1
 #define RRCW		instruction_e2
 #define RLCW_A		instruction_e3
-#define RLCW_NSP	instruction_e6
-#define RRCW_NSP	instruction_e7
+#define RRCW_NSP	instruction_e6
+#define RLCW_NSP	instruction_e7
 #define SRAW		instruction_e4
 #define ADDW_SP_D	instruction_ea
 #define ADDW_A_D	instruction_eb
