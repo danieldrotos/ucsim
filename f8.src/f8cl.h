@@ -441,7 +441,7 @@ public:
   int SRAW(t_mem code);
   int ADDW_SP_D(t_mem code);
   int ADDW_A_D(t_mem code);
-  int ADDW_Y_SP(t_mem code);
+  int LDW_A_SP(t_mem code);
   int CPW(t_mem code);
   int INCNW(t_mem code);
   int DECW_NSP(t_mem code);
