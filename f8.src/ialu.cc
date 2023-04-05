@@ -1219,13 +1219,12 @@ cl_f8::INCNW(t_mem code)
 int
 cl_f8::DECW_NSP(t_mem code)
 {
-  // TODO: flags untuched?
   u16_t a= a_n_sp();
   u16_t v= read_addr(rom, a);
   vc.rd+= 2;
-  v--;
-  rom->write(a, v);
-  rom->write(a+1, v>>8);
+  u16_t r= add16(v, 1, 0, true);
+  rom->write(a  , r);
+  rom->write(a+1, r>>8);
   vc.wr+= 2;
   return resGO;
 }
