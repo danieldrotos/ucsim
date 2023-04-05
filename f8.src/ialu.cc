@@ -1222,7 +1222,7 @@ cl_f8::DECW_NSP(t_mem code)
   u16_t a= a_n_sp();
   u16_t v= read_addr(rom, a);
   vc.rd+= 2;
-  u16_t r= add16(v, 1, 0, true);
+  u16_t r= add16(v, 1, 1, true);
   rom->write(a  , r);
   rom->write(a+1, r>>8);
   vc.wr+= 2;
