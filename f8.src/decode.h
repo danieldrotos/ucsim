@@ -74,7 +74,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LDW_AM_X	instruction_cd
 #define LDW_NAM_X	instruction_ce
 #define LDW_NNAM_X	instruction_cf
-#define LDW_SP_A	instruction_70
 #define LDW_DSP_A	instruction_74
 
 #define PUSH_M		instruction_60
@@ -267,6 +266,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define MAD_NSP		instruction_bd
 #define MAD_NNZ		instruction_be
 #define MAD_Z		instruction_bf
+#define XCH_F_0SP	instruction_ec
 
 #define MUL		instruction_b9
 #define NEGW		instruction_fa
@@ -280,7 +280,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SRAW		instruction_e4
 #define ADDW_SP_D	instruction_ea
 #define ADDW_A_D	instruction_eb
-#define LDW_A_SP	instruction_ec
+#define LDW_A_SP	instruction_70
 #define CPW		instruction_f8
 #define INCNW		instruction_f6
 #define DECW_NSP	instruction_f7

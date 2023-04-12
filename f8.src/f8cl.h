@@ -231,7 +231,6 @@ public:
   int LDW_AM_X(t_mem code)   { return ldw_m_r(a_acc16(), rX); }
   int LDW_NAM_X(t_mem code)  { return ldw_m_r(a_n_acc16(), rX); }
   int LDW_NNAM_X(t_mem code) { return ldw_m_r(a_nn_acc16(), rX); }
-  int LDW_SP_A(t_mem code);
   int LDW_DSP_A(t_mem code);
   // other moves
   int PUSH_M(t_mem code);
@@ -427,6 +426,7 @@ public:
   int MAD_NSP(t_mem code) { return mad(m_n_sp()); }
   int MAD_NNZ(t_mem code) { return mad(m_nn_z()); }
   int MAD_Z(t_mem code)   { return mad(m_z()); }
+  int XCH_F_0SP(t_mem code);
 
   // 16-bit 0-op-inst
   int MUL(t_mem code);

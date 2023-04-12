@@ -88,7 +88,7 @@ struct dis_entry disass_f8[]=
     { 0xcd, 0xff, ' ', 1, "ldw (%A),x" },
     { 0xce, 0xff, ' ', 2, "ldw ('nA_16'),x" },
     { 0xcf, 0xff, ' ', 3, "ldw ('nnA_16'),x" },
-    { 0x70, 0xff, ' ', 1, "ldw sp,%A" },
+    { 0x70, 0xff, ' ', 1, "ldw %A, sp" },
     { 0x74, 0xff, ' ', 1, "ldw ('dsp_16'),%A" },
 
     { 0x60, 0xff, ' ', 3, "push 'a16_8'" },
@@ -292,7 +292,7 @@ struct dis_entry disass_f8[]=
     { 0xe4, 0xff, ' ', 1, "sraw %A"},
     { 0xea, 0xff, ' ', 2, "addw sp,#%d"},
     { 0xeb, 0xff, ' ', 2, "addw %A,#%d"},
-    { 0xec, 0xff, ' ', 1, "ldw %A,sp"},
+    { 0xec, 0xff, ' ', 1, "xch f,(0, sp)"},
     { 0xf8, 0xff, ' ', 3, "cpw %A,#'i16'"},
     { 0xf6, 0xff, ' ', 1, "incnw %A"},
     { 0xf7, 0xff, ' ', 2, "decw ('nsp_16')"},
@@ -382,14 +382,14 @@ u8_t allowed_prefs[256]= {
   /* 4_ */    PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 5_ */    PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,  PD,PD,PD,PD,
   /* 6_ */    PD,PD,PD,PD,  PN,P6,PN,P6,  PD,PD,PD,PD,  PD,PD,PD,PD,
-  /* 7_ */    PD,P2,P2,P2,  PD,P2,P2,P2,  P6,P2,P2,P2,  P6,P2,P2,P2,
+  /* 7_ */    P2,P2,P2,P2,  PD,P2,P2,P2,  P6,P2,P2,P2,  P6,P2,P2,P2,
   /* 8_ */    PD,PD,PD,PD,  PD,PD,PA,PA,  PA,PA,PA,PD,  PD,PD,PD,PD,
   /* 9_ */    PN,PD,PD,P6,  PN,PD,PD,PD,  PD,PD,PD,PN,   0, 0, 0, 0,
   /* a_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* b_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,PN,PN,  PN,PN,PN,PN,
   /* c_ */    P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,  P6,P6,P6,P6,
   /* d_ */    PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,  PN,PN,PN,PN,
-  /* e_ */    P6,P6,P6,P6,  P6,P6,PN,PN,  PN,P6,PN,P6,  PD, 0,P6,P6,
+  /* e_ */    P6,P6,P6,P6,  P6,P6,PN,PN,  PN,P6,PN,P6,  PN, 0,P6,P6,
   /* f_ */    P6,P2,P2,P2,  PN,PN,P6,PN,  P6,PN,P6,P6,   0, 0, 0, 0
 };
 
