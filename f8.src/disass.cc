@@ -287,7 +287,7 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      l= rom->read(addr+1);
 	      a= rY+l;
 	      a&= 0xffff;
-	      word->appendf("0x%02x,sp", l);
+	      word->appendf("0x%02x,y", l);
 	      comment->appendf("; [0x%04x]= 0x%02x", a, rom->read(a));
 	    }
 	  if (strcmp(fmt.c_str(), "ny_16") == 0)
