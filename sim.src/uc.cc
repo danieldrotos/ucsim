@@ -1614,7 +1614,7 @@ cl_uc::read_p2h_file(cl_f *f)
 	  chars w3= line.token(" \t");
 	  if (w1.nempty() && w2.nempty() && w3.nempty())
 	    {
-	      if (w2 == "//C")
+	      if ((w2 == "//C") || (w2 == "//I"))
 		{
 		  t_mem v= strtol(w1.c_str(), 0, 16);
 		  t_addr a= strtol(w3.c_str(), 0, 16);
