@@ -582,6 +582,7 @@ CLP2::inst_alu(t_mem code)
     case 0xb: // BTST
       {
 	u32_t r= R[d] & uop;
+	RC[d]->W(r);
 	setZSw(r);
       }
     case 0xc: // TEST
