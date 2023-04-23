@@ -78,8 +78,15 @@ cl_clock::tick(int cycles)
       pre_cnt+= cycles;
       if (pre_cnt > p)
 	{
+	  int i;
 	  clock->W(clock->R() + 1);
 	  pre_cnt-= p;
+	  for (i=2; i<16; i++)
+	    {
+	      t_mem m= uc->rom->read(addr+i);
+	      if (m)
+		uc->rom->write(addr+i, m-1);
+	    }
 	}
     }
   return 0;
@@ -88,12 +95,16 @@ cl_clock::tick(int cycles)
 void
 cl_clock::print_info(class cl_console_base *con)
 {
-  con->dd_printf("Pre= %d             \n",
-		 pre->get());
-  con->dd_printf("Cnt= %d             \n",
-		 pre_cnt);
-  con->dd_printf("Clk= %d             \n",
-		 clock->get());
+  con->dd_printf("Pre= %u             \n",
+		 MU(pre->get()));
+  con->dd_printf("Cnt= %u             \n",
+		 MU(pre_cnt));
+  con->dd_printf("Clk= %u             \n",
+		 MU(clock->get()));
+  int i;
+  for (i=2; i<16; i++)
+    con->dd_printf("Bcnt[%2d]= %u             \n",
+		   i, MU(uc->rom->get(addr+i)));
 }
 
 
