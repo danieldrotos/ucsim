@@ -67,6 +67,7 @@ int juj= 0;
 
 cl_app::cl_app(void)
 {
+  save_std_attribs();
   sim= 0;
   in_files= new cl_ustrings(2, 2, "input files");
   options= new cl_options();
@@ -210,6 +211,7 @@ cl_app::run(void)
 void
 cl_app::done(void)
 {
+  restore_std_attribs();
 }
 
 

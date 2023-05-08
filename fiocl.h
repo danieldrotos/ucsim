@@ -238,6 +238,8 @@ extern double dnow(void);
 extern const char *fio_type_name(enum file_type t);
 extern void  sigpipe_off();
 
+extern void save_std_attribs();
+extern void restore_std_attribs();
 
 #endif
 
