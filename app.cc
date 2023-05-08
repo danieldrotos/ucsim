@@ -385,7 +385,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	  o->hide();
 	  if (!options->set_value("port_number", this, strtol(optarg, NULL, 0)))
 	    fprintf(stderr, "Warning: No \"port_number\" option found"
-		    " to set parameter of -Z as pot number to listen on\n");
+		    " to set parameter of -Z as port number to listen on\n");
 	  break;
 	}
 #endif
