@@ -221,7 +221,7 @@ print_help(const char *name)
 	 "       [-C cfg_file] [-c file] [-e command] [-s file] [-S optionlist]\n"
 	 "       [-I if_optionlist] [-o colorlist] [-a nr]\n"
 #ifdef SOCKET_AVAIL
-	 "       [-Z portnum] [-k portnum]"
+	 "       [-z portnum] [-Z portnum] [-k portnum]"
 #endif
 	 "\n"
 	 "       [files...]\n", name);
@@ -234,6 +234,7 @@ print_help(const char *name)
      "  -C cfg_file  Read initial commands from `cfg_file' and execute them\n"
      "  -e command   Execute command on startup\n"
      "  -c file      Open command console on `file' (use `-' for std in/out)\n"
+     "  -z portnum   portnum for command console (default=4567), <1000 turns off\n"
      "  -Z portnum   Use localhost:portnum for command console\n"
      "  -k portnum   Use localhost:portnum for serial I/O\n"
      "  -s file      Connect serial interface uart0 to `file'\n"
@@ -319,7 +320,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 
   strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGJo:blBR:_");
 #ifdef SOCKET_AVAIL
-  strcat(opts, "Z:r:k:");
+  strcat(opts, "Z:r:k:z:");
 #endif
 
   for (i= 0; i < argc; i++)
@@ -374,6 +375,18 @@ cl_app::proc_arguments(int argc, char *argv[])
         srnd(atoi(optarg));
         break;
 #ifdef SOCKET_AVAIL
+      case 'z':
+	{
+	  class cl_option *o;
+	  options->new_option(o= new cl_number_option(this, "default_port",
+						      "Default port to listen on (-z)"));
+	  o->init();
+	  o->hide();
+	  if (!options->set_value("default_port", this, strtol(optarg, NULL, 0)))
+	    fprintf(stderr, "Warning: No \"default_port\" option found"
+		    " to set parameter of -z as port number to listen on\n");
+	  break;
+	}	
       case 'Z': case 'r':
 	{
 	  // By Sandeep
