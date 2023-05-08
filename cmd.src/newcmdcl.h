@@ -323,7 +323,7 @@ public:
   virtual void update_active(void) = 0;
   virtual int proc_input(void) = 0;
   virtual int input_avail(void) = 0;
-  virtual int wait_input(void) = 0;
+  //virtual int wait_input(void) = 0;
   virtual void check(void) { return; }
 };
 

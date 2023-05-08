@@ -126,7 +126,7 @@ class cl_commander: public cl_commander_base
   virtual int init(void);
   virtual void update_active(void);
   virtual int input_avail(void);
-  virtual int wait_input(void);
+  //virtual int wait_input(void);
   virtual int proc_input(void);
   virtual void check(void);
 };

@@ -161,8 +161,12 @@ cl_app::run(void)
 	}
       if (!sim)
 	{
-	  commander->wait_input();
-	  done= commander->proc_input();
+	  //commander->wait_input();
+	  //done= commander->proc_input();
+	  if (commander->input_avail())
+	    done = commander->proc_input();
+	  else
+	    loop_delay();
 	}
       else
         {

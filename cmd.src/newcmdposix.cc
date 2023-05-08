@@ -655,7 +655,7 @@ cl_commander::input_avail(void)
     }
   return ret;
 }
-
+/*
 int
 cl_commander::wait_input(void)
 {
@@ -663,7 +663,7 @@ cl_commander::wait_input(void)
     loop_delay();
   return 0;
 }
-
+*/
 int
 cl_commander::proc_input(void)
 {
