@@ -495,9 +495,11 @@ cl_commander::init(void)
   if (def_port >= 0)
     {
       c= new cl_listen_console(def_port, app);
-      c->init();
-      c->prev_quit= 0;
+      //c->init();
+      printf("prev_quit=%d\n",c->prev_quit);
       add_console(c);
+      c->prev_quit= 0;
+      printf("prev_quit=%d\n",c->prev_quit);
       ccnt++;
     }
   
