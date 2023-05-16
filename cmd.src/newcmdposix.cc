@@ -487,18 +487,22 @@ cl_commander::init(void)
   
   bool need_config= true;
 
-  int def_port= -1;
+  int def_port= 4567;
   if (default_port_option.use("default_port"))
     {
       def_port= default_port_option.get_value((long)0);
     }
-  if (def_port >= 0)
+  if (def_port > 1000)
     {
       c= new cl_listen_console(def_port, app);
-      //c->init();
-      add_console(c);
-      c->prev_quit= 0;
-      ccnt++;
+      cl_f *i= c->get_fin();
+      if (i->opened())
+	{
+	  add_console(c);
+	  c->prev_quit= 0;
+	  ccnt++;
+	}
+      else delete c;
     }
   
   if (port_number_option.use("port_number"))
