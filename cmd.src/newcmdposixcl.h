@@ -75,6 +75,7 @@ class cl_console: public cl_console_base
 class cl_listen_console: public cl_console
 {
  public:
+  cl_listen_console(cl_f *_fin, class cl_app *the_app);
   cl_listen_console(int serverport, class cl_app *the_app);
   virtual void welcome(void) {}
   virtual int proc_input(class cl_cmdset *cmdset);

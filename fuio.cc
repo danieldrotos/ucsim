@@ -419,6 +419,7 @@ void
 sigpipe_off()
 {
   struct sigaction sa;
+  sigaction(SIGPIPE, NULL, &sa);
   sa.sa_handler= SIG_IGN;
   sigaction(SIGPIPE, &sa, NULL);
 }
