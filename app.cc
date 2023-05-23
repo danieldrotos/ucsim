@@ -179,50 +179,48 @@ cl_app::run(void)
 	}
       if (rs == rs_run)
 	{
-      if (!sim)
-	{
-	  //commander->wait_input();
-	  //done= commander->proc_input();
-	  if (commander->input_avail())
-	    done = commander->proc_input();
-	  else
-	    loop_delay();
-	}
-      else
-        {
-	  acyc++;
-          if (sim->state & SIM_GO)
-            {
-	      if (++cyc > period)
-		{
-		  cyc= 0;
-		  if (sim->uc)
-		    sim->uc->touch();
-		  if (commander->input_avail())
-		    done= commander->proc_input();
-		}
-	      sim->step();
-	      if (jaj) ocon->dd_printf("** %u\n",MU(acyc));
-	      if (jaj && commander->frozen_or_actual())
-		{
-		  sim->uc->print_regs(commander->frozen_or_actual()),
-		    commander->frozen_or_actual()->dd_printf("\n");
-		}
-            }
-	  else
+	  if (!sim)
 	    {
 	      if (commander->input_avail())
 		done = commander->proc_input();
-              else
-                loop_delay();
-
-	      if (sim->uc)
-		sim->uc->touch();
+	      else
+		loop_delay();
 	    }
-	  if (sim->state & SIM_QUIT)
-	    done= 1;
-	}
-      commander->check();
+	  else
+	    {
+	      acyc++;
+	      if (sim->state & SIM_GO)
+		{
+		  if (++cyc > period)
+		    {
+		      cyc= 0;
+		      if (sim->uc)
+			sim->uc->touch();
+		      if (commander->input_avail())
+			done= commander->proc_input();
+		    }
+		  sim->step();
+		  if (jaj) ocon->dd_printf("** %u\n",MU(acyc));
+		  if (jaj && commander->frozen_or_actual())
+		    {
+		      sim->uc->print_regs(commander->frozen_or_actual()),
+			commander->frozen_or_actual()->dd_printf("\n");
+		    }
+		}
+	      else
+		{
+		  if (commander->input_avail())
+		    done = commander->proc_input();
+		  else
+		    loop_delay();
+		  
+		  if (sim->uc)
+		    sim->uc->touch();
+		}
+	      if (sim->state & SIM_QUIT)
+		done= 1;
+	    }
+	  commander->check();
 	}
     }
   return(0);

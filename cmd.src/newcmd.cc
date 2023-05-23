@@ -162,13 +162,13 @@ cl_console_base::init(void)
   prev_quit= -1;
   return(0);
 }
-
+/*
 void
 cl_console_base::set_startup(chars the)
 {
   //startup_command= the;
 }
-
+*/
 void
 cl_console_base::welcome(void)
 {

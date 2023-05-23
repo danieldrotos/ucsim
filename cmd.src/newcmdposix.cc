@@ -239,8 +239,8 @@ bool
 cl_console::input_avail(void)
 {
   bool ret= false;
-  if (startup_command.nempty())
-    return true;
+  //if (startup_command.nempty())
+  //return true;
   if (input_active())
     {
       ret= fin->input_avail();
@@ -288,14 +288,14 @@ cl_console::read_line(void)
   int b[2]= { 0, 0 };
 
   do {
-    if (startup_command.nempty())
+    /*if (startup_command.nempty())
       {
 	const char *s= startup_command;
 	b[0]= s[0];
 	startup_command= &s[1];
 	i= 1;
       }
-    else
+      else*/
       {
 	i= fin->read(b, 1);
       }
@@ -585,7 +585,7 @@ cl_commander::init(void)
 	      con->set_flag(CONS_NOWELCOME|CONS_ECHO, true);
 	      //exec_on(con, Config);
 	      config_console= con;
-	      con->set_startup(app->startup_command);
+	      //con->set_startup(app->startup_command);
 	      add_console(con);
 	    }
 	}
@@ -667,11 +667,11 @@ cl_commander::input_avail(void)
     for (int j = 0; j < cons->count; j++)
     {
       class cl_console *c = dynamic_cast<class cl_console*>((class cl_console_base*)(cons->at(j)));
-      chars *s= c->get_startup();
+      /*chars *s= c->get_startup();
       if (s->nempty())
 	{
 	  return true;
-	}
+	  }*/
     }
   return ret;
 }
@@ -703,7 +703,7 @@ cl_commander::proc_input(void)
 	continue;
 
       if (c->input_active() &&
-	  (f || c->has_startup()))
+	  (f /*|| c->has_startup()*/))
         {
 	  if (c->input_avail())
             {
