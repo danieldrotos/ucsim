@@ -139,7 +139,7 @@ cl_app::run(void)
 	  //loop_delay();
 	  if (commander->config_console == NULL)
 	    {
-	      //printf("1 rs_config done\n");
+	      printf("1 rs_config done\n");
 	      rs= rs_read_files;
 	    }
 	}
@@ -158,14 +158,14 @@ cl_app::run(void)
 		    }
 		}
 	    }
-	  //printf("2 rs_read_files done\n");
+	  printf("2 rs_read_files done\n");
 	  rs= rs_startup_cmd;
 	}
       if (rs == rs_startup_cmd)
 	{
 	  if (startup_command.nempty())
 	    exec(startup_command);
-	  //printf("3 rs_startup_cmd done\n");
+	  printf("3 rs_startup_cmd done\n");
 	  rs= rs_start;
 	}
       if (rs == rs_start)
@@ -174,7 +174,7 @@ cl_app::run(void)
 	    o->get_value(&g_opt);
 	  if (sim && g_opt)
 	    sim->start(0, 0);
-	  //printf("4 rs_start done\n");
+	  printf("4 rs_start done\n");
 	  rs= rs_run;
 	}
       if (rs == rs_run)

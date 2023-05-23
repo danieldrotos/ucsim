@@ -485,7 +485,7 @@ cl_commander::init(void)
   active_inputs= new cl_list(10, 5, "active_inputs");
   check_list= new cl_list(10, 5, "check_list");
   
-  bool need_config= true;
+  //bool need_config= true;
 
   int def_port= 4567;
   if (default_port_option.use("default_port"))
@@ -543,9 +543,20 @@ cl_commander::init(void)
 	}
       else
 	{
-	  add_console(con= new cl_console(cn, cn, app));
-	  config_console= exec_on(con, Config);
-	  need_config= false;
+	  class cl_f *in, *out;
+	  in= mk_io(cn, "r");
+	  if (!in)
+	    fprintf(stderr, "Can not open %s\n", cn);
+	  else
+	    {
+	      if (in->type == F_FILE)
+		out= cp_io(fileno(stdout), "w");
+	      else
+		out= cp_io(in->file_id, "w");
+	      add_console(con= new cl_console(in, out, app));
+	      //config_console= exec_on(con, Config);
+	      //need_config= false;
+	    }
 	}
     }
   if (cons->get_count() == ccnt)
@@ -663,16 +674,15 @@ cl_commander::input_avail(void)
   bool ret= check_inputs(active_inputs, avail);
   avail->disconn_all();
   delete avail;
+  /*
   if (!ret)
     for (int j = 0; j < cons->count; j++)
     {
-      class cl_console *c = dynamic_cast<class cl_console*>((class cl_console_base*)(cons->at(j)));
-      /*chars *s= c->get_startup();
-      if (s->nempty())
-	{
-	  return true;
-	  }*/
+      //class cl_console *c = dynamic_cast<class cl_console*>((class cl_console_base*)(cons->at(j)));
+      //chars *s= c->get_startup();
+      //if (s->nempty()) return true;
     }
+  */
   return ret;
 }
 /*
