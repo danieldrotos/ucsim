@@ -532,12 +532,12 @@ cl_commander::init(void)
 	  out= cp_io(fileno(stdout), "w");
 	  in->interactive(out);
 	  add_console(con= new cl_console(in, out, app));
-	  config_console= exec_on(con, Config);
+	  /*config_console= exec_on(con, Config);
 	  if (config_console)
 	    config_console->set_startup(app->startup_command);
 	  else
 	    con->set_startup(app->startup_command);
-	  need_config= false;
+	    need_config= false;*/
 	  if (in->tty)
 	    con->set_flag(CONS_INTERACTIVE, true);
 	}
@@ -555,21 +555,20 @@ cl_commander::init(void)
       out= cp_io(fileno(stdout), "w");
       in->interactive(out);
       add_console(con= new cl_console(in, out, app));
-      config_console= exec_on(con, Config);
+      /*config_console= exec_on(con, Config);
       if (config_console)
 	config_console->set_startup(app->startup_command);
       else
 	con->set_startup(app->startup_command);
-      need_config= false;
+	need_config= false;*/
       if (in->tty)
 	con->set_flag(CONS_INTERACTIVE, true);
     }
   if (
-      need_config &&
+      //need_config &&
       (
        (Config && *Config)
-       ||
-       app->startup_command.nempty()
+       //|| app->startup_command.nempty()
        )
       )
     {
@@ -590,17 +589,17 @@ cl_commander::init(void)
 	      add_console(con);
 	    }
 	}
-      else if (app->startup_command.nempty())
+      /*else if (app->startup_command.nempty())
 	{
 	  i= NULL;
 	  o= cp_io(fileno(stderr), "w");
-	  con= new cl_console(/*fc*/i, /*stderr*/o, app);
+	  con= new cl_console(i, o, app);
 	  con->set_flag(CONS_NOWELCOME|CONS_ECHO, true);
 	  //exec_on(con, Config);
 	  config_console= con;
 	  con->set_startup(app->startup_command);
 	  add_console(con);
-	}
+	  }*/
     }
   return(0);
 }
@@ -616,7 +615,9 @@ cl_commander::update_active(void)
   if (config_console)
     {
       if (!cons->index_of(config_console, NULL))
-	config_console= 0;
+	{
+	  config_console= 0;
+	}
     }
 
   //printf("List of active cons: ");

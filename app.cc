@@ -114,6 +114,7 @@ cl_app::init(int argc, char *argv[])
 enum run_states {
   rs_config,
   rs_read_files,
+  rs_startup_cmd,
   rs_start,
   rs_run
 };
@@ -130,10 +131,17 @@ cl_app::run(void)
   cperiod.set(cperiod_value());
   while (!done)
     {
-      if ((rs == rs_config) &&
-	  (commander->config_console == NULL))
+      if (rs == rs_config)
 	{
-	  rs= rs_read_files;
+	  if (commander->input_avail())
+	    /*done =*/ commander->proc_input();
+	  //else
+	  //loop_delay();
+	  if (commander->config_console == NULL)
+	    {
+	      //printf("1 rs_config done\n");
+	      rs= rs_read_files;
+	    }
 	}
       if (rs == rs_read_files)
 	{
@@ -150,6 +158,14 @@ cl_app::run(void)
 		    }
 		}
 	    }
+	  //printf("2 rs_read_files done\n");
+	  rs= rs_startup_cmd;
+	}
+      if (rs == rs_startup_cmd)
+	{
+	  if (startup_command.nempty())
+	    exec(startup_command);
+	  //printf("3 rs_startup_cmd done\n");
 	  rs= rs_start;
 	}
       if (rs == rs_start)
@@ -158,8 +174,11 @@ cl_app::run(void)
 	    o->get_value(&g_opt);
 	  if (sim && g_opt)
 	    sim->start(0, 0);
+	  //printf("4 rs_start done\n");
 	  rs= rs_run;
 	}
+      if (rs == rs_run)
+	{
       if (!sim)
 	{
 	  //commander->wait_input();
@@ -204,6 +223,7 @@ cl_app::run(void)
 	    done= 1;
 	}
       commander->check();
+	}
     }
   return(0);
 }
@@ -375,7 +395,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	break;
       case 'e':
 	startup_command+= optarg;
-	startup_command+= chars("\n");
+	startup_command+= chars(";"/*"\n"*/);
 	break;
       case 'R':
         srnd(atoi(optarg));
