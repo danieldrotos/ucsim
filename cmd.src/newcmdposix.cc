@@ -590,6 +590,17 @@ cl_commander::init(void)
 	      add_console(con);
 	    }
 	}
+      else if (app->startup_command.nempty())
+	{
+	  i= NULL;
+	  o= cp_io(fileno(stderr), "w");
+	  con= new cl_console(/*fc*/i, /*stderr*/o, app);
+	  con->set_flag(CONS_NOWELCOME|CONS_ECHO, true);
+	  //exec_on(con, Config);
+	  config_console= con;
+	  con->set_startup(app->startup_command);
+	  add_console(con);
+	}
     }
   return(0);
 }
