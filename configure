@@ -6722,9 +6722,9 @@ fi
 
   fi
 
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for nodelay in -ltinfo" >&5
-printf %s "checking for nodelay in -ltinfo... " >&6; }
-if test ${ac_cv_lib_tinfo_nodelay+y}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for curs_set in -ltinfo" >&5
+printf %s "checking for curs_set in -ltinfo... " >&6; }
+if test ${ac_cv_lib_tinfo_curs_set+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
@@ -6734,29 +6734,29 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 namespace conftest {
-  extern "C" int nodelay ();
+  extern "C" int curs_set ();
 }
 int
 main (void)
 {
-return conftest::nodelay ();
+return conftest::curs_set ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_cxx_try_link "$LINENO"
 then :
-  ac_cv_lib_tinfo_nodelay=yes
+  ac_cv_lib_tinfo_curs_set=yes
 else $as_nop
-  ac_cv_lib_tinfo_nodelay=no
+  ac_cv_lib_tinfo_curs_set=no
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_tinfo_nodelay" >&5
-printf "%s\n" "$ac_cv_lib_tinfo_nodelay" >&6; }
-if test "x$ac_cv_lib_tinfo_nodelay" = xyes
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_tinfo_curs_set" >&5
+printf "%s\n" "$ac_cv_lib_tinfo_curs_set" >&6; }
+if test "x$ac_cv_lib_tinfo_curs_set" = xyes
 then :
   curses_ok="yes"
 else $as_nop

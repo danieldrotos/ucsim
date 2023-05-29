@@ -431,7 +431,7 @@ else
       curses_ok="no")
   fi
 
-  AC_CHECK_LIB(tinfo,nodelay,
+  AC_CHECK_LIB(tinfo,curs_set,
 	       curses_ok="yes",
 	       CURSES_LIBS="${CURSES_LIBS} -ltinfo",
 	       curses_ok="no",
