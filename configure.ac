@@ -430,7 +430,15 @@ else
       CURSES_LIBS="${CURSES_LIBS} -lncurses",
       curses_ok="no")
   fi
+
+  AC_CHECK_LIB(tinfo,nodelay,
+	       curses_ok="yes",
+	       CURSES_LIBS="${CURSES_LIBS} -ltinfo",
+	       curses_ok="no",
+	       $CURSES_LIBS)
+  
 fi
+
 
 AC_SUBST(panel_ok)
 AC_SUBST(curses_ok)
