@@ -432,9 +432,9 @@ else
   fi
 
   AC_CHECK_LIB(tinfo,curs_set,
-	       curses_ok="yes",
+	       curses_ok="yes"
 	       CURSES_LIBS="${CURSES_LIBS} -ltinfo",
-	       curses_ok="no",
+	       ,
 	       $CURSES_LIBS)
   
 fi
