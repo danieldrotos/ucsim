@@ -106,8 +106,13 @@ COMMAND_DO_WORK_SIM(cl_run_cmd)
 
 CMDHELP(cl_run_cmd,
 	"run [start [stop]]",
-	"Go",
-	"")
+	"Start execution in foreground",
+	"Start simulation at given address (first parameter) or at\n"
+	"actual PC value. If second parameter is used, a breakpoint\n"
+	"will be placed at that address which stops the simulaton\n"
+	"when reached. The run command stops the actual console which\n"
+	"became frozen. Pressing ENTER key on this console stops the\n"
+	"simulation.\n")
 
 /*
  * Command: stop
@@ -126,7 +131,7 @@ COMMAND_DO_WORK_SIM(cl_stop_cmd)
 
 CMDHELP(cl_stop_cmd,
 	"stop",
-	"Stop",
+	"Stop simulation.",
 	"")
 
 /*
