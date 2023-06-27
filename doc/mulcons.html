@@ -20,7 +20,8 @@
       simulator then will listen and wait for network connection
       requests and provide console functions for network connections. </p>
 
-    <p>To run <i>&micro;Csim</i> in the background you have to use <a href="invoke.html#Zoption">-Z</a>
+    <p>To run <i>&micro;Csim</i> in the background you have to use
+      <a href="invoke.html#ucZoption">-Z</a>
       option for the simulator: </p>
 
     <pre><font color="blue">pigmy$</font> ucsim_51 -Z 5555 foo.hex
@@ -32,7 +33,7 @@
     <pre><font color="blue">pigmy$</font> ucsim_51 -Z 5555 foo.hex &amp;
 </pre>
 
-The parameter of the <a href="invoke.html#Zoption">-Z</a> option is a
+The parameter of the <a href="invoke.html#ucZoption">-Z</a> option is a
     port number. This can be number of any unused port of your machine. If the
     specified port is already occupied then following message appears:
 
@@ -42,11 +43,15 @@ The parameter of the <a href="invoke.html#Zoption">-Z</a> option is a
 
 In this case you have to use an other number.
 
-<p><blockquote><i>Multiply consoles can be used even if without <a href="invoke.html#Zoption">-Z option</a>. When
-simulator is running in "foreground", a network server is opened on
-port <b>4567</b> by default, but it can be changed using <a href="invoke.html#zoption">-z option</a>. This
-default server can be turned off using less then 1000 as parameter for
-  <a href="invoke.html#zoption">-z option</a>.
+<p><blockquote><i>Port number for listening incoming connections can
+  be specified either by using <a href="invoke.html#ucZoption">-Z</a> or
+  <a href="invoke.html#lczoption">-z</a> option. If
+  <a href="invoke.html#ucZoption">-Z</a> is used, &micro;Csim will work
+  in backgound mode, default console is not opened in stdio.
+  If <a href="invoke.html#lczoption">-z</a> is used to specify the port
+  number, &micro;Csim will work in foreground mode, default console is
+  opened on stdio and other consoles can be accessed by telneting to
+  the listening port.
 </i></blockquote>
 </p>
 
@@ -62,7 +67,7 @@ default server can be turned off using less then 1000 as parameter for
     same machine or the fully qualified host name if you are at the other end of
     the world. Second parameter is the number of the port where the simulator is
     listening. It must be the same number which was specified as parameter of
-    the <a href="invoke.html#Zoption">-Z</a> option when the simulator was
+    the <a href="invoke.html#ucZoption">-Z</a> option when the simulator was
     started (see above).
 
     <p>Connecting to the simulator you get a command console: </p>
@@ -100,7 +105,7 @@ under certain conditions; type `show c' for details.
 
     You can get a console on the terminal where you started the simulator. To do
     this you must explicitly ask the simulator to open a console on the standard
-    input/output. You can do this using <a href="invoke.html#coption">-c</a>
+    input/output. You can do this using <a href="invoke.html#lccoption">-c</a>
     option and specify the actual terminal as parameter for it:
 
     <pre><font color="blue">pigmy$</font> ucsim_51 -Z 5555 foo.hex -c /dev/tty

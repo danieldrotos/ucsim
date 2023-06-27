@@ -120,10 +120,16 @@ Open command console on
 (use \- for std in/out).
 
 .TP
-.B \-Z portnum
-Use
-.I localhost:portnum
+.B \-z portnum
+Listen
+.I portnum
 for command console.
+
+.TP
+.B \-Z portnum
+Listen
+.I portnum
+for command console (no console on stdio).
 
 .TP
 .B \-k portnum
@@ -201,7 +207,7 @@ Use colors of the light theme (default is dark).
 
 .TP
 .B \-b
-Black & white (non-color) console.
+Black & white (non-color) theme.
 
 .TP
 .B \-B
@@ -226,6 +232,10 @@ Writable flash.
 .TP
 .B \-V
 Verbose mode.
+
+.TP
+.B \-q
+Quiet mode.
 
 .TP
 .B \-v

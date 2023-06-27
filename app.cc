@@ -245,6 +245,10 @@ print_help(const char *name)
 	 "       [files...]\n", name);
   printf
     (
+     /*
+      12345678901234567890123456789012345678901234567890123456789012345678901234567890
+               1         2         3         4         5         6         7         8
+      */
      "Options:\n"
      "  -t CPU       Type of CPU: 51, C52, 251, etc.\n"
      "  -X freq[k|M] XTAL frequency\n"
@@ -252,10 +256,10 @@ print_help(const char *name)
      "  -C cfg_file  Read initial commands from `cfg_file' and execute them\n"
      "  -e command   Execute command on startup\n"
      "  -c file      Open command console on `file' (use `-' for std in/out)\n"
-     "  -z portnum   portnum for command console (default=4567), <1000 turns off\n"
-     "  -Z portnum   Use localhost:portnum for command console\n"
-     "  -k portnum   Use localhost:portnum for serial I/O\n"
-     "  -s file      Connect serial interface uart0 to `file'\n"
+     "  -z portnum   Listen portnum for command console\n"
+     "  -Z portnum   Listen portnum for command console (no console on stdio)\n"
+     "  -k portnum   Listen portnum for serial I/O (obsolete, use -S)\n"
+     "  -s file      Connect serial interface uart0 to `file' (obsolete, use -S)\n"
      "  -S options   `options' is a comma separated list of options according to\n"
      "               serial interface. Know options are:\n"
      "                  uart=nr   number of uart (default=0)\n"
