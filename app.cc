@@ -35,6 +35,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #endif
 #include <ctype.h>
 #include <errno.h>
+#include <unistd.h>
 #include "i_string.h"
 
 // prj
@@ -227,6 +228,20 @@ void
 cl_app::done(void)
 {
   restore_std_attribs();
+  bool bw= false;
+  class cl_option *o= application->options->get_option("black_and_white");
+  if (o)
+    {
+      o->get_value(&bw);
+      if (!bw)
+	{
+	  if (isatty(fileno(stdout)))
+	    {
+	      printf("\033[0m");
+	      fflush(0);
+	    }
+	}
+    }
 }
 
 
