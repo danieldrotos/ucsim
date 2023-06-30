@@ -207,7 +207,7 @@ public:
   virtual bool non_color(void) { return false; }
   virtual class cl_f *get_fout(void) { return f_stdout; }
   virtual class cl_f *get_fin(void) { return NULL; }
-  virtual class cl_console_base *clone_for_exec(char *fin) { return NULL; }
+  virtual class cl_console_base *clone_for_exec(char *fin);
   virtual void redirect(const char *fname, const char *mode) {}
   virtual void un_redirect(void) {}
   virtual bool is_tty(void) const { return true; }

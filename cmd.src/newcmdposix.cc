@@ -103,7 +103,7 @@ cl_console::cl_console(cl_f *_fin, cl_f *_fout, class cl_app *the_app)
   lines_printed= new cl_ustrings(100, 100, "console_cache");
 }
 
-class cl_console *
+class cl_console_base *
 cl_console::clone_for_exec(char *_fin)
 {
   class cl_f *fi= 0, *fo= 0;

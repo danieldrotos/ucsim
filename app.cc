@@ -290,7 +290,7 @@ print_help(const char *name)
      "  -a nr        Specify size of variable space (default=256)\n"
      "  -w           Writable flash\n"
      "  -V           Verbose mode\n"
-     "  -q           Quiet mode\n"
+     "  -q           Quiet mode (implies -b)\n"
      "  -v           Print out version number and quit\n"
      "  -H           Print out types of known CPUs and quit\n"
      "  -h           Print out this help and quit\n"
@@ -367,7 +367,10 @@ cl_app::proc_arguments(int argc, char *argv[])
     switch (c)
       {
       case '_': break;
-      case 'q': quiet= true; break;
+      case 'q':
+	quiet= true;
+	options->set_value("black_and_white", this, bool(true));
+	break;
       case 'J': jaj= true; break;
       case 'g':
 	if (!options->set_value("go", this, true))
