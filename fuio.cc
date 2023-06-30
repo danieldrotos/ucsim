@@ -461,7 +461,7 @@ save_std_attribs()
     {
       if (isatty(STDOUT_FILENO))
 	{
-	  tcgetattr(STDIN_FILENO, &out_attribs);
+	  tcgetattr(STDOUT_FILENO, &out_attribs);
 	  out_attribs_saved= 1;
 	}
     }
@@ -473,7 +473,10 @@ restore_std_attribs()
   if (in_attribs_saved)
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &in_attribs);
   if (out_attribs_saved)
-    tcsetattr(STDOUT_FILENO, TCSAFLUSH, &out_attribs);
+    {
+      //out_attribs.c_lflag|= ICANON|ECHO;
+      tcsetattr(STDOUT_FILENO, TCSAFLUSH, &out_attribs);
+    }
 }
 
 
