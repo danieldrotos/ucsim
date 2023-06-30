@@ -169,7 +169,10 @@ cl_app::run(void)
 	    o->get_value(&g_opt);
 	  if (sim && g_opt)
 	    sim->start(0, 0);
-	  rs= rs_run;
+	  if (commander->consoles_prevent_quit() < 1)
+	    done= 1;
+	  else
+	    rs= rs_run;
 	}
       if (rs == rs_run)
 	{
