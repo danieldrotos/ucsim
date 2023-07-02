@@ -266,6 +266,9 @@ enum cpu_type {
 
   CPU_P1516	= 0x0001,
   CPU_P2223	= 0x0002,
+
+  // MCS48 Intel 8048 family
+  CPU_I8048	= 0x0001,
   
   // technology
   CPU_CMOS	= 0x0001,
