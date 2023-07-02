@@ -686,6 +686,7 @@ LDFLAGS
 CXXFLAGS
 CXX
 enable_serio
+enable_i8048_port
 enable_f8_port
 enable_i8085_port
 enable_pblaze_port
@@ -787,6 +788,7 @@ enable_rxk_port
 enable_pblaze_port
 enable_i8085_port
 enable_f8_port
+enable_i8048_port
 enable_serio
 enable_statistic
 '
@@ -1453,6 +1455,7 @@ Optional Features:
   --disable-pblaze-port   do not compile simulator for Xilinx PicoBlaze
   --disable-i8085-port    do not compile simulator for i8085
   --disable-f8-port       do not compile simulator for f8
+  --disable-i8048-port    do not compile simulator for i8048
   --disable-serio         do not compile serio GUI tool (needs curses)
   --enable-statistic      compile statistical features (slower simulation)
 
@@ -3526,6 +3529,16 @@ else $as_nop
   enable_f8_port="yes"
 fi
 
+# Check whether --enable-i8048-port was given.
+if test ${enable_i8048_port+y}
+then :
+  enableval=$enable_i8048_port; if test $enable_i8048_port  != "no"; then
+    enable_i8048_port="yes"
+fi
+else $as_nop
+  enable_i8048_port="yes"
+fi
+
 # Check whether --enable-serio was given.
 if test ${enable_serio+y}
 then :
@@ -3535,6 +3548,7 @@ fi
 else $as_nop
   enable_serio="yes"
 fi
+
 
 
 
@@ -7955,7 +7969,7 @@ printf "%s\n" "#define _M_ \"${M}\"" >>confdefs.h
 # Generating output files
 # ===========================================================================
 
-ac_config_files="$ac_config_files Makefile main.mk:main_in.mk packages.mk:packages_in.mk cmd.src/Makefile motorola.src/Makefile sim.src/Makefile sim.src/test/Makefile avr.src/Makefile avr.src/test/Makefile m68hc08.src/Makefile m68hc08.src/test/Makefile m6809.src/Makefile m6809.src/test/Makefile m6800.src/Makefile m6800.src/test/Makefile m68hc11.src/Makefile m68hc11.src/test/Makefile m68hc12.src/Makefile m68hc12.src/test/Makefile mos6502.src/Makefile mos6502.src/test/Makefile rxk.src/Makefile rxk.src/test/Makefile pblaze.src/Makefile pblaze.src/test/Makefile i8085.src/Makefile i8085.src/test/Makefile f8.src/Makefile f8.src/test/Makefile p1516.src/Makefile p1516.src/test/Makefile pdk.src/Makefile pdk.src/test/Makefile s51.src/Makefile s51.src/test/Makefile st7.src/Makefile st7.src/test/Makefile stm8.src/Makefile stm8.src/test/Makefile tlcs.src/Makefile tlcs.src/test/Makefile xa.src/Makefile xa.src/test/Makefile z80.src/Makefile z80.src/test/Makefile gui.src/Makefile gui.src/serio.src/Makefile doc/Makefile"
+ac_config_files="$ac_config_files Makefile main.mk:main_in.mk packages.mk:packages_in.mk cmd.src/Makefile motorola.src/Makefile sim.src/Makefile sim.src/test/Makefile avr.src/Makefile avr.src/test/Makefile m68hc08.src/Makefile m68hc08.src/test/Makefile m6809.src/Makefile m6809.src/test/Makefile m6800.src/Makefile m6800.src/test/Makefile m68hc11.src/Makefile m68hc11.src/test/Makefile m68hc12.src/Makefile m68hc12.src/test/Makefile mos6502.src/Makefile mos6502.src/test/Makefile rxk.src/Makefile rxk.src/test/Makefile pblaze.src/Makefile pblaze.src/test/Makefile i8085.src/Makefile i8085.src/test/Makefile f8.src/Makefile f8.src/test/Makefile i8048.src/Makefile i8048.src/test/Makefile p1516.src/Makefile p1516.src/test/Makefile pdk.src/Makefile pdk.src/test/Makefile s51.src/Makefile s51.src/test/Makefile st7.src/Makefile st7.src/test/Makefile stm8.src/Makefile stm8.src/test/Makefile tlcs.src/Makefile tlcs.src/test/Makefile xa.src/Makefile xa.src/test/Makefile z80.src/Makefile z80.src/test/Makefile gui.src/Makefile gui.src/serio.src/Makefile doc/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -8674,6 +8688,8 @@ do
     "i8085.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES i8085.src/test/Makefile" ;;
     "f8.src/Makefile") CONFIG_FILES="$CONFIG_FILES f8.src/Makefile" ;;
     "f8.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES f8.src/test/Makefile" ;;
+    "i8048.src/Makefile") CONFIG_FILES="$CONFIG_FILES i8048.src/Makefile" ;;
+    "i8048.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES i8048.src/test/Makefile" ;;
     "p1516.src/Makefile") CONFIG_FILES="$CONFIG_FILES p1516.src/Makefile" ;;
     "p1516.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES p1516.src/test/Makefile" ;;
     "pdk.src/Makefile") CONFIG_FILES="$CONFIG_FILES pdk.src/Makefile" ;;

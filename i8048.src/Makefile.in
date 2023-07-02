@@ -1,11 +1,11 @@
 #
-# uCsim i8085.src/Makefile
+# uCsim i8048.src/Makefile
 #
 # (c) Drotos Daniel, Talker Bt. 2022
 #
 
 # tool name
-TN		= i8085
+TN		= i8048
 
 STARTYEAR	= 1997
 
@@ -52,8 +52,9 @@ infodir         = @infodir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-OBJECTS_SHARED	= sim$(TN).o i8080.o $(TN).o glob.o \
-		  inst.o ialu.o ibranch.o imove.o
+OBJECTS_SHARED	=
+#sim$(TN).o i8048.o $(TN).o glob.o \
+#		  inst.o ialu.o ibranch.o imove.o
 #		  irq.o port10.o
 
 OBJECTS_EXE	= s$(TN).o
@@ -68,7 +69,7 @@ SONAME		= libucsim_$(TN).so
 enable_dlso	= @enable_dlso@
 dlso_ok		= @dlso_ok@
 
-I8085ASM	=
+I8048ASM	=
 TEST_OBJ	= 
 
 
@@ -174,7 +175,7 @@ $(top_builddir)/libucsimutil.a:
 	$(CXX) $(CXXFLAGS) $(PICOPT) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
 
 .asm.hex:
-	$(I8085ASM) -l $< -o $@ -e $<.lst
+	$(I8048ASM) -l $< -o $@ -e $<.lst
 
 
 # Remaking configuration
@@ -184,4 +185,4 @@ checkconf:
 	  $(MAKE) -C $(top_builddir) -f conf.mk srcdir="$(srcdir)" top_builddir="$(top_builddir)" freshconf;\
 	fi
 
-# End of i8085.src/Makefile.in
+# End of i8048.src/Makefile.in

@@ -1,4 +1,4 @@
-# i8085.src/clean.mk
+# i8048.src/clean.mk
 
 srcdir		= .
 
@@ -7,9 +7,9 @@ srcdir		= .
 clean:
 	rm -f *core *[%~] *.[oa] *.map
 	rm -f .[a-z]*~
-	rm -f si8085$(EXEEXT) si8085.exe
+	rm -f si8048$(EXEEXT) si8048.exe
 	rm -f smcs6502$(EXEEXT) smcs6502.exe
-	rm -f ucsim_i8085$(EXEEXT) ucsim_i8085.exe
+	rm -f ucsim_i8048$(EXEEXT) ucsim_i8048.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
 	$(MAKE) -C test clean
 endif
@@ -34,4 +34,4 @@ mostlyclean: clean
 # -----------------------------------------------------------------------
 realclean: distclean
 
-# End of i8085.src/clean.mk
+# End of i8048.src/clean.mk
