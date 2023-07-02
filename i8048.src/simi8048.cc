@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (si8048.cc)
+ * Simulator of microcontrollers (simi8048.cc)
  *
  * Copyright (C) 2022 Drotos Daniel, Talker Bt.
  * 
@@ -25,36 +25,48 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-// prj
-#include "globals.h"
-#include "utils.h"
-
-// local
 #include "simi8048cl.h"
+#include "i8048cl.h"
 #include "glob.h"
 
-int
-main(int argc, char *argv[])
-{
-  class cl_sim *sim;
 
-  app_start_at= dnow();
-  cpus= cpus_8048;
-  /* Replace 1s to flagP in p table */
-  /*for (int i= 0; i<256; i++)
-    if (ptab[i])
-    ptab[i]= flagP;*/
-  application= new cl_app();
-  application->set_name("si8048");
-  application->init(argc, argv);
-  sim= new cl_simi8048(application);
-  if (sim->init())
-    sim->state|= SIM_QUIT;
-  application->set_simulator(sim);
-  application->run();
-  application->done();
-  delete application;
-  return 0;
+cl_simi8048::cl_simi8048(class cl_app *the_app):
+  cl_sim(the_app)
+{}
+
+class cl_uc *
+cl_simi8048::mk_controller(void)
+{
+  int i;
+  const char *typ= 0;
+  class cl_optref type_option(this);
+  class cl_i8048 *uc;
+
+  type_option.init();
+  type_option.use("cpu_type");
+  i= 0;
+  if ((typ= type_option.get_value(typ)) == 0)
+    typ= "I8048";
+  while ((cpus_8048[i].type_str != NULL) &&
+	 (strcasecmp(typ, cpus_8048[i].type_str) != 0))
+    i++;
+  if (cpus_8048[i].type_str == NULL)
+    {
+      fprintf(stderr, "Unknown processor type. "
+	      "Use -H option to see known types.\n");
+      return(NULL);
+    }
+  switch (cpus_8048[i].type)
+    {
+    case CPU_I8048:
+      uc= new cl_i8048(this);
+      return uc;
+    default:
+      fprintf(stderr, "Unknown processor type\n");
+      return NULL;
+    }
+  return NULL;
 }
 
-/* End of i8048.src/si8048.cc */
+
+/* End of i8048.src/simi8048.cc */

@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (si8048.cc)
+ * Simulator of microcontrollers (i8048cl.h)
  *
  * Copyright (C) 2022 Drotos Daniel, Talker Bt.
  * 
@@ -25,36 +25,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-// prj
-#include "globals.h"
-#include "utils.h"
 
-// local
-#include "simi8048cl.h"
-#include "glob.h"
+#ifndef I8048CL_HEADER
+#define I8048CL_HEADER
 
-int
-main(int argc, char *argv[])
+#include "uccl.h"
+
+
+/*
+ * i8048 processor
+ */
+
+class cl_i8048: public cl_uc
 {
-  class cl_sim *sim;
+ public:
+  cl_i8048(class cl_sim *asim);
+};
 
-  app_start_at= dnow();
-  cpus= cpus_8048;
-  /* Replace 1s to flagP in p table */
-  /*for (int i= 0; i<256; i++)
-    if (ptab[i])
-    ptab[i]= flagP;*/
-  application= new cl_app();
-  application->set_name("si8048");
-  application->init(argc, argv);
-  sim= new cl_simi8048(application);
-  if (sim->init())
-    sim->state|= SIM_QUIT;
-  application->set_simulator(sim);
-  application->run();
-  application->done();
-  delete application;
-  return 0;
-}
 
-/* End of i8048.src/si8048.cc */
+#endif
+
+/* End of i8048.src/i8048cl.h */

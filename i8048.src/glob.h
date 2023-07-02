@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "iwrap.h"
 
 
-extern struct cpu_entry cpus_80485[];
+extern struct cpu_entry cpus_8048[];
 
 
 #endif
