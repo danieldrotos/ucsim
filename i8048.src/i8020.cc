@@ -54,5 +54,11 @@ cl_i8020::init(void)
   return 0;
 }
 
+const char *
+cl_i8020::id_string(void)
+{
+  return "i8020";
+}
+
 
 /* End of i8048.src/i8020.cc */

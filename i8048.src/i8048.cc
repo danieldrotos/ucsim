@@ -41,5 +41,18 @@ cl_i8048::cl_i8048(class cl_sim *asim):
 {
 }
 
+int
+cl_i8048::init(void)
+{
+  cl_i8020::init();
+  return 0;
+}
+
+const char *
+cl_i8048::id_string(void)
+{
+  return "i8048";
+}
+
 
 /* End of i8048.src/i8048.cc */

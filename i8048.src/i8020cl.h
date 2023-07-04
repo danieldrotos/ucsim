@@ -44,6 +44,7 @@ class cl_i8020: public cl_uc
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
+  virtual const char *id_string(void);
 };
 
 
