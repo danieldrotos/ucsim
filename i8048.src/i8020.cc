@@ -29,6 +29,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "utils.h"
 
+#include "glob.h"
+
 #include "i8020cl.h"
 
 
@@ -39,6 +41,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_i8020::cl_i8020(class cl_sim *asim):
   cl_uc(asim)
 {
+}
+
+int
+cl_i8020::init(void)
+{
+  cl_uc::init();
+  fill_def_wrappers(itab);
+  reg_cell_var(&cpsw, &psw, "psw", "CPU register PSW");
+
+  reset();
+  return 0;
 }
 
 

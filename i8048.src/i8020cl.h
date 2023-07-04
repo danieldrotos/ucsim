@@ -39,7 +39,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_i8020: public cl_uc
 {
  public:
+  u8_t psw;
+  class cl_cell8 cpsw;
+ public:
   cl_i8020(class cl_sim *asim);
+  virtual int init(void);
 };
 
 

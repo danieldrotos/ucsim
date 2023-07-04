@@ -32,6 +32,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "iwrap.h"
 
 
+extern instruction_wrapper_fn itab[256];
+
 extern struct cpu_entry cpus_8048[];
 
 

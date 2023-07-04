@@ -37,7 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 cl_i8048::cl_i8048(class cl_sim *asim):
-  cl_uc(asim)
+  cl_i8020(asim)
 {
 }
 

@@ -29,14 +29,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef I8048CL_HEADER
 #define I8048CL_HEADER
 
-#include "uccl.h"
+#include "i8020cl.h"
 
 
 /*
  * i8048 processor
  */
 
-class cl_i8048: public cl_uc
+class cl_i8048: public cl_i8020
 {
  public:
   cl_i8048(class cl_sim *asim);

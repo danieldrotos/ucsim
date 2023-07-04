@@ -27,6 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
+instruction_wrapper_fn itab[256];
+
 struct cpu_entry cpus_8048[]=
   {
     {"I8048"	, CPU_I8048, 0		, "I8048", ""},
