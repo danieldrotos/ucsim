@@ -33,6 +33,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /*
+ * Special handling of flags
+ */
+
+class cl_flag20_op: public cl_memory_operator
+{
+public:
+  cl_flag20_op(class cl_memory_cell *acell): cl_memory_operator(acell) {}
+  virtual t_mem write(t_mem val);
+};
+
+
+/*
  * i8048 processor
  */
 

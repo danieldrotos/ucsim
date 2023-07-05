@@ -35,6 +35,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /*
+ * Flags
+ */
+
+t_mem
+cl_flag20_op::write(t_mem val)
+{
+  val|= 0x08;
+  return val;
+}
+
+
+/*
  * CPU
  */
 
@@ -48,8 +60,13 @@ cl_i8020::init(void)
 {
   cl_uc::init();
   fill_def_wrappers(itab);
+  class cl_memory_operator *o= new cl_flag20_op(&cpsw);
+  o->init();
+  o->set_name("MCS48 flag operator");
+  cpsw.append_operator(o);
   reg_cell_var(&cpsw, &psw, "psw", "CPU register PSW");
-
+  cpsw.W(0);
+  
   reset();
   return 0;
 }
