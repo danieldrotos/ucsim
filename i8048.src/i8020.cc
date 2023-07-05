@@ -66,6 +66,12 @@ cl_i8020::init(void)
   cpsw.append_operator(o);
   reg_cell_var(&cpsw, &psw, "psw", "CPU register PSW");
   cpsw.W(0);
+
+  reg_cell_var(&cflagF1, &flagF1, "F1", "CPU flag F1");
+  cflagF1.set_mask(1);
+  
+  reg_cell_var(&cmb, &mb, "mb", "CPU code bank selector");
+  cmb.set_mask(1);
   
   reset();
   return 0;

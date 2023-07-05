@@ -32,6 +32,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uccl.h"
 
 
+enum {
+  flagC = 0x80,
+  flagA = 0x40,
+  flagAC= 0x40,
+  flagF0= 0x20,
+  flagBS= 0x10
+};
+
+  
 /*
  * Special handling of flags
  */
@@ -53,6 +62,9 @@ class cl_i8020: public cl_uc
  public:
   u8_t psw;
   class cl_cell8 cpsw;
+  u8_t flagF1;
+  u8_t mb;
+  class cl_bit_cell8 cflagF1, cmb;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
