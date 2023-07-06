@@ -83,6 +83,7 @@ cl_i8020::init(void)
 
   mk_cvar(&cflagF1, "F1", "CPU flag F1");
   mk_cvar(&cmb, "mb", "CPU code bank selector");
+  mk_cvar(&cmb, "A11", "CPU code bank selector");
   
   //reset();
   return 0;
@@ -203,12 +204,30 @@ cl_i8020::print_regs(class cl_console_base *con)
   // show regs
   start= (psw & flagBS)?24:0;
   con->dd_color("answer");
-  con->dd_printf("     R0 R1 R2 R3 R4 R5 R6 R7\n%02x: ", start);
+  con->dd_printf("        R0 R1 R2 R3 R4 R5 R6 R7    PSW= CAFB-SSS    ACC= ");
+  con->dd_color("dump_number");
+  con->dd_printf("0x%02x %+3d %c", ACC, ACC, (isprint(ACC)?ACC:'?'));
+  con->dd_printf("\n");
+  con->dd_cprintf("dump_address", "   0x%02x", start);
   for (t_addr i= 0; i < 8; i++)
     con->dd_cprintf("dump_number", " %02x", iram->get(start + i));
+  con->dd_cprintf("dump_number", "    0x%02x ", psw);
+  con->dd_color("dump_number");
+  con->print_bin(psw, 8);
+  con->dd_printf("    A11=%d F1=%d", mb, flagF1);
   con->dd_printf("\n");
-  con->dd_color("answer");
   // show indirectly addressed IRAM and some basic regs
+  start= R[0]->get();
+  stop= start+7;
+  con->dd_color("answer");
+  con->dd_printf("R0=");
+  iram->dump(0, start, stop, 8, con);
+  start= R[1]->get();
+  stop= start+7;
+  con->dd_color("answer");
+  con->dd_printf("R1=");
+  iram->dump(0, start, stop, 8, con);
+  /*
   data= iram->get(iram->get(start));
   con->dd_printf("@R0 %02x %c", data, isprint(data) ? data : '.');
   
@@ -220,7 +239,7 @@ cl_i8020::print_regs(class cl_console_base *con)
   con->dd_printf("  PSW= 0x%02x CY=%c AC=%c F0=%c BS=%c\n", data,
 		 (data&flagC)?'1':'0', (data&flagA)?'1':'0',
 		 (data&flagF0)?'1':'0', (data&flagBS)?'1':'0');
-
+  */
   print_disass(PC, con);
 }
 
