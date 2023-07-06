@@ -84,6 +84,7 @@ cl_i8020::init(void)
   mk_cvar(&cflagF1, "F1", "CPU flag F1");
   mk_cvar(&cmb, "mb", "CPU code bank selector");
   mk_cvar(&cmb, "A11", "CPU code bank selector");
+  reg_cell_var(&cA, &rA, "ACC", "Accumulator");
   
   //reset();
   return 0;
@@ -180,7 +181,7 @@ cl_i8020::decode_regs(void)
   b->add_bank(1, memory("iram_chip"), 24);
   cpsw->write(0);
   for (i= 0; i < 8; i++)
-    R[i]= regs->get_cell(i);
+    R[i]= (cl_cell8*)regs->get_cell(i);
 }
 
 void
@@ -198,8 +199,8 @@ cl_i8020::decode_iram(void)
 void
 cl_i8020::print_regs(class cl_console_base *con)
 {
-  int start, stop;
-  t_mem data;
+  int start, stop, i;
+  //t_mem data;
   u16_t dp;
   // show regs
   start= (psw & flagBS)?24:0;
@@ -227,19 +228,30 @@ cl_i8020::print_regs(class cl_console_base *con)
   con->dd_color("answer");
   con->dd_printf("R1=");
   iram->dump(0, start, stop, 8, con);
-  /*
-  data= iram->get(iram->get(start));
-  con->dd_printf("@R0 %02x %c", data, isprint(data) ? data : '.');
-  
-  con->dd_printf("  ACC= 0x%02x %3d %c\n", ACC, ACC,
-              isprint(ACC)?(ACC):'.');
-  data= iram->get(iram->get(start+1));
-  con->dd_printf("@R1 %02x %c", data, isprint(data) ? data : '.');
-  data= psw;
-  con->dd_printf("  PSW= 0x%02x CY=%c AC=%c F0=%c BS=%c\n", data,
-		 (data&flagC)?'1':'0', (data&flagA)?'1':'0',
-		 (data&flagF0)?'1':'0', (data&flagBS)?'1':'0');
-  */
+
+  con->dd_cprintf("answer", "SP=%d", psw&7);
+  start= 8;
+  stop= psw&7;
+  for (i= 7; i>=0; i--)
+    {
+      dp= iram->read(start+2*i+1) * 256 + iram->read(start+2*i);
+      con->dd_cprintf("dump_address", " %x", dp>>12);
+      if (i<stop)
+	con->dd_color("dump_address");
+      else
+	con->dd_color("dump_number");
+      con->dd_printf(".%03x", dp&0xfff);
+    }
+  con->dd_printf("\n ");
+  con->dd_color("answer");
+  for (i= 7; i>=0; i--)
+    {
+      con->dd_printf("    %d", i);
+      con->dd_printf("%c", (i==(psw&7))?'^':' ');
+	
+    }
+  con->dd_printf("\n");
+
   print_disass(PC, con);
 }
 

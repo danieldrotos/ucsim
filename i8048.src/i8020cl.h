@@ -83,7 +83,7 @@ class cl_i8020: public cl_uc
   u8_t flagF1, mb, rA;
   class cl_bit_cell8 cflagF1, cmb;
   class cl_address_space *regs, *aspsw, *iram;
-  class cl_memory_cell *cA, *R[8];
+  class cl_cell8 cA, *R[8];
   class cl_memory_chip *rom_chip, *iram_chip;
  public:
   cl_i8020(class cl_sim *asim);
