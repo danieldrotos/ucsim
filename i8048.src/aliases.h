@@ -1,1 +1,1 @@
-#define nop instruction_00
+#define NOP instruction_00

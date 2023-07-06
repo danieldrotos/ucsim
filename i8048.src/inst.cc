@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 int
-cl_i8020::nop(t_mem code)
+cl_i8020::NOP(t_mem code)
 {
   return resGO;
 }

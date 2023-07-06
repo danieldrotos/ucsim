@@ -1,3 +1,3 @@
 #include "gen.h"
 
-DEC( 00, nop	, "nop"		, ' ', 1, false, 1 )
+DEC( 00, NOP	, "nop"		, ' ', 1, false, 1 )
