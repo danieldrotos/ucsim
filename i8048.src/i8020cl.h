@@ -101,6 +101,10 @@ class cl_i8020: public cl_uc
 
   virtual void reset(void);
   virtual int exec_inst(void);
+
+#define GEN_METHOD
+#include "decode.h"
+#undef GEN_METHOD
 };
 
 

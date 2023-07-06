@@ -29,6 +29,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
+struct dis_entry disass[]=
+  {
+#define GEN_DIS
+#include "decode.h"
+#undef GEN_DIS    
+    { 0, 0, 0, 0, 0, 0 }
+  };
+
+int tick_tab[256]=
+  {
+  };
+  
 struct cpu_entry cpus_8048[]=
   {
     {"I8048"	, CPU_I8048, 0		, "I8048", ""},

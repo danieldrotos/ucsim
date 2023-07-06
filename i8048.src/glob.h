@@ -31,6 +31,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 
 
+extern struct dis_entry disass[];
+
+extern int tick_tab[256];
+
 extern struct cpu_entry cpus_8048[];
 
 
