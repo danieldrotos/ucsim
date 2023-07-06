@@ -75,14 +75,23 @@ class cl_i8020: public cl_uc
 {
  public:
   u8_t psw;
-  class cl_cell8 cpsw;
-  u8_t flagF1, mb;
+  class cl_cell8 *cpsw;
+  u8_t flagF1, mb, rA;
   class cl_bit_cell8 cflagF1, cmb;
+  class cl_address_space *regs, *aspsw, *iram;
+  class cl_memory_cell *cA, *R[8];
+  class cl_memory_chip *rom_chip, *iram_chip;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void set_PC(t_addr addr);
+  virtual void make_memories(void);
+  virtual void make_address_spaces(void);
+  virtual void make_chips(void);
+  virtual void decode_regs(void);
+  virtual void decode_rom(void);
+  virtual void decode_iram(void);
 };
 
 

@@ -58,15 +58,10 @@ cl_i8020::cl_i8020(class cl_sim *asim):
 int
 cl_i8020::init(void)
 {
-  cl_uc::init();
+  class cl_memory_operator *o;
 
+  cl_uc::init();
   PCmask= 0xfff;
-  class cl_memory_operator *o= new cl_flag20_op(&cpsw);
-  o->init();
-  o->set_name("MCS48 flag operator");
-  cpsw.append_operator(o);
-  reg_cell_var(&cpsw, &psw, "psw", "CPU register PSW");
-  cpsw.W(0);
 
   reg_cell_var(&cflagF1, &flagF1, "F1", "CPU flag F1");
   cflagF1.set_mask(1);
@@ -101,6 +96,97 @@ cl_i8020::set_PC(t_addr addr)
   PC&= 0x7ff;
   addr&= 0x7ff;
   PC|= addr;
+}
+
+void
+cl_i8020::make_memories(void)
+{
+  class cl_memory_operator *o;
+  make_address_spaces();
+  // setup psw
+  cpsw= (cl_cell8*)aspsw->get_cell(0);
+  cpsw->decode(&psw);
+  o= new cl_flag20_op(cpsw);
+  o->init();
+  o->set_name("MCS48 flag operator");
+  cpsw->append_operator(o);
+  reg_cell_var(cpsw, &psw, "psw", "CPU register PSW");
+  // do others
+  make_chips();
+  decode_regs();
+  decode_rom();
+  decode_iram();
+}
+
+void
+cl_i8020::make_address_spaces(void)
+{
+  rom= new cl_address_space("rom", 0, 0x1000, 8);
+  rom->init();
+  address_spaces->add(rom);
+  
+  iram= new cl_address_space("iram", 0, 0x100, 8);
+  iram->init();
+  address_spaces->add(iram);
+
+  regs= new cl_address_space("regs", 0, 8, 8);
+  regs->init();
+  address_spaces->add(regs);
+
+  aspsw= new cl_address_space("aspsw", 0, 1, 8);
+  aspsw->init();
+  //address_spaces->add(aspsw);
+}
+
+void
+cl_i8020::make_chips(void)
+{
+  rom_chip= new cl_chip8("rom_chip", 0x1000, 8, 0xff);
+  rom_chip->init();
+  memchips->add(rom_chip);
+  
+  iram_chip= new cl_chip8("iram_chip", 0x100, 8);
+  iram_chip->init();
+  memchips->add(iram_chip);
+}
+
+void
+cl_i8020::decode_rom(void)
+{
+  class cl_address_decoder *ad;
+  ad= new cl_address_decoder(rom, rom_chip, 0, 0xfff, 0);
+  ad->init();
+  ad->set_name("def_rom_decoder");
+  rom->decoders->add(ad);
+  ad->activate(0);
+}
+
+void
+cl_i8020::decode_regs(void)
+{
+  int i;
+  cl_banker *b= new cl_banker(aspsw, 0, flagBS, //0,
+			      regs, 0, 7);
+  b->init();
+  b->set_name("def_regs_banker");
+  regs->decoders->add(b);
+  b->add_bank(0, memory("iram_chip"), 0);
+  b->add_bank(1, memory("iram_chip"), 24);
+  cpsw->write(0);
+  for (i= 0; i < 8; i++)
+    R[i]= regs->get_cell(i);
+}
+
+void
+cl_i8020::decode_iram(void)
+{
+  class cl_address_decoder *ad;
+  
+  ad= new cl_address_decoder(iram, iram_chip, 0, 0xff, 0);
+  ad->init();
+  ad->set_name("def_iram_decoder");
+  iram->decoders->add(ad);
+  ad->activate(0);
 }
 
 
