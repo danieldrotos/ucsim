@@ -52,6 +52,13 @@ public:
   virtual t_mem write(t_mem val);
 };
 
+class cl_bool_op: public cl_memory_operator
+{
+public:
+  cl_bool_op(class cl_memory_cell *acell): cl_memory_operator(acell) {}
+  virtual t_mem write(t_mem val) { return val?1:0; }
+};
+
 
 /*
  * i8048 processor
