@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 
 
-extern struct dis_entry disass[];
+extern struct dis_entry distab[];
 
 extern int tick_tab[256];
 

@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
-struct dis_entry disass[]=
+struct dis_entry distab[]=
   {
 #define GEN_DIS
 #include "decode.h"

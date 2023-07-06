@@ -98,7 +98,9 @@ class cl_i8020: public cl_uc
   virtual void decode_regs(void);
   virtual void decode_rom(void);
   virtual void decode_iram(void);
-
+  virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual char *disassc(t_addr addr, chars *comment);
   virtual void print_regs(class cl_console_base *con);
 
   virtual void reset(void);

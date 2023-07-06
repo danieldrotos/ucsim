@@ -196,6 +196,87 @@ cl_i8020::decode_iram(void)
   ad->activate(0);
 }
 
+struct dis_entry *
+cl_i8020::dis_tbl(void)
+{
+  return(distab);
+}
+
+struct dis_entry *
+cl_i8020::get_dis_entry(t_addr addr)
+{
+  t_mem code= rom->get(addr);
+
+  for (struct dis_entry *de = dis_tbl(); de && de->mnemonic; de++)
+    {
+      if ((code & de->mask) == de->code)
+        return de;
+    }
+
+  return NULL;
+}
+
+char *
+cl_i8020::disassc(t_addr addr, chars *comment)
+{
+  chars work= chars(), temp= chars(), fmt= chars();
+  const char *b;
+  struct dis_entry *de;
+  int i;
+  bool first;
+  //u8_t h, l, r;
+  //u8_t code;
+  //u16_t a;
+
+  de= get_dis_entry(addr);
+  //code= rom->read(addr);
+  
+  if (!de || !de->mnemonic)
+    return strdup("-- UNKNOWN/INVALID");
+
+  b= de->mnemonic;
+
+  first= true;
+  work= "";
+  for (i=0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '\'')
+	{
+	  fmt= "";
+	  i++;
+	  while (b[i] && (b[i]!='\''))
+	    fmt.append(b[i++]);
+	  if (!b[i]) i--;
+	  if (fmt.empty())
+	    work.append("'");
+	  if (strcmp(fmt.c_str(), "i8") == 0)
+	    {
+	      work.appendf("0x%02x", rom->read(addr+1));
+	    }
+	  continue;
+	}
+      if (b[i] == '%')
+	{
+	  i++;
+	  temp= "";
+	  switch (b[i])
+	    {
+	    }
+	  if (comment && temp.nempty())
+	    comment->append(temp);
+	}
+      else
+	work+= b[i];
+    }
+
+  return(strdup(work.c_str()));
+}
+
 void
 cl_i8020::print_regs(class cl_console_base *con)
 {
