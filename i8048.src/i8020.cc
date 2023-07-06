@@ -59,7 +59,8 @@ int
 cl_i8020::init(void)
 {
   cl_uc::init();
-  fill_def_wrappers(itab);
+
+  PCmask= 0xfff;
   class cl_memory_operator *o= new cl_flag20_op(&cpsw);
   o->init();
   o->set_name("MCS48 flag operator");
@@ -78,7 +79,11 @@ cl_i8020::init(void)
   o= new cl_bool_op(&cmb);
   o->init();
   cmb.append_operator(o);
-  
+
+  o= new cl_pc_op(&cPC);
+  o->init();
+  cPC.append_operator(o);
+
   reset();
   return 0;
 }
@@ -87,6 +92,15 @@ const char *
 cl_i8020::id_string(void)
 {
   return "i8020";
+}
+
+void
+cl_i8020::set_PC(t_addr addr)
+{
+  // do not change A11
+  PC&= 0x7ff;
+  addr&= 0x7ff;
+  PC|= addr;
 }
 
 

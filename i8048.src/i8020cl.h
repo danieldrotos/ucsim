@@ -59,6 +59,13 @@ public:
   virtual t_mem write(t_mem val) { return val?1:0; }
 };
 
+class cl_pc_op: public cl_memory_operator
+{
+public:
+  cl_pc_op(class cl_memory_cell *acell): cl_memory_operator(acell) {}
+  virtual t_mem write(t_mem val) { return val&0xfff; }
+};
+
 
 /*
  * i8048 processor
@@ -69,13 +76,13 @@ class cl_i8020: public cl_uc
  public:
   u8_t psw;
   class cl_cell8 cpsw;
-  u8_t flagF1;
-  u8_t mb;
+  u8_t flagF1, mb;
   class cl_bit_cell8 cflagF1, cmb;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
+  virtual void set_PC(t_addr addr);
 };
 
 

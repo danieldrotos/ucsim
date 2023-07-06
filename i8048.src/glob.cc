@@ -25,9 +25,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "glob.h"
+#include <stdio.h>
 
-instruction_wrapper_fn itab[256];
+#include "glob.h"
 
 struct cpu_entry cpus_8048[]=
   {
