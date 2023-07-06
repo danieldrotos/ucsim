@@ -69,9 +69,15 @@ cl_i8020::init(void)
 
   reg_cell_var(&cflagF1, &flagF1, "F1", "CPU flag F1");
   cflagF1.set_mask(1);
+  o= new cl_bool_op(&cflagF1);
+  o->init();
+  cflagF1.append_operator(o);
   
   reg_cell_var(&cmb, &mb, "mb", "CPU code bank selector");
   cmb.set_mask(1);
+  o= new cl_bool_op(&cmb);
+  o->init();
+  cmb.append_operator(o);
   
   reset();
   return 0;
