@@ -53,6 +53,7 @@ cl_flag20_op::write(t_mem val)
 cl_i8020::cl_i8020(class cl_sim *asim):
   cl_uc(asim)
 {
+  PCmask= 0xfff;
 }
 
 int
@@ -60,26 +61,30 @@ cl_i8020::init(void)
 {
   class cl_memory_operator *o;
 
-  cl_uc::init();
-  PCmask= 0xfff;
-
-  reg_cell_var(&cflagF1, &flagF1, "F1", "CPU flag F1");
-  cflagF1.set_mask(1);
-  o= new cl_bool_op(&cflagF1);
-  o->init();
-  cflagF1.append_operator(o);
-  
-  reg_cell_var(&cmb, &mb, "mb", "CPU code bank selector");
-  cmb.set_mask(1);
-  o= new cl_bool_op(&cmb);
-  o->init();
-  cmb.append_operator(o);
-
   o= new cl_pc_op(&cPC);
   o->init();
   cPC.append_operator(o);
 
-  reset();
+  cflagF1.init();
+  cflagF1.decode(&flagF1);
+  o= new cl_bool_op(&cflagF1);
+  o->init();
+  cflagF1.append_operator(o);
+  cflagF1.set_mask(1);
+
+  cmb.init();
+  cmb.decode(&mb);
+  o= new cl_bool_op(&cmb);
+  o->init();
+  cmb.append_operator(o);
+  cmb.set_mask(1);
+
+  cl_uc::init();
+
+  mk_cvar(&cflagF1, "F1", "CPU flag F1");
+  mk_cvar(&cmb, "mb", "CPU code bank selector");
+  
+  //reset();
   return 0;
 }
 
@@ -187,6 +192,61 @@ cl_i8020::decode_iram(void)
   ad->set_name("def_iram_decoder");
   iram->decoders->add(ad);
   ad->activate(0);
+}
+
+void
+cl_i8020::print_regs(class cl_console_base *con)
+{
+  int start, stop;
+  t_mem data;
+  u16_t dp;
+  // show regs
+  start= (psw & flagBS)?24:0;
+  con->dd_color("answer");
+  con->dd_printf("     R0 R1 R2 R3 R4 R5 R6 R7\n%02x: ", start);
+  for (t_addr i= 0; i < 8; i++)
+    con->dd_cprintf("dump_number", " %02x", iram->get(start + i));
+  con->dd_printf("\n");
+  con->dd_color("answer");
+  // show indirectly addressed IRAM and some basic regs
+  data= iram->get(iram->get(start));
+  con->dd_printf("@R0 %02x %c", data, isprint(data) ? data : '.');
+  
+  con->dd_printf("  ACC= 0x%02x %3d %c\n", ACC, ACC,
+              isprint(ACC)?(ACC):'.');
+  data= iram->get(iram->get(start+1));
+  con->dd_printf("@R1 %02x %c", data, isprint(data) ? data : '.');
+  data= psw;
+  con->dd_printf("  PSW= 0x%02x CY=%c AC=%c F0=%c BS=%c\n", data,
+		 (data&flagC)?'1':'0', (data&flagA)?'1':'0',
+		 (data&flagF0)?'1':'0', (data&flagBS)?'1':'0');
+
+  print_disass(PC, con);
+}
+
+void
+cl_i8020::reset(void)
+{
+  // 1) PC=0
+  cPC.W(0);
+  // 2) SP=0, 3) regbank=0
+  cpsw->W(0);
+  // 4) membank=0
+  cmb.W(0);
+  // 5) BUS=> HiZ
+  // 6) Port1, Port2: input mode
+  // 7) disbale irq
+  // 8) stop timer
+  // 9) clear timer flag
+  // 10) Clear F0, F1
+  cflagF1.W(0);
+  // 11) disable clock output from T0
+}
+
+int
+cl_i8020::exec_inst(void)
+{
+  return exec_inst_uctab();
 }
 
 

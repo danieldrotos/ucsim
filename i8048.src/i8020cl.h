@@ -40,7 +40,11 @@ enum {
   flagBS= 0x10
 };
 
-  
+#define ACC rA
+#define A   rA
+#define acc rA
+
+
 /*
  * Special handling of flags
  */
@@ -92,6 +96,11 @@ class cl_i8020: public cl_uc
   virtual void decode_regs(void);
   virtual void decode_rom(void);
   virtual void decode_iram(void);
+
+  virtual void print_regs(class cl_console_base *con);
+
+  virtual void reset(void);
+  virtual int exec_inst(void);
 };
 
 
