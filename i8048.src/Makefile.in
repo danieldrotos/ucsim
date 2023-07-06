@@ -17,6 +17,7 @@ RANLIB		= @RANLIB@
 INSTALL		= @INSTALL@
 STRIP		= @STRIP@
 MAKEDEP         = @MAKEDEP@
+SED		= @SED@
 
 top_builddir	= @top_builddir@
 top_srcdir	= @top_srcdir@
@@ -54,6 +55,7 @@ VPATH           = @srcdir@
 
 OBJECTS_SHARED	= glob.o \
 		  i8020.o $(TN).o \
+		  inst.o \
 		  sim$(TN).o
 
 OBJECTS_EXE	= s$(TN).o
@@ -130,7 +132,12 @@ include $(srcdir)/clean.mk
 # --------
 .SUFFIXES: .asm .hex
 
-$(TN).src: $(LEN) shared_lib
+$(TN).src: preped_headers $(LEN) shared_lib
+
+preped_headers: $(srcdir)/aliases.h
+
+$(srcdir)/aliases.h: $(srcdir)/decode.h $(srcdir)/gen.h $(srcdir)/genal.h
+	$(CXXCPP) -P genal.h | $(SED) 's/^/#/' >$(srcdir)/aliases.h
 
 $(LEN): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(LIBS) -o $@

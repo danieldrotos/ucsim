@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "uccl.h"
 
+#include "aliases.h"
+
 
 enum {
   flagC = 0x80,

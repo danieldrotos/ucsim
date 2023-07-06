@@ -6,6 +6,7 @@ AC_CONFIG_SRCDIR(.version)
 AC_CONFIG_HEADERS([ddconfig.h:ddconfig_in.h])
 
 AC_PROG_AWK
+AC_PROG_SED
 
 AC_MSG_CHECKING(version of the package)
 if test -f ${srcdir}/.version; then
