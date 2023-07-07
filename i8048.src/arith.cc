@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (inst.cc)
+ * Simulator of microcontrollers (arith.cc)
  *
  * Copyright (C) 2022 Drotos Daniel, Talker Bt.
  * 
@@ -28,4 +28,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8020cl.h"
 
 
-/* End of i8085.src/inst.cc */
+int
+cl_i8020::add(u8_t op2, bool addc)
+{
+  u16_t r;
+  rF&= ~flagCA;
+  r= rA+op2;
+  if (r > 0xff) rF|= flagC;
+  if (((rA&0xf) + (op2&0xf)) > 0xf) rF|= flagA;
+  cF.W(rF);
+  cA.W(r);
+  return resGO;
+}
+
+
+/* End of i8085.src/arith.cc */

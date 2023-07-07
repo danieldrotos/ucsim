@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
-struct dis_entry distab[]=
+struct dis_entry dis_tab20[]=
   {
 #define GEN_DIS
 #include "decode.h"
@@ -37,9 +37,7 @@ struct dis_entry distab[]=
     { 0, 0, 0, 0, 0, 0 }
   };
 
-int tick_tab[256]=
-  {
-  };
+int tick_tab[256];
   
 struct cpu_entry cpus_8048[]=
   {

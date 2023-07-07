@@ -199,7 +199,7 @@ cl_i8020::decode_iram(void)
 struct dis_entry *
 cl_i8020::dis_tbl(void)
 {
-  return(distab);
+  return(dis_tab20);
 }
 
 struct dis_entry *

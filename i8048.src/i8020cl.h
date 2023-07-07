@@ -37,7 +37,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 enum {
   flagC = 0x80,
   flagA = 0x40,
-  flagAC= 0x40,
+  flagAC= 0xc0,
+  flagCA= 0xc0,
   flagF0= 0x20,
   flagBS= 0x10
 };
@@ -45,6 +46,8 @@ enum {
 #define ACC rA
 #define A   rA
 #define acc rA
+#define rF  psw
+#define cF  (*cpsw)
 
 
 /*
@@ -106,9 +109,14 @@ class cl_i8020: public cl_uc
   virtual void reset(void);
   virtual int exec_inst(void);
 
+  virtual int add(u8_t op2, bool addc);
+  /*
 #define GEN_METHOD
 #include "decode.h"
 #undef GEN_METHOD
+  */
+  int NOP(t_mem code) { return resGO; }
+  int ADDI8(t_mem code) { return add(fetch(), false); }
 };
 
 
