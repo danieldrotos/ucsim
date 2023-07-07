@@ -148,7 +148,7 @@ cl_i8020::make_address_spaces(void)
 void
 cl_i8020::make_chips(void)
 {
-  rom_chip= new cl_chip8("rom_chip", 0x1000, 8, 0xff);
+  rom_chip= new cl_chip8("rom_chip", 0x1000, 8/*, 0xff*/);
   rom_chip->init();
   memchips->add(rom_chip);
   
@@ -225,11 +225,11 @@ cl_i8020::disassc(t_addr addr, chars *comment)
   int i;
   bool first;
   //u8_t h, l, r;
-  //u8_t code;
-  //u16_t a;
+  u8_t code;
+  u16_t a;
 
   de= get_dis_entry(addr);
-  //code= rom->read(addr);
+  code= rom->read(addr);
   
   if (!de || !de->mnemonic)
     return strdup("-- UNKNOWN/INVALID");
@@ -258,6 +258,16 @@ cl_i8020::disassc(t_addr addr, chars *comment)
 	    {
 	      work.appendf("0x%02x", rom->read(addr+1));
 	    }
+	  if (strcmp(fmt.c_str(), "a11") == 0)
+	    {
+	      a= (code&0xe0)<<3;
+	      a+= rom->read(addr+1);
+	      work.appendf("P.0x%04x", a);
+	      if (A11) a|= 0x800;
+	      temp.format("; %04x", a);
+	    }
+	  if (comment && temp.nempty())
+	    comment->append(temp);
 	  continue;
 	}
       if (b[i] == '%')

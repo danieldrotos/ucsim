@@ -32,9 +32,9 @@ int
 cl_i8020::jmp(MP)
 {
   u16_t a;
-  a= A11?0x800:0;
-  a+= (code & 0xe0)>>5;
+  a= (code&0xe0)<<3;
   a+= fetch();
+  if (A11) a|= 0x800;
   PC= a;
   return resGO;
 }
