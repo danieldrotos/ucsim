@@ -386,5 +386,11 @@ cl_i8020::exec_inst(void)
   return exec_inst_uctab();
 }
 
+class cl_memory_cell *
+CL2::iram_ir(int regnr)
+{
+  u8_t a= R[regnr&1]->get();
+  return iram->get_cell(a);
+}
 
 /* End of i8048.src/i8020.cc */

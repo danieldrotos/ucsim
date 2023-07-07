@@ -15,3 +15,6 @@
 #define MOVDAP5 instruction_0d
 #define MOVDAP6 instruction_0e
 #define MOVDAP7 instruction_0f
+#define INCIR0 instruction_10
+#define INCIR1 instruction_11
+#define ADDCI8 instruction_13

@@ -55,6 +55,11 @@ enum {
 #define CL2 cl_i8020
 #define CL4 cl_i8048
 
+#define RD   (vc.rd++)
+#define WR   (vc.wr++)
+#define RDWR (vc.rd++,vc.wr++)
+#define WRRD (vc.rd++,vc.wr++)
+
 
 /*
  * Special handling of flags
@@ -115,7 +120,11 @@ class cl_i8020: public cl_uc
   virtual void reset(void);
   virtual int exec_inst(void);
 
+  virtual class cl_memory_cell *iram_ir(int regnr);
+  
   virtual int add(u8_t op2, bool addc);
+  virtual int inc(class cl_memory_cell *op);
+  
   virtual int jmp(MP);
 
   virtual int in(int port_addr);
@@ -128,6 +137,7 @@ class cl_i8020: public cl_uc
   int NOP(MP) { return resGO; }
   
   int ADDI8(MP) { return add(fetch(), false); }
+  int ADDCI8(MP) { return add(fetch(), true); }
   int DECA(MP) { cA.W(cA.R()-1); return resGO; }
   
   int JMP0(MP) { return jmp(code); }
@@ -145,6 +155,9 @@ class cl_i8020: public cl_uc
   int MOVDAP5(MP) { return in((code&3)+4); }
   int MOVDAP6(MP) { return in((code&3)+4); }
   int MOVDAP7(MP) { return in((code&3)+4); }
+
+  int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
+  int INCIR1(MP) { RDWR; return inc(iram_ir(1)); }
 };
 
 

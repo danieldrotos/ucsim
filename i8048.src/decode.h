@@ -20,3 +20,8 @@ DEC( 0c, MOVDAP4, "movd a,p4"	, ' ', 1, false, 2 )
 DEC( 0d, MOVDAP5, "movd a,p5"	, ' ', 1, false, 2 )
 DEC( 0e, MOVDAP6, "movd a,p6"	, ' ', 1, false, 2 )
 DEC( 0f, MOVDAP7, "movd a,p7"	, ' ', 1, false, 2 )
+
+DEC( 10, INCIR0 , "inc @r0"	, ' ', 1, false, 1 )
+DEC( 11, INCIR1 , "inc @r1"	, ' ', 1, false, 1 )
+
+DEC( 13, ADDCI8	, "addc a,'i8'"	, ' ', 2, false, 2 )

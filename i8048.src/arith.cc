@@ -31,13 +31,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 cl_i8020::add(u8_t op2, bool addc)
 {
-  u16_t r;
+  u16_t r, c= addc?1:0;
   rF&= ~flagCA;
-  r= cA.R()+op2;
+  r= cA.R()+op2+c;
   if (r > 0xff) rF|= flagC;
-  if (((rA&0xf) + (op2&0xf)) > 0xf) rF|= flagA;
+  if (((rA&0xf) + (op2&0xf) + c) > 0xf) rF|= flagA;
   cF.W(rF);
   cA.W(r);
+  return resGO;
+}
+
+int
+CL2::inc(class cl_memory_cell *op)
+{
+  op->write(op->read() + 1);
   return resGO;
 }
 
