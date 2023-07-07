@@ -82,7 +82,7 @@ cl_i8020::init(void)
   cl_uc::init();
 
   mk_cvar(&cflagF1, "F1", "CPU flag F1");
-  mk_cvar(&cmb, "mb", "CPU code bank selector");
+  mk_cvar(&cmb, "DBF", "CPU code bank selector");
   mk_cvar(&cmb, "A11", "CPU code bank selector");
   reg_cell_var(&cA, &rA, "ACC", "Accumulator");
   
@@ -100,7 +100,7 @@ void
 cl_i8020::set_PC(t_addr addr)
 {
   // do not change A11
-  PC&= 0x7ff;
+  PC&= ~0x7ff;
   addr&= 0x7ff;
   PC|= addr;
 }
@@ -296,7 +296,7 @@ cl_i8020::print_regs(class cl_console_base *con)
   con->dd_cprintf("dump_number", "    0x%02x ", psw);
   con->dd_color("dump_number");
   con->print_bin(psw, 8);
-  con->dd_printf("    A11=%d F1=%d", mb, flagF1);
+  con->dd_printf("    DBF=%d F1=%d", mb, flagF1);
   con->dd_printf("\n");
   // show indirectly addressed IRAM and some basic regs
   start= R[0]->get();

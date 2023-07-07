@@ -1,2 +1,10 @@
 #define NOP instruction_00
 #define ADDI8 instruction_03
+#define JMP0 instruction_04
+#define JMP1 instruction_24
+#define JMP2 instruction_44
+#define JMP3 instruction_64
+#define JMP4 instruction_84
+#define JMP5 instruction_a4
+#define JMP6 instruction_c4
+#define JMP7 instruction_e4

@@ -48,6 +48,12 @@ enum {
 #define acc rA
 #define rF  psw
 #define cF  (*cpsw)
+#define A11 mb
+#define DBF mb
+
+#define MP  t_mem code
+#define CL2 cl_i8020
+#define CL4 cl_i8048
 
 
 /*
@@ -110,13 +116,23 @@ class cl_i8020: public cl_uc
   virtual int exec_inst(void);
 
   virtual int add(u8_t op2, bool addc);
+  virtual int jmp(MP);
+  
   /*
 #define GEN_METHOD
 #include "decode.h"
 #undef GEN_METHOD
   */
-  int NOP(t_mem code) { return resGO; }
-  int ADDI8(t_mem code) { return add(fetch(), false); }
+  int NOP(MP) { return resGO; }
+  int ADDI8(MP) { return add(fetch(), false); }
+  int JMP0(MP) { return jmp(code); }
+  int JMP1(MP) { return jmp(code); }
+  int JMP2(MP) { return jmp(code); }
+  int JMP3(MP) { return jmp(code); }
+  int JMP4(MP) { return jmp(code); }
+  int JMP5(MP) { return jmp(code); }
+  int JMP6(MP) { return jmp(code); }
+  int JMP7(MP) { return jmp(code); }
 };
 
 

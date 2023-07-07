@@ -55,7 +55,7 @@ VPATH           = @srcdir@
 
 OBJECTS_SHARED	= glob.o \
 		  i8020.o $(TN).o \
-		  inst.o arith.o \
+		  inst.o arith.o move.o branch.o \
 		  sim$(TN).o
 
 OBJECTS_EXE	= s$(TN).o
