@@ -18,3 +18,12 @@
 #define INCIR0 instruction_10
 #define INCIR1 instruction_11
 #define ADDCI8 instruction_13
+#define CALL0 instruction_14
+#define CALL1 instruction_34
+#define CALL2 instruction_54
+#define CALL3 instruction_74
+#define CALL4 instruction_94
+#define CALL5 instruction_b4
+#define CALL6 instruction_d4
+#define CALL7 instruction_f4
+#define DISI instruction_15

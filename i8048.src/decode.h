@@ -25,3 +25,14 @@ DEC( 10, INCIR0 , "inc @r0"	, ' ', 1, false, 1 )
 DEC( 11, INCIR1 , "inc @r1"	, ' ', 1, false, 1 )
 
 DEC( 13, ADDCI8	, "addc a,'i8'"	, ' ', 2, false, 2 )
+
+DEC( 14, CALL0  , "call 'a11'"	, ' ', 2, false, 2 )
+DEC( 34, CALL1  , "call 'a11'"	, ' ', 2, false, 2 )
+DEC( 54, CALL2  , "call 'a11'"	, ' ', 2, false, 2 )
+DEC( 74, CALL3  , "call 'a11'"	, ' ', 2, false, 2 )
+DEC( 94, CALL4  , "call 'a11'"	, ' ', 2, false, 2 )
+DEC( b4, CALL5  , "call 'a11'"	, ' ', 2, false, 2 )
+DEC( d4, CALL6  , "call 'a11'"	, ' ', 2, false, 2 )
+DEC( f4, CALL7  , "call 'a11'"	, ' ', 2, false, 2 )
+
+DEC( 15, DISI	, "dis i"	, ' ', 1, false, 1 )

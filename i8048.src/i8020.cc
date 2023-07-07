@@ -362,6 +362,43 @@ cl_i8020::print_regs(class cl_console_base *con)
 }
 
 void
+cl_i8020::push(void)
+{
+  u8_t spb= psw&7;
+  u8_t spa= (spb+1)&7;
+  u8_t ib= 8 + spb*2;
+  iram->write(ib, PC);
+  WR;
+  u8_t h= (PC>>8) & 0xf;
+  h|= (psw & 0xf0);
+  iram->write(ib+1, h);
+  WR;
+  psw&= ~7;
+  psw|= spa;
+  cF.W(psw);
+  stack_write((t_addr)spa);
+}
+
+void
+cl_i8020::stack_check_overflow(t_addr sp_after)
+{
+  u8_t spa= sp_after, sp_before;
+  spa&= 7;
+  sp_before= (spa-1)&7;
+  
+  if (spa < sp_before)
+    {
+      u8_t ib, ia;
+      ib= 8 + sp_before*2;
+      ia= 8 + spa*2;
+      class cl_error_stack_overflow *e=
+	new cl_error_stack_overflow(instPC, ib, ia);
+      e->init();
+      error(e);
+    }
+}
+
+void
 cl_i8020::reset(void)
 {
   // 1) PC=0
@@ -373,6 +410,7 @@ cl_i8020::reset(void)
   // 5) BUS=> HiZ
   // 6) Port1, Port2: input mode
   // 7) disbale irq
+  ien= 0;
   // 8) stop timer
   // 9) clear timer flag
   // 10) Clear F0, F1

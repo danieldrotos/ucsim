@@ -39,5 +39,16 @@ cl_i8020::jmp(MP)
   return resGO;
 }
 
+int
+CL2::call(MP)
+{
+  u16_t a= (code&0xe0)<<3;
+  a+= fetch();
+  if (A11) a|= 0x800;
+  push();
+  PC= a;
+  return resGO;
+}
+
 
 /* End of i8085.src/branch.cc */

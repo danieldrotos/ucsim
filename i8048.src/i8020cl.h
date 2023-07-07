@@ -96,7 +96,7 @@ class cl_i8020: public cl_uc
  public:
   u8_t psw;
   class cl_cell8 *cpsw;
-  u8_t flagF1, mb, rA;
+  u8_t flagF1, mb, rA, ien;
   class cl_bit_cell8 cflagF1, cmb;
   class cl_address_space *regs, *aspsw, *iram, *ports;
   class cl_cell8 cA, *R[8];
@@ -117,6 +117,9 @@ class cl_i8020: public cl_uc
   virtual char *disassc(t_addr addr, chars *comment);
   virtual void print_regs(class cl_console_base *con);
 
+  virtual void push(void);
+  virtual void stack_check_overflow(t_addr sp_after);
+  
   virtual void reset(void);
   virtual int exec_inst(void);
 
@@ -126,6 +129,7 @@ class cl_i8020: public cl_uc
   virtual int inc(class cl_memory_cell *op);
   
   virtual int jmp(MP);
+  virtual int call(MP);
 
   virtual int in(int port_addr);
   
@@ -135,6 +139,7 @@ class cl_i8020: public cl_uc
 #undef GEN_METHOD
   */
   int NOP(MP) { return resGO; }
+  int DISI(MP) { ien= 0; return resGO; }
   
   int ADDI8(MP) { return add(fetch(), false); }
   int ADDCI8(MP) { return add(fetch(), true); }
@@ -158,6 +163,15 @@ class cl_i8020: public cl_uc
 
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
   int INCIR1(MP) { RDWR; return inc(iram_ir(1)); }
+
+  int CALL0(MP) { return call(code); }
+  int CALL1(MP) { return call(code); }
+  int CALL2(MP) { return call(code); }
+  int CALL3(MP) { return call(code); }
+  int CALL4(MP) { return call(code); }
+  int CALL5(MP) { return call(code); }
+  int CALL6(MP) { return call(code); }
+  int CALL7(MP) { return call(code); }
 };
 
 
