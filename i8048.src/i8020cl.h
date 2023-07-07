@@ -93,9 +93,9 @@ class cl_i8020: public cl_uc
   class cl_cell8 *cpsw;
   u8_t flagF1, mb, rA;
   class cl_bit_cell8 cflagF1, cmb;
-  class cl_address_space *regs, *aspsw, *iram;
+  class cl_address_space *regs, *aspsw, *iram, *ports;
   class cl_cell8 cA, *R[8];
-  class cl_memory_chip *rom_chip, *iram_chip;
+  class cl_memory_chip *rom_chip, *iram_chip, *ports_chip;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
@@ -117,6 +117,8 @@ class cl_i8020: public cl_uc
 
   virtual int add(u8_t op2, bool addc);
   virtual int jmp(MP);
+
+  virtual int in(int port_addr);
   
   /*
 #define GEN_METHOD
@@ -124,7 +126,10 @@ class cl_i8020: public cl_uc
 #undef GEN_METHOD
   */
   int NOP(MP) { return resGO; }
+  
   int ADDI8(MP) { return add(fetch(), false); }
+  int DECA(MP) { cA.W(cA.R()-1); return resGO; }
+  
   int JMP0(MP) { return jmp(code); }
   int JMP1(MP) { return jmp(code); }
   int JMP2(MP) { return jmp(code); }
@@ -133,6 +138,13 @@ class cl_i8020: public cl_uc
   int JMP5(MP) { return jmp(code); }
   int JMP6(MP) { return jmp(code); }
   int JMP7(MP) { return jmp(code); }
+
+  int IN1(MP) { return in(code&3); }
+  int IN2(MP) { return in(code&3); }
+  int MOVDAP4(MP) { return in((code&3)+4); }
+  int MOVDAP5(MP) { return in((code&3)+4); }
+  int MOVDAP6(MP) { return in((code&3)+4); }
+  int MOVDAP7(MP) { return in((code&3)+4); }
 };
 
 

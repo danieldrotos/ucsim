@@ -123,6 +123,13 @@ cl_i8020::make_memories(void)
   decode_regs();
   decode_rom();
   decode_iram();
+  // decode ports
+  class cl_address_decoder *ad;
+  ad= new cl_address_decoder(ports, ports_chip, 0, 7, 0);
+  ad->init();
+  ad->set_name("def_ports_decoder");
+  ports->decoders->add(ad);
+  ad->activate(0);
 }
 
 void
@@ -143,6 +150,10 @@ cl_i8020::make_address_spaces(void)
   aspsw= new cl_address_space("aspsw", 0, 1, 8);
   aspsw->init();
   //address_spaces->add(aspsw);
+
+  ports= new cl_address_space("ports", 0, 8, 8);
+  ports->init();
+  address_spaces->add(ports);
 }
 
 void
@@ -155,6 +166,10 @@ cl_i8020::make_chips(void)
   iram_chip= new cl_chip8("iram_chip", 0x100, 8);
   iram_chip->init();
   memchips->add(iram_chip);
+  
+  ports_chip= new cl_chip8("ports_chip", 8, 8);
+  ports_chip->init();
+  memchips->add(ports_chip);
 }
 
 void

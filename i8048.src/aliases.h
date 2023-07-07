@@ -8,3 +8,10 @@
 #define JMP5 instruction_a4
 #define JMP6 instruction_c4
 #define JMP7 instruction_e4
+#define DECA instruction_07
+#define IN1 instruction_09
+#define IN2 instruction_0a
+#define MOVDAP4 instruction_0c
+#define MOVDAP5 instruction_0d
+#define MOVDAP6 instruction_0e
+#define MOVDAP7 instruction_0f

@@ -33,7 +33,7 @@ cl_i8020::add(u8_t op2, bool addc)
 {
   u16_t r;
   rF&= ~flagCA;
-  r= rA+op2;
+  r= cA.R()+op2;
   if (r > 0xff) rF|= flagC;
   if (((rA&0xf) + (op2&0xf)) > 0xf) rF|= flagA;
   cF.W(rF);

@@ -28,4 +28,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8020cl.h"
 
 
+int
+CL2::in(int port_addr)
+{
+  cA.W(ports->read(port_addr));
+  return resGO;
+}
+
+
 /* End of i8085.src/move.cc */
