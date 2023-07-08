@@ -25,7 +25,17 @@
 #define INCR7 instruction_1f
 #define XCHAIR0 instruction_20
 #define XCHAIR1 instruction_21
+#define MOVAI8 instruction_23
 #define JMP1 instruction_24
+#define CLRA instruction_27
+#define XCHAR0 instruction_28
+#define XCHAR1 instruction_29
+#define XCHAR2 instruction_2a
+#define XCHAR3 instruction_2b
+#define XCHAR4 instruction_2c
+#define XCHAR5 instruction_2d
+#define XCHAR6 instruction_2e
+#define XCHAR7 instruction_2f
 #define CALL1 instruction_34
 #define JMP2 instruction_44
 #define CALL2 instruction_54

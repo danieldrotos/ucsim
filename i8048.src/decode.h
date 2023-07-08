@@ -38,8 +38,21 @@ DEC( 1f, INCR7	, "inc r7"	, ' ', 1, false, 1 )
 
 DEC( 20, XCHAIR0, "xch a,@r0"	, ' ', 1, false, 1 )
 DEC( 21, XCHAIR1, "xch a,@r1"	, ' ', 1, false, 1 )
-
+// 22 IN A,DBB 41A,41
+DEC( 23, MOVAI8	, "mov a,'i8'"	, ' ', 2, false, 2 )
 DEC( 24, JMP1   , "jmp 'a11'"   , ' ', 2, false, 2 )
+// 25 EN TCNTI 48,41A,41,22
+// 26 JNT0 48,41A,41,22
+DEC( 27, CLRA	, "clr a"	, ' ', 1, false, 1 )
+DEC( 28, XCHAR0	, "xch a,r0"	, ' ', 1, false, 1 )
+DEC( 29, XCHAR1	, "xch a,r1"	, ' ', 1, false, 1 )
+DEC( 2a, XCHAR2	, "xch a,r2"	, ' ', 1, false, 1 )
+DEC( 2b, XCHAR3	, "xch a,r3"	, ' ', 1, false, 1 )
+DEC( 2c, XCHAR4	, "xch a,r4"	, ' ', 1, false, 1 )
+DEC( 2d, XCHAR5	, "xch a,r5"	, ' ', 1, false, 1 )
+DEC( 2e, XCHAR6	, "xch a,r6"	, ' ', 1, false, 1 )
+DEC( 2f, XCHAR7	, "xch a,r7"	, ' ', 1, false, 1 )
+
 DEC( 34, CALL1  , "call 'a11'"	, ' ', 2, false, 2 )
 DEC( 44, JMP2   , "jmp 'a11'"   , ' ', 2, false, 2 )
 DEC( 54, CALL2  , "call 'a11'"	, ' ', 2, false, 2 )

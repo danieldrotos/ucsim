@@ -165,6 +165,16 @@ class cl_i8020: public cl_uc
   int MOVDAP7(MP) { return in((code&3)+4); }
   int XCHAIR0(MP) { return xcha(iram_ir(0)); }
   int XCHAIR1(MP) { return xcha(iram_ir(1)); }
+  int MOVAI8(MP) { cA.W(fetch()); return resGO; }
+  int CLRA(MP) { cA.W(0); return resGO; }
+  int XCHAR0(MP) { return xcha(R[code&7]); }
+  int XCHAR1(MP) { return xcha(R[code&7]); }
+  int XCHAR2(MP) { return xcha(R[code&7]); }
+  int XCHAR3(MP) { return xcha(R[code&7]); }
+  int XCHAR4(MP) { return xcha(R[code&7]); }
+  int XCHAR5(MP) { return xcha(R[code&7]); }
+  int XCHAR6(MP) { return xcha(R[code&7]); }
+  int XCHAR7(MP) { return xcha(R[code&7]); }
   
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
   int INCIR1(MP) { RDWR; return inc(iram_ir(1)); }
