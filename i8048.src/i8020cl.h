@@ -126,6 +126,7 @@ class cl_i8020: public cl_uc
   virtual class cl_memory_cell *iram_ir(int regnr);
   
   virtual int add(u8_t op2, bool addc);
+  virtual int dec(class cl_memory_cell *op);
   virtual int inc(class cl_memory_cell *op);
   
   virtual int jmp(MP);
@@ -143,7 +144,7 @@ class cl_i8020: public cl_uc
   
   int ADDI8(MP) { return add(fetch(), false); }
   int ADDCI8(MP) { return add(fetch(), true); }
-  int DECA(MP) { cA.W(cA.R()-1); return resGO; }
+  int DECA(MP) { return dec(&cA); }
   
   int JMP0(MP) { return jmp(code); }
   int JMP1(MP) { return jmp(code); }
@@ -163,7 +164,8 @@ class cl_i8020: public cl_uc
 
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
   int INCIR1(MP) { RDWR; return inc(iram_ir(1)); }
-
+  int INCA(MP) { return inc(&cA); }
+  
   int CALL0(MP) { return call(code); }
   int CALL1(MP) { return call(code); }
   int CALL2(MP) { return call(code); }

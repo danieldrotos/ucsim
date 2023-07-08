@@ -42,6 +42,13 @@ cl_i8020::add(u8_t op2, bool addc)
 }
 
 int
+CL2::dec(class cl_memory_cell *op)
+{
+  op->write(op->read() - 1);
+  return resGO;
+}
+
+int
 CL2::inc(class cl_memory_cell *op)
 {
   op->write(op->read() + 1);
