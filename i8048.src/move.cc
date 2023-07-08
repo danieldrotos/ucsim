@@ -35,5 +35,14 @@ CL2::in(int port_addr)
   return resGO;
 }
 
+int
+CL2::xcha(class cl_memory_cell *op)
+{
+  u8_t t= cA.R();
+  cA.W(op->read());
+  op->write(t);
+  return resGO;
+}
+
 
 /* End of i8085.src/move.cc */

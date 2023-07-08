@@ -23,6 +23,8 @@
 #define INCR5 instruction_1d
 #define INCR6 instruction_1e
 #define INCR7 instruction_1f
+#define XCHAIR0 instruction_20
+#define XCHAIR1 instruction_21
 #define JMP1 instruction_24
 #define CALL1 instruction_34
 #define JMP2 instruction_44

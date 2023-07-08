@@ -36,6 +36,9 @@ DEC( 1d, INCR5	, "inc r5"	, ' ', 1, false, 1 )
 DEC( 1e, INCR6	, "inc r6"	, ' ', 1, false, 1 )
 DEC( 1f, INCR7	, "inc r7"	, ' ', 1, false, 1 )
 
+DEC( 20, XCHAIR0, "xch a,@r0"	, ' ', 1, false, 1 )
+DEC( 21, XCHAIR1, "xch a,@r1"	, ' ', 1, false, 1 )
+
 DEC( 24, JMP1   , "jmp 'a11'"   , ' ', 2, false, 2 )
 DEC( 34, CALL1  , "call 'a11'"	, ' ', 2, false, 2 )
 DEC( 44, JMP2   , "jmp 'a11'"   , ' ', 2, false, 2 )
