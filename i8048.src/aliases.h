@@ -1,6 +1,7 @@
 #define NOP instruction_00
 #define ADDI8 instruction_03
 #define JMP0 instruction_04
+#define ENI instruction_05
 #define DECA instruction_07
 #define IN1 instruction_09
 #define IN2 instruction_0a
@@ -14,6 +15,14 @@
 #define CALL0 instruction_14
 #define DISI instruction_15
 #define INCA instruction_17
+#define INCR0 instruction_18
+#define INCR1 instruction_19
+#define INCR2 instruction_1a
+#define INCR3 instruction_1b
+#define INCR4 instruction_1c
+#define INCR5 instruction_1d
+#define INCR6 instruction_1e
+#define INCR7 instruction_1f
 #define JMP1 instruction_24
 #define CALL1 instruction_34
 #define JMP2 instruction_44

@@ -141,6 +141,7 @@ class cl_i8020: public cl_uc
   */
   int NOP(MP) { return resGO; }
   int DISI(MP) { ien= 0; return resGO; }
+  int ENI(MP) { ien= 1; return resGO; }
   
   int ADDI8(MP) { return add(fetch(), false); }
   int ADDCI8(MP) { return add(fetch(), true); }
@@ -165,6 +166,14 @@ class cl_i8020: public cl_uc
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
   int INCIR1(MP) { RDWR; return inc(iram_ir(1)); }
   int INCA(MP) { return inc(&cA); }
+  int INCR0(MP) { return inc(R[code&7]); }
+  int INCR1(MP) { return inc(R[code&7]); }
+  int INCR2(MP) { return inc(R[code&7]); }
+  int INCR3(MP) { return inc(R[code&7]); }
+  int INCR4(MP) { return inc(R[code&7]); }
+  int INCR5(MP) { return inc(R[code&7]); }
+  int INCR6(MP) { return inc(R[code&7]); }
+  int INCR7(MP) { return inc(R[code&7]); }
   
   int CALL0(MP) { return call(code); }
   int CALL1(MP) { return call(code); }
