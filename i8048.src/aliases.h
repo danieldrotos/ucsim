@@ -36,6 +36,8 @@
 #define XCHAR5 instruction_2d
 #define XCHAR6 instruction_2e
 #define XCHAR7 instruction_2f
+#define XCHDAIR0 instruction_30
+#define XCHDAIR1 instruction_31
 #define CALL1 instruction_34
 #define JMP2 instruction_44
 #define CALL2 instruction_54

@@ -44,5 +44,15 @@ CL2::xcha(class cl_memory_cell *op)
   return resGO;
 }
 
+int
+CL2::xchad(class cl_memory_cell *op)
+{
+  u8_t o= op->read(), a= cA.R();
+  u8_t to= o&0x0f, ta= a&0x0f;
+  cA.W((a&0xf0)|to);
+  op->write((o&0xf0)|ta);
+  return resGO;
+}
+
 
 /* End of i8085.src/move.cc */
