@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 cl_i8020::add(u8_t op2, bool addc)
 {
-  u16_t r, c= addc?1:0;
+  u16_t r, c= addc?((psw&flagC)?1:0):0;
   rF&= ~flagCA;
   r= cA.R()+op2+c;
   if (r > 0xff) rF|= flagC;
