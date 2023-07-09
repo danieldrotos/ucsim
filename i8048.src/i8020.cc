@@ -433,8 +433,17 @@ cl_i8020::exec_inst(void)
 class cl_memory_cell *
 CL2::iram_ir(int regnr)
 {
-  u8_t a= R[regnr&1]->get();
+  u8_t a= R[regnr&1]->read();
   return iram->get_cell(a);
 }
+
+u8_t
+CL2::read_ir(int regnr)
+{
+  u8_t a= R[regnr&1]->read();
+  RD;
+  return iram->read(a);
+}
+
 
 /* End of i8048.src/i8020.cc */

@@ -124,6 +124,7 @@ class cl_i8020: public cl_uc
   virtual int exec_inst(void);
 
   virtual class cl_memory_cell *iram_ir(int regnr);
+  virtual u8_t read_ir(int regnr);
   
   virtual int add(u8_t op2, bool addc);
   virtual int dec(class cl_memory_cell *op);
