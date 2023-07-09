@@ -44,6 +44,8 @@
 #define MOVDP5A instruction_3d
 #define MOVDP6A instruction_3e
 #define MOVDP7A instruction_3f
+#define ORLAIR0 instruction_40
+#define ORLAIR1 instruction_41
 #define JMP2 instruction_44
 #define CALL2 instruction_54
 #define JMP3 instruction_64

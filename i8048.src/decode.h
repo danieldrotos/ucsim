@@ -70,6 +70,9 @@ DEC( 3d, MOVDP5A	, "movd p5,a"	, ' ', 1, false, 2 )
 DEC( 3e, MOVDP6A	, "movd p6,a"	, ' ', 1, false, 2 )
 DEC( 3f, MOVDP7A	, "movd p7,a"	, ' ', 1, false, 2 )
 
+DEC( 40, ORLAIR0	, "orl a,@r0"	, ' ', 1, false, 1 )
+DEC( 41, ORLAIR1	, "orl a,@r1"	, ' ', 1, false, 1 )
+
 DEC( 44, JMP2   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 DEC( 54, CALL2  	, "call 'a11'"	, ' ', 2, false, 2 )
 DEC( 64, JMP3   	, "jmp 'a11'"   , ' ', 2, false, 2 )

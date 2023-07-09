@@ -128,6 +128,7 @@ class cl_i8020: public cl_uc
   virtual int add(u8_t op2, bool addc);
   virtual int dec(class cl_memory_cell *op);
   virtual int inc(class cl_memory_cell *op);
+  virtual int orla(class cl_memory_cell *op);
   
   virtual int jmp(MP);
   virtual int call(MP);
@@ -153,15 +154,17 @@ class cl_i8020: public cl_uc
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
   int INCIR1(MP) { RDWR; return inc(iram_ir(1)); }
   int INCA(MP) { cA.W(rA+1); return resGO; }
-  int INCR0(MP) { return inc(R[code&7]); }
-  int INCR1(MP) { return inc(R[code&7]); }
-  int INCR2(MP) { return inc(R[code&7]); }
-  int INCR3(MP) { return inc(R[code&7]); }
-  int INCR4(MP) { return inc(R[code&7]); }
-  int INCR5(MP) { return inc(R[code&7]); }
-  int INCR6(MP) { return inc(R[code&7]); }
-  int INCR7(MP) { return inc(R[code&7]); }
-
+  int INCR0(MP) { return inc(R[0]); }
+  int INCR1(MP) { return inc(R[1]); }
+  int INCR2(MP) { return inc(R[2]); }
+  int INCR3(MP) { return inc(R[3]); }
+  int INCR4(MP) { return inc(R[4]); }
+  int INCR5(MP) { return inc(R[5]); }
+  int INCR6(MP) { return inc(R[6]); }
+  int INCR7(MP) { return inc(R[7]); }
+  int ORLAIR0(MP) { RD; return orla(iram_ir(0)); }
+  int ORLAIR1(MP) { RD; return orla(iram_ir(1)); }
+  
   int JMP0(MP) { return jmp(code); }
   int JMP1(MP) { return jmp(code); }
   int JMP2(MP) { return jmp(code); }
@@ -171,28 +174,28 @@ class cl_i8020: public cl_uc
   int JMP6(MP) { return jmp(code); }
   int JMP7(MP) { return jmp(code); }
 
-  int IN1(MP) { RD; return in(code&3); }
-  int IN2(MP) { RD; return in(code&3); }
-  int MOVDAP4(MP) { RD; return in((code&3)+4); }
-  int MOVDAP5(MP) { RD; return in((code&3)+4); }
-  int MOVDAP6(MP) { RD; return in((code&3)+4); }
-  int MOVDAP7(MP) { RD; return in((code&3)+4); }
-  int MOVDP4A(MP) { WR; return out((code&3)+4); }
-  int MOVDP5A(MP) { WR; return out((code&3)+4); }
-  int MOVDP6A(MP) { WR; return out((code&3)+4); }
-  int MOVDP7A(MP) { WR; return out((code&3)+4); }
+  int IN1(MP) { RD; return in(1); }
+  int IN2(MP) { RD; return in(2); }
+  int MOVDAP4(MP) { RD; return in(4); }
+  int MOVDAP5(MP) { RD; return in(5); }
+  int MOVDAP6(MP) { RD; return in(6); }
+  int MOVDAP7(MP) { RD; return in(7); }
+  int MOVDP4A(MP) { WR; return out(4); }
+  int MOVDP5A(MP) { WR; return out(5); }
+  int MOVDP6A(MP) { WR; return out(6); }
+  int MOVDP7A(MP) { WR; return out(7); }
   int XCHAIR0(MP) { RDWR; return xcha(iram_ir(0)); }
   int XCHAIR1(MP) { RDWR; return xcha(iram_ir(1)); }
   int MOVAI8(MP) { cA.W(fetch()); return resGO; }
   int CLRA(MP) { cA.W(0); return resGO; }
-  int XCHAR0(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHAR1(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHAR2(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHAR3(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHAR4(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHAR5(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHAR6(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHAR7(MP) { RDWR; return xcha(R[code&7]); }
+  int XCHAR0(MP) { RDWR; return xcha(R[0]); }
+  int XCHAR1(MP) { RDWR; return xcha(R[1]); }
+  int XCHAR2(MP) { RDWR; return xcha(R[2]); }
+  int XCHAR3(MP) { RDWR; return xcha(R[3]); }
+  int XCHAR4(MP) { RDWR; return xcha(R[4]); }
+  int XCHAR5(MP) { RDWR; return xcha(R[5]); }
+  int XCHAR6(MP) { RDWR; return xcha(R[6]); }
+  int XCHAR7(MP) { RDWR; return xcha(R[7]); }
   int XCHDAIR0(MP) { RDWR; return xchda(iram_ir(0)); }
   int XCHDAIR1(MP) { RDWR; return xchda(iram_ir(1)); }
     
