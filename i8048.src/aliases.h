@@ -62,7 +62,17 @@
 #define ANLAIR0 instruction_50
 #define ANLAIR1 instruction_51
 #define JB2 instruction_52
+#define ANLAI8 instruction_53
 #define CALL2 instruction_54
+#define DAA instruction_57
+#define ANLAR0 instruction_58
+#define ANLAR1 instruction_59
+#define ANLAR2 instruction_5a
+#define ANLAR3 instruction_5b
+#define ANLAR4 instruction_5c
+#define ANLAR5 instruction_5d
+#define ANLAR6 instruction_5e
+#define ANLAR7 instruction_5f
 #define JMP3 instruction_64
 #define JB3 instruction_72
 #define CALL3 instruction_74

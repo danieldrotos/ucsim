@@ -90,8 +90,20 @@ DEC( 4f, ORLAR7		, "orl a,r7"	, ' ', 1, false, 1 )
 DEC( 50, ANLAIR0	, "anl a,@r0"	, ' ', 1, false, 1 )
 DEC( 51, ANLAIR1	, "anl a,@r1"	, ' ', 1, false, 1 )
 DEC( 52, JB2		, "jb2 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
-
+DEC( 53, ANLAI8		, "anl a,'i8'"	, ' ', 2, false, 1 )
 DEC( 54, CALL2  	, "call 'a11'"	, ' ', 2, false, 2 )
+// 55 STRT T
+// 56 JT1
+DEC( 57, DAA		, "da a"	, ' ', 1, false, 1 )
+DEC( 58, ANLAR0		, "anl a,r0"	, ' ', 1, false, 1)
+DEC( 59, ANLAR1		, "anl a,r1"	, ' ', 1, false, 1)
+DEC( 5a, ANLAR2		, "anl a,r2"	, ' ', 1, false, 1)
+DEC( 5b, ANLAR3		, "anl a,r3"	, ' ', 1, false, 1)
+DEC( 5c, ANLAR4		, "anl a,r4"	, ' ', 1, false, 1)
+DEC( 5d, ANLAR5		, "anl a,r5"	, ' ', 1, false, 1)
+DEC( 5e, ANLAR6		, "anl a,r6"	, ' ', 1, false, 1)
+DEC( 5f, ANLAR7		, "anl a,r7"	, ' ', 1, false, 1)
+
 DEC( 64, JMP3   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 DEC( 72, JB3		, "jb3 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( 74, CALL3  	, "call 'a11'"	, ' ', 2, false, 2 )

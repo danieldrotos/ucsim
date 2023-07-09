@@ -130,7 +130,8 @@ class cl_i8020: public cl_uc
   virtual int inc(class cl_memory_cell *op);
   virtual int orla(class cl_memory_cell *op);
   virtual int anla(class cl_memory_cell *op);
-  
+  virtual int daa(void);
+    
   virtual int jmp(MP);
   virtual int call(MP);
   virtual int jb(MP);
@@ -179,6 +180,16 @@ class cl_i8020: public cl_uc
   int ORLAR7(MP) { cA.W(rA | R[7]->read()); return resGO; }
   int ANLAIR0(MP) { RD; return anla(iram_ir(0)); }
   int ANLAIR1(MP) { RD; return anla(iram_ir(1)); }
+  int ANLAI8(MP) { cA.W(rA & fetch()); return resGO; }
+  int DAA(MP) { return daa(); }
+  int ANLAR0(MP) { cA.W(rA & R[0]->read()); return resGO; }
+  int ANLAR1(MP) { cA.W(rA & R[1]->read()); return resGO; }
+  int ANLAR2(MP) { cA.W(rA & R[2]->read()); return resGO; }
+  int ANLAR3(MP) { cA.W(rA & R[3]->read()); return resGO; }
+  int ANLAR4(MP) { cA.W(rA & R[4]->read()); return resGO; }
+  int ANLAR5(MP) { cA.W(rA & R[5]->read()); return resGO; }
+  int ANLAR6(MP) { cA.W(rA & R[6]->read()); return resGO; }
+  int ANLAR7(MP) { cA.W(rA & R[7]->read()); return resGO; }
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }

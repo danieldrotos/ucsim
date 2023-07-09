@@ -271,7 +271,7 @@ cl_i8020::disassc(t_addr addr, chars *comment)
 	    work.append("'");
 	  if (strcmp(fmt.c_str(), "i8") == 0)
 	    {
-	      work.appendf("0x%02x", rom->read(addr+1));
+	      work.appendf("#0x%02x", rom->read(addr+1));
 	    }
 	  if (strcmp(fmt.c_str(), "a8") == 0)
 	    {

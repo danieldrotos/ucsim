@@ -69,5 +69,23 @@ CL2::anla(class cl_memory_cell *op)
   return resGO;
 }
 
+int
+CL2::daa(void)
+{
+  if (((rA & 0x0f) > 9) || (rF & flagA))
+    {
+      if (rA > 0xf9) rF|= flagC;
+      rA+= 6;
+    }
+  if (((rA & 0xf0) > 0x90) || (rF & flagC))
+    {
+      rA+= 0x60;
+      rF|= flagC;
+    }
+  cA.W(rA);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of i8085.src/arith.cc */
