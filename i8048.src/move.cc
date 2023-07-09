@@ -61,5 +61,13 @@ CL2::xchda(class cl_memory_cell *op)
   return resGO;
 }
 
+int
+CL2::SWAPA(MP)
+{
+  u8_t l= rA&0x0f;
+  cA.W((rA>>4)|(l<<4));
+  return resGO;
+}
+
 
 /* End of i8085.src/move.cc */

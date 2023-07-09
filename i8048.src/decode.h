@@ -72,8 +72,21 @@ DEC( 3f, MOVDP7A	, "movd p7,a"	, ' ', 1, false, 2 )
 
 DEC( 40, ORLAIR0	, "orl a,@r0"	, ' ', 1, false, 1 )
 DEC( 41, ORLAIR1	, "orl a,@r1"	, ' ', 1, false, 1 )
-
+// 42 MOV A,T
+DEC( 43, ORLAI8		, "orl a,'i8'"	, ' ', 2, false, 2 )
 DEC( 44, JMP2   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+// 45 STRT CNT
+// 46 JNTI
+DEC( 47, SWAPA		, "swap a"	, ' ', 1, false, 1 )
+DEC( 48, ORLAR0		, "orl a,r0"	, ' ', 1, false, 1 )
+DEC( 49, ORLAR1		, "orl a,r1"	, ' ', 1, false, 1 )
+DEC( 4a, ORLAR2		, "orl a,r2"	, ' ', 1, false, 1 )
+DEC( 4b, ORLAR3		, "orl a,r3"	, ' ', 1, false, 1 )
+DEC( 4c, ORLAR4		, "orl a,r4"	, ' ', 1, false, 1 )
+DEC( 4d, ORLAR5		, "orl a,r5"	, ' ', 1, false, 1 )
+DEC( 4e, ORLAR6		, "orl a,r6"	, ' ', 1, false, 1 )
+DEC( 4f, ORLAR7		, "orl a,r7"	, ' ', 1, false, 1 )
+
 DEC( 54, CALL2  	, "call 'a11'"	, ' ', 2, false, 2 )
 DEC( 64, JMP3   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 DEC( 74, CALL3  	, "call 'a11'"	, ' ', 2, false, 2 )

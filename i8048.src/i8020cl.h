@@ -143,10 +143,12 @@ class cl_i8020: public cl_uc
 #include "decode.h"
 #undef GEN_METHOD
   */
+  /* Other instructions */
   int NOP(MP) { return resGO; }
   int DISI(MP) { ien= 0; return resGO; }
   int ENI(MP) { ien= 1; return resGO; }
-  
+
+  /* Arithmetics */
   int ADDI8(MP) { return add(fetch(), false); }
   int ADDCI8(MP) { return add(fetch(), true); }
   int DECA(MP) { cA.W(rA-1); return resGO; }
@@ -164,7 +166,17 @@ class cl_i8020: public cl_uc
   int INCR7(MP) { return inc(R[7]); }
   int ORLAIR0(MP) { RD; return orla(iram_ir(0)); }
   int ORLAIR1(MP) { RD; return orla(iram_ir(1)); }
+  int ORLAI8(MP) { cA.W(rA | fetch()); return resGO; }
+  int ORLAR0(MP) { cA.W(rA | R[0]->read()); return resGO; }
+  int ORLAR1(MP) { cA.W(rA | R[1]->read()); return resGO; }
+  int ORLAR2(MP) { cA.W(rA | R[2]->read()); return resGO; }
+  int ORLAR3(MP) { cA.W(rA | R[3]->read()); return resGO; }
+  int ORLAR4(MP) { cA.W(rA | R[4]->read()); return resGO; }
+  int ORLAR5(MP) { cA.W(rA | R[5]->read()); return resGO; }
+  int ORLAR6(MP) { cA.W(rA | R[6]->read()); return resGO; }
+  int ORLAR7(MP) { cA.W(rA | R[7]->read()); return resGO; }
   
+  /* Branching */
   int JMP0(MP) { return jmp(code); }
   int JMP1(MP) { return jmp(code); }
   int JMP2(MP) { return jmp(code); }
@@ -173,7 +185,16 @@ class cl_i8020: public cl_uc
   int JMP5(MP) { return jmp(code); }
   int JMP6(MP) { return jmp(code); }
   int JMP7(MP) { return jmp(code); }
+  int CALL0(MP) { return call(code); }
+  int CALL1(MP) { return call(code); }
+  int CALL2(MP) { return call(code); }
+  int CALL3(MP) { return call(code); }
+  int CALL4(MP) { return call(code); }
+  int CALL5(MP) { return call(code); }
+  int CALL6(MP) { return call(code); }
+  int CALL7(MP) { return call(code); }
 
+  /* Data movement */
   int IN1(MP) { RD; return in(1); }
   int IN2(MP) { RD; return in(2); }
   int MOVDAP4(MP) { RD; return in(4); }
@@ -198,15 +219,7 @@ class cl_i8020: public cl_uc
   int XCHAR7(MP) { RDWR; return xcha(R[7]); }
   int XCHDAIR0(MP) { RDWR; return xchda(iram_ir(0)); }
   int XCHDAIR1(MP) { RDWR; return xchda(iram_ir(1)); }
-    
-  int CALL0(MP) { return call(code); }
-  int CALL1(MP) { return call(code); }
-  int CALL2(MP) { return call(code); }
-  int CALL3(MP) { return call(code); }
-  int CALL4(MP) { return call(code); }
-  int CALL5(MP) { return call(code); }
-  int CALL6(MP) { return call(code); }
-  int CALL7(MP) { return call(code); }
+  int SWAPA(MP);
 };
 
 

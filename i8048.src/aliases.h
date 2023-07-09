@@ -46,7 +46,17 @@
 #define MOVDP7A instruction_3f
 #define ORLAIR0 instruction_40
 #define ORLAIR1 instruction_41
+#define ORLAI8 instruction_43
 #define JMP2 instruction_44
+#define SWAPA instruction_47
+#define ORLAR0 instruction_48
+#define ORLAR1 instruction_49
+#define ORLAR2 instruction_4a
+#define ORLAR3 instruction_4b
+#define ORLAR4 instruction_4c
+#define ORLAR5 instruction_4d
+#define ORLAR6 instruction_4e
+#define ORLAR7 instruction_4f
 #define CALL2 instruction_54
 #define JMP3 instruction_64
 #define CALL3 instruction_74
