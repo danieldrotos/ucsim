@@ -129,10 +129,12 @@ class cl_i8020: public cl_uc
   virtual int dec(class cl_memory_cell *op);
   virtual int inc(class cl_memory_cell *op);
   virtual int orla(class cl_memory_cell *op);
+  virtual int anla(class cl_memory_cell *op);
   
   virtual int jmp(MP);
   virtual int call(MP);
-
+  virtual int jb(MP);
+  
   virtual int in(int port_addr);
   virtual int out(int port_addr);
   virtual int xcha(class cl_memory_cell *op);
@@ -175,6 +177,8 @@ class cl_i8020: public cl_uc
   int ORLAR5(MP) { cA.W(rA | R[5]->read()); return resGO; }
   int ORLAR6(MP) { cA.W(rA | R[6]->read()); return resGO; }
   int ORLAR7(MP) { cA.W(rA | R[7]->read()); return resGO; }
+  int ANLAIR0(MP) { RD; return anla(iram_ir(0)); }
+  int ANLAIR1(MP) { RD; return anla(iram_ir(1)); }
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }
@@ -193,7 +197,15 @@ class cl_i8020: public cl_uc
   int CALL5(MP) { return call(code); }
   int CALL6(MP) { return call(code); }
   int CALL7(MP) { return call(code); }
-
+  int JB0(MP) { return jb(code); }
+  int JB1(MP) { return jb(code); }
+  int JB2(MP) { return jb(code); }
+  int JB3(MP) { return jb(code); }
+  int JB4(MP) { return jb(code); }
+  int JB5(MP) { return jb(code); }
+  int JB6(MP) { return jb(code); }
+  int JB7(MP) { return jb(code); }
+  
   /* Data movement */
   int IN1(MP) { RD; return in(1); }
   int IN2(MP) { RD; return in(2); }

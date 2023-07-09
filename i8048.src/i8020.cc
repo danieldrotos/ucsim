@@ -273,6 +273,12 @@ cl_i8020::disassc(t_addr addr, chars *comment)
 	    {
 	      work.appendf("0x%02x", rom->read(addr+1));
 	    }
+	  if (strcmp(fmt.c_str(), "a8") == 0)
+	    {
+	      a= addr & 0xf00;
+	      a|= rom->read(addr+1);
+	      work.appendf("0x%04x", a);
+	    }
 	  if (strcmp(fmt.c_str(), "a11") == 0)
 	    {
 	      a= (code&0xe0)<<3;

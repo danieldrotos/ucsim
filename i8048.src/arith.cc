@@ -62,5 +62,12 @@ CL2::orla(class cl_memory_cell *op)
   return resGO;
 }
 
+int
+CL2::anla(class cl_memory_cell *op)
+{
+  cA.W(rA & op->read());
+  return resGO;
+}
+
 
 /* End of i8085.src/arith.cc */

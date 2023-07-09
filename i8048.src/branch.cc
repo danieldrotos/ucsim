@@ -50,5 +50,18 @@ CL2::call(MP)
   return resGO;
 }
 
+int
+CL2::jb(MP)
+{
+  u8_t a= fetch();
+  u8_t m= 1<<((code>>5)&7);
+  if (rA & m)
+    {
+      PC&= 0xf00;
+      PC|= a;
+    }
+  return resGO;
+}
+
 
 /* End of i8085.src/branch.cc */
