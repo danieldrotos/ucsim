@@ -39,6 +39,11 @@
 #define XCHDAIR0 instruction_30
 #define XCHDAIR1 instruction_31
 #define CALL1 instruction_34
+#define CPLA instruction_37
+#define MOVDP4A instruction_3c
+#define MOVDP5A instruction_3d
+#define MOVDP6A instruction_3e
+#define MOVDP7A instruction_3f
 #define JMP2 instruction_44
 #define CALL2 instruction_54
 #define JMP3 instruction_64

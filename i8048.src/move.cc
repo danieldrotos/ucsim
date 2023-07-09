@@ -36,6 +36,13 @@ CL2::in(int port_addr)
 }
 
 int
+CL2::out(int port_addr)
+{
+  ports->write(port_addr, rA);
+  return resGO;
+}
+
+int
 CL2::xcha(class cl_memory_cell *op)
 {
   u8_t t= cA.R();

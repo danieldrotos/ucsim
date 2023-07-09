@@ -55,8 +55,21 @@ DEC( 2f, XCHAR7		, "xch a,r7"	, ' ', 1, false, 1 )
 
 DEC( 30, XCHDAIR0	, "xchd a,@r0"	, ' ', 1, false, 1 )
 DEC( 31, XCHDAIR1	, "xchd a,@r1"	, ' ', 1, false, 1 )
-
+// 32 JB1 48,41A,41
+// 33 undefined
 DEC( 34, CALL1  	, "call 'a11'"	, ' ', 2, false, 2 )
+// 35 DIS TCNTI 48,41A,41,22
+// 36 JT0 48,41A,41,22
+DEC( 37, CPLA		, "cpl a"	, ' ', 1, false, 1 )
+// 38 undefined
+// 39 OUTL P1,A
+// 3a OUTL P2,A
+// 3b undefined
+DEC( 3c, MOVDP4A	, "movd p4,a"	, ' ', 1, false, 2 )
+DEC( 3d, MOVDP5A	, "movd p5,a"	, ' ', 1, false, 2 )
+DEC( 3e, MOVDP6A	, "movd p6,a"	, ' ', 1, false, 2 )
+DEC( 3f, MOVDP7A	, "movd p7,a"	, ' ', 1, false, 2 )
+
 DEC( 44, JMP2   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 DEC( 54, CALL2  	, "call 'a11'"	, ' ', 2, false, 2 )
 DEC( 64, JMP3   	, "jmp 'a11'"   , ' ', 2, false, 2 )
