@@ -134,7 +134,7 @@ class cl_i8020: public cl_uc
 
   virtual int in(int port_addr);
   virtual int xcha(class cl_memory_cell *op);
-  virtual int xchad(class cl_memory_cell *op);
+  virtual int xchda(class cl_memory_cell *op);
   
   /*
 #define GEN_METHOD
@@ -176,8 +176,8 @@ class cl_i8020: public cl_uc
   int XCHAR5(MP) { RDWR; return xcha(R[code&7]); }
   int XCHAR6(MP) { RDWR; return xcha(R[code&7]); }
   int XCHAR7(MP) { RDWR; return xcha(R[code&7]); }
-  int XCHDAIR0(MP) { RDWR; return xchad(iram_ir(0)); }
-  int XCHDAIR1(MP) { RDWR; return xchad(iram_ir(1)); }
+  int XCHDAIR0(MP) { RDWR; return xchda(iram_ir(0)); }
+  int XCHDAIR1(MP) { RDWR; return xchda(iram_ir(1)); }
   
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
   int INCIR1(MP) { RDWR; return inc(iram_ir(1)); }

@@ -45,7 +45,7 @@ CL2::xcha(class cl_memory_cell *op)
 }
 
 int
-CL2::xchad(class cl_memory_cell *op)
+CL2::xchda(class cl_memory_cell *op)
 {
   u8_t o= op->read(), a= cA.R();
   u8_t to= o&0x0f, ta= a&0x0f;
