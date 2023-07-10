@@ -87,5 +87,18 @@ CL2::daa(void)
   return resGO;
 }
 
+int
+CL2::RRCA(MP)
+{
+  u8_t orgc= rF & flagC;
+  rF&= ~flagC;
+  if (rA & 1) rF|= flagC;
+  rA>>= 1;
+  if (orgc) rA|= 0x80;
+  cA.W(rA);
+  cF.W(rF);
+  return resGO;
+}
+
 
 /* End of i8085.src/arith.cc */

@@ -155,6 +155,16 @@ class cl_i8020: public cl_uc
   /* Arithmetics */
   int ADDI8(MP) { return add(fetch(), false); }
   int ADDCI8(MP) { return add(fetch(), true); }
+  int ADDAIR0(MP) { return add(read_ir(0), false); }
+  int ADDAIR1(MP) { return add(read_ir(1), false); }
+  int ADDAR0(MP) { return add(R[0]->read(), false); }
+  int ADDAR1(MP) { return add(R[1]->read(), false); }
+  int ADDAR2(MP) { return add(R[2]->read(), false); }
+  int ADDAR3(MP) { return add(R[3]->read(), false); }
+  int ADDAR4(MP) { return add(R[4]->read(), false); }
+  int ADDAR5(MP) { return add(R[5]->read(), false); }
+  int ADDAR6(MP) { return add(R[6]->read(), false); }
+  int ADDAR7(MP) { return add(R[7]->read(), false); }
   int DECA(MP) { cA.W(rA-1); return resGO; }
   int CPLA(MP) { cA.W(~(cA.R())); return resGO; }
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
@@ -191,6 +201,7 @@ class cl_i8020: public cl_uc
   int ANLAR5(MP) { cA.W(rA & R[5]->read()); return resGO; }
   int ANLAR6(MP) { cA.W(rA & R[6]->read()); return resGO; }
   int ANLAR7(MP) { cA.W(rA & R[7]->read()); return resGO; }
+  int RRCA(MP);
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }

@@ -95,16 +95,32 @@ DEC( 54, CALL2  	, "call 'a11'"	, ' ', 2, false, 2 )
 // 55 STRT T
 // 56 JT1
 DEC( 57, DAA		, "da a"	, ' ', 1, false, 1 )
-DEC( 58, ANLAR0		, "anl a,r0"	, ' ', 1, false, 1)
-DEC( 59, ANLAR1		, "anl a,r1"	, ' ', 1, false, 1)
-DEC( 5a, ANLAR2		, "anl a,r2"	, ' ', 1, false, 1)
-DEC( 5b, ANLAR3		, "anl a,r3"	, ' ', 1, false, 1)
-DEC( 5c, ANLAR4		, "anl a,r4"	, ' ', 1, false, 1)
-DEC( 5d, ANLAR5		, "anl a,r5"	, ' ', 1, false, 1)
-DEC( 5e, ANLAR6		, "anl a,r6"	, ' ', 1, false, 1)
-DEC( 5f, ANLAR7		, "anl a,r7"	, ' ', 1, false, 1)
+DEC( 58, ANLAR0		, "anl a,r0"	, ' ', 1, false, 1 )
+DEC( 59, ANLAR1		, "anl a,r1"	, ' ', 1, false, 1 )
+DEC( 5a, ANLAR2		, "anl a,r2"	, ' ', 1, false, 1 )
+DEC( 5b, ANLAR3		, "anl a,r3"	, ' ', 1, false, 1 )
+DEC( 5c, ANLAR4		, "anl a,r4"	, ' ', 1, false, 1 )
+DEC( 5d, ANLAR5		, "anl a,r5"	, ' ', 1, false, 1 )
+DEC( 5e, ANLAR6		, "anl a,r6"	, ' ', 1, false, 1 )
+DEC( 5f, ANLAR7		, "anl a,r7"	, ' ', 1, false, 1 )
 
+DEC( 60, ADDAIR0	, "add a,@r0"	, ' ', 1, false, 1 )
+DEC( 61, ADDAIR1	, "add a,@r1"	, ' ', 1, false, 1 )
+// 62 MOV T,A
+// 63 undefined
 DEC( 64, JMP3   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+// 65 STOP TCNT
+// 66 undefined
+DEC( 67, RRCA		, "rrc a"	, ' ', 1, false, 1 )
+DEC( 68, ADDAR0		, "add a,r0"	, ' ', 1, false, 1 )
+DEC( 69, ADDAR1		, "add a,r1"	, ' ', 1, false, 1 )
+DEC( 6a, ADDAR2		, "add a,r2"	, ' ', 1, false, 1 )
+DEC( 6b, ADDAR3		, "add a,r3"	, ' ', 1, false, 1 )
+DEC( 6c, ADDAR4		, "add a,r4"	, ' ', 1, false, 1 )
+DEC( 6d, ADDAR5		, "add a,r5"	, ' ', 1, false, 1 )
+DEC( 6e, ADDAR6		, "add a,r6"	, ' ', 1, false, 1 )
+DEC( 6f, ADDAR7		, "add a,r7"	, ' ', 1, false, 1 )
+
 DEC( 72, JB3		, "jb3 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( 74, CALL3  	, "call 'a11'"	, ' ', 2, false, 2 )
 DEC( 84, JMP4   	, "jmp 'a11'"   , ' ', 2, false, 2 )
