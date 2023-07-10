@@ -129,8 +129,8 @@ class cl_i8020: public cl_uc
   virtual int add(u8_t op2, bool addc);
   virtual int dec(class cl_memory_cell *op);
   virtual int inc(class cl_memory_cell *op);
-  virtual int orla(class cl_memory_cell *op);
-  virtual int anla(class cl_memory_cell *op);
+  virtual int orl(class cl_memory_cell *op);
+  virtual int anl(class cl_memory_cell *op);
   virtual int daa(void);
     
   virtual int jmp(MP);
@@ -139,8 +139,8 @@ class cl_i8020: public cl_uc
   
   virtual int in(int port_addr);
   virtual int out(int port_addr);
-  virtual int xcha(class cl_memory_cell *op);
-  virtual int xchda(class cl_memory_cell *op);
+  virtual int xch(class cl_memory_cell *op);
+  virtual int xchd(class cl_memory_cell *op);
   
   /*
 #define GEN_METHOD
@@ -154,17 +154,17 @@ class cl_i8020: public cl_uc
 
   /* Arithmetics */
   int ADDI8(MP) { return add(fetch(), false); }
-  int ADDCI8(MP) { return add(fetch(), true); }
-  int ADDAIR0(MP) { return add(read_ir(0), false); }
-  int ADDAIR1(MP) { return add(read_ir(1), false); }
-  int ADDAR0(MP) { return add(R[0]->read(), false); }
-  int ADDAR1(MP) { return add(R[1]->read(), false); }
-  int ADDAR2(MP) { return add(R[2]->read(), false); }
-  int ADDAR3(MP) { return add(R[3]->read(), false); }
-  int ADDAR4(MP) { return add(R[4]->read(), false); }
-  int ADDAR5(MP) { return add(R[5]->read(), false); }
-  int ADDAR6(MP) { return add(R[6]->read(), false); }
-  int ADDAR7(MP) { return add(R[7]->read(), false); }
+  int ADCI8(MP) { return add(fetch(), true); }
+  int ADDIR0(MP) { return add(read_ir(0), false); }
+  int ADDIR1(MP) { return add(read_ir(1), false); }
+  int ADDR0(MP) { return add(R[0]->read(), false); }
+  int ADDR1(MP) { return add(R[1]->read(), false); }
+  int ADDR2(MP) { return add(R[2]->read(), false); }
+  int ADDR3(MP) { return add(R[3]->read(), false); }
+  int ADDR4(MP) { return add(R[4]->read(), false); }
+  int ADDR5(MP) { return add(R[5]->read(), false); }
+  int ADDR6(MP) { return add(R[6]->read(), false); }
+  int ADDR7(MP) { return add(R[7]->read(), false); }
   int DECA(MP) { cA.W(rA-1); return resGO; }
   int CPLA(MP) { cA.W(~(cA.R())); return resGO; }
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
@@ -178,29 +178,29 @@ class cl_i8020: public cl_uc
   int INCR5(MP) { return inc(R[5]); }
   int INCR6(MP) { return inc(R[6]); }
   int INCR7(MP) { return inc(R[7]); }
-  int ORLAIR0(MP) { RD; return orla(iram_ir(0)); }
-  int ORLAIR1(MP) { RD; return orla(iram_ir(1)); }
-  int ORLAI8(MP) { cA.W(rA | fetch()); return resGO; }
-  int ORLAR0(MP) { cA.W(rA | R[0]->read()); return resGO; }
-  int ORLAR1(MP) { cA.W(rA | R[1]->read()); return resGO; }
-  int ORLAR2(MP) { cA.W(rA | R[2]->read()); return resGO; }
-  int ORLAR3(MP) { cA.W(rA | R[3]->read()); return resGO; }
-  int ORLAR4(MP) { cA.W(rA | R[4]->read()); return resGO; }
-  int ORLAR5(MP) { cA.W(rA | R[5]->read()); return resGO; }
-  int ORLAR6(MP) { cA.W(rA | R[6]->read()); return resGO; }
-  int ORLAR7(MP) { cA.W(rA | R[7]->read()); return resGO; }
-  int ANLAIR0(MP) { RD; return anla(iram_ir(0)); }
-  int ANLAIR1(MP) { RD; return anla(iram_ir(1)); }
-  int ANLAI8(MP) { cA.W(rA & fetch()); return resGO; }
+  int ORLIR0(MP) { RD; return orl(iram_ir(0)); }
+  int ORLIR1(MP) { RD; return orl(iram_ir(1)); }
+  int ORLI8(MP) { cA.W(rA | fetch()); return resGO; }
+  int ORLR0(MP) { cA.W(rA | R[0]->read()); return resGO; }
+  int ORLR1(MP) { cA.W(rA | R[1]->read()); return resGO; }
+  int ORLR2(MP) { cA.W(rA | R[2]->read()); return resGO; }
+  int ORLR3(MP) { cA.W(rA | R[3]->read()); return resGO; }
+  int ORLR4(MP) { cA.W(rA | R[4]->read()); return resGO; }
+  int ORLR5(MP) { cA.W(rA | R[5]->read()); return resGO; }
+  int ORLR6(MP) { cA.W(rA | R[6]->read()); return resGO; }
+  int ORLR7(MP) { cA.W(rA | R[7]->read()); return resGO; }
+  int ANLIR0(MP) { RD; return anl(iram_ir(0)); }
+  int ANLIR1(MP) { RD; return anl(iram_ir(1)); }
+  int ANLI8(MP) { cA.W(rA & fetch()); return resGO; }
   int DAA(MP) { return daa(); }
-  int ANLAR0(MP) { cA.W(rA & R[0]->read()); return resGO; }
-  int ANLAR1(MP) { cA.W(rA & R[1]->read()); return resGO; }
-  int ANLAR2(MP) { cA.W(rA & R[2]->read()); return resGO; }
-  int ANLAR3(MP) { cA.W(rA & R[3]->read()); return resGO; }
-  int ANLAR4(MP) { cA.W(rA & R[4]->read()); return resGO; }
-  int ANLAR5(MP) { cA.W(rA & R[5]->read()); return resGO; }
-  int ANLAR6(MP) { cA.W(rA & R[6]->read()); return resGO; }
-  int ANLAR7(MP) { cA.W(rA & R[7]->read()); return resGO; }
+  int ANLR0(MP) { cA.W(rA & R[0]->read()); return resGO; }
+  int ANLR1(MP) { cA.W(rA & R[1]->read()); return resGO; }
+  int ANLR2(MP) { cA.W(rA & R[2]->read()); return resGO; }
+  int ANLR3(MP) { cA.W(rA & R[3]->read()); return resGO; }
+  int ANLR4(MP) { cA.W(rA & R[4]->read()); return resGO; }
+  int ANLR5(MP) { cA.W(rA & R[5]->read()); return resGO; }
+  int ANLR6(MP) { cA.W(rA & R[6]->read()); return resGO; }
+  int ANLR7(MP) { cA.W(rA & R[7]->read()); return resGO; }
   int RRCA(MP);
   
   /* Branching */
@@ -240,20 +240,20 @@ class cl_i8020: public cl_uc
   int MOVDP5A(MP) { WR; return out(5); }
   int MOVDP6A(MP) { WR; return out(6); }
   int MOVDP7A(MP) { WR; return out(7); }
-  int XCHAIR0(MP) { RDWR; return xcha(iram_ir(0)); }
-  int XCHAIR1(MP) { RDWR; return xcha(iram_ir(1)); }
+  int XCHIR0(MP) { RDWR; return xch(iram_ir(0)); }
+  int XCHIR1(MP) { RDWR; return xch(iram_ir(1)); }
   int MOVAI8(MP) { cA.W(fetch()); return resGO; }
   int CLRA(MP) { cA.W(0); return resGO; }
-  int XCHAR0(MP) { RDWR; return xcha(R[0]); }
-  int XCHAR1(MP) { RDWR; return xcha(R[1]); }
-  int XCHAR2(MP) { RDWR; return xcha(R[2]); }
-  int XCHAR3(MP) { RDWR; return xcha(R[3]); }
-  int XCHAR4(MP) { RDWR; return xcha(R[4]); }
-  int XCHAR5(MP) { RDWR; return xcha(R[5]); }
-  int XCHAR6(MP) { RDWR; return xcha(R[6]); }
-  int XCHAR7(MP) { RDWR; return xcha(R[7]); }
-  int XCHDAIR0(MP) { RDWR; return xchda(iram_ir(0)); }
-  int XCHDAIR1(MP) { RDWR; return xchda(iram_ir(1)); }
+  int XCHR0(MP) { RDWR; return xch(R[0]); }
+  int XCHR1(MP) { RDWR; return xch(R[1]); }
+  int XCHR2(MP) { RDWR; return xch(R[2]); }
+  int XCHR3(MP) { RDWR; return xch(R[3]); }
+  int XCHR4(MP) { RDWR; return xch(R[4]); }
+  int XCHR5(MP) { RDWR; return xch(R[5]); }
+  int XCHR6(MP) { RDWR; return xch(R[6]); }
+  int XCHR7(MP) { RDWR; return xch(R[7]); }
+  int XCHDIR0(MP) { RDWR; return xchd(iram_ir(0)); }
+  int XCHDIR1(MP) { RDWR; return xchd(iram_ir(1)); }
   int SWAPA(MP);
 };
 

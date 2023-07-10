@@ -56,14 +56,14 @@ CL2::inc(class cl_memory_cell *op)
 }
 
 int
-CL2::orla(class cl_memory_cell *op)
+CL2::orl(class cl_memory_cell *op)
 {
   cA.W(rA | op->read());
   return resGO;
 }
 
 int
-CL2::anla(class cl_memory_cell *op)
+CL2::anl(class cl_memory_cell *op)
 {
   cA.W(rA & op->read());
   return resGO;
