@@ -165,6 +165,14 @@ class cl_i8020: public cl_uc
   int ADDR5(MP) { return add(R[5]->read(), false); }
   int ADDR6(MP) { return add(R[6]->read(), false); }
   int ADDR7(MP) { return add(R[7]->read(), false); }
+  int ADCR0(MP) { return add(R[0]->read(), true); }
+  int ADCR1(MP) { return add(R[1]->read(), true); }
+  int ADCR2(MP) { return add(R[2]->read(), true); }
+  int ADCR3(MP) { return add(R[3]->read(), true); }
+  int ADCR4(MP) { return add(R[4]->read(), true); }
+  int ADCR5(MP) { return add(R[5]->read(), true); }
+  int ADCR6(MP) { return add(R[6]->read(), true); }
+  int ADCR7(MP) { return add(R[7]->read(), true); }
   int DECA(MP) { cA.W(rA-1); return resGO; }
   int CPLA(MP) { cA.W(~(cA.R())); return resGO; }
   int INCIR0(MP) { RDWR; return inc(iram_ir(0)); }
@@ -201,7 +209,8 @@ class cl_i8020: public cl_uc
   int ANLR5(MP) { cA.W(rA & R[5]->read()); return resGO; }
   int ANLR6(MP) { cA.W(rA & R[6]->read()); return resGO; }
   int ANLR7(MP) { cA.W(rA & R[7]->read()); return resGO; }
-  int RRCA(MP);
+  int RRC(MP);
+  int RR(MP);
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }

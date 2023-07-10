@@ -111,7 +111,7 @@ DEC( 61, ADDIR1		, "add a,@r1"	, ' ', 1, false, 1 )
 DEC( 64, JMP3   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 // 65 STOP TCNT
 // 66 undefined
-DEC( 67, RRCA		, "rrc a"	, ' ', 1, false, 1 )
+DEC( 67, RRC		, "rrc a"	, ' ', 1, false, 1 )
 DEC( 68, ADDR0		, "add a,r0"	, ' ', 1, false, 1 )
 DEC( 69, ADDR1		, "add a,r1"	, ' ', 1, false, 1 )
 DEC( 6a, ADDR2		, "add a,r2"	, ' ', 1, false, 1 )
@@ -121,8 +121,22 @@ DEC( 6d, ADDR5		, "add a,r5"	, ' ', 1, false, 1 )
 DEC( 6e, ADDR6		, "add a,r6"	, ' ', 1, false, 1 )
 DEC( 6f, ADDR7		, "add a,r7"	, ' ', 1, false, 1 )
 
+DEC( 70, ADCIR0		, "adc a,@r0"	, ' ', 1, false, 1 )
+DEC( 71, ADCIR1		, "adc a,@r1"	, ' ', 1, false, 1 )
 DEC( 72, JB3		, "jb3 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( 74, CALL3  	, "call 'a11'"	, ' ', 2, false, 2 )
+// 75 ENT0 CLK 48
+// 76 JF1 48,41A,41
+DEC( 77, RR		, "rr a"	, ' ', 1, false, 1 )
+DEC( 78, ADCR0		, "adc a,r0"	, ' ', 1, false, 1 )
+DEC( 79, ADCR1		, "adc a,r1"	, ' ', 1, false, 1 )
+DEC( 7a, ADCR2		, "adc a,r2"	, ' ', 1, false, 1 )
+DEC( 7b, ADCR3		, "adc a,r3"	, ' ', 1, false, 1 )
+DEC( 7c, ADCR4		, "adc a,r4"	, ' ', 1, false, 1 )
+DEC( 7d, ADCR5		, "adc a,r5"	, ' ', 1, false, 1 )
+DEC( 7e, ADCR6		, "adc a,r6"	, ' ', 1, false, 1 )
+DEC( 7f, ADCR7		, "adc a,r7"	, ' ', 1, false, 1 )
+
 DEC( 84, JMP4   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2 )

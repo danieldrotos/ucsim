@@ -88,7 +88,7 @@ CL2::daa(void)
 }
 
 int
-CL2::RRCA(MP)
+CL2::RRC(MP)
 {
   u8_t orgc= rF & flagC;
   rF&= ~flagC;
@@ -97,6 +97,16 @@ CL2::RRCA(MP)
   if (orgc) rA|= 0x80;
   cA.W(rA);
   cF.W(rF);
+  return resGO;
+}
+
+int
+CL2::RR(MP)
+{
+  u8_t a0= (rA&1)?0x80:0;
+  rA>>= 1;
+  rA|= a0;
+  cA.W(rA);
   return resGO;
 }
 
