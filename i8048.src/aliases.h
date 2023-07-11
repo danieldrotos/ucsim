@@ -165,5 +165,17 @@
 #define DJNZR5 instruction_ed
 #define DJNZR6 instruction_ee
 #define DJNZR7 instruction_ef
+#define MOVAIR0 instruction_f0
+#define MOVAIR1 instruction_f1
 #define JB7 instruction_f2
 #define CALL7 instruction_f4
+#define JC instruction_f6
+#define RLC instruction_f7
+#define MOVAR0 instruction_f8
+#define MOVAR1 instruction_f9
+#define MOVAR2 instruction_fa
+#define MOVAR3 instruction_fb
+#define MOVAR4 instruction_fc
+#define MOVAR5 instruction_fd
+#define MOVAR6 instruction_fe
+#define MOVAR7 instruction_ff

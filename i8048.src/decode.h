@@ -259,5 +259,20 @@ DEC( ed, DJNZR5		, "djnz r5,'a8'", ' ', 2, false, 2 )
 DEC( ee, DJNZR6		, "djnz r6,'a8'", ' ', 2, false, 2 )
 DEC( ef, DJNZR7		, "djnz r7,'a8'", ' ', 2, false, 2 )
 
+DEC( f0, MOVAIR0	, "mov a,@r0"	, ' ', 1, false, 1 )
+DEC( f1, MOVAIR1	, "mov a,@r1"	, ' ', 1, false, 1 )
 DEC( f2, JB7		, "jb7 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
+// f3 undefined
 DEC( f4, CALL7  	, "call 'a11'"	, ' ', 2, false, 2 )
+// f5 SEL MB1 48
+// f5 EN FLAGS 41A
+DEC( f6, JC		, "jc 'a8'"	, ' ', 2, false, 2 )
+DEC( f7, RLC		, "rlc a"	, ' ', 1, false, 1 )
+DEC( f8, MOVAR0		, "mov a,r0"	, ' ', 1, false, 1 )
+DEC( f9, MOVAR1		, "mov a,r1"	, ' ', 1, false, 1 )
+DEC( fa, MOVAR2		, "mov a,r2"	, ' ', 1, false, 1 )
+DEC( fb, MOVAR3		, "mov a,r3"	, ' ', 1, false, 1 )
+DEC( fc, MOVAR4		, "mov a,r4"	, ' ', 1, false, 1 )
+DEC( fd, MOVAR5		, "mov a,r5"	, ' ', 1, false, 1 )
+DEC( fe, MOVAR6		, "mov a,r6"	, ' ', 1, false, 1 )
+DEC( ff, MOVAR7		, "mov a,r7"	, ' ', 1, false, 1 )

@@ -218,6 +218,7 @@ class cl_i8020: public cl_uc
   int RRC(MP);
   int RR(MP);
   int RL(MP);
+  int RLC(MP);
   int ORLDP4A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP5A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP6A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
@@ -270,6 +271,7 @@ class cl_i8020: public cl_uc
   int JNZ(MP);
   int JZ(MP);
   int JNC(MP);
+  int JC(MP);
   int JMPPIA(MP);
   int DJNZR0(MP) { return djnz(code); }
   int DJNZR1(MP) { return djnz(code); }
@@ -310,6 +312,8 @@ class cl_i8020: public cl_uc
   //int MOVXAIR1(MP) { RD; cA.W(xram->read(R[1]->read())); return resGO; }
   int MOVIR0A(MP) { WR; iram->write(R[0]->R(), rA); return resGO; }
   int MOVIR1A(MP) { WR; iram->write(R[1]->R(), rA); return resGO; }
+  int MOVAIR0(MP) { RD; cA.W(iram->read(R[0]->R())); return resGO; }
+  int MOVAIR1(MP) { RD; cA.W(iram->read(R[1]->R())); return resGO; }
   int MOVPAIA(MP) { RD; return movp(); }
   int MOVR0A(MP) { R[0]->W(rA); return resGO; }
   int MOVR1A(MP) { R[1]->W(rA); return resGO; }
@@ -319,6 +323,14 @@ class cl_i8020: public cl_uc
   int MOVR5A(MP) { R[5]->W(rA); return resGO; }
   int MOVR6A(MP) { R[6]->W(rA); return resGO; }
   int MOVR7A(MP) { R[7]->W(rA); return resGO; }
+  int MOVAR0(MP) { cA.W(R[0]->R()); return resGO; }
+  int MOVAR1(MP) { cA.W(R[1]->R()); return resGO; }
+  int MOVAR2(MP) { cA.W(R[2]->R()); return resGO; }
+  int MOVAR3(MP) { cA.W(R[3]->R()); return resGO; }
+  int MOVAR4(MP) { cA.W(R[4]->R()); return resGO; }
+  int MOVAR5(MP) { cA.W(R[5]->R()); return resGO; }
+  int MOVAR6(MP) { cA.W(R[6]->R()); return resGO; }
+  int MOVAR7(MP) { cA.W(R[7]->R()); return resGO; }
   int MOVIR0I8(MP) { WR; iram->write(R[0]->read(), fetch()); return resGO; }
   int MOVIR1I8(MP) { WR; iram->write(R[1]->read(), fetch()); return resGO; }
   int MOVR0I8(MP) { R[0]->W(fetch()); return resGO; }

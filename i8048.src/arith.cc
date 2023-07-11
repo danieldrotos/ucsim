@@ -128,6 +128,19 @@ CL2::RL(MP)
 }
 
 int
+CL2::RLC(MP)
+{
+  u8_t orgc= rF & flagC;
+  rF&= ~flagC;
+  if (rA & 0x80) rF|= flagC;
+  rA<<= 1;
+  if (orgc) rA|= 1;
+  cA.W(rA);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 CL2::orld(cl_memory_cell *op1, cl_memory_cell *op2)
 {
   u8_t v1= op1->R() & 0xf;

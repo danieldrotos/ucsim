@@ -116,6 +116,18 @@ CL2::JNC(MP)
 }
 
 int
+CL2::JC(MP)
+{
+  u8_t a= fetch();
+  if (psw & flagC)
+    {
+      PC&= 0xf00;
+      PC|= a;
+    }
+  return resGO;
+}
+
+int
 CL2::JMPPIA(MP)
 {
   u16_t a= (PC&=0xf00)|rA;
