@@ -91,5 +91,13 @@ CL2::jnz(MP)
   return resGO;
 }
 
+int
+CL2::JMPPIA(MP)
+{
+  u16_t a= (PC&=0xf00)|rA;
+  PC|= rom->read(a);
+  return resGO;
+}
+
 
 /* End of i8085.src/branch.cc */

@@ -162,7 +162,7 @@ DEC( 8f, ORLDP7A	, "orld p7,a"	, ' ', 1, false, 2 )
 // 91 MOVX @R1,A 48
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( 93, RETR		, "retr"	, ' ', 1, false, 2 ) //48,41A,41
-DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2 )
+DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2 ) //48,22
 // 95 CPL F0 48,41A,41
 DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2 )
 DEC( 97, CLRC		, "clr c"	, ' ', 1, false, 1 )
@@ -191,8 +191,22 @@ DEC( ad, MOVR5A		, "mov r5,a"	, ' ', 1, false, 1 )
 DEC( ae, MOVR6A		, "mov r6,a"	, ' ', 1, false, 1 )
 DEC( af, MOVR7A		, "mov r7,a"	, ' ', 1, false, 1 )
 
+DEC( b0, MOVIR0I8	, "mov @r0,'i8'", ' ', 2, false, 2 )
+DEC( b1, MOVIR1I8	, "mov @r1,'i8'", ' ', 2, false, 2 )
 DEC( b2, JB5		, "jb5 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
-DEC( b4, CALL5  	, "call 'a11'"	, ' ', 2, false, 2 )
+DEC( b3, JMPPIA		, "jmpp @a"	, ' ', 1, false, 2 )
+DEC( b4, CALL5  	, "call 'a11'"	, ' ', 2, false, 2 ) //48,22
+// b5 CPL F1 48,41A,41
+// b6 JF0 48,41A,41
+// b7 undefined
+DEC( b8, MOVR0I8	, "mov r0,'i8'"	, ' ', 2, false, 2 )
+DEC( b9, MOVR1I8	, "mov r1,'i8'"	, ' ', 2, false, 2 )
+DEC( ba, MOVR2I8	, "mov r2,'i8'"	, ' ', 2, false, 2 )
+DEC( bb, MOVR3I8	, "mov r3,'i8'"	, ' ', 2, false, 2 )
+DEC( bc, MOVR4I8	, "mov r4,'i8'"	, ' ', 2, false, 2 )
+DEC( bd, MOVR5I8	, "mov r5,'i8'"	, ' ', 2, false, 2 )
+DEC( be, MOVR6I8	, "mov r6,'i8'"	, ' ', 2, false, 2 )
+DEC( bf, MOVR7I8	, "mov r7,'i8'"	, ' ', 2, false, 2 )
 
 DEC( c4, JMP6   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 

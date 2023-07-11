@@ -255,6 +255,7 @@ class cl_i8020: public cl_uc
   int RET(MP);
   //int RETR(MP);
   int JNZ(MP) { return jnz(code); }
+  int JMPPIA(MP);
   
   /* Data movement */
   int IN1(MP) { RD; return in(1); }
@@ -295,6 +296,16 @@ class cl_i8020: public cl_uc
   int MOVR5A(MP) { R[5]->W(rA); return resGO; }
   int MOVR6A(MP) { R[6]->W(rA); return resGO; }
   int MOVR7A(MP) { R[7]->W(rA); return resGO; }
+  int MOVIR0I8(MP) { WR; iram->write(R[0]->read(), fetch()); return resGO; }
+  int MOVIR1I8(MP) { WR; iram->write(R[1]->read(), fetch()); return resGO; }
+  int MOVR0I8(MP) { R[0]->W(fetch()); return resGO; }
+  int MOVR1I8(MP) { R[1]->W(fetch()); return resGO; }
+  int MOVR2I8(MP) { R[2]->W(fetch()); return resGO; }
+  int MOVR3I8(MP) { R[3]->W(fetch()); return resGO; }
+  int MOVR4I8(MP) { R[4]->W(fetch()); return resGO; }
+  int MOVR5I8(MP) { R[5]->W(fetch()); return resGO; }
+  int MOVR6I8(MP) { R[6]->W(fetch()); return resGO; }
+  int MOVR7I8(MP) { R[7]->W(fetch()); return resGO; }
 };
 
 
