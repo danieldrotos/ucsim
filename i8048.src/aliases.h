@@ -98,7 +98,12 @@
 #define ADCR5 instruction_7d
 #define ADCR6 instruction_7e
 #define ADCR7 instruction_7f
+#define RET instruction_83
 #define JMP4 instruction_84
+#define ORLDP4A instruction_8c
+#define ORLDP5A instruction_8d
+#define ORLDP6A instruction_8e
+#define ORLDP7A instruction_8f
 #define JB4 instruction_92
 #define CALL4 instruction_94
 #define JMP5 instruction_a4

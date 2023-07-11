@@ -137,7 +137,25 @@ DEC( 7d, ADCR5		, "adc a,r5"	, ' ', 1, false, 1 )
 DEC( 7e, ADCR6		, "adc a,r6"	, ' ', 1, false, 1 )
 DEC( 7f, ADCR7		, "adc a,r7"	, ' ', 1, false, 1 )
 
+// DEC( 80, MOVXAIR0	, "movx a,@r0"	, ' ', 1, false, 2 ) 48
+// 80 RAD 22
+// DEC( 81, MOVXAIR1	, "movx a,@r1"	, ' ', 1, false, 2 ) 48
+// 82 undefined
+DEC( 83, RET		, "ret"		, ' ', 1, false, 2 )
 DEC( 84, JMP4   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+// 85 CLR F0 48,41A,41
+// 85 SEL AN0 22
+// 86 JNI 48
+// 87 undefined
+// 88 ORL BUS,#i8 48
+// 89 ORL P1,#i8 58,41A,41
+// 8a ORL P2,#i8 48,41A,41
+// 8b undefined
+DEC( 8c, ORLDP4A	, "orld p4,a"	, ' ', 1, false, 2 )
+DEC( 8d, ORLDP5A	, "orld p5,a"	, ' ', 1, false, 2 )
+DEC( 8e, ORLDP6A	, "orld p6,a"	, ' ', 1, false, 2 )
+DEC( 8f, ORLDP7A	, "orld p7,a"	, ' ', 1, false, 2 )
+
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2 )
 DEC( a4, JMP5   	, "jmp 'a11'"   , ' ', 2, false, 2 )

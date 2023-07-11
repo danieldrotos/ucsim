@@ -98,9 +98,9 @@ class cl_i8020: public cl_uc
   class cl_cell8 *cpsw;
   u8_t flagF1, mb, rA, ien;
   class cl_bit_cell8 cflagF1, cmb;
-  class cl_address_space *regs, *aspsw, *iram, *ports;
+  class cl_address_space *regs, *aspsw, *iram, *ports, *xram;
   class cl_cell8 cA, *R[8];
-  class cl_memory_chip *rom_chip, *iram_chip, *ports_chip;
+  class cl_memory_chip *rom_chip, *iram_chip, *ports_chip, *xram_chip;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
@@ -118,6 +118,7 @@ class cl_i8020: public cl_uc
   virtual void print_regs(class cl_console_base *con);
 
   virtual void push(void);
+  virtual u16_t pop(bool popf);
   virtual void stack_check_overflow(t_addr sp_after);
   
   virtual void reset(void);
@@ -132,7 +133,8 @@ class cl_i8020: public cl_uc
   virtual int orl(class cl_memory_cell *op);
   virtual int anl(class cl_memory_cell *op);
   virtual int daa(void);
-    
+  virtual int orld(cl_memory_cell *op1, cl_memory_cell *op2);
+  
   virtual int jmp(MP);
   virtual int call(MP);
   virtual int jb(MP);
@@ -211,6 +213,10 @@ class cl_i8020: public cl_uc
   int ANLR7(MP) { cA.W(rA & R[7]->read()); return resGO; }
   int RRC(MP);
   int RR(MP);
+  int ORLDP4A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
+  int ORLDP5A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
+  int ORLDP6A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
+  int ORLDP7A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }
@@ -237,6 +243,7 @@ class cl_i8020: public cl_uc
   int JB5(MP) { return jb(code); }
   int JB6(MP) { return jb(code); }
   int JB7(MP) { return jb(code); }
+  int RET(MP);
   
   /* Data movement */
   int IN1(MP) { RD; return in(1); }
@@ -264,6 +271,8 @@ class cl_i8020: public cl_uc
   int XCHDIR0(MP) { RDWR; return xchd(iram_ir(0)); }
   int XCHDIR1(MP) { RDWR; return xchd(iram_ir(1)); }
   int SWAPA(MP);
+  //int MOVXAIR0(MP) { RD; cA.W(xram->read(R[0]->read())); return resGO; }
+  //int MOVXAIR1(MP) { RD; cA.W(xram->read(R[1]->read())); return resGO; }
 };
 
 

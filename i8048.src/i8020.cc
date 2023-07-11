@@ -130,6 +130,12 @@ cl_i8020::make_memories(void)
   ad->set_name("def_ports_decoder");
   ports->decoders->add(ad);
   ad->activate(0);
+  // decode xram
+  ad= new cl_address_decoder(xram, xram_chip, 0, 0xff, 0);
+  ad->init();
+  ad->set_name("def_xram_decoder");
+  xram->decoders->add(ad);
+  ad->activate(0);
 }
 
 void
@@ -154,6 +160,10 @@ cl_i8020::make_address_spaces(void)
   ports= new cl_address_space("ports", 0, 8, 8);
   ports->init();
   address_spaces->add(ports);
+
+  xram= new cl_address_space("xram", 0, 256, 8);
+  xram->init();
+  address_spaces->add(xram);
 }
 
 void
@@ -170,6 +180,10 @@ cl_i8020::make_chips(void)
   ports_chip= new cl_chip8("ports_chip", 8, 8);
   ports_chip->init();
   memchips->add(ports_chip);
+  
+  xram_chip= new cl_chip8("xram_chip", 0x100, 8);
+  xram_chip->init();
+  memchips->add(xram_chip);
 }
 
 void
@@ -383,6 +397,27 @@ cl_i8020::push(void)
   psw|= spa;
   cF.W(psw);
   stack_write((t_addr)spa);
+}
+
+u16_t
+cl_i8020::pop(bool popf)
+{
+  u8_t spb= psw&7;
+  u8_t spa= (spb-1)&7;
+  u8_t ia= 8 + spa*2, vh;
+  u16_t v= iram->read(ia);
+  vh= iram->read(ia+1);
+  v+= 256 * vh;
+  vc.rd+= 2;
+  if (popf)
+    {
+      psw&= 0xf;
+      psw|= (vh&0xf0);
+    }
+  psw&= ~7;
+  psw|= spa;
+  cF.W(psw);
+  return v & 0xfff;
 }
 
 void

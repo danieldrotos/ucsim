@@ -51,6 +51,13 @@ CL2::call(MP)
 }
 
 int
+CL2::RET(MP)
+{
+  PC= pop(false);
+  return resGO;
+}
+
+int
 CL2::jb(MP)
 {
   u8_t a= fetch();
