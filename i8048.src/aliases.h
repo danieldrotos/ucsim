@@ -155,5 +155,15 @@
 #define XRLR6 instruction_de
 #define XRLR7 instruction_df
 #define JMP7 instruction_e4
+#define JNC instruction_e6
+#define RL instruction_e7
+#define DJNZR0 instruction_e8
+#define DJNZR1 instruction_e9
+#define DJNZR2 instruction_ea
+#define DJNZR3 instruction_eb
+#define DJNZR4 instruction_ec
+#define DJNZR5 instruction_ed
+#define DJNZR6 instruction_ee
+#define DJNZR7 instruction_ef
 #define JB7 instruction_f2
 #define CALL7 instruction_f4

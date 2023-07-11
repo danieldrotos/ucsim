@@ -140,8 +140,7 @@ class cl_i8020: public cl_uc
   virtual int jmp(MP);
   virtual int call(MP);
   virtual int jb(MP);
-  virtual int jnz(void);
-  virtual int jz(void);
+  virtual int djnz(MP);
   
   virtual int in(int port_addr);
   virtual int out(int port_addr);
@@ -218,6 +217,7 @@ class cl_i8020: public cl_uc
   int ANLR7(MP) { cA.W(rA & R[7]->read()); return resGO; }
   int RRC(MP);
   int RR(MP);
+  int RL(MP);
   int ORLDP4A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP5A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP6A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
@@ -267,9 +267,18 @@ class cl_i8020: public cl_uc
   //int JB7(MP) { return jb(code); }
   int RET(MP);
   //int RETR(MP);
-  int JNZ(MP) { return jnz(); }
-  int JZ(MP) { return jz(); }
+  int JNZ(MP);
+  int JZ(MP);
+  int JNC(MP);
   int JMPPIA(MP);
+  int DJNZR0(MP) { return djnz(code); }
+  int DJNZR1(MP) { return djnz(code); }
+  int DJNZR2(MP) { return djnz(code); }
+  int DJNZR3(MP) { return djnz(code); }
+  int DJNZR4(MP) { return djnz(code); }
+  int DJNZR5(MP) { return djnz(code); }
+  int DJNZR6(MP) { return djnz(code); }
+  int DJNZR7(MP) { return djnz(code); }
   
   /* Data movement */
   int IN1(MP) { RD; return in(1); }

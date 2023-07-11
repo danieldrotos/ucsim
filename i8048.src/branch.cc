@@ -80,7 +80,7 @@ CL2::jb(MP)
 }
 
 int
-CL2::jnz(void)
+CL2::JNZ(MP)
 {
   u8_t a= fetch();
   if (rA)
@@ -92,10 +92,22 @@ CL2::jnz(void)
 }
 
 int
-CL2::jz(void)
+CL2::JZ(MP)
 {
   u8_t a= fetch();
   if (!rA)
+    {
+      PC&= 0xf00;
+      PC|= a;
+    }
+  return resGO;
+}
+
+int
+CL2::JNC(MP)
+{
+  u8_t a= fetch();
+  if (!(psw & flagC))
     {
       PC&= 0xf00;
       PC|= a;
@@ -108,6 +120,20 @@ CL2::JMPPIA(MP)
 {
   u16_t a= (PC&=0xf00)|rA;
   PC|= rom->read(a);
+  return resGO;
+}
+
+int
+CL2::djnz(MP)
+{
+  u8_t r= (code>>5)&7;
+  u8_t a= fetch();
+  R[r]->W(R[r]->R() - 1);
+  if (R[r] != 0)
+    {
+      PC&= 0xf00;
+      PC+= a;
+    }
   return resGO;
 }
 

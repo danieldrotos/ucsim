@@ -241,8 +241,23 @@ DEC( dc, XRLR4		, "xrl a,r4"	, ' ', 1, false, 1 )
 DEC( dd, XRLR5		, "xrl a,r5"	, ' ', 1, false, 1 )
 DEC( de, XRLR6		, "xrl a,r6"	, ' ', 1, false, 1 )
 DEC( df, XRLR7		, "xrl a,r7"	, ' ', 1, false, 1 )
-  
-DEC( e4, JMP7   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+
+// e0 undefined
+// e1 undefined
+// e2 undefined
+// e3 MOVP3 A,@A 48,41A,41
+DEC( e4, JMP7   	, "jmp 'a11'"   , ' ', 2, false, 2 ) //48,22
+// e5 EN DMA 41A
+DEC( e6, JNC		, "jnc 'a8'"	, ' ', 2, false, 2 )
+DEC( e7, RL		, "rl a"	, ' ', 1, false, 1 )
+DEC( e8, DJNZR0		, "djnz r0,'a8'", ' ', 2, false, 2 )
+DEC( e9, DJNZR1		, "djnz r1,'a8'", ' ', 2, false, 2 )
+DEC( ea, DJNZR2		, "djnz r2,'a8'", ' ', 2, false, 2 )
+DEC( eb, DJNZR3		, "djnz r3,'a8'", ' ', 2, false, 2 )
+DEC( ec, DJNZR4		, "djnz r4,'a8'", ' ', 2, false, 2 )
+DEC( ed, DJNZR5		, "djnz r5,'a8'", ' ', 2, false, 2 )
+DEC( ee, DJNZR6		, "djnz r6,'a8'", ' ', 2, false, 2 )
+DEC( ef, DJNZR7		, "djnz r7,'a8'", ' ', 2, false, 2 )
 
 DEC( f2, JB7		, "jb7 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( f4, CALL7  	, "call 'a11'"	, ' ', 2, false, 2 )

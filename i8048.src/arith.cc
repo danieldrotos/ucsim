@@ -118,6 +118,16 @@ CL2::RR(MP)
 }
 
 int
+CL2::RL(MP)
+{
+  u8_t a7= (rA&0x80)?1:0;
+  rA<<= 1;
+  rA|= a7;
+  cA.W(rA);
+  return resGO;
+}
+
+int
 CL2::orld(cl_memory_cell *op1, cl_memory_cell *op2)
 {
   u8_t v1= op1->R() & 0xf;
