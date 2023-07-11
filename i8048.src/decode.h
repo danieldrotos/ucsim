@@ -166,8 +166,30 @@ DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2 )
 // 95 CPL F0 48,41A,41
 DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2 )
 DEC( 97, CLRC		, "clr c"	, ' ', 1, false, 1 )
+// 98 ANL BUS,#i8 48
+// 99 ANL P1,#i8 48,41A,41
+// 9a ANL P2,#i8 48,41A,41
+DEC( 9c, ANLDP4A	, "anl p4,a"	, ' ', 1, false, 2 )
+DEC( 9d, ANLDP5A	, "anl p5,a"	, ' ', 1, false, 2 )
+DEC( 9e, ANLDP6A	, "anl p6,a"	, ' ', 1, false, 2 )
+DEC( 9f, ANLDP7A	, "anl p7,a"	, ' ', 1, false, 2 )
 
+DEC( a0, MOVIR0A	, "mov @r0,a"	, ' ', 1, false, 2 )
+DEC( a1, MOVIR1A	, "mov @r1,a"	, ' ', 1, false, 2 )
+// a2 undefined
+DEC( a3, MOVPAIA	, "movp a,@a"	, ' ', 1, false, 2 )
 DEC( a4, JMP5   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+// a5 CLR F1 48,41A,41
+// a6 undefined
+DEC( a7, CPLC		, "cpl c"	, ' ', 1, false, 1 )
+DEC( a8, MOVR0A		, "mov r0,a"	, ' ', 1, false, 1 )
+DEC( a9, MOVR1A		, "mov r1,a"	, ' ', 1, false, 1 )
+DEC( aa, MOVR2A		, "mov r2,a"	, ' ', 1, false, 1 )
+DEC( ab, MOVR3A		, "mov r3,a"	, ' ', 1, false, 1 )
+DEC( ac, MOVR4A		, "mov r4,a"	, ' ', 1, false, 1 )
+DEC( ad, MOVR5A		, "mov r5,a"	, ' ', 1, false, 1 )
+DEC( ae, MOVR6A		, "mov r6,a"	, ' ', 1, false, 1 )
+DEC( af, MOVR7A		, "mov r7,a"	, ' ', 1, false, 1 )
 
 DEC( b2, JB5		, "jb5 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( b4, CALL5  	, "call 'a11'"	, ' ', 2, false, 2 )

@@ -134,6 +134,7 @@ class cl_i8020: public cl_uc
   virtual int anl(class cl_memory_cell *op);
   virtual int daa(void);
   virtual int orld(cl_memory_cell *op1, cl_memory_cell *op2);
+  virtual int anld(cl_memory_cell *op1, cl_memory_cell *op2);
   
   virtual int jmp(MP);
   virtual int call(MP);
@@ -144,6 +145,7 @@ class cl_i8020: public cl_uc
   virtual int out(int port_addr);
   virtual int xch(class cl_memory_cell *op);
   virtual int xchd(class cl_memory_cell *op);
+  virtual int movp(void);
   
   /*
 #define GEN_METHOD
@@ -218,7 +220,12 @@ class cl_i8020: public cl_uc
   int ORLDP5A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP6A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP7A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
+  int ANLDP4A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
+  int ANLDP5A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
+  int ANLDP6A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
+  int ANLDP7A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
   int CLRC(MP) { cF.W(psw & ~flagC); return resGO; }
+  int CPLC(MP) { cF.W(psw ^ flagC); return resGO; }
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }
@@ -277,6 +284,17 @@ class cl_i8020: public cl_uc
   int SWAPA(MP);
   //int MOVXAIR0(MP) { RD; cA.W(xram->read(R[0]->read())); return resGO; }
   //int MOVXAIR1(MP) { RD; cA.W(xram->read(R[1]->read())); return resGO; }
+  int MOVIR0A(MP) { WR; iram->write(R[0]->R(), rA); return resGO; }
+  int MOVIR1A(MP) { WR; iram->write(R[1]->R(), rA); return resGO; }
+  int MOVPAIA(MP) { RD; return movp(); }
+  int MOVR0A(MP) { R[0]->W(rA); return resGO; }
+  int MOVR1A(MP) { R[1]->W(rA); return resGO; }
+  int MOVR2A(MP) { R[2]->W(rA); return resGO; }
+  int MOVR3A(MP) { R[3]->W(rA); return resGO; }
+  int MOVR4A(MP) { R[4]->W(rA); return resGO; }
+  int MOVR5A(MP) { R[5]->W(rA); return resGO; }
+  int MOVR6A(MP) { R[6]->W(rA); return resGO; }
+  int MOVR7A(MP) { R[7]->W(rA); return resGO; }
 };
 
 

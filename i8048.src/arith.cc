@@ -119,5 +119,14 @@ CL2::orld(cl_memory_cell *op1, cl_memory_cell *op2)
   return resGO;
 }
 
+int
+CL2::anld(cl_memory_cell *op1, cl_memory_cell *op2)
+{
+  u8_t v1= op1->R() & 0xf;
+  u8_t v2= op2->R() & 0xf;
+  op1->W(v1 & v2);
+  return resGO;
+}
+
 
 /* End of i8085.src/arith.cc */
