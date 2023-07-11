@@ -105,7 +105,10 @@
 #define ORLDP6A instruction_8e
 #define ORLDP7A instruction_8f
 #define JB4 instruction_92
+#define RETR instruction_93
 #define CALL4 instruction_94
+#define JNZ instruction_96
+#define CLRC instruction_97
 #define JMP5 instruction_a4
 #define JB5 instruction_b2
 #define CALL5 instruction_b4

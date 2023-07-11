@@ -138,6 +138,7 @@ class cl_i8020: public cl_uc
   virtual int jmp(MP);
   virtual int call(MP);
   virtual int jb(MP);
+  virtual int jnz(MP);
   
   virtual int in(int port_addr);
   virtual int out(int port_addr);
@@ -217,6 +218,7 @@ class cl_i8020: public cl_uc
   int ORLDP5A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP6A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
   int ORLDP7A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
+  int CLRC(MP) { cF.W(psw & ~flagC); return resGO; }
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }
@@ -235,15 +237,17 @@ class cl_i8020: public cl_uc
   int CALL5(MP) { return call(code); }
   int CALL6(MP) { return call(code); }
   int CALL7(MP) { return call(code); }
-  int JB0(MP) { return jb(code); }
-  int JB1(MP) { return jb(code); }
-  int JB2(MP) { return jb(code); }
-  int JB3(MP) { return jb(code); }
-  int JB4(MP) { return jb(code); }
-  int JB5(MP) { return jb(code); }
-  int JB6(MP) { return jb(code); }
-  int JB7(MP) { return jb(code); }
+  //int JB0(MP) { return jb(code); }
+  //int JB1(MP) { return jb(code); }
+  //int JB2(MP) { return jb(code); }
+  //int JB3(MP) { return jb(code); }
+  //int JB4(MP) { return jb(code); }
+  //int JB5(MP) { return jb(code); }
+  //int JB6(MP) { return jb(code); }
+  //int JB7(MP) { return jb(code); }
   int RET(MP);
+  //int RETR(MP);
+  int JNZ(MP) { return jnz(code); }
   
   /* Data movement */
   int IN1(MP) { RD; return in(1); }

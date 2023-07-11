@@ -156,14 +156,28 @@ DEC( 8d, ORLDP5A	, "orld p5,a"	, ' ', 1, false, 2 )
 DEC( 8e, ORLDP6A	, "orld p6,a"	, ' ', 1, false, 2 )
 DEC( 8f, ORLDP7A	, "orld p7,a"	, ' ', 1, false, 2 )
 
+// 90 MOVX @R0,A 48
+// 90 OUTL P0,A 22,21
+// 90 MOV STS,A 41A
+// 91 MOVX @R1,A 48
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
+DEC( 93, RETR		, "retr"	, ' ', 1, false, 2 ) //48,41A,41
 DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2 )
+// 95 CPL F0 48,41A,41
+DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2 )
+DEC( 97, CLRC		, "clr c"	, ' ', 1, false, 1 )
+
 DEC( a4, JMP5   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+
 DEC( b2, JB5		, "jb5 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( b4, CALL5  	, "call 'a11'"	, ' ', 2, false, 2 )
+
 DEC( c4, JMP6   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+
 DEC( d2, JB6		, "jb6 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( d4, CALL6  	, "call 'a11'"	, ' ', 2, false, 2 )
+
 DEC( e4, JMP7   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+
 DEC( f2, JB7		, "jb7 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( f4, CALL7  	, "call 'a11'"	, ' ', 2, false, 2 )
