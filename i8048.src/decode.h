@@ -225,9 +225,23 @@ DEC( c6, JZ		, "jz 'a8'"	, ' ', 2, false, 2 )
 // ce DEC R6
 // cf DEC R7
 
+DEC( d0, XRLIR0		, "xrl a,@r0"	, ' ', 1, false, 1 )
+DEC( d1, XRLIR1		, "xrl a,@r1"	, ' ', 1, false, 1 )
 DEC( d2, JB6		, "jb6 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
-DEC( d4, CALL6  	, "call 'a11'"	, ' ', 2, false, 2 )
-
+DEC (d3, XRLI8		, "xrl a,'i8'"	, ' ', 2, false, 2 )
+DEC( d4, CALL6  	, "call 'a11'"	, ' ', 2, false, 2 ) //48,22
+// d5 SEL RB1 48,41A,41
+// d6 JNIBF 41A,41
+// d7 MOV PSW,A 48,41A,41
+DEC( d8, XRLR0		, "xrl a,r0"	, ' ', 1, false, 1 )
+DEC( d9, XRLR1		, "xrl a,r1"	, ' ', 1, false, 1 )
+DEC( da, XRLR2		, "xrl a,r2"	, ' ', 1, false, 1 )
+DEC( db, XRLR3		, "xrl a,r3"	, ' ', 1, false, 1 )
+DEC( dc, XRLR4		, "xrl a,r4"	, ' ', 1, false, 1 )
+DEC( dd, XRLR5		, "xrl a,r5"	, ' ', 1, false, 1 )
+DEC( de, XRLR6		, "xrl a,r6"	, ' ', 1, false, 1 )
+DEC( df, XRLR7		, "xrl a,r7"	, ' ', 1, false, 1 )
+  
 DEC( e4, JMP7   	, "jmp 'a11'"   , ' ', 2, false, 2 )
 
 DEC( f2, JB7		, "jb7 'a8'"	, ' ', 2, false, 2 ) //48,41A,41

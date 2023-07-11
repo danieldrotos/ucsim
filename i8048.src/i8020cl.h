@@ -132,6 +132,7 @@ class cl_i8020: public cl_uc
   virtual int inc(class cl_memory_cell *op);
   virtual int orl(class cl_memory_cell *op);
   virtual int anl(class cl_memory_cell *op);
+  virtual int xrl(class cl_memory_cell *op);
   virtual int daa(void);
   virtual int orld(cl_memory_cell *op1, cl_memory_cell *op2);
   virtual int anld(cl_memory_cell *op1, cl_memory_cell *op2);
@@ -227,6 +228,17 @@ class cl_i8020: public cl_uc
   int ANLDP7A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
   int CLRC(MP) { cF.W(psw & ~flagC); return resGO; }
   int CPLC(MP) { cF.W(psw ^ flagC); return resGO; }
+  int XRLIR0(MP) { RD; return xrl(iram_ir(0)); }
+  int XRLIR1(MP) { RD; return xrl(iram_ir(1)); }
+  int XRLI8(MP) { cA.W(rA ^ fetch()); return resGO; }
+  int XRLR0(MP) { cA.W(rA ^ R[0]->read()); return resGO; }
+  int XRLR1(MP) { cA.W(rA ^ R[1]->read()); return resGO; }
+  int XRLR2(MP) { cA.W(rA ^ R[2]->read()); return resGO; }
+  int XRLR3(MP) { cA.W(rA ^ R[3]->read()); return resGO; }
+  int XRLR4(MP) { cA.W(rA ^ R[4]->read()); return resGO; }
+  int XRLR5(MP) { cA.W(rA ^ R[5]->read()); return resGO; }
+  int XRLR6(MP) { cA.W(rA ^ R[6]->read()); return resGO; }
+  int XRLR7(MP) { cA.W(rA ^ R[7]->read()); return resGO; }
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }

@@ -70,6 +70,13 @@ CL2::anl(class cl_memory_cell *op)
 }
 
 int
+CL2::xrl(class cl_memory_cell *op)
+{
+  cA.W(rA ^ op->read());
+  return resGO;
+}
+
+int
 CL2::daa(void)
 {
   if (((rA & 0x0f) > 9) || (rF & flagA))
