@@ -139,7 +139,8 @@ class cl_i8020: public cl_uc
   virtual int jmp(MP);
   virtual int call(MP);
   virtual int jb(MP);
-  virtual int jnz(MP);
+  virtual int jnz(void);
+  virtual int jz(void);
   
   virtual int in(int port_addr);
   virtual int out(int port_addr);
@@ -254,7 +255,8 @@ class cl_i8020: public cl_uc
   //int JB7(MP) { return jb(code); }
   int RET(MP);
   //int RETR(MP);
-  int JNZ(MP) { return jnz(code); }
+  int JNZ(MP) { return jnz(); }
+  int JZ(MP) { return jz(); }
   int JMPPIA(MP);
   
   /* Data movement */

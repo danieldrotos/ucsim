@@ -80,10 +80,22 @@ CL2::jb(MP)
 }
 
 int
-CL2::jnz(MP)
+CL2::jnz(void)
 {
   u8_t a= fetch();
   if (rA)
+    {
+      PC&= 0xf00;
+      PC|= a;
+    }
+  return resGO;
+}
+
+int
+CL2::jz(void)
+{
+  u8_t a= fetch();
+  if (!rA)
     {
       PC&= 0xf00;
       PC|= a;

@@ -140,6 +140,7 @@
 #define MOVR6I8 instruction_be
 #define MOVR7I8 instruction_bf
 #define JMP6 instruction_c4
+#define JZ instruction_c6
 #define JB6 instruction_d2
 #define CALL6 instruction_d4
 #define JMP7 instruction_e4

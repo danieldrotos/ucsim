@@ -208,7 +208,22 @@ DEC( bd, MOVR5I8	, "mov r5,'i8'"	, ' ', 2, false, 2 )
 DEC( be, MOVR6I8	, "mov r6,'i8'"	, ' ', 2, false, 2 )
 DEC( bf, MOVR7I8	, "mov r7,'i8'"	, ' ', 2, false, 2 )
 
-DEC( c4, JMP6   	, "jmp 'a11'"   , ' ', 2, false, 2 )
+// c0 undefined
+// c1 undefined
+// c2 undefined
+// c3 undefined
+DEC( c4, JMP6   	, "jmp 'a11'"   , ' ', 2, false, 2 ) //48,22
+// c5 SEL RB0 48,41A,41
+DEC( c6, JZ		, "jz 'a8'"	, ' ', 2, false, 2 )
+// c7 MOV A,PSW 48,41A,41
+// c8 DEC R0
+// c9 DEC R1
+// ca DEC R2
+// cb DEC R3
+// cc DEC R4
+// cd DEC R5
+// ce DEC R6
+// cf DEC R7
 
 DEC( d2, JB6		, "jb6 'a8'"	, ' ', 2, false, 2 ) //48,41A,41
 DEC( d4, CALL6  	, "call 'a11'"	, ' ', 2, false, 2 )
