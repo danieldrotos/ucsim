@@ -42,6 +42,7 @@ class cl_i8048: public cl_i8020
   cl_i8048(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
+  virtual void decode_regs(void);
 };
 
 

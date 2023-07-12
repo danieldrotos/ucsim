@@ -54,5 +54,21 @@ cl_i8048::id_string(void)
   return "i8048";
 }
 
+void
+cl_i8048::decode_regs(void)
+{
+  int i;
+  cl_banker *b= new cl_banker(aspsw, 0, flagBS, //0,
+			      regs, 0, 7);
+  b->init();
+  b->set_name("def_regs_banker");
+  regs->decoders->add(b);
+  b->add_bank(0, memory("iram_chip"), 0);
+  b->add_bank(1, memory("iram_chip"), 24);
+  cpsw->write(0);
+  for (i= 0; i < 8; i++)
+    R[i]= (cl_cell8*)regs->get_cell(i);
+}
+
 
 /* End of i8048.src/i8048.cc */
