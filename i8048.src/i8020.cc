@@ -41,7 +41,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 t_mem
 cl_flag20_op::write(t_mem val)
 {
-  val|= 0x08;
+  val|= 0x18;
   return val;
 }
 
@@ -54,6 +54,9 @@ cl_i8020::cl_i8020(class cl_sim *asim):
   cl_uc(asim)
 {
   PCmask= 0xfff;
+  ram_size= 64;
+  rom_size= 1024;
+  info_ch= '1';
 }
 
 int
@@ -90,11 +93,13 @@ cl_i8020::init(void)
   return 0;
 }
 
+/*
 const char *
 cl_i8020::id_string(void)
 {
-  return "i8020";
+  return get_name();
 }
+*/
 
 void
 cl_i8020::set_PC(t_addr addr)
@@ -105,6 +110,24 @@ cl_i8020::set_PC(t_addr addr)
   PC|= addr;
 }
 
+class cl_memory_operator *
+cl_i8020::make_flagop(void)
+{
+  class cl_memory_operator *o;
+  o= new cl_flag20_op(cpsw);
+  o->init();
+  o->set_name("MCS21 flag operator");
+  return o;
+}
+
+void
+cl_i8020::make_cpu_hw(void)
+{
+  cpu= new cl_i8020_cpu(this);
+  add_hw(cpu);
+  cpu->init();
+}
+
 void
 cl_i8020::make_memories(void)
 {
@@ -113,9 +136,7 @@ cl_i8020::make_memories(void)
   // setup psw
   cpsw= (cl_cell8*)aspsw->get_cell(0);
   cpsw->decode(&psw);
-  o= new cl_flag20_op(cpsw);
-  o->init();
-  o->set_name("MCS48 flag operator");
+  o= make_flagop();
   cpsw->append_operator(o);
   reg_cell_var(cpsw, &psw, "psw", "CPU register PSW");
   // do others
@@ -169,11 +190,11 @@ cl_i8020::make_address_spaces(void)
 void
 cl_i8020::make_chips(void)
 {
-  rom_chip= new cl_chip8("rom_chip", 0x1000, 8/*, 0xff*/);
+  rom_chip= new cl_chip8("rom_chip", rom_size, 8/*, 0xff*/);
   rom_chip->init();
   memchips->add(rom_chip);
   
-  iram_chip= new cl_chip8("iram_chip", 0x100, 8);
+  iram_chip= new cl_chip8("iram_chip", ram_size, 8);
   iram_chip->init();
   memchips->add(iram_chip);
   
@@ -190,7 +211,7 @@ void
 cl_i8020::decode_rom(void)
 {
   class cl_address_decoder *ad;
-  ad= new cl_address_decoder(rom, rom_chip, 0, 0xfff, 0);
+  ad= new cl_address_decoder(rom, rom_chip, 0, rom_size-1, 0);
   ad->init();
   ad->set_name("def_rom_decoder");
   rom->decoders->add(ad);
@@ -201,7 +222,7 @@ void
 cl_i8020::decode_regs(void)
 {
   class cl_address_decoder *ad;
-  ad= new cl_address_decoder(regs, iram_chip, 0, 0xff, 0);
+  ad= new cl_address_decoder(regs, iram_chip, 0, 7, 0);
   ad->init();
   ad->set_name("def_regs_decoder");
   regs->decoders->add(ad);
@@ -216,7 +237,7 @@ cl_i8020::decode_iram(void)
 {
   class cl_address_decoder *ad;
   
-  ad= new cl_address_decoder(iram, iram_chip, 0, 0xff, 0);
+  ad= new cl_address_decoder(iram, iram_chip, 0, ram_size-1, 0);
   ad->init();
   ad->set_name("def_iram_decoder");
   iram->decoders->add(ad);
@@ -237,7 +258,10 @@ cl_i8020::get_dis_entry(t_addr addr)
   for (struct dis_entry *de = dis_tbl(); de && de->mnemonic; de++)
     {
       if ((code & de->mask) == de->code)
-        return de;
+	{
+	  if (strchr((const char*)(de->info), info_ch) != NULL)
+	    return de;
+	}
     }
 
   return NULL;
@@ -320,6 +344,13 @@ cl_i8020::disassc(t_addr addr, chars *comment)
   return(strdup(work.c_str()));
 }
 
+int
+cl_i8020::inst_length(t_addr addr)
+{
+  struct dis_entry *de= get_dis_entry(addr);
+  return de?(de->length):1;
+}
+
 void
 cl_i8020::print_regs(class cl_console_base *con)
 {
@@ -329,7 +360,8 @@ cl_i8020::print_regs(class cl_console_base *con)
   // show regs
   start= (psw & flagBS)?24:0;
   con->dd_color("answer");
-  con->dd_printf("        R0 R1 R2 R3 R4 R5 R6 R7    PSW= CAFB-SSS    ACC= ");
+  con->dd_printf("        R0 R1 R2 R3 R4 R5 R6 R7    PSW= CAF%c-SSS    ACC= ",
+		 (type->type & CPU_MCS21)?'-':'B');
   con->dd_color("dump_number");
   con->dd_printf("0x%02x %+3d %c", ACC, ACC, (isprint(ACC)?ACC:'?'));
   con->dd_printf("\n");
@@ -478,5 +510,71 @@ CL2::read_ir(int regnr)
   return iram->read(a);
 }
 
+
+cl_i8021::cl_i8021(class cl_sim *asim):
+  cl_i8020(asim)
+{
+  rom_size= 1024;
+  ram_size= 64;
+  info_ch= '1';
+}
+
+
+cl_i8022::cl_i8022(class cl_sim *asim):
+  cl_i8021(asim)
+{
+  rom_size= 2048;
+  ram_size= 128;
+  info_ch= '2';
+}
+
+
+cl_i8020_cpu::cl_i8020_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_CPU, 0, "cpu")
+{
+}
+
+int
+cl_i8020_cpu::init(void)
+{
+  cl_hw::init();
+
+  cl_var *v;
+  uc->vars->add(v= new cl_var("T1", cfg, i8020cpu_t1,
+			      cfg_help(i8020cpu_t1)));
+  v->init();
+
+  return 0;
+}
+
+const char *
+cl_i8020_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case i8020cpu_t1:
+      return "T1 input pin";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  //class cl_i8020 *u= (class cl_i8020 *)uc;
+  if (val)
+    cell->set(*val);
+  switch ((enum i8020cpu_confs)addr)
+    {
+    case i8020cpu_t1:
+      if (val)
+	*val= (*val)?1:0;
+	  /*else
+	    cell->set(u->sp_limit);*/
+      break;
+    case i8020cpu_nuof: break;
+    }
+  return cell->get();
+}
 
 /* End of i8048.src/i8020.cc */

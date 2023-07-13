@@ -32,6 +32,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8048cl.h"
 
 
+t_mem
+cl_flag48_op::write(t_mem val)
+{
+  val|= 0x08;
+  return val;
+}
+
+
 /*
  * CPU
  */
@@ -39,6 +47,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_i8048::cl_i8048(class cl_sim *asim):
   cl_i8020(asim)
 {
+  rom_size= 1024;
+  ram_size= 64;
+  info_ch= '8';
+}
+
+cl_i8048::cl_i8048(class cl_sim *asim,
+		   unsigned int rom_siz,
+		   unsigned int ram_siz):
+  cl_i8020(asim)
+{
+  rom_size= rom_siz;
+  ram_size= ram_siz;
+  info_ch= '8';
 }
 
 int
@@ -47,11 +68,22 @@ cl_i8048::init(void)
   cl_i8020::init();
   return 0;
 }
-
+/*
 const char *
 cl_i8048::id_string(void)
 {
   return "i8048";
+}
+*/
+
+class cl_memory_operator *
+cl_i8048::make_flagop(void)
+{
+  class cl_memory_operator *o;
+  o= new cl_flag48_op(cpsw);
+  o->init();
+  o->set_name("MCS48 flag operator");
+  return o;
 }
 
 void

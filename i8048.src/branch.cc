@@ -128,6 +128,18 @@ CL2::JC(MP)
 }
 
 int
+CL2::JT1(MP)
+{
+  u8_t a= fetch();
+  if (cpu->cfg_read(i8020cpu_t1))
+    {
+      PC&= 0xf00;
+      PC|= a;
+    }
+  return resGO;
+}
+
+int
 CL2::JMPPIA(MP)
 {
   u16_t a= (PC&=0xf00)|rA;

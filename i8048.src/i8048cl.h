@@ -32,6 +32,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8020cl.h"
 
 
+class cl_flag48_op: public cl_memory_operator
+{
+public:
+  cl_flag48_op(class cl_memory_cell *acell): cl_memory_operator(acell) {}
+  virtual t_mem write(t_mem val);
+};
+
+
 /*
  * i8048 processor
  */
@@ -40,8 +48,12 @@ class cl_i8048: public cl_i8020
 {
  public:
   cl_i8048(class cl_sim *asim);
+  cl_i8048(class cl_sim *asim,
+	   unsigned int rom_siz,
+	   unsigned int ram_siz);
   virtual int init(void);
-  virtual const char *id_string(void);
+  //virtual const char *id_string(void);
+  virtual class cl_memory_operator *make_flagop(void);
   virtual void decode_regs(void);
 };
 

@@ -93,6 +93,10 @@ public:
 
 class cl_i8020: public cl_uc
 {
+protected:
+  unsigned int ram_size, rom_size;
+  const char *id_str;
+  char info_ch;
  public:
   u8_t psw;
   class cl_cell8 *cpsw;
@@ -104,8 +108,11 @@ class cl_i8020: public cl_uc
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
-  virtual const char *id_string(void);
+  virtual void set_id(const char *ids) { id_str= ids; }
+  virtual const char *id_string(void) { return id_str; }
   virtual void set_PC(t_addr addr);
+  virtual class cl_memory_operator *make_flagop(void);
+  virtual void make_cpu_hw(void);
   virtual void make_memories(void);
   virtual void make_address_spaces(void);
   virtual void make_chips(void);
@@ -115,6 +122,7 @@ class cl_i8020: public cl_uc
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment);
+  virtual int inst_length(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
 
   virtual void push(void);
@@ -272,6 +280,7 @@ class cl_i8020: public cl_uc
   int JZ(MP);
   int JNC(MP);
   int JC(MP);
+  int JT1(MP);
   int JMPPIA(MP);
   int DJNZR0(MP) { return djnz(code); }
   int DJNZR1(MP) { return djnz(code); }
@@ -341,6 +350,39 @@ class cl_i8020: public cl_uc
   int MOVR5I8(MP) { R[5]->W(fetch()); return resGO; }
   int MOVR6I8(MP) { R[6]->W(fetch()); return resGO; }
   int MOVR7I8(MP) { R[7]->W(fetch()); return resGO; }
+};
+
+
+class cl_i8021: public cl_i8020
+{
+ public:
+  cl_i8021(class cl_sim *asim);
+  //virtual const char *id_string(void) { return "I8021"; }
+};
+
+class cl_i8022: public cl_i8021
+{
+ public:
+  cl_i8022(class cl_sim *asim);
+  //virtual const char *id_string(void) { return "I8022"; }
+};
+
+
+enum i8020cpu_confs
+  {
+    i8020cpu_t1		= 0,
+    i8020cpu_nuof	= 1
+  };
+
+class cl_i8020_cpu: public cl_hw
+{
+public:
+  cl_i8020_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return i8020cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 

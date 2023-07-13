@@ -64,6 +64,7 @@
 #define JB2 instruction_52
 #define ANLI8 instruction_53
 #define CALL2 instruction_54
+#define JT1 instruction_56
 #define DAA instruction_57
 #define ANLR0 instruction_58
 #define ANLR1 instruction_59

@@ -40,13 +40,13 @@ cl_simi8048::mk_controller(void)
   int i;
   const char *typ= 0;
   class cl_optref type_option(this);
-  class cl_i8048 *uc;
+  class cl_i8020 *uc;
 
   type_option.init();
   type_option.use("cpu_type");
   i= 0;
   if ((typ= type_option.get_value(typ)) == 0)
-    typ= "I8048";
+    typ= "I8050";
   while ((cpus_8048[i].type_str != NULL) &&
 	 (strcasecmp(typ, cpus_8048[i].type_str) != 0))
     i++;
@@ -58,8 +58,45 @@ cl_simi8048::mk_controller(void)
     }
   switch (cpus_8048[i].type)
     {
+    case CPU_I8021:
+      uc= new cl_i8021(this);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8022:
+      uc= new cl_i8022(this);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
     case CPU_I8048:
       uc= new cl_i8048(this);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8049:
+      uc= new cl_i8048(this, 2048, 128);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8050:
+      uc= new cl_i8048(this, 4096, 256);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8035:
+      uc= new cl_i8048(this, 4096, 64);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8039:
+      uc= new cl_i8048(this, 4096, 128);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8040:
+      uc= new cl_i8048(this, 4096, 256);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
       return uc;
     default:
       fprintf(stderr, "Unknown processor type\n");
