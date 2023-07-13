@@ -25,7 +25,7 @@ DEC( 12, JB0		, "jb0 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 13, ADCI8		, "addc a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 14, CALL0  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 15, DISI		, "dis i"	, ' ', 1, false, 1, (void*)"8A421" )
-// 16 JTF
+DEC( 16, JTF		, "jtf 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 17, INCA   	, "inc a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 18, INCR0		, "inc r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 19, INCR1		, "inc r1"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -72,11 +72,11 @@ DEC( 3f, MOVDP7A	, "movd p7,a"	, ' ', 1, false, 2, (void*)"8A421" )
 
 DEC( 40, ORLIR0		, "orl a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 41, ORLIR1		, "orl a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
-// 42 MOV A,T
+DEC( 42, MOVAT		, "mov a,t"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 43, ORLI8		, "orl a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 44, JMP2   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
-// 45 STRT CNT
-// 46 JNTI
+DEC( 45, STRTCNT	, "strt cnt"	, ' ', 1, false, 1, (void*)"8A421" )
+DEC( 46, JNT1		, "jnt1 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 47, SWAPA		, "swap a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 48, ORLR0		, "orl a,r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 49, ORLR1		, "orl a,r1"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -92,7 +92,7 @@ DEC( 51, ANLIR1		, "anl a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 52, JB2		, "jb2 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 53, ANLI8		, "anl a,'i8'"	, ' ', 2, false, 1, (void*)"8A421" )
 DEC( 54, CALL2  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
-// 55 STRT T
+DEC( 55, STRTT		, "strt t"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 56, JT1		, "jt1 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 57, DAA		, "da a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 58, ANLR0		, "anl a,r0"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -106,10 +106,10 @@ DEC( 5f, ANLR7		, "anl a,r7"	, ' ', 1, false, 1, (void*)"8A421" )
 
 DEC( 60, ADDIR0		, "add a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 61, ADDIR1		, "add a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
-// 62 MOV T,A
+DEC( 62, MOVTA		, "mov t,a"	, ' ', 1, false, 1, (void*)"8A421" )
 // 63 undefined
 DEC( 64, JMP3   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
-// 65 STOP TCNT
+DEC( 65, STOPTCNT	, "stop tcnt"	, ' ', 1, false, 1, (void*)"8A421" )
 // 66 undefined
 DEC( 67, RRC		, "rrc a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 68, ADDR0		, "add a,r0"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -148,7 +148,7 @@ DEC( 85, CLRF0		, "clr f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // 86 JNI 48
 // 87 undefined
 // 88 ORL BUS,#i8 48
-// 89 ORL P1,#i8 58,41A,41
+// 89 ORL P1,#i8 48,41A,41
 // 8a ORL P2,#i8 48,41A,41
 // 8b undefined
 DEC( 8c, ORLDP4A	, "orld p4,a"	, ' ', 1, false, 2, (void*)"8A421" )
@@ -159,11 +159,11 @@ DEC( 8f, ORLDP7A	, "orld p7,a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 90, MOVXIR0A	, "movx @r0,a"	, ' ', 1, false, 2, (void*)"8----" ) //48
 // 90 OUTL P0,A 22,21
 // 90 MOV STS,A 41A
-DEC( 91, MOVXIR1A	, "movx @r1,a"	, ' ', 1, false, 2, (void*)"8----") //48
+DEC( 91, MOVXIR1A	, "movx @r1,a"	, ' ', 1, false, 2, (void*)"8----" ) //48
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 93, RETR		, "retr"	, ' ', 1, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
-// 95 CPL F0 48,41A,41
+DEC( 95, CPLF0		, "cpl f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 97, CLRC		, "clr c"	, ' ', 1, false, 1, (void*)"8A421" )
 // 98 ANL BUS,#i8 48
@@ -179,7 +179,7 @@ DEC( a1, MOVIR1A	, "mov @r1,a"	, ' ', 1, false, 2, (void*)"8A421" )
 // a2 undefined
 DEC( a3, MOVPAIA	, "movp a,@a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( a4, JMP5   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
-// a5 CLR F1 48,41A,41
+DEC( a5, CLRF1		, "clr f1"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // a6 undefined
 DEC( a7, CPLC		, "cpl c"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( a8, MOVR0A		, "mov r0,a"	, ' ', 1, false, 1, (void*)"8A421" )

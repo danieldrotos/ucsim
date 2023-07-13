@@ -49,6 +49,8 @@ class cl_i8041: public cl_i8048
   int JNT0(MP) { return jif(cpu->cfg_read(i8020cpu_t0)==0); }
   int JT0 (MP) { return jif(cpu->cfg_read(i8020cpu_t0)!=0); }
   int JF1 (MP) { return jif(cflagF1.R() != 0); }
+  int CPLF0(MP) { cF.W(rF ^ flagF0); return resGO; }
+  int CLRF1(MP) { cflagF1.W(0); return resGO; }
 };
 
 

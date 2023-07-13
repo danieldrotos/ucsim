@@ -19,6 +19,7 @@
 #define ADCI8 instruction_13
 #define CALL0 instruction_14
 #define DISI instruction_15
+#define JTF instruction_16
 #define INCA instruction_17
 #define INCR0 instruction_18
 #define INCR1 instruction_19
@@ -55,8 +56,11 @@
 #define MOVDP7A instruction_3f
 #define ORLIR0 instruction_40
 #define ORLIR1 instruction_41
+#define MOVAT instruction_42
 #define ORLI8 instruction_43
 #define JMP2 instruction_44
+#define STRTCNT instruction_45
+#define JNT1 instruction_46
 #define SWAPA instruction_47
 #define ORLR0 instruction_48
 #define ORLR1 instruction_49
@@ -71,6 +75,7 @@
 #define JB2 instruction_52
 #define ANLI8 instruction_53
 #define CALL2 instruction_54
+#define STRTT instruction_55
 #define JT1 instruction_56
 #define DAA instruction_57
 #define ANLR0 instruction_58
@@ -83,7 +88,9 @@
 #define ANLR7 instruction_5f
 #define ADDIR0 instruction_60
 #define ADDIR1 instruction_61
+#define MOVTA instruction_62
 #define JMP3 instruction_64
+#define STOPTCNT instruction_65
 #define RRC instruction_67
 #define ADDR0 instruction_68
 #define ADDR1 instruction_69
@@ -121,6 +128,7 @@
 #define JB4 instruction_92
 #define RETR instruction_93
 #define CALL4 instruction_94
+#define CPLF0 instruction_95
 #define JNZ instruction_96
 #define CLRC instruction_97
 #define ANLDP4A instruction_9c
@@ -131,6 +139,7 @@
 #define MOVIR1A instruction_a1
 #define MOVPAIA instruction_a3
 #define JMP5 instruction_a4
+#define CLRF1 instruction_a5
 #define CPLC instruction_a7
 #define MOVR0A instruction_a8
 #define MOVR1A instruction_a9

@@ -326,8 +326,6 @@ protected:
   int XCHDIR0(MP) { RDWR; return xchd(iram_ir(0)); }
   int XCHDIR1(MP) { RDWR; return xchd(iram_ir(1)); }
   int SWAPA(MP);
-  //int MOVXAIR0(MP) { RD; cA.W(xram->read(R[0]->read())); return resGO; }
-  //int MOVXAIR1(MP) { RD; cA.W(xram->read(R[1]->read())); return resGO; }
   int MOVIR0A(MP) { WR; iram->write(R[0]->R(), rA); return resGO; }
   int MOVIR1A(MP) { WR; iram->write(R[1]->R(), rA); return resGO; }
   int MOVAIR0(MP) { RD; cA.W(iram->read(R[0]->R())); return resGO; }
@@ -360,6 +358,15 @@ protected:
   int MOVR6I8(MP) { R[6]->W(fetch()); return resGO; }
   int MOVR7I8(MP) { R[7]->W(fetch()); return resGO; }
 
+  // Timer instructions
+  //JTF(MP);
+  //MOVAT(MP);
+  //MOVTA(MP);
+  //STRTCNT(MP);
+  //STRTT(MP);
+  //STOPTCNT(MP);
+  //JNT1(MP);
+  
   // 21,22 specific instructions to implement
   int INP0(MP) { return in(0); }
 };
