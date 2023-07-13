@@ -276,7 +276,7 @@ enum cpu_type {
   CPU_I8039	= 0x0020, // 0k-128 "8"
   CPU_I8040	= 0x0040, // 0k-256 "8"
   CPU_MCS30	= (CPU_I8035|CPU_I8039|CPU_I8040),
-  CPU_I8041	= 0x0100, // "1"
+  CPU_I8041	= 0x0100, // "4"
   CPU_I8041A	= 0x0200, // "A"
   CPU_MCS41	= (CPU_I8041|CPU_I8041A),
   CPU_I8048	= 0x1000, // 1k-64 "8"

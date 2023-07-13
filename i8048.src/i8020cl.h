@@ -33,6 +33,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "aliases.h"
 
+#include "glob.h"
+
 
 enum {
   flagC = 0x80,
@@ -121,9 +123,11 @@ protected:
   virtual void decode_iram(void);
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual struct dis_entry *dis_entry_of(u8_t code);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int inst_length(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
+  virtual int8_t *tick_tab(t_mem code) { return tick_tab20; }
 
   virtual void push(void);
   virtual u16_t pop(bool popf);
@@ -156,11 +160,6 @@ protected:
   virtual int xchd(class cl_memory_cell *op);
   virtual int movp(void);
   
-  /*
-#define GEN_METHOD
-#include "decode.h"
-#undef GEN_METHOD
-  */
   /* Other instructions */
   int NOP(MP) { return resGO; }
   int DISI(MP) { ien= 0; return resGO; }

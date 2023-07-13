@@ -88,6 +88,25 @@ cl_i8020::init(void)
   mk_cvar(&cmb, "DBF", "CPU code bank selector");
   mk_cvar(&cmb, "A11", "CPU code bank selector");
   reg_cell_var(&cA, &rA, "ACC", "Accumulator");
+
+  // prepare tables
+  u8_t not_inv[256];
+  int i;
+  struct dis_entry *dt= dis_tbl();
+  for (i= 0; i < 256; i++) not_inv[i]= 0;
+  i= 0;
+  while (dt[i].mnemonic != NULL)
+    {
+      if (strchr((const char*)(dt[i].info), info_ch) != NULL)
+	{
+	  not_inv[i]= 1;
+	  tick_tab20[i]= dt[i].ticks;
+	}
+      i++;
+    }
+  for (i= 0; i < 256; i++)
+    if (!not_inv[i])
+      uc_itab[i]= uc_itab[0x100];
   
   //reset();
   return 0;
@@ -253,8 +272,13 @@ cl_i8020::dis_tbl(void)
 struct dis_entry *
 cl_i8020::get_dis_entry(t_addr addr)
 {
-  t_mem code= rom->get(addr);
+  u8_t code= rom->get(addr);
+  return dis_entry_of(code);
+}
 
+struct dis_entry *
+cl_i8020::dis_entry_of(u8_t code)
+{
   for (struct dis_entry *de = dis_tbl(); de && de->mnemonic; de++)
     {
       if ((code & de->mask) == de->code)
@@ -263,7 +287,6 @@ cl_i8020::get_dis_entry(t_addr addr)
 	    return de;
 	}
     }
-
   return NULL;
 }
 
