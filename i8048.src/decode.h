@@ -143,7 +143,7 @@ DEC( 81, MOVXAIR1	, "movx a,@r1"	, ' ', 1, false, 2, (void*)"8----" ) //48
 // 82 undefined
 DEC( 83, RET		, "ret"		, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 84, JMP4   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
-// 85 CLR F0 48,41A,41
+DEC( 85, CLRF0		, "clr f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // 85 SEL AN0 22
 // 86 JNI 48
 // 87 undefined
@@ -156,10 +156,10 @@ DEC( 8d, ORLDP5A	, "orld p5,a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 8e, ORLDP6A	, "orld p6,a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 8f, ORLDP7A	, "orld p7,a"	, ' ', 1, false, 2, (void*)"8A421" )
 
-// 90 MOVX @R0,A 48
+DEC( 90, MOVXIR0A	, "movx @r0,a"	, ' ', 1, false, 2, (void*)"8----" ) //48
 // 90 OUTL P0,A 22,21
 // 90 MOV STS,A 41A
-// 91 MOVX @R1,A 48
+DEC( 91, MOVXIR1A	, "movx @r1,a"	, ' ', 1, false, 2, (void*)"8----") //48
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 93, RETR		, "retr"	, ' ', 1, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22

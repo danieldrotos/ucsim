@@ -173,7 +173,8 @@ protected:
   int NOP(MP) { return resGO; }
   int DISI(MP) { ien= 0; return resGO; }
   int ENI(MP) { ien= 1; return resGO; }
-
+  int CLRF0(MP) { cF.W(rF & ~flagF0); return resGO; }
+  
   /* Arithmetics */
   int ADDI8(MP) { return add(fetch(), false); }
   int ADCI8(MP) { return add(fetch(), true); }

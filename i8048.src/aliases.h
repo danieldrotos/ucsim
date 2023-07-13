@@ -111,10 +111,13 @@
 #define MOVXAIR1 instruction_81
 #define RET instruction_83
 #define JMP4 instruction_84
+#define CLRF0 instruction_85
 #define ORLDP4A instruction_8c
 #define ORLDP5A instruction_8d
 #define ORLDP6A instruction_8e
 #define ORLDP7A instruction_8f
+#define MOVXIR0A instruction_90
+#define MOVXIR1A instruction_91
 #define JB4 instruction_92
 #define RETR instruction_93
 #define CALL4 instruction_94
