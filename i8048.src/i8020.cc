@@ -99,15 +99,16 @@ cl_i8020::init(void)
     {
       if (strchr((const char*)(dt[i].info), info_ch) != NULL)
 	{
-	  not_inv[i]= 1;
-	  tick_tab20[i]= dt[i].ticks;
+	  not_inv[dt[i].code]= 1;
+	  tick_tab20[dt[i].code]= dt[i].ticks;
 	}
       i++;
     }
   for (i= 0; i < 256; i++)
     if (!not_inv[i])
-      uc_itab[i]= uc_itab[0x100];
-  
+      {
+	uc_itab[i]= uc_itab[0x100];
+      }
   //reset();
   return 0;
 }

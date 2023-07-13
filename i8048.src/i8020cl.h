@@ -265,14 +265,14 @@ protected:
   int CALL5(MP) { return call(code); }
   int CALL6(MP) { return call(code); }
   int CALL7(MP) { return call(code); }
-  //int JB0(MP) { return jb(code); }
-  //int JB1(MP) { return jb(code); }
-  //int JB2(MP) { return jb(code); }
-  //int JB3(MP) { return jb(code); }
-  //int JB4(MP) { return jb(code); }
-  //int JB5(MP) { return jb(code); }
-  //int JB6(MP) { return jb(code); }
-  //int JB7(MP) { return jb(code); }
+  int JB0(MP) { return jb(code); }
+  int JB1(MP) { return jb(code); }
+  int JB2(MP) { return jb(code); }
+  int JB3(MP) { return jb(code); }
+  int JB4(MP) { return jb(code); }
+  int JB5(MP) { return jb(code); }
+  int JB6(MP) { return jb(code); }
+  int JB7(MP) { return jb(code); }
   int RET(MP);
   //int RETR(MP);
   int JNZ(MP);
