@@ -42,6 +42,10 @@ class cl_i8041: public cl_i8048
   virtual int init(void);
   virtual class cl_memory_operator *make_flagop(void);
   virtual void decode_regs(void);
+
+  // UPI41 sepcific instructions to implement
+  //OUTDBB
+  //INDBB
 };
 
 

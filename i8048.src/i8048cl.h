@@ -55,8 +55,8 @@ class cl_i8048: public cl_i8020
   virtual class cl_memory_operator *make_flagop(void);
   virtual void decode_regs(void);
   // 48 specific insts to implement:
-  //OUTLBA
-  //INSAB
+  //OUTLB
+  //INS
 };
 
 

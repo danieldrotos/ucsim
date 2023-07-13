@@ -80,6 +80,18 @@ CL2::jb(MP)
 }
 
 int
+CL2::jif(bool cond)
+{
+  u8_t a= fetch();
+  if (cond)
+    {
+      PC&= 0xf00;
+      PC|= a;
+    }
+  return resGO;
+}
+
+int
 CL2::JNZ(MP)
 {
   u8_t a= fetch();

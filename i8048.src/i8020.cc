@@ -552,6 +552,14 @@ cl_i8022::cl_i8022(class cl_sim *asim):
   info_ch= '2';
 }
 
+void
+cl_i8022::make_cpu_hw(void)
+{
+  cpu= new cl_i8022_cpu(this);
+  add_hw(cpu);
+  cpu->init();
+}
+
 
 cl_i8020_cpu::cl_i8020_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
@@ -600,5 +608,56 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     }
   return cell->get();
 }
+
+
+cl_i8022_cpu::cl_i8022_cpu(class cl_uc *auc):
+  cl_i8020_cpu(auc)
+{
+}
+
+int
+cl_i8022_cpu::init(void)
+{
+  cl_i8020_cpu::init();
+
+  cl_var *v;
+  uc->vars->add(v= new cl_var("T0", cfg, i8022cpu_t0,
+			      cfg_help(i8022cpu_t0)));
+  v->init();
+
+  return 0;
+}
+
+const char *
+cl_i8022_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case i8022cpu_t0:
+      return "T0 input pin";
+    }
+  return cl_i8020_cpu::cfg_help(addr);
+}
+
+t_mem
+cl_i8022_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  //class cl_i8020 *u= (class cl_i8020 *)uc;
+  if (val)
+    cell->set(*val);
+  switch (addr)
+    {
+    case i8022cpu_t0:
+      if (val)
+	*val= (*val)?1:0;
+	  /*else
+	    cell->set(u->sp_limit);*/
+      break;
+    default:
+      return cl_i8020_cpu::conf_op(cell, addr, val);
+    }
+  return cell->get();
+}
+
 
 /* End of i8048.src/i8020.cc */

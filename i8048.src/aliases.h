@@ -1,10 +1,11 @@
 #define NOP instruction_00
-#define OUTLBA instruction_02
+#define OUTLB instruction_02
+#define OUTDBB instruction_02
 #define ADDI8 instruction_03
 #define JMP0 instruction_04
 #define ENI instruction_05
 #define DECA instruction_07
-#define INSAB instruction_08
+#define INS instruction_08
 #define INP0 instruction_08
 #define IN1 instruction_09
 #define IN2 instruction_0a
@@ -29,8 +30,10 @@
 #define INCR7 instruction_1f
 #define XCHIR0 instruction_20
 #define XCHIR1 instruction_21
+#define INDBB instruction_22
 #define MOVAI8 instruction_23
 #define JMP1 instruction_24
+#define JNT0 instruction_26
 #define CLRA instruction_27
 #define XCHR0 instruction_28
 #define XCHR1 instruction_29

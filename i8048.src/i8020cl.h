@@ -63,6 +63,18 @@ enum {
 #define WRRD (vc.rd++,vc.wr++)
 
 
+enum i8020cpu_confs
+  {
+    i8020cpu_t1		= 0,
+    i8020cpu_nuof	= 1
+  };
+
+enum i8022cpu_confs
+  {
+    i8022cpu_t0		= i8020cpu_nuof+0,
+    i8022cpu_nuof	= i8020cpu_nuof+1
+  };
+
 /*
  * Special handling of flags
  */
@@ -153,6 +165,7 @@ protected:
   virtual int call(MP);
   virtual int jb(MP);
   virtual int djnz(MP);
+  virtual int jif(bool cond);
   
   virtual int in(int port_addr);
   virtual int out(int port_addr);
@@ -359,22 +372,17 @@ class cl_i8021: public cl_i8020
 {
  public:
   cl_i8021(class cl_sim *asim);
-  //virtual const char *id_string(void) { return "I8021"; }
 };
 
 class cl_i8022: public cl_i8021
 {
  public:
   cl_i8022(class cl_sim *asim);
-  //virtual const char *id_string(void) { return "I8022"; }
+  virtual void make_cpu_hw(void);
+  // 8022 specific instructions
+  int JNT0(MP) { return jif(cpu->cfg_read(i8022cpu_t0)); }
 };
 
-
-enum i8020cpu_confs
-  {
-    i8020cpu_t1		= 0,
-    i8020cpu_nuof	= 1
-  };
 
 class cl_i8020_cpu: public cl_hw
 {
@@ -382,6 +390,17 @@ public:
   cl_i8020_cpu(class cl_uc *auc);
   virtual int init(void);
   virtual unsigned int cfg_size(void) { return i8020cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+};
+
+class cl_i8022_cpu: public cl_i8020_cpu
+{
+public:
+  cl_i8022_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return i8022cpu_nuof; }
   virtual const char *cfg_help(t_addr addr);
 
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
