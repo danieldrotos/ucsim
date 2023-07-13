@@ -91,6 +91,7 @@ CL2::jif(bool cond)
   return resGO;
 }
 
+/*
 int
 CL2::JNZ(MP)
 {
@@ -102,7 +103,9 @@ CL2::JNZ(MP)
     }
   return resGO;
 }
+*/
 
+/*
 int
 CL2::JZ(MP)
 {
@@ -114,7 +117,9 @@ CL2::JZ(MP)
     }
   return resGO;
 }
+*/
 
+/*
 int
 CL2::JNC(MP)
 {
@@ -126,7 +131,9 @@ CL2::JNC(MP)
     }
   return resGO;
 }
+*/
 
+/*
 int
 CL2::JC(MP)
 {
@@ -138,7 +145,9 @@ CL2::JC(MP)
     }
   return resGO;
 }
+*/
 
+/*
 int
 CL2::JT1(MP)
 {
@@ -150,6 +159,7 @@ CL2::JT1(MP)
     }
   return resGO;
 }
+*/
 
 int
 CL2::JMPPIA(MP)

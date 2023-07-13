@@ -57,6 +57,11 @@ class cl_i8048: public cl_i8020
   // 48 specific insts to implement:
   //OUTLB
   //INS
+  int JNT0(MP) { return jif(cpu->cfg_read(i8020cpu_t0)==0); }
+  int JT0 (MP) { return jif(cpu->cfg_read(i8020cpu_t0)!=0); }
+  int JF1 (MP) { return jif(cflagF1.R() != 0); }
+  int MOVXAIR0(MP) { RD; return xram->read(R[0]->R()); }
+  int MOVXAIR1(MP) { RD; return xram->read(R[1]->R()); }
 };
 
 

@@ -47,6 +47,7 @@
 #define XCHDIR1 instruction_31
 #define JB1 instruction_32
 #define CALL1 instruction_34
+#define JT0 instruction_36
 #define CPLA instruction_37
 #define MOVDP4A instruction_3c
 #define MOVDP5A instruction_3d
@@ -96,6 +97,7 @@
 #define ADCIR1 instruction_71
 #define JB3 instruction_72
 #define CALL3 instruction_74
+#define JF1 instruction_76
 #define RR instruction_77
 #define ADCR0 instruction_78
 #define ADCR1 instruction_79
@@ -105,6 +107,8 @@
 #define ADCR5 instruction_7d
 #define ADCR6 instruction_7e
 #define ADCR7 instruction_7f
+#define MOVXAIR0 instruction_80
+#define MOVXAIR1 instruction_81
 #define RET instruction_83
 #define JMP4 instruction_84
 #define ORLDP4A instruction_8c
