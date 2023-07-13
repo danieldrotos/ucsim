@@ -59,13 +59,21 @@ class cl_i8048: public cl_i8020
   //INS
   int JNT0(MP) { return jif(cpu->cfg_read(i8020cpu_t0)==0); }
   int JT0 (MP) { return jif(cpu->cfg_read(i8020cpu_t0)!=0); }
+  int JF0 (MP) { return jif(psw & flagF0); }
   int JF1 (MP) { return jif(cflagF1.R() != 0); }
   int MOVXAIR0(MP) { RD; cA.W(xram->read(R[0]->R())); return resGO; }
   int MOVXAIR1(MP) { RD; cA.W(xram->read(R[1]->R())); return resGO; }
   int MOVXIR0A(MP) { WR; xram->write(R[0]->R(), rA); return resGO; }
   int MOVXIR1A(MP) { WR; xram->write(R[1]->R(), rA); return resGO; }
   int CPLF0(MP) { cF.W(rF ^ flagF0); return resGO; }
+  int CPLF1(MP) { cflagF1.W(flagF1^1); return resGO; }
   int CLRF1(MP) { cflagF1.W(0); return resGO; }
+  int SELRB0(MP) { cF.W(rF & ~flagBS); return resGO; }
+  int SELRB1(MP) { cF.W(rF | flagBS); return resGO; }
+  int MOVAF(MP) { cA.W(psw); return resGO; }
+  int MOVFA(MP) { cF.W(rA); return resGO; }
+  int SELMB0(MP) { mb= 0; return resGO; }
+  int SELMB1(MP) { mb= 1; return resGO; }
 };
 
 

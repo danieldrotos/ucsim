@@ -257,6 +257,14 @@ protected:
   int XRLR5(MP) { cA.W(rA ^ R[5]->read()); return resGO; }
   int XRLR6(MP) { cA.W(rA ^ R[6]->read()); return resGO; }
   int XRLR7(MP) { cA.W(rA ^ R[7]->read()); return resGO; }
+  int DECR0(MP) { return dec(R[0]); }
+  int DECR1(MP) { return dec(R[1]); }
+  int DECR2(MP) { return dec(R[2]); }
+  int DECR3(MP) { return dec(R[3]); }
+  int DECR4(MP) { return dec(R[4]); }
+  int DECR5(MP) { return dec(R[5]); }
+  int DECR6(MP) { return dec(R[6]); }
+  int DECR7(MP) { return dec(R[7]); }
   
   /* Branching */
   int JMP0(MP) { return jmp(code); }
