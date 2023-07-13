@@ -57,6 +57,7 @@ class cl_i8041: public cl_i8048
   int SELRB1(MP) { cF.W(rF | flagBS); return resGO; }
   int MOVAF(MP) { cA.W(psw); return resGO; }
   int MOVFA(MP) { cF.W(rA); return resGO; }
+  int MOVP3AIA(MP) { RD; return movp3(); }
 };
 
 

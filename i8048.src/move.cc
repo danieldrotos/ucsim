@@ -78,5 +78,14 @@ CL2::movp(void)
   return resGO;
 }
 
+int
+CL2::movp3(void)
+{
+  u16_t a= PC & 0x800;
+  a|= (0x300+rA);
+  cA.W(rom->read(a));
+  return resGO;
+}
+
 
 /* End of i8085.src/move.cc */

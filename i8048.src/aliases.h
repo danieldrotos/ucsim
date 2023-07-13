@@ -191,6 +191,7 @@
 #define XRLR5 instruction_dd
 #define XRLR6 instruction_de
 #define XRLR7 instruction_df
+#define MOVP3AIA instruction_e3
 #define JMP7 instruction_e4
 #define SELMB0 instruction_e5
 #define JNC instruction_e6

@@ -168,6 +168,7 @@ protected:
   virtual int xch(class cl_memory_cell *op);
   virtual int xchd(class cl_memory_cell *op);
   virtual int movp(void);
+  virtual int movp3(void);
   
   /* Other instructions */
   int NOP(MP) { return resGO; }

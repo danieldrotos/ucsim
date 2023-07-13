@@ -245,7 +245,7 @@ DEC( df, XRLR7		, "xrl a,r7"	, ' ', 1, false, 1, (void*)"8A421" )
 // e0 undefined
 // e1 undefined
 // e2 undefined
-// e3 MOVP3 A,@A 48,41A,41
+DEC( e3, MOVP3AIA	,  "movp3 a,@a"	, ' ', 1, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( e4, JMP7   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 DEC( e5, SELMB0		, "sel mb0"	, ' ', 1, false, 1, (void*)"8----" ) //48
 // e5 EN DMA 41A

@@ -65,6 +65,7 @@ class cl_i8048: public cl_i8020
   int MOVXAIR1(MP) { RD; cA.W(xram->read(R[1]->R())); return resGO; }
   int MOVXIR0A(MP) { WR; xram->write(R[0]->R(), rA); return resGO; }
   int MOVXIR1A(MP) { WR; xram->write(R[1]->R(), rA); return resGO; }
+  int MOVP3AIA(MP) { RD; return movp3(); }
   int CPLF0(MP) { cF.W(rF ^ flagF0); return resGO; }
   int CPLF1(MP) { cflagF1.W(flagF1^1); return resGO; }
   int CLRF1(MP) { cflagF1.W(0); return resGO; }
