@@ -2,15 +2,15 @@
 
 DEC( 00, NOP		, "nop"		, ' ', 1, false, 1, (void*)"8A421" )
 // 01 undefined
-// 02 OUTL BUS,A 48
+DEC( 02, OUTLBA		, "outl bus,a"	, ' ', 1, false, 2, (void*)"8----" ) // 48
 // 02 OUT DBB,A 41A,41
 DEC( 03, ADDI8		, "add a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 04, JMP0   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
 DEC( 05, ENI    	, "en i"	, ' ', 1, false, 1, (void*)"8A421" )
 // 06 undefined
 DEC( 07, DECA		, "dec a"	, ' ', 1, false, 1, (void*)"8A421" )
-// 08 INS A,BUS 48
-// 08 IN A,P0 21,22
+DEC( 08, INSAB		, "ins a,bus"	, ' ', 1, false, 2, (void*)"8----" ) //48
+DEC( 08, INP0		, "in a,p0"	, ' ', 1, false, 2, (void*)"---21" ) //21,22
 DEC( 09, IN1    	, "in a,p1"     , ' ', 1, false, 2, (void*)"8A421" )
 DEC( 0a, IN2    	, "in a,p2"     , ' ', 1, false, 2, (void*)"8A421" )
 // 0b undefined
@@ -21,7 +21,7 @@ DEC( 0f, MOVDAP7	, "movd a,p7"	, ' ', 1, false, 2, (void*)"8A421" )
 
 DEC( 10, INCIR0 	, "inc @r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 11, INCIR1 	, "inc @r1"	, ' ', 1, false, 1, (void*)"8A421" )
-DEC( 12, JB0		, "jb0 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
+DEC( 12, JB0		, "jb0 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 13, ADCI8		, "addc a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 14, CALL0  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 15, DISI		, "dis i"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -55,7 +55,7 @@ DEC( 2f, XCHR7		, "xch a,r7"	, ' ', 1, false, 1, (void*)"8A421" )
 
 DEC( 30, XCHDIR0	, "xchd a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 31, XCHDIR1	, "xchd a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
-DEC( 32, JB1		, "jb1 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
+DEC( 32, JB1		, "jb1 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 // 33 undefined
 DEC( 34, CALL1  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
 // 35 DIS TCNTI 48,41A,41,22
@@ -89,7 +89,7 @@ DEC( 4f, ORLR7		, "orl a,r7"	, ' ', 1, false, 1, (void*)"8A421" )
 
 DEC( 50, ANLIR0		, "anl a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 51, ANLIR1		, "anl a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
-DEC( 52, JB2		, "jb2 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
+DEC( 52, JB2		, "jb2 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 53, ANLI8		, "anl a,'i8'"	, ' ', 2, false, 1, (void*)"8A421" )
 DEC( 54, CALL2  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
 // 55 STRT T
@@ -123,7 +123,7 @@ DEC( 6f, ADDR7		, "add a,r7"	, ' ', 1, false, 1, (void*)"8A421" )
 
 DEC( 70, ADCIR0		, "adc a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 71, ADCIR1		, "adc a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
-DEC( 72, JB3		, "jb3 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
+DEC( 72, JB3		, "jb3 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 74, CALL3  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
 // 75 ENT0 CLK 48
 // 76 JF1 48,41A,41
@@ -160,9 +160,9 @@ DEC( 8f, ORLDP7A	, "orld p7,a"	, ' ', 1, false, 2, (void*)"8A421" )
 // 90 OUTL P0,A 22,21
 // 90 MOV STS,A 41A
 // 91 MOVX @R1,A 48
-DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
-DEC( 93, RETR		, "retr"	, ' ', 1, false, 2, (void*)"8A4" ) //48,41A,41
-DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"82" ) //48,22
+DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
+DEC( 93, RETR		, "retr"	, ' ', 1, false, 2, (void*)"8A4--" ) //48,41A,41
+DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 // 95 CPL F0 48,41A,41
 DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 97, CLRC		, "clr c"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -193,9 +193,9 @@ DEC( af, MOVR7A		, "mov r7,a"	, ' ', 1, false, 1, (void*)"8A421" )
 
 DEC( b0, MOVIR0I8	, "mov @r0,'i8'", ' ', 2, false, 2, (void*)"8A421" )
 DEC( b1, MOVIR1I8	, "mov @r1,'i8'", ' ', 2, false, 2, (void*)"8A421" )
-DEC( b2, JB5		, "jb5 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
+DEC( b2, JB5		, "jb5 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( b3, JMPPIA		, "jmpp @a"	, ' ', 1, false, 2, (void*)"8A421" )
-DEC( b4, CALL5  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"82" ) //48,22
+DEC( b4, CALL5  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 // b5 CPL F1 48,41A,41
 // b6 JF0 48,41A,41
 // b7 undefined
@@ -212,7 +212,7 @@ DEC( bf, MOVR7I8	, "mov r7,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 // c1 undefined
 // c2 undefined
 // c3 undefined
-DEC( c4, JMP6   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"82" ) //48,22
+DEC( c4, JMP6   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 // c5 SEL RB0 48,41A,41
 DEC( c6, JZ		, "jz 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 // c7 MOV A,PSW 48,41A,41
@@ -227,9 +227,9 @@ DEC( c6, JZ		, "jz 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 
 DEC( d0, XRLIR0		, "xrl a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( d1, XRLIR1		, "xrl a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
-DEC( d2, JB6		, "jb6 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
+DEC( d2, JB6		, "jb6 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC (d3, XRLI8		, "xrl a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
-DEC( d4, CALL6  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"82" ) //48,22
+DEC( d4, CALL6  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 // d5 SEL RB1 48,41A,41
 // d6 JNIBF 41A,41
 // d7 MOV PSW,A 48,41A,41
@@ -246,7 +246,7 @@ DEC( df, XRLR7		, "xrl a,r7"	, ' ', 1, false, 1, (void*)"8A421" )
 // e1 undefined
 // e2 undefined
 // e3 MOVP3 A,@A 48,41A,41
-DEC( e4, JMP7   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"82" ) //48,22
+DEC( e4, JMP7   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 // e5 EN DMA 41A
 DEC( e6, JNC		, "jnc 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( e7, RL		, "rl a"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -261,9 +261,9 @@ DEC( ef, DJNZR7		, "djnz r7,'a8'", ' ', 2, false, 2, (void*)"8A421" )
 
 DEC( f0, MOVAIR0	, "mov a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( f1, MOVAIR1	, "mov a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
-DEC( f2, JB7		, "jb7 'a8'"	, ' ', 2, false, 2, (void*)"8A4" ) //48,41A,41
+DEC( f2, JB7		, "jb7 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 // f3 undefined
-DEC( f4, CALL7  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"82" ) //48,22
+DEC( f4, CALL7  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 // f5 SEL MB1 48
 // f5 EN FLAGS 41A
 DEC( f6, JC		, "jc 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )

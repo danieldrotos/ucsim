@@ -1,8 +1,11 @@
 #define NOP instruction_00
+#define OUTLBA instruction_02
 #define ADDI8 instruction_03
 #define JMP0 instruction_04
 #define ENI instruction_05
 #define DECA instruction_07
+#define INSAB instruction_08
+#define INP0 instruction_08
 #define IN1 instruction_09
 #define IN2 instruction_0a
 #define MOVDAP4 instruction_0c

@@ -26,7 +26,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 #include "simi8048cl.h"
-#include "i8048cl.h"
+#include "i8041cl.h"
 #include "glob.h"
 
 
@@ -95,6 +95,16 @@ cl_simi8048::mk_controller(void)
       return uc;
     case CPU_I8040:
       uc= new cl_i8048(this, 4096, 256);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8041:
+      uc= new cl_i8041(this, 4096, 256);
+      uc->set_id(cpus_8048[i].type_help);
+      uc->type= &cpus_8048[i];
+      return uc;
+    case CPU_I8041A:
+      uc= new cl_i8041A(this, 4096, 256);
       uc->set_id(cpus_8048[i].type_help);
       uc->type= &cpus_8048[i];
       return uc;

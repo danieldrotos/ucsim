@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (i8048cl.h)
+ * Simulator of microcontrollers (i8041cl.h)
  *
  * Copyright (C) 2022 Drotos Daniel, Talker Bt.
  * 
@@ -26,40 +26,36 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 
-#ifndef I8048CL_HEADER
-#define I8048CL_HEADER
+#ifndef I8041CL_HEADER
+#define I8041CL_HEADER
 
-#include "i8020cl.h"
-
-
-class cl_flag48_op: public cl_memory_operator
-{
-public:
-  cl_flag48_op(class cl_memory_cell *acell): cl_memory_operator(acell) {}
-  virtual t_mem write(t_mem val);
-};
+#include "i8048cl.h"
 
 
-/*
- * i8048 processor
- */
-
-class cl_i8048: public cl_i8020
+class cl_i8041: public cl_i8048
 {
  public:
-  cl_i8048(class cl_sim *asim);
-  cl_i8048(class cl_sim *asim,
+  cl_i8041(class cl_sim *asim);
+  cl_i8041(class cl_sim *asim,
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
   virtual int init(void);
   virtual class cl_memory_operator *make_flagop(void);
   virtual void decode_regs(void);
-  // 48 specific insts to implement:
-  //OUTLBA
-  //INSAB
+};
+
+
+class cl_i8041A: public cl_i8041
+{
+ public:
+  cl_i8041A(class cl_sim *asim);
+  cl_i8041A(class cl_sim *asim,
+	   unsigned int rom_siz,
+	   unsigned int ram_siz);
+  virtual int init(void);
 };
 
 
 #endif
 
-/* End of i8048.src/i8048cl.h */
+/* End of i8048.src/i8041cl.h */
