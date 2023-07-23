@@ -30,9 +30,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 #include "glob.h"
+#include "timercl.h"
 
 #include "i8020cl.h"
-
 
 /*
  * Flags
@@ -146,6 +146,16 @@ cl_i8020::make_cpu_hw(void)
   cpu= new cl_i8020_cpu(this);
   add_hw(cpu);
   cpu->init();
+}
+
+void
+cl_i8020::mk_hw_elements(void)
+{
+  cl_uc::mk_hw_elements();
+  class cl_hw *h;
+  h= new cl_timer(this);
+  h->init();
+  add_hw(h);
 }
 
 void
@@ -496,6 +506,7 @@ cl_i8020::stack_check_overflow(t_addr sp_after)
 void
 cl_i8020::reset(void)
 {
+  cl_uc::reset();
   // 1) PC=0
   cPC.W(0);
   // 2) SP=0, 3) regbank=0
