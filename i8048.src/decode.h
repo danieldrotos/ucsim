@@ -41,7 +41,7 @@ DEC( 21, XCHIR1		, "xch a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 22, INDBB		, "in a,dbb"	, ' ', 1, false, 2, (void*)"-A4--" ) //41A,41
 DEC( 23, MOVAI8		, "mov a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 24, JMP1   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
-// 25 EN TCNTI 48,41A,41,22
+DEC( 25, ENTCNTI 	, "en tcnti"	, ' ', 1, false, 1, (void*)"8A42-" ) //48,41A,41,22
 DEC( 26, JNT0		, "jnt0 'a8'"	, ' ', 2, false, 2, (void*)"8A42-" ) //48,41A,41,22
 DEC( 27, CLRA		, "clr a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 28, XCHR0		, "xch a,r0"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -58,7 +58,7 @@ DEC( 31, XCHDIR1	, "xchd a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 32, JB1		, "jb1 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 // 33 undefined
 DEC( 34, CALL1  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
-// 35 DIS TCNTI 48,41A,41,22
+DEC( 35, DISTCNTI	, "dis tcnti"	, ' ', 1, false, 1, (void*)"8A42-" ) //48,41A,41,22
 DEC( 36, JT0		, "jt0 'a8'"	, ' ', 2, false, 2, (void*)"8A42-" ) //48,41A,41,22
 DEC( 37, CPLA		, "cpl a"	, ' ', 1, false, 1, (void*)"8A421" )
 // 38 undefined

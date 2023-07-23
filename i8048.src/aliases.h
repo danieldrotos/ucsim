@@ -34,6 +34,7 @@
 #define INDBB instruction_22
 #define MOVAI8 instruction_23
 #define JMP1 instruction_24
+#define ENTCNTI instruction_25
 #define JNT0 instruction_26
 #define CLRA instruction_27
 #define XCHR0 instruction_28
@@ -48,6 +49,7 @@
 #define XCHDIR1 instruction_31
 #define JB1 instruction_32
 #define CALL1 instruction_34
+#define DISTCNTI instruction_35
 #define JT0 instruction_36
 #define CPLA instruction_37
 #define MOVDP4A instruction_3c

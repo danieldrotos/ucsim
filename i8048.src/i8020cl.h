@@ -34,6 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "aliases.h"
 
 #include "glob.h"
+#include "timercl.h"
 
 
 enum {
@@ -115,6 +116,7 @@ protected:
   class cl_address_space *regs, *aspsw, *iram, *ports, *xram;
   class cl_cell8 cA, *R[8];
   class cl_memory_chip *rom_chip, *iram_chip, *ports_chip, *xram_chip;
+  class cl_timer *timer;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
@@ -176,6 +178,15 @@ protected:
   int DISI(MP) { ien= 0; return resGO; }
   int ENI(MP) { ien= 1; return resGO; }
   int CLRF0(MP) { cF.W(rF & ~flagF0); return resGO; }
+  /* Timer */
+  int ENTCNTI(MP);
+  int DISTCNTI(MP);
+  int JTF(MP);
+  int MOVAT(MP);
+  int MOVTA(MP);
+  int STRTCNT(MP);
+  int STRTT(MP);
+  int STOPTCNT(MP);
   
   /* Arithmetics */
   int ADDI8(MP) { return add(fetch(), false); }
@@ -300,6 +311,7 @@ protected:
   int JNC(MP) { return jif(!(psw & flagC)); }
   int JC(MP) { return jif(psw & flagC); }
   int JT1(MP) { return jif(cpu->cfg_read(i8020cpu_t1)); }
+  int JNT1(MP) { return jif(!(cpu->cfg_read(i8020cpu_t1))); }
   int JMPPIA(MP);
   int DJNZR0(MP) { return djnz(code); }
   int DJNZR1(MP) { return djnz(code); }
@@ -367,15 +379,6 @@ protected:
   int MOVR5I8(MP) { R[5]->W(fetch()); return resGO; }
   int MOVR6I8(MP) { R[6]->W(fetch()); return resGO; }
   int MOVR7I8(MP) { R[7]->W(fetch()); return resGO; }
-
-  // Timer instructions
-  //JTF(MP);
-  //MOVAT(MP);
-  //MOVTA(MP);
-  //STRTCNT(MP);
-  //STRTT(MP);
-  //STOPTCNT(MP);
-  //JNT1(MP);
   
   // 21,22 specific instructions to implement
   int INP0(MP) { return in(0); }

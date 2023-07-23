@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "i8020cl.h"
+
 #include "timercl.h"
 
 
@@ -39,23 +41,23 @@ cl_timer::reset(void)
 {
   pre= pre16= tmr= 0;
   mode= tm_stop;
-  int_enabled= false;
-  int_active= false;
-  overflow_flag= false;
+  int_enabled= 0;
+  overflow_flag= 0;
+  timer_flag= 0;
 }
 
 void
 cl_timer::print_info(class cl_console_base *con)
 {
-  con->dd_printf("pre16=%u pre32=%u tmr=%u ",
-		 pre16, pre, tmr);
+  con->dd_printf("pre16=%u pre32=%u tmr=%u,0x%02x ",
+		 pre16, pre, tmr, tmr);
   con->dd_printf("mode=%s ",
 		 (mode==tm_counter)?"COUNTER":
 		 (mode==tm_timer)?"TIMER":
 		 "STOP");
-  con->dd_printf("ovf=%s int=%s %s",
+  con->dd_printf("tflag=%s ovf=%s int %s",
+		 timer_flag?"ON":"off",
 		 overflow_flag?"ON":"off",
-		 int_active?"ON":"off",
 		 int_enabled?"enabled":"disabled");
   con->dd_printf("\n");
 }
@@ -95,12 +97,145 @@ cl_timer::do_timer(unsigned int cyc)
   tmr+= cyc;
   if (tmr > 0xff)
     {
-      overflow_flag= true;
-      if (int_enabled)
-	int_active= true;
+      do_overflow();
     }
   tmr&= 0xff;
+  cfg_write(tcfg_tmr, tmr);
 }
 
+void
+cl_timer::do_overflow(void)
+{
+  cfg_write(tcfg_tflag, 1);
+  if (int_enabled)
+    cfg_write(tcfg_ovflag, 1);
+}
+
+const char *
+cl_timer::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case tcfg_on: return cl_hw::cfg_help(addr);
+    case tcfg_mode: return "Mode of timer (0:stop, 1:counter, 2:timer)";
+    case tcfg_pre16: return "Pre divider of input clock (divs by 16)";
+    case tcfg_pre: return "Prescaler of timer (divs by 32)";
+    case tcfg_tmr: return "Value of timer (8 bit)";
+    case tcfg_ovflag: return "Overflow flag (boolean)";
+    case tcfg_tflag: return "Timer flag (boolean)";
+    case tcfg_ien: return "Enable of interrupt request (boolean)";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_timer::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch (addr)
+    {
+    case tcfg_on: return cl_hw::conf_op(cell, addr, val);
+    case tcfg_mode:
+      if (val)
+	{
+	  mode= (enum timer_modes)(*val % 3);
+	  if (mode != tm_stop)
+	    pre= 0;
+	}
+      cell->set(mode);
+      break;
+    case tcfg_pre16:
+      if (val) pre16= *val % 16;
+      cell->set(pre16);
+      break;
+    case tcfg_pre:
+      if (val) pre= *val % 32;
+      cell->set(pre);
+      break;
+    case tcfg_tmr:
+      if (val)
+	tmr= *val & 0xff;
+      cell->set(tmr);
+      break;
+    case tcfg_ien:
+      if (val)
+	{
+	  if (!(int_enabled= (*val)?1:0))
+	    overflow_flag= 0;
+	}
+      cell->set(int_enabled?1:0);
+    case tcfg_tflag:
+      if (val)
+	timer_flag= (*val)?1:0;
+      cell->set(timer_flag?1:0);
+    case tcfg_ovflag:
+      if (val)
+	overflow_flag= (*val)?1:0;
+      cell->set(overflow_flag?1:0);
+    }
+  return cell->get();
+}
+
+
+int
+CL2::ENTCNTI(MP)
+{
+  if (timer)
+    timer->int_enabled= 1;
+  return resGO;
+}
+
+int
+CL2::DISTCNTI(MP)
+{
+  if (timer)
+    {
+      timer->int_enabled= 0;
+      timer->overflow_flag= 0;
+    }
+  return resGO;
+}
+
+int
+CL2::JTF(MP)
+{
+  jif(timer->timer_flag);
+  timer->timer_flag= 0;
+  return resGO;
+}
+
+int
+CL2::MOVAT(MP)
+{
+  cA.W(timer->tmr);
+  return resGO;
+}
+
+int
+CL2::MOVTA(MP)
+{
+  timer->cfg_write(tcfg_tmr, rA);
+  return resGO;
+}
+
+int
+CL2::STRTCNT(MP)
+{
+  timer->cfg_write(tcfg_mode, tm_counter);
+  return resGO;
+}
+
+int
+CL2::STRTT(MP)
+{
+  timer->cfg_write(tcfg_mode, tm_timer);
+  return resGO;
+}
+
+int
+CL2::STOPTCNT(MP)
+{
+  timer->cfg_write(tcfg_mode, tm_stop);
+  return resGO;
+}
 
 /* End of i8048.src/timer.cc */

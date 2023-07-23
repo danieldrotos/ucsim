@@ -57,6 +57,7 @@ cl_i8020::cl_i8020(class cl_sim *asim):
   ram_size= 64;
   rom_size= 1024;
   info_ch= '1';
+  timer= NULL;
 }
 
 int
@@ -152,10 +153,10 @@ void
 cl_i8020::mk_hw_elements(void)
 {
   cl_uc::mk_hw_elements();
-  class cl_hw *h;
-  h= new cl_timer(this);
-  h->init();
-  add_hw(h);
+  //class cl_hw *h;
+  timer= new cl_timer(this);
+  timer->init();
+  add_hw(timer);
 }
 
 void

@@ -37,19 +37,36 @@ enum timer_modes {
   tm_timer= 2
 };
 
+enum timer_confs
+  {
+    tcfg_on	= 0,
+    tcfg_mode	= 1,
+    tcfg_pre16	= 2,
+    tcfg_pre	= 3,
+    tcfg_tmr	= 4,
+    tcfg_ovflag	= 5,
+    tcfg_tflag	= 6,
+    tcfg_ien	= 7,
+    tcfg_eni	= 7,
+    tcfg_nuof	= 8
+  };
 
 class cl_timer: public cl_hw
 {
- protected:
+ public:
   unsigned int pre, pre16, tmr;
   enum timer_modes mode;
-  bool int_enabled, int_active, overflow_flag;
+  bool int_enabled, overflow_flag, timer_flag;
  public:
   cl_timer(class cl_uc *auc);
   virtual void reset(void);
   virtual void print_info(class cl_console_base *con);
   virtual int tick(int cycles);
   virtual void do_timer(unsigned int cyc);
+  virtual void do_overflow(void);
+  virtual unsigned int cfg_size(void) { return tcfg_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 
