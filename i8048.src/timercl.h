@@ -59,6 +59,7 @@ class cl_timer: public cl_hw
   bool int_enabled, overflow_flag, timer_flag;
  public:
   cl_timer(class cl_uc *auc);
+  virtual int init(void);
   virtual void reset(void);
   virtual void print_info(class cl_console_base *con);
   virtual int tick(int cycles);

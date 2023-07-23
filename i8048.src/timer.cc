@@ -36,6 +36,21 @@ cl_timer::cl_timer(class cl_uc *auc):
   pre16= 0;
 }
 
+int
+cl_timer::init(void)
+{
+  cl_hw::init();
+  uc->vars->add("timer_on", cfg, tcfg_on, cfg_help(tcfg_on));
+  uc->vars->add("timer_mode", cfg, tcfg_mode, cfg_help(tcfg_mode));
+  uc->vars->add("timer_pre16", cfg, tcfg_pre16, cfg_help(tcfg_pre16));
+  uc->vars->add("timer_pre", cfg, tcfg_pre, cfg_help(tcfg_pre));
+  uc->vars->add("timer", cfg, tcfg_tmr, cfg_help(tcfg_tmr));
+  uc->vars->add("timer_overflow", cfg, tcfg_ovflag, cfg_help(tcfg_ovflag));
+  uc->vars->add("timer_flag", cfg, tcfg_tflag, cfg_help(tcfg_tflag));
+  uc->vars->add("timer_int_enabled", cfg, tcfg_ien, cfg_help(tcfg_ien));
+  return 0;
+}
+
 void
 cl_timer::reset(void)
 {
@@ -117,13 +132,13 @@ cl_timer::cfg_help(t_addr addr)
   switch (addr)
     {
     case tcfg_on: return cl_hw::cfg_help(addr);
-    case tcfg_mode: return "Mode of timer (0:stop, 1:counter, 2:timer)";
-    case tcfg_pre16: return "Pre divider of input clock (divs by 16)";
-    case tcfg_pre: return "Prescaler of timer (divs by 32)";
-    case tcfg_tmr: return "Value of timer (8 bit)";
-    case tcfg_ovflag: return "Overflow flag (boolean)";
-    case tcfg_tflag: return "Timer flag (boolean)";
-    case tcfg_ien: return "Enable of interrupt request (boolean)";
+    case tcfg_mode: return "Mode of timer (0:stop, 1:counter, 2:timer, RW)";
+    case tcfg_pre16: return "Pre divider of input clock, divs by 16 (int, RW)";
+    case tcfg_pre: return "Prescaler of timer, divs by 32 (int, RW)";
+    case tcfg_tmr: return "Value of timer (8 bit, RW)";
+    case tcfg_ovflag: return "Overflow flag (bool, RW)";
+    case tcfg_tflag: return "Timer flag (bool, RW)";
+    case tcfg_ien: return "Enable of interrupt request (bool, RW)";
     }
   return "Not used";
 }
@@ -163,14 +178,17 @@ cl_timer::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	    overflow_flag= 0;
 	}
       cell->set(int_enabled?1:0);
+      break;
     case tcfg_tflag:
       if (val)
 	timer_flag= (*val)?1:0;
       cell->set(timer_flag?1:0);
+      break;
     case tcfg_ovflag:
       if (val)
 	overflow_flag= (*val)?1:0;
       cell->set(overflow_flag?1:0);
+      break;
     }
   return cell->get();
 }
