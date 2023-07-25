@@ -59,6 +59,7 @@ cl_i8020::cl_i8020(class cl_sim *asim):
   info_ch= '1';
   timer= NULL;
   inner_rom= rom_size;
+  bus= NULL;
 }
 
 int

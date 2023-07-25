@@ -77,12 +77,18 @@ cl_bus::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     {
     case tbus_on: return cl_hw::conf_op(cell, addr, val);
     case tbus_in:
-      if (val) *val&= 0xff;
-      cell->set(*val);
+      if (val)
+	{
+	  *val&= 0xff;
+	  cell->set(*val);
+	}
       break;
     case tbus_out:
-      if (val) *val&= 0xff;
-      cell->set(*val);
+      if (val)
+	{
+	  *val&= 0xff;
+	  cell->set(*val);
+	}
       break;
     }
   return cell->get();
