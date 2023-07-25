@@ -3085,9 +3085,6 @@ cl_uc::fetch(void)
     return(0);
 
   code= rom->read(PC);
-  //PC= ++PC & PCmask;//rom->inc_address(PC);
-  //PC++;
-  //PC&= PCmask;
   set_PC((PC+1)&PCmask);
   vc.fetch++;
   return(code);

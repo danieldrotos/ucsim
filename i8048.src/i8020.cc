@@ -58,6 +58,7 @@ cl_i8020::cl_i8020(class cl_sim *asim):
   rom_size= 1024;
   info_ch= '1';
   timer= NULL;
+  inner_rom= rom_size;
 }
 
 int
@@ -131,6 +132,17 @@ cl_i8020::set_PC(t_addr addr)
   PC|= addr;
 }
 
+t_mem
+cl_i8020::fetch(void)
+{
+  u8_t c= rom->read(PC);
+  set_PC((PC+1)&PCmask);
+  if (PC >= inner_rom)
+    bus->latch(PC);
+  vc.fetch++;
+  return c;
+}
+
 class cl_memory_operator *
 cl_i8020::make_flagop(void)
 {
@@ -157,6 +169,9 @@ cl_i8020::mk_hw_elements(void)
   timer= new cl_timer(this);
   timer->init();
   add_hw(timer);
+
+  bus= new cl_bus(this);
+  bus->init();
 }
 
 void

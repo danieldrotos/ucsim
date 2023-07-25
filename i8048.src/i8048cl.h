@@ -52,19 +52,22 @@ class cl_i8048: public cl_i8020
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
   virtual int init(void);
+  virtual void mk_hw_elements(void);
   virtual class cl_memory_operator *make_flagop(void);
   virtual void decode_regs(void);
+  virtual u8_t movxrd(u8_t addr);
+  virtual void movxwr(u8_t addr, u8_t val);
   // 48 specific insts to implement:
-  //OUTLB
-  //INS
+  int OUTLB(MP);
+  int INS(MP);
   int JNT0(MP) { return jif(cpu->cfg_read(i8020cpu_t0)==0); }
   int JT0 (MP) { return jif(cpu->cfg_read(i8020cpu_t0)!=0); }
   int JF0 (MP) { return jif(psw & flagF0); }
   int JF1 (MP) { return jif(cflagF1.R() != 0); }
-  int MOVXAIR0(MP) { RD; cA.W(xram->read(R[0]->R())); return resGO; }
-  int MOVXAIR1(MP) { RD; cA.W(xram->read(R[1]->R())); return resGO; }
-  int MOVXIR0A(MP) { WR; xram->write(R[0]->R(), rA); return resGO; }
-  int MOVXIR1A(MP) { WR; xram->write(R[1]->R(), rA); return resGO; }
+  int MOVXAIR0(MP) { RD; cA.W(movxrd(R[0]->R())); return resGO; }
+  int MOVXAIR1(MP) { RD; cA.W(movxrd(R[1]->R())); return resGO; }
+  int MOVXIR0A(MP) { WR; movxwr(R[0]->R(), rA); return resGO; }
+  int MOVXIR1A(MP) { WR; movxwr(R[1]->R(), rA); return resGO; }
   int MOVP3AIA(MP) { RD; return movp3(); }
   int CPLF0(MP) { cF.W(rF ^ flagF0); return resGO; }
   int CPLF1(MP) { cflagF1.W(flagF1^1); return resGO; }

@@ -50,6 +50,7 @@ cl_i8048::cl_i8048(class cl_sim *asim):
   rom_size= 1024;
   ram_size= 64;
   info_ch= '8';
+  inner_rom= rom_size;
 }
 
 cl_i8048::cl_i8048(class cl_sim *asim,
@@ -60,6 +61,7 @@ cl_i8048::cl_i8048(class cl_sim *asim,
   rom_size= rom_siz;
   ram_size= ram_siz;
   info_ch= '8';
+  inner_rom= rom_size;
 }
 
 int
@@ -68,13 +70,13 @@ cl_i8048::init(void)
   cl_i8020::init();
   return 0;
 }
-/*
-const char *
-cl_i8048::id_string(void)
+
+void
+cl_i8048::mk_hw_elements(void)
 {
-  return "i8048";
+  cl_i8020::mk_hw_elements();
+  add_hw(bus);
 }
-*/
 
 class cl_memory_operator *
 cl_i8048::make_flagop(void)
@@ -100,6 +102,34 @@ cl_i8048::decode_regs(void)
   cpsw->write(0);
   for (i= 0; i < 8; i++)
     R[i]= (cl_cell8*)regs->get_cell(i);
+}
+
+u8_t
+cl_i8048::movxrd(u8_t addr)
+{
+  bus->latch(addr);
+  return xram->read(addr);
+}
+
+void
+cl_i8048::movxwr(u8_t addr, u8_t val)
+{
+  xram->write(addr, val);
+  bus->latch(val);
+}
+
+int
+cl_i8048::OUTLB(MP)
+{
+  bus->latch(rA);
+  return resGO;
+}
+
+int
+cl_i8048::INS(MP)
+{
+  cA.W(bus->cfg_read(tbus_in));
+  return resGO;
 }
 
 

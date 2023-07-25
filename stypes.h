@@ -400,6 +400,7 @@ enum hw_cath {
   HW_TIMER	= 0x0002,
   HW_UART	= 0x0004,
   HW_PORT	= 0x0008,
+  HW_GPIO	= 0x0008,
   HW_PCA	= 0x0010,
   HW_INTERRUPT	= 0x0020,
   HW_WDT	= 0x0040,

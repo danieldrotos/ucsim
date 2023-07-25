@@ -35,6 +35,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 #include "timercl.h"
+#include "buscl.h"
 
 
 enum {
@@ -105,7 +106,7 @@ public:
 class cl_i8020: public cl_uc
 {
 protected:
-  unsigned int ram_size, rom_size;
+  unsigned int ram_size, rom_size, inner_rom;
   const char *id_str;
   char info_ch;
  public:
@@ -117,12 +118,14 @@ protected:
   class cl_cell8 cA, *R[8];
   class cl_memory_chip *rom_chip, *iram_chip, *ports_chip, *xram_chip;
   class cl_timer *timer;
+  class cl_bus *bus;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
   virtual void set_id(const char *ids) { id_str= ids; }
   virtual const char *id_string(void) { return id_str; }
   virtual void set_PC(t_addr addr);
+  virtual t_mem fetch(void);
   virtual class cl_memory_operator *make_flagop(void);
   virtual void make_cpu_hw(void);
   virtual void mk_hw_elements(void);

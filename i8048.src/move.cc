@@ -75,6 +75,8 @@ CL2::movp(void)
   u16_t a= PC & 0xf00;
   a|= rA;
   cA.W(rom->read(a));
+  if (a >= inner_rom)
+    bus->latch(a);
   return resGO;
 }
 
@@ -84,6 +86,8 @@ CL2::movp3(void)
   u16_t a= PC & 0x800;
   a|= (0x300+rA);
   cA.W(rom->read(a));
+  if (a >= inner_rom)
+    bus->latch(a);
   return resGO;
 }
 
