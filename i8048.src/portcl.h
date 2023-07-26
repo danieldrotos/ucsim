@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (i8041cl.h)
+ * Simulator of microcontrollers (portcl.h)
  *
- * Copyright (C) 2022 Drotos Daniel, Talker Bt.
+ * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,41 +25,48 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#ifndef PORTCL_HEADER
+#define PORTCL_HEADER
 
-#ifndef I8041CL_HEADER
-#define I8041CL_HEADER
-
-#include "i8048cl.h"
+#include "port_hwcl.h"
 
 
-class cl_i8041: public cl_i8048
+enum port_cfg {
+  port_on	= 0,
+  port_pin	= 1,
+  port_value	= 2,
+  port_odr	= 3,
+  port_nuof	= 4
+};
+
+enum port_widths {
+  port_4bit	= 4,
+  port_8bit	= 8
+};
+
+class cl_qport: public cl_hw
 {
  public:
-  cl_i8041(class cl_sim *asim);
-  cl_i8041(class cl_sim *asim,
-	   unsigned int rom_siz,
-	   unsigned int ram_siz);
-  virtual int init(void);
-  virtual class cl_memory_operator *make_flagop(void);
-  virtual void decode_regs(void);
-
-  // UPI41 sepcific instructions to implement
-  //OUTDBB
-  //INDBB
+  class cl_address_space *port_as;
+  t_addr addr;
+  u8_t mask, width;
+ public:
+  cl_qport(class cl_uc *auc, int aid,
+	   class cl_address_space *apas, t_addr aaddr,
+	   enum port_widths awidth);
+  virtual unsigned int cfg_size(void) { return port_nuof; }
 };
 
 
-class cl_i8041A: public cl_i8041
+class cl_p2: public cl_qport
 {
  public:
-  cl_i8041A(class cl_sim *asim);
-  cl_i8041A(class cl_sim *asim,
-	   unsigned int rom_siz,
-	   unsigned int ram_siz);
-  virtual int init(void);
+  cl_p2(class cl_uc *auc, int aid,
+	class cl_address_space *apas, t_addr aaddr,
+	enum port_widths awidth);
 };
 
 
 #endif
 
-/* End of i8048.src/i8041cl.h */
+/* End of i8048.src/portcl.h */

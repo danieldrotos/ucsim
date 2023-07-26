@@ -74,8 +74,22 @@ cl_i8048::init(void)
 void
 cl_i8048::mk_hw_elements(void)
 {
-  cl_i8020::mk_hw_elements();
+  cl_uc::mk_hw_elements();
+  //class cl_hw *h;
+  timer= new cl_timer(this);
+  timer->init();
+  add_hw(timer);
+
+  bus= new cl_bus(this);
   add_hw(bus);
+
+  p0= NULL;
+  p1= new cl_qport(this, 1, ports, 1, port_8bit);
+  p1->init();
+  add_hw(p1);
+  p2= new cl_p2(this, 2, ports, 2, port_8bit);
+  p2->init();
+  add_hw(p2);
 }
 
 class cl_memory_operator *

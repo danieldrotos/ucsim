@@ -36,6 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "timercl.h"
 #include "buscl.h"
+#include "portcl.h"
 
 
 enum {
@@ -119,6 +120,8 @@ protected:
   class cl_memory_chip *rom_chip, *iram_chip, *ports_chip, *xram_chip;
   class cl_timer *timer;
   class cl_bus *bus;
+  class cl_qport *p0, *p1;
+  class cl_p2 *p2;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);

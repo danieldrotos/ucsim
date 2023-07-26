@@ -30,7 +30,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 #include "glob.h"
-#include "timercl.h"
 
 #include "i8020cl.h"
 
@@ -173,6 +172,16 @@ cl_i8020::mk_hw_elements(void)
 
   bus= new cl_bus(this);
   bus->init();
+
+  p0= new cl_qport(this, 0, ports, 0, port_8bit);
+  p0->init();
+  add_hw(p0);
+  p1= new cl_qport(this, 1, ports, 1, port_8bit);
+  p1->init();
+  add_hw(p1);
+  p2= new cl_p2(this, 2, ports, 2, port_4bit);
+  p2->init();
+  add_hw(p2);
 }
 
 void

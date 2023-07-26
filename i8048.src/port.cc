@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (i8041cl.h)
+ * Simulator of microcontrollers (port.cc)
  *
- * Copyright (C) 2022 Drotos Daniel, Talker Bt.
+ * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,41 +25,35 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-
-#ifndef I8041CL_HEADER
-#define I8041CL_HEADER
-
-#include "i8048cl.h"
+#include "portcl.h"
 
 
-class cl_i8041: public cl_i8048
+cl_qport::cl_qport(class cl_uc *auc, int aid,
+		   class cl_address_space *apas, t_addr aaddr,
+		   enum port_widths awidth):
+  cl_hw(auc, HW_PORT, aid, "port")
 {
- public:
-  cl_i8041(class cl_sim *asim);
-  cl_i8041(class cl_sim *asim,
-	   unsigned int rom_siz,
-	   unsigned int ram_siz);
-  virtual int init(void);
-  virtual class cl_memory_operator *make_flagop(void);
-  virtual void decode_regs(void);
-
-  // UPI41 sepcific instructions to implement
-  //OUTDBB
-  //INDBB
-};
+  port_as= apas;
+  addr= aaddr;
+  width= awidth;
+  switch (width)
+    {
+    case port_4bit: mask= 0x0f; break;
+    case port_8bit: mask= 0xff; break;
+    }
+}
 
 
-class cl_i8041A: public cl_i8041
+/*
+ * P2 port
+ */
+
+cl_p2::cl_p2(class cl_uc *auc, int aid,
+	     class cl_address_space *apas, t_addr aaddr,
+	     enum port_widths awidth):
+  cl_qport(auc, aid, apas, aaddr, awidth)
 {
- public:
-  cl_i8041A(class cl_sim *asim);
-  cl_i8041A(class cl_sim *asim,
-	   unsigned int rom_siz,
-	   unsigned int ram_siz);
-  virtual int init(void);
-};
+}
 
 
-#endif
-
-/* End of i8048.src/i8041cl.h */
+/* End of i8048.src/port.cc */
