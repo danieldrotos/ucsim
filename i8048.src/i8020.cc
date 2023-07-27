@@ -541,6 +541,9 @@ cl_i8020::reset(void)
   cmb.W(0);
   // 5) BUS=> HiZ
   // 6) Port1, Port2: input mode
+  ports->write(0, 0xff);
+  ports->write(1, 0xff);
+  ports->write(2, 0xff);
   // 7) disbale irq
   ien= 0;
   // 8) stop timer

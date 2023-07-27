@@ -50,11 +50,20 @@ class cl_qport: public cl_hw
   class cl_address_space *port_as;
   t_addr addr;
   u8_t mask, width;
+  class cl_memory_cell *pcell;
  public:
   cl_qport(class cl_uc *auc, int aid,
 	   class cl_address_space *apas, t_addr aaddr,
 	   enum port_widths awidth);
+  virtual int init(void);
   virtual unsigned int cfg_size(void) { return port_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+  
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
+  virtual void print_info(class cl_console_base *con);
 };
 
 
