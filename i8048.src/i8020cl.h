@@ -70,7 +70,8 @@ enum i8020cpu_confs
   {
     i8020cpu_t0		= 0,
     i8020cpu_t1		= 1,
-    i8020cpu_nuof	= 2
+    i8020cpu_inner	= 2,
+    i8020cpu_nuof	= 3
   };
 
 
@@ -125,6 +126,8 @@ protected:
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
+  virtual void set_inner(unsigned int inner) { inner_rom= inner; }
+  virtual unsigned int get_inner(void) { return inner_rom; }
   virtual void set_id(const char *ids) { id_str= ids; }
   virtual const char *id_string(void) { return id_str; }
   virtual void set_PC(t_addr addr);

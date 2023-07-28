@@ -609,6 +609,9 @@ cl_i8020_cpu::init(void)
   uc->vars->add(v= new cl_var("T1", cfg, i8020cpu_t1,
 			      cfg_help(i8020cpu_t1)));
   v->init();
+  uc->vars->add(v= new cl_var("inner_rom", cfg, i8020cpu_inner,
+			      cfg_help(i8020cpu_inner)));
+  v->init();
 
   return 0;
 }
@@ -618,10 +621,9 @@ cl_i8020_cpu::cfg_help(t_addr addr)
 {
   switch (addr)
     {
-    case i8020cpu_t0:
-      return "T0 input pin";
-    case i8020cpu_t1:
-      return "T1 input pin";
+    case i8020cpu_t0: return "T0 input pin (bool, RW)";
+    case i8020cpu_t1: return "T1 input pin (bool, RW)";
+    case i8020cpu_inner: return "Size of inner code memory (int, RW)";
     }
   return "Not used";
 }
@@ -629,7 +631,7 @@ cl_i8020_cpu::cfg_help(t_addr addr)
 t_mem
 cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
-  //class cl_i8020 *u= (class cl_i8020 *)uc;
+  class cl_i8020 *u= (class cl_i8020 *)uc;
   if (val)
     cell->set(*val);
   switch ((enum i8020cpu_confs)addr)
@@ -640,6 +642,11 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	*val= (*val)?1:0;
 	  /*else
 	    cell->set(u->sp_limit);*/
+      break;
+    case i8020cpu_inner:
+      if (val)
+	u->set_inner(*val);
+      cell->set(u->get_inner());
       break;
     case i8020cpu_nuof: break;
     }
