@@ -182,6 +182,10 @@ cl_i8020::mk_hw_elements(void)
   p2= new cl_p2(this, 2, ports, 2, port_4bit);
   p2->init();
   add_hw(p2);
+
+  pext= new cl_pext(this, 0, ports, 4, p2);
+  pext->init();
+  add_hw(pext);
 }
 
 void

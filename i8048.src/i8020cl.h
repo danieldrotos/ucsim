@@ -123,6 +123,7 @@ protected:
   class cl_bus *bus;
   class cl_qport *p0, *p1;
   class cl_p2 *p2;
+  class cl_pext *pext;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);

@@ -55,6 +55,10 @@ class cl_qport: public cl_hw
   cl_qport(class cl_uc *auc, int aid,
 	   class cl_address_space *apas, t_addr aaddr,
 	   enum port_widths awidth);
+  cl_qport(class cl_uc *auc, int aid,
+	   class cl_address_space *apas, t_addr aaddr,
+	   enum port_widths awidth,
+	   const char *aid_string);
   virtual int init(void);
   virtual unsigned int cfg_size(void) { return port_nuof; }
   virtual const char *cfg_help(t_addr addr);
@@ -76,6 +80,45 @@ class cl_p2: public cl_qport
 };
 
 
+enum pext_cfg {
+  pext_on	= 0,
+  pext_pin4	= 4,
+  pext_pin5	= 5,
+  pext_pin6	= 6,
+  pext_pin7	= 7,
+  pext_odr4	= 8,
+  pext_odr5	= 9,
+  pext_odr6	= 10,
+  pext_odr7	= 11,
+  pext_dir4	= 12,
+  pext_dir5	= 13,
+  pext_dir6	= 14,
+  pext_dir7	= 15,
+  pext_nuof	= 16
+};
+
+class cl_pext: public cl_qport
+{
+public:
+  class cl_memory_cell *pcell4, *pcell5, *pcell6, *pcell7;
+  class cl_p2 *p2;
+public:
+  cl_pext(class cl_uc *auc, int aid,
+	  class cl_address_space *apas, t_addr aaddr,
+	  class cl_p2 *the_p2);
+  virtual int init(void);
+  virtual void reset(void);
+  virtual unsigned int cfg_size(void) { return pext_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+  
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+
+  virtual void print_info(class cl_console_base *con);
+};
+
+  
 #endif
 
 /* End of i8048.src/portcl.h */

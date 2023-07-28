@@ -45,6 +45,22 @@ cl_qport::cl_qport(class cl_uc *auc, int aid,
     }
 }
 
+cl_qport::cl_qport(class cl_uc *auc, int aid,
+		   class cl_address_space *apas, t_addr aaddr,
+		   enum port_widths awidth,
+		   const char *aid_string):
+  cl_hw(auc, HW_PORT, aid, aid_string)
+{
+  port_as= apas;
+  addr= aaddr;
+  width= awidth;
+  switch (width)
+    {
+    case port_4bit: mask= 0x0f; break;
+    case port_8bit: mask= 0xff; break;
+    }
+}
+
 int
 cl_qport::init(void)
 {
@@ -79,6 +95,7 @@ cl_qport::read(class cl_memory_cell *cell)
 void
 cl_qport::write(class cl_memory_cell *cell, t_mem *val)
 {
+  if (cell == pcell) cfg_set(port_odr, *val & mask);
   conf(cell, val);
 }
 
@@ -103,7 +120,7 @@ cl_qport::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       break;
     case port_odr: // copy value into memory cell
       if (val)
-	pcell->write(*val & mask);
+	pcell->set(*val & mask);
       cell->set(pcell->get());
       break;
     case port_nuof:
@@ -148,6 +165,199 @@ cl_p2::cl_p2(class cl_uc *auc, int aid,
 	     enum port_widths awidth):
   cl_qport(auc, aid, apas, aaddr, awidth)
 {
+}
+
+
+/*
+ * 8243 Port extender
+ */
+
+cl_pext::cl_pext(class cl_uc *auc, int aid,
+		 class cl_address_space *apas, t_addr aaddr,
+		 class cl_p2 *the_p2):
+  cl_qport(auc, aid, apas, aaddr, port_4bit, "pext")
+{
+  p2= the_p2;
+}
+
+int
+cl_pext::init(void)
+{
+  cl_hw::init();
+  pcell4= register_cell(port_as, addr+0);
+  pcell5= register_cell(port_as, addr+1);
+  pcell6= register_cell(port_as, addr+2);
+  pcell7= register_cell(port_as, addr+3);
+  cfg_set(pext_pin4, 0);
+  cfg_set(pext_pin5, 0);
+  cfg_set(pext_pin6, 0);
+  cfg_set(pext_pin7, 0);
+  cfg_write(pext_dir4, 0);
+  cfg_write(pext_dir5, 0);
+  cfg_write(pext_dir6, 0);
+  cfg_write(pext_dir7, 0);
+  cfg_write(pext_odr4, 0);
+  cfg_write(pext_odr5, 0); 
+  cfg_write(pext_odr6, 0);
+  cfg_write(pext_odr7, 0);
+  return 0;
+}
+
+void
+cl_pext::reset(void)
+{
+  cfg_write(pext_dir4, 0);
+  cfg_write(pext_dir5, 0);
+  cfg_write(pext_dir6, 0);
+  cfg_write(pext_dir7, 0);
+}
+
+const char *
+cl_pext::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case pext_on: return "Turn/get on/off state (bool, RW)";
+    case pext_pin4: return "Outside value of port 4 pins (int, RW)";
+    case pext_pin5: return "Outside value of port 5 pins (int, RW)";
+    case pext_pin6: return "Outside value of port 6 pins (int, RW)";
+    case pext_pin7: return "Outside value of port 7 pins (int, RW)";
+    case pext_odr4: return "Value of output 4 (int, RW)";
+    case pext_odr5: return "Value of output 5 (int, RW)";
+    case pext_odr6: return "Value of output 6 (int, RW)";
+    case pext_odr7: return "Value of output 7 (int, RW)";
+    case pext_dir4: return "Direction of port 4, In=0,Out=1 (int, RW)";
+    case pext_dir5: return "Direction of port 5, In=0,Out=1 (int, RW)";
+    case pext_dir6: return "Direction of port 6, In=0,Out=1 (int, RW)";
+    case pext_dir7: return "Derection of port 7, In=0,Out=1 (int, RW)";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_pext::read(class cl_memory_cell *cell)
+{
+  if (cell == pcell4)
+    return(cfg_get(pext_pin4));
+  if (cell == pcell5)
+    return(cfg_get(pext_pin5));
+  if (cell == pcell6)
+    return(cfg_get(pext_pin6));
+  if (cell == pcell7)
+    return(cfg_get(pext_pin7));
+  conf(cell, NULL);
+  return cell->get();
+}
+
+
+void
+cl_pext::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (cell == pcell4) cfg_set(pext_odr4, *val & mask);
+  if (cell == pcell5) cfg_set(pext_odr5, *val & mask);
+  if (cell == pcell6) cfg_set(pext_odr6, *val & mask);
+  if (cell == pcell7) cfg_set(pext_odr7, *val & mask);
+  conf(cell, val);
+}
+
+t_mem
+cl_pext::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch ((enum pext_cfg)addr)
+    {
+    case pext_on: // turn this HW on/off
+      if (val)
+	{
+	  on= (*val)?1:0;
+	}
+      cell->set(on?1:0);
+      break;
+    case pext_pin4: // get/set PINS
+    case pext_pin5:
+    case pext_pin6:
+    case pext_pin7:
+      if (val)
+	cell->set(*val & mask);
+      break;
+    case pext_dir4: // set direction, 0=in 1=out
+    case pext_dir5:
+    case pext_dir6:
+    case pext_dir7:
+      if (val)
+	{
+	  if (*val)
+	    *val= mask;	    
+	  cell->set(*val);
+	}
+      break;
+    case pext_odr4: // copy value into memory cell
+      if (val)
+	pcell4->set(*val & mask);
+      cell->set(pcell4->get());
+      break;
+    case pext_odr5: // copy value into memory cell
+      if (val)
+	pcell5->set(*val & mask);
+      cell->set(pcell5->get());
+      break;
+    case pext_odr6: // copy value into memory cell
+      if (val)
+	pcell6->set(*val & mask);
+      cell->set(pcell6->get());
+      break;
+    case pext_odr7: // copy value into memory cell
+      if (val)
+	pcell7->set(*val & mask);
+      cell->set(pcell7->get());
+      break;
+    case pext_nuof:
+      break;
+    }
+  return cell->get();
+}
+
+void
+cl_pext::print_info(class cl_console_base *con)
+{
+  con->dd_printf("port4 --> ");
+  if (cfg_get(pext_dir4))
+    con->print_bin(cfg_get(pext_odr4), width);
+  else
+    con->dd_printf("----");
+  con->dd_printf("    ");
+  con->dd_printf("port5 --> ");
+  if (cfg_get(pext_dir4))
+    con->print_bin(cfg_get(pext_odr5), width);
+  else
+    con->dd_printf("----");
+  con->dd_printf("    ");
+  con->dd_printf("port6 --> ");
+  if (cfg_get(pext_dir4))
+    con->print_bin(cfg_get(pext_odr6), width);
+  else
+    con->dd_printf("----");
+  con->dd_printf("    ");
+  con->dd_printf("port7 --> ");
+  if (cfg_get(pext_dir4))
+   con->print_bin(cfg_get(pext_odr7), width);
+  else
+    con->dd_printf("----");
+  con->dd_printf("    ");
+  con->dd_printf("\n");
+
+  con->dd_printf("port4 <-- ");
+  con->print_bin(cfg_get(pext_pin4), width);
+  con->dd_printf("    ");
+  con->dd_printf("port5 <-- ");
+  con->print_bin(cfg_get(pext_pin5), width);
+  con->dd_printf("    ");
+  con->dd_printf("port6 <-- ");
+  con->print_bin(cfg_get(pext_pin6), width);
+  con->dd_printf("    ");
+  con->dd_printf("port7 <-- ");
+  con->print_bin(cfg_get(pext_pin7), width);
+  con->dd_printf("    ");
+  con->dd_printf("\n");
 }
 
 
