@@ -167,8 +167,8 @@ protected:
   virtual int anl(class cl_memory_cell *op);
   virtual int xrl(class cl_memory_cell *op);
   virtual int daa(void);
-  virtual int orld(cl_memory_cell *op1, cl_memory_cell *op2);
-  virtual int anld(cl_memory_cell *op1, cl_memory_cell *op2);
+  virtual int orld(int addr, cl_memory_cell *op2);
+  virtual int anld(int addr, cl_memory_cell *op2);
   
   virtual int jmp(MP);
   virtual int call(MP);
@@ -259,14 +259,14 @@ protected:
   int RR(MP);
   int RL(MP);
   int RLC(MP);
-  int ORLDP4A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
-  int ORLDP5A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
-  int ORLDP6A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
-  int ORLDP7A(MP) { RDWR; return orld(ports->get_cell(4+(code>>6)), &cA); }
-  int ANLDP4A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
-  int ANLDP5A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
-  int ANLDP6A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
-  int ANLDP7A(MP) { RDWR; return anld(ports->get_cell(4+(code>>6)), &cA); }
+  int ORLDP4A(MP) { RDWR; return orld(4+(code>>6), &cA); }
+  int ORLDP5A(MP) { RDWR; return orld(4+(code>>6), &cA); }
+  int ORLDP6A(MP) { RDWR; return orld(4+(code>>6), &cA); }
+  int ORLDP7A(MP) { RDWR; return orld(4+(code>>6), &cA); }
+  int ANLDP4A(MP) { RDWR; return anld(4+(code>>6), &cA); }
+  int ANLDP5A(MP) { RDWR; return anld(4+(code>>6), &cA); }
+  int ANLDP6A(MP) { RDWR; return anld(4+(code>>6), &cA); }
+  int ANLDP7A(MP) { RDWR; return anld(4+(code>>6), &cA); }
   int CLRC(MP) { cF.W(psw & ~flagC); return resGO; }
   int CPLC(MP) { cF.W(psw ^ flagC); return resGO; }
   int XRLIR0(MP) { RD; return xrl(iram_ir(0)); }

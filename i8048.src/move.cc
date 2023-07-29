@@ -31,14 +31,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 CL2::in(int port_addr)
 {
-  cA.W(ports->read(port_addr));
+  if (port_addr >= 4)
+    cA.W(pext->in(port_addr));
+  else
+    cA.W(ports->read(port_addr));
   return resGO;
 }
 
 int
 CL2::out(int port_addr)
 {
-  ports->write(port_addr, rA);
+  if (port_addr >= 4)
+    pext->out(port_addr, rA);
+  else
+    ports->write(port_addr, rA);
   return resGO;
 }
 

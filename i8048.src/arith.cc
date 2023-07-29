@@ -141,20 +141,18 @@ CL2::RLC(MP)
 }
 
 int
-CL2::orld(cl_memory_cell *op1, cl_memory_cell *op2)
+CL2::orld(int addr, cl_memory_cell *op2)
 {
-  u8_t v1= op1->R() & 0xf;
   u8_t v2= op2->R() & 0xf;
-  op1->W(v1 | v2);
+  pext->orl(addr, v2);
   return resGO;
 }
 
 int
-CL2::anld(cl_memory_cell *op1, cl_memory_cell *op2)
+CL2::anld(int addr, cl_memory_cell *op2)
 {
-  u8_t v1= op1->R() & 0xf;
   u8_t v2= op2->R() & 0xf;
-  op1->W(v1 & v2);
+  pext->anl(addr, v2);
   return resGO;
 }
 

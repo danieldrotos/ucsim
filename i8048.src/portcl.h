@@ -77,6 +77,7 @@ class cl_p2: public cl_qport
   cl_p2(class cl_uc *auc, int aid,
 	class cl_address_space *apas, t_addr aaddr,
 	enum port_widths awidth);
+  virtual void set_low(u8_t val);
 };
 
 
@@ -115,6 +116,11 @@ public:
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
+  virtual u8_t in(u8_t addr);
+  virtual void out(u8_t addr, u8_t val);
+  virtual void orl(u8_t addr, u8_t val);
+  virtual void anl(u8_t addr, u8_t val);
+  
   virtual void print_info(class cl_console_base *con);
 };
 

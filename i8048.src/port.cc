@@ -129,6 +129,7 @@ cl_qport::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return cell->get();
 }
 
+
 void
 cl_qport::print_info(class cl_console_base *con)
 {
@@ -165,6 +166,16 @@ cl_p2::cl_p2(class cl_uc *auc, int aid,
 	     enum port_widths awidth):
   cl_qport(auc, aid, apas, aaddr, awidth)
 {
+}
+
+void
+cl_p2::set_low(u8_t val)
+{
+  u8_t r= cfg_get(port_odr);
+  r&= 0xf0;
+  val&= 0xf;
+  r|= val;
+  cfg_write(port_odr, val);
 }
 
 
@@ -315,6 +326,82 @@ cl_pext::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     }
   return cell->get();
 }
+
+u8_t
+cl_pext::in(u8_t addr)
+{
+  int rdir, rpin;
+  u8_t r;
+  switch (addr)
+    {
+    case 4: rdir= pext_dir4; rpin= pext_pin4; break;
+    case 5: rdir= pext_dir5; rpin= pext_pin5; break;
+    case 6: rdir= pext_dir6; rpin= pext_pin6; break;
+    case 7: rdir= pext_dir7; rpin= pext_pin7; break;
+    default: return 0;
+    }
+  cfg_write(rdir, 0);
+  r= cfg_read(rpin);
+  p2->set_low(r);
+  return r;
+}
+
+void
+cl_pext::out(u8_t addr, u8_t val)
+{
+  int rdir, rodr;
+  switch (addr)
+    {
+    case 4: rdir= pext_dir4; rodr= pext_odr4; break;
+    case 5: rdir= pext_dir5; rodr= pext_odr5; break;
+    case 6: rdir= pext_dir6; rodr= pext_odr6; break;
+    case 7: rdir= pext_dir7; rodr= pext_odr7; break;
+    default: return ;
+    }
+  cfg_write(rdir, 1);
+  cfg_write(rodr, val);
+  p2->set_low(val);
+}
+
+void
+cl_pext::orl(u8_t addr, u8_t val)
+{
+  int rdir, rodr;
+  switch (addr)
+    {
+    case 4: rdir= pext_dir4; rodr= pext_odr4; break;
+    case 5: rdir= pext_dir5; rodr= pext_odr5; break;
+    case 6: rdir= pext_dir6; rodr= pext_odr6; break;
+    case 7: rdir= pext_dir7; rodr= pext_odr7; break;
+    default: return ;
+    }
+  cfg_write(rdir, 1);
+  val&= 0xf;
+  u8_t r= cfg_read(rodr);
+  val|= r;
+  cfg_write(rodr, val);
+  p2->set_low(val);
+}
+
+void
+cl_pext::anl(u8_t addr, u8_t val)
+{
+  int rdir, rodr;
+  switch (addr)
+    {
+    case 4: rdir= pext_dir4; rodr= pext_odr4; break;
+    case 5: rdir= pext_dir5; rodr= pext_odr5; break;
+    case 6: rdir= pext_dir6; rodr= pext_odr6; break;
+    case 7: rdir= pext_dir7; rodr= pext_odr7; break;
+    default: return ;
+    }
+  cfg_write(rdir, 1);
+  val&= 0xf;
+  u8_t r= cfg_read(rodr);
+  val&= r;
+  cfg_write(rodr, val);
+  p2->set_low(val);
+}  
 
 void
 cl_pext::print_info(class cl_console_base *con)
