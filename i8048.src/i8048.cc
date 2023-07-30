@@ -81,6 +81,7 @@ cl_i8048::mk_hw_elements(void)
   add_hw(timer);
 
   bus= new cl_bus(this);
+  bus->init();
   add_hw(bus);
 
   p0= NULL;

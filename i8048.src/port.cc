@@ -67,6 +67,11 @@ cl_qport::init(void)
   cl_hw::init();
   pcell= register_cell(port_as, addr);
   cfg_set(port_pin, 0xff & mask);
+  chars n;
+  n.format("port%d_", id);
+  uc->vars->add(n+"pin", cfg, port_pin, cfg_help(port_pin));
+  uc->vars->add(n+"value", cfg, port_value, cfg_help(port_value));
+  uc->vars->add(n+"odr", cfg, port_odr, cfg_help(port_odr));
   return 0;
 }
 
@@ -136,21 +141,21 @@ cl_qport::print_info(class cl_console_base *con)
   uchar data;
 
   con->dd_printf("%s[%d]\n", id_string, id);
-  data= pcell->get();
+  data= pcell->get() & mask;
   con->dd_printf("P%d    ", id);
-  con->print_bin(data, 8);
+  con->print_bin(data, width);
   con->dd_printf(" 0x%02x %3d %c (Value in SFR register)\n",
 		 data, data, isprint(data)?data:'.');
 
-  data= cfg_get(port_pin);
+  data= cfg_get(port_pin) & mask;
   con->dd_printf("Pin%d  ", id);
-  con->print_bin(data, 8);
+  con->print_bin(data, width);
   con->dd_printf(" 0x%02x %3d %c (Output of outside circuits)\n",
 		 data, data, isprint(data)?data:'.');
 
-  data= pcell->read();
+  data= pcell->read() & mask;
   con->dd_printf("Port%d ", id);
-  con->print_bin(data, 8);
+  con->print_bin(data, width);
   con->dd_printf(" 0x%02x %3d %c (Value on the port pins)\n",
 		 data, data, isprint(data)?data:'.');
   //print_cfg_info(con);
@@ -211,6 +216,20 @@ cl_pext::init(void)
   cfg_write(pext_odr5, 0); 
   cfg_write(pext_odr6, 0);
   cfg_write(pext_odr7, 0);
+  chars n;
+  n.format("pext%d_", id);
+  uc->vars->add(n+"pin4", cfg, pext_pin4, cfg_help(pext_pin4));
+  uc->vars->add(n+"pin5", cfg, pext_pin5, cfg_help(pext_pin5));
+  uc->vars->add(n+"pin6", cfg, pext_pin6, cfg_help(pext_pin6));
+  uc->vars->add(n+"pin7", cfg, pext_pin7, cfg_help(pext_pin7));
+  uc->vars->add(n+"odr4", cfg, pext_odr4, cfg_help(pext_odr4));
+  uc->vars->add(n+"odr5", cfg, pext_odr5, cfg_help(pext_odr5));
+  uc->vars->add(n+"odr6", cfg, pext_odr6, cfg_help(pext_odr6));
+  uc->vars->add(n+"odr7", cfg, pext_odr7, cfg_help(pext_odr7));
+  uc->vars->add(n+"dir4", cfg, pext_dir4, cfg_help(pext_dir4));
+  uc->vars->add(n+"dir5", cfg, pext_dir5, cfg_help(pext_dir5));
+  uc->vars->add(n+"dir6", cfg, pext_dir6, cfg_help(pext_dir6));
+  uc->vars->add(n+"dir7", cfg, pext_dir7, cfg_help(pext_dir7));
   return 0;
 }
 
@@ -410,25 +429,25 @@ cl_pext::print_info(class cl_console_base *con)
   if (cfg_get(pext_dir4))
     con->print_bin(cfg_get(pext_odr4), width);
   else
-    con->dd_printf("----");
+    con->dd_printf("xxxx");
   con->dd_printf("    ");
   con->dd_printf("port5 --> ");
   if (cfg_get(pext_dir4))
     con->print_bin(cfg_get(pext_odr5), width);
   else
-    con->dd_printf("----");
+    con->dd_printf("xxxx");
   con->dd_printf("    ");
   con->dd_printf("port6 --> ");
   if (cfg_get(pext_dir4))
     con->print_bin(cfg_get(pext_odr6), width);
   else
-    con->dd_printf("----");
+    con->dd_printf("xxxx");
   con->dd_printf("    ");
   con->dd_printf("port7 --> ");
   if (cfg_get(pext_dir4))
    con->print_bin(cfg_get(pext_odr7), width);
   else
-    con->dd_printf("----");
+    con->dd_printf("xxxx");
   con->dd_printf("    ");
   con->dd_printf("\n");
 

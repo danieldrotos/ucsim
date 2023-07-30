@@ -127,6 +127,7 @@ protected:
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
+  virtual double def_xtal(void) { return 11000000; }
   virtual void set_inner(unsigned int inner) { inner_rom= inner; }
   virtual unsigned int get_inner(void) { return inner_rom; }
   virtual void set_id(const char *ids) { id_str= ids; }

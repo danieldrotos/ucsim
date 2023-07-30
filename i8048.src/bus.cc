@@ -37,9 +37,11 @@ int
 cl_bus::init(void)
 {
   cl_hw::init();
-  uc->vars->add("bus_on", cfg, tbus_on, cfg_help(tbus_on));
+  //uc->vars->add("bus_on", cfg, tbus_on, cfg_help(tbus_on));
   uc->vars->add("bus_in", cfg, tbus_in, cfg_help(tbus_in));
+  uc->vars->add("bus0_in", cfg, tbus_in, cfg_help(tbus_in));
   uc->vars->add("bus_out", cfg, tbus_out, cfg_help(tbus_out));
+  uc->vars->add("bus0_out", cfg, tbus_out, cfg_help(tbus_out));
   out_ff= cfg_cell(tbus_out);
   return 0;
 }

@@ -40,14 +40,15 @@ int
 cl_timer::init(void)
 {
   cl_hw::init();
-  uc->vars->add("timer_on", cfg, tcfg_on, cfg_help(tcfg_on));
-  uc->vars->add("timer_mode", cfg, tcfg_mode, cfg_help(tcfg_mode));
-  uc->vars->add("timer_pre16", cfg, tcfg_pre16, cfg_help(tcfg_pre16));
-  uc->vars->add("timer_pre", cfg, tcfg_pre, cfg_help(tcfg_pre));
+  //uc->vars->add("timer_on", cfg, tcfg_on, cfg_help(tcfg_on));
+  uc->vars->add("timer0_mode", cfg, tcfg_mode, cfg_help(tcfg_mode));
+  uc->vars->add("timer0_pre16", cfg, tcfg_pre16, cfg_help(tcfg_pre16));
+  uc->vars->add("timer0_pre", cfg, tcfg_pre, cfg_help(tcfg_pre));
   uc->vars->add("timer", cfg, tcfg_tmr, cfg_help(tcfg_tmr));
-  uc->vars->add("timer_overflow", cfg, tcfg_ovflag, cfg_help(tcfg_ovflag));
-  uc->vars->add("timer_flag", cfg, tcfg_tflag, cfg_help(tcfg_tflag));
-  uc->vars->add("timer_int_enabled", cfg, tcfg_ien, cfg_help(tcfg_ien));
+  uc->vars->add("timer0", cfg, tcfg_tmr, cfg_help(tcfg_tmr));
+  uc->vars->add("timer0_overflow", cfg, tcfg_ovflag, cfg_help(tcfg_ovflag));
+  uc->vars->add("timer0_flag", cfg, tcfg_tflag, cfg_help(tcfg_tflag));
+  uc->vars->add("timer0_int_enabled", cfg, tcfg_ien, cfg_help(tcfg_ien));
   return 0;
 }
 

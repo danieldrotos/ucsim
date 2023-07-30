@@ -102,7 +102,7 @@ cl_i8020::init(void)
       if (strchr((const char*)(dt[i].info), info_ch) != NULL)
 	{
 	  not_inv[dt[i].code]= 1;
-	  tick_tab20[dt[i].code]= dt[i].ticks;
+	  tick_tab20[dt[i].code]= dt[i].ticks * 5;
 	}
       i++;
     }
