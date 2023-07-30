@@ -120,6 +120,21 @@ cl_timer::do_timer(unsigned int cyc)
 }
 
 void
+cl_timer::do_counter(unsigned int cyc)
+{
+  if (mode == tm_counter)
+    {
+      tmr+= cyc;
+      if (tmr > 0xff)
+	{
+	  do_overflow();
+	}
+      tmr&= 0xff;
+      cfg_write(tcfg_tmr, tmr);
+    }
+}
+
+void
 cl_timer::do_overflow(void)
 {
   cfg_write(tcfg_tflag, 1);

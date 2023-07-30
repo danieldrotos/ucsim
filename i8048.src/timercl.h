@@ -64,6 +64,7 @@ class cl_timer: public cl_hw
   virtual void print_info(class cl_console_base *con);
   virtual int tick(int cycles);
   virtual void do_timer(unsigned int cyc);
+  virtual void do_counter(unsigned int cyc);
   virtual void do_overflow(void);
   virtual unsigned int cfg_size(void) { return tcfg_nuof; }
   virtual const char *cfg_help(t_addr addr);

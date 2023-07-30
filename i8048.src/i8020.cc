@@ -641,11 +641,20 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   switch ((enum i8020cpu_confs)addr)
     {
     case i8020cpu_t0:
-    case i8020cpu_t1:
       if (val)
 	*val= (*val)?1:0;
-	  /*else
-	    cell->set(u->sp_limit);*/
+      break;
+    case i8020cpu_t1:
+      if (val)
+	{
+	  *val= (*val)?1:0;
+	  if ((cell->get() != 0) &&
+	      (*val == 0) &&
+	      (u->timer != NULL))
+	    {
+	      u->timer->do_counter(1);
+	    }
+	}
       break;
     case i8020cpu_inner:
       if (val)
