@@ -55,8 +55,8 @@
 #include "outputportcl.h"
 #include "cmdpblazecl.h"
 
-#define uint32 t_addr
-#define uint8 unsigned char
+//#define uint32 t_addr
+//#define uint8 unsigned char
 
 using namespace std;
 /*******************************************************************/
