@@ -165,10 +165,10 @@ cl_cmd_arg::as_memory(class cl_uc *uc)
     {
       if (value.memory.memory->is_chip())
 	value.memory.memchip=
-	  dynamic_cast<class cl_memory_chip *>(value.memory.memory);
+	  (class cl_memory_chip *)(value.memory.memory);
       if (value.memory.memory->is_address_space())
 	value.memory.address_space=
-	  dynamic_cast<class cl_address_space *>(value.memory.memory);
+	  (class cl_address_space *)(value.memory.memory);
     }
   return(value.memory.memory != 0);
 }

@@ -1834,7 +1834,7 @@ cl_address_space::undecode_area(class cl_address_decoder *skip,
   for (i= 0; i < decoders->count; i++)
     {
       class cl_address_decoder *d=
-	dynamic_cast<class cl_address_decoder *>(decoders->object_at(i));
+	(class cl_address_decoder *)(decoders->object_at(i));
       if (!d ||
 	  d == skip)
 	continue;

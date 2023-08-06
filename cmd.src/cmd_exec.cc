@@ -366,7 +366,7 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
 	      for (i= 0; i < subset->count; i++)
 		{
 		  class cl_cmd *c=
-		    dynamic_cast<class cl_cmd *>(subset->object_at(i));
+		    (class cl_cmd *)(subset->object_at(i));
 		  //con->dd_printf("%s\n", c->short_help.c_str());
 		  c->print_short(con);
 		}
@@ -394,7 +394,7 @@ cl_help_cmd::do_set(class cl_cmdline *cmdline, int pari,
   int i;
   for (i= 0; i < cmdset->count; i++)
     {
-      class cl_cmd *cmd= dynamic_cast<class cl_cmd *>(cmdset->object_at(i));
+      class cl_cmd *cmd= (class cl_cmd *)(cmdset->object_at(i));
       if (!cmd)
 	continue;
       if (pari >= cmdline->nuof_params())
@@ -528,7 +528,10 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
 	  if (w.nempty())
 	    {
 	      v= application->eval(w);
-	      con->print_expr_result(v, fmt.nempty()?((const char *)fmt):NULL);
+	      if (fmt.nempty())
+		con->print_expr_result(v, fmt.c_str());
+	      else
+		con->print_expr_result(v, (const char *)NULL);
 	    }
 	  fmt= "";
 	}

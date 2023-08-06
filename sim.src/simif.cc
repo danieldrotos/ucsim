@@ -252,7 +252,7 @@ cl_sif_commands::produce_answer(void)
     {
       answer[i+1]= 0;
       class cl_sif_command *sc=
-	dynamic_cast<class cl_sif_command *>(sif->commands->object_at(i));
+	(class cl_sif_command *)(sif->commands->object_at(i));
       if (!sc)
 	continue;
       answer[i+1]= sc->get_command();
@@ -278,7 +278,7 @@ cl_sif_cmdinfo::produce_answer(void)
   for (i= 0; i < sif->commands->count; i++)
     {
       class cl_sif_command *sc=
-	dynamic_cast<class cl_sif_command *>(sif->commands->object_at(i));
+	(class cl_sif_command *)(sif->commands->object_at(i));
       if (sc->get_command() == (enum sif_command)cm)
 	{
 	  about= sc;
@@ -309,7 +309,7 @@ cl_sif_cmdhelp::produce_answer(void)
   for (i= 0; i < sif->commands->count; i++)
     {
       class cl_sif_command *sc=
-	dynamic_cast<class cl_sif_command *>(sif->commands->object_at(i));
+	(class cl_sif_command *)(sif->commands->object_at(i));
       if (sc->get_command() == (enum sif_command)cm)
 	{
 	  about= sc;
@@ -639,7 +639,7 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 	}
       as_name= strdup(mem->get_name());
       addr= a;
-      if ((as= dynamic_cast<class cl_address_space *>(mem)) != 0)
+      if ((as= (class cl_address_space *)(mem)) != 0)
 	{
 	  address= addr;
 	  if (addr < 0)
@@ -714,7 +714,7 @@ cl_simulator_interface::write(class cl_memory_cell *cel, t_mem *val)
       for (i= 0; i < commands->count; i++)
 	{
 	  class cl_sif_command *c=
-	    dynamic_cast<class cl_sif_command *>(commands->object_at(i));
+	    (class cl_sif_command *)(commands->object_at(i));
 	  if (!c)
 	    continue;
 	  enum sif_command cm= c->get_command();
@@ -916,7 +916,7 @@ cl_simulator_interface::print_info(class cl_console_base *con)
   for (i= 0; i < commands->count; i++)
     {
       class cl_sif_command *c=
-	dynamic_cast<class cl_sif_command *>(commands->object_at(i));
+	(class cl_sif_command *)(commands->object_at(i));
       if (!c)
 	continue;
       int cmd= c->get_command();

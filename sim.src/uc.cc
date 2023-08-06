@@ -1213,7 +1213,7 @@ cl_uc::memory(const char *id)
   for (i= 0; i < address_spaces->count; i++)
     {
       class cl_base *b= address_spaces->object_at(i);
-      class cl_memory *m= dynamic_cast<cl_memory *>(b);
+      class cl_memory *m= (class cl_memory *)(b);
       if (!m ||
 	  !m->have_real_name())
 	continue;
@@ -2804,14 +2804,14 @@ cl_uc::handle_event(class cl_event &event)
     {
     case ev_address_space_added:
       {
-	try {
+	//try {
 	  class cl_event_address_space_added &e=
-	    dynamic_cast<class cl_event_address_space_added &>(event);
+	    (class cl_event_address_space_added &)(event);
 	  address_space_added(e.as);
 	  e.handle();
-	}
-	catch (...)
-	  { break; }
+	  //}
+	  //catch (...)
+	  //{ break; }
 	break;
       }
     default:
@@ -3696,7 +3696,7 @@ cl_uc::check_events(void)
   for (i= 0; i < events->count; i++)
     {
       class cl_ev_brk *brk=
-	dynamic_cast<class cl_ev_brk *>(events->object_at(i));
+	(class cl_ev_brk *)(events->object_at(i));
       brk->breaking();
     }
 }

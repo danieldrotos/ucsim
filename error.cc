@@ -88,7 +88,7 @@ cl_error_class::is_on(void)
       if (!get_parent())
 	return(true);
       class cl_error_class *p=
-	dynamic_cast<class cl_error_class *>(get_parent());
+	(class cl_error_class *)(get_parent());
       return(p->is_on());
     }
   else
