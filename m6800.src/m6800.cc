@@ -43,7 +43,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 instruction_wrapper_fn itab[256];
 
-int8_t p0ticks[256]= {
+i8_t p0ticks[256]= {
   /*      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  */
   /* 0 */ 0, 2, 0, 0, 0, 0, 2, 2, 4, 4, 2, 2, 2, 2, 2, 2,
   /* 1 */ 2, 2, 0, 0, 0, 0, 2, 2, 0, 2, 0, 2, 0, 0, 0, 0,

@@ -2977,7 +2977,7 @@ cl_uc::tick(int cycles)
 int
 cl_uc::tickt(t_mem code)
 {
-  int8_t *tt= tick_tab(code);
+  i8_t *tt= tick_tab(code);
   if (tt == NULL)
     return tick(1);
   int t= tt[code];

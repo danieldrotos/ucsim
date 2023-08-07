@@ -397,7 +397,7 @@ public:
   virtual int tick_hw(int cycles);
   virtual void do_extra_hw(int cycles);
   virtual int tick(int cycles);
-  virtual int8_t *tick_tab(t_mem code) { return NULL; }
+  virtual i8_t *tick_tab(t_mem code) { return NULL; }
   virtual int tickt(t_mem code);
   virtual class cl_ticker *get_counter(int nr);
   virtual class cl_ticker *get_counter(const char *nam);
