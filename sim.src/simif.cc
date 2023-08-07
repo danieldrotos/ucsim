@@ -509,8 +509,8 @@ cl_simulator_interface::init(void)
       if (as)
 	{
 	  address= addr;
-	  if (addr < 0)
-	    address= as->highest_valid_address();
+	  //if (addr < 0)
+	  //address= as->highest_valid_address();
 	  cell= register_cell(as, address);
 	}
       else
@@ -642,8 +642,8 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
       if ((as= (class cl_address_space *)(mem)) != 0)
 	{
 	  address= addr;
-	  if (addr < 0)
-	    address= as->highest_valid_address();
+	  //if (addr < 0)
+	  //address= as->highest_valid_address();
 	  if (cell != NULL)
 	    unregister_cell(cell);
 	  cell= register_cell(as, address);
@@ -798,7 +798,7 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case simif_xtal: // xtal frequ
       if (val)
 	uc->set_xtal(*val);
-      cell->set(uc->get_xtal());
+      cell->set((u32_t)(uc->get_xtal()));
       break;
     case simif_ticks: // tick counter
       if (val)
@@ -818,7 +818,7 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case simif_real_time: // real time in msec
       if (val)
 	*val= cell->get();
-      cell->set(uc->ticks->get_rtime() * 1000);
+      cell->set((u32_t)(uc->ticks->get_rtime() * 1000));
       break;
     case simif_vclk: // virtual clock
       if (val)

@@ -161,7 +161,10 @@ cl_sim::stop(int reason)
   class cl_commander_base *cmd= app->get_commander();
   class cl_option *o= app->options->get_option("quit");
   unsigned long dt= uc?(uc->ticks->get_ticks() - start_tick):0;
-  class cl_console_base *con= (cmd==NULL)?NULL:(cmd->frozen_or_actual());
+  class cl_console_base *con= NULL;
+
+  if (cmd!=NULL)
+    con= cmd->frozen_or_actual();
 
   state&= ~SIM_GO;
   stop_at= dnow();

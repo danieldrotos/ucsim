@@ -2638,7 +2638,7 @@ cl_uc::addr_name(t_addr addr,
 
       // If there is a context var and its name prefixes the var for this
       // addr we strip the prefix off.
-      size_t len;
+      size_t len= 0;
       if (context && (len = strlen(context->get_name())) &&
           !strncmp(name, context->get_name(), len) &&
           (name[len] == '\0' || name[len] == '_'))
@@ -3724,7 +3724,7 @@ cl_error_unknown_code::cl_error_unknown_code(class cl_uc *the_uc)
 void
 cl_error_unknown_code::print(class cl_commander_base *c)
 {
-  c->dd_printf("%s: unknown instruction code at ", get_type_name());
+  c->dd_printf("%s: unknown instruction code at ", (char*)get_type_name());
   if (uc->rom)
     {
       c->dd_printf(uc->rom->addr_format, PC);

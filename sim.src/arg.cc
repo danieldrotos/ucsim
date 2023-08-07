@@ -485,7 +485,7 @@ cl_cmd_array_arg::get_bit_address(class cl_uc *uc, // input
                                 int *bitnr_low)
 {
   // address_space[address]
-  char *n;
+  char *n= 0;
   t_addr a;
   if (name_arg == 0 ||
       index == 0 ||
@@ -510,7 +510,7 @@ cl_cmd_array_arg::get_bit_address(class cl_uc *uc, // input
 bool
 cl_cmd_array_arg::as_hw(class cl_uc *uc)
 {
-  char *n;
+  char *n= 0;
   t_addr a;
 
   if (name_arg == 0 ||
@@ -518,7 +518,7 @@ cl_cmd_array_arg::as_hw(class cl_uc *uc)
       (n= name_arg->get_svalue()) == NULL ||
       !index->get_address(uc, &a))
     return(false);
-  
+
   value.hw= uc->get_hw(n, a, NULL);
   return(value.hw != NULL);
 }

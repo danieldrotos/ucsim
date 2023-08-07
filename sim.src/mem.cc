@@ -435,8 +435,8 @@ cl_memory::dump(int smart,
               con->dd_color("dump_char");
               con->dd_printf(" '");
 	      // FIXME: endian assumption: low byte first - should be a uc flag or option?
-              for (int i= 0; i <= (nbits - 1) - ((nbits - 1) % 8); i += 8)
-                con->dd_printf("%c", (isprint((m >> i) & 255) ? (m >> i) & 255 : '.'));
+              for (int ii= 0; ii <= (nbits - 1) - ((nbits - 1) % 8); ii += 8)
+                con->dd_printf("%c", (isprint((m >> ii) & 255) ? (m >> ii) & 255 : '.'));
               con->dd_printf("'");
               con->dd_color("dump_number");
 
@@ -501,8 +501,8 @@ cl_memory::dump(int smart,
         {
           long c= read(ads->start+i*step);
 	  // FIXME: endian assumption: low byte first - should be a uc flag or option?
-          for (int i= 0; i <= (width - 1) - ((width - 1) % 8); i += 8)
-            con->dd_printf("%c", (isprint((c >> i) & 255) ? (c >> i) & 255 : '.'));
+          for (int ii= 0; ii <= (width - 1) - ((width - 1) % 8); ii += 8)
+            con->dd_printf("%c", (isprint((c >> ii) & 255) ? (c >> ii) & 255 : '.'));
         }
       con->dd_printf("\n");
 
@@ -2998,9 +2998,9 @@ cl_error_mem_invalid_address(class cl_memory *amem, t_addr aaddr):
 void
 cl_error_mem_invalid_address::print(class cl_commander_base *c)
 {
-  c->dd_printf("%s: invalid address ", get_type_name());
+  c->dd_printf("%s: invalid address ", (char*)get_type_name());
   c->dd_printf(mem->addr_format, addr);
-  c->dd_printf(" in memory %s.\n", mem->get_name());
+  c->dd_printf(" in memory %s.\n", (char*)(mem->get_name()));
 }
 
 /* Non-decoded address space access */
@@ -3015,9 +3015,9 @@ cl_error_mem_non_decoded(class cl_memory *amem, t_addr aaddr):
 void
 cl_error_mem_non_decoded::print(class cl_commander_base *c)
 {
-  c->dd_printf("%s: access of non-decoded address ", get_type_name());
+  c->dd_printf("%s: access of non-decoded address ", (char*)get_type_name());
   c->dd_printf(mem->addr_format, addr);
-  c->dd_printf(" in memory %s.\n", mem->get_name());
+  c->dd_printf(" in memory %s.\n", (char*)(mem->get_name()));
 }
 
 cl_mem_error_registry::cl_mem_error_registry(void)

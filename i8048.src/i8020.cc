@@ -437,8 +437,8 @@ cl_i8020::print_regs(class cl_console_base *con)
   con->dd_printf("0x%02x %+3d %c", ACC, ACC, (isprint(ACC)?ACC:'?'));
   con->dd_printf("\n");
   con->dd_cprintf("dump_address", "   0x%02x", start);
-  for (t_addr i= 0; i < 8; i++)
-    con->dd_cprintf("dump_number", " %02x", iram->get(start + i));
+  for (int ii= 0; ii < 8; ii++)
+    con->dd_cprintf("dump_number", " %02x", iram->get(start + ii));
   con->dd_cprintf("dump_number", "    0x%02x ", psw);
   con->dd_color("dump_number");
   con->print_bin(psw, 8);

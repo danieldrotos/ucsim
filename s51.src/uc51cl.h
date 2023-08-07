@@ -116,9 +116,9 @@ public:
 					  t_addr *memaddr,
 					  int *bitnr_high,
 					  int *bitnr_low);
-  virtual t_addr bit_address(class cl_memory *mem,
-			     t_addr mem_address,
-			     int bit_number);
+  //virtual t_addr bit_address(class cl_memory *mem,
+  //			     t_addr mem_address,
+  //			     int bit_number);
   virtual bool   daddr_name(t_addr addr, chars *buf);
   virtual void   baddr_name(t_addr addr, chars *buf);
   

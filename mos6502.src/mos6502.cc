@@ -295,7 +295,7 @@ cl_mos6502::analyze_start(void)
 void
 cl_mos6502::analyze(t_addr addr)
 {
-  struct dis_entry *de;
+  struct dis_entry *de= 0;
 
   while (!inst_at(addr) && (de = get_dis_entry(addr)))
     {

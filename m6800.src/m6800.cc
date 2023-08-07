@@ -482,7 +482,7 @@ cl_m6800::analyze_start(void)
 void
 cl_m6800::analyze(t_addr addr)
 {
-  struct dis_entry *di;
+  struct dis_entry *di= 0;
 
   while (!inst_at(addr) && (di = get_dis_entry(addr)) && (di->mnemonic != NULL))
     {
