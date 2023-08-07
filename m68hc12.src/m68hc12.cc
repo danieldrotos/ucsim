@@ -592,15 +592,18 @@ cl_m68hc12::print_regs(class cl_console_base *con)
   con->dd_printf("\n");
 
   con->dd_printf("IX= ");
-  rom->dump(0, IX, IX+7, 8, con);
+  class cl_dump_ads ads(IX, IX+7);
+  rom->dump(0, /*IX, IX+7*/&ads, 8, con);
   con->dd_color("answer");
   
   con->dd_printf("IY= ");
-  rom->dump(0, IY, IY+7, 8, con);
+  ads._ss(IY, IY+7);
+  rom->dump(0, /*IY, IY+7*/&ads, 8, con);
   con->dd_color("answer");
   
   con->dd_printf("SP= ");
-  rom->dump(0, SP, SP+7, 8, con);
+  ads._ss(SP, SP+7);
+  rom->dump(0, /*SP, SP+7*/&ads, 8, con);
   con->dd_color("answer");
   
   print_disass(PC, con);

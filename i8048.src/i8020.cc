@@ -449,12 +449,14 @@ cl_i8020::print_regs(class cl_console_base *con)
   stop= start+7;
   con->dd_color("answer");
   con->dd_printf("R0=");
-  iram->dump(0, start, stop, 8, con);
+  class cl_dump_ads ads(start, stop);
+  iram->dump(0, /*start, stop*/&ads, 8, con);
   start= R[1]->get();
   stop= start+7;
   con->dd_color("answer");
   con->dd_printf("R1=");
-  iram->dump(0, start, stop, 8, con);
+  ads._ss(start, stop);
+  iram->dump(0, /*start, stop*/&ads, 8, con);
 
   con->dd_cprintf("answer", "SP=%d", psw&7);
   start= 8;
