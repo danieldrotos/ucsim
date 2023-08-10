@@ -316,6 +316,23 @@ CMDHELP(cl_next_cmd,
 	"infinite the breakpoint set by next will never be reached.\n")
 
 /*
+ * Command: emulation
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_SIM(cl_emu_cmd)
+{
+  sim->emulation(con);
+  return false;
+}
+
+CMDHELP(cl_emu_cmd,
+	"emulation",
+	"Start execution in emulation mode.",
+	"")
+
+
+/*
  * Command: help
  *----------------------------------------------------------------------------
  */

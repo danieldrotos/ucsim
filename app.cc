@@ -107,120 +107,121 @@ cl_app::init(int argc, char *argv[])
   ocon->init();
   commander= new cl_commander(this, cmdset/*, sim*/);
   commander->init();
+
   return(0);
 }
 
-/* Main cycle */
+void
+cl_app::read_conf_file(void)
+{
+  /* read config file (-C option) */
+  while (commander->config_console != NULL)
+    if (commander->input_avail())
+      commander->proc_input();
+}
 
-enum run_states {
-  rs_config,
-  rs_read_files,
-  rs_startup_cmd,
-  rs_start,
-  rs_run
-};
+void
+cl_app::read_input_files(void)
+{
+  if (sim && (sim->uc != NULL))
+    {
+      int i;
+      for (i= 0; i < in_files->count; i++)
+	{
+	  const char *fname= (const char *)(in_files->at(i));
+	  long l;
+	  if ((l= sim->uc->read_file(fname, NULL)) >= 0)
+	    {
+	      sim->uc->reset();
+	    }
+	}
+    }
+}
+
+void
+cl_app::exec_startup_cmd(void)
+{
+  if (startup_command.nempty())
+    exec(startup_command);
+}
+
+int
+cl_app::check_start_options(void)
+{
+  class cl_option *o= options->get_option("go");
+  bool g_opt= false;
+  if (o)
+    o->get_value(&g_opt);
+  if (sim && g_opt)
+    sim->start(0, 0);
+  /*if (commander->consoles_prevent_quit() < 1)
+    done= 1;
+  else
+  rs= rs_run;*/
+  return 0;
+}
+
+/* Main cycle */
 
 int
 cl_app::run(void)
 {
   int done= 0;
-  //double input_last_checked= 0;
-  class cl_option *o= options->get_option("go");
-  bool g_opt= false;
-  enum run_states rs= rs_config;
 
   cperiod.set(cperiod_value());
+  read_conf_file();
+  read_input_files();
+  exec_startup_cmd();
+  check_start_options();
+  if (commander->consoles_prevent_quit() < 1)
+    done= 1;
   while (!done)
     {
-      if (rs == rs_config)
+      if (!sim)
 	{
 	  if (commander->input_avail())
-	    commander->proc_input();
-	  if (commander->config_console == NULL)
-	    {
-	      rs= rs_read_files;
-	    }
+	    done = commander->proc_input();
+	  loop_delay();
 	}
-      if (rs == rs_read_files)
+      else
 	{
-	  if (sim && (sim->uc != NULL))
+	  acyc++;
+	  if (sim->state & SIM_QUIT)
+	    done= 1;
+	  else if (sim->state & SIM_GO)
 	    {
-	      int i;
-	      for (i= 0; i < in_files->count; i++)
+	      if (++cyc > period)
 		{
-		  const char *fname= (const char *)(in_files->at(i));
-		  long l;
-		  if ((l= sim->uc->read_file(fname, NULL)) >= 0)
-		    {
-		      sim->uc->reset();
-		    }
+		  cyc= 0;
+		  if (sim->uc)
+		    sim->uc->touch();
+		  if (commander->input_avail())
+		    done= commander->proc_input();
+		}
+	      sim->step();
+	      if (jaj)
+		{
+		  class cl_console_base *c= commander->frozen_or_actual();
+		  if (c)
+		    sim->uc->print_regs(c), c->dd_printf("\n");
 		}
 	    }
-	  rs= rs_startup_cmd;
-	}
-      if (rs == rs_startup_cmd)
-	{
-	  if (startup_command.nempty())
-	    exec(startup_command);
-	  rs= rs_start;
-	}
-      if (rs == rs_start)
-	{
-	  if (o)
-	    o->get_value(&g_opt);
-	  if (sim && g_opt)
-	    sim->start(0, 0);
-	  if (commander->consoles_prevent_quit() < 1)
-	    done= 1;
+	  else if (sim->state & SIM_EMU)
+	    {
+	      sim->uc->do_inst();
+	    }
 	  else
-	    rs= rs_run;
-	}
-      if (rs == rs_run)
-	{
-	  if (!sim)
 	    {
 	      if (commander->input_avail())
 		done = commander->proc_input();
-	      else
-		loop_delay();
+	      loop_delay();
+	      if (sim->uc)
+		sim->uc->touch();
 	    }
-	  else
-	    {
-	      acyc++;
-	      if (sim->state & SIM_GO)
-		{
-		  if (++cyc > period)
-		    {
-		      cyc= 0;
-		      if (sim->uc)
-			sim->uc->touch();
-		      if (commander->input_avail())
-			done= commander->proc_input();
-		    }
-		  sim->step();
-		  if (jaj) ocon->dd_printf("** %u\n",MU(acyc));
-		  if (jaj && commander->frozen_or_actual())
-		    {
-		      sim->uc->print_regs(commander->frozen_or_actual()),
-			commander->frozen_or_actual()->dd_printf("\n");
-		    }
-		}
-	      else
-		{
-		  if (commander->input_avail())
-		    done = commander->proc_input();
-		  else
-		    loop_delay();
-		  
-		  if (sim->uc)
-		    sim->uc->touch();
-		}
-	      if (sim->state & SIM_QUIT)
-		done= 1;
-	    }
-	  commander->check();
 	}
+      commander->check();
     }
+    
   return(0);
 }
 
