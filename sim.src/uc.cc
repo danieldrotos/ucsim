@@ -3173,8 +3173,43 @@ cl_uc::do_inst(void)
   return(res);
 }
 
+int
+cl_uc::do_emu(void)
+{
+  int res= resGO;
+
+  if (state == stGO)
+    {
+      pre_emu();
+      instPC= PC;
+      res= exec_inst();
+      if (res == resINV_INST)
+	/* backup to start of instruction */
+	PC= instPC;
+    }
+  post_emu();
+
+  if ((res == resGO || res == resNOT_DONE))
+    {
+      int r= do_interrupt();
+      if (r != resGO)
+	res= r;
+    }
+
+  return(res);
+}
+
 void
 cl_uc::pre_inst(void)
+{
+  inst_exec= true;
+  events->disconn_all();
+  vc.inst++;
+  inst_ticks= 0;
+}
+
+void
+cl_uc::pre_emu(void)
 {
   inst_exec= true;
   events->disconn_all();
@@ -3245,6 +3280,14 @@ cl_uc::post_inst(void)
     check_errors();
   if (events->count)
     check_events();
+  inst_exec= false;
+}
+
+void
+cl_uc::post_emu(void)
+{
+  tick_hw(inst_ticks);
+  errors->free_all();
   inst_exec= false;
 }
 

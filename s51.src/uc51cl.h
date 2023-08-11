@@ -127,6 +127,7 @@ public:
   virtual void   analyze(t_addr addr);
 
   virtual int    do_inst(void);
+  virtual int    do_emu(void);
 
   //virtual void mem_cell_changed(class cl_m *mem, t_addr addr);
 

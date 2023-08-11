@@ -1944,6 +1944,42 @@ cl_51core::do_inst(void)
   return(result);
 }
 
+int
+cl_51core::do_emu(void)
+{
+  result= resGO;
+
+  if (state == stGO)
+    {
+      interrupt->was_reti= false;
+      pre_emu();
+      instPC= PC;
+      result= exec_inst();
+      post_emu();
+    }
+  else
+    {
+      // tick hw in idle state
+      tick(1);
+    }
+
+  if (result == resGO)
+    {
+      int res;
+      if ((res= do_interrupt()) != resGO)
+	result= res;
+      else
+	result= idle_pd();
+    }
+  if ((result == resINTERRUPT) &&
+      stop_at_it)
+    {
+      sim->stop(result);
+      return result;
+    }
+  return(result);
+}
+
 /*
  * Abstract method to handle WDT
  */

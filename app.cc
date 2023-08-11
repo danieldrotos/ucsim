@@ -208,7 +208,7 @@ cl_app::run(void)
 	    }
 	  else if (sim->state & SIM_EMU)
 	    {
-	      sim->uc->do_inst();
+	      sim->uc->do_emu();
 	    }
 	  else
 	    {

@@ -578,7 +578,7 @@ cl_m6800::exec_inst(void)
   
   cI= &cIX;
   res= exec_inst_tab(itab);
-  post_inst();
+  //post_ inst(); // will be called by do_inst()
   if (res != resNOT_DONE)
     return res;
 
