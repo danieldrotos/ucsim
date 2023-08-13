@@ -206,6 +206,12 @@ cl_app::run(void)
 		    sim->uc->print_regs(c), c->dd_printf("\n");
 		}
 	    }
+	  else if (sim->state & SIM_STARTEMU)
+	    {
+	      sim->state= SIM_EMU;
+	      sim->start_at= dnow();
+	      sim->uc->do_emu();
+	    }
 	  else if (sim->state & SIM_EMU)
 	    {
 	      sim->uc->do_emu();

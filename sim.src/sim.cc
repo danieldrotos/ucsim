@@ -161,8 +161,7 @@ cl_sim::emulation(class cl_console_base *con)
   class cl_commander_base *cmd= app->get_commander();
   if (uc)
     {
-      state|= SIM_EMU;
-      start_at= dnow();
+      state|= SIM_STARTEMU;
       if (con)
 	{
 	  con->set_flag(CONS_FROZEN, true);
