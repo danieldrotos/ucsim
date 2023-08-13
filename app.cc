@@ -148,12 +148,25 @@ cl_app::exec_startup_cmd(void)
 int
 cl_app::check_start_options(void)
 {
-  class cl_option *o= options->get_option("go");
+  class cl_option *o;
+
+  o= options->get_option("emulation");
+  bool emu_opt= false;
+  if (o)
+    o->get_value(&emu_opt);
+  if (sim && emu_opt)
+    {
+      sim->emulation(0);
+      return 0;
+    }
+  
+  o= options->get_option("go");
   bool g_opt= false;
   if (o)
     o->get_value(&g_opt);
   if (sim && g_opt)
     sim->start(0, 0);
+  
   /*if (commander->consoles_prevent_quit() < 1)
     done= 1;
   else
@@ -260,7 +273,7 @@ static void
 print_help(const char *name)
 {
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-hHVvPgGwlbBq] [-p prompt] [-t CPU] [-X freq[k|M]] [-R seed]\n"
+  printf("Usage: %s [-hHVvPgGEwlbBq] [-p prompt] [-t CPU] [-X freq[k|M]] [-R seed]\n"
 	 "       [-C cfg_file] [-c file] [-e command] [-s file] [-S optionlist]\n"
 	 "       [-I if_optionlist] [-o colorlist] [-a nr]\n"
 #ifdef SOCKET_AVAIL
@@ -309,6 +322,7 @@ print_help(const char *name)
      "  -B           Beep on breakpoints\n"
      "  -g           Go, start simulation\n"
      "  -G           Go, start simulation, quit on stop\n"
+     "  -E           Go, start simulation in emulation mode\n"
      "  -a nr        Specify size of variable space (default=256)\n"
      "  -w           Writable flash\n"
      "  -V           Verbose mode\n"
@@ -365,7 +379,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= false,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGJo:blBR:_");
+  strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:z:");
 #endif
@@ -406,6 +420,11 @@ cl_app::proc_arguments(int argc, char *argv[])
 	if (!options->set_value("quit", this, true))
 	  fprintf(stderr, "Warning: No \"quit\" option found "
 		  "to set by -G\n");
+	break;
+      case 'E':
+	if (!options->set_value("emulation", this, true))
+	  fprintf(stderr, "Warning: No \"emulation\" option found "
+		  "to set by -E\n");
 	break;
       case 'c':
 	if (!options->set_value("console_on", this, optarg))
@@ -1166,6 +1185,11 @@ cl_app::mk_options(void)
 
   options->new_option(o= new cl_bool_option(this, "quit",
 					    "Quit on stop (-G)"));
+  o->init();
+  o->hide();
+  
+  options->new_option(o= new cl_bool_option(this, "emulation",
+					    "Emulate on start (-E)"));
   o->init();
   o->hide();
   
