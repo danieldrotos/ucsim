@@ -166,11 +166,7 @@ cl_app::check_start_options(void)
     o->get_value(&g_opt);
   if (sim && g_opt)
     sim->start(0, 0);
-  
-  /*if (commander->consoles_prevent_quit() < 1)
-    done= 1;
-  else
-  rs= rs_run;*/
+
   return 0;
 }
 
@@ -233,7 +229,8 @@ cl_app::run(void)
 	    {
 	      if (commander->input_avail())
 		done = commander->proc_input();
-	      loop_delay();
+	      else
+		loop_delay();
 	      if (sim->uc)
 		sim->uc->touch();
 	    }
