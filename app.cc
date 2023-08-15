@@ -198,23 +198,7 @@ cl_app::run(void)
 	  if (sim->state & SIM_QUIT)
 	    done= 1;
 	  else if (sim->state & SIM_GO)
-	    {
-	      if (++cyc > period)
-		{
-		  cyc= 0;
-		  if (sim->uc)
-		    sim->uc->touch();
-		  if (commander->input_avail())
-		    done= commander->proc_input();
-		}
-	      sim->step();
-	      if (jaj)
-		{
-		  class cl_console_base *c= commander->frozen_or_actual();
-		  if (c)
-		    sim->uc->print_regs(c), c->dd_printf("\n");
-		}
-	    }
+	    done= run_go();
 	  else if (sim->state & SIM_STARTEMU)
 	    {
 	      sim->state= SIM_EMU;
@@ -222,23 +206,51 @@ cl_app::run(void)
 	      sim->uc->do_emu();
 	    }
 	  else if (sim->state & SIM_EMU)
-	    {
-	      sim->uc->do_emu();
-	    }
+	    sim->uc->do_emu();
 	  else
-	    {
-	      if (commander->input_avail())
-		done = commander->proc_input();
-	      else
-		loop_delay();
-	      if (sim->uc)
-		sim->uc->touch();
-	    }
+	    done= run_nogo();
 	}
-      commander->check();
+      //commander->check();
     }
     
   return(0);
+}
+
+int
+cl_app::run_go(void)
+{
+  bool done= false;
+  if (++cyc > period)
+    {
+      cyc= 0;
+      if (sim->uc)
+	sim->uc->touch();
+      commander->check();
+      if (commander->input_avail())
+	done= commander->proc_input();
+    }
+  sim->step();
+  if (jaj)
+    {
+      class cl_console_base *c= commander->frozen_or_actual();
+      if (c)
+	sim->uc->print_regs(c), c->dd_printf("\n");
+    }
+  return done;
+}
+
+int
+cl_app::run_nogo(void)
+{
+  bool done= false;
+  commander->check();
+  if (commander->input_avail())
+    done = commander->proc_input();
+  else if (dnow() - app_start_at > 2.0)
+    loop_delay();
+  if (sim->uc)
+    sim->uc->touch();
+  return done;
 }
 
 void

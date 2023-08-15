@@ -109,6 +109,8 @@ public:
   virtual void exec_startup_cmd(void);
   virtual int check_start_options(void);
   virtual int run(void);
+  virtual int run_go(void);
+  virtual int run_nogo(void);
   virtual void done(void);
 
 protected:
