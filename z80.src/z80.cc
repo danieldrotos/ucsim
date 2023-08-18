@@ -625,6 +625,8 @@ cl_z80::exec_inst(void)
   tick(1);
   inc_R();
   iblock= false;
+  extra_ticks= 0;
+  tickt(code);
   
   switch (code)
     {
@@ -804,6 +806,9 @@ cl_z80::exec_inst(void)
     case 0xff: return(inst_rst(code));
     }
 
+  if (extra_ticks)
+    tick(extra_ticks);
+  
   //PC= instPC;//rom->inc_address(PC, -1);
   return(resINV_INST);
 }

@@ -62,6 +62,7 @@ public:
   #define BIT_H BIT_A
   int imode;
   bool iblock;
+  u8_t extra_ticks;
 public:
   cl_z80(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
