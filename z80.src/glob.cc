@@ -1303,6 +1303,21 @@ struct dis_entry DISASS_NAME(_fdcb)[]= {
   { 0, 0, 0, 0, NULL }
 };
 
+u8_t ttab_00[256]= {
+};
+
+u8_t ttab_dd[256]= {
+};
+
+u8_t ttab_cb[256]= {
+};
+
+u8_t ttab_ed[256]= {
+};
+
+u8_t ttab_ddcb[256]= {
+};
+
 struct cpu_entry cpus_z80[]=
   {
     {"Z80"    , CPU_Z80,     0			, ""		, ""},

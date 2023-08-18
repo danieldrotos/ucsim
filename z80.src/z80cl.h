@@ -81,6 +81,7 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_inst(void);
+  virtual int tickt(t_mem code);
   virtual void inc_R(void);
   virtual void xy(u8_t v);
   

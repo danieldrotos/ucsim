@@ -808,6 +808,37 @@ cl_z80::exec_inst(void)
   return(resINV_INST);
 }
 
+int
+cl_z80::tickt(t_mem code)
+{
+  // special cases: dd, cb, ed, ddcb
+  int t= 0;
+  u8_t c2, c3, c4;
+  switch (code)
+    {
+    case 0xdd:
+      c2= rom->read(instPC+1);
+      if (c2 == 0xcb)
+	{
+	  c4= rom->read(instPC+3);
+	  tick(t= ttab_ddcb[c4]);
+	  return t;
+	}
+      tick(t= ttab_dd[c2]);
+      return t;;
+    case 0xcb:
+      c2= rom->read(instPC+1);
+      tick(t= ttab_cb[c2]);
+      return t;
+    case 0xed:
+      c2= rom->read(instPC+1);
+      tick(t= ttab_ed[c2]);
+      return t;
+    }
+  tick(t= ttab_00[code]);
+  return t;
+}
+
 bool cl_z80::inst_z80n(t_mem code, int *ret)
 {
   int r= resGO;
