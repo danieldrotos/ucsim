@@ -811,7 +811,7 @@ cl_z80::exec_inst(void)
 int
 cl_z80::tickt(t_mem code)
 {
-  // special cases: dd, cb, ed, ddcb
+  // special cases: dd, cb, ed, ddcb, fd, fdcb
   int t= 0;
   u8_t c2, c3, c4;
   switch (code)
@@ -825,7 +825,17 @@ cl_z80::tickt(t_mem code)
 	  return t;
 	}
       tick(t= ttab_dd[c2]);
-      return t;;
+      return t;
+    case 0xfb:
+      c2= rom->read(instPC+1);
+      if (c2==0xcb)
+	{
+	  c4= rom->read(instPC+3);
+	  tick(t= ttab_fdcb[c4]);
+	  return t;
+	}
+      tick(t= ttab_fd[c2]);
+      return t;
     case 0xcb:
       c2= rom->read(instPC+1);
       tick(t= ttab_cb[c2]);

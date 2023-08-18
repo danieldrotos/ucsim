@@ -1315,7 +1315,13 @@ u8_t ttab_cb[256]= {
 u8_t ttab_ed[256]= {
 };
 
+u8_t ttab_fd[256]= {
+};
+
 u8_t ttab_ddcb[256]= {
+};
+
+u8_t ttab_fdcb[256]= {
 };
 
 struct cpu_entry cpus_z80[]=
