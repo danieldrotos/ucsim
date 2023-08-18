@@ -625,8 +625,7 @@ cl_z80::exec_inst(void)
   tick(1);
   inc_R();
   iblock= false;
-  extra_ticks= 0;
-  tickt(code);
+  cond_true= false;
   
   switch (code)
     {
@@ -806,8 +805,7 @@ cl_z80::exec_inst(void)
     case 0xff: return(inst_rst(code));
     }
 
-  if (extra_ticks)
-    tick(extra_ticks);
+  tickt(code);
   
   //PC= instPC;//rom->inc_address(PC, -1);
   return(resINV_INST);
@@ -817,7 +815,7 @@ int
 cl_z80::tickt(t_mem code)
 {
   // special cases: dd, cb, ed, ddcb, fd, fdcb
-  int t= 0;
+  u16_t t= 0;
   u8_t c2, c3, c4;
   switch (code)
     {
@@ -826,31 +824,38 @@ cl_z80::tickt(t_mem code)
       if (c2 == 0xcb)
 	{
 	  c4= rom->read(instPC+3);
-	  tick(t= ttab_ddcb[c4]);
-	  return t;
+	  t= ttab_ddcb[c4];
+	  break;
 	}
-      tick(t= ttab_dd[c2]);
-      return t;
+      t= ttab_dd[c2];
+      break;
     case 0xfb:
       c2= rom->read(instPC+1);
       if (c2==0xcb)
 	{
 	  c4= rom->read(instPC+3);
-	  tick(t= ttab_fdcb[c4]);
-	  return t;
+	  t= ttab_fdcb[c4];
+	  break;
 	}
-      tick(t= ttab_fd[c2]);
-      return t;
+      t= ttab_fd[c2];
+      break;
     case 0xcb:
       c2= rom->read(instPC+1);
-      tick(t= ttab_cb[c2]);
-      return t;
+      t= ttab_cb[c2];
+      break;
     case 0xed:
       c2= rom->read(instPC+1);
-      tick(t= ttab_ed[c2]);
-      return t;
+      t= ttab_ed[c2];
+      break;
+    default:
+      t= ttab_00[code];
+      break;
     }
-  tick(t= ttab_00[code]);
+  if (cond_true)
+    t>>= 8;
+  else
+    t&= 0xff;
+  tick(t-1);
   return t;
 }
 

@@ -43,13 +43,13 @@ extern struct dis_entry disass_z80_fdcb[];
 extern struct dis_entry disass_gb80[];
 extern struct dis_entry disass_gb80_cb[];
 
-extern u8_t ttab_00[256];
-extern u8_t ttab_dd[256];
-extern u8_t ttab_cb[256];
-extern u8_t ttab_ed[256];
-extern u8_t ttab_fd[256];
-extern u8_t ttab_ddcb[256];
-extern u8_t ttab_fdcb[256];
+extern u16_t ttab_00[256];
+extern u16_t ttab_dd[256];
+extern u16_t ttab_cb[256];
+extern u16_t ttab_ed[256];
+extern u16_t ttab_fd[256];
+extern u16_t ttab_ddcb[256];
+extern u16_t ttab_fdcb[256];
 
 extern struct cpu_entry cpus_z80[];
 
