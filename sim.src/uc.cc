@@ -3157,7 +3157,7 @@ cl_uc::do_inst(void)
     }
   post_inst();
 
-  if ((res == resGO) && (PC == instPC) && stop_selfjump)
+  if ((res == resGO) && (PC == instPC) && stop_selfjump && !repeating)
     {
       res= resSELFJUMP;
       return res;
@@ -3206,6 +3206,7 @@ cl_uc::pre_inst(void)
   events->disconn_all();
   vc.inst++;
   inst_ticks= 0;
+  repeating= false;
 }
 
 void

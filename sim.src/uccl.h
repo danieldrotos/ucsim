@@ -284,6 +284,7 @@ public:
   int inst_ticks;		// Ticks of an instruction
   struct vcounter_t vc;		// Virtual clk counter
   bool stop_selfjump;		// Whether it should stop on selfjump
+  bool repeating;		// Repeating inst skips check of selfjump
   bool analyzer;		// Whether the code analyzer is enabled
   
   int brk_counter;		// Number of breakpoints
