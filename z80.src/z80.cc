@@ -832,7 +832,7 @@ cl_z80::tickt(t_mem code)
 	}
       t= ttab_dd[c2];
       break;
-    case 0xfb:
+    case 0xfd:
       c2= rom->read(instPC+1);
       if (c2==0xcb)
 	{
