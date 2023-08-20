@@ -732,7 +732,7 @@ cl_z80::inst_djnz(t_mem code)
   if ((--regs.bc.h != 0)) {
     PC += j;
     //tick(5);
-    cond_true;
+    cond_true= true;
   } else {
   }
   return(resGO);
