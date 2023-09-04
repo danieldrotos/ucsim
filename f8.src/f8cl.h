@@ -426,7 +426,7 @@ public:
   int MAD_NSP(t_mem code) { return mad(m_n_sp()); }
   int MAD_NNZ(t_mem code) { return mad(m_nn_z()); }
   int MAD_Z(t_mem code)   { return mad(m_z()); }
-  int XCH_F_0SP(t_mem code);
+  int XCH_F_NSP(t_mem code);
 
   // 16-bit 0-op-inst
   int MUL(t_mem code);

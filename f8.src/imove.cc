@@ -130,9 +130,9 @@ cl_f8::LDW_A_SP(t_mem code)
 }
 
 int
-cl_f8::XCH_F_0SP(t_mem code)
+cl_f8::XCH_F_NSP(t_mem code)
 {
-  class cl_cell8 &c= *(class cl_cell8 *)rom->get_cell(rSP);
+  class cl_cell8 &c= m_n_sp();
   u8_t t= rF;
   rF = c.R();
   vc.rd++;

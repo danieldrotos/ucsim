@@ -266,7 +266,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define MAD_NSP		instruction_bd
 #define MAD_NNZ		instruction_be
 #define MAD_Z		instruction_bf
-#define XCH_F_0SP	instruction_ec
+#define XCH_F_NSP	instruction_ec
 
 #define MUL		instruction_b9
 #define NEGW		instruction_fa

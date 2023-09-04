@@ -292,7 +292,7 @@ struct dis_entry disass_f8[]=
     { 0xe4, 0xff, ' ', 1, "sraw %A"},
     { 0xea, 0xff, ' ', 2, "addw sp,#%d"},
     { 0xeb, 0xff, ' ', 2, "addw %A,#%d"},
-    { 0xec, 0xff, ' ', 1, "xch f,(0, sp)"},
+    { 0xec, 0xff, ' ', 2, "xch f,('nsp_16')"},
     { 0xf8, 0xff, ' ', 3, "cpw %A,#'i16'"},
     { 0xf6, 0xff, ' ', 1, "incnw %A"},
     { 0xf7, 0xff, ' ', 2, "decw ('nsp_16')"},
