@@ -3150,10 +3150,15 @@ cl_uc::do_inst(void)
 	/* backup to start of instruction */
 	PC= instPC;
       else
-	if (res == resGO && !inst_at(instPC) && analyzer)
-	  {
-	    analyze(instPC);
-	  }
+	{
+	  if (analyzer)
+	    {
+	      if (res == resGO && !inst_at(instPC))
+		{
+		  analyze(instPC);
+		}
+	    }
+	}
     }
   post_inst();
 
