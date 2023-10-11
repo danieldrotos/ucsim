@@ -827,6 +827,9 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
   cmd->init();
   cmd->add_name("dl");
 
+  cmdset->add(cmd= new cl_check_cmd("check", 0));
+  cmd->init();
+
   cmdset->add(cmd= new cl_pc_cmd("pc", 0));
   cmd->init();
 
@@ -1606,7 +1609,7 @@ cl_uc::read_asc_file(cl_f *f)
 }
 
 long
-cl_uc::read_p2h_file(cl_f *f)
+cl_uc::read_p2h_file(cl_f *f, bool just_check)
 {
   chars line= chars();
   int c;
@@ -1627,7 +1630,17 @@ cl_uc::read_p2h_file(cl_f *f)
 		{
 		  t_mem v= w1.htoi();//strtol(w1.c_str(), 0, 16);
 		  t_addr a= w3.htoi();//strtol(w3.c_str(), 0, 16);
-		  set_rom(a, v);
+		  if (just_check)
+		    {
+		      t_mem mv= rom->read(a);
+		      if (mv != v)
+			{
+			  application->dd_printf("Diff at %08x, FILE=%08x MEM=%08x\n",
+						 AU32(a), MU32(v), MU32(mv));
+			}
+		    }
+		  else
+		    set_rom(a, v);
 		  nr++;		  
 		}
 	    }
@@ -2015,7 +2028,7 @@ cl_uc::find_loadable_file(chars nam)
 }
 
 long
-cl_uc::read_file(chars nam, class cl_console_base *con)
+cl_uc::read_file(chars nam, class cl_console_base *con, bool just_check)
 {
   cl_f *f= find_loadable_file(nam);
   long l= 0;
@@ -2032,7 +2045,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con)
     printf("Loading from %s\n", f->get_file_name());
   if (is_p2h_file(f))
     {
-      l= read_p2h_file(f);
+      l= read_p2h_file(f, just_check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
@@ -2100,7 +2113,8 @@ cl_uc::read_file(chars nam, class cl_console_base *con)
     }
   delete f;
 
-  analyze_init();
+  if (!just_check)
+    analyze_init();
   return l;
 }
 
