@@ -117,12 +117,13 @@ COMMAND_DO_WORK_UC(cl_set_mem_cmd)
         {
           int i;
           t_addr addr;
+	  class cl_dump_ads ads(start, start+len-1, true, true);
           for (i= 0, addr= start;
                i < len && mem->valid_address(addr);
                i++, addr++)
             mem->write(addr, array[i]);
           uc->check_errors();
-          mem->dump(start, start+len-1, 8, con);
+          mem->dump(/*start, start+len-1*/&ads, 8, con);
         }
     }
   else
