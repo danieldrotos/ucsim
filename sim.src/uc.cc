@@ -2634,16 +2634,21 @@ cl_uc::addr_name(t_addr addr,
       cl_address_decoder *ad = ((cl_address_space *)mem)->get_decoder_of(addr);
       if (ad)
         {
-          mem = ad->memchip;
-          addr = ad->as_to_chip(addr);
-
-          if (vars->by_addr.search(mem, addr, bitnr_high, bitnr_low, i))
-            var = vars->by_addr.at(i);
-          else if (vars->by_addr.search(mem, addr, mem->width - 1, 0, i))
-            var = vars->by_addr.at(i);
-          else if (bitnr_high >= 0 && vars->by_addr.search(mem, addr, -1, -1, i))
-            var = vars->by_addr.at(i);
-        }
+          class cl_memory *chip = ad->memchip;
+	  if (chip)
+	    {
+	      addr = ad->as_to_chip(addr);
+	      
+	      if (vars->by_addr.search(chip, addr, bitnr_high, bitnr_low, i))
+		var = vars->by_addr.at(i);
+	      else if (vars->by_addr.search(chip, addr, chip->width - 1, 0, i))
+		var = vars->by_addr.at(i);
+	      else if (bitnr_high >= 0 && vars->by_addr.search(chip, addr, -1, -1, i))
+		var = vars->by_addr.at(i);
+	    }
+	  else if (vars->by_addr.search(mem, addr, -1, -1, i))
+	    var = vars->by_addr.at(i);
+	}
     }
 
   if (var)
