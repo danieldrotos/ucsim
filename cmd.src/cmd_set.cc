@@ -116,13 +116,16 @@ COMMAND_DO_WORK_UC(cl_set_mem_cmd)
       else
         {
           int i;
-          t_addr addr;
-	  class cl_dump_ads ads(start, start+len-1, true, true);
+          t_addr addr, last= mem->get_start_address()+mem->get_size()-1;
+	  class cl_dump_ads ads(start, start, true, true);
           for (i= 0, addr= start;
-               i < len && mem->valid_address(addr);
+               (i < len) &&
+		 mem->valid_address(addr) &&
+		 (addr <= last);
                i++, addr++)
             mem->write(addr, array[i]);
           uc->check_errors();
+	  ads.stop= addr;
           mem->dump(/*start, start+len-1*/&ads, 8, con);
         }
     }
