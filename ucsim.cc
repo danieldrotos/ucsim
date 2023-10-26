@@ -77,6 +77,14 @@ main(int argc, char *argv[])
   class cl_sim *sim;
   
   app_start_at= dnow();
+  {
+    double cnt= 0;
+    while (dnow() - app_start_at < 1.0)
+      {
+	cnt++;
+      }
+    printf("%f\n", cnt);
+  }
   application= new cl_app();
   application->set_name("ucsim");
   application->init(argc, argv);
