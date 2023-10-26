@@ -80,7 +80,7 @@ main(int argc, char *argv[])
   {
     volatile double d= 0;
     unsigned int i= 0;
-    while (++i < 100000000) d++;
+    while (++i < 100000000) d+= 1.0;
     d= dnow()-app_start_at;
     d= 100.0/d;
     printf("%f\n", d);
