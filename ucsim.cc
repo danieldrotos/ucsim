@@ -78,12 +78,12 @@ main(int argc, char *argv[])
   
   app_start_at= dnow();
   {
-    double cnt= 0;
-    while (dnow() - app_start_at < 1.0)
-      {
-	cnt++;
-      }
-    printf("%f\n", cnt);
+    volatile double d= 0;
+    unsigned int i= 0;
+    while (++i < 100000000) d++;
+    d= dnow()-app_start_at;
+    d= 100.0/d;
+    printf("%f\n", d);
   }
   application= new cl_app();
   application->set_name("ucsim");
