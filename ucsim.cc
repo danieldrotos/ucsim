@@ -34,8 +34,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_general_uc: public cl_uc
 {
 public:
+  u8_t r;
+public:
   cl_general_uc(cl_sim *s): cl_uc(s) {}
   virtual void make_memories(void);
+  virtual int exec_inst()
+  {
+    t_mem code;
+    if (fetch(&code))
+      return resBREAKPOINT;
+    tick(1);
+    r= rom->read(0);
+    return resGO;
+  }
 };
 
 void
@@ -92,6 +103,14 @@ main(int argc, char *argv[])
   if (sim->init())
     sim->state|= SIM_QUIT;
   application->set_simulator(sim);
+  {
+    double d= dnow();
+    unsigned int i= 0;
+    while (++i < 1000000) sim->step();
+    d= dnow() - d;
+    d= 1.0/d;
+    printf("\n%f\n", d);
+  }
   ret= application->run();
   application->done();
   return(ret);
