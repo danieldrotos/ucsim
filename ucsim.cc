@@ -44,7 +44,11 @@ public:
     if (fetch(&code))
       return resBREAKPOINT;
     tick(1);
-    r= rom->read(0);
+    r= rom->read(PC);
+    vc.rd++;
+    rom->write(PC, r+1);
+    vc.wr++;
+    r= 34;
     return resGO;
   }
 };
@@ -60,7 +64,7 @@ cl_general_uc::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  ch= new cl_chip8("chip", 0x100000, 8, 0);
+  ch= new cl_chip8("chip", 0x100000, 8/*, 0*/);
   ch->init();
   memchips->add(ch);
   
@@ -86,15 +90,15 @@ main(int argc, char *argv[])
 {
   int ret;
   class cl_sim *sim;
+  volatile double fd, id;
+  unsigned int i= 0;
   
   app_start_at= dnow();
   {
-    volatile double d= 0;
-    unsigned int i= 0;
-    while (++i < 100000000) d+= 1.0;
-    d= dnow()-app_start_at;
-    d= 100.0/d;
-    printf("%f\n", d);
+    fd= 0;
+    while (++i < 100000000) fd+= 1.0;
+    fd= dnow()-app_start_at;
+    fd= 100.0/fd;
   }
   application= new cl_app();
   application->set_name("ucsim");
@@ -104,12 +108,13 @@ main(int argc, char *argv[])
     sim->state|= SIM_QUIT;
   application->set_simulator(sim);
   {
-    double d= dnow();
-    unsigned int i= 0;
+    id= dnow();
+    i= 0;
     while (++i < 1000000) sim->step();
-    d= dnow() - d;
-    d= 1.0/d;
-    printf("\n%f\n", d);
+    id= dnow() - id;
+    id= (1.0*1000)/id;
+    fprintf(stderr, "\n%f MFlop ", fd);
+    fprintf(stderr, "%f kips\n", id);
   }
   ret= application->run();
   application->done();
