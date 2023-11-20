@@ -561,8 +561,6 @@ CLP2::inst_alu(t_mem code)
 	  RC[d]->W(R[d] & op2);
 	  setZSw(R[d]);
 	  return resGO;
-	case 0xb:
-	  return resINV;
 	}
     }
   switch (op)
