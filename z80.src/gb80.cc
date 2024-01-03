@@ -420,9 +420,9 @@ cl_gb80::exec_inst(void)
   switch (code)
     {
     case 0x00: res= (inst_nop(code)); break;
-    case 0x01: break;
+    case 0x01:
     case 0x02: case 0x06: res= (inst_ld(code)); break;
-    case 0x03: break;
+    case 0x03:
     case 0x04: res= (inst_inc(code)); break;
     case 0x05: res= (inst_dec(code)); break;
     case 0x07: {
@@ -434,7 +434,7 @@ cl_gb80::exec_inst(void)
     case 0x08: res= (inst_st_sp_abs(code)); break;
     case 0x09: res= (inst_add(code)); break;
     case 0x0a: case 0x0e: res= (inst_ld(code)); break;
-    case 0x0b: break;
+    case 0x0b:
     case 0x0d: res= (inst_dec(code)); break;
     case 0x0c: res= (inst_inc(code)); break;
     case 0x0f: {
@@ -445,9 +445,9 @@ cl_gb80::exec_inst(void)
     }
 
     case 0x10: res= (inst_stop0(code)); break;
-    case 0x11: break;
+    case 0x11:
     case 0x12: case 0x16: res= (inst_ld(code)); break;
-    case 0x13:  break;
+    case 0x13:
     case 0x14: res= (inst_inc(code)); break;
     case 0x15: res= (inst_dec(code)); break;
     case 0x17: {
@@ -459,7 +459,7 @@ cl_gb80::exec_inst(void)
     case 0x18: res= (inst_jr(code)); break;
     case 0x19: res= (inst_add(code)); break;
     case 0x1a: case 0x1e: res= (inst_ld(code)); break;
-    case 0x1b:  break;
+    case 0x1b:
     case 0x1d: res= (inst_dec(code)); break;
     case 0x1c: res= (inst_inc(code)); break;
     case 0x1f: {
