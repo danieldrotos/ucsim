@@ -57,6 +57,7 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_inst(void);
+  virtual int tickt(t_mem code);
   virtual void xy(u8_t v) {}
 
   virtual const char *get_disasm_info(t_addr addr,

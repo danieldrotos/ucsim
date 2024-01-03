@@ -808,7 +808,6 @@ cl_z80::exec_inst(void)
 
   tickt(code);
   
-  //PC= instPC;//rom->inc_address(PC, -1);
   if (res >= 0)
     return res;
   return resINV_INST;

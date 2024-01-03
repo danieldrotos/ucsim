@@ -51,6 +51,9 @@ extern u16_t ttab_fd[256];
 extern u16_t ttab_ddcb[256];
 extern u16_t ttab_fdcb[256];
 
+extern u16_t gb_ttab_00[256];
+extern u16_t gb_ttab_cb[256];
+
 extern struct cpu_entry cpus_z80[];
 
 #endif
