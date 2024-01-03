@@ -470,10 +470,10 @@ cl_gb80::exec_inst(void)
     }
 
     case 0x20: res= (inst_jr(code)); break;
-    case 0x21:  break;
+    case 0x21:
     case 0x26: res= (inst_ld(code)); break;
     case 0x22: res=  inst_ldi(code); break;
-    case 0x23:  break;
+    case 0x23:
     case 0x24: res= (inst_inc(code)); break;
     case 0x25: res= (inst_dec(code)); break;
     case 0x27: res= (inst_daa(code)); break;
@@ -481,7 +481,7 @@ cl_gb80::exec_inst(void)
     case 0x28: res= (inst_jr(code)); break;
     case 0x29: res= (inst_add(code)); break;
     case 0x2a: res= (inst_ldi(code)); break;
-    case 0x2b:  break;
+    case 0x2b:
     case 0x2d: res= (inst_dec(code)); break;
     case 0x2c: res= (inst_inc(code)); break;
     case 0x2e: res= (inst_ld(code)); break;
@@ -490,7 +490,7 @@ cl_gb80::exec_inst(void)
     case 0x30: res= (inst_jr(code)); break;
     case 0x31: case 0x36: res= (inst_ld(code)); break;
     case 0x32: res= (inst_ldd(code)); break;
-    case 0x33:  break;
+    case 0x33: 
     case 0x34: res= (inst_inc(code)); break;
     case 0x35: res= (inst_dec(code)); break;
     case 0x37: res= (inst_scf(code)); break;
@@ -498,7 +498,7 @@ cl_gb80::exec_inst(void)
     case 0x38: res= (inst_jr(code)); break;
     case 0x39: res= (inst_add(code)); break;
     case 0x3a: res=  inst_ldd(code); break;
-    case 0x3b:  break;
+    case 0x3b:
     case 0x3d: res= (inst_dec(code)); break;
     case 0x3c: res= (inst_inc(code)); break;
     case 0x3e: res= (inst_ld(code)); break;
@@ -610,7 +610,7 @@ cl_gb80::exec_inst(void)
     case 0xe0: res= (inst_ldh(code)); break;
     case 0xe1: res= (inst_pop(code)); break;
     case 0xe2: res= (inst_ldh(code)); break;
-    case 0xe3: break;
+    case 0xe3:
     case 0xe4: break;
     case 0xe5: res= (inst_push(code)); break;
     case 0xe6: res= (inst_and(code)); break;
@@ -619,7 +619,7 @@ cl_gb80::exec_inst(void)
     case 0xe8: res= (inst_add_sp_d(code)); break;
     case 0xe9: res= (inst_jp(code)); break;
     case 0xea: res= (inst_ld16(code)); break;
-    case 0xeb: break;
+    case 0xeb:
     case 0xec: case 0xed: break;
     case 0xee: res= (inst_xor(code)); break;
     case 0xef: res= (inst_rst(code)); break;
@@ -643,7 +643,7 @@ cl_gb80::exec_inst(void)
     case 0xf9: res= (inst_ld(code)); break;
     case 0xfa: res= (inst_ld16(code)); break;
     case 0xfb: res= (inst_ei(code)); break;
-    case 0xfc: break;
+    case 0xfc:
     case 0xfd: break;
     case 0xfe: res= (inst_cp(code)); break;
     case 0xff: res= (inst_rst(code)); break;
