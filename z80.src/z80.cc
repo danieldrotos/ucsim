@@ -89,6 +89,14 @@ cl_z80::init(void)
   }
   sp_limit= 0xf000;
   iblock= false;
+
+  ttab_00= z80_ttab_00;
+  ttab_dd= z80_ttab_dd;
+  ttab_cb= z80_ttab_cb;
+  ttab_ed= z80_ttab_ed;
+  ttab_fd= z80_ttab_fd;
+  ttab_ddcb= z80_ttab_ddcb;
+  ttab_fdcb= z80_ttab_fdcb;
   
   return(0);
 }

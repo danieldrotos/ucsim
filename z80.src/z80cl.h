@@ -63,6 +63,9 @@ public:
   int imode;
   bool iblock;
   bool cond_true;
+  // tick tables
+  u16_t *ttab_00, *ttab_dd, *ttab_cb, *ttab_ed, *ttab_fd;
+  u16_t *ttab_ddcb, *ttab_fdcb;
 public:
   cl_z80(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);

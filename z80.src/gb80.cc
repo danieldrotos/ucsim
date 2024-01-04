@@ -67,7 +67,10 @@ cl_gb80::cl_gb80(struct cpu_entry *Itype, class cl_sim *asim):
 int
 cl_gb80::init(void)
 {
-  cl_uc::init(); /* Memories now exist */
+  /*cl_uc*/cl_z80::init(); /* Memories now exist */
+
+  ttab_00= gb_ttab_00;
+  ttab_cb= gb_ttab_cb;
 
   return(0);
 }

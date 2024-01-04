@@ -39,18 +39,18 @@ cl_r800::init(void)
 {
   return cl_ez80::init();
   // FIXME
-  ttab_ed[0xc1]= 15;
-  ttab_ed[0xc9]= 15;
-  ttab_ed[0xd1]= 15;
-  ttab_ed[0xd9]= 15;
-  ttab_ed[0xe1]= 15;
-  ttab_ed[0xe9]= 15;
-  ttab_ed[0xf1]= 15;
-  ttab_ed[0xf9]= 15;
-  ttab_ed[0xc3]= 37;
-  ttab_ed[0xd3]= 37;
-  ttab_ed[0xe3]= 37;
-  ttab_ed[0xf3]= 37;
+  z80_ttab_ed[0xc1]= 15;
+  z80_ttab_ed[0xc9]= 15;
+  z80_ttab_ed[0xd1]= 15;
+  z80_ttab_ed[0xd9]= 15;
+  z80_ttab_ed[0xe1]= 15;
+  z80_ttab_ed[0xe9]= 15;
+  z80_ttab_ed[0xf1]= 15;
+  z80_ttab_ed[0xf9]= 15;
+  z80_ttab_ed[0xc3]= 37;
+  z80_ttab_ed[0xd3]= 37;
+  z80_ttab_ed[0xe3]= 37;
+  z80_ttab_ed[0xf3]= 37;
 }
 
 const char *
