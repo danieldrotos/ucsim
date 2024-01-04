@@ -43,7 +43,14 @@ cl_r800::init(void)
   ttab_ed[0xc9]= 15;
   ttab_ed[0xd1]= 15;
   ttab_ed[0xd9]= 15;
+  ttab_ed[0xe1]= 15;
+  ttab_ed[0xe9]= 15;
+  ttab_ed[0xf1]= 15;
+  ttab_ed[0xf9]= 15;
   ttab_ed[0xc3]= 37;
+  ttab_ed[0xd3]= 37;
+  ttab_ed[0xe3]= 37;
+  ttab_ed[0xf3]= 37;
 }
 
 const char *
@@ -58,11 +65,12 @@ cl_r800::inst_ed_(t_mem code)
 {
   switch (code)
     {
-    // Z280/R800 multu
-    case 0xc1:
-    case 0xc9:
-    case 0xd1:
-    case 0xd9:
+      // Z280/R800 multu HL=A*r
+      // ED 11rr r001
+    case 0xc1: case 0xc9:
+    case 0xd1: case 0xd9:
+    case 0xe1: case 0xe9:
+    case 0xf1: case 0xf9:
       {
 	unsigned int result = (unsigned int)(regs.raf.A) * reg_g_read((code >> 3) & 0x07);
 	regs.HL = result;
@@ -71,15 +79,16 @@ cl_r800::inst_ed_(t_mem code)
 	  regs.raf.F |= BIT_Z;
 	if (result >= 0x100)
 	  regs.raf.F |= BIT_C;
-	//tick (14);
 	return(resGO);
       }
       
 
-    // Z280/R800 multuw
-    case 0xc3: // multuw hl, bc
+      // Z280/R800 multuw
+      // multuw DE:HL= HL*ss
+      // ED 11ss 0011
+    case 0xc3: case 0xd3: case 0xe3: case 0xf3:
       {
-	unsigned long result = (unsigned long)(regs.HL) *  (unsigned long)(regs.BC);
+	unsigned long result = (unsigned long)(regs.HL) *  (unsigned long)(regrp_ss_read((code >> 4)&3));
 	regs.HL = (result >> 0) & 0xff;
 	regs.DE = (result >> 16) & 0xff;
 	regs.raf.F &= ~(BIT_S | BIT_Z | BIT_P | BIT_C);
@@ -87,7 +96,6 @@ cl_r800::inst_ed_(t_mem code)
 	  regs.raf.F |= BIT_Z;
 	if (regs.DE)
 	  regs.raf.F |= BIT_C;
-	//tick (36);
 	return(resGO);
       }
 

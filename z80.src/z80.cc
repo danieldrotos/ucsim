@@ -1160,6 +1160,19 @@ void        cl_z80::reg_g_store( t_mem g, u8_t new_val )
     }
 }
 
+u16_t
+cl_z80::regrp_ss_read(u8_t ss)
+{
+  switch (ss)
+    {
+    case 0: return regs.BC;
+    case 1: return regs.DE;
+    case 2: return regs.HL;
+      //case 3:
+    }
+  return regs.SP;
+}
+
 void
 cl_z80::stack_check_overflow(class cl_stack_op *op)
 {
