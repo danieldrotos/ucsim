@@ -39,18 +39,27 @@ cl_r800::init(void)
 {
   return cl_ez80::init();
   // FIXME
-  z80_ttab_ed[0xc1]= 15;
-  z80_ttab_ed[0xc9]= 15;
-  z80_ttab_ed[0xd1]= 15;
-  z80_ttab_ed[0xd9]= 15;
-  z80_ttab_ed[0xe1]= 15;
-  z80_ttab_ed[0xe9]= 15;
-  z80_ttab_ed[0xf1]= 15;
-  z80_ttab_ed[0xf9]= 15;
-  z80_ttab_ed[0xc3]= 37;
-  z80_ttab_ed[0xd3]= 37;
-  z80_ttab_ed[0xe3]= 37;
-  z80_ttab_ed[0xf3]= 37;
+  r800_ttab_ed[0xc1]= 15;
+  r800_ttab_ed[0xc9]= 15;
+  r800_ttab_ed[0xd1]= 15;
+  r800_ttab_ed[0xd9]= 15;
+  r800_ttab_ed[0xe1]= 15;
+  r800_ttab_ed[0xe9]= 15;
+  r800_ttab_ed[0xf1]= 15;
+  r800_ttab_ed[0xf9]= 15;
+  r800_ttab_ed[0xc3]= 37;
+  r800_ttab_ed[0xd3]= 37;
+  r800_ttab_ed[0xe3]= 37;
+  r800_ttab_ed[0xf3]= 37;
+
+  ttab_00= r800_ttab_00;
+  ttab_dd= r800_ttab_dd;
+  ttab_cb= r800_ttab_cb;
+  ttab_ed= r800_ttab_ed;
+  ttab_fd= r800_ttab_fd;
+  ttab_ddcb= r800_ttab_ddcb;
+  ttab_fdcb= r800_ttab_fdcb;
+
 }
 
 const char *
@@ -59,6 +68,11 @@ cl_r800::id_string(void)
   return ("R800");
 }
 
+/*
+  dd/fd 88+p   ADC A,IXYp
+  dd/fd 80+p   ADD A,IXYp
+  dd/fd a0+p   AND IXYp
+ */
 
 int
 cl_r800::inst_ed_(t_mem code)
