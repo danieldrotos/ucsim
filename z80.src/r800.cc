@@ -39,14 +39,6 @@ cl_r800::init(void)
 {
   return cl_ez80::init();
   // FIXME
-  r800_ttab_ed[0xc1]= 15;
-  r800_ttab_ed[0xc9]= 15;
-  r800_ttab_ed[0xd1]= 15;
-  r800_ttab_ed[0xd9]= 15;
-  r800_ttab_ed[0xe1]= 15;
-  r800_ttab_ed[0xe9]= 15;
-  r800_ttab_ed[0xf1]= 15;
-  r800_ttab_ed[0xf9]= 15;
   r800_ttab_ed[0xc3]= 37;
   r800_ttab_ed[0xd3]= 37;
   r800_ttab_ed[0xe3]= 37;
@@ -69,9 +61,21 @@ cl_r800::id_string(void)
 }
 
 /*
-  dd/fd 88+p   ADC A,IXYp
-  dd/fd 80+p   ADD A,IXYp
-  dd/fd a0+p   AND IXYp
+  dd/fd 88+p   ADC   A,IXYp
+  dd/fd 80+p   ADD   A,IXYp
+  dd/fd a0+p   AND   IXYp
+  dd/fd b8 oo  CP    (IXY+oo)
+  dd/fd 05+8*p DEC   IXYp
+  dd/fd 04+8*p INX   IXYp
+  dd/fd 78+p   LD    A,IXYp
+  dd/fd 40+p   LD    B,IXYp
+  dd/fd 48+p   LD    C,IXYp
+  dd/fd 50+p   LD    D,IXYp
+  dd/fd 58+p   LD    E,IXYp
+  dd/fd 60+p   LD    IXYh,p
+  dd/fd 68+p   LD    IXYl,p
+  ed c1+8*r    MULUB A,r
+  dd/fd b0+p   OR    IXYp
  */
 
 int
