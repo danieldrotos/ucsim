@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (inst.cc)
+ * Simulator of microcontrollers (inst_cb.cc)
  *
  * Copyright (C) 1999,99 Drotos Daniel, Talker Bt.
  * 

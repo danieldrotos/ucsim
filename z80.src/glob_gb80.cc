@@ -1,6 +1,6 @@
 /*
  * Disassembly table for LR35902, a Z-80 derivative used
- * by the Gameboy (glob_lr35902.cc)
+ * by the Gameboy (glob_gb80.cc)
  *
  */
 /* Derived from z80 glob.cc by Leland Morrison 2011 */

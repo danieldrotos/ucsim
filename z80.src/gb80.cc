@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (z80.src/gb80.cc)
+ * Simulator of microcontrollers (gb80.cc)
  *
  * Copyright (C) 2021,21 Drotos Daniel, Talker Bt.
  * 

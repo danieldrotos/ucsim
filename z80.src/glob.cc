@@ -1486,4 +1486,4 @@ struct cpu_entry cpus_z80[]=
   };
 
 
-/* z80.src/glob.cc */
+/* End of z80.src/glob.cc */
