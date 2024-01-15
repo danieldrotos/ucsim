@@ -76,6 +76,9 @@ cl_r800::id_string(void)
   dd/fd 68+p   LD    IXYl,p
   ed c1+8*r    MULUB A,r
   dd/fd b0+p   OR    IXYp
+  dd/fd 98+p   SBC   A,IXYp
+  dd/fd 90+p   SUB   IXYp
+  dd/fd a8+p   XOR   IXYp
  */
 
 int
