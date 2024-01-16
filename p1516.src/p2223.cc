@@ -702,12 +702,19 @@ CLP2::inst_ext(t_mem code)
       if (code & 0x01000000)
 	{
 	  // PUTB
+	  u32_t mask= 0xff << (i*8);
+	  u32_t data= RC[d]->R();
+	  u32_t byte= RC[b]->R() & 0xff;
+	  data&= ~mask;
+	  byte<<= (i*8);
+	  data|= byte;
+	  RC[d]->W(data);
 	}
       else
 	{
 	  // GETB
 	  u32_t byte= RC[b]->R();
-	  byte>>= i*8;
+	  byte>>= (i*8);
 	  byte&= 0xff;
 	  RC[d]->W(byte);
 	}
