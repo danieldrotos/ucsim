@@ -711,6 +711,7 @@ CLP2::inst_ext(t_mem code)
 	  byte&= 0xff;
 	  RC[d]->W(byte);
 	}
+      return resGO;
     }
   return resINV;
 }
