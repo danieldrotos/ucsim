@@ -63,6 +63,9 @@ public:
   int imode;
   bool iblock;
   bool cond_true;
+  // tick tables
+  u16_t *ttab_00, *ttab_dd, *ttab_cb, *ttab_ed, *ttab_fd;
+  u16_t *ttab_ddcb, *ttab_fdcb;
 public:
   cl_z80(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
@@ -113,7 +116,8 @@ public:
   //virtual t_mem fetch(void);
   virtual u8_t reg_g_read ( t_mem g );
   virtual void reg_g_store( t_mem g, u8_t new_val );
-
+  virtual u16_t regrp_ss_read(u8_t ss);
+  
   virtual void stack_check_overflow(class cl_stack_op *op);
 
   virtual int inst_nop(t_mem code);

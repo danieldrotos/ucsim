@@ -89,6 +89,14 @@ cl_z80::init(void)
   }
   sp_limit= 0xf000;
   iblock= false;
+
+  ttab_00= z80_ttab_00;
+  ttab_dd= z80_ttab_dd;
+  ttab_cb= z80_ttab_cb;
+  ttab_ed= z80_ttab_ed;
+  ttab_fd= z80_ttab_fd;
+  ttab_ddcb= z80_ttab_ddcb;
+  ttab_fdcb= z80_ttab_fdcb;
   
   return(0);
 }
@@ -808,7 +816,6 @@ cl_z80::exec_inst(void)
 
   tickt(code);
   
-  //PC= instPC;//rom->inc_address(PC, -1);
   if (res >= 0)
     return res;
   return resINV_INST;
@@ -1159,6 +1166,19 @@ void        cl_z80::reg_g_store( t_mem g, u8_t new_val )
 
     case 7:  regs.raf.A    = new_val;  break;  /* write to a */
     }
+}
+
+u16_t
+cl_z80::regrp_ss_read(u8_t ss)
+{
+  switch (ss)
+    {
+    case 0: return regs.BC;
+    case 1: return regs.DE;
+    case 2: return regs.HL;
+      //case 3:
+    }
+  return regs.SP;
 }
 
 void
