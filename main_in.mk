@@ -123,6 +123,7 @@ installcheck:
 # Creating installation directories
 # ---------------------------------
 installdirs:
+	test -d $(DESTDIR)$(bindir) || $(INSTALL) -d $(DESTDIR)$(bindir)
 
 
 # Creating dependencies
