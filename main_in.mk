@@ -86,13 +86,13 @@ install: all installdirs installapps
 
 ifeq ($(enable_ucsim),yes)
 installapps:
-	$(INSTALL) ucsim$(EXEEXT) $(DESTDIR)$(bindir)
+	$(INSTALL) ucsim$(EXEEXT) $(DESTDIR)$(bindir)/ucsim$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/ucsim$(EXEEXT)
-	$(INSTALL) relay$(EXEEXT) $(DESTDIR)$(bindir)
+	$(INSTALL) relay$(EXEEXT) $(DESTDIR)$(bindir)/relay$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/relay$(EXEEXT)
 else
 installapps:
-	$(INSTALL) relay$(EXEEXT) $(DESTDIR)$(bindir)
+	$(INSTALL) relay$(EXEEXT) $(DESTDIR)$(bindir)/relay$(EXEEXT)
 	$(STRIP) $(DESTDIR)$(bindir)/relay$(EXEEXT)
 endif
 
