@@ -12,6 +12,7 @@ CXX		= @CXX@
 CXXCPP		= @CXXCPP@
 RANLIB		= @RANLIB@
 INSTALL		= @INSTALL@
+STRIP		= @STRIP@
 MAKEDEP         = @MAKEDEP@
 AR		= @AR@
 
@@ -81,8 +82,19 @@ main_app: checkconf ucsim_app relay_app
 
 # Compiling and installing everything and running test
 # ---------------------------------------------------
-install: all installdirs
+install: all installdirs installapps
 
+ifeq ($(enable_ucsim),yes)
+installapps:
+	$(INSTALL) ucsim$(EXEEXT) $(DESTDIR)$(bindir)
+	$(STRIP) $(DESTDIR)$(bindir)/ucsim$(EXEEXT)
+	$(INSTALL) relay$(EXEEXT) $(DESTDIR)$(bindir)
+	$(STRIP) $(DESTDIR)$(bindir)/relay$(EXEEXT)
+else
+installapps:
+	$(INSTALL) relay$(EXEEXT) $(DESTDIR)$(bindir)
+	$(STRIP) $(DESTDIR)$(bindir)/relay$(EXEEXT)
+endif
 
 # Deleting all the installed files
 # --------------------------------
