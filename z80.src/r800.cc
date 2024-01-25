@@ -37,7 +37,7 @@ cl_r800::cl_r800(struct cpu_entry *Itype, class cl_sim *asim):
 int
 cl_r800::init(void)
 {
-  return cl_ez80::init();
+  cl_ez80::init();
   // FIXME
   r800_ttab_ed[0xc3]= 37;
   r800_ttab_ed[0xd3]= 37;
@@ -52,6 +52,7 @@ cl_r800::init(void)
   ttab_ddcb= r800_ttab_ddcb;
   ttab_fdcb= r800_ttab_fdcb;
 
+  return 0;
 }
 
 const char *
