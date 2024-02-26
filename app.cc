@@ -851,7 +851,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	set_option_s("color_ui_bit0", "white:black");
 	set_option_s("color_ui_bit1", "bred:black");
 	set_option_s("color_debug", "magenta:bwhite");
-	set_option_s("color_led_on", "bgreen:bwhite");
+	set_option_s("color_led_on", "green:bwhite");
 	set_option_s("color_led_off", "black:bwhite");
 	break;
       case 'B':
