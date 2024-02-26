@@ -830,6 +830,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	  break;
 	}
       case 'l':
+	set_option_s("color_bg", "bwhite");
 	set_option_s("color_prompt", "green:bwhite");
 	set_option_s("color_prompt_console", "blue:bwhite");
 	set_option_s("color_command", "blue:bwhite");
@@ -1247,6 +1248,11 @@ cl_app::mk_options(void)
 					      "Prompt color"));
   o->init();
   o->set_value("bwhite:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_bg",
+					      "Default background color"));
+  o->init();
+  o->set_value("black");
   
   options->new_option(o= new cl_string_option(this, "color_prompt_console",
 					      "Color of console number in prompt"));

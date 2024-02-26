@@ -156,7 +156,8 @@ cl_fpga::draw_display(void)
   int i;
   if (!io)
     return;
-  io->tu_hide();
+  //io->tu_hide();
+  io->dd_color("led_on");
   io->tu_cls();
   cl_hw::draw_display();
   io->tu_go(10,10);

@@ -347,7 +347,13 @@ void
 cl_console_base::dd_color(const char *color_name)
 {
   if (!non_color())
-    dd_printf("%s", get_color_ansiseq(color_name, true).c_str());
+    {
+      chars c;
+      const char *s;
+      c= get_color_ansiseq(color_name, true);
+      s= c.c_str();
+      dd_printf("%s", s);
+    }
 }
 
 int

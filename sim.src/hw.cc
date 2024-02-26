@@ -525,6 +525,7 @@ cl_hw::draw_display(void)
   io->dd_cprintf("ui_title", "%-13s", s.c_str());
 
   io->tu_go(1,3);
+  io->dd_color("answer");
   io->dd_printf("\033[2K"); // entire line
   io->dd_printf("\033[0J"); // from cursor to end of screen
   io->dd_printf("\n");
