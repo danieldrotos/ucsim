@@ -850,6 +850,8 @@ cl_app::proc_arguments(int argc, char *argv[])
 	set_option_s("color_ui_bit0", "white:black");
 	set_option_s("color_ui_bit1", "bred:black");
 	set_option_s("color_debug", "magenta:bwhite");
+	set_option_s("color_led_on", "bgreen:bwhite");
+	set_option_s("color_led_off", "black:bwhite");
 	break;
       case 'B':
 	if (!options->set_value("beep_break", this, (bool)true))
@@ -1345,6 +1347,16 @@ cl_app::mk_options(void)
 					      "Stop state color on UI display"));
   o->init();
   o->set_value("white:red");
+  
+  options->new_option(o= new cl_string_option(this, "color_led_on",
+					      ""));
+  o->init();
+  o->set_value("b:green:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_led_off",
+					      ""));
+  o->init();
+  o->set_value("white:black");
   
   options->new_option(o= new cl_number_option(this, "label_width",
 					      "Space to allow for labels in dumps and disassembly (-1 for auto)"));

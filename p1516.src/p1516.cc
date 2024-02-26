@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "portcl.h"
 #include "uartcl.h"
 #include "clockcl.h"
+#include "fpgacl.h"
 
 #include "p1516cl.h"
 
@@ -191,6 +192,9 @@ cl_p1516::mk_hw_elements(void)
   u->add_port(&d, 5);
   d.basy   = 10;
   ui->add_port(&d, 1);
+
+  add_hw(h= new cl_fpga(this, 0, "fpga"));
+  h->init();
 }
 
 void
