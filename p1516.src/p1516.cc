@@ -193,7 +193,7 @@ cl_p1516::mk_hw_elements(void)
   d.basy   = 10;
   ui->add_port(&d, 1);
 
-  add_hw(h= new cl_fpga(this, 0, "fpga"));
+  add_hw(h= new cl_n4(this, 0, "n4ddr"));
   h->init();
 }
 

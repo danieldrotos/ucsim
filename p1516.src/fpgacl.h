@@ -55,6 +55,8 @@ public:
   class cl_led *leds[16];
 public:
   cl_fpga(class cl_uc *auc, int aid, chars aid_string);
+  virtual int init(void);
+  virtual void mk_leds(void) {}
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual bool proc_input(void);
@@ -62,9 +64,21 @@ public:
   virtual void refresh_leds(bool force);
   virtual void refresh_display(bool force);
   virtual void draw_display(void);
-
+  virtual void draw_fpga(void) {}
+  
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
+};
+
+
+class cl_n4: public cl_fpga
+{
+public:
+  int basey;
+public:
+  cl_n4(class cl_uc *auc, int aid, chars aid_string);
+  virtual void mk_leds(void);
+  virtual void draw_fpga(void);
 };
 
 

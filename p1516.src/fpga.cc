@@ -48,7 +48,7 @@ void
 cl_led::refresh(bool force)
 {
   class cl_hw_io *io= fpga->get_io();
-  uint32_t act= fpga->pb->read() & mask;
+  uint32_t act= fpga->pb->get() & mask;
   uint32_t last= fpga->lb & mask;
   if (force || (act != last))
     {
@@ -80,18 +80,29 @@ cl_led::draw(void)
 cl_fpga::cl_fpga(class cl_uc *auc, int aid, chars aid_string):
   cl_hw(auc, HW_DUMMY, aid, aid_string)
 {
-  int i, m;
+  int i;
   for (i= 0; i<16; i++)
     leds[i]= NULL;
-  m= 1;
   pa= (class cl_cell32 *)register_cell(uc->rom, 0xff00);
   pb= (class cl_cell32 *)register_cell(uc->rom, 0xff01);
   pc= (class cl_cell32 *)register_cell(uc->rom, 0xff02);
   pd= (class cl_cell32 *)register_cell(uc->rom, 0xff03);
   pi= (class cl_cell32 *)register_cell(uc->rom, 0xff20);
   pj= (class cl_cell32 *)register_cell(uc->rom, 0xff10);
-  for (i=0; i<8; i++, m<<=1)
-    leds[i]= new cl_led(this, 16*3-i*3,20, m);
+  la= pa->R();
+  lb= pb->R();
+  lc= pc->R();
+  ld= pd->R();
+  li= pi->R();
+  lj= pj->R();
+}
+
+
+int
+cl_fpga::init(void)
+{
+  mk_leds();
+  return 0;
 }
 
 
@@ -168,8 +179,7 @@ cl_fpga::draw_display(void)
   io->dd_color("led_on");
   io->tu_cls();
   cl_hw::draw_display();
-  io->tu_go(10,10);
-  io->dd_printf("FPGA");
+  draw_fpga();
   for (i=0; i<16; i++)
     if (leds[i])
       leds[i]->draw();
@@ -200,6 +210,41 @@ cl_fpga::write(class cl_memory_cell *cell, t_mem *val)
       refresh_leds(false);
     }
   cell->set(*val);
+}
+
+
+/*
+                                                                 Nexys4 DDR
+  -------------------------------------------------------------------------
+*/
+
+cl_n4::cl_n4(class cl_uc *auc, int aid, chars aid_string):
+  cl_fpga(auc, aid, aid_string)
+{
+  basey= 13; // row of leds
+}
+
+
+void
+cl_n4::mk_leds(void)
+{
+  int i, m;
+  for (i=0, m=1; i<16; i++, m<<=1)
+    leds[i]= new cl_led(this, 2+16*3-i*3,basey, m);
+}
+
+
+void
+cl_n4::draw_fpga(void)
+{
+  int i;
+  io->tu_go(1,4);
+  io->dd_printf("Nexys4DDR");
+  for (i=0; i<16; i++)
+    {
+      io->tu_go(2+16*3-i*3-1,basey+1);
+      io->dd_cprintf("ui_label", "%2d", i);
+    }
 }
 
 
