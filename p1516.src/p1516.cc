@@ -195,6 +195,8 @@ cl_p1516::mk_hw_elements(void)
 
   add_hw(h= new cl_n4(this, 0, "n4ddr"));
   h->init();
+  add_hw(h= new cl_bool(this, 0, "boolean"));
+  h->init();
 }
 
 void

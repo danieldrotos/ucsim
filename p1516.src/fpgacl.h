@@ -75,9 +75,18 @@ class cl_n4: public cl_fpga
 {
 public:
   int basey;
+  chars board;
 public:
   cl_n4(class cl_uc *auc, int aid, chars aid_string);
   virtual void mk_leds(void);
+  virtual void draw_fpga(void);
+};
+
+
+class cl_bool: public cl_n4
+{
+public:
+  cl_bool(class cl_uc *auc, int aid, chars aid_string);
   virtual void draw_fpga(void);
 };
 

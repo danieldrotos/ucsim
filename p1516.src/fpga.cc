@@ -222,6 +222,7 @@ cl_n4::cl_n4(class cl_uc *auc, int aid, chars aid_string):
   cl_fpga(auc, aid, aid_string)
 {
   basey= 13; // row of leds
+  board= "Nexys4DDR";
 }
 
 
@@ -239,7 +240,7 @@ cl_n4::draw_fpga(void)
 {
   int i;
   io->tu_go(1,4);
-  io->dd_printf("Nexys4DDR");
+  io->dd_printf("%s", board.c_str());
   for (i=0; i<16; i++)
     {
       io->tu_go(2+16*3-i*3-1,basey+1);
@@ -247,5 +248,22 @@ cl_n4::draw_fpga(void)
     }
 }
 
+
+/*
+                                                                    Boolean
+  -------------------------------------------------------------------------
+*/
+
+cl_bool::cl_bool(class cl_uc *auc, int aid, chars aid_string):
+  cl_n4(auc, aid, aid_string)
+{
+}
+
+
+void
+cl_bool::draw_fpga(void)
+{
+  cl_n4::draw_fpga();
+}
 
 /* End of p1516.src/fpga.cc */
