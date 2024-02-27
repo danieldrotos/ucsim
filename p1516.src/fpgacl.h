@@ -39,8 +39,20 @@ public:
   class cl_fpga *fpga;
   int x, y;
   uint32_t mask;
+  uint32_t last;
 public:
   cl_led(class cl_fpga *the_fpga, int ax, int ay, uint32_t amask);
+  virtual void refresh(bool force);
+  virtual void draw(void);
+};
+
+
+class cl_seg: public cl_led
+{
+public:
+  int digit;
+public:
+  cl_seg(class cl_fpga *the_fpga, int ax, int ay, int adigit);
   virtual void refresh(bool force);
   virtual void draw(void);
 };
@@ -51,17 +63,19 @@ class cl_fpga: public cl_hw
 public:
   cl_cell32 *pa, *pb, *pc, *pd;
   cl_cell32 *pi, *pj;
-  uint32_t la, lb, lc, ld, li, lj; // last shown values
   class cl_led *leds[16];
+  class cl_seg *segs[8];
 public:
   cl_fpga(class cl_uc *auc, int aid, chars aid_string);
   virtual int init(void);
   virtual void mk_leds(void) {}
+  virtual void mk_segs(void) {}
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual bool proc_input(void);
   virtual bool handle_input(int c);
   virtual void refresh_leds(bool force);
+  virtual void refresh_segs(bool force);
   virtual void refresh_display(bool force);
   virtual void draw_display(void);
   virtual void draw_fpga(void) {}
@@ -79,6 +93,7 @@ public:
 public:
   cl_n4(class cl_uc *auc, int aid, chars aid_string);
   virtual void mk_leds(void);
+  virtual void mk_segs(void);
   virtual void draw_fpga(void);
 };
 

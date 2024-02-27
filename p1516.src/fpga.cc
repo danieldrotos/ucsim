@@ -42,6 +42,7 @@ cl_led::cl_led(class cl_fpga *the_fpga, int ax, int ay, uint32_t amask):
   x= ax;
   y= ay;
   mask= amask;
+  last= 0;
 }
 
 void
@@ -49,19 +50,19 @@ cl_led::refresh(bool force)
 {
   class cl_hw_io *io= fpga->get_io();
   uint32_t act= fpga->pb->get() & mask;
-  uint32_t last= fpga->lb & mask;
+  uint32_t l= last & mask;
   if (force || (act != last))
     {
       io->tu_go(x, y);
       if (act)
 	{
 	  io->dd_cprintf("led_on", "@");
-	  fpga->lb|= mask;
+	  last|= mask;
 	}
       else
 	{
 	  io->dd_cprintf("led_off", ".");
-	  fpga->lb&= ~mask;
+	  last&= ~mask;
 	}
     }
 }
@@ -69,6 +70,55 @@ cl_led::refresh(bool force)
 void
 cl_led::draw(void)
 {
+}
+
+
+/*
+                                                          7 SEGMENT DISPLAY
+  -------------------------------------------------------------------------
+*/
+
+cl_seg::cl_seg(class cl_fpga *the_fpga, int ax, int ay, int adigit):
+  cl_led(the_fpga, ax, ay, 0)
+{
+  digit= adigit;
+}
+
+void
+cl_seg::refresh(bool force)
+{
+  class cl_hw_io *io= fpga->get_io();
+  uint32_t sw= fpga->pj->read(), act;
+  uint32_t l, mask, a;
+  sw>>= 8;
+  sw&= 0xf;
+  switch (sw)
+    {
+    case 0: act= fpga->pa->get(); break;
+    case 1: act= fpga->pb->get(); break;
+    case 2: act= fpga->pc->get(); break;
+    case 3: act= fpga->pd->get(); break;
+    default: act= 0;
+    }
+  mask= 0xf << (digit*4);
+  act&= mask;
+  l= last & mask;
+  if (force || (act != l))
+    {
+      a= act >> (digit*4);
+      a&= 0xf;	
+      io->tu_go(x, y);
+      io->dd_printf("%x",a);
+      last= (last & ~mask) | act;
+    }
+}
+
+void
+cl_seg::draw(void)
+{
+  class cl_hw_io *io= fpga->get_io();
+  io->tu_go(x+1,y+3);
+  io->dd_cprintf("ui_label", "%d", digit);
 }
 
 
@@ -83,18 +133,14 @@ cl_fpga::cl_fpga(class cl_uc *auc, int aid, chars aid_string):
   int i;
   for (i= 0; i<16; i++)
     leds[i]= NULL;
+  for (i= 0; i<8; i++)
+    segs[i]= NULL;
   pa= (class cl_cell32 *)register_cell(uc->rom, 0xff00);
   pb= (class cl_cell32 *)register_cell(uc->rom, 0xff01);
   pc= (class cl_cell32 *)register_cell(uc->rom, 0xff02);
   pd= (class cl_cell32 *)register_cell(uc->rom, 0xff03);
   pi= (class cl_cell32 *)register_cell(uc->rom, 0xff20);
   pj= (class cl_cell32 *)register_cell(uc->rom, 0xff10);
-  la= pa->R();
-  lb= pb->R();
-  lc= pc->R();
-  ld= pd->R();
-  li= pi->R();
-  lj= pj->R();
 }
 
 
@@ -102,6 +148,7 @@ int
 cl_fpga::init(void)
 {
   mk_leds();
+  mk_segs();
   return 0;
 }
 
@@ -157,6 +204,18 @@ cl_fpga::refresh_leds(bool force)
 
 
 void
+cl_fpga::refresh_segs(bool force)
+{
+  int i;
+  for (i=0; i<8; i++)
+    {
+      if (segs[i])
+	segs[i]->refresh(force);
+    }
+}
+
+
+void
 cl_fpga::refresh_display(bool force)
 {
   int i;
@@ -166,6 +225,7 @@ cl_fpga::refresh_display(bool force)
 
   //io->tu_hide();
   refresh_leds(force);
+  refresh_segs(force);
 }
 
 
@@ -183,6 +243,9 @@ cl_fpga::draw_display(void)
   for (i=0; i<16; i++)
     if (leds[i])
       leds[i]->draw();
+  for (i=0; i<8; i++)
+    if (segs[i])
+      segs[i]->draw();
   refresh_display(true);
 }
 
@@ -234,6 +297,13 @@ cl_n4::mk_leds(void)
     leds[i]= new cl_led(this, 2+16*3-i*3,basey, m);
 }
 
+void
+cl_n4::mk_segs(void)
+{
+  int i, d;
+  for (i=0, d=0; i<8; i++, d++)
+    segs[i]= new cl_seg(this, 2+8*5-i*5,basey-6, d);
+}
 
 void
 cl_n4::draw_fpga(void)
