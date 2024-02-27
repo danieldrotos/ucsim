@@ -134,14 +134,9 @@ cl_fpga::handle_input(int c)
 
 
 void
-cl_fpga::refresh_display(bool force)
+cl_fpga::refresh_leds(bool force)
 {
   int i;
-  
-  if (!io)
-    return;
-
-  //io->tu_hide();
   for (i=0; i<16; i++)
     {
       if (leds[i])
@@ -151,12 +146,25 @@ cl_fpga::refresh_display(bool force)
 
 
 void
+cl_fpga::refresh_display(bool force)
+{
+  int i;
+  
+  if (!io)
+    return;
+
+  //io->tu_hide();
+  refresh_leds(force);
+}
+
+
+void
 cl_fpga::draw_display(void)
 {
   int i;
   if (!io)
     return;
-  //io->tu_hide();
+  io->tu_hide();
   io->dd_color("led_on");
   io->tu_cls();
   cl_hw::draw_display();
@@ -186,6 +194,10 @@ cl_fpga::write(class cl_memory_cell *cell, t_mem *val)
     return;
   if (cell == pa)
     {
+    }
+  else if (cell == pb)
+    {
+      refresh_leds(false);
     }
   cell->set(*val);
 }

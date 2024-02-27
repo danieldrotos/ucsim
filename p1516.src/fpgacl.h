@@ -59,6 +59,7 @@ public:
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual bool proc_input(void);
   virtual bool handle_input(int c);
+  virtual void refresh_leds(bool force);
   virtual void refresh_display(bool force);
   virtual void draw_display(void);
 
