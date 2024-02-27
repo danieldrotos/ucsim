@@ -557,6 +557,20 @@ cl_console_base::tu_color(int bg, int fg)
 }
 
 void
+cl_console_base::tu_bgcolor(int bg)
+{
+  if (bg >= 0)
+    dd_printf("\033[%dm", (tu_bg_color= bg)+40);
+}
+
+void
+cl_console_base::tu_fgcolor(int fg)
+{
+  if (fg >= 0)
+    dd_printf("\033[%dm", (tu_fg_color= fg)+30);
+}
+
+void
 cl_console_base::tu_mouse_on(void)
 {
   // enable mouse click reports of terminal

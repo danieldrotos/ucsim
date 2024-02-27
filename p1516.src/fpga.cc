@@ -84,6 +84,14 @@ cl_seg::cl_seg(class cl_fpga *the_fpga, int ax, int ay, int adigit):
   digit= adigit;
 }
 
+static const char *dsp[3]= {
+  //         1         2         3         4
+  //1234567890123456789012345678901234567890123456789
+  " _         _    _         _    _    _    _    _    _         _         _    _ ",
+  "| |    |   _|   _|  |_|  |_   |_     |  |_|  |_|  |_|  |_   |     _|  |_   |_ ",
+  "|_|    |  |_    _|    |   _|  |_|    |  |_|   _|  | |  |_|  |_   |_|  |_   |  "
+};
+
 void
 cl_seg::refresh(bool force)
 {
@@ -107,8 +115,16 @@ cl_seg::refresh(bool force)
     {
       a= act >> (digit*4);
       a&= 0xf;	
+      int s= a*5;
+      io->tu_fgcolor(1); io->dd_printf("\033[1m");
       io->tu_go(x, y);
-      io->dd_printf("%x",a);
+      io->dd_printf("%c%c%c", dsp[0][s], dsp[0][s+1], dsp[0][s+2]);
+      io->tu_go(x, y+1);
+      io->dd_printf("%c%c%c", dsp[1][s], dsp[1][s+1], dsp[1][s+2]);
+      io->tu_go(x, y+2);
+      io->dd_printf("%c%c%c", dsp[2][s], dsp[2][s+1], dsp[2][s+2]);
+      io->dd_printf("\033[0m");
+      io->dd_color("answer");
       last= (last & ~mask) | act;
     }
 }
@@ -117,7 +133,7 @@ void
 cl_seg::draw(void)
 {
   class cl_hw_io *io= fpga->get_io();
-  io->tu_go(x+1,y+3);
+  io->tu_go(x+1,y+4);
   io->dd_cprintf("ui_label", "%d", digit);
 }
 
@@ -147,6 +163,7 @@ cl_fpga::cl_fpga(class cl_uc *auc, int aid, chars aid_string):
 int
 cl_fpga::init(void)
 {
+  cl_hw::init();
   mk_leds();
   mk_segs();
   return 0;
@@ -195,6 +212,7 @@ void
 cl_fpga::refresh_leds(bool force)
 {
   int i;
+  if (!io) return;
   for (i=0; i<16; i++)
     {
       if (leds[i])
@@ -207,6 +225,7 @@ void
 cl_fpga::refresh_segs(bool force)
 {
   int i;
+  if (!io) return;
   for (i=0; i<8; i++)
     {
       if (segs[i])
@@ -220,8 +239,7 @@ cl_fpga::refresh_display(bool force)
 {
   int i;
   
-  if (!io)
-    return;
+  if (!io) return;
 
   //io->tu_hide();
   refresh_leds(force);
@@ -233,8 +251,7 @@ void
 cl_fpga::draw_display(void)
 {
   int i;
-  if (!io)
-    return;
+  if (!io) return;
   io->tu_hide();
   io->dd_color("led_on");
   io->tu_cls();
@@ -309,6 +326,7 @@ void
 cl_n4::draw_fpga(void)
 {
   int i;
+  if (!io) return;
   io->tu_go(1,4);
   io->dd_printf("%s", board.c_str());
   for (i=0; i<16; i++)
