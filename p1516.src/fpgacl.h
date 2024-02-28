@@ -65,6 +65,8 @@ public:
   cl_cell32 *pi, *pj;
   class cl_led *leds[16];
   class cl_seg *segs[8];
+  int basey;
+  chars board;
 public:
   cl_fpga(class cl_uc *auc, int aid, chars aid_string);
   virtual int init(void);
@@ -88,9 +90,6 @@ public:
 class cl_n4: public cl_fpga
 {
 public:
-  int basey;
-  chars board;
-public:
   cl_n4(class cl_uc *auc, int aid, chars aid_string);
   virtual void mk_leds(void);
   virtual void mk_segs(void);
@@ -102,6 +101,16 @@ class cl_bool: public cl_n4
 {
 public:
   cl_bool(class cl_uc *auc, int aid, chars aid_string);
+  virtual void draw_fpga(void);
+};
+
+
+class cl_logsys: public cl_fpga
+{
+public:
+  cl_logsys(class cl_uc *auc, int aid, chars aid_string);
+  virtual void mk_leds(void);
+  virtual void mk_segs(void);
   virtual void draw_fpga(void);
 };
 

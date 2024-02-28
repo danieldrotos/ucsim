@@ -157,6 +157,7 @@ cl_fpga::cl_fpga(class cl_uc *auc, int aid, chars aid_string):
   pd= (class cl_cell32 *)register_cell(uc->rom, 0xff03);
   pi= (class cl_cell32 *)register_cell(uc->rom, 0xff20);
   pj= (class cl_cell32 *)register_cell(uc->rom, 0xff10);
+  basey= 13; // row of leds
 }
 
 
@@ -301,7 +302,6 @@ cl_fpga::write(class cl_memory_cell *cell, t_mem *val)
 cl_n4::cl_n4(class cl_uc *auc, int aid, chars aid_string):
   cl_fpga(auc, aid, aid_string)
 {
-  basey= 13; // row of leds
   board= "Nexys4DDR";
 }
 
@@ -345,6 +345,7 @@ cl_n4::draw_fpga(void)
 cl_bool::cl_bool(class cl_uc *auc, int aid, chars aid_string):
   cl_n4(auc, aid, aid_string)
 {
+  board= "Boolean";
 }
 
 
@@ -352,6 +353,45 @@ void
 cl_bool::draw_fpga(void)
 {
   cl_n4::draw_fpga();
+}
+
+
+/*
+                                                                     LogSys
+  -------------------------------------------------------------------------
+*/
+
+cl_logsys::cl_logsys(class cl_uc *auc, int aid, chars aid_string):
+  cl_fpga(auc, aid, aid_string)
+{
+  board= "LogSys";
+}
+
+void
+cl_logsys::mk_leds(void)
+{
+}
+
+void
+cl_logsys::mk_segs(void)
+{
+  int i, d;
+  for (i=0, d=0; i<4; i++, d++)
+    segs[i]= new cl_seg(this, 2+8*5-i*5,basey-6, d);
+}
+
+void
+cl_logsys::draw_fpga(void)
+{
+  int i;
+  if (!io) return;
+  io->tu_go(1,4);
+  io->dd_printf("%s", board.c_str());
+  for (i=0; i<8; i++)
+    {
+      io->tu_go(2+16*3-i*3-1,basey+1);
+      io->dd_cprintf("ui_label", "%2d", i);
+    }
 }
 
 /* End of p1516.src/fpga.cc */

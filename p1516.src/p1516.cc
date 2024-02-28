@@ -197,6 +197,8 @@ cl_p1516::mk_hw_elements(void)
   h->init();
   add_hw(h= new cl_bool(this, 0, "boolean"));
   h->init();
+  add_hw(h= new cl_logsys(this, 0, "logsys"));
+  h->init();
 }
 
 void
