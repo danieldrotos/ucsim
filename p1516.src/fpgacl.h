@@ -58,13 +58,41 @@ public:
 };
 
 
+class cl_ibit: public cl_base
+{
+public:
+  cl_fpga *fpga;
+  int x, y;
+  int mask;
+public:
+  cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask);
+};
+
+
+class cl_sw: public cl_ibit
+{
+public:
+  cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask);
+};
+
+
+class cl_btn: public cl_ibit
+{
+public:
+  cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask);
+};
+
+
 class cl_fpga: public cl_hw
 {
 public:
   cl_cell32 *pa, *pb, *pc, *pd;
   cl_cell32 *pi, *pj;
+  cl_memory_cell *pip, *pjp;
   class cl_led *leds[16];
   class cl_seg *segs[8];
+  class cl_sw *sws[16];
+  class cl_btn *btns[8];
   int basey;
   chars board;
 public:
@@ -72,6 +100,8 @@ public:
   virtual int init(void);
   virtual void mk_leds(void) {}
   virtual void mk_segs(void) {}
+  virtual void mk_sws(void) {}
+  virtual void mk_btns(void) {}
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual bool proc_input(void);

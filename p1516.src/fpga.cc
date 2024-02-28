@@ -139,6 +139,43 @@ cl_seg::draw(void)
 
 
 /*
+                                                                  Input bit
+  -------------------------------------------------------------------------
+*/
+
+cl_ibit::cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask):
+  cl_base()
+{
+  fpga= the_fpga;
+  x= ax;
+  y= ay;
+  mask= amask;
+}
+
+
+/*
+                                                                     Switch
+  -------------------------------------------------------------------------
+*/
+
+cl_sw::cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask):
+  cl_ibit(the_fpga, ax, ay, amask)
+{
+}
+
+
+/*
+                                                                Push button
+  -------------------------------------------------------------------------
+*/
+
+cl_btn::cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask):
+  cl_ibit(the_fpga, ax, ay, amask)
+{
+}
+
+
+/*
                                                                        FPGA
   -------------------------------------------------------------------------
 */
@@ -151,12 +188,24 @@ cl_fpga::cl_fpga(class cl_uc *auc, int aid, chars aid_string):
     leds[i]= NULL;
   for (i= 0; i<8; i++)
     segs[i]= NULL;
+  for (i= 0; i<16; i++)
+    sws[i]= NULL;
+  for (i= 0; i<8; i++)
+    btns[i]= NULL;
   pa= (class cl_cell32 *)register_cell(uc->rom, 0xff00);
   pb= (class cl_cell32 *)register_cell(uc->rom, 0xff01);
   pc= (class cl_cell32 *)register_cell(uc->rom, 0xff02);
   pd= (class cl_cell32 *)register_cell(uc->rom, 0xff03);
   pi= (class cl_cell32 *)register_cell(uc->rom, 0xff20);
   pj= (class cl_cell32 *)register_cell(uc->rom, 0xff10);
+  if ((uc->symbol2cell((char*)"pi_pins", &pip)))
+    {
+      register_cell(pip);
+    }
+  if ((uc->symbol2cell((char*)"pj_pins", &pjp)))
+    {
+      register_cell(pjp);
+    }
   basey= 13; // row of leds
 }
 
