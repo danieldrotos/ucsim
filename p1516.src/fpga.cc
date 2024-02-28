@@ -143,13 +143,14 @@ cl_seg::draw(void)
   -------------------------------------------------------------------------
 */
 
-cl_ibit::cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask):
+cl_ibit::cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
   cl_base()
 {
   fpga= the_fpga;
   x= ax;
   y= ay;
   mask= amask;
+  key= akey;
 }
 
 
@@ -158,8 +159,8 @@ cl_ibit::cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask):
   -------------------------------------------------------------------------
 */
 
-cl_sw::cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask):
-  cl_ibit(the_fpga, ax, ay, amask)
+cl_sw::cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
+  cl_ibit(the_fpga, ax, ay, amask, akey)
 {
 }
 
@@ -169,8 +170,8 @@ cl_sw::cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask):
   -------------------------------------------------------------------------
 */
 
-cl_btn::cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask):
-  cl_ibit(the_fpga, ax, ay, amask)
+cl_btn::cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
+  cl_ibit(the_fpga, ax, ay, amask, akey)
 {
 }
 

@@ -64,22 +64,23 @@ public:
   cl_fpga *fpga;
   int x, y;
   int mask;
+  char key;
 public:
-  cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask);
+  cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
 };
 
 
 class cl_sw: public cl_ibit
 {
 public:
-  cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask);
+  cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
 };
 
 
 class cl_btn: public cl_ibit
 {
 public:
-  cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask);
+  cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
 };
 
 
