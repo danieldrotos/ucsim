@@ -164,6 +164,20 @@ cl_sw::cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
 {
 }
 
+void
+cl_sw::refresh(bool force)
+{
+  class cl_hw_io *io= fpga->get_io();
+
+}
+
+void
+cl_sw::draw(void)
+{
+  class cl_hw_io *io= fpga->get_io();
+
+}
+
 
 /*
                                                                 Push button
@@ -173,6 +187,24 @@ cl_sw::cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
 cl_btn::cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
   cl_ibit(the_fpga, ax, ay, amask, akey)
 {
+}
+
+void
+cl_btn::refresh(bool force)
+{
+  class cl_hw_io *io= fpga->get_io();
+  if (!io) return;
+  io->tu_go(x,y);
+  io->dd_printf("_T_");
+}
+
+void
+cl_btn::draw(void)
+{
+  class cl_hw_io *io= fpga->get_io();
+  if (!io) return;
+  io->tu_go(x+1,y+1);
+  io->dd_printf("%c", key);
 }
 
 
@@ -217,6 +249,8 @@ cl_fpga::init(void)
   cl_hw::init();
   mk_leds();
   mk_segs();
+  mk_sws();
+  mk_btns();
   return 0;
 }
 
@@ -286,6 +320,32 @@ cl_fpga::refresh_segs(bool force)
 
 
 void
+cl_fpga::refresh_sws(bool force)
+{
+  int i;
+  if (!io) return;
+  for (i=0; i<16; i++)
+    {
+      if (sws[i])
+	sws[i]->refresh(force);
+    }
+}
+
+
+void
+cl_fpga::refresh_btns(bool force)
+{
+  int i;
+  if (!io) return;
+  for (i=0; i<8; i++)
+    {
+      if (btns[i])
+	btns[i]->refresh(force);
+    }
+}
+
+
+void
 cl_fpga::refresh_display(bool force)
 {
   int i;
@@ -295,6 +355,8 @@ cl_fpga::refresh_display(bool force)
   //io->tu_hide();
   refresh_leds(force);
   refresh_segs(force);
+  refresh_sws(force);
+  refresh_btns(force);
 }
 
 
@@ -314,6 +376,12 @@ cl_fpga::draw_display(void)
   for (i=0; i<8; i++)
     if (segs[i])
       segs[i]->draw();
+  for (i=0; i<16; i++)
+    if (sws[i])
+      sws[i]->draw();
+  for (i=0; i<8; i++)
+    if (btns[i])
+      btns[i]->draw();
   refresh_display(true);
 }
 
@@ -370,6 +438,22 @@ cl_n4::mk_segs(void)
   int i, d;
   for (i=0, d=0; i<8; i++, d++)
     segs[i]= new cl_seg(this, 2+8*5-i*5,basey-6, d);
+}
+
+void
+cl_n4::mk_btns(void)
+{
+  int d;
+  // btnc
+  btns[0]= new cl_btn(this, 2+16*3+5+5,basey-5, 1, '0');
+  // btnd
+  btns[1]= new cl_btn(this, 2+16*3+5+5,basey-2, 2, '1');
+  // btnu
+  btns[2]= new cl_btn(this, 2+16*3+5+5,basey-8, 4, '2');
+  // btnr
+  btns[3]= new cl_btn(this, 2+16*3+5+5+5,basey-5, 8, '3');
+  // btnl
+  btns[4]= new cl_btn(this, 2+16*3+5,basey-5, 16, '4');
 }
 
 void
