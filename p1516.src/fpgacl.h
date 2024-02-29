@@ -43,7 +43,15 @@ public:
 public:
   cl_led(class cl_fpga *the_fpga, int ax, int ay, uint32_t amask);
   virtual void refresh(bool force);
-  virtual void draw(void);
+  virtual void draw(void) {}
+};
+
+
+class cl_rgb: public cl_led
+{
+public:
+  cl_rgb(class cl_fpga *the_fpga, int ax, int ay, uint32_t amask);
+  virtual void refresh(bool force);
 };
 
 

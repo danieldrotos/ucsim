@@ -51,12 +51,12 @@ void
 cl_led::refresh(bool force)
 {
   class cl_hw_io *io= fpga->get_io();
-  uint32_t act= fpga->pb->get() & mask;
+  uint32_t a= fpga->pb->get() & mask;
   uint32_t l= last & mask;
-  if (force || (act != last))
+  if (force || (a != l))
     {
       io->tu_go(x, y);
-      if (act)
+      if (a)
 	{
 	  io->dd_cprintf("led_on", "@");
 	  last|= mask;
@@ -69,9 +69,45 @@ cl_led::refresh(bool force)
     }
 }
 
-void
-cl_led::draw(void)
+
+/*
+                                                                    RGB LED
+  -------------------------------------------------------------------------
+*/
+
+cl_rgb::cl_rgb(class cl_fpga *the_fpga, int ax, int ay, uint32_t amask):
+  cl_led(the_fpga, ax, ay, amask)
 {
+  last= 0;
+}
+
+void
+cl_rgb::refresh(bool force)
+{
+  uint32_t gm= mask, rm= mask<<8, bm= mask<<16;
+  uint32_t m= gm|rm|bm;
+  class cl_hw_io *io= fpga->get_io();
+  uint32_t a= fpga->pb->get() & m;
+  uint32_t l= last & m;
+  if (force || (a != l))
+    {
+      int c= 0;
+      io->tu_go(x, y);
+      if (a&gm) c|= 2;
+      if (a&rm) c|= 1;
+      if (a&bm) c|= 4;
+      if (a)
+	{
+	  io->tu_fgcolor(c);
+	  io->dd_printf("\033[1m");
+	}
+      else
+	io->dd_color("answer");
+      io->dd_printf("%c", a?'@':'.');
+      last&= ~m;
+      last|= a;
+      if (a) io->dd_color("answer");
+    }
 }
 
 
@@ -496,8 +532,6 @@ cl_fpga::draw_display(void)
   io->tu_cls();
   cl_hw::draw_display();
   draw_fpga(); // board specific
-  io->tu_go(1,basey);
-  io->dd_cprintf("ui_label", "PB=");
   for (i=0; i<16; i++)
     if (leds[i])
       leds[i]->draw();
@@ -609,6 +643,8 @@ cl_n4::draw_fpga(void)
 {
   int i;
   if (!io) return;
+  io->tu_go(1,basey);
+  io->dd_cprintf("ui_label", "PB=");
   io->tu_go(1,4);
   io->dd_printf("%s", board.c_str());
   for (i=0; i<16; i++)
@@ -667,6 +703,9 @@ cl_logsys::cl_logsys(class cl_uc *auc, int aid, chars aid_string):
 void
 cl_logsys::mk_leds(void)
 {
+  int i, m;
+  for (i=0, m=1; i<8; i++, m<<=1)
+    leds[i]= new cl_rgb(this, 2+16*3-i*3,basey+7, m);
 }
 
 void
@@ -682,6 +721,8 @@ cl_logsys::draw_fpga(void)
 {
   int i;
   if (!io) return;
+  io->tu_go(2+16*3-8*3-1,basey+7);
+  io->dd_cprintf("ui_label", "PB=");
   io->tu_go(1,4);
   io->dd_printf("%s", board.c_str());
   for (i=0; i<8; i++)
