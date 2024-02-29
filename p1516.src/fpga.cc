@@ -102,7 +102,7 @@ cl_seg::refresh(bool force)
   uint32_t l, mask, a, lw;
   class cl_p1516 *uc= (class cl_p1516 *)(fpga->uc);
   chars w= "non ";
-  switch ((sw>>8)&0xf)
+  switch ((sw>>4)&0xf)
     {
     case 0: act= fpga->pa->get(); w="PA= "; break;
     case 1: act= fpga->pb->get(); w="PB= "; break;
@@ -120,7 +120,7 @@ cl_seg::refresh(bool force)
   mask= 0xf << (digit*4);
   act&= mask;
   l= last & mask;
-  act_what= sw & 0xf0f;
+  act_what= sw & 0xff;
   if (force || (act_what != last_what))
     {
       io->tu_go(1,y+2);
@@ -227,10 +227,10 @@ cl_sw::draw(void)
 }
 
 bool
-cl_sw::handle_input(char c)
+cl_sw::handle_input(int c)
 {
   cl_memory_cell *p= fpga->pjp;
-  if (c == key)
+  if ((c == key) || ((key=='y')&&(c=='z')))
     {
       if (p)
 	{
@@ -297,7 +297,7 @@ cl_btn::draw(void)
 }
 
 bool
-cl_btn::handle_input(char c)
+cl_btn::handle_input(int c)
 {
   cl_memory_cell *p= fpga->pip;
   if (c == key)
@@ -397,6 +397,23 @@ cl_fpga::handle_input(int c)
     if (sws[i])
       if (sws[i]->handle_input(c))
 	return true;
+  if (pjp)
+    {
+      uint32_t sw= pjp->R();
+      uint32_t rx= sw&0xf;
+      //printf("c=%8x\n",c);
+      switch (c)
+	{
+	case 'A': sw&= ~0xf0; sw|= 0x00; pjp->W(sw); break;
+	case 'B': sw&= ~0xf0; sw|= 0x10; pjp->W(sw); break;
+	case 'C': sw&= ~0xf0; sw|= 0x20; pjp->W(sw); break;
+	case 'D': sw&= ~0xf0; sw|= 0x30; pjp->W(sw); break;
+	case 'R': sw&= ~0xf0; sw|= 0x90; pjp->W(sw); break;
+	case TU_UP  : sw&= ~0xf; sw|= ((rx+1)&0xf); pjp->W(sw); break;
+	case TU_DOWN: sw&= ~0xf; sw|= ((rx-1)&0xf); pjp->W(sw); break;
+	}
+      
+    }
   ret= cl_hw::handle_input(c); // handle default keys
   return ret;
 }
@@ -493,6 +510,15 @@ cl_fpga::draw_display(void)
   for (i=0; i<8; i++)
     if (btns[i])
       btns[i]->draw();
+  io->tu_go(2+8*5-9-7+3-16,basey-7);
+  io->dd_cprintf("ui_mkey", "[ABCD] ");
+  io->dd_cprintf("ui_mitem", "PX ");
+  io->dd_cprintf("ui_mkey", "[R] ");
+  io->dd_cprintf("ui_mitem", "RX ");
+  io->dd_cprintf("ui_mkey", "[up] ");
+  io->dd_cprintf("ui_mitem", "R+ ");
+  io->dd_cprintf("ui_mkey", "[dn] ");
+  io->dd_cprintf("ui_mitem", "R- ");
   refresh_display(true);
 }
 
@@ -676,6 +702,16 @@ cl_logsys::mk_btns(void)
   btns[1]= new cl_btn(this, 2+16*3-3-9*3-1*5,basey+3, 2, '1');
   btns[2]= new cl_btn(this, 2+16*3-3-9*3-2*5,basey+3, 4, '2');
   btns[3]= new cl_btn(this, 2+16*3-3-9*3-3*5,basey+3, 8, '3');
+}
+
+
+void
+cl_logsys::mk_sws(void)
+{
+  const char *k= "qwertyui";
+  int i, m;
+  for (i=0, m=1; i<8; i++, m<<=1)
+    sws[i]= new cl_sw(this, 2+16*3-i*3,basey+2, m, k[7-i]);
 }
 
 /* End of p1516.src/fpga.cc */

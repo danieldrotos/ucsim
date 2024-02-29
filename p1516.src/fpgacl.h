@@ -71,7 +71,7 @@ public:
   cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
   virtual void refresh(bool force) {}
   virtual void draw(void) {}
-  virtual bool handle_input(char c) { return false; }
+  virtual bool handle_input(int c) { return false; }
 };
 
 
@@ -81,7 +81,7 @@ public:
   cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
   virtual void refresh(bool force);
   virtual void draw(void);
-  virtual bool handle_input(char c);
+  virtual bool handle_input(int c);
 };
 
 
@@ -91,7 +91,7 @@ public:
   cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
   virtual void refresh(bool force);
   virtual void draw(void);
-  virtual bool handle_input(char c);
+  virtual bool handle_input(int c);
 };
 
 
@@ -159,6 +159,7 @@ public:
   virtual void mk_segs(void);
   virtual void draw_fpga(void);
   virtual void mk_btns(void);
+  virtual void mk_sws(void);
 };
 
 

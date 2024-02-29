@@ -350,6 +350,7 @@ cl_hw::new_i(class cl_f *f_in)
       f_in->interactive(NULL);
       f_in->raw();
       f_in->echo(NULL);
+      f_in->set_escape(true);
     }
   draw_display();
 }
