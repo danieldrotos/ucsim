@@ -192,10 +192,25 @@ cl_btn::cl_btn(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
 void
 cl_btn::refresh(bool force)
 {
+  char c= ' ';
   class cl_hw_io *io= fpga->get_io();
   if (!io) return;
+  class cl_memory_cell *p= fpga->pip;
+  if (!p)
+    {
+      io->dd_color("answer");
+      c= '?';
+    }
+  else
+    {
+      t_mem v= p->R();
+      v&= mask;
+      c= v?'-':'T';
+      io->dd_color(v?"btn_on":"btn_off");
+    }
   io->tu_go(x,y);
-  io->dd_printf("_T_");
+  io->dd_printf("_%c_", c);
+  io->dd_color("answer");
 }
 
 void
@@ -205,6 +220,23 @@ cl_btn::draw(void)
   if (!io) return;
   io->tu_go(x+1,y+1);
   io->dd_printf("%c", key);
+}
+
+bool
+cl_btn::handle_input(char c)
+{
+  cl_memory_cell *p= fpga->pip;
+  if (c == key)
+    {
+      if (p)
+	{
+	  t_mem v= p->R();
+	  v^= mask;
+	  p->W(v);
+	}
+      return true;
+    }
+  return false;
 }
 
 
@@ -279,16 +311,15 @@ cl_fpga::new_io(class cl_f *f_in, class cl_f *f_out)
 
 
 bool
-cl_fpga::proc_input(void)
-{
-  return cl_hw::proc_input();
-}
-
-
-bool
 cl_fpga::handle_input(int c)
 {
-  int ret= cl_hw::handle_input(c); // handle default keys
+  int i;
+  int ret;
+  for (i=0; i<8; i++)
+    if (btns[i])
+      if (btns[i]->handle_input(c))
+	return true;
+  ret= cl_hw::handle_input(c); // handle default keys
   return ret;
 }
 
@@ -490,6 +521,21 @@ cl_bool::draw_fpga(void)
 }
 
 
+void
+cl_bool::mk_btns(void)
+{
+  int d;
+  /*
+    0 1
+    2 3
+  */
+  btns[0]= new cl_btn(this, 2+16*3+5+5  ,basey-5, 1, '0');
+  btns[1]= new cl_btn(this, 2+16*3+5+5+5,basey-5, 2, '1');
+  btns[2]= new cl_btn(this, 2+16*3+5+5  ,basey-2, 4, '2');
+  btns[3]= new cl_btn(this, 2+16*3+5+5+5,basey-2, 8, '3');
+}
+
+
 /*
                                                                      LogSys
   -------------------------------------------------------------------------
@@ -526,6 +572,19 @@ cl_logsys::draw_fpga(void)
       io->tu_go(2+16*3-i*3-1,basey+1);
       io->dd_cprintf("ui_label", "%2d", i);
     }
+}
+
+void
+cl_logsys::mk_btns(void)
+{
+  int d;
+  /*
+    3 2 1 0
+  */
+  btns[0]= new cl_btn(this, 2+16*3-3-9*3-0*5,basey+3, 1, '0');
+  btns[1]= new cl_btn(this, 2+16*3-3-9*3-1*5,basey+3, 2, '1');
+  btns[2]= new cl_btn(this, 2+16*3-3-9*3-2*5,basey+3, 4, '2');
+  btns[3]= new cl_btn(this, 2+16*3-3-9*3-3*5,basey+3, 8, '3');
 }
 
 /* End of p1516.src/fpga.cc */

@@ -853,6 +853,10 @@ cl_app::proc_arguments(int argc, char *argv[])
 	set_option_s("color_debug", "magenta:bwhite");
 	set_option_s("color_led_on", "green:bwhite");
 	set_option_s("color_led_off", "black:bwhite");
+	set_option_s("color_btn_on", "bcyan:bwhite");
+	set_option_s("color_btn_off", "black:bwhite");
+	set_option_s("color_sw_on", "bcyan:bwhite");
+	set_option_s("color_sw_off", "black:bwhite");
 	break;
       case 'B':
 	if (!options->set_value("beep_break", this, (bool)true))
@@ -1360,6 +1364,26 @@ cl_app::mk_options(void)
   o->set_value("b:green:black");
   
   options->new_option(o= new cl_string_option(this, "color_led_off",
+					      ""));
+  o->init();
+  o->set_value("white:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_btn_on",
+					      ""));
+  o->init();
+  o->set_value("bcyan:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_btn_off",
+					      ""));
+  o->init();
+  o->set_value("white:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_sw_on",
+					      ""));
+  o->init();
+  o->set_value("bcyan:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_sw_off",
 					      ""));
   o->init();
   o->set_value("white:black");
