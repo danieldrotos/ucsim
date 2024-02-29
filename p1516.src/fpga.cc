@@ -329,7 +329,7 @@ cl_btn::draw(void)
   class cl_hw_io *io= fpga->get_io();
   if (!io) return;
   io->tu_go(x+1,y+1);
-  io->dd_printf("%c", key);
+  io->dd_cprintf("ui_mkey", "%c", key);
 }
 
 bool
