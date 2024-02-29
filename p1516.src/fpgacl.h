@@ -51,6 +51,7 @@ class cl_seg: public cl_led
 {
 public:
   int digit;
+  uint32_t last_what;
 public:
   cl_seg(class cl_fpga *the_fpga, int ax, int ay, int adigit);
   virtual void refresh(bool force);
@@ -65,6 +66,7 @@ public:
   int x, y;
   int mask;
   char key;
+  uint32_t last;
 public:
   cl_ibit(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
   virtual void refresh(bool force) {}
@@ -79,6 +81,7 @@ public:
   cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey);
   virtual void refresh(bool force);
   virtual void draw(void);
+  virtual bool handle_input(char c);
 };
 
 
@@ -134,6 +137,7 @@ public:
   virtual void mk_leds(void);
   virtual void mk_segs(void);
   virtual void mk_btns(void);
+  virtual void mk_sws(void);
   virtual void draw_fpga(void);
 };
 

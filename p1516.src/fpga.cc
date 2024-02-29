@@ -27,6 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "globals.h"
 
+#include "p1516cl.h"
+
 #include "fpgacl.h"
 
 
@@ -96,22 +98,35 @@ void
 cl_seg::refresh(bool force)
 {
   class cl_hw_io *io= fpga->get_io();
-  uint32_t sw= fpga->pj->read(), act;
-  uint32_t l, mask, a;
-  sw>>= 8;
-  sw&= 0xf;
-  switch (sw)
+  uint32_t sw= fpga->pj->read(), act, act_what;
+  uint32_t l, mask, a, lw;
+  class cl_p1516 *uc= (class cl_p1516 *)(fpga->uc);
+  chars w= "non ";
+  switch ((sw>>8)&0xf)
     {
-    case 0: act= fpga->pa->get(); break;
-    case 1: act= fpga->pb->get(); break;
-    case 2: act= fpga->pc->get(); break;
-    case 3: act= fpga->pd->get(); break;
+    case 0: act= fpga->pa->get(); w="PA= "; break;
+    case 1: act= fpga->pb->get(); w="PB= "; break;
+    case 2: act= fpga->pc->get(); w="PC= "; break;
+    case 3: act= fpga->pd->get(); w="PD= "; break;
+    case 9:
+      act= uc->R[sw&0xf];
+      if ((sw&0xf)>9)
+	w.format("R%d=", sw&0xf);
+      else
+	w.format("R%d= ", sw&0xf);
+      break;
     default: act= 0;
     }
   mask= 0xf << (digit*4);
   act&= mask;
   l= last & mask;
-  if (force || (act != l))
+  act_what= sw & 0xf0f;
+  if (force || (act_what != last_what))
+    {
+      io->tu_go(1,y+2);
+      io->dd_cprintf("ui_label", "%s", w.c_str());
+    }
+  if (force || (act != l) || (act_what != last_what))
     {
       a= act >> (digit*4);
       a&= 0xf;	
@@ -126,6 +141,7 @@ cl_seg::refresh(bool force)
       io->dd_printf("\033[0m");
       io->dd_color("answer");
       last= (last & ~mask) | act;
+      last_what= act_what;
     }
 }
 
@@ -167,15 +183,64 @@ cl_sw::cl_sw(class cl_fpga *the_fpga, int ax, int ay, int amask, char akey):
 void
 cl_sw::refresh(bool force)
 {
+  char c= ' ';
+  uint32_t v= 0, act, a, l;
   class cl_hw_io *io= fpga->get_io();
-
+  if (!io) return;
+  class cl_memory_cell *p= fpga->pjp;
+  if (!p)
+    {
+      c= '?';
+      act= 0;
+    }
+  else
+    {
+      v= p->R();
+      act= v;
+      v&= mask;
+      c= '#';
+    }
+  a= act & mask;
+  l= last & mask;
+  if (force || (a != l))
+    {
+      const char *d0= "_ #";
+      const char *d1= "_#_";
+      const char *p= v?d1:d0;
+      if (!p) io->dd_color("answer");
+      else io->dd_color(v?"sw_on":"sw_off");
+      io->tu_go(x,y+0); io->dd_printf("%c", p[0]);
+      io->tu_go(x,y+1); io->dd_printf("%c", p[1]);
+      io->tu_go(x,y+2); io->dd_printf("%c", p[2]);
+      io->dd_color("answer");
+      last= act;
+    }
 }
 
 void
 cl_sw::draw(void)
 {
   class cl_hw_io *io= fpga->get_io();
+  if (!io) return;
+  io->tu_go(x,y+3);
+  io->dd_cprintf("ui_mkey", "%c", key);
+}
 
+bool
+cl_sw::handle_input(char c)
+{
+  cl_memory_cell *p= fpga->pjp;
+  if (c == key)
+    {
+      if (p)
+	{
+	  t_mem v= p->R();
+	  v^= mask;
+	  p->W(v);
+	}
+      return true;
+    }
+  return false;
 }
 
 
@@ -193,24 +258,33 @@ void
 cl_btn::refresh(bool force)
 {
   char c= ' ';
+  uint32_t act, a, l, v= 0;
   class cl_hw_io *io= fpga->get_io();
   if (!io) return;
   class cl_memory_cell *p= fpga->pip;
   if (!p)
     {
-      io->dd_color("answer");
       c= '?';
+      act= last;
     }
   else
     {
-      t_mem v= p->R();
+      v= p->R();
+      act= v;
       v&= mask;
       c= v?'-':'T';
-      io->dd_color(v?"btn_on":"btn_off");
     }
-  io->tu_go(x,y);
-  io->dd_printf("_%c_", c);
-  io->dd_color("answer");
+  a= act&mask;
+  l= last&mask;
+  if (force || (a != l))
+    {
+      if (!p) io->dd_color("answer");
+      else io->dd_color(v?"btn_on":"btn_off");
+      io->tu_go(x,y);
+      io->dd_printf("_%c_", c);
+      io->dd_color("answer");
+      last= act;
+    }
 }
 
 void
@@ -319,6 +393,10 @@ cl_fpga::handle_input(int c)
     if (btns[i])
       if (btns[i]->handle_input(c))
 	return true;
+  for (i=0; i<16; i++)
+    if (sws[i])
+      if (sws[i]->handle_input(c))
+	return true;
   ret= cl_hw::handle_input(c); // handle default keys
   return ret;
 }
@@ -400,7 +478,9 @@ cl_fpga::draw_display(void)
   io->dd_color("led_on");
   io->tu_cls();
   cl_hw::draw_display();
-  draw_fpga();
+  draw_fpga(); // board specific
+  io->tu_go(1,basey);
+  io->dd_cprintf("ui_label", "PB=");
   for (i=0; i<16; i++)
     if (leds[i])
       leds[i]->draw();
@@ -432,6 +512,7 @@ cl_fpga::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (conf(cell, val))
     return;
+  /*
   if (cell == pa)
     {
     }
@@ -439,6 +520,7 @@ cl_fpga::write(class cl_memory_cell *cell, t_mem *val)
     {
       refresh_leds(false);
     }
+  */
   cell->set(*val);
 }
 
@@ -485,6 +567,15 @@ cl_n4::mk_btns(void)
   btns[3]= new cl_btn(this, 2+16*3+5+5+5,basey-5, 8, '3');
   // btnl
   btns[4]= new cl_btn(this, 2+16*3+5,basey-5, 16, '4');
+}
+
+void
+cl_n4::mk_sws(void)
+{
+  const char *k= "asdfghjkqwertyui";
+  int i, m;
+  for (i=0, m=1; i<16; i++, m<<=1)
+    sws[i]= new cl_sw(this, 2+16*3-i*3,basey+2, m, k[15-i]);
 }
 
 void
