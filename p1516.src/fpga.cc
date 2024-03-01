@@ -513,7 +513,6 @@ cl_fpga::refresh_display(bool force)
   int i;
   
   if (!io) return;
-
   //io->tu_hide();
   refresh_leds(force);
   refresh_segs(force);
