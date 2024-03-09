@@ -38,7 +38,11 @@ cl_f8::ld8_a_i(u8_t op2)
 int
 cl_f8::ld8_a_m(class cl_cell8 &m)
 {
-  acc8->W(m.R());
+  uint8_t v = m.R();
+  rF&= ~(flagN|flagZ);
+  if (v & 0x80) rF|= flagN;
+  if (!v) rF|= flagZ;
+  acc8->W(v);
   vc.rd++;
   return resGO;
 }
@@ -88,6 +92,9 @@ cl_f8::ldw_a_m(u16_t addr)
 {
   u16_t v= rom->read(addr);
   v+= (rom->read(addr+1))*256;
+  rF&= ~(flagN|flagZ);
+  if (v & 0x8000) rF|= flagN;
+  if (!v) rF|= flagZ;
   acc16->W(v);
   vc.rd+= 2;
   return resGO;
