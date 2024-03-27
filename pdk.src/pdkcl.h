@@ -86,7 +86,11 @@ public:
 class cl_pdk: public cl_uc
 {
 public:
-  cl_pdk(class cl_sim *asim);
+  class cl_fppa *fpp[8];
+public:
+  cl_pdk(struct cpu_entry *IType, class cl_sim *asim);
+  virtual int init(void);
+  virtual const char *id_string(void);
 };
 
 

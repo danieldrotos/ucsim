@@ -45,7 +45,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // local
 #include "glob.h"
-#include "pdkcl.h"
+#include "pdk16cl.h"
 //#include "portcl.h"
 //#include "regspdk.h"
 
@@ -459,9 +459,46 @@ int cl_fppa::exec_inst(void)
 
 /****************************************************************************/
 
-cl_pdk::cl_pdk(class cl_sim *asim):
+cl_pdk::cl_pdk(struct cpu_entry *IType, class cl_sim *asim):
   cl_uc(asim)
 {
+  int i;
+  type = IType;
+  for (i= 0; i<8; i++)
+    fpp[i]= NULL;
+  if (type->type == CPU_PDK13)
+    fpp[0]= new cl_fppa13(this, asim);
+  if (type->type == CPU_PDK14)
+    fpp[0]= new cl_fppa14(this, asim);
+  if (type->type == CPU_PDK15)
+    fpp[0]= new cl_fppa15(this, asim);
+  if (type->type == CPU_PDK16)
+    fpp[0]= new cl_fppa16(this, asim); 
+}
+
+int
+cl_pdk::init(void)
+{
+  cl_uc::init();
+  return 0;
+}
+
+const char *
+cl_pdk::id_string(void)
+{
+  switch (type->type)
+    {
+    case CPU_PDK13:
+      return("pdk13");
+    case CPU_PDK14:
+      return("pdk14");
+    case CPU_PDK15:
+      return("pdk15");
+    case CPU_PDK16:
+      return("pdk16");
+    default:
+      return("pdk");
+  }
 }
 
 
