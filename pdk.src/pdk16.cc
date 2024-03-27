@@ -27,29 +27,28 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "pdk16cl.h"
 
-#define PDK16 cl_pdk16
 
-PDK16::PDK16(class cl_sim *asim):
-  cl_fppa(asim)
+cl_fppa16::cl_fppa16(class cl_pdk *the_puc, class cl_sim *asim):
+  cl_fppa15(the_puc, asim)
 {
   PCmask= 0xffff;
 }
 
 int
-PDK16::init(void)
+cl_fppa16::init(void)
 {
   cl_fppa::init();
   return 0;
 }
 
 const char *
-PDK16::id_string(void)
+cl_fppa16::id_string(void)
 {
   return "pdk16";
 }
 
 void
-PDK16::reset(void)
+cl_fppa16::reset(void)
 {
   cl_fppa::reset();
 }

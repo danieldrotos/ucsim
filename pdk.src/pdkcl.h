@@ -38,16 +38,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base type of STM8 microcontrollers
  */
 
+class cl_pdk;
+
 class cl_fppa: public cl_uc
 {
 public:
+  class cl_pdk *puc;
   class cl_memory *ram;
   class cl_memory *rom;
   class cl_address_space *regs8;
   union t_regs regs;
 public:
-  cl_fppa(class cl_sim *asim);
-  cl_fppa(struct cpu_entry *IType, class cl_sim *asim);
+  cl_fppa(class cl_pdk *the_puc, class cl_sim *asim);
+  cl_fppa(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
 
@@ -78,6 +81,14 @@ public:
 
 #include "instcl.h"
 };
+
+
+class cl_pdk: public cl_uc
+{
+public:
+  cl_pdk(class cl_sim *asim);
+};
+
 
 /*
 class cl_pdk_cpu: public cl_hw

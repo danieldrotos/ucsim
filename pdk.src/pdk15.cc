@@ -27,4 +27,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "pdk15cl.h"
 
+
+cl_fppa15::cl_fppa15(class cl_pdk *the_puc, class cl_sim *asim):
+  cl_fppa14(the_puc, asim)
+{
+}
+
+
 /* End of pdk.src/pdk15cl.h */

@@ -27,4 +27,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "pdk13cl.h"
 
+
+cl_fppa13::cl_fppa13(class cl_pdk *the_puc, class cl_sim *asim):
+  cl_fppa(the_puc, asim)
+{
+}
+
+
 /* End of pdk.src/pdk13cl.h */

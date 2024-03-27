@@ -51,9 +51,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /*******************************************************************/
 
-cl_fppa::cl_fppa(class cl_sim *asim):
+cl_fppa::cl_fppa(class cl_pdk *the_puc, class cl_sim *asim):
   cl_uc(asim)
 {
+  puc= the_puc;
 }
 
 
@@ -61,7 +62,9 @@ cl_fppa::cl_fppa(class cl_sim *asim):
  * Base type of PDK controllers
  */
 
-cl_fppa::cl_fppa(struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim) {
+cl_fppa::cl_fppa(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim)
+{
+  puc= the_puc;
   type = IType;
   if (type->type == CPU_PDK13)
     PCmask= 0x3ff;
@@ -450,5 +453,16 @@ int cl_fppa::exec_inst(void)
     }
   return (status);
 }
+
+
+
+
+/****************************************************************************/
+
+cl_pdk::cl_pdk(class cl_sim *asim):
+  cl_uc(asim)
+{
+}
+
 
 /* End of pdk.src/pdk.cc */

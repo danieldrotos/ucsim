@@ -27,6 +27,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #ifndef PDK13CL_HEADER
 #define PDK13CL_HEADER
+
+#include "pdkcl.h"
+
+
+class cl_fppa13: public cl_fppa
+{
+ public:
+  cl_fppa13(class cl_pdk *the_puc, class cl_sim *asim);
+};
+
+
 #endif
 
 /* End of pdk.src/pdk13cl.h */
