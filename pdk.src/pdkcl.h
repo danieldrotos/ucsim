@@ -34,6 +34,26 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "regspdk.h"
 
 
+const t_addr io_size = 64;
+
+#define BIT_Z	0x01  // zero status, 1=zero, 0=nonzero
+#define BIT_C	0x02  // carry status(addition and subtraction)
+#define BIT_AC  0x04  // sign, 1=negative, 0=positive (or zero)
+#define BIT_OV  0x08  // signed overflow, 1=overflow, 0=no overflow
+#define BIT_ALL	(BIT_Z | BIT_C | BIT_AC | BIT_OV)  // all bits
+
+#define BITPOS_Z 0    // 1
+#define BITPOS_C 1    // 2H
+#define BITPOS_AC 2    // 4H
+#define BITPOS_OV 3    // 8H
+
+union t_regs
+{
+  u8_t a;
+  t_mem _a;
+};
+
+
 /*
  * Base type of STM8 microcontrollers
  */
@@ -44,8 +64,7 @@ class cl_fppa: public cl_uc
 {
 public:
   class cl_pdk *puc;
-  class cl_memory *ram;
-  class cl_memory *rom;
+  class cl_address_space *ram;
   class cl_address_space *regs8;
   union t_regs regs;
 public:
@@ -58,6 +77,7 @@ public:
   //virtual void mk_port(t_addr base, chars n);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
+  virtual void build_cmdset(class cl_cmdset *cmdset);
 
   virtual double def_xtal(void) { return 8000000; }
   
@@ -87,10 +107,13 @@ class cl_pdk: public cl_uc
 {
 public:
   class cl_fppa *fpp[8];
+  class cl_address_space *ram;
+  class cl_address_space *regs8;
 public:
   cl_pdk(struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
+  virtual void make_memories(void);
 };
 
 

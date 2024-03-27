@@ -47,6 +47,7 @@ cl_simpdk::mk_controller(void)
   int i;
   const char *typ= 0;
   class cl_optref type_option(this);
+  class cl_uc *u;
   
   type_option.init();
   type_option.use("cpu_type");
@@ -67,9 +68,11 @@ cl_simpdk::mk_controller(void)
     case CPU_PDK13:
     case CPU_PDK14:
     case CPU_PDK15:
-      return(new cl_fppa(NULL, &cpus_pdk[i], this));
+      u= new cl_fppa(NULL, &cpus_pdk[i], this);
+      return u;
     case CPU_PDK16:
-      return new cl_pdk(&cpus_pdk[i], this);
+      u= new cl_pdk(&cpus_pdk[i], this);
+      return u;
     default:
       fprintf(stderr, "Unknown processor type\n");
       return NULL;

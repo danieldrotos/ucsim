@@ -142,9 +142,18 @@ void cl_fppa::mk_hw_elements(void)
   h->init();
 }
 
-class cl_memory_chip *c;
+//class cl_memory_chip *c;
 
-void cl_fppa::make_memories(void) {
+void cl_fppa::make_memories(void)
+{
+  if (puc != NULL)
+    {
+      ram= puc->ram;
+      rom= puc->rom;
+      regs8= puc->regs8;
+      return;
+    }
+  
   class cl_address_space *as;
 
   int rom_storage, ram_storage;
@@ -213,6 +222,14 @@ void cl_fppa::make_memories(void) {
   vars->add("flag", regs8, 0, 7, 0, "Flags");
   vars->add("sp", regs8, 1, 7, 0, "Stack Pointer");
 }
+
+void
+cl_fppa::build_cmdset(class cl_cmdset *cmdset)
+{
+  if (puc == NULL)
+    cl_uc::build_cmdset(cmdset);
+}
+
 
 /*
  * Help command interpreter
@@ -466,20 +483,21 @@ cl_pdk::cl_pdk(struct cpu_entry *IType, class cl_sim *asim):
   type = IType;
   for (i= 0; i<8; i++)
     fpp[i]= NULL;
-  if (type->type == CPU_PDK13)
-    fpp[0]= new cl_fppa13(this, asim);
-  if (type->type == CPU_PDK14)
-    fpp[0]= new cl_fppa14(this, asim);
-  if (type->type == CPU_PDK15)
-    fpp[0]= new cl_fppa15(this, asim);
-  if (type->type == CPU_PDK16)
-    fpp[0]= new cl_fppa16(this, asim); 
 }
 
 int
 cl_pdk::init(void)
 {
   cl_uc::init();
+  if (type->type == CPU_PDK13)
+    fpp[0]= new cl_fppa13(this, sim);
+  if (type->type == CPU_PDK14)
+    fpp[0]= new cl_fppa14(this, sim);
+  if (type->type == CPU_PDK15)
+    fpp[0]= new cl_fppa15(this, sim);
+  if (type->type == CPU_PDK16)
+    fpp[0]= new cl_fppa16(this, sim);
+  fpp[0]->init();
   return 0;
 }
 
@@ -499,6 +517,52 @@ cl_pdk::id_string(void)
     default:
       return("pdk");
   }
+}
+
+void
+cl_pdk::make_memories(void)
+{
+  class cl_address_space *as;
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+  int rom_size= 0x1000, ram_size=0x100;
+
+  rom = as = new cl_address_space("rom", 0, rom_size, 16);
+  as->init();
+  address_spaces->add(as);
+  ram = as = new cl_address_space("ram", 0, ram_size, 8);
+  as->init();
+  address_spaces->add(as);
+  regs8 = as = new cl_address_space("regs8", 0, io_size + 1, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip = new cl_chip16("rom_chip", rom_size, 16);
+  chip->init();
+  memchips->add(chip);
+
+  ad = new cl_address_decoder(as = address_space("rom"), chip, 0, rom_size-1, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  chip = new cl_chip16("ram_chip", ram_size, 8);
+  chip->init();
+  memchips->add(chip);
+  
+  ad = new cl_address_decoder(as = address_space("ram"), chip, 0, ram_size-1, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+    
+  chip = new cl_chip16("io_chip", io_size, 8);
+  chip->init();
+  memchips->add(chip);
+
+  ad = new cl_address_decoder(as = address_space("regs8"), chip, 0, io_size-1, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
 }
 
 
