@@ -30,7 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define CODE_MASK(op, m) ((code & ~(m)) == (op))
 
-unsigned char cl_pdk::add_to(unsigned char initial, int value, bool carry) {
+unsigned char cl_fppa::add_to(unsigned char initial, int value, bool carry) {
   store_flag(flag_z, initial + value + carry == 0);
   store_flag(flag_c, initial + value + carry > 0xFF);
   store_flag(flag_ac, (initial & 0xF) + (value & 0xF) + carry > 0xF);
@@ -41,7 +41,7 @@ unsigned char cl_pdk::add_to(unsigned char initial, int value, bool carry) {
   return initial + value + carry;
 }
 
-unsigned char cl_pdk::sub_to(unsigned char initial, int value, bool carry) {
+unsigned char cl_fppa::sub_to(unsigned char initial, int value, bool carry) {
   store_flag(flag_z, initial - value - carry == 0);
   store_flag(flag_c, initial < value + carry);
   store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);
@@ -52,16 +52,16 @@ unsigned char cl_pdk::sub_to(unsigned char initial, int value, bool carry) {
   return initial - value - carry;
 }
 
-int cl_pdk::get_mem(unsigned int addr) {
+int cl_fppa::get_mem(unsigned int addr) {
   vc.rd++;
   return ram->read((t_addr)(addr));
 }
 
-unsigned char cl_pdk::get_io(t_addr addr) {
+unsigned char cl_fppa::get_io(t_addr addr) {
   return regs8->read(addr);
 }
 
-int cl_pdk::store_io(t_addr addr, int value) {
+int cl_fppa::store_io(t_addr addr, int value) {
   
   regs8->write(addr, value & 0xFF);
   if (addr == 0x02)
@@ -74,19 +74,19 @@ int cl_pdk::store_io(t_addr addr, int value) {
   return resGO;
 }
 
-unsigned char cl_pdk::get_SP() {
+unsigned char cl_fppa::get_SP() {
     return get_io(0x02);
 }
 
-unsigned char cl_pdk::get_flags() {
+unsigned char cl_fppa::get_flags() {
     return get_io(0x00);
 }
 
-void cl_pdk::set_flags(unsigned char flags) {
+void cl_fppa::set_flags(unsigned char flags) {
     store_io(0x00, flags);
 }
 
-int cl_pdk::get_flag(flag n) {
+int cl_fppa::get_flag(flag n) {
   switch (n) {
   case flag_z: return get_flags() & BIT_Z;
   case flag_c: return (get_flags() & BIT_C) >> 1;
@@ -98,7 +98,7 @@ int cl_pdk::get_flag(flag n) {
   return 0;
 }
 
-void cl_pdk::store_flag(flag n, int value) {
+void cl_fppa::store_flag(flag n, int value) {
   value= value?1:0;
   switch (n) {
   case flag_z: set_flags((get_flags() & ~1) | value); break;
@@ -110,7 +110,7 @@ void cl_pdk::store_flag(flag n, int value) {
   }
 }
 
-int cl_pdk::execute(unsigned int code) {
+int cl_fppa::execute(unsigned int code) {
   switch (type->type) {
   case CPU_PDK13:
     return(execute_pdk13(code));
@@ -123,7 +123,7 @@ int cl_pdk::execute(unsigned int code) {
   }
 }
 
-int cl_pdk::execute_pdk14(unsigned int code) {
+int cl_fppa::execute_pdk14(unsigned int code) {
   int write_result = resGO;
   if (code == 0x0000) {
     // nop
@@ -486,7 +486,7 @@ int cl_pdk::execute_pdk14(unsigned int code) {
   return (write_result);
 }
 
-int cl_pdk::execute_pdk13(unsigned int code) {
+int cl_fppa::execute_pdk13(unsigned int code) {
   int write_result = resGO;
   if (code == 0x0000) {
     // nop
@@ -825,7 +825,7 @@ int cl_pdk::execute_pdk13(unsigned int code) {
   return (write_result);
 }
 
-int cl_pdk::execute_pdk15(unsigned int code) {
+int cl_fppa::execute_pdk15(unsigned int code) {
   int write_result = resGO;
   if (code == 0x0000) {
     // nop

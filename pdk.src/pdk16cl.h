@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pdkcl.h"
 #include "memcl.h"
 
-class cl_pdk16: public cl_pdk
+class cl_pdk16: public cl_fppa
 {
  public:
   cl_pdk16(class cl_sim *asim);

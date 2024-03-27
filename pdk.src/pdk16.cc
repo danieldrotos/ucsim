@@ -30,7 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PDK16 cl_pdk16
 
 PDK16::PDK16(class cl_sim *asim):
-  cl_pdk(asim)
+  cl_fppa(asim)
 {
   PCmask= 0xffff;
 }
@@ -38,7 +38,7 @@ PDK16::PDK16(class cl_sim *asim):
 int
 PDK16::init(void)
 {
-  cl_pdk::init();
+  cl_fppa::init();
   return 0;
 }
 
@@ -51,7 +51,7 @@ PDK16::id_string(void)
 void
 PDK16::reset(void)
 {
-  cl_pdk::reset();
+  cl_fppa::reset();
 }
 
 

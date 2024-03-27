@@ -51,7 +51,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /*******************************************************************/
 
-cl_pdk::cl_pdk(class cl_sim *asim):
+cl_fppa::cl_fppa(class cl_sim *asim):
   cl_uc(asim)
 {
 }
@@ -61,7 +61,7 @@ cl_pdk::cl_pdk(class cl_sim *asim):
  * Base type of PDK controllers
  */
 
-cl_pdk::cl_pdk(struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim) {
+cl_fppa::cl_fppa(struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim) {
   type = IType;
   if (type->type == CPU_PDK13)
     PCmask= 0x3ff;
@@ -71,7 +71,7 @@ cl_pdk::cl_pdk(struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim) {
     PCmask= 0xfff;
 }
 
-int cl_pdk::init(void) {
+int cl_fppa::init(void) {
   cl_uc::init(); /* Memories now exist */
 
   //set_xtal(8000000);
@@ -88,7 +88,7 @@ int cl_pdk::init(void) {
   return (0);
 }
 
-void cl_pdk::reset(void) {
+void cl_fppa::reset(void) {
   cl_uc::reset();
   sp_most = 0x00;
 
@@ -99,7 +99,7 @@ void cl_pdk::reset(void) {
   }
 }
 
-const char *cl_pdk::id_string(void) {
+const char *cl_fppa::id_string(void) {
   switch (type->type) {
     case CPU_PDK13:
       return("pdk13");
@@ -129,7 +129,7 @@ cl_pdk::get_mem_size(enum mem_class type)
 }
 */
 
-void cl_pdk::mk_hw_elements(void)
+void cl_fppa::mk_hw_elements(void)
 {
   // TODO: Add hardware stuff here.
   class cl_hw *h;
@@ -141,7 +141,7 @@ void cl_pdk::mk_hw_elements(void)
 
 class cl_memory_chip *c;
 
-void cl_pdk::make_memories(void) {
+void cl_fppa::make_memories(void) {
   class cl_address_space *as;
 
   int rom_storage, ram_storage;
@@ -215,7 +215,7 @@ void cl_pdk::make_memories(void) {
  * Help command interpreter
  */
 
-struct dis_entry *cl_pdk::dis_tbl(void) {
+struct dis_entry *cl_fppa::dis_tbl(void) {
   switch (type->type) {
   case CPU_PDK13:
     return (disass_pdk_13);
@@ -241,10 +241,10 @@ cl_pdk::bit_tbl(void)
   return(0);
 }*/
 
-int cl_pdk::inst_length(t_addr /*addr*/) {
+int cl_fppa::inst_length(t_addr /*addr*/) {
   return 1;
 }
-int cl_pdk::inst_branch(t_addr addr) {
+int cl_fppa::inst_branch(t_addr addr) {
   int b;
 
   get_disasm_info(addr, NULL, &b, NULL, NULL);
@@ -252,7 +252,7 @@ int cl_pdk::inst_branch(t_addr addr) {
   return b;
 }
 
-bool cl_pdk::is_call(t_addr addr) {
+bool cl_fppa::is_call(t_addr addr) {
   struct dis_entry *e;
 
   get_disasm_info(addr, NULL, NULL, NULL, &e);
@@ -260,9 +260,9 @@ bool cl_pdk::is_call(t_addr addr) {
   return e ? (e->is_call) : false;
 }
 
-int cl_pdk::longest_inst(void) { return 1; }
+int cl_fppa::longest_inst(void) { return 1; }
 
-const char *cl_pdk::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
+const char *cl_fppa::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
                                     int *immed_offset,
                                     struct dis_entry **dentry) {
   const char *b = NULL;
@@ -314,7 +314,7 @@ const char *cl_pdk::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
   return b;
 }
 
-char *cl_pdk::disass(t_addr addr)
+char *cl_fppa::disass(t_addr addr)
 {
   chars work, temp;
   const char *b;
@@ -419,7 +419,7 @@ char *cl_pdk::disass(t_addr addr)
   return strdup(work.c_str());
 }
 
-void cl_pdk::print_regs(class cl_console_base *con) {
+void cl_fppa::print_regs(class cl_console_base *con) {
   con->dd_color("answer");
   con->dd_printf("A= 0x%02x(%3d)\n", regs.a, regs.a);
   con->dd_printf("Flag= 0x%02x(%3d)  \n", get_flags(), get_flags());
@@ -432,7 +432,7 @@ void cl_pdk::print_regs(class cl_console_base *con) {
  * Execution
  */
 
-int cl_pdk::exec_inst(void)
+int cl_fppa::exec_inst(void)
 {
   t_mem code;
 

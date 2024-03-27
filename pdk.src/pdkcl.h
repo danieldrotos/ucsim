@@ -38,7 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base type of STM8 microcontrollers
  */
 
-class cl_pdk: public cl_uc
+class cl_fppa: public cl_uc
 {
 public:
   class cl_memory *ram;
@@ -46,8 +46,8 @@ public:
   class cl_address_space *regs8;
   union t_regs regs;
 public:
-  cl_pdk(class cl_sim *asim);
-  cl_pdk(struct cpu_entry *IType, class cl_sim *asim);
+  cl_fppa(class cl_sim *asim);
+  cl_fppa(struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
 

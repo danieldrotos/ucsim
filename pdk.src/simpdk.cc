@@ -67,7 +67,7 @@ cl_simpdk::mk_controller(void)
     case CPU_PDK13:
     case CPU_PDK14:
     case CPU_PDK15:
-      return(new cl_pdk(&cpus_pdk[i], this));
+      return(new cl_fppa(&cpus_pdk[i], this));
     case CPU_PDK16:
       return new cl_pdk16(this);
     default:
