@@ -50,7 +50,7 @@ const t_addr io_size = 64;
 union t_regs
 {
   u8_t a;
-  t_mem _a;
+  //t_mem _a;
 };
 
 
@@ -66,13 +66,16 @@ public:
   class cl_pdk *puc;
   class cl_address_space *ram;
   class cl_address_space *regs8;
-  union t_regs regs;
+  //union t_regs regs;
+  u8_t rA, rF, rSP;
+  class cl_memory_cell *cA, *cF, *cSP;
 public:
   cl_fppa(class cl_pdk *the_puc, class cl_sim *asim);
   cl_fppa(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
-
+  virtual void act(void);
+  
   //virtual t_addr get_mem_size(enum mem_class type);
   //virtual void mk_port(t_addr base, chars n);
   virtual void mk_hw_elements(void);

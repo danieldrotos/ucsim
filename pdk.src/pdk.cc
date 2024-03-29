@@ -88,19 +88,12 @@ int cl_fppa::init(void) {
   //   ram->set((t_addr)i, 0);
   // }
 
+  cA= new cl_cell8();
+  cA->init();
+  reg_cell_var(cA, &rA, "A", "Accumulator");
   return (0);
 }
 
-void cl_fppa::reset(void) {
-  cl_uc::reset();
-  sp_most = 0x00;
-
-  PC = 0x0000;
-  regs.a = 0;
-  for (t_addr i = 0; i < io_size; ++i) {
-    store_io(i, 0);
-  }
-}
 
 const char *cl_fppa::id_string(void) {
   switch (type->type) {
@@ -112,6 +105,24 @@ const char *cl_fppa::id_string(void) {
       return("pdk15");
     default:
       return("unknown pdk");
+  }
+}
+
+void
+cl_fppa::act(void)
+{
+  cSP->decode(&rSP);
+  cF ->decode(&rF);
+}
+
+void cl_fppa::reset(void) {
+  cl_uc::reset();
+  sp_most = 0x00;
+
+  PC = 0x0000;
+  rA = 0;
+  for (t_addr i = 0; i < io_size; ++i) {
+    store_io(i, 0);
   }
 }
 
@@ -146,82 +157,88 @@ void cl_fppa::mk_hw_elements(void)
 
 void cl_fppa::make_memories(void)
 {
+  class cl_address_space *as;
+  int rom_storage, ram_storage;
+
   if (puc != NULL)
     {
       ram= puc->ram;
       rom= puc->rom;
       regs8= puc->regs8;
-      return;
     }
-  
-  class cl_address_space *as;
+  else
+    {
+      switch (type->type) {
+      case CPU_PDK13:
+	rom_storage = 0x400;
+	ram_storage = 0x40;
+	break;
+      case CPU_PDK14:
+	rom_storage = 0x800;
+	ram_storage = 0x80;
+	break;
+      case CPU_PDK15:
+	rom_storage = 0x1000;
+	ram_storage = 0x100;
+	break;
+      default:
+	return;//__builtin_unreachable();
+      }
+      rom = as = new cl_address_space("rom", 0, rom_storage, 16);
+      as->init();
+      address_spaces->add(as);
+      ram = as = new cl_address_space("ram", 0, ram_storage, 8);
+      as->init();
+      address_spaces->add(as);
+      regs8 = as = new cl_address_space("regs8", 0, io_size + 1, 8);
+      as->init();
+      address_spaces->add(as);
+      
+      {
+	class cl_address_decoder *ad;
+	class cl_memory_chip *chip;
+    
+	chip = new cl_chip16("rom_chip", rom_storage, 16);
+	chip->init();
+	memchips->add(chip);
+    
+	ad = new cl_address_decoder(as = address_space("rom"), chip, 0, rom_storage-1, 0);
+	ad->init();
+	as->decoders->add(ad);
+	ad->activate(0);
+    
+	chip = new cl_chip16("ram_chip", ram_storage, 8);
+	chip->init();
+	memchips->add(chip);
+	
+	ad = new cl_address_decoder(as = address_space("ram"), chip, 0, ram_storage-1, 0);
+	ad->init();
+	as->decoders->add(ad);
+	ad->activate(0);
+	
+	chip = new cl_chip16("io_chip", io_size, 8);
+	chip->init();
+	memchips->add(chip);
+	
+	ad = new cl_address_decoder(as = address_space("regs8"), chip, 0, io_size-1, 0);
+	ad->init();
+	as->decoders->add(ad);
+	ad->activate(0);
+      }
+      {
+	// extra byte of the IO memory will point to the A register just for the debugger
+	regs8->get_cell(io_size)->decode(&(rA));
+      }
 
-  int rom_storage, ram_storage;
-  switch (type->type) {
-  case CPU_PDK13:
-    rom_storage = 0x400;
-    ram_storage = 0x40;
-    break;
-  case CPU_PDK14:
-    rom_storage = 0x800;
-    ram_storage = 0x80;
-    break;
-  case CPU_PDK15:
-    rom_storage = 0x1000;
-    ram_storage = 0x100;
-    break;
-  default:
-    return;//__builtin_unreachable();
-  }
-  rom = as = new cl_address_space("rom", 0, rom_storage, 16);
-  as->init();
-  address_spaces->add(as);
-  ram = as = new cl_address_space("ram", 0, ram_storage, 8);
-  as->init();
-  address_spaces->add(as);
-  regs8 = as = new cl_address_space("regs8", 0, io_size + 1, 8);
-  as->init();
-  address_spaces->add(as);
+      vars->add("flag", regs8, 0, 7, 0, "Flags");
+      vars->add("sp", regs8, 1, 7, 0, "Stack Pointer");
+    }
 
-  {
-    class cl_address_decoder *ad;
-    class cl_memory_chip *chip;
-
-    chip = new cl_chip16("rom_chip", rom_storage, 16);
-    chip->init();
-    memchips->add(chip);
-
-    ad = new cl_address_decoder(as = address_space("rom"), chip, 0, rom_storage-1, 0);
-    ad->init();
-    as->decoders->add(ad);
-    ad->activate(0);
-
-    chip = new cl_chip16("ram_chip", ram_storage, 8);
-    chip->init();
-    memchips->add(chip);
-
-    ad = new cl_address_decoder(as = address_space("ram"), chip, 0, ram_storage-1, 0);
-    ad->init();
-    as->decoders->add(ad);
-    ad->activate(0);
-
-    chip = new cl_chip16("io_chip", io_size, 8);
-    chip->init();
-    memchips->add(chip);
-
-    ad = new cl_address_decoder(as = address_space("regs8"), chip, 0, io_size-1, 0);
-    ad->init();
-    as->decoders->add(ad);
-    ad->activate(0);
-  }
-  {
-    // extra byte of the IO memory will point to the A register just for the debugger
-    regs8->get_cell(io_size)->decode(&(regs._a));
-  }
-
-  vars->add("flag", regs8, 0, 7, 0, "Flags");
-  vars->add("sp", regs8, 1, 7, 0, "Stack Pointer");
+  cSP= regs8->get_cell(2);
+  cF = regs8->get_cell(0);
+  act();
 }
+
 
 void
 cl_fppa::build_cmdset(class cl_cmdset *cmdset)
@@ -439,12 +456,14 @@ char *cl_fppa::disass(t_addr addr)
   return strdup(work.c_str());
 }
 
-void cl_fppa::print_regs(class cl_console_base *con) {
+void
+cl_fppa::print_regs(class cl_console_base *con)
+{
+  act();
   con->dd_color("answer");
-  con->dd_printf("A= 0x%02x(%3d)\n", regs.a, regs.a);
+  con->dd_printf("A= 0x%02x(%3d)\n", rA, rA);
   con->dd_printf("Flag= 0x%02x(%3d)  \n", get_flags(), get_flags());
   con->dd_printf("SP= 0x%02x(%3d)\n", get_SP(), get_SP());
-
   print_disass(PC, con);
 }
 
@@ -456,6 +475,7 @@ int cl_fppa::exec_inst(void)
 {
   t_mem code;
 
+  act();
   instPC= PC;
   if (fetch(&code)) {
     return (resBREAKPOINT);
