@@ -82,7 +82,6 @@ public:
   cl_fppa(class cl_pdk *the_puc, class cl_sim *asim);
   cl_fppa(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
-  virtual const char *id_string(void);
   virtual void act(void);
   
   virtual void mk_hw_elements(void);

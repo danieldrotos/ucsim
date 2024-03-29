@@ -31,11 +31,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_fppa14::cl_fppa14(class cl_pdk *the_puc, class cl_sim *asim):
   cl_fppa13(the_puc, asim)
 {
+  PCmask= 0x7ff;
 }
 
 cl_fppa14::cl_fppa14(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
   cl_fppa13(the_puc, IType, asim)
 {
+  PCmask= 0x7ff;
 }
 
 

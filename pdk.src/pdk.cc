@@ -66,12 +66,6 @@ cl_fppa::cl_fppa(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *a
 {
   puc= the_puc;
   type = IType;
-  if (type->type == CPU_PDK13)
-    PCmask= 0x3ff;
-  if (type->type == CPU_PDK14)
-    PCmask= 0x7ff;
-  if (type->type == CPU_PDK15)
-    PCmask= 0xfff;
 }
 
 int cl_fppa::init(void) {
@@ -90,23 +84,11 @@ int cl_fppa::init(void) {
 
   cA= new cl_cell8();
   cA->init();
-  reg_cell_var(cA, &rA, "A", "Accumulator");
+  cA->decode(&rA);
+
   return (0);
 }
 
-
-const char *cl_fppa::id_string(void) {
-  switch (type->type) {
-    case CPU_PDK13:
-      return("pdk13");
-    case CPU_PDK14:
-      return("pdk14");
-    case CPU_PDK15:
-      return("pdk15");
-    default:
-      return("unknown pdk");
-  }
-}
 
 void
 cl_fppa::act(void)
@@ -126,23 +108,6 @@ void cl_fppa::reset(void) {
   }
 }
 
-/*
- * Making elements of the controller
- */
-/*
-t_addr
-cl_pdk::get_mem_size(enum mem_class type)
-{
-  switch(type)
-    {
-    case MEM_ROM: return(0x10000);
-    case MEM_XRAM: return(0x10000);
-    default: return(0);
-    }
- return(cl_uc::get_mem_size(type));
-}
-*/
-
 void cl_fppa::mk_hw_elements(void)
 {
   // TODO: Add hardware stuff here.
@@ -152,8 +117,6 @@ void cl_fppa::mk_hw_elements(void)
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
 }
-
-//class cl_memory_chip *c;
 
 void cl_fppa::make_memories(void)
 {
@@ -229,9 +192,6 @@ void cl_fppa::make_memories(void)
 	// extra byte of the IO memory will point to the A register just for the debugger
 	regs8->get_cell(io_size)->decode(&(rA));
       }
-
-      vars->add("flag", regs8, 0, 7, 0, "Flags");
-      vars->add("sp", regs8, 1, 7, 0, "Stack Pointer");
     }
 
   cSP= regs8->get_cell(2);
@@ -265,22 +225,11 @@ struct dis_entry *cl_fppa::dis_tbl(void) {
   }
 }
 
-/*struct name_entry *
-cl_pdk::sfr_tbl(void)
-{
-  return(0);
-}*/
-
-/*struct name_entry *
-cl_pdk::bit_tbl(void)
-{
-  //FIXME
-  return(0);
-}*/
 
 int cl_fppa::inst_length(t_addr /*addr*/) {
   return 1;
 }
+
 int cl_fppa::inst_branch(t_addr addr) {
   int b;
 
@@ -461,9 +410,11 @@ cl_fppa::print_regs(class cl_console_base *con)
 {
   act();
   con->dd_color("answer");
-  con->dd_printf("A= 0x%02x(%3d)\n", rA, rA);
-  con->dd_printf("Flag= 0x%02x(%3d)  \n", rF, rF);
-  con->dd_printf("SP= 0x%02x(%3d)\n", rSP, rSP);
+  con->dd_printf("A = 0x%02x %3u\n", rA, rA);
+  con->dd_printf("         OACZ\n");
+  con->dd_printf("F = 0x%02x ", rF, rF);
+  con->dd_printf("%d%d%d%d\n", fO, fA, fC, fZ);
+  con->dd_printf("SP= 0x%02x\n", rSP, rSP);
   print_disass(PC, con);
 }
 

@@ -36,6 +36,7 @@ class cl_fppa14: public cl_fppa13
  public:
   cl_fppa14(class cl_pdk *the_puc, class cl_sim *asim);
   cl_fppa14(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
+  virtual const char *id_string(void) { return "pdk14"; }
   virtual int execute(unsigned int code);
 };
 

@@ -34,6 +34,13 @@ cl_fppa16::cl_fppa16(class cl_pdk *the_puc, class cl_sim *asim):
   PCmask= 0xffff;
 }
 
+cl_fppa16::cl_fppa16(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
+  cl_fppa15(the_puc, IType, asim)
+{
+  PCmask= 0xfff;
+}
+
+
 int
 cl_fppa16::init(void)
 {
@@ -53,6 +60,11 @@ cl_fppa16::reset(void)
   cl_fppa::reset();
 }
 
+int
+cl_fppa16::execute(unsigned int code)
+{
+  return resINV;
+}
 
 
 /* End of pdk.src/pdk16.cc */
