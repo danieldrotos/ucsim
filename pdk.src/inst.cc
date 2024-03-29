@@ -36,7 +36,7 @@ unsigned char cl_fppa::add_to(unsigned char initial, int value, bool carry) {
   store_flag(flag_ac, (initial & 0xF) + (value & 0xF) + carry > 0xF);
   store_flag(
       flag_ov,
-      get_flag(flag_c) ^ ((initial & 0x7F) + (value & 0x7F) + carry > 0x7F));
+      fC ^ ((initial & 0x7F) + (value & 0x7F) + carry > 0x7F));
 
   return initial + value + carry;
 }
@@ -47,7 +47,7 @@ unsigned char cl_fppa::sub_to(unsigned char initial, int value, bool carry) {
   store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);
   store_flag(
       flag_ov,
-      get_flag(flag_c) ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0));
+      fC ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0));
 
   return initial - value - carry;
 }
@@ -66,45 +66,21 @@ int cl_fppa::store_io(t_addr addr, int value) {
   regs8->write(addr, value & 0xFF);
   if (addr == 0x02)
     {
-      if (get_SP() > sp_most)
-        sp_most = get_SP();
+      if (rSP > sp_most)
+        sp_most = rSP;
       if (!ram->valid_address(value))
         return resSTACK_OV;
     }
   return resGO;
 }
 
-unsigned char cl_fppa::get_SP() {
-    return get_io(0x02);
-}
-
-unsigned char cl_fppa::get_flags() {
-    return get_io(0x00);
-}
-
-void cl_fppa::set_flags(unsigned char flags) {
-    store_io(0x00, flags);
-}
-
-int cl_fppa::get_flag(flag n) {
-  switch (n) {
-  case flag_z: return get_flags() & BIT_Z;
-  case flag_c: return (get_flags() & BIT_C) >> 1;
-  case flag_ac: return (get_flags() & BIT_AC) >> 2;
-  case flag_ov: return (get_flags() & BIT_OV) >> 3;
-  default:
-    assert(!"invalid bit access to FLAG");
-  }
-  return 0;
-}
-
 void cl_fppa::store_flag(flag n, int value) {
   value= value?1:0;
   switch (n) {
-  case flag_z: set_flags((get_flags() & ~1) | value); break;
-  case flag_c: set_flags((get_flags() & ~2) | (value << 1)); break;
-  case flag_ac: set_flags((get_flags() & ~4) | (value << 2)); break;
-  case flag_ov: set_flags((get_flags() & ~8) | (value << 3)); break;
+  case flag_z: cF->W((rF & ~1) | (value << BITPOS_Z)); break;
+  case flag_c: cF->W((rF & ~2) | (value << BITPOS_C)); break;
+  case flag_ac: cF->W((rF & ~4) | (value << BITPOS_AC)); break;
+  case flag_ov: cF->W((rF & ~8) | (value << BITPOS_OV)); break;
   default:
     assert(!"invalid bit store to FLAG");
   }
@@ -130,14 +106,14 @@ int cl_fppa::execute_pdk14(unsigned int code) {
   } else if (CODE_MASK(0x0200, 0xFF)) {
     // ret k
     rA = code & 0xFF;
-    write_result = store_io(0x2, get_SP() - 2);
+    write_result = store_io(0x2, rSP - 2);
     if (write_result == resGO)
-      PC = get_mem(get_SP()) | (get_mem(get_SP() + 1) << 8);
+      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (code == 0x007A) {
     // ret
-    write_result = store_io(0x2, get_SP() - 2);
+    write_result = store_io(0x2, rSP - 2);
     if (write_result == resGO)
-      PC = get_mem(get_SP()) | (get_mem(get_SP() + 1) << 8);
+      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (CODE_MASK(0x2F00, 0xFF)) {
     // mov a, k
     rA = code & 0xFF;
@@ -170,14 +146,14 @@ int cl_fppa::execute_pdk14(unsigned int code) {
     rA = mem;
   } else if (code == 0x0072) {
     // pushaf
-    ram->write(get_SP(), rA);
-    ram->write(get_SP() + 1, get_flags());
-    write_result = store_io(0x2, get_SP() + 2);
+    ram->write(rSP, rA);
+    ram->write(rSP + 1, rF);
+    write_result = store_io(0x2, rSP + 2);
   } else if (code == 0x0073) {
     // popaf
-    set_flags(get_mem(get_SP() - 1));
-    rA = get_mem(get_SP() - 2);
-    write_result = store_io(0x2, get_SP() - 2);
+    cF->W(get_mem(rSP - 1));
+    rA = get_mem(rSP - 2);
+    write_result = store_io(0x2, rSP - 2);
   } else if (CODE_MASK(0x2800, 0xFF)) {
     // add a, k
     rA = add_to(rA, code & 0xFF);
@@ -200,32 +176,32 @@ int cl_fppa::execute_pdk14(unsigned int code) {
     ram->write(addr, sub_to(get_mem(addr), rA));
   } else if (CODE_MASK(0x0D00, 0x7F)) {
     // addc a, m
-    rA = add_to(rA, get_mem(code & 0x7F), get_flag(flag_c));
+    rA = add_to(rA, get_mem(code & 0x7F), fC);
   } else if (CODE_MASK(0x0900, 0x7F)) {
     // addc m, a
     int addr = code & 0x7F;
-    ram->write(addr, add_to(rA, get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, add_to(rA, get_mem(addr), fC));
   } else if (code == 0x0060) {
     // addc a
-    rA = add_to(rA, get_flag(flag_c));
+    rA = add_to(rA, fC);
   } else if (CODE_MASK(0x1000, 0x7F)) {
     // addc m
     int addr = code & 0x7F;
-    ram->write(addr, add_to(get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, add_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x0D80, 0x7F)) {
     // subc a, m
-    rA = sub_to(rA, get_mem(code & 0x7F), get_flag(flag_c));
+    rA = sub_to(rA, get_mem(code & 0x7F), fC);
   } else if (CODE_MASK(0x0980, 0x7F)) {
     // subc m, a
     int addr = code & 0x7F;
-    ram->write(addr, sub_to(get_mem(addr), rA, get_flag(flag_c)));
+    ram->write(addr, sub_to(get_mem(addr), rA, fC));
   } else if (code == 0x0061) {
     // subc a
-    rA = sub_to(rA, get_flag(flag_c));
+    rA = sub_to(rA, fC);
   } else if (CODE_MASK(0x1080, 0x7F)) {
     // subc m
     int addr = code & 0x7F;
-    ram->write(addr, sub_to(get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, sub_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x1200, 0x7F)) {
     // inc m
     int addr = code & 0x7F;
@@ -259,25 +235,25 @@ int cl_fppa::execute_pdk14(unsigned int code) {
     // src a
     int c = rA & 1;
     rA >>= 1;
-    rA |= get_flag(flag_c) << 7;
+    rA |= fC << 7;
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x1600, 0x7F)) {
     // src m
     int value = get_mem(code & 0x7F);
     int c = value & 1;
-    ram->write(code & 0x7F, (value >> 1) | (get_flag(flag_c) << 7));
+    ram->write(code & 0x7F, (value >> 1) | (fC << 7));
     store_flag(flag_c, c);
   } else if (code == 0x006D) {
     // slc a
     int c = (rA & 0x80) >> 7;
     rA <<= 1;
-    rA |= get_flag(flag_c);
+    rA |= fC;
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x1680, 0x7F)) {
     // slc m
     int value = get_mem(code & 0x7F);
     int c = (value & 0x80) >> 7;
-    ram->write(code & 0x7F, (value << 1) | get_flag(flag_c));
+    ram->write(code & 0x7F, (value << 1) | fC);
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x2C00, 0xFF)) {
     // and a, k
@@ -427,10 +403,10 @@ int cl_fppa::execute_pdk14(unsigned int code) {
       ++PC;
   } else if (CODE_MASK(0x3800, 0x7FF)) {
     // call k
-    ram->write(get_SP(), PC);
-    ram->write(get_SP() + 1, PC >> 8);
+    ram->write(rSP, PC);
+    ram->write(rSP + 1, PC >> 8);
     PC = code & 0x7FF;
-    write_result = store_io(0x2, get_SP() + 2);
+    write_result = store_io(0x2, rSP + 2);
   } else if (CODE_MASK(0x3000, 0x7FF)) {
     // goto k
     PC = code & 0x7FF;
@@ -467,10 +443,10 @@ int cl_fppa::execute_pdk14(unsigned int code) {
   // TODO: swapc IO, k
   else if (code == 0x0006) {
     // ldsptl
-    rA = rom->get(get_SP()) & 0xFF;
+    rA = rom->get(rSP) & 0xFF;
   } else if (code == 0x0007) {
     // ldspth
-    rA = (rom->get(get_SP()) & 0xFF00) >> 8;
+    rA = (rom->get(rSP) & 0xFF00) >> 8;
   } else if (code == 0x007C) {
     // mul
     unsigned result = rA * get_io(0x08);
@@ -493,14 +469,14 @@ int cl_fppa::execute_pdk13(unsigned int code) {
   } else if (CODE_MASK(0x0100, 0xFF)) {
     // ret k
     rA = code & 0xFF;
-    write_result = store_io(0x2, get_SP() - 2);
+    write_result = store_io(0x2, rSP - 2);
     if (write_result == resGO)
-      PC = get_mem(get_SP()) | (get_mem(get_SP() + 1) << 8);
+      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (code == 0x003A) {
     // ret
-    write_result = store_io(0x2, get_SP() - 2);
+    write_result = store_io(0x2, rSP - 2);
     if (write_result == resGO)
-      PC = get_mem(get_SP()) | (get_mem(get_SP() + 1) << 8);
+      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (CODE_MASK(0x1700, 0xFF)) {
     // mov a, k
     rA = code & 0xFF;
@@ -533,14 +509,14 @@ int cl_fppa::execute_pdk13(unsigned int code) {
     rA = mem;
   } else if (code == 0x0032) {
     // pushaf
-    ram->write(get_SP(), rA);
-    ram->write(get_SP() + 1, get_flags());
-    write_result = store_io(0x2, get_SP() + 2);
+    ram->write(rSP, rA);
+    ram->write(rSP + 1, rF);
+    write_result = store_io(0x2, rSP + 2);
   } else if (code == 0x0033) {
     // popaf
-    set_flags(get_mem(get_SP() - 1));
-    rA = get_mem(get_SP() - 2);
-    write_result = store_io(0x2, get_SP() - 2);
+    cF->W(get_mem(rSP - 1));
+    rA = get_mem(rSP - 2);
+    write_result = store_io(0x2, rSP - 2);
   } else if (CODE_MASK(0x1000, 0xFF)) {
     // add a, k
     rA = add_to(rA, code & 0xFF);
@@ -563,32 +539,32 @@ int cl_fppa::execute_pdk13(unsigned int code) {
     ram->write(addr, sub_to(get_mem(addr), rA));
   } else if (CODE_MASK(0x0680, 0x3F)) {
     // addc a, m
-    rA = add_to(rA, get_mem(code & 0x3F), get_flag(flag_c));
+    rA = add_to(rA, get_mem(code & 0x3F), fC);
   } else if (CODE_MASK(0x0480, 0x3F)) {
     // addc m, a
     int addr = code & 0x3F;
-    ram->write(addr, add_to(rA, get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, add_to(rA, get_mem(addr), fC));
   } else if (code == 0x0010) {
     // addc a
-    rA = add_to(rA, get_flag(flag_c));
+    rA = add_to(rA, fC);
   } else if (CODE_MASK(0x0800, 0x3F)) {
     // addc m
     int addr = code & 0x3F;
-    ram->write(addr, add_to(get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, add_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x06C0, 0x3F)) {
     // subc a, m
-    rA = sub_to(rA, get_mem(code & 0x3F), get_flag(flag_c));
+    rA = sub_to(rA, get_mem(code & 0x3F), fC);
   } else if (CODE_MASK(0x04C0, 0x3F)) {
     // subc m, a
     int addr = code & 0x3F;
-    ram->write(addr, sub_to(get_mem(addr), rA, get_flag(flag_c)));
+    ram->write(addr, sub_to(get_mem(addr), rA, fC));
   } else if (code == 0x0011) {
     // subc a
-    rA = sub_to(rA, get_flag(flag_c));
+    rA = sub_to(rA, fC);
   } else if (CODE_MASK(0x0840, 0x3F)) {
     // subc m
     int addr = code & 0x3F;
-    ram->write(addr, sub_to(get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, sub_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x0900, 0x3F)) {
     // inc m
     int addr = code & 0x3F;
@@ -622,25 +598,25 @@ int cl_fppa::execute_pdk13(unsigned int code) {
     // src a
     int c = rA & 1;
     rA >>= 1;
-    rA |= get_flag(flag_c) << 7;
+    rA |= fC << 7;
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x0B00, 0x3F)) {
     // src m
     int value = get_mem(code & 0x3F);
     int c = value & 1;
-    ram->write(code & 0x3F, (value >> 1) | (get_flag(flag_c) << 7));
+    ram->write(code & 0x3F, (value >> 1) | (fC << 7));
     store_flag(flag_c, c);
   } else if (code == 0x001D) {
     // slc a
     int c = (rA & 0x80) >> 7;
     rA <<= 1;
-    rA |= get_flag(flag_c);
+    rA |= fC;
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x0B40, 0x3F)) {
     // slc m
     int value = get_mem(code & 0x3F);
     int c = (value & 0x80) >> 7;
-    ram->write(code & 0x3F, (value << 1) | get_flag(flag_c));
+    ram->write(code & 0x3F, (value << 1) | fC);
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x1400, 0xFF)) {
     // and a, k
@@ -779,10 +755,10 @@ int cl_fppa::execute_pdk13(unsigned int code) {
       ++PC;
   } else if (CODE_MASK(0x1C00, 0x3FF)) {
     // call k
-    ram->write(get_SP(), PC);
-    ram->write(get_SP() + 1, PC >> 8);
+    ram->write(rSP, PC);
+    ram->write(rSP + 1, PC >> 8);
     PC = code & 0x3FF;
-    write_result = store_io(0x2, get_SP() + 2);
+    write_result = store_io(0x2, rSP + 2);
   } else if (CODE_MASK(0x1800, 0x3FF)) {
     // goto k
     PC = code & 0x3FF;
@@ -806,10 +782,10 @@ int cl_fppa::execute_pdk13(unsigned int code) {
   // TODO: swapc IO, k
   else if (code == 0x0006) {
     // ldsptl
-    rA = rom->get(get_SP()) & 0xFF;
+    rA = rom->get(rSP) & 0xFF;
   } else if (code == 0x0007) {
     // ldregs[0x02]th
-    rA = (rom->get(get_SP()) & 0xFF00) >> 8;
+    rA = (rom->get(rSP) & 0xFF00) >> 8;
   } else if (code == 0x003C) {
     // mul
     unsigned result = rA * get_io(0x08);
@@ -832,14 +808,14 @@ int cl_fppa::execute_pdk15(unsigned int code) {
   } else if (CODE_MASK(0x0200, 0xFF)) {
     // ret k
     rA = code & 0xFF;
-    write_result = store_io(0x2, get_SP() - 2);
+    write_result = store_io(0x2, rSP - 2);
     if (write_result == resGO)
-      PC = get_mem(get_SP()) | (get_mem(get_SP() + 1) << 8);
+      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (code == 0x007A) {
     // ret
-    write_result = store_io(0x2, get_SP() - 2);
+    write_result = store_io(0x2, rSP - 2);
     if (write_result == resGO)
-      PC = get_mem(get_SP()) | (get_mem(get_SP() + 1) << 8);
+      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (CODE_MASK(0x5700, 0xFF)) {
     // mov a, k
     rA = code & 0xFF;
@@ -872,14 +848,14 @@ int cl_fppa::execute_pdk15(unsigned int code) {
     rA = mem;
   } else if (code == 0x0072) {
     // pushaf
-    ram->write(get_SP(), rA);
-    ram->write(get_SP() + 1, get_flags());
-    write_result = store_io(0x2, get_SP() + 2);
+    ram->write(rSP, rA);
+    ram->write(rSP + 1, rF);
+    write_result = store_io(0x2, rSP + 2);
   } else if (code == 0x0073) {
     // popaf
-    set_flags(get_mem(get_SP() - 1));
-    rA = get_mem(get_SP() - 2);
-    write_result = store_io(0x2, get_SP() - 2);
+    cF->W(get_mem(rSP - 1));
+    rA = get_mem(rSP - 2);
+    write_result = store_io(0x2, rSP - 2);
   } else if (CODE_MASK(0x5000, 0xFF)) {
     // add a, k
     rA = add_to(rA, code & 0xFF);
@@ -902,32 +878,32 @@ int cl_fppa::execute_pdk15(unsigned int code) {
     ram->write(addr, sub_to(get_mem(addr), rA));
   } else if (CODE_MASK(0x1A00, 0xFF)) {
     // addc a, m
-    rA = add_to(rA, get_mem(code & 0xFF), get_flag(flag_c));
+    rA = add_to(rA, get_mem(code & 0xFF), fC);
   } else if (CODE_MASK(0x1200, 0xFF)) {
     // addc m, a
     int addr = code & 0xFF;
-    ram->write(addr, add_to(rA, get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, add_to(rA, get_mem(addr), fC));
   } else if (code == 0x0060) {
     // addc a
-    rA = add_to(rA, get_flag(flag_c));
+    rA = add_to(rA, fC);
   } else if (CODE_MASK(0x2000, 0xFF)) {
     // addc m
     int addr = code & 0xFF;
-    ram->write(addr, add_to(get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, add_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x1B00, 0xFF)) {
     // subc a, m
-    rA = sub_to(rA, get_mem(code & 0xFF), get_flag(flag_c));
+    rA = sub_to(rA, get_mem(code & 0xFF), fC);
   } else if (CODE_MASK(0x1300, 0xFF)) {
     // subc m, a
     int addr = code & 0xFF;
-    ram->write(addr, sub_to(get_mem(addr), rA, get_flag(flag_c)));
+    ram->write(addr, sub_to(get_mem(addr), rA, fC));
   } else if (code == 0x0061) {
     // subc a
-    rA = sub_to(rA, get_flag(flag_c));
+    rA = sub_to(rA, fC);
   } else if (CODE_MASK(0x2100, 0xFF)) {
     // subc m
     int addr = code & 0xFF;
-    ram->write(addr, sub_to(get_mem(addr), get_flag(flag_c)));
+    ram->write(addr, sub_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x2400, 0xFF)) {
     // inc m
     int addr = code & 0xFF;
@@ -961,25 +937,25 @@ int cl_fppa::execute_pdk15(unsigned int code) {
     // src a
     int c = rA & 1;
     rA >>= 1;
-    rA |= get_flag(flag_c) << 7;
+    rA |= fC << 7;
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x2C00, 0xFF)) {
     // src m
     int value = get_mem(code & 0xFF);
     int c = value & 1;
-    ram->write(code & 0xFF, (value >> 1) | (get_flag(flag_c) << 7));
+    ram->write(code & 0xFF, (value >> 1) | (fC << 7));
     store_flag(flag_c, c);
   } else if (code == 0x006D) {
     // slc a
     int c = (rA & 0x80) >> 7;
     rA <<= 1;
-    rA |= get_flag(flag_c);
+    rA |= fC;
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x2D00, 0xFF)) {
     // slc m
     int value = get_mem(code & 0xFF);
     int c = (value & 0x80) >> 7;
-    ram->write(code & 0xFF, (value << 1) | get_flag(flag_c));
+    ram->write(code & 0xFF, (value << 1) | fC);
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x5400, 0xFF)) {
     // and a, k
@@ -1129,10 +1105,10 @@ int cl_fppa::execute_pdk15(unsigned int code) {
       ++PC;
   } else if (CODE_MASK(0x7000, 0xFFF)) {
     // call k
-    ram->write(get_SP(), PC);
-    ram->write(get_SP() + 1, PC >> 8);
+    ram->write(rSP, PC);
+    ram->write(rSP + 1, PC >> 8);
     PC = code & 0xFFF;
-    write_result = store_io(0x2, get_SP() + 2);
+    write_result = store_io(0x2, rSP + 2);
   } else if (CODE_MASK(0x6000, 0xFFF)) {
     // goto k
     PC = code & 0xFFF;
@@ -1169,10 +1145,10 @@ int cl_fppa::execute_pdk15(unsigned int code) {
   // TODO: swapc IO, k
   else if (code == 0x0006) {
     // ldsptl
-    rA = rom->get(get_SP()) & 0xFF;
+    rA = rom->get(rSP) & 0xFF;
   } else if (code == 0x0007) {
     // ldspth
-    rA = (rom->get(get_SP()) & 0xFF00) >> 8;
+    rA = (rom->get(rSP) & 0xFF00) >> 8;
   } else if (code == 0x007C) {
     // mul
     unsigned result = rA * get_io(0x08);

@@ -462,8 +462,8 @@ cl_fppa::print_regs(class cl_console_base *con)
   act();
   con->dd_color("answer");
   con->dd_printf("A= 0x%02x(%3d)\n", rA, rA);
-  con->dd_printf("Flag= 0x%02x(%3d)  \n", get_flags(), get_flags());
-  con->dd_printf("SP= 0x%02x(%3d)\n", get_SP(), get_SP());
+  con->dd_printf("Flag= 0x%02x(%3d)  \n", rF, rF);
+  con->dd_printf("SP= 0x%02x(%3d)\n", rSP, rSP);
   print_disass(PC, con);
 }
 

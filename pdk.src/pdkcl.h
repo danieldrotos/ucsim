@@ -47,12 +47,19 @@ const t_addr io_size = 64;
 #define BITPOS_AC 2    // 4H
 #define BITPOS_OV 3    // 8H
 
-union t_regs
-{
-  u8_t a;
-  //t_mem _a;
+enum flag {
+  flag_z,
+  flag_c,
+  flag_ac,
+  flag_ov,
 };
 
+#define fC  ((rF&BIT_C)>>BITPOS_C)
+#define fZ  ((rF&BIT_Z)>>BITPOS_Z)
+#define fAC ((rF&BIT_AC)>>BITPOS_AC)
+#define fA  ((rF&BIT_AC)>>BITPOS_AC)
+#define fOV ((rF&BIT_OV)>>BITPOS_OV)
+#define fO  ((rF&BIT_OV)>>BITPOS_OV)
 
 /*
  * Base type of STM8 microcontrollers
@@ -66,7 +73,6 @@ public:
   class cl_pdk *puc;
   class cl_address_space *ram;
   class cl_address_space *regs8;
-  //union t_regs regs;
   u8_t rA, rF, rSP;
   class cl_memory_cell *cA, *cF, *cSP;
 public:
@@ -76,8 +82,6 @@ public:
   virtual const char *id_string(void);
   virtual void act(void);
   
-  //virtual t_addr get_mem_size(enum mem_class type);
-  //virtual void mk_port(t_addr base, chars n);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
   virtual void build_cmdset(class cl_cmdset *cmdset);
@@ -102,7 +106,19 @@ public:
 
   virtual void reset(void);
 
-#include "instcl.h"
+  // originaly in instcl.h
+int get_mem(unsigned int addr);
+unsigned char add_to(unsigned char initial, int value, bool carry = false);
+unsigned char sub_to(unsigned char initial, int value, bool carry = false);
+unsigned char get_io(t_addr addr);
+int store_io(t_addr addr, int value);
+void store_flag(flag n, int value);
+
+int execute(unsigned int code);
+int execute_pdk13(unsigned int code);
+int execute_pdk14(unsigned int code);
+int execute_pdk15(unsigned int code);
+
 };
 
 
