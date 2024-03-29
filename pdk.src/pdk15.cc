@@ -28,14 +28,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pdk15cl.h"
 
 
-cl_fppa15::cl_fppa15(class cl_pdk *the_puc, class cl_sim *asim):
-  cl_fppa14(the_puc, asim)
+cl_fppa15::cl_fppa15(int aid, class cl_pdk *the_puc, class cl_sim *asim):
+  cl_fppa14(aid, the_puc, asim)
 {
   PCmask= 0xfff;
 }
 
-cl_fppa15::cl_fppa15(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
-  cl_fppa14(the_puc, IType, asim)
+cl_fppa15::cl_fppa15(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
+  cl_fppa14(aid, the_puc, IType, asim)
 {
   PCmask= 0xfff;
 }

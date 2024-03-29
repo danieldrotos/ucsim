@@ -63,6 +63,8 @@ enum flag {
 
 #define CODE_MASK(op, m) ((code & ~(m)) == (op))
 
+#define regs8 sfr
+
 
 /*
  * Base type of STM8 microcontrollers
@@ -74,13 +76,14 @@ class cl_fppa: public cl_uc
 {
 public:
   class cl_pdk *puc;
+  int id;
   class cl_address_space *ram;
-  class cl_address_space *regs8;
+  class cl_address_space *sfr;
   u8_t rA, rF, rSP;
   class cl_memory_cell *cA, *cF, *cSP;
 public:
-  cl_fppa(class cl_pdk *the_puc, class cl_sim *asim);
-  cl_fppa(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
+  cl_fppa(int aid, class cl_pdk *the_puc, class cl_sim *asim);
+  cl_fppa(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual void act(void);
   
@@ -124,17 +127,48 @@ int execute_pdk15(unsigned int code);
 };
 
 
+class cl_pdk_cell: public cl_cell8
+{
+public:
+  class cl_pdk *puc;
+public:
+  cl_pdk_cell(class cl_pdk *the_puc):
+    cl_cell8()
+  {
+    puc= the_puc;
+  }
+};
+  
+class cl_act_cell: public cl_pdk_cell
+{
+public:
+  cl_act_cell(class cl_pdk *the_puc): cl_pdk_cell(the_puc) {}
+  virtual t_mem write(t_mem val);
+};
+  
+class cl_nuof_cell: public cl_pdk_cell
+{
+public:
+  cl_nuof_cell(class cl_pdk *the_puc): cl_pdk_cell(the_puc) {}
+  virtual t_mem write(t_mem val);
+};
+
+
 class cl_pdk: public cl_uc
 {
 public:
-  class cl_fppa *fpp[8];
+  class cl_fppa *fpps[8], *fpp;
   class cl_address_space *ram;
   class cl_address_space *regs8;
+  u8_t rFPPEN, act, nuof_fppa;
+  class cl_memory_cell *cFPPEN, *cact, *cnuof_fppa;
 public:
   cl_pdk(struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void make_memories(void);
+
+  virtual class cl_fppa *mk_fppa(int id);
 };
 
 

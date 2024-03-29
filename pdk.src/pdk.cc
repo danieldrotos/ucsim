@@ -51,9 +51,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /*******************************************************************/
 
-cl_fppa::cl_fppa(class cl_pdk *the_puc, class cl_sim *asim):
+cl_fppa::cl_fppa(int aid, class cl_pdk *the_puc, class cl_sim *asim):
   cl_uc(asim)
 {
+  id= aid;
   puc= the_puc;
 }
 
@@ -62,8 +63,9 @@ cl_fppa::cl_fppa(class cl_pdk *the_puc, class cl_sim *asim):
  * Base type of PDK controllers
  */
 
-cl_fppa::cl_fppa(class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim)
+cl_fppa::cl_fppa(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim)
 {
+  id= aid;
   puc= the_puc;
   type = IType;
 }
@@ -127,7 +129,7 @@ void cl_fppa::make_memories(void)
     {
       ram= puc->ram;
       rom= puc->rom;
-      regs8= puc->regs8;
+      sfr= puc->sfr;
     }
   else
     {
@@ -153,7 +155,7 @@ void cl_fppa::make_memories(void)
       ram = as = new cl_address_space("ram", 0, ram_storage, 8);
       as->init();
       address_spaces->add(as);
-      regs8 = as = new cl_address_space("regs8", 0, io_size + 1, 8);
+      sfr = as = new cl_address_space("regs8", 0, io_size + 1, 8);
       as->init();
       address_spaces->add(as);
       
@@ -165,7 +167,7 @@ void cl_fppa::make_memories(void)
 	chip->init();
 	memchips->add(chip);
     
-	ad = new cl_address_decoder(as = address_space("rom"), chip, 0, rom_storage-1, 0);
+	ad = new cl_address_decoder(as = rom, chip, 0, rom_storage-1, 0);
 	ad->init();
 	as->decoders->add(ad);
 	ad->activate(0);
@@ -174,7 +176,7 @@ void cl_fppa::make_memories(void)
 	chip->init();
 	memchips->add(chip);
 	
-	ad = new cl_address_decoder(as = address_space("ram"), chip, 0, ram_storage-1, 0);
+	ad = new cl_address_decoder(as = ram, chip, 0, ram_storage-1, 0);
 	ad->init();
 	as->decoders->add(ad);
 	ad->activate(0);
@@ -183,19 +185,19 @@ void cl_fppa::make_memories(void)
 	chip->init();
 	memchips->add(chip);
 	
-	ad = new cl_address_decoder(as = address_space("regs8"), chip, 0, io_size-1, 0);
+	ad = new cl_address_decoder(as = sfr, chip, 0, io_size-1, 0);
 	ad->init();
 	as->decoders->add(ad);
 	ad->activate(0);
       }
       {
 	// extra byte of the IO memory will point to the A register just for the debugger
-	regs8->get_cell(io_size)->decode(&(rA));
+	sfr->get_cell(io_size)->decode(&(rA));
       }
     }
 
-  cSP= regs8->get_cell(2);
-  cF = regs8->get_cell(0);
+  cSP= sfr->get_cell(2);
+  cF = sfr->get_cell(0);
   act();
 }
 
@@ -447,28 +449,60 @@ int cl_fppa::exec_inst(void)
 
 /****************************************************************************/
 
+
+/* Set nr of active FPP */
+
+t_mem
+cl_act_cell::write(t_mem val)
+{
+  val= 0;
+  return cl_pdk_cell::write(val);
+}
+
+/* Set nr of FPPs */
+
+t_mem
+cl_nuof_cell::write(t_mem val)
+{
+  val= 1;
+  return cl_pdk_cell::write(val);
+}
+
+
+/*
+ * PDK uc
+ */
+
 cl_pdk::cl_pdk(struct cpu_entry *IType, class cl_sim *asim):
   cl_uc(asim)
 {
   int i;
   type = IType;
   for (i= 0; i<8; i++)
-    fpp[i]= NULL;
+    fpps[i]= NULL;
 }
 
 int
 cl_pdk::init(void)
 {
   cl_uc::init();
-  if (type->type == CPU_PDK13)
-    fpp[0]= new cl_fppa13(this, sim);
-  if (type->type == CPU_PDK14)
-    fpp[0]= new cl_fppa14(this, sim);
-  if (type->type == CPU_PDK15)
-    fpp[0]= new cl_fppa15(this, sim);
-  if (type->type == CPU_PDK16)
-    fpp[0]= new cl_fppa16(this, sim);
-  fpp[0]->init();
+
+  fpps[0]= mk_fppa(0);
+
+  cFPPEN= sfr->get_cell(1);
+  reg_cell_var(cFPPEN, &rFPPEN, "FPPEN", "FPP unit Enable Register");
+  mk_cvar(sfr->get_cell(0), "FLAG", "ACC Status Flag Register");
+  mk_cvar(sfr->get_cell(2), "SP", "Stack Pointer Register");
+  rFPPEN= 1;
+
+  fpp= fpps[0];
+  act= 0;
+  cact= new cl_act_cell(this);
+  reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");
+  nuof_fppa= 1;
+  cnuof_fppa= new cl_nuof_cell(this);
+  reg_cell_var(cnuof_fppa, &nuof_fppa, "nuof_fpp", "Number of FPPs");
+  
   return 0;
 }
 
@@ -504,7 +538,7 @@ cl_pdk::make_memories(void)
   ram = as = new cl_address_space("ram", 0, ram_size, 8);
   as->init();
   address_spaces->add(as);
-  regs8 = as = new cl_address_space("regs8", 0, io_size + 1, 8);
+  sfr = as = new cl_address_space("regs8", 0, io_size + 1, 8);
   as->init();
   address_spaces->add(as);
 
@@ -512,7 +546,7 @@ cl_pdk::make_memories(void)
   chip->init();
   memchips->add(chip);
 
-  ad = new cl_address_decoder(as = address_space("rom"), chip, 0, rom_size-1, 0);
+  ad = new cl_address_decoder(as = rom, chip, 0, rom_size-1, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -521,7 +555,7 @@ cl_pdk::make_memories(void)
   chip->init();
   memchips->add(chip);
   
-  ad = new cl_address_decoder(as = address_space("ram"), chip, 0, ram_size-1, 0);
+  ad = new cl_address_decoder(as = ram, chip, 0, ram_size-1, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -530,10 +564,26 @@ cl_pdk::make_memories(void)
   chip->init();
   memchips->add(chip);
 
-  ad = new cl_address_decoder(as = address_space("regs8"), chip, 0, io_size-1, 0);
+  ad = new cl_address_decoder(as = sfr, chip, 0, io_size-1, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+}
+
+class cl_fppa *
+cl_pdk::mk_fppa(int id)
+{
+  class cl_fppa *fppa;
+  if (type->type == CPU_PDK13)
+    fppa= new cl_fppa13(id, this, sim);
+  if (type->type == CPU_PDK14)
+    fppa= new cl_fppa14(id, this, sim);
+  if (type->type == CPU_PDK15)
+    fppa= new cl_fppa15(id, this, sim);
+  if (type->type == CPU_PDK16)
+    fppa= new cl_fppa16(id, this, sim);
+  fppa->init();
+  return fppa;
 }
 
 

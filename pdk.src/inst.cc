@@ -57,12 +57,12 @@ int cl_fppa::get_mem(unsigned int addr) {
 }
 
 unsigned char cl_fppa::get_io(t_addr addr) {
-  return regs8->read(addr);
+  return sfr->read(addr);
 }
 
 int cl_fppa::store_io(t_addr addr, int value) {
   
-  regs8->write(addr, value & 0xFF);
+  sfr->write(addr, value & 0xFF);
   if (addr == 0x02)
     {
       if (rSP > sp_most)
