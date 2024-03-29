@@ -61,6 +61,9 @@ enum flag {
 #define fOV ((rF&BIT_OV)>>BITPOS_OV)
 #define fO  ((rF&BIT_OV)>>BITPOS_OV)
 
+#define CODE_MASK(op, m) ((code & ~(m)) == (op))
+
+
 /*
  * Base type of STM8 microcontrollers
  */
@@ -95,6 +98,7 @@ public:
   virtual char *disass(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
 
+  virtual int execute(unsigned int code) { return resINV; }
   virtual int exec_inst(void);
 
   virtual const char *get_disasm_info(t_addr addr,
@@ -114,7 +118,6 @@ unsigned char get_io(t_addr addr);
 int store_io(t_addr addr, int value);
 void store_flag(flag n, int value);
 
-int execute(unsigned int code);
 int execute_pdk13(unsigned int code);
 int execute_pdk14(unsigned int code);
 int execute_pdk15(unsigned int code);
