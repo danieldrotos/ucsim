@@ -412,11 +412,11 @@ cl_fppa::print_regs(class cl_console_base *con)
 {
   act();
   con->dd_color("answer");
-  con->dd_printf("A = 0x%02x %3u\n", rA, rA);
-  con->dd_printf("         OACZ\n");
-  con->dd_printf("F = 0x%02x ", rF, rF);
+  con->dd_printf("A = %02x %3u\n", rA, rA);
+  con->dd_printf("       OACZ\n");
+  con->dd_printf("F = %02x ", rF);
   con->dd_printf("%d%d%d%d\n", fO, fA, fC, fZ);
-  con->dd_printf("SP= 0x%02x\n", rSP, rSP);
+  con->dd_printf("SP= %02x\n", rSP);
   print_disass(PC, con);
 }
 
@@ -506,10 +506,8 @@ cl_pdk::init(void)
   reg_cell_var(cFPPEN, &rFPPEN, "FPPEN", "FPP unit Enable Register");
   mk_cvar(sfr->get_cell(0), "FLAG", "ACC Status Flag Register");
   mk_cvar(sfr->get_cell(2), "SP", "Stack Pointer Register");
-  rFPPEN= 1;
 
   fpp= fpps[0];
-  act= 0;
   cact= new cl_act_cell(this);
   reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");
   nuof_fppa= 1;
@@ -522,6 +520,8 @@ cl_pdk::init(void)
       nuof_fppa= 2;
     }
   
+  act= 0;
+  rFPPEN= 1;
   return 0;
 }
 
@@ -604,6 +604,48 @@ cl_pdk::mk_fppa(int id)
     }  
   fppa->init();
   return fppa;
+}
+
+
+void
+cl_pdk::print_regs(class cl_console_base *con)
+{
+  int i;
+  
+  con->dd_color("answer");
+  for (i= 0; i<nuof_fppa; i++)
+    {
+      if (rFPPEN & (1<<i))
+	con->dd_printf("FPP%d:EN   ", i);
+      else
+	con->dd_printf("FPP%d:DIS  ", i);
+    }
+  con->dd_printf("\n");
+  for (i= 0; i<nuof_fppa; i++)
+    {
+      con->dd_printf("A=%02x %3u  ", fpps[i]->rA, fpps[i]->rA);
+    }
+  con->dd_printf("\n");
+  for (i= 0; i<nuof_fppa; i++)
+    {
+      con->dd_printf("    OACZ  ");
+    }
+  con->dd_printf("\n");
+  for (i= 0; i<nuof_fppa; i++)
+    {
+      con->dd_printf("F=  ", fpps[i]->rF);
+      con->dd_printf("%d%d%d%d  ",
+		     ((fpps[i]->rF&BIT_OV)>>BITPOS_OV),
+		     ((fpps[i]->rF&BIT_AC)>>BITPOS_AC),
+		     ((fpps[i]->rF&BIT_C )>>BITPOS_C ),
+		     ((fpps[i]->rF&BIT_Z )>>BITPOS_Z ));
+    }
+  con->dd_printf("\n");
+  for (i= 0; i<nuof_fppa; i++)
+    {
+      con->dd_printf("SP=%02x     ", fpps[i]->rSP);
+    }
+  con->dd_printf("\n");
 }
 
 

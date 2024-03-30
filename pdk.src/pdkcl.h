@@ -168,8 +168,10 @@ public:
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void make_memories(void);
-
   virtual class cl_fppa *mk_fppa(int id);
+
+  virtual void print_regs(class cl_console_base *con);
+
 };
 
 
@@ -188,6 +190,7 @@ class cl_pdk_cpu: public cl_hw
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 */
+
 
 #endif
 
