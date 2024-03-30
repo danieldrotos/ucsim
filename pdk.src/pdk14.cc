@@ -32,6 +32,8 @@ cl_fppa14::cl_fppa14(int aid, class cl_pdk *the_puc, class cl_sim *asim):
   cl_fppa13(aid, the_puc, asim)
 {
   PCmask= 0x7ff;
+  type= new struct cpu_entry;
+  type->type= CPU_PDK14;
 }
 
 cl_fppa14::cl_fppa14(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):

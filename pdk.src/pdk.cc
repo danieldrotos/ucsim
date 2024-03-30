@@ -517,7 +517,13 @@ cl_pdk::init(void)
   if (type->type == CPU_PDKX)
     {
       fpps[1]= mk_fppa(1);
-      nuof_fppa= 2;
+      fpps[2]= mk_fppa(2);
+      fpps[3]= mk_fppa(3);
+      fpps[4]= mk_fppa(4);
+      fpps[5]= mk_fppa(5);
+      fpps[6]= mk_fppa(6);
+      fpps[7]= mk_fppa(7);
+      nuof_fppa= 8;
     }
   
   act= 0;
@@ -646,6 +652,12 @@ cl_pdk::print_regs(class cl_console_base *con)
       con->dd_printf("SP=%02x     ", fpps[i]->rSP);
     }
   con->dd_printf("\n");
+
+  for (i=0; i<nuof_fppa; i++)
+    {
+      con->dd_printf("FPP%d: ", i);
+      fpps[0]->print_disass(fpps[i]->PC, con);
+    }
 }
 
 
