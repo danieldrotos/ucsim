@@ -103,7 +103,7 @@ void cl_fppa::reset(void) {
   cl_uc::reset();
   sp_most = 0x00;
 
-  PC = 0x0000;
+  PC = id;
   rA = 0;
   for (t_addr i = 0; i < io_size; ++i) {
     store_io(i, 0);
@@ -445,6 +445,19 @@ int cl_fppa::exec_inst(void)
 }
 
 
+void
+cl_fppa::stack_check_overflow(void)
+{
+  if (0)
+    {
+      class cl_stack_op *op;
+      op= new cl_stack_op(stack_push, instPC, rSP-1, rSP);
+      class cl_error_stack_overflow *e=
+	new cl_error_stack_overflow(op);
+      e->init();
+      error(e);
+    }
+}
 
 
 /****************************************************************************/

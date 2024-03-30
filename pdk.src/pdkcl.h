@@ -102,6 +102,7 @@ public:
 
   virtual int execute(unsigned int code) { return resINV; }
   virtual int exec_inst(void);
+  virtual void stack_check_overflow(void);
 
   virtual const char *get_disasm_info(t_addr addr,
                                       int *ret_len,
