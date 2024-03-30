@@ -515,6 +515,12 @@ cl_pdk::init(void)
   nuof_fppa= 1;
   cnuof_fppa= new cl_nuof_cell(this);
   reg_cell_var(cnuof_fppa, &nuof_fppa, "nuof_fpp", "Number of FPPs");
+
+  if (type->type == CPU_PDKX)
+    {
+      fpps[1]= mk_fppa(1);
+      nuof_fppa= 2;
+    }
   
   return 0;
 }
@@ -587,14 +593,15 @@ class cl_fppa *
 cl_pdk::mk_fppa(int id)
 {
   class cl_fppa *fppa;
-  if (type->type == CPU_PDK13)
-    fppa= new cl_fppa13(id, this, sim);
-  if (type->type == CPU_PDK14)
-    fppa= new cl_fppa14(id, this, sim);
-  if (type->type == CPU_PDK15)
-    fppa= new cl_fppa15(id, this, sim);
-  if (type->type == CPU_PDK16)
-    fppa= new cl_fppa16(id, this, sim);
+  switch (type->type)
+    {
+    case CPU_PDK13: fppa= new cl_fppa13(id, this, sim); break;
+    case CPU_PDK14: fppa= new cl_fppa14(id, this, sim); break;
+    case CPU_PDK15: fppa= new cl_fppa15(id, this, sim); break;
+    case CPU_PDK16: fppa= new cl_fppa16(id, this, sim); break;
+    case CPU_PDKX:  fppa= new cl_fppa15(id, this, sim); break;
+    default: fppa= new cl_fppa14(id, this, sim); break;
+    }  
   fppa->init();
   return fppa;
 }

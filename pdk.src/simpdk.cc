@@ -77,6 +77,9 @@ cl_simpdk::mk_controller(void)
     case CPU_PDK16:
       u= new cl_pdk(&cpus_pdk[i], this);
       return u;
+    case CPU_PDKX:
+      u= new cl_pdk(&cpus_pdk[i], this);
+      return u;
     default:
       fprintf(stderr, "Unknown processor type\n");
       return NULL;

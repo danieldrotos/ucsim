@@ -375,7 +375,9 @@ struct cpu_entry cpus_pdk[]=
 
     {"16"      , CPU_PDK16, 0			, "PDK16"		, ""},
     {"PDK16"   , CPU_PDK16, 0			, "PDK16"		, ""},
-    
+
+    {"X"       , CPU_PDKX, 0			, "PDKX"		, ""},
+
     {NULL, CPU_NONE, 0, "", ""}
   };
 
