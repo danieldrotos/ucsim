@@ -677,7 +677,7 @@ cl_pdk::exec_inst(void)
   fpps[act]->pre_inst();
   int ret= fpps[act]->exec_inst();
   fpps[act]->post_inst();
-  tick(fpps[act]->inst_ticks);
+  tick(inst_ticks= fpps[act]->inst_ticks);
   if (rFPPEN != 1)
     {
       do
