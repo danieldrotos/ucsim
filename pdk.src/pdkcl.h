@@ -171,8 +171,8 @@ public:
   class cl_fppa *fpps[8];
   class cl_address_space *ram;
   class cl_address_space *regs8;
-  u8_t rFPPEN, act, nuof_fppa;
-  class cl_memory_cell *cFPPEN, *cact, *cnuof_fppa;
+  u8_t rFPPEN, act, nuof_fpp;
+  class cl_memory_cell *cFPPEN, *cact, *cnuof_fpp;
 public:
   cl_pdk(struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);

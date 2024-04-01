@@ -525,9 +525,9 @@ cl_pdk::init(void)
 
   cact= new cl_act_cell(this);
   reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");
-  nuof_fppa= 1;
-  cnuof_fppa= new cl_nuof_cell(this);
-  reg_cell_var(cnuof_fppa, &nuof_fppa, "nuof_fpp", "Number of FPPs");
+  nuof_fpp= 1;
+  cnuof_fpp= new cl_nuof_cell(this);
+  reg_cell_var(cnuof_fpp, &nuof_fpp, "nuof_fpp", "Number of FPPs");
 
   if (type->type == CPU_PDKX)
     {
@@ -538,7 +538,7 @@ cl_pdk::init(void)
       fpps[5]= mk_fppa(5);
       fpps[6]= mk_fppa(6);
       fpps[7]= mk_fppa(7);
-      nuof_fppa= 8;
+      nuof_fpp= 8;
     }
   
   act= 0;
@@ -646,7 +646,7 @@ cl_pdk::set_fppen(u8_t val)
 u8_t
 cl_pdk::set_act(u8_t val)
 {
-  if (val < nuof_fppa)
+  if (val < nuof_fpp)
     return val;
   return 0;
 }
@@ -689,12 +689,12 @@ int
 cl_pdk::exec_inst(void)
 {
   while (!(rFPPEN & (1<<act)))
-    act= (act+1)%nuof_fppa;  
+    act= (act+1)%nuof_fpp;  
   int ret= fpps[act]->exec_inst();
   if (rFPPEN != 1)
     {
       do
-	act= (act+1)%nuof_fppa;
+	act= (act+1)%nuof_fpp;
       while (!(rFPPEN & (1<<act)));
     }
   return ret;
@@ -706,7 +706,7 @@ cl_pdk::print_regs(class cl_console_base *con)
 {
   int i;
   
-  for (i= 0; i<nuof_fppa; i++)
+  for (i= 0; i<nuof_fpp; i++)
     {
       //con->dd_color((i==act)?"result":"answer");
       if (rFPPEN & (1<<i))
@@ -715,19 +715,19 @@ cl_pdk::print_regs(class cl_console_base *con)
 	con->dd_cprintf("ui_stop", "FPP%d:DIS  ", i);
     }
   con->dd_printf("\n");
-  for (i= 0; i<nuof_fppa; i++)
+  for (i= 0; i<nuof_fpp; i++)
     {
       con->dd_color((i==act)?"result":"answer");
       con->dd_printf("A=%02x %3u  ", fpps[i]->rA, fpps[i]->rA);
     }
   con->dd_printf("\n");
-  for (i= 0; i<nuof_fppa; i++)
+  for (i= 0; i<nuof_fpp; i++)
     {
       con->dd_color((i==act)?"result":"answer");
       con->dd_printf("  OACZ    ");
     }
   con->dd_printf("\n");
-  for (i= 0; i<nuof_fppa; i++)
+  for (i= 0; i<nuof_fpp; i++)
     {
       con->dd_color((i==act)?"result":"answer");
       con->dd_printf("F=", fpps[i]->rF);
@@ -738,14 +738,14 @@ cl_pdk::print_regs(class cl_console_base *con)
 		     ((fpps[i]->rF&BIT_Z )>>BITPOS_Z ));
     }
   con->dd_printf("\n");
-  for (i= 0; i<nuof_fppa; i++)
+  for (i= 0; i<nuof_fpp; i++)
     {
       con->dd_color((i==act)?"result":"answer");
       con->dd_printf("SP=%02x     ", fpps[i]->rSP);
     }
   con->dd_printf("\n");
 
-  for (i=0; i<nuof_fppa; i++)
+  for (i=0; i<nuof_fpp; i++)
     {
       con->dd_color((i==act)?"result":"answer");
       con->dd_printf("FPP%d: ", i);
