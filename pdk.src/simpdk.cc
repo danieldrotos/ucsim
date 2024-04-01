@@ -69,7 +69,8 @@ cl_simpdk::mk_controller(void)
       u= new cl_fppa13(0, NULL, &cpus_pdk[i], this);
       return u;
     case CPU_PDK14:
-      u= new cl_fppa14(0, NULL, &cpus_pdk[i], this);
+      u= //new cl_fppa14(0, NULL, &cpus_pdk[i], this);
+	new cl_pdk(&cpus_pdk[i], this);
       return u;
     case CPU_PDK15:
       u= new cl_fppa15(0, NULL, &cpus_pdk[i], this);

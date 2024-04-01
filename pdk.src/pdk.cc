@@ -56,6 +56,7 @@ cl_fppa::cl_fppa(int aid, class cl_pdk *the_puc, class cl_sim *asim):
 {
   id= aid;
   puc= the_puc;
+  PCmask= 0xfff;
 }
 
 
@@ -133,22 +134,8 @@ void cl_fppa::make_memories(void)
     }
   else
     {
-      switch (type->type) {
-      case CPU_PDK13:
-	rom_storage = 0x400;
-	ram_storage = 0x40;
-	break;
-      case CPU_PDK14:
-	rom_storage = 0x800;
-	ram_storage = 0x80;
-	break;
-      case CPU_PDK15:
-	rom_storage = 0x1000;
-	ram_storage = 0x100;
-	break;
-      default:
-	return;//__builtin_unreachable();
-      }
+      rom_storage = 0x1000;
+      ram_storage = 0x100;
       rom = as = new cl_address_space("rom", 0, rom_storage, 16);
       as->init();
       address_spaces->add(as);
@@ -159,43 +146,40 @@ void cl_fppa::make_memories(void)
       as->init();
       address_spaces->add(as);
       
-      {
-	class cl_address_decoder *ad;
-	class cl_memory_chip *chip;
+      class cl_address_decoder *ad;
+      class cl_memory_chip *chip;
     
-	chip = new cl_chip16("rom_chip", rom_storage, 16);
-	chip->init();
-	memchips->add(chip);
-    
-	ad = new cl_address_decoder(as = rom, chip, 0, rom_storage-1, 0);
-	ad->init();
-	as->decoders->add(ad);
-	ad->activate(0);
-    
-	chip = new cl_chip16("ram_chip", ram_storage, 8);
-	chip->init();
-	memchips->add(chip);
-	
-	ad = new cl_address_decoder(as = ram, chip, 0, ram_storage-1, 0);
-	ad->init();
-	as->decoders->add(ad);
-	ad->activate(0);
-	
-	chip = new cl_chip16("io_chip", io_size, 8);
-	chip->init();
-	memchips->add(chip);
-	
-	ad = new cl_address_decoder(as = sfr, chip, 0, io_size-1, 0);
-	ad->init();
-	as->decoders->add(ad);
-	ad->activate(0);
-      }
-      {
-	// extra byte of the IO memory will point to the A register just for the debugger
-	sfr->get_cell(io_size)->decode(&(rA));
-      }
+      chip = new cl_chip16("rom_chip", rom_storage, 16);
+      chip->init();
+      memchips->add(chip);
+      
+      ad = new cl_address_decoder(as = rom, chip, 0, rom_storage-1, 0);
+      ad->init();
+      as->decoders->add(ad);
+      ad->activate(0);
+      
+      chip = new cl_chip16("ram_chip", ram_storage, 8);
+      chip->init();
+      memchips->add(chip);
+      
+      ad = new cl_address_decoder(as = ram, chip, 0, ram_storage-1, 0);
+      ad->init();
+      as->decoders->add(ad);
+      ad->activate(0);
+      
+      chip = new cl_chip16("io_chip", io_size, 8);
+      chip->init();
+      memchips->add(chip);
+      
+      ad = new cl_address_decoder(as = sfr, chip, 0, io_size-1, 0);
+      ad->init();
+      as->decoders->add(ad);
+      ad->activate(0);
+   
+      // extra byte of the IO memory will point to the A register just for the debugger
+      sfr->get_cell(io_size)->decode(&(rA));
     }
-
+  
   cSP= sfr->get_cell(2);
   cF = sfr->get_cell(0);
   act();
