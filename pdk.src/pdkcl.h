@@ -155,10 +155,20 @@ public:
 };
 
 
+class cl_fppen_op: public cl_memory_operator
+{
+public:
+  class cl_pdk *puc;
+public:
+  cl_fppen_op(class cl_pdk *the_puc, class cl_memory_cell *acell);
+  virtual t_mem write(t_mem val);
+};
+
+
 class cl_pdk: public cl_uc
 {
 public:
-  class cl_fppa *fpps[8], *fpp;
+  class cl_fppa *fpps[8];
   class cl_address_space *ram;
   class cl_address_space *regs8;
   u8_t rFPPEN, act, nuof_fppa;
@@ -170,8 +180,12 @@ public:
   virtual void make_memories(void);
   virtual class cl_fppa *mk_fppa(int id);
 
+  virtual u8_t set_fppen(u8_t val);
+  virtual u8_t set_act(u8_t val);
+  virtual u8_t set_nuof(u8_t val);
+  
+  virtual int exec_inst(void);
   virtual void print_regs(class cl_console_base *con);
-
 };
 
 

@@ -468,7 +468,7 @@ cl_fppa::stack_check_overflow(void)
 t_mem
 cl_act_cell::write(t_mem val)
 {
-  val= 0;
+  val= puc->set_act(val);
   return cl_pdk_cell::write(val);
 }
 
@@ -477,8 +477,21 @@ cl_act_cell::write(t_mem val)
 t_mem
 cl_nuof_cell::write(t_mem val)
 {
-  val= 1;
+  val= puc->set_nuof(val);
   return cl_pdk_cell::write(val);
+}
+
+
+cl_fppen_op::cl_fppen_op(class cl_pdk *the_puc, class cl_memory_cell *acell):
+  cl_memory_operator(acell)
+{
+  puc= the_puc;
+}
+
+t_mem
+cl_fppen_op::write(t_mem val)
+{
+  return puc->set_fppen(val);
 }
 
 
@@ -499,15 +512,17 @@ int
 cl_pdk::init(void)
 {
   cl_uc::init();
-
+  class cl_fppen_op *op;
   fpps[0]= mk_fppa(0);
 
   cFPPEN= sfr->get_cell(1);
+  op= new cl_fppen_op(this, cFPPEN);
+  op->init();
+  cFPPEN->append_operator(op);
   reg_cell_var(cFPPEN, &rFPPEN, "FPPEN", "FPP unit Enable Register");
   mk_cvar(sfr->get_cell(0), "FLAG", "ACC Status Flag Register");
   mk_cvar(sfr->get_cell(2), "SP", "Stack Pointer Register");
 
-  fpp= fpps[0];
   cact= new cl_act_cell(this);
   reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");
   nuof_fppa= 1;
@@ -613,34 +628,110 @@ cl_pdk::mk_fppa(int id)
 }
 
 
+u8_t
+cl_pdk::set_fppen(u8_t val)
+{
+  int i;
+  u8_t m;
+  if (val == 0)
+    val= 1;
+  for (i=0, m=1; i<8; i++, m<<=1)
+    {
+      if (fpps[i] == NULL)
+	val&= ~m;
+    }
+  return val;
+}
+
+u8_t
+cl_pdk::set_act(u8_t val)
+{
+  if (val < nuof_fppa)
+    return val;
+  return 0;
+}
+
+u8_t
+cl_pdk::set_nuof(u8_t val)
+{
+  int i;
+  if (val > 8)
+    val= 8;
+  if (val<1)
+    val= 1;
+  for (i=0; i<8; i++)
+    {
+      if (i<val)
+	{
+	  if (fpps[i] == NULL)
+	    fpps[i]= mk_fppa(i);
+	  else
+	    fpps[i]->reset();
+	}
+      else
+	{
+	  if (fpps[i] != NULL)
+	    {
+	      delete fpps[i];
+	      fpps[i]= NULL;
+	    }
+	}
+    }
+  if (rFPPEN == 0)
+    set_fppen(1);
+  else
+    set_fppen(rFPPEN);
+  return val;
+}
+
+
+int
+cl_pdk::exec_inst(void)
+{
+  while (!(rFPPEN & (1<<act)))
+    act= (act+1)%nuof_fppa;  
+  int ret= fpps[act]->exec_inst();
+  if (rFPPEN != 1)
+    {
+      do
+	act= (act+1)%nuof_fppa;
+      while (!(rFPPEN & (1<<act)));
+    }
+  return ret;
+}
+
+
 void
 cl_pdk::print_regs(class cl_console_base *con)
 {
   int i;
   
-  con->dd_color("answer");
   for (i= 0; i<nuof_fppa; i++)
     {
+      //con->dd_color((i==act)?"result":"answer");
       if (rFPPEN & (1<<i))
-	con->dd_printf("FPP%d:EN   ", i);
+	con->dd_cprintf("ui_run", "FPP%d:EN   ", i);
       else
-	con->dd_printf("FPP%d:DIS  ", i);
+	con->dd_cprintf("ui_stop", "FPP%d:DIS  ", i);
     }
   con->dd_printf("\n");
   for (i= 0; i<nuof_fppa; i++)
     {
+      con->dd_color((i==act)?"result":"answer");
       con->dd_printf("A=%02x %3u  ", fpps[i]->rA, fpps[i]->rA);
     }
   con->dd_printf("\n");
   for (i= 0; i<nuof_fppa; i++)
     {
-      con->dd_printf("    OACZ  ");
+      con->dd_color((i==act)?"result":"answer");
+      con->dd_printf("  OACZ    ");
     }
   con->dd_printf("\n");
   for (i= 0; i<nuof_fppa; i++)
     {
-      con->dd_printf("F=  ", fpps[i]->rF);
-      con->dd_printf("%d%d%d%d  ",
+      con->dd_color((i==act)?"result":"answer");
+      con->dd_printf("F=", fpps[i]->rF);
+      con->dd_printf("%d%d%d%d    ",
 		     ((fpps[i]->rF&BIT_OV)>>BITPOS_OV),
 		     ((fpps[i]->rF&BIT_AC)>>BITPOS_AC),
 		     ((fpps[i]->rF&BIT_C )>>BITPOS_C ),
@@ -649,12 +740,14 @@ cl_pdk::print_regs(class cl_console_base *con)
   con->dd_printf("\n");
   for (i= 0; i<nuof_fppa; i++)
     {
+      con->dd_color((i==act)?"result":"answer");
       con->dd_printf("SP=%02x     ", fpps[i]->rSP);
     }
   con->dd_printf("\n");
 
   for (i=0; i<nuof_fppa; i++)
     {
+      con->dd_color((i==act)?"result":"answer");
       con->dd_printf("FPP%d: ", i);
       fpps[0]->print_disass(fpps[i]->PC, con);
     }
