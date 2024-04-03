@@ -39,7 +39,7 @@ class cl_fppa16: public cl_fppa15
   cl_fppa16(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
-  virtual void reset(void);
+  //virtual void reset(void);
   virtual int execute(unsigned int code);
 };
 
