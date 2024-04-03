@@ -688,6 +688,13 @@ cl_pdk::exec_inst(void)
 }
 
 
+char *
+cl_pdk::disass(t_addr addr)
+{
+  return fpps[0]->disass(addr);
+}
+
+
 void
 cl_pdk::print_regs(class cl_console_base *con)
 {

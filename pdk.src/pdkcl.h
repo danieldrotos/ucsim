@@ -185,6 +185,8 @@ public:
   virtual u8_t set_nuof(u8_t val);
   
   virtual int exec_inst(void);
+
+  virtual char *disass(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
 };
 
