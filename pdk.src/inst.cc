@@ -56,9 +56,9 @@ unsigned char cl_fppa::sub_to(unsigned char initial, int value, bool carry) {
   return ram->read((t_addr)(addr));
   }*/
 
-unsigned char cl_fppa::get_io(t_addr addr) {
+/*unsigned char cl_fppa::get_io(t_addr addr) {
   return sfr->read(addr);
-}
+  }*/
 
 int cl_fppa::store_io(t_addr addr, int value) {
   
