@@ -554,15 +554,15 @@ cl_pdk::make_memories(void)
   class cl_address_space *as;
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
-  int rom_size= 0x2000, ram_size=0x200;
+  int rom_size= 0x2000, ram_size=0x100;
 
   rom = as = new cl_address_space("rom", 0, rom_size, 16);
   as->init();
   address_spaces->add(as);
-  ram = as = new cl_address_space("ram", 0, ram_size, 9);
+  ram = as = new cl_address_space("ram", 0, ram_size, 8);
   as->init();
   address_spaces->add(as);
-  sfr = as = new cl_address_space("regs8", 0, io_size, 6);
+  sfr = as = new cl_address_space("regs8", 0, io_size, 8);
   as->init();
   address_spaces->add(as);
 
