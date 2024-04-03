@@ -51,10 +51,10 @@ unsigned char cl_fppa::sub_to(unsigned char initial, int value, bool carry) {
   return initial - value - carry;
 }
 
-int cl_fppa::get_mem(unsigned int addr) {
+/*int cl_fppa::get_mem(unsigned int addr) {
   vc.rd++;
   return ram->read((t_addr)(addr));
-}
+  }*/
 
 unsigned char cl_fppa::get_io(t_addr addr) {
   return sfr->read(addr);

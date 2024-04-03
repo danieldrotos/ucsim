@@ -114,12 +114,12 @@ public:
   virtual void reset(void);
 
   // originaly in instcl.h
-int get_mem(unsigned int addr);
-unsigned char add_to(unsigned char initial, int value, bool carry = false);
-unsigned char sub_to(unsigned char initial, int value, bool carry = false);
-unsigned char get_io(t_addr addr);
-int store_io(t_addr addr, int value);
-void store_flag(flag n, int value);
+  int get_mem(unsigned int addr) { vc.rd++; return ram->read(addr); }
+  unsigned char add_to(unsigned char initial, int value, bool carry = false);
+  unsigned char sub_to(unsigned char initial, int value, bool carry = false);
+  unsigned char get_io(t_addr addr);
+  int store_io(t_addr addr, int value);
+  void store_flag(flag n, int value);
 
 int execute_pdk13(unsigned int code);
 int execute_pdk14(unsigned int code);

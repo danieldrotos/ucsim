@@ -50,9 +50,10 @@ cl_fppa13::execute(unsigned int code)
   } else if (CODE_MASK(0x0100, 0xFF)) {
     // ret k
     rA = code & 0xFF;
-    write_result = store_io(0x2, rSP - 2);
-    if (write_result == resGO)
-      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
+    rSP-= 2;//write_result = store_io(0x2, rSP - 2);
+    //if (write_result == resGO)
+    PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
+    cSP->W(rSP);
   } else if (code == 0x003A) {
     // ret
     write_result = store_io(0x2, rSP - 2);
