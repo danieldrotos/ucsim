@@ -65,7 +65,7 @@ cl_fppa16::execute(unsigned int code)
 {
   switch (code & 0xffff)
     {
-    case 0x0032: //push af
+    case 0x0032: // push af
       return resGO;
     case 0x0033: // pop af
       return resGO;
@@ -169,113 +169,153 @@ cl_fppa16::execute(unsigned int code)
 
   switch (code & 0xfe00)
     {
-    case 0x5c00: //
+    case 0x5c00: // mov M,a
       return resGO;
-    case 0x5e00: //
+    case 0x5e00: // mov a,M
       return resGO;
-    case 0x3200: //
+    case 0x3200: // nmov M,a
       return resGO;
-    case 0x3000: //
+    case 0x3000: // nmov a,M
       return resGO;
-    case 0x0400: //
+    case 0x0400:
+      if (code & 1)
+	{
+	  // pushw word
+	}
+      else
+	{
+	  // popw word
+	}
       return resGO;
-    case 0x0a00: //
+    case 0x0a00:
+      if (code & 1)
+	{
+	  // ldtabh index
+	}
+      else
+	{
+	  // ldtabl index
+	}
       return resGO;
-    case 0x0200: //
+    case 0x0200:
+      if (code & 1)
+	{
+	  // ldt16 word
+	}
+      else
+	{
+	  // stt16 word
+	}
       return resGO;
-    case 0x6e00: //
+    case 0x6e00: // xch M
       return resGO;
-    case 0x6c00: //
+    case 0x6c00: // clear M
       return resGO;
-    case 0x0800: //
+    case 0x0800:
+      if (code & 1)
+	{
+	  // idxm a,M
+	}
+      else
+	{
+	  // idxm M,a
+	}
       return resGO;
-    case 0x4200: //
+    case 0x4200: // add a,M
       return resGO;
-    case 0x4000: //
+    case 0x4000: // add M,a
       return resGO;
-    case 0x4500: //
+    case 0x4a00: //  addc a,M
       return resGO;
-    case 0x4800: //
+    case 0x4800: // addc M,a
       return resGO;
-    case 0x6000: //
+    case 0x6000: // addc M
       return resGO;
-    case 0x3400: //
+    case 0x3400: // nadd a,M
       return resGO;
-    case 0x3600: //
+    case 0x3600: // nadd M,a
       return resGO;
-    case 0x4600: //
+    case 0x4600: // sub a,M
       return resGO;
-    case 0x4400: //
+    case 0x4400: // sub M,a
       return resGO;
-    case 0x4e00: //
+    case 0x4e00: // subc a,M
       return resGO;
-    case 0x4c00: //
+    case 0x4c00: // subc M,a
       return resGO;
-    case 0x6200: //
+    case 0x6200: // subc M
       return resGO;
-    case 0x6800: //
+    case 0x6800: // inc M
       return resGO;
-    case 0x6a00: //
+    case 0x6a00: // dec M
       return resGO;
-    case 0x7400: //
+    case 0x7400: // sr M
       return resGO;
-    case 0x7800: //
+    case 0x7800: // src M
       return resGO;
-    case 0x7600: //
+    case 0x7600: // sl M
       return resGO;
-    case 0x7a00: //
+    case 0x7a00: // slc M
       return resGO;
-    case 0x7c00: //
+    case 0x7c00: // swap M
       return resGO;
-    case 0x5200: //
+    case 0x5200: // and a,M
       return resGO;
-    case 0x5000: //
+    case 0x5000: // and M,a
       return resGO;
-    case 0x5600: //
+    case 0x5600: // or a,M
       return resGO;
-    case 0x5400: //
+    case 0x5400: // or M,a
       return resGO;
-    case 0x5a00: //
+    case 0x5a00: // xor a,M
       return resGO;
-    case 0x5800: //
+    case 0x5800: // xor M,a
       return resGO;
-    case 0x7000: //
+    case 0x7000: // not M
       return resGO;
-    case 0x7200: //
+    case 0x7200: // neg M
       return resGO;
-    case 0x3c00: //
+    case 0x3c00: // comp a,M
       return resGO;
-    case 0x3e00: //
+    case 0x3e00: // comp M,a
       return resGO;
-    case 0x2400: //
+    case 0x2400: // set0 IO.n
       return resGO;
-    case 0x2600: //
+    case 0x2600: // set1 IO.n
       return resGO;
-    case 0x2e00: //
+    case 0x2e00: // swapc IO.n
       return resGO;
-    case 0x3800: //
+    case 0x3800: // ceqsn a,M
       return resGO;
-    case 0x3a00: //
+    case 0x3a00: // ceqsn A,m
       return resGO;
-    case 0x1600: //
+    case 0x1600: // cneqsn a,M
       return resGO;
-    case 0x1400: //
+    case 0x1400: // cneqsn M,a
       return resGO;
-    case 0x2000: //
+    case 0x2000: // t0sn IO.n
       return resGO;
-    case 0x2200: //
+    case 0x2200: // t1sn IO.n
       return resGO;
-    case 0x6400: //
+    case 0x6400: // izsn M
       return resGO;
-    case 0x6600: //
+    case 0x6600: // dzsn M
       return resGO;
-    case 0x2a00: //
+    case 0x2a00: // wait0 IO.n
       return resGO;
-    case 0x2c00: //
+    case 0x2c00: // wait1 IO.n
       return resGO;
-    case 0x0600: //
+    case 0x0600:
+      if (code & 1)
+	{
+	  // icall M
+	}
+      else
+	{
+	  // igoto M
+	}
       return resGO;
-    case 0x7e00: //
+    case 0x7e00: // delay M
       return resGO;
     }
 
