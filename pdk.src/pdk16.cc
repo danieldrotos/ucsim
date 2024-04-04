@@ -131,6 +131,11 @@ cl_fppa16::execute(unsigned int code)
 	PC++;
       return resGO;
     case 0x001f: // delay a
+      if (puc && (puc->single))
+	return resINV;
+      cA.W(rA-1);
+      if (rA)
+	PC--;
       return resGO;
     case 0x003a: // ret
       return resGO;

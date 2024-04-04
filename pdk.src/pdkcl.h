@@ -176,6 +176,7 @@ public:
   class cl_address_space *ram;
   class cl_address_space *regs8;
   u8_t rFPPEN, act, nuof_fpp;
+  bool single;
   class cl_memory_cell *cFPPEN, *cact, *cnuof_fpp;
 public:
   cl_pdk(struct cpu_entry *IType, class cl_sim *asim);

@@ -540,6 +540,7 @@ cl_pdk::init(void)
   
   act= 0;
   rFPPEN= 1;
+  single= true;
   cPC.decode(&(fpps[0]->PC));
   return 0;
 }
@@ -629,15 +630,18 @@ cl_pdk::mk_fppa(int id)
 u8_t
 cl_pdk::set_fppen(u8_t val)
 {
-  int i;
+  int i, n;
   u8_t m;
   if (val == 0)
     val= 1;
-  for (i=0, m=1; i<8; i++, m<<=1)
+  for (i=0, m=1, n=0; i<8; i++, m<<=1)
     {
       if (fpps[i] == NULL)
 	val&= ~m;
+      else
+	n++;
     }
+  single= n==1;
   return val;
 }
 
