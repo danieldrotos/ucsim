@@ -55,42 +55,14 @@ u8_t cl_fppa::add_to(u8_t initial, int value, bool carry) {
 }
 
 u8_t cl_fppa::sub_to(u8_t initial, int value, bool carry) {
-  u8_t f= 0, res;
-  int c= carry?(fC):1;
-  int r, r2, r3;
-
-  value= ~value;
-  r= (int)initial + (int)value + c;
-  r2= (initial & 0x7f) + (value & 0x7f) + c;
-  r3= (initial &  0xf) + (value &  0xf) + c;
-  if ((r & 0xff) == 0) f|= BIT_Z;
-  if (r > 0xff) f|= BIT_C;
-  if (r3 > 0xf) f|= BIT_AC;
-  if ( (r2 & 0x80) && !(f & BIT_C)) f|= BIT_OV;
-  if (!(r2 & 0x80) &&  (f & BIT_C)) f|= BIT_OV;
-  cF->W(f);
-  return r;
-  /*
-  u8_t f= 0;
-  int c= carry?fC:0;
-  int r;
-
-  r= initial - value - carry;
-  if ((r & 0xff) == 0) f|= BIT_Z;
-  if (initial < value + c) f|= BIT_C;
-  if ((value & 0xF) > (initial & 0xF) - c) f|= BIT_AC;
-  if (((f&BIT_C)>>BITPOS_C) ^ ((initial & 0x7F) - (value & 0x7F) - c < 0))
-    f|= BIT_OV;
-  return r;
-
-  store_flag(flag_z, initial - value - c == 0);
-  store_flag(flag_c, initial < value + c);
-  store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - c);
+  store_flag(flag_z, initial - value - carry == 0);
+  store_flag(flag_c, initial < value + carry);
+  store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);
   store_flag(
       flag_ov,
-      fC ^ ((initial & 0x7F) - (value & 0x7F) - c < 0));
+      fC ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0));
+
   return initial - value - carry;
-  */
 }
 
 /*int cl_fppa::get_mem(unsigned int addr) {
