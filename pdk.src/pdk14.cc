@@ -55,9 +55,11 @@ cl_fppa14::execute(unsigned int code)
       PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (code == 0x007A) {
     // ret
-    write_result = store_io(0x2, rSP - 2);
+    /*write_result = store_io(0x2, rSP - 2);
     if (write_result == resGO)
-      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
+    PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);*/
+    cSP->W(rSP-2);
+    PC= rd16(rSP);
   } else if (CODE_MASK(0x2F00, 0xFF)) {
     // mov a, k
     rA = code & 0xFF;

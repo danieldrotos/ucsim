@@ -138,6 +138,8 @@ cl_fppa16::execute(unsigned int code)
 	PC--;
       return resGO;
     case 0x003a: // ret
+      cSP->W(rSP-2);
+      PC= rd16(rSP);
       return resGO;
     case 0x003b: // reti
       return resGO;
