@@ -215,6 +215,7 @@ cl_fppa16::execute(unsigned int code)
       cA.W(code);
       return resGO;
     case 0x1800: // add a,k
+      cA.W(add_to(rA, code&0xff, false));
       return resGO;
     case 0x1900: // sub a,k
       return resGO;

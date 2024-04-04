@@ -108,7 +108,7 @@ cl_fppa15::execute(unsigned int code)
     cA.W(pop());
   } else if (CODE_MASK(0x5000, 0xFF)) {
     // add a, k
-    rA = add_to(rA, code & 0xFF);
+    cA.W(add_to(rA, code & 0xFF));
   } else if (CODE_MASK(0x1800, 0xFF)) {
     // add a, m
     rA = add_to(rA, get_mem(code & 0xFF));
