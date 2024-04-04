@@ -44,7 +44,7 @@ cl_fppa16::cl_fppa16(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, cl
 int
 cl_fppa16::init(void)
 {
-  cl_fppa::init();
+  cl_fppa15::init();
   return 0;
 }
 
@@ -107,6 +107,8 @@ cl_fppa16::execute(unsigned int code)
       cA->W((rA>>4)|(rA<<4));
       return resGO;
     case 0x0018: // not a
+      cA->W(~rA);
+      SETZ(!rA);
       return resGO;
     case 0x0019: // neg a
       return resGO;

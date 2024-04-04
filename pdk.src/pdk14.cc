@@ -246,7 +246,7 @@ cl_fppa14::execute(unsigned int code)
   } else if (code == 0x0068) {
     // not a
     rA = ~rA;
-    store_flag(flag_z, !rA);
+    /*store_flag(flag_z, */SETZ(!rA);
   } else if (CODE_MASK(0x1400, 0x7F)) {
     // not m
     int store = (~get_mem(code & 0x7F) & 0xff);

@@ -89,6 +89,16 @@ int cl_fppa::init(void) {
   cA->init();
   cA->decode(&rA);
 
+  if (puc)
+    {
+      chars n, d;
+      n.format("A%d", id);
+      d.format("Accumulator of FPP%d", id);
+      puc->mk_cvar(cA, n, d);
+      if (id == 0)
+	puc->mk_cvar(cA, "A", "Accumulator");
+    }
+  
   return (0);
 }
 
