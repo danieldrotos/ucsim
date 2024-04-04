@@ -63,10 +63,10 @@ cl_fppa13::execute(unsigned int code)
     // mov a, k
     cA.W(code);//rA = code & 0xFF;
   } else if (CODE_MASK(0x0080, 0x1F)) {
-    // mov i, a
+    // mov io, a
     sfr->write(code&0x1f, rA);//write_result = store_io(code & 0x1F, rA);
   } else if (CODE_MASK(0x00A0, 0x1F)) {
-    // mov a, i
+    // mov a, io
     rA = get_io(code & 0x1F);
   } else if (CODE_MASK(0x05C0, 0x3F)) {
     // mov m, a
@@ -373,11 +373,11 @@ cl_fppa13::execute(unsigned int code)
     unsigned result = rA * get_io(0x08);
     rA = result & 0xFF;
     write_result = store_io(0x08, (result & 0xFF00) >> 8);
-  } else if (code == 0xFF00) {
+  } /*else if (code == 0xFF00) {
     // putchar - usim specific instruction
     putchar(rA);
     fflush(stdout);
-  } else {
+    } */else {
     return (resINV_INST);
   }
   return (write_result);
