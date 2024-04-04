@@ -211,25 +211,26 @@ cl_fppa16::execute(unsigned int code)
 
   switch (code & 0xff00)
     {
-    case 0x1f00: // mov a,i
+    case 0x1f00: // mov a,k
+      cA.W(code);
       return resGO;
-    case 0x1800: // add a,i
+    case 0x1800: // add a,k
       return resGO;
-    case 0x1900: // sub a,i
+    case 0x1900: // sub a,k
       return resGO;
-    case 0x1c00: // and a,i
+    case 0x1c00: // and a,k
       return resGO;
-    case 0x1d00: // or a,i
+    case 0x1d00: // or a,k
       return resGO;
-    case 0x1e00: // xor a,i
+    case 0x1e00: // xor a,k
       return resGO;
-    case 0x1a00: // ceqsn a,i
+    case 0x1a00: // ceqsn a,k
       return resGO;
-    case 0x1b00: // cneqsn a,i
+    case 0x1b00: // cneqsn a,k
       return resGO;
-    case 0x0e00: // delay i
+    case 0x0e00: // delay k
       return resGO;
-    case 0x0f00: // ret i
+    case 0x0f00: // ret k
       return resGO;
     }
 

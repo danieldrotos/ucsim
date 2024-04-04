@@ -63,12 +63,12 @@ cl_fppa14::execute(unsigned int code)
     vc.rd+= 2;
   } else if (CODE_MASK(0x2F00, 0xFF)) {
     // mov a, k
-    rA = code & 0xFF;
+    cA.W(code/* & 0xFF*/);
   } else if (CODE_MASK(0x0180, 0x3F)) {
     // mov i, a
     write_result = store_io(code & 0x3F, rA);
   } else if (CODE_MASK(0x01C0, 0x3F)) {
-    // mov a, i
+    // mov a, io
     cA.W(get_io(code & 0x3F));
   } else if (CODE_MASK(0x0B80, 0x7F)) {
     // mov m, a
