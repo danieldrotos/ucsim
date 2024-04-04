@@ -80,15 +80,17 @@ cl_fppa15::execute(unsigned int code)
     // TODO: stt16
   } else if ((CODE_MASK(0x701, 0xFE))) {
     // idxm a, m
-    rA = get_mem(get_mem(code & 0xFE));
+    cA.W(rd8(rd8(code & 0xFE)));
+    tick(1);
   } else if ((CODE_MASK(0x700, 0xFE))) {
     // idxm m, a
-    ram->write(get_mem(code & 0xFE), rA);
+    wr8(rd8(code & 0xFE), rA);
+    tick(1);
   } else if (CODE_MASK(0x2700, 0xFF)) {
     // xch m
-    int mem = get_mem(code & 0xFF);
-    ram->write(code & 0xFF, rA);
-    rA = mem;
+    int mem = rd8(code & 0xFF);
+    wr8(code & 0xFF, rA);
+    cA.W(mem);
   } else if (code == 0x0072) {
     // pushaf
     /*ram->write(rSP, rA);
@@ -162,7 +164,7 @@ cl_fppa15::execute(unsigned int code)
     ram->write(addr, sub_to(get_mem(addr), 1));
   } else if (CODE_MASK(0x2600, 0xFF)) {
     // clear m
-    ram->write(code & 0xFF, 0);
+    wr8(code & 0xFF, 0);
   } else if (code == 0x006A) {
     // sr a
     store_flag(flag_c, rA & 1);

@@ -63,8 +63,9 @@ cl_fppa16::reset(void)
 int
 cl_fppa16::execute(unsigned int code)
 {
-  int c;
+  int c, i;
   unsigned int u;
+  u8_t u8;
   
   switch (code & 0xffff)
     {
@@ -317,20 +318,31 @@ cl_fppa16::execute(unsigned int code)
 	{
 	  // stt16 word
 	}
+      return resNOT_DONE;
       return resGO;
     case 0x6e00: // xch M
+      u= code & 0x1ff;
+      u8= rd8(u);
+      wr8(u, rA);
+      cA.W(u8);
       return resGO;
     case 0x6c00: // clear M
+      wr8(code & 0x1ff, 0);
       return resGO;
     case 0x0800:
       if (code & 1)
 	{
 	  // idxm a,M
+	  u= rd16(code & 0x1ff);
+	  cA.W(rd8(u));
 	}
       else
 	{
 	  // idxm M,a
+	  u= rd16(code & 0x1ff);
+	  wr8(rd8(u), rA);
 	}
+      tick(1);
       return resGO;
     case 0x4200: // add a,M
       return resGO;

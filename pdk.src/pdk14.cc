@@ -80,15 +80,17 @@ cl_fppa14::execute(unsigned int code)
     // TODO: stt16
   } else if ((CODE_MASK(0x381, 0x7E))) {
     // idxm a, m
-    rA = get_mem(get_mem(code & 0x7E));
+    cA.W(rd8(rd8(code & 0x7E)));
+    tick(1);
   } else if ((CODE_MASK(0x380, 0x7E))) {
     // idxm m, a
-    ram->write(get_mem(code & 0x7E), rA);
+    wr8(rd8(code & 0x7E), rA);
+    tick(1);
   } else if (CODE_MASK(0x1380, 0x7F)) {
     // xch m
-    int mem = get_mem(code & 0x7F);
-    ram->write(code & 0x7F, rA);
-    rA = mem;
+    int mem = rd8(code & 0x7F);
+    wr8(code & 0x7F, rA);
+    cA.W(mem);
   } else if (code == 0x0072) {
     // pushaf
     /*ram->write(rSP, rA);
@@ -162,7 +164,7 @@ cl_fppa14::execute(unsigned int code)
     ram->write(addr, sub_to(get_mem(addr), 1));
   } else if (CODE_MASK(0x1300, 0x7F)) {
     // clear m
-    ram->write(code & 0x7F, 0);
+    wr8(code & 0x7F, 0);
   } else if (code == 0x006A) {
     // sr a
     store_flag(flag_c, rA & 1);
@@ -392,7 +394,7 @@ cl_fppa14::execute(unsigned int code)
   // TODO: wdreset
   // TODO: swapc IO, k
   else if (code == 0x0006) {
-    // ldsptl
+    // ldspl
     rA = rom->get(rSP) & 0xFF;
   } else if (code == 0x0007) {
     // ldspth
