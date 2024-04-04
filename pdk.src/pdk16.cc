@@ -64,6 +64,7 @@ int
 cl_fppa16::execute(unsigned int code)
 {
   int c;
+  unsigned int u;
   
   switch (code & 0xffff)
     {
@@ -115,6 +116,9 @@ cl_fppa16::execute(unsigned int code)
       SETZ(!rA);
       return resGO;
     case 0x003c: // mul
+      u= rA * sfr->read(8);
+      cA.W(u);
+      sfr->write(8, u>>8);
       return resGO;
     case 0x0012: // izsn a
       return resGO;

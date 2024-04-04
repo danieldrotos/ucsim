@@ -396,8 +396,8 @@ cl_fppa14::execute(unsigned int code)
   } else if (code == 0x007C) {
     // mul
     unsigned result = rA * get_io(0x08);
-    rA = result & 0xFF;
-    write_result = store_io(0x08, (result & 0xFF00) >> 8);
+    cA.W(result);//rA = result & 0xFF;
+    /*write_result = store_io*/sfr->write(0x08, (result & 0xFF00) >> 8);
   } else if (code == 0xFF00) {
     // putchar - usim specific instruction
     putchar(rA);
