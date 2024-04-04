@@ -266,12 +266,17 @@ cl_fppa16::execute(unsigned int code)
   switch (code & 0xfe00)
     {
     case 0x5c00: // mov M,a
+      wr8(code & 0x1ff, rA);
       return resGO;
     case 0x5e00: // mov a,M
+      cA.W(ram->read(code & 0x1ff));
       return resGO;
     case 0x3200: // nmov M,a
+      wr8(code & 0x1ff, -rA);
       return resGO;
     case 0x3000: // nmov a,M
+      cA.W(-get_mem(code & 0x1ff));
+      SETZ(!rA);
       return resGO;
     case 0x0400:
       if (code & 1)

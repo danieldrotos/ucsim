@@ -123,7 +123,11 @@ public:
 
   // originaly in instcl.h
   int get_mem(unsigned int addr) { vc.rd++; return ram->read(addr); }
+  u8_t rd8(unsigned int addr) { vc.rd++; return ram->read(addr); }
   u16_t rd16(u16_t addr) { vc.rd+= 2; return ram->read(addr+1)*256+ram->read(addr); }
+  void wr8(u16_t addr, u8_t val) { vc.wr++; ram->write(addr, val); }
+  void wr16(u16_t addr, u16_t val)
+  { vc.wr+=2; ram->write(addr, val); ram->write(addr+1, val>>8); }
   u8_t add_to(u8_t initial, int value, bool carry = false);
   u8_t sub_to(u8_t initial, int value, bool carry = false);
   u8_t get_io(t_addr addr) { return sfr->read(addr); }

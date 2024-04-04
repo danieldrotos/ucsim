@@ -59,22 +59,21 @@ cl_fppa14::execute(unsigned int code)
     PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);*/
     cSP->W(rSP-2);
     PC= rd16(rSP);
-    vc.rd+= 2;
   } else if (CODE_MASK(0x2F00, 0xFF)) {
     // mov a, k
     cA.W(code/* & 0xFF*/);
   } else if (CODE_MASK(0x0180, 0x3F)) {
-    // mov i, a
+    // mov io, a
     write_result = store_io(code & 0x3F, rA);
   } else if (CODE_MASK(0x01C0, 0x3F)) {
     // mov a, io
     cA.W(get_io(code & 0x3F));
   } else if (CODE_MASK(0x0B80, 0x7F)) {
     // mov m, a
-    ram->write(code & 0x7F, rA);
+    wr8(code & 0x7F, rA);
   } else if (CODE_MASK(0x0F80, 0x7F)) {
     // mov a, m
-    rA = get_mem(code & 0x7F);
+    cA.W(get_mem(code & 0x7F));
   } else if (CODE_MASK(0x0301, 0x7E)) {
     // TODO: ldt16
   } else if (CODE_MASK(0x0300, 0x7E)) {
