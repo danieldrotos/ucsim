@@ -49,10 +49,9 @@ cl_fppa15::execute(unsigned int code)
     // nop
   } else if (CODE_MASK(0x0200, 0xFF)) {
     // ret k
-    rA = code & 0xFF;
-    write_result = store_io(0x2, rSP - 2);
-    if (write_result == resGO)
-      PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
+    cA.W(code);
+    cSP->W(rSP - 2);
+    PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (code == 0x007A) {
     // ret
     /*write_result = store_io(0x2, rSP - 2);
@@ -222,8 +221,8 @@ cl_fppa15::execute(unsigned int code)
     ram->write(code & 0xFF, store);
   } else if (CODE_MASK(0x5500, 0xFF)) {
     // or a, k
-    rA |= code & 0xFF;
-    store_flag(flag_z, !rA);
+    cA.W(rA | (code & 0xFF));
+    SETZ(!rA);
   } else if (CODE_MASK(0x1D00, 0xFF)) {
     // or a, m
     rA |= get_mem(code & 0xFF);
@@ -235,8 +234,8 @@ cl_fppa15::execute(unsigned int code)
     ram->write(code & 0xFF, store);
   } else if (CODE_MASK(0x5600, 0xFF)) {
     // xor a, k
-    rA ^= code & 0xFF;
-    store_flag(flag_z, !rA);
+    cA.W(rA ^ (code & 0xFF));
+    SETZ(!rA);
   } else if (CODE_MASK(0x1E00, 0xFF)) {
     // xor a, m
     rA ^= get_mem(code & 0xFF);

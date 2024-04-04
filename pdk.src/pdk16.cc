@@ -225,8 +225,12 @@ cl_fppa16::execute(unsigned int code)
       SETZ(!rA);
       return resGO;
     case 0x1d00: // or a,k
+      cA.W(rA | (code & 0xff));
+      SETZ(!rA);
       return resGO;
     case 0x1e00: // xor a,k
+      cA.W(rA ^ (code & 0xff));
+      SETZ(!rA);
       return resGO;
     case 0x1a00: // ceqsn a,k
       return resGO;
@@ -235,6 +239,8 @@ cl_fppa16::execute(unsigned int code)
     case 0x0e00: // delay k
       return resGO;
     case 0x0f00: // ret k
+      cA.W(code);
+      PC= pop()*256 + pop();
       return resGO;
     }
 
