@@ -282,21 +282,31 @@ cl_fppa16::execute(unsigned int code)
       if (code & 1)
 	{
 	  // pushw word
+	  u= rd16(code&0x1ff);
+	  push(u);
 	}
       else
 	{
 	  // popw word
+	  u= pop()*256+pop();
+	  wr16(code&0x1ff, u);
 	}
+      tick(1);
       return resGO;
     case 0x0a00:
       if (code & 1)
 	{
 	  // ldtabh index
+	  u= rd16(code & 0x1ff & 0xfffe);
+	  cA.W(rom->read(u+1));
 	}
       else
 	{
 	  // ldtabl index
+	  u= rd16(code & 0x1ff & 0xfffe);
+	  cA.W(rom->read(u));
 	}
+      tick(1);
       return resGO;
     case 0x0200:
       if (code & 1)
