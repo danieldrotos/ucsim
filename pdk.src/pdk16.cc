@@ -91,17 +91,17 @@ cl_fppa16::execute(unsigned int code)
       c= rA & 1;
       rA>>= 1;
       cA->W(rA | (fC << 7));
-      store_flag(flag_c, c);
+      SETC(c);
     return resGO;
     case 0x001b: // sl a
-      store_flag(flag_c, rA & 0x80);
+      SETC(rA & 0x80);
       cA->W(rA << 1);
       return resGO;
     case 0x001d: // slc a
       c = rA & 0x80;
       rA <<= 1;
       cA->W(rA | fC);
-      store_flag(flag_c, c);
+      SETC(c);
       return resGO;
     case 0x001e: // swap a
       cA->W((rA>>4)|(rA<<4));
