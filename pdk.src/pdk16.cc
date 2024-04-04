@@ -63,6 +63,8 @@ cl_fppa16::reset(void)
 int
 cl_fppa16::execute(unsigned int code)
 {
+  int c;
+  
   switch (code & 0xffff)
     {
     case 0x0032: // push af
@@ -86,8 +88,14 @@ cl_fppa16::execute(unsigned int code)
       cA->W(rA >>= 1);
       return resGO;
     case 0x001c: // src a
-      return resGO;
+      c= rA & 1;
+      rA>>= 1;
+      cA->W(rA | (fC << 7));
+      store_flag(flag_c, c);
+    return resGO;
     case 0x001b: // sl a
+      store_flag(flag_c, rA & 0x80);
+      cA->W(rA << 1);
       return resGO;
     case 0x001d: // slc a
       return resGO;

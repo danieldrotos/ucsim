@@ -170,8 +170,8 @@ cl_fppa14::execute(unsigned int code)
     ram->write(code & 0x7F, value >> 1);
   } else if (code == 0x006B) {
     // sl a
-    store_flag(flag_c, (rA & 0x80) >> 7);
-    rA <<= 1;
+    store_flag(flag_c, (rA & 0x80) /*>> 7*/);
+    cA->W(rA << 1);
   } else if (CODE_MASK(0x1580, 0x7F)) {
     // sl m
     int value = get_mem(code & 0x7F);
@@ -181,7 +181,7 @@ cl_fppa14::execute(unsigned int code)
     // src a
     int c = rA & 1;
     rA >>= 1;
-    rA |= fC << 7;
+    cA->W(rA |= fC << 7);
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x1600, 0x7F)) {
     // src m
