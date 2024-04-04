@@ -127,7 +127,7 @@ public:
   u8_t add_to(u8_t initial, int value, bool carry = false);
   u8_t sub_to(u8_t initial, int value, bool carry = false);
   u8_t get_io(t_addr addr) { return sfr->read(addr); }
-  int store_io(t_addr addr, int value);
+  int store_io(t_addr addr, int value) { sfr->write(addr, value); return resGO; }
   void store_flag(flag n, int value);
   /*
   int execute_pdk13(unsigned int code);

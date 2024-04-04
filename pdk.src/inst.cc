@@ -58,34 +58,16 @@ u8_t cl_fppa::sub_to(u8_t initial, int value, bool carry) {
   u8_t f= 0;
   int r= initial - value - carry;
   
-  //store_flag(flag_z, r == 0);
   if ((r&0xff) == 0) f|= BIT_Z;
-  
-  //store_flag(flag_c, initial < value + carry);
   if (initial < value + carry) f|= BIT_C;
-  
-  //store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);
   if ((value & 0xF) > (initial & 0xF) - carry) f|= BIT_AC;
-  
-  /*store_flag(
-      flag_ov,
-      ((f&BIT_C)>>BITPOS_C) ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0));*/
   if (((f&BIT_C)>>BITPOS_C) ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0))
     f|= BIT_OV;
 
   cF->W(f);
   return r;
 }
-
-/*int cl_fppa::get_mem(unsigned int addr) {
-  vc.rd++;
-  return ram->read((t_addr)(addr));
-  }*/
-
-/*unsigned char cl_fppa::get_io(t_addr addr) {
-  return sfr->read(addr);
-  }*/
-
+/*
 int cl_fppa::store_io(t_addr addr, int value) {
   
   sfr->write(addr, value & 0xFF);
@@ -98,7 +80,7 @@ int cl_fppa::store_io(t_addr addr, int value) {
     }
   return resGO;
 }
-
+*/
 void cl_fppa::store_flag(flag n, int value) {
   value= value?1:0;
   switch (n) {

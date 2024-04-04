@@ -121,12 +121,12 @@ cl_fppa16::execute(unsigned int code)
       sfr->write(8, u>>8);
       return resGO;
     case 0x0012: // izsn a
-      cA.W(add_to(rA,1,false));
+      cA.W(add_to(rA, 1));
       if (!rA)
 	PC++;
       return resGO;
     case 0x0013: // dzsn a
-      cA.W(sub_to(rA, 1, false));
+      cA.W(sub_to(rA, 1));
       if (!rA)
 	PC++;
       return resGO;
@@ -215,11 +215,14 @@ cl_fppa16::execute(unsigned int code)
       cA.W(code);
       return resGO;
     case 0x1800: // add a,k
-      cA.W(add_to(rA, code&0xff, false));
+      cA.W(add_to(rA, code&0xff));
       return resGO;
     case 0x1900: // sub a,k
+      cA.W(sub_to(rA, code&0xff));
       return resGO;
     case 0x1c00: // and a,k
+      cA.W(rA & code & 0xff);
+      SETZ(!rA);
       return resGO;
     case 0x1d00: // or a,k
       return resGO;

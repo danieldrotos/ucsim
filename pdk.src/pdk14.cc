@@ -118,7 +118,7 @@ cl_fppa14::execute(unsigned int code)
     ram->write(addr, add_to(rA, get_mem(addr)));
   } else if (CODE_MASK(0x2900, 0xFF)) {
     // sub a, k
-    rA = sub_to(rA, code & 0xFF);
+    cA.W(sub_to(rA, code & 0xFF));
   } else if (CODE_MASK(0x0C80, 0x7F)) {
     // sub a, m
     rA = sub_to(rA, get_mem(code & 0x7F));
@@ -209,8 +209,8 @@ cl_fppa14::execute(unsigned int code)
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x2C00, 0xFF)) {
     // and a, k
-    rA &= code & 0xFF;
-    store_flag(flag_z, !rA);
+    cA.W(rA & code & 0xFF);
+    SETZ(!rA);
   } else if (CODE_MASK(0x0E00, 0x7F)) {
     // and a, m
     rA &= get_mem(code & 0x7F);
