@@ -82,7 +82,7 @@ public:
   int id;
   class cl_address_space *ram;
   class cl_address_space *sfr;
-  u8_t rA, rF, rSP;
+  u8_t rA, rF, rSP, rTMP;
   class cl_cell8 cA;
   class cl_memory_cell *cF, *cSP;
 public:

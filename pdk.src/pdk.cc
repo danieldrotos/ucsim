@@ -121,6 +121,7 @@ void cl_fppa::reset(void) {
   for (t_addr i = 0; i < io_size; ++i) {
     store_io(i, 0);
   }
+  rTMP= 0;
 }
 
 void cl_fppa::mk_hw_elements(void)

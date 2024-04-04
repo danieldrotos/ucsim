@@ -233,10 +233,29 @@ cl_fppa16::execute(unsigned int code)
       SETZ(!rA);
       return resGO;
     case 0x1a00: // ceqsn a,k
+      sub_to(rA, code&0xff);
+      if (rA == (code&0xff))
+	PC++;
       return resGO;
     case 0x1b00: // cneqsn a,k
+      sub_to(rA, code&0xff);
+      if (rA != (code&0xff))
+	PC++;
       return resGO;
     case 0x0e00: // delay k
+      if (puc && (puc->single))
+	return resINV;
+      if (!rTMP)
+	{
+	  rTMP= code;
+	  PC--;
+	}
+      else
+	{
+	  if (--rTMP)
+	    PC--;
+	}
+      cA.W(rTMP);
       return resGO;
     case 0x0f00: // ret k
       cA.W(code);
