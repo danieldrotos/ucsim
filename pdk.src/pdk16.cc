@@ -69,14 +69,14 @@ cl_fppa16::execute(unsigned int code)
   switch (code & 0xffff)
     {
     case 0x0032: // push af
-      ram->write(rSP, rA);
+      /*ram->write(rSP, rA);
       ram->write(rSP+1, rF);
-      cSP->W(rSP+2);
+      cSP->W(rSP+2);*/
+      pushlh(rA, rF);
       return resGO;
     case 0x0033: // pop af
-      cF->W(get_mem(rSP-1));
-      cA.W(get_mem(rSP-2));
-      cSP->W(rSP-2);
+      cF->W(pop());
+      cA.W(pop());
       return resGO;
     case 0x0010: // addc a
       cA.W(add_to(rA, 0, fC));
@@ -140,6 +140,7 @@ cl_fppa16::execute(unsigned int code)
     case 0x003a: // ret
       cSP->W(rSP-2);
       PC= rd16(rSP);
+      vc.rd+= 2;
       return resGO;
     case 0x003b: // reti
       return resNOT_DONE;

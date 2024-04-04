@@ -106,7 +106,11 @@ public:
 
   virtual int execute(unsigned int code) { return resINV; }
   virtual int exec_inst(void);
+  virtual void push(u16_t word);
+  virtual void pushlh(u8_t low, u8_t high);
+  virtual u8_t pop(void) { cSP->W(rSP-1); vc.rd++; return ram->read(rSP); }
   virtual void stack_check_overflow(void);
+  virtual void stack_check_overflow(t_addr sp_before);
 
   virtual const char *get_disasm_info(t_addr addr,
                                       int *ret_len,
@@ -125,11 +129,11 @@ public:
   u8_t get_io(t_addr addr) { return sfr->read(addr); }
   int store_io(t_addr addr, int value);
   void store_flag(flag n, int value);
-
-int execute_pdk13(unsigned int code);
-int execute_pdk14(unsigned int code);
-int execute_pdk15(unsigned int code);
-
+  /*
+  int execute_pdk13(unsigned int code);
+  int execute_pdk14(unsigned int code);
+  int execute_pdk15(unsigned int code);
+  */
 };
 
 

@@ -60,6 +60,7 @@ cl_fppa15::execute(unsigned int code)
     PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);*/
     cSP->W(rSP-2);
     PC= rd16(rSP);
+    vc.rd+= 2;
   } else if (CODE_MASK(0x5700, 0xFF)) {
     // mov a, k
     rA = code & 0xFF;
@@ -92,16 +93,19 @@ cl_fppa15::execute(unsigned int code)
     rA = mem;
   } else if (code == 0x0072) {
     // pushaf
-    ram->write(rSP, rA);
+    /*ram->write(rSP, rA);
     ram->write(rSP + 1, rF);
     //write_result = store_io(0x2, rSP + 2);
-    cSP->W(rSP+2);
+    cSP->W(rSP+2);*/
+    pushlh(rA, rF);
   } else if (code == 0x0073) {
     // popaf
-    cF->W(get_mem(rSP - 1));
+    /*cF->W(get_mem(rSP - 1));
     cA.W(get_mem(rSP - 2));
     //write_result = store_io(0x2, rSP - 2);
-    cSP->W(rSP-2);
+    cSP->W(rSP-2);*/
+    cF->W(pop());
+    cA.W(pop());
   } else if (CODE_MASK(0x5000, 0xFF)) {
     // add a, k
     rA = add_to(rA, code & 0xFF);

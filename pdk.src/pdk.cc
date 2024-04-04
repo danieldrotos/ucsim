@@ -442,12 +442,34 @@ int cl_fppa::exec_inst(void)
 
 
 void
+cl_fppa::push(u16_t word)
+{
+  u8_t b= rSP;
+  ram->write(rSP, word);
+  ram->write(rSP+1, word>>8);
+  cSP->W(rSP+2);
+  vc.wr+= 2;
+  stack_check_overflow(b);
+}
+
+void
+cl_fppa::pushlh(u8_t low, u8_t high)
+{
+  u8_t b= rSP;
+  ram->write(rSP, low);
+  ram->write(rSP+1, high);
+  cSP->W(rSP+2);
+  vc.wr+= 2;
+  stack_check_overflow(b);
+}
+
+void
 cl_fppa::stack_check_overflow(void)
 {
   if (0)
     {
       class cl_stack_op *op;
-      op= new cl_stack_op(stack_push, instPC, rSP-1, rSP);
+      op= new cl_stack_op(stack_push, instPC, rSP-2, rSP);
       class cl_error_stack_overflow *e=
 	new cl_error_stack_overflow(op);
       e->init();
@@ -455,6 +477,19 @@ cl_fppa::stack_check_overflow(void)
     }
 }
 
+void
+cl_fppa::stack_check_overflow(t_addr sp_before)
+{
+  if (0)
+    {
+      class cl_stack_op *op;
+      op= new cl_stack_op(stack_push, instPC, sp_before, rSP);
+      class cl_error_stack_overflow *e=
+	new cl_error_stack_overflow(op);
+      e->init();
+      error(e);
+    }
+}
 
 /****************************************************************************/
 
