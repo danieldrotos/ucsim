@@ -98,6 +98,10 @@ cl_fppa16::execute(unsigned int code)
       cA->W(rA << 1);
       return resGO;
     case 0x001d: // slc a
+      c = rA & 0x80;
+      rA <<= 1;
+      cA->W(rA | fC);
+      store_flag(flag_c, c);
       return resGO;
     case 0x001e: // swap a
       return resGO;

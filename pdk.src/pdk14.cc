@@ -191,9 +191,9 @@ cl_fppa14::execute(unsigned int code)
     store_flag(flag_c, c);
   } else if (code == 0x006D) {
     // slc a
-    int c = (rA & 0x80) >> 7;
+    int c = (rA & 0x80) /*>> 7*/;
     rA <<= 1;
-    rA |= fC;
+    cA->W(rA | fC);
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x1680, 0x7F)) {
     // slc m
