@@ -142,10 +142,12 @@ cl_fppa16::execute(unsigned int code)
       PC= rd16(rSP);
       return resGO;
     case 0x003b: // reti
+      return resNOT_DONE;
       return resGO;
     case 0x0000: // nop
       return resGO;
     case 0x0017: // pcadd a
+      PC+= rA-1;
       return resGO;
     case 0x0038: // engint
       return resGO;
