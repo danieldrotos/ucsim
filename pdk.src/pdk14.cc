@@ -254,8 +254,8 @@ cl_fppa14::execute(unsigned int code)
     ram->write(code & 0x7F, store);
   } else if (code == 0x0069) {
     // neg a
-    rA = -rA;
-    store_flag(flag_z, !rA);
+    cA->W(-rA);
+    /*store_flag(flag_z, */SETZ(!rA);
   } else if (CODE_MASK(0x1480, 0x7F)) {
     // neg m
     int store = (-get_mem(code & 0x7F) & 0xff);

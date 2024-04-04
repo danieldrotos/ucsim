@@ -111,6 +111,8 @@ cl_fppa16::execute(unsigned int code)
       SETZ(!rA);
       return resGO;
     case 0x0019: // neg a
+      cA->W(-rA);
+      SETZ(!rA);
       return resGO;
     case 0x003c: // mul
       return resGO;
