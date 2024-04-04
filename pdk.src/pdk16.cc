@@ -150,16 +150,20 @@ cl_fppa16::execute(unsigned int code)
       PC+= rA-1;
       return resGO;
     case 0x0038: // engint
+      return resNOT_DONE;
       return resGO;
     case 0x0039: // disgint
+      return resNOT_DONE;
       return resGO;
     case 0x0036: // stopsys
-      return resGO;
+      return resHALT;
     case 0x0037: // stopexe
-      return resGO;
+      return resHALT;
     case 0x0035: // reset
+      reset();
       return resGO;
     case 0x0030: // wdtreset
+      return resNOT_DONE;
       return resGO;
     }
 
