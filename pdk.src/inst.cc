@@ -29,18 +29,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "regspdk.h"
 
 
-u8_t cl_fppa::add_to(u8_t initial, int value, bool carry) {
+u8_t cl_fppa::add_to(u8_t initial, int value, int carry) {
   u8_t f= 0;
+  int r;
   carry= carry?1:0;
-  if (initial + value + carry == 0) f|= BIT_Z;
-  if (initial + value + carry > 0xFF) f|= BIT_C;
+  r= initial + value + carry;
+  if ((r&0xff) == 0) f|= BIT_Z;
+  if (r > 0xFF) f|= BIT_C;
   if ((initial & 0xF) + (value & 0xF) + carry > 0xF) f|= BIT_AC;
   if (fC ^ ((initial & 0x7F) + (value & 0x7F) + carry > 0x7F)) f|= BIT_OV;
   cF->W(f);
-  return initial + value + carry;
+  return r;
 }
 
-u8_t cl_fppa::sub_to(u8_t initial, int value, bool carry) {
+u8_t cl_fppa::sub_to(u8_t initial, int value, int carry) {
   u8_t f= 0;
   carry= carry?1:0;
   if (initial - value - carry == 0) f|= BIT_Z;

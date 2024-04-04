@@ -124,8 +124,8 @@ public:
   // originaly in instcl.h
   int get_mem(unsigned int addr) { vc.rd++; return ram->read(addr); }
   u16_t rd16(u16_t addr) { vc.rd+= 2; return ram->read(addr+1)*256+ram->read(addr); }
-  u8_t add_to(u8_t initial, int value, bool carry = false);
-  u8_t sub_to(u8_t initial, int value, bool carry = false);
+  u8_t add_to(u8_t initial, int value, int carry = 0);
+  u8_t sub_to(u8_t initial, int value, int carry = 0);
   u8_t get_io(t_addr addr) { return sfr->read(addr); }
   int store_io(t_addr addr, int value);
   void store_flag(flag n, int value);
