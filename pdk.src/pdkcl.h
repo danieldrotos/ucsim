@@ -61,8 +61,8 @@ enum flag {
 #define fOV ((rF&BIT_OV)>>BITPOS_OV)
 #define fO  ((rF&BIT_OV)>>BITPOS_OV)
 
-#define SETZ(boolval) ((boolval)?(rF|=BIT_Z):(rF&=~BIT_Z))
-#define SETC(boolval) ((boolval)?(rF|=BIT_C):(rF&=~BIT_C))
+#define SETZ(boolval) (cF->W((boolval)?(rF|BIT_Z):(rF&~BIT_Z)))
+#define SETC(boolval) (cF->W((boolval)?(rF|BIT_C):(rF&~BIT_C)))
 
 #define CODE_MASK(op, m) ((code & ~(m)) == (op))
 
