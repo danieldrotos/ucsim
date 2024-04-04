@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "regspdk.h"
 
 
-unsigned char cl_fppa::add_to(unsigned char initial, int value, bool carry) {
+u8_t cl_fppa::add_to(u8_t initial, int value, bool carry) {
   store_flag(flag_z, initial + value + carry == 0);
   store_flag(flag_c, initial + value + carry > 0xFF);
   store_flag(flag_ac, (initial & 0xF) + (value & 0xF) + carry > 0xF);
@@ -40,7 +40,7 @@ unsigned char cl_fppa::add_to(unsigned char initial, int value, bool carry) {
   return initial + value + carry;
 }
 
-unsigned char cl_fppa::sub_to(unsigned char initial, int value, bool carry) {
+u8_t cl_fppa::sub_to(u8_t initial, int value, bool carry) {
   store_flag(flag_z, initial - value - carry == 0);
   store_flag(flag_c, initial < value + carry);
   store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);

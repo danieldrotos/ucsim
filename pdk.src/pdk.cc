@@ -694,7 +694,6 @@ cl_pdk::exec_inst(void)
   fpps[act]->pre_inst();
   int ret= fpps[act]->exec_inst();
   fpps[act]->post_inst();
-  printf("pc=%x pc%d=%x\n",PC,act,fpps[act]->PC);
   tick(inst_ticks= fpps[act]->inst_ticks);
   if (rFPPEN != 1)
     {
@@ -704,7 +703,6 @@ cl_pdk::exec_inst(void)
       cPC.decode(&(fpps[act]->PC));
     }
   PC= fpps[act]->PC;
-  printf("pc=%x pc%d=%x\n",PC,act,fpps[act]->PC);
   return ret;
 }
 

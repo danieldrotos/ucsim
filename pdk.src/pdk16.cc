@@ -121,8 +121,14 @@ cl_fppa16::execute(unsigned int code)
       sfr->write(8, u>>8);
       return resGO;
     case 0x0012: // izsn a
+      cA.W(add_to(rA,1,false));
+      if (!rA)
+	PC++;
       return resGO;
     case 0x0013: // dzsn a
+      cA.W(sub_to(rA, 1, false));
+      if (!rA)
+	PC++;
       return resGO;
     case 0x001f: // delay a
       return resGO;

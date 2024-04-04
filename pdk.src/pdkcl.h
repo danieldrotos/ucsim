@@ -119,9 +119,9 @@ public:
 
   // originaly in instcl.h
   int get_mem(unsigned int addr) { vc.rd++; return ram->read(addr); }
-  unsigned char add_to(unsigned char initial, int value, bool carry = false);
-  unsigned char sub_to(unsigned char initial, int value, bool carry = false);
-  unsigned char get_io(t_addr addr) { return sfr->read(addr); }
+  u8_t add_to(u8_t initial, int value, bool carry = false);
+  u8_t sub_to(u8_t initial, int value, bool carry = false);
+  u8_t get_io(t_addr addr) { return sfr->read(addr); }
   int store_io(t_addr addr, int value);
   void store_flag(flag n, int value);
 

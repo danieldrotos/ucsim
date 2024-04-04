@@ -325,7 +325,7 @@ cl_fppa14::execute(unsigned int code)
       ++PC;
   } else if (code == 0x0062) {
     // izsn
-    rA = add_to(rA, 1);
+    cA.W(add_to(rA, 1));
     if (!rA)
       ++PC;
   } else if (CODE_MASK(0x1100, 0x7F)) {
@@ -337,7 +337,7 @@ cl_fppa14::execute(unsigned int code)
       ++PC;
   } else if (code == 0x0063) {
     // dzsn
-    rA = sub_to(rA, 1);
+    cA.W(sub_to(rA, 1));
     if (!rA)
       ++PC;
   } else if (CODE_MASK(0x1180, 0x7F)) {
@@ -398,11 +398,12 @@ cl_fppa14::execute(unsigned int code)
     unsigned result = rA * get_io(0x08);
     cA.W(result);//rA = result & 0xFF;
     /*write_result = store_io*/sfr->write(0x08, (result & 0xFF00) >> 8);
-  } else if (code == 0xFF00) {
+  } /*else if (code == 0xFF00) {
     // putchar - usim specific instruction
     putchar(rA);
     fflush(stdout);
-  } else {
+    } */
+  else {
     return (resINV_INST);
   }
   return (write_result);
