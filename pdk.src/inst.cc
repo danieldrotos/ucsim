@@ -58,18 +58,18 @@ u8_t cl_fppa::sub_to(u8_t initial, int value, bool carry) {
   u8_t f= 0;
   int r= initial - value - carry;
   
-  store_flag(flag_z, r == 0);
-  if (initial - value - carry == 0) f|= BIT_Z;
+  //store_flag(flag_z, r == 0);
+  if ((r&0xff) == 0) f|= BIT_Z;
   
-  store_flag(flag_c, initial < value + carry);
+  //store_flag(flag_c, initial < value + carry);
   if (initial < value + carry) f|= BIT_C;
   
-  store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);
+  //store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);
   if ((value & 0xF) > (initial & 0xF) - carry) f|= BIT_AC;
   
-  store_flag(
+  /*store_flag(
       flag_ov,
-      ((f&BIT_C)>>BITPOS_C) ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0));
+      ((f&BIT_C)>>BITPOS_C) ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0));*/
   if (((f&BIT_C)>>BITPOS_C) ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0))
     f|= BIT_OV;
 
