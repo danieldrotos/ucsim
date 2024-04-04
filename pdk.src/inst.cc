@@ -29,11 +29,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "regspdk.h"
 
 
-u8_t cl_fppa::add_to(u8_t initial, int value, int carry) {
-  u8_t f= 0;
-  int r;
-  carry= carry?1:0;
+u8_t cl_fppa::add_to(u8_t initial, int value, bool carry) {
+  u8_t f= 0, res;
+  int c= carry?(fC):0;
+  int r, r2, r3;
 
+  r= (int)initial + (int)value + c;
+  r2= (initial & 0x7f) + (value & 0x7f) + c;
+  r3= (initial &  0xf) + (value &  0xf) + c;
+  if ((r & 0xff) == 0) f|= BIT_Z;
+  if (r > 0xff) f|= BIT_C;
+  if (r3 > 0xf) f|= BIT_AC;
+  if ( (r2 & 0x80) && !(f & BIT_C)) f|= BIT_OV;
+  if (!(r2 & 0x80) &&  (f & BIT_C)) f|= BIT_OV;
+  cF->W(f);
+  return r;
+  
   store_flag(flag_z, initial + value + carry == 0);
   store_flag(flag_c, initial + value + carry > 0xFF);
   store_flag(flag_ac, (initial & 0xF) + (value & 0xF) + carry > 0xF);
@@ -41,34 +52,26 @@ u8_t cl_fppa::add_to(u8_t initial, int value, int carry) {
       flag_ov,
       fC ^ ((initial & 0x7F) + (value & 0x7F) + carry > 0x7F));
   return initial + value + carry;
-  
-  r= initial + value + carry;
-  if ((r&0xff) == 0) f|= BIT_Z;
-  if (r > 0xFF) f|= BIT_C;
-  if ((initial & 0xF) + (value & 0xF) + carry > 0xF) f|= BIT_AC;
-  if (fC ^ ((initial & 0x7F) + (value & 0x7F) + carry > 0x7F)) f|= BIT_OV;
-  cF->W(f);
-  return r;
 }
 
-u8_t cl_fppa::sub_to(u8_t initial, int value, int carry) {
+u8_t cl_fppa::sub_to(u8_t initial, int value, bool carry) {
   u8_t f= 0;
-  carry= carry?1:0;
+  int c= carry?fC:0;
 
-  store_flag(flag_z, initial - value - carry == 0);
-  store_flag(flag_c, initial < value + carry);
-  store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - carry);
+  store_flag(flag_z, initial - value - c == 0);
+  store_flag(flag_c, initial < value + c);
+  store_flag(flag_ac, (value & 0xF) > (initial & 0xF) - c);
   store_flag(
       flag_ov,
-      fC ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0));
+      fC ^ ((initial & 0x7F) - (value & 0x7F) - c < 0));
   return initial - value - carry;
   
-  if (initial - value - carry == 0) f|= BIT_Z;
-  if (initial < value + carry) f|= BIT_C;
-  if ((value & 0xF) > (initial & 0xF) - carry) f|= BIT_AC;
-  if (fC ^ ((initial & 0x7F) - (value & 0x7F) - carry < 0)) f|= BIT_OV;
+  if (initial - value - c == 0) f|= BIT_Z;
+  if (initial < value + c) f|= BIT_C;
+  if ((value & 0xF) > (initial & 0xF) - c) f|= BIT_AC;
+  if (fC ^ ((initial & 0x7F) - (value & 0x7F) - c < 0)) f|= BIT_OV;
   cF->W(f);
-  return initial - value - carry;
+  return initial - value - c;
 }
 
 /*int cl_fppa::get_mem(unsigned int addr) {
