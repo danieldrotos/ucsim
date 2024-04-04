@@ -372,7 +372,7 @@ cl_fppa14::execute(unsigned int code)
   } else if (code == 0x006E) {
     // swap
     int high = rA & 0xF;
-    rA = (high << 4) | (rA >> 4);
+    cA->W((high << 4) | (rA >> 4));
   } else if (code == 0x0067) {
     // pcadd
     PC += rA - 1;

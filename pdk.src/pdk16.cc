@@ -104,6 +104,7 @@ cl_fppa16::execute(unsigned int code)
       store_flag(flag_c, c);
       return resGO;
     case 0x001e: // swap a
+      cA->W((rA>>4)|(rA<<4));
       return resGO;
     case 0x0018: // not a
       return resGO;
