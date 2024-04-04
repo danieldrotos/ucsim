@@ -74,44 +74,44 @@ cl_fppa16::execute(unsigned int code)
       return resGO;
     case 0x0033: // pop af
       cF->W(get_mem(rSP-1));
-      cA->W(get_mem(rSP-2));
+      cA.W(get_mem(rSP-2));
       cSP->W(rSP-2);
       return resGO;
     case 0x0010: // addc a
-      cA->W(add_to(rA, 0, fC));
+      cA.W(add_to(rA, 0, fC));
       return resGO;
     case 0x0011: // subc a
-      cA->W(sub_to(rA, 0, fC));
+      cA.W(sub_to(rA, 0, fC));
       return resGO;
     case 0x001a: // sr a
       store_flag(flag_c, rA & 1);
-      cA->W(rA >>= 1);
+      cA.W(rA >>= 1);
       return resGO;
     case 0x001c: // src a
       c= rA & 1;
       rA>>= 1;
-      cA->W(rA | (fC << 7));
+      cA.W(rA | (fC << 7));
       SETC(c);
     return resGO;
     case 0x001b: // sl a
       SETC(rA & 0x80);
-      cA->W(rA << 1);
+      cA.W(rA << 1);
       return resGO;
     case 0x001d: // slc a
       c = rA & 0x80;
       rA <<= 1;
-      cA->W(rA | fC);
+      cA.W(rA | fC);
       SETC(c);
       return resGO;
     case 0x001e: // swap a
-      cA->W((rA>>4)|(rA<<4));
+      cA.W((rA>>4)|(rA<<4));
       return resGO;
     case 0x0018: // not a
-      cA->W(~rA);
+      cA.W(~rA);
       SETZ(!rA);
       return resGO;
     case 0x0019: // neg a
-      cA->W(-rA);
+      cA.W(-rA);
       SETZ(!rA);
       return resGO;
     case 0x003c: // mul

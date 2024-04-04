@@ -85,18 +85,20 @@ int cl_fppa::init(void) {
   //   ram->set((t_addr)i, 0);
   // }
 
-  cA= new cl_cell8();
-  cA->init();
-  cA->decode(&rA);
+  cA.init();
+  cA.decode(&rA);
 
   if (puc)
     {
       chars n, d;
       n.format("A%d", id);
       d.format("Accumulator of FPP%d", id);
-      puc->mk_cvar(cA, n, d);
+      puc->mk_cvar(&cA, n, d);
       if (id == 0)
-	puc->mk_cvar(cA, "A", "Accumulator");
+	puc->mk_cvar(&cA, "A", "Accumulator");
+      n.format("PC%d", id);
+      d.format("Program counter of FPP%d", id);
+      puc->mk_cvar(&cPC, n, d);
     }
   
   return (0);
@@ -515,6 +517,7 @@ cl_pdk::init(void)
   cFPPEN->append_operator(op);
   reg_cell_var(cFPPEN, &rFPPEN, "FPPEN", "FPP unit Enable Register");
   mk_cvar(sfr->get_cell(0), "FLAG", "ACC Status Flag Register");
+  mk_cvar(sfr->get_cell(0), "F", "ACC Status Flag Register");
   mk_cvar(sfr->get_cell(2), "SP", "Stack Pointer Register");
 
   cact= new cl_act_cell(this);
@@ -537,6 +540,7 @@ cl_pdk::init(void)
   
   act= 0;
   rFPPEN= 1;
+  cPC.decode(&(fpps[0]->PC));
   return 0;
 }
 
@@ -640,9 +644,12 @@ cl_pdk::set_fppen(u8_t val)
 u8_t
 cl_pdk::set_act(u8_t val)
 {
+  u8_t r= 0;
   if (val < nuof_fpp)
-    return val;
-  return 0;
+    r= val;
+  cPC.decode(&(fpps[act]->PC));
+  PC= fpps[act]->PC;
+  return r;
 }
 
 u8_t
@@ -687,13 +694,17 @@ cl_pdk::exec_inst(void)
   fpps[act]->pre_inst();
   int ret= fpps[act]->exec_inst();
   fpps[act]->post_inst();
+  printf("pc=%x pc%d=%x\n",PC,act,fpps[act]->PC);
   tick(inst_ticks= fpps[act]->inst_ticks);
   if (rFPPEN != 1)
     {
       do
 	act= (act+1)%nuof_fpp;
       while (!(rFPPEN & (1<<act)));
+      cPC.decode(&(fpps[act]->PC));
     }
+  PC= fpps[act]->PC;
+  printf("pc=%x pc%d=%x\n",PC,act,fpps[act]->PC);
   return ret;
 }
 
@@ -752,7 +763,7 @@ cl_pdk::print_regs(class cl_console_base *con)
   for (i=0; i<nuof_fpp; i++)
     {
       con->dd_color((i==act)?"result":"answer");
-      con->dd_printf("FPP%d: ", i);
+      con->dd_printf("%cFPP%d%c: ", (rFPPEN&(1<<act))?'+':'-', i, (act==i)?'*':' ');
       fpps[0]->print_disass(fpps[i]->PC, con);
     }
 }

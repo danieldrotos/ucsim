@@ -97,7 +97,7 @@ cl_fppa15::execute(unsigned int code)
   } else if (code == 0x0073) {
     // popaf
     cF->W(get_mem(rSP - 1));
-    cA->W(get_mem(rSP - 2));
+    cA.W(get_mem(rSP - 2));
     //write_result = store_io(0x2, rSP - 2);
     cSP->W(rSP-2);
   } else if (CODE_MASK(0x5000, 0xFF)) {
@@ -129,7 +129,7 @@ cl_fppa15::execute(unsigned int code)
     ram->write(addr, add_to(rA, get_mem(addr), fC));
   } else if (code == 0x0060) {
     // addc a
-    cA->W(add_to(rA, fC));
+    cA.W(add_to(rA, fC));
   } else if (CODE_MASK(0x2000, 0xFF)) {
     // addc m
     int addr = code & 0xFF;
@@ -143,7 +143,7 @@ cl_fppa15::execute(unsigned int code)
     ram->write(addr, sub_to(get_mem(addr), rA, fC));
   } else if (code == 0x0061) {
     // subc a
-    cA->W(sub_to(rA, fC));
+    cA.W(sub_to(rA, fC));
   } else if (CODE_MASK(0x2100, 0xFF)) {
     // subc m
     int addr = code & 0xFF;
@@ -162,7 +162,7 @@ cl_fppa15::execute(unsigned int code)
   } else if (code == 0x006A) {
     // sr a
     store_flag(flag_c, rA & 1);
-    cA->W(rA >>= 1);
+    cA.W(rA >>= 1);
   } else if (CODE_MASK(0x2A00, 0xFF)) {
     // sr m
     int value = get_mem(code & 0xFF);
@@ -171,7 +171,7 @@ cl_fppa15::execute(unsigned int code)
   } else if (code == 0x006B) {
     // sl a
     store_flag(flag_c, (rA & 0x80) /*>> 7*/);
-    cA->W(rA << 1);
+    cA.W(rA << 1);
   } else if (CODE_MASK(0x2B00, 0xFF)) {
     // sl m
     int value = get_mem(code & 0xFF);
@@ -181,7 +181,7 @@ cl_fppa15::execute(unsigned int code)
     // src a
     int c = rA & 1;
     rA >>= 1;
-    cA->W(rA |= fC << 7);
+    cA.W(rA |= fC << 7);
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x2C00, 0xFF)) {
     // src m
@@ -193,7 +193,7 @@ cl_fppa15::execute(unsigned int code)
     // slc a
     int c = (rA & 0x80) /*>> 7*/;
     rA <<= 1;
-    cA->W(rA | fC);
+    cA.W(rA | fC);
     store_flag(flag_c, c);
   } else if (CODE_MASK(0x2D00, 0xFF)) {
     // slc m
@@ -254,7 +254,7 @@ cl_fppa15::execute(unsigned int code)
     ram->write(code & 0xFF, store);
   } else if (code == 0x0069) {
     // neg a
-    cA->W(-rA);
+    cA.W(-rA);
     /*store_flag(flag_z, */SETZ(!rA);
   } else if (CODE_MASK(0x2900, 0xFF)) {
     // neg m
@@ -372,7 +372,7 @@ cl_fppa15::execute(unsigned int code)
   } else if (code == 0x006E) {
     // swap
     int high = rA & 0xF;
-    cA->W((high << 4) | (rA >> 4));
+    cA.W((high << 4) | (rA >> 4));
   } else if (code == 0x0067) {
     // pcadd
     PC += rA - 1;

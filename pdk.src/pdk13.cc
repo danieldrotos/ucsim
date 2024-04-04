@@ -61,7 +61,7 @@ cl_fppa13::execute(unsigned int code)
     PC = get_mem(rSP) | (get_mem(rSP + 1) << 8);
   } else if (CODE_MASK(0x1700, 0xFF)) {
     // mov a, k
-    cA->W(code);//rA = code & 0xFF;
+    cA.W(code);//rA = code & 0xFF;
   } else if (CODE_MASK(0x0080, 0x1F)) {
     // mov i, a
     sfr->write(code&0x1f, rA);//write_result = store_io(code & 0x1F, rA);

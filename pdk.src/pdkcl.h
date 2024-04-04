@@ -83,7 +83,8 @@ public:
   class cl_address_space *ram;
   class cl_address_space *sfr;
   u8_t rA, rF, rSP;
-  class cl_memory_cell *cA, *cF, *cSP;
+  class cl_cell8 cA;
+  class cl_memory_cell *cF, *cSP;
 public:
   cl_fppa(int aid, class cl_pdk *the_puc, class cl_sim *asim);
   cl_fppa(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
