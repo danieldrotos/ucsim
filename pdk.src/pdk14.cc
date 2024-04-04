@@ -92,12 +92,14 @@ cl_fppa14::execute(unsigned int code)
     // pushaf
     ram->write(rSP, rA);
     ram->write(rSP + 1, rF);
-    write_result = store_io(0x2, rSP + 2);
+    //write_result = store_io(0x2, rSP + 2);
+    cSP->W(rSP+2);
   } else if (code == 0x0073) {
     // popaf
     cF->W(get_mem(rSP - 1));
-    rA = get_mem(rSP - 2);
-    write_result = store_io(0x2, rSP - 2);
+    cA->W(get_mem(rSP - 2));
+    //write_result = store_io(0x2, rSP - 2);
+    cSP->W(rSP-2);
   } else if (CODE_MASK(0x2800, 0xFF)) {
     // add a, k
     rA = add_to(rA, code & 0xFF);
@@ -127,7 +129,7 @@ cl_fppa14::execute(unsigned int code)
     ram->write(addr, add_to(rA, get_mem(addr), fC));
   } else if (code == 0x0060) {
     // addc a
-    rA = add_to(rA, fC);
+    cA->W(add_to(rA, fC));
   } else if (CODE_MASK(0x1000, 0x7F)) {
     // addc m
     int addr = code & 0x7F;
@@ -141,7 +143,7 @@ cl_fppa14::execute(unsigned int code)
     ram->write(addr, sub_to(get_mem(addr), rA, fC));
   } else if (code == 0x0061) {
     // subc a
-    rA = sub_to(rA, fC);
+    cA->W(sub_to(rA, fC));
   } else if (CODE_MASK(0x1080, 0x7F)) {
     // subc m
     int addr = code & 0x7F;

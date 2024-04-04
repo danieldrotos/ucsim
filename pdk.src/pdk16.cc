@@ -66,12 +66,20 @@ cl_fppa16::execute(unsigned int code)
   switch (code & 0xffff)
     {
     case 0x0032: // push af
+      ram->write(rSP, rA);
+      ram->write(rSP+1, rF);
+      cSP->W(rSP+2);
       return resGO;
     case 0x0033: // pop af
+      cF->W(get_mem(rSP-1));
+      cA->W(get_mem(rSP-2));
+      cSP->W(rSP-2);
       return resGO;
     case 0x0010: // addc a
+      cA->W(add_to(rA, fC, false));
       return resGO;
     case 0x0011: // subc a
+      cA->W(sub_to(rA, fC, false));
       return resGO;
     case 0x001a: // sr a
       return resGO;
