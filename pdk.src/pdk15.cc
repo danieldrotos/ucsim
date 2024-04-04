@@ -68,8 +68,8 @@ cl_fppa15::execute(unsigned int code)
     // mov i, a
     write_result = store_io(code & 0x7F, rA);
   } else if (CODE_MASK(0x0180, 0x7F)) {
-    // mov a, i
-    rA = get_io(code & 0x7F);
+    // mov a, io
+    cA.W(get_io(code & 0x7F));
   } else if (CODE_MASK(0x1700, 0xFF)) {
     // mov m, a
     ram->write(code & 0xFF, rA);
@@ -248,7 +248,7 @@ cl_fppa15::execute(unsigned int code)
     ram->write(code & 0xFF, store);
   } else if (CODE_MASK(0x0080, 0x7F)) {
     // xor io, a
-    write_result = store_io(code & 0x3F, rA ^ get_io(code & 0x3F));
+    write_result = store_io(code & 0x7F, rA ^ get_io(code & 0x7F));
   } else if (code == 0x0068) {
     // not a
     rA = ~rA;

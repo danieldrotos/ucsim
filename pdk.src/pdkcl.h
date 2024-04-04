@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "regspdk.h"
 
 
-const t_addr io_size = 64;
+const t_addr io_size = 128;
 
 #define BIT_Z	0x01  // zero status, 1=zero, 0=nonzero
 #define BIT_C	0x02  // carry status(addition and subtraction)

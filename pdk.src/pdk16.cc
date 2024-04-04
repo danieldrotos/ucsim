@@ -188,24 +188,30 @@ cl_fppa16::execute(unsigned int code)
   switch (code & 0xffe0)
     {
     case 0x0040: // pmode k
+      return resNOT_DONE;
       return resGO;
     }
 
   switch (code & 0xffc0)
     {
     case 0x00c0: // mov a,IO
+      cA.W(sfr->read(code & 0x3f));
       return resGO;
     case 0x0080: // mov IO,a
+      sfr->write(code&0x3f, rA);
       return resGO;
     case 0x1040: // xor a,IO
+      cA.W(rA ^ sfr->read(code&0x3f));
+      SETZ(!rA);
       return resGO;
     case 0x1000: // xor IO,a
+      sfr->write(code&0x3f, sfr->read(code&0x3f) ^ rA);
       return resGO;
     }
 
   switch (code & 0xff00)
     {
-    case 0x1f00: // mov a.i
+    case 0x1f00: // mov a,i
       return resGO;
     case 0x1800: // add a,i
       return resGO;

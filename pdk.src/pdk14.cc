@@ -69,7 +69,7 @@ cl_fppa14::execute(unsigned int code)
     write_result = store_io(code & 0x3F, rA);
   } else if (CODE_MASK(0x01C0, 0x3F)) {
     // mov a, i
-    rA = get_io(code & 0x3F);
+    cA.W(get_io(code & 0x3F));
   } else if (CODE_MASK(0x0B80, 0x7F)) {
     // mov m, a
     ram->write(code & 0x7F, rA);
