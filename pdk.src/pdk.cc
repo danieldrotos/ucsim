@@ -724,6 +724,22 @@ cl_pdk::set_nuof(u8_t val)
   return val;
 }
 
+t_addr
+cl_pdk::get_pc(int id)
+{
+  if (id >= nuof_fpp)
+    return 0;
+  return fpps[id]->PC;
+}
+
+void
+cl_pdk::set_pc(int id, t_addr new_pc)
+{
+  if (id >= nuof_fpp)
+    return;
+  fpps[id]->cPC.W(new_pc);
+}
+
 
 int
 cl_pdk::exec_inst(void)

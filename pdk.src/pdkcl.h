@@ -193,6 +193,8 @@ public:
   virtual u8_t set_fppen(u8_t val);
   virtual u8_t set_act(u8_t val);
   virtual u8_t set_nuof(u8_t val);
+  virtual t_addr get_pc(int id);
+  virtual void set_pc(int id, t_addr new_pc);
   
   virtual int exec_inst(void);
 

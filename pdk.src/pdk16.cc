@@ -171,8 +171,17 @@ cl_fppa16::execute(unsigned int code)
   switch (code & 0xfff0)
     {
     case 0x0070: // pushw pcN
+      if (puc)
+	u= puc->get_pc(code&0xf);
+      else
+	u= 0;
+      push(u);
+      tick(1);
       return resGO;
     case 0x0060: // popw pcN
+      u= pop()*256+pop();
+      if (puc)
+	puc->set_pc(code&0xf, u);
       return resGO;
     }
 
