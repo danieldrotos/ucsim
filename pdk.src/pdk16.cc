@@ -76,12 +76,14 @@ cl_fppa16::execute(unsigned int code)
       cSP->W(rSP-2);
       return resGO;
     case 0x0010: // addc a
-      cA->W(add_to(rA, fC, false));
+      cA->W(add_to(rA, 0, fC));
       return resGO;
     case 0x0011: // subc a
-      cA->W(sub_to(rA, fC, false));
+      cA->W(sub_to(rA, 0, fC));
       return resGO;
     case 0x001a: // sr a
+      store_flag(flag_c, rA & 1);
+      cA->W(rA >>= 1);
       return resGO;
     case 0x001c: // src a
       return resGO;

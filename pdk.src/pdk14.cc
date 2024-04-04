@@ -162,7 +162,7 @@ cl_fppa14::execute(unsigned int code)
   } else if (code == 0x006A) {
     // sr a
     store_flag(flag_c, rA & 1);
-    rA >>= 1;
+    cA->W(rA >>= 1);
   } else if (CODE_MASK(0x1500, 0x7F)) {
     // sr m
     int value = get_mem(code & 0x7F);
