@@ -415,24 +415,58 @@ cl_fppa16::execute(unsigned int code)
       wr8(u, u8<<1);
       return resGO;
     case 0x7a00: // slc M
+      u= code & 0x1ff;
+      u8= rd8(u);
+      c= u8 & 0x80;
+      wr8(u, (u8<<1)|fC);
+      SETC(c);
       return resGO;
     case 0x7c00: // swap M
+      u= code & 0x1ff;
+      u8= rd8(u);
+      wr8(u, (u8<<4)|(u8>>4));
       return resGO;
     case 0x5200: // and a,M
+      cA.W(rA & rd8(code & 0x1ff));
+      SETZ(!rA);
       return resGO;
     case 0x5000: // and M,a
+      u= code & 0x1ff;
+      u8= rA & rd8(u);
+      SETZ(!u8);
+      wr8(u, u8);
       return resGO;
     case 0x5600: // or a,M
+      cA.W(rA | rd8(code & 0x1ff));
+      SETZ(!rA);
       return resGO;
     case 0x5400: // or M,a
+      u= code & 0x1ff;
+      u8= rA | rd8(u);
+      SETZ(!u8);
+      wr8(u, u8);
       return resGO;
     case 0x5a00: // xor a,M
+      cA.W(rA ^ rd8(code & 0x1ff));
+      SETZ(!rA);
       return resGO;
     case 0x5800: // xor M,a
+      u= code & 0x1ff;
+      u8= rA ^ rd8(u);
+      SETZ(!u8);
+      wr8(u, u8);
       return resGO;
     case 0x7000: // not M
+      u= code & 0x1ff;
+      u8= ~rd8(u);
+      SETZ(!u8);
+      wr8(u, u8);
       return resGO;
     case 0x7200: // neg M
+      u= code & 0x1ff;
+      u8= -rd8(u);
+      SETZ(!u8);
+      wr8(u, u8);
       return resGO;
     case 0x3c00: // comp a,M
       return resGO;

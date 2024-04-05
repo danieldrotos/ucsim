@@ -204,48 +204,48 @@ cl_fppa14::execute(unsigned int code)
   } else if (CODE_MASK(0x1680, 0x7F)) {
     // slc m
     int value = get_mem(code & 0x7F);
-    int c = (value & 0x80) >> 7;
-    ram->write(code & 0x7F, (value << 1) | fC);
-    store_flag(flag_c, c);
+    int c = (value & 0x80)/* >> 7*/;
+    wr8(code & 0x7F, (value << 1) | fC);
+    SETC(c);
   } else if (CODE_MASK(0x2C00, 0xFF)) {
     // and a, k
     cA.W(rA & code & 0xFF);
     SETZ(!rA);
   } else if (CODE_MASK(0x0E00, 0x7F)) {
     // and a, m
-    rA &= get_mem(code & 0x7F);
-    store_flag(flag_z, !rA);
+    cA.W(rA & get_mem(code & 0x7F));
+    SETZ(!rA);
   } else if (CODE_MASK(0x0A00, 0x7F)) {
     // and m, a
     int store = rA & get_mem(code & 0x7F);
-    store_flag(flag_z, !store);
-    ram->write(code & 0x7F, store);
+    SETZ(!store);
+    wr8(code & 0x7F, store);
   } else if (CODE_MASK(0x2D00, 0xFF)) {
     // or a, k
     cA.W(rA | (code & 0xFF));
     SETZ(!rA);
   } else if (CODE_MASK(0x0E80, 0x7F)) {
     // or a, m
-    rA |= get_mem(code & 0x7F);
-    store_flag(flag_z, !rA);
+    cA.W(rA | get_mem(code & 0x7F));
+    SETZ(!rA);
   } else if (CODE_MASK(0x0A80, 0x7F)) {
     // or m, a
     int store = rA | get_mem(code & 0x7F);
-    store_flag(flag_z, !store);
-    ram->write(code & 0x7F, store);
+    SETZ(!store);
+    wr8(code & 0x7F, store);
   } else if (CODE_MASK(0x2E00, 0xFF)) {
     // xor a, k
     cA.W(rA ^ (code & 0xFF));
     SETZ(!rA);
   } else if (CODE_MASK(0x0F00, 0x7F)) {
     // xor a, m
-    rA ^= get_mem(code & 0x7F);
-    store_flag(flag_z, !rA);
+    cA.W(rA ^ get_mem(code & 0x7F));
+    SETZ(!rA);
   } else if (CODE_MASK(0x0B00, 0x7F)) {
     // xor m, a
     int store = rA ^ get_mem(code & 0x7F);
-    store_flag(flag_z, !store);
-    ram->write(code & 0x7F, store);
+    SETZ(!store);
+    wr8(code & 0x7F, store);
   } else if (CODE_MASK(0x00C0, 0x3F)) {
     // xor io, a
     write_result = store_io(code & 0x3F, rA ^ get_io(code & 0x3F));
@@ -256,8 +256,8 @@ cl_fppa14::execute(unsigned int code)
   } else if (CODE_MASK(0x1400, 0x7F)) {
     // not m
     int store = (~get_mem(code & 0x7F) & 0xff);
-    store_flag(flag_z, !store);
-    ram->write(code & 0x7F, store);
+    SETZ(!store);
+    wr8(code & 0x7F, store);
   } else if (code == 0x0069) {
     // neg a
     cA.W(-rA);
@@ -265,8 +265,8 @@ cl_fppa14::execute(unsigned int code)
   } else if (CODE_MASK(0x1480, 0x7F)) {
     // neg m
     int store = (-get_mem(code & 0x7F) & 0xff);
-    store_flag(flag_z, !store);
-    ram->write(code & 0x7F, store);
+    SETZ(!store);
+    wr8(code & 0x7F, store);
   } else if (CODE_MASK(0x1C00, 0x1FF)) {
     // set0 io, k
     const u8_t bit = (code & 0x1C0) >> 6;
