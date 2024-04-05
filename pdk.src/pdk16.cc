@@ -283,14 +283,14 @@ cl_fppa16::execute(unsigned int code)
       if (code & 1)
 	{
 	  // pushw word
-	  u= rd16(code&0x1ff);
+	  u= rd16(code&0x1fe);
 	  push(u);
 	}
       else
 	{
 	  // popw word
 	  u= pop()*256+pop();
-	  wr16(code&0x1ff, u);
+	  wr16(code&0x1fe, u);
 	}
       tick(1);
       return resGO;
@@ -298,18 +298,19 @@ cl_fppa16::execute(unsigned int code)
       if (code & 1)
 	{
 	  // ldtabh index
-	  u= rd16(code & 0x1ff & 0xfffe);
+	  u= rd16(code & 0x1fe);
 	  cA.W(rom->read(u+1));
 	}
       else
 	{
 	  // ldtabl index
-	  u= rd16(code & 0x1ff & 0xfffe);
+	  u= rd16(code & 0x1fe);
 	  cA.W(rom->read(u));
 	}
       tick(1);
       return resGO;
     case 0x0200:
+      u= code & 0x1fe;
       if (code & 1)
 	{
 	  // ldt16 word
@@ -333,13 +334,13 @@ cl_fppa16::execute(unsigned int code)
       if (code & 1)
 	{
 	  // idxm a,M
-	  u= rd16(code & 0x1ff);
+	  u= rd16(code & 0x1fe);
 	  cA.W(rd8(u));
 	}
       else
 	{
 	  // idxm M,a
-	  u= rd16(code & 0x1ff);
+	  u= rd16(code & 0x1fe);
 	  wr8(rd8(u), rA);
 	}
       tick(1);
@@ -566,6 +567,7 @@ cl_fppa16::execute(unsigned int code)
       return resGO;
     case 0x0600:
       return resNOT_DONE;
+      u= code & 0x1fe;
       if (code & 1)
 	{
 	  // icall M
