@@ -167,7 +167,7 @@ cl_fppa14::execute(unsigned int code)
     wr8(code & 0x7F, 0);
   } else if (code == 0x006A) {
     // sr a
-    store_flag(flag_c, rA & 1);
+    SETC(rA & 1);
     cA.W(rA >>= 1);
   } else if (CODE_MASK(0x1500, 0x7F)) {
     // sr m
@@ -276,7 +276,7 @@ cl_fppa14::execute(unsigned int code)
     // set0 m, k
     const u8_t bit = (code & 0x1C0) >> 6;
     const u8_t addr = code & 0x3F;
-    ram->write(addr, get_mem(addr) & ~(1 << bit));
+    wr8(addr, get_mem(addr) & ~(1 << bit));
   } else if (CODE_MASK(0x1E00, 0x1FF)) {
     // set1 io, k
     const u8_t bit = (code & 0x1C0) >> 6;
@@ -286,7 +286,7 @@ cl_fppa14::execute(unsigned int code)
     // set1 m, k
     const u8_t bit = (code & 0x1C0) >> 6;
     const u8_t addr = code & 0x3F;
-    ram->write(addr, get_mem(addr) | (1 << bit));
+    wr8(addr, get_mem(addr) | (1 << bit));
   } else if (CODE_MASK(0x1800, 0x1FF)) {
     // t0sn io, k
     int n = (code & 0x1C0) >> 6;
@@ -397,10 +397,13 @@ cl_fppa14::execute(unsigned int code)
   // TODO: swapc IO, k
   else if (code == 0x0006) {
     // ldspl
-    rA = rom->get(rSP) & 0xFF;
+    cA.W(rom->read(rSP));
+    vc.rd++;
   } else if (code == 0x0007) {
     // ldspth
-    rA = (rom->get(rSP) & 0xFF00) >> 8;
+    //rA = (rom->get(rSP) & 0xFF00) >> 8;
+    cA.W(rom->read(rSP+1));
+    vc.rd++;
   } else if (code == 0x007C) {
     // mul
     unsigned result = rA * get_io(0x08);

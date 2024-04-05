@@ -565,6 +565,7 @@ cl_fppa16::execute(unsigned int code)
 	PC--;
       return resGO;
     case 0x0600:
+      return resNOT_DONE;
       if (code & 1)
 	{
 	  // icall M
@@ -594,20 +595,41 @@ cl_fppa16::execute(unsigned int code)
   switch (code & 0xf000)
     {
     case 0xa000: // set0 M,n
+      u= code & 0x1ff;
+      n= (code>>9)&7;
+      u8= rd8(u);
+      u8&= ~(1<<n);
+      wr8(u, u8);
       return resGO;
     case 0xb000: // set1 M,n
+      u= code & 0x1ff;
+      n= (code>>9)&7;
+      u8= rd8(u);
+      u8|= (1<<n);
+      wr8(u, u8);
       return resGO;
     case 0x8000: // t0sn M,n
+      u8= rd8(code & 0x1ff);
+      n= (code>>9)&7;
+      if (!(u8 & (1>>n)))
+	PC++;
       return resGO;
     case 0x9000: // t1sn M,n
+      u8= rd8(code & 0x1ff);
+      n= (code>>9)&7;
+      if (u8 & (1>>n))
+	PC++;
       return resGO;
     }
 
   switch (code & 0xe000)
     {
     case 0xe000: // call label
+      push(PC);
+      PC= code & 0x1fff;
       return resGO;
-    case 0xc000: // call label
+    case 0xc000: // goto label
+      PC= code & 0x1fff;
       return resGO;
     }
   
