@@ -340,7 +340,7 @@ cl_fppa14::execute(unsigned int code)
     // izsn m
     const int addr = code & 0x7F;
     int result = add_to(get_mem(addr), 1);
-    ram->write(addr, result);
+    wr8(addr, result);
     if (!result)
       ++PC;
   } else if (code == 0x0063) {
@@ -352,7 +352,7 @@ cl_fppa14::execute(unsigned int code)
     // dzsn m
     const int addr = code & 0x7F;
     int result = sub_to(get_mem(addr), 1);
-    ram->write(addr, result);
+    wr8(addr, result);
     if (!result)
       ++PC;
   } else if (CODE_MASK(0x3800, 0x7FF)) {

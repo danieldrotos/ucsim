@@ -474,30 +474,6 @@ cl_fppa16::execute(unsigned int code)
     case 0x3e00: // comp M,a
       sub_to(rd8(code & 0x1ff), rA);
       return resGO;
-    case 0x2400: // set0 IO.n
-      u= code & 0x03f;
-      n= (code>>6)&7;
-      u8= sfr->read(u);
-      u8&= ~(1<<n);
-      sfr->write(u, u8);
-      return resGO;
-    case 0x2600: // set1 IO.n
-      u= code & 0x3f;
-      n= (code>>6)&7;
-      u8= sfr->read(u);
-      u8|= (1<<n);
-      sfr->write(u, u8);
-      return resGO;
-    case 0x2e00: // swapc IO.n
-      u= code & 0x3f;
-      n= (code>>6)&7;
-      m= 1<<n;
-      u8= sfr->read(u);
-      c= u8 & m;
-      fC?(u8|=m):(u8&=~m);
-      SETC(c);
-      wr8(u, u8);
-      return resGO;
     case 0x3800: // ceqsn a,M
       u8= rd8(code & 0x1ff);
       sub_to(rA, u8);
@@ -522,17 +498,71 @@ cl_fppa16::execute(unsigned int code)
       if (rA != u8)
 	PC++;  
       return resGO;
-    case 0x2000: // t0sn IO.n
-      return resGO;
-    case 0x2200: // t1sn IO.n
-      return resGO;
     case 0x6400: // izsn M
+      u= code & 0x1ff;
+      u8= add_to(rd8(u), 1);
+      wr8(u, u8);
+      if (!u8)
+	PC++;
       return resGO;
     case 0x6600: // dzsn M
+      u= code & 0x1ff;
+      u8= sub_to(rd8(u), 1);
+      wr8(u, u8);
+      if (!u8)
+	PC++;
+      return resGO;
+    case 0x2400: // set0 IO.n
+      u= code & 0x03f;
+      n= (code>>6)&7;
+      u8= sfr->read(u);
+      u8&= ~(1<<n);
+      sfr->write(u, u8);
+      return resGO;
+    case 0x2600: // set1 IO.n
+      u= code & 0x3f;
+      n= (code>>6)&7;
+      u8= sfr->read(u);
+      u8|= (1<<n);
+      sfr->write(u, u8);
+      return resGO;
+    case 0x2e00: // swapc IO.n
+      u= code & 0x3f;
+      n= (code>>6)&7;
+      m= 1<<n;
+      u8= sfr->read(u);
+      c= u8 & m;
+      fC?(u8|=m):(u8&=~m);
+      SETC(c);
+      wr8(u, u8);
+      return resGO;
+    case 0x2000: // t0sn IO.n
+      n= (code>>6)&7;
+      u8= sfr->read(code & 0x3f);
+      if (!(u8 & (1<<n)))
+	PC++;
+      return resGO;
+    case 0x2200: // t1sn IO.n
+      n= (code>>6)&7;
+      u8= sfr->read(code & 0x3f);
+      if (u8 & (1<<n))
+	PC++;
       return resGO;
     case 0x2a00: // wait0 IO.n
+      if (puc && (puc->single))
+	return resINV;
+      n= (code>>6)&7;
+      u8= sfr->read(code & 0x3f);
+      if (u8 & (1<<n))
+	PC--;
       return resGO;
     case 0x2c00: // wait1 IO.n
+      if (puc && (puc->single))
+	return resINV;
+      n= (code>>6)&7;
+      u8= sfr->read(code & 0x3f);
+      if (!(u8 & (1<<n)))
+	PC--;
       return resGO;
     case 0x0600:
       if (code & 1)
@@ -545,6 +575,19 @@ cl_fppa16::execute(unsigned int code)
 	}
       return resGO;
     case 0x7e00: // delay M
+      if (puc && (puc->single))
+	return resINV;
+      if (!rTMP)
+	{
+	  rTMP= rd8(code & 0x1ff);
+	  PC--;
+	}
+      else
+	{
+	  if (--rTMP)
+	    PC--;
+	}
+      cA.W(rTMP);
       return resGO;
     }
 
