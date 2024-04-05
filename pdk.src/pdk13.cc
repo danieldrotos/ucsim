@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "glob.h"
+
 #include "pdk13cl.h"
 
 
@@ -38,6 +40,12 @@ cl_fppa13::cl_fppa13(int aid, class cl_pdk *the_puc, class cl_sim *asim):
 cl_fppa13::cl_fppa13(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
   cl_fppa(aid, the_puc, IType, asim)
 {
+}
+
+
+struct dis_entry *cl_fppa13::dis_tbl(void)
+{
+  return disass_pdk_13;
 }
 
 
@@ -341,9 +349,11 @@ cl_fppa13::execute(unsigned int code)
     ram->write(rSP + 1, PC >> 8);
     PC = code & 0x3FF;
     write_result = store_io(0x2, rSP + 2);
+    tick(1);
   } else if (CODE_MASK(0x1800, 0x3FF)) {
     // goto k
     PC = code & 0x3FF;
+    tick(1);
   } else if (code == 0x001E) {
     // swap
     int high = rA & 0xF;
@@ -364,10 +374,11 @@ cl_fppa13::execute(unsigned int code)
   // TODO: swapc IO, k
   else if (code == 0x0006) {
     // ldsptl
-    rA = rom->get(rSP) & 0xFF;
+    rA = rom->read(rSP) & 0xFF;
   } else if (code == 0x0007) {
     // ldregs[0x02]th
-    rA = (rom->get(rSP) & 0xFF00) >> 8;
+    //rA = (rom->get(rSP) & 0xFF00) >> 8;
+    rA = rom->read(rSP+1);
   } else if (code == 0x003C) {
     // mul
     unsigned result = rA * get_io(0x08);

@@ -97,11 +97,16 @@ public:
 
   virtual double def_xtal(void) { return 8000000; }
   
-  virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *dis_tbl(void)=0;
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual int inst_length(t_addr addr);
   virtual int inst_branch(t_addr addr);
   virtual int longest_inst(void);
-  virtual char *disass(t_addr addr);
+  virtual int m_mask(void)= 0;
+  virtual int io_mask(void)= 0;
+  virtual int rom_mask(void)= 0;
+  //virtual char *disass(t_addr addr);
+  virtual char *disassc(t_addr addr, chars *comment);
   virtual void print_regs(class cl_console_base *con);
 
   virtual int execute(unsigned int code) { return resINV; }
@@ -202,7 +207,7 @@ public:
   
   virtual int exec_inst(void);
 
-  virtual char *disass(t_addr addr);
+  virtual char *disassc(t_addr addr, chars *comment);
   virtual void print_regs(class cl_console_base *con);
 };
 

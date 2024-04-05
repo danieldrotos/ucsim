@@ -40,6 +40,10 @@ class cl_fppa16: public cl_fppa15
   virtual int init(void);
   virtual const char *id_string(void);
   //virtual void reset(void);
+  virtual int m_mask(void) { return 0x1ff; }
+  virtual int io_mask(void) { return 0x3f; }
+  virtual int rom_mask(void) { return 0x1fff; }
+  virtual struct dis_entry *dis_tbl(void);
   virtual int execute(unsigned int code);
 };
 

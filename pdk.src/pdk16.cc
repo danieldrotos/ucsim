@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "glob.h"
+
 #include "pdk16cl.h"
 
 
@@ -53,13 +55,14 @@ cl_fppa16::id_string(void)
 {
   return "pdk16";
 }
-/*
-void
-cl_fppa16::reset(void)
+
+
+struct dis_entry *cl_fppa16::dis_tbl(void)
 {
-  cl_fppa::reset();
+  return disass_pdk_16;
 }
-*/
+
+
 int
 cl_fppa16::execute(unsigned int code)
 {
@@ -70,9 +73,6 @@ cl_fppa16::execute(unsigned int code)
   switch (code & 0xffff)
     {
     case 0x0032: // push af
-      /*ram->write(rSP, rA);
-      ram->write(rSP+1, rF);
-      cSP->W(rSP+2);*/
       pushlh(rA, rF);
       return resGO;
     case 0x0033: // pop af
@@ -481,7 +481,7 @@ cl_fppa16::execute(unsigned int code)
       if (rA == u8)
 	PC++;		   
       return resGO;
-    case 0x3a00: // ceqsn A,m
+    case 0x3a00: // ceqsn M,a
       u8= rd8(code & 0x1ff);
       sub_to(u8, rA);
       if (rA == u8)
@@ -566,16 +566,20 @@ cl_fppa16::execute(unsigned int code)
 	PC--;
       return resGO;
     case 0x0600:
-      return resNOT_DONE;
+      // TODO assumption
       u= code & 0x1fe;
       if (code & 1)
 	{
 	  // icall M
+	  push(PC);
+	  PC= rd16(u);
 	}
       else
 	{
 	  // igoto M
+	  PC= rd16(u);
 	}
+      tick(1);
       return resGO;
     case 0x7e00: // delay M
       if (puc && (puc->single))
@@ -629,9 +633,11 @@ cl_fppa16::execute(unsigned int code)
     case 0xe000: // call label
       push(PC);
       PC= code & 0x1fff;
+      tick(1);
       return resGO;
     case 0xc000: // goto label
       PC= code & 0x1fff;
+      tick(1);
       return resGO;
     }
   

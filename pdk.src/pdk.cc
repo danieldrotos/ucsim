@@ -210,11 +210,11 @@ cl_fppa::build_cmdset(class cl_cmdset *cmdset)
 /*
  * Help command interpreter
  */
-
+/*
 struct dis_entry *cl_fppa::dis_tbl(void) {
   switch (type->type) {
-  case CPU_PDK13:
-    return (disass_pdk_13);
+    case CPU_PDK13:
+      return (disass_pdk_13);
   case CPU_PDK14:
     return (disass_pdk_14);
   case CPU_PDK15:
@@ -223,7 +223,7 @@ struct dis_entry *cl_fppa::dis_tbl(void) {
     return NULL;//__builtin_unreachable();
   }
 }
-
+*/
 
 int cl_fppa::inst_length(t_addr /*addr*/) {
   return 1;
@@ -253,26 +253,22 @@ const char *cl_fppa::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
   const char *b = NULL;
   int immed_n = 0;
   int start_addr = addr;
-  struct dis_entry *instructions;
-
+  struct dis_entry *instructions= dis_tbl();
+  /*
   switch (type->type) {
-      /* Dispatch to appropriate pdk port. */
       case CPU_PDK13:
         instructions = disass_pdk_13;
         break;
-
       case CPU_PDK14:
         instructions = disass_pdk_14;
         break;
-
       case CPU_PDK15:
         instructions = disass_pdk_15;
         break;
-
       default:
         return "";//__builtin_unreachable();
   }
-
+  */
   uint code = rom->get(addr++);
   int i = 0;
   while ((code & instructions[i].mask) != instructions[i].code &&
@@ -298,7 +294,7 @@ const char *cl_fppa::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
 
   return b;
 }
-
+/*
 char *cl_fppa::disass(t_addr addr)
 {
   chars work, temp;
@@ -335,43 +331,20 @@ char *cl_fppa::disass(t_addr addr)
 	      temp.format("#0x%x", code);
 	      break;
 	    case 'm':  // m    memory addressing
-	      if (*b == 'n') {
-		switch (type->type) {
-		case CPU_PDK13:
-		  code &= 0x0F;
-		  break;
-		case CPU_PDK14:
-		  code &= 0x3F;
-		  break;
-		case CPU_PDK15:
-		  code &= 0x7F;
-		  break;
-		default:
-		  ;//__builtin_unreachable();
+	      if (*b == 'n')
+		{
+		  code &= m_mask();
+		  b++;
 		}
-		++b;
-	      }
 	      temp.format("0x%x", code);
 	      break;
 	    case 'i':  // i    IO addressing
 	      // TODO: Maybe add pretty printing.
-	      if (*b == 'n') {
-		switch (type->type) {
-		case CPU_PDK13:
-		  code &= 0x1F;
-		  break;
-		case CPU_PDK14:
-		  code &= 0x3F;
-		  break;
-		case CPU_PDK15:
-		  code &= 0x7F;
-		  break;
-		default:
-		  ;//__builtin_unreachable();
+	      if (*b == 'n')
+		{
+		  code &= io_mask();
+		  ++b;
 		}
-		
-		++b;
-	      }
 	      temp.format("[0x%x]", code);
 	      break;
 	    case 'n':  // n    N-bit addressing
@@ -399,6 +372,131 @@ char *cl_fppa::disass(t_addr addr)
 	}
       else
 	work+= *(b++);
+    }
+
+  return strdup(work.c_str());
+}
+*/
+
+struct dis_entry *
+cl_fppa::get_dis_entry(t_addr addr)
+{
+  t_mem code;
+  code= rom->get(addr);
+  int i;
+  i= 0;
+  while ((code & dis_tbl()[i].mask) != dis_tbl()[i].code &&
+	 dis_tbl()[i].mnemonic)
+    i++;
+  return &dis_tbl()[i];
+}
+
+char *
+cl_fppa::disassc(t_addr addr, chars *comment)
+{
+  chars work= chars(), temp= chars(), fmt= chars();
+  const char *b;
+  t_mem code;
+  int i;
+  bool first;
+  struct dis_entry *de;
+
+  code= rom->get(addr);
+  de= get_dis_entry(addr);
+  if (!de || !de->mnemonic)
+    return strdup("-- UNKNOWN/INVALID");
+
+  b= de->mnemonic;
+  
+  first= true;
+  work= "";
+  for (i=0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 9) work.append(' ');
+	}
+      if (b[i] == '\'')
+	{
+	  fmt= "";
+	  i++;
+	  while (b[i] && (b[i]!='\''))
+	    fmt.append(b[i++]);
+	  if (!b[i]) i--;
+	  if (fmt.empty())
+	    work.append("'");
+	  if (fmt == "i5")
+	    work.appendf("0x%02x", code & 0x1f);
+	  if (fmt == "m4")
+	    work.appendf("[0x%04x]", code & 0xf);
+	  if (fmt == "m6")
+	    work.appendf("[0x%04x]", code & 0x3f);
+	  if (fmt == "m7")
+	    work.appendf("[0x%04x]", code & 0x7f);
+	  if (fmt == "m8")
+	    work.appendf("[0x%04x]", code & 0xff);
+	  if (fmt == "M5")
+	    work.appendf("[0x%04x]", code & 0x1f & ~1);
+	  if (fmt == "M7")
+	    work.appendf("[0x%04x]", code & 0x7f & ~1);
+	  if (fmt == "M8")
+	    work.appendf("[0x%04x]", code & 0xff & ~1);
+	  if (fmt == "M9")
+	    work.appendf("[0x%04x]", code & 0x1ff & ~1);
+	  if (fmt == "n5")
+	    work.appendf("%d", (code>>5)&7);
+	  if (fmt == "n6")
+	    work.appendf("%d", (code>>6)&7);
+	  if (fmt == "n7")
+	    work.appendf("%d", (code>>7)&7);
+	  if (fmt == "n9")
+	    work.appendf("%d", (code>>9)&7);
+	  if (fmt == "a8")
+	    work.appendf("0x%04x", code & 0xff);
+	  if (fmt == "a10")
+	    work.appendf("0x%04x", code & 0x3ff);
+	  if (fmt == "a11")
+	    work.appendf("0x%04x", code & 0x7ff);
+	  if (fmt == "a12")
+	    work.appendf("0x%04x", code & 0xfff);
+	  if (fmt == "a13")
+	    work.appendf("0x%04x", code & 0x1fff);
+	  if (fmt == "d4")
+	    work.appendf("%d", code & 0xf);
+	  if (fmt == "d5")
+	    work.appendf("%d", code & 0x1f);
+	  if (comment && temp.nempty())
+	    comment->append(temp);
+	  continue;
+	}
+      if (b[i] == '%')
+	{
+	  i++;
+	  temp= "";
+	  switch (b[i])
+	    {
+	    case 'm':
+	      work.appendf("[0x%04x]", code & m_mask());
+	      break;
+	    case 'M':
+	      work.appendf("[0x%04x]", code & m_mask() & ~1);
+	      break;
+	    case 'k':
+	      work.appendf("#0x%02x", code & 0xff);
+	      break;
+	    case 'i':
+	      work.appendf("0x%02x", code & io_mask());
+	      break;
+	    case 'n': // == n5
+	      work.appendf("%d", (code>>5)&7);
+	      break;
+	    }
+	  if (comment && temp.nempty())
+	    comment->append(temp);
+	}
+      else
+	work+= b[i];
     }
 
   return strdup(work.c_str());
@@ -764,9 +862,9 @@ cl_pdk::exec_inst(void)
 
 
 char *
-cl_pdk::disass(t_addr addr)
+cl_pdk::disassc(t_addr addr, chars *comment)
 {
-  return fpps[0]->disass(addr);
+  return fpps[0]->disassc(addr, comment);
 }
 
 

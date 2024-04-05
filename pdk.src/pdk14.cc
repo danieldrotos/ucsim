@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "glob.h"
+
 #include "pdk14cl.h"
 
 
@@ -38,6 +40,12 @@ cl_fppa14::cl_fppa14(int aid, class cl_pdk *the_puc, class cl_sim *asim):
 cl_fppa14::cl_fppa14(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
   cl_fppa13(aid, the_puc, IType, asim)
 {
+}
+
+
+struct dis_entry *cl_fppa14::dis_tbl(void)
+{
+  return disass_pdk_14;
 }
 
 
@@ -361,9 +369,11 @@ cl_fppa14::execute(unsigned int code)
     ram->write(rSP + 1, PC >> 8);
     PC = code & 0x7FF;
     write_result = store_io(0x2, rSP + 2);
+    tick(1);
   } else if (CODE_MASK(0x3000, 0x7FF)) {
     // goto k
     PC = code & 0x7FF;
+    tick(1);
   } else if (CODE_MASK(0x0600, 0x7F)) {
     // comp a, m
     sub_to(rA, get_mem(code & 0x7F));
