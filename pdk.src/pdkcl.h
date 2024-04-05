@@ -75,7 +75,7 @@ enum flag {
 
 class cl_pdk;
 
-class cl_fppa: public cl_uc
+class cl_fpp: public cl_uc
 {
 public:
   class cl_pdk *puc;
@@ -86,8 +86,8 @@ public:
   class cl_cell8 cA;
   class cl_memory_cell *cF, *cSP;
 public:
-  cl_fppa(int aid, class cl_pdk *the_puc, class cl_sim *asim);
-  cl_fppa(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
+  cl_fpp(int aid, class cl_pdk *the_puc, class cl_sim *asim);
+  cl_fpp(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);
   virtual void act(void);
   
@@ -186,7 +186,7 @@ public:
 class cl_pdk: public cl_uc
 {
 public:
-  class cl_fppa *fpps[8];
+  class cl_fpp *fpps[8];
   class cl_address_space *ram;
   class cl_address_space *regs8;
   u8_t rFPPEN, act, nuof_fpp;
@@ -197,7 +197,7 @@ public:
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void make_memories(void);
-  virtual class cl_fppa *mk_fppa(int id);
+  virtual class cl_fpp *mk_fpp(int id);
 
   virtual u8_t set_fppen(u8_t val);
   virtual u8_t set_act(u8_t val);

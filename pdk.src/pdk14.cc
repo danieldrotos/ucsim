@@ -30,27 +30,27 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pdk14cl.h"
 
 
-cl_fppa14::cl_fppa14(int aid, class cl_pdk *the_puc, class cl_sim *asim):
-  cl_fppa13(aid, the_puc, asim)
+cl_fpp14::cl_fpp14(int aid, class cl_pdk *the_puc, class cl_sim *asim):
+  cl_fpp13(aid, the_puc, asim)
 {
   type= new struct cpu_entry;
   type->type= CPU_PDK14;
 }
 
-cl_fppa14::cl_fppa14(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
-  cl_fppa13(aid, the_puc, IType, asim)
+cl_fpp14::cl_fpp14(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
+  cl_fpp13(aid, the_puc, IType, asim)
 {
 }
 
 
-struct dis_entry *cl_fppa14::dis_tbl(void)
+struct dis_entry *cl_fpp14::dis_tbl(void)
 {
   return disass_pdk_14;
 }
 
 
 int
-cl_fppa14::execute(unsigned int code)
+cl_fpp14::execute(unsigned int code)
 {
   int write_result = resGO;
   if (code == 0x0000) {

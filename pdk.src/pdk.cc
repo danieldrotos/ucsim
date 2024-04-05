@@ -51,7 +51,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /*******************************************************************/
 
-cl_fppa::cl_fppa(int aid, class cl_pdk *the_puc, class cl_sim *asim):
+cl_fpp::cl_fpp(int aid, class cl_pdk *the_puc, class cl_sim *asim):
   cl_uc(asim)
 {
   id= aid;
@@ -64,14 +64,14 @@ cl_fppa::cl_fppa(int aid, class cl_pdk *the_puc, class cl_sim *asim):
  * Base type of PDK controllers
  */
 
-cl_fppa::cl_fppa(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim)
+cl_fpp::cl_fpp(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim) : cl_uc(asim)
 {
   id= aid;
   puc= the_puc;
   type = IType;
 }
 
-int cl_fppa::init(void) {
+int cl_fpp::init(void) {
   cl_uc::init(); /* Memories now exist */
 
   //set_xtal(8000000);
@@ -106,13 +106,13 @@ int cl_fppa::init(void) {
 
 
 void
-cl_fppa::act(void)
+cl_fpp::act(void)
 {
   cSP->decode(&rSP);
   cF ->decode(&rF);
 }
 
-void cl_fppa::reset(void) {
+void cl_fpp::reset(void) {
   cl_uc::reset();
   sp_most = 0x00;
 
@@ -124,7 +124,7 @@ void cl_fppa::reset(void) {
   rTMP= 0;
 }
 
-void cl_fppa::mk_hw_elements(void)
+void cl_fpp::mk_hw_elements(void)
 {
   // TODO: Add hardware stuff here.
   class cl_hw *h;
@@ -134,7 +134,7 @@ void cl_fppa::mk_hw_elements(void)
   h->init();
 }
 
-void cl_fppa::make_memories(void)
+void cl_fpp::make_memories(void)
 {
   class cl_address_space *as;
   int rom_storage, ram_storage;
@@ -200,7 +200,7 @@ void cl_fppa::make_memories(void)
 
 
 void
-cl_fppa::build_cmdset(class cl_cmdset *cmdset)
+cl_fpp::build_cmdset(class cl_cmdset *cmdset)
 {
   if (puc == NULL)
     cl_uc::build_cmdset(cmdset);
@@ -225,11 +225,11 @@ struct dis_entry *cl_fppa::dis_tbl(void) {
 }
 */
 
-int cl_fppa::inst_length(t_addr /*addr*/) {
+int cl_fpp::inst_length(t_addr /*addr*/) {
   return 1;
 }
 
-int cl_fppa::inst_branch(t_addr addr) {
+int cl_fpp::inst_branch(t_addr addr) {
   int b;
 
   get_disasm_info(addr, NULL, &b, NULL, NULL);
@@ -237,7 +237,7 @@ int cl_fppa::inst_branch(t_addr addr) {
   return b;
 }
 
-bool cl_fppa::is_call(t_addr addr) {
+bool cl_fpp::is_call(t_addr addr) {
   struct dis_entry *e;
 
   get_disasm_info(addr, NULL, NULL, NULL, &e);
@@ -245,9 +245,9 @@ bool cl_fppa::is_call(t_addr addr) {
   return e ? (e->is_call) : false;
 }
 
-int cl_fppa::longest_inst(void) { return 1; }
+int cl_fpp::longest_inst(void) { return 1; }
 
-const char *cl_fppa::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
+const char *cl_fpp::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
                                     int *immed_offset,
                                     struct dis_entry **dentry) {
   const char *b = NULL;
@@ -379,7 +379,7 @@ char *cl_fppa::disass(t_addr addr)
 */
 
 struct dis_entry *
-cl_fppa::get_dis_entry(t_addr addr)
+cl_fpp::get_dis_entry(t_addr addr)
 {
   t_mem code;
   code= rom->get(addr);
@@ -392,7 +392,7 @@ cl_fppa::get_dis_entry(t_addr addr)
 }
 
 char *
-cl_fppa::disassc(t_addr addr, chars *comment)
+cl_fpp::disassc(t_addr addr, chars *comment)
 {
   chars work= chars(), temp= chars(), fmt= chars();
   const char *b;
@@ -503,7 +503,7 @@ cl_fppa::disassc(t_addr addr, chars *comment)
 }
 
 void
-cl_fppa::print_regs(class cl_console_base *con)
+cl_fpp::print_regs(class cl_console_base *con)
 {
   act();
   con->dd_color("answer");
@@ -519,7 +519,7 @@ cl_fppa::print_regs(class cl_console_base *con)
  * Execution
  */
 
-int cl_fppa::exec_inst(void)
+int cl_fpp::exec_inst(void)
 {
   t_mem code;
 
@@ -541,7 +541,7 @@ int cl_fppa::exec_inst(void)
 
 
 void
-cl_fppa::push(u16_t word)
+cl_fpp::push(u16_t word)
 {
   u8_t b= rSP;
   ram->write(rSP, word);
@@ -552,7 +552,7 @@ cl_fppa::push(u16_t word)
 }
 
 void
-cl_fppa::pushlh(u8_t low, u8_t high)
+cl_fpp::pushlh(u8_t low, u8_t high)
 {
   u8_t b= rSP;
   ram->write(rSP, low);
@@ -563,7 +563,7 @@ cl_fppa::pushlh(u8_t low, u8_t high)
 }
 
 void
-cl_fppa::stack_check_overflow(void)
+cl_fpp::stack_check_overflow(void)
 {
   if (0)
     {
@@ -577,7 +577,7 @@ cl_fppa::stack_check_overflow(void)
 }
 
 void
-cl_fppa::stack_check_overflow(t_addr sp_before)
+cl_fpp::stack_check_overflow(t_addr sp_before)
 {
   if (0)
     {
@@ -643,7 +643,7 @@ cl_pdk::init(void)
 {
   cl_uc::init();
   class cl_fppen_op *op;
-  fpps[0]= mk_fppa(0);
+  fpps[0]= mk_fpp(0);
 
   cFPPEN= sfr->get_cell(1);
   op= new cl_fppen_op(this, cFPPEN);
@@ -662,13 +662,13 @@ cl_pdk::init(void)
 
   if (type->type == CPU_PDKX)
     {
-      fpps[1]= mk_fppa(1);
-      fpps[2]= mk_fppa(2);
-      fpps[3]= mk_fppa(3);
-      fpps[4]= mk_fppa(4);
-      fpps[5]= mk_fppa(5);
-      fpps[6]= mk_fppa(6);
-      fpps[7]= mk_fppa(7);
+      fpps[1]= mk_fpp(1);
+      fpps[2]= mk_fpp(2);
+      fpps[3]= mk_fpp(3);
+      fpps[4]= mk_fpp(4);
+      fpps[5]= mk_fpp(5);
+      fpps[6]= mk_fpp(6);
+      fpps[7]= mk_fpp(7);
       nuof_fpp= 8;
     }
   
@@ -743,18 +743,18 @@ cl_pdk::make_memories(void)
   ad->activate(0);
 }
 
-class cl_fppa *
-cl_pdk::mk_fppa(int id)
+class cl_fpp *
+cl_pdk::mk_fpp(int id)
 {
-  class cl_fppa *fppa;
+  class cl_fpp *fppa;
   switch (type->type)
     {
-    case CPU_PDK13: fppa= new cl_fppa13(id, this, sim); break;
-    case CPU_PDK14: fppa= new cl_fppa14(id, this, sim); break;
-    case CPU_PDK15: fppa= new cl_fppa15(id, this, sim); break;
-    case CPU_PDK16: fppa= new cl_fppa16(id, this, sim); break;
-    case CPU_PDKX:  fppa= new cl_fppa15(id, this, sim); break;
-    default: fppa= new cl_fppa14(id, this, sim); break;
+    case CPU_PDK13: fppa= new cl_fpp13(id, this, sim); break;
+    case CPU_PDK14: fppa= new cl_fpp14(id, this, sim); break;
+    case CPU_PDK15: fppa= new cl_fpp15(id, this, sim); break;
+    case CPU_PDK16: fppa= new cl_fpp16(id, this, sim); break;
+    case CPU_PDKX:  fppa= new cl_fpp15(id, this, sim); break;
+    default: fppa= new cl_fpp14(id, this, sim); break;
     }  
   fppa->init();
   return fppa;
@@ -803,7 +803,7 @@ cl_pdk::set_nuof(u8_t val)
       if (i<val)
 	{
 	  if (fpps[i] == NULL)
-	    fpps[i]= mk_fppa(i);
+	    fpps[i]= mk_fpp(i);
 	  else
 	    fpps[i]->reset();
 	}

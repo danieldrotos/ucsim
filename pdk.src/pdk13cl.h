@@ -31,11 +31,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pdkcl.h"
 
 
-class cl_fppa13: public cl_fppa
+class cl_fpp13: public cl_fpp
 {
  public:
-  cl_fppa13(int aid, class cl_pdk *the_puc, class cl_sim *asim);
-  cl_fppa13(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
+  cl_fpp13(int aid, class cl_pdk *the_puc, class cl_sim *asim);
+  cl_fpp13(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim);
   virtual const char *id_string(void) { return "pdk13"; }
   virtual struct dis_entry *dis_tbl(void);
   virtual int m_mask(void) { return 0x3f; }

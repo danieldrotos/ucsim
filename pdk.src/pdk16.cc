@@ -30,41 +30,41 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pdk16cl.h"
 
 
-cl_fppa16::cl_fppa16(int aid, class cl_pdk *the_puc, class cl_sim *asim):
-  cl_fppa15(aid, the_puc, asim)
+cl_fpp16::cl_fpp16(int aid, class cl_pdk *the_puc, class cl_sim *asim):
+  cl_fpp15(aid, the_puc, asim)
 {
   type= new struct cpu_entry;
   type->type= CPU_PDK16;
 }
 
-cl_fppa16::cl_fppa16(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
-  cl_fppa15(aid, the_puc, IType, asim)
+cl_fpp16::cl_fpp16(int aid, class cl_pdk *the_puc, struct cpu_entry *IType, class cl_sim *asim):
+  cl_fpp15(aid, the_puc, IType, asim)
 {
 }
 
 
 int
-cl_fppa16::init(void)
+cl_fpp16::init(void)
 {
-  cl_fppa15::init();
+  cl_fpp15::init();
   return 0;
 }
 
 const char *
-cl_fppa16::id_string(void)
+cl_fpp16::id_string(void)
 {
   return "pdk16";
 }
 
 
-struct dis_entry *cl_fppa16::dis_tbl(void)
+struct dis_entry *cl_fpp16::dis_tbl(void)
 {
   return disass_pdk_16;
 }
 
 
 int
-cl_fppa16::execute(unsigned int code)
+cl_fpp16::execute(unsigned int code)
 {
   int c, i, n;
   unsigned int u;

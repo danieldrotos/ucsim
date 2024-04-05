@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "regspdk.h"
 
 
-u8_t cl_fppa::add_to(u8_t initial, int value, bool carry) {
+u8_t cl_fpp::add_to(u8_t initial, int value, bool carry) {
   u8_t f= 0, res;
   int c= carry?(fC):0;
   int r, r2, r3;
@@ -54,7 +54,7 @@ u8_t cl_fppa::add_to(u8_t initial, int value, bool carry) {
   return initial + value + carry;
 }
 
-u8_t cl_fppa::sub_to(u8_t initial, int value, bool carry) {
+u8_t cl_fpp::sub_to(u8_t initial, int value, bool carry) {
   u8_t f= 0;
   int r= initial - value - carry;
   
@@ -81,7 +81,7 @@ int cl_fppa::store_io(t_addr addr, int value) {
   return resGO;
 }
 */
-void cl_fppa::store_flag(flag n, int value) {
+void cl_fpp::store_flag(flag n, int value) {
   value= value?1:0;
   switch (n) {
   case flag_z: cF->W((rF & ~1) | (value << BITPOS_Z)); break;
