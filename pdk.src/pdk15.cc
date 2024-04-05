@@ -157,11 +157,11 @@ cl_fppa15::execute(unsigned int code)
   } else if (CODE_MASK(0x2400, 0xFF)) {
     // inc m
     int addr = code & 0xFF;
-    ram->write(addr, add_to(get_mem(addr), 1));
+    wr8(addr, add_to(get_mem(addr), 1));
   } else if (CODE_MASK(0x2500, 0xFF)) {
     // dec m
     int addr = code & 0xFF;
-    ram->write(addr, sub_to(get_mem(addr), 1));
+    wr8(addr, sub_to(get_mem(addr), 1));
   } else if (CODE_MASK(0x2600, 0xFF)) {
     // clear m
     wr8(code & 0xFF, 0);
@@ -172,8 +172,8 @@ cl_fppa15::execute(unsigned int code)
   } else if (CODE_MASK(0x2A00, 0xFF)) {
     // sr m
     int value = get_mem(code & 0xFF);
-    store_flag(flag_c, value & 1);
-    ram->write(code & 0xFF, value >> 1);
+    SETC(value & 1);
+    wr8(code & 0xFF, value >> 1);
   } else if (code == 0x006B) {
     // sl a
     store_flag(flag_c, (rA & 0x80) /*>> 7*/);
@@ -181,8 +181,8 @@ cl_fppa15::execute(unsigned int code)
   } else if (CODE_MASK(0x2B00, 0xFF)) {
     // sl m
     int value = get_mem(code & 0xFF);
-    store_flag(flag_c, (value & 0x80) >> 7);
-    ram->write(code & 0xFF, value << 1);
+    SETC((value & 0x80)/* >> 7*/);
+    wr8(code & 0xFF, value << 1);
   } else if (code == 0x006C) {
     // src a
     int c = rA & 1;
@@ -193,8 +193,8 @@ cl_fppa15::execute(unsigned int code)
     // src m
     int value = get_mem(code & 0xFF);
     int c = value & 1;
-    ram->write(code & 0xFF, (value >> 1) | (fC << 7));
-    store_flag(flag_c, c);
+    wr8(code & 0xFF, (value >> 1) | (fC << 7));
+    SETC(c);
   } else if (code == 0x006D) {
     // slc a
     int c = (rA & 0x80) /*>> 7*/;
