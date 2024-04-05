@@ -427,7 +427,7 @@ cl_fpp14::execute(unsigned int code)
   else {
     return (resINV_INST);
   }
-  return (write_result);
+  return (resGO);
 }
 
 
