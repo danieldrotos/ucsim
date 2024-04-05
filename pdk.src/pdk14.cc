@@ -121,11 +121,11 @@ cl_fppa14::execute(unsigned int code)
     cA.W(sub_to(rA, code & 0xFF));
   } else if (CODE_MASK(0x0C80, 0x7F)) {
     // sub a, m
-    rA = sub_to(rA, get_mem(code & 0x7F));
+    cA.W(sub_to(rA, get_mem(code & 0x7F)));
   } else if (CODE_MASK(0x0880, 0x7F)) {
     // sub m, a
     int addr = code & 0x7F;
-    ram->write(addr, sub_to(get_mem(addr), rA));
+    wr8(addr, sub_to(get_mem(addr), rA));
   } else if (CODE_MASK(0x0D00, 0x7F)) {
     // addc a, m
     cA.W(add_to(rA, get_mem(code & 0x7F), fC));
@@ -142,18 +142,18 @@ cl_fppa14::execute(unsigned int code)
     wr8(addr, add_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x0D80, 0x7F)) {
     // subc a, m
-    rA = sub_to(rA, get_mem(code & 0x7F), fC);
+    cA.W(sub_to(rA, get_mem(code & 0x7F), fC));
   } else if (CODE_MASK(0x0980, 0x7F)) {
     // subc m, a
     int addr = code & 0x7F;
-    ram->write(addr, sub_to(get_mem(addr), rA, fC));
+    wr8(addr, sub_to(get_mem(addr), rA, fC));
   } else if (code == 0x0061) {
     // subc a
     cA.W(sub_to(rA, fC));
   } else if (CODE_MASK(0x1080, 0x7F)) {
     // subc m
     int addr = code & 0x7F;
-    ram->write(addr, sub_to(get_mem(addr), fC));
+    wr8(addr, sub_to(get_mem(addr), fC));
   } else if (CODE_MASK(0x1200, 0x7F)) {
     // inc m
     int addr = code & 0x7F;

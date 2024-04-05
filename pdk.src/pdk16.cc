@@ -370,14 +370,22 @@ cl_fppa16::execute(unsigned int code)
       wr8(u, add_to(-rd8(u), rA));
       return resGO;
     case 0x4600: // sub a,M
+      cA.W(sub_to(rA, rd8(code & 0x1ff)));
       return resGO;
     case 0x4400: // sub M,a
+      u= code & 0x1ff;
+      wr8(u, sub_to(rd8(u), rA));
       return resGO;
     case 0x4e00: // subc a,M
+      cA.W(sub_to(rA, rd8(code & 0x1ff), fC));
       return resGO;
     case 0x4c00: // subc M,a
+      u= code & 0x1ff;
+      wr8(u, sub_to(rd8(u), rA, fC));
       return resGO;
     case 0x6200: // subc M
+      u= code & 0x1ff;
+      wr8(u, sub_to(rd8(u), fC));
       return resGO;
     case 0x6800: // inc M
       return resGO;
