@@ -345,18 +345,29 @@ cl_fppa16::execute(unsigned int code)
       tick(1);
       return resGO;
     case 0x4200: // add a,M
+      cA.W(add_to(rA, rd8(code & 0x1ff)));
       return resGO;
     case 0x4000: // add M,a
+      u= code & 0x1ff;
+      wr8(u, add_to(rA, rd8(u)));
       return resGO;
     case 0x4a00: //  addc a,M
+      cA.W(add_to(rA, rd8(code & 0x1ff), fC));
       return resGO;
     case 0x4800: // addc M,a
+      u= code & 0x1ff;
+      wr8(u, add_to(rA, rd8(u), fC));
       return resGO;
     case 0x6000: // addc M
+      u= code & 0x1ff;
+      wr8(u, add_to(rd8(u), fC));
       return resGO;
     case 0x3400: // nadd a,M
+      cA.W(add_to(rd8(code & 0x1ff), -rA));
       return resGO;
     case 0x3600: // nadd M,a
+      u= code & 0x1ff;
+      wr8(u, add_to(-rd8(u), rA));
       return resGO;
     case 0x4600: // sub a,M
       return resGO;
