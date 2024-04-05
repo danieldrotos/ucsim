@@ -315,8 +315,9 @@ cl_fppa14::execute(unsigned int code)
   } else if (CODE_MASK(0x1700, 0x7F)) {
     // ceqsn a, m
     int addr = code & 0x7F;
-    sub_to(rA, get_mem(addr));
-    if (rA == get_mem(addr))
+    u8_t value= get_mem(addr); 
+    sub_to(rA, value);
+    if (rA == value)
       ++PC;
   } else if (CODE_MASK(0x2B00, 0xFF)) {
     // cneqsn a, k
@@ -326,8 +327,9 @@ cl_fppa14::execute(unsigned int code)
   } else if (CODE_MASK(0x1780, 0x7F)) {
     // cneqsn a, m
     int addr = code & 0x7F;
-    sub_to(rA, get_mem(addr));
-    if (rA != get_mem(addr))
+    u8_t value= get_mem(addr); 
+    sub_to(rA, value);
+    if (rA != value)
       ++PC;
   } else if (code == 0x0062) {
     // izsn

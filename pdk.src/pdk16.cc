@@ -63,9 +63,9 @@ cl_fppa16::reset(void)
 int
 cl_fppa16::execute(unsigned int code)
 {
-  int c, i;
+  int c, i, n;
   unsigned int u;
-  u8_t u8;
+  u8_t u8, m;
   
   switch (code & 0xffff)
     {
@@ -469,22 +469,58 @@ cl_fppa16::execute(unsigned int code)
       wr8(u, u8);
       return resGO;
     case 0x3c00: // comp a,M
+      sub_to(rA, rd8(code & 0x1ff));
       return resGO;
     case 0x3e00: // comp M,a
+      sub_to(rd8(code & 0x1ff), rA);
       return resGO;
     case 0x2400: // set0 IO.n
+      u= code & 0x03f;
+      n= (code>>6)&7;
+      u8= sfr->read(u);
+      u8&= ~(1<<n);
+      sfr->write(u, u8);
       return resGO;
     case 0x2600: // set1 IO.n
+      u= code & 0x3f;
+      n= (code>>6)&7;
+      u8= sfr->read(u);
+      u8|= (1<<n);
+      sfr->write(u, u8);
       return resGO;
     case 0x2e00: // swapc IO.n
+      u= code & 0x3f;
+      n= (code>>6)&7;
+      m= 1<<n;
+      u8= sfr->read(u);
+      c= u8 & m;
+      fC?(u8|=m):(u8&=~m);
+      SETC(c);
+      wr8(u, u8);
       return resGO;
     case 0x3800: // ceqsn a,M
+      u8= rd8(code & 0x1ff);
+      sub_to(rA, u8);
+      if (rA == u8)
+	PC++;		   
       return resGO;
     case 0x3a00: // ceqsn A,m
+      u8= rd8(code & 0x1ff);
+      sub_to(u8, rA);
+      if (rA == u8)
+	PC++;		   
       return resGO;
     case 0x1600: // cneqsn a,M
+      u8= rd8(code & 0x1ff);
+      sub_to(rA, u8);
+      if (rA != u8)
+	PC++;  
       return resGO;
     case 0x1400: // cneqsn M,a
+      u8= rd8(code & 0x1ff);
+      sub_to(u8, rA);
+      if (rA != u8)
+	PC++;  
       return resGO;
     case 0x2000: // t0sn IO.n
       return resGO;
