@@ -394,7 +394,7 @@ cl_fpp15::execute(unsigned int code)
   } else if (code == 0x0067) {
     // pcadd
     PC += rA - 1;
-  } if (code == 0x0078) {
+  } else if (code == 0x0078) {
     // TODO: engint
   } else if (code == 0x0079) {
     // TODO: disgint

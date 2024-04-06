@@ -420,7 +420,7 @@ cl_fpp14::execute(unsigned int code)
     sfr->write(a, d);
   }
   else if (code == 0x0006) {
-    // ldspl
+    // ldsptl
     cA.W(rom->read(rSP));
     vc.rd++;
   } else if (code == 0x0007) {
