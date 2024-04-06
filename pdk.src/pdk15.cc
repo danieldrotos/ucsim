@@ -394,36 +394,45 @@ cl_fpp15::execute(unsigned int code)
   } else if (code == 0x0067) {
     // pcadd
     PC += rA - 1;
+  } if (code == 0x0078) {
+    // TODO: engint
+  } else if (code == 0x0079) {
+    // TODO: disgint
   }
-  // TODO: engint
-  // TODO: disint
   else if (code == 0x0076) {
     // stopsys
     return (resHALT);
+  } else if (code == 0x0077) {
+    // stopexe
+    return resHALT;
+  } else if (code == 0x0075) {
+    // reset
+    reset();
+  } else if (code == 0x0070) {
+    // TODO: wdreset
+  } else if ((code & 0xfc00) == 0x5c00) {
+    // swapc IO, k
+    int c, a= code & 0x7f, n= (code>>7)&7, m=1<<n;
+    u8_t d= sfr->read(a);
+    c= d & m;
+    fC?(d|=m):(d&=~m);
+    SETC(c);
+    sfr->write(a, d);
   }
-  // TODO: stopexe
-  // TODO: reset
-  // TODO: wdreset
-  // TODO: swapc IO, k
   else if (code == 0x0006) {
     // ldsptl
     cA.W(rom->read(rSP));
     vc.rd++;
   } else if (code == 0x0007) {
     // ldspth
-    //rA = (rom->get(rSP) & 0xFF00) >> 8;
     cA.W(rom->read(rSP+1));
     vc.rd++;
   } else if (code == 0x007C) {
     // mul
     unsigned result = rA * get_io(0x08);
-    cA.W(result);//rA = result & 0xFF;
-    /*write_result = store_io*/sfr->write(0x08, (result & 0xFF00) >> 8);
-  } /*else if (code == 0xFF00) {
-    // putchar - usim specific instruction
-    putchar(rA);
-    fflush(stdout);
-    } */
+    cA.W(result);
+    sfr->write(0x08, (result & 0xFF00) >> 8);
+  } 
   else {
     return (resINV_INST);
   }

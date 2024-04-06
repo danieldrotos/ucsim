@@ -137,8 +137,18 @@ void cl_fpp::mk_hw_elements(void)
 void cl_fpp::make_memories(void)
 {
   class cl_address_space *as;
-  int rom_storage, ram_storage;
+  int rom_storage= 0x2000, ram_storage= 0x200;
+  int rom_width= 16;
 
+  switch (type->type)
+    {
+    case CPU_PDK13: rom_width= 13; break;
+    case CPU_PDK14: rom_width= 14; break;
+    case CPU_PDK15: rom_width= 15; break;
+    case CPU_PDK16: rom_width= 16; break;
+    default: rom_width= 16;
+    }
+  
   if (puc != NULL)
     {
       ram= puc->ram;
@@ -147,9 +157,7 @@ void cl_fpp::make_memories(void)
     }
   else
     {
-      rom_storage = 0x2000;
-      ram_storage = 0x200;
-      rom = as = new cl_address_space("rom", 0, rom_storage, 16);
+      rom = as = new cl_address_space("rom", 0, rom_storage, rom_width);
       as->init();
       address_spaces->add(as);
       ram = as = new cl_address_space("ram", 0, ram_storage, 8);
@@ -162,7 +170,7 @@ void cl_fpp::make_memories(void)
       class cl_address_decoder *ad;
       class cl_memory_chip *chip;
     
-      chip = new cl_chip16("rom_chip", rom_storage, 16);
+      chip = new cl_chip16("rom_chip", rom_storage, rom_width);
       chip->init();
       memchips->add(chip);
       

@@ -535,7 +535,7 @@ cl_fpp16::execute(unsigned int code)
       c= u8 & m;
       fC?(u8|=m):(u8&=~m);
       SETC(c);
-      wr8(u, u8);
+      sfr->write(u, u8);
       return resGO;
     case 0x2000: // t0sn IO.n
       n= (code>>6)&7;
