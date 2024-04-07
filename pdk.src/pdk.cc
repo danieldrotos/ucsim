@@ -47,6 +47,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "pdk16cl.h"
 #include "t16cl.h"
+#include "osccl.h"
 //#include "portcl.h"
 //#include "regspdk.h"
 
@@ -759,6 +760,9 @@ cl_pdk::mk_hw_elements(void)
   cl_uc::mk_hw_elements();
 
   add_hw(h= new cl_t16(this, "t16"));
+  h->init();
+
+  add_hw(h= new cl_osc(this, "osc"));
   h->init();
 }
 

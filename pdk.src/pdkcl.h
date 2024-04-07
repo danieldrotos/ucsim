@@ -199,6 +199,7 @@ public:
   virtual void make_memories(void);
   virtual void mk_hw_elements(void);
   virtual class cl_fpp *mk_fpp(int id);
+  virtual double def_xtal(void) { return 8000000; }
 
   virtual u8_t set_fppen(u8_t val);
   virtual u8_t set_act(u8_t val);
