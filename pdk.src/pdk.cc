@@ -120,9 +120,7 @@ void cl_fpp::reset(void) {
 
   PC = id;
   rA = 0;
-  for (t_addr i = 0; i < io_size; ++i) {
-    store_io(i, 0);
-  }
+  //for (t_addr i = 0; i < io_size; ++i) store_io(i, 0);
   rTMP= 0;
 }
 

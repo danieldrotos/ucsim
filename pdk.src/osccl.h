@@ -34,14 +34,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_osc: public cl_hw
 {
  public:
-  class cl_memory_cell *mod;
+  class cl_pdk *pdk;
+  double frh, frl, fre, frsys; // frequencies
+  double ihrc, ilrc, eosc; // number of clock periods
+  double mh, ml, me; // multiplication factors
+  int runh, runl, rune;
+  class cl_memory_cell *eoscr, *clkmd;
  public:
   cl_osc(class cl_uc *auc, const char *aname);
   virtual int init(void);
   virtual void reset(void);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual int tick(int cycles);
-  
+  virtual void setup(double src_fr, unsigned int div_by);
   virtual void print_info(class cl_console_base *con);
 };
 
