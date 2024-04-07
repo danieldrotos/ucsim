@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (clockcl.h)
+ * Simulator of microcontrollers (t16cl.h)
  *
- * Copyright (C) 2020,2023 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2020,2024 Drotos Daniel, Talker Bt.
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
@@ -25,20 +25,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef CLOCKCL_HEADER
-#define CLOCKCL_HEADER
+#ifndef T16CL_HEADER
+#define T16CL_HEADER
 
 #include "hwcl.h"
 
 
-class cl_clock: public cl_hw
+class cl_t16: public cl_hw
 {
  public:
-  class cl_memory_cell *pre, *clock;
-  t_addr addr;
-  t_mem pre_cnt;
+  class cl_memory_cell *mod;
+  u16_t cnt;
  public:
-  cl_clock(class cl_uc *auc, t_addr the_addr, const char *aname);
+  cl_t16(class cl_uc *auc, const char *aname);
   virtual int init(void);
   virtual void reset(void);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
@@ -50,4 +49,4 @@ class cl_clock: public cl_hw
 
 #endif
 
-/* End of p1516.src/clockcl.h */
+/* End of pdk.src/t16cl.h */

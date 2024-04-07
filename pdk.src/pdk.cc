@@ -46,6 +46,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "glob.h"
 #include "pdk16cl.h"
+#include "t16cl.h"
 //#include "portcl.h"
 //#include "regspdk.h"
 
@@ -749,6 +750,16 @@ cl_pdk::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
+}
+
+void
+cl_pdk::mk_hw_elements(void)
+{
+  class cl_hw *h;
+  cl_uc::mk_hw_elements();
+
+  add_hw(h= new cl_t16(this, "t16"));
+  h->init();
 }
 
 class cl_fpp *

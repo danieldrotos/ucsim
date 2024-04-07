@@ -197,6 +197,7 @@ public:
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void make_memories(void);
+  virtual void mk_hw_elements(void);
   virtual class cl_fpp *mk_fpp(int id);
 
   virtual u8_t set_fppen(u8_t val);
