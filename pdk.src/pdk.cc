@@ -669,12 +669,13 @@ cl_pdk::init(void)
   op= new cl_fppen_op(this, cFPPEN);
   op->init();
   cFPPEN->append_operator(op);
+  
   mk_mvar(sfr, 0, "FLAG", "ACC Status Flag Register");
   mk_mvar(sfr, 0, "F", "ACC Status Flag Register");
   mk_mvar(sfr, 1, "FPPEN", "FPP unit Enable Register");
   mk_mvar(sfr, 2, "SP", "Stack Pointer Register");
   mk_mvar(sfr, 3, "CLKMD", "Clock Mode Register");
-  
+  mk_mvar(sfr, 6, "T16M", "Timer16 Mode Register");
   mk_mvar(sfr, 0xa, "EOSCR", "External Oscillator Setting Register");
 
   cact= new cl_act_cell(this);
@@ -805,6 +806,14 @@ cl_pdk::mk_fpp(int id)
   return fppa;
 }
 
+void
+cl_pdk::reset(void)
+{
+  int i;
+  mode= pm_run;
+  for (i=0; i<nuof_fpp; i++)
+    fpps[i]->reset();
+}
 
 u8_t
 cl_pdk::set_fppen(u8_t val)
@@ -888,21 +897,27 @@ cl_pdk::set_pc(int id, t_addr new_pc)
 int
 cl_pdk::exec_inst(void)
 {
-  int it;
+  int it, ret= resHALT;
+  if (mode == pm_pd)
+    return resHALT;
   while (!(rFPPEN & (1<<act)))
     act= (act+1)%nuof_fpp;
-  fpps[act]->pre_inst();
-  int ret= fpps[act]->exec_inst();
-  fpps[act]->post_inst();
-  it= inst_ticks= fpps[act]->inst_ticks;
-  tick(it);
-  inst_ticks= it;
-  if (rFPPEN != 1)
+  inst_ticks= 0;
+  if (mode == pm_run)
     {
-      do
-	act= (act+1)%nuof_fpp;
-      while (!(rFPPEN & (1<<act)));
-      cPC.decode(&(fpps[act]->PC));
+      fpps[act]->pre_inst();
+      ret= fpps[act]->exec_inst();
+      fpps[act]->post_inst();
+      it= inst_ticks= fpps[act]->inst_ticks;
+      tick(it);
+      inst_ticks= it;
+      if (rFPPEN != 1)
+	{
+	  do
+	    act= (act+1)%nuof_fpp;
+	  while (!(rFPPEN & (1<<act)));
+	  cPC.decode(&(fpps[act]->PC));
+	}
     }
   PC= fpps[act]->PC;
   return ret;

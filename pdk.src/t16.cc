@@ -37,7 +37,22 @@ int
 cl_t16::init(void)
 {
   cl_hw::init();
+
+  uc->mk_mvar(cfg, t16_cnt, "T16", cfg_help(t16_cnt));
+  
   return 0;
+}
+
+const char *
+cl_t16::cfg_help(t_addr addr)
+{
+  switch ((enum t16_cfg)addr)
+    {
+    case t16_on: return "Turn ticking of T16 on/off (bool, RW)";
+    case t16_cnt: return "T16 counter value (RW)";
+    case t16_nuof: return "";
+    }
+  return "Not used";
 }
 
 void
@@ -55,6 +70,27 @@ cl_t16::write(class cl_memory_cell *cell, t_mem *val)
     {
     }
   cell->set(*val);
+}
+
+t_mem
+cl_t16::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch (addr)
+    {
+    case t16_on: // turn this HW on/off
+      if (val)
+	on= *val;
+      else
+	cell->set(on?1:0);
+      break;
+    default:
+      if (val)
+	cnt= *val & 0xffff;
+      else
+	cell->set(cnt);
+      break;
+    }
+    return cell->get();
 }
 
 int
