@@ -665,15 +665,17 @@ cl_pdk::init(void)
   fpps[0]= mk_fpp(0);
 
   cFPPEN= sfr->get_cell(1);
+  cFPPEN->decode(&rFPPEN);
   op= new cl_fppen_op(this, cFPPEN);
   op->init();
   cFPPEN->append_operator(op);
-  reg_cell_var(cFPPEN, &rFPPEN, "FPPEN", "FPP unit Enable Register");
-  mk_cvar(sfr->get_cell(0), "FLAG", "ACC Status Flag Register");
-  mk_cvar(sfr->get_cell(0), "F", "ACC Status Flag Register");
-  mk_cvar(sfr->get_cell(2), "SP", "Stack Pointer Register");
-  mk_cvar(sfr->get_cell(3), "CLKMD", "Clock Mode Register");
-  mk_cvar(sfr->get_cell(0xa), "EOSCR", "External Oscillator Setting Register");
+  mk_mvar(sfr, 0, "FLAG", "ACC Status Flag Register");
+  mk_mvar(sfr, 0, "F", "ACC Status Flag Register");
+  mk_mvar(sfr, 1, "FPPEN", "FPP unit Enable Register");
+  mk_mvar(sfr, 2, "SP", "Stack Pointer Register");
+  mk_mvar(sfr, 3, "CLKMD", "Clock Mode Register");
+  
+  mk_mvar(sfr, 0xa, "EOSCR", "External Oscillator Setting Register");
 
   cact= new cl_act_cell(this);
   reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");

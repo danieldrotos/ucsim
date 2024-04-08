@@ -732,6 +732,18 @@ cl_uc::mk_cvar(class cl_memory_cell *cell, chars vname, chars vdesc,
   v->set_by(vby);
 }
 
+void
+cl_uc::mk_mvar(class cl_memory *m, t_addr a,
+	       chars vname, chars vdesc,
+	       enum var_by vby)
+{
+  class cl_cvar *v;
+  vars->add(v= new cl_var(vname, m, a, vdesc));
+  v->init();
+  v->set_by(vby);
+}
+
+
 /*
  * Making elements
  */
