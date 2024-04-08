@@ -672,6 +672,8 @@ cl_pdk::init(void)
   mk_cvar(sfr->get_cell(0), "FLAG", "ACC Status Flag Register");
   mk_cvar(sfr->get_cell(0), "F", "ACC Status Flag Register");
   mk_cvar(sfr->get_cell(2), "SP", "Stack Pointer Register");
+  mk_cvar(sfr->get_cell(3), "CLKMD", "Clock Mode Register");
+  mk_cvar(sfr->get_cell(0xa), "EOSCR", "External Oscillator Setting Register");
 
   cact= new cl_act_cell(this);
   reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");

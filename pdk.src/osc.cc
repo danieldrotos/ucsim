@@ -41,11 +41,62 @@ cl_osc::init(void)
 {
   clkmd= register_cell(pdk->sfr, 3);
   eoscr= register_cell(pdk->sfr, 0xa);
+  cl_hw::init();
+  /*
+  uc->reg_cell_var(cfg_cell(osc_freq_ihrc), &frh,
+		   "freq_ihrc", cfg_help(osc_freq_ihrc));
+  uc->reg_cell_var(cfg_cell(osc_freq_ilrc), &frh,
+		   "freq_ilrc", cfg_help(osc_freq_ilrc));
+  uc->reg_cell_var(cfg_cell(osc_freq_eosc), &frh,
+		   "freq_eosc", cfg_help(osc_freq_eosc));
+  */
+  class cl_var *v;
+  uc->vars->add(v= new cl_var("freq_ihrc", cfg, osc_freq_ihrc,
+			      cfg_help(osc_freq_ihrc)));
+  v->init();
+  v->set_by(VBY_PRE);
+  cfg_cell(osc_freq_ihrc)->decode(&frh);
+
+  uc->vars->add(v= new cl_var("freq_ilrc", cfg, osc_freq_ilrc,
+			      cfg_help(osc_freq_ilrc)));
+  v->init();
+  v->set_by(VBY_PRE);
+  cfg_cell(osc_freq_ilrc)->decode(&frl);
+
+  uc->vars->add(v= new cl_var("freq_eosc", cfg, osc_freq_eosc,
+			      cfg_help(osc_freq_eosc)));
+  v->init();
+  v->set_by(VBY_PRE);
+  cfg_cell(osc_freq_eosc)->decode(&fre);
+
   fre= pdk->get_xtal();
   frh= 16000000;
   frl= 24000;
-  cl_hw::init();
   return 0;
+}
+
+void
+cl_osc::recalc(void)
+{
+  t_mem v;
+  v= clkmd->get();
+  write(clkmd, &v);
+  v= eoscr->get();
+  write(eoscr, &v);
+}
+
+const char *
+cl_osc::cfg_help(t_addr addr)
+{
+  switch ((enum osc_cfg)addr)
+    {
+    case osc_on: return "Turn ticking of osc on/off (bool, RW)";
+    case osc_freq_ihrc: return "Frequ of IHRC oscillator (Hz, RW)";
+    case osc_freq_ilrc: return "Frequ of ILRC oscillator (Hz, RW)";
+    case osc_freq_eosc: return "Frequ of external oscillator (Hz, RW)";
+    case osc_nuof: return "";
+    }
+  return "Not used";
 }
 
 void
@@ -80,14 +131,14 @@ cl_osc::write(class cl_memory_cell *cell, t_mem *val)
 	  // Type 0
 	  switch ((v>>5) & 7)
 	    {
-	    case 0: setup(frh, 4); break;
-	    case 1: setup(frh, 2); break;
+	    case 0: setup(frh, 4); sys_source="ihrc/4"; break;
+	    case 1: setup(frh, 2); sys_source="ihrc/2"; break;
 	    case 2: break;
-	    case 3: setup(fre, 4); break;
-	    case 4: setup(fre, 2); break;
-	    case 5: setup(fre, 1); break;
-	    case 6: setup(frl, 4); break;
-	    case 7: setup(frl, 1); break;
+	    case 3: setup(fre, 4); sys_source="eosc/4"; break;
+	    case 4: setup(fre, 2); sys_source="eosc/2"; break;
+	    case 5: setup(fre, 1); sys_source="eosc"; break;
+	    case 6: setup(frl, 4); sys_source="ilrc/4"; break;
+	    case 7: setup(frl, 1); sys_source="ilrc"; break;
 	    }
 	}
       else
@@ -95,18 +146,40 @@ cl_osc::write(class cl_memory_cell *cell, t_mem *val)
 	  // Type 1
 	  switch ((v>>5) & 7)
 	    {
-	    case 0: setup(frh,16); break;
-	    case 1: setup(frh, 8); break;
-	    case 2: setup(frl,16); break;
-	    case 3: setup(frh,32); break;
-	    case 4: setup(frh,64); break;
-	    case 5: setup(fre, 8); break;
-	    case 6: setup(frl, 2); break;
+	    case 0: setup(frh,16); sys_source="ihrc/16"; break;
+	    case 1: setup(frh, 8); sys_source="ihrc/8"; break;
+	    case 2: setup(frl,16); sys_source="ilrc/16"; break;
+	    case 3: setup(frh,32); sys_source="ihrc/32"; break;
+	    case 4: setup(frh,64); sys_source="ihrc/64"; break;
+	    case 5: setup(fre, 8); sys_source="eosc/8"; break;
+	    case 6: setup(frl, 2); sys_source="ilrc/2"; break;
 	    case 7: break;
 	    }
 	}
     }
   cell->set(*val);
+}
+
+t_mem
+cl_osc::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch (addr)
+    {
+    case osc_on: // turn this HW on/off
+      if (val)
+	on= *val;
+      else
+	cell->set(on?1:0);
+      break;
+    default:
+      if (val)
+	{
+	  cell->set(*val);
+	  recalc();
+	}
+      break;
+    }
+    return cell->get();
 }
 
 int
@@ -119,9 +192,9 @@ cl_osc::tick(int cycles)
 }
 
 void
-cl_osc::setup(double src_fr, unsigned int div_by)
+cl_osc::setup(t_mem src_fr, unsigned int div_by)
 {
-  frsys= src_fr/div_by;
+  frsys= (double)src_fr/div_by;
   mh= frh/frsys;
   ml= frl/frsys;
   me= fre/frsys;
@@ -131,10 +204,10 @@ cl_osc::setup(double src_fr, unsigned int div_by)
 void
 cl_osc::print_info(class cl_console_base *con)
 {
-  con->dd_printf("frsys=%f\n", frsys);
+  con->dd_printf("frsys=%f source=%s\n", frsys, sys_source.c_str());
   con->dd_printf("Hon=%d Lon=%d Eon=%d\n", runh?1:0, runl?1:0, rune?1:0);
   con->dd_printf("Th=%f Tl=%f Te=%f\n", ihrc, ilrc, eosc);
-  con->dd_printf("frh=%f frl=%f fre=%f\n", frh, frl, fre);
+  con->dd_printf("frh=%u frl=%u fre=%u\n", MU(frh), MU(frl), MU(fre));
   con->dd_printf("mh=%f ml=%f me=%f\n", mh, ml, me);
 }
 
