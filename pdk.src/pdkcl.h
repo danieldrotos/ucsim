@@ -69,6 +69,17 @@ enum flag {
 #define regs8 sfr
 
 
+class cl_xtal_writer: public cl_memory_operator
+{
+public:
+  class cl_pdk *puc;
+public:
+  cl_xtal_writer(class cl_pdk *apuc, class cl_memory_cell *acell):
+    cl_memory_operator(acell) { puc= apuc; }
+  virtual t_mem write(t_mem val);
+};
+
+
 /*
  * Base type of STM8 microcontrollers
  */
@@ -192,6 +203,8 @@ public:
   u8_t rFPPEN, act, nuof_fpp;
   bool single;
   class cl_memory_cell *cFPPEN, *cact, *cnuof_fpp;
+  class cl_osc *osc;
+  class cl_t16 *t16;
 public:
   cl_pdk(struct cpu_entry *IType, class cl_sim *asim);
   virtual int init(void);

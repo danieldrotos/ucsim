@@ -42,6 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // sim
 //#include "simcl.h"
 #include "dregcl.h"
+#include "simifcl.h"
 
 // local
 #include "glob.h"
@@ -634,6 +635,15 @@ cl_fppen_op::write(t_mem val)
 }
 
 
+t_mem
+cl_xtal_writer::write(t_mem val)
+{
+  u32_t u= puc->osc->frsys;
+  puc->set_xtal(u);
+  return u;
+}
+
+
 /*
  * PDK uc
  */
@@ -685,6 +695,7 @@ cl_pdk::init(void)
   rFPPEN= 1;
   single= true;
   cPC.decode(&(fpps[0]->PC));
+
   return 0;
 }
 
@@ -755,14 +766,22 @@ cl_pdk::make_memories(void)
 void
 cl_pdk::mk_hw_elements(void)
 {
-  class cl_hw *h;
+  //class cl_hw *h;
   cl_uc::mk_hw_elements();
 
-  add_hw(h= new cl_t16(this, "t16"));
-  h->init();
+  add_hw(t16= new cl_t16(this, "t16"));
+  t16->init();
 
-  add_hw(h= new cl_osc(this, "osc"));
-  h->init();
+  add_hw(osc= new cl_osc(this, "osc"));
+  osc->init();
+
+  class cl_memory_cell *c;
+  class cl_hw *simif= get_hw("simif", 0);
+  if (simif)
+    {
+      c= simif->cfg_cell(simif_xtal);
+      c->prepend_operator(new cl_xtal_writer(this, c));
+    }
 }
 
 class cl_fpp *
