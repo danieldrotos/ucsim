@@ -30,6 +30,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "hwcl.h"
 
+#include "pdkcl.h"
+
 
 enum t16_cfg {
   t16_on	= 0,
@@ -39,15 +41,23 @@ enum t16_cfg {
 
 class cl_t16: public cl_hw
 {
- public:
-  class cl_memory_cell *mod;
-  u16_t cnt;
- public:
+public:
+  class cl_pdk *puc;
+  class cl_memory_cell *mod, *egs, *irq;
+  u16_t cnt, irq_mask;
+  double *src;
+  int div;
+  unsigned int pre;
+  u32_t last;
+  chars clk_source;
+public:
   cl_t16(class cl_uc *auc, const char *aname);
   virtual int init(void);
   virtual unsigned int cfg_size(void) { return t16_nuof; }
   virtual const char *cfg_help(t_addr addr);
   virtual void reset(void);
+  virtual void recalc(void);
+  virtual void set_div(void);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual int tick(int cycles);

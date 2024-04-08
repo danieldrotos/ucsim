@@ -43,6 +43,7 @@ cl_osc::cl_osc(class cl_uc *auc, const char *aname):
 int
 cl_osc::init(void)
 {
+  cl_hw::init();
   clkmd= register_cell(puc->sfr, 3);
   eoscr= register_cell(puc->sfr, 0xa);
   cl_hw::init();
@@ -54,28 +55,22 @@ cl_osc::init(void)
   uc->reg_cell_var(cfg_cell(osc_freq_eosc), &frh,
 		   "freq_eosc", cfg_help(osc_freq_eosc));
   */
-  class cl_var *v;
-  uc->vars->add(v= new cl_var("freq_ihrc", cfg, osc_freq_ihrc,
-			      cfg_help(osc_freq_ihrc)));
-  v->init();
-  v->set_by(VBY_PRE);
+  uc->mk_mvar(cfg, osc_freq_ihrc, "freq_ihrc",
+	      cfg_help(osc_freq_ihrc));
   cfg_cell(osc_freq_ihrc)->decode(&frh);
 
-  uc->vars->add(v= new cl_var("freq_ilrc", cfg, osc_freq_ilrc,
-			      cfg_help(osc_freq_ilrc)));
-  v->init();
-  v->set_by(VBY_PRE);
+  uc->mk_mvar(cfg, osc_freq_ilrc, "freq_ilrc", 
+	      cfg_help(osc_freq_ilrc));
   cfg_cell(osc_freq_ilrc)->decode(&frl);
 
-  uc->vars->add(v= new cl_var("freq_eosc", cfg, osc_freq_eosc,
-			      cfg_help(osc_freq_eosc)));
-  v->init();
-  v->set_by(VBY_PRE);
+  uc->mk_mvar(cfg, osc_freq_eosc, "freq_eosc", 
+	      cfg_help(osc_freq_eosc));
   cfg_cell(osc_freq_eosc)->decode(&fre);
 
   fre= puc->get_xtal();
   frh= 16000000;
   frl= 24000;
+  reset();
   return 0;
 }
 

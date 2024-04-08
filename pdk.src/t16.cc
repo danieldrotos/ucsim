@@ -25,21 +25,28 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "pdkcl.h"
+#include "osccl.h"
+
 #include "t16cl.h"
 
 
 cl_t16::cl_t16(class cl_uc *auc, const char *aname):
   cl_hw(auc, HW_TIMER, 0, aname)
 {
+  puc= (class cl_pdk *)auc;
+  src= NULL;
 }
 
 int
 cl_t16::init(void)
 {
+  mod= register_cell(puc->sfr, 6);
+  egs= register_cell(puc->sfr, 0xc);
+  irq= register_cell(puc->sfr, 5);
   cl_hw::init();
-
   uc->mk_mvar(cfg, t16_cnt, "T16", cfg_help(t16_cnt));
-  
+  reset();
   return 0;
 }
 
@@ -59,6 +66,45 @@ void
 cl_t16::reset(void)
 {
   cnt= 0;
+  div= 1;
+  pre= 0;
+  last= 0;
+  mod->set(0);
+  recalc();
+}
+
+void
+cl_t16::recalc(void)
+{
+  u8_t v= mod->get();
+  switch ((v>>5)&7)
+    {
+    case 0: clk_source="None"; src= NULL; break;
+    case 1: clk_source="SysClk"; src= &(puc->osc->sys); break;
+    case 2: clk_source="None"; src= NULL; break;
+    case 3: /* TODO PA4 */ clk_source="PA4"; src= NULL; break;
+    case 4: clk_source="ihrc"; src= &(puc->osc->ihrc); break;
+    case 5: clk_source="eosc"; src= &(puc->osc->eosc); break;
+    case 6: clk_source="ilrc"; src= &(puc->osc->ilrc); break;
+    case 7: /* TODO PA0 */ clk_source="PA0"; src= NULL; break;
+    }
+  set_div();
+  pre= 0;
+  if (src)
+    last= *src;
+}
+
+void
+cl_t16::set_div(void)
+{
+  u8_t v= mod->get();
+  switch ((v>>3)&3)
+    {
+    case 0: div= 1; break;
+    case 1: div= 4; break;
+    case 2: div= 16; break;
+    case 3: div= 64; break;
+    }
 }
 
 void
@@ -68,7 +114,18 @@ cl_t16::write(class cl_memory_cell *cell, t_mem *val)
     return;
   if (cell == mod)
     {
+      if ((*val & 0xff) != cell->get())
+	{
+	  cell->set(*val);
+	  recalc();
+	}
     }
+  /*else if (cell == egs)
+    {
+    }*/
+  /*else if (cell == irq)
+    {
+    }*/
   cell->set(*val);
 }
 
@@ -83,7 +140,7 @@ cl_t16::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       else
 	cell->set(on?1:0);
       break;
-    default:
+    case t16_cnt:
       if (val)
 	cnt= *val & 0xffff;
       else
@@ -96,13 +153,32 @@ cl_t16::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 int
 cl_t16::tick(int cycles)
 {
-  cnt+= cycles;
+  if (src)
+    {
+      t_mem act= *src;
+      if (act != last)
+	{
+	  int d= act - last, i;
+	  if (d<0) d= -d;
+	  if (d)
+	    {
+	      pre+= d;
+	      if ((i= pre/div))
+		{
+		  cnt+= i;
+		  pre%= div;
+		}
+	    }
+	  last= act;
+	}
+    }
   return 0;
 }
 
 void
 cl_t16::print_info(class cl_console_base *con)
 {
+  con->dd_printf("T16 Src=%s/%d pre=%u\n", clk_source.c_str(), div, pre);
   con->dd_printf("cnt= %5u\n", cnt);
 }
 
