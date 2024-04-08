@@ -42,7 +42,7 @@ int
 cl_t16::init(void)
 {
   mod= register_cell(puc->sfr, 6);
-  egs= register_cell(puc->sfr, 0xc);
+  edg= register_cell(puc->sfr, 0xc);
   irq= register_cell(puc->sfr, 5);
   cl_hw::init();
   uc->mk_mvar(cfg, t16_cnt, "T16", cfg_help(t16_cnt));
@@ -66,8 +66,6 @@ void
 cl_t16::reset(void)
 {
   cnt= 0;
-  div= 1;
-  pre= 0;
   last= 0;
   mod->set(0);
   recalc();
@@ -89,6 +87,7 @@ cl_t16::recalc(void)
     case 7: /* TODO PA0 */ clk_source="PA0"; src= NULL; break;
     }
   set_div();
+  mask= 1<<((v&7)+8);
   pre= 0;
   if (src)
     last= *src;
@@ -165,8 +164,19 @@ cl_t16::tick(int cycles)
 	      pre+= d;
 	      if ((i= pre/div))
 		{
+		  u16_t prev= cnt;
 		  cnt+= i;
 		  pre%= div;
+		  if ((prev & mask) != (cnt & mask))
+		    {
+		      // 0= rising, 1= falling
+		      u8_t edge= edg->get() & 0x10;
+		      if (( edge && !(cnt & mask)) ||
+			  (!edge &&  (cnt & mask)))
+			{
+			  irq->write(irq->get() | 4);
+			}
+		    }
 		}
 	    }
 	  last= act;
@@ -178,8 +188,11 @@ cl_t16::tick(int cycles)
 void
 cl_t16::print_info(class cl_console_base *con)
 {
-  con->dd_printf("T16 Src=%s/%d pre=%u\n", clk_source.c_str(), div, pre);
-  con->dd_printf("cnt= %5u\n", cnt);
+  con->dd_printf("T16 Src=%s/%d pre=%u mask=%04x edge=%s irq=%d\n",
+		 clk_source.c_str(), div, pre, mask,
+		 (edg->get()&0x10)?"fall":"rise",
+		 (irq->get()&4)?1:0);
+  con->dd_printf("cnt= %5u 0x%04x\n", cnt, cnt);
 }
 
 

@@ -675,8 +675,10 @@ cl_pdk::init(void)
   mk_mvar(sfr, 1, "FPPEN", "FPP unit Enable Register");
   mk_mvar(sfr, 2, "SP", "Stack Pointer Register");
   mk_mvar(sfr, 3, "CLKMD", "Clock Mode Register");
+  mk_mvar(sfr, 5, "INTRQ", "Interrupt Request Register");
   mk_mvar(sfr, 6, "T16M", "Timer16 Mode Register");
   mk_mvar(sfr, 0xa, "EOSCR", "External Oscillator Setting Register");
+  mk_mvar(sfr, 0xc, "INTEGS", "Interrupt Edge Select Register");
 
   cact= new cl_act_cell(this);
   reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");

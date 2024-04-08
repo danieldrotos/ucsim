@@ -43,8 +43,8 @@ class cl_t16: public cl_hw
 {
 public:
   class cl_pdk *puc;
-  class cl_memory_cell *mod, *egs, *irq;
-  u16_t cnt, irq_mask;
+  class cl_memory_cell *mod, *edg, *irq;
+  u16_t cnt, mask;
   double *src;
   int div;
   unsigned int pre;
