@@ -127,11 +127,12 @@ void cl_fpp::reset(void) {
 void cl_fpp::mk_hw_elements(void)
 {
   // TODO: Add hardware stuff here.
+  /*
   class cl_hw *h;
   cl_uc::mk_hw_elements();
-
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
+  */
 }
 
 void cl_fpp::make_memories(void)
@@ -864,12 +865,15 @@ cl_pdk::set_pc(int id, t_addr new_pc)
 int
 cl_pdk::exec_inst(void)
 {
+  int it;
   while (!(rFPPEN & (1<<act)))
     act= (act+1)%nuof_fpp;
   fpps[act]->pre_inst();
   int ret= fpps[act]->exec_inst();
   fpps[act]->post_inst();
-  tick(inst_ticks= fpps[act]->inst_ticks);
+  it= inst_ticks= fpps[act]->inst_ticks;
+  tick(it);
+  inst_ticks= it;
   if (rFPPEN != 1)
     {
       do
