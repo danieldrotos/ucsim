@@ -43,10 +43,10 @@ enum osc_cfg {
 class cl_osc: public cl_hw
 {
  public:
-  class cl_pdk *pdk;
+  class cl_pdk *puc;
   double frsys;
   t_mem frh, frl, fre; // frequencies
-  double ihrc, ilrc, eosc; // number of clock periods
+  double ihrc, ilrc, eosc, sys; // number of clock periods
   double mh, ml, me; // multiplication factors
   int runh, runl, rune;
   class cl_memory_cell *eoscr, *clkmd;

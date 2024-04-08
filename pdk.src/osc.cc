@@ -33,14 +33,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_osc::cl_osc(class cl_uc *auc, const char *aname):
   cl_hw(auc, HW_TIMER, 0, aname)
 {
-  pdk= (class cl_pdk *)auc;
+  puc= (class cl_pdk *)auc;
+  ihrc= 0;
+  ilrc= 0;
+  eosc= 0;
+  sys = 0;
 }
 
 int
 cl_osc::init(void)
 {
-  clkmd= register_cell(pdk->sfr, 3);
-  eoscr= register_cell(pdk->sfr, 0xa);
+  clkmd= register_cell(puc->sfr, 3);
+  eoscr= register_cell(puc->sfr, 0xa);
   cl_hw::init();
   /*
   uc->reg_cell_var(cfg_cell(osc_freq_ihrc), &frh,
@@ -69,7 +73,7 @@ cl_osc::init(void)
   v->set_by(VBY_PRE);
   cfg_cell(osc_freq_eosc)->decode(&fre);
 
-  fre= pdk->get_xtal();
+  fre= puc->get_xtal();
   frh= 16000000;
   frl= 24000;
   return 0;
@@ -103,9 +107,6 @@ void
 cl_osc::reset(void)
 {
   t_mem v;
-  ihrc= 0;
-  ilrc= 0;
-  eosc= 0;
   v= 0xf4;
   write(clkmd, &v);
   v= 0x80;
@@ -185,9 +186,13 @@ cl_osc::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 int
 cl_osc::tick(int cycles)
 {
-  if (runh) ihrc+= cycles * mh;
-  if (runl) ilrc+= cycles * ml;
-  if (rune) eosc+= cycles * me;
+  if (puc->mode == pm_run) sys+= cycles;
+  if (puc->mode != pm_pd)
+    {
+      if (runh) ihrc+= cycles * mh;
+      if (runl) ilrc+= cycles * ml;
+      if (rune) eosc+= cycles * me;
+    }
   return 0;
 }
 
@@ -198,7 +203,7 @@ cl_osc::setup(t_mem src_fr, unsigned int div_by)
   mh= frh/frsys;
   ml= frl/frsys;
   me= fre/frsys;
-  pdk->set_xtal(frsys);
+  puc->set_xtal(frsys);
 }
 
 void
