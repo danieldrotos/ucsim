@@ -368,11 +368,11 @@ cl_fpp13::execute(unsigned int code)
   }
   else if (code == 0x0036) {
     // stopsys
-    return (resHALT);
+    if (puc) puc->mode= pm_pd;
   }
   else if (code == 0x0037) {
     // stopexe
-    return resHALT;
+    if (puc) puc->mode= pm_ps;
   }
   else if (code == 0x0035) {
     // reset

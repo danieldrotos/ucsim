@@ -160,9 +160,11 @@ cl_fpp16::execute(unsigned int code)
       return resNOT_DONE;
       return resGO;
     case 0x0036: // stopsys
-      return resHALT;
+      if (puc) puc->mode= pm_pd;
+      return resGO;
     case 0x0037: // stopexe
-      return resHALT;
+      if (puc) puc->mode= pm_ps;
+      return resGO;
     case 0x0035: // reset
       reset();
       return resGO;
