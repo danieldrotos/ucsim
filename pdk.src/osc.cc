@@ -102,8 +102,8 @@ void
 cl_osc::reset(void)
 {
   t_mem v;
-  v= 0xf4;
-  write(clkmd, &v);
+  v= 0xf6;
+  puc->sfr->write(3/*clkmd*/, v);
   v= 0x80;
   write(eoscr, &v);
 }

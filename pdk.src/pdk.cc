@@ -49,6 +49,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pdk16cl.h"
 #include "t16cl.h"
 #include "osccl.h"
+#include "wdtcl.h"
 //#include "portcl.h"
 //#include "regspdk.h"
 
@@ -677,9 +678,10 @@ cl_pdk::init(void)
   mk_mvar(sfr, 3, "CLKMD", "Clock Mode Register");
   mk_mvar(sfr, 5, "INTRQ", "Interrupt Request Register");
   mk_mvar(sfr, 6, "T16M", "Timer16 Mode Register");
+  mk_mvar(sfr, 0x8, "MISC", "MISC Register");
   mk_mvar(sfr, 0xa, "EOSCR", "External Oscillator Setting Register");
   mk_mvar(sfr, 0xc, "INTEGS", "Interrupt Edge Select Register");
-
+  
   cact= new cl_act_cell(this);
   reg_cell_var(cact, &act, "fpp", "ID of actual FPPA");
   nuof_fpp= 1;
@@ -773,14 +775,17 @@ cl_pdk::make_memories(void)
 void
 cl_pdk::mk_hw_elements(void)
 {
-  //class cl_hw *h;
+  class cl_hw *h;
   cl_uc::mk_hw_elements();
+
+  add_hw(osc= new cl_osc(this, "osc"));
+  osc->init();
 
   add_hw(t16= new cl_t16(this, "t16"));
   t16->init();
 
-  add_hw(osc= new cl_osc(this, "osc"));
-  osc->init();
+  add_hw(h= new cl_wdt(this, "wdt"));
+  h->init();
 
   class cl_memory_cell *c;
   class cl_hw *simif= get_hw("simif", 0);
