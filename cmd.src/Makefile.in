@@ -4,6 +4,8 @@
 # (c) Drotos Daniel, Talker Bt. 1997
 #
 
+TN		= cmd
+
 STARTYEAR	= 1997
 
 SHELL		= /bin/sh
@@ -25,8 +27,8 @@ DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
 PICOPT		= @PICOPT@
 CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) -I$(top_srcdir) -I$(top_builddir) \
 		  -I$(top_srcdir)/sim.src -I$(top_srcdir)/gui.src
-CFLAGS          = @WALL_FLAG@ @CFLAGS@
-CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(PICOPT)
+CFLAGS          = @WALL_FLAG@ @CFLAGS@ $(OPT)
+CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(OPT) $(PICOPT)
 WINSOCK_AVAIL   = @WINSOCK_AVAIL@
 
 prefix          = @prefix@
@@ -113,22 +115,36 @@ cmdlex.cc: cmdlex.l cmdpars.hh
 cmdlib: $(top_builddir)/libcmd.a
 
 $(top_builddir)/libcmd.a: $(OBJECTS) $(LOCAL_OBJECTS)
-	$(AR) -rc $@ $(OBJECTS) $(LOCAL_OBJECTS)
+ifeq ($(SILENT),yes)
+	@echo LIB $(TN)-$@
+	@$(AR) -rc $@ $+
+	@$(RANLIB) $@
+else
+	$(AR) -rc $@ $+
 	$(RANLIB) $@
+endif
 
-.cc.o:
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+#.cc.o:
+#	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+include $(top_srcdir)/common.mk
 
 cmdpars.hh: cmdpars.cc
 
 cmdpars.cc: cmdpars.y
+ifeq ($(SILENT),yes)
+	@echo YAC $(TN)-$< 	>>$(top_srcdir)/compile.log 2>&1
+	@$(YACC) -d $<		>>$(top_srcdir)/compile.log 2>&1
+	@mv y.tab.c $*.cc 	>>$(top_srcdir)/compile.log 2>&1
+	@mv y.tab.h $*.hh 	>>$(top_srcdir)/compile.log 2>&1
+else
 	$(YACC) -d $<
 	mv y.tab.c $*.cc
 	mv y.tab.h $*.hh
+endif
 
-.l.cc:
-	rm -f $@
-	$(LEX) -t $< > $@
+#.l.cc:
+#	rm -f $@
+#	$(LEX) -t $< > $@
 
 # Remaking configuration
 # ----------------------

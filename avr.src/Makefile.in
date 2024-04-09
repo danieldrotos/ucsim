@@ -28,8 +28,8 @@ PICOPT		= @PICOPT@
 CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) -I$(top_srcdir) -I$(top_builddir) \
 		  -I$(top_srcdir)/cmd.src -I$(top_srcdir)/sim.src \
 		  -I$(top_srcdir)/gui.src
-CFLAGS          = @WALL_FLAG@ @CFLAGS@
-CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(PICOPT)
+CFLAGS          = @WALL_FLAG@ @CFLAGS@ $(OPT)
+CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(OPT) $(PICOPT)
 LDFLAGS         = @LDFLAGS@
 SHAREDLIB	= @SHAREDLIB@
 EXEEXT		= @EXEEXT@
@@ -167,8 +167,9 @@ $(top_builddir)/libsim.a:
 $(top_builddir)/libucsimutil.a:
 	$(MAKE) -C $(top_builddir) -f main.mk
 
-.cc.o:
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+#.cc.o:
+#	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+include $(top_srcdir)/common.mk
 
 .asm.hex:
 	$(AVRASM) -l $< -o $@ -e $<.lst
