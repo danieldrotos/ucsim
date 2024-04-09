@@ -27,6 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
+#include "t16cl.h"
+
 #include "pdk16cl.h"
 
 
@@ -314,10 +316,13 @@ cl_fpp16::execute(unsigned int code)
       if (code & 1)
 	{
 	  // ldt16 word
+	  wr16(code & 0x01fe, puc?(puc->t16->cnt):0);
 	}
       else
 	{
 	  // stt16 word
+	  if (puc)
+	    puc->t16->cnt= rd16(code & 0x01fe);
 	}
       return resNOT_DONE;
       return resGO;

@@ -27,6 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
+#include "t16cl.h"
+
 #include "pdk13cl.h"
 
 
@@ -80,9 +82,12 @@ cl_fpp13::execute(unsigned int code)
     // mov a, m
     cA.W(get_mem(code & 0x3F));
   } else if (CODE_MASK(0x00C1, 0x1E)) {
-    // TODO: ldt16
+    // ldt16
+    wr16(code & 0x001e, puc?(puc->t16->cnt):0);
   } else if (CODE_MASK(0x00C0, 0x1E)) {
-    // TODO: stt16
+    // stt16
+    if (puc)
+      puc->t16->cnt= rd16(code & 0x001e);
   } else if ((CODE_MASK(0x0E1, 0x1E))) {
     // idxm a, m
     cA.W(get_mem(get_mem(code & 0x1E)));
