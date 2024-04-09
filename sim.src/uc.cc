@@ -645,7 +645,7 @@ cl_uc::init(void)
   build_cmdset(cs);
   irq= false;
   vcd_break= false;
-  reset();
+  //reset();
 
   return 0;
   for (i= 0; i < sim->app->in_files->count; i++)
