@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 
 #include "t16cl.h"
+#include "wdtcl.h"
 
 #include "pdk15cl.h"
 
@@ -414,7 +415,8 @@ cl_fpp15::execute(unsigned int code)
     // reset
     reset();
   } else if (code == 0x0070) {
-    // TODO: wdreset
+    // wdreset
+    if (puc) puc->wdt->clear();
   } else if ((code & 0xfc00) == 0x5c00) {
     // swapc IO, k
     int c, a= code & 0x7f, n= (code>>7)&7, m=1<<n;

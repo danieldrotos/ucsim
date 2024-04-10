@@ -210,6 +210,7 @@ public:
   class cl_memory_cell *cFPPEN, *cact, *cnuof_fpp;
   class cl_osc *osc;
   class cl_t16 *t16;
+  class cl_wdt *wdt;
   enum pdk_mode_t mode;
 public:
   cl_pdk(struct cpu_entry *IType, class cl_sim *asim);

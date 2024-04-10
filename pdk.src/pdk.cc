@@ -775,7 +775,7 @@ cl_pdk::make_memories(void)
 void
 cl_pdk::mk_hw_elements(void)
 {
-  class cl_hw *h;
+  //class cl_hw *h;
   cl_uc::mk_hw_elements();
 
   add_hw(osc= new cl_osc(this, "osc"));
@@ -784,8 +784,8 @@ cl_pdk::mk_hw_elements(void)
   add_hw(t16= new cl_t16(this, "t16"));
   t16->init();
 
-  add_hw(h= new cl_wdt(this, "wdt"));
-  h->init();
+  add_hw(wdt= new cl_wdt(this, "wdt"));
+  wdt->init();
 
   class cl_memory_cell *c;
   class cl_hw *simif= get_hw("simif", 0);

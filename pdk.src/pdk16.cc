@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 
 #include "t16cl.h"
+#include "wdtcl.h"
 
 #include "pdk16cl.h"
 
@@ -169,7 +170,7 @@ cl_fpp16::execute(unsigned int code)
       reset();
       return resGO;
     case 0x0030: // wdtreset
-      return resNOT_DONE;
+      if (puc) puc->wdt->clear();
       return resGO;
     }
 

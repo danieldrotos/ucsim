@@ -56,6 +56,7 @@ public:
   virtual void reset(void);
   virtual void recalc(void);
   virtual void set_len(void);
+  virtual void clear(void) { cnt= 0; }
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual int tick(int cycles);

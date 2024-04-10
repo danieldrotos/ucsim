@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 
 #include "t16cl.h"
+#include "wdtcl.h"
 
 #include "pdk13cl.h"
 
@@ -379,7 +380,8 @@ cl_fpp13::execute(unsigned int code)
     reset();
   }
   else if (code == 0x0030) {
-    // TODO: wdreset
+    // wdreset
+    if (puc) puc->wdt->clear();
   }
   else if (code == 0x0006) {
     // ldsptl
