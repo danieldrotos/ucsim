@@ -30,8 +30,9 @@ PICOPT		= @PICOPT@
 CPPFLAGS        = @CPPFLAGS@ -I$(top_builddir) -I$(srcdir) \
                   -I$(top_srcdir)/$(SIMDIR) \
 		  -I$(top_srcdir)/$(CMDDIR) -I$(top_srcdir)/$(GUIDIR)
-CFLAGS          = @WALL_FLAG@ @CFLAGS@ $(OPT) -I$(top_builddir)
-CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(OPT) $(PICOPT) -I$(top_builddir)
+OPT		?= 2
+CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT) -I$(top_builddir)
+CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ -O$(OPT) $(PICOPT) -I$(top_builddir)
 WINSOCK_AVAIL   = @WINSOCK_AVAIL@
 LDFLAGS		= @LDFLAGS@
 
@@ -179,8 +180,9 @@ relay$(EXEEXT): $(RELAY_OBJECTS) $(RELAY_LIB_FILES)
 ptt: ptt.o
 	$(CXX) $(CXXFLAGS) -o $@ $< -lpthread
 
-#.cc.o:
-#	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+.cc.o:
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+
 include $(top_srcdir)/common.mk
 
 

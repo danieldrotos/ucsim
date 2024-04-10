@@ -27,8 +27,9 @@ DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
 PICOPT		= @PICOPT@
 CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) -I$(top_srcdir) -I$(top_builddir) \
 		  -I$(top_srcdir)/sim.src -I$(top_srcdir)/gui.src
-CFLAGS          = @WALL_FLAG@ @CFLAGS@ $(OPT)
-CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(OPT) $(PICOPT)
+OPT		?= 2
+CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT)
+CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ -O$(OPT) $(PICOPT)
 WINSOCK_AVAIL   = @WINSOCK_AVAIL@
 
 prefix          = @prefix@
@@ -124,27 +125,19 @@ else
 	$(RANLIB) $@
 endif
 
-#.cc.o:
-#	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
-include $(top_srcdir)/common.mk
+.cc.o:
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
 
 cmdpars.hh: cmdpars.cc
 
 cmdpars.cc: cmdpars.y
-ifeq ($(SILENT),yes)
-	@echo YAC $(TN)-$< 	>>$(top_srcdir)/compile.log 2>&1
-	@$(YACC) -d $<		>>$(top_srcdir)/compile.log 2>&1
-	@mv y.tab.c $*.cc 	>>$(top_srcdir)/compile.log 2>&1
-	@mv y.tab.h $*.hh 	>>$(top_srcdir)/compile.log 2>&1
-else
 	$(YACC) -d $<
 	mv y.tab.c $*.cc
 	mv y.tab.h $*.hh
-endif
 
-#.l.cc:
-#	rm -f $@
-#	$(LEX) -t $< > $@
+.l.cc:
+	rm -f $@
+	$(LEX) -t $< > $@
 
 # Remaking configuration
 # ----------------------

@@ -3146,6 +3146,9 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 ac_config_headers="$ac_config_headers ddconfig.h:ddconfig_in.h"
 
 
+: ${CFLAGS="-g"}
+: ${CXXFLAGS="-g"}
+
 def_ucsim="yes"
 def_dlso="no"
 def_mcs51_port="yes"

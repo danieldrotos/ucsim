@@ -5,6 +5,9 @@ AC_INIT
 AC_CONFIG_SRCDIR(.version)
 AC_CONFIG_HEADERS([ddconfig.h:ddconfig_in.h])
 
+: ${CFLAGS="-g"}
+: ${CXXFLAGS="-g"}
+
 def_ucsim="yes"
 def_dlso="no"
 def_mcs51_port="yes"
