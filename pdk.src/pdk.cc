@@ -645,6 +645,19 @@ cl_xtal_writer::write(t_mem val)
 }
 
 
+cl_mulrh_op::cl_mulrh_op(class cl_pdk *the_puc, class cl_memory_cell *acell):
+  cl_memory_operator(acell)
+{
+  puc= the_puc;
+}
+
+t_mem
+cl_mulrh_op::read(void)
+{
+  return puc->rMULRH;
+}
+
+
 /*
  * PDK uc
  */
@@ -662,7 +675,7 @@ int
 cl_pdk::init(void)
 {
   cl_uc::init();
-  class cl_fppen_op *op;
+  class cl_memory_operator *op;
   fpps[0]= mk_fpp(0);
 
   cFPPEN= sfr->get_cell(1);
@@ -670,6 +683,9 @@ cl_pdk::init(void)
   op= new cl_fppen_op(this, cFPPEN);
   op->init();
   cFPPEN->append_operator(op);
+
+  op= new cl_mulrh_op(this, sfr->get_cell(9));
+  sfr->get_cell(9)->append_operator(op);
   
   mk_mvar(sfr, 0, "FLAG", "ACC Status Flag Register");
   mk_mvar(sfr, 0, "F", "ACC Status Flag Register");
@@ -678,7 +694,9 @@ cl_pdk::init(void)
   mk_mvar(sfr, 3, "CLKMD", "Clock Mode Register");
   mk_mvar(sfr, 5, "INTRQ", "Interrupt Request Register");
   mk_mvar(sfr, 6, "T16M", "Timer16 Mode Register");
-  mk_mvar(sfr, 0x8, "MISC", "MISC Register");
+  mk_mvar(sfr, 8, "MULOP", "Multplier Operand Register");
+  mk_mvar(sfr, 8, "MISC", "MISC Register");
+  mk_mvar(sfr, 9, "MULRH", "Multplier Result High Byte Register");
   mk_mvar(sfr, 0xa, "EOSCR", "External Oscillator Setting Register");
   mk_mvar(sfr, 0xc, "INTEGS", "Interrupt Edge Select Register");
   

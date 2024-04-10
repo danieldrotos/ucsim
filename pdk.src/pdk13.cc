@@ -394,7 +394,7 @@ cl_fpp13::execute(unsigned int code)
     // mul
     unsigned result = rA * get_io(0x08);
     cA.W(result & 0xFF);
-    sfr->write(0x08, (result & 0xFF00) >> 8);
+    if (puc) puc->rMULRH= result >> 8;
   } else {
     return (resINV_INST);
   }

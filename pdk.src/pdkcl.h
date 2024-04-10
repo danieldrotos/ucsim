@@ -199,13 +199,23 @@ public:
 };
 
 
+class cl_mulrh_op: public cl_memory_operator
+{
+public:
+  class cl_pdk *puc;
+public:
+  cl_mulrh_op(class cl_pdk *the_puc, class cl_memory_cell *acell);
+  virtual t_mem read(void);
+};
+
+
 class cl_pdk: public cl_uc
 {
 public:
   class cl_fpp *fpps[8];
   class cl_address_space *ram;
   class cl_address_space *regs8;
-  u8_t rFPPEN, act, nuof_fpp;
+  u8_t rFPPEN, act, nuof_fpp, rMULRH;
   bool single;
   class cl_memory_cell *cFPPEN, *cact, *cnuof_fpp;
   class cl_osc *osc;
