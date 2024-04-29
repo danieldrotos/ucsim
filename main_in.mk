@@ -183,8 +183,6 @@ ptt: ptt.o
 .cc.o:
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
 
-#include $(top_srcdir)/common.mk
-
 
 # Remaking configuration
 # ----------------------
