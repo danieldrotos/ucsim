@@ -74,6 +74,33 @@ enum pdk_mode_t {
   pm_ps		= 2, // powersave (stopexe)
 };
 
+
+struct fppinfo_t {
+  const char *part;
+  int fpp_num;
+  int ram_size;
+  int rom_size;
+  const char *arm_sym;
+  const char *ice_sym;
+};
+
+enum regaccess_t {
+  NO= 0,
+  RO= 1,
+  WO= 2,
+  RW= 3,
+  WR= RW,
+  DI= 4
+};
+
+struct reginfo_t {
+  const char *part;
+  const char *reg;
+  enum regaccess_t access;
+  int address;
+};
+
+
 class cl_xtal_writer: public cl_memory_operator
 {
 public:
