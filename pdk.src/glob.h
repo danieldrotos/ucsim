@@ -30,6 +30,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "stypes.h"
 
+#include "pdkcl.h"
+
 
 extern struct dis_entry disass_pdk_13[];
 extern struct dis_entry disass_pdk_14[];
@@ -39,6 +41,7 @@ extern struct dis_entry disass_pdk_16[];
 /*extern struct dis_entry disass_pdk_16[];*/
 
 extern struct cpu_entry cpus_pdk[];
+extern struct fppinfo_t fppinfo[];
 
 
 #endif
