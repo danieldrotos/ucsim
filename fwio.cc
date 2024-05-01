@@ -360,6 +360,35 @@ bool
 cl_io::writable(void)
 {
   // TODO
+  switch (type)
+    {
+    case F_LISTENER: return false;
+    case F_SOCKET:
+      {
+	struct timeval tv= {0,0};
+	fd_set s;
+	FD_ZERO(&s);
+	FD_SET((SOCKET)handle, &s);
+	int ret= select(0, NULL, &s, NULL, &tv);
+	if (!FD_ISSET((SOCKET)handle, &s))
+	  return false;
+	break;
+      }
+    case F_FILE:
+      break;
+    case F_PIPE:
+      break;
+    case F_CONSOLE: return true;
+    case F_SERIAL:
+      DWORD err;
+      COMSTAT comStat;
+      bool res= ClearCommError(handle, &err, &comStat);
+      if (!res)
+	return false;
+      if (comStat.cbOutQue != 0)
+	return false;
+      break;
+    }
   return true;
 }
 
