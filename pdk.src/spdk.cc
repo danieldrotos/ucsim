@@ -62,19 +62,26 @@ gen_cpus()
     {
       t[ti].type= CPU_NONE;
       if (fppinfo[i].part[0] == 0) continue;
-      if (strcmp(fppinfo[i].part, "84B") == 0) t[ti].type= CPU_PDK13;
-      if (strcmp(fppinfo[i].part, "13" ) == 0) t[ti].type= CPU_PDK13;
-      if (strcmp(fppinfo[i].part, "85A") == 0) t[ti].type= CPU_PDK14;
-      if (strcmp(fppinfo[i].part, "14" ) == 0) t[ti].type= CPU_PDK14;
-      if (strcmp(fppinfo[i].part, "86B") == 0) t[ti].type= CPU_PDK15;
-      if (strcmp(fppinfo[i].part, "15" ) == 0) t[ti].type= CPU_PDK15;
-      if (strcmp(fppinfo[i].part, "83A") == 0) t[ti].type= CPU_PDK16;
-      if (strcmp(fppinfo[i].part, "16" ) == 0) t[ti].type= CPU_PDK16;
+      if (strcmp(fppinfo[i].arm_sym, "84B") == 0) t[ti].type= CPU_PDK13;
+      if (strcmp(fppinfo[i].arm_sym, "13" ) == 0) t[ti].type= CPU_PDK13;
+      if (strcmp(fppinfo[i].arm_sym, "85A") == 0) t[ti].type= CPU_PDK14;
+      if (strcmp(fppinfo[i].arm_sym, "14" ) == 0) t[ti].type= CPU_PDK14;
+      if (strcmp(fppinfo[i].arm_sym, "86B") == 0) t[ti].type= CPU_PDK15;
+      if (strcmp(fppinfo[i].arm_sym, "15" ) == 0) t[ti].type= CPU_PDK15;
+      if (strcmp(fppinfo[i].arm_sym, "83A") == 0) t[ti].type= CPU_PDK16;
+      if (strcmp(fppinfo[i].arm_sym, "16" ) == 0) t[ti].type= CPU_PDK16;
       if (t[ti].type != CPU_NONE)
 	{
 	  t[ti].type_str= fppinfo[i].part;
 	  t[ti].subtype= 0;
-	  t[ti].type_help= "";
+	  switch (t[ti].type)
+	    {
+	    case CPU_PDK13: t[ti].type_help= "PDK13"; break;
+	    case CPU_PDK14: t[ti].type_help= "PDK14"; break;
+	    case CPU_PDK15: t[ti].type_help= "PDK15"; break;
+	    case CPU_PDK16: t[ti].type_help= "PDK16"; break;
+	    default: t[ti].type_help= ""; break;
+	    }
 	  t[ti].sub_help= "";
 	  ti++;
 	}
