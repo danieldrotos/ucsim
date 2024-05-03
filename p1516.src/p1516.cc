@@ -206,7 +206,7 @@ cl_p1516::make_memories(void)
 {
   class cl_address_space *as;
   int i;
-  
+
   rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x20000, 32);
   as->init();
   address_spaces->add(as);
