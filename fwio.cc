@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <windows.h>
+#include <fileapi.h>
 #ifdef HAVE_WINCON_H
 #include <wincon.h>
 #endif
@@ -362,6 +363,9 @@ cl_io::writable(void)
   // TODO
   switch (type)
     {
+    case F_UNKNOWN: break;
+    case F_CHAR:
+      break;
     case F_LISTENER: return false;
     case F_SOCKET:
       {
@@ -375,7 +379,12 @@ cl_io::writable(void)
 	break;
       }
     case F_FILE:
-      break;
+      {
+	ULARGE_INTEGER s;
+	if (GetDiskFreeSpaceExA(NULL, NULL, &s, NULL))
+	  return s.QuadPart>1024;
+	break;
+      }
     case F_PIPE:
       break;
     case F_CONSOLE: return true;
