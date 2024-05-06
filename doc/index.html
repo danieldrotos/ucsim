@@ -3,11 +3,15 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Microcontroller Simulator</title>
   </head>
-  <body style="    background-color: white;"> [ <a href="news.html">News</a> ]
-    [ <a href="#download">Download</a> ] [ <a href="#install">Installation</a>
-    ] [ <a href="#use">Usage</a> ] [ <a href="mailto:drdani@mazsola.iit.uni-miskolc.hu">Mail
-      to developer</a> ]
+  <body style="    background-color: white;">
+    [ <a href="news.html">News</a> ]
+    [ <a href="#download">Download</a> ]
+    [ <a href="#install">Installation</a> ]
+    [ <a href="#use">Usage</a> ]
+    [ <a href="mailto:drdani@mazsola.iit.uni-miskolc.hu">Mail to developer</a> ]
+    
     <p> </p>
+
     <pre><tt><font size="+1">
         _____     _           
        / ____|   (_)          
@@ -125,34 +129,49 @@
     </ul>
     <p><b>Features of the simulator</b> </p>
     <ul>
+      
       <li><a href="analyzer.html">Code analyzer</a>. <br>
         The simulator tries to figure out places of valid instructions in code
         area.</li>
+      
       <li><a href="cpu_types.html">Processor types</a>. <br>
         The simulator can simulate different type of microcontrollers. </li>
+      
       <li><a href="mulcons.html">Multiple consoles</a>. <br>
         The simulator can handle more than one command consoles and accepts
         command from multiple sources. It also can be driven by other programs
         such as debugger interfaces. </li>
+      
       <li><a href="serial.html">Serial interfaces</a>. <br>
         The simulator can virtually connect a terminal to serial interface of
         the simulated CPU. </li>
+      
       <li><a href="memory.html">Memory simulation</a>. <br>
         Simulated CPU provides address spaces, storage is simulated by memory
         chips, address decoders connects them together. </li>
+      
       <li><a href="simif.html">Simulator interface</a>.<br>
         This is a special interface which provides services for the simulated
         program. This services can be used to control the simulator (for example
         run/stop) and access some host features (print, file I/O).</li>
+      
       <li><a href="vcd.html">VCD file I/O</a>.<br>
         This is a special virtual hardware peripheral which can monitor changes
         of a memory location (or a bit in MCS51 where bit address space is
         available) and write out changes to a VCD file. It can also be used to
         replay events from a VCD file in order to simulate external events.</li>
+
+      <li><a href="display.html">Peripheral displays</a>. <br>Textual
+      user intarfaces which can show information about a
+      peripheral. Some of them are interactive and can be used to
+      provide external input data for the simulated system (port,
+      uart).</li>
+      
       <li><a href="syntax.html">Command syntax</a> and <a href="cmd.html">command
           reference</a>. <br>
         The simulator can be controlled via a command line interface. It accepts
         simple commands. </li>
+      
     </ul>
     <p><b>Microcontroller specific features</b> </p>
     <ul>
