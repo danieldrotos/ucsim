@@ -164,8 +164,17 @@ uart[0] terminal display, press ^u to access control menu
     <p>It is also not recommended to use characters (either alone or
       with CTRL) used on control menu, such as <b>s</b>, <b>r</b>, <b>g</b>, <b>p</b>, <b>T</b>, <b>q</b>, <b>o</b>, <b>e</b>,
       <b>n</b>.</p>
-      
+
+    
     <a name="register_display"><h2>Register display</h2></a>
+
+    <p>Register set of the CPU is not a peripheral but could be
+      usefull to show that as a display. To accomplish this, all
+      simulators include a special "virtual" peripheral, called <b>dreg</b>, which, when displayed, shows the registers, the same way as the <a href="cmd_general.html#info_registers">info registers</a>
+      command.</p>
+
+    <img src="dreg_s51.png" border="0">
+
     
     <a name="port_display"><h2>Port display</h2></a>
     
