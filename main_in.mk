@@ -1,7 +1,7 @@
 #
-# S51 main.mk
+# uCsim main.mk
 #
-# (c) Drotos Daniel, Talker Bt. 1997,99
+# (c) 1997 Drotos Daniel
 #
 
 TN		= main
