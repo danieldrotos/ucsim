@@ -79,7 +79,7 @@ Controller has 14 hardware element(s).
     <p>Some peripherals can not be used to input external data into
       the system and do not have special display implemented. When you
       open display of them you will see the same information what you
-      can display using <a href="">info hw</a> command.</p>
+      can check using <a href="">info hw</a> command.</p>
 
     <pre>
 10&gt; <font color="#118811">i h irq</font>
@@ -105,7 +105,66 @@ Configuration memory of irq
     
     <a name="uart_display"><h2>Uart display</h2></a>
 
+    <p>Display of any uart peripheral is spcial because it acts like a
+      terminal emulator, connected to simulated uart. It doesn't have
+      control menu like other displays, but you can show it by
+      pressing a special <i>escape</i> key. This
+      escape key is CTRL-x by default, but you can configure it. </p>
+
+    <pre>
+$ <font color="#118811">ucsim_51</font>
+uCsim 0.8.4, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+0> <font color="#118811">set con uart[0]</font>
+Converting console to display of uart[0]...
+uart[0] terminal display, press ^x to access control menu
+    </pre>
+
+    <img src="uart_s51.png" border="0">
+
+    <p>If the simulated uart sends a character (byte), it will be
+    printed on the screen, so that how non-ascii charaters are shown
+    is up to your terminal where the program was started.</p>
+
+    <p>Local echo is off, which means that key presses are not
+      printed, they will be received by the simulated uart.</p>
+
+    <p>If you press the escape key, you will see the control menu, as
+    shown on the above screenshot. Keys of the menu can be pressed
+    alone or by holding CTRL down.</p>
+
     
+    <h3>Configure uart display escape charater</h3>
+
+    <p>There is a variable which holds ascii code of the escape
+      charater, to configure it you can set the appropriate variable. The variable is called</p>
+
+    <p><tt>uartX_esc_char</tt></p>
+
+    <p>where X is id number of the uart (there can be more than one
+      uarts in the controller, distinguised by their id numbers).</p>
+
+    <p>CTRL ascii codes are between 0 and 31, so for example, if you
+      are going to use CTRL-u, the easiest way to set it is:</p>
+
+    <pre>
+0&gt; <font color="#118811">expr uart0_esc_char='U'-'A'+1</font>
+21
+0&gt; <font color="#118811">set con uart[0]</font>
+Converting console to display of uart[0]...
+uart[0] terminal display, press ^u to access control menu
+    </pre>
+
+    <p>Some CTRL combinations can be recognized by the operating
+    system's terminal driver (for example ^z and ^c on linux), these
+      conbinations are not recommended to use.</p>
+
+    <p>It is also not recommended to use characters (either alone or
+      with CTRL) used on control menu, such as <b>s</b>, <b>r</b>, <b>g</b>, <b>p</b>, <b>T</b>, <b>q</b>, <b>o</b>, <b>e</b>,
+      <b>n</b>.</p>
+      
     <a name="register_display"><h2>Register display</h2></a>
     
     <a name="port_display"><h2>Port display</h2></a>
