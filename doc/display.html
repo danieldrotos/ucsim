@@ -12,9 +12,105 @@
       peripherals, which are called <b>peripheral displays</b>. They
       can be usefull for peripherals which can generate input data for
       the microcontroller, such as ports (GPIO), uarts. Some displays
-      are used to show information in non-interactive way, for example <b>dreg</b> register display.</p>
+      are used to show information in non-interactive way, for example <a href="#register_display">dreg</a> register display.</p>
 
-    <hr>
+    <p>Peripheral display can be turned onusing <a href="cmd_general.html#set_console_hw">set console hw</a> command where <i>hw</i> is the name of the peripheral.</p>
+
+    <pre>
+0&gt; <font color="#118811">conf</font>
+ucsim version 0.8.4
+Type of microcontroller: C52 CMOS cmos
+Controller has 14 hardware element(s).
+   on cpu[0]
+   on simif[0]
+  off vcd[0]
+   on timer0[0]
+   on timer1[1]
+   on uart[0]
+   on dreg[0]
+   on dport[0]
+   on port[0]
+   on port[1]
+   on port[2]
+   on port[3]
+   on irq[0]
+   on timer2[2]
+0&gt; <font color="#118811">set con dport</font>
+    </pre>
+
+    <img src="dport_s51.png" border="0">
+
+    <h2>Control simulator with peripheral display</h2>
+
+    <p>Each peripheral display interpret some control keys (a key
+      pressed while CTRL is hold). They can be used to control the
+      simulator, or the display itself.</p>
+
+    <dl>
+      
+      <dt><b>CTRL-s</b></dt>
+      <dd>Change run state of the simulator: start/stop
+      simulation. Actual state is displayed at the right side of the
+	first line.</dd>
+      
+      <dt><b>CTRL-t</b></dt>
+      <dd>Reset CPU.</dd>
+      
+      <dt><b>CTRL-q</b></dt>
+      <dd>Quit simulator, it is the same as the <a href="cmd_general.html#kill">kill</a> command.</dd>
+
+      <dt><b>CTRL-o</b></dt>
+      <dd>Close the display and return to the command console.</dd>
+
+      <dt><b>CTRL-l</b></dt>
+      <dd>Redraw the content of the display.</dd>
+
+      <dt><b>CTRL-n</b></dt>
+      <dd>Switch display to the next hardware element (peripheral) of
+	the microcontroller which has display feature implemented.</dd>
+      
+    </dl>
+
+    <p>Please note, that uart peripheral use a different display (<a href="#uart_display">see
+      below</a>) where control keys are not available by default, you
+    have to press a hot-key first to display the simulator control
+    menu.</p>
+
+    <p>Some peripherals can not be used to input external data into
+      the system and do not have special display implemented. When you
+      open display of them you will see the same information what you
+      can display using <a href="">info hw</a> command.</p>
+
+    <pre>
+10&gt; <font color="#118811">i h irq</font>
+Interrupts are disabled. Interrupt sources:
+  Handler  En  Pr Req Act Name
+  0x000003 dis  0 no  act external #0
+  0x00000b dis  0 no  act timer #0
+  0x000013 dis  0 no  act external #1
+  0x00001b dis  0 no  act timer #1
+  0x000023 dis  0 no  act serial receive
+  0x000023 dis  0 no  act serial transmit
+  0x00002b dis  0 no  act timer #2 EXF2
+  0x00002b dis  0 no  act timer #2 TF2
+Active interrupt service(s):
+  Pr Handler  PC       Source
+Configuration memory of irq
+0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
+10&gt; <font color="#118811">set con irq</font>
+    </pre>
+
+    <img src="irq_s51.png" border="0">
+
     
+    <a name="uart_display"><h2>Uart display</h2></a>
+
+    
+    <a name="register_display"><h2>Register display</h2></a>
+    
+    <a name="port_display"><h2>Port display</h2></a>
+    
+    <hr>
+
   </body>
 </html>
