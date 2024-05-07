@@ -74,13 +74,6 @@ cl_f8::ld8_a_r(class cl_cell8 &r)
 }
 
 int
-cl_f8::LD8_YH_I(t_mem code)
-{
-  cYH.W(fetch());
-  return resGO;
-}
-
-int
 cl_f8::ldw_a_i(u16_t op2)
 {
   acc16->W(op2);
@@ -189,9 +182,11 @@ cl_f8::PUSH_A(t_mem code)
 }
 
 int
-cl_f8::PUSH_ZH(t_mem code)
+cl_f8::PUSH_NY(t_mem code)
 {
-  push1(rZH); // TODO?
+  class cl_cell8 &c= m_n_y();
+  push1(c.R());
+  vc.rd++;
   return resGO;
 }
 
@@ -387,9 +382,11 @@ cl_f8::CLR_A(t_mem code)
 }
 
 int
-cl_f8::CLR_ZH(t_mem code)
+cl_f8::CLR_NY(t_mem code)
 {
-  cZH.W(0);
+  class cl_cell8 &c= m_n_y();
+  c.W(0);
+  vc.wr++;
   return resGO;
 }
 
