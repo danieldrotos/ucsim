@@ -55,6 +55,7 @@ class cl_vcd: public cl_hw
   inline char get_next_var_id(void) { return var_id++; }
 
   virtual bool set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
+  virtual void set_help(class cl_console_base *con);
 
   virtual int tick(int cycles);
 

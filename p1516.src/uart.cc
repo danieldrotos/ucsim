@@ -217,9 +217,13 @@ cl_uart::set_cmd(class cl_cmdline *cmdline,
       init();
       return true; // handled
     }
-  else
-    con->dd_printf("set hardware uart[%d] address\n", id);
   return false; // unhandled
+}
+
+void
+cl_uart::set_help(class cl_console_base *con)
+{
+  con->dd_printf("set hardware uart[%d] address\n", id);
 }
 
 int

@@ -71,6 +71,7 @@ protected:
   char input;
   bool input_avail;
   char menu;
+  bool is_raw;
 public:
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
   virtual ~cl_serial_hw(void);
@@ -79,12 +80,14 @@ public:
   virtual const char *cfg_help(t_addr addr);
   
   virtual bool set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
+  virtual void set_help(class cl_console_base *con);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);
   virtual void new_i(class cl_f *f_in);
   virtual void new_o(class cl_f *f_out);
+  virtual void set_raw(bool raw);
   virtual void del_listener_i(void);
   virtual void del_listener_o(void);
   virtual bool proc_input(void);

@@ -961,21 +961,25 @@ cl_vcd::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
         }
     }
 
-    con->dd_printf("set hardware vcd[id] add memory address [ [bit_high] bit_low]\n");
-    con->dd_printf("set hardware vcd[id] del[ete] memory address [ [bit_high] bit_low]\n");
-    con->dd_printf("set hardware vcd[id] timescale n [ms|us|ns|ps|fs]\n");
-    con->dd_printf("set hardware vcd[id] starttime n [ms|us|ns|ps|fs]\n");
-    con->dd_printf("set hardware vcd[id] input \"vcd_file_name\"\n");
-    con->dd_printf("set hardware vcd[id] output|file \"vcd_file_name\"\n");
-    con->dd_printf("set hardware vcd[id] mod[ule] module_name\n");
-    con->dd_printf("set hardware vcd[id] start\n");
-    con->dd_printf("set hardware vcd[id] pause\n");
-    con->dd_printf("set hardware vcd[id] [re]start\n");
-    con->dd_printf("set hardware vcd[id] stop\n");
-    con->dd_printf("set hardware vcd[id] break\n");
-    con->dd_printf("set hardware vcd[id] new id\n");
-
     return false;
+}
+
+void
+cl_vcd::set_help(class cl_console_base *con)
+{
+  con->dd_printf("set hardware vcd[id] add memory address [ [bit_high] bit_low]\n");
+  con->dd_printf("set hardware vcd[id] del[ete] memory address [ [bit_high] bit_low]\n");
+  con->dd_printf("set hardware vcd[id] timescale n [ms|us|ns|ps|fs]\n");
+  con->dd_printf("set hardware vcd[id] starttime n [ms|us|ns|ps|fs]\n");
+  con->dd_printf("set hardware vcd[id] input \"vcd_file_name\"\n");
+  con->dd_printf("set hardware vcd[id] output|file \"vcd_file_name\"\n");
+  con->dd_printf("set hardware vcd[id] mod[ule] module_name\n");
+  con->dd_printf("set hardware vcd[id] start\n");
+  con->dd_printf("set hardware vcd[id] pause\n");
+  con->dd_printf("set hardware vcd[id] [re]start\n");
+  con->dd_printf("set hardware vcd[id] stop\n");
+  con->dd_printf("set hardware vcd[id] break\n");
+  con->dd_printf("set hardware vcd[id] new id\n");
 }
 
 void

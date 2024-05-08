@@ -42,6 +42,11 @@ cl_output_port::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
 }
 
 void
+cl_output_port::set_help(class cl_console_base *con)
+{
+}
+
+void
 cl_output_port::print_info(class cl_console_base *con)
 {
   con->dd_printf("Value on output port: %2X\n", value);

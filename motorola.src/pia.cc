@@ -611,9 +611,13 @@ cl_pia::set_cmd(class cl_cmdline *cmdline, class cl_console_base *con)
       init();
       return true; // handled
     }
-  else
-    con->dd_printf("set hardware pia[%d] address\n", id);
   return false; // unhandled
+}
+
+void
+cl_pia::set_help(class cl_console_base *con)
+{
+  con->dd_printf("set hardware pia[%d] address\n", id);
 }
 
 void

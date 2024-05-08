@@ -46,6 +46,7 @@ public:
   
   cl_output_port(class cl_uc *auc);
   virtual bool set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
+  virtual void set_help(class cl_console_base *con);
   virtual void print_info(class cl_console_base *con);
     
   virtual void add_output(int port, long tick, t_mem value);

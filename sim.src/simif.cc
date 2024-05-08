@@ -679,15 +679,16 @@ cl_simulator_interface::set_cmd(class cl_cmdline *cmdline,
 	  return true;
 	}
     }
-  else
-    {
-      con->dd_printf("set hardware simif memory address\n");
-      con->dd_printf("set hardware simif fin \"input_file_name\"\n");
-      con->dd_printf("set hardware simif fout \"output_file_name\"\n");
-    }
   return false;
 }
 
+void
+cl_simulator_interface::set_help(class cl_console_base *con)
+{
+  con->dd_printf("set hardware simif memory address\n");
+  con->dd_printf("set hardware simif fin \"input_file_name\"\n");
+  con->dd_printf("set hardware simif fout \"output_file_name\"\n");
+}
 
 t_mem
 cl_simulator_interface::read(class cl_memory_cell *cel)
