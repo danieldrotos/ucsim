@@ -13,8 +13,8 @@ top_srcdir	= @top_srcdir@
 
 DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
 PICOPT		= @PICOPT@
-CPPFLAGS        = @CPPFLAGS@ -I. -I$(top_builddir)
-#		  -I$(top_builddir)/cmd.src -I$(top_builddir)/sim.src
+CPPFLAGS        = @CPPFLAGS@ -I. -I$(top_builddir) \
+		  -I$(top_srcdir)/utils.src
 OPT		?= 2
 CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT)
 CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(PICOPT) -O$(OPT)

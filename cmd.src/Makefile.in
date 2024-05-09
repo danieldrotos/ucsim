@@ -25,8 +25,10 @@ top_srcdir	= @top_srcdir@
 
 DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
 PICOPT		= @PICOPT@
-CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) -I$(top_srcdir) -I$(top_builddir) \
-		  -I$(top_srcdir)/sim.src -I$(top_srcdir)/gui.src
+CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) \
+		  -I$(top_builddir) \
+		  -I$(top_srcdir)/sim.src -I$(top_srcdir)/gui.src \
+		  -I$(top_srcdir)/utils.src
 OPT		?= 2
 CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT)
 CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ -O$(OPT) $(PICOPT)

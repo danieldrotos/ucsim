@@ -79,7 +79,7 @@ enable_ucsim	= @enable_ucsim@
 # ------------------------------------------
 all: checkconf libs
 
-libs: libucsimutil.a
+libs: $(top_builddir)/libucsimutil.a
 
 main_app: checkconf ucsim_app relay_app
 
@@ -145,7 +145,7 @@ include $(srcdir)/clean.mk
 
 # My rules
 # --------
-libucsimutil.a: $(OBJECTS)
+$(top_builddir)/libucsimutil.a: $(OBJECTS)
 ifeq ($(SILENT),yes)
 	@echo LIB $(TN)-$@
 	@$(AR) -rc $@ $+ 	>>$(top_srcdir)/compile.log 2>&1

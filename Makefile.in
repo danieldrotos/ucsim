@@ -18,14 +18,16 @@ top_srcdir	= @top_srcdir@
 
 # Compiling entire program or any subproject
 # ------------------------------------------
-all: checkconf #libs apps
-	$(MAKE) libs
-	$(MAKE) apps
+all: libs $(PKGS)
+#all: checkconf #libs apps
+#	$(MAKE) libs
+#	$(MAKE) $(PKGS)
+#	$(MAKE) apps
 
-libs: main_all cmd_src_all sim_src_all gui_src_all motorola_src_all m6800lib
+libs: utils_src_all cmd_src_all sim_src_all gui_src_all motorola_src_all m6800lib
 
-main_all:
-	$(MAKE) -f main.mk all
+utils_src_all:
+	$(MAKE) -C utils.src all
 
 cmd_src_all:
 	$(MAKE) -C cmd.src cmd.src
@@ -43,10 +45,10 @@ m6800lib:
 	$(MAKE) -C m6800.src m6800lib
 
 
-apps: $(PKGS) main_app
+#apps: $(PKGS) main_app
 
-main_app:
-	$(MAKE) -f main.mk main_app
+#main_app:
+#	$(MAKE) -f main.mk main_app
 
 
 .PHONY: $(PKGS)

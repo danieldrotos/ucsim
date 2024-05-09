@@ -3,9 +3,6 @@ EXEEXT		= @EXEEXT@
 enable_mcs51_port   = @enable_mcs51_port@
 enable_avr_port     = @enable_avr_port@
 enable_z80_port     = @enable_z80_port@
-enable_gbz80_port   = @enable_gbz80_port@
-enable_r2k_port     = @enable_r2k_port@
-enable_r3ka_port    = @enable_r3ka_port@
 enable_tlcs_port    = @enable_tlcs_port@
 enable_xa_port      = @enable_xa_port@
 enable_m68hc08_port = @enable_m68hc08_port@
@@ -157,7 +154,7 @@ PKGS		= $(S51) \
 		  $(RXK) $(PBLAZE) $(I8085) $(F8) $(I8048) \
 		  doc gui.src
 
-PKGS_ALL	= cmd.src sim.src gui.src motorola.src \
+PKGS_ALL	= utils.src cmd.src sim.src gui.src motorola.src \
 		  s51.src avr.src z80.src tlcs.src xa.src \
 		  m68hc08.src stm8.src st7.src pdk.src p1516.src \
 		  m6809.src m6800.src m68hc11.src m68hc12.src mos6502.src \

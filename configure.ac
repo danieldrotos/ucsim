@@ -3,7 +3,7 @@
 AC_PREREQ(2.60)
 AC_INIT
 AC_CONFIG_SRCDIR(.version)
-AC_CONFIG_HEADERS([ddconfig.h:ddconfig_in.h])
+AC_CONFIG_HEADERS([utils.src/ddconfig.h:utils.src/ddconfig_in.h])
 
 : ${CFLAGS="-g"}
 : ${CXXFLAGS="-g"}
@@ -826,12 +826,12 @@ AC_DEFINE_UNQUOTED(_M_, "${M}", [XXX])
 # ===========================================================================
 
 AC_CONFIG_FILES(Makefile
-main.mk:main_in.mk
 packages.mk:packages_in.mk
 cmd.src/Makefile
 motorola.src/Makefile
 
-sim.src/Makefile   sim.src/test/Makefile
+utils.src/Makefile
+sim.src/Makefile    sim.src/test/Makefile
 
 avr.src/Makefile     avr.src/test/Makefile
 m68hc08.src/Makefile m68hc08.src/test/Makefile
