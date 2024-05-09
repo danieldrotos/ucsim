@@ -27,7 +27,7 @@ GUIDIR		= gui.src
 DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
 # FIXME: -Imcs51 must be removed!!!
 PICOPT		= @PICOPT@
-CPPFLAGS        = @CPPFLAGS@ -I$(top_builddir) -I$(srcdir) \
+CPPFLAGS        = @CPPFLAGS@ -I. -I$(srcdir) \
                   -I$(top_srcdir)/$(SIMDIR) \
 		  -I$(top_srcdir)/$(CMDDIR) -I$(top_srcdir)/$(GUIDIR)
 OPT		?= 2

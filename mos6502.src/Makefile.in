@@ -24,8 +24,9 @@ top_srcdir	= @top_srcdir@
 transform	= @program_transform_name@
 
 DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
-CPPFLAGS        = @CPPFLAGS@ -I$(srcdir) -I$(top_builddir) \
+CPPFLAGS        = @CPPFLAGS@ -I. -I$(srcdir) \
 		  -I$(top_srcdir)/utils.src \
+		  -I$(top_builddir)/utils.src \
 		  -I$(top_srcdir)/cmd.src -I$(top_srcdir)/sim.src \
 		  -I$(top_srcdir)/gui.src
 OPT		= 2
