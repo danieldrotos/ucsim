@@ -1,5 +1,5 @@
 #
-# uCsim main.mk
+# uCsim utils.src/Makefile
 #
 # (c) 1997 Drotos Daniel
 #
@@ -200,4 +200,4 @@ checkconf:
 	  $(MAKE) -f conf.mk srcdir="$(srcdir)" freshconf;\
 	fi
 
-# End of main_in.mk/main.mk
+# End of utils.src/Makefile

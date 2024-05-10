@@ -45,19 +45,10 @@ m6800lib:
 	$(MAKE) -C m6800.src m6800lib
 
 
-#apps: $(PKGS) main_app
-
-#main_app:
-#	$(MAKE) -f main.mk main_app
-
-
 .PHONY: $(PKGS)
 
 $(PKGS):
 	$(MAKE) -C $@ $@
-
-#main_libs: main.mk
-#	$(MAKE) -f main.mk libs
 
 
 # Compiling and installing everything and running test

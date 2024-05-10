@@ -169,7 +169,7 @@ $(top_builddir)/libsim.a:
 	$(MAKE) -C $(top_builddir)/sim.src all
 
 $(top_builddir)/libucsimutil.a:
-	$(MAKE) -C $(top_builddir) -f main.mk
+	$(MAKE) -C $(top_builddir)/utils.src libs
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) $(PICOPT) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
