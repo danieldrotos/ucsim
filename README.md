@@ -16,15 +16,16 @@ p1516/p2223 and some AVR processors.
 ### How to get uCsim?
 
 uCsim is distributed in source code under GPL. It can be downloaded
-from its home site:
+from its home sites:
 
-[](http://mazsola.iit.uni-miskolc.hu/ucsim/)
+* http://mazsola.iit.uni-miskolc.hu/ucsim/
+* https://github.com/danieldrotos/ucsim
 
 uCsim is included in sdcc, free C compiler of Sandeep Dutta. It is a
 complete development package with debugger (see below). It can be
 downloaded from its home site (or from its mirrors):
 
-[](http://sdcc.sourceforge.net/)
+* http://sdcc.sourceforge.net/
 
 
 ### Mailing list
