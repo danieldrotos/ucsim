@@ -39,11 +39,9 @@ LDFLAGS		= @LDFLAGS@
 EXEEXT		= @EXEEXT@
 
 LIB_LIST	= sim ucsimutil guiucsim cmd sim
-UCSIM_LIBS	= $(patsubst %,-l%,$(LIB_LIST)) @LIBS@
-UCSIM_LIB_FILES	= $(patsubst %,lib%.a,$(LIB_LIST))
+UCSIM_LIBS	= -L$(top_builddir) -lsim -lucsimutil -lguiucsim -lcmd -lsim @LIBS@
 
-RELAY_LIBS	= $(patsubst %,-l%,ucsimutil) @LIBS@
-RELAY_LIB_FILES	= $(patsubst %,lib%.a,ucsimutil)
+RELAY_LIBS	= -L$(top_builddir) -lucsimutil @LIBS@
 
 prefix          = @prefix@
 exec_prefix     = @exec_prefix@
@@ -77,11 +75,11 @@ enable_ucsim	= @enable_ucsim@
 
 # Compiling entire program or any subproject
 # ------------------------------------------
-all: checkconf libs
+all: checkconf libs main_app
 
 libs: $(top_builddir)/libucsimutil.a
 
-main_app: checkconf ucsim_app relay_app
+main_app: checkconf otherlibs ucsim_app relay_app
 
 # Compiling and installing everything and running test
 # ---------------------------------------------------
@@ -145,6 +143,17 @@ include $(srcdir)/clean.mk
 
 # My rules
 # --------
+otherlibs: $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
+
+$(top_builddir)/libcmd.a:
+	$(MAKE) -C $(top_builddir)/cmd.src all
+
+$(top_builddir)/libguiucsim.a:
+	$(MAKE) -C $(top_builddir)/gui.src checkconf ucsim_lib
+
+$(top_builddir)/libsim.a:
+	$(MAKE) -C $(top_builddir)/sim.src all
+
 $(top_builddir)/libucsimutil.a: $(OBJECTS)
 ifeq ($(SILENT),yes)
 	@echo LIB $(TN)-$@
@@ -166,14 +175,13 @@ ftest_app: libs ftest$(EXEEXT)
 
 relay_app: libs relay$(EXEEXT)
 
-ucsim$(EXEEXT): $(UCSIM_OBJECTS) $(UCSIM_LIB_FILES)
-	echo $(UCSIM_LIB_FILES)
+ucsim$(EXEEXT): $(UCSIM_OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< -L$(top_builddir) $(UCSIM_LIBS) -o $@ 
 
 #ftest$(EXEEXT): ftest.o libucsimutil.a
 #	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $< -L$(top_builddir) -lucsimutil @LIBS@
 
-relay$(EXEEXT): $(RELAY_OBJECTS) $(RELAY_LIB_FILES)
+relay$(EXEEXT): $(RELAY_OBJECTS) $(top_builddir)/libucsimutil.a
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< -L$(top_builddir) $(RELAY_LIBS) -o $@
 
 
