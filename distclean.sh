@@ -17,7 +17,7 @@ for pkg in utils.src cmd.src sim.src gui.src motorola.src \
 	   m68hc08.src m6809.src m6800.src m68hc11.src m68hc12.src \
 	   mos6502.src rxk.src \
 	   pblaze.src i8085.src f8.src i8048.src \
-	   doc
+	   docs
 do
     echo "Make distclean of package ${pkg} directory..."
     make -C $pkg -f clean.mk top_srcdir=$(pwd) distclean
