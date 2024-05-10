@@ -72,6 +72,7 @@ OBJECTS		= $(OBJECTS_SHARED) $(OBJECTS_EXE)
 # short/long exe and lib name
 SEN		= s$(TN)$(EXEEXT)
 LEN		= ucsim_$(TN)$(EXEEXT)
+LEN2		= ucsim_i8051$(EXEEXT)
 SONAME		= libucsim_$(TN).so
 
 enable_dlso	= @enable_dlso@
@@ -90,6 +91,8 @@ install: all installdirs install_shared_lib
 	$(STRIP) $(DESTDIR)$(bindir)/$(SEN)
 	$(INSTALL) $(LEN) $(DESTDIR)$(bindir)/$(LEN)
 	$(STRIP) $(DESTDIR)$(bindir)/$(LEN)
+	$(INSTALL) $(LEN2) $(DESTDIR)$(bindir)/$(LEN2)
+	$(STRIP) $(DESTDIR)$(bindir)/$(LEN2)
 
 
 # Deleting all the installed files
@@ -97,6 +100,7 @@ install: all installdirs install_shared_lib
 uninstall:
 	rm -f $(DESTDIR)$(bindir)/$(SEN)
 	rm -f $(DESTDIR)$(bindir)/$(LEN)
+	rm -f $(DESTDIR)$(bindir)/$(LEN2)
 	rm -f $(DESTDIR)$(libdir)/$(SONAME)
 
 
@@ -141,12 +145,15 @@ include $(srcdir)/clean.mk
 # --------
 .SUFFIXES: .rel
 
-s$(TN).src: $(SEN) $(LEN) shared_lib
+s$(TN).src: $(SEN) $(LEN) $(LEN2) shared_lib
 
 $(SEN): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(LIBS) -o $@
 
 $(LEN): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(LIBS) -o $@
+
+$(LEN2): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libguiucsim.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(LIBS) -o $@
 
 ifeq ($(dlso_ok),yes)
