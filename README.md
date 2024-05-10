@@ -28,6 +28,28 @@ downloaded from its home site (or from its mirrors):
 * http://sdcc.sourceforge.net/
 
 
+### Install
+
+#### Required packages
+
+* gcc
+* g++
+* make
+* bison
+* flex
+* libncurses-dev
+
+
+#### Compilation
+
+Download source package and unzip it. Go to root directory of the
+unzipped package and the issue following commands:
+
+* ./configure
+* make
+* sudo make install
+
+
 ### Mailing list
 
 There is no mailing list which is specifically opened for
