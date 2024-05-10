@@ -93,30 +93,30 @@ already.
 
 ### Contributors and maintainers
 
-Gunnar Holm <gunnarh@foa.nft.no>
-Sandeep Dutta <dutta@comm.mot.com>
-Salvador Eduardo Tropea <salvador@inti.gov.ar>
-Josef Wolf <jw@raven.inka.de>
-Stephane MEYER <smeyer@cea.fr>
-Larry Doolittle <LRDoolittle@lbl.gov>
-Timothy Hurman <ee62th@ee.surrey.ac.uk>
-Karl-Max Wagner <karlmax@oberland.net>
-Edmar Wienskoski Jr <edmar-w-jr@technologist.com>
-Alexandre Frey <Alexandre.Frey@trusted-logic.fr>
-Kaido Karner <kaido@tradenet.ee>
-Karl Bongers <karl@turbobit.com>
-Alexis Pavlov <alexis.pavlov@certess.com>
-Davide Zanni <davide.zanni@libero.it>
-Anton Persson <anton@omicron.se>
-Nicolas Lesser <>
-Mike Jagdis <>
-Jiri Simek <>
-Zbynek Krivka <krivka@fit.vutbr.cz>
-Vaclav Peroutka <vaclavpe@users.sourceforge.net>
-Valentin Dudouyt <valentin.dudouyt@gmail.com>
-Erik Petrich <epetrich@users.sourceforge.net>
-Leland Morrison <>
-Johan Knol <johan.knol@iduna.nl>
+Gunnar Holm <gunnarh@foa.nft.no>,
+Sandeep Dutta <dutta@comm.mot.com>,
+Salvador Eduardo Tropea <salvador@inti.gov.ar>,
+Josef Wolf <jw@raven.inka.de>,
+Stephane MEYER <smeyer@cea.fr>,
+Larry Doolittle <LRDoolittle@lbl.gov>,
+Timothy Hurman <ee62th@ee.surrey.ac.uk>,
+Karl-Max Wagner <karlmax@oberland.net>,
+Edmar Wienskoski Jr <edmar-w-jr@technologist.com>,
+Alexandre Frey <Alexandre.Frey@trusted-logic.fr>,
+Kaido Karner <kaido@tradenet.ee>,
+Karl Bongers <karl@turbobit.com>,
+Alexis Pavlov <alexis.pavlov@certess.com>,
+Davide Zanni <davide.zanni@libero.it>,
+Anton Persson <anton@omicron.se>,
+Nicolas Lesser,
+Mike Jagdis,
+Jiri Simek,
+Zbynek Krivka <krivka@fit.vutbr.cz>,
+Vaclav Peroutka <vaclavpe@users.sourceforge.net>,
+Valentin Dudouyt <valentin.dudouyt@gmail.com>,
+Erik Petrich <epetrich@users.sourceforge.net>,
+Leland Morrison,
+Johan Knol <johan.knol@iduna.nl>,
 
-Maintainer of serialview: Timothy Hurman <ee62th@ee.surrey.ac.uk>
+Maintainer of serialview: Timothy Hurman <ee62th@ee.surrey.ac.uk>,
 Maintainer of other parts: Daniel Drotos <dr.dkdb@gmail.com>
