@@ -64,7 +64,6 @@ $(PKGS):
 # ---------------------------------------------------
 .PHONY: install INSTALL Install
 install:
-	$(MAKE) -f main.mk install
 	@for pkg in $(PKGS); do\
 	  $(MAKE) -C $$pkg install ;\
 	done
@@ -73,7 +72,6 @@ install:
 # Deleting all the installed files
 # --------------------------------
 uninstall:
-	$(MAKE) -f main.mk uninstall
 	@for pkg in $(PKGS); do\
 	  $(MAKE) -C $$pkg uninstall ;\
 	done
@@ -102,6 +100,7 @@ distclean: clean
 #		fi ;\
 #	done
 	rm -rf doc/*~ doc/*.bak doc/Makefile
+	rm -rf docs/*~ docs/*.bak docs/Makefile
 	rm -f Makefile packages.mk libtool
 
 
@@ -127,7 +126,6 @@ realclean: distclean
 # Performing self-test
 # --------------------
 check:
-	$(MAKE) -f main.mk check
 	@for pkg in $(PKGS); do\
 	  $(MAKE) -C $$pkg check ;\
 	done
@@ -154,7 +152,6 @@ installcheck:
 # Creating dependencies
 # ---------------------
 dep:
-	$(MAKE) -f main.mk dep
 	@for pkg in $(PKGS); do\
 	  $(MAKE) -C $$pkg dep ;\
 	done
@@ -189,11 +186,11 @@ makefiles: config.status
 	@$(top_srcdir)/mkecho $(top_builddir) "RE-MAKING MAKEFILES"
 	$(SHELL) ./config.status
 
-main.mk: $(srcdir)/main_in.mk config.status
-	@$(top_srcdir)/mkecho $(top_builddir) "RE-MAKING MAIN.MK"
-	$(SHELL) ./config.status
+#main.mk: $(srcdir)/main_in.mk config.status
+#	@$(top_srcdir)/mkecho $(top_builddir) "RE-MAKING MAIN.MK"
+#	$(SHELL) ./config.status
 
-freshconf: echo_freshconf configure main.mk ddconfig.h
+freshconf: echo_freshconf configure ddconfig.h
 
 ddconfig.h: ddconfig_in.h config.status
 	$(SHELL) ./config.status

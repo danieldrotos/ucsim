@@ -857,7 +857,7 @@ z80.src/Makefile     z80.src/test/Makefile
 gui.src/Makefile
 gui.src/serio.src/Makefile
 
-doc/Makefile
+docs/Makefile
 )
 AC_OUTPUT
 

@@ -8101,7 +8101,7 @@ printf "%s\n" "#define _M_ \"${M}\"" >>confdefs.h
 # Generating output files
 # ===========================================================================
 
-ac_config_files="$ac_config_files Makefile packages.mk:packages_in.mk cmd.src/Makefile motorola.src/Makefile utils.src/Makefile sim.src/Makefile sim.src/test/Makefile avr.src/Makefile avr.src/test/Makefile m68hc08.src/Makefile m68hc08.src/test/Makefile m6809.src/Makefile m6809.src/test/Makefile m6800.src/Makefile m6800.src/test/Makefile m68hc11.src/Makefile m68hc11.src/test/Makefile m68hc12.src/Makefile m68hc12.src/test/Makefile mos6502.src/Makefile mos6502.src/test/Makefile rxk.src/Makefile rxk.src/test/Makefile pblaze.src/Makefile pblaze.src/test/Makefile i8085.src/Makefile i8085.src/test/Makefile f8.src/Makefile f8.src/test/Makefile i8048.src/Makefile i8048.src/test/Makefile p1516.src/Makefile p1516.src/test/Makefile pdk.src/Makefile pdk.src/test/Makefile s51.src/Makefile s51.src/test/Makefile st7.src/Makefile st7.src/test/Makefile stm8.src/Makefile stm8.src/test/Makefile tlcs.src/Makefile tlcs.src/test/Makefile xa.src/Makefile xa.src/test/Makefile z80.src/Makefile z80.src/test/Makefile gui.src/Makefile gui.src/serio.src/Makefile doc/Makefile"
+ac_config_files="$ac_config_files Makefile packages.mk:packages_in.mk cmd.src/Makefile motorola.src/Makefile utils.src/Makefile sim.src/Makefile sim.src/test/Makefile avr.src/Makefile avr.src/test/Makefile m68hc08.src/Makefile m68hc08.src/test/Makefile m6809.src/Makefile m6809.src/test/Makefile m6800.src/Makefile m6800.src/test/Makefile m68hc11.src/Makefile m68hc11.src/test/Makefile m68hc12.src/Makefile m68hc12.src/test/Makefile mos6502.src/Makefile mos6502.src/test/Makefile rxk.src/Makefile rxk.src/test/Makefile pblaze.src/Makefile pblaze.src/test/Makefile i8085.src/Makefile i8085.src/test/Makefile f8.src/Makefile f8.src/test/Makefile i8048.src/Makefile i8048.src/test/Makefile p1516.src/Makefile p1516.src/test/Makefile pdk.src/Makefile pdk.src/test/Makefile s51.src/Makefile s51.src/test/Makefile st7.src/Makefile st7.src/test/Makefile stm8.src/Makefile stm8.src/test/Makefile tlcs.src/Makefile tlcs.src/test/Makefile xa.src/Makefile xa.src/test/Makefile z80.src/Makefile z80.src/test/Makefile gui.src/Makefile gui.src/serio.src/Makefile docs/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -8840,7 +8840,7 @@ do
     "z80.src/test/Makefile") CONFIG_FILES="$CONFIG_FILES z80.src/test/Makefile" ;;
     "gui.src/Makefile") CONFIG_FILES="$CONFIG_FILES gui.src/Makefile" ;;
     "gui.src/serio.src/Makefile") CONFIG_FILES="$CONFIG_FILES gui.src/serio.src/Makefile" ;;
-    "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
+    "docs/Makefile") CONFIG_FILES="$CONFIG_FILES docs/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
