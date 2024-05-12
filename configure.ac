@@ -3,7 +3,7 @@
 AC_PREREQ(2.60)
 AC_INIT
 AC_CONFIG_SRCDIR(.version)
-AC_CONFIG_HEADERS([utils.src/ddconfig.h:utils.src/ddconfig_in.h])
+AC_CONFIG_HEADERS([src/core/utils.src/ddconfig.h:src/core/utils.src/ddconfig_in.h])
 
 : ${CFLAGS="-g"}
 : ${CXXFLAGS="-g"}
@@ -825,37 +825,37 @@ AC_DEFINE_UNQUOTED(_M_, "${M}", [XXX])
 # Generating output files
 # ===========================================================================
 
-AC_CONFIG_FILES(Makefile
-packages.mk:packages_in.mk
-cmd.src/Makefile
-motorola.src/Makefile
+AC_CONFIG_FILES(src/Makefile src/common.mk:src/common_in.mk
+src/packages.mk:src/packages_in.mk
+src/core/cmd.src/Makefile
+src/core/motorola.src/Makefile
 
-utils.src/Makefile
-sim.src/Makefile    sim.src/test/Makefile
+src/core/utils.src/Makefile
+src/core/sim.src/Makefile    src/core/sim.src/test/Makefile
 
-avr.src/Makefile     avr.src/test/Makefile
-m68hc08.src/Makefile m68hc08.src/test/Makefile
-m6809.src/Makefile   m6809.src/test/Makefile
-m6800.src/Makefile   m6800.src/test/Makefile
-m68hc11.src/Makefile m68hc11.src/test/Makefile
-m68hc12.src/Makefile m68hc12.src/test/Makefile
-mos6502.src/Makefile mos6502.src/test/Makefile
-rxk.src/Makefile     rxk.src/test/Makefile
-pblaze.src/Makefile  pblaze.src/test/Makefile
-i8085.src/Makefile   i8085.src/test/Makefile
-f8.src/Makefile      f8.src/test/Makefile
-i8048.src/Makefile   i8048.src/test/Makefile
-p1516.src/Makefile   p1516.src/test/Makefile
-pdk.src/Makefile     pdk.src/test/Makefile
-s51.src/Makefile     s51.src/test/Makefile
-st7.src/Makefile     st7.src/test/Makefile
-stm8.src/Makefile    stm8.src/test/Makefile
-tlcs.src/Makefile    tlcs.src/test/Makefile
-xa.src/Makefile      xa.src/test/Makefile
-z80.src/Makefile     z80.src/test/Makefile
+src/sims/avr.src/Makefile     src/sims/avr.src/test/Makefile
+src/sims/m68hc08.src/Makefile src/sims/m68hc08.src/test/Makefile
+src/sims/m6809.src/Makefile   src/sims/m6809.src/test/Makefile
+src/sims/m6800.src/Makefile   src/sims/m6800.src/test/Makefile
+src/sims/m68hc11.src/Makefile src/sims/m68hc11.src/test/Makefile
+src/sims/m68hc12.src/Makefile src/sims/m68hc12.src/test/Makefile
+src/sims/mos6502.src/Makefile src/sims/mos6502.src/test/Makefile
+src/sims/rxk.src/Makefile     src/sims/rxk.src/test/Makefile
+src/sims/pblaze.src/Makefile  src/sims/pblaze.src/test/Makefile
+src/sims/i8085.src/Makefile   src/sims/i8085.src/test/Makefile
+src/sims/f8.src/Makefile      src/sims/f8.src/test/Makefile
+src/sims/i8048.src/Makefile   src/sims/i8048.src/test/Makefile
+src/sims/p1516.src/Makefile   src/sims/p1516.src/test/Makefile
+src/sims/pdk.src/Makefile     src/sims/pdk.src/test/Makefile
+src/sims/s51.src/Makefile     src/sims/s51.src/test/Makefile
+src/sims/st7.src/Makefile     src/sims/st7.src/test/Makefile
+src/sims/stm8.src/Makefile    src/sims/stm8.src/test/Makefile
+src/sims/tlcs.src/Makefile    src/sims/tlcs.src/test/Makefile
+src/sims/xa.src/Makefile      src/sims/xa.src/test/Makefile
+src/sims/z80.src/Makefile     src/sims/z80.src/test/Makefile
 
-gui.src/Makefile
-gui.src/serio.src/Makefile
+src/core/gui.src/Makefile
+src/core/gui.src/serio.src/Makefile
 
 docs/Makefile
 )
