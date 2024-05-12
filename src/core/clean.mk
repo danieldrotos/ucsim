@@ -3,6 +3,7 @@ all: clean
 clean: local_clean sub_clean
 
 local_clean:
+	rm -f *~ lib*.a
 
 sub_clean:
 	$(MAKE) -C cmd.src      -f clean.mk clean

@@ -825,13 +825,16 @@ AC_DEFINE_UNQUOTED(_M_, "${M}", [XXX])
 # Generating output files
 # ===========================================================================
 
-AC_CONFIG_FILES(src/Makefile src/common.mk:src/common_in.mk
+AC_CONFIG_FILES(src/Makefile
+src/common.mk:src/common_in.mk
 src/packages.mk:src/packages_in.mk
+
 src/core/cmd.src/Makefile
 src/core/motorola.src/Makefile
-
 src/core/utils.src/Makefile
-src/core/sim.src/Makefile    src/core/sim.src/test/Makefile
+src/core/sim.src/Makefile
+src/core/sim.src/test/Makefile
+src/core/gui.src/Makefile
 
 src/sims/avr.src/Makefile     src/sims/avr.src/test/Makefile
 src/sims/m68hc08.src/Makefile src/sims/m68hc08.src/test/Makefile
@@ -854,8 +857,7 @@ src/sims/tlcs.src/Makefile    src/sims/tlcs.src/test/Makefile
 src/sims/xa.src/Makefile      src/sims/xa.src/test/Makefile
 src/sims/z80.src/Makefile     src/sims/z80.src/test/Makefile
 
-src/core/gui.src/Makefile
-src/core/gui.src/serio.src/Makefile
+src/apps/serio.src/Makefile
 
 docs/Makefile
 )
