@@ -24,13 +24,13 @@ all: #checkconf #libs apps
 	$(MAKE) $(PKGS)
 #	$(MAKE) apps
 
-libs: utils_src_all cmd_src_all sim_src_all gui_src_all motorola_src_all m6800lib
+libs: utils cmd sim_src_all gui_src_all motorola_src_all m6800lib
 
-utils_src_all:
+utils:
 	$(MAKE) -C core/utils.src libs
 
-cmd_src_all:
-	$(MAKE) -C core/cmd.src cmd.src
+cmd:
+	$(MAKE) -C core/cmd.src libs
 
 sim_src_all:
 	$(MAKE) -C core/sim.src sim.src

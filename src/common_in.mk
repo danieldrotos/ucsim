@@ -2,16 +2,15 @@ STARTYEAR	= 1997
 
 SHELL		= /bin/sh
 CXX		= @CXX@
-#CPP		= @CPP@
 CXXCPP		= @CXXCPP@
 RANLIB		= @RANLIB@
 INSTALL		= @INSTALL@
 STRIP		= @STRIP@
 MAKEDEP         = @MAKEDEP@
 AR		= @AR@
+LEX		= @LEX@
+YACC		= @YACC@
 
-top_builddir	= @top_builddir@
-top_srcdir	= @top_srcdir@
 UTLDIR		= utils.src
 SIMDIR		= sim.src
 CMDDIR		= cmd.src
@@ -24,6 +23,7 @@ CPPFLAGS        = @CPPFLAGS@ \
                   -I$(top_srcdir)/$(SIMDIR) \
 		  -I$(top_srcdir)/$(CMDDIR) \
 		  -I$(top_srcdir)/$(GUIDIR)
+OPT		?= 2
 CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT)
 CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ -O$(OPT) $(PICOPT)
 LDFLAGS		= @LDFLAGS@
@@ -46,7 +46,17 @@ man1dir         = $(mandir)/man1
 man2dir         = $(mandir)/man2
 infodir         = @infodir@
 
-SOURCES		= $(patsubst %.o,%.cc,$(OBJECTS))
+ALL_OBJECTS	= $(OBJECTS) $(LOCAL_OBJECTS)
+SOURCES		= $(patsubst %.o,%.cc,$(ALL_OBJECTS))
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+
+.l.cc:
+	rm -f $@
+	$(LEX) -t $< > $@
+
+.y.cc:
+	$(YACC) -d $<
+	mv y.tab.c $*.cc
+	mv y.tab.h $*.hh

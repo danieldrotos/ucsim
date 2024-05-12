@@ -11,15 +11,10 @@ include ../../common.mk
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-#DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
-OPT		?= 2
+top_builddir	= @top_builddir@
+top_srcdir	= @top_srcdir@
 
-OBJECTS         = pobj.o globals.o utils.o error.o app.o option.o chars.o fio.o
-ifeq ($(WINSOCK_AVAIL), 1)
-OBJECTS		+= fwio.o
-else
-OBJECTS		+= fuio.o
-endif
+include $(srcdir)/objs.mk
 
 
 # Compiling entire program or any subproject
@@ -31,22 +26,13 @@ libs: $(top_builddir)/lib$(PKG).a
 apps:
 
 
-# Compiling and installing everything and running test
-# ---------------------------------------------------
-install: all installdirs
+# Compiling and installing everything
+# -----------------------------------
+installdirs:
 
+install:
 
-# Deleting all the installed files
-# --------------------------------
 uninstall:
-	rm -f $(DESTDIR)$(bindir)/s51$(EXEEXT)
-	rm -f $(DESTDIR)$(bindir)/savr$(EXEEXT)
-	rm -f $(DESTDIR)$(bindir)/serialview$(EXEEXT)
-	rm -f $(DESTDIR)$(bindir)/portmon$(EXEEXT)
-	rm -f $(DESTDIR)$(bindir)/sstm8$(EXEEXT)
-	rm -f $(DESTDIR)$(bindir)/sst7$(EXEEXT)
-	rm -f $(DESTDIR)$(bindir)/sp1516$(EXEEXT)
-	rm -f $(DESTDIR)$(bindir)/sm6809$(EXEEXT)
 
 
 # Performing self-test
@@ -55,30 +41,23 @@ check:
 
 test:
 
-# Performing installation test
-# ----------------------------
-installcheck:
-
-
-# Creating installation directories
-# ---------------------------------
-installdirs:
+baseline:
 
 
 # Creating dependencies
 # ---------------------
-dep: main.dep
+dep: Makefile.dep
 
-main.dep: $(SOURCES) $(srcdir)/*.h
-	$(MAKEDEP) $(CPPFLAGS) $(filter %.cc,$^) >main.dep
+Makefile.dep: $(SOURCES) $(srcdir)/*.h
+	$(MAKEDEP) $(CPPFLAGS) $(filter %.cc,$^) >Makefile.dep
 
--include main.dep
+-include Makefile.dep
 include $(srcdir)/clean.mk
 
 
 # My rules
 # --------
-$(top_builddir)/lib$(PKG).a: $(OBJECTS)
+$(top_builddir)/lib$(PKG).a: $(ALL_OBJECTS)
 ifeq ($(SILENT),yes)
 	@echo LIB $(TN)-$@
 	@$(AR) -rc $@ $+ 	>>$(top_srcdir)/compile.log 2>&1
