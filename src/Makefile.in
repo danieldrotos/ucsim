@@ -24,7 +24,7 @@ all: #checkconf #libs apps
 	$(MAKE) $(PKGS)
 #	$(MAKE) apps
 
-libs: utils_lib cmd_lib sim_lib gui_lib motorola_lib m6800lib
+libs: utils_lib cmd_lib sim_lib gui_lib motorola_lib
 
 utils_lib:
 	$(MAKE) -C core/utils.src libs
@@ -40,9 +40,6 @@ gui_lib:
 
 motorola_lib:
 	$(MAKE) -C core/motorola.src libs
-
-m6800lib:
-	$(MAKE) -C sims/m6800.src m6800lib
 
 
 .PHONY: $(PKGS)
