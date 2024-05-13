@@ -4,9 +4,6 @@
 # (c) Drotos Daniel, Talker Bt. 1997
 #
 
-# tool name
-PKG		= st7
-
 include ../../common.mk
 
 srcdir          = @srcdir@

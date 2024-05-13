@@ -1,3 +1,5 @@
+PKG		= tlcs
+
 OBJECTS		= stlcs.o \
 		  glob.o \
 		  simtlcs.o tlcs.o \

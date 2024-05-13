@@ -1,3 +1,5 @@
+PKG		= st7
+
 OBJECTS		= sst7.o \
 		  glob.o \
 		  inst.o \

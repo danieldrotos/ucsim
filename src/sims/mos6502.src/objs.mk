@@ -1,3 +1,5 @@
+PKG		= mos6502
+
 OBJECTS		= smos6502.o \
 		  simmos6502.o mos6502.o glob.o irq.o \
 		  inst.o ialu.o ibranch.o imove.o \

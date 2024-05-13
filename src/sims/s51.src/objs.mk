@@ -1,3 +1,5 @@
+PKG		= 51
+
 OBJECTS		= glob.o sim51.o s51.o \
                   inc.o jmp.o mov.o logic.o arith.o bit.o \
                   timer0.o timer1.o timer2.o serial.o port.o interrupt.o \

@@ -1,3 +1,5 @@
+PKG		= z80
+
 OBJECTS		= sz80.o \
 		  glob.o \
 		  inst.o \

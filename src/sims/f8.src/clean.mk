@@ -16,7 +16,7 @@ endif
 
 distclean: local_distclean sub_distclean
 
-local-distclean: local_clean
+local_distclean: local_clean
 	rm -f config.cache config.log config.status
 	rm -f Makefile *.dep
 	rm -f *.obj *.list *.lst *.hex

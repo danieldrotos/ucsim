@@ -1,3 +1,5 @@
+PKG		= pdk
+
 OBJECTS		= spdk.o \
 		  glob.o port.o osc.o t16.o wdt.o \
 		  inst.o \

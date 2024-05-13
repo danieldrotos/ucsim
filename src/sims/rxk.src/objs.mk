@@ -1,3 +1,5 @@
+PKG		= rxk
+
 OBJECTS		= srxk.o \
 		  simrxk.o rxk.o rmem.o \
 		  glob.o gp0m3.o gp0m4.o \

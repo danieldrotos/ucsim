@@ -50,7 +50,7 @@ ifeq ($(enable_m68hc08_port),yes)
 SM68HC08	= m68hc08.src
 else
 ifeq ($(enable_s08_port),yes)
-SS08		= m68hc08.src
+SM68HC08	= m68hc08.src
 else
 SM68HC08	=
 endif
@@ -146,14 +146,14 @@ else
 I8048		=
 endif
 
-PKGS		= $(P1516) \
-		  $(S51) \
-		  $(SAVR) $(SZ80) \
-		  $(TLCS) \
-		  $(SM68HC08) $(SS08) $(XA) $(STM8) $(ST7) $(PDK) \
-		  $(M6809) $(M6800) $(M68HC11) $(M68HC12) $(MOS6502) \
-		  $(RXK) $(PBLAZE) $(I8085) $(F8) $(I8048) \
-		  docs gui.src
+PKGS		= $(P1516) $(F8) \
+		  $(S51) $(I8048) $(I8085) $(XA) \
+		  $(SAVR) \
+		  $(SZ80) $(TLCS) $(RXK) \
+		  $(STM8) $(ST7)  \
+		  $(M6800) $(SM68HC08) $(M6809) $(M68HC11) $(M68HC12) \
+		  $(MOS6502) \
+		  $(PBLAZE) $(PDK)
 
 PKGS_ALL	= utils.src cmd.src sim.src gui.src motorola.src \
 		  s51.src avr.src z80.src tlcs.src xa.src \
