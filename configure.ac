@@ -826,7 +826,8 @@ AC_DEFINE_UNQUOTED(_M_, "${M}", [XXX])
 # Generating output files
 # ===========================================================================
 
-AC_CONFIG_FILES(src/Makefile
+AC_CONFIG_FILES(Makefile
+src/Makefile
 src/common.mk:src/common_in.mk
 src/packages.mk:src/packages_in.mk
 

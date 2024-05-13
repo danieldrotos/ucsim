@@ -23,6 +23,7 @@ MOTDIR		= src/core/motorola.src
 PICOPT		= @PICOPT@
 CPPFLAGS        = @CPPFLAGS@ \
 		  -I. -I$(srcdir) \
+                  -I$(top_builddir)/$(UTLDIR) \
                   -I$(top_srcdir)/$(UTLDIR) \
                   -I$(top_srcdir)/$(SIMDIR) \
 		  -I$(top_srcdir)/$(CMDDIR) \
