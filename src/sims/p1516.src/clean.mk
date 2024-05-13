@@ -12,9 +12,6 @@ ifneq ($(shell test -f test/Makefile && echo ok), )
 	$(MAKE) -C test -f clean.mk clean
 endif
 
-
-# Deleting all files created by configuring or building the program
-# -----------------------------------------------------------------
 distclean: local_distclean sub_distclean
 
 local_distclean: local_clean

@@ -1,6 +1,6 @@
 include $(srcdir)/objs.mk
 
-app: $(LEN)
+app: $(LOCAL_TARGETS) $(LEN)
 
 
 install: all installdirs local_install
@@ -54,3 +54,6 @@ $(top_builddir)/libsim.a:
 
 $(top_builddir)/libucsimutil.a:
 	$(MAKE) -C $(top_builddir)/src/core/utils.src libs
+
+$(top_builddir)/libmotorola.a:
+	$(MAKE) -C $(top_builddir)/src/core/motorola.src libs

@@ -15,7 +15,7 @@ VPATH           = @srcdir@
 top_builddir	= @top_builddir@
 top_srcdir	= @top_srcdir@
 
-LOCAL_LIB_PREREQU	= $(top_srcdir)/libmotorola.a
+LOCAL_LIB_PREREQU	= $(top_builddir)/libmotorola.a
 LOCAL_LIB_OPTIONS	= -lmotorola
 
 CPPFLAGS	+= -I$(top_srcdir)/src/core/motorola.src
