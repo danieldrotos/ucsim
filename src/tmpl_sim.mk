@@ -1,11 +1,11 @@
 #
-# uCsim p1516.src/Makefile
+# uCsim .src/Makefile
 #
 # (c) Drotos Daniel, Talker Bt. 1997
 #
 
 # tool name
-PKG		= p1516
+PKG		= 
 
 include ../../common.mk
 
@@ -22,7 +22,6 @@ LOCAL_LIB_OPTIONS	=
 # Compiling entire program or any subproject
 # ------------------------------------------
 all: otherlibs app
-	echo TN=$(TN) PKG=$(PKG)
 
 include $(top_srcdir)/src/app.mk
 
@@ -41,4 +40,4 @@ Makefile.dep: $(srcdir)/*.cc $(srcdir)/*.h objs.mk
 include $(srcdir)/clean.mk
 
 
-# End of p1516.src/Makefile.in
+# End of .src/Makefile.in

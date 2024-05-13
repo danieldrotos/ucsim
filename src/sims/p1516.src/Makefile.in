@@ -22,7 +22,6 @@ LOCAL_LIB_OPTIONS	=
 # Compiling entire program or any subproject
 # ------------------------------------------
 all: otherlibs app
-	echo TN=$(TN) PKG=$(PKG)
 
 include $(top_srcdir)/src/app.mk
 
