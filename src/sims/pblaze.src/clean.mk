@@ -8,7 +8,7 @@ clean:
 	rm -f ucsim_pblaze ucsim_pblaze.exe
 	rm -f ucsim_spblaze ucsim_spblaze.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

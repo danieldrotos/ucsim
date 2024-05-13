@@ -6,7 +6,7 @@ clean:
 	rm -f spdk spdk.exe
 	rm -f ucsim_pdk ucsim_pdk.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

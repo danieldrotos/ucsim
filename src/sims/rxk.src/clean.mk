@@ -9,7 +9,7 @@ clean:
 	rm -f ucsim_rxk$(EXEEXT) ucsim_rxk.exe
 	rm -f gen_insts gen_wrap
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

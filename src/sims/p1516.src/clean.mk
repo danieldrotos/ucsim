@@ -8,7 +8,7 @@ clean:
 	rm -f sp1516$(EXEEXT) sp1516.exe
 	rm -f ucsim_p1516$(EXEEXT) ucsim_p1516.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

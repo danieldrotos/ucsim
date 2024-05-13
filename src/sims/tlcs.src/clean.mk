@@ -10,7 +10,7 @@ clean:
 	rm -f stlcs stlcs.exe
 	rm -f ucsim_tlcs ucsim_tlcs.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

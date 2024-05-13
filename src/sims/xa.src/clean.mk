@@ -6,7 +6,7 @@ clean:
 	rm -f sxa sxa.exe
 	rm -f ucsim_xa ucsim_xa.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

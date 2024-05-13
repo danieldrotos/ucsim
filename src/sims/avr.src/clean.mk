@@ -8,7 +8,7 @@ clean:
 	rm -f savr$(EXEEXT) savr.exe
 	rm -f ucsim_avr$(EXEEXT) ucsim_avr.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

@@ -10,7 +10,7 @@ clean:
 	rm -f ucsim_m6800$(EXEEXT) ucsim_m6800.exe
 	rm -f ucsim_m68hc11$(EXEEXT) ucsim_m68hc11.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

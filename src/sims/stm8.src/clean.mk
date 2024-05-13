@@ -6,7 +6,7 @@ clean:
 	rm -f sstm8 sstm8.exe
 	rm -f ucsim_stm8 ucsim_stm8.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

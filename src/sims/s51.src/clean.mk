@@ -9,7 +9,7 @@ clean:
 	rm -f s51 s51.exe
 	rm -f ucsim_51 ucsim_51.exe ucsim_i8051
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

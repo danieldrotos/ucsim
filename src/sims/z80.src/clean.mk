@@ -6,7 +6,7 @@ clean:
 	rm -f sz80 sz80.exe
 	rm -f ucsim_z80 ucsim_z80.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

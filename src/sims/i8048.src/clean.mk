@@ -11,7 +11,7 @@ clean:
 	rm -f smcs6502$(EXEEXT) smcs6502.exe
 	rm -f ucsim_i8048$(EXEEXT) ucsim_i8048.exe
 ifneq ($(shell test -f test/Makefile && echo ok), )
-	$(MAKE) -C test clean
+	$(MAKE) -C test -f clean.mk clean
 endif
 
 

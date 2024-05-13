@@ -12,7 +12,7 @@ local_clean:
 
 sub_clean:
 	@for sim in $(SIMS); do \
-		$(MAKE) -C $$sim.src -f clean.mk clean ;\
+		$(MAKE) -C $${sim}.src -f clean.mk clean ;\
 	done
 
 distclean: local_distclean sub_distclean
@@ -21,5 +21,5 @@ local_distclean: local_clean
 
 sub_distclean:
 	@for sim in $(SIMS); do \
-		$(MAKE) -C $$sim.src -f clean.mk distclean ;\
+		$(MAKE) -C $${sim}.src -f clean.mk distclean ;\
 	done
