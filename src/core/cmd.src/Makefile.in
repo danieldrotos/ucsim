@@ -14,24 +14,14 @@ VPATH           = @srcdir@
 top_builddir	= @top_builddir@
 top_srcdir	= @top_srcdir@
 
-include $(srcdir)/objs.mk
-
 
 # Compiling entire program or any subproject
 # ------------------------------------------
 all: libs
 
-libs: $(top_builddir)/lib$(PKG).a
+include $(top_srcdir)/src/lib.mk
 
-
-# Compiling and installing everything
-# -----------------------------------
-installdirs:
-
-install:
-
-uninstall:
-
+cmdlex.cc: cmdlex.l cmdpars.hh
 
 # Performing self-test
 # --------------------
@@ -40,39 +30,6 @@ check:
 test:
 
 baseline:
-
-
-# Creating dependencies
-# ---------------------
-dep: Makefile.dep
-
-Makefile.dep: $(SOURCES) $(srcdir)/*.h #cmdpars.hh cmdpars.cc
-	$(MAKEDEP) $(CPPFLAGS) $(filter %.cc,$^) >Makefile.dep
-
--include Makefile.dep
-include $(srcdir)/clean.mk
-
-cmdlex.cc: cmdlex.l cmdpars.hh
-
-# My rules
-# --------
-
-$(top_builddir)/lib$(PKG).a: $(ALL_OBJECTS)
-ifeq ($(SILENT),yes)
-	@echo LIB $(TN)-$@
-	@$(AR) -rc $@ $+
-	@$(RANLIB) $@
-else
-	$(AR) -rc $@ $+
-	$(RANLIB) $@
-endif
-
-#cmdpars.hh: cmdpars.cc
-
-#cmdpars.cc: cmdpars.y
-#	$(YACC) -d $<
-#	mv y.tab.c $*.cc
-#	mv y.tab.h $*.hh
 
 
 # End of cmd.src/Makefile.in

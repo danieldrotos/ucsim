@@ -1,3 +1,5 @@
+TN		= $(PKG)
+
 STARTYEAR	= 1997
 
 SHELL		= /bin/sh
@@ -11,10 +13,11 @@ AR		= @AR@
 LEX		= @LEX@
 YACC		= @YACC@
 
-UTLDIR		= utils.src
-SIMDIR		= sim.src
-CMDDIR		= cmd.src
-GUIDIR		= gui.src
+UTLDIR		= src/core/utils.src
+SIMDIR		= src/core/sim.src
+CMDDIR		= src/core/cmd.src
+GUIDIR		= src/core/gui.src
+MOTDIR		= src/core/motorola.src
 
 PICOPT		= @PICOPT@
 CPPFLAGS        = @CPPFLAGS@ \
@@ -45,6 +48,8 @@ mandir          = @mandir@
 man1dir         = $(mandir)/man1
 man2dir         = $(mandir)/man2
 infodir         = @infodir@
+
+curses_ok	= @curses_ok@
 
 ALL_OBJECTS	= $(OBJECTS) $(LOCAL_OBJECTS)
 SOURCES		= $(patsubst %.o,%.cc,$(ALL_OBJECTS))

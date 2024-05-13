@@ -2,6 +2,7 @@
 
 AC_PREREQ(2.60)
 AC_INIT
+AC_CONFIG_AUX_DIR(src)
 AC_CONFIG_SRCDIR(.version)
 AC_CONFIG_HEADERS([src/core/utils.src/ddconfig.h:src/core/utils.src/ddconfig_in.h])
 
