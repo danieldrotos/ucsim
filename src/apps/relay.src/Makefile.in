@@ -1,0 +1,28 @@
+include ../../common.mk
+
+srcdir          = @srcdir@
+VPATH           = @srcdir@
+
+top_builddir	= @top_builddir@
+top_srcdir	= @top_srcdir@
+
+LOCAL_LIB_PREREQU	=
+LOCAL_LIB_OPTIONS	=
+
+all: otherlibs $(LEN)
+
+include $(top_srcdir)/src/app.mk
+
+LEN		= $(PKG)
+
+local_install:
+
+local_uninstall:
+
+dep: Makefile.dep
+
+Makefile.dep: $(srcdir)/*.cc $(srcdir)/*.h objs.mk
+	$(MAKEDEP) $(CPPFLAGS) $(filter %.cc,$^) >Makefile.dep
+
+-include Makefile.dep
+include $(srcdir)/clean.mk

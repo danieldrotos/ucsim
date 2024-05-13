@@ -22,6 +22,9 @@ enable_i8085_port   = @enable_i8085_port@
 enable_f8_port      = @enable_f8_port@
 enable_i8048_port   = @enable_i8048_port@
 
+enable_serio        = @enable_serio@
+enable_ucsim        = @enable_ucsim@
+
 ifeq ($(enable_mcs51_port),yes)
 S51		= s51.src
 else
@@ -155,9 +158,24 @@ PKGS		= $(P1516) $(F8) \
 		  $(MOS6502) \
 		  $(PBLAZE) $(PDK)
 
-PKGS_ALL	= utils.src cmd.src sim.src gui.src motorola.src \
-		  s51.src avr.src z80.src tlcs.src xa.src \
+PKGS_ALL	= s51.src avr.src z80.src tlcs.src xa.src \
 		  m68hc08.src stm8.src st7.src pdk.src p1516.src \
 		  m6809.src m6800.src m68hc11.src m68hc12.src mos6502.src \
-		  rxk.src pblaze.src i8085.src f8.src i8048.src \
-		  docs
+		  rxk.src pblaze.src i8085.src f8.src i8048.src
+
+
+ifeq ($(enable_serio),yes)
+SERIO		= serio.src
+else
+SERIO		=
+endif
+
+ifeq ($(enable_ucsim),yes)
+UCSIM		= ucsim.src
+else
+UCSIM		=
+endif
+
+APPS		= $(SERIO) $(UCSIM) relay.src
+
+APPS_ALL	= serio.src ucsim.src relay.src

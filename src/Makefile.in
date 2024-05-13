@@ -19,6 +19,8 @@ top_srcdir	= @top_srcdir@
 all:
 	$(MAKE) libs
 	$(MAKE) $(PKGS)
+	$(MAKE) $(APPS)
+
 
 libs: utils_lib cmd_lib sim_lib gui_lib motorola_lib
 
@@ -43,6 +45,10 @@ motorola_lib:
 $(PKGS):
 	@echo "Compiling package $@ ..."
 	$(MAKE) -C sims/$@ app
+
+$(APPS):
+	@echo "Compiling app $@ ..."
+	$(MAKE) -C apps/$@ all
 
 
 # Compiling and installing everything and running test

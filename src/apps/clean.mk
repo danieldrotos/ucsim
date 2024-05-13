@@ -1,6 +1,4 @@
-APPS		= serio
-
-all: clean
+APPS		= serio ucsim relay
 
 clean: local_clean sub_clean
 
@@ -9,7 +7,7 @@ local_clean:
 
 sub_clean:
 	@for app in $(APPS); do \
-		$(MAKE) -C $$app.src -f clean.mk clean ;\
+		$(MAKE) -C $${app}.src -f clean.mk clean ;\
 	done
 
 distclean: local_distclean sub_distclean
@@ -18,5 +16,5 @@ local_distclean: local_clean
 
 sub_distclean:
 	@for app in $(APPS); do \
-		$(MAKE) -C $$app.src -f clean.mk distclean ;\
+		$(MAKE) -C $${app}.src -f clean.mk distclean ;\
 	done

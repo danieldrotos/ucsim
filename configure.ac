@@ -860,6 +860,8 @@ src/sims/xa.src/Makefile      src/sims/xa.src/test/Makefile
 src/sims/z80.src/Makefile     src/sims/z80.src/test/Makefile
 
 src/apps/serio.src/Makefile
+src/apps/ucsim.src/Makefile
+src/apps/relay.src/Makefile
 
 docs/Makefile
 )
