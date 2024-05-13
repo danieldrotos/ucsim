@@ -55,7 +55,7 @@ infodir         = @infodir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-OBJECTS_SHARED	= sim$(TN).o $(TN).o glob.o irq.o \
+OBJECTS_SHARED	= sim$(TN).o $(TN).o glob68.o irq.o \
 		  inst.o ialu.o ibranch.o imove.o
 
 OBJECTS_EXE	= s$(TN).o

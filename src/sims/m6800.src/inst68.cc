@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (irqcl.h)
+ * Simulator of microcontrollers (inst68.cc)
  *
  * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
@@ -24,32 +24,36 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
-#include "itsrccl.h"
-
 #include "m6800cl.h"
 
-enum irq_cfg
-  {
-    m68_nmi_en	= 0,
-    m68_nmi	= 1,
-    m68_irq_en	= 2,
-    m68_irq	= 3,
-    m68_swi_en	= 4,
-    m68_swi	= 5,
-    m68_nr	= 6
-  };
-
-class cl_irq_hw: public cl_hw
+int
+cl_m6800::NOP(t_mem code)
 {
- public:
-  class cl_m6800 *muc;
- public:
-  cl_irq_hw(class cl_uc *auc);
-  virtual int init(void);
-  virtual unsigned int cfg_size(void) { return m68_nr; }
-  virtual const char *cfg_help(t_addr addr);
-  virtual void print_info(class cl_console_base *con);  
-};
+  return resGO;
+}
+
+int
+cl_m6800::RTI(t_mem code)
+{
+  pull_regs(true);
+  return resGO;
+}
+
+int
+cl_m6800::WAI(t_mem code)
+{
+  push_regs(true);
+  wai= true;
+  state= stIDLE;
+  return resGO;
+}
+
+int
+cl_m6800::SWI(t_mem code)
+{
+  src_swi->request();
+  return resGO;
+}
 
 
-/* End of m6800.src/irqcl.h */
+/* End of m6800.src/inst68.cc */

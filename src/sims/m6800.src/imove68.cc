@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (imove.cc)
+ * Simulator of microcontrollers (imove68.cc)
  *
  * Copyright (C) @@S@@,@@Y@@ Drotos Daniel, Talker Bt.
  * 
@@ -171,4 +171,4 @@ cl_m6800::PSHB(t_mem code)
 }
 
 
-/* End of m6800.src/imove.cc */
+/* End of m6800.src/imove68.cc */
