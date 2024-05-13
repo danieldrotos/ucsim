@@ -146,10 +146,11 @@ else
 I8048		=
 endif
 
-PKGS		= $(S51) \
+PKGS		= $(P1516) \
+		  $(S51) \
 		  $(SAVR) $(SZ80) \
 		  $(TLCS) \
-		  $(SM68HC08) $(SS08) $(XA) $(STM8) $(ST7) $(PDK) $(P1516) \
+		  $(SM68HC08) $(SS08) $(XA) $(STM8) $(ST7) $(PDK) \
 		  $(M6809) $(M6800) $(M68HC11) $(M68HC12) $(MOS6502) \
 		  $(RXK) $(PBLAZE) $(I8085) $(F8) $(I8048) \
 		  docs gui.src

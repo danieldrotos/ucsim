@@ -20,53 +20,16 @@ top_srcdir	= @top_srcdir@
 # ------------------------------------------
 all: libs
 
-libs: $(top_builddir)/lib$(PKG).a
-
-
-# Compiling and installing everything
-# -----------------------------------
-installdirs:
-
-install:
-
-uninstall:
+include $(top_srcdir)/src/lib.mk
 
 
 # Performing self-test
 # --------------------
-check: test
+check:
 
-.PHONY:	test baseline
 test:
-	@$(MAKE) --no-print-directory -C test
 
 baseline:
-	@$(MAKE) --no-print-directory -C test baseline
-
-
-# Creating dependencies
-# ---------------------
-dep: main.dep
-
-Makefile.dep: $(srcdir)/*.cc $(srcdir)/*.h $(srcdir)/objs.mk
-	$(MAKEDEP) $(CPPFLAGS) $(filter %.cc,$^) >Makefile.dep
-
--include Makefile.dep
-include $(srcdir)/clean.mk
-
-
-# My rules
-# --------
-
-$(top_builddir)/libsim.a: $(ALL_OBJECTS) $(srcdir)/objs.mk
-ifeq ($(SILENT),yes)
-	@echo LIB $(TN)-$@
-	@$(AR) -rc $@ $+
-	@$(RANLIB) $@
-else
-	$(AR) -rc $@ $+
-	$(RANLIB) $@
-endif
 
 
 # End of sim.src/Makefile

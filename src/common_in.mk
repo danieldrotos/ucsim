@@ -12,6 +12,7 @@ MAKEDEP         = @MAKEDEP@
 AR		= @AR@
 LEX		= @LEX@
 YACC		= @YACC@
+transform	= @program_transform_name@
 
 UTLDIR		= src/core/utils.src
 SIMDIR		= src/core/sim.src
@@ -30,12 +31,15 @@ OPT		?= 2
 CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT)
 CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ -O$(OPT) $(PICOPT)
 LDFLAGS		= @LDFLAGS@
+LIBS		= @LIBS@
 
 WINSOCK_AVAIL   = @WINSOCK_AVAIL@
 LDFLAGS		= @LDFLAGS@
 
 EXEEXT		= @EXEEXT@
-UCSIM_LIBS	= -L$(top_builddir) -lsim -lucsimutil -lguiucsim -lcmd -lsim
+UCSIM_LIBS	= -L$(top_builddir) \
+		  -lsim -lucsimutil -lgui -lcmd -lsim \
+		  $(LIBS)
 
 prefix          = @prefix@
 exec_prefix     = @exec_prefix@
@@ -50,6 +54,8 @@ man2dir         = $(mandir)/man2
 infodir         = @infodir@
 
 curses_ok	= @curses_ok@
+enable_dlso	= @enable_dlso@
+dlso_ok		= @dlso_ok@
 
 ALL_OBJECTS	= $(OBJECTS) $(LOCAL_OBJECTS)
 SOURCES		= $(patsubst %.o,%.cc,$(ALL_OBJECTS))
@@ -65,3 +71,8 @@ SOURCES		= $(patsubst %.o,%.cc,$(ALL_OBJECTS))
 	$(YACC) -d $<
 	mv y.tab.c $*.cc
 	mv y.tab.h $*.hh
+
+
+SEN		= s$(TN)$(EXEEXT)
+LEN		= ucsim_$(TN)$(EXEEXT)
+SONAME		= libucsim_$(TN).so

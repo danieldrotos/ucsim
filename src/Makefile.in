@@ -46,7 +46,7 @@ motorola_lib:
 
 $(PKGS):
 	@echo "Compiling package $@ ..."
-	$(MAKE) -C $@ $@
+	$(MAKE) -C sims/$@ app
 
 
 # Compiling and installing everything and running test
@@ -54,7 +54,7 @@ $(PKGS):
 .PHONY: install INSTALL Install
 install:
 	@for pkg in $(PKGS); do\
-	  $(MAKE) -C $$pkg install ;\
+	  $(MAKE) -C sims/$${pkg} install ;\
 	done
 
 
@@ -62,7 +62,7 @@ install:
 # --------------------------------
 uninstall:
 	@for pkg in $(PKGS); do\
-	  $(MAKE) -C $$pkg uninstall ;\
+	  $(MAKE) -C sims/$${pkg} uninstall ;\
 	done
 
 
@@ -71,7 +71,7 @@ uninstall:
 clean:
 	$(MAKE) -f $(srcdir)/clean.mk clean EXEEXT=$(EXEEXT)
 	@for pkg in $(PKGS_ALL); do\
-	  $(MAKE) -C $$pkg -f $$(cd $(top_srcdir)&&pwd)/$$pkg/clean.mk top_srcdir=$$(cd $(top_srcdir)&&pwd) clean EXEEXT=$(EXEEXT) ;\
+	  $(MAKE) -C sims/$${pkg} -f $$(cd $(top_srcdir)&&pwd)/src/sims/$${pkg}/clean.mk top_srcdir=$$(cd $(top_srcdir)&&pwd) clean EXEEXT=$(EXEEXT) ;\
 	done
 
 
