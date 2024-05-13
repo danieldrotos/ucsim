@@ -1,9 +1,9 @@
 include $(srcdir)/objs.mk
 
-app: $(LEN) shared_lib
+app: $(LEN)
 
 
-install: all installdirs install_shared_lib local_install
+install: all installdirs local_install
 	$(INSTALL) $(LEN) $(DESTDIR)$(bindir)/$(LEN)
 	$(STRIP) $(DESTDIR)$(bindir)/$(LEN)
 	rm -f $(DESTDIR)$(bindir)/$(SEN)
@@ -26,7 +26,7 @@ baseline:
 
 
 $(LEN): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libgui.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a $(LOCAL_LIB_PREREQU)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(UCSIM_LIBS) $(LOCAL_LIB_OPTIONS) -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) -L$(top_builddir) $(LOCAL_LIB_OPTIONS) $(UCSIM_LIBS) -o $@
 
 ifeq ($(dlso_ok),yes)
 shared_lib: $(top_builddir)/$(SONAME)

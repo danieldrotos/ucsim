@@ -38,8 +38,7 @@ WINSOCK_AVAIL   = @WINSOCK_AVAIL@
 LDFLAGS		= @LDFLAGS@
 
 EXEEXT		= @EXEEXT@
-UCSIM_LIBS	= -L$(top_builddir) \
-		  -lsim -lucsimutil -lgui -lcmd -lsim \
+UCSIM_LIBS	= -lsim -lucsimutil -lgui -lcmd -lsim \
 		  $(LIBS)
 
 prefix          = @prefix@
