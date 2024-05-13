@@ -5,6 +5,7 @@ clean: local_clean sub_clean
 
 local_clean:
 	rm -f *~ lib*.a
+	rm -rf autom4te.cache
 
 sub_clean:
 	$(MAKE) -C src  -f clean.mk clean

@@ -1,4 +1,3 @@
-all: clean
 
 clean: local_clean sub_clean
 
@@ -11,7 +10,7 @@ sub_clean:
 
 distclean: local_distclean sub_distclean
 
-local_distclean:
+local_distclean: local_clean
 	rm -f config.cache config.log config.status
 	rm -f ddconfig.h main.mk Makefile *.dep packages.mk
 	rm -rf autom4te.cache

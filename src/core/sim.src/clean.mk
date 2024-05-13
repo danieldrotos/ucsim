@@ -1,4 +1,3 @@
-all: clean
 
 clean: local_clean sub_clean
 
@@ -11,7 +10,7 @@ sub_clean:
 
 distclean: local_distclean sub_distclean
 
-local_distclean:
+local_distclean: local_clean
 	rm -f Makefile *.dep
 	rm -f test/Makefile
 

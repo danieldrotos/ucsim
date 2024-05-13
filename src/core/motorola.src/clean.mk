@@ -1,8 +1,3 @@
-#
-# ucsim motorola.src/clean.mk
-#
-
-all: clean
 
 clean: local_clean sub_clean
 
@@ -19,5 +14,3 @@ local_distclean: local_clean
 	rm -f Makefile *.dep
 
 sub_distclean:
-
-# End of motorola.src/clean.mk
