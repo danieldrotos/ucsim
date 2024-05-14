@@ -4,7 +4,7 @@ simulator: $(LOCAL_TARGETS) $(LEN)
 install: all installdirs local_install
 	$(INSTALL) $(LEN) $(DESTDIR)$(bindir)/$(LEN)
 	$(STRIP) $(DESTDIR)$(bindir)/$(LEN)
-	rm -f $(DESTDIR)$(bindir)/$(SEN)
+#rm -f $(DESTDIR)$(bindir)/$(SEN)
 
 uninstall: local_uninstall
 	rm -f $(DESTDIR)$(bindir)/$(SEN)
