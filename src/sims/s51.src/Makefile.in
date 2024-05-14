@@ -1,37 +1,27 @@
 #
-# uCsim s51.src/Makefile
+# uCsim  simulator Makefile
 #
 # (c) Drotos Daniel, Talker Bt. 1997
 #
 
-include ../../common.mk
-
 srcdir          = @srcdir@
 VPATH           = @srcdir@
-
 top_builddir	= @top_builddir@
 top_srcdir	= @top_srcdir@
 
-LOCAL_LIB_PREREQU	=
-LOCAL_LIB_OPTIONS	=
+include $(srcdir)/objs.mk
+include ../../common.mk
 
-LEN2		= ucsim_i8051$(EXEEXT)
 
 # Compiling entire program or any subproject
 # ------------------------------------------
-all: otherlibs app
+all: $(LEN)
 
 include $(top_srcdir)/src/app.mk
 
-$(LEN2): $(LEN)
-	cp $< $@
-
-local_install: $(LEN2)
-	$(INSTALL) $(LEN2) $(DESTDIR)$(bindir)/$(LEN2)
-	$(STRIP) $(DESTDIR)$(bindir)/$(LEN2)
+local_install:
 
 local_uninstall:
-	rm -f $(DESTDIR)$(bindir)/$(LEN2)
 
 # Creating dependencies
 # ---------------------
@@ -44,4 +34,4 @@ Makefile.dep: $(srcdir)/*.cc $(srcdir)/*.h objs.mk
 include $(srcdir)/clean.mk
 
 
-# End of s51.src/Makefile.in
+# End of simulator Makefile

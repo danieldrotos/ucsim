@@ -1,6 +1,17 @@
 all:
 	$(MAKE) -C src all
 
+libs:
+	$(MAKE) -C src libs
+
+pkgs:
+	$(MAKE) -C src pkgs
+
+sims: pkgs
+
+apps:
+	$(MAKE) -C src apps
+
 install:
 	$(MAKE) -C src install
 	$(MAKE) -C docs install

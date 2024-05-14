@@ -1,6 +1,4 @@
-include $(srcdir)/objs.mk
-
-app: $(LOCAL_TARGETS) $(LEN)
+simulator: $(LOCAL_TARGETS) $(LEN)
 
 
 install: all installdirs local_install
@@ -25,7 +23,7 @@ baseline:
 	@$(MAKE) --no-print-directory -C test baseline
 
 
-$(LEN): $(OBJECTS) $(top_builddir)/libcmd.a $(top_builddir)/libgui.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a $(LOCAL_LIB_PREREQU)
+$(LEN): $(OBJECTS) $(UCSIM_LIB_PREREQUES) $(LOCAL_LIB_PREREQU)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) -L$(top_builddir) $(LOCAL_LIB_OPTIONS) $(UCSIM_LIBS) -o $@
 
 ifeq ($(dlso_ok),yes)
@@ -41,7 +39,7 @@ endif
 $(top_builddir)/$(SONAME): $(OBJECTS_SHARED)
 	$(CXX) -shared $(LDFLAGS) $(OBJECTS_SHARED) -o $@
 
-otherlibs: $(top_builddir)/libcmd.a $(top_builddir)/libgui.a $(top_builddir)/libsim.a $(top_builddir)/libucsimutil.a $(LOCAL_LIB_PREREQU)
+otherlibs: $(UCSIM_LIB_PREREQUES) $(LOCAL_LIB_PREREQU)
 
 $(top_builddir)/libcmd.a:
 	$(MAKE) -C $(top_builddir)/src/core/cmd.src libs

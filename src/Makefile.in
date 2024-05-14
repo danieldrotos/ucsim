@@ -18,9 +18,14 @@ top_srcdir	= @top_srcdir@
 # ------------------------------------------
 all:
 	$(MAKE) libs
-	$(MAKE) $(PKGS)
-	$(MAKE) $(APPS)
+	$(MAKE) pkgs apps
 
+pkgs: $(PKGS)
+
+.PHONY: sims
+sims: pkgs
+
+apps: $(APPS)
 
 libs: utils_lib cmd_lib sim_lib gui_lib motorola_lib
 
@@ -44,7 +49,7 @@ motorola_lib:
 
 $(PKGS):
 	@echo "Compiling package $@ ..."
-	$(MAKE) -C sims/$@ app
+	$(MAKE) -C sims/$@ simulator
 
 $(APPS):
 	@echo "Compiling app $@ ..."

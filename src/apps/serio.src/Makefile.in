@@ -1,116 +1,34 @@
-# Makefile for kano-networks talker
-
-SHELL		= /bin/sh
-CXX		= @CXX@
-CXXCPP		= @CXXCPP@
-INSTALL		= @INSTALL@
-STRIP		= @STRIP@
-CP		= /bin/cp
-MAKEDEP         = @MAKEDEP@
-
+srcdir          = @srcdir@
+VPATH           = @srcdir@
 top_builddir	= @top_builddir@
 top_srcdir	= @top_srcdir@
 
-DEFS            = $(subs -DHAVE_CONFIG_H,,@DEFS@)
-PICOPT		= @PICOPT@
-CPPFLAGS        = @CPPFLAGS@ -I. \
-		  -I$(top_srcdir)/utils.src
-OPT		?= 2
-CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT)
-CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ $(PICOPT) -O$(OPT)
+include $(srcdir)/objs.mk
+include ../../common.mk
 
-LIBS		= @CURSES_LIBS@ @LIBS@
+LOCAL_LIB_PREREQU	=
+LOCAL_LIB_OPTIONS	=
 
-EXEEXT		= @EXEEXT@
+APP		= $(PKG)$(EXEEXT)
 
-curses_ok	= @curses_ok@
+all: $(APP)
 
-prefix          = @prefix@
-exec_prefix     = @exec_prefix@
-bindir          = @bindir@
-libdir          = @libdir@
-datadir         = @datadir@
-datarootdir     = @datarootdir@
-includedir      = @includedir@
-mandir          = @mandir@
-man1dir         = $(mandir)/man1
-man2dir         = $(mandir)/man2
-infodir         = @infodir@
-srcdir          = @srcdir@
-VPATH           = @srcdir@
+include $(top_srcdir)/src/app.mk
 
-OBJECTS		= main.o fileio.o frontend.o posix_signal.o
+$(APP): $(OBJECTS) $(UCSIM_LIB_PREREQUES)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) -L$(top_builddir) $(UCSIM_LIBS) -o $@
 
+local_install:
+	$(INSTALL) $(APP) $(DESTDIR)$(bindir)/$(APP)
+	$(STRIP) $(DESTDIR)$(bindir)/$(APP)
 
-# Compiling entire program or any subproject
-# ------------------------------------------
-all: serio.src
+local_uninstall:
+	rm -f $(DESTDIR)$(bindir)/$(APP)
 
-ifeq ($(curses_ok),yes)
-serio.src: checkconf serialview$(EXEEXT)
-else
-serio.src: checkconf
-endif
-
-
-# Compiling and installing everything and running test
-# ---------------------------------------------------
-install: all installdirs
-	$(INSTALL) serialview$(EXEEXT) $(DESTDIR)$(bindir)/serialview$(EXEEXT)
-	$(STRIP) $(DESTDIR)$(bindir)/serialview$(EXEEXT)
-
-
-# Deleting all the installed files
-# --------------------------------
-uninstall:
-	rm -f $(DESTDIR)$(bindir)/serialview$(EXEEXT)
-
-
-# Performing self-test
-# --------------------
-check:
-
-test:
-
-
-# Performing installation test
-# ----------------------------
-installcheck:
-
-
-# Creating installation directories
-# ---------------------------------
-installdirs:
-	test -d $(DESTDIR)$(bindir) || $(INSTALL) -d $(DESTDIR)$(bindir)
-
-
-# Creating dependencies
-# ---------------------
 dep: Makefile.dep
 
-Makefile.dep: $(srcdir)/*.cc $(srcdir)/*.h $(srcdir)/*.hh
+Makefile.dep: $(srcdir)/*.cc objs.mk $(srcdir)/*.h
 	$(MAKEDEP) $(CPPFLAGS) $(filter %.cc,$^) >Makefile.dep
 
-ifeq "$(findstring $(MAKECMDGOALS),uninstall installcheck installdirs checkconf \
-                                   clean distclean mostlyclean realclean)" ""
-  -include Makefile.dep
-endif
+-include Makefile.dep
 include $(srcdir)/clean.mk
-
-
-# My rules
-# --------
-serialview$(EXEEXT): $(OBJECTS)
-	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) $(LIBS)
-
-.cc.o:
-	$(CXX) $(CXXFLAGS)  $(CPPFLAGS) -c $< -o $@
-
-# Remaking configuration
-# ----------------------
-checkconf:
-	@if [ -f $(top_builddir)/devel ]; then\
-	  $(MAKE) -f conf.mk srcdir="$(srcdir)" top_builddir="$(top_builddir)" top_srcdir=$(top_srcdir) freshconf;\
-	fi
-
-# End of gui.src/serio.src/Makefile.in

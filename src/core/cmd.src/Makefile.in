@@ -21,7 +21,7 @@ all: libs
 
 include $(top_srcdir)/src/lib.mk
 
-cmdlex.cc: cmdlex.l cmdpars.hh
+cmdlex.cc: cmdlex.l cmdpars.y
 
 # Performing self-test
 # --------------------

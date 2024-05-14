@@ -1,43 +1,23 @@
 #
-# uCsim m68hc12.src/Makefile
+# uCsim  simulator Makefile
 #
 # (c) Drotos Daniel, Talker Bt. 1997
 #
 
-include ../../common.mk
-
 srcdir          = @srcdir@
 VPATH           = @srcdir@
-
 top_builddir	= @top_builddir@
 top_srcdir	= @top_srcdir@
 
-LOCAL_LIB_PREREQU	= $(top_builddir)/libmotorola.a
-LOCAL_LIB_OPTIONS	= -lmotorola
-
-CPPFLAGS	+= -I$(top_srcdir)/src/core/motorola.src
-CPPFLAGS	+= -I$(top_srcdir)/src/sims/m6800.src
-CPPFLAGS	+= -I$(top_srcdir)/src/sims/m68hc11.src
+include $(srcdir)/objs.mk
+include ../../common.mk
 
 
 # Compiling entire program or any subproject
 # ------------------------------------------
-all: otherlibs app
+all: $(LEN)
 
 include $(top_srcdir)/src/app.mk
-
-LOCAL_TARGETS: $(srcdir)/wfills.h $(srcdir)/wdecls.h $(srcdir)/wdefs.h
-
-$(srcdir)/wfills.h: $(srcdir)/decode12.h $(srcdir)/gen.h
-	gcc -DGEN_F -E -P $< >$@
-
-$(srcdir)/wdecls.h: $(srcdir)/decode12.h $(srcdir)/gen.h
-	gcc -DGEN_D -E -P $< >$@
-
-$(srcdir)/wdefs.h: $(srcdir)/decode12.h $(srcdir)/gen.h
-	gcc -DGEN_W -E -P $< >$@
-
-hcwrap.o: $(srcdir)/hcwrap.cc $(srcdir)/hcwrapcl.h $(srcdir)/wfills.h $(srcdir)/wdecls.h $(srcdir)/wdefs.h $(srcdir)/m68hc12cl.h
 
 local_install:
 
@@ -54,4 +34,4 @@ Makefile.dep: $(srcdir)/*.cc $(srcdir)/*.h objs.mk
 include $(srcdir)/clean.mk
 
 
-# End of m68hc12.src/Makefile.in
+# End of simulator Makefile
