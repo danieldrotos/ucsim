@@ -20,8 +20,11 @@ all: $(LEN)
 include $(top_srcdir)/src/app.mk
 
 local_install:
+	$(INSTALL) $(LEN) $(DESTDIR)$(bindir)/ucsim_i8051
+	$(STRIP) $(DESTDIR)$(bindir)/ucsim_i8051
 
 local_uninstall:
+	rm -f $(DESTDIR)$(bindir)/ucsim_i8051
 
 # Creating dependencies
 # ---------------------
