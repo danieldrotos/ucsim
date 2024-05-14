@@ -163,9 +163,14 @@ PKGS_ALL	= s51.src avr.src z80.src tlcs.src xa.src \
 		  m6809.src m6800.src m68hc11.src m68hc12.src mos6502.src \
 		  rxk.src pblaze.src i8085.src f8.src i8048.src
 
+curses_ok	= @curses_ok@
 
 ifeq ($(enable_serio),yes)
+ifeq ($(curses_ok),yes)
 SERIO		= serio.src
+else
+SERIO		=
+endif
 else
 SERIO		=
 endif
