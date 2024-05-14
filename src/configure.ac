@@ -892,6 +892,7 @@ echo "Compile i8085     $enable_i8085_port"
 echo "Compile f8        $enable_f8_port"
 echo "Compile i8048     $enable_i8048_port"
 echo "Compile serio     $enable_serio"
+echo "v${VERSION}"
 
 #gui.src/portmon.src/Makefile
 
