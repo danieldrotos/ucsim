@@ -32,9 +32,8 @@ downloaded from its home site (or from its mirrors):
 
 #### Required packages
 
-* gcc
 * g++
-* make
+* make (GNU make is required)
 * bison
 * flex
 * libncurses-dev
@@ -48,6 +47,9 @@ unzipped package and the issue following commands:
 * ./configure
 * make
 * sudo make install
+
+If GNU make is different from system's default make, you can try
+**gmake** command, instead of make.
 
 
 ### Mailing list
