@@ -68,7 +68,12 @@ ALL_OBJECTS	= $(OBJECTS) $(LOCAL_OBJECTS)
 SOURCES		= $(patsubst %.o,%.cc,$(ALL_OBJECTS))
 
 .cc.o:
+ifeq ($(SILENT),yes)
+	@echo CXX $(PKG)-$@
+	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+else
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+endif
 
 .l.cc:
 	rm -f $@
