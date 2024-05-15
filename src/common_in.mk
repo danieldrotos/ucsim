@@ -28,6 +28,7 @@ CPPFLAGS        = @CPPFLAGS@ \
 		  -I$(top_srcdir)/$(GUIDIR) \
 		  -I$(top_srcdir)/$(MOTDIR)
 
+SILENT		= @SILENT@
 OPT		?= 2
 CFLAGS          = @WALL_FLAG@ @CFLAGS@ -O$(OPT)
 CXXFLAGS        = @WALL_FLAG@ @CXXFLAGS@ -O$(OPT) $(PICOPT)
