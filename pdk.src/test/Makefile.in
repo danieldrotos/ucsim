@@ -1,9 +1,0 @@
-# @configure_input@
-
-srcdir           = @abs_srcdir@
-
-abs_top_builddir = @abs_top_builddir@
-abs_top_srcdir   = @abs_top_srcdir@
-
-
-include $(abs_top_srcdir)/test-target.mk
