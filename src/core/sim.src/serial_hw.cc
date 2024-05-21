@@ -61,7 +61,6 @@ int
 cl_serial_hw::init(void)
 {
   chars cs;
-  bool raw= false;
   is_raw= false;
   
   cl_hw::init();
@@ -77,7 +76,7 @@ cl_serial_hw::init(void)
   serial_ifirst_option= new cl_optref(this, cs.c_str());
   cs.format("serial%d_raw", id);
   serial_raw_option= new cl_optref(this, cs.c_str());
-  serial_raw_option->get_value(&raw);
+  serial_raw_option->get_value(&is_raw);
   
   cs.format("serial%d_port", id);
   serial_port_option= new cl_optref(this, cs.c_str());
@@ -142,7 +141,7 @@ cl_serial_hw::init(void)
 	    }
 	  else
 	    fi= mk_io(f_serial_in, "r");
-	  if (!fi->tty && !raw)
+	  if (!fi->tty && !is_raw)
 	    fprintf(stderr, "Warning: serial input interface connected to a "
 		    "non-terminal file.\n");
 	}
@@ -157,7 +156,7 @@ cl_serial_hw::init(void)
 	    }
 	  else
 	    fo= mk_io(chars(f_serial_out), "w");
-	  if (!fo->tty && !raw)
+	  if (!fo->tty && !is_raw)
 	    fprintf(stderr, "Warning: serial output interface connected to a "
 		    "non-terminal file.\n");
 	}
@@ -175,7 +174,7 @@ cl_serial_hw::init(void)
 	    }
 	  else
 	    fo= mk_io(chars(f_serial_out), "w");
-	  if (!fo->tty && !raw)
+	  if (!fo->tty && !is_raw)
 	    fprintf(stderr, "Warning: serial output interface connected to a "
 		    "non-terminal file.\n");
 	}
@@ -190,16 +189,17 @@ cl_serial_hw::init(void)
 	    }
 	  else
 	    fi= mk_io(f_serial_in, "r");
-	  if (!fi->tty && !raw)
+	  if (!fi->tty && !is_raw)
 	    fprintf(stderr, "Warning: serial input interface connected to a "
 		    "non-terminal file.\n");
 	}
       else
 	fi= 0;
     }
+
   
   io->replace_files(true, fi, fo);
-  set_raw(raw);
+  set_raw();
   
   menu= 0;
   
@@ -220,19 +220,21 @@ cl_serial_hw::init(void)
 }
 
 void
-cl_serial_hw::set_raw(bool raw)
+cl_serial_hw::set_raw(void)
 {
   class cl_f *fi= io->get_fin();
   if (fi)
     {
-      if (!raw)
-	fi->interactive(NULL);
-      //else
+      if (is_raw)
+	fi->set_telnet(false);
+      else
+	{
+	  fi->interactive(NULL);
+	  fi->set_telnet(true);
+	}
       fi->raw();
       fi->echo(NULL);
     }
-  is_raw= raw;
-  printf("set_raw(%d,fi=%p)\n",raw,fi);
 }
 
 const char *
@@ -308,7 +310,8 @@ cl_serial_hw::set_cmd(class cl_cmdline *cmdline,
       if (strcmp(p1, "raw")==0)
 	{
 	  bool v= port;
-	  set_raw(v);
+	  is_raw= v;
+	  set_raw();
 	  return true;
 	}
       return false;
@@ -412,7 +415,7 @@ cl_serial_hw::make_io()
     {
       io= new cl_serial_io(this);
       application->get_commander()->add_console(io);
-      set_raw(is_raw);
+      set_raw();
     }
 }
 
@@ -437,7 +440,7 @@ cl_serial_hw::new_i(class cl_f *f_in)
   io->replace_files(true, f_in, io->get_fout());
   if (!f_in)
     return;
-  set_raw(is_raw);
+  set_raw();
   if (f_in->tty)
     {
       char esc= (char)cfg_get(serconf_escape);
@@ -565,7 +568,6 @@ cl_serial_hw::proc_input(void)
 		{
 		  input= c;
 		  input_avail= true;
-		  printf("1 input=%d\n", c);
 		}
 	      else
 		fin->unget(c);
@@ -581,7 +583,6 @@ cl_serial_hw::proc_input(void)
 		  input= c;
 		  input_avail= true;
 		  cfg_set(serconf_able_receive, 0);
-		  printf("2 input=%d\n", c);
 		}
 	    }
 	}

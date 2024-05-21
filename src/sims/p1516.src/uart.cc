@@ -95,7 +95,6 @@ cl_uart::read(class cl_memory_cell *cell)
   if (cell == regs[dr])
     {
       cfg_set(serconf_able_receive, 1);
-      printf("READ(%d,%c)\n",s_in,isprint(s_in)?s_in:' ');
       show_readable(false);
       return s_in;
     }
@@ -343,7 +342,6 @@ cl_uart::received()
 {
   set_dr(s_in);
   cfg_write(serconf_received, s_in);
-  printf("received:%d,%c\n",s_in,isprint(s_in)?s_in:' ');
   show_readable(true);
 }
 
@@ -409,7 +407,6 @@ void
 cl_uart::show_readable(bool val)
 {
   u32_t r= regs[rstat]->get();
-  printf("show_readable(%d)\n", val);
   if (val)
     r|= 1;
   else
