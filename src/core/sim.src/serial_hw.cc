@@ -62,6 +62,7 @@ cl_serial_hw::init(void)
 {
   chars cs;
   bool raw= false;
+  is_raw= false;
   
   cl_hw::init();
   
@@ -231,6 +232,7 @@ cl_serial_hw::set_raw(bool raw)
       fi->echo(NULL);
     }
   is_raw= raw;
+  printf("set_raw(%d,fi=%p)\n",raw,fi);
 }
 
 const char *
@@ -563,6 +565,7 @@ cl_serial_hw::proc_input(void)
 		{
 		  input= c;
 		  input_avail= true;
+		  printf("1 input=%d\n", c);
 		}
 	      else
 		fin->unget(c);
@@ -578,6 +581,7 @@ cl_serial_hw::proc_input(void)
 		  input= c;
 		  input_avail= true;
 		  cfg_set(serconf_able_receive, 0);
+		  printf("2 input=%d\n", c);
 		}
 	    }
 	}
