@@ -63,10 +63,10 @@ public:
 class cl_p1516: public cl_uc
 {
 public:
-  u8_t F;
+  u32_t F;
   u32_t R[16];
   cl_memory_cell *RC[16];
-  cl_cell8 cF;
+  cl_cell32 cF;
   cl_address_space *regs;
   class cl_porto *pa, *pb, *pc, *pd;
   class cl_porti *pi, *pj;
