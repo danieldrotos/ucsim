@@ -98,7 +98,7 @@ public:
 };
 
 #define SET_C(v) ( cF.W( (F&~C) | ((v)?C:0) ))
-#define SET_Z(v) ( cF.W( (F&~Z) | ((v==0)?Z:0) ))
+#define SET_Z(v) ( cF.W( (F&~Z) | (((v)==0)?Z:0) ))
 #define SET_S(v) ( cF.W( (F&~S) | ((v)?S:0) ))
 
 #endif
