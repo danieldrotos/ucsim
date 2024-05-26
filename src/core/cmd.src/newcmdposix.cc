@@ -342,12 +342,20 @@ cl_listen_console::proc_input(class cl_cmdset *cmdset)
   cmd= app->get_commander();
 
   srv_accept(fin, &in, &out);
-  class cl_console_base *c= new cl_console(in, out, app);
-  c->set_flag(CONS_INTERACTIVE, true);
-  in->interactive(out);
+  class cl_console_base *c= mk_console(in, out);
   cmd->add_console(c);
   return(0);
 }
+
+class cl_console_base *
+cl_listen_console::mk_console(cl_f *fi, cl_f *fo)
+{
+  class cl_console_base *c= new cl_console(fi, fo, app);
+  c->set_flag(CONS_INTERACTIVE, true);
+  fi->interactive(fo);
+  return c;
+}
+
 
 //#endif /* SOCKET_AVAIL */
 

@@ -78,6 +78,24 @@ public:
 };
 
 
+class cl_rgdb_listener: public cl_listen_console
+{
+protected:
+  class cl_sim *sim;
+public:
+  cl_rgdb_listener(int serverport, class cl_app *the_app, cl_sim *asim);
+  virtual class cl_console_base *mk_console(cl_f *fi, cl_f *fo);
+};
+
+class cl_rgdb: public cl_console
+{
+protected:
+  class cl_sim *sim;
+public:
+  cl_rgdb(cl_f *fi, cl_f *fo, class cl_app *the_app, class cl_sim *asim);
+};
+
+
 #endif
 
 /* End of simcl.h */

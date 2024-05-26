@@ -392,4 +392,31 @@ cl_sim::mem_cell_changed(class cl_address_space *mem, t_addr addr)
 }
 */
 
+/*
+ * GDB server
+ ********************************************************************
+ */
+
+cl_rgdb_listener::cl_rgdb_listener(int serverport, class cl_app *the_app, cl_sim *asim):
+  cl_listen_console(serverport, the_app)
+{
+  sim= asim;
+}
+
+class cl_console_base *
+cl_rgdb_listener::mk_console(cl_f *fi, cl_f *fo)
+{
+  class cl_console_base *c;
+  c= new cl_rgdb(fi, fo, app, sim);
+  return c;
+}
+
+
+cl_rgdb::cl_rgdb(cl_f *fi, cl_f *fo, class cl_app *the_app, class cl_sim *asim):
+  cl_console(fi, fo, the_app)
+{
+  sim= asim;
+}
+
+
 /* End of sim.src/sim.cc */
