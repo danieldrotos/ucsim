@@ -282,6 +282,17 @@ chars::starts_with(const char *x) const
   return false;
 }
 
+int
+chars::first_pos(char c)
+{
+  if (empty())
+    return -1;
+  char *pos= strchr(chars_string, c);
+  if (pos == NULL)
+    return -1;
+  return pos-chars_string;
+}
+
 
 chars &
 chars::append(const char *s)

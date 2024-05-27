@@ -393,7 +393,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 
   strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:_");
 #ifdef SOCKET_AVAIL
-  strcat(opts, "Z:r:k:z:");
+  strcat(opts, "Z:r:k:z:d:");
 #endif
 
   for (i= 0; i < argc; i++)

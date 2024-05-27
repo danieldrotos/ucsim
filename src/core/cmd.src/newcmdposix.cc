@@ -449,6 +449,12 @@ cl_commander::init(void)
       c->init();
       add_console(c);
     }
+  if (app->rgdb_port > 0)
+    {
+      c= new cl_rgdb_listener(app->rgdb_port, app, app->sim);
+      c->init();
+      add_console(c);
+    }
 
   char *Config= config_file_option.get_value("");
   char *cn= console_on_option.get_value("");

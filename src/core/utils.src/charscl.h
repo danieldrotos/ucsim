@@ -78,6 +78,7 @@ public:
   void rip(const char *cset) { lrip(cset); rrip(cset); }
   // search
   bool starts_with(const char *x) const;
+  int first_pos(char c);
 public:
   // Operators
 

@@ -93,6 +93,9 @@ protected:
   class cl_sim *sim;
 public:
   cl_rgdb(cl_f *fi, cl_f *fo, class cl_app *the_app, class cl_sim *asim);
+  virtual int init(void);
+  virtual int read_line(void);
+  virtual int proc_input(class cl_cmdset *cmdset);
 };
 
 

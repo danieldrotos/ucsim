@@ -418,5 +418,86 @@ cl_rgdb::cl_rgdb(cl_f *fi, cl_f *fo, class cl_app *the_app, class cl_sim *asim):
   sim= asim;
 }
 
+int
+cl_rgdb::init(void)
+{
+  cl_base::init();
+  prev_quit= -1;
+  set_interactive(false);
+  set_flag(CONS_NOWELCOME, true);
+  set_cooked(false);
+  set_flag(CONS_ECHO, false);
+  return 0;
+}
+
+int
+cl_rgdb::read_line(void)
+{
+  int i, b[2]= { 0, 0 };
+  do {
+    i= fin->read(b, 1);
+    if (i < 0)
+      return -1;
+    if (i == 0)
+      {
+	// EOF
+	dprintf(2,"EOF\n");
+	return -1;
+      }
+    if (i > 0)
+      {
+	//dprintf(2, "%c", b[0]);
+	if (lbuf.empty())
+	  {
+	    if (b[0] == '$')
+	      lbuf+= (char)(b[0]);
+	  }
+	else
+	  {
+	    lbuf+= (char)(b[0]);
+	    i= lbuf.first_pos('#');
+	    if (i >= 0)
+	      {
+		if (lbuf.len() > i+2)
+		  {
+		    //dprintf(2, "buf ready=\"%s\"\n",lbuf.c_str());
+		    return 1;
+		  }
+	      }
+	  }
+      }
+  }
+  while (i > 0);
+  return 0;
+}
+
+int
+cl_rgdb::proc_input(class cl_cmdset *cmdset)
+{
+  int i= read_line();
+  if (i < 0)
+    {
+      return 1;
+    }
+  if (i == 0)
+    return 0;
+  dprintf(2, "proc:%s\n",lbuf.c_str());
+  dd_printf("+");
+  /*
+$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+;fork-events+;vfork-events+;exec-events+;vContSupported+;QThreadEvents+;no-resumed+;memory-tagging+;xmlRegisters=i386#77
+$vMustReplyEmpty#3a
+$Hg0#df
+$qTStatus#49
+$?#3f
+$qfThreadInfo#bb
+$Hc-1#09
+$qC#b4
+$qAttached#8f
+   */
+  dd_printf("$#00");
+  lbuf= 0;
+  return 0;
+}
+
 
 /* End of sim.src/sim.cc */
