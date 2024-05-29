@@ -251,6 +251,7 @@ chars::lrip(const char *cset)
   if (skip > 0)
     allocate_string(chars_string+skip);
 }
+
 void
 chars::rrip(const char *cset)
 {
@@ -267,6 +268,20 @@ chars::rrip(const char *cset)
       else
 	break;
       i--;
+    }
+}
+
+void
+chars::rrip(int nuof_chars)
+{
+  if (empty()) return;
+  if (nuof_chars < 1) return;
+  int i= chars_length-1;
+  while ((i>=0) && nuof_chars)
+    {
+      chars_string[i]= 0;
+      i--;
+      nuof_chars--;
     }
 }
 

@@ -427,6 +427,8 @@ cl_rgdb::init(void)
   set_flag(CONS_NOWELCOME, true);
   set_cooked(false);
   set_flag(CONS_ECHO, false);
+  thread_id_reported= false;
+  //reply("S13");
   return 0;
 }
 
@@ -451,6 +453,14 @@ cl_rgdb::read_line(void)
 	  {
 	    if (b[0] == '$')
 	      lbuf+= (char)(b[0]);
+	    else if (b[0] == '+')
+	      {
+		dprintf(2, "\033[32m+\033[0m");
+	      }
+	    else if (b[0] == '-')
+	      {
+		dprintf(2, "\033[91m+\033[0m");
+	      }
 	  }
 	else
 	  {
@@ -474,6 +484,7 @@ cl_rgdb::read_line(void)
 int
 cl_rgdb::proc_input(class cl_cmdset *cmdset)
 {
+  chars r;
   int i= read_line();
   if (i < 0)
     {
@@ -494,10 +505,63 @@ $Hc-1#09
 $qC#b4
 $qAttached#8f
    */
-  dd_printf("$#00");
+  switch (lbuf.c_str()[1])
+    {
+    case 'q': procq(lbuf); break;
+    case 'H': reply("OK"); break;
+    case '?': reply("S13"); break;
+    default:
+      reply("");
+      break;
+    }
   lbuf= 0;
   return 0;
 }
 
 
+int
+cl_rgdb::procq(chars l)
+{
+  chars q= &(l.c_str()[2]);
+  q.rrip(3);
+  chars t= q.token(";#:");
+  chars r;
+  while (t.nempty())
+    {
+      dprintf(2, "q=%s\n", t.c_str());
+      if (t == "fThreadInfo")
+	{
+	  return reply("l");
+	  if (!thread_id_reported)
+	    {
+	      thread_id_reported= true;
+	      reply("m1");
+	    }
+	  else
+	    reply("l");
+	}
+      else if (t == "C") reply("qC1");
+      else if (t == "Attached") reply("");
+      else if (t == "Supported") return reply("OK");
+      else if (t == "TStatus") reply("");
+      else
+	reply("");
+      t= q.token(";#:");
+    }
+  return 0;
+}
+
+int
+cl_rgdb::reply(const char *s)
+{
+  u8_t sum= 0;
+  int i;
+  for (i= 0; s[i]; i++)
+    sum+= s[i];
+  dd_printf("$%s#%02x", s, sum);
+  dprintf(2, "\033[91m$%s#%02x\033[0m\n",s,sum);
+  return 0;
+}
+
+  
 /* End of sim.src/sim.cc */
