@@ -439,36 +439,41 @@ cl_rgdb::read_line(void)
   do {
     i= fin->read(b, 1);
     if (i < 0)
-      return -1;
-    if (i == 0)
+      {
+	//dprintf(2, "fin-read: %d\n", i);
+	//return -1;
+      }
+    else if (i == 0)
       {
 	// EOF
 	dprintf(2,"EOF\n");
 	return -1;
       }
-    if (i > 0)
+    else if (i > 0)
       {
-	//dprintf(2, "%c", b[0]);
+	dprintf(2, "\033[32m%c\033[0m", b[0]);
 	if (lbuf.empty())
 	  {
 	    if (b[0] == '$')
 	      lbuf+= (char)(b[0]);
 	    else if (b[0] == '+')
 	      {
-		dprintf(2, "\033[32m+\033[0m");
 	      }
 	    else if (b[0] == '-')
 	      {
-		dprintf(2, "\033[91m+\033[0m");
+	      }
+	    else if (b[0] == 3)
+	      {
+		// Ctrl-C from gdb
 	      }
 	  }
 	else
 	  {
 	    lbuf+= (char)(b[0]);
-	    i= lbuf.first_pos('#');
-	    if (i >= 0)
+	    int p= lbuf.first_pos('#');
+	    if (p >= 0)
 	      {
-		if (lbuf.len() > i+2)
+		if (lbuf.len() > p+2)
 		  {
 		    //dprintf(2, "buf ready=\"%s\"\n",lbuf.c_str());
 		    return 1;
@@ -488,23 +493,16 @@ cl_rgdb::proc_input(class cl_cmdset *cmdset)
   int i= read_line();
   if (i < 0)
     {
+      dprintf(2, "proc_input returns 1\n");
       return 1;
     }
   if (i == 0)
-    return 0;
+    {
+      //dprintf(2, "proc_input NAH\n");
+      return 0;
+    }
+  send("+");
   dprintf(2, "proc:%s\n",lbuf.c_str());
-  dd_printf("+");
-  /*
-$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+;fork-events+;vfork-events+;exec-events+;vContSupported+;QThreadEvents+;no-resumed+;memory-tagging+;xmlRegisters=i386#77
-$vMustReplyEmpty#3a
-$Hg0#df
-$qTStatus#49
-$?#3f
-$qfThreadInfo#bb
-$Hc-1#09
-$qC#b4
-$qAttached#8f
-   */
   switch (lbuf.c_str()[1])
     {
     case 'q': procq(lbuf); break;
@@ -531,6 +529,7 @@ cl_rgdb::procq(chars l)
       dprintf(2, "q=%s\n", t.c_str());
       if (t == "fThreadInfo")
 	{
+	  return reply("");
 	  return reply("l");
 	  if (!thread_id_reported)
 	    {
@@ -541,8 +540,8 @@ cl_rgdb::procq(chars l)
 	    reply("l");
 	}
       else if (t == "C") reply("qC1");
-      else if (t == "Attached") reply("");
-      else if (t == "Supported") return reply("OK");
+      else if (t == "Attached") reply("1");
+      else if (t == "Supported") return reply("");
       else if (t == "TStatus") reply("");
       else
 	reply("");
@@ -558,10 +557,18 @@ cl_rgdb::reply(const char *s)
   int i;
   for (i= 0; s[i]; i++)
     sum+= s[i];
-  dd_printf("$%s#%02x", s, sum);
-  dprintf(2, "\033[91m$%s#%02x\033[0m\n",s,sum);
+  chars m;
+  m.format("$%s#%02x", s, sum);
+  send(m.c_str());
   return 0;
 }
 
-  
+void
+cl_rgdb::send(const char *s)
+{
+  dprintf(2, "\033[91m%s\033[0m\n", s);
+  dd_printf("%s", s);
+}
+
+
 /* End of sim.src/sim.cc */

@@ -100,6 +100,7 @@ public:
   virtual int procq(chars l);
   virtual int reply(const char *s);
   virtual int reply(chars s) { return reply(s.c_str()); }
+  virtual void send(const char *s);
 };
 
 
