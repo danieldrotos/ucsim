@@ -502,7 +502,7 @@ cl_rgdb::proc_input(class cl_cmdset *cmdset)
       return 0;
     }
   send("+");
-  dprintf(2, "proc:%s\n",lbuf.c_str());
+  //dprintf(2, "proc:%s\n",lbuf.c_str());
   switch (lbuf.c_str()[1])
     {
     case 'q': procq(lbuf); break;
@@ -541,7 +541,7 @@ cl_rgdb::procq(chars l)
 	}
       else if (t == "C") reply("qC1");
       else if (t == "Attached") reply("1");
-      else if (t == "Supported") return reply("");
+      else if (t == "Supported") return reply("OK");//reply("PacketSize=47ff");
       else if (t == "TStatus") reply("");
       else
 	reply("");
@@ -568,6 +568,7 @@ cl_rgdb::send(const char *s)
 {
   dprintf(2, "\033[91m%s\033[0m\n", s);
   dd_printf("%s", s);
+  fflush(NULL);
 }
 
 
