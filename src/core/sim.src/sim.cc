@@ -428,6 +428,8 @@ cl_rgdb::init(void)
   set_cooked(false);
   set_flag(CONS_ECHO, false);
   thread_id_reported= false;
+  fin->echo(NULL);
+  ack= true;
   //reply("S13");
   return 0;
 }
@@ -501,13 +503,17 @@ cl_rgdb::proc_input(class cl_cmdset *cmdset)
       //dprintf(2, "proc_input NAH\n");
       return 0;
     }
-  send("+");
+  if (ack)
+    {
+      send("+");
+    }
   //dprintf(2, "proc:%s\n",lbuf.c_str());
   switch (lbuf.c_str()[1])
     {
-    case 'q': procq(lbuf); break;
+    case 'q': case 'Q': procq(lbuf); break;
     case 'H': reply("OK"); break;
     case '?': reply("S13"); break;
+    case 'g': procg(); break;
     default:
       reply("");
       break;
@@ -524,31 +530,67 @@ cl_rgdb::procq(chars l)
   q.rrip(3);
   chars t= q.token(";#:");
   chars r;
-  while (t.nempty())
+
+  dprintf(2, "q=%s\n", t.c_str());
+  if (t == "fThreadInfo")
     {
-      dprintf(2, "q=%s\n", t.c_str());
-      if (t == "fThreadInfo")
+      return reply("");
+      return reply("l");
+      if (!thread_id_reported)
 	{
-	  return reply("");
-	  return reply("l");
-	  if (!thread_id_reported)
-	    {
-	      thread_id_reported= true;
-	      reply("m1");
-	    }
-	  else
-	    reply("l");
+	  thread_id_reported= true;
+	  reply("m1");
 	}
-      else if (t == "C") reply("qC1");
-      else if (t == "Attached") reply("1");
-      else if (t == "Supported") return reply("OK");//reply("PacketSize=47ff");
-      else if (t == "TStatus") reply("");
       else
-	reply("");
-      t= q.token(";#:");
+	reply("l");
     }
+  else if (t == "C") reply("qC1");
+  else if (t == "Attached") reply("1");
+  else if (t == "Supported")
+    reply("PacketSize=7fff;QStartNoAckMode+;qXfer:features:read+");
+  else if (t == "TStatus") reply("");
+  else if (t == "StartNoAckMode")
+    {
+      ack= false;
+      reply("OK");
+    }
+  else if (t == "Xfer")
+    {
+      t= q.token(";#:");
+      if (t == "features")
+	{
+	  t= q.token(";#:");
+	  if (t == "read")
+	    {
+	      chars t;
+	      t= "l<?xml version=\"1.0\"?>\n"
+		"<!DOCTYPE target SYSTEM \"gdb-target.dtd\">\n"
+		"<target>\n"
+		"<architecture>ucsim</architecture>\n"
+		"<feature name=\"ucsim_feat\">\n"
+		"<reg name=\"r\" bitsize=\"8\" type=\"int8\" regnum=\"0\"/>\n"
+		"</feature>\n"
+                "</target>\n";
+		reply(t);
+	    }	      
+	}
+    }
+  else
+    reply("");
+
   return 0;
 }
+
+
+/* Report register values */
+
+int
+cl_rgdb::procg(void)
+{
+  reply("00");
+  return 0;
+}
+
 
 int
 cl_rgdb::reply(const char *s)

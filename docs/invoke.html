@@ -35,7 +35,7 @@
 
     <p><tt><font color="blue">$</font> ucsim_51 [-hHVvPgGEwlbB] [-p prompt] [-t CPU] [-X
         freq[k|M]] [-R seed] [-C cfg_file] [-e command] [-c file] [-s file] [-S
-      optionlist] [-I if_optionlist] [-a nr] [-z portnum] [-Z portnum] [-k portnum] [-o colorlist] [files...]</tt> </p>
+      optionlist] [-I if_optionlist] [-a nr] [-z portnum] [-Z portnum] [-k portnum] <!-- -d portnum -->[-o colorlist] [files...]</tt> </p>
     
     <p>Specified files must be names of Intel hex files. Simulator loads them in
       the specified order into the ROM of the simulated system. If the file is
@@ -75,11 +75,11 @@
 
       <dd>Read and execute initial commands from specified file.</dd>
 
-      
+<!--       
       <dt><tt>-d portnum</tt></dt>
 
       <dd>Act as gdbserver, listen on <b>portnum</b> for gdb connections.</dd>
-
+-->
       
       <dt><b><span style="font-family: monospace;">-e command</span></b></dt>
 

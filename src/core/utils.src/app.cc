@@ -288,7 +288,7 @@ print_help(const char *name)
 	 "       [-C cfg_file] [-c file] [-e command] [-s file] [-S optionlist]\n"
 	 "       [-I if_optionlist] [-o colorlist] [-a nr]\n"
 #ifdef SOCKET_AVAIL
-	 "       [-z portnum] [-Z portnum] [-k portnum] [-d posrtnum]"
+	 "       [-z portnum] [-Z portnum] [-k portnum] "//"[-d portnum]"
 #endif
 	 "\n"
 	 "       [files...]\n", name);
@@ -304,7 +304,7 @@ print_help(const char *name)
      "  -B           Beep on breakpoints\n"
      "  -c file      Open command console on `file' (use `-' for std in/out)\n"
      "  -C cfg_file  Read initial commands from `cfg_file' and execute them\n"
-     "  -d portnum   Act as gdbserver, listen on portnum for gdb connections\n"
+   //"  -d portnum   Act as gdbserver, listen on portnum for gdb connections\n"
      "  -e command   Execute command on startup\n"
      "  -E           Go, start simulation in emulation mode\n"
      "  -g           Go, start simulation\n"
