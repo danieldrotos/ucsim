@@ -713,10 +713,30 @@ CLP2::inst_ext(t_mem code)
       else
 	{
 	  // GETB
-	  u32_t byte= RC[b]->R();
+	  u32_t byte= RC[b]->R(), dv= RC[d]->R();
 	  byte>>= (i*8);
 	  byte&= 0xff;
-	  RC[d]->W(byte);
+	  if (code & 0x00004000)
+	    {
+	      if (code & 0x00002000)
+		{
+		  // sign extend
+		  dv= (byte & 0x80)? 0xffffff00 : 0;
+		  dv|= byte;
+		}
+	      else
+		{
+		  // zero extend
+		  dv= byte;
+		}
+	    }
+	  else
+	    {
+	      // no extend
+	      dv&= 0xffffff00;
+	      dv|= byte;
+	    }
+	  RC[d]->W(dv);
 	}
       return resGO;
     }
