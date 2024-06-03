@@ -502,7 +502,7 @@ CLP2::inst_alu_1op(t_mem code)
       RC[d]->W(F);
       break;
     case 0xf: // SETF
-      cF.W(R[d] & 0xff);
+      cF.W(R[d]);
       break;
     }
   return resGO;
@@ -737,6 +737,40 @@ CLP2::inst_ext(t_mem code)
 	      dv|= byte;
 	    }
 	  RC[d]->W(dv);
+	}
+      return resGO;
+    case 2: // RDS, WRS
+      d= (code & 0x00f00000) >> 20;
+      b= (code & 0x00000f00) >> 8;
+      if (code & 0x01000000)
+	{
+	  // WRS
+	  if (b == 0)
+	    cF.W(R[d]);
+	  else
+	    switch (b)
+	      {
+	      }
+	}
+      else
+	{
+	  // RDS
+	  uint32_t dv= R[d];
+	  if (b == 0)
+	    RC[d]->W(F);
+	  else
+	    {
+	      switch (b)
+		{
+		case 1: // Version
+		  dv= 0; break;
+		case 2: // Feat1
+		  dv= 3; break;
+		case 3: // Feat2
+		  dv= 0; break;
+		}
+	      RC[d]->W(dv);
+	    }
 	}
       return resGO;
     }
