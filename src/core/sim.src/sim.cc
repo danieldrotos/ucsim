@@ -27,6 +27,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 //#include "ddconfig.h"
 
+#define _WITH_DPRINTF
 #include <stdio.h>
 #include <stdlib.h>
 //#include <unistd.h>
