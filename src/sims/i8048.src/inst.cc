@@ -28,4 +28,4 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8020cl.h"
 
 
-/* End of i8085.src/inst.cc */
+/* End of i8048.src/inst.cc */
