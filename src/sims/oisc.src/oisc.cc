@@ -36,6 +36,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "oisccl.h"
 
 
+cl_op_pass::cl_op_pass(class cl_memory_cell *acell, class cl_oisc *auc):
+  cl_memory_operator(acell)
+{
+  t_addr a;
+  uc= auc;
+  addr= 0;
+  if (uc->rom->is_owned(acell, &a))
+    addr= a;
+}
+
+t_mem
+cl_op_pass::read(void)
+{
+  return uc->read(addr);
+}
+
+t_mem
+cl_op_pass::write(t_mem val)
+{
+  return uc->write(addr, val);
+}
+
+
 /*
  * CPU
  */
@@ -50,6 +73,8 @@ int
 cl_oisc::init(void)
 {
   cl_uc::init();
+  reg_cell_var(&cA, &rA, "A", "Accumulator");
+  init_alu();
   return 0;
 }
 
@@ -70,17 +95,6 @@ cl_oisc::mk_hw_elements(void)
 {
   cl_uc::mk_hw_elements();
   class cl_hw *h;
-  /*
-  p0= new cl_qport(this, 0, ports, 0, port_8bit);
-  p0->init();
-  add_hw(p0);
-  p1= new cl_qport(this, 1, ports, 1, port_8bit);
-  p1->init();
-  add_hw(p1);
-  p2= new cl_p2(this, 2, ports, 2, port_4bit);
-  p2->init();
-  add_hw(p2);
-  */
 
   h= new cl_dreg(this, 0, "dreg");
   h->init();
@@ -123,10 +137,11 @@ cl_oisc::disassc(t_addr addr, chars *comment)
   int i;
   bool first;
   //u8_t h, l, r;
-  u16_t code;
+  u16_t src, dst;
   u16_t a;
 
-  code= rom->read(addr);
+  src= rom->read(addr);
+  dst= rom->read(addr+1);
   
   b= "mov %d,%s";
 
@@ -165,10 +180,10 @@ cl_oisc::disassc(t_addr addr, chars *comment)
 	  switch (b[i])
 	    {
 	    case 's':
-	      work.appendf("0x%04x", code);
+	      work.appendf("0x%04x", src);
 	      break;
 	    case 'd':
-	      work.appendf("0x%04x", rom->read(addr+1));
+	      work.appendf("0x%04x", dst);
 	      break;
 	    }
 	  if (comment && temp.nempty())
@@ -210,66 +225,40 @@ cl_oisc::exec_inst(void)
 
 
 void
+cl_oisc::print_acc(class cl_console_base *con)
+{
+  u16_t v= rom->read(rA);
+  con->dd_color("answer");
+  con->dd_printf("A= %04x %5u %+5d ", rA, rA, (i16_t)rA);
+  con->dd_printf(" [A]= %04x %5u %+5d ", v, v, (i16_t)v);
+  con->dd_printf("\n");
+}
+
+
+void
 cl_oisc::print_regs(class cl_console_base *con)
 {
-  /*
-  int start, stop, i;
-  //t_mem data;
-  u16_t dp;
-  // show regs
-  start= (psw & flagBS)?24:0;
-  con->dd_color("answer");
-  con->dd_printf("        R0 R1 R2 R3 R4 R5 R6 R7    PSW= CAF%c-SSS    ACC= ",
-		 (type->type & CPU_MCS21)?'-':'B');
-  con->dd_color("dump_number");
-  con->dd_printf("0x%02x %+3d %c", ACC, ACC, (isprint(ACC)?ACC:'?'));
-  con->dd_printf("\n");
-  con->dd_cprintf("dump_address", "   0x%02x", start);
-  for (int ii= 0; ii < 8; ii++)
-    con->dd_cprintf("dump_number", " %02x", iram->get(start + ii));
-  con->dd_cprintf("dump_number", "    0x%02x ", psw);
-  con->dd_color("dump_number");
-  con->print_bin(psw, 8);
-  con->dd_printf("    DBF=%d F1=%d", mb, flagF1);
-  con->dd_printf("\n");
-  // show indirectly addressed IRAM and some basic regs
-  start= R[0]->get();
-  stop= start+7;
-  con->dd_color("answer");
-  con->dd_printf("R0=");
-  class cl_dump_ads ads(start, stop);
-  iram->dump(0, &ads, 8, con);
-  start= R[1]->get();
-  stop= start+7;
-  con->dd_color("answer");
-  con->dd_printf("R1=");
-  ads._ss(start, stop);
-  iram->dump(0, &ads, 8, con);
-
-  con->dd_cprintf("answer", "SP=%d", psw&7);
-  start= 8;
-  stop= psw&7;
-  for (i= 7; i>=0; i--)
-    {
-      dp= iram->read(start+2*i+1) * 256 + iram->read(start+2*i);
-      con->dd_cprintf("dump_address", " %x", dp>>12);
-      if (i<stop)
-	con->dd_color("dump_address");
-      else
-	con->dd_color("dump_number");
-      con->dd_printf(".%03x", dp&0xfff);
-    }
-  con->dd_printf("\n ");
-  con->dd_color("answer");
-  for (i= 7; i>=0; i--)
-    {
-      con->dd_printf("    %d", i);
-      con->dd_printf("%c", (i==(psw&7))?'^':' ');
-	
-    }
-  con->dd_printf("\n");
-  */
+  print_acc(con);
   print_disass(PC, con);
 }
+
+
+void
+cl_oisc::init_alu(void)
+{
+}
+
+u16_t
+cl_oisc::read(u16_t addr)
+{
+  return rom->get(addr);
+}
+
+u16_t
+cl_oisc::write(u16_t addr, u16_t val)
+{
+  return val;
+}
+
 
 /* End of oisc.src/oisc.cc */

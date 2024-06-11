@@ -30,8 +30,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define OISCCL_HEADER
 
 #include "uccl.h"
+#include "memcl.h"
 
 #include "oisccl.h"
+
+
+class cl_oisc;
+
+class cl_op_pass: public cl_memory_operator
+{
+public:
+  u16_t addr;
+  class cl_oisc *uc;
+public:
+  cl_op_pass(class cl_memory_cell *acell, class cl_oisc *auc);
+  virtual t_mem read(void);
+  virtual t_mem write(t_mem val);
+};
 
 
 /*
@@ -40,8 +55,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_oisc: public cl_uc
 {
-protected:
+public:
   const char *id_str;
+  u16_t rA;
+  class cl_cell16 cA;
 public:
   cl_oisc(class cl_sim *asim);
   virtual int init(void);
@@ -52,10 +69,15 @@ public:
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int inst_length(t_addr addr);
+  virtual void print_acc(class cl_console_base *con);
   virtual void print_regs(class cl_console_base *con);
 
   virtual void reset(void);
   virtual int exec_inst(void);
+
+  virtual void init_alu(void);
+  virtual u16_t read(u16_t addr);
+  virtual u16_t write(u16_t addr, u16_t val);
 };
 
 

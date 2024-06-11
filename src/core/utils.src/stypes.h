@@ -292,6 +292,8 @@ enum cpu_type {
 
   // OISC
   CPU_OISC	= 0x0001,
+  CPU_URISC     = 0x0002,
+  CPU_MISC16	= 0x0004,
   
   // technology
   CPU_CMOS	= 0x0001,

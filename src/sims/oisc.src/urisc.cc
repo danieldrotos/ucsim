@@ -39,6 +39,18 @@ cl_urisc::init_alu(void)
   reg_cell_var(&cF, &rF, "F", "Flags");
 }
 
+void
+cl_urisc::print_regs(class cl_console_base *con)
+{
+  print_acc(con);
+  con->dd_printf("   ONCZ\n");
+  con->dd_printf("F= ");
+  con->print_bin(rF, 4);
+  con->dd_printf(" 0x%02x", rF);
+  con->dd_printf("\n");
+  print_disass(PC, con);
+}
+
 u16_t
 cl_urisc::read(u16_t addr)
 {

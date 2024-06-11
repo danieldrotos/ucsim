@@ -41,6 +41,15 @@ cl_misc16::init_alu(void)
   cC.append_operator(new cl_cy_op(&cC));
 }
 
+void
+cl_misc16::print_regs(class cl_console_base *con)
+{
+  print_acc(con);
+  con->dd_printf("CY= %d", rC);
+  con->dd_printf("\n");
+  print_disass(PC, con);
+}
+
 u16_t
 cl_misc16::read(u16_t addr)
 {

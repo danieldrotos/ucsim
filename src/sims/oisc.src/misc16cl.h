@@ -49,6 +49,7 @@ public:
   class cl_cell8 cC;
 public:
   cl_misc16(class cl_sim *asim);
+  virtual void print_regs(class cl_console_base *con);
   
   virtual void init_alu(void);
   virtual u16_t read(u16_t addr);
