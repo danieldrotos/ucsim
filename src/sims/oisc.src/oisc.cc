@@ -123,7 +123,7 @@ cl_oisc::disassc(t_addr addr, chars *comment)
   int i;
   bool first;
   //u8_t h, l, r;
-  u8_t code;
+  u16_t code;
   u16_t a;
 
   code= rom->read(addr);
@@ -165,8 +165,10 @@ cl_oisc::disassc(t_addr addr, chars *comment)
 	  switch (b[i])
 	    {
 	    case 's':
+	      work.appendf("0x%04x", code);
 	      break;
 	    case 'd':
+	      work.appendf("0x%04x", rom->read(addr+1));
 	      break;
 	    }
 	  if (comment && temp.nempty())
@@ -193,7 +195,17 @@ cl_oisc::reset(void)
 int
 cl_oisc::exec_inst(void)
 {
-  return resGO;
+  bool ret= do_brk();
+  if (!ret)
+    {
+      u16_t src= rom->read(PC);
+      u16_t dst= rom->read((PC+1) & 0xffff);
+      u16_t tmp= rom->read(src);
+      PC+= 2;
+      PC&= 0xffff;
+      rom->write(dst, tmp);
+    }
+  return ret;
 }
 
 
