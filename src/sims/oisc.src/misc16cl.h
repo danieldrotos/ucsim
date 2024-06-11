@@ -50,7 +50,10 @@ public:
 public:
   cl_misc16(class cl_sim *asim);
   virtual void print_regs(class cl_console_base *con);
-  
+
+  virtual u16_t sub(u16_t a, u16_t b);
+  virtual u16_t add(u16_t a, u16_t b);
+  virtual u16_t shift(u16_t a); 
   virtual void init_alu(void);
   virtual u16_t read(u16_t addr);
   virtual u16_t write(u16_t addr, u16_t val);
