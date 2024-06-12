@@ -64,6 +64,13 @@ cl_misc16::cl_misc16(class cl_sim *asim):
 {
 }
 
+void
+cl_misc16::reset(void)
+{
+  cl_oisc::reset();
+  PC= 0x10;
+}
+
 u16_t
 cl_misc16::sub(u16_t a, u16_t b)
 {

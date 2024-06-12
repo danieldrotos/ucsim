@@ -36,6 +36,8 @@ struct cpu_entry cpus_oisc[]=
     {"U"	, CPU_URISC, 0		, "USISC", ""},
     {"MISC16"	, CPU_MISC16, 0		, "MISC16", ""},
     {"M"	, CPU_MISC16, 0		, "MISC16", ""},
+    {"EM"	, CPU_EM, 0		, "EM", ""},
+    {"E"	, CPU_EM, 0		, "EM", ""},
 
     {NULL, CPU_NONE, 0, "", ""}
   };

@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "oisccl.h"
 #include "urisccl.h"
 #include "misc16cl.h"
+#include "emcl.h"
 #include "glob.h"
 
 
@@ -70,6 +71,10 @@ cl_simoisc::mk_controller(void)
       return uc;
     case CPU_MISC16:
       uc= new cl_misc16(this);
+      uc->type= &cpus_oisc[i];
+      return uc;
+    case CPU_EM:
+      uc= new cl_em(this);
       uc->type= &cpus_oisc[i];
       return uc;
     default:

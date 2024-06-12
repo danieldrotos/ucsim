@@ -30,6 +30,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "misc16cl.h"
 
+
+class cl_em: public cl_misc16
+{
+public:
+  u16_t rP;
+  class cl_cell16 cP;
+public:
+  cl_em(class cl_sim *asim);
+  virtual void print_regs(class cl_console_base *con);
+
+  virtual void init_alu(void);
+  virtual u16_t read(u16_t addr);
+  virtual u16_t write(u16_t addr, u16_t val);
+};
+
+
 #endif
 
 /* End of oisc.src/emcl.h */

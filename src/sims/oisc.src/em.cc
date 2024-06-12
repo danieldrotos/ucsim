@@ -27,6 +27,79 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "emcl.h"
 
+/*
+  Extended MISC16
+  
++---------+-------------+------------------+
+| Address | Source      | Destination      |
++---------+-------------+------------------+
+| 0x0000  | PC          | PC               |   
+| 0x0001  | PC+2        | PC if A < 0      |
+| 0x0002  | PC+4        | PC if A = 0      |
+| 0x0003  | PC+6        | -    PC if A<src |
+| 0x0004  | -           | PC if C = 1      |
+| 0x0005  | -         P | -              P |
+| 0x0006  | -     [P++] | -          [--P] |
+| 0x0007  | [A]         | [A]              |
+| 0x0008  | A           | A                |
+| 0x0009  | -           | A = A - source   |
+| 0x000A  | -           | -                |
+| 0x000B  | -           | A = A + source   |
+| 0x000C  | -           | A = A xor source |
+| 0x000D  | -           | A = A or source  |
+| 0x000E  | -           | A = A and source |
+| 0x000F  | -           | A = source >> 1  | 
++---------+-------------+------------------+
+ */
+
+cl_em::cl_em(class cl_sim *asim):
+  cl_misc16(asim)
+{
+}
+
+void
+cl_em::print_regs(class cl_console_base *con)
+{
+  u16_t v= rom->read(rP);
+  print_acc(con);
+  con->dd_printf("P= %04x %5u %+5d ", rP, rP, rP);
+  con->dd_printf(" [P]= %04x %5u %+5d\n", v, v, v);
+  con->dd_printf("CY= %d", rC);
+  con->dd_printf("\n");
+  print_disass(PC, con);
+}
+
+void
+cl_em::init_alu(void)
+{
+  cl_misc16::init_alu();
+  reg_cell_var(&cP, &rP, "P", "Pointer register");
+  class cl_memory_cell *c;
+  c= rom->get_cell(5); c->append_operator(new cl_op_pass(c, this));
+  c= rom->get_cell(6); c->append_operator(new cl_op_pass(c, this));
+}
+
+u16_t
+cl_em::read(u16_t addr)
+{
+  switch (addr)
+    {
+    case 5: return rP;
+    case 6: return rom->read(rP++);
+    }
+  return cl_misc16::read(addr);
+}
+
+u16_t
+cl_em::write(u16_t addr, u16_t val)
+{
+  switch (addr)
+    {
+    case 5: cP.W(val); return val;
+    case 6: rom->write(--rP, val); return val;
+    }
+  return cl_misc16::write(addr, val);
+}
 
 
 /* End of oisc.src/em.cc */
