@@ -29,6 +29,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /*
+
+  MISC16 CPU design by:
+  - Juergen Pintaske
+  - Harry Siebert
+  - Bernd Paysan
+
+  Toolset is by Steve Teal, at https://github.com/Steve-Teal/eforth-misc16
+  
 +---------+-------------+------------------+
 | Address | Source      | Destination      |
 +---------+-------------+------------------+

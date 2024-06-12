@@ -29,6 +29,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /*
+  Simulation of CPU designed by Douglas W. Jones
+  Published in: ACM Computer Architecture News, 16, 3 (June 1988), pages 48-55.
+  https://doi.org/10.1145/48675.48683
+  
+  Revised design documented at: https://homepage.cs.uiowa.edu/~jones/arch/risc/
+
+  
         address |      write      |     read
       ----------+-----------------+--------------
           FFF0  |  acc = data     |  data = acc
@@ -40,7 +47,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
           FFF5  |  acc = data&acc |  data = N^O
           FFF6  |  acc = data|acc |  data = (N^O)|Z
           FFF7  |  acc = data>>1  |  data = C^not(Z)
- */
+*/
 
 cl_urisc::cl_urisc(class cl_sim *asim):
   cl_oisc(asim)
