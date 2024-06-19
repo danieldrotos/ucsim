@@ -342,6 +342,19 @@ CLP2::disassc(t_addr addr, chars *comment)
 	      int ri= (code & 0x3);
 	      work.appendf("%d", ri);
 	    }
+	  if (fmt == "sfr")
+	    {
+	      int rb= (code & 0x00000f00) >> 8;
+	      switch (rb)
+		{
+		case 0: work.append("Sflag"); break;
+		case 1: work.append("Sfeat1"); break;
+		case 2: work.append("Sfeat2"); break;
+		default:
+		  work.appendf("sfr[%d]", rb);
+		  break;
+		}
+	    }
 	  continue;
 	}
       if (b[i] == '%')

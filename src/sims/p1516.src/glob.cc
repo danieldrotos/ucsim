@@ -175,6 +175,8 @@ struct dis_entry disass_p2223[]=
    { 0x06018000, 0x0f0fc000, ' ', 1, "getb %d:=%b['u2']", false },
    { 0x07010000, 0x0f0f8000, ' ', 1, "putb %d:=%b['ri0']", false },
    { 0x07018000, 0x0f0f8000, ' ', 1, "putb %d:=%b['u2']", false },
+   { 0x06020000, 0x0f0f0000, ' ', 1, "rds %d:='sfr'", false },
+   { 0x07020000, 0x0f0f0000, ' ', 1, "wrs 'sfr':=%d", false },
    
    { 0, 0, 0, 0, 0, 0 }
   };
