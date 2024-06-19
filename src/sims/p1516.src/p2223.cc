@@ -26,12 +26,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "glob.h"
 #include "pmon.h"
 
 #include "p2223cl.h"
 
+
+/*
+ * Flag register write operator
+ */
 
 t_mem
 cl_f_write::write(t_mem val)
@@ -43,6 +48,52 @@ cl_f_write::write(t_mem val)
   return val&0x3f;
 }
 
+
+/*
+ * SFR operators
+ */
+
+t_mem
+cl_sfr_op::write(t_mem val)
+{
+  switch (addr)
+    {
+    case 0: return uc->cF.W(val);
+    }
+  return 0;
+}
+
+t_mem
+cl_sfr_op::read(void)
+{
+  u32_t dv;
+  switch (addr)
+    {
+    case 0: return uc->F;
+    case 1: // version
+      {
+	chars s= p12cpu_version;
+	s.start_parse();
+	chars s1= s.token(".\n");
+	chars s2= s.token(".\n");
+	chars s3= s.token(".\n");
+	u8_t v1= strtol(s1.c_str(), 0, 10);
+	u8_t v2= strtol(s2.c_str(), 0, 10);
+	u8_t v3= strtol(s3.c_str(), 0, 10);
+	dv= (v1<<16) + (v2<<8) + (v3);
+	return dv;
+	break;
+      }
+    case 2: return 7; // feat1
+    case 3: return 0; // feat2
+    }
+  return 0;
+}
+
+
+/*
+ * p2223 CPU
+ */
 
 CLP2::cl_p2223(class cl_sim *asim):
   cl_p1516(asim)
@@ -79,9 +130,41 @@ CLP2::init(void)
 const char *
 CLP2::id_string(void)
 {
-  return "p2223";
+  if (id_chars.empty())
+    {
+      id_chars= "p2223";
+      if (p12cpu_version && *p12cpu_version)
+	id_chars+= "-", id_chars+= p12cpu_version;
+    }
+  return id_chars.c_str();
 }
 
+void
+CLP2::make_memories(void)
+{
+  cl_p1516::make_memories();
+  sfr= new cl_address_space("sfr", 0, 16, 32);
+  sfr->init();
+  address_spaces->add(sfr);
+  
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+
+  chip= new cl_chip32("sfr_chip", 16, 32, 0);
+  chip->init();
+  memchips->add(chip);
+  ad= new cl_address_decoder(sfr, chip, 0, 0xf, 0);
+  ad->init();
+  sfr->decoders->add(ad);
+  ad->activate(0);
+
+  int i;
+  for (i=0; i<16; i++)
+    {
+      class cl_memory_cell *c= sfr->get_cell(i);
+      c->append_operator(new cl_sfr_op(c, this, i));
+    }
+}
 
 struct dis_entry *
 CLP2::dis_tbl(void)
@@ -388,6 +471,12 @@ CLP2::print_regs(class cl_console_base *con)
       else
 	con->dd_printf(" ");
     }
+  con->dd_printf("S0,Flag= 0x%08x ", sfr->read(0));
+  con->dd_printf("S1,Ver = 0x%08x ", sfr->read(1));
+  //con->dd_printf("\n");
+  con->dd_printf("S2,Fea1= 0x%08x ", sfr->read(2));
+  con->dd_printf("S3,Fea2= 0x%08x ", sfr->read(3));
+  con->dd_printf("\n");
   print_disass(PC, con);
 }
 
@@ -745,33 +834,13 @@ CLP2::inst_ext(t_mem code)
       if (code & 0x01000000)
 	{
 	  // WRS
-	  if (b == 0)
-	    cF.W(R[d]);
-	  else
-	    switch (b)
-	      {
-	      }
+	  sfr->write(b, RC[d]->R());
 	}
       else
 	{
 	  // RDS
-	  uint32_t dv= R[d];
-	  if (b == 0)
-	    RC[d]->W(F);
-	  else
-	    {
-	      switch (b)
-		{
-		case 1: // Version
-		  dv= 0; break;
-		case 2: // Feat1
-		  dv= 7; break;
-		case 3: // Feat2
-		  dv= 0; break;
-		}
-	      RC[d]->W(dv);
-	    }
-	}
+	  RC[d]->W(sfr->read(b));
+	}	
       return resGO;
     }
   return resINV;
