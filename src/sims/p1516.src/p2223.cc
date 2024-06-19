@@ -765,7 +765,7 @@ CLP2::inst_ext(t_mem code)
 		case 1: // Version
 		  dv= 0; break;
 		case 2: // Feat1
-		  dv= 3; break;
+		  dv= 7; break;
 		case 3: // Feat2
 		  dv= 0; break;
 		}
