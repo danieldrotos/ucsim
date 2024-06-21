@@ -443,18 +443,15 @@ cl_rgdb::read_line(void)
     i= fin->read(b, 1);
     if (i < 0)
       {
-	//dprintf(2, "fin-read: %d\n", i);
 	//return -1;
       }
     else if (i == 0)
       {
 	// EOF
-	dprintf(2,"EOF\n");
 	return -1;
       }
     else if (i > 0)
       {
-	dprintf(2, "\033[32m%c\033[0m", b[0]);
 	if (lbuf.empty())
 	  {
 	    if (b[0] == '$')
@@ -478,7 +475,6 @@ cl_rgdb::read_line(void)
 	      {
 		if (lbuf.len() > p+2)
 		  {
-		    //dprintf(2, "buf ready=\"%s\"\n",lbuf.c_str());
 		    return 1;
 		  }
 	      }
@@ -496,19 +492,16 @@ cl_rgdb::proc_input(class cl_cmdset *cmdset)
   int i= read_line();
   if (i < 0)
     {
-      dprintf(2, "proc_input returns 1\n");
       return 1;
     }
   if (i == 0)
     {
-      //dprintf(2, "proc_input NAH\n");
       return 0;
     }
   if (ack)
     {
       send("+");
     }
-  //dprintf(2, "proc:%s\n",lbuf.c_str());
   switch (lbuf.c_str()[1])
     {
     case 'q': case 'Q': procq(lbuf); break;
@@ -532,7 +525,6 @@ cl_rgdb::procq(chars l)
   chars t= q.token(";#:");
   chars r;
 
-  dprintf(2, "q=%s\n", t.c_str());
   if (t == "fThreadInfo")
     {
       return reply("");
@@ -609,7 +601,6 @@ cl_rgdb::reply(const char *s)
 void
 cl_rgdb::send(const char *s)
 {
-  dprintf(2, "\033[91m%s\033[0m\n", s);
   dd_printf("%s", s);
   fflush(NULL);
 }
