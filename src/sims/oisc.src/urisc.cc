@@ -47,6 +47,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
           FFF5  |  acc = data&acc |  data = N^O
           FFF6  |  acc = data|acc |  data = (N^O)|Z
           FFF7  |  acc = data>>1  |  data = C^not(Z)
+	  FFFF  |  PC             |  PC
 */
 
 cl_urisc::cl_urisc(class cl_sim *asim):
@@ -114,6 +115,7 @@ cl_urisc::dis_src(t_addr addr)
     case 0xfff5: return "N^O";
     case 0xfff6: return "(N^O)|Z";
     case 0xfff7: return "C^~Z";
+    case 0xffff: return "PC";
     }
   return NULL;
 }
@@ -131,6 +133,7 @@ cl_urisc::dis_dst(t_addr addr)
     case 0xfff5: return "acc&";
     case 0xfff6: return "acc|";
     case 0xfff7: return ">>";
+    case 0xffff: return "PC";
     }
   return NULL;
 }
@@ -140,7 +143,8 @@ cl_urisc::dis_comment(t_addr src, t_addr dst)
 {
   chars s= "";
   if ((dst >= 0xfff0) && (dst <= 0xfff7) &&
-      ((src < 0xfff0) || (src > 0xfff7)))
+      ((src < 0xfff0) || (src > 0xfff7)) &&
+      (src != 0xffff))
     s.appendf("; 0x%04x", rom->read(src));
   return s;
 }
@@ -167,6 +171,8 @@ cl_urisc::read(u16_t addr)
       c= (rF&flagC)?2:0;
       nz= (rF&flagZ)?0:2;
       return c^nz;
+    case 0xffff:
+      return PC;
     }
   return rom->get(addr);
 }
@@ -184,6 +190,7 @@ cl_urisc::write(u16_t addr, u16_t val)
     case 0xfff5: cA.W(rA&val); break;
     case 0xfff6: cA.W(rA|val); break;
     case 0xfff7: cA.W(val>>1); break;
+    case 0xffff: PC= val; break;
     }
   return val;
 }

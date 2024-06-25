@@ -132,6 +132,69 @@ cl_misc16::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
+
+const char *
+cl_misc16::dis_src(t_addr addr)
+{
+  switch (addr)
+    {
+    case 0: return "PC";
+    case 1: return "PC+2";
+    case 2: return "PC+4";
+    case 3: return "PC+8";
+    case 7: return "[A]";
+    case 8: return "A";
+    }
+  return NULL;
+}
+
+const char *
+cl_misc16::dis_dst(t_addr addr)
+{
+  switch (addr)
+    {
+    case 0: return "PC";
+    case 1: return "PC(A<0)";
+    case 2: return "PC(A==0)";
+    case 4: return "PC(C)";
+    case 7: return "[A]";
+    case 8: return "A";
+    case 9: return "A-";
+    case 11: return "A+";
+    case 12: return "A^";
+    case 13: return "A|";
+    case 14: return "A&";
+    case 15: return ">>";
+    }
+  return NULL;
+}
+
+chars
+cl_misc16::dis_comment(t_addr src, t_addr dst)
+{
+  chars s= "";
+  if (dst==7)
+    s.appendf("; dst=0x%04x", rA);
+  if ((dst==0) || (dst==1) || (dst==2) || (dst==4) || (dst==7) ||
+      (dst==9) || (dst==11) || (dst==12) || (dst==13) || (dst==14) || (dst==15))
+    {
+      uint16_t sa= src;
+      if (sa == 7)
+	sa= rA;
+      if (s.nempty()) s+= ", ";
+      else s+= "; ";
+      s.appendf("[0x%04x]=0x%04x", sa, rom->read(sa));
+    }
+  else if (src==7)
+    {
+      if (s.nempty()) s+= ", ";
+      else s+= "; ";
+      s.appendf("[src=0x%04x]=0x%04x", rA, rom->read(rA));
+    }
+  return s;
+}
+
+
 u16_t
 cl_misc16::read(u16_t addr)
 {
