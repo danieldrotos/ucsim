@@ -52,6 +52,9 @@ public:
 public:
   cl_urisc(class cl_sim *asim);
   virtual void print_regs(class cl_console_base *con);
+  virtual const char *dis_src(t_addr addr);
+  virtual const char *dis_dst(t_addr addr);
+  virtual chars dis_comment(t_addr src, t_addr dst);
 
   virtual u16_t add(u16_t a, u16_t b, u16_t c);
   virtual void init_alu(void);

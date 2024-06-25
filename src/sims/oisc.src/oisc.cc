@@ -169,32 +169,66 @@ cl_oisc::disassc(t_addr addr, chars *comment)
 	      work.appendf("#0x%02x", rom->read(addr+1));
 	    }
 	  */
-	  if (comment && temp.nempty())
+	  /*
+	    if (comment && temp.nempty())
 	    comment->append(temp);
+	  */
 	  continue;
 	}
       if (b[i] == '%')
 	{
 	  i++;
 	  temp= "";
+	  const char *n;
 	  switch (b[i])
 	    {
 	    case 's':
-	      work.appendf("0x%04x", src);
+	      n= dis_src(src);
+	      if (n != NULL)
+		work+= n;
+	      else
+		work.appendf("0x%04x", src);
 	      break;
 	    case 'd':
-	      work.appendf("0x%04x", dst);
+	      n= dis_dst(dst);
+	      if (n != NULL)
+		work+= n;
+	      else
+		work.appendf("0x%04x", dst);
 	      break;
 	    }
-	  if (comment && temp.nempty())
+	  /*
+	    if (comment && temp.nempty())
 	    comment->append(temp);
+	  */
 	}
       else
 	work+= b[i];
     }
-
+  *comment= dis_comment(src, dst);
+  
   return(strdup(work.c_str()));
 }
+
+const char *
+cl_oisc::dis_src(t_addr addr)
+{
+  return NULL;
+}
+
+const char *
+cl_oisc::dis_dst(t_addr addr)
+{
+  return NULL;
+}
+
+chars
+cl_oisc::dis_comment(t_addr src, t_addr dst)
+{
+  chars s= "";
+  return s;
+}
+
 
 int
 cl_oisc::inst_length(t_addr addr)

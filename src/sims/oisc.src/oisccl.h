@@ -68,6 +68,9 @@ public:
   virtual void make_memories(void);
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);
+  virtual const char *dis_src(t_addr addr);
+  virtual const char *dis_dst(t_addr addr);
+  virtual chars dis_comment(t_addr src, t_addr dst);
   virtual int inst_length(t_addr addr);
   virtual void print_acc(class cl_console_base *con);
   virtual void print_regs(class cl_console_base *con);

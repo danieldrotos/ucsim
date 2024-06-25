@@ -100,6 +100,52 @@ cl_urisc::print_regs(class cl_console_base *con)
   c= rom->get_cell(0xfff7); c->append_operator(new cl_op_pass(c, this));
 }
 
+
+const char *
+cl_urisc::dis_src(t_addr addr)
+{
+  switch (addr)
+    {
+    case 0xfff0: return "acc";
+    case 0xfff1: return "N";
+    case 0xfff2: return "Z";
+    case 0xfff3: return "O";
+    case 0xfff4: return "C";
+    case 0xfff5: return "N^O";
+    case 0xfff6: return "(N^O)|Z";
+    case 0xfff7: return "C^~Z";
+    }
+  return NULL;
+}
+
+const char *
+cl_urisc::dis_dst(t_addr addr)
+{
+  switch (addr)
+    {
+    case 0xfff0: return "acc";
+    case 0xfff1: return "acc-";
+    case 0xfff2: return "-acc";
+    case 0xfff3: return "acc+";
+    case 0xfff4: return "acc^";
+    case 0xfff5: return "acc&";
+    case 0xfff6: return "acc|";
+    case 0xfff7: return ">>";
+    }
+  return NULL;
+}
+
+chars
+cl_urisc::dis_comment(t_addr src, t_addr dst)
+{
+  chars s= "";
+  if ((dst >= 0xfff0) && (dst <= 0xfff7) &&
+      ((src < 0xfff0) || (src > 0xfff7)))
+    s.appendf("; 0x%04x", rom->read(src));
+  return s;
+}
+
+
 u16_t
 cl_urisc::read(u16_t addr)
 {
