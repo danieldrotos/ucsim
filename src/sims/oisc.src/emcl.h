@@ -39,6 +39,9 @@ public:
 public:
   cl_em(class cl_sim *asim);
   virtual void print_regs(class cl_console_base *con);
+  virtual const char *dis_src(t_addr addr);
+  virtual const char *dis_dst(t_addr addr);
+  virtual chars dis_comment(t_addr src, t_addr dst);
 
   virtual void init_alu(void);
   virtual u16_t read(u16_t addr);

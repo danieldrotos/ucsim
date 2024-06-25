@@ -69,6 +69,61 @@ cl_em::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
+
+const char *
+cl_em::dis_src(t_addr addr)
+{
+  switch (addr)
+    {
+    case 5: return "P";
+    case 6: return "[P++]";
+    case 10: return "[A++]";
+    }
+  return cl_misc16::dis_src(addr);
+}
+
+const char *
+cl_em::dis_dst(t_addr addr)
+{
+  switch (addr)
+    {
+    case 5: return "P";
+    case 6: return "[--P]";
+    case 10: return "[A++]";
+    }
+  return cl_misc16::dis_dst(addr);
+}
+
+chars
+cl_em::dis_comment(t_addr src, t_addr dst)
+{
+  chars s= "";
+  if (src==6)
+    {
+      s.appendf("; [src=0x%04x++]=0x%04x", rP, rom->get(rP));
+    }
+  if (dst==6)
+    {
+      if (s.empty()) s+= "; ";
+      if (s.nempty()) s+= ", ";
+      s.appendf("[dst=--0x%04x]=0x%04x", rP, rom->get(rP-1));
+    }
+  if (src==10)
+    {
+      if (s.empty()) s+= "; ";
+      if (s.nempty()) s+= ", ";
+      s.appendf("[src=0x%04x++]=0x%04x", rA, rom->get(rA));
+    }
+  if (dst==10)
+    {
+      if (s.empty()) s+= "; ";
+      if (s.nempty()) s+= ", ";
+      s.appendf("[dst=0x%04x++]=0x%04x", rA, rom->get(rA));
+    }
+  return cl_misc16::dis_comment(src, dst);
+}
+
+
 void
 cl_em::init_alu(void)
 {

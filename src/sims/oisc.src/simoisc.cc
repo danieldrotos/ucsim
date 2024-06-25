@@ -49,7 +49,7 @@ cl_simoisc::mk_controller(void)
   type_option.use("cpu_type");
   i= 0;
   if ((typ= type_option.get_value(typ)) == 0)
-    typ= "MISC16";
+    typ= "EM";
   while ((cpus_oisc[i].type_str != NULL) &&
 	 (strcasecmp(typ, cpus_oisc[i].type_str) != 0))
     i++;
