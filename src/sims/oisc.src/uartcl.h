@@ -38,11 +38,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 enum uart_reg_idx
   {
-   cpb  = 0, // RW
-   dr   = 1, // RW
-   tstat= 2, // RO
-   rdr  = 3,
-   rstat= 4, // RO
+   cpb  = 0, // RW 0xfffb
+   dr   = 1, // WO 0xfffc TDR
+   tstat= 2, // RO 0xfffd
+   rdr  = 3, // RO 0xfffe
+   rstat= 4, // RO 0xffff
   };
 
 enum uart_cfg
