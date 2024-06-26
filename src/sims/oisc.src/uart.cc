@@ -92,7 +92,7 @@ cl_uart::cfg_help(t_addr addr)
 t_mem
 cl_uart::read(class cl_memory_cell *cell)
 {
-  if (cell == regs[dr])
+  if (cell == regs[rdr])
     {
       cfg_set(serconf_able_receive, 1);
       show_readable(false);
@@ -129,7 +129,7 @@ cl_uart::write(class cl_memory_cell *cell, t_mem *val)
   else
     {
       cell->set(*val);
-      if (cell == regs[dr])
+      if (cell == regs[tdr])
 	{
 	  s_txd= *val & 0xff;
 	  s_tx_written= true;
@@ -249,7 +249,8 @@ cl_uart::tick(int cycles)
 	    s_tr_bit++;
 	}
       //if (ren)
-	s_rec_bit++;
+	if (s_rec_bit < 8)
+	  s_rec_bit++;
     }
   else
     return 0;
@@ -342,7 +343,7 @@ cl_uart::finish_send()
 void
 cl_uart::received()
 {
-  set_dr(s_in);
+  set_rdr(s_in);
   cfg_write(serconf_received, s_in);
   show_readable(true);
 }
@@ -396,7 +397,7 @@ void
 cl_uart::show_writable(bool val)
 {
   u32_t r= regs[tstat]->get();
-  if (val)
+  if (!val)
     r|= 1;
   else
     r&= ~1;
@@ -407,7 +408,7 @@ void
 cl_uart::show_readable(bool val)
 {
   u32_t r= regs[rstat]->get();
-  if (val)
+  if (!val)
     r|= 1;
   else
     r&= ~1;
@@ -426,9 +427,9 @@ cl_uart::show_idle(bool val)
 }
 
 void
-cl_uart::set_dr(t_mem val)
+cl_uart::set_rdr(t_mem val)
 {
-  regs[dr]->set(val);
+  regs[rdr]->set(val);
 }
 
 void

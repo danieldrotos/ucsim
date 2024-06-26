@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "uartcl.h"
+
 #include "misc16cl.h"
 
 
@@ -62,6 +64,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_misc16::cl_misc16(class cl_sim *asim):
   cl_oisc(asim)
 {
+}
+
+void
+cl_misc16::mk_hw_elements(void)
+{
+  class cl_hw *h;
+  cl_oisc::mk_hw_elements();
+
+  add_hw(h= new cl_uart(this, 0, 0xfffb));
+  h->init();
 }
 
 void
@@ -204,7 +216,7 @@ cl_misc16::read(u16_t addr)
     case 1: return (PC+2)&0xffff;
     case 2: return (PC+4)&0xffff;
     case 3: return (PC+6)&0xffff;
-    case 7: return rom->read(rA);
+    case 7: return (rA==7)?rA:(rom->read(rA));
     case 8: return rA;
     }
   return rom->get(addr);
@@ -226,7 +238,7 @@ cl_misc16::write(u16_t addr, u16_t val)
     case 12: cA.W(val= rA^val); break;
     case 13: cA.W(val= rA|val); break;
     case 14: cA.W(val= rA&val); break;
-    case 15: cA.W(val= shift(rA)); break;
+    case 15: cA.W(val= shift(val)); break;
     }
   return val;
 }

@@ -49,6 +49,7 @@ public:
   class cl_cell8 cC;
 public:
   cl_misc16(class cl_sim *asim);
+  virtual void mk_hw_elements(void);
   virtual void print_regs(class cl_console_base *con);
   virtual const char *dis_src(t_addr addr);
   virtual const char *dis_dst(t_addr addr);

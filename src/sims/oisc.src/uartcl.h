@@ -39,7 +39,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 enum uart_reg_idx
   {
    cpb  = 0, // RW 0xfffb
-   dr   = 1, // WO 0xfffc TDR
+   tdr  = 1, // WO 0xfffc
    tstat= 2, // RO 0xfffd
    rdr  = 3, // RO 0xfffe
    rstat= 4, // RO 0xffff
@@ -93,7 +93,7 @@ class cl_uart: public cl_serial_hw
   virtual void show_readable(bool val);
   virtual void show_tx_complete(bool val);
   virtual void show_idle(bool vol);
-  virtual void set_dr(t_mem val);
+  virtual void set_rdr(t_mem val);
   
   virtual void print_info(class cl_console_base *con);
 };
