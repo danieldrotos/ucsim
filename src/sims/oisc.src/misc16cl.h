@@ -62,6 +62,8 @@ public:
   virtual void init_alu(void);
   virtual u16_t read(u16_t addr);
   virtual u16_t write(u16_t addr, u16_t val);
+
+  //virtual int exec_inst(void);
 };
 
 

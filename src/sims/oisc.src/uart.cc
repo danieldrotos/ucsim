@@ -52,6 +52,7 @@ cl_uart::init(void)
   
   set_name("uart");
   cl_serial_hw::init();
+  nl_value= 13;
   
   for (i= 0; i < 5; i++)
     regs[i]= register_cell(uc->rom, base+i);
@@ -262,7 +263,6 @@ cl_uart::tick(int cycles)
       if ((fo == NULL) || (fo->writable()))
 	{
 	  s_sending= false;
-	  //io->dd_printf("%c", s_out);
 	  io->write((char*)&s_out, 1);
 	  s_tr_bit-= 8;
 	  if (s_tx_written)
@@ -295,8 +295,8 @@ cl_uart::tick(int cycles)
       (s_rec_bit >= 8))
     {
 	{
-	  c= input;
-	  input_avail= false;
+	  c= get_input();
+	  //input_avail= false;
 	  s_in= c;
 	  received();
 	}

@@ -90,7 +90,7 @@ cl_misc16::sub(u16_t a, u16_t b)
 
   b= ~b;
   s= a+b+1;
-  rC= (((a&b)|((a|b)&~s))&0x8000)?1:0;
+  rC= (((a&b)|((a|b)&~s))&0x8000)?0:1;
   return s;
 }
 
@@ -203,6 +203,12 @@ cl_misc16::dis_comment(t_addr src, t_addr dst)
       else s+= "; ";
       s.appendf("[src=0x%04x]=0x%04x", rA, rom->read(rA));
     }
+  else
+    {
+      if (s.nempty()) s+= ", ";
+      else s+= "; ";
+      s.appendf("[src=0x%04x]=0x%04x", src, rom->read(src));
+    }
   return s;
 }
 
@@ -242,6 +248,26 @@ cl_misc16::write(u16_t addr, u16_t val)
     }
   return val;
 }
+
+
+/*
+int
+cl_misc16::exec_inst(void)
+{
+  bool ret= do_brk();
+  if (!ret)
+    {
+      u16_t src= rom->read(PC);
+      u16_t dst= rom->read((PC+1) & 0xffff);
+      u16_t tmp= rom->read(src);
+      PC+= 2;
+      PC&= 0xffff;
+      rom->write(dst, tmp);
+      tick(4);
+    }
+  return ret;
+}
+*/
 
 
 /* End of oisc.src/misc16.cc */
