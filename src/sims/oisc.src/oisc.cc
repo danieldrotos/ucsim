@@ -251,7 +251,6 @@ cl_oisc::exec_inst(void)
       u16_t src= rom->read(PC);
       u16_t dst= rom->read((PC+1) & 0xffff);
       u16_t tmp= rom->read(src);
-      //dprintf(2,"PC=%04x [src=%04x]=%04x dst=%04x\n",PC,src,tmp,dst);
       PC+= 2;
       PC&= 0xffff;
       rom->write(dst, tmp);
