@@ -871,6 +871,8 @@ cl_app::proc_arguments(int argc, char *argv[])
 		  "by -B parameter\n");	
 	break;
       case 'U':
+	con_hw_cath= HW_UART;
+	con_hw_id= strtol(optarg, 0, 0);
 	break;
       case 'h':
 	print_help(get_name());
