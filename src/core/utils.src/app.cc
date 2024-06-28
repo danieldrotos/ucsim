@@ -80,6 +80,8 @@ cl_app::cl_app(void)
   period= 0;
   cyc= 0;
   acyc= 0;
+  con_hw_cath= HW_NONE;
+  con_hw_id= -1;
 }
 
 cl_app::~cl_app(void)
@@ -284,9 +286,9 @@ static void
 print_help(const char *name)
 {
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-hHVvPgGEwlbBq] [-p prompt] [-t CPU] [-X freq[k|M]] [-R seed]\n"
-	 "       [-C cfg_file] [-c file] [-e command] [-s file] [-S optionlist]\n"
-	 "       [-I if_optionlist] [-o colorlist] [-a nr]\n"
+  printf("Usage: %s [-bBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] [-e command]\n"
+	 "       [-I if_optionlist] [-o colorlist] [-p prompt] [-R seed]\n"
+	 "       [-s file] [-S optionlist] [-t CPU] [-U uartnr] [-X freq[k|M]]\n"
 #ifdef SOCKET_AVAIL
 	 "       [-z portnum] [-Z portnum] [-k portnum] "//"[-d portnum]"
 #endif
@@ -336,6 +338,7 @@ print_help(const char *name)
      "                  oport=nr  use localhost:nr as server for serial output\n"
      "                  raw       perform non-interactive communication even on tty\n"
      "  -t CPU       Type of CPU: 51, C52, 251, etc.\n"
+     "  -U uartnr    Use std console as terminal for UART id=uartnr\n"
      "  -v           Print out version number and quit\n"
      "  -V           Verbose mode\n"
      "  -w           Writable flash\n"
@@ -391,7 +394,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= false,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:_");
+  strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:z:d:");
 #endif
@@ -866,6 +869,8 @@ cl_app::proc_arguments(int argc, char *argv[])
 	if (!options->set_value("beep_break", this, (bool)true))
 	  fprintf(stderr, "Warning: No \"debug\" option found to set "
 		  "by -B parameter\n");	
+	break;
+      case 'U':
 	break;
       case 'h':
 	print_help(get_name());
