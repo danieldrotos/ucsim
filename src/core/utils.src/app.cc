@@ -80,8 +80,9 @@ cl_app::cl_app(void)
   period= 0;
   cyc= 0;
   acyc= 0;
-  con_hw_cath= HW_NONE;
+  con_hw_cath= HW_DUMMY;
   con_hw_id= -1;
+  con_hw_name= "";
 }
 
 cl_app::~cl_app(void)
@@ -147,6 +148,48 @@ cl_app::exec_startup_cmd(void)
     exec(startup_command);
 }
 
+void
+cl_app::check_con_hw(void)
+{
+  class cl_hw *hw= 0;
+  int hw_idx;
+  if (con_hw_id >= 0)
+    {
+      hw= sim->uc->get_hw(con_hw_cath, con_hw_id, &hw_idx);
+    }
+  else if (con_hw_name.nempty())
+    {
+      con_hw_name.start_parse();
+      chars name, id;
+      name= con_hw_name.token("[,");
+      id= con_hw_name.token("],");
+      if (id.empty())
+	hw= sim->uc->get_hw(name.c_str(), id.lint(), &hw_idx);
+      else
+	hw= sim->uc->get_hw(name.c_str(), &hw_idx);
+    }
+  else
+    return;
+  if (hw == 0)
+    {
+      fprintf(stderr, "No hw found\n");
+      return;
+    }
+  class cl_console_base *con= commander->std_console;
+  if (con == 0)
+    {
+      fprintf(stderr, "No consol on standard io\n");
+      return;
+    }
+  con->dd_printf("Converting console to display of %s[%d]...\n",
+		 hw->id_string, hw->id);
+  hw->new_io(con->get_fin(), con->get_fout());
+  if (hw->get_io())
+    con->drop_files();
+  else
+    con->dd_printf("%s[%d]: no display\n", hw->id_string, hw->id);
+}
+
 int
 cl_app::check_start_options(void)
 {
@@ -183,6 +226,7 @@ cl_app::run(void)
   read_conf_file();
   read_input_files();
   exec_startup_cmd();
+  check_con_hw();
   check_start_options();
   if (commander->consoles_prevent_quit() < 1)
     done= 1;

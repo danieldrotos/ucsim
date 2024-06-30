@@ -410,8 +410,7 @@ enum intr_levels {
 
 /* cathegories of hw elements (peripherals) */
 enum hw_cath {
-  HW_NONE       = 0,
-  HW_DUMMY	= 0x0001,
+  HW_DUMMY	= 0x0000,
   HW_TIMER	= 0x0002,
   HW_UART	= 0x0004,
   HW_PORT	= 0x0008,
