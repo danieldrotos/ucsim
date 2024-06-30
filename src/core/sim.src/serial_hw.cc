@@ -69,7 +69,7 @@ cl_serial_hw::init(void)
   input_avail= false;
   sending_nl= false;
   skip_nl= false;
-  nl_value= 10;
+  cfg_set(serconf_nl, nl_value= 10);
   nl_send_idx= 0;
   
   cs.format("serial%d_in_file", id);
@@ -410,8 +410,7 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
     case serconf_nl:
       if (val)
-	nl_value= *val;
-      return nl_value;
+	cell->set(nl_value= *val);
     default:
       break;
     }
