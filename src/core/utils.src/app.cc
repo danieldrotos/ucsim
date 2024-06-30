@@ -329,13 +329,20 @@ cl_app::done(void)
 static void
 print_help(const char *name)
 {
-  printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-bBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] [-e command]\n"
-	 "       [-I if_optionlist] [-o colorlist] [-p prompt] [-R seed]\n"
-	 "       [-s file] [-S optionlist] [-t CPU] [-U uartnr] [-X freq[k|M]]\n"
 #ifdef SOCKET_AVAIL
-	 "       [-z portnum] [-Z portnum] [-k portnum] "//"[-d portnum]"
+#define ZOPT "[-z portnum] [-Z portnum]"
+#define KOPT "[-k portnum]"
+#define DOPT //"[-d portnum]"
+#else
+#define ZOPT
+#define KOPT
+#define DOPT
 #endif
+  printf("%s: %s\n", name, VERSIONSTR);
+  printf("Usage: %s [-bBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
+	 "       [-e command] [-I if_optionlist] " KOPT " [-o colorlist]\n"
+	 "       [-p prompt] [-R seed] [-s file] [-S optionlist]\n"
+	 "       [-t CPU] [-U uartnr] [-X freq[k|M]] " ZOPT "\n"
 	 "\n"
 	 "       [files...]\n", name);
   printf

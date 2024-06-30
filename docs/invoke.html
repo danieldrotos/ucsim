@@ -34,9 +34,11 @@
 
     <p>The simulator can be started in the following way: </p>
 
-    <p><tt><font color="blue">$</font> ucsim_51 [-hHVvPgGEwlbB] [-p prompt] [-t CPU] [-X
-        freq[k|M]] [-R seed] [-C cfg_file] [-e command] [-c file] [-s file] [-S
-      optionlist] [-I if_optionlist] [-a nr] [-z portnum] [-Z portnum] [-k portnum] <!-- -d portnum -->[-o colorlist] [files...]</tt> </p>
+    <p><tt><font color="blue">$</font> ucsim_XXX [-bBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] [-e command]
+      [-I if_optionlist] [-k portnum] [-o colorlist] [-p prompt] [-R seed]\n
+      [-s file] [-S optionlist] [-t CPU] [-U uartnr] [-X freq[k|M]]\n
+      [-z portnum] [-Z portnum]
+      [files...]</tt> </p>
     
     <p>Specified files must be names of Intel hex files. Simulator loads them in
       the specified order into the ROM of the simulated system. If the file is
@@ -292,6 +294,12 @@
         See <a href="cpu_types.html">how to select CPU type</a>. </dd>
 
 
+      <dt><tt><b>-U uartnr</b></tt></dt>
+
+      <dd>Connect console of standard io to uart as a <a href="display.html#uart_display">display</a> of
+      it. ID of the uart must be specified as parameter to -U option.</dd>
+
+      
       <dt><tt><b>-v</b></tt> </dt>
 
       <dd>Print out version number and stop. </dd>
