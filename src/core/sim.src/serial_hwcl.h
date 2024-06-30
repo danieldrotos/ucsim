@@ -41,7 +41,8 @@ enum serial_cfg {
   serconf_received	= 4,
   serconf_flowctrl	= 5,
   serconf_able_receive	= 6,
-  serconf_nr		= 7
+  serconf_nl		= 7,
+  serconf_nr		= 8
 };
 
 

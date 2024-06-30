@@ -260,6 +260,8 @@ cl_serial_hw::cfg_help(t_addr addr)
       return "Flow-control simulation on/off (bool, RW)";
     case serconf_able_receive:
       return "UART enabled to receive by flow-control (bool, RW)";
+    case serconf_nl:
+      return "Characters to send as new line (int, RW)";
     }
   return "Not used";
 }
@@ -406,6 +408,10 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	      (c <= 'z'))
 	    cell->set(c - 'a'+1);
 	}
+    case serconf_nl:
+      if (val)
+	nl_value= *val;
+      return nl_value;
     default:
       break;
     }
