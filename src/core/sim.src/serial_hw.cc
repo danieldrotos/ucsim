@@ -218,7 +218,7 @@ cl_serial_hw::init(void)
   uc->vars->add(pn+"received_char", cfg, serconf_received, cfg_help(serconf_received));
   uc->vars->add(pn+"flowctrl", cfg, serconf_flowctrl, cfg_help(serconf_flowctrl));
   uc->vars->add(pn+"able_receive", cfg, serconf_able_receive, cfg_help(serconf_able_receive));
-
+  uc->vars->add(pn+"nl", cfg, serconf_nl, cfg_help(serconf_nl));
   cfg_set(serconf_able_receive, 1);
   return 0;
 }
