@@ -68,7 +68,7 @@ cl_serial_hw::init(void)
   make_io();
   input_avail= false;
   sending_nl= false;
-  skip_nl= false;
+  skip_nl= 0;
   cfg_set(serconf_nl, nl_value= 10);
   nl_send_idx= 0;
   
@@ -429,7 +429,7 @@ cl_serial_hw::get_input(void)
 	  input_avail= false;
 	  return input;
 	}
-      skip_nl= true;
+      skip_nl= opposite_nl(input);
       sending_nl= true;
       nl_send_idx= 0;
     }
@@ -609,13 +609,13 @@ cl_serial_hw::proc_input(void)
 		}
 	      else if (!input_avail)
 		{
-		  if (skip_nl && is_nl(c))
+		  if (skip_nl /*&& is_nl(c)*/ && (c==skip_nl))
 		    ;
 		  else
 		    {
 		      input= c;
 		      input_avail= true;
-		      skip_nl= false;
+		      skip_nl= 0;
 		    }
 		}
 	      else
@@ -629,13 +629,14 @@ cl_serial_hw::proc_input(void)
 	    {
 	      if (fin->read(&c, 1))
 		{
-		  if (skip_nl && is_nl(c))
+		  if (skip_nl /*&& is_nl(c)*/ && (c==skip_nl))
 		    ;
 		  else
 		    {
 		      input= c;
 		      input_avail= true;
 		      cfg_set(serconf_able_receive, 0);
+		      skip_nl= 0;
 		    }
 		}
 	    }
@@ -734,7 +735,7 @@ cl_serial_hw::reset(void)
   cfg_set(serconf_able_receive, 1);
   sending_nl= false;
   nl_send_idx= 0;
-  skip_nl= false;
+  skip_nl= 0;
 }
 
 cl_serial_listener::cl_serial_listener(int serverport, class cl_app *the_app,
