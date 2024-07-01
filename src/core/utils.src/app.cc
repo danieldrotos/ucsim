@@ -152,10 +152,10 @@ void
 cl_app::check_con_hw(void)
 {
   class cl_hw *hw= 0;
-  int hw_idx;
+  //int hw_idx;
   if (con_hw_id >= 0)
     {
-      hw= sim->uc->get_hw(con_hw_cath, con_hw_id, &hw_idx);
+      hw= sim->uc->get_hw(con_hw_cath, con_hw_id, 0);
     }
   else if (con_hw_name.nempty())
     {
@@ -164,9 +164,9 @@ cl_app::check_con_hw(void)
       name= con_hw_name.token("[,");
       id= con_hw_name.token("],");
       if (id.empty())
-	hw= sim->uc->get_hw(name.c_str(), id.lint(), &hw_idx);
+	hw= sim->uc->get_hw(name.c_str(), id.lint(), 0);
       else
-	hw= sim->uc->get_hw(name.c_str(), &hw_idx);
+	hw= sim->uc->get_hw(name.c_str(), 0);
     }
   else
     return;
