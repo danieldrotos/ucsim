@@ -342,7 +342,7 @@ print_help(const char *name)
   printf("Usage: %s [-bBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
 	 "       [-e command] [-I if_optionlist] " KOPT " [-o colorlist]\n"
 	 "       [-p prompt] [-R seed] [-s file] [-S optionlist]\n"
-	 "       [-t CPU] [-U uartnr] [-X freq[k|M]] " ZOPT "\n"
+	 "       [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]] " ZOPT "\n"
 	 "\n"
 	 "       [files...]\n", name);
   printf
@@ -390,6 +390,7 @@ print_help(const char *name)
      "                  raw       perform non-interactive communication even on tty\n"
      "  -t CPU       Type of CPU: 51, C52, 251, etc.\n"
      "  -U uartnr    Use std console as terminal for UART id=uartnr\n"
+     "  -u hw        Use std console as display for hardware element\n"
      "  -v           Print out version number and quit\n"
      "  -V           Verbose mode\n"
      "  -w           Writable flash\n"
@@ -445,7 +446,7 @@ cl_app::proc_arguments(int argc, char *argv[])
   bool /*s_done= false,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:_");
+  strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:u:_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:z:d:");
 #endif
@@ -924,6 +925,9 @@ cl_app::proc_arguments(int argc, char *argv[])
       case 'U':
 	con_hw_cath= HW_UART;
 	con_hw_id= strtol(optarg, 0, 0);
+	break;
+      case 'u':
+	con_hw_name= optarg;
 	break;
       case 'h':
 	print_help(get_name());
