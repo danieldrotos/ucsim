@@ -410,7 +410,7 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
     case serconf_nl:
       if (val)
-	cell->set(nl_value= *val);
+	cell->set(nl_value= (*val)&0x00ffffff);
     default:
       break;
     }
