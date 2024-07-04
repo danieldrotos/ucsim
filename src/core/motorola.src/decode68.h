@@ -1,9 +1,9 @@
 /*
  * Simulator of microcontrollers (decode68.h)
  *
- * Copyright (C) 2020,20 Drotos Daniel
+ * Copyright (C) 2020 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

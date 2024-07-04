@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999,2002 Drotos Daniel
  *
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  * Other contributors include:
  *   Karl Bongers karl@turbobit.com,
  *   Johan Knol 

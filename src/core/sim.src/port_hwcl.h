@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/port_hwcl.h)
+ * Simulator of microcontrollers (port_hwcl.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/vcdcl.h)
+ * Simulator of microcontrollers (vcdcl.h)
  *
- * Copyright (C) 2017,17 Drotos Daniel
+ * Copyright (C) 2017 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

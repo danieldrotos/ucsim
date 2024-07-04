@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2021,21 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

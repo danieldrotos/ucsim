@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/serial_hw.cc)
+ * Simulator of microcontrollers (serial_hw.cc)
  *
- * Copyright (C) 2016,16 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2016 Drotos Daniel
  * 
- * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/argcl.h)
+ * Simulator of microcontrollers (argcl.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 
@@ -236,4 +236,4 @@ public:
 
 #endif
 
-/* End of argcl.h */
+/* End of sim.src/argcl.h */

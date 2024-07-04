@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/varcl.h)
+ * Simulator of microcontrollers (varcl.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel
+ * Copyright (C) 1999 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

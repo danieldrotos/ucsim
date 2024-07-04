@@ -4,7 +4,7 @@
  * Copyright (C) 1999 Drotos Daniel
  * Copyright (C) 2006, Borut Razem - borut.razem@siol.net
  *
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

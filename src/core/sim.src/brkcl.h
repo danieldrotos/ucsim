@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/brkcl.h)
+ * Simulator of microcontrollers (brkcl.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 
@@ -190,4 +190,4 @@ public:
 
 #endif
 
-/* End of brkcl.h */
+/* End of sim.src/brkcl.h */

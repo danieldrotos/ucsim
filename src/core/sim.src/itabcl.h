@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/itabcl.h)
+ * Simulator of microcontrollers (itabcl.h)
  *
- * Copyright (C) 1999,2023 Daniel
+ * Copyright (C) 1999 Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 

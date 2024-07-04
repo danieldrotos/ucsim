@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/uccl.h)
+ * Simulator of microcontrollers (uccl.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  *
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 
@@ -559,4 +559,4 @@ public:
 
 #endif
 
-/* End of uccl.h */
+/* End of sim.src/uccl.h */

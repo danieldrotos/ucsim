@@ -1,9 +1,9 @@
 /*
- * Simulator of microcontrollers (sim.src/memcl.h)
+ * Simulator of microcontrollers (memcl.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  * 
- * To contact author send email to dr.dkdb#gmail.com
+ * To contact author send email to dr.dkdb@gmail.com
  *
  */
 
@@ -815,4 +815,4 @@ public:
 
 #endif
 
-/* End of memcl.h */
+/* End of sim.src/memcl.h */
