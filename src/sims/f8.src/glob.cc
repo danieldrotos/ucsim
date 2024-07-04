@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (glob.cc)
  *
- * Copyright (C) 2022 Drotos Daniel, Talker Bt.
+ * Copyright (C) 2022 Drotos Daniel
  * 
  * To contact author send email to drdani@mazsola.iit.uni-miskolc.hu
  *
