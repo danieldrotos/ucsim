@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (oisc.src/uartcl.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel
+ * Copyright (C) 2024 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

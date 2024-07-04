@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (emcl.h)
  *
- * Copyright (C) 2022 Drotos Daniel
+ * Copyright (C) 2024 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

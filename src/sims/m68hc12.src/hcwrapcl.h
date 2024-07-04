@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (hcwrapcl.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel
+ * Copyright (C) 2020 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
