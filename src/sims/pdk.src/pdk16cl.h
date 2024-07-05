@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (pdk16cl.h)
  *
- * Copyright (C) @@S@@,@@Y@@ Drotos Daniel
+ * Copyright (C) 2016 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

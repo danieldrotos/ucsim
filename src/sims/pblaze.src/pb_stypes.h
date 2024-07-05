@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (stypes.h)
+ * Simulator of microcontrollers (pb_stypes.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  *
@@ -240,4 +240,4 @@ enum letter_case {
 
 #endif
 
-/* End of stypes.h */
+/* End of pblaze.src/pb_stypes.h */

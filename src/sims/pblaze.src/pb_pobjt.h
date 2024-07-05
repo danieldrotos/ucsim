@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (pobjt.h)
+ * Simulator of microcontrollers (pb_pobjt.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  *
@@ -39,4 +39,4 @@ typedef void	(*iterator_func)(void *, void *);
 
 #endif
 
-/* End of pobjt.h */
+/* End of pblaze.src/pb_pobjt.h */

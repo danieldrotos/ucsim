@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (osccl.h)
  *
- * Copyright (C) 2024,2024 Drotos Daniel
+ * Copyright (C) 2024 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

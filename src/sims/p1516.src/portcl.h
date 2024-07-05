@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (portcl.h)
  *
- * Copyright (C) 2020,2023 Drotos Daniel
+ * Copyright (C) 2020 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
