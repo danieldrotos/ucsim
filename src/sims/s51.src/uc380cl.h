@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (s51.src/uc380cl.h)
  *
- * Copyright (C) 2017,17 Drotos Daniel
+ * Copyright (C) 2017 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

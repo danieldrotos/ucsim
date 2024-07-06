@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (types51.h)
  *
- * Copyright (C) 2002,02 Drotos Daniel
+ * Copyright (C) 2002 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
