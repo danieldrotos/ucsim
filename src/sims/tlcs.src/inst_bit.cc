@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (tlcs.src/inst_bit.cc)
+ * Simulator of microcontrollers (inst_bit.cc)
  *
- * Copyright (C) 2016,16 Drotos Daniel
+ * Copyright (C) 2016 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
