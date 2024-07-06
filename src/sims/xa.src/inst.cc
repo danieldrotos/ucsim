@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (inst.cc)
  *
- * Copyright (C) 1999,2002 Drotos Daniel
+ * Copyright (C) 2002 Drotos Daniel
  *
  * To contact author send email to dr.dkdb@gmail.com
  * Other contributors include:

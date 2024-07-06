@@ -4,7 +4,7 @@
    of inst.cc with FUNC1 and FUNC2 defined as
    various operations to implement ADD, ADDC, ...
  *
- * Copyright (C) 1999,2002 Drotos Daniel
+ * Copyright (C) 2002 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  * Other contributors include:
