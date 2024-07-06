@@ -3,7 +3,7 @@
  *
  * st7 code base from Vaclav Peroutka vaclavpe@users.sourceforge.net
  *
- * Copyright (C) 1999 Drotos Daniel
+ * Copyright (C) 2015 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

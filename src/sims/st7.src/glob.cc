@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (glob.cc)
  *
- * Copyright (C) 1999 Drotos Daniel
+ * Copyright (C) 2015 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
