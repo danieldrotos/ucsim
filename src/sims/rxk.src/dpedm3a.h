@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (dpedm3a.h)
  *
- * Copyright (C) 2020,2021 Drotos Daniel
+ * Copyright (C) 2020 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

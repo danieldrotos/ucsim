@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (@@F@@)
  *
- * Copyright (C) 2021,2021 Drotos Daniel
+ * Copyright (C) 2021 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
