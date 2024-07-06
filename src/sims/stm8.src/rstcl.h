@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (stm8.src/rstcl.h)
+ * Simulator of microcontrollers (rstcl.h)
  *
- * Copyright (C) 2016,16 Drotos Daniel
+ * Copyright (C) 2016 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

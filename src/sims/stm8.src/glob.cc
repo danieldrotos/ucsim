@@ -1,7 +1,7 @@
 /*
  * Simulator of microcontrollers (glob.cc)
  *
- * Copyright (C) 1999 Drotos Daniel
+ * Copyright (C) 2015 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
@@ -781,4 +781,4 @@ struct dis_entry disass_stm8_92[]= {
   { 0, 0, 0, 0, NULL }
 };
 
-/* glob.cc */
+/* End of stm8.src/glob.cc */

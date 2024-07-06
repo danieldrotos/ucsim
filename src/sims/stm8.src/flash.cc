@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (stm8.src/flash.cc)
+ * Simulator of microcontrollers (flash.cc)
  *
- * Copyright (C) 2017,17 Drotos Daniel
+ * Copyright (C) 2017 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *

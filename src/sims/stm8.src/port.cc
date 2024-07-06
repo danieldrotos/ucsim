@@ -1,7 +1,7 @@
 /*
- * Simulator of microcontrollers (stm8.src/port.cc)
+ * Simulator of microcontrollers (port.cc)
  *
- * Copyright (C) 2017,17 Drotos Daniel
+ * Copyright (C) 2017 Drotos Daniel
  * 
  * To contact author send email to dr.dkdb@gmail.com
  *
