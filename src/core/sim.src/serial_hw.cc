@@ -558,7 +558,6 @@ cl_serial_hw::proc_input(void)
 {
   int c;
   char esc= (char)cfg_get(serconf_escape);
-  bool run= uc->sim->state & SIM_GO;
   class cl_f *fin, *fout;
   int flw= cfg_get(serconf_flowctrl);
   int able= cfg_get(serconf_able_receive);
@@ -580,150 +579,177 @@ cl_serial_hw::proc_input(void)
       return true;
     }
   if (menu == 0)
+    proc_not_in_menu(fin, fout);
+  else
+    proc_in_menu(fin, fout);
+    
+  return true;
+}
+
+void
+cl_serial_hw::show_menu(void)
+{
+  char esc= (char)cfg_get(serconf_escape);
+  io->dd_printf("\n");
+  io->dd_cprintf("ui_title", "Simulator control menu\n");
+  io->dd_cprintf("ui_mkey", " %c      ", 'a'+esc-1);
+  io->dd_cprintf("ui_mitem", "Insert ^%c\n", 'a'+esc-1);
+  io->dd_cprintf("ui_mkey", " s,r,g  ");
+  io->dd_cprintf("ui_mitem", "Start simulation\n");
+  io->dd_cprintf("ui_mkey", " p      ");
+  io->dd_cprintf("ui_mitem", "Stop simulation\n");
+  io->dd_cprintf("ui_mkey", " T      ");
+  io->dd_cprintf("ui_mitem", "Reset CPU\n");
+  io->dd_cprintf("ui_mkey", " q      ");
+  io->dd_cprintf("ui_mitem", "Quit simulator\n");
+  io->dd_cprintf("ui_mkey", " o      ");
+  io->dd_cprintf("ui_mitem", "Close serial terminal\n");
+  io->dd_cprintf("ui_mkey", " e      ");
+  io->dd_cprintf("ui_mitem", "Exit menu\n");
+  io->dd_cprintf("ui_mkey", " n      ");
+  io->dd_cprintf("ui_mitem", "Change display\n");
+}
+
+bool
+cl_serial_hw::proc_not_in_menu(cl_f *fin, cl_f *fout)
+{
+  int c;
+  int flw= cfg_get(serconf_flowctrl);
+  int able= cfg_get(serconf_able_receive);
+  char esc= (char)cfg_get(serconf_escape);
+
+  if (fin->tty && !flw)
     {
-      if (fin->tty && !flw)
+      if (fin->read(&c, 1))
+	{
+	  if (c == esc)
+	    {
+	      menu= 'm';
+	      show_menu();
+	    }
+	  else if (!input_avail)
+	    {
+	      if (skip_nl /*&& is_nl(c)*/ && (c==skip_nl))
+		;
+	      else
+		{
+		  input= c;
+		  input_avail= true;
+		  skip_nl= 0;
+		}
+	    }
+	      /*else
+		fin->unget(c);*/
+	}
+    }
+  else if (!input_avail)
+    {
+      if (!flw ||
+	  able)
 	{
 	  if (fin->read(&c, 1))
 	    {
-	      if (c == esc)
-		{
-		  menu= 'm';
-		  io->dd_printf("\n");
-		  io->dd_cprintf("ui_title", "Simulator control menu\n");
-		  io->dd_cprintf("ui_mkey", " %c      ", 'a'+esc-1);
-		  io->dd_cprintf("ui_mitem", "Insert ^%c\n", 'a'+esc-1);
-		  io->dd_cprintf("ui_mkey", " s,r,g  ");
-		  io->dd_cprintf("ui_mitem", "Start simulation\n");
-		  io->dd_cprintf("ui_mkey", " p      ");
-		  io->dd_cprintf("ui_mitem", "Stop simulation\n");
-		  io->dd_cprintf("ui_mkey", " T      ");
-		  io->dd_cprintf("ui_mitem", "Reset CPU\n");
-		  io->dd_cprintf("ui_mkey", " q      ");
-		  io->dd_cprintf("ui_mitem", "Quit simulator\n");
-		  io->dd_cprintf("ui_mkey", " o      ");
-		  io->dd_cprintf("ui_mitem", "Close serial terminal\n");
-		  io->dd_cprintf("ui_mkey", " e      ");
-		  io->dd_cprintf("ui_mitem", "Exit menu\n");
-		  io->dd_cprintf("ui_mkey", " n      ");
-		  io->dd_cprintf("ui_mitem", "Change display\n");
-		}
-	      else if (!input_avail)
-		{
-		  if (skip_nl /*&& is_nl(c)*/ && (c==skip_nl))
-		    ;
-		  else
-		    {
-		      input= c;
-		      input_avail= true;
-		      skip_nl= 0;
-		    }
-		}
+	      if (skip_nl /*&& is_nl(c)*/ && (c==skip_nl))
+		;
 	      else
-		fin->unget(c);
-	    }
-	}
-      else if (!input_avail)
-	{
-	  if (!flw ||
-	      able)
-	    {
-	      if (fin->read(&c, 1))
 		{
-		  if (skip_nl /*&& is_nl(c)*/ && (c==skip_nl))
-		    ;
-		  else
-		    {
-		      input= c;
-		      input_avail= true;
-		      cfg_set(serconf_able_receive, 0);
-		      skip_nl= 0;
-		    }
+		  input= c;
+		  input_avail= true;
+		  cfg_set(serconf_able_receive, 0);
+		  skip_nl= 0;
 		}
 	    }
 	}
     }
-  else
+  return true;
+}
+
+bool
+cl_serial_hw::proc_in_menu(cl_f *fin, cl_f *fout)
+{
+  int c;
+  char esc= (char)cfg_get(serconf_escape);
+  bool run= uc->sim->state & SIM_GO;
+
+  if (fin->read(&c, 1))
     {
-      if (fin->read(&c, 1))
+      switch (menu)
 	{
-	  switch (menu)
+	case 'm':
+	  if ((c == esc-1+'a') ||
+	      (c == esc-1+'A') ||
+	      (c == esc))
 	    {
-	    case 'm':
-	      if ((c == esc-1+'a') ||
-		  (c == esc-1+'A') ||
-		  (c == esc))
+	      // insert ^esc
+	      if (run && !input_avail)
 		{
-		  // insert ^esc
-		  if (run && !input_avail)
-		    {
-		      input= esc, input_avail= true;
-		      io->dd_printf("^%c entered.\n", 'a'+esc-1);
-		    }
-		  else
-		    io->dd_printf("Control menu exited.\n");
-		  menu= 0;
+		  input= esc, input_avail= true;
+		  io->dd_printf("^%c entered.\n", 'a'+esc-1);
 		}
-	      switch (c)
-		{
-		case 'e': case 'E': case 'e'-'a'+1:
-		  // exit menu
-		  menu= 0;
-		  io->dd_printf("Control menu exited.\n");
-		  break;
-		case 's': case 'S': case 's'-'a'+1:
-		case 'r': case 'R': case 'r'-'a'+1:
-		case 'g': case 'G': case 'g'-'a'+1:
-		  // start
-		  uc->sim->start(0, 0);
-		  menu= 0;
-		  io->dd_printf("Simulation started.\n");
-		  break;
-		case 'p': case 'P': case 'p'-'a'+1:
-		  uc->sim->stop(resSIMIF);
-		  // stop
-		  menu= 0;
-		  io->dd_printf("Simulation stopped.\n");
-		  break;
-		case 'T':
-		  uc->reset();
-		  menu= 0;
-		  io->dd_printf("CPU reset.\n");
-		  break;
-		case 'q': case 'Q': case 'q'-'a'+1:
-		  // kill
-		  uc->sim->state|= SIM_QUIT;
-		  menu= 0;
-		  io->dd_printf("Exit simulator.\n");
-		  break;
-		case 'o': case 'O': case 'o'-'a'+1:
+	      else
+		io->dd_printf("Control menu exited.\n");
+	      menu= 0;
+	    }
+	  switch (c)
+	    {
+	    case 'e': case 'E': case 'e'-'a'+1:
+	      // exit menu
+	      menu= 0;
+	      io->dd_printf("Control menu exited.\n");
+	      break;
+	    case 's': case 'S': case 's'-'a'+1:
+	    case 'r': case 'R': case 'r'-'a'+1:
+	    case 'g': case 'G': case 'g'-'a'+1:
+	      // start
+	      uc->sim->start(0, 0);
+	      menu= 0;
+	      io->dd_printf("Simulation started.\n");
+	      break;
+	    case 'p': case 'P': case 'p'-'a'+1:
+	      uc->sim->stop(resSIMIF);
+	      // stop
+	      menu= 0;
+	      io->dd_printf("Simulation stopped.\n");
+	      break;
+	    case 'T':
+	      uc->reset();
+	      menu= 0;
+	      io->dd_printf("CPU reset.\n");
+	      break;
+	    case 'q': case 'Q': case 'q'-'a'+1:
+	      // kill
+	      uc->sim->state|= SIM_QUIT;
+	      menu= 0;
+	      io->dd_printf("Exit simulator.\n");
+	      break;
+	    case 'o': case 'O': case 'o'-'a'+1:
+	      {
+		// close
+		io->dd_printf("Closing terminal.\n");
+		menu= 0;
+		io->convert2console();
+		break;
+	      }
+	    case 'n': case 'N': case 'n'-'a'+1:
+	      {
+		class cl_hw *h= next_displayer();
+		if (!h)
+		  io->dd_printf("No other displayer.\n");
+		else
 		  {
-		    // close
-		    io->dd_printf("Closing terminal.\n");
-		    menu= 0;
-		    io->convert2console();
-		    break;
+		    io->tu_reset();
+		    io->tu_cls();
+		    io->pass2hw(h);
 		  }
-		case 'n': case 'N': case 'n'-'a'+1:
-		  {
-		    class cl_hw *h= next_displayer();
-		    if (!h)
-		      io->dd_printf("No other displayer.\n");
-		    else
-		      {
-			io->tu_reset();
-			io->tu_cls();
-			io->pass2hw(h);
-		      }
-		    menu= 0;
-		    break;
-		  }
-		default:
-		  menu= 0;
-		  io->dd_printf("Control menu closed (%d).\n", c);
-		  break;
-		}
+		menu= 0;
+		break;
+	      }
+	    default:
+	      menu= 0;
+	      io->dd_printf("Control menu closed (%d).\n", c);
 	      break;
 	    }
+	  break;
 	}
     }
   return true;

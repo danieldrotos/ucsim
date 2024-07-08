@@ -99,6 +99,9 @@ public:
   virtual void del_listener_i(void);
   virtual void del_listener_o(void);
   virtual bool proc_input(void);
+  virtual void show_menu(void);
+  virtual bool proc_not_in_menu(cl_f *fin, cl_f *fout);
+  virtual bool proc_in_menu(cl_f *fin, cl_f *fout);
   virtual void refresh_display(bool force) {}
   virtual void draw_state_time(bool force) {}
   virtual void draw_display(void) {}
