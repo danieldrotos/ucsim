@@ -386,10 +386,10 @@ cl_cia::pick_div()
 {
   switch (r_cr->get() & 0x03)
     {
-    case 0x00: div= 1; break;
-    case 0x01: div= 16; break;
-    case 0x02: div= 64; break;
-    case 0x03: /*Master reset*/ div= 1; break;
+    case 0x00: cpb= 1; break;
+    case 0x01: cpb= 16; break;
+    case 0x02: cpb= 64; break;
+    case 0x03: /*Master reset*/ cpb= 1; break;
     }
   mcnt= 0;
 }
@@ -491,7 +491,7 @@ cl_cia::print_info(class cl_console_base *con)
   con->dd_printf("CR: ");
   con->print_bin(r_cr->get(), 8);
   con->dd_printf(" 0x%02x", r_cr->get());
-  con->dd_printf(" div=%8d bits=%2d\n", div, bits);
+  con->dd_printf(" cpb=%8d bits=%2d\n", cpb, bits);
   con->dd_printf("SR: ");
   con->print_bin(u8, 8);
   con->dd_printf(" 0x%02x", u8);

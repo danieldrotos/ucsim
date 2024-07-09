@@ -259,7 +259,8 @@ COMMAND_DO_WORK_UC(cl_tick_cmd)
     cycles= params[0]->i_value;
 
   uc->tick(cycles);
-
+  uc->tick_hw(cycles);
+  
   return 0;
 }
 

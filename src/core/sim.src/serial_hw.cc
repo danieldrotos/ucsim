@@ -71,6 +71,16 @@ cl_serial_hw::init(void)
   skip_nl= 0;
   cfg_set(serconf_nl, nl_value= 10);
   nl_send_idx= 0;
+
+  s_sending= false;
+  s_receiving= false;
+  s_tx_written= false;
+  s_rec_bit= 0;
+  s_tr_bit= 0;
+  bits= 10;
+
+  mcnt= 0;
+  cpb= 1;
   
   cs.format("serial%d_in_file", id);
   serial_in_file_option= new cl_optref(this, cs.c_str());
@@ -768,10 +778,10 @@ bool
 cl_serial_hw::prediv_bitcnt(int cycles)
 {
   mcnt+= cycles;
-  if (mcnt >= div)
+  if (mcnt >= cpb)
     {
-      mcnt-= div;
-      if (ten & (s_tr_bit < bits))
+      mcnt-= cpb;
+      if (ten && (s_tr_bit < bits))
 	s_tr_bit++;
       if (ren && (s_rec_bit < bits))
 	s_rec_bit++;

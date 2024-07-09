@@ -364,7 +364,7 @@ cl_serial::pick_div()
 {
   u8_t b1= regs[brr1]->get();
   u8_t b2= regs[brr2]->get();
-  div= ((((b2&0xf0)<<4) + b1)<<4) + (b2&0xf);
+  cpb= ((((b2&0xf0)<<4) + b1)<<4) + (b2&0xf);
   mcnt= 0;
 }
 
@@ -431,7 +431,7 @@ cl_serial::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on":"off");
   con->dd_printf("clk %s\n", clk_enabled?"enabled":"disabled");
-  con->dd_printf("mcnt=%d/div=%d\n", mcnt, div);
+  con->dd_printf("mcnt=%d/cpb=%d\n", mcnt, cpb);
   con->dd_printf("ting=%d ten=%d,tbit=%d/%d s_out=0x%02x,%d,%c\n",
 		 s_sending?1:0, ten?1:0,s_tr_bit, bits,
 		 s_out, s_out, isprint(s_out)?s_out:' ');

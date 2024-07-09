@@ -110,15 +110,6 @@ cl_uart::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (conf(cell, val))
     return;
-  /*
-  if (cell == regs[ctrl])
-    {
-      regs[ctrl]->set(*val);
-      pick_div();
-      pick_ctrl();
-      *val= cell->get();
-    }
-  */
   if (cell == regs[rstat])
     {
       *val= regs[rstat]->get();
@@ -340,7 +331,7 @@ cl_uart::reset(void)
 {
   show_writable(true);
   show_readable(false);
-  regs[cpb]->set(div= 217);
+  regs[rcpb]->set(cpb= 217);
   pick_div();
   pick_ctrl();
 }
@@ -355,16 +346,7 @@ cl_uart::happen(class cl_hw *where, enum hw_event he,
 void
 cl_uart::pick_div()
 {
-  /*
-  switch (r_cr->get() & 0x03)
-    {
-    case 0x00: div= 1; break;
-    case 0x01: div= 16; break;
-    case 0x02: div= 64; break;
-    case 0x03: div= 1; break;
-    }
-  */
-  div= regs[cpb]->get();
+  cpb= regs[rcpb]->get();
   mcnt= 0;
 }
 
@@ -445,7 +427,7 @@ cl_uart::print_info(class cl_console_base *con)
   //con->dd_printf("CR: ");
   //con->print_bin(regs[ctrl]->get(), 8);
   //con->dd_printf(" 0x%02x", regs[ctrl]->get());
-  con->dd_printf("Div=%8d bits=8\n", div);
+  con->dd_printf("Cpb=%8d bits=8\n", cpb);
   con->dd_printf("RXSR: ");
   con->print_bin(ru8, 8);
   con->dd_printf(" 0x%02x", ru8);

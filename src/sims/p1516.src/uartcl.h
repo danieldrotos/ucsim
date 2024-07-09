@@ -42,7 +42,7 @@ enum uart_reg_idx
    ctrl = 1, // RW
    rstat= 2, // RO
    tstat= 3, // RO
-   cpb  = 4, // RW
+   rcpb = 4, // RW
   };
 
 enum uart_cfg

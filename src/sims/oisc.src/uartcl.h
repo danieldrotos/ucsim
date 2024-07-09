@@ -38,7 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 enum uart_reg_idx
   {
-   cpb  = 0, // RW 0xfffb
+   rcpb = 0, // RW 0xfffb
    tdr  = 1, // WO 0xfffc
    tstat= 2, // RO 0xfffd
    rdr  = 3, // RO 0xfffe

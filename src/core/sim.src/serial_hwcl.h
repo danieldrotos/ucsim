@@ -90,7 +90,7 @@ protected:
   bool  ren;          // Receiving is enabled
   bool  ten;          // Transmitter is enabled
   // clock divider
-  int div;
+  int cpb;
   int mcnt;
 public:
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
