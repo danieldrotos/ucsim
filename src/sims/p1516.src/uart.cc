@@ -237,19 +237,7 @@ cl_uart::tick(int cycles)
   if (!on)
     return 0;
 
-  mcnt+= cycles;
-  if (mcnt >= div)
-    {
-      mcnt-= div;
-      if (ten)
-	{
-	  if (s_tr_bit < bits)
-	    s_tr_bit++;
-	}
-      if (ren)
-	s_rec_bit++;
-    }
-  else
+  if (!prediv_bitcnt(cycles))
     return 0;
   
   if (s_sending &&

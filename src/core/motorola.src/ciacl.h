@@ -57,17 +57,6 @@ class cl_cia: public cl_serial_hw
   class cl_it_src *is_r, *is_t;
   class cl_memory_cell *r_cr;         // Copy of written CR value
   class cl_memory_cell *r_sr;         // Simulated SR value
-  u8_t  s_in;         // Serial channel input reg
-  u8_t  s_out;        // Serial channel output reg
-  u8_t  s_txd;	      // TX data register
-  bool  s_sending;    // Transmitter is working (s_out is not empty)
-  bool  s_receiving;  // Receiver is working (s_in is shifting)
-  bool  s_tx_written; // TX data reg has been written
-  int   s_rec_bit;    // Bit counter of receiver
-  int   s_tr_bit;     // Bit counter of transmitter
-  uchar bits;         // Nr of bits to send/receive
-  bool  ren;          // Receiving is enabled
-  bool  ten;          // Transmitter is enabled
  public:
   cl_cia(class cl_uc *auc, int aid, t_addr abase);
   virtual ~cl_cia(void);

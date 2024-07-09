@@ -89,6 +89,9 @@ protected:
   uchar bits;         // Nr of bits to send/receive
   bool  ren;          // Receiving is enabled
   bool  ten;          // Transmitter is enabled
+  // clock divider
+  int div;
+  int mcnt;
 public:
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
   virtual ~cl_serial_hw(void);
@@ -119,6 +122,7 @@ public:
   virtual void draw_display(void) {}
   
   virtual void reset(void);
+  virtual bool prediv_bitcnt(int cycles);
 };
 
 enum ser_listener_for

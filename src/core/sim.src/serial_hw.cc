@@ -764,6 +764,27 @@ cl_serial_hw::reset(void)
   skip_nl= 0;
 }
 
+bool
+cl_serial_hw::prediv_bitcnt(int cycles)
+{
+  mcnt+= cycles;
+  if (mcnt >= div)
+    {
+      mcnt-= div;
+      if (ten & (s_tr_bit < bits))
+	s_tr_bit++;
+      if (ren && (s_rec_bit < bits))
+	s_rec_bit++;
+      return true;
+    }
+  return false;
+}
+
+
+/*
+ * Network listener for UART
+ */
+
 cl_serial_listener::cl_serial_listener(int serverport, class cl_app *the_app,
 				       class cl_serial_hw *the_serial,
 				       enum ser_listener_for slf):

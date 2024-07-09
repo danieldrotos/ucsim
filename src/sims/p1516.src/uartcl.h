@@ -55,8 +55,6 @@ class cl_uart: public cl_serial_hw
  protected:
   t_addr base;
   class cl_memory_cell *regs[16];
-  int div;
-  int mcnt;
  public:
   cl_uart(class cl_uc *auc, int aid, t_addr abase);
   virtual ~cl_uart(void);
