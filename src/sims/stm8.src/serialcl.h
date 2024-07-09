@@ -51,17 +51,6 @@ class cl_serial: public cl_serial_hw
   int div;
   int mcnt;
   bool    sr_read;	// last op was read of SR
-  u8_t s_in;		// Serial channel input reg
-  u8_t s_out;	// Serial channel output reg
-  u8_t s_txd;	// TX data register
-  bool    s_sending;	// Transmitter is working (s_out is not empty)
-  bool    s_receiving;	// Receiver is working (s_in is shifting)
-  bool	  s_tx_written;	// TX data reg has been written
-  int     s_rec_bit;	// Bit counter of receiver
-  int     s_tr_bit;	// Bit counter of transmitter
-  uchar   bits;		// Nr of bits to send/receive
-  bool    ren;		// Receiving is enabled
-  bool    ten;		// Transmitter is enabled
   bool    en;		// USART is enabled
  public:
   cl_serial(class cl_uc *auc,

@@ -77,6 +77,18 @@ protected:
   int skip_nl;
   u32_t nl_value;
   int nl_send_idx;
+  // common state variables
+  u8_t  s_in;         // Serial channel input reg
+  u8_t  s_out;        // Serial channel output reg
+  u8_t  s_txd;	      // TX data register
+  bool  s_sending;    // Transmitter is working (s_out is not empty)
+  bool  s_receiving;  // Receiver is working (s_in is shifting)
+  bool  s_tx_written; // TX data reg has been written
+  int   s_rec_bit;    // Bit counter of receiver
+  int   s_tr_bit;     // Bit counter of transmitter
+  uchar bits;         // Nr of bits to send/receive
+  bool  ren;          // Receiving is enabled
+  bool  ten;          // Transmitter is enabled
 public:
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
   virtual ~cl_serial_hw(void);

@@ -57,14 +57,6 @@ class cl_uart: public cl_serial_hw
   class cl_memory_cell *regs[5];
   int div;
   int mcnt;
-  u8_t  s_in;         // Serial channel input reg
-  u8_t  s_out;        // Serial channel output reg
-  u8_t  s_txd;	      // TX data register
-  bool  s_sending;    // Transmitter is working (s_out is not empty)
-  bool  s_receiving;  // Receiver is working (s_in is shifting)
-  bool  s_tx_written; // TX data reg has been written
-  int   s_rec_bit;    // Bit counter of receiver
-  int   s_tr_bit;     // Bit counter of transmitter
  public:
   cl_uart(class cl_uc *auc, int aid, t_addr abase);
   virtual ~cl_uart(void);
