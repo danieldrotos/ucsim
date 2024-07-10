@@ -628,7 +628,7 @@ cl_serial_hw::proc_not_in_menu(cl_f *fin, cl_f *fout)
   int able= cfg_get(serconf_able_receive);
   char esc= (char)cfg_get(serconf_escape);
 
-  if (fin->tty && !flw)
+  if (fin->tty /*&& !flw*/ && esc)
     {
       if (fin->read(&c, 1))
 	{
@@ -648,8 +648,12 @@ cl_serial_hw::proc_not_in_menu(cl_f *fin, cl_f *fout)
 		  skip_nl= 0;
 		}
 	    }
-	      /*else
-		fin->unget(c);*/
+	  else
+	    {
+	      //fin->unget(c);
+	      fprintf(stderr, "%s[%d] Character %d queued for RX, skip %d\n",
+		      get_name(), id, input, c);
+	    }
 	}
     }
   else if (!input_avail)
