@@ -67,6 +67,7 @@ class cl_uart: public cl_serial_hw
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual bool set_cmd(class cl_cmdline *cmdline, class cl_console_base *con);
   virtual void set_help(class cl_console_base *con);
+  virtual int dev_size(void) { return 16; }
 
   virtual int tick(int cycles);
   virtual void start_send();

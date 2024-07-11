@@ -47,6 +47,10 @@ class cl_pc16550: public cl_serial_hw
   class cl_memory_cell *regs[10];
  public:
   cl_pc16550(class cl_uc *auc, int aid);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return serconf_nr+1; }
+  virtual const char *cfg_help(t_addr addr);
+  virtual int dev_size(void) { return 8; }
 };
 
 

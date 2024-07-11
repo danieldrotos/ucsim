@@ -91,7 +91,7 @@ cl_serial::init(void)
   
   set_name("stm8_uart");
   cl_serial_hw::init();
-  for (i= 0; i < 12; i++)
+  for (i= 0; i < dev_size(); i++)
     {
       regs[i]= register_cell(uc->rom, base+i);
     }

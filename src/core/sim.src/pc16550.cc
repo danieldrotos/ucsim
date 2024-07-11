@@ -42,4 +42,14 @@ cl_pc16550::cl_pc16550(class cl_uc *auc, int aid):
   base= 0;
 }
 
+int
+cl_pc16550::init(void)
+{
+}
+
+const char *
+cl_pc16550::cfg_help(t_addr addr)
+{
+}
+
 /* End of sim.src/pc16550.cc */

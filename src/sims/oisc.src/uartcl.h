@@ -61,7 +61,8 @@ class cl_uart: public cl_serial_hw
   virtual int init(void);
   virtual unsigned int cfg_size(void) { return serconf_nr+1; }
   virtual const char *cfg_help(t_addr addr);
-  
+  virtual int dev_size(void) { return 5; }
+
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);

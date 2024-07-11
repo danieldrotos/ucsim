@@ -53,7 +53,7 @@ cl_uart::init(void)
   set_name("uart");
   cl_serial_hw::init();
   
-  for (i= 0; i < 16; i++)
+  for (i= 0; i < dev_size(); i++)
     regs[i]= register_cell(uc->rom, base+i);
 
   ten= false;
@@ -154,7 +154,7 @@ cl_uart::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  int i;
 	  if (uc->rom->valid_address(*val))
 	    {
-	      for (i= 0; i < 16; i++)
+	      for (i= 0; i < dev_size(); i++)
 		unregister_cell(regs[i]);
 	      base= *val;
 	      init();
@@ -213,7 +213,7 @@ cl_uart::set_cmd(class cl_cmdline *cmdline,
 			 AU(uc->rom->highest_valid_address()));
 	  return true;
 	}
-      for (i= 0; i < 16; i++)
+      for (i= 0; i < dev_size(); i++)
 	unregister_cell(regs[i]);
       base= a;
       init();

@@ -63,7 +63,7 @@ cl_cia::init(void)
   r_cr= cfg_cell(acia_cfg_cr);
   r_sr= cfg_cell(acia_cfg_sr);
 
-  for (i= 0; i < 2; i++)
+  for (i= 0; i < dev_size(); i++)
     regs[i]= register_cell(uc->rom, base+i);
   regs[cr]->write(0x15);
   //pick_div();
@@ -209,7 +209,7 @@ cl_cia::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  int i;
 	  if (uc->rom->valid_address(*val))
 	    {
-	      for (i= 0; i < 2; i++)
+	      for (i= 0; i < dev_size(); i++)
 		unregister_cell(regs[i]);
 	      prepare_rebase(*val);
 	      base= *val;
@@ -266,7 +266,7 @@ cl_cia::set_cmd(class cl_cmdline *cmdline,
 			 AU(uc->rom->highest_valid_address()));
 	  return true;
 	}
-      for (i= 0; i < 2; i++)
+      for (i= 0; i < dev_size(); i++)
 	unregister_cell(regs[i]);
       prepare_rebase(a);
       base= a;

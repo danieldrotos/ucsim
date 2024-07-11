@@ -62,6 +62,7 @@ class cl_cia: public cl_serial_hw
   virtual void prepare_rebase(t_addr new_base);
   virtual unsigned int cfg_size(void) { return 11; }
   virtual const char *cfg_help(t_addr addr);
+  virtual int dev_size(void) { return 2; }
 
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
