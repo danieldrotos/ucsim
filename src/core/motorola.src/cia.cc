@@ -81,6 +81,10 @@ cl_cia::init(void)
   
   cl_var *v;
   chars pn= chars("", "uart%d_", id);
+  uc->vars->del(pn+"base");
+  uc->vars->del(pn+"cr");
+  uc->vars->del(pn+"sr");
+  uc->vars->del(pn+"req");
   uc->vars->add(v= new cl_var(pn+"base", cfg, acia_cfg_base, cfg_help(acia_cfg_base)));
   v->init();
   uc->vars->add(v= new cl_var(pn+"cr", cfg, acia_cfg_cr,
@@ -115,6 +119,20 @@ cl_cia::init(void)
   uc->it_sources->add(is_r);
   
   return(0);
+}
+
+void
+cl_cia::prepare_rebase(t_addr new_base)
+{
+  if (new_base != base)
+    {
+      int i;
+      for (i= 0; i < 2; i++)
+	{
+	  t_mem v= uc->rom->get(base+i);
+	  uc->rom->set(new_base+i, v);
+	}
+    }
 }
 
 const char *
@@ -193,6 +211,7 @@ cl_cia::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	    {
 	      for (i= 0; i < 2; i++)
 		unregister_cell(regs[i]);
+	      prepare_rebase(*val);
 	      base= *val;
 	      init();
 	    }
@@ -249,6 +268,7 @@ cl_cia::set_cmd(class cl_cmdline *cmdline,
 	}
       for (i= 0; i < 2; i++)
 	unregister_cell(regs[i]);
+      prepare_rebase(a);
       base= a;
       init();
       return true; // handled

@@ -59,6 +59,7 @@ class cl_cia: public cl_serial_hw
   cl_cia(class cl_uc *auc, int aid, t_addr abase);
   virtual ~cl_cia(void);
   virtual int init(void);
+  virtual void prepare_rebase(t_addr new_base);
   virtual unsigned int cfg_size(void) { return 11; }
   virtual const char *cfg_help(t_addr addr);
 
