@@ -75,7 +75,7 @@ protected:
   bool is_raw;
   bool sending_nl;
   int skip_nl;
-  u32_t nl_value;
+  //u32_t nl_value;
   int nl_send_idx;
   // common state variables
   u8_t  s_in;         // Serial channel input reg
@@ -92,10 +92,16 @@ protected:
   // clock divider
   int cpb;
   int mcnt;
+  // mapping into memory space
+  class cl_memory_cell **regs;
+  class cl_address_space *as;
+  t_addr base;
+  chars var_names;
 public:
   cl_serial_hw(class cl_uc *auc, int aid, chars aid_string);
   virtual ~cl_serial_hw(void);
   virtual int init(void);
+  virtual void map(class cl_address_space *new_as, t_addr new_base);
   virtual unsigned int cfg_size(void) { return serconf_nr; }
   virtual const char *cfg_help(t_addr addr);
   virtual int dev_size(void) { return 1; }

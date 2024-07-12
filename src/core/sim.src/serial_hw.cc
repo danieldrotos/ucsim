@@ -47,6 +47,8 @@ cl_serial_hw::cl_serial_hw(class cl_uc *auc, int aid, chars aid_string):
   cl_hw(auc, HW_UART, aid, (const char *)aid_string)
 {
   listener_io= listener_i= listener_o= NULL;
+  as= NULL;
+  base= 0;
 }
 
 cl_serial_hw::~cl_serial_hw(void)
@@ -64,12 +66,12 @@ cl_serial_hw::init(void)
   is_raw= false;
   
   cl_hw::init();
-  
+  regs= (cl_memory_cell**)malloc(dev_size() * sizeof(class cl_memory_cell *));
   make_io();
   input_avail= false;
   sending_nl= false;
   skip_nl= 0;
-  cfg_set(serconf_nl, nl_value= 10);
+  cfg_set(serconf_nl, 10);
   nl_send_idx= 0;
 
   s_sending= false;
@@ -230,7 +232,52 @@ cl_serial_hw::init(void)
   uc->vars->add(pn+"able_receive", cfg, serconf_able_receive, cfg_help(serconf_able_receive));
   uc->vars->add(pn+"nl", cfg, serconf_nl, cfg_help(serconf_nl));
   cfg_set(serconf_able_receive, 1);
+
   return 0;
+}
+
+void
+cl_serial_hw::map(class cl_address_space *new_as, t_addr new_base)
+{
+  int i;
+  if ((as && new_as) &&
+      ((as != new_as) || (base != new_base)))
+    {
+      for (i=0; i<dev_size(); i++)
+	{
+	  t_mem v= as->get(base+i);
+	  new_as->set(new_base+i, v);
+	}
+    }
+  if (as)
+    {
+      for (i=0; i<dev_size(); i++)
+	unregister_cell(as->get_cell(base+i));
+    }
+  if (new_as)
+    {
+      for (i=0; i<dev_size(); i++)
+	regs[i]= register_cell(new_as, new_base+i);
+    }
+  as= new_as;
+  base= new_base;
+  if (var_names.nempty())
+    {
+      chars n;
+      chars pn= chars("", "uart%d_", id);
+      cl_cvar *v;
+      var_names.start_parse();
+      n= var_names.token(";");
+      i= 0;
+      while (!n.is_null())
+	{
+	  v= uc->get_var(pn+n);
+	  if (v)
+	    v->set_cell(as->get_cell(base+i));
+	  n= var_names.token(";");
+	  i++;
+	}
+    }
 }
 
 void
@@ -420,7 +467,7 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
     case serconf_nl:
       if (val)
-	cell->set(nl_value= (*val)&0x00ffffff);
+	cell->set((*val)&0x00ffffff);
     default:
       break;
     }
@@ -445,6 +492,7 @@ cl_serial_hw::get_input(void)
     }
   if (sending_nl)
     {
+      u32_t nl_value= cfg_get(serconf_nl);
       u8_t v= (nl_value >> (nl_send_idx*8)) & 0xff;
       u8_t vn= (nl_value >> ((nl_send_idx+1)*8)) & 0xff;
       if (vn == 0)

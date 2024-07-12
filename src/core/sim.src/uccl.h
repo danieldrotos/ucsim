@@ -508,6 +508,7 @@ public:
   virtual chars cell_name(class cl_memory_cell *cell, int bitnr_high, int bitnr_low);
   virtual chars cell_name(class cl_memory_cell *cell) { return cell_name(cell, -1, -1); }
   virtual t_addr read_addr(class cl_memory *m, t_addr start_addr);
+  virtual class cl_cvar *get_var(chars name);
   
   /* Converting abstract address spaces into real ones */
   virtual class cl_address_space *bit2mem(t_addr bitaddr,

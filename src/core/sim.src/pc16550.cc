@@ -45,6 +45,8 @@ cl_pc16550::cl_pc16550(class cl_uc *auc, int aid):
 int
 cl_pc16550::init(void)
 {
+  cl_serial_hw::init();
+  return 0;
 }
 
 const char *

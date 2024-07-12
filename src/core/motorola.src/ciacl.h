@@ -50,8 +50,6 @@ class cl_serial_listener;
 class cl_cia: public cl_serial_hw
 {
  protected:
-  t_addr base;
-  class cl_memory_cell *regs[2];
   class cl_it_src *is_r, *is_t;
   class cl_memory_cell *r_cr;         // Copy of written CR value
   class cl_memory_cell *r_sr;         // Simulated SR value

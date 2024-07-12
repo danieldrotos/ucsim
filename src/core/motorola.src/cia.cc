@@ -63,8 +63,9 @@ cl_cia::init(void)
   r_cr= cfg_cell(acia_cfg_cr);
   r_sr= cfg_cell(acia_cfg_sr);
 
-  for (i= 0; i < dev_size(); i++)
-    regs[i]= register_cell(uc->rom, base+i);
+  /*for (i= 0; i < dev_size(); i++)
+    regs[i]= register_cell(uc->rom, base+i);*/
+  map(uc->rom, base);
   regs[cr]->write(0x15);
   //pick_div();
   //pick_ctrl();
@@ -78,13 +79,9 @@ cl_cia::init(void)
   show_readable(false);
   show_writable(true);
   //cfg_set(acia_cfg_req, 'i');
-  
+
   cl_var *v;
   chars pn= chars("", "uart%d_", id);
-  uc->vars->del(pn+"base");
-  uc->vars->del(pn+"cr");
-  uc->vars->del(pn+"sr");
-  uc->vars->del(pn+"req");
   uc->vars->add(v= new cl_var(pn+"base", cfg, acia_cfg_base, cfg_help(acia_cfg_base)));
   v->init();
   uc->vars->add(v= new cl_var(pn+"cr", cfg, acia_cfg_cr,
@@ -209,11 +206,14 @@ cl_cia::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  int i;
 	  if (uc->rom->valid_address(*val))
 	    {
+	      /*
 	      for (i= 0; i < dev_size(); i++)
 		unregister_cell(regs[i]);
 	      prepare_rebase(*val);
 	      base= *val;
 	      init();
+	      */
+	      map(uc->rom, (*val)&0xffff);
 	    }
 	}
       else
@@ -266,11 +266,14 @@ cl_cia::set_cmd(class cl_cmdline *cmdline,
 			 AU(uc->rom->highest_valid_address()));
 	  return true;
 	}
+      /*
       for (i= 0; i < dev_size(); i++)
 	unregister_cell(regs[i]);
       prepare_rebase(a);
       base= a;
       init();
+      */
+      map(uc->rom, a);
       return true; // handled
     }
   return cl_serial_hw::set_cmd(cmdline, con);

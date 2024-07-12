@@ -61,7 +61,8 @@ class cl_cvar: public cl_base
   virtual class cl_memory *get_mem() const { return NULL; }
   virtual t_addr get_addr() const { return 0; }
   virtual bool is_mem_var() const { return false; }
-
+  virtual void set_cell(cl_memory_cell *new_cell) { cell= new_cell; }
+  
   virtual t_mem write(t_mem val);
   virtual t_mem read();
   virtual t_mem set(t_mem val);

@@ -2759,6 +2759,15 @@ cl_uc::symbol2cell(char *sym,
   return false;
 }
 
+class cl_cvar *
+cl_uc::get_var(chars name)
+{
+  t_index i;
+  if (vars->by_name.search(name.c_str(), i))
+    return vars->by_name.at(i);
+  return NULL;
+}
+
 
 /*
  * Searching for a name in the specified table
