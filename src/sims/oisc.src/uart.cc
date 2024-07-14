@@ -50,7 +50,7 @@ cl_uart::init(void)
 {
   int i;
   
-  set_name("uart");
+  //set_name("uart");
   cl_serial_hw::init();
   cfg_set(serconf_nl, 13);
   /*  
@@ -194,7 +194,7 @@ cl_uart::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 
 bool
 cl_uart::set_cmd(class cl_cmdline *cmdline,
-				class cl_console_base *con)
+		 class cl_console_base *con)
 {
   class cl_cmd_arg *params[2]= {
     cmdline->param(0),

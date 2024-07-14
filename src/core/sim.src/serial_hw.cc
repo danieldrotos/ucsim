@@ -63,10 +63,13 @@ int
 cl_serial_hw::init(void)
 {
   chars cs;
+  int i;
   is_raw= false;
   
   cl_hw::init();
   regs= (cl_memory_cell**)malloc(dev_size() * sizeof(class cl_memory_cell *));
+  for (i=0; i<dev_size(); i++)
+    regs[i]= NULL;
   make_io();
   input_avail= false;
   sending_nl= false;
@@ -252,7 +255,10 @@ cl_serial_hw::map(class cl_address_space *new_as, t_addr new_base)
   if (as)
     {
       for (i=0; i<dev_size(); i++)
-	unregister_cell(as->get_cell(base+i));
+	{
+	  unregister_cell(as->get_cell(base+i));
+	  regs[i]= NULL;
+	}
     }
   if (new_as)
     {
