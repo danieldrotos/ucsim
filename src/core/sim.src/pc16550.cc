@@ -142,7 +142,27 @@ cl_pc16550::set_cmd(class cl_cmdline *cmdline,
     cmdline->param(1)
   };
 
-  if (cmdline->syntax_match(uc, NUMBER))
+  if (cmdline->syntax_match(uc, MEMORY ADDRESS))
+    {
+      class cl_memory *mem= params[0]->value.memory.memory;
+      t_addr a= params[1]->value.address;
+      if (!mem->is_address_space())
+	{
+	  con->dd_printf("%s is not an address space\n");
+	  return true;
+	}
+      if (!mem->valid_address(a))
+	{
+	  con->dd_printf("Address must be between 0x%x and 0x%x\n",
+			 AU(mem->lowest_valid_address()),
+			 AU(mem->highest_valid_address()));
+	  return true;
+	}
+      if (mem != 0)
+	map((class cl_address_space *)mem, a);
+      return true;
+    }
+  else if (cmdline->syntax_match(uc, NUMBER))
     {
       int i;
       t_addr a= params[0]->value.number;
