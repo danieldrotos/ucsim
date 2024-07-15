@@ -265,8 +265,11 @@ cl_serial_hw::map(class cl_address_space *new_as, t_addr new_base)
       for (i=0; i<dev_size(); i++)
 	regs[i]= register_cell(new_as, new_base+i);
     }
+  i= as==NULL;
   as= new_as;
   base= new_base;
+  if (i)
+    reset();
   if (var_names.nempty())
     {
       chars n;
