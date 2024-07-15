@@ -46,6 +46,9 @@ int
 cl_pc16550::init(void)
 {
   cl_serial_hw::init();
+  cfcr.decode(&fcr);
+  cdll.decode(&dll);
+  cdlm.decode(&dlm);
   return 0;
 }
 

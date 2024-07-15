@@ -59,7 +59,9 @@ class cl_pc16550: public cl_serial_hw
  protected:
   class cl_address_space *as;
   t_addr base;
-  class cl_memory_cell *regs[10];
+  class cl_memory_cell *regs[8];
+  class cl_cell8 cfcr, cdll, cdlm;
+  u8_t fcr, dll, dlm;
   bool dlab;
  public:
   cl_pc16550(class cl_uc *auc, int aid);
