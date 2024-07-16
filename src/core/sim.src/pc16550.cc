@@ -66,12 +66,25 @@ cl_pc16550::cfg_help(t_addr addr)
 t_mem
 cl_pc16550::read(class cl_memory_cell *cell)
 {
-  /*if (cell == regs[rdr])
+  if (cell == regs[rdr])
     {
-      cfg_set(serconf_able_receive, 1);
-      show_readable(false);
-      return s_in;
-      }*/
+      if (dlab)
+	{
+	  return dll;
+	}
+      else
+	{
+	  cfg_set(serconf_able_receive, 1);
+	  show_readable(false);
+	  return s_in;
+	}
+    }
+  if (cell == regs[rier])
+    {
+      if (dlab)
+	return dlm;
+      return cell->get();
+    }
   /*if (cell == regs[stat])
     return r_sr->read();*/
   conf(cell, NULL);
@@ -83,27 +96,47 @@ cl_pc16550::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (conf(cell, val))
     return;
-  if (cell == regs[rlcr])
+  if (cell == regs[rier])
+    {
+      if (dlab)
+	{
+	  dlm= *val;
+	  *val= cell->get();
+	}
+      else
+	{
+	  *val&= 0xf;
+	}
+    }
+  else if (cell == regs[rlcr])
     {
       dlab= *val & 0x80;
     }
   /*if (cell == regs[tstat])
     {
       *val= regs[tstat]->get();
-    }
-    else*/
+      }*/
+  else
     {
-      cell->set(*val);
-      /*if (cell == regs[tdr])
+      if (cell == regs[tdr])
 	{
-	  s_txd= *val & 0xff;
-	  s_tx_written= true;
-	  show_writable(false);
-	  if (!s_sending)
+	  if (dlab)
 	    {
-	      start_send();
-	    }      
-	    }*/
+	      dll= *val;
+	      *val= cell->get();
+	    }
+	  else
+	    {
+	      cell->set(*val);
+	      s_txd= *val & 0xff;
+	      s_tx_written= true;
+	      show_writable(false);
+	      if (!s_sending)
+		{
+		  start_send();
+		}
+	    }
+	}
     }
 }
 
