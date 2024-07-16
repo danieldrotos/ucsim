@@ -202,7 +202,7 @@ cl_pc16550::tick(int cycles)
     return 0;
   
   if (s_sending &&
-      (s_tr_bit >= 8))
+      (s_tr_bit >= bits))
     {
       cl_f *fo= io->get_fout();
       if ((fo == NULL) || (fo->writable()))
@@ -237,7 +237,7 @@ cl_pc16550::tick(int cycles)
 	show_idle(true);
     }
   if (s_receiving &&
-      (s_rec_bit >= 8))
+      (s_rec_bit >= bits))
     {
 	{
 	  c= get_input();
@@ -326,33 +326,34 @@ cl_pc16550::pick_ctrl()
 void
 cl_pc16550::show_writable(bool val)
 {
-  /*
-  u32_t r= regs[tstat]->get();
-  if (!val)
-    r|= 1;
+  u8_t r= regs[rlsr]->get();
+  if (val)
+    r|= 0x20;
   else
-    r&= ~1;
-  regs[tstat]->set(r);
-  */
+    r&= ~0x20;
+  regs[rlsr]->set(r);
 }
 
 void
 cl_pc16550::show_readable(bool val)
 {
-  /*
-  u32_t r= regs[rstat]->get();
-  if (!val)
+  u8_t r= regs[rlsr]->get();
+  if (val)
     r|= 1;
   else
     r&= ~1;
-  regs[rstat]->set(r);
-  */
+  regs[rlsr]->set(r);
 }
 
 void
 cl_pc16550::show_tx_complete(bool val)
 {
-  show_writable(val);
+  u8_t r= regs[rlsr]->get();
+  if (val)
+    r|= 0x60;
+  else
+    r&= ~0x60;
+  regs[rlsr]->set(r);
 }
 
 void

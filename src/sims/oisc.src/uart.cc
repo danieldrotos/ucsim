@@ -63,7 +63,7 @@ cl_uart::init(void)
   ren= true;
   s_sending= false;
   s_receiving= false;
-
+  
   show_readable(false);
   show_writable(true);
 
@@ -243,7 +243,7 @@ cl_uart::tick(int cycles)
     return 0;
   
   if (s_sending &&
-      (s_tr_bit >= 8))
+      (s_tr_bit >= bits))
     {
       cl_f *fo= io->get_fout();
       if ((fo == NULL) || (fo->writable()))
@@ -278,7 +278,7 @@ cl_uart::tick(int cycles)
 	show_idle(true);
     }
   if (s_receiving &&
-      (s_rec_bit >= 8))
+      (s_rec_bit >= bits))
     {
 	{
 	  c= get_input();
@@ -367,6 +367,7 @@ cl_uart::pick_ctrl()
   s_rec_bit= s_tr_bit= 0;
   s_receiving= false;
   s_tx_written= false;
+  bits= 10;
 }
 
 
