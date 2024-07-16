@@ -83,10 +83,10 @@ cl_pc16550::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (conf(cell, val))
     return;
-  /*if (cell == regs[rstat])
+  if (cell == regs[rlcr])
     {
-      *val= regs[rstat]->get();
-      }*/
+      dlab= *val & 0x80;
+    }
   /*if (cell == regs[tstat])
     {
       *val= regs[tstat]->get();
