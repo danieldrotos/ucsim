@@ -432,13 +432,13 @@ cl_serial_hw::set_cmd(class cl_cmdline *cmdline,
 void
 cl_serial_hw::set_help(class cl_console_base *con)
 {
-  con->dd_printf("set hardware uart[%d] raw   0|1\n", id);
-  con->dd_printf("set hardware uart[%d] file  \"file\"\n", id);
-  con->dd_printf("set hardware uart[%d] in    \"file\"\n", id);
-  con->dd_printf("set hardware uart[%d] out   \"file\"\n", id);
-  con->dd_printf("set hardware uart[%d] port  nr\n", id);
-  con->dd_printf("set hardware uart[%d] iport nr\n", id);
-  con->dd_printf("set hardware uart[%d] oport nr\n", id);
+  con->dd_printf("set hardware %s[%d] raw   0|1\n", get_name(), id);
+  con->dd_printf("set hardware %s[%d] file  \"file\"\n", get_name(), id);
+  con->dd_printf("set hardware %s[%d] in    \"file\"\n", get_name(), id);
+  con->dd_printf("set hardware %s[%d] out   \"file\"\n", get_name(), id);
+  con->dd_printf("set hardware %s[%d] port  nr\n", get_name(), id);
+  con->dd_printf("set hardware %s[%d] iport nr\n", get_name(), id);
+  con->dd_printf("set hardware %s[%d] oport nr\n", get_name(), id);
 }
  
 

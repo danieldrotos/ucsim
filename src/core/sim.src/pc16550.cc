@@ -185,7 +185,7 @@ cl_pc16550::set_cmd(class cl_cmdline *cmdline,
 void
 cl_pc16550::set_help(class cl_console_base *con)
 {
-  con->dd_printf("set hardware pc16550[%d] address\n", id);
+  con->dd_printf("set hardware %s[%d] address\n", get_name(), id);
   cl_serial_hw::set_help(con);
 }
 
@@ -373,7 +373,9 @@ cl_pc16550::print_info(class cl_console_base *con)
   u8_t ru8= regs[rstat]->get();
   u8_t tu8= regs[tstat]->get();
   */
-  con->dd_printf("%s[%d] at 0x%06x %s\n", id_string, id, base, on?"on ":"off");
+  con->dd_printf("%s[%d] at %s[0x%06x] %s\n", id_string, id,
+		 as?(as->get_name()):"none",
+		 base, on?"ON ":"OFF");
   con->dd_printf("Input: ");
   class cl_f *fin= io->get_fin(), *fout= io->get_fout();
   if (fin)
