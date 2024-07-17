@@ -47,7 +47,6 @@ class cl_serial: public cl_serial_hw
   bool clk_en_is_set;
   t_addr base;
   int type, txit, rxit;
-  class cl_memory_cell *regs[12];
   bool    sr_read;	// last op was read of SR
   bool    en;		// USART is enabled
  public:

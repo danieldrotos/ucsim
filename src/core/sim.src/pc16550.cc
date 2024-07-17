@@ -49,6 +49,7 @@ cl_pc16550::init(void)
   cfcr.decode(&fcr);
   cdll.decode(&dll);
   cdlm.decode(&dlm);
+  ten= ren= true;
   return 0;
 }
 
@@ -329,6 +330,8 @@ cl_pc16550::received()
 void
 cl_pc16550::reset(void)
 {
+  if (!as)
+    return;
   show_writable(true);
   show_readable(false);
   

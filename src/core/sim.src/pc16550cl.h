@@ -57,7 +57,6 @@ enum pc16550_cfg
 class cl_pc16550: public cl_serial_hw
 {
  protected:
-  class cl_memory_cell *regs[8];
   class cl_cell8 cfcr, cdll, cdlm;
   u8_t fcr, dll, dlm;
   bool dlab;
