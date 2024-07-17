@@ -554,6 +554,7 @@ COMMAND_DO_WORK_APP(cl_expression_cmd)
 	}
       w= cs.token(" \n\r\v\t");
     }
+  con->dd_color("answer");
   return(false);
 }
 
