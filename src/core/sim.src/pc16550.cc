@@ -113,10 +113,10 @@ cl_pc16550::write(class cl_memory_cell *cell, t_mem *val)
     {
       dlab= *val & 0x80;
     }
-  /*if (cell == regs[tstat])
+  else if (cell == regs[rlsr])
     {
-      *val= regs[tstat]->get();
-      }*/
+      *val= cell->get();
+    }
   else
     {
       if (cell == regs[tdr])
@@ -128,7 +128,7 @@ cl_pc16550::write(class cl_memory_cell *cell, t_mem *val)
 	    }
 	  else
 	    {
-	      cell->set(*val);
+	      //cell->set(*val);
 	      s_txd= *val & 0xff;
 	      s_tx_written= true;
 	      show_writable(false);
@@ -136,6 +136,7 @@ cl_pc16550::write(class cl_memory_cell *cell, t_mem *val)
 		{
 		  start_send();
 		}
+	      *val= cell->get();
 	    }
 	}
     }
