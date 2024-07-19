@@ -72,6 +72,7 @@ cl_flash_as::cl_flash_as(const char *id, t_addr astart, t_addr asize):
       void *p= &(cella[i]);
       memcpy(p, (void*)cell, sizeof(class cl_memory_cell));
       cella[i].init();
+      cella[i].write(cella[i].get());
     }
   dummy= new cl_dummy_cell(8);
   dummy->init();
@@ -190,7 +191,7 @@ cl_flash::finish_program(bool ok)
     iapsr->set(iapsr->get() | 0x04);
   else
     iapsr->set(iapsr->get() | 0x01);
-  uc->sim->app->debug("FLASH prg finish\n");
+  uc->sim->app->debug("FLASH prg finish, OK=%d iapsr=%02x\n", ok, iapsr->get());
   state= fs_wait_mode;
 }
 
