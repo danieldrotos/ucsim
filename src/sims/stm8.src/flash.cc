@@ -65,6 +65,9 @@ cl_flash_as::cl_flash_as(const char *id, t_addr astart, t_addr asize):
   start_address= astart;
   decoders= new cl_decoder_list(2, 2, false);
   cella= (class cl_memory_cell *)malloc(size * sizeof(class cl_memory_cell));
+  int s1= sizeof(class cl_memory_cell);
+  int s2= sizeof(class cl_flash_cell);
+  printf("s1=%d s2=%d\n", s1, s2);
   //cell->init();
   t_addr i;
   for (i= 0; i < size; i++)
@@ -72,8 +75,13 @@ cl_flash_as::cl_flash_as(const char *id, t_addr astart, t_addr asize):
       void *p= &(cella[i]);
       memcpy(p, (void*)cell, sizeof(class cl_memory_cell));
       cella[i].init();
-      cella[i].write(cella[i].get());
+      //cella[i].write(cella[i].get());
     }
+  class cl_memory_cell *c= &cella[0x4013];
+  c->write(0);
+  class cl_memory_cell *c2= get_cell(0x4013);
+  c2->write(0);
+  
   dummy= new cl_dummy_cell(8);
   dummy->init();
 }
@@ -81,7 +89,7 @@ cl_flash_as::cl_flash_as(const char *id, t_addr astart, t_addr asize):
 int
 cl_flash_as::init(void)
 {
-  return cl_address_space::init();
+  return cl_memory::init();
 }
 
 
