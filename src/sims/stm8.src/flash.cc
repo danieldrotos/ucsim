@@ -75,13 +75,7 @@ cl_flash_as::cl_flash_as(const char *id, t_addr astart, t_addr asize):
       void *p= &(cella[i]);
       memcpy(p, (void*)cell, sizeof(class cl_memory_cell));
       cella[i].init();
-      //cella[i].write(cella[i].get());
     }
-  class cl_memory_cell *c= &cella[0x4013];
-  c->write(0);
-  class cl_memory_cell *c2= get_cell(0x4013);
-  c2->write(0);
-  
   dummy= new cl_dummy_cell(8);
   dummy->init();
 }
@@ -90,6 +84,22 @@ int
 cl_flash_as::init(void)
 {
   return cl_memory::init();
+}
+
+
+cl_iapsr_op::cl_iapsr_op(class cl_memory_cell *acell):
+  cl_memory_operator(acell)
+{
+  set_name("EOP_clearer");
+}
+
+// read clears EOP and WR_PG_DIS bits
+t_mem
+cl_iapsr_op::read(void)
+{
+  t_mem v= cell->get();
+  cell->set(v&0x05);
+  return v;
 }
 
 
@@ -178,12 +188,15 @@ cl_flash::tick(int cycles)
       else if (elapsed > tprog)
 	{
 	  int i;
-	  uc->sim->app->debug("FLASH dl-ing %06lx .. %d\n", wbuf_start, wbuf_size);
+	  uc->sim->app->debug("FLASH dl-ing %06lx .. %06l\n", wbuf_start, wbuf_start+wbuf_size);
 	  for (i= 0; i < wbuf_size; i++)
 	    {
 	      class cl_memory_cell *c= uc->rom->get_cell(wbuf_start + i);
-	      t_mem org= c->get();
-	      c->download(org | wbuf[i]);
+	      t_mem org= c->get(), n;
+	      n= org | wbuf[i];
+	      c->download(n);
+	      uc->sim->app->debug("FLASH dl [%06lx]= %x (org=%x)\n",
+				  wbuf_start+i, n, org);
 	    }
 	  uc->sim->app->debug("FLASH end of program\n");
 	  finish_program(true);
@@ -223,9 +236,13 @@ cl_flash::read(class cl_memory_cell *cell)
 	v|= 0x02;
       if (d_unlocked)
 	v|= 0x08;
-      // read clears EOP and WR_PG_DIS bits
-      cell->set(v&= ~0x05);
-      if (v & 0x05) uc->sim->app->debug("FLASH read iapsr5 %02x\n",v);	
+      if (v & 0x05)
+	{
+	  uc->sim->app->debug("FLASH read iapsr5 %02x\n",v);
+	  uc->sim->stop(0);
+	}
+      // clear of EOP and WR_PG_DIS bits will be done by cl_iapsr_op
+      cell->set(v);
     }
   return v;
 }
@@ -508,7 +525,9 @@ cl_flash::start_wbuf(t_addr addr)
 void
 cl_flash::start_program(enum stm8_flash_state start_state)
 {
-  uc->sim->app->debug("FLASH start prg %d\n", start_state);
+  uc->sim->app->debug("FLASH start prg state=0x%x wbuf=%02x,%02x,%02x,%02x\n",
+		      start_state,
+		      wbuf[0], wbuf[1], wbuf[2], wbuf[3]);
   state= start_state;
   start_time= uc->ticks->get_rtime();
 }
@@ -588,6 +607,9 @@ cl_saf_flash::registration(void)
 					0x8008+24*4, false, false,
 					"FLASH_RO", 20*20+1));
   is->init();
+
+  class cl_iapsr_op *o= new cl_iapsr_op(iapsr);
+  iapsr->append_operator(o);
 }
 
 

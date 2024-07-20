@@ -641,8 +641,6 @@ cl_stm8::make_memories(void)
       rom->set_cell_flag(0x8000, 0x27fff, true, CELL_READ_ONLY);
       rom->set_cell_flag(0x4000,  0x4fff, true, CELL_READ_ONLY);
     }
-  class cl_memory_cell *c= rom->get_cell(0x4013);
-  c->write(0);
   
   regs8= new cl_address_space("regs8", 0, 2, 8);
   regs8->init();
