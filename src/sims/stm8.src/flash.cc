@@ -239,7 +239,7 @@ cl_flash::read(class cl_memory_cell *cell)
       if (v & 0x05)
 	{
 	  uc->sim->app->debug("FLASH read iapsr5 %02x\n",v);
-	  uc->sim->stop(0);
+	  //uc->sim->stop(0);
 	}
       // clear of EOP and WR_PG_DIS bits will be done by cl_iapsr_op
       cell->set(v);
