@@ -84,7 +84,7 @@ cl_sfr_op::read(void)
 	return dv;
 	break;
       }
-    case 2: return 7; // feat1
+    case 2: return 15; // feat1
     case 3: return 0; // feat2
     }
   return 0;
@@ -860,6 +860,45 @@ CLP2::inst_ext(t_mem code)
 }
 
 int
+CLP2::inst_uncond(t_mem code)
+{
+  u8_t inst;
+  inst= (code & 0x0e000000) >> 25;
+  switch (inst)
+    {
+    case 2:
+      return inst_call(code);
+    }
+  return resINV;
+}
+
+int
+CLP2::inst_call(t_mem code)
+{
+  t_addr call_a;
+  i32_t i32;
+  // CALL
+  if (code & 0x01000000)
+    {
+      u8_t d;
+      d= (code & 0x00f00000) >> 20;
+      // CALL Rd,s20
+      i32= (code & 0x000fffff);
+      if (i32 & 0x00080000)
+	i32|= 0xfff00000;
+      call_a= R[d]+i32;
+    }
+  else
+    {
+      // CALL abs
+      call_a= code & 0x00ffffff;
+    }
+  RC[14]->W(R[15]);
+  RC[15]->W(PC= call_a);
+  return resGO;
+}
+
+int
 CLP2::exec_inst(void)
 {
   t_mem code;
@@ -882,33 +921,18 @@ CLP2::exec_inst(void)
   d= (code & 0x00f00000) >> 20;
   inst= (code & 0x0e000000) >> 25;
   int ret= resGO;
-  switch (inst)
+  if ((code & 0xf0000000) == 0xf0000000)
+    {
+      ret= inst_uncond(code);
+    }
+  else switch (inst)
     {
     case 0: case 1:
       ret= inst_alu(code);
       break;
     case 2:
-      {
-	t_addr call_a;
-	i32_t i32;
-	// CALL
-	if (code & 0x01000000)
-	  {
-	    // CALL Rd,s20
-	    i32= (code & 0x000fffff);
-	    if (i32 & 0x00080000)
-	      i32|= 0xfff00000;
-	    call_a= R[d]+i32;
-	  }
-	else
-	  {
-	    // CALL abs
-	    call_a= code & 0x00ffffff;
-	  }
-	RC[14]->W(R[15]);
-	RC[15]->W(PC= call_a);
-	return resGO;
-      }
+      ret= inst_call(code);
+      break;
     case 3:
       ret= inst_ext(code);
       break;
