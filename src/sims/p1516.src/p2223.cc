@@ -59,6 +59,9 @@ cl_sfr_op::write(t_mem val)
   switch (addr)
     {
     case 0: return uc->cF.W(val);
+    case 1: return cell->get();
+    case 2: return cell->get();
+    case 3: return cell->get();
     }
   return 0;
 }
@@ -81,13 +84,13 @@ cl_sfr_op::read(void)
 	u8_t v2= strtol(s2.c_str(), 0, 10);
 	u8_t v3= strtol(s3.c_str(), 0, 10);
 	dv= (v1<<16) + (v2<<8) + (v3);
-	return dv;
+	return cell->set(dv);
 	break;
       }
-    case 2: return 15; // feat1
-    case 3: return 0; // feat2
+    case 2: return cell->set(15); // feat1
+    case 3: return cell->set(0); // feat2
     }
-  return 0;
+  return cell->set(0);
 }
 
 
@@ -164,6 +167,17 @@ CLP2::make_memories(void)
       class cl_memory_cell *c= sfr->get_cell(i);
       c->append_operator(new cl_sfr_op(c, this, i));
     }
+
+  cl_cvar *v;
+  v= new cl_var("sfr_version", sfr, 1, "CPU version (int, RO)");
+  v->init();
+  vars->add(v);
+  v= new cl_var("sfr_feat1", sfr, 2, "CPU features 1 (int, RO)");
+  v->init();
+  vars->add(v);
+  v= new cl_var("sfr_feat2", sfr, 3, "CPU features 2 (int, RO)");
+  v->init();
+  vars->add(v);
 }
 
 struct dis_entry *
