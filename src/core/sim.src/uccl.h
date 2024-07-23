@@ -479,6 +479,7 @@ public:
   virtual int inst_branch(t_addr addr);
   virtual bool is_call(t_addr addr);
   virtual int longest_inst(void);
+  virtual t_addr next_inst(t_addr addr) { return addr+inst_length(addr); }
   virtual const class cl_var *addr_name(t_addr addr,
 					class cl_memory *mem,
 					int bitnr_high,

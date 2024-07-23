@@ -459,6 +459,23 @@ CLP2::analyze(t_addr addr)
     }
 }
 
+t_addr
+CLP2::next_inst(t_addr addr)
+{
+  t_mem v= rom->read(addr);
+  if ((v & 0xf0000000) == 0xf0000000)
+    {
+      if (((v & 0x0e000000) >> 25) == 2)
+	{
+	  // CES
+	  unsigned int i= 1;
+	  while (rom->read(addr+i) != 0)
+	    i++;
+	  return addr+i+1;
+	}
+    }
+  return addr+1;
+}
 
 void
 CLP2::print_regs(class cl_console_base *con)
@@ -869,7 +886,7 @@ CLP2::inst_uncond(t_mem code)
     case 2:
       return inst_call(code);
     }
-  return resINV;
+  return resGO;
 }
 
 int
