@@ -837,6 +837,22 @@ cl_pdk::reset(void)
   mode= pm_run;
   for (i=0; i<nuof_fpp; i++)
     fpps[i]->reset();
+  
+  instPC= PC= 0;
+  state = stGO;
+  ticks->set(0, 0);
+  isr_ticks->set(0, 0);
+  idle_ticks->set(0, 0);
+  halt_ticks->set(0, 0);
+  vc.inst= vc.fetch= vc.rd= vc.wr= 0;
+
+  stack_ops->free_all();
+
+  for (i= 0; i < hws->count; i++)
+    {
+      class cl_hw *hw= (class cl_hw *)(hws->at(i));
+      hw->reset();
+    }
 }
 
 u8_t
@@ -935,9 +951,15 @@ cl_pdk::exec_inst(void)
       it= inst_ticks= fpps[act]->inst_ticks;
       tick(it);
       inst_ticks= it;
-      vc.fetch+= fpps[act]->vc.fetch;
-      vc.rd+= fpps[act]->vc.rd;
-      vc.wr+= fpps[act]->vc.wr;
+      int i;
+      vc.inst= vc.fetch= vc.rd= vc.wr= 0;
+      for (i= 0; i<nuof_fpp; i++)
+	{
+	  vc.inst+= fpps[i]->vc.inst;
+	  vc.fetch+= fpps[i]->vc.fetch;
+	  vc.rd+= fpps[i]->vc.rd;
+	  vc.wr+= fpps[i]->vc.wr;
+	}
       if (rFPPEN != 1)
 	{
 	  do
