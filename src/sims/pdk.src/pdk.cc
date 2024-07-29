@@ -935,6 +935,9 @@ cl_pdk::exec_inst(void)
       it= inst_ticks= fpps[act]->inst_ticks;
       tick(it);
       inst_ticks= it;
+      vc.fetch+= fpps[act]->vc.fetch;
+      vc.rd+= fpps[act]->vc.rd;
+      vc.wr+= fpps[act]->vc.wr;
       if (rFPPEN != 1)
 	{
 	  do
