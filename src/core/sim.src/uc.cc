@@ -50,6 +50,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "cmd_statcl.h"
 #include "cmd_memcl.h"
 #include "cmd_execcl.h"
+#include "cmd_showcl.h"
 
 // local, sim.src
 #include "uccl.h"
@@ -973,6 +974,23 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
       cmdset->add(cmd= new cl_super_cmd("info", 0, cset));
       cmd->init();
       set_info_help(cmd);
+    }
+  }
+
+  { // show
+    super_cmd= (class cl_super_cmd *)(cmdset->get_cmd("show"));
+    if (super_cmd)
+      cset= super_cmd->get_subcommands();
+    else {
+      cset= new cl_cmdset();
+      cset->init();
+    }
+    cset->add(cmd= new cl_show_reg_cmd("registers", 0));
+    cmd->init();
+    if (!super_cmd) {
+      cmdset->add(cmd= new cl_super_cmd("show", 0, cset));
+      cmd->init();
+      set_show_help(cmd);
     }
   }
 
