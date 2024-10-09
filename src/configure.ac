@@ -38,7 +38,7 @@ def_oisc="yes"
 in_sdcc="no"
 src_root=$(dirname $0)
 dnl echo "src_root=$src_root"
-if test "$src_root"x == "x" -o "$src_root" == "." ; then
+if test "$src_root"x == "x" -o "$src_root"x == ".x" ; then
     src_root=$(pwd)
 fi
 dnl echo "src_root=$src_root"
