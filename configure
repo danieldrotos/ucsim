@@ -677,31 +677,30 @@ LDFLAGS
 CXXFLAGS
 CXX
 enable_serio
-enable_oisc_port
-enable_i8048_port
-enable_f8_port
-enable_i8085_port
-enable_pblaze_port
-enable_rxk_port
-enable_mos6502_port
-enable_m68hc12_port
-enable_m68hc11_port
-enable_m6800_port
-enable_m6809_port
-enable_p1516_port
-enable_pdk_port
-enable_st7_port
-enable_stm8_port
-enable_xa_port
-enable_s08_port
-enable_m68hc08_port
-enable_tlcs_port
-enable_r3ka_port
-enable_r2k_port
-enable_gbz80_port
-enable_z80_port
-enable_avr_port
-enable_mcs51_port
+enable_oisc_sim
+enable_i8048_sim
+enable_f8_sim
+enable_i8085_sim
+enable_pblaze_sim
+enable_rxk_sim
+enable_mos6502_sim
+enable_m68hc12_sim
+enable_m68hc11_sim
+enable_m6800_sim
+enable_m6809_sim
+enable_p1516_sim
+enable_pdk_sim
+enable_st7_sim
+enable_stm8_sim
+enable_xa_sim
+enable_m68hc08_sim
+enable_tlcs_sim
+enable_r3ka_sim
+enable_r2k_sim
+enable_gbz80_sim
+enable_z80_sim
+enable_avr_sim
+enable_mcs51_sim
 enable_dlso
 enable_ucsim
 VERSIONP
@@ -755,28 +754,27 @@ ac_user_opts='
 enable_option_checking
 enable_ucsim
 enable_dlso
-enable_mcs51_port
-enable_avr_port
-enable_z80_port
-enable_tlcs_port
-enable_m68hc08_port
-enable_s08_port
-enable_xa_port
-enable_stm8_port
-enable_pdk_port
-enable_st7_port
-enable_p1516_port
-enable_m6800_port
-enable_m6809_port
-enable_m68hc11_port
-enable_m68hc12_port
-enable_mos6502_port
-enable_rxk_port
-enable_pblaze_port
-enable_i8085_port
-enable_f8_port
-enable_i8048_port
-enable_oisc_port
+enable_mcs51_sim
+enable_avr_sim
+enable_z80_sim
+enable_tlcs_sim
+enable_m68hc08_sim
+enable_xa_sim
+enable_stm8_sim
+enable_pdk_sim
+enable_st7_sim
+enable_p1516_sim
+enable_m6800_sim
+enable_m6809_sim
+enable_m68hc11_sim
+enable_m68hc12_sim
+enable_mos6502_sim
+enable_rxk_sim
+enable_pblaze_sim
+enable_i8085_sim
+enable_f8_sim
+enable_i8048_sim
+enable_oisc_sim
 enable_serio
 enable_statistic
 '
@@ -1418,31 +1416,30 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-ucsim=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-dlso=ARG       en/disable compile shared objects
-  --enable-mcs51-port=ARG en/disable compile mcs51 simulator
-  --enable-avr-port=ARG   en/disable compile avr simulator
-  --enable-z80-port=ARG   en/disable compile z80 simulator
-  --enable-tlcs-port=ARG  en/disable compile tlcs simulator
-  --disable-m68hc08-port  do not compile simulator for m68hc08
-  --disable-s08-port      do not compile simulator for s08
-  --disable-xa-port       do not compile simulator for xa
-  --disable-stm8-port     do not compile simulator for stm8
-  --disable-pdk-port      do not compile simulator for pdk
-  --enable-st7-port=ARG   en/disable compile st7 simulator
-  --disable-p1516-port    en/dsbale compile p1516 simulator
-  --enable-m6800-port=ARG en/disable compile m6800 simulator
-  --enable-m6809-port=ARG en/disable compile m6809 simulator
-  --enable-m68hc11-port=ARG
+  --enable-mcs51-sim=ARG  en/disable compile mcs51 simulator
+  --enable-avr-sim=ARG    en/disable compile avr simulator
+  --enable-z80-sim=ARG    en/disable compile z80 simulator
+  --enable-tlcs-sim=ARG   en/disable compile tlcs simulator
+  --enable-m68hc08-sim=ARG
+                          en/disable compile m68hc08 simulator
+  --enable-xa-sim=ARG     en/disable compile xa simulator
+  --disable-stm8-sim      do not compile simulator for stm8
+  --disable-pdk-sim       do not compile simulator for pdk
+  --enable-st7-sim=ARG    en/disable compile st7 simulator
+  --disable-p1516-sim     en/disbale compile p1516 simulator
+  --enable-m6800-sim=ARG  en/disable compile m6800 simulator
+  --enable-m6809-sim=ARG  en/disable compile m6809 simulator
+  --enable-m68hc11-sim=ARG
                           en/disable compile m68hc11 simulator
-  --enable-m68hc12-port=ARG
+  --enable-m68hc12-sim=ARG
                           en/disable compile m68hc12 simulator
-  --disable-mos6502-port  do not compile simulator for mos6502
-  --disable-rxk-port      do not compile simulator for Rabbit rXk
-  --enable-pblaze-port=ARG
-                          en/disable compile picoblaze simulator
-  --enable-i8085-port=ARG en/disable compile i8085 simulator
-  --disable-f8-port       do not compile simulator for f8
-  --enable-i8048-port=ARG en/disable compile i8048 simulator
-  --enable-oisc-port=ARG  en/disable compile oisc simulator
+  --disable-mos6502-sim   do not compile simulator for mos6502
+  --disable-rxk-sim       do not compile simulator for Rabbit rXk
+  --enable-pblaze-sim=ARG en/disable compile picoblaze simulator
+  --enable-i8085-sim=ARG  en/disable compile i8085 simulator
+  --disable-f8-sim        do not compile simulator for f8
+  --enable-i8048-sim=ARG  en/disable compile i8048 simulator
+  --enable-oisc-sim=ARG   en/disable compile oisc simulator
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
   --enable-statistic      compile statistical features (slower simulation)
 
@@ -3189,27 +3186,9 @@ if test -z "$CXXFLAGS"; then
 fi
 
 
-def_ucsim="yes"
-def_dlso="no"
-def_mcs51_port="yes"
-def_p1516="yes"
-def_avr="yes"
-def_serio="yes"
-def_z80="yes"
-def_tlcs="yes"
-def_m6800="yes"
-def_m6809="yes"
-def_m68hc11="yes"
-def_m68hc12="yes"
-def_pblaze="yes"
-def_i8085="yes"
-def_i8048="yes"
-def_st7="yes"
-def_oisc="yes"
-
 in_sdcc="no"
 src_root=$(dirname $0)
-if test "$src_root"x == "x" -o "$src_root"x == ".x" ; then
+if test "$src_root"x == "x" -o "$src_root" == "." ; then
     src_root=$(pwd)
 fi
 last_root=$(basename $src_root)
@@ -3220,6 +3199,26 @@ if test $last_root == "ucsim" ; then
     fi
 fi
 echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
+
+def_ucsim="yes"
+def_dlso="no"
+def_mcs51="yes"
+def_p1516="yes"
+def_avr="yes"
+def_serio="yes"
+def_z80="yes"
+def_tlcs="yes"
+def_m6800="yes"
+def_m68hc08="yes"
+def_xa="yes"
+def_m6809="yes"
+def_m68hc11="yes"
+def_m68hc12="yes"
+def_pblaze="yes"
+def_i8085="yes"
+def_i8048="yes"
+def_st7="yes"
+def_oisc="yes"
 
 if test $in_sdcc == "yes" ; then
     def_ucsim="no"
@@ -3437,233 +3436,221 @@ esac
 fi
 
 
-# Check whether --enable-mcs51-port was given.
-if test ${enable_mcs51_port+y}
+# Check whether --enable-mcs51-sim was given.
+if test ${enable_mcs51_sim+y}
 then :
-  enableval=$enable_mcs51_port;
+  enableval=$enable_mcs51_sim;
 else case e in #(
-  e) enable_mcs51_port=$def_mcs51_port ;;
+  e) enable_mcs51_sim=$def_mcs51 ;;
 esac
 fi
 
 
-# Check whether --enable-avr-port was given.
-if test ${enable_avr_port+y}
+# Check whether --enable-avr-sim was given.
+if test ${enable_avr_sim+y}
 then :
-  enableval=$enable_avr_port;
+  enableval=$enable_avr_sim;
 else case e in #(
-  e) enable_avr_port=$def_avr ;;
+  e) enable_avr_sim=$def_avr ;;
 esac
 fi
 
 
-# Check whether --enable-z80-port was given.
-if test ${enable_z80_port+y}
+# Check whether --enable-z80-sim was given.
+if test ${enable_z80_sim+y}
 then :
-  enableval=$enable_z80_port;
+  enableval=$enable_z80_sim;
 else case e in #(
-  e) enable_z80_port=$def_z80 ;;
+  e) enable_z80_sim=$def_z80 ;;
 esac
 fi
 
 
-# Check whether --enable-tlcs-port was given.
-if test ${enable_tlcs_port+y}
+# Check whether --enable-tlcs-sim was given.
+if test ${enable_tlcs_sim+y}
 then :
-  enableval=$enable_tlcs_port;
+  enableval=$enable_tlcs_sim;
 else case e in #(
-  e) enable_tlcs_port=$def_tlcs ;;
+  e) enable_tlcs_sim=$def_tlcs ;;
 esac
 fi
 
 
-# Check whether --enable-m68hc08-port was given.
-if test ${enable_m68hc08_port+y}
+# Check whether --enable-m68hc08-sim was given.
+if test ${enable_m68hc08_sim+y}
 then :
-  enableval=$enable_m68hc08_port; if test $enable_m68hc08_port != "no"; then
-    enable_m68hc08_port="yes"
-fi
+  enableval=$enable_m68hc08_sim;
 else case e in #(
-  e) enable_m68hc08_port="yes" ;;
-esac
-fi
-
-# Check whether --enable-s08-port was given.
-if test ${enable_s08_port+y}
-then :
-  enableval=$enable_s08_port; if test $enable_s08_port != "no"; then
-    enable_s08_port="yes"
-fi
-else case e in #(
-  e) enable_s08_port="yes" ;;
-esac
-fi
-
-# Check whether --enable-xa-port was given.
-if test ${enable_xa_port+y}
-then :
-  enableval=$enable_xa_port; if test $enable_xa_port != "no"; then
-    enable_xa_port="yes"
-fi
-else case e in #(
-  e) enable_xa_port="yes" ;;
-esac
-fi
-
-# Check whether --enable-stm8-port was given.
-if test ${enable_stm8_port+y}
-then :
-  enableval=$enable_stm8_port; if test $enable_stm8_port != "no"; then
-    enable_stm8_port="yes"
-fi
-else case e in #(
-  e) enable_stm8_port="yes" ;;
-esac
-fi
-
-# Check whether --enable-pdk-port was given.
-if test ${enable_pdk_port+y}
-then :
-  enableval=$enable_pdk_port; if test $enable_pdk_port != "no"; then
-    enable_pdk_port="yes"
-fi
-else case e in #(
-  e) enable_pdk_port="yes" ;;
+  e) enable_m68hc08_sim=$def_m68hc08 ;;
 esac
 fi
 
 
-# Check whether --enable-st7-port was given.
-if test ${enable_st7_port+y}
+# Check whether --enable-xa-sim was given.
+if test ${enable_xa_sim+y}
 then :
-  enableval=$enable_st7_port;
+  enableval=$enable_xa_sim;
 else case e in #(
-  e) enable_st7_port=$def_st7 ;;
+  e) enable_xa_sim=$def_xa ;;
 esac
 fi
 
 
-# Check whether --enable-p1516-port was given.
-if test ${enable_p1516_port+y}
+# Check whether --enable-stm8-sim was given.
+if test ${enable_stm8_sim+y}
 then :
-  enableval=$enable_p1516_port;
+  enableval=$enable_stm8_sim; if test $enable_stm8_sim != "no"; then
+    enable_stm8_sim="yes"
+fi
 else case e in #(
-  e) enable_p1516_port=$def_p1516 ;;
+  e) enable_stm8_sim="yes" ;;
 esac
 fi
 
 
-# Check whether --enable-m6800-port was given.
-if test ${enable_m6800_port+y}
+# Check whether --enable-pdk-sim was given.
+if test ${enable_pdk_sim+y}
 then :
-  enableval=$enable_m6800_port;
+  enableval=$enable_pdk_sim; if test $enable_pdk_sim != "no"; then
+    enable_pdk_sim="yes"
+fi
 else case e in #(
-  e) enable_m6800_port=$def_m6800 ;;
+  e) enable_pdk_sim="yes" ;;
 esac
 fi
 
 
-# Check whether --enable-m6809-port was given.
-if test ${enable_m6809_port+y}
+# Check whether --enable-st7-sim was given.
+if test ${enable_st7_sim+y}
 then :
-  enableval=$enable_m6809_port;
+  enableval=$enable_st7_sim;
 else case e in #(
-  e) enable_m6809_port=$def_m6809 ;;
+  e) enable_st7_sim=$def_st7 ;;
 esac
 fi
 
 
-# Check whether --enable-m68hc11-port was given.
-if test ${enable_m68hc11_port+y}
+# Check whether --enable-p1516-sim was given.
+if test ${enable_p1516_sim+y}
 then :
-  enableval=$enable_m68hc11_port;
+  enableval=$enable_p1516_sim;
 else case e in #(
-  e) enable_m68hc11_port=$def_m68hc11 ;;
+  e) enable_p1516_sim=$def_p1516 ;;
 esac
 fi
 
 
-# Check whether --enable-m68hc12-port was given.
-if test ${enable_m68hc12_port+y}
+# Check whether --enable-m6800-sim was given.
+if test ${enable_m6800_sim+y}
 then :
-  enableval=$enable_m68hc12_port;
+  enableval=$enable_m6800_sim;
 else case e in #(
-  e) enable_m68hc12_port=$def_m68hc12 ;;
+  e) enable_m6800_sim=$def_m6800 ;;
 esac
 fi
 
 
-# Check whether --enable-mos6502-port was given.
-if test ${enable_mos6502_port+y}
+# Check whether --enable-m6809-sim was given.
+if test ${enable_m6809_sim+y}
 then :
-  enableval=$enable_mos6502_port; if test $enable_mos6502_port  != "no"; then
-    enable_mos6502_port="yes"
-fi
+  enableval=$enable_m6809_sim;
 else case e in #(
-  e) enable_mos6502_port="yes" ;;
-esac
-fi
-
-# Check whether --enable-rxk-port was given.
-if test ${enable_rxk_port+y}
-then :
-  enableval=$enable_rxk_port; if test $enable_rxk_port  != "no"; then
-    enable_rxk_port="yes"
-fi
-else case e in #(
-  e) enable_rxk_port="yes" ;;
+  e) enable_m6809_sim=$def_m6809 ;;
 esac
 fi
 
 
-# Check whether --enable-pblaze-port was given.
-if test ${enable_pblaze_port+y}
+# Check whether --enable-m68hc11-sim was given.
+if test ${enable_m68hc11_sim+y}
 then :
-  enableval=$enable_pblaze_port;
+  enableval=$enable_m68hc11_sim;
 else case e in #(
-  e) enable_pblaze_port=$def_pblaze ;;
+  e) enable_m68hc11_sim=$def_m68hc11 ;;
 esac
 fi
 
 
-# Check whether --enable-i8085-port was given.
-if test ${enable_i8085_port+y}
+# Check whether --enable-m68hc12-sim was given.
+if test ${enable_m68hc12_sim+y}
 then :
-  enableval=$enable_i8085_port;
+  enableval=$enable_m68hc12_sim;
 else case e in #(
-  e) enable_i8085_port=$def_i8085 ;;
+  e) enable_m68hc12_sim=$def_m68hc12 ;;
 esac
 fi
 
 
-# Check whether --enable-f8-port was given.
-if test ${enable_f8_port+y}
+# Check whether --enable-mos6502-sim was given.
+if test ${enable_mos6502_sim+y}
 then :
-  enableval=$enable_f8_port; if test $enable_f8_port  != "no"; then
-    enable_f8_port="yes"
+  enableval=$enable_mos6502_sim; if test $enable_mos6502_sim  != "no"; then
+    enable_mos6502_sim="yes"
 fi
 else case e in #(
-  e) enable_f8_port="yes" ;;
+  e) enable_mos6502_sim="yes" ;;
+esac
+fi
+
+# Check whether --enable-rxk-sim was given.
+if test ${enable_rxk_sim+y}
+then :
+  enableval=$enable_rxk_sim; if test $enable_rxk_sim  != "no"; then
+    enable_rxk_sim="yes"
+fi
+else case e in #(
+  e) enable_rxk_sim="yes" ;;
 esac
 fi
 
 
-# Check whether --enable-i8048-port was given.
-if test ${enable_i8048_port+y}
+# Check whether --enable-pblaze-sim was given.
+if test ${enable_pblaze_sim+y}
 then :
-  enableval=$enable_i8048_port;
+  enableval=$enable_pblaze_sim;
 else case e in #(
-  e) enable_i8048_port=$def_i8048 ;;
+  e) enable_pblaze_sim=$def_pblaze ;;
 esac
 fi
 
 
-# Check whether --enable-oisc-port was given.
-if test ${enable_oisc_port+y}
+# Check whether --enable-i8085-sim was given.
+if test ${enable_i8085_sim+y}
 then :
-  enableval=$enable_oisc_port;
+  enableval=$enable_i8085_sim;
 else case e in #(
-  e) enable_oisc_port=$def_oisc ;;
+  e) enable_i8085_sim=$def_i8085 ;;
+esac
+fi
+
+
+# Check whether --enable-f8-sim was given.
+if test ${enable_f8_sim+y}
+then :
+  enableval=$enable_f8_sim; if test $enable_f8_sim  != "no"; then
+    enable_f8_sim="yes"
+fi
+else case e in #(
+  e) enable_f8_sim="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-i8048-sim was given.
+if test ${enable_i8048_sim+y}
+then :
+  enableval=$enable_i8048_sim;
+else case e in #(
+  e) enable_i8048_sim=$def_i8048 ;;
+esac
+fi
+
+
+# Check whether --enable-oisc-sim was given.
+if test ${enable_oisc_sim+y}
+then :
+  enableval=$enable_oisc_sim;
+else case e in #(
+  e) enable_oisc_sim=$def_oisc ;;
 esac
 fi
 
@@ -3676,7 +3663,6 @@ else case e in #(
   e) enable_serio=$def_serio ;;
 esac
 fi
-
 
 
 
@@ -9637,28 +9623,27 @@ fi
 echo "Compile for SDCC  $in_sdcc"
 echo "Compile dlso      $enable_dlso"
 echo "Compile ucsim     $enable_ucsim"
-echo "Compile s51       $enable_mcs51_port"
-echo "Compile avr       $enable_avr_port"
-echo "Compile z80       $enable_z80_port"
-echo "Compile tlcs      $enable_tlcs_port"
-echo "Compile m68hc08   $enable_m68hc08_port"
-echo "Compile s08       $enable_s08_port"
-echo "Compile xa        $enable_xa_port"
-echo "Compile stm8      $enable_stm8_port"
-echo "Compile pdk       $enable_pdk_port"
-echo "Compile st7       $enable_st7_port"
-echo "Compile p1516     $enable_p1516_port"
-echo "Compile m6809     $enable_m6809_port"
-echo "Compile m6800     $enable_m6800_port"
-echo "Compile m68hc11   $enable_m68hc11_port"
-echo "Compile m68hc12   $enable_m68hc12_port"
-echo "Compile mos6502   $enable_mos6502_port"
-echo "Compile rxk       $enable_rxk_port"
-echo "Compile pblaze    $enable_pblaze_port"
-echo "Compile i8085     $enable_i8085_port"
-echo "Compile f8        $enable_f8_port"
-echo "Compile i8048     $enable_i8048_port"
-echo "Compile oisc      $enable_oisc_port"
+echo "Compile s51       $enable_mcs51_sim"
+echo "Compile avr       $enable_avr_sim"
+echo "Compile z80       $enable_z80_sim"
+echo "Compile tlcs      $enable_tlcs_sim"
+echo "Compile m68hc08   $enable_m68hc08_sim"
+echo "Compile xa        $enable_xa_sim"
+echo "Compile stm8      $enable_stm8_sim"
+echo "Compile pdk       $enable_pdk_sim"
+echo "Compile st7       $enable_st7_sim"
+echo "Compile p1516     $enable_p1516_sim"
+echo "Compile m6809     $enable_m6809_sim"
+echo "Compile m6800     $enable_m6800_sim"
+echo "Compile m68hc11   $enable_m68hc11_sim"
+echo "Compile m68hc12   $enable_m68hc12_sim"
+echo "Compile mos6502   $enable_mos6502_sim"
+echo "Compile rxk       $enable_rxk_sim"
+echo "Compile pblaze    $enable_pblaze_sim"
+echo "Compile i8085     $enable_i8085_sim"
+echo "Compile f8        $enable_f8_sim"
+echo "Compile i8048     $enable_i8048_sim"
+echo "Compile oisc      $enable_oisc_sim"
 echo "Compile serio     $enable_serio"
 echo "v${VERSION}"
 
