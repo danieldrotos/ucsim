@@ -17,6 +17,23 @@ if test -z "$CXXFLAGS"; then
 fi
 
     
+in_sdcc="no"
+src_root=$(dirname $0)
+dnl echo "src_root=$src_root"
+if test "$src_root"x == "x" -o "$src_root" == "." ; then
+    src_root=$(pwd)
+fi
+dnl echo "src_root=$src_root"
+last_root=$(basename $src_root)
+dnl echo "last_root=$last_root"
+if test $last_root == "ucsim" ; then
+    up_src=$(dirname $src_root)
+    if test $(basename $up_src) == "sim" ; then
+	in_sdcc="yes"
+    fi
+fi
+echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
+
 def_ucsim="yes"
 def_dlso="no"
 def_mcs51_port="yes"
@@ -34,23 +51,6 @@ def_i8085="yes"
 def_i8048="yes"
 def_st7="yes"
 def_oisc="yes"
-
-in_sdcc="no"
-src_root=$(dirname $0)
-dnl echo "src_root=$src_root"
-if test "$src_root"x == "x" -o "$src_root" == "." ; then
-    src_root=$(pwd)
-fi
-dnl echo "src_root=$src_root"
-last_root=$(basename $src_root)
-dnl echo "last_root=$last_root"
-if test $last_root == "ucsim" ; then
-    up_src=$(dirname $src_root)
-    if test $(basename $up_src) == "sim" ; then
-	in_sdcc="yes"
-    fi
-fi
-echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
 
 if test $in_sdcc == "yes" ; then
     def_ucsim="no"
