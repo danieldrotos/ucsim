@@ -6770,6 +6770,50 @@ then :
 fi
 
 fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for fmod in -lm" >&5
+printf %s "checking for fmod in -lm... " >&6; }
+if test ${ac_cv_lib_m_fmod+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) ac_check_lib_save_LIBS=$LIBS
+LIBS="-lm  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+namespace conftest {
+  extern "C" int fmod ();
+}
+int
+main (void)
+{
+return conftest::fmod ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"
+then :
+  ac_cv_lib_m_fmod=yes
+else case e in #(
+  e) ac_cv_lib_m_fmod=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_m_fmod" >&5
+printf "%s\n" "$ac_cv_lib_m_fmod" >&6; }
+if test "x$ac_cv_lib_m_fmod" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBM 1" >>confdefs.h
+
+  LIBS="-lm $LIBS"
+
+fi
+
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for dlopen in -ldl" >&5
 printf %s "checking for dlopen in -ldl... " >&6; }

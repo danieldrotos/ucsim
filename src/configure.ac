@@ -459,6 +459,7 @@ else
   AC_CHECK_LIB(nsl,xdr_short)
   AC_CHECK_LIB(rt,nanosleep)
 fi
+AC_CHECK_LIB(m,fmod)
 
 AC_CHECK_LIB(dl,dlopen,
 dl_ok="yes"
