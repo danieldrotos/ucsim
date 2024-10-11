@@ -33,7 +33,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 # include <sys/socket.h>
 #endif
 #if defined HAVE_NEED_SELECT_H
+#if defined(HAVE_SYS_SELEC_H)
 # include <sys/select.h>
+#endif
 #endif
 #if defined HAVE_NEED_TIME_H
 # include <sys/time.h>
@@ -53,7 +55,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/select.h>
+#if defined(HAVE_SYS_SELECT_H)
+# include <sys/select.h>
+#endif
 #include <time.h>
 #include <string.h>
 #include <stdarg.h>
