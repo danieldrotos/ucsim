@@ -7344,6 +7344,19 @@ then :
 
 fi
 
+ac_fn_cxx_check_func "$LINENO" "nanosleep" "ac_cv_func_nanosleep"
+if test "x$ac_cv_func_nanosleep" = xyes
+then :
+  printf "%s\n" "#define HAVE_NANOSLEEP 1" >>confdefs.h
+
+fi
+ac_fn_cxx_check_func "$LINENO" "usleep" "ac_cv_func_usleep"
+if test "x$ac_cv_func_usleep" = xyes
+then :
+  printf "%s\n" "#define HAVE_USLEEP 1" >>confdefs.h
+
+fi
+
 
 # AC_CACHE_CHECK(whether scanf knows %a, ucsim_cv_scanf_a,
 # [echo "a b" >conftest.data
