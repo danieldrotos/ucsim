@@ -879,7 +879,6 @@ src/sims/oisc.src/Makefile    src/sims/oisc.src/test/Makefile
 
 src/apps/serio.src/Makefile
 src/apps/ucsim.src/Makefile
-src/apps/relay.src/Makefile
 
 docs/Makefile
 )
