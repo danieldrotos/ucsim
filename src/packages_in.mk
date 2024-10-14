@@ -23,7 +23,7 @@ enable_i8048_sim   = @enable_i8048_sim@
 enable_oisc_sim    = @enable_oisc_sim@
 
 enable_serio        = @enable_serio@
-enable_ucsim        = @enable_ucsim@
+enable_feapp        = @enable_feapp@
 
 ifeq ($(enable_mcs51_sim),yes)
 S51		= s51.src
@@ -178,7 +178,7 @@ else
 SERIO		=
 endif
 
-ifeq ($(enable_ucsim),yes)
+ifeq ($(enable_feapp),yes)
 UCSIM		= ucsim.src
 else
 UCSIM		=

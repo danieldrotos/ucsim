@@ -702,7 +702,7 @@ enable_z80_sim
 enable_avr_sim
 enable_mcs51_sim
 enable_dlso
-enable_ucsim
+enable_feapp
 VERSIONP
 VERSIONLO
 VERSIONHI
@@ -752,7 +752,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
-enable_ucsim
+enable_feapp
 enable_dlso
 enable_mcs51_sim
 enable_avr_sim
@@ -1414,7 +1414,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-ucsim=ARG      en/disable compile of exe wrapper (unfinished)
+  --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-dlso=ARG       en/disable compile shared objects
   --enable-mcs51-sim=ARG  en/disable compile mcs51 simulator
   --enable-avr-sim=ARG    en/disable compile avr simulator
@@ -3200,7 +3200,7 @@ if test $last_root == "ucsim" ; then
 fi
 echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
 
-def_ucsim="yes"
+def_feapp="yes"
 def_dlso="no"
 def_mcs51="yes"
 def_p1516="yes"
@@ -3221,7 +3221,7 @@ def_st7="yes"
 def_oisc="yes"
 
 if test $in_sdcc == "yes" ; then
-    def_ucsim="no"
+    def_feapp="no"
     def_p1516="no"
     def_avr="no"
     def_serio="no"
@@ -3416,12 +3416,12 @@ if test "${docdir}" = ""; then
 fi
 
 
-# Check whether --enable-ucsim was given.
-if test ${enable_ucsim+y}
+# Check whether --enable-feapp was given.
+if test ${enable_feapp+y}
 then :
-  enableval=$enable_ucsim;
+  enableval=$enable_feapp;
 else case e in #(
-  e) enable_ucsim=$def_ucsim ;;
+  e) enable_feapp=$def_feapp ;;
 esac
 fi
 
@@ -9685,7 +9685,7 @@ fi
 
 echo "Compile for SDCC  $in_sdcc"
 echo "Compile dlso      $enable_dlso"
-echo "Compile ucsim     $enable_ucsim"
+echo "Compile feapp     $enable_feapp"
 echo "Compile s51       $enable_mcs51_sim"
 echo "Compile avr       $enable_avr_sim"
 echo "Compile z80       $enable_z80_sim"

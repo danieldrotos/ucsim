@@ -34,7 +34,7 @@ if test $last_root == "ucsim" ; then
 fi
 echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
 
-def_ucsim="yes"
+def_feapp="yes"
 def_dlso="no"
 def_mcs51="yes"
 def_p1516="yes"
@@ -55,7 +55,7 @@ def_st7="yes"
 def_oisc="yes"
 
 if test $in_sdcc == "yes" ; then
-    def_ucsim="no"
+    def_feapp="no"
     def_p1516="no"
     def_avr="no"
     def_serio="no"
@@ -107,11 +107,11 @@ if test "${docdir}" = ""; then
 fi
 AC_SUBST(docdir)
 
-AC_ARG_ENABLE(ucsim,
-	      AS_HELP_STRING([--enable-ucsim=ARG],
+AC_ARG_ENABLE(feapp,
+	      AS_HELP_STRING([--enable-feapp=ARG],
 			     [en/disable compile of exe wrapper (unfinished)]),
 	      ,
-	      enable_ucsim=$def_ucsim)
+	      enable_feapp=$def_feapp)
 
 AC_ARG_ENABLE(dlso,
 	      AS_HELP_STRING([--enable-dlso=ARG],
@@ -260,7 +260,7 @@ AC_ARG_ENABLE(serio,
 	      ,
 	      enable_serio=$def_serio)
 
-AC_SUBST(enable_ucsim)
+AC_SUBST(enable_feapp)
 AC_SUBST(enable_dlso)
 AC_SUBST(enable_mcs51_sim)
 AC_SUBST(enable_avr_sim)
@@ -886,7 +886,7 @@ AC_OUTPUT
 
 echo "Compile for SDCC  $in_sdcc"
 echo "Compile dlso      $enable_dlso"
-echo "Compile ucsim     $enable_ucsim"
+echo "Compile feapp     $enable_feapp"
 echo "Compile s51       $enable_mcs51_sim"
 echo "Compile avr       $enable_avr_sim"
 echo "Compile z80       $enable_z80_sim"
