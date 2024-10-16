@@ -74,19 +74,22 @@ AC_ARG_ENABLE(mcs51-port,
 	      AS_HELP_STRING([--enable-mcs51-port=ARG],
 			     [feature opt passed from SDCC]),
 	      sdcc_mcs51_set="yes",
-	      sdcc_mcs51_set="no")
+	      sdcc_mcs51_set="no"
+	      enable_mcs51_port="yes")
 
 AC_ARG_ENABLE(ds390-port,
 	      AS_HELP_STRING([--enable-ds390-port=ARG],
 			     [feature opt passed from SDCC]),
 	      sdcc_ds390_set="yes",
-	      sdcc_ds390_set="no")
+	      sdcc_ds390_set="no"
+	      enable_ds390_port="yes")
 
 AC_ARG_ENABLE(ds400-port,
 	      AS_HELP_STRING([--enable-ds400-port=ARG],
 			     [feature opt passed from SDCC]),
 	      sdcc_ds400_set="yes",
-	      sdcc_ds400_set="no")
+	      sdcc_ds400_set="no"
+	      enable_ds400_port="yes")
 
 def_dlso="no"
 def_feapp="yes"

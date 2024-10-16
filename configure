@@ -3386,7 +3386,8 @@ if test ${enable_mcs51_port+y}
 then :
   enableval=$enable_mcs51_port; sdcc_mcs51_set="yes"
 else case e in #(
-  e) sdcc_mcs51_set="no" ;;
+  e) sdcc_mcs51_set="no"
+	      enable_mcs51_port="yes" ;;
 esac
 fi
 
@@ -3396,7 +3397,8 @@ if test ${enable_ds390_port+y}
 then :
   enableval=$enable_ds390_port; sdcc_ds390_set="yes"
 else case e in #(
-  e) sdcc_ds390_set="no" ;;
+  e) sdcc_ds390_set="no"
+	      enable_ds390_port="yes" ;;
 esac
 fi
 
@@ -3406,7 +3408,8 @@ if test ${enable_ds400_port+y}
 then :
   enableval=$enable_ds400_port; sdcc_ds400_set="yes"
 else case e in #(
-  e) sdcc_ds400_set="no" ;;
+  e) sdcc_ds400_set="no"
+	      enable_ds400_port="yes" ;;
 esac
 fi
 
