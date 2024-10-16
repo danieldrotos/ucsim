@@ -166,6 +166,30 @@ AC_ARG_ENABLE(stm8-port,
 	      ,
 	      enable_stm8_port="yes")
 
+AC_ARG_ENABLE(pdk13-port,
+	      AS_HELP_STRING([--enable-pdk13-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk13_port="yes")
+
+AC_ARG_ENABLE(pdk14-port,
+	      AS_HELP_STRING([--enable-pdk14-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk14_port="yes")
+
+AC_ARG_ENABLE(pdk15-port,
+	      AS_HELP_STRING([--enable-pdk15-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk15_port="yes")
+
+AC_ARG_ENABLE(pdk16-port,
+	      AS_HELP_STRING([--enable-pdk16-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk16_port="yes")
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -267,6 +291,20 @@ if test $in_sdcc == "yes" ; then
     def_stm8="no"
     if test $enable_stm8_port = "yes"; then
 	def_stm8="yes"
+    fi
+
+    def_pdk="no"
+    if test $enable_pdk13_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk14_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk15_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk16_port = "yes"; then
+	def_pdk="yes"
     fi
 else
     SILENT="no"
