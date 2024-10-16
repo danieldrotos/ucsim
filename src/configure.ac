@@ -289,13 +289,13 @@ AC_SUBST(enable_oisc_sim)
 AC_SUBST(enable_serio)
 
 
-AC_ARG_ENABLE(statistic,
-[  --enable-statistic      compile statistical features (slower simulation)],
-if test $enable_statistic != "no"; then
-   enable_statistic="yes"
-fi,
-enable_statistic="no")
-AC_DEFINE_UNQUOTED(STATISTIC, $enable_statistic, [XXX])
+dnl AC_ARG_ENABLE(statistic,
+dnl [  --enable-statistic      compile statistical features (slower simulation)],
+dnl if test $enable_statistic != "no"; then
+dnl    enable_statistic="yes"
+dnl fi,
+dnl enable_statistic="no")
+dnl AC_DEFINE_UNQUOTED(STATISTIC, $enable_statistic, [XXX])
 
 
 # Required programs
@@ -731,6 +731,7 @@ else
     AC_CHECK_SIZEOF(int)
     AC_CHECK_SIZEOF(long)
     AC_CHECK_SIZEOF(long long)
+    AC_CHECK_SIZEOF(void *)
 fi
 
 type_name()
