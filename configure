@@ -762,6 +762,9 @@ enable_tlcs90_port
 enable_r2k_port
 enable_r2ka_port
 enable_r3ka_port
+enable_hc08_port
+enable_s08_port
+enable_stm8_port
 enable_dlso
 enable_feapp
 enable_serio
@@ -1438,6 +1441,9 @@ Optional Features:
   --enable-r2k-port=ARG   feature opt passed from SDCC
   --enable-r2ka-port=ARG  feature opt passed from SDCC
   --enable-r3ka-port=ARG  feature opt passed from SDCC
+  --enable-hc08-port=ARG  feature opt passed from SDCC
+  --enable-s08-port=ARG   feature opt passed from SDCC
+  --enable-stm8-port=ARG  feature opt passed from SDCC
   --enable-dlso=ARG       en/disable compile shared objects
   --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
@@ -3533,6 +3539,36 @@ esac
 fi
 
 
+# Check whether --enable-hc08-port was given.
+if test ${enable_hc08_port+y}
+then :
+  enableval=$enable_hc08_port;
+else case e in #(
+  e) enable_hc08_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-s08-port was given.
+if test ${enable_s08_port+y}
+then :
+  enableval=$enable_s08_port;
+else case e in #(
+  e) enable_s08_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-stm8-port was given.
+if test ${enable_stm8_port+y}
+then :
+  enableval=$enable_stm8_port;
+else case e in #(
+  e) enable_stm8_port="yes" ;;
+esac
+fi
+
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -3564,6 +3600,7 @@ if test $in_sdcc == "yes" ; then
     def_serio="no"
     def_i8048="no"
     def_i8085="no"
+    def_xa="no"
     def_avr="no"
     def_m6800="no"
     def_m6809="no"
@@ -3620,6 +3657,19 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_r3ka_port = "yes"; then
 	def_rxk="yes"
+    fi
+
+    def_68hc08="no"
+    if test $enable_hc08_port = "yes"; then
+	def_68hc08="yes"
+    fi
+    if test $enable_s08_port = "yes"; then
+	def_68hc08="yes"
+    fi
+
+    def_stm8="no"
+    if test $enable_stm8_port = "yes"; then
+	def_stm8="yes"
     fi
 else
     SILENT="no"

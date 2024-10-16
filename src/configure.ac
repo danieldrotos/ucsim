@@ -148,6 +148,24 @@ AC_ARG_ENABLE(r3ka-port,
 	      ,
 	      enable_r3ka_port="yes")
 
+AC_ARG_ENABLE(hc08-port,
+	      AS_HELP_STRING([--enable-hc08-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_hc08_port="yes")
+
+AC_ARG_ENABLE(s08-port,
+	      AS_HELP_STRING([--enable-s08-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_s08_port="yes")
+
+AC_ARG_ENABLE(stm8-port,
+	      AS_HELP_STRING([--enable-stm8-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_stm8_port="yes")
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -179,6 +197,7 @@ if test $in_sdcc == "yes" ; then
     def_serio="no"
     def_i8048="no"
     def_i8085="no"
+    def_xa="no"
     def_avr="no"
     def_m6800="no"
     def_m6809="no"
@@ -235,6 +254,19 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_r3ka_port = "yes"; then
 	def_rxk="yes"
+    fi
+
+    def_68hc08="no"
+    if test $enable_hc08_port = "yes"; then
+	def_68hc08="yes"
+    fi
+    if test $enable_s08_port = "yes"; then
+	def_68hc08="yes"
+    fi
+
+    def_stm8="no"
+    if test $enable_stm8_port = "yes"; then
+	def_stm8="yes"
     fi
 else
     SILENT="no"
