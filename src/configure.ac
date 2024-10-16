@@ -88,6 +88,42 @@ AC_ARG_ENABLE(ds400-port,
 	      ,
 	      enable_ds400_port="yes")
 
+AC_ARG_ENABLE(z80-port,
+	      AS_HELP_STRING([--enable-z80-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_z80_port="yes")
+
+AC_ARG_ENABLE(z180-port,
+	      AS_HELP_STRING([--enable-z180-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_z180_port="yes")
+
+AC_ARG_ENABLE(sm83-port,
+	      AS_HELP_STRING([--enable--port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_sm83_port="yes")
+
+AC_ARG_ENABLE(ez80_z80-port,
+	      AS_HELP_STRING([--enable-ez80_z80-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_ez80_z80_port="yes")
+
+AC_ARG_ENABLE(z80n-port,
+	      AS_HELP_STRING([--enable-z80n-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_z80n_port="yes")
+
+AC_ARG_ENABLE(r800-port,
+	      AS_HELP_STRING([--enable-r800-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r800_port="yes")
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -139,6 +175,26 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_ds400_port = "yes"; then
 	def_mcs51="yes"
+    fi
+
+    def_z80="no"
+    if test $enable_z80_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_z180_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_sm83_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_ez80_z80_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_z80n_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_r800_port = "yes"; then
+	def_z80="yes"
     fi
 else
     SILENT="no"

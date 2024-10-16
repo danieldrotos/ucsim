@@ -752,6 +752,12 @@ enable_option_checking
 enable_mcs51_port
 enable_ds390_port
 enable_ds400_port
+enable_z80_port
+enable_z180_port
+enable_sm83_port
+enable_ez80_z80_port
+enable_z80n_port
+enable_r800_port
 enable_dlso
 enable_feapp
 enable_serio
@@ -1416,6 +1422,13 @@ Optional Features:
   --enable-mcs51-port=ARG feature opt passed from SDCC
   --enable-ds390-port=ARG feature opt passed from SDCC
   --enable-ds400-port=ARG feature opt passed from SDCC
+  --enable-z80-port=ARG   feature opt passed from SDCC
+  --enable-z180-port=ARG  feature opt passed from SDCC
+  --enable--port=ARG      feature opt passed from SDCC
+  --enable-ez80_z80-port=ARG
+                          feature opt passed from SDCC
+  --enable-z80n-port=ARG  feature opt passed from SDCC
+  --enable-r800-port=ARG  feature opt passed from SDCC
   --enable-dlso=ARG       en/disable compile shared objects
   --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
@@ -3411,6 +3424,66 @@ esac
 fi
 
 
+# Check whether --enable-z80-port was given.
+if test ${enable_z80_port+y}
+then :
+  enableval=$enable_z80_port;
+else case e in #(
+  e) enable_z80_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-z180-port was given.
+if test ${enable_z180_port+y}
+then :
+  enableval=$enable_z180_port;
+else case e in #(
+  e) enable_z180_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-sm83-port was given.
+if test ${enable_sm83_port+y}
+then :
+  enableval=$enable_sm83_port;
+else case e in #(
+  e) enable_sm83_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-ez80_z80-port was given.
+if test ${enable_ez80_z80_port+y}
+then :
+  enableval=$enable_ez80_z80_port;
+else case e in #(
+  e) enable_ez80_z80_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-z80n-port was given.
+if test ${enable_z80n_port+y}
+then :
+  enableval=$enable_z80n_port;
+else case e in #(
+  e) enable_z80n_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-r800-port was given.
+if test ${enable_r800_port+y}
+then :
+  enableval=$enable_r800_port;
+else case e in #(
+  e) enable_r800_port="yes" ;;
+esac
+fi
+
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -3462,6 +3535,26 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_ds400_port = "yes"; then
 	def_mcs51="yes"
+    fi
+
+    def_z80="no"
+    if test $enable_z80_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_z180_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_sm83_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_ez80_z80_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_z80n_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_r800_port = "yes"; then
+	def_z80="yes"
     fi
 else
     SILENT="no"
