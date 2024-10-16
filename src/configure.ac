@@ -129,10 +129,11 @@ if test $in_sdcc == "yes" ; then
     def_p1516="no"
     def_oisc="no"
     SILENT="yes"    
-    if [ $sdcc_mcs51_set = "yes" -a
-	 $enable_mcs51_port = "no" -a
-	 $sdcc_ds390_set = "yes" -a
-	 $enable_d390_port = "yes" ]; then
+    if test $sdcc_mcs51_set = "yes" -a \
+	 $enable_mcs51_port = "no" -a \
+	 $sdcc_ds390_set = "yes" -a \
+	 $enable_d390_port = "yes"
+    then
 	$def_mcs51="no"
     fi
 else
