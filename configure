@@ -765,6 +765,10 @@ enable_r3ka_port
 enable_hc08_port
 enable_s08_port
 enable_stm8_port
+enable_pdk13_port
+enable_pdk14_port
+enable_pdk15_port
+enable_pdk16_port
 enable_dlso
 enable_feapp
 enable_serio
@@ -1444,6 +1448,10 @@ Optional Features:
   --enable-hc08-port=ARG  feature opt passed from SDCC
   --enable-s08-port=ARG   feature opt passed from SDCC
   --enable-stm8-port=ARG  feature opt passed from SDCC
+  --enable-pdk13-port=ARG feature opt passed from SDCC
+  --enable-pdk14-port=ARG feature opt passed from SDCC
+  --enable-pdk15-port=ARG feature opt passed from SDCC
+  --enable-pdk16-port=ARG feature opt passed from SDCC
   --enable-dlso=ARG       en/disable compile shared objects
   --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
@@ -3569,6 +3577,46 @@ esac
 fi
 
 
+# Check whether --enable-pdk13-port was given.
+if test ${enable_pdk13_port+y}
+then :
+  enableval=$enable_pdk13_port;
+else case e in #(
+  e) enable_pdk13_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-pdk14-port was given.
+if test ${enable_pdk14_port+y}
+then :
+  enableval=$enable_pdk14_port;
+else case e in #(
+  e) enable_pdk14_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-pdk15-port was given.
+if test ${enable_pdk15_port+y}
+then :
+  enableval=$enable_pdk15_port;
+else case e in #(
+  e) enable_pdk15_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-pdk16-port was given.
+if test ${enable_pdk16_port+y}
+then :
+  enableval=$enable_pdk16_port;
+else case e in #(
+  e) enable_pdk16_port="yes" ;;
+esac
+fi
+
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -3670,6 +3718,20 @@ if test $in_sdcc == "yes" ; then
     def_stm8="no"
     if test $enable_stm8_port = "yes"; then
 	def_stm8="yes"
+    fi
+
+    def_pdk="no"
+    if test $enable_pdk13_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk14_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk15_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk16_port = "yes"; then
+	def_pdk="yes"
     fi
 else
     SILENT="no"
