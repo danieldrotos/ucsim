@@ -128,9 +128,17 @@ if test $in_sdcc == "yes" ; then
     def_pblaze="no"
     def_p1516="no"
     def_oisc="no"
-    SILENT="yes"    
-    if test $enable_mcs51_port = "no" -a $enable_d390_port = "no" -a $enable_ds400_port = "no"; then
-	def_mcs51="no"
+    SILENT="yes"
+    
+    def_mcs51="no"
+    if test $enable_mcs51_port = "yes"; then
+	def_mcs51="yes"
+    fi
+    if test $enable_ds390_port = "yes"; then
+	def_mcs51="yes"
+    fi
+    if test $enable_ds400_port = "yes"; then
+	def_mcs51="yes"
     fi
 else
     SILENT="no"
