@@ -134,7 +134,7 @@ if test $in_sdcc == "yes" ; then
 	 $sdcc_ds390_set = "yes" -a \
 	 $enable_d390_port = "yes"
     then
-	$def_mcs51="no"
+	def_mcs51="no"
     fi
 else
     SILENT="no"
