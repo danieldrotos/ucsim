@@ -758,6 +758,7 @@ enable_sm83_port
 enable_ez80_z80_port
 enable_z80n_port
 enable_r800_port
+enable_tlcs90_port
 enable_dlso
 enable_feapp
 enable_serio
@@ -1429,6 +1430,8 @@ Optional Features:
                           feature opt passed from SDCC
   --enable-z80n-port=ARG  feature opt passed from SDCC
   --enable-r800-port=ARG  feature opt passed from SDCC
+  --enable-tlcs90-port=ARG
+                          feature opt passed from SDCC
   --enable-dlso=ARG       en/disable compile shared objects
   --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
@@ -3484,6 +3487,16 @@ esac
 fi
 
 
+# Check whether --enable-tlcs90-port was given.
+if test ${enable_tlcs90_port+y}
+then :
+  enableval=$enable_tlcs90_port;
+else case e in #(
+  e) enable_tlcs90_port="yes" ;;
+esac
+fi
+
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -3555,6 +3568,11 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_r800_port = "yes"; then
 	def_z80="yes"
+    fi
+
+    def_tlcs="no"
+    if test $enable_tlcs90_port = "yes"; then
+	def_tlcs="yes"
     fi
 else
     SILENT="no"

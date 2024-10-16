@@ -124,6 +124,12 @@ AC_ARG_ENABLE(r800-port,
 	      ,
 	      enable_r800_port="yes")
 
+AC_ARG_ENABLE(tlcs90-port,
+	      AS_HELP_STRING([--enable-tlcs90-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_tlcs90_port="yes")
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -195,6 +201,11 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_r800_port = "yes"; then
 	def_z80="yes"
+    fi
+
+    def_tlcs="no"
+    if test $enable_tlcs90_port = "yes"; then
+	def_tlcs="yes"
     fi
 else
     SILENT="no"
