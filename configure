@@ -759,6 +759,9 @@ enable_ez80_z80_port
 enable_z80n_port
 enable_r800_port
 enable_tlcs90_port
+enable_r2k_port
+enable_r2ka_port
+enable_r3ka_port
 enable_dlso
 enable_feapp
 enable_serio
@@ -1432,6 +1435,9 @@ Optional Features:
   --enable-r800-port=ARG  feature opt passed from SDCC
   --enable-tlcs90-port=ARG
                           feature opt passed from SDCC
+  --enable-r2k-port=ARG   feature opt passed from SDCC
+  --enable-r2ka-port=ARG  feature opt passed from SDCC
+  --enable-r3ka-port=ARG  feature opt passed from SDCC
   --enable-dlso=ARG       en/disable compile shared objects
   --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
@@ -3497,6 +3503,36 @@ esac
 fi
 
 
+# Check whether --enable-r2k-port was given.
+if test ${enable_r2k_port+y}
+then :
+  enableval=$enable_r2k_port;
+else case e in #(
+  e) enable_r2k_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-r2ka-port was given.
+if test ${enable_r2ka_port+y}
+then :
+  enableval=$enable_r2ka_port;
+else case e in #(
+  e) enable_r2ka_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-r3ka-port was given.
+if test ${enable_r3ka_port+y}
+then :
+  enableval=$enable_r3ka_port;
+else case e in #(
+  e) enable_r3ka_port="yes" ;;
+esac
+fi
+
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -3573,6 +3609,17 @@ if test $in_sdcc == "yes" ; then
     def_tlcs="no"
     if test $enable_tlcs90_port = "yes"; then
 	def_tlcs="yes"
+    fi
+
+    def_rxk="no"
+    if test $enable_r2k_port = "yes"; then
+	def_rxk="yes"
+    fi
+    if test $enable_r2ka_port = "yes"; then
+	def_rxk="yes"
+    fi
+    if test $enable_r3ka_port = "yes"; then
+	def_rxk="yes"
     fi
 else
     SILENT="no"

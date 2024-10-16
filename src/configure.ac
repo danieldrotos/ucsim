@@ -130,6 +130,24 @@ AC_ARG_ENABLE(tlcs90-port,
 	      ,
 	      enable_tlcs90_port="yes")
 
+AC_ARG_ENABLE(r2k-port,
+	      AS_HELP_STRING([--enable-r2k-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r2k_port="yes")
+
+AC_ARG_ENABLE(r2ka-port,
+	      AS_HELP_STRING([--enable-r2ka-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r2ka_port="yes")
+
+AC_ARG_ENABLE(r3ka-port,
+	      AS_HELP_STRING([--enable-r3ka-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r3ka_port="yes")
+
 def_dlso="no"
 def_feapp="yes"
 def_serio="yes"
@@ -206,6 +224,17 @@ if test $in_sdcc == "yes" ; then
     def_tlcs="no"
     if test $enable_tlcs90_port = "yes"; then
 	def_tlcs="yes"
+    fi
+
+    def_rxk="no"
+    if test $enable_r2k_port = "yes"; then
+	def_rxk="yes"
+    fi
+    if test $enable_r2ka_port = "yes"; then
+	def_rxk="yes"
+    fi
+    if test $enable_r3ka_port = "yes"; then
+	def_rxk="yes"
     fi
 else
     SILENT="no"
