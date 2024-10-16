@@ -3384,10 +3384,9 @@ fi
 # Check whether --enable-mcs51-port was given.
 if test ${enable_mcs51_port+y}
 then :
-  enableval=$enable_mcs51_port; sdcc_mcs51_set="yes"
+  enableval=$enable_mcs51_port;
 else case e in #(
-  e) sdcc_mcs51_set="no"
-	      enable_mcs51_port="yes" ;;
+  e) enable_mcs51_port="yes" ;;
 esac
 fi
 
@@ -3395,10 +3394,9 @@ fi
 # Check whether --enable-ds390-port was given.
 if test ${enable_ds390_port+y}
 then :
-  enableval=$enable_ds390_port; sdcc_ds390_set="yes"
+  enableval=$enable_ds390_port;
 else case e in #(
-  e) sdcc_ds390_set="no"
-	      enable_ds390_port="yes" ;;
+  e) enable_ds390_port="yes" ;;
 esac
 fi
 
@@ -3406,10 +3404,9 @@ fi
 # Check whether --enable-ds400-port was given.
 if test ${enable_ds400_port+y}
 then :
-  enableval=$enable_ds400_port; sdcc_ds400_set="yes"
+  enableval=$enable_ds400_port;
 else case e in #(
-  e) sdcc_ds400_set="no"
-	      enable_ds400_port="yes" ;;
+  e) enable_ds400_port="yes" ;;
 esac
 fi
 
@@ -3455,11 +3452,7 @@ if test $in_sdcc == "yes" ; then
     def_p1516="no"
     def_oisc="no"
     SILENT="yes"
-    if test $sdcc_mcs51_set = "yes" -a \
-	 $enable_mcs51_port = "no" -a \
-	 $sdcc_ds390_set = "yes" -a \
-	 $enable_d390_port = "yes"
-    then
+    if test $enable_mcs51_port = "no" -a $enable_d390_port = "no" -a $enable_ds400_port = "no"; then
 	def_mcs51="no"
     fi
 else

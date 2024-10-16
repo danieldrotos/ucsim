@@ -73,22 +73,19 @@ AC_SUBST(docdir)
 AC_ARG_ENABLE(mcs51-port,
 	      AS_HELP_STRING([--enable-mcs51-port=ARG],
 			     [feature opt passed from SDCC]),
-	      sdcc_mcs51_set="yes",
-	      sdcc_mcs51_set="no"
+	      ,
 	      enable_mcs51_port="yes")
 
 AC_ARG_ENABLE(ds390-port,
 	      AS_HELP_STRING([--enable-ds390-port=ARG],
 			     [feature opt passed from SDCC]),
-	      sdcc_ds390_set="yes",
-	      sdcc_ds390_set="no"
+	      ,
 	      enable_ds390_port="yes")
 
 AC_ARG_ENABLE(ds400-port,
 	      AS_HELP_STRING([--enable-ds400-port=ARG],
 			     [feature opt passed from SDCC]),
-	      sdcc_ds400_set="yes",
-	      sdcc_ds400_set="no"
+	      ,
 	      enable_ds400_port="yes")
 
 def_dlso="no"
@@ -132,11 +129,7 @@ if test $in_sdcc == "yes" ; then
     def_p1516="no"
     def_oisc="no"
     SILENT="yes"    
-    if test $sdcc_mcs51_set = "yes" -a \
-	 $enable_mcs51_port = "no" -a \
-	 $sdcc_ds390_set = "yes" -a \
-	 $enable_d390_port = "yes"
-    then
+    if test $enable_mcs51_port = "no" -a $enable_d390_port = "no" -a $enable_ds400_port = "no"; then
 	def_mcs51="no"
     fi
 else
