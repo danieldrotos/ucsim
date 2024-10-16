@@ -1422,21 +1422,22 @@ Optional Features:
   --enable-m68hc08-sim=ARG
                           en/disable compile m68hc08 simulator
   --enable-xa-sim=ARG     en/disable compile xa simulator
-  --disable-stm8-sim      do not compile simulator for stm8
-  --disable-pdk-sim       do not compile simulator for pdk
+  --enable-stm8-sim=ARG   en/disable compile stm8 simulator
+  --enable-pdk-sim=ARG    en/disable compile pdk simulator
   --enable-st7-sim=ARG    en/disable compile st7 simulator
-  --disable-p1516-sim     en/disbale compile p1516 simulator
+  --enable-p1516-sim=ARG  en/disbale compile p1516 simulator
   --enable-m6800-sim=ARG  en/disable compile m6800 simulator
   --enable-m6809-sim=ARG  en/disable compile m6809 simulator
   --enable-m68hc11-sim=ARG
                           en/disable compile m68hc11 simulator
   --enable-m68hc12-sim=ARG
                           en/disable compile m68hc12 simulator
-  --disable-mos6502-sim   do not compile simulator for mos6502
-  --disable-rxk-sim       do not compile simulator for Rabbit rXk
+  --enable-mos6502-sim=ARG
+                          en/disable compile mos6502 simulator
+  --enable-rxk-sim=ARG    en/disable compile Rabbit rXk simulator
   --enable-pblaze-sim=ARG en/disable compile picoblaze simulator
   --enable-i8085-sim=ARG  en/disable compile i8085 simulator
-  --disable-f8-sim        do not compile simulator for f8
+  --enable-f8-sim=ARG     en/disable compile f8 simulator
   --enable-i8048-sim=ARG  en/disable compile i8048 simulator
   --enable-oisc-sim=ARG   en/disable compile oisc simulator
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
@@ -3209,6 +3210,8 @@ def_tlcs="yes"
 def_m6800="yes"
 def_m68hc08="yes"
 def_xa="yes"
+def_stm8="yes"
+def_pdk="yes"
 def_m6809="yes"
 def_m68hc11="yes"
 def_m68hc12="yes"
@@ -3217,6 +3220,9 @@ def_i8085="yes"
 def_i8048="yes"
 def_st7="yes"
 def_oisc="yes"
+def_mos6502="yes"
+def_rkx="yes"
+def_f8="yes"
 
 if test $in_sdcc == "yes" ; then
     def_feapp="no"
@@ -3497,11 +3503,9 @@ fi
 # Check whether --enable-stm8-sim was given.
 if test ${enable_stm8_sim+y}
 then :
-  enableval=$enable_stm8_sim; if test $enable_stm8_sim != "no"; then
-    enable_stm8_sim="yes"
-fi
+  enableval=$enable_stm8_sim;
 else case e in #(
-  e) enable_stm8_sim="yes" ;;
+  e) enable_stm8_sim=$def_stm8 ;;
 esac
 fi
 
@@ -3509,11 +3513,9 @@ fi
 # Check whether --enable-pdk-sim was given.
 if test ${enable_pdk_sim+y}
 then :
-  enableval=$enable_pdk_sim; if test $enable_pdk_sim != "no"; then
-    enable_pdk_sim="yes"
-fi
+  enableval=$enable_pdk_sim;
 else case e in #(
-  e) enable_pdk_sim="yes" ;;
+  e) enable_pdk_sim=$def_pdk ;;
 esac
 fi
 
@@ -3581,22 +3583,19 @@ fi
 # Check whether --enable-mos6502-sim was given.
 if test ${enable_mos6502_sim+y}
 then :
-  enableval=$enable_mos6502_sim; if test $enable_mos6502_sim  != "no"; then
-    enable_mos6502_sim="yes"
-fi
+  enableval=$enable_mos6502_sim;
 else case e in #(
-  e) enable_mos6502_sim="yes" ;;
+  e) enable_mos6502_sim=$def_mos6502 ;;
 esac
 fi
+
 
 # Check whether --enable-rxk-sim was given.
 if test ${enable_rxk_sim+y}
 then :
-  enableval=$enable_rxk_sim; if test $enable_rxk_sim  != "no"; then
-    enable_rxk_sim="yes"
-fi
+  enableval=$enable_rxk_sim;
 else case e in #(
-  e) enable_rxk_sim="yes" ;;
+  e) enable_rxk_sim=$def_rxk ;;
 esac
 fi
 
@@ -3624,11 +3623,9 @@ fi
 # Check whether --enable-f8-sim was given.
 if test ${enable_f8_sim+y}
 then :
-  enableval=$enable_f8_sim; if test $enable_f8_sim  != "no"; then
-    enable_f8_sim="yes"
-fi
+  enableval=$enable_f8_sim;
 else case e in #(
-  e) enable_f8_sim="yes" ;;
+  e) enable_f8_sim=$def_f8 ;;
 esac
 fi
 

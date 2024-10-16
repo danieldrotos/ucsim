@@ -45,6 +45,8 @@ def_tlcs="yes"
 def_m6800="yes"
 def_m68hc08="yes"
 def_xa="yes"
+def_stm8="yes"
+def_pdk="yes"
 def_m6809="yes"
 def_m68hc11="yes"
 def_m68hc12="yes"
@@ -53,6 +55,9 @@ def_i8085="yes"
 def_i8048="yes"
 def_st7="yes"
 def_oisc="yes"
+def_mos6502="yes"
+def_rkx="yes"
+def_f8="yes"
 
 if test $in_sdcc == "yes" ; then
     def_feapp="no"
@@ -156,20 +161,16 @@ AC_ARG_ENABLE(xa-sim,
 	      enable_xa_sim=$def_xa)
 
 AC_ARG_ENABLE(stm8-sim,
-	      AS_HELP_STRING([--disable-stm8-sim],
-			     [do not compile simulator for stm8]),
-if test $enable_stm8_sim != "no"; then
-    enable_stm8_sim="yes"
-fi,
-enable_stm8_sim="yes")
+	      AS_HELP_STRING([--enable-stm8-sim=ARG],
+			     [en/disable compile stm8 simulator]),
+	      ,
+	      enable_stm8_sim=$def_stm8)
 
 AC_ARG_ENABLE(pdk-sim,
-	      AS_HELP_STRING([--disable-pdk-sim],
-			     [do not compile simulator for pdk]),
-if test $enable_pdk_sim != "no"; then
-    enable_pdk_sim="yes"
-fi,
-enable_pdk_sim="yes")
+	      AS_HELP_STRING([--enable-pdk-sim=ARG],
+			     [en/disable compile pdk simulator]),
+	      ,
+	      enable_pdk_sim=$def_pdk)
 
 AC_ARG_ENABLE(st7-sim,
 	      AS_HELP_STRING([--enable-st7-sim=ARG],
@@ -178,7 +179,7 @@ AC_ARG_ENABLE(st7-sim,
 	      enable_st7_sim=$def_st7)
 
 AC_ARG_ENABLE(p1516-sim,
-	      AS_HELP_STRING([--disable-p1516-sim],
+	      AS_HELP_STRING([--enable-p1516-sim=ARG],
 			     [en/disbale compile p1516 simulator]),
 	      ,
 	      enable_p1516_sim=$def_p1516)
@@ -208,19 +209,16 @@ AC_ARG_ENABLE(m68hc12-sim,
 	      enable_m68hc12_sim=$def_m68hc12)
 
 AC_ARG_ENABLE(mos6502-sim,
-	      AS_HELP_STRING([--disable-mos6502-sim],
-			     [do not compile simulator for mos6502]),
-if test $enable_mos6502_sim  != "no"; then
-    enable_mos6502_sim="yes"
-fi,
-enable_mos6502_sim="yes")
+	      AS_HELP_STRING([--enable-mos6502-sim=ARG],
+			     [en/disable compile mos6502 simulator]),
+	      ,
+	      enable_mos6502_sim=$def_mos6502)
+
 AC_ARG_ENABLE(rxk-sim,
-	      AS_HELP_STRING([--disable-rxk-sim],
-			     [do not compile simulator for Rabbit rXk]),
-if test $enable_rxk_sim  != "no"; then
-    enable_rxk_sim="yes"
-fi,
-enable_rxk_sim="yes")
+	      AS_HELP_STRING([--enable-rxk-sim=ARG],
+			     [en/disable compile Rabbit rXk simulator]),
+	      ,
+	      enable_rxk_sim=$def_rxk)
 
 AC_ARG_ENABLE(pblaze-sim,
 	      AS_HELP_STRING([--enable-pblaze-sim=ARG],
@@ -235,12 +233,10 @@ AC_ARG_ENABLE(i8085-sim,
 	      enable_i8085_sim=$def_i8085)
 
 AC_ARG_ENABLE(f8-sim,
-	      AS_HELP_STRING([--disable-f8-sim],
-			     [do not compile simulator for f8]),
-if test $enable_f8_sim  != "no"; then
-    enable_f8_sim="yes"
-fi,
-enable_f8_sim="yes")
+	      AS_HELP_STRING([--enable-f8-sim=ARG],
+			     [en/disable compile f8 simulator]),
+	      ,
+	      enable_f8_sim=$def_f8)
 
 AC_ARG_ENABLE(i8048-sim,
 	      AS_HELP_STRING([--enable-i8048-sim=ARG],
