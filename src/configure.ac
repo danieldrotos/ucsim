@@ -160,6 +160,18 @@ AC_ARG_ENABLE(s08-port,
 	      ,
 	      enable_s08_port="yes")
 
+AC_ARG_ENABLE(mos6502-port,
+	      AS_HELP_STRING([--enable-mos6502-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_mos6502_port="yes")
+
+AC_ARG_ENABLE(mos65c02-port,
+	      AS_HELP_STRING([--enable-mos65c02-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_mos65c02_port="yes")
+
 AC_ARG_ENABLE(stm8-port,
 	      AS_HELP_STRING([--enable-stm8-port=ARG],
 			     [feature opt passed from SDCC]),
@@ -189,6 +201,12 @@ AC_ARG_ENABLE(pdk16-port,
 			     [feature opt passed from SDCC]),
 	      ,
 	      enable_pdk16_port="yes")
+
+AC_ARG_ENABLE(f8-port,
+	      AS_HELP_STRING([--enable-f8-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_f8_port="yes")
 
 def_dlso="no"
 def_feapp="yes"
@@ -288,6 +306,14 @@ if test $in_sdcc == "yes" ; then
 	def_68hc08="yes"
     fi
 
+    def_mos6502="no"
+    if test $enable_mos6502_port = "yes"; then
+	def_mos6502="yes"
+    fi
+    if test $enable_mos65c02_port = "yes"; then
+	def_mos65c02="yes"
+    fi
+
     def_stm8="no"
     if test $enable_stm8_port = "yes"; then
 	def_stm8="yes"
@@ -305,6 +331,11 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_pdk16_port = "yes"; then
 	def_pdk="yes"
+    fi
+
+    def_f8="no"
+    if test $enable_f8_port = "yes"; then
+	def_f8="yes"
     fi
 else
     SILENT="no"

@@ -764,11 +764,14 @@ enable_r2ka_port
 enable_r3ka_port
 enable_hc08_port
 enable_s08_port
+enable_mos6502_port
+enable_mos65c02_port
 enable_stm8_port
 enable_pdk13_port
 enable_pdk14_port
 enable_pdk15_port
 enable_pdk16_port
+enable_f8_port
 enable_dlso
 enable_feapp
 enable_serio
@@ -1447,11 +1450,16 @@ Optional Features:
   --enable-r3ka-port=ARG  feature opt passed from SDCC
   --enable-hc08-port=ARG  feature opt passed from SDCC
   --enable-s08-port=ARG   feature opt passed from SDCC
+  --enable-mos6502-port=ARG
+                          feature opt passed from SDCC
+  --enable-mos65c02-port=ARG
+                          feature opt passed from SDCC
   --enable-stm8-port=ARG  feature opt passed from SDCC
   --enable-pdk13-port=ARG feature opt passed from SDCC
   --enable-pdk14-port=ARG feature opt passed from SDCC
   --enable-pdk15-port=ARG feature opt passed from SDCC
   --enable-pdk16-port=ARG feature opt passed from SDCC
+  --enable-f8-port=ARG    feature opt passed from SDCC
   --enable-dlso=ARG       en/disable compile shared objects
   --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
   --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
@@ -3567,6 +3575,26 @@ esac
 fi
 
 
+# Check whether --enable-mos6502-port was given.
+if test ${enable_mos6502_port+y}
+then :
+  enableval=$enable_mos6502_port;
+else case e in #(
+  e) enable_mos6502_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-mos65c02-port was given.
+if test ${enable_mos65c02_port+y}
+then :
+  enableval=$enable_mos65c02_port;
+else case e in #(
+  e) enable_mos65c02_port="yes" ;;
+esac
+fi
+
+
 # Check whether --enable-stm8-port was given.
 if test ${enable_stm8_port+y}
 then :
@@ -3613,6 +3641,16 @@ then :
   enableval=$enable_pdk16_port;
 else case e in #(
   e) enable_pdk16_port="yes" ;;
+esac
+fi
+
+
+# Check whether --enable-f8-port was given.
+if test ${enable_f8_port+y}
+then :
+  enableval=$enable_f8_port;
+else case e in #(
+  e) enable_f8_port="yes" ;;
 esac
 fi
 
@@ -3715,6 +3753,14 @@ if test $in_sdcc == "yes" ; then
 	def_68hc08="yes"
     fi
 
+    def_mos6502="no"
+    if test $enable_mos6502_port = "yes"; then
+	def_mos6502="yes"
+    fi
+    if test $enable_mos65c02_port = "yes"; then
+	def_mos65c02="yes"
+    fi
+
     def_stm8="no"
     if test $enable_stm8_port = "yes"; then
 	def_stm8="yes"
@@ -3732,6 +3778,11 @@ if test $in_sdcc == "yes" ; then
     fi
     if test $enable_pdk16_port = "yes"; then
 	def_pdk="yes"
+    fi
+
+    def_f8="no"
+    if test $enable_f8_port = "yes"; then
+	def_f8="yes"
     fi
 else
     SILENT="no"
