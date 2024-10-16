@@ -78,6 +78,7 @@ cl_general_uc::make_memories(void)
   class cl_address_space *as;
   class cl_memory_chip *ch;
   class cl_address_decoder *ad;
+  printf("size of cell= %lu\n", sizeof(class cl_cell8));
   /*
   m(0x10000);
   m(0x100000);
