@@ -34,50 +34,6 @@ if test $last_root == "ucsim" ; then
 fi
 echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
 
-def_feapp="yes"
-def_dlso="no"
-def_mcs51="yes"
-def_p1516="yes"
-def_avr="yes"
-def_serio="yes"
-def_z80="yes"
-def_tlcs="yes"
-def_m6800="yes"
-def_m68hc08="yes"
-def_xa="yes"
-def_stm8="yes"
-def_pdk="yes"
-def_m6809="yes"
-def_m68hc11="yes"
-def_m68hc12="yes"
-def_pblaze="yes"
-def_i8085="yes"
-def_i8048="yes"
-def_st7="yes"
-def_oisc="yes"
-def_mos6502="yes"
-def_rkx="yes"
-def_f8="yes"
-
-if test $in_sdcc == "yes" ; then
-    def_feapp="no"
-    def_p1516="no"
-    def_avr="no"
-    def_serio="no"
-    def_m6800="no"
-    def_m6809="no"
-    def_m68hc11="no"
-    def_m68hc12="no"
-    def_pblaze="no"
-    def_i8085="no"
-    def_i8048="no"
-    def_st7="no"
-    def_oisc="no"
-    SILENT="yes"
-else
-    SILENT="no"
-fi
-AC_SUBST(SILENT)
 
 
 AC_PROG_AWK
@@ -112,11 +68,79 @@ if test "${docdir}" = ""; then
 fi
 AC_SUBST(docdir)
 
-AC_ARG_ENABLE(feapp,
-	      AS_HELP_STRING([--enable-feapp=ARG],
-			     [en/disable compile of exe wrapper (unfinished)]),
-	      ,
-	      enable_feapp=$def_feapp)
+######################################################################
+
+AC_ARG_ENABLE(mcs51-port,
+	      AS_HELP_STRING([--enable-mcs51-port=ARG],
+			     [feature opt passed from SDCC]),
+	      sdcc_mcs51_set="yes",
+	      sdcc_mcs51_set="no")
+
+AC_ARG_ENABLE(ds390-port,
+	      AS_HELP_STRING([--enable-ds390-port=ARG],
+			     [feature opt passed from SDCC]),
+	      sdcc_ds390_set="yes",
+	      sdcc_ds390_set="no")
+
+AC_ARG_ENABLE(ds400-port,
+	      AS_HELP_STRING([--enable-ds400-port=ARG],
+			     [feature opt passed from SDCC]),
+	      sdcc_ds400_set="yes",
+	      sdcc_ds400_set="no")
+
+def_dlso="no"
+def_feapp="yes"
+def_serio="yes"
+
+def_mcs51="yes"
+def_i8048="yes"
+def_i8085="yes"
+def_xa="yes"
+def_avr="yes"
+def_z80="yes"
+def_tlcs="yes"
+def_rkx="yes"
+def_m6800="yes"
+def_m68hc08="yes"
+def_m6809="yes"
+def_m68hc11="yes"
+def_m68hc12="yes"
+def_mos6502="yes"
+def_st7="yes"
+def_stm8="yes"
+def_pdk="yes"
+def_pblaze="yes"
+def_p1516="yes"
+def_f8="yes"
+def_oisc="yes"
+
+if test $in_sdcc == "yes" ; then
+    def_feapp="no"
+    def_serio="no"
+    def_i8048="no"
+    def_i8085="no"
+    def_avr="no"
+    def_m6800="no"
+    def_m6809="no"
+    def_m68hc11="no"
+    def_m68hc12="no"
+    def_st7="no"
+    def_pblaze="no"
+    def_p1516="no"
+    def_oisc="no"
+    SILENT="yes"    
+    if [ $sdcc_mcs51_set = "yes" -a
+	 $enable_mcs51_port = "no" -a
+	 $sdcc_ds390_set = "yes" -a
+	 $enable_d390_port = "yes" ]; then
+	$def_mcs51="no"
+    fi
+else
+    SILENT="no"
+fi
+AC_SUBST(SILENT)
+
+######################################################################
 
 AC_ARG_ENABLE(dlso,
 	      AS_HELP_STRING([--enable-dlso=ARG],
@@ -124,11 +148,41 @@ AC_ARG_ENABLE(dlso,
 	      ,
 	      enable_dlso=$def_dlso)
 
+AC_ARG_ENABLE(feapp,
+	      AS_HELP_STRING([--enable-feapp=ARG],
+			     [en/disable compile of exe wrapper (unfinished)]),
+	      ,
+	      enable_feapp=$def_feapp)
+
+AC_ARG_ENABLE(serio,
+	      AS_HELP_STRING([--enable-serio=ARG],
+			     [en/disable compile serio GUI tool (needs curses)]),
+	      ,
+	      enable_serio=$def_serio)
+
 AC_ARG_ENABLE(mcs51-sim,
 	      AS_HELP_STRING([--enable-mcs51-sim=ARG],
 			     [en/disable compile mcs51 simulator]),
 	      ,
 	      enable_mcs51_sim=$def_mcs51)
+
+AC_ARG_ENABLE(i8048-sim,
+	      AS_HELP_STRING([--enable-i8048-sim=ARG],
+			     [en/disable compile i8048 simulator]),
+	      ,
+	      enable_i8048_sim=$def_i8048)
+
+AC_ARG_ENABLE(i8085-sim,
+	      AS_HELP_STRING([--enable-i8085-sim=ARG],
+			     [en/disable compile i8085 simulator]),
+	      ,
+	      enable_i8085_sim=$def_i8085)
+
+AC_ARG_ENABLE(xa-sim,
+	      AS_HELP_STRING([--enable-xa-sim=ARG],
+			     [en/disable compile xa simulator]),
+	      ,
+	      enable_xa_sim=$def_xa)
 
 AC_ARG_ENABLE(avr-sim,
 	      AS_HELP_STRING([--enable-avr-sim=ARG],
@@ -148,47 +202,23 @@ AC_ARG_ENABLE(tlcs-sim,
 	      ,
 	      enable_tlcs_sim=$def_tlcs)
 
-AC_ARG_ENABLE(m68hc08-sim,
-	      AS_HELP_STRING([--enable-m68hc08-sim=ARG],
-			     [en/disable compile m68hc08 simulator]),
+AC_ARG_ENABLE(rxk-sim,
+	      AS_HELP_STRING([--enable-rxk-sim=ARG],
+			     [en/disable compile Rabbit rXk simulator]),
 	      ,
-	      enable_m68hc08_sim=$def_m68hc08)
-
-AC_ARG_ENABLE(xa-sim,
-	      AS_HELP_STRING([--enable-xa-sim=ARG],
-			     [en/disable compile xa simulator]),
-	      ,
-	      enable_xa_sim=$def_xa)
-
-AC_ARG_ENABLE(stm8-sim,
-	      AS_HELP_STRING([--enable-stm8-sim=ARG],
-			     [en/disable compile stm8 simulator]),
-	      ,
-	      enable_stm8_sim=$def_stm8)
-
-AC_ARG_ENABLE(pdk-sim,
-	      AS_HELP_STRING([--enable-pdk-sim=ARG],
-			     [en/disable compile pdk simulator]),
-	      ,
-	      enable_pdk_sim=$def_pdk)
-
-AC_ARG_ENABLE(st7-sim,
-	      AS_HELP_STRING([--enable-st7-sim=ARG],
-			     [en/disable compile st7 simulator]),
-	      ,
-	      enable_st7_sim=$def_st7)
-
-AC_ARG_ENABLE(p1516-sim,
-	      AS_HELP_STRING([--enable-p1516-sim=ARG],
-			     [en/disbale compile p1516 simulator]),
-	      ,
-	      enable_p1516_sim=$def_p1516)
+	      enable_rxk_sim=$def_rxk)
 
 AC_ARG_ENABLE(m6800-sim,
 	      AS_HELP_STRING([--enable-m6800-sim=ARG],
 			     [en/disable compile m6800 simulator]),
 	      ,
 	      enable_m6800_sim=$def_m6800)
+
+AC_ARG_ENABLE(m68hc08-sim,
+	      AS_HELP_STRING([--enable-m68hc08-sim=ARG],
+			     [en/disable compile m68hc08 simulator]),
+	      ,
+	      enable_m68hc08_sim=$def_m68hc08)
 
 AC_ARG_ENABLE(m6809-sim,
 	      AS_HELP_STRING([--enable-m6809-sim=ARG],
@@ -214,11 +244,23 @@ AC_ARG_ENABLE(mos6502-sim,
 	      ,
 	      enable_mos6502_sim=$def_mos6502)
 
-AC_ARG_ENABLE(rxk-sim,
-	      AS_HELP_STRING([--enable-rxk-sim=ARG],
-			     [en/disable compile Rabbit rXk simulator]),
+AC_ARG_ENABLE(st7-sim,
+	      AS_HELP_STRING([--enable-st7-sim=ARG],
+			     [en/disable compile st7 simulator]),
 	      ,
-	      enable_rxk_sim=$def_rxk)
+	      enable_st7_sim=$def_st7)
+
+AC_ARG_ENABLE(stm8-sim,
+	      AS_HELP_STRING([--enable-stm8-sim=ARG],
+			     [en/disable compile stm8 simulator]),
+	      ,
+	      enable_stm8_sim=$def_stm8)
+
+AC_ARG_ENABLE(pdk-sim,
+	      AS_HELP_STRING([--enable-pdk-sim=ARG],
+			     [en/disable compile pdk simulator]),
+	      ,
+	      enable_pdk_sim=$def_pdk)
 
 AC_ARG_ENABLE(pblaze-sim,
 	      AS_HELP_STRING([--enable-pblaze-sim=ARG],
@@ -226,11 +268,11 @@ AC_ARG_ENABLE(pblaze-sim,
 	      ,
 	      enable_pblaze_sim=$def_pblaze)
 
-AC_ARG_ENABLE(i8085-sim,
-	      AS_HELP_STRING([--enable-i8085-sim=ARG],
-			     [en/disable compile i8085 simulator]),
+AC_ARG_ENABLE(p1516-sim,
+	      AS_HELP_STRING([--enable-p1516-sim=ARG],
+			     [en/disbale compile p1516 simulator]),
 	      ,
-	      enable_i8085_sim=$def_i8085)
+	      enable_p1516_sim=$def_p1516)
 
 AC_ARG_ENABLE(f8-sim,
 	      AS_HELP_STRING([--enable-f8-sim=ARG],
@@ -238,51 +280,39 @@ AC_ARG_ENABLE(f8-sim,
 	      ,
 	      enable_f8_sim=$def_f8)
 
-AC_ARG_ENABLE(i8048-sim,
-	      AS_HELP_STRING([--enable-i8048-sim=ARG],
-			     [en/disable compile i8048 simulator]),
-	      ,
-	      enable_i8048_sim=$def_i8048)
-
 AC_ARG_ENABLE(oisc-sim,
 	      AS_HELP_STRING([--enable-oisc-sim=ARG],
 			     [en/disable compile oisc simulator]),
 	      ,
 	      enable_oisc_sim=$def_oisc)
 
-AC_ARG_ENABLE(serio,
-	      AS_HELP_STRING([--enable-serio=ARG],
-			     [en/disable compile serio GUI tool (needs curses)]),
-	      ,
-	      enable_serio=$def_serio)
+######################################################################
 
-AC_SUBST(enable_feapp)
 AC_SUBST(enable_dlso)
+AC_SUBST(enable_feapp)
+AC_SUBST(enable_serio)
+
 AC_SUBST(enable_mcs51_sim)
+AC_SUBST(enable_i8048_sim)
+AC_SUBST(enable_i8085_sim)
+AC_SUBST(enable_xa_sim)
 AC_SUBST(enable_avr_sim)
 AC_SUBST(enable_z80_sim)
-AC_SUBST(enable_gbz80_sim)
-AC_SUBST(enable_r2k_sim)
-AC_SUBST(enable_r3ka_sim)
 AC_SUBST(enable_tlcs_sim)
-AC_SUBST(enable_m68hc08_sim)
-AC_SUBST(enable_xa_sim)
-AC_SUBST(enable_stm8_sim)
-AC_SUBST(enable_st7_sim)
-AC_SUBST(enable_pdk_sim)
-AC_SUBST(enable_p1516_sim)
-AC_SUBST(enable_m6809_sim)
+AC_SUBST(enable_rxk_sim)
 AC_SUBST(enable_m6800_sim)
+AC_SUBST(enable_m68hc08_sim)
+AC_SUBST(enable_m6809_sim)
 AC_SUBST(enable_m68hc11_sim)
 AC_SUBST(enable_m68hc12_sim)
 AC_SUBST(enable_mos6502_sim)
-AC_SUBST(enable_rxk_sim)
+AC_SUBST(enable_st7_sim)
+AC_SUBST(enable_stm8_sim)
+AC_SUBST(enable_pdk_sim)
 AC_SUBST(enable_pblaze_sim)
-AC_SUBST(enable_i8085_sim)
+AC_SUBST(enable_p1516_sim)
 AC_SUBST(enable_f8_sim)
-AC_SUBST(enable_i8048_sim)
 AC_SUBST(enable_oisc_sim)
-AC_SUBST(enable_serio)
 
 
 dnl AC_ARG_ENABLE(statistic,

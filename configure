@@ -676,40 +676,37 @@ CPPFLAGS
 LDFLAGS
 CXXFLAGS
 CXX
-enable_serio
 enable_oisc_sim
-enable_i8048_sim
 enable_f8_sim
-enable_i8085_sim
+enable_p1516_sim
 enable_pblaze_sim
-enable_rxk_sim
+enable_pdk_sim
+enable_stm8_sim
+enable_st7_sim
 enable_mos6502_sim
 enable_m68hc12_sim
 enable_m68hc11_sim
-enable_m6800_sim
 enable_m6809_sim
-enable_p1516_sim
-enable_pdk_sim
-enable_st7_sim
-enable_stm8_sim
-enable_xa_sim
 enable_m68hc08_sim
+enable_m6800_sim
+enable_rxk_sim
 enable_tlcs_sim
-enable_r3ka_sim
-enable_r2k_sim
-enable_gbz80_sim
 enable_z80_sim
 enable_avr_sim
+enable_xa_sim
+enable_i8085_sim
+enable_i8048_sim
 enable_mcs51_sim
-enable_dlso
+enable_serio
 enable_feapp
+enable_dlso
+SILENT
 VERSIONP
 VERSIONLO
 VERSIONHI
 VERSION
 SED
 AWK
-SILENT
 target_alias
 host_alias
 build_alias
@@ -752,30 +749,33 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
-enable_feapp
+enable_mcs51_port
+enable_ds390_port
+enable_ds400_port
 enable_dlso
+enable_feapp
+enable_serio
 enable_mcs51_sim
+enable_i8048_sim
+enable_i8085_sim
+enable_xa_sim
 enable_avr_sim
 enable_z80_sim
 enable_tlcs_sim
-enable_m68hc08_sim
-enable_xa_sim
-enable_stm8_sim
-enable_pdk_sim
-enable_st7_sim
-enable_p1516_sim
+enable_rxk_sim
 enable_m6800_sim
+enable_m68hc08_sim
 enable_m6809_sim
 enable_m68hc11_sim
 enable_m68hc12_sim
 enable_mos6502_sim
-enable_rxk_sim
+enable_st7_sim
+enable_stm8_sim
+enable_pdk_sim
 enable_pblaze_sim
-enable_i8085_sim
+enable_p1516_sim
 enable_f8_sim
-enable_i8048_sim
 enable_oisc_sim
-enable_serio
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1413,20 +1413,23 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
+  --enable-mcs51-port=ARG feature opt passed from SDCC
+  --enable-ds390-port=ARG feature opt passed from SDCC
+  --enable-ds400-port=ARG feature opt passed from SDCC
   --enable-dlso=ARG       en/disable compile shared objects
+  --enable-feapp=ARG      en/disable compile of exe wrapper (unfinished)
+  --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
   --enable-mcs51-sim=ARG  en/disable compile mcs51 simulator
+  --enable-i8048-sim=ARG  en/disable compile i8048 simulator
+  --enable-i8085-sim=ARG  en/disable compile i8085 simulator
+  --enable-xa-sim=ARG     en/disable compile xa simulator
   --enable-avr-sim=ARG    en/disable compile avr simulator
   --enable-z80-sim=ARG    en/disable compile z80 simulator
   --enable-tlcs-sim=ARG   en/disable compile tlcs simulator
+  --enable-rxk-sim=ARG    en/disable compile Rabbit rXk simulator
+  --enable-m6800-sim=ARG  en/disable compile m6800 simulator
   --enable-m68hc08-sim=ARG
                           en/disable compile m68hc08 simulator
-  --enable-xa-sim=ARG     en/disable compile xa simulator
-  --enable-stm8-sim=ARG   en/disable compile stm8 simulator
-  --enable-pdk-sim=ARG    en/disable compile pdk simulator
-  --enable-st7-sim=ARG    en/disable compile st7 simulator
-  --enable-p1516-sim=ARG  en/disbale compile p1516 simulator
-  --enable-m6800-sim=ARG  en/disable compile m6800 simulator
   --enable-m6809-sim=ARG  en/disable compile m6809 simulator
   --enable-m68hc11-sim=ARG
                           en/disable compile m68hc11 simulator
@@ -1434,13 +1437,13 @@ Optional Features:
                           en/disable compile m68hc12 simulator
   --enable-mos6502-sim=ARG
                           en/disable compile mos6502 simulator
-  --enable-rxk-sim=ARG    en/disable compile Rabbit rXk simulator
+  --enable-st7-sim=ARG    en/disable compile st7 simulator
+  --enable-stm8-sim=ARG   en/disable compile stm8 simulator
+  --enable-pdk-sim=ARG    en/disable compile pdk simulator
   --enable-pblaze-sim=ARG en/disable compile picoblaze simulator
-  --enable-i8085-sim=ARG  en/disable compile i8085 simulator
+  --enable-p1516-sim=ARG  en/disbale compile p1516 simulator
   --enable-f8-sim=ARG     en/disable compile f8 simulator
-  --enable-i8048-sim=ARG  en/disable compile i8048 simulator
   --enable-oisc-sim=ARG   en/disable compile oisc simulator
-  --enable-serio=ARG      en/disable compile serio GUI tool (needs curses)
 
 Some influential environment variables:
   docdir      documentation installation directory
@@ -3199,50 +3202,6 @@ if test $last_root == "ucsim" ; then
 fi
 echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
 
-def_feapp="yes"
-def_dlso="no"
-def_mcs51="yes"
-def_p1516="yes"
-def_avr="yes"
-def_serio="yes"
-def_z80="yes"
-def_tlcs="yes"
-def_m6800="yes"
-def_m68hc08="yes"
-def_xa="yes"
-def_stm8="yes"
-def_pdk="yes"
-def_m6809="yes"
-def_m68hc11="yes"
-def_m68hc12="yes"
-def_pblaze="yes"
-def_i8085="yes"
-def_i8048="yes"
-def_st7="yes"
-def_oisc="yes"
-def_mos6502="yes"
-def_rkx="yes"
-def_f8="yes"
-
-if test $in_sdcc == "yes" ; then
-    def_feapp="no"
-    def_p1516="no"
-    def_avr="no"
-    def_serio="no"
-    def_m6800="no"
-    def_m6809="no"
-    def_m68hc11="no"
-    def_m68hc12="no"
-    def_pblaze="no"
-    def_i8085="no"
-    def_i8048="no"
-    def_st7="no"
-    def_oisc="no"
-    SILENT="yes"
-else
-    SILENT="no"
-fi
-
 
 
 for ac_prog in gawk mawk nawk awk
@@ -3420,15 +3379,91 @@ if test "${docdir}" = ""; then
 fi
 
 
-# Check whether --enable-feapp was given.
-if test ${enable_feapp+y}
+######################################################################
+
+# Check whether --enable-mcs51-port was given.
+if test ${enable_mcs51_port+y}
 then :
-  enableval=$enable_feapp;
+  enableval=$enable_mcs51_port; sdcc_mcs51_set="yes"
 else case e in #(
-  e) enable_feapp=$def_feapp ;;
+  e) sdcc_mcs51_set="no" ;;
 esac
 fi
 
+
+# Check whether --enable-ds390-port was given.
+if test ${enable_ds390_port+y}
+then :
+  enableval=$enable_ds390_port; sdcc_ds390_set="yes"
+else case e in #(
+  e) sdcc_ds390_set="no" ;;
+esac
+fi
+
+
+# Check whether --enable-ds400-port was given.
+if test ${enable_ds400_port+y}
+then :
+  enableval=$enable_ds400_port; sdcc_ds400_set="yes"
+else case e in #(
+  e) sdcc_ds400_set="no" ;;
+esac
+fi
+
+
+def_dlso="no"
+def_feapp="yes"
+def_serio="yes"
+
+def_mcs51="yes"
+def_i8048="yes"
+def_i8085="yes"
+def_xa="yes"
+def_avr="yes"
+def_z80="yes"
+def_tlcs="yes"
+def_rkx="yes"
+def_m6800="yes"
+def_m68hc08="yes"
+def_m6809="yes"
+def_m68hc11="yes"
+def_m68hc12="yes"
+def_mos6502="yes"
+def_st7="yes"
+def_stm8="yes"
+def_pdk="yes"
+def_pblaze="yes"
+def_p1516="yes"
+def_f8="yes"
+def_oisc="yes"
+
+if test $in_sdcc == "yes" ; then
+    def_feapp="no"
+    def_serio="no"
+    def_i8048="no"
+    def_i8085="no"
+    def_avr="no"
+    def_m6800="no"
+    def_m6809="no"
+    def_m68hc11="no"
+    def_m68hc12="no"
+    def_st7="no"
+    def_pblaze="no"
+    def_p1516="no"
+    def_oisc="no"
+    SILENT="yes"
+    if  $sdcc_mcs51_set = "yes" -a
+	 $enable_mcs51_port = "no" -a
+	 $sdcc_ds390_set = "yes" -a
+	 $enable_d390_port = "yes" ; then
+	$def_mcs51="no"
+    fi
+else
+    SILENT="no"
+fi
+
+
+######################################################################
 
 # Check whether --enable-dlso was given.
 if test ${enable_dlso+y}
@@ -3440,12 +3475,62 @@ esac
 fi
 
 
+# Check whether --enable-feapp was given.
+if test ${enable_feapp+y}
+then :
+  enableval=$enable_feapp;
+else case e in #(
+  e) enable_feapp=$def_feapp ;;
+esac
+fi
+
+
+# Check whether --enable-serio was given.
+if test ${enable_serio+y}
+then :
+  enableval=$enable_serio;
+else case e in #(
+  e) enable_serio=$def_serio ;;
+esac
+fi
+
+
 # Check whether --enable-mcs51-sim was given.
 if test ${enable_mcs51_sim+y}
 then :
   enableval=$enable_mcs51_sim;
 else case e in #(
   e) enable_mcs51_sim=$def_mcs51 ;;
+esac
+fi
+
+
+# Check whether --enable-i8048-sim was given.
+if test ${enable_i8048_sim+y}
+then :
+  enableval=$enable_i8048_sim;
+else case e in #(
+  e) enable_i8048_sim=$def_i8048 ;;
+esac
+fi
+
+
+# Check whether --enable-i8085-sim was given.
+if test ${enable_i8085_sim+y}
+then :
+  enableval=$enable_i8085_sim;
+else case e in #(
+  e) enable_i8085_sim=$def_i8085 ;;
+esac
+fi
+
+
+# Check whether --enable-xa-sim was given.
+if test ${enable_xa_sim+y}
+then :
+  enableval=$enable_xa_sim;
+else case e in #(
+  e) enable_xa_sim=$def_xa ;;
 esac
 fi
 
@@ -3480,62 +3565,12 @@ esac
 fi
 
 
-# Check whether --enable-m68hc08-sim was given.
-if test ${enable_m68hc08_sim+y}
+# Check whether --enable-rxk-sim was given.
+if test ${enable_rxk_sim+y}
 then :
-  enableval=$enable_m68hc08_sim;
+  enableval=$enable_rxk_sim;
 else case e in #(
-  e) enable_m68hc08_sim=$def_m68hc08 ;;
-esac
-fi
-
-
-# Check whether --enable-xa-sim was given.
-if test ${enable_xa_sim+y}
-then :
-  enableval=$enable_xa_sim;
-else case e in #(
-  e) enable_xa_sim=$def_xa ;;
-esac
-fi
-
-
-# Check whether --enable-stm8-sim was given.
-if test ${enable_stm8_sim+y}
-then :
-  enableval=$enable_stm8_sim;
-else case e in #(
-  e) enable_stm8_sim=$def_stm8 ;;
-esac
-fi
-
-
-# Check whether --enable-pdk-sim was given.
-if test ${enable_pdk_sim+y}
-then :
-  enableval=$enable_pdk_sim;
-else case e in #(
-  e) enable_pdk_sim=$def_pdk ;;
-esac
-fi
-
-
-# Check whether --enable-st7-sim was given.
-if test ${enable_st7_sim+y}
-then :
-  enableval=$enable_st7_sim;
-else case e in #(
-  e) enable_st7_sim=$def_st7 ;;
-esac
-fi
-
-
-# Check whether --enable-p1516-sim was given.
-if test ${enable_p1516_sim+y}
-then :
-  enableval=$enable_p1516_sim;
-else case e in #(
-  e) enable_p1516_sim=$def_p1516 ;;
+  e) enable_rxk_sim=$def_rxk ;;
 esac
 fi
 
@@ -3546,6 +3581,16 @@ then :
   enableval=$enable_m6800_sim;
 else case e in #(
   e) enable_m6800_sim=$def_m6800 ;;
+esac
+fi
+
+
+# Check whether --enable-m68hc08-sim was given.
+if test ${enable_m68hc08_sim+y}
+then :
+  enableval=$enable_m68hc08_sim;
+else case e in #(
+  e) enable_m68hc08_sim=$def_m68hc08 ;;
 esac
 fi
 
@@ -3590,12 +3635,32 @@ esac
 fi
 
 
-# Check whether --enable-rxk-sim was given.
-if test ${enable_rxk_sim+y}
+# Check whether --enable-st7-sim was given.
+if test ${enable_st7_sim+y}
 then :
-  enableval=$enable_rxk_sim;
+  enableval=$enable_st7_sim;
 else case e in #(
-  e) enable_rxk_sim=$def_rxk ;;
+  e) enable_st7_sim=$def_st7 ;;
+esac
+fi
+
+
+# Check whether --enable-stm8-sim was given.
+if test ${enable_stm8_sim+y}
+then :
+  enableval=$enable_stm8_sim;
+else case e in #(
+  e) enable_stm8_sim=$def_stm8 ;;
+esac
+fi
+
+
+# Check whether --enable-pdk-sim was given.
+if test ${enable_pdk_sim+y}
+then :
+  enableval=$enable_pdk_sim;
+else case e in #(
+  e) enable_pdk_sim=$def_pdk ;;
 esac
 fi
 
@@ -3610,12 +3675,12 @@ esac
 fi
 
 
-# Check whether --enable-i8085-sim was given.
-if test ${enable_i8085_sim+y}
+# Check whether --enable-p1516-sim was given.
+if test ${enable_p1516_sim+y}
 then :
-  enableval=$enable_i8085_sim;
+  enableval=$enable_p1516_sim;
 else case e in #(
-  e) enable_i8085_sim=$def_i8085 ;;
+  e) enable_p1516_sim=$def_p1516 ;;
 esac
 fi
 
@@ -3630,16 +3695,6 @@ esac
 fi
 
 
-# Check whether --enable-i8048-sim was given.
-if test ${enable_i8048_sim+y}
-then :
-  enableval=$enable_i8048_sim;
-else case e in #(
-  e) enable_i8048_sim=$def_i8048 ;;
-esac
-fi
-
-
 # Check whether --enable-oisc-sim was given.
 if test ${enable_oisc_sim+y}
 then :
@@ -3650,17 +3705,7 @@ esac
 fi
 
 
-# Check whether --enable-serio was given.
-if test ${enable_serio+y}
-then :
-  enableval=$enable_serio;
-else case e in #(
-  e) enable_serio=$def_serio ;;
-esac
-fi
-
-
-
+######################################################################
 
 
 
