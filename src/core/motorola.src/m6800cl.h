@@ -54,7 +54,7 @@ struct acc_t {
   } DAB;
 };
 
-struct cc_tip {
+struct cc_t {
   union {
     u16_t cc16;
     struct {
@@ -160,7 +160,7 @@ class cl_m6800: public cl_uc
 {
 public:
   struct acc_t acc;
-  struct cc_tip CC;
+  struct cc_t CC;
   u16_t IX, SP;
   class cl_cell8 cA, cB, cCC;
   class cl_cell16 cSP;

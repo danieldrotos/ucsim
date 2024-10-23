@@ -68,7 +68,8 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
     hit= params[1]->value.number;
     mem= uc->address_space(params[0]->value.cell, &addr);
     s= params[2]->get_svalue();
-    if (s == "if")
+    if (s && *s &&
+	(strcmp(s, "if") == 0))
       cond= params[3]->get_svalue();
     if (mem && (mem == uc->rom))
       do_fetch(uc, addr, hit, cond, con);
@@ -90,7 +91,8 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
     hit= 1;
     mem= uc->address_space(params[0]->value.cell, &addr);
     s= params[1]->get_svalue();
-    if (s == "if")
+    if (s && *s &&
+	(strcmp(s, "if") == 0))
       cond= params[2]->get_svalue();
     if (mem && (mem == uc->rom))
       do_fetch(uc, addr, hit, cond, con);
@@ -152,7 +154,7 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
     addr= params[2]->value.address;
     hit= params[3]->value.number;
     s= params[4]->get_svalue();
-    if (s == "if")
+    if (s && *s && (s=="if"))
       cond= params[5]->get_svalue();
     do_event(uc, mem, op, addr, hit, cond, con);
   }
@@ -169,7 +171,7 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
     addr= params[2]->value.address;
     hit= 1;
     s= params[3]->get_svalue();
-    if (s == "if")
+    if (s && *s && (s=="if"))
       cond= params[4]->get_svalue();
     do_event(uc, mem, op, addr, hit, cond, con);
   }
@@ -184,7 +186,7 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
     addr= params[0]->value.address;
     hit= params[1]->value.number;
     s= params[2]->get_svalue();
-    if (s == "if")
+    if (s && *s && (s=="if"))
       cond= params[3]->get_svalue();
     do_fetch(uc, addr, hit, cond, con);
   }
@@ -197,7 +199,7 @@ COMMAND_DO_WORK_UC(cl_break_cmd)
     addr= params[0]->value.address;
     hit= 1;
     s= params[1]->get_svalue();
-    if (s == "if")
+    if (s && *s && (s=="if"))
       cond= params[2]->get_svalue();
     do_fetch(uc, addr, hit, cond, con);
   }
