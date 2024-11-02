@@ -479,6 +479,7 @@ cl_fpga::handle_input(int c)
 	case 'C': sw&= ~0xf0; sw|= 0x20; pjp->W(sw); break;
 	case 'D': sw&= ~0xf0; sw|= 0x30; pjp->W(sw); break;
 	case 'R': sw&= ~0xf0; sw|= 0x90; pjp->W(sw); break;
+	case 'S': sw&= ~0xf0; sw|= 0xa0; pjp->W(sw); break;
 	case TU_UP  : sw&= ~0xf; sw|= ((rx+1)&0xf); pjp->W(sw); break;
 	case TU_DOWN: sw&= ~0xf; sw|= ((rx-1)&0xf); pjp->W(sw); break;
 	}
@@ -577,14 +578,16 @@ cl_fpga::draw_display(void)
   for (i=0; i<8; i++)
     if (btns[i])
       btns[i]->draw();
-  io->tu_go(2+8*5-9-7+3-16,basey-7);
-  io->dd_cprintf("ui_mkey", "[ABCD] ");
+  io->tu_go(2+8*5-9-7+3-16-6,basey-7);
+  io->dd_cprintf("ui_mkey" , "[S]");
+  io->dd_cprintf("ui_mitem", "eg ");
+  io->dd_cprintf("ui_mkey" , "[ABCD] ");
   io->dd_cprintf("ui_mitem", "PX ");
-  io->dd_cprintf("ui_mkey", "[R] ");
+  io->dd_cprintf("ui_mkey" , "[R] ");
   io->dd_cprintf("ui_mitem", "RX ");
-  io->dd_cprintf("ui_mkey", "[up] ");
+  io->dd_cprintf("ui_mkey" , "[up] ");
   io->dd_cprintf("ui_mitem", "R+ ");
-  io->dd_cprintf("ui_mkey", "[dn] ");
+  io->dd_cprintf("ui_mkey" , "[dn] ");
   io->dd_cprintf("ui_mitem", "R- ");
   refresh_display(true);
 }
