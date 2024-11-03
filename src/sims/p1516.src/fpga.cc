@@ -139,6 +139,7 @@ cl_seg::refresh(bool force)
   class cl_p1516 *uc= (class cl_p1516 *)(fpga->uc);
   chars w= "non ";
   bool direct= false;
+  int c= -digit + fpga->d2c_b;
   switch ((sw>>4)&0xf)
     {
     case 0: act= fpga->pa->get(); w="PA= "; break;
@@ -152,7 +153,17 @@ cl_seg::refresh(bool force)
       else
 	w.format("R%d= ", sw&0xf);
       break;
-    case 10: act= (digit<=3)?(fpga->pd->get()):(fpga->pc->get()); w="CD->"; direct= true; break;
+    case 10:
+      {
+	t_addr a;
+	//act= (digit<=3)?(fpga->pd->get()):(fpga->pc->get());
+	a= 0xff02; // ODR of PC
+	a+= c/4;
+	act= fpga->uc->rom->read(a);
+	w="CD->";
+	direct= true;
+	break;
+      }
     default: act= 0;
     }
   act_what= sw & 0xff;
@@ -188,11 +199,11 @@ cl_seg::refresh(bool force)
     {
       // direct
       int sby= 0;
-      switch (digit % 4)
+      switch (c % 4)
 	{
-	case 0: mask= 0xff000000; sby= 3*8; break;
-	case 1: mask= 0x00ff0000; sby= 2*8; break;
-	case 2: mask= 0x0000ff00; sby= 1*8; break;
+	case 3: mask= 0xff000000; sby= 3*8; break;
+	case 2: mask= 0x00ff0000; sby= 2*8; break;
+	case 1: mask= 0x0000ff00; sby= 1*8; break;
 	default: mask= 0x000000ff; sby= 0*8; break;
 	}
       act&= mask;
@@ -416,6 +427,7 @@ cl_fpga::cl_fpga(class cl_uc *auc, int aid, chars aid_string):
       register_cell(pjp);
     }
   basey= 13; // row of leds
+  d2c_b= 7;
 }
 
 
@@ -734,6 +746,7 @@ cl_logsys::cl_logsys(class cl_uc *auc, int aid, chars aid_string):
   cl_fpga(auc, aid, aid_string)
 {
   board= "LogSys";
+  d2c_b= 3;
 }
 
 void
