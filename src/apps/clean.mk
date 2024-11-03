@@ -1,4 +1,4 @@
-APPS		= serio ucsim relay
+APPS		= serio ucsim
 
 clean: local_clean sub_clean
 

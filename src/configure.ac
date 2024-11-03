@@ -17,24 +17,6 @@ if test -z "$CXXFLAGS"; then
 fi
 
     
-def_ucsim="yes"
-def_dlso="no"
-def_mcs51_port="yes"
-def_p1516="yes"
-def_avr="yes"
-def_serio="yes"
-def_z80="yes"
-def_tlcs="yes"
-def_m6800="yes"
-def_m6809="yes"
-def_m68hc11="yes"
-def_m68hc12="yes"
-def_pblaze="yes"
-def_i8085="yes"
-def_i8048="yes"
-def_st7="yes"
-def_oisc="yes"
-
 in_sdcc="no"
 src_root=$(dirname $0)
 dnl echo "src_root=$src_root"
@@ -52,25 +34,6 @@ if test $last_root == "ucsim" ; then
 fi
 echo "In SDCC tree: $in_sdcc (CFLAGS=${CFLAGS}, CXXFLAGS=${CXXFLAGS})"
 
-if test $in_sdcc == "yes" ; then
-    def_ucsim="no"
-    def_p1516="no"
-    def_avr="no"
-    def_serio="no"
-    def_m6800="no"
-    def_m6809="no"
-    def_m68hc11="no"
-    def_m68hc12="no"
-    def_pblaze="no"
-    def_i8085="no"
-    def_i8048="no"
-    def_st7="no"
-    def_oisc="no"
-    SILENT="yes"
-else
-    SILENT="no"
-fi
-AC_SUBST(SILENT)
 
 
 AC_PROG_AWK
@@ -105,11 +68,281 @@ if test "${docdir}" = ""; then
 fi
 AC_SUBST(docdir)
 
-AC_ARG_ENABLE(ucsim,
-	      AS_HELP_STRING([--enable-ucsim=ARG],
-			     [en/disable compile of exe wrapper (unfinished)]),
+######################################################################
+
+AC_ARG_ENABLE(mcs51-port,
+	      AS_HELP_STRING([--enable-mcs51-port=ARG],
+			     [feature opt passed from SDCC]),
 	      ,
-	      enable_ucsim=$def_ucsim)
+	      enable_mcs51_port="yes")
+
+AC_ARG_ENABLE(ds390-port,
+	      AS_HELP_STRING([--enable-ds390-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_ds390_port="yes")
+
+AC_ARG_ENABLE(ds400-port,
+	      AS_HELP_STRING([--enable-ds400-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_ds400_port="yes")
+
+AC_ARG_ENABLE(z80-port,
+	      AS_HELP_STRING([--enable-z80-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_z80_port="yes")
+
+AC_ARG_ENABLE(z180-port,
+	      AS_HELP_STRING([--enable-z180-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_z180_port="yes")
+
+AC_ARG_ENABLE(sm83-port,
+	      AS_HELP_STRING([--enable--port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_sm83_port="yes")
+
+AC_ARG_ENABLE(ez80_z80-port,
+	      AS_HELP_STRING([--enable-ez80_z80-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_ez80_z80_port="yes")
+
+AC_ARG_ENABLE(z80n-port,
+	      AS_HELP_STRING([--enable-z80n-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_z80n_port="yes")
+
+AC_ARG_ENABLE(r800-port,
+	      AS_HELP_STRING([--enable-r800-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r800_port="yes")
+
+AC_ARG_ENABLE(tlcs90-port,
+	      AS_HELP_STRING([--enable-tlcs90-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_tlcs90_port="yes")
+
+AC_ARG_ENABLE(r2k-port,
+	      AS_HELP_STRING([--enable-r2k-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r2k_port="yes")
+
+AC_ARG_ENABLE(r2ka-port,
+	      AS_HELP_STRING([--enable-r2ka-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r2ka_port="yes")
+
+AC_ARG_ENABLE(r3ka-port,
+	      AS_HELP_STRING([--enable-r3ka-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_r3ka_port="yes")
+
+AC_ARG_ENABLE(hc08-port,
+	      AS_HELP_STRING([--enable-hc08-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_hc08_port="yes")
+
+AC_ARG_ENABLE(s08-port,
+	      AS_HELP_STRING([--enable-s08-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_s08_port="yes")
+
+AC_ARG_ENABLE(mos6502-port,
+	      AS_HELP_STRING([--enable-mos6502-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_mos6502_port="yes")
+
+AC_ARG_ENABLE(mos65c02-port,
+	      AS_HELP_STRING([--enable-mos65c02-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_mos65c02_port="yes")
+
+AC_ARG_ENABLE(stm8-port,
+	      AS_HELP_STRING([--enable-stm8-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_stm8_port="yes")
+
+AC_ARG_ENABLE(pdk13-port,
+	      AS_HELP_STRING([--enable-pdk13-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk13_port="yes")
+
+AC_ARG_ENABLE(pdk14-port,
+	      AS_HELP_STRING([--enable-pdk14-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk14_port="yes")
+
+AC_ARG_ENABLE(pdk15-port,
+	      AS_HELP_STRING([--enable-pdk15-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk15_port="yes")
+
+AC_ARG_ENABLE(pdk16-port,
+	      AS_HELP_STRING([--enable-pdk16-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_pdk16_port="yes")
+
+AC_ARG_ENABLE(f8-port,
+	      AS_HELP_STRING([--enable-f8-port=ARG],
+			     [feature opt passed from SDCC]),
+	      ,
+	      enable_f8_port="yes")
+
+def_dlso="no"
+def_feapp="yes"
+def_serio="yes"
+
+def_mcs51="yes"
+def_i8048="yes"
+def_i8085="yes"
+def_xa="yes"
+def_avr="yes"
+def_z80="yes"
+def_tlcs="yes"
+def_rxk="yes"
+def_m6800="yes"
+def_m68hc08="yes"
+def_m6809="yes"
+def_m68hc11="yes"
+def_m68hc12="yes"
+def_mos6502="yes"
+def_st7="yes"
+def_stm8="yes"
+def_pdk="yes"
+def_pblaze="yes"
+def_p1516="yes"
+def_f8="yes"
+def_oisc="yes"
+
+if test $in_sdcc == "yes" ; then
+    def_feapp="no"
+    def_serio="no"
+    def_i8048="no"
+    def_i8085="no"
+    def_xa="no"
+    def_avr="no"
+    def_m6800="no"
+    def_m6809="no"
+    def_m68hc11="no"
+    def_m68hc12="no"
+    def_st7="no"
+    def_pblaze="no"
+    def_p1516="no"
+    def_oisc="no"
+    SILENT="yes"
+    
+    def_mcs51="no"
+    if test $enable_mcs51_port = "yes"; then
+	def_mcs51="yes"
+    fi
+    if test $enable_ds390_port = "yes"; then
+	def_mcs51="yes"
+    fi
+    if test $enable_ds400_port = "yes"; then
+	def_mcs51="yes"
+    fi
+
+    def_z80="no"
+    if test $enable_z80_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_z180_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_sm83_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_ez80_z80_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_z80n_port = "yes"; then
+	def_z80="yes"
+    fi
+    if test $enable_r800_port = "yes"; then
+	def_z80="yes"
+    fi
+
+    def_tlcs="no"
+    if test $enable_tlcs90_port = "yes"; then
+	def_tlcs="yes"
+    fi
+
+    def_rxk="no"
+    if test $enable_r2k_port = "yes"; then
+	def_rxk="yes"
+    fi
+    if test $enable_r2ka_port = "yes"; then
+	def_rxk="yes"
+    fi
+    if test $enable_r3ka_port = "yes"; then
+	def_rxk="yes"
+    fi
+
+    def_68hc08="no"
+    if test $enable_hc08_port = "yes"; then
+	def_68hc08="yes"
+    fi
+    if test $enable_s08_port = "yes"; then
+	def_68hc08="yes"
+    fi
+
+    def_mos6502="no"
+    if test $enable_mos6502_port = "yes"; then
+	def_mos6502="yes"
+    fi
+    if test $enable_mos65c02_port = "yes"; then
+	def_mos65c02="yes"
+    fi
+
+    def_stm8="no"
+    if test $enable_stm8_port = "yes"; then
+	def_stm8="yes"
+    fi
+
+    def_pdk="no"
+    if test $enable_pdk13_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk14_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk15_port = "yes"; then
+	def_pdk="yes"
+    fi
+    if test $enable_pdk16_port = "yes"; then
+	def_pdk="yes"
+    fi
+
+    def_f8="no"
+    if test $enable_f8_port = "yes"; then
+	def_f8="yes"
+    fi
+else
+    SILENT="no"
+fi
+AC_SUBST(SILENT)
+
+######################################################################
 
 AC_ARG_ENABLE(dlso,
 	      AS_HELP_STRING([--enable-dlso=ARG],
@@ -117,140 +350,11 @@ AC_ARG_ENABLE(dlso,
 	      ,
 	      enable_dlso=$def_dlso)
 
-AC_ARG_ENABLE(mcs51-port,
-	      AS_HELP_STRING([--enable-mcs51-port=ARG],
-			     [en/disable compile mcs51 simulator]),
+AC_ARG_ENABLE(feapp,
+	      AS_HELP_STRING([--enable-feapp=ARG],
+			     [en/disable compile of exe wrapper (unfinished)]),
 	      ,
-	      enable_mcs51_port=$def_mcs51_port)
-
-AC_ARG_ENABLE(avr-port,
-	      AS_HELP_STRING([--enable-avr-port=ARG],
-			     [en/disable compile avr simulator]),
-	      ,
-	      enable_avr_port=$def_avr)
-
-AC_ARG_ENABLE(z80-port,
-	      AS_HELP_STRING([--enable-z80-port=ARG],
-			     [en/disable compile z80 simulator]),
-	      ,
-	      enable_z80_port=$def_z80)
-
-AC_ARG_ENABLE(tlcs-port,
-	      AS_HELP_STRING([--enable-tlcs-port=ARG],
-			     [en/disable compile tlcs simulator]),
-	      ,
-	      enable_tlcs_port=$def_tlcs)
-
-AC_ARG_ENABLE(m68hc08-port,
-[  --disable-m68hc08-port  do not compile simulator for m68hc08],
-if test $enable_m68hc08_port != "no"; then
-    enable_m68hc08_port="yes"
-fi,
-enable_m68hc08_port="yes")
-AC_ARG_ENABLE(s08-port,
-[  --disable-s08-port      do not compile simulator for s08],
-if test $enable_s08_port != "no"; then
-    enable_s08_port="yes"
-fi,
-enable_s08_port="yes")
-AC_ARG_ENABLE(xa-port,
-[  --disable-xa-port       do not compile simulator for xa],
-if test $enable_xa_port != "no"; then
-    enable_xa_port="yes"
-fi,
-enable_xa_port="yes")
-AC_ARG_ENABLE(stm8-port,
-[  --disable-stm8-port     do not compile simulator for stm8],
-if test $enable_stm8_port != "no"; then
-    enable_stm8_port="yes"
-fi,
-enable_stm8_port="yes")
-AC_ARG_ENABLE(pdk-port,
-[  --disable-pdk-port      do not compile simulator for pdk],
-if test $enable_pdk_port != "no"; then
-    enable_pdk_port="yes"
-fi,
-enable_pdk_port="yes")
-
-AC_ARG_ENABLE(st7-port,
-	      AS_HELP_STRING([--enable-st7-port=ARG],
-			     [en/disable compile st7 simulator]),
-	      ,
-	      enable_st7_port=$def_st7)
-
-AC_ARG_ENABLE(p1516-port,
-	      AS_HELP_STRING([--disable-p1516-port],
-			     [en/dsbale compile p1516 simulator]),
-	      ,
-	      enable_p1516_port=$def_p1516)
-
-AC_ARG_ENABLE(m6800-port,
-	      AS_HELP_STRING([--enable-m6800-port=ARG],
-			     [en/disable compile m6800 simulator]),
-	      ,
-	      enable_m6800_port=$def_m6800)
-
-AC_ARG_ENABLE(m6809-port,
-	      AS_HELP_STRING([--enable-m6809-port=ARG],
-			     [en/disable compile m6809 simulator]),
-	      ,
-	      enable_m6809_port=$def_m6809)
-
-AC_ARG_ENABLE(m68hc11-port,
-	      AS_HELP_STRING([--enable-m68hc11-port=ARG],
-			     [en/disable compile m68hc11 simulator]),
-	      ,
-	      enable_m68hc11_port=$def_m68hc11)
-
-AC_ARG_ENABLE(m68hc12-port,
-	      AS_HELP_STRING([--enable-m68hc12-port=ARG],
-			     [en/disable compile m68hc12 simulator]),
-	      ,
-	      enable_m68hc12_port=$def_m68hc12)
-
-AC_ARG_ENABLE(mos6502-port,
-[  --disable-mos6502-port  do not compile simulator for mos6502],
-if test $enable_mos6502_port  != "no"; then
-    enable_mos6502_port="yes"
-fi,
-enable_mos6502_port="yes")
-AC_ARG_ENABLE(rxk-port,
-[  --disable-rxk-port      do not compile simulator for Rabbit rXk],
-if test $enable_rxk_port  != "no"; then
-    enable_rxk_port="yes"
-fi,
-enable_rxk_port="yes")
-
-AC_ARG_ENABLE(pblaze-port,
-	      AS_HELP_STRING([--enable-pblaze-port=ARG],
-			     [en/disable compile picoblaze simulator]),
-	      ,
-	      enable_pblaze_port=$def_pblaze)
-
-AC_ARG_ENABLE(i8085-port,
-	      AS_HELP_STRING([--enable-i8085-port=ARG],
-			     [en/disable compile i8085 simulator]),
-	      ,
-	      enable_i8085_port=$def_i8085)
-
-AC_ARG_ENABLE(f8-port,
-[  --disable-f8-port       do not compile simulator for f8],
-if test $enable_f8_port  != "no"; then
-    enable_f8_port="yes"
-fi,
-enable_f8_port="yes")
-
-AC_ARG_ENABLE(i8048-port,
-	      AS_HELP_STRING([--enable-i8048-port=ARG],
-			     [en/disable compile i8048 simulator]),
-	      ,
-	      enable_i8048_port=$def_i8048)
-
-AC_ARG_ENABLE(oisc-port,
-	      AS_HELP_STRING([--enable-oisc-port=ARG],
-			     [en/disable compile oisc simulator]),
-	      ,
-	      enable_oisc_port=$def_oisc)
+	      enable_feapp=$def_feapp)
 
 AC_ARG_ENABLE(serio,
 	      AS_HELP_STRING([--enable-serio=ARG],
@@ -258,43 +362,168 @@ AC_ARG_ENABLE(serio,
 	      ,
 	      enable_serio=$def_serio)
 
-AC_SUBST(enable_ucsim)
+AC_ARG_ENABLE(mcs51-sim,
+	      AS_HELP_STRING([--enable-mcs51-sim=ARG],
+			     [en/disable compile mcs51 simulator]),
+	      ,
+	      enable_mcs51_sim=$def_mcs51)
+
+AC_ARG_ENABLE(i8048-sim,
+	      AS_HELP_STRING([--enable-i8048-sim=ARG],
+			     [en/disable compile i8048 simulator]),
+	      ,
+	      enable_i8048_sim=$def_i8048)
+
+AC_ARG_ENABLE(i8085-sim,
+	      AS_HELP_STRING([--enable-i8085-sim=ARG],
+			     [en/disable compile i8085 simulator]),
+	      ,
+	      enable_i8085_sim=$def_i8085)
+
+AC_ARG_ENABLE(xa-sim,
+	      AS_HELP_STRING([--enable-xa-sim=ARG],
+			     [en/disable compile xa simulator]),
+	      ,
+	      enable_xa_sim=$def_xa)
+
+AC_ARG_ENABLE(avr-sim,
+	      AS_HELP_STRING([--enable-avr-sim=ARG],
+			     [en/disable compile avr simulator]),
+	      ,
+	      enable_avr_sim=$def_avr)
+
+AC_ARG_ENABLE(z80-sim,
+	      AS_HELP_STRING([--enable-z80-sim=ARG],
+			     [en/disable compile z80 simulator]),
+	      ,
+	      enable_z80_sim=$def_z80)
+
+AC_ARG_ENABLE(tlcs-sim,
+	      AS_HELP_STRING([--enable-tlcs-sim=ARG],
+			     [en/disable compile tlcs simulator]),
+	      ,
+	      enable_tlcs_sim=$def_tlcs)
+
+AC_ARG_ENABLE(rxk-sim,
+	      AS_HELP_STRING([--enable-rxk-sim=ARG],
+			     [en/disable compile Rabbit rXk simulator]),
+	      ,
+	      enable_rxk_sim=$def_rxk)
+
+AC_ARG_ENABLE(m6800-sim,
+	      AS_HELP_STRING([--enable-m6800-sim=ARG],
+			     [en/disable compile m6800 simulator]),
+	      ,
+	      enable_m6800_sim=$def_m6800)
+
+AC_ARG_ENABLE(m68hc08-sim,
+	      AS_HELP_STRING([--enable-m68hc08-sim=ARG],
+			     [en/disable compile m68hc08 simulator]),
+	      ,
+	      enable_m68hc08_sim=$def_m68hc08)
+
+AC_ARG_ENABLE(m6809-sim,
+	      AS_HELP_STRING([--enable-m6809-sim=ARG],
+			     [en/disable compile m6809 simulator]),
+	      ,
+	      enable_m6809_sim=$def_m6809)
+
+AC_ARG_ENABLE(m68hc11-sim,
+	      AS_HELP_STRING([--enable-m68hc11-sim=ARG],
+			     [en/disable compile m68hc11 simulator]),
+	      ,
+	      enable_m68hc11_sim=$def_m68hc11)
+
+AC_ARG_ENABLE(m68hc12-sim,
+	      AS_HELP_STRING([--enable-m68hc12-sim=ARG],
+			     [en/disable compile m68hc12 simulator]),
+	      ,
+	      enable_m68hc12_sim=$def_m68hc12)
+
+AC_ARG_ENABLE(mos6502-sim,
+	      AS_HELP_STRING([--enable-mos6502-sim=ARG],
+			     [en/disable compile mos6502 simulator]),
+	      ,
+	      enable_mos6502_sim=$def_mos6502)
+
+AC_ARG_ENABLE(st7-sim,
+	      AS_HELP_STRING([--enable-st7-sim=ARG],
+			     [en/disable compile st7 simulator]),
+	      ,
+	      enable_st7_sim=$def_st7)
+
+AC_ARG_ENABLE(stm8-sim,
+	      AS_HELP_STRING([--enable-stm8-sim=ARG],
+			     [en/disable compile stm8 simulator]),
+	      ,
+	      enable_stm8_sim=$def_stm8)
+
+AC_ARG_ENABLE(pdk-sim,
+	      AS_HELP_STRING([--enable-pdk-sim=ARG],
+			     [en/disable compile pdk simulator]),
+	      ,
+	      enable_pdk_sim=$def_pdk)
+
+AC_ARG_ENABLE(pblaze-sim,
+	      AS_HELP_STRING([--enable-pblaze-sim=ARG],
+			     [en/disable compile picoblaze simulator]),
+	      ,
+	      enable_pblaze_sim=$def_pblaze)
+
+AC_ARG_ENABLE(p1516-sim,
+	      AS_HELP_STRING([--enable-p1516-sim=ARG],
+			     [en/disbale compile p1516 simulator]),
+	      ,
+	      enable_p1516_sim=$def_p1516)
+
+AC_ARG_ENABLE(f8-sim,
+	      AS_HELP_STRING([--enable-f8-sim=ARG],
+			     [en/disable compile f8 simulator]),
+	      ,
+	      enable_f8_sim=$def_f8)
+
+AC_ARG_ENABLE(oisc-sim,
+	      AS_HELP_STRING([--enable-oisc-sim=ARG],
+			     [en/disable compile oisc simulator]),
+	      ,
+	      enable_oisc_sim=$def_oisc)
+
+######################################################################
+
 AC_SUBST(enable_dlso)
-AC_SUBST(enable_mcs51_port)
-AC_SUBST(enable_avr_port)
-AC_SUBST(enable_z80_port)
-AC_SUBST(enable_gbz80_port)
-AC_SUBST(enable_r2k_port)
-AC_SUBST(enable_r3ka_port)
-AC_SUBST(enable_tlcs_port)
-AC_SUBST(enable_m68hc08_port)
-AC_SUBST(enable_s08_port)
-AC_SUBST(enable_xa_port)
-AC_SUBST(enable_stm8_port)
-AC_SUBST(enable_st7_port)
-AC_SUBST(enable_pdk_port)
-AC_SUBST(enable_p1516_port)
-AC_SUBST(enable_m6809_port)
-AC_SUBST(enable_m6800_port)
-AC_SUBST(enable_m68hc11_port)
-AC_SUBST(enable_m68hc12_port)
-AC_SUBST(enable_mos6502_port)
-AC_SUBST(enable_rxk_port)
-AC_SUBST(enable_pblaze_port)
-AC_SUBST(enable_i8085_port)
-AC_SUBST(enable_f8_port)
-AC_SUBST(enable_i8048_port)
-AC_SUBST(enable_oisc_port)
+AC_SUBST(enable_feapp)
 AC_SUBST(enable_serio)
 
+AC_SUBST(enable_mcs51_sim)
+AC_SUBST(enable_i8048_sim)
+AC_SUBST(enable_i8085_sim)
+AC_SUBST(enable_xa_sim)
+AC_SUBST(enable_avr_sim)
+AC_SUBST(enable_z80_sim)
+AC_SUBST(enable_tlcs_sim)
+AC_SUBST(enable_rxk_sim)
+AC_SUBST(enable_m6800_sim)
+AC_SUBST(enable_m68hc08_sim)
+AC_SUBST(enable_m6809_sim)
+AC_SUBST(enable_m68hc11_sim)
+AC_SUBST(enable_m68hc12_sim)
+AC_SUBST(enable_mos6502_sim)
+AC_SUBST(enable_st7_sim)
+AC_SUBST(enable_stm8_sim)
+AC_SUBST(enable_pdk_sim)
+AC_SUBST(enable_pblaze_sim)
+AC_SUBST(enable_p1516_sim)
+AC_SUBST(enable_f8_sim)
+AC_SUBST(enable_oisc_sim)
 
-AC_ARG_ENABLE(statistic,
-[  --enable-statistic      compile statistical features (slower simulation)],
-if test $enable_statistic != "no"; then
-   enable_statistic="yes"
-fi,
-enable_statistic="no")
-AC_DEFINE_UNQUOTED(STATISTIC, $enable_statistic, [XXX])
+
+dnl AC_ARG_ENABLE(statistic,
+dnl [  --enable-statistic      compile statistical features (slower simulation)],
+dnl if test $enable_statistic != "no"; then
+dnl    enable_statistic="yes"
+dnl fi,
+dnl enable_statistic="no")
+dnl AC_DEFINE_UNQUOTED(STATISTIC, $enable_statistic, [XXX])
 
 
 # Required programs
@@ -340,6 +569,7 @@ AC_CHECK_HEADERS(cstdint.h)
 AC_CHECK_HEADERS(stdint.h)
 AC_CHECK_HEADERS(sys/wait.h)
 AC_CHECK_HEADERS(wincon.h)
+AC_CHECK_HEADERS(sys/select.h)
 
 AC_CHECK_HEADER(curses.h,
   AC_DEFINE(HAVE_CURSES_H, 1, [XXX])
@@ -457,6 +687,7 @@ else
   AC_CHECK_LIB(nsl,xdr_short)
   AC_CHECK_LIB(rt,nanosleep)
 fi
+AC_CHECK_LIB(m,fmod)
 
 AC_CHECK_LIB(dl,dlopen,
 dl_ok="yes"
@@ -514,6 +745,7 @@ dnl AC_CHECK_FUNCS(strdup)
 dnl AC_CHECK_FUNCS(getline)
 dnl AC_CHECK_FUNCS(getdelim)
 AC_CHECK_FUNCS(yylex)
+AC_CHECK_FUNCS(nanosleep usleep)
 
 # AC_CACHE_CHECK(whether scanf knows %a, ucsim_cv_scanf_a,
 # [echo "a b" >conftest.data
@@ -727,6 +959,7 @@ else
     AC_CHECK_SIZEOF(int)
     AC_CHECK_SIZEOF(long)
     AC_CHECK_SIZEOF(long long)
+    AC_CHECK_SIZEOF(void *)
 fi
 
 type_name()
@@ -875,7 +1108,6 @@ src/sims/oisc.src/Makefile    src/sims/oisc.src/test/Makefile
 
 src/apps/serio.src/Makefile
 src/apps/ucsim.src/Makefile
-src/apps/relay.src/Makefile
 
 docs/Makefile
 )
@@ -883,29 +1115,28 @@ AC_OUTPUT
 
 echo "Compile for SDCC  $in_sdcc"
 echo "Compile dlso      $enable_dlso"
-echo "Compile ucsim     $enable_ucsim"
-echo "Compile s51       $enable_mcs51_port"
-echo "Compile avr       $enable_avr_port"
-echo "Compile z80       $enable_z80_port"
-echo "Compile tlcs      $enable_tlcs_port"
-echo "Compile m68hc08   $enable_m68hc08_port"
-echo "Compile s08       $enable_s08_port"
-echo "Compile xa        $enable_xa_port"
-echo "Compile stm8      $enable_stm8_port"
-echo "Compile pdk       $enable_pdk_port"
-echo "Compile st7       $enable_st7_port"
-echo "Compile p1516     $enable_p1516_port"
-echo "Compile m6809     $enable_m6809_port"
-echo "Compile m6800     $enable_m6800_port"
-echo "Compile m68hc11   $enable_m68hc11_port"
-echo "Compile m68hc12   $enable_m68hc12_port"
-echo "Compile mos6502   $enable_mos6502_port"
-echo "Compile rxk       $enable_rxk_port"
-echo "Compile pblaze    $enable_pblaze_port"
-echo "Compile i8085     $enable_i8085_port"
-echo "Compile f8        $enable_f8_port"
-echo "Compile i8048     $enable_i8048_port"
-echo "Compile oisc      $enable_oisc_port"
+echo "Compile feapp     $enable_feapp"
+echo "Compile s51       $enable_mcs51_sim"
+echo "Compile avr       $enable_avr_sim"
+echo "Compile z80       $enable_z80_sim"
+echo "Compile tlcs      $enable_tlcs_sim"
+echo "Compile m68hc08   $enable_m68hc08_sim"
+echo "Compile xa        $enable_xa_sim"
+echo "Compile stm8      $enable_stm8_sim"
+echo "Compile pdk       $enable_pdk_sim"
+echo "Compile st7       $enable_st7_sim"
+echo "Compile p1516     $enable_p1516_sim"
+echo "Compile m6809     $enable_m6809_sim"
+echo "Compile m6800     $enable_m6800_sim"
+echo "Compile m68hc11   $enable_m68hc11_sim"
+echo "Compile m68hc12   $enable_m68hc12_sim"
+echo "Compile mos6502   $enable_mos6502_sim"
+echo "Compile rxk       $enable_rxk_sim"
+echo "Compile pblaze    $enable_pblaze_sim"
+echo "Compile i8085     $enable_i8085_sim"
+echo "Compile f8        $enable_f8_sim"
+echo "Compile i8048     $enable_i8048_sim"
+echo "Compile oisc      $enable_oisc_sim"
 echo "Compile serio     $enable_serio"
 echo "v${VERSION}"
 

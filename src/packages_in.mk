@@ -188,6 +188,6 @@ else
 UCSIM		=
 endif
 
-APPS		= $(SERIO) $(UCSIM) relay.src
+APPS		= $(SERIO) $(UCSIM)
 
-APPS_ALL	= serio.src ucsim.src relay.src
+APPS_ALL	= serio.src ucsim.src
