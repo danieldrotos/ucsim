@@ -154,6 +154,9 @@
 /* Define to 1 if you have the `vsnprintf' function. */
 #undef HAVE_VSNPRINTF
 
+/* Define to 1 if you have the `fmod' function. */
+#undef HAVE_FMOD
+
 /* XXX */
 #undef HAVE_WINSOCK2_H
 

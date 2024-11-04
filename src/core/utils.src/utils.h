@@ -77,6 +77,7 @@ extern unsigned int urnd(void);
 extern u8_t urnd8(void);
 extern u16_t urnd16(void);
 extern u32_t urnd32(void);
+extern double ddfmod(double x, double y);
 
 
 #endif
