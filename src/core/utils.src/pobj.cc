@@ -84,7 +84,7 @@ const char *
 cl_base::get_name(const char *def) const
 {
   if (name.is_null())
-    return derf;
+    return def;
   return(name);
 }
 
