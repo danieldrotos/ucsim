@@ -1,6 +1,6 @@
 #include "pmon.h"
 
-const char * p12cpu_version= "2.2.7";
+const char * p12cpu_version= "2.2.9";
 
 t_mem pmon[]= {
 0x00000000, 0x01f2f03c, /* 01f2f03c //C 00000    24 jmp	cold_start */
