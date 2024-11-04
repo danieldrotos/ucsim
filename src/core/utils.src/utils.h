@@ -28,7 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef UTILS_HEADER
 #define UTILS_HEADER
 
-#include <math.h>
+//#include <math.h>
 #include <stdio.h>
 #include <stdarg.h>
 
