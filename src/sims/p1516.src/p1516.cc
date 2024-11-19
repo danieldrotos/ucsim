@@ -682,7 +682,6 @@ cl_p1516::btn_edge(int btn, bool press)
 	r2b_state= r2b_none;
       break;
     }
-  printf("btn=%d press=%d state=%d\n",btn,press,r2b_state);
 }
 
 
