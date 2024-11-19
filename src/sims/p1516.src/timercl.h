@@ -31,6 +31,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "hwcl.h"
 
 
+class cl_timer: public cl_hw
+{
+ public:
+  t_addr addr;
+  u32_t freq;
+ public:
+  cl_timer(class cl_uc *auc, t_addr the_addr, const char *aname);
+};
+
+
 #endif
 
 /* End of p1516.src/timercl.h */

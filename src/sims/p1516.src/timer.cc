@@ -28,4 +28,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "timercl.h"
 
 
+cl_timer::cl_timer(class cl_uc *auc, t_addr the_addr, const char *aname):
+  cl_hw(auc, HW_TIMER, 0, aname)
+{
+  addr= the_addr;
+  set_name(aname);
+}
+
 /* End of p1516.src/timer.cc */

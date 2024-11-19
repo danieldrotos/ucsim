@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "portcl.h"
 #include "uartcl.h"
 #include "clockcl.h"
+#include "timercl.h"
 #include "fpgacl.h"
 #include "brd_ctrlcl.h"
 
@@ -117,6 +118,9 @@ cl_p1516::mk_hw_elements(void)
   add_hw(pj= new cl_porti(this, 0xff10, "pj"));
   pj->init();
 
+  add_hw(h= new cl_timer(this, 0xff30, "timer"));
+  h->init();
+  
   add_hw(h= new cl_uart(this, 0, 0xff40));
   h->init();
 
