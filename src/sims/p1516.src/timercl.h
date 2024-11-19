@@ -34,10 +34,19 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_timer: public cl_hw
 {
  public:
+  class cl_memory_cell *ctrl, *ar, *cnt, *stat;
   t_addr addr;
-  u32_t freq;
+  u32_t cps, pre_cnt;
+  u32_t overflow;
  public:
   cl_timer(class cl_uc *auc, t_addr the_addr, const char *aname);
+  virtual int init(void);
+  virtual void reset(void);
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual int tick(int cycles);
+  
+  virtual void print_info(class cl_console_base *con);
 };
 
 
