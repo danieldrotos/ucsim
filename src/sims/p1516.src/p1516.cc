@@ -58,6 +58,7 @@ cl_p1516::cl_p1516(class cl_sim *asim):
   cl_uc(asim)
 {
   PCmask= 0xffffffff;
+  r2b_state= r2b_none;
 }
 
 int
@@ -655,6 +656,33 @@ cl_p1516::exec_inst(void)
   PC= R[15];
   
   return resGO;
+}
+
+
+void
+cl_p1516::btn_edge(int btn, bool press)
+{
+  switch (r2b_state)
+    {
+    case r2b_none:
+      if ((btn==1) && press)
+	r2b_state= r2b_alarmed;
+      break;
+    case r2b_alarmed:
+      if ((btn==1) && !press)
+	r2b_state= r2b_none;
+      if ((btn==0) && press)
+	{
+	  reset();
+	  r2b_state= r2b_activated;
+	}
+      break;
+    case r2b_activated:
+      if ((btn==1) && !press)
+	r2b_state= r2b_none;
+      break;
+    }
+  printf("btn=%d press=%d state=%d\n",btn,press,r2b_state);
 }
 
 
