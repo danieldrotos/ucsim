@@ -480,7 +480,13 @@ cl_sif_getlimit::produce_answer(void)
 {
   if (sif)
     {
-      sif->finish_command();
+      u32_t p= 0x12345678;
+      t_mem b[4];
+      b[0]= (p>> 0)&0xff;
+      b[1]= (p>> 8)&0xff;
+      b[2]= (p>>16)&0xff;
+      b[3]= (p>>24)&0xff;
+      set_answer(4, b);
     }
 }
 
