@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "hwcl.h"
 
 
-#define SIMIF_VERSION	1
+#define SIMIF_VERSION	2
 
 enum sif_command {
   DETECT_SIGN	        = '!',	// answer to detect command
