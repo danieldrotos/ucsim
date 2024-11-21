@@ -155,6 +155,8 @@ cl_sim::start(class cl_console_base *con, unsigned long steps_to_do)
     start_tick= uc->ticks->get_ticks();
   steps_done= 0;
   steps_todo= steps_to_do;
+  if ((steps_todo == 0) && (uc->stop_at_time == NULL))
+    steps_todo= exec_limit;
 }
 
 void

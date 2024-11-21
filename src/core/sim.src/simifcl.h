@@ -116,8 +116,9 @@ enum simif_cfg {
   //simif_pc		= 12, // RW
   simif_print		= 12, // W
   simif_write		= 13, // W
+  simif_limit		= 14, // RW
   
-  simif_nuof		= 14
+  simif_nuof		= 15
 };
 
 class cl_simulator_interface;
