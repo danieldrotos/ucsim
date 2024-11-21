@@ -467,7 +467,7 @@ cl_sif_setlimit::produce_answer(void)
 	((parameters[2]&0xff)<<16) +
 	((parameters[1]&0xff)<<8) +
 	((parameters[0]&0xff));
-      printf("p=0x%08x\n",p);
+      sif->uc->sim->exec_limit= p;
       sif->finish_command();
     }
 }
@@ -480,7 +480,7 @@ cl_sif_getlimit::produce_answer(void)
 {
   if (sif)
     {
-      u32_t p= 0x12345678;
+      u32_t p= sif->uc->sim->exec_limit;
       t_mem b[4];
       b[0]= (p>> 0)&0xff;
       b[1]= (p>> 8)&0xff;
@@ -650,7 +650,7 @@ cl_simulator_interface::cfg_help(t_addr addr)
       //case simif_pc	: return "PC register (int, RW)";
     case simif_print	: return "Print char on stdout (int, WO)";
     case simif_write	: return "Write char to simif output (int, WO)";
-    case simif_limit    : return "Limit of instructions to simulate by run/step (uint, RW)";
+    case simif_limit    : return "Limit of instructions to simulate by run (uint, RW)";
     }
   return "Not used";
 }
