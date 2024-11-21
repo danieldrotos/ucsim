@@ -76,6 +76,7 @@ public:
   virtual void stop(int reason);
   virtual void change_run(int reason= resSIMIF);
   virtual int step(void);
+  virtual void set_limit(u32_t new_limit);
 };
 
 

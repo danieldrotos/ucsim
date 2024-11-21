@@ -122,6 +122,19 @@ cl_sim::step(void)
   return(0);
 }
 
+void
+cl_sim::set_limit(u32_t new_limit)
+{
+  exec_limit= new_limit;
+  if (exec_limit)
+    {
+      // restart instr counting
+      steps_todo= exec_limit;
+      steps_done= 0;
+    }
+}
+
+
 /*int
 cl_sim::do_cmd(char *cmdstr, class cl_console *console)
 {

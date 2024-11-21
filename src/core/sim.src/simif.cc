@@ -467,7 +467,7 @@ cl_sif_setlimit::produce_answer(void)
 	((parameters[2]&0xff)<<16) +
 	((parameters[1]&0xff)<<8) +
 	((parameters[0]&0xff));
-      sif->uc->sim->exec_limit= p;
+      sif->uc->sim->set_limit(p);
       sif->finish_command();
     }
 }
@@ -905,7 +905,7 @@ cl_simulator_interface::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case simif_limit:
       if (val)
 	{
-	  uc->sim->exec_limit= (u32_t)(*val);
+	  uc->sim->set_limit((u32_t)(*val));
 	}
       cell->set(uc->sim->exec_limit);
       break;
