@@ -456,6 +456,35 @@ cl_sif_reset::produce_answer(void)
 }
 
 
+/* Command: setlimit */
+
+void
+cl_sif_setlimit::produce_answer(void)
+{
+  if (sif)
+    {
+      u32_t p= ((parameters[3]&0xff)<<24) +
+	((parameters[2]&0xff)<<16) +
+	((parameters[1]&0xff)<<8) +
+	((parameters[0]&0xff));
+      printf("p=0x%08x\n",p);
+      sif->finish_command();
+    }
+}
+
+
+/* Command: getlimit */
+
+void
+cl_sif_getlimit::produce_answer(void)
+{
+  if (sif)
+    {
+      sif->finish_command();
+    }
+}
+
+
 /*
  * Virtual HW: simulator interface
  */
@@ -567,7 +596,13 @@ cl_simulator_interface::init(void)
   c->init();
   commands->add(c= new cl_sif_write(this));
   c->init();
-
+  commands->add(c= new cl_sif_reset(this));
+  c->init();
+  commands->add(c= new cl_sif_setlimit(this));
+  c->init();
+  commands->add(c= new cl_sif_getlimit(this));
+  c->init();
+  
   uc->vars->add("simif_on", cfg, simif_on, cfg_help(simif_on));
   cfg_set(simif_on, 1);
   uc->vars->add("sim_run", cfg, simif_run, cfg_help(simif_run));
