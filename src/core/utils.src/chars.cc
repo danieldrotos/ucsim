@@ -125,7 +125,7 @@ chars::deallocate_string(void)
  */
 
 char
-chars::c(int idx)
+chars::c(int idx) const
 {
   if (!chars_string)
     return 0;
@@ -443,7 +443,7 @@ chars::token(const char *delims) const
 }
 
 unsigned int
-chars::htoi(void)
+chars::htoi(void) const
 {
   unsigned int v= 0;
   int i, x;
@@ -465,7 +465,7 @@ chars::htoi(void)
 }
 
 unsigned long long int
-chars::htoll(void)
+chars::htoll(void) const
 {
   unsigned long long int v= 0;
   int i, x;
@@ -487,13 +487,13 @@ chars::htoll(void)
 }
 
 long int
-chars::lint(void)
+chars::lint(void) const
 {
   return lint(10);
 }
 
 long int
-chars::lint(int base)
+chars::lint(int base) const
 {
   if (base < 2) base= 0;
   if (base > 36) base= 36;
@@ -581,7 +581,7 @@ chars::icontains(chars x) const
 }
 
 int
-chars::first_pos(char c)
+chars::first_pos(char c) const
 {
   if (empty())
     return -1;
@@ -612,7 +612,7 @@ chars::operator=(const chars &cs)
 // Arithmetic operators
 
 chars
-chars::operator+(char c) const
+chars::operator+(char c)
 {
   char b[2];
   b[0]= c;
@@ -622,7 +622,7 @@ chars::operator+(char c) const
 }
 
 chars
-chars::operator+(const char *s) const
+chars::operator+(const char *s)
 {
   chars temp(chars_string);
   return(temp.append(s));

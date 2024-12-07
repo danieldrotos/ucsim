@@ -145,7 +145,7 @@ class cl_console_base: public cl_base
   virtual bool non_color(void)= 0;
   virtual void print_prompt(void);
   virtual void print_expr_result(t_mem val, const char *fmt);
-  virtual void print_expr_result(t_mem val, const chars &fmt)
+  virtual void print_expr_result(t_mem val, chars &fmt)
   { print_expr_result(val, fmt.c_str()); }
   virtual int dd_printf(const char *format, ...);
   virtual int dd_cprintf(const char *color_name, const char *format, ...);

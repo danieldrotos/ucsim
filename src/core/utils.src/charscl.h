@@ -51,8 +51,8 @@ public:
   /* content */
   const char *c_str(void) const { return chars_string; }
   const char *cstr(void) const { return chars_string; }
-  char *str(void) { return chars_string; }
-  char c(int idx);
+  char *str(void) const { return chars_string; }
+  char c(int idx) const;
   /* content creation */
   chars &append(const char *s);
   chars &append(char c);
@@ -62,7 +62,7 @@ public:
   /* get properties */
   bool empty() const { return chars_length == 0; }
   bool nempty() const { return !empty(); }
-  bool is_null()const { return !chars_string; }
+  bool is_null() const { return !chars_string; }
   int len() const { return chars_length; }
   int length() const { return chars_length; }
   /* change */
@@ -81,10 +81,10 @@ public:
   void start_parse(void) const { start_parse(0); }
   void start_parse(int at) const { pars_pos= at; }
   chars token(const char *delims) const;
-  unsigned int htoi(void);
-  unsigned long long int htoll(void);
-  long int lint(void);
-  long int lint(int base);
+  unsigned int htoi(void) const;
+  unsigned long long int htoll(void) const;
+  long int lint(void) const;
+  long int lint(int base) const;
   // search
   bool starts_with(const char *x) const;
   bool starts_with(chars x) const;
@@ -92,7 +92,7 @@ public:
   bool contains(chars x) const;
   bool icontains(const char *x) const;
   bool icontains(chars x) const;
-  int first_pos(char c);
+  int first_pos(char c) const;
 public:
   // Operators
 
@@ -102,8 +102,8 @@ public:
   chars &operator=(const char *s);
   chars &operator=(const chars &cs);
   // Arithmetic
-  chars operator+(char c) const;
-  chars operator+(const char *s) const;
+  chars operator+(char c);
+  chars operator+(const char *s);
   chars &operator+=(char c) { return(append(c)); }
   chars &operator+=(const char *s) { return(append(s)); }
   // Boolean
