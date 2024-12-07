@@ -48,29 +48,28 @@ private:
   void deallocate_string(void);
 
 public:
+  /* content */
   const char *c_str(void) const { return chars_string; }
   const char *cstr(void) const { return chars_string; }
   char *str(void) { return chars_string; }
   char c(int idx);
+  /* content creation */
   chars &append(const char *s);
   chars &append(char c);
   chars &appendf(const char *format, ...);
   chars &appendn(const char *src, int n);
   chars &format(const char *format, ...);
+  /* get properties */
   bool empty() const { return chars_length == 0; }
   bool nempty() const { return !empty(); }
   bool is_null()const { return !chars_string; }
-  chars &uppercase(void);
-  chars &lowercase(void);
-  chars &subst(const char *what, char with);
-  chars &substr(int start, int maxlen);
   int len() const { return chars_length; }
   int length() const { return chars_length; }
-  void start_parse(void) const { start_parse(0); }
-  void start_parse(int at) const { pars_pos= at; }
-  chars token(const char *delims) const;
-  unsigned int htoi(void);
-  unsigned long long int htoll(void);
+  /* change */
+  void uppercase(void);
+  void lowercase(void);
+  void subst(const char *what, char with);
+  void substr(int start, int maxlen);
   void ltrim(void);
   void rtrim(void);
   void trim() { ltrim(); rtrim(); }
@@ -78,6 +77,14 @@ public:
   void rrip(const char *cset);
   void rrip(int nuof_chars);
   void rip(const char *cset) { lrip(cset); rrip(cset); }
+  /* parsing */
+  void start_parse(void) const { start_parse(0); }
+  void start_parse(int at) const { pars_pos= at; }
+  chars token(const char *delims) const;
+  unsigned int htoi(void);
+  unsigned long long int htoll(void);
+  long int lint(void);
+  long int lint(int base);
   // search
   bool starts_with(const char *x) const;
   bool starts_with(chars x) const;
@@ -86,8 +93,6 @@ public:
   bool icontains(const char *x) const;
   bool icontains(chars x) const;
   int first_pos(char c);
-  long int lint(void);
-  long int lint(int base);
 public:
   // Operators
 
