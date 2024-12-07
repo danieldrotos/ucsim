@@ -297,6 +297,67 @@ chars::starts_with(const char *x) const
   return false;
 }
 
+bool
+chars::starts_with(chars x) const
+{
+  if (empty() ||
+      x.empty())
+    return false;
+  if (strstr(chars_string, x.c_str()) == chars_string)
+    return true;
+  return false;
+}
+
+bool
+chars::contains(const char *x) const
+{
+  if (empty() ||
+      !x ||
+      !*x)
+    return false;
+  if (strstr(chars_string, x) != NULL)
+    return true;
+  return false;
+}
+
+bool
+chars::contains(chars x) const
+{
+  if (empty() ||
+      x.empty())
+    return false;
+  if (strstr(chars_string, x.c_str()) != NULL)
+    return true;
+  return false;
+}
+
+bool
+chars::icontains(const char *x) const
+{
+  if (empty() ||
+      !x ||
+      !*x)
+    return false;
+  chars s1= chars_string;
+  chars s2= x;
+  s1.uppercase();
+  s2.uppercase();
+  return s1.contains(s2);
+}
+
+bool
+chars::icontains(chars x) const
+{
+  if (empty() ||
+      x.empty())
+    return false;
+  chars s1= chars_string;
+  chars s2= x;
+  s1.uppercase();
+  s2.uppercase();
+  return s1.contains(s2);
+}
+
 int
 chars::first_pos(char c)
 {
@@ -458,6 +519,18 @@ chars::uppercase(void)
 
   for (int i= 0; i < chars_length; i++)
     chars_string[i]= toupper(chars_string[i]);
+
+  return *this;
+}
+
+chars &
+chars::lowercase(void)
+{
+  if (!dynamic)
+    allocate_string(chars_string);
+
+  for (int i= 0; i < chars_length; i++)
+    chars_string[i]= tolower(chars_string[i]);
 
   return *this;
 }

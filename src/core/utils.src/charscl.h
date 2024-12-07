@@ -61,6 +61,7 @@ public:
   bool nempty() const { return !empty(); }
   bool is_null()const { return !chars_string; }
   chars &uppercase(void);
+  chars &lowercase(void);
   chars &subst(const char *what, char with);
   chars &substr(int start, int maxlen);
   int len() const { return chars_length; }
@@ -79,6 +80,11 @@ public:
   void rip(const char *cset) { lrip(cset); rrip(cset); }
   // search
   bool starts_with(const char *x) const;
+  bool starts_with(chars x) const;
+  bool contains(const char *x) const;
+  bool contains(chars x) const;
+  bool icontains(const char *x) const;
+  bool icontains(chars x) const;
   int first_pos(char c);
   long int lint(void);
   long int lint(int base);
