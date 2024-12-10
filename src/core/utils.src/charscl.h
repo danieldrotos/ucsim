@@ -68,8 +68,8 @@ public:
   /* change */
   void uppercase(void);
   void lowercase(void);
-  void subst(const char *what, char with);
-  void substr(int start, int maxlen);
+  void replace(const char *any_in_set, char with);
+  void keep(int start, int maxlen);
   void ltrim(void);
   void rtrim(void);
   void trim() { ltrim(); rtrim(); }
@@ -81,6 +81,7 @@ public:
   void start_parse(void) const { start_parse(0); }
   void start_parse(int at) const { pars_pos= at; }
   chars token(const char *delims) const;
+  chars substr(int start, int len);
   unsigned int htoi(void) const;
   unsigned long long int htoll(void) const;
   long int lint(void) const;
@@ -92,7 +93,9 @@ public:
   bool contains(chars x) const;
   bool icontains(const char *x) const;
   bool icontains(chars x) const;
-  int first_pos(char c) const;
+  int pos(char c) const;
+  int pos(chars x) const;
+  int ipos(chars x) const;
 public:
   // Operators
 

@@ -296,18 +296,18 @@ chars::lowercase(void)
 }
 
 void
-chars::subst(const char *what, char with)
+chars::replace(const char *any_in_set, char with)
 {
   if (!dynamic)
     allocate_string(chars_string);
 
   for (int i= 0; i < chars_length; i++)
-    if (strchr(what, chars_string[i]))
+    if (strchr(any_in_set, chars_string[i]))
       chars_string[i] = with;
 }
 
 void
-chars::substr(int start, int maxlen)
+chars::keep(int start, int maxlen)
 {
   if (!chars_string)
     return ;
@@ -439,6 +439,18 @@ chars::token(const char *delims) const
       return c;
     }
   // not found more
+  return c;
+}
+
+chars
+chars::substr(int start, int len)
+{
+  chars c= (char*)NULL;
+  if (empty() || (start >= chars_length))
+    return c;
+  int i, l= len+start;
+  for (i= start; chars_string[i] && (i < l); i++)
+    c+= chars_string[i];
   return c;
 }
 
@@ -581,14 +593,41 @@ chars::icontains(chars x) const
 }
 
 int
-chars::first_pos(char c) const
+chars::pos(char c) const
 {
   if (empty())
     return -1;
-  char *pos= strchr(chars_string, c);
-  if (pos == NULL)
+  char *p= strchr(chars_string, c);
+  if (p == NULL)
     return -1;
-  return pos-chars_string;
+  return p-chars_string;
+}
+
+int
+chars::pos(chars x) const
+{
+  if (empty() || x.empty())
+    return -1;
+  const char *p= strstr(chars_string, x.c_str());
+  if (p == NULL)
+    return -1;
+  return p-chars_string;
+}
+
+int
+chars::ipos(chars x) const
+{
+  if (empty() || x.empty())
+    return -1;
+  chars h= c_str();
+  chars n= x;
+  h.uppercase();
+  n.uppercase();
+  const char *s= h.c_str();
+  const char *p= strstr(s, x.c_str());
+  if (p == NULL)
+    return -1;
+  return p-s;
 }
 
 
