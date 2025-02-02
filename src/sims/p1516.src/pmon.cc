@@ -1,13 +1,13 @@
 #include "pmon.h"
 
-const char * p12cpu_version= "2.2.13";
+const char * p12cpu_version= "2.2.14";
 
 t_mem pmon[]= {
 0x00000000, 0x01f2f040, /* 01f2f040 //C 00000    24 jmp	cold_start */
 0x0000f000, 0x01f2f029, /* 01f2f029 //C 0f000    29 _f000:	jmp	callin */
 0x0000f001, 0x01f2f01a, /* 01f2f01a //C 0f001    30 _f001:	jmp	enter_by_uart */
 0x0000f002, 0x01f2f68c, /* 01f2f68c //C 0f002    31 _f002:	jmp	getchar */
-0x0000f003, 0x01f2f808, /* 01f2f808 //C 0f003    32 _f003:	jmp	version */
+0x0000f003, 0x01f2f809, /* 01f2f809 //C 0f003    32 _f003:	jmp	version */
 0x0000f004, 0x01f2f40e, /* 01f2f40e //C 0f004    33 _f004:	jmp	itobcd */
 0x0000f005, 0x01f2f040, /* 01f2f040 //C 0f005    34 _f005:	jmp	cold_start */
 0x0000f006, 0x01f2f480, /* 01f2f480 //C 0f006    35 _f006:	jmp	strchr */
@@ -25,7 +25,7 @@ t_mem pmon[]= {
 0x0000f012, 0x01f2f6b5, /* 01f2f6b5 //C 0f012    47 _f012:	jmp	pes */
 0x0000f013, 0x01f2f6fa, /* 01f2f6fa //C 0f013    48 _f013:	jmp	printd */
 0x0000f014, 0x01f2f70d, /* 01f2f70d //C 0f014    49 _f014:	jmp	printf */
-0x0000f015, 0x01f2f7ff, /* 01f2f7ff //C 0f015    50 _f015:	jmp	pesf */
+0x0000f015, 0x01f2f800, /* 01f2f800 //C 0f015    50 _f015:	jmp	pesf */
 0x0000f016, 0x01f2f425, /* 01f2f425 //C 0f016    51 _f016:	jmp	ascii2seg */
 0x0000f017, 0x01f2f432, /* 01f2f432 //C 0f017    52 _f017:	jmp	strunpack */
 0x0000f018, 0x01f2f451, /* 01f2f451 //C 0f018    53 _f018:	jmp	strpack */
@@ -45,42 +45,42 @@ t_mem pmon[]= {
 0x0000f026, 0x020f0000, /* 020f0000 //C 0f026    72 setf	r0 */
 0x0000f027, 0x0f0d0000, /* 0f0d0000 //C 0f027    73 pop	r0 */
 0x0000f028, 0x01f2f029, /* 01f2f029 //C 0f028    74 jmp	callin */
-0x0000f029, 0x0600f87c, /* 0600f87c //C 0f029    77 st	r0,reg0 */
-0x0000f02a, 0x0610f87d, /* 0610f87d //C 0f02a    78 st	r1,reg1 */
-0x0000f02b, 0x0620f87e, /* 0620f87e //C 0f02b    79 st	r2,reg2 */
-0x0000f02c, 0x0630f87f, /* 0630f87f //C 0f02c    80 st	r3,reg3 */
-0x0000f02d, 0x0640f880, /* 0640f880 //C 0f02d    81 st	r4,reg4 */
-0x0000f02e, 0x0650f881, /* 0650f881 //C 0f02e    82 st	r5,reg5 */
-0x0000f02f, 0x0660f882, /* 0660f882 //C 0f02f    83 st	r6,reg6 */
-0x0000f030, 0x0670f883, /* 0670f883 //C 0f030    84 st	r7,reg7 */
-0x0000f031, 0x0680f884, /* 0680f884 //C 0f031    85 st	r8,reg8 */
-0x0000f032, 0x0690f885, /* 0690f885 //C 0f032    86 st	r9,reg9 */
-0x0000f033, 0x06a0f886, /* 06a0f886 //C 0f033    87 st	r10,reg10 */
-0x0000f034, 0x06b0f887, /* 06b0f887 //C 0f034    88 st	r11,reg11 */
-0x0000f035, 0x06c0f888, /* 06c0f888 //C 0f035    89 st	r12,reg12 */
-0x0000f036, 0x06d0f889, /* 06d0f889 //C 0f036    90 st	r13,reg13 */
-0x0000f037, 0x06e0f88a, /* 06e0f88a //C 0f037    91 st	r14,reg14 */
-0x0000f038, 0x06e0f88b, /* 06e0f88b //C 0f038    92 st	r14,reg15 */
+0x0000f029, 0x0600f87d, /* 0600f87d //C 0f029    77 st	r0,reg0 */
+0x0000f02a, 0x0610f87e, /* 0610f87e //C 0f02a    78 st	r1,reg1 */
+0x0000f02b, 0x0620f87f, /* 0620f87f //C 0f02b    79 st	r2,reg2 */
+0x0000f02c, 0x0630f880, /* 0630f880 //C 0f02c    80 st	r3,reg3 */
+0x0000f02d, 0x0640f881, /* 0640f881 //C 0f02d    81 st	r4,reg4 */
+0x0000f02e, 0x0650f882, /* 0650f882 //C 0f02e    82 st	r5,reg5 */
+0x0000f02f, 0x0660f883, /* 0660f883 //C 0f02f    83 st	r6,reg6 */
+0x0000f030, 0x0670f884, /* 0670f884 //C 0f030    84 st	r7,reg7 */
+0x0000f031, 0x0680f885, /* 0680f885 //C 0f031    85 st	r8,reg8 */
+0x0000f032, 0x0690f886, /* 0690f886 //C 0f032    86 st	r9,reg9 */
+0x0000f033, 0x06a0f887, /* 06a0f887 //C 0f033    87 st	r10,reg10 */
+0x0000f034, 0x06b0f888, /* 06b0f888 //C 0f034    88 st	r11,reg11 */
+0x0000f035, 0x06c0f889, /* 06c0f889 //C 0f035    89 st	r12,reg12 */
+0x0000f036, 0x06d0f88a, /* 06d0f88a //C 0f036    90 st	r13,reg13 */
+0x0000f037, 0x06e0f88b, /* 06e0f88b //C 0f037    91 st	r14,reg14 */
+0x0000f038, 0x06e0f88c, /* 06e0f88c //C 0f038    92 st	r14,reg15 */
 0x0000f039, 0x020e0000, /* 020e0000 //C 0f039    93 getf	r0 */
-0x0000f03a, 0x0600f88c, /* 0600f88c //C 0f03a    94 st	r0,regf */
+0x0000f03a, 0x0600f88d, /* 0600f88d //C 0f03a    94 st	r0,regf */
 0x0000f03b, 0x01020001, /* 01020001 //C 0f03b    95 mvzl	r0,1 */
-0x0000f03c, 0x0600f87a, /* 0600f87a //C 0f03c    96 st	r0,called */
+0x0000f03c, 0x0600f87b, /* 0600f87b //C 0f03c    96 st	r0,called */
 0x0000f03d, 0x01f2f04a, /* 01f2f04a //C 0f03d    97 jmp	common_start */
 0x0000f03e, 0x01f2f04a, /* 01f2f04a //C 0f03e    99 jmp	common_start */
 0x0000f03f, 0x01f2f040, /* 01f2f040 //C 0f03f   101 jmp	cold_start */
 0x0000f040, 0x01020000, /* 01020000 //C 0f040   103 mvzl	r0,0 */
-0x0000f041, 0x0600f87a, /* 0600f87a //C 0f041   104 st	r0,called */
+0x0000f041, 0x0600f87b, /* 0600f87b //C 0f041   104 st	r0,called */
 0x0000f042, 0x0102f03f, /* 0102f03f //C 0f042   105 mvzl	r0,def_zero	; restore jmp to monitor at zero */
 0x0000f043, 0x0e000000, /* 0e000000 //C 0f043   106 ld	r0,r0 */
 0x0000f044, 0x06000000, /* 06000000 //C 0f044   107 st	r0,0 */
 0x0000f045, 0x01020000, /* 01020000 //C 0f045   108 mvzl	r0,0		; def values of some regs */
-0x0000f046, 0x0600f88c, /* 0600f88c //C 0f046   109 st	r0,regf		; FALGS= 0 */
+0x0000f046, 0x0600f88d, /* 0600f88d //C 0f046   109 st	r0,regf		; FALGS= 0 */
 0x0000f047, 0x0102f7ff, /* 0102f7ff //C 0f047   110 mvzl	r0,0xf7ff	; R13= 0xf7ff */
-0x0000f048, 0x0600f889, /* 0600f889 //C 0f048   111 st	r0,reg13 */
+0x0000f048, 0x0600f88a, /* 0600f88a //C 0f048   111 st	r0,reg13 */
 0x0000f049, 0x01f2f04a, /* 01f2f04a //C 0f049   112 jmp	common_start */
-0x0000f04a, 0x01d2fb35, /* 01d2fb35 //C 0f04a   115 mvzl	sp,stack_end */
+0x0000f04a, 0x01d2fb36, /* 01d2fb36 //C 0f04a   115 mvzl	sp,stack_end */
 0x0000f04b, 0x01020001, /* 01020001 //C 0f04b   116 mvzl	r0,1 */
-0x0000f04c, 0x0600f879, /* 0600f879 //C 0f04c   117 st	r0,echo */
+0x0000f04c, 0x0600f87a, /* 0600f87a //C 0f04c   117 st	r0,echo */
 0x0000f04d, 0x01020000, /* 01020000 //C 0f04d   118 mvzl	r0,0 */
 0x0000f04e, 0x020f0000, /* 020f0000 //C 0f04e   119 setf	r0 */
 0x0000f04f, 0x0710ff41, /* 0710ff41 //C 0f04f   124 ld	r1,UART_CTRL	; check if transmit is enabled */
@@ -117,16 +117,16 @@ t_mem pmon[]= {
 0x0000f06e, 0x0631c002, /* 0631c002 //C 0f06e   145 getbz	r3,r0,2 */
 0x0000f06f, 0x0641c001, /* 0641c001 //C 0f06f   146 getbz	r4,r0,1 */
 0x0000f070, 0x0651c000, /* 0651c000 //C 0f070   147 getbz	r5,r0,0 */
-0x0000f071, 0x0102f88d, /* 0102f88d //C 0f071   148 mvzl	r0,msg_start */
+0x0000f071, 0x0102f88e, /* 0102f88e //C 0f071   148 mvzl	r0,msg_start */
 0x0000f072, 0x0400f70d, /* 0400f70d //C 0f072   149 call	printf */
-0x0000f073, 0x0700f87a, /* 0700f87a //C 0f073   151 ld	r0,called */
+0x0000f073, 0x0700f87b, /* 0700f87b //C 0f073   151 ld	r0,called */
 0x0000f074, 0x020b0000, /* 020b0000 //C 0f074   152 sz	r0 */
 0x0000f075, 0x11f2f07f, /* 11f2f07f //C 0f075   153 jz	no_called_from */
 0x0000f076, 0x0102000a, /* 0102000a //C 0f076   154 mvzl	r0,LF */
 0x0000f077, 0x0400f690, /* 0400f690 //C 0f077   155 call	putchar */
-0x0000f078, 0x0102f8ae, /* 0102f8ae //C 0f078   156 mvzl	r0,msg_stopat */
+0x0000f078, 0x0102f8af, /* 0102f8af //C 0f078   156 mvzl	r0,msg_stopat */
 0x0000f079, 0x0400f697, /* 0400f697 //C 0f079   157 call	prints */
-0x0000f07a, 0x0700f88a, /* 0700f88a //C 0f07a   158 ld	r0,reg14 */
+0x0000f07a, 0x0700f88b, /* 0700f88b //C 0f07a   158 ld	r0,reg14 */
 0x0000f07b, 0x01120004, /* 01120004 //C 0f07b   159 mvzl	r1,4 */
 0x0000f07c, 0x0400f6d4, /* 0400f6d4 //C 0f07c   160 call	print_vhex */
 0x0000f07d, 0x0102000a, /* 0102000a //C 0f07d   161 mvzl	r0,LF */
@@ -135,11 +135,11 @@ t_mem pmon[]= {
 0x0000f080, 0x01f2f08a, /* 01f2f08a //C 0f080   170 jmp	main */
 0x0000f081, 0x0ded0000, /* 0ded0000 //C 0f081   176 push	lr */
 0x0000f082, 0x01120000, /* 01120000 //C 0f082   177 mvzl	r1,0		; lptr= 0 */
-0x0000f083, 0x0610f872, /* 0610f872 //C 0f083   178 st	r1,line_ptr */
-0x0000f084, 0x0610f80e, /* 0610f80e //C 0f084   179 st	r1,line		; line[0]= 0 */
+0x0000f083, 0x0610f873, /* 0610f873 //C 0f083   178 st	r1,line_ptr */
+0x0000f084, 0x0610f80f, /* 0610f80f //C 0f084   179 st	r1,line		; line[0]= 0 */
 0x0000f085, 0x01120000, /* 01120000 //C 0f085   180 mvzl	r1,0		; at_eol= 0 */
-0x0000f086, 0x0610f873, /* 0610f873 //C 0f086   181 st	r1,at_eol */
-0x0000f087, 0x0102f8bc, /* 0102f8bc //C 0f087   183 mvzl	r0,prompt */
+0x0000f086, 0x0610f874, /* 0610f874 //C 0f086   181 st	r1,at_eol */
+0x0000f087, 0x0102f8bd, /* 0102f8bd //C 0f087   183 mvzl	r0,prompt */
 0x0000f088, 0x0400f697, /* 0400f697 //C 0f088   184 call	prints */
 0x0000f089, 0x0ffd0000, /* 0ffd0000 //C 0f089   185 pop	pc */
 0x0000f08a, 0x0400f681, /* 0400f681 //C 0f08a   192 call	check_uart */
@@ -160,15 +160,15 @@ t_mem pmon[]= {
 0x0000f099, 0x0108007f, /* 0108007f //C 0f099   217 cmp	r0,127 */
 0x0000f09a, 0x11f2f09c, /* 11f2f09c //C 0f09a   218 jz	got_DEL */
 0x0000f09b, 0x01f2f0a8, /* 01f2f0a8 //C 0f09b   219 jmp	got_char */
-0x0000f09c, 0x0700f872, /* 0700f872 //C 0f09c   222 ld	r0,line_ptr */
+0x0000f09c, 0x0700f873, /* 0700f873 //C 0f09c   222 ld	r0,line_ptr */
 0x0000f09d, 0x020b0000, /* 020b0000 //C 0f09d   223 sz	r0 */
 0x0000f09e, 0x11f2f0a6, /* 11f2f0a6 //C 0f09e   224 jz	got_done */
 0x0000f09f, 0x01060001, /* 01060001 //C 0f09f   225 sub	r0,1 */
-0x0000f0a0, 0x0600f872, /* 0600f872 //C 0f0a0   226 st	r0,line_ptr */
-0x0000f0a1, 0x0112f80e, /* 0112f80e //C 0f0a1   227 mvzl	r1,line */
+0x0000f0a0, 0x0600f873, /* 0600f873 //C 0f0a0   226 st	r0,line_ptr */
+0x0000f0a1, 0x0112f80f, /* 0112f80f //C 0f0a1   227 mvzl	r1,line */
 0x0000f0a2, 0x01220000, /* 01220000 //C 0f0a2   228 mvzl	r2,0 */
 0x0000f0a3, 0x08210000, /* 08210000 //C 0f0a3   229 st	r2,r1,r0 */
-0x0000f0a4, 0x0102f8b8, /* 0102f8b8 //C 0f0a4   230 mvzl	r0,msg_BS */
+0x0000f0a4, 0x0102f8b9, /* 0102f8b9 //C 0f0a4   230 mvzl	r0,msg_BS */
 0x0000f0a5, 0x0400f697, /* 0400f697 //C 0f0a5   231 call	prints */
 0x0000f0a6, 0x020d0000, /* 020d0000 //C 0f0a6   233 clc */
 0x0000f0a7, 0x01f2f0c2, /* 01f2f0c2 //C 0f0a7   234 jmp	proc_input_ret */
@@ -177,23 +177,23 @@ t_mem pmon[]= {
 0x0000f0aa, 0x0108007e, /* 0108007e //C 0f0aa   238 cmp	r0,126		; refuse graph chars */
 0x0000f0ab, 0x91f2f0c2, /* 91f2f0c2 //C 0f0ab   239 HI jmp	proc_input_ret */
 0x0000f0ac, 0x01220000, /* 01220000 //C 0f0ac   240 mvzl	r2,0		; at_aol= 0 */
-0x0000f0ad, 0x0620f873, /* 0620f873 //C 0f0ad   241 st	r2,at_eol */
-0x0000f0ae, 0x0112f872, /* 0112f872 //C 0f0ae   242 mvzl	r1,line_ptr	; line[line_ptr]= char */
+0x0000f0ad, 0x0620f874, /* 0620f874 //C 0f0ad   241 st	r2,at_eol */
+0x0000f0ae, 0x0112f873, /* 0112f873 //C 0f0ae   242 mvzl	r1,line_ptr	; line[line_ptr]= char */
 0x0000f0af, 0x0e310000, /* 0e310000 //C 0f0af   243 ld	r3,r1 */
-0x0000f0b0, 0x0122f80e, /* 0122f80e //C 0f0b0   244 mvzl	r2,line */
+0x0000f0b0, 0x0122f80f, /* 0122f80f //C 0f0b0   244 mvzl	r2,line */
 0x0000f0b1, 0x08020300, /* 08020300 //C 0f0b1   245 st	r0,r2,r3 */
 0x0000f0b2, 0x013a0001, /* 013a0001 //C 0f0b2   247 plus	r3,1		; line_ptr++ */
 0x0000f0b3, 0x0c310000, /* 0c310000 //C 0f0b3   248 st	r3,r1 */
 0x0000f0b4, 0x01420000, /* 01420000 //C 0f0b4   249 mvzl	r4,0 */
 0x0000f0b5, 0x09438200, /* 09438200 //C 0f0b5   250 st	r4,r3+,r2	; line[line_ptr]= 0 */
 0x0000f0b6, 0x08430200, /* 08430200 //C 0f0b6   251 st	r4,r3,r2	; double 0 at end, needed by tokenizer */
-0x0000f0b7, 0x0142f879, /* 0142f879 //C 0f0b7   252 mvzl	r4,echo		; check if echo is turned on */
+0x0000f0b7, 0x0142f87a, /* 0142f87a //C 0f0b7   252 mvzl	r4,echo		; check if echo is turned on */
 0x0000f0b8, 0x0e440000, /* 0e440000 //C 0f0b8   253 ld	r4,r4 */
 0x0000f0b9, 0x024b0000, /* 024b0000 //C 0f0b9   254 sz	r4 */
 0x0000f0ba, 0x2400f690, /* 2400f690 //C 0f0ba   255 NZ call	putchar		; echo */
 0x0000f0bb, 0x020d0000, /* 020d0000 //C 0f0bb   256 clc */
 0x0000f0bc, 0x01f2f0c2, /* 01f2f0c2 //C 0f0bc   257 jmp	proc_input_ret */
-0x0000f0bd, 0x0112f873, /* 0112f873 //C 0f0bd   259 mvzl	r1,at_eol */
+0x0000f0bd, 0x0112f874, /* 0112f874 //C 0f0bd   259 mvzl	r1,at_eol */
 0x0000f0be, 0x0e110000, /* 0e110000 //C 0f0be   260 ld	r1,r1 */
 0x0000f0bf, 0x021b0000, /* 021b0000 //C 0f0bf   261 sz	r1		; Z=0 at eol -> skip, not ready */
 0x0000f0c0, 0x220d0000, /* 220d0000 //C 0f0c0   262 Z0 clc */
@@ -202,7 +202,7 @@ t_mem pmon[]= {
 0x0000f0c3, 0x0ded0000, /* 0ded0000 //C 0f0c3   274 push	lr */
 0x0000f0c4, 0x0102000a, /* 0102000a //C 0f0c4   276 mvzl	r0,LF */
 0x0000f0c5, 0x0400f690, /* 0400f690 //C 0f0c5   277 call	putchar */
-0x0000f0c6, 0x0700f80e, /* 0700f80e //C 0f0c6   279 ld	r0,line */
+0x0000f0c6, 0x0700f80f, /* 0700f80f //C 0f0c6   279 ld	r0,line */
 0x0000f0c7, 0x020b0000, /* 020b0000 //C 0f0c7   280 sz	r0 */
 0x0000f0c8, 0x11f2f0d0, /* 11f2f0d0 //C 0f0c8   281 jz	proc_line_ret */
 0x0000f0c9, 0x0400f0ec, /* 0400f0ec //C 0f0c9   289 call	tokenize */
@@ -213,7 +213,7 @@ t_mem pmon[]= {
 0x0000f0ce, 0x0102f0d8, /* 0102f0d8 //C 0f0ce   308 mvzl	r0,snotfound */
 0x0000f0cf, 0x0400f6cd, /* 0400f6cd //C 0f0cf   309 call	printsnl */
 0x0000f0d0, 0x01120001, /* 01120001 //C 0f0d0   312 mvzl	r1,1		; at_eol= 1 */
-0x0000f0d1, 0x0610f873, /* 0610f873 //C 0f0d1   313 st	r1,at_eol */
+0x0000f0d1, 0x0610f874, /* 0610f874 //C 0f0d1   313 st	r1,at_eol */
 0x0000f0d2, 0x0ffd0000, /* 0ffd0000 //C 0f0d2   314 pop	pc */
 0x0000f0d3, 0x00000047, /* 00000047 //C 0f0d3   316 db	71 */
 0x0000f0d4, 0x0000006f, /* 0000006f //C 0f0d4   316 db	111 */
@@ -237,12 +237,12 @@ t_mem pmon[]= {
 0x0000f0e6, 0x00000064, /* 00000064 //C 0f0e6   317 db	100 */
 0x0000f0e7, 0x00000000, /* 00000000 //C 0f0e7   317 db */
 0x0000f0e8, 0x0ded0000, /* 0ded0000 //C 0f0e8   325 push	lr */
-0x0000f0e9, 0x0112f8be, /* 0112f8be //C 0f0e9   326 mvzl	r1,delimiters */
+0x0000f0e9, 0x0112f8bf, /* 0112f8bf //C 0f0e9   326 mvzl	r1,delimiters */
 0x0000f0ea, 0x0400f480, /* 0400f480 //C 0f0ea   327 call	strchr */
 0x0000f0eb, 0x0ffd0000, /* 0ffd0000 //C 0f0eb   328 pop	pc */
 0x0000f0ec, 0x0ded0000, /* 0ded0000 //C 0f0ec   337 push	lr */
-0x0000f0ed, 0x0142f874, /* 0142f874 //C 0f0ed   338 mvzl	r4,words	; array of result */
-0x0000f0ee, 0x0152f80e, /* 0152f80e //C 0f0ee   339 mvzl	r5,line		; address of next char */
+0x0000f0ed, 0x0142f875, /* 0142f875 //C 0f0ed   338 mvzl	r4,words	; array of result */
+0x0000f0ee, 0x0152f80f, /* 0152f80f //C 0f0ee   339 mvzl	r5,line		; address of next char */
 0x0000f0ef, 0x01620000, /* 01620000 //C 0f0ef   340 mvzl	r6,0		; nuof words found */
 0x0000f0f0, 0x01720000, /* 01720000 //C 0f0f0   341 mvzl	r7,0		; bool in_word */
 0x0000f0f1, 0x0e050000, /* 0e050000 //C 0f0f1   343 ld	r0,r5		; pick a char */
@@ -277,7 +277,7 @@ t_mem pmon[]= {
 0x0000f10e, 0x0d2d0000, /* 0d2d0000 //C 0f10e   388 push	r2 */
 0x0000f10f, 0x0d3d0000, /* 0d3d0000 //C 0f10f   389 push	r3 */
 0x0000f110, 0x0dad0000, /* 0dad0000 //C 0f110   390 push	r10 */
-0x0000f111, 0x0700f874, /* 0700f874 //C 0f111   391 ld	r0,words	; R0= 1st word of command */
+0x0000f111, 0x0700f875, /* 0700f875 //C 0f111   391 ld	r0,words	; R0= 1st word of command */
 0x0000f112, 0x020b0000, /* 020b0000 //C 0f112   392 sz	r0 */
 0x0000f113, 0x11f2f143, /* 11f2f143 //C 0f113   393 jz	find_cmd_false */
 0x0000f114, 0x0e100000, /* 0e100000 //C 0f114   396 ld	r1,r0		; 1st char of word1 */
@@ -300,14 +300,14 @@ t_mem pmon[]= {
 0x0000f125, 0x91f2f12f, /* 91f2f12f //C 0f125   414 HI jmp	find_not_rx */
 0x0000f126, 0x01360030, /* 01360030 //C 0f126   415 sub	r3,'0' */
 0x0000f127, 0x0134000a, /* 0134000a //C 0f127   416 add	r3,10 */
-0x0000f128, 0x0630f87b, /* 0630f87b //C 0f128   417 st	r3,nuof_reg */
+0x0000f128, 0x0630f87c, /* 0630f87c //C 0f128   417 st	r3,nuof_reg */
 0x0000f129, 0x01f2f12c, /* 01f2f12c //C 0f129   418 jmp	find_rx */
 0x0000f12a, 0x01260030, /* 01260030 //C 0f12a   420 sub	r2,'0' */
-0x0000f12b, 0x0620f87b, /* 0620f87b //C 0f12b   421 st	r2,nuof_reg */
+0x0000f12b, 0x0620f87c, /* 0620f87c //C 0f12b   421 st	r2,nuof_reg */
 0x0000f12c, 0x0102f379, /* 0102f379 //C 0f12c   423 mvzl	r0,cmd_rx */
 0x0000f12d, 0x020c0000, /* 020c0000 //C 0f12d   424 sec */
 0x0000f12e, 0x01f2f14e, /* 01f2f14e //C 0f12e   425 jmp	find_cmd_ret */
-0x0000f12f, 0x01a2f8da, /* 01a2f8da //C 0f12f   428 mvzl	r10,commands */
+0x0000f12f, 0x01a2f8db, /* 01a2f8db //C 0f12f   428 mvzl	r10,commands */
 0x0000f130, 0x0e2a0000, /* 0e2a0000 //C 0f130   430 ld	r2,r10		; R2= cmd addr */
 0x0000f131, 0x022b0000, /* 022b0000 //C 0f131   431 sz	r2 */
 0x0000f132, 0x11f2f143, /* 11f2f143 //C 0f132   432 jz	find_cmd_false */
@@ -344,7 +344,7 @@ t_mem pmon[]= {
 0x0000f151, 0x0f1d0000, /* 0f1d0000 //C 0f151   467 pop	r1 */
 0x0000f152, 0x0ffd0000, /* 0ffd0000 //C 0f152   468 pop	pc */
 0x0000f153, 0x0ded0000, /* 0ded0000 //C 0f153   473 push	lr */
-0x0000f154, 0x0122f874, /* 0122f874 //C 0f154   474 mvzl	r2,words */
+0x0000f154, 0x0122f875, /* 0122f875 //C 0f154   474 mvzl	r2,words */
 0x0000f155, 0x01020000, /* 01020000 //C 0f155   475 mvzl	r0,0 */
 0x0000f156, 0x0e420001, /* 0e420001 //C 0f156   477 ld	r4,r2,1		; addr */
 0x0000f157, 0x0e520002, /* 0e520002 //C 0f157   478 ld	r5,r2,2		; value */
@@ -362,7 +362,7 @@ t_mem pmon[]= {
 0x0000f163, 0x0132f000, /* 0132f000 //C 0f163   493 mvzl	r3,the_begin */
 0x0000f164, 0x00380400, /* 00380400 //C 0f164   494 cmp	r3,r4 */
 0x0000f165, 0x91f2f16d, /* 91f2f16d //C 0f165   495 HI jmp	m_addrv_ok */
-0x0000f166, 0x0132fb36, /* 0132fb36 //C 0f166   496 mvzl	r3,the_end */
+0x0000f166, 0x0132fb37, /* 0132fb37 //C 0f166   496 mvzl	r3,the_end */
 0x0000f167, 0x00380400, /* 00380400 //C 0f167   497 cmp	r3,r4 */
 0x0000f168, 0x91f2f16a, /* 91f2f16a //C 0f168   498 HI jmp	m_addrv_nok */
 0x0000f169, 0x01f2f16d, /* 01f2f16d //C 0f169   499 jmp	m_addrv_ok */
@@ -433,7 +433,7 @@ t_mem pmon[]= {
 0x0000f1aa, 0x00000072, /* 00000072 //C 0f1aa   537 db	114 */
 0x0000f1ab, 0x00000000, /* 00000000 //C 0f1ab   537 db */
 0x0000f1ac, 0x0ded0000, /* 0ded0000 //C 0f1ac   542 push	lr */
-0x0000f1ad, 0x0122f874, /* 0122f874 //C 0f1ad   543 mvzl	r2,words */
+0x0000f1ad, 0x0122f875, /* 0122f875 //C 0f1ad   543 mvzl	r2,words */
 0x0000f1ae, 0x01020000, /* 01020000 //C 0f1ae   544 mvzl	r0,0 */
 0x0000f1af, 0x0e420001, /* 0e420001 //C 0f1af   546 ld	r4,r2,1		; addr */
 0x0000f1b0, 0x0e520002, /* 0e520002 //C 0f1b0   547 ld	r5,r2,2		; value */
@@ -451,7 +451,7 @@ t_mem pmon[]= {
 0x0000f1bc, 0x0132f000, /* 0132f000 //C 0f1bc   562 mvzl	r3,the_begin */
 0x0000f1bd, 0x00380400, /* 00380400 //C 0f1bd   563 cmp	r3,r4 */
 0x0000f1be, 0x91f2f1c6, /* 91f2f1c6 //C 0f1be   564 HI jmp	sm_addrv_ok */
-0x0000f1bf, 0x0132fb36, /* 0132fb36 //C 0f1bf   565 mvzl	r3,the_end */
+0x0000f1bf, 0x0132fb37, /* 0132fb37 //C 0f1bf   565 mvzl	r3,the_end */
 0x0000f1c0, 0x00380400, /* 00380400 //C 0f1c0   566 cmp	r3,r4 */
 0x0000f1c1, 0x91f2f1c3, /* 91f2f1c3 //C 0f1c1   567 HI jmp	sm_addrv_nok */
 0x0000f1c2, 0x01f2f1c6, /* 01f2f1c6 //C 0f1c2   568 jmp	sm_addrv_ok */
@@ -468,7 +468,7 @@ t_mem pmon[]= {
 0x0000f1cd, 0x0c540000, /* 0c540000 //C 0f1cd   582 st	r5,r4 */
 0x0000f1ce, 0x0ffd0000, /* 0ffd0000 //C 0f1ce   585 pop	pc */
 0x0000f1cf, 0x0ded0000, /* 0ded0000 //C 0f1cf   591 push	lr */
-0x0000f1d0, 0x0122f874, /* 0122f874 //C 0f1d0   592 mvzl	r2,words */
+0x0000f1d0, 0x0122f875, /* 0122f875 //C 0f1d0   592 mvzl	r2,words */
 0x0000f1d1, 0x0e020001, /* 0e020001 //C 0f1d1   593 ld	r0,r2,1		; start address */
 0x0000f1d2, 0x0400f54e, /* 0400f54e //C 0f1d2   594 call	htoi */
 0x0000f1d3, 0x00300100, /* 00300100 //C 0f1d3   595 mov	r3,r1 */
@@ -637,7 +637,7 @@ t_mem pmon[]= {
 0x0000f276, 0x0400f690, /* 0400f690 //C 0f276   806 call	putchar */
 0x0000f277, 0x0ffd0000, /* 0ffd0000 //C 0f277   807 pop	pc */
 0x0000f278, 0x0ded0000, /* 0ded0000 //C 0f278   813 push	lr */
-0x0000f279, 0x0122f874, /* 0122f874 //C 0f279   814 mvzl	r2,words */
+0x0000f279, 0x0122f875, /* 0122f875 //C 0f279   814 mvzl	r2,words */
 0x0000f27a, 0x0e020001, /* 0e020001 //C 0f27a   815 ld	r0,r2,1		; address */
 0x0000f27b, 0x020b0000, /* 020b0000 //C 0f27b   816 sz	r0 */
 0x0000f27c, 0x11f2f29f, /* 11f2f29f //C 0f27c   817 jz	g_no_addr */
@@ -650,35 +650,35 @@ t_mem pmon[]= {
 0x0000f283, 0x0400f6d4, /* 0400f6d4 //C 0f283   825 call	print_vhex */
 0x0000f284, 0x0102000a, /* 0102000a //C 0f284   826 mvzl	r0,LF */
 0x0000f285, 0x0400f690, /* 0400f690 //C 0f285   827 call	putchar */
-0x0000f286, 0x06b0f88b, /* 06b0f88b //C 0f286   828 st	r11,reg15 */
+0x0000f286, 0x06b0f88c, /* 06b0f88c //C 0f286   828 st	r11,reg15 */
 0x0000f287, 0x0122ff43, /* 0122ff43 //C 0f287   830 mvzl	r2,UART_TSTAT */
 0x0000f288, 0x0e920000, /* 0e920000 //C 0f288   832 ld	r9,r2 */
 0x0000f289, 0x019c0001, /* 019c0001 //C 0f289   833 test	r9,1 */
 0x0000f28a, 0x11f2f288, /* 11f2f288 //C 0f28a   834 jz	g_wait_tc */
 0x0000f28b, 0x07000000, /* 07000000 //C 0f28b   836 ld	r0,0 */
-0x0000f28c, 0x0600f87a, /* 0600f87a //C 0f28c   837 st	r0,called */
-0x0000f28d, 0x0700f88c, /* 0700f88c //C 0f28d   839 ld	r0,regf */
+0x0000f28c, 0x0600f87b, /* 0600f87b //C 0f28c   837 st	r0,called */
+0x0000f28d, 0x0700f88d, /* 0700f88d //C 0f28d   839 ld	r0,regf */
 0x0000f28e, 0x020f0000, /* 020f0000 //C 0f28e   840 setf	r0 */
-0x0000f28f, 0x0700f87c, /* 0700f87c //C 0f28f   841 ld	r0,reg0 */
-0x0000f290, 0x0710f87d, /* 0710f87d //C 0f290   842 ld	r1,reg1 */
-0x0000f291, 0x0720f87e, /* 0720f87e //C 0f291   843 ld	r2,reg2 */
-0x0000f292, 0x0730f87f, /* 0730f87f //C 0f292   844 ld	r3,reg3 */
-0x0000f293, 0x0740f880, /* 0740f880 //C 0f293   845 ld	r4,reg4 */
-0x0000f294, 0x0750f881, /* 0750f881 //C 0f294   846 ld	r5,reg5 */
-0x0000f295, 0x0760f882, /* 0760f882 //C 0f295   847 ld	r6,reg6 */
-0x0000f296, 0x0770f883, /* 0770f883 //C 0f296   848 ld	r7,reg7 */
-0x0000f297, 0x0780f884, /* 0780f884 //C 0f297   849 ld	r8,reg8 */
-0x0000f298, 0x0790f885, /* 0790f885 //C 0f298   850 ld	r9,reg9 */
-0x0000f299, 0x07a0f886, /* 07a0f886 //C 0f299   851 ld	r10,reg10 */
-0x0000f29a, 0x07b0f887, /* 07b0f887 //C 0f29a   852 ld	r11,reg11 */
-0x0000f29b, 0x07c0f888, /* 07c0f888 //C 0f29b   853 ld	r12,reg12 */
-0x0000f29c, 0x07d0f889, /* 07d0f889 //C 0f29c   854 ld	r13,reg13 */
-0x0000f29d, 0x07e0f88a, /* 07e0f88a //C 0f29d   855 ld	r14,reg14 */
-0x0000f29e, 0x07f0f88b, /* 07f0f88b //C 0f29e   857 ld	r15,reg15 */
-0x0000f29f, 0x0700f87a, /* 0700f87a //C 0f29f   860 ld	r0,called */
+0x0000f28f, 0x0700f87d, /* 0700f87d //C 0f28f   841 ld	r0,reg0 */
+0x0000f290, 0x0710f87e, /* 0710f87e //C 0f290   842 ld	r1,reg1 */
+0x0000f291, 0x0720f87f, /* 0720f87f //C 0f291   843 ld	r2,reg2 */
+0x0000f292, 0x0730f880, /* 0730f880 //C 0f292   844 ld	r3,reg3 */
+0x0000f293, 0x0740f881, /* 0740f881 //C 0f293   845 ld	r4,reg4 */
+0x0000f294, 0x0750f882, /* 0750f882 //C 0f294   846 ld	r5,reg5 */
+0x0000f295, 0x0760f883, /* 0760f883 //C 0f295   847 ld	r6,reg6 */
+0x0000f296, 0x0770f884, /* 0770f884 //C 0f296   848 ld	r7,reg7 */
+0x0000f297, 0x0780f885, /* 0780f885 //C 0f297   849 ld	r8,reg8 */
+0x0000f298, 0x0790f886, /* 0790f886 //C 0f298   850 ld	r9,reg9 */
+0x0000f299, 0x07a0f887, /* 07a0f887 //C 0f299   851 ld	r10,reg10 */
+0x0000f29a, 0x07b0f888, /* 07b0f888 //C 0f29a   852 ld	r11,reg11 */
+0x0000f29b, 0x07c0f889, /* 07c0f889 //C 0f29b   853 ld	r12,reg12 */
+0x0000f29c, 0x07d0f88a, /* 07d0f88a //C 0f29c   854 ld	r13,reg13 */
+0x0000f29d, 0x07e0f88b, /* 07e0f88b //C 0f29d   855 ld	r14,reg14 */
+0x0000f29e, 0x07f0f88c, /* 07f0f88c //C 0f29e   857 ld	r15,reg15 */
+0x0000f29f, 0x0700f87b, /* 0700f87b //C 0f29f   860 ld	r0,called */
 0x0000f2a0, 0x020b0000, /* 020b0000 //C 0f2a0   861 sz	r0 */
 0x0000f2a1, 0x11f2f2a4, /* 11f2f2a4 //C 0f2a1   862 jz	g_err */
-0x0000f2a2, 0x07b0f88b, /* 07b0f88b //C 0f2a2   863 ld	r11,reg15 */
+0x0000f2a2, 0x07b0f88c, /* 07b0f88c //C 0f2a2   863 ld	r11,reg15 */
 0x0000f2a3, 0x01f2f27f, /* 01f2f27f //C 0f2a3   864 jmp	g_go11 */
 0x0000f2a4, 0x0102f2a7, /* 0102f2a7 //C 0f2a4   866 mvzl	r0,g_err_addr */
 0x0000f2a5, 0x0400f6cd, /* 0400f6cd //C 0f2a5   867 call	printsnl */
@@ -700,7 +700,7 @@ t_mem pmon[]= {
 0x0000f2b5, 0x00000020, /* 00000020 //C 0f2b5   872 db	32 */
 0x0000f2b6, 0x00000000, /* 00000000 //C 0f2b6   872 db */
 0x0000f2b7, 0x0ded0000, /* 0ded0000 //C 0f2b7   877 push	lr */
-0x0000f2b8, 0x0122f937, /* 0122f937 //C 0f2b8   878 mvzl	r2,helps */
+0x0000f2b8, 0x0122f938, /* 0122f938 //C 0f2b8   878 mvzl	r2,helps */
 0x0000f2b9, 0x01320000, /* 01320000 //C 0f2b9   879 mvzl	r3,0 */
 0x0000f2ba, 0x0b038200, /* 0b038200 //C 0f2ba   881 ld	r0,r3+,r2	; pick a char */
 0x0000f2bb, 0x020b0000, /* 020b0000 //C 0f2bb   882 sz	r0		; is it eos? */
@@ -773,7 +773,7 @@ t_mem pmon[]= {
 0x0000f2fe, 0x0d1d0000, /* 0d1d0000 //C 0f2fe   961 push	r1 */
 0x0000f2ff, 0x01080010, /* 01080010 //C 0f2ff   962 cmp	r0,16 */
 0x0000f300, 0x91f2f305, /* 91f2f305 //C 0f300   963 HI jmp	prv_ret */
-0x0000f301, 0x0112f87c, /* 0112f87c //C 0f301   964 mvzl	r1,reg0 */
+0x0000f301, 0x0112f87d, /* 0112f87d //C 0f301   964 mvzl	r1,reg0 */
 0x0000f302, 0x0a010000, /* 0a010000 //C 0f302   965 ld	r0,r1,r0 */
 0x0000f303, 0x01120004, /* 01120004 //C 0f303   966 mvzl	r1,4 */
 0x0000f304, 0x0400f6d4, /* 0400f6d4 //C 0f304   967 call	print_vhex */
@@ -803,12 +803,12 @@ t_mem pmon[]= {
 0x0000f31c, 0x0400f690, /* 0400f690 //C 0f31c  1005 call	putchar */
 0x0000f31d, 0x0ffd0000, /* 0ffd0000 //C 0f31d  1006 pop	pc */
 0x0000f31e, 0x0ded0000, /* 0ded0000 //C 0f31e  1011 push	lr */
-0x0000f31f, 0x0700f87a, /* 0700f87a //C 0f31f  1012 ld	r0,called */
+0x0000f31f, 0x0700f87b, /* 0700f87b //C 0f31f  1012 ld	r0,called */
 0x0000f320, 0x020b0000, /* 020b0000 //C 0f320  1013 sz	r0 */
 0x0000f321, 0x11f2f32a, /* 11f2f32a //C 0f321  1014 jz	r_not_called */
 0x0000f322, 0x0102f347, /* 0102f347 //C 0f322  1016 mvzl	r0,msg_r_called */
 0x0000f323, 0x0400f697, /* 0400f697 //C 0f323  1017 call	prints */
-0x0000f324, 0x0700f88b, /* 0700f88b //C 0f324  1018 ld	r0,reg15 */
+0x0000f324, 0x0700f88c, /* 0700f88c //C 0f324  1018 ld	r0,reg15 */
 0x0000f325, 0x01120004, /* 01120004 //C 0f325  1019 mvzl	r1,4 */
 0x0000f326, 0x0400f6d4, /* 0400f6d4 //C 0f326  1020 call	print_vhex */
 0x0000f327, 0x0102000a, /* 0102000a //C 0f327  1021 mvzl	r0,LF */
@@ -821,7 +821,7 @@ t_mem pmon[]= {
 0x0000f32e, 0x01a40001, /* 01a40001 //C 0f32e  1031 add	r10,1 */
 0x0000f32f, 0x01a80011, /* 01a80011 //C 0f32f  1032 cmp	r10,17 */
 0x0000f330, 0x21f2f32d, /* 21f2f32d //C 0f330  1033 jnz	r_cyc */
-0x0000f331, 0x0710f88c, /* 0710f88c //C 0f331  1035 ld	r1,regf */
+0x0000f331, 0x0710f88d, /* 0710f88d //C 0f331  1035 ld	r1,regf */
 0x0000f332, 0x01320020, /* 01320020 //C 0f332  1036 mvzl	r3,32 */
 0x0000f333, 0x01020055, /* 01020055 //C 0f333  1037 mvzl	r0,'U' */
 0x0000f334, 0x01220020, /* 01220020 //C 0f334  1038 mvzl	r2,0x20 */
@@ -894,7 +894,7 @@ t_mem pmon[]= {
 0x0000f377, 0x0000000a, /* 0000000a //C 0f377  1059 db	10 */
 0x0000f378, 0x00000000, /* 00000000 //C 0f378  1059 db */
 0x0000f379, 0x0ded0000, /* 0ded0000 //C 0f379  1064 push	lr */
-0x0000f37a, 0x07a0f87b, /* 07a0f87b //C 0f37a  1065 ld	r10,nuof_reg	; Reg num is in R10 */
+0x0000f37a, 0x07a0f87c, /* 07a0f87c //C 0f37a  1065 ld	r10,nuof_reg	; Reg num is in R10 */
 0x0000f37b, 0x01a80010, /* 01a80010 //C 0f37b  1066 cmp	r10,16 */
 0x0000f37c, 0xa1f2f391, /* a1f2f391 //C 0f37c  1067 LS jmp	rx_nr_ok */
 0x0000f37d, 0x0102f380, /* 0102f380 //C 0f37d  1068 mvzl	r0,rx_err_nr */
@@ -917,7 +917,7 @@ t_mem pmon[]= {
 0x0000f38e, 0x00000065, /* 00000065 //C 0f38e  1072 db	101 */
 0x0000f38f, 0x00000072, /* 00000072 //C 0f38f  1072 db	114 */
 0x0000f390, 0x00000000, /* 00000000 //C 0f390  1072 db */
-0x0000f391, 0x0122f874, /* 0122f874 //C 0f391  1074 mvzl	r2,words */
+0x0000f391, 0x0122f875, /* 0122f875 //C 0f391  1074 mvzl	r2,words */
 0x0000f392, 0x0e420001, /* 0e420001 //C 0f392  1075 ld	r4,r2,1		; get aof first parameter */
 0x0000f393, 0x024b0000, /* 024b0000 //C 0f393  1076 sz	r4		; is it NULL? */
 0x0000f394, 0x11f2f3ac, /* 11f2f3ac //C 0f394  1077 jz	rx_print */
@@ -942,21 +942,21 @@ t_mem pmon[]= {
 0x0000f3a7, 0x00000000, /* 00000000 //C 0f3a7  1086 db */
 0x0000f3a8, 0x01a80010, /* 01a80010 //C 0f3a8  1088 cmp	r10,16		; Flag reg? */
 0x0000f3a9, 0x115f003f, /* 115f003f //C 0f3a9  1089 EQ and	r5,0x3f */
-0x0000f3aa, 0x0102f87c, /* 0102f87c //C 0f3aa  1090 mvzl	r0,reg0 */
+0x0000f3aa, 0x0102f87d, /* 0102f87d //C 0f3aa  1090 mvzl	r0,reg0 */
 0x0000f3ab, 0x08500a00, /* 08500a00 //C 0f3ab  1091 st	r5,r0,r10 */
 0x0000f3ac, 0x0400f307, /* 0400f307 //C 0f3ac  1093 call	print_reg_name_value */
 0x0000f3ad, 0x0ffd0000, /* 0ffd0000 //C 0f3ad  1095 pop	pc */
 0x0000f3ae, 0x0102000d, /* 0102000d //C 0f3ae  1101 mvzl	r0,13 */
-0x0000f3af, 0x0600f87b, /* 0600f87b //C 0f3af  1102 st	r0,nuof_reg */
+0x0000f3af, 0x0600f87c, /* 0600f87c //C 0f3af  1102 st	r0,nuof_reg */
 0x0000f3b0, 0x01f2f379, /* 01f2f379 //C 0f3b0  1103 jmp	cmd_rx */
 0x0000f3b1, 0x0102000e, /* 0102000e //C 0f3b1  1108 mvzl	r0,14 */
-0x0000f3b2, 0x0600f87b, /* 0600f87b //C 0f3b2  1109 st	r0,nuof_reg */
+0x0000f3b2, 0x0600f87c, /* 0600f87c //C 0f3b2  1109 st	r0,nuof_reg */
 0x0000f3b3, 0x01f2f379, /* 01f2f379 //C 0f3b3  1110 jmp	cmd_rx */
 0x0000f3b4, 0x0102000f, /* 0102000f //C 0f3b4  1115 mvzl	r0,15 */
-0x0000f3b5, 0x0600f87b, /* 0600f87b //C 0f3b5  1116 st	r0,nuof_reg */
+0x0000f3b5, 0x0600f87c, /* 0600f87c //C 0f3b5  1116 st	r0,nuof_reg */
 0x0000f3b6, 0x01f2f379, /* 01f2f379 //C 0f3b6  1117 jmp	cmd_rx */
 0x0000f3b7, 0x01020010, /* 01020010 //C 0f3b7  1122 mvzl	r0,16 */
-0x0000f3b8, 0x0600f87b, /* 0600f87b //C 0f3b8  1123 st	r0,nuof_reg */
+0x0000f3b8, 0x0600f87c, /* 0600f87c //C 0f3b8  1123 st	r0,nuof_reg */
 0x0000f3b9, 0x01f2f379, /* 01f2f379 //C 0f3b9  1124 jmp	cmd_rx */
 0x0000f3ba, 0x0ded0000, /* 0ded0000 //C 0f3ba  1129 push	lr */
 0x0000f3bb, 0x01120001, /* 01120001 //C 0f3bb  1130 mvzl	r1,version_main */
@@ -967,7 +967,7 @@ t_mem pmon[]= {
 0x0000f3c0, 0x0651c000, /* 0651c000 //C 0f3c0  1135 getbz	r5,r0,0 */
 0x0000f3c1, 0x06620200, /* 06620200 //C 0f3c1  1136 rds	r6,SFEAT1 */
 0x0000f3c2, 0x06720300, /* 06720300 //C 0f3c2  1137 rds	r7,SFEAT2 */
-0x0000f3c3, 0xf400f7ff, /* f400f7ff //C 0f3c3  1138 ces	pesf */
+0x0000f3c3, 0xf400f800, /* f400f800 //C 0f3c3  1138 ces	pesf */
 0x0000f3c4, 0x00000070, /* 00000070 //C 0f3c4  1139 db	112 */
 0x0000f3c5, 0x0000006d, /* 0000006d //C 0f3c5  1139 db	109 */
 0x0000f3c6, 0x0000006f, /* 0000006f //C 0f3c6  1139 db	111 */
@@ -1072,7 +1072,7 @@ t_mem pmon[]= {
 0x0000f429, 0x0d1d0000, /* 0d1d0000 //C 0f429  1223 push	r1 */
 0x0000f42a, 0x02090000, /* 02090000 //C 0f42a  1225 shr	r0 */
 0x0000f42b, 0x02090000, /* 02090000 //C 0f42b  1226 shr	r0 */
-0x0000f42c, 0x0112fad5, /* 0112fad5 //C 0f42c  1227 mvzl	r1,ascii2seg_table */
+0x0000f42c, 0x0112fad6, /* 0112fad6 //C 0f42c  1227 mvzl	r1,ascii2seg_table */
 0x0000f42d, 0x0a400100, /* 0a400100 //C 0f42d  1228 ld	r4,r0,r1 */
 0x0000f42e, 0x0f1d0000, /* 0f1d0000 //C 0f42e  1229 pop	r1 */
 0x0000f42f, 0x0f0d0000, /* 0f0d0000 //C 0f42f  1230 pop	r0 */
@@ -1668,7 +1668,7 @@ t_mem pmon[]= {
 0x0000f69d, 0x0d5d0000, /* 0d5d0000 //C 0f69d  2071 push	r5 */
 0x0000f69e, 0x01420000, /* 01420000 //C 0f69e  2073 mvzl	r4,0 */
 0x0000f69f, 0x020b0000, /* 020b0000 //C 0f69f  2074 sz	r0 */
-0x0000f6a0, 0x1102f8c7, /* 1102f8c7 //C 0f6a0  2075 Z1 mvzl	r0,null_str */
+0x0000f6a0, 0x1102f8c8, /* 1102f8c8 //C 0f6a0  2075 Z1 mvzl	r0,null_str */
 0x0000f6a1, 0x00200000, /* 00200000 //C 0f6a1  2076 mov	r2,r0 */
 0x0000f6a2, 0x0b148200, /* 0b148200 //C 0f6a2  2078 ld	r1,r4+,r2 */
 0x0000f6a3, 0x021b0000, /* 021b0000 //C 0f6a3  2079 sz	r1 */
@@ -1785,263 +1785,263 @@ t_mem pmon[]= {
 0x0000f712, 0x0d3d0000, /* 0d3d0000 //C 0f712  2242 push	r3 */
 0x0000f713, 0x0d4d0000, /* 0d4d0000 //C 0f713  2243 push	r4 */
 0x0000f714, 0x0d5d0000, /* 0d5d0000 //C 0f714  2244 push	r5 */
-0x0000f715, 0x0610f87d, /* 0610f87d //C 0f715  2246 st	r1,reg1 */
-0x0000f716, 0x0620f87e, /* 0620f87e //C 0f716  2247 st	r2,reg2 */
-0x0000f717, 0x0630f87f, /* 0630f87f //C 0f717  2248 st	r3,reg3 */
-0x0000f718, 0x0640f880, /* 0640f880 //C 0f718  2249 st	r4,reg4 */
-0x0000f719, 0x0650f881, /* 0650f881 //C 0f719  2250 st	r5,reg5 */
-0x0000f71a, 0x0660f882, /* 0660f882 //C 0f71a  2251 st	r6,reg6 */
-0x0000f71b, 0x0670f883, /* 0670f883 //C 0f71b  2252 st	r7,reg7 */
-0x0000f71c, 0x0680f884, /* 0680f884 //C 0f71c  2253 st	r8,reg8 */
-0x0000f71d, 0x0690f885, /* 0690f885 //C 0f71d  2254 st	r9,reg9 */
-0x0000f71e, 0x06a0f886, /* 06a0f886 //C 0f71e  2255 st	r10,reg10 */
-0x0000f71f, 0x06b0f887, /* 06b0f887 //C 0f71f  2256 st	r11,reg11 */
-0x0000f720, 0x06c0f888, /* 06c0f888 //C 0f720  2257 st	r12,reg12 */
+0x0000f715, 0x0610f87e, /* 0610f87e //C 0f715  2246 st	r1,reg1 */
+0x0000f716, 0x0620f87f, /* 0620f87f //C 0f716  2247 st	r2,reg2 */
+0x0000f717, 0x0630f880, /* 0630f880 //C 0f717  2248 st	r3,reg3 */
+0x0000f718, 0x0640f881, /* 0640f881 //C 0f718  2249 st	r4,reg4 */
+0x0000f719, 0x0650f882, /* 0650f882 //C 0f719  2250 st	r5,reg5 */
+0x0000f71a, 0x0660f883, /* 0660f883 //C 0f71a  2251 st	r6,reg6 */
+0x0000f71b, 0x0670f884, /* 0670f884 //C 0f71b  2252 st	r7,reg7 */
+0x0000f71c, 0x0680f885, /* 0680f885 //C 0f71c  2253 st	r8,reg8 */
+0x0000f71d, 0x0690f886, /* 0690f886 //C 0f71d  2254 st	r9,reg9 */
+0x0000f71e, 0x06a0f887, /* 06a0f887 //C 0f71e  2255 st	r10,reg10 */
+0x0000f71f, 0x06b0f888, /* 06b0f888 //C 0f71f  2256 st	r11,reg11 */
+0x0000f720, 0x06c0f889, /* 06c0f889 //C 0f720  2257 st	r12,reg12 */
 0x0000f721, 0x00200000, /* 00200000 //C 0f721  2259 mov	r2,r0		; pointer to format string */
-0x0000f722, 0x0112f87d, /* 0112f87d //C 0f722  2260 mvzl	r1,reg1		; pointer to params */
+0x0000f722, 0x0112f87e, /* 0112f87e //C 0f722  2260 mvzl	r1,reg1		; pointer to params */
 0x0000f723, 0x01320000, /* 01320000 //C 0f723  2261 mvzl	r3,0		; byte idx in packed str */
 0x0000f724, 0x01420000, /* 01420000 //C 0f724  2262 mvzl	r4,0		; bool: len reading mode */
-0x0000f725, 0x0630f709, /* 0630f709 //C 0f725  2264 st	r3,printf_left_align */
-0x0000f726, 0x0630f70a, /* 0630f70a //C 0f726  2265 st	r3,printf_show_sign */
-0x0000f727, 0x0630f70b, /* 0630f70b //C 0f727  2266 st	r3,printf_fill_zero */
-0x0000f728, 0x0630f70c, /* 0630f70c //C 0f728  2267 st	r3,printf_min_len */
-0x0000f729, 0x0e020000, /* 0e020000 //C 0f729  2269 ld	r0,r2		; get next char */
-0x0000f72a, 0x020b0000, /* 020b0000 //C 0f72a  2270 sz	r0		; is it EOS? */
-0x0000f72b, 0x11f2f7bc, /* 11f2f7bc //C 0f72b  2271 jz	printf_ret */
-0x0000f72c, 0x06014003, /* 06014003 //C 0f72c  2272 getbz	r0,r0,r3	; pick next byte */
-0x0000f72d, 0x020b0000, /* 020b0000 //C 0f72d  2273 sz	r0		; is it null? */
-0x0000f72e, 0x11f2f7b9, /* 11f2f7b9 //C 0f72e  2274 jz	printf_nextword	; no more non-nulls */
-0x0000f72f, 0x01080025, /* 01080025 //C 0f72f  2276 cmp	r0,'%'		; is it a format char? */
-0x0000f730, 0x21f2f7b5, /* 21f2f7b5 //C 0f730  2277 jnz	printf_print */
-0x0000f731, 0x01340001, /* 01340001 //C 0f731  2281 inc	r3 */
-0x0000f732, 0x01380004, /* 01380004 //C 0f732  2282 cmp	r3,4 */
-0x0000f733, 0x21f2f736, /* 21f2f736 //C 0f733  2283 jnz	printf_l3 */
-0x0000f734, 0x01320000, /* 01320000 //C 0f734  2285 mvzl	r3,0 */
-0x0000f735, 0x01240001, /* 01240001 //C 0f735  2286 inc	r2		; go to format char */
-0x0000f736, 0x0e020000, /* 0e020000 //C 0f736  2288 ld	r0,r2 */
-0x0000f737, 0x020b0000, /* 020b0000 //C 0f737  2289 sz	r0		; is it EOS? */
-0x0000f738, 0x11f2f7bc, /* 11f2f7bc //C 0f738  2290 jz	printf_ret */
-0x0000f739, 0x06014003, /* 06014003 //C 0f739  2291 getbz	r0,r0,r3 */
-0x0000f73a, 0x020b0000, /* 020b0000 //C 0f73a  2292 sz	r0 */
-0x0000f73b, 0x11f2f734, /* 11f2f734 //C 0f73b  2293 jz	printf_l4 */
-0x0000f73c, 0x024b0000, /* 024b0000 //C 0f73c  2296 sz	r4		; len reading? */
-0x0000f73d, 0x11f2f749, /* 11f2f749 //C 0f73d  2297 jz	printf_nolen_read */
-0x0000f73e, 0x01080030, /* 01080030 //C 0f73e  2299 cmp	r0,'0'		; when non-digit found: */
-0x0000f73f, 0x41f2f748, /* 41f2f748 //C 0f73f  2300 ULT jmp	printf_len_read_exit */
-0x0000f740, 0x01080039, /* 01080039 //C 0f740  2301 cmp	r0,'9' */
-0x0000f741, 0x91f2f748, /* 91f2f748 //C 0f741  2302 UGT jmp	printf_len_read_exit */
-0x0000f742, 0x01060030, /* 01060030 //C 0f742  2304 sub	r0,'0'		; convert to binary */
-0x0000f743, 0x0750f70c, /* 0750f70c //C 0f743  2305 ld	r5,printf_min_len ; and mix to parameter */
-0x0000f744, 0x0159000a, /* 0159000a //C 0f744  2306 mul	r5,10 */
-0x0000f745, 0x00540000, /* 00540000 //C 0f745  2307 add	r5,r0 */
-0x0000f746, 0x0650f70c, /* 0650f70c //C 0f746  2308 st	r5,printf_min_len */
-0x0000f747, 0x01f2f731, /* 01f2f731 //C 0f747  2309 jmp	printf_fmt_next */
-0x0000f748, 0x01420000, /* 01420000 //C 0f748  2311 mvzl	r4,0 */
-0x0000f749, 0x0108002b, /* 0108002b //C 0f749  2314 cmp	r0,'+' */
-0x0000f74a, 0x21f2f74e, /* 21f2f74e //C 0f74a  2315 jnz	printf_n1 */
-0x0000f74b, 0x01020001, /* 01020001 //C 0f74b  2316 mvzl	r0,1 */
-0x0000f74c, 0x0600f70a, /* 0600f70a //C 0f74c  2317 st	r0,printf_show_sign */
-0x0000f74d, 0x01f2f731, /* 01f2f731 //C 0f74d  2318 jmp	printf_fmt_next */
-0x0000f74e, 0x0108002d, /* 0108002d //C 0f74e  2320 cmp	r0,'-' */
-0x0000f74f, 0x21f2f753, /* 21f2f753 //C 0f74f  2321 jnz	printf_n2 */
-0x0000f750, 0x01020001, /* 01020001 //C 0f750  2322 mvzl	r0,1 */
-0x0000f751, 0x0600f709, /* 0600f709 //C 0f751  2323 st	r0,printf_left_align */
-0x0000f752, 0x01f2f731, /* 01f2f731 //C 0f752  2324 jmp	printf_fmt_next */
-0x0000f753, 0x01080030, /* 01080030 //C 0f753  2326 cmp	r0,'0' */
-0x0000f754, 0x21f2f758, /* 21f2f758 //C 0f754  2327 jnz	printf_n3 */
-0x0000f755, 0x01020001, /* 01020001 //C 0f755  2328 mvzl	r0,1 */
-0x0000f756, 0x0600f70b, /* 0600f70b //C 0f756  2329 st	r0,printf_fill_zero */
-0x0000f757, 0x01f2f731, /* 01f2f731 //C 0f757  2330 jmp	printf_fmt_next */
-0x0000f758, 0x01080031, /* 01080031 //C 0f758  2332 cmp	r0,'1' */
-0x0000f759, 0x41f2f75e, /* 41f2f75e //C 0f759  2333 ULT jmp	printf_n4 */
-0x0000f75a, 0x01080039, /* 01080039 //C 0f75a  2334 cmp	r0,'9' */
-0x0000f75b, 0x91f2f75e, /* 91f2f75e //C 0f75b  2335 UGT jmp	printf_n4 */
-0x0000f75c, 0x01420001, /* 01420001 //C 0f75c  2336 mvzl	r4,1 */
-0x0000f75d, 0x01f2f742, /* 01f2f742 //C 0f75d  2337 jmp	printf_add2len */
-0x0000f75e, 0x01080025, /* 01080025 //C 0f75e  2339 cmp	r0,'%'		; % is used to print % */
-0x0000f75f, 0x11f2f7b5, /* 11f2f7b5 //C 0f75f  2340 jz	printf_print */
-0x0000f760, 0x01080075, /* 01080075 //C 0f760  2342 cmp	r0,'u'		; u print unsigned in decimal */
-0x0000f761, 0x21f2f768, /* 21f2f768 //C 0f761  2343 jnz	printf_notu */
-0x0000f762, 0x0e010000, /* 0e010000 //C 0f762  2347 ld	r0,r1 */
-0x0000f763, 0x01140001, /* 01140001 //C 0f763  2348 inc	r1 */
-0x0000f764, 0x0400f59a, /* 0400f59a //C 0f764  2349 call	utoa */
-0x0000f765, 0x0102f5d2, /* 0102f5d2 //C 0f765  2350 mvzl	r0,itoa_buffer */
-0x0000f766, 0x0400f7cb, /* 0400f7cb //C 0f766  2351 call	printf_pr */
-0x0000f767, 0x01f2f7b6, /* 01f2f7b6 //C 0f767  2352 jmp	printf_next */
-0x0000f768, 0x01080064, /* 01080064 //C 0f768  2355 cmp	r0,'d'		;d print signed in decimal */
-0x0000f769, 0x21f2f77a, /* 21f2f77a //C 0f769  2356 jnz	printf_notd */
-0x0000f76a, 0x0e010000, /* 0e010000 //C 0f76a  2360 ld	r0,r1 */
-0x0000f76b, 0x01140001, /* 01140001 //C 0f76b  2361 inc	r1 */
-0x0000f76c, 0x0750f70a, /* 0750f70a //C 0f76c  2362 ld	r5,printf_show_sign */
-0x0000f76d, 0x025b0000, /* 025b0000 //C 0f76d  2363 sz	r5 */
-0x0000f76e, 0x21f2f774, /* 21f2f774 //C 0f76e  2364 jnz	printf_d_sign */
-0x0000f76f, 0x020b0000, /* 020b0000 //C 0f76f  2366 sz	r0 */
-0x0000f770, 0x51520000, /* 51520000 //C 0f770  2367 S1 mvzl	r5,0 */
-0x0000f771, 0x5650f70b, /* 5650f70b //C 0f771  2368 S1 st	r5,printf_fill_zero */
-0x0000f772, 0x0400f57c, /* 0400f57c //C 0f772  2369 call	itoa */
-0x0000f773, 0x01f2f777, /* 01f2f777 //C 0f773  2370 jmp	printf_d_pr */
-0x0000f774, 0x01520000, /* 01520000 //C 0f774  2372 mvzl	r5,0 */
-0x0000f775, 0x0650f70b, /* 0650f70b //C 0f775  2373 st	r5,printf_fill_zero */
-0x0000f776, 0x0400f58d, /* 0400f58d //C 0f776  2374 call	itosa */
-0x0000f777, 0x0102f5d2, /* 0102f5d2 //C 0f777  2376 mvzl	r0,itoa_buffer */
-0x0000f778, 0x0400f7cb, /* 0400f7cb //C 0f778  2377 call	printf_pr */
-0x0000f779, 0x01f2f7b6, /* 01f2f7b6 //C 0f779  2378 jmp	printf_next */
-0x0000f77a, 0x01080078, /* 01080078 //C 0f77a  2381 cmp	r0,'x' */
-0x0000f77b, 0x21f2f78e, /* 21f2f78e //C 0f77b  2382 jnz	printf_notx */
-0x0000f77c, 0x0e010000, /* 0e010000 //C 0f77c  2386 ld	r0,r1 */
-0x0000f77d, 0x01140001, /* 01140001 //C 0f77d  2387 inc	r1 */
-0x0000f77e, 0x01520000, /* 01520000 //C 0f77e  2388 mvzl	r5,0 */
-0x0000f77f, 0x0650f70a, /* 0650f70a //C 0f77f  2389 st	r5,printf_show_sign */
-0x0000f780, 0x0750f70c, /* 0750f70c //C 0f780  2390 ld	r5,printf_min_len */
-0x0000f781, 0x025b0000, /* 025b0000 //C 0f781  2391 sz	r5 */
-0x0000f782, 0x21f2f786, /* 21f2f786 //C 0f782  2392 jnz	printf_x_len */
-0x0000f783, 0x0400f5fe, /* 0400f5fe //C 0f783  2394 call	utoh */
-0x0000f784, 0x0102f5d2, /* 0102f5d2 //C 0f784  2395 mvzl	r0,itoa_buffer */
-0x0000f785, 0x01f2f78c, /* 01f2f78c //C 0f785  2396 jmp	printf_x_do */
-0x0000f786, 0x01580008, /* 01580008 //C 0f786  2398 cmp	r5,8 */
-0x0000f787, 0x91f2f783, /* 91f2f783 //C 0f787  2399 UGT jmp	printf_x_def */
-0x0000f788, 0x0400f629, /* 0400f629 //C 0f788  2401 call	utoh32 */
-0x0000f789, 0x0102f5d2, /* 0102f5d2 //C 0f789  2402 mvzl	r0,itoa_buffer */
-0x0000f78a, 0x01040008, /* 01040008 //C 0f78a  2403 add	r0,8 */
-0x0000f78b, 0x00060500, /* 00060500 //C 0f78b  2404 sub	r0,r5 */
-0x0000f78c, 0x0400f7cb, /* 0400f7cb //C 0f78c  2406 call	printf_pr */
-0x0000f78d, 0x01f2f7b6, /* 01f2f7b6 //C 0f78d  2407 jmp	printf_next */
-0x0000f78e, 0x01080073, /* 01080073 //C 0f78e  2410 cmp	r0,'s' */
-0x0000f78f, 0x21f2f796, /* 21f2f796 //C 0f78f  2411 jnz	printf_nots */
-0x0000f790, 0x0e010000, /* 0e010000 //C 0f790  2415 ld	r0,r1 */
-0x0000f791, 0x01140001, /* 01140001 //C 0f791  2416 inc	r1 */
-0x0000f792, 0x01520000, /* 01520000 //C 0f792  2417 mvzl	r5,0 */
-0x0000f793, 0x0650f70b, /* 0650f70b //C 0f793  2418 st	r5,printf_fill_zero */
-0x0000f794, 0x0400f7cb, /* 0400f7cb //C 0f794  2419 call	printf_pr */
-0x0000f795, 0x01f2f7b6, /* 01f2f7b6 //C 0f795  2420 jmp	printf_next */
-0x0000f796, 0x01080063, /* 01080063 //C 0f796  2423 cmp	r0,'c' */
-0x0000f797, 0x21f2f79c, /* 21f2f79c //C 0f797  2424 jnz	printf_notc */
-0x0000f798, 0x0e010000, /* 0e010000 //C 0f798  2428 ld	r0,r1 */
-0x0000f799, 0x01140001, /* 01140001 //C 0f799  2429 inc	r1 */
-0x0000f79a, 0x0400f690, /* 0400f690 //C 0f79a  2430 call	putchar */
-0x0000f79b, 0x01f2f7b6, /* 01f2f7b6 //C 0f79b  2431 jmp	printf_next */
-0x0000f79c, 0x01080062, /* 01080062 //C 0f79c  2434 cmp	r0,'b' */
-0x0000f79d, 0x21f2f7ac, /* 21f2f7ac //C 0f79d  2435 jnz	printf_notb */
-0x0000f79e, 0x0e010000, /* 0e010000 //C 0f79e  2439 ld	r0,r1 */
-0x0000f79f, 0x01140001, /* 01140001 //C 0f79f  2440 inc	r1 */
-0x0000f7a0, 0x01520000, /* 01520000 //C 0f7a0  2441 mvzl	r5,0 */
-0x0000f7a1, 0x0650f70a, /* 0650f70a //C 0f7a1  2442 st	r5,printf_show_sign */
-0x0000f7a2, 0x0400f66e, /* 0400f66e //C 0f7a2  2443 call	btoa */
-0x0000f7a3, 0x0102f5d2, /* 0102f5d2 //C 0f7a3  2444 mvzl	r0,itoa_buffer */
-0x0000f7a4, 0x0750f70c, /* 0750f70c //C 0f7a4  2445 ld	r5,printf_min_len */
-0x0000f7a5, 0x025b0000, /* 025b0000 //C 0f7a5  2446 sz	r5 */
-0x0000f7a6, 0x11f2f7aa, /* 11f2f7aa //C 0f7a6  2447 jz	printf_b_do */
-0x0000f7a7, 0x01580020, /* 01580020 //C 0f7a7  2449 cmp	r5,32 */
-0x0000f7a8, 0xa10a0020, /* a10a0020 //C 0f7a8  2452 ULE plus r0,32 */
-0x0000f7a9, 0xa0060500, /* a0060500 //C 0f7a9  2453 ULE sub	r0,r5 */
-0x0000f7aa, 0x0400f7cb, /* 0400f7cb //C 0f7aa  2455 call	printf_pr */
-0x0000f7ab, 0x01f2f7b6, /* 01f2f7b6 //C 0f7ab  2456 jmp	printf_next */
-0x0000f7ac, 0x01080070, /* 01080070 //C 0f7ac  2459 cmp	r0,'p' */
-0x0000f7ad, 0x21f2f7b4, /* 21f2f7b4 //C 0f7ad  2460 jnz	printf_notp */
-0x0000f7ae, 0x0e010000, /* 0e010000 //C 0f7ae  2464 ld	r0,r1 */
-0x0000f7af, 0x01140001, /* 01140001 //C 0f7af  2465 inc	r1 */
-0x0000f7b0, 0x0400f64a, /* 0400f64a //C 0f7b0  2466 call	ptoa */
-0x0000f7b1, 0x0102f5d2, /* 0102f5d2 //C 0f7b1  2467 mvzl	r0,itoa_buffer */
-0x0000f7b2, 0x0400f7cb, /* 0400f7cb //C 0f7b2  2468 call	printf_pr */
-0x0000f7b3, 0x01f2f7b6, /* 01f2f7b6 //C 0f7b3  2469 jmp	printf_next */
-0x0000f7b4, 0x01f2f7b6, /* 01f2f7b6 //C 0f7b4  2472 jmp	printf_next */
-0x0000f7b5, 0x0400f690, /* 0400f690 //C 0f7b5  2475 call	putchar		; print actual char */
-0x0000f7b6, 0x01340001, /* 01340001 //C 0f7b6  2477 inc	r3		; next byte in word */
-0x0000f7b7, 0x01380004, /* 01380004 //C 0f7b7  2478 cmp	r3,4		; all 4 processed? */
-0x0000f7b8, 0x21f2f729, /* 21f2f729 //C 0f7b8  2479 jnz	printf_cyc */
-0x0000f7b9, 0x01240001, /* 01240001 //C 0f7b9  2481 inc	r2		; inc string ptr */
-0x0000f7ba, 0x01320000, /* 01320000 //C 0f7ba  2482 mvzl	r3,0		; restart byte idx */
-0x0000f7bb, 0x01f2f729, /* 01f2f729 //C 0f7bb  2483 jmp	printf_cyc */
-0x0000f7bc, 0x07c0f888, /* 07c0f888 //C 0f7bc  2486 ld	r12,reg12 */
-0x0000f7bd, 0x07b0f887, /* 07b0f887 //C 0f7bd  2487 ld	r11,reg11 */
-0x0000f7be, 0x07a0f886, /* 07a0f886 //C 0f7be  2488 ld	r10,reg10 */
-0x0000f7bf, 0x0790f885, /* 0790f885 //C 0f7bf  2489 ld	r9,reg9 */
-0x0000f7c0, 0x0780f884, /* 0780f884 //C 0f7c0  2490 ld	r8,reg8 */
-0x0000f7c1, 0x0770f883, /* 0770f883 //C 0f7c1  2491 ld	r7,reg7 */
-0x0000f7c2, 0x0760f882, /* 0760f882 //C 0f7c2  2492 ld	r6,reg6 */
-0x0000f7c3, 0x0750f881, /* 0750f881 //C 0f7c3  2493 ld	r5,reg5 */
-0x0000f7c4, 0x0740f880, /* 0740f880 //C 0f7c4  2494 ld	r4,reg4 */
-0x0000f7c5, 0x0f5d0000, /* 0f5d0000 //C 0f7c5  2496 pop	r5 */
-0x0000f7c6, 0x0f4d0000, /* 0f4d0000 //C 0f7c6  2497 pop	r4 */
-0x0000f7c7, 0x0f3d0000, /* 0f3d0000 //C 0f7c7  2498 pop	r3 */
-0x0000f7c8, 0x0f1d0000, /* 0f1d0000 //C 0f7c8  2499 pop	r1 */
-0x0000f7c9, 0x0f0d0000, /* 0f0d0000 //C 0f7c9  2500 pop	r0 */
-0x0000f7ca, 0x0ffd0000, /* 0ffd0000 //C 0f7ca  2501 pop	pc */
-0x0000f7cb, 0x020b0000, /* 020b0000 //C 0f7cb  2505 sz	r0 */
-0x0000f7cc, 0x10f00e00, /* 10f00e00 //C 0f7cc  2506 Z ret */
-0x0000f7cd, 0x0ded0000, /* 0ded0000 //C 0f7cd  2507 push	lr */
-0x0000f7ce, 0x0d0d0000, /* 0d0d0000 //C 0f7ce  2508 push	r0 */
-0x0000f7cf, 0x0d1d0000, /* 0d1d0000 //C 0f7cf  2509 push	r1 */
-0x0000f7d0, 0x0d2d0000, /* 0d2d0000 //C 0f7d0  2510 push	r2 */
-0x0000f7d1, 0x0d4d0000, /* 0d4d0000 //C 0f7d1  2511 push	r4 */
-0x0000f7d2, 0x0710f70c, /* 0710f70c //C 0f7d2  2512 ld	r1,printf_min_len */
-0x0000f7d3, 0x021b0000, /* 021b0000 //C 0f7d3  2513 sz	r1 */
-0x0000f7d4, 0x21f2f7d7, /* 21f2f7d7 //C 0f7d4  2514 jnz	pp_use_len */
-0x0000f7d5, 0x0400f697, /* 0400f697 //C 0f7d5  2516 call	prints */
-0x0000f7d6, 0x01f2f7e5, /* 01f2f7e5 //C 0f7d6  2517 jmp	pp_ret */
-0x0000f7d7, 0x0400f502, /* 0400f502 //C 0f7d7  2519 call	strlen		; R4= str length */
-0x0000f7d8, 0x00160400, /* 00160400 //C 0f7d8  2520 sub	r1,r4		; R1= fill length */
-0x0000f7d9, 0x0720f709, /* 0720f709 //C 0f7d9  2521 ld	r2,printf_left_align */
-0x0000f7da, 0x022b0000, /* 022b0000 //C 0f7da  2522 sz	r2 */
-0x0000f7db, 0x21f2f7e2, /* 21f2f7e2 //C 0f7db  2523 jnz	pp_left */
-0x0000f7dc, 0x0d0d0000, /* 0d0d0000 //C 0f7dc  2525 push	r0 */
-0x0000f7dd, 0x00000100, /* 00000100 //C 0f7dd  2526 mov	r0,r1 */
-0x0000f7de, 0x0400f7ea, /* 0400f7ea //C 0f7de  2527 call	printf_fill */
-0x0000f7df, 0x0f0d0000, /* 0f0d0000 //C 0f7df  2528 pop	r0 */
-0x0000f7e0, 0x0400f697, /* 0400f697 //C 0f7e0  2529 call	prints */
-0x0000f7e1, 0x01f2f7e5, /* 01f2f7e5 //C 0f7e1  2530 jmp	pp_ret */
-0x0000f7e2, 0x0400f697, /* 0400f697 //C 0f7e2  2532 call	prints */
-0x0000f7e3, 0x00000100, /* 00000100 //C 0f7e3  2533 mov	r0,r1 */
-0x0000f7e4, 0x0400f7ea, /* 0400f7ea //C 0f7e4  2534 call	printf_fill */
-0x0000f7e5, 0x0f4d0000, /* 0f4d0000 //C 0f7e5  2536 pop	r4 */
-0x0000f7e6, 0x0f2d0000, /* 0f2d0000 //C 0f7e6  2537 pop	r2 */
-0x0000f7e7, 0x0f1d0000, /* 0f1d0000 //C 0f7e7  2538 pop	r1 */
-0x0000f7e8, 0x0f0d0000, /* 0f0d0000 //C 0f7e8  2539 pop	r0 */
-0x0000f7e9, 0x0ffd0000, /* 0ffd0000 //C 0f7e9  2540 pop	pc */
-0x0000f7ea, 0x020b0000, /* 020b0000 //C 0f7ea  2544 sz	r0 */
-0x0000f7eb, 0x50f00e00, /* 50f00e00 //C 0f7eb  2545 S1 ret */
-0x0000f7ec, 0x10f00e00, /* 10f00e00 //C 0f7ec  2546 Z ret */
-0x0000f7ed, 0x0ded0000, /* 0ded0000 //C 0f7ed  2547 push	lr */
-0x0000f7ee, 0x0d0d0000, /* 0d0d0000 //C 0f7ee  2548 push	r0 */
-0x0000f7ef, 0x0d1d0000, /* 0d1d0000 //C 0f7ef  2549 push	r1 */
-0x0000f7f0, 0x00100000, /* 00100000 //C 0f7f0  2550 mov	r1,r0 */
-0x0000f7f1, 0x0700f709, /* 0700f709 //C 0f7f1  2551 ld	r0,printf_left_align */
-0x0000f7f2, 0x020b0000, /* 020b0000 //C 0f7f2  2552 sz	r0 */
-0x0000f7f3, 0x21020020, /* 21020020 //C 0f7f3  2553 NZ mvzl	r0,32 */
-0x0000f7f4, 0x21f2f7f9, /* 21f2f7f9 //C 0f7f4  2554 jnz	pf_cyc */
-0x0000f7f5, 0x0700f70b, /* 0700f70b //C 0f7f5  2555 ld	r0,printf_fill_zero */
-0x0000f7f6, 0x020b0000, /* 020b0000 //C 0f7f6  2556 sz	r0 */
-0x0000f7f7, 0x21020030, /* 21020030 //C 0f7f7  2557 NZ mvzl r0,'0' */
-0x0000f7f8, 0x11020020, /* 11020020 //C 0f7f8  2558 Z mvzl	r0,32 */
-0x0000f7f9, 0x0400f690, /* 0400f690 //C 0f7f9  2559 pf_cyc:	call	putchar */
-0x0000f7fa, 0x0114ffff, /* 0114ffff //C 0f7fa  2560 dec	r1 */
-0x0000f7fb, 0x21f2f7f9, /* 21f2f7f9 //C 0f7fb  2561 jnz	pf_cyc */
-0x0000f7fc, 0x0f1d0000, /* 0f1d0000 //C 0f7fc  2562 pop	r1 */
-0x0000f7fd, 0x0f0d0000, /* 0f0d0000 //C 0f7fd  2563 pop	r0 */
-0x0000f7fe, 0x0ffd0000, /* 0ffd0000 //C 0f7fe  2564 pop	pc */
-0x0000f7ff, 0x0d0d0000, /* 0d0d0000 //C 0f7ff  2567 push	r0 */
-0x0000f800, 0x0d2d0000, /* 0d2d0000 //C 0f800  2568 push	r2 */
-0x0000f801, 0x00000e00, /* 00000e00 //C 0f801  2569 mov	r0,LR */
-0x0000f802, 0x0400f70d, /* 0400f70d //C 0f802  2570 call	printf */
-0x0000f803, 0x01240001, /* 01240001 //C 0f803  2571 inc	r2 */
-0x0000f804, 0x00e00200, /* 00e00200 //C 0f804  2572 mov	LR,r2 */
-0x0000f805, 0x0f2d0000, /* 0f2d0000 //C 0f805  2573 pop	r2 */
-0x0000f806, 0x0f0d0000, /* 0f0d0000 //C 0f806  2574 pop	r0 */
-0x0000f807, 0x00f00e00, /* 00f00e00 //C 0f807  2575 ret */
-0x0000f808, 0x0d1d0000, /* 0d1d0000 //C 0f808  2579 push	r1 */
-0x0000f809, 0x01020005, /* 01020005 //C 0f809  2580 mvzl	r0,version_sub */
-0x0000f80a, 0x01120001, /* 01120001 //C 0f80a  2581 mvzl	r1,version_main */
-0x0000f80b, 0x07018101, /* 07018101 //C 0f80b  2582 putb	r0,r1,1 */
-0x0000f80c, 0x0f1d0000, /* 0f1d0000 //C 0f80c  2583 pop	r1 */
-0x0000f80d, 0x00f00e00, /* 00f00e00 //C 0f80d  2584 ret */
-0x0000f80e, 0x00000000, /* 00000000 //C 0f80e  2589 line:		ds	100		; line buffer */
-0x0000f872, 0x00000000, /* 00000000 //C 0f872  2590 line_ptr:	ds	1		; line pointer (index) */
-0x0000f873, 0x00000000, /* 00000000 //C 0f873  2591 at_eol:		ds	1		; bool, true if EOL arrived */
-0x0000f874, 0x00000000, /* 00000000 //C 0f874  2592 words:		ds	5		; Tokens of line */
-0x0000f879, 0x00000000, /* 00000000 //C 0f879  2593 echo:		ds	1		; bool, do echo or not */
-0x0000f87a, 0x00000000, /* 00000000 //C 0f87a  2594 dd	0 */
+0x0000f725, 0x0e020000, /* 0e020000 //C 0f725  2265 ld	r0,r2		; get next char */
+0x0000f726, 0x020b0000, /* 020b0000 //C 0f726  2266 sz	r0		; is it EOS? */
+0x0000f727, 0x11f2f7bd, /* 11f2f7bd //C 0f727  2267 jz	printf_ret */
+0x0000f728, 0x06014003, /* 06014003 //C 0f728  2268 getbz	r0,r0,r3	; pick next byte */
+0x0000f729, 0x020b0000, /* 020b0000 //C 0f729  2269 sz	r0		; is it null? */
+0x0000f72a, 0x11f2f7ba, /* 11f2f7ba //C 0f72a  2270 jz	printf_nextword	; no more non-nulls */
+0x0000f72b, 0x01080025, /* 01080025 //C 0f72b  2272 cmp	r0,'%'		; is it a format char? */
+0x0000f72c, 0x21f2f7b6, /* 21f2f7b6 //C 0f72c  2273 jnz	printf_print */
+0x0000f72d, 0x01520000, /* 01520000 //C 0f72d  2276 mvzl	r5,0 */
+0x0000f72e, 0x0650f709, /* 0650f709 //C 0f72e  2277 st	r5,printf_left_align */
+0x0000f72f, 0x0650f70a, /* 0650f70a //C 0f72f  2278 st	r5,printf_show_sign */
+0x0000f730, 0x0650f70b, /* 0650f70b //C 0f730  2279 st	r5,printf_fill_zero */
+0x0000f731, 0x0650f70c, /* 0650f70c //C 0f731  2280 st	r5,printf_min_len */
+0x0000f732, 0x01340001, /* 01340001 //C 0f732  2282 inc	r3 */
+0x0000f733, 0x01380004, /* 01380004 //C 0f733  2283 cmp	r3,4 */
+0x0000f734, 0x21f2f737, /* 21f2f737 //C 0f734  2284 jnz	printf_l3 */
+0x0000f735, 0x01320000, /* 01320000 //C 0f735  2286 mvzl	r3,0 */
+0x0000f736, 0x01240001, /* 01240001 //C 0f736  2287 inc	r2		; go to format char */
+0x0000f737, 0x0e020000, /* 0e020000 //C 0f737  2289 ld	r0,r2 */
+0x0000f738, 0x020b0000, /* 020b0000 //C 0f738  2290 sz	r0		; is it EOS? */
+0x0000f739, 0x11f2f7bd, /* 11f2f7bd //C 0f739  2291 jz	printf_ret */
+0x0000f73a, 0x06014003, /* 06014003 //C 0f73a  2292 getbz	r0,r0,r3 */
+0x0000f73b, 0x020b0000, /* 020b0000 //C 0f73b  2293 sz	r0 */
+0x0000f73c, 0x11f2f735, /* 11f2f735 //C 0f73c  2294 jz	printf_l4 */
+0x0000f73d, 0x024b0000, /* 024b0000 //C 0f73d  2297 sz	r4		; len reading? */
+0x0000f73e, 0x11f2f74a, /* 11f2f74a //C 0f73e  2298 jz	printf_nolen_read */
+0x0000f73f, 0x01080030, /* 01080030 //C 0f73f  2300 cmp	r0,'0'		; when non-digit found: */
+0x0000f740, 0x41f2f749, /* 41f2f749 //C 0f740  2301 ULT jmp	printf_len_read_exit */
+0x0000f741, 0x01080039, /* 01080039 //C 0f741  2302 cmp	r0,'9' */
+0x0000f742, 0x91f2f749, /* 91f2f749 //C 0f742  2303 UGT jmp	printf_len_read_exit */
+0x0000f743, 0x01060030, /* 01060030 //C 0f743  2305 sub	r0,'0'		; convert to binary */
+0x0000f744, 0x0750f70c, /* 0750f70c //C 0f744  2306 ld	r5,printf_min_len ; and mix to parameter */
+0x0000f745, 0x0159000a, /* 0159000a //C 0f745  2307 mul	r5,10 */
+0x0000f746, 0x00540000, /* 00540000 //C 0f746  2308 add	r5,r0 */
+0x0000f747, 0x0650f70c, /* 0650f70c //C 0f747  2309 st	r5,printf_min_len */
+0x0000f748, 0x01f2f732, /* 01f2f732 //C 0f748  2310 jmp	printf_fmt_next */
+0x0000f749, 0x01420000, /* 01420000 //C 0f749  2312 mvzl	r4,0 */
+0x0000f74a, 0x0108002b, /* 0108002b //C 0f74a  2315 cmp	r0,'+' */
+0x0000f74b, 0x21f2f74f, /* 21f2f74f //C 0f74b  2316 jnz	printf_n1 */
+0x0000f74c, 0x01020001, /* 01020001 //C 0f74c  2317 mvzl	r0,1 */
+0x0000f74d, 0x0600f70a, /* 0600f70a //C 0f74d  2318 st	r0,printf_show_sign */
+0x0000f74e, 0x01f2f732, /* 01f2f732 //C 0f74e  2319 jmp	printf_fmt_next */
+0x0000f74f, 0x0108002d, /* 0108002d //C 0f74f  2321 cmp	r0,'-' */
+0x0000f750, 0x21f2f754, /* 21f2f754 //C 0f750  2322 jnz	printf_n2 */
+0x0000f751, 0x01020001, /* 01020001 //C 0f751  2323 mvzl	r0,1 */
+0x0000f752, 0x0600f709, /* 0600f709 //C 0f752  2324 st	r0,printf_left_align */
+0x0000f753, 0x01f2f732, /* 01f2f732 //C 0f753  2325 jmp	printf_fmt_next */
+0x0000f754, 0x01080030, /* 01080030 //C 0f754  2327 cmp	r0,'0' */
+0x0000f755, 0x21f2f759, /* 21f2f759 //C 0f755  2328 jnz	printf_n3 */
+0x0000f756, 0x01020001, /* 01020001 //C 0f756  2329 mvzl	r0,1 */
+0x0000f757, 0x0600f70b, /* 0600f70b //C 0f757  2330 st	r0,printf_fill_zero */
+0x0000f758, 0x01f2f732, /* 01f2f732 //C 0f758  2331 jmp	printf_fmt_next */
+0x0000f759, 0x01080031, /* 01080031 //C 0f759  2333 cmp	r0,'1' */
+0x0000f75a, 0x41f2f75f, /* 41f2f75f //C 0f75a  2334 ULT jmp	printf_n4 */
+0x0000f75b, 0x01080039, /* 01080039 //C 0f75b  2335 cmp	r0,'9' */
+0x0000f75c, 0x91f2f75f, /* 91f2f75f //C 0f75c  2336 UGT jmp	printf_n4 */
+0x0000f75d, 0x01420001, /* 01420001 //C 0f75d  2337 mvzl	r4,1 */
+0x0000f75e, 0x01f2f743, /* 01f2f743 //C 0f75e  2338 jmp	printf_add2len */
+0x0000f75f, 0x01080025, /* 01080025 //C 0f75f  2340 cmp	r0,'%'		; % is used to print % */
+0x0000f760, 0x11f2f7b6, /* 11f2f7b6 //C 0f760  2341 jz	printf_print */
+0x0000f761, 0x01080075, /* 01080075 //C 0f761  2343 cmp	r0,'u'		; u print unsigned in decimal */
+0x0000f762, 0x21f2f769, /* 21f2f769 //C 0f762  2344 jnz	printf_notu */
+0x0000f763, 0x0e010000, /* 0e010000 //C 0f763  2348 ld	r0,r1 */
+0x0000f764, 0x01140001, /* 01140001 //C 0f764  2349 inc	r1 */
+0x0000f765, 0x0400f59a, /* 0400f59a //C 0f765  2350 call	utoa */
+0x0000f766, 0x0102f5d2, /* 0102f5d2 //C 0f766  2351 mvzl	r0,itoa_buffer */
+0x0000f767, 0x0400f7cc, /* 0400f7cc //C 0f767  2352 call	printf_pr */
+0x0000f768, 0x01f2f7b7, /* 01f2f7b7 //C 0f768  2353 jmp	printf_next */
+0x0000f769, 0x01080064, /* 01080064 //C 0f769  2356 cmp	r0,'d'		;d print signed in decimal */
+0x0000f76a, 0x21f2f77b, /* 21f2f77b //C 0f76a  2357 jnz	printf_notd */
+0x0000f76b, 0x0e010000, /* 0e010000 //C 0f76b  2361 ld	r0,r1 */
+0x0000f76c, 0x01140001, /* 01140001 //C 0f76c  2362 inc	r1 */
+0x0000f76d, 0x0750f70a, /* 0750f70a //C 0f76d  2363 ld	r5,printf_show_sign */
+0x0000f76e, 0x025b0000, /* 025b0000 //C 0f76e  2364 sz	r5 */
+0x0000f76f, 0x21f2f775, /* 21f2f775 //C 0f76f  2365 jnz	printf_d_sign */
+0x0000f770, 0x020b0000, /* 020b0000 //C 0f770  2367 sz	r0 */
+0x0000f771, 0x51520000, /* 51520000 //C 0f771  2368 S1 mvzl	r5,0 */
+0x0000f772, 0x5650f70b, /* 5650f70b //C 0f772  2369 S1 st	r5,printf_fill_zero */
+0x0000f773, 0x0400f57c, /* 0400f57c //C 0f773  2370 call	itoa */
+0x0000f774, 0x01f2f778, /* 01f2f778 //C 0f774  2371 jmp	printf_d_pr */
+0x0000f775, 0x01520000, /* 01520000 //C 0f775  2373 mvzl	r5,0 */
+0x0000f776, 0x0650f70b, /* 0650f70b //C 0f776  2374 st	r5,printf_fill_zero */
+0x0000f777, 0x0400f58d, /* 0400f58d //C 0f777  2375 call	itosa */
+0x0000f778, 0x0102f5d2, /* 0102f5d2 //C 0f778  2377 mvzl	r0,itoa_buffer */
+0x0000f779, 0x0400f7cc, /* 0400f7cc //C 0f779  2378 call	printf_pr */
+0x0000f77a, 0x01f2f7b7, /* 01f2f7b7 //C 0f77a  2379 jmp	printf_next */
+0x0000f77b, 0x01080078, /* 01080078 //C 0f77b  2382 cmp	r0,'x' */
+0x0000f77c, 0x21f2f78f, /* 21f2f78f //C 0f77c  2383 jnz	printf_notx */
+0x0000f77d, 0x0e010000, /* 0e010000 //C 0f77d  2387 ld	r0,r1 */
+0x0000f77e, 0x01140001, /* 01140001 //C 0f77e  2388 inc	r1 */
+0x0000f77f, 0x01520000, /* 01520000 //C 0f77f  2389 mvzl	r5,0 */
+0x0000f780, 0x0650f70a, /* 0650f70a //C 0f780  2390 st	r5,printf_show_sign */
+0x0000f781, 0x0750f70c, /* 0750f70c //C 0f781  2391 ld	r5,printf_min_len */
+0x0000f782, 0x025b0000, /* 025b0000 //C 0f782  2392 sz	r5 */
+0x0000f783, 0x21f2f787, /* 21f2f787 //C 0f783  2393 jnz	printf_x_len */
+0x0000f784, 0x0400f5fe, /* 0400f5fe //C 0f784  2395 call	utoh */
+0x0000f785, 0x0102f5d2, /* 0102f5d2 //C 0f785  2396 mvzl	r0,itoa_buffer */
+0x0000f786, 0x01f2f78d, /* 01f2f78d //C 0f786  2397 jmp	printf_x_do */
+0x0000f787, 0x01580008, /* 01580008 //C 0f787  2399 cmp	r5,8 */
+0x0000f788, 0x91f2f784, /* 91f2f784 //C 0f788  2400 UGT jmp	printf_x_def */
+0x0000f789, 0x0400f629, /* 0400f629 //C 0f789  2402 call	utoh32 */
+0x0000f78a, 0x0102f5d2, /* 0102f5d2 //C 0f78a  2403 mvzl	r0,itoa_buffer */
+0x0000f78b, 0x01040008, /* 01040008 //C 0f78b  2404 add	r0,8 */
+0x0000f78c, 0x00060500, /* 00060500 //C 0f78c  2405 sub	r0,r5 */
+0x0000f78d, 0x0400f7cc, /* 0400f7cc //C 0f78d  2407 call	printf_pr */
+0x0000f78e, 0x01f2f7b7, /* 01f2f7b7 //C 0f78e  2408 jmp	printf_next */
+0x0000f78f, 0x01080073, /* 01080073 //C 0f78f  2411 cmp	r0,'s' */
+0x0000f790, 0x21f2f797, /* 21f2f797 //C 0f790  2412 jnz	printf_nots */
+0x0000f791, 0x0e010000, /* 0e010000 //C 0f791  2416 ld	r0,r1 */
+0x0000f792, 0x01140001, /* 01140001 //C 0f792  2417 inc	r1 */
+0x0000f793, 0x01520000, /* 01520000 //C 0f793  2418 mvzl	r5,0 */
+0x0000f794, 0x0650f70b, /* 0650f70b //C 0f794  2419 st	r5,printf_fill_zero */
+0x0000f795, 0x0400f7cc, /* 0400f7cc //C 0f795  2420 call	printf_pr */
+0x0000f796, 0x01f2f7b7, /* 01f2f7b7 //C 0f796  2421 jmp	printf_next */
+0x0000f797, 0x01080063, /* 01080063 //C 0f797  2424 cmp	r0,'c' */
+0x0000f798, 0x21f2f79d, /* 21f2f79d //C 0f798  2425 jnz	printf_notc */
+0x0000f799, 0x0e010000, /* 0e010000 //C 0f799  2429 ld	r0,r1 */
+0x0000f79a, 0x01140001, /* 01140001 //C 0f79a  2430 inc	r1 */
+0x0000f79b, 0x0400f690, /* 0400f690 //C 0f79b  2431 call	putchar */
+0x0000f79c, 0x01f2f7b7, /* 01f2f7b7 //C 0f79c  2432 jmp	printf_next */
+0x0000f79d, 0x01080062, /* 01080062 //C 0f79d  2435 cmp	r0,'b' */
+0x0000f79e, 0x21f2f7ad, /* 21f2f7ad //C 0f79e  2436 jnz	printf_notb */
+0x0000f79f, 0x0e010000, /* 0e010000 //C 0f79f  2440 ld	r0,r1 */
+0x0000f7a0, 0x01140001, /* 01140001 //C 0f7a0  2441 inc	r1 */
+0x0000f7a1, 0x01520000, /* 01520000 //C 0f7a1  2442 mvzl	r5,0 */
+0x0000f7a2, 0x0650f70a, /* 0650f70a //C 0f7a2  2443 st	r5,printf_show_sign */
+0x0000f7a3, 0x0400f66e, /* 0400f66e //C 0f7a3  2444 call	btoa */
+0x0000f7a4, 0x0102f5d2, /* 0102f5d2 //C 0f7a4  2445 mvzl	r0,itoa_buffer */
+0x0000f7a5, 0x0750f70c, /* 0750f70c //C 0f7a5  2446 ld	r5,printf_min_len */
+0x0000f7a6, 0x025b0000, /* 025b0000 //C 0f7a6  2447 sz	r5 */
+0x0000f7a7, 0x11f2f7ab, /* 11f2f7ab //C 0f7a7  2448 jz	printf_b_do */
+0x0000f7a8, 0x01580020, /* 01580020 //C 0f7a8  2450 cmp	r5,32 */
+0x0000f7a9, 0xa10a0020, /* a10a0020 //C 0f7a9  2453 ULE plus r0,32 */
+0x0000f7aa, 0xa0060500, /* a0060500 //C 0f7aa  2454 ULE sub	r0,r5 */
+0x0000f7ab, 0x0400f7cc, /* 0400f7cc //C 0f7ab  2456 call	printf_pr */
+0x0000f7ac, 0x01f2f7b7, /* 01f2f7b7 //C 0f7ac  2457 jmp	printf_next */
+0x0000f7ad, 0x01080070, /* 01080070 //C 0f7ad  2460 cmp	r0,'p' */
+0x0000f7ae, 0x21f2f7b5, /* 21f2f7b5 //C 0f7ae  2461 jnz	printf_notp */
+0x0000f7af, 0x0e010000, /* 0e010000 //C 0f7af  2465 ld	r0,r1 */
+0x0000f7b0, 0x01140001, /* 01140001 //C 0f7b0  2466 inc	r1 */
+0x0000f7b1, 0x0400f64a, /* 0400f64a //C 0f7b1  2467 call	ptoa */
+0x0000f7b2, 0x0102f5d2, /* 0102f5d2 //C 0f7b2  2468 mvzl	r0,itoa_buffer */
+0x0000f7b3, 0x0400f7cc, /* 0400f7cc //C 0f7b3  2469 call	printf_pr */
+0x0000f7b4, 0x01f2f7b7, /* 01f2f7b7 //C 0f7b4  2470 jmp	printf_next */
+0x0000f7b5, 0x01f2f7b7, /* 01f2f7b7 //C 0f7b5  2473 jmp	printf_next */
+0x0000f7b6, 0x0400f690, /* 0400f690 //C 0f7b6  2476 call	putchar		; print actual char */
+0x0000f7b7, 0x01340001, /* 01340001 //C 0f7b7  2478 inc	r3		; next byte in word */
+0x0000f7b8, 0x01380004, /* 01380004 //C 0f7b8  2479 cmp	r3,4		; all 4 processed? */
+0x0000f7b9, 0x21f2f725, /* 21f2f725 //C 0f7b9  2480 jnz	printf_cyc */
+0x0000f7ba, 0x01240001, /* 01240001 //C 0f7ba  2482 inc	r2		; inc string ptr */
+0x0000f7bb, 0x01320000, /* 01320000 //C 0f7bb  2483 mvzl	r3,0		; restart byte idx */
+0x0000f7bc, 0x01f2f725, /* 01f2f725 //C 0f7bc  2484 jmp	printf_cyc */
+0x0000f7bd, 0x07c0f889, /* 07c0f889 //C 0f7bd  2487 ld	r12,reg12 */
+0x0000f7be, 0x07b0f888, /* 07b0f888 //C 0f7be  2488 ld	r11,reg11 */
+0x0000f7bf, 0x07a0f887, /* 07a0f887 //C 0f7bf  2489 ld	r10,reg10 */
+0x0000f7c0, 0x0790f886, /* 0790f886 //C 0f7c0  2490 ld	r9,reg9 */
+0x0000f7c1, 0x0780f885, /* 0780f885 //C 0f7c1  2491 ld	r8,reg8 */
+0x0000f7c2, 0x0770f884, /* 0770f884 //C 0f7c2  2492 ld	r7,reg7 */
+0x0000f7c3, 0x0760f883, /* 0760f883 //C 0f7c3  2493 ld	r6,reg6 */
+0x0000f7c4, 0x0750f882, /* 0750f882 //C 0f7c4  2494 ld	r5,reg5 */
+0x0000f7c5, 0x0740f881, /* 0740f881 //C 0f7c5  2495 ld	r4,reg4 */
+0x0000f7c6, 0x0f5d0000, /* 0f5d0000 //C 0f7c6  2497 pop	r5 */
+0x0000f7c7, 0x0f4d0000, /* 0f4d0000 //C 0f7c7  2498 pop	r4 */
+0x0000f7c8, 0x0f3d0000, /* 0f3d0000 //C 0f7c8  2499 pop	r3 */
+0x0000f7c9, 0x0f1d0000, /* 0f1d0000 //C 0f7c9  2500 pop	r1 */
+0x0000f7ca, 0x0f0d0000, /* 0f0d0000 //C 0f7ca  2501 pop	r0 */
+0x0000f7cb, 0x0ffd0000, /* 0ffd0000 //C 0f7cb  2502 pop	pc */
+0x0000f7cc, 0x020b0000, /* 020b0000 //C 0f7cc  2506 sz	r0 */
+0x0000f7cd, 0x10f00e00, /* 10f00e00 //C 0f7cd  2507 Z ret */
+0x0000f7ce, 0x0ded0000, /* 0ded0000 //C 0f7ce  2508 push	lr */
+0x0000f7cf, 0x0d0d0000, /* 0d0d0000 //C 0f7cf  2509 push	r0 */
+0x0000f7d0, 0x0d1d0000, /* 0d1d0000 //C 0f7d0  2510 push	r1 */
+0x0000f7d1, 0x0d2d0000, /* 0d2d0000 //C 0f7d1  2511 push	r2 */
+0x0000f7d2, 0x0d4d0000, /* 0d4d0000 //C 0f7d2  2512 push	r4 */
+0x0000f7d3, 0x0710f70c, /* 0710f70c //C 0f7d3  2513 ld	r1,printf_min_len */
+0x0000f7d4, 0x021b0000, /* 021b0000 //C 0f7d4  2514 sz	r1 */
+0x0000f7d5, 0x21f2f7d8, /* 21f2f7d8 //C 0f7d5  2515 jnz	pp_use_len */
+0x0000f7d6, 0x0400f697, /* 0400f697 //C 0f7d6  2517 call	prints */
+0x0000f7d7, 0x01f2f7e6, /* 01f2f7e6 //C 0f7d7  2518 jmp	pp_ret */
+0x0000f7d8, 0x0400f502, /* 0400f502 //C 0f7d8  2520 call	strlen		; R4= str length */
+0x0000f7d9, 0x00160400, /* 00160400 //C 0f7d9  2521 sub	r1,r4		; R1= fill length */
+0x0000f7da, 0x0720f709, /* 0720f709 //C 0f7da  2522 ld	r2,printf_left_align */
+0x0000f7db, 0x022b0000, /* 022b0000 //C 0f7db  2523 sz	r2 */
+0x0000f7dc, 0x21f2f7e3, /* 21f2f7e3 //C 0f7dc  2524 jnz	pp_left */
+0x0000f7dd, 0x0d0d0000, /* 0d0d0000 //C 0f7dd  2526 push	r0 */
+0x0000f7de, 0x00000100, /* 00000100 //C 0f7de  2527 mov	r0,r1 */
+0x0000f7df, 0x0400f7eb, /* 0400f7eb //C 0f7df  2528 call	printf_fill */
+0x0000f7e0, 0x0f0d0000, /* 0f0d0000 //C 0f7e0  2529 pop	r0 */
+0x0000f7e1, 0x0400f697, /* 0400f697 //C 0f7e1  2530 call	prints */
+0x0000f7e2, 0x01f2f7e6, /* 01f2f7e6 //C 0f7e2  2531 jmp	pp_ret */
+0x0000f7e3, 0x0400f697, /* 0400f697 //C 0f7e3  2533 call	prints */
+0x0000f7e4, 0x00000100, /* 00000100 //C 0f7e4  2534 mov	r0,r1 */
+0x0000f7e5, 0x0400f7eb, /* 0400f7eb //C 0f7e5  2535 call	printf_fill */
+0x0000f7e6, 0x0f4d0000, /* 0f4d0000 //C 0f7e6  2537 pop	r4 */
+0x0000f7e7, 0x0f2d0000, /* 0f2d0000 //C 0f7e7  2538 pop	r2 */
+0x0000f7e8, 0x0f1d0000, /* 0f1d0000 //C 0f7e8  2539 pop	r1 */
+0x0000f7e9, 0x0f0d0000, /* 0f0d0000 //C 0f7e9  2540 pop	r0 */
+0x0000f7ea, 0x0ffd0000, /* 0ffd0000 //C 0f7ea  2541 pop	pc */
+0x0000f7eb, 0x020b0000, /* 020b0000 //C 0f7eb  2545 sz	r0 */
+0x0000f7ec, 0x50f00e00, /* 50f00e00 //C 0f7ec  2546 S1 ret */
+0x0000f7ed, 0x10f00e00, /* 10f00e00 //C 0f7ed  2547 Z ret */
+0x0000f7ee, 0x0ded0000, /* 0ded0000 //C 0f7ee  2548 push	lr */
+0x0000f7ef, 0x0d0d0000, /* 0d0d0000 //C 0f7ef  2549 push	r0 */
+0x0000f7f0, 0x0d1d0000, /* 0d1d0000 //C 0f7f0  2550 push	r1 */
+0x0000f7f1, 0x00100000, /* 00100000 //C 0f7f1  2551 mov	r1,r0 */
+0x0000f7f2, 0x0700f709, /* 0700f709 //C 0f7f2  2552 ld	r0,printf_left_align */
+0x0000f7f3, 0x020b0000, /* 020b0000 //C 0f7f3  2553 sz	r0 */
+0x0000f7f4, 0x21020020, /* 21020020 //C 0f7f4  2554 NZ mvzl	r0,32 */
+0x0000f7f5, 0x21f2f7fa, /* 21f2f7fa //C 0f7f5  2555 jnz	pf_cyc */
+0x0000f7f6, 0x0700f70b, /* 0700f70b //C 0f7f6  2556 ld	r0,printf_fill_zero */
+0x0000f7f7, 0x020b0000, /* 020b0000 //C 0f7f7  2557 sz	r0 */
+0x0000f7f8, 0x21020030, /* 21020030 //C 0f7f8  2558 NZ mvzl r0,'0' */
+0x0000f7f9, 0x11020020, /* 11020020 //C 0f7f9  2559 Z mvzl	r0,32 */
+0x0000f7fa, 0x0400f690, /* 0400f690 //C 0f7fa  2560 pf_cyc:	call	putchar */
+0x0000f7fb, 0x0114ffff, /* 0114ffff //C 0f7fb  2561 dec	r1 */
+0x0000f7fc, 0x21f2f7fa, /* 21f2f7fa //C 0f7fc  2562 jnz	pf_cyc */
+0x0000f7fd, 0x0f1d0000, /* 0f1d0000 //C 0f7fd  2563 pop	r1 */
+0x0000f7fe, 0x0f0d0000, /* 0f0d0000 //C 0f7fe  2564 pop	r0 */
+0x0000f7ff, 0x0ffd0000, /* 0ffd0000 //C 0f7ff  2565 pop	pc */
+0x0000f800, 0x0d0d0000, /* 0d0d0000 //C 0f800  2568 push	r0 */
+0x0000f801, 0x0d2d0000, /* 0d2d0000 //C 0f801  2569 push	r2 */
+0x0000f802, 0x00000e00, /* 00000e00 //C 0f802  2570 mov	r0,LR */
+0x0000f803, 0x0400f70d, /* 0400f70d //C 0f803  2571 call	printf */
+0x0000f804, 0x01240001, /* 01240001 //C 0f804  2572 inc	r2 */
+0x0000f805, 0x00e00200, /* 00e00200 //C 0f805  2573 mov	LR,r2 */
+0x0000f806, 0x0f2d0000, /* 0f2d0000 //C 0f806  2574 pop	r2 */
+0x0000f807, 0x0f0d0000, /* 0f0d0000 //C 0f807  2575 pop	r0 */
+0x0000f808, 0x00f00e00, /* 00f00e00 //C 0f808  2576 ret */
+0x0000f809, 0x0d1d0000, /* 0d1d0000 //C 0f809  2580 push	r1 */
+0x0000f80a, 0x01020005, /* 01020005 //C 0f80a  2581 mvzl	r0,version_sub */
+0x0000f80b, 0x01120001, /* 01120001 //C 0f80b  2582 mvzl	r1,version_main */
+0x0000f80c, 0x07018101, /* 07018101 //C 0f80c  2583 putb	r0,r1,1 */
+0x0000f80d, 0x0f1d0000, /* 0f1d0000 //C 0f80d  2584 pop	r1 */
+0x0000f80e, 0x00f00e00, /* 00f00e00 //C 0f80e  2585 ret */
+0x0000f80f, 0x00000000, /* 00000000 //C 0f80f  2590 line:		ds	100		; line buffer */
+0x0000f873, 0x00000000, /* 00000000 //C 0f873  2591 line_ptr:	ds	1		; line pointer (index) */
+0x0000f874, 0x00000000, /* 00000000 //C 0f874  2592 at_eol:		ds	1		; bool, true if EOL arrived */
+0x0000f875, 0x00000000, /* 00000000 //C 0f875  2593 words:		ds	5		; Tokens of line */
+0x0000f87a, 0x00000000, /* 00000000 //C 0f87a  2594 echo:		ds	1		; bool, do echo or not */
 0x0000f87b, 0x00000000, /* 00000000 //C 0f87b  2595 dd	0 */
-0x0000f87c, 0x00000000, /* 00000000 //C 0f87c  2597 dd	0 */
+0x0000f87c, 0x00000000, /* 00000000 //C 0f87c  2596 dd	0 */
 0x0000f87d, 0x00000000, /* 00000000 //C 0f87d  2598 dd	0 */
 0x0000f87e, 0x00000000, /* 00000000 //C 0f87e  2599 dd	0 */
 0x0000f87f, 0x00000000, /* 00000000 //C 0f87f  2600 dd	0 */
@@ -2058,582 +2058,582 @@ t_mem pmon[]= {
 0x0000f88a, 0x00000000, /* 00000000 //C 0f88a  2611 dd	0 */
 0x0000f88b, 0x00000000, /* 00000000 //C 0f88b  2612 dd	0 */
 0x0000f88c, 0x00000000, /* 00000000 //C 0f88c  2613 dd	0 */
-0x0000f88d, 0x00000050, /* 00000050 //C 0f88d  2615 db	80 */
-0x0000f88e, 0x0000004d, /* 0000004d //C 0f88e  2615 db	77 */
-0x0000f88f, 0x0000006f, /* 0000006f //C 0f88f  2615 db	111 */
-0x0000f890, 0x0000006e, /* 0000006e //C 0f890  2615 db	110 */
-0x0000f891, 0x00000069, /* 00000069 //C 0f891  2615 db	105 */
-0x0000f892, 0x00000074, /* 00000074 //C 0f892  2615 db	116 */
-0x0000f893, 0x0000006f, /* 0000006f //C 0f893  2615 db	111 */
-0x0000f894, 0x00000072, /* 00000072 //C 0f894  2615 db	114 */
-0x0000f895, 0x00000020, /* 00000020 //C 0f895  2615 db	32 */
-0x0000f896, 0x00000076, /* 00000076 //C 0f896  2615 db	118 */
-0x0000f897, 0x00000025, /* 00000025 //C 0f897  2615 db	37 */
-0x0000f898, 0x00000064, /* 00000064 //C 0f898  2615 db	100 */
-0x0000f899, 0x0000002e, /* 0000002e //C 0f899  2615 db	46 */
-0x0000f89a, 0x00000025, /* 00000025 //C 0f89a  2615 db	37 */
-0x0000f89b, 0x00000064, /* 00000064 //C 0f89b  2615 db	100 */
-0x0000f89c, 0x00000020, /* 00000020 //C 0f89c  2615 db	32 */
-0x0000f89d, 0x00000028, /* 00000028 //C 0f89d  2615 db	40 */
-0x0000f89e, 0x00000063, /* 00000063 //C 0f89e  2615 db	99 */
-0x0000f89f, 0x00000070, /* 00000070 //C 0f89f  2615 db	112 */
-0x0000f8a0, 0x00000075, /* 00000075 //C 0f8a0  2615 db	117 */
-0x0000f8a1, 0x00000020, /* 00000020 //C 0f8a1  2615 db	32 */
-0x0000f8a2, 0x00000076, /* 00000076 //C 0f8a2  2615 db	118 */
-0x0000f8a3, 0x00000025, /* 00000025 //C 0f8a3  2615 db	37 */
-0x0000f8a4, 0x00000064, /* 00000064 //C 0f8a4  2615 db	100 */
-0x0000f8a5, 0x0000002e, /* 0000002e //C 0f8a5  2615 db	46 */
-0x0000f8a6, 0x00000025, /* 00000025 //C 0f8a6  2615 db	37 */
-0x0000f8a7, 0x00000064, /* 00000064 //C 0f8a7  2615 db	100 */
-0x0000f8a8, 0x0000002e, /* 0000002e //C 0f8a8  2615 db	46 */
-0x0000f8a9, 0x00000025, /* 00000025 //C 0f8a9  2615 db	37 */
-0x0000f8aa, 0x00000064, /* 00000064 //C 0f8aa  2615 db	100 */
-0x0000f8ab, 0x00000029, /* 00000029 //C 0f8ab  2615 db	41 */
-0x0000f8ac, 0x0000000a, /* 0000000a //C 0f8ac  2615 db	10 */
-0x0000f8ad, 0x00000000, /* 00000000 //C 0f8ad  2615 db */
-0x0000f8ae, 0x00000053, /* 00000053 //C 0f8ae  2616 db	83 */
-0x0000f8af, 0x00000074, /* 00000074 //C 0f8af  2616 db	116 */
-0x0000f8b0, 0x0000006f, /* 0000006f //C 0f8b0  2616 db	111 */
-0x0000f8b1, 0x00000070, /* 00000070 //C 0f8b1  2616 db	112 */
-0x0000f8b2, 0x00000020, /* 00000020 //C 0f8b2  2616 db	32 */
-0x0000f8b3, 0x00000061, /* 00000061 //C 0f8b3  2616 db	97 */
-0x0000f8b4, 0x00000074, /* 00000074 //C 0f8b4  2616 db	116 */
-0x0000f8b5, 0x0000003a, /* 0000003a //C 0f8b5  2616 db	58 */
-0x0000f8b6, 0x00000020, /* 00000020 //C 0f8b6  2616 db	32 */
-0x0000f8b7, 0x00000000, /* 00000000 //C 0f8b7  2616 db */
-0x0000f8b8, 0x00000008, /* 00000008 //C 0f8b8  2617 db	8 */
-0x0000f8b9, 0x00000020, /* 00000020 //C 0f8b9  2617 db	32 */
-0x0000f8ba, 0x00000008, /* 00000008 //C 0f8ba  2617 db	8 */
-0x0000f8bb, 0x00000000, /* 00000000 //C 0f8bb  2617 db	0 */
-0x0000f8bc, 0x0000003a, /* 0000003a //C 0f8bc  2618 db	58 */
-0x0000f8bd, 0x00000000, /* 00000000 //C 0f8bd  2618 db */
-0x0000f8be, 0x00000020, /* 00000020 //C 0f8be  2619 db	32 */
-0x0000f8bf, 0x0000003b, /* 0000003b //C 0f8bf  2619 db	59 */
-0x0000f8c0, 0x00000009, /* 00000009 //C 0f8c0  2619 db	9 */
-0x0000f8c1, 0x0000000b, /* 0000000b //C 0f8c1  2619 db	11 */
-0x0000f8c2, 0x0000002c, /* 0000002c //C 0f8c2  2619 db	44 */
-0x0000f8c3, 0x0000003d, /* 0000003d //C 0f8c3  2619 db	61 */
-0x0000f8c4, 0x0000005b, /* 0000005b //C 0f8c4  2619 db	91 */
-0x0000f8c5, 0x0000005d, /* 0000005d //C 0f8c5  2619 db	93 */
-0x0000f8c6, 0x00000000, /* 00000000 //C 0f8c6  2619 db */
-0x0000f8c7, 0x00000028, /* 00000028 //C 0f8c7  2620 db	40 */
-0x0000f8c8, 0x0000006e, /* 0000006e //C 0f8c8  2620 db	110 */
-0x0000f8c9, 0x00000075, /* 00000075 //C 0f8c9  2620 db	117 */
-0x0000f8ca, 0x0000006c, /* 0000006c //C 0f8ca  2620 db	108 */
-0x0000f8cb, 0x0000006c, /* 0000006c //C 0f8cb  2620 db	108 */
-0x0000f8cc, 0x00000029, /* 00000029 //C 0f8cc  2620 db	41 */
-0x0000f8cd, 0x00000000, /* 00000000 //C 0f8cd  2620 db */
-0x0000f8ce, 0x00000000, /* 00000000 //C 0f8ce  2621 db	0 */
+0x0000f88d, 0x00000000, /* 00000000 //C 0f88d  2614 dd	0 */
+0x0000f88e, 0x00000050, /* 00000050 //C 0f88e  2616 db	80 */
+0x0000f88f, 0x0000004d, /* 0000004d //C 0f88f  2616 db	77 */
+0x0000f890, 0x0000006f, /* 0000006f //C 0f890  2616 db	111 */
+0x0000f891, 0x0000006e, /* 0000006e //C 0f891  2616 db	110 */
+0x0000f892, 0x00000069, /* 00000069 //C 0f892  2616 db	105 */
+0x0000f893, 0x00000074, /* 00000074 //C 0f893  2616 db	116 */
+0x0000f894, 0x0000006f, /* 0000006f //C 0f894  2616 db	111 */
+0x0000f895, 0x00000072, /* 00000072 //C 0f895  2616 db	114 */
+0x0000f896, 0x00000020, /* 00000020 //C 0f896  2616 db	32 */
+0x0000f897, 0x00000076, /* 00000076 //C 0f897  2616 db	118 */
+0x0000f898, 0x00000025, /* 00000025 //C 0f898  2616 db	37 */
+0x0000f899, 0x00000064, /* 00000064 //C 0f899  2616 db	100 */
+0x0000f89a, 0x0000002e, /* 0000002e //C 0f89a  2616 db	46 */
+0x0000f89b, 0x00000025, /* 00000025 //C 0f89b  2616 db	37 */
+0x0000f89c, 0x00000064, /* 00000064 //C 0f89c  2616 db	100 */
+0x0000f89d, 0x00000020, /* 00000020 //C 0f89d  2616 db	32 */
+0x0000f89e, 0x00000028, /* 00000028 //C 0f89e  2616 db	40 */
+0x0000f89f, 0x00000063, /* 00000063 //C 0f89f  2616 db	99 */
+0x0000f8a0, 0x00000070, /* 00000070 //C 0f8a0  2616 db	112 */
+0x0000f8a1, 0x00000075, /* 00000075 //C 0f8a1  2616 db	117 */
+0x0000f8a2, 0x00000020, /* 00000020 //C 0f8a2  2616 db	32 */
+0x0000f8a3, 0x00000076, /* 00000076 //C 0f8a3  2616 db	118 */
+0x0000f8a4, 0x00000025, /* 00000025 //C 0f8a4  2616 db	37 */
+0x0000f8a5, 0x00000064, /* 00000064 //C 0f8a5  2616 db	100 */
+0x0000f8a6, 0x0000002e, /* 0000002e //C 0f8a6  2616 db	46 */
+0x0000f8a7, 0x00000025, /* 00000025 //C 0f8a7  2616 db	37 */
+0x0000f8a8, 0x00000064, /* 00000064 //C 0f8a8  2616 db	100 */
+0x0000f8a9, 0x0000002e, /* 0000002e //C 0f8a9  2616 db	46 */
+0x0000f8aa, 0x00000025, /* 00000025 //C 0f8aa  2616 db	37 */
+0x0000f8ab, 0x00000064, /* 00000064 //C 0f8ab  2616 db	100 */
+0x0000f8ac, 0x00000029, /* 00000029 //C 0f8ac  2616 db	41 */
+0x0000f8ad, 0x0000000a, /* 0000000a //C 0f8ad  2616 db	10 */
+0x0000f8ae, 0x00000000, /* 00000000 //C 0f8ae  2616 db */
+0x0000f8af, 0x00000053, /* 00000053 //C 0f8af  2617 db	83 */
+0x0000f8b0, 0x00000074, /* 00000074 //C 0f8b0  2617 db	116 */
+0x0000f8b1, 0x0000006f, /* 0000006f //C 0f8b1  2617 db	111 */
+0x0000f8b2, 0x00000070, /* 00000070 //C 0f8b2  2617 db	112 */
+0x0000f8b3, 0x00000020, /* 00000020 //C 0f8b3  2617 db	32 */
+0x0000f8b4, 0x00000061, /* 00000061 //C 0f8b4  2617 db	97 */
+0x0000f8b5, 0x00000074, /* 00000074 //C 0f8b5  2617 db	116 */
+0x0000f8b6, 0x0000003a, /* 0000003a //C 0f8b6  2617 db	58 */
+0x0000f8b7, 0x00000020, /* 00000020 //C 0f8b7  2617 db	32 */
+0x0000f8b8, 0x00000000, /* 00000000 //C 0f8b8  2617 db */
+0x0000f8b9, 0x00000008, /* 00000008 //C 0f8b9  2618 db	8 */
+0x0000f8ba, 0x00000020, /* 00000020 //C 0f8ba  2618 db	32 */
+0x0000f8bb, 0x00000008, /* 00000008 //C 0f8bb  2618 db	8 */
+0x0000f8bc, 0x00000000, /* 00000000 //C 0f8bc  2618 db	0 */
+0x0000f8bd, 0x0000003a, /* 0000003a //C 0f8bd  2619 db	58 */
+0x0000f8be, 0x00000000, /* 00000000 //C 0f8be  2619 db */
+0x0000f8bf, 0x00000020, /* 00000020 //C 0f8bf  2620 db	32 */
+0x0000f8c0, 0x0000003b, /* 0000003b //C 0f8c0  2620 db	59 */
+0x0000f8c1, 0x00000009, /* 00000009 //C 0f8c1  2620 db	9 */
+0x0000f8c2, 0x0000000b, /* 0000000b //C 0f8c2  2620 db	11 */
+0x0000f8c3, 0x0000002c, /* 0000002c //C 0f8c3  2620 db	44 */
+0x0000f8c4, 0x0000003d, /* 0000003d //C 0f8c4  2620 db	61 */
+0x0000f8c5, 0x0000005b, /* 0000005b //C 0f8c5  2620 db	91 */
+0x0000f8c6, 0x0000005d, /* 0000005d //C 0f8c6  2620 db	93 */
+0x0000f8c7, 0x00000000, /* 00000000 //C 0f8c7  2620 db */
+0x0000f8c8, 0x00000028, /* 00000028 //C 0f8c8  2621 db	40 */
+0x0000f8c9, 0x0000006e, /* 0000006e //C 0f8c9  2621 db	110 */
+0x0000f8ca, 0x00000075, /* 00000075 //C 0f8ca  2621 db	117 */
+0x0000f8cb, 0x0000006c, /* 0000006c //C 0f8cb  2621 db	108 */
+0x0000f8cc, 0x0000006c, /* 0000006c //C 0f8cc  2621 db	108 */
+0x0000f8cd, 0x00000029, /* 00000029 //C 0f8cd  2621 db	41 */
+0x0000f8ce, 0x00000000, /* 00000000 //C 0f8ce  2621 db */
 0x0000f8cf, 0x00000000, /* 00000000 //C 0f8cf  2622 db	0 */
-0x0000f8d0, 0x00000000, /* 00000000 //C 0f8d0  2623 sc_buffer:	ds	10 */
-0x0000f8da, 0x0000f1ac, /* 0000f1ac //C 0f8da  2627 dd	cmd_sm */
-0x0000f8db, 0x00000073, /* 00000073 //C 0f8db  2628 db	115 */
-0x0000f8dc, 0x0000006d, /* 0000006d //C 0f8dc  2628 db	109 */
-0x0000f8dd, 0x00000000, /* 00000000 //C 0f8dd  2628 db */
-0x0000f8de, 0x0000f153, /* 0000f153 //C 0f8de  2629 dd	cmd_m */
-0x0000f8df, 0x0000006d, /* 0000006d //C 0f8df  2630 db	109 */
-0x0000f8e0, 0x00000000, /* 00000000 //C 0f8e0  2630 db */
-0x0000f8e1, 0x0000f153, /* 0000f153 //C 0f8e1  2631 dd	cmd_m */
-0x0000f8e2, 0x0000006d, /* 0000006d //C 0f8e2  2632 db	109 */
-0x0000f8e3, 0x00000065, /* 00000065 //C 0f8e3  2632 db	101 */
-0x0000f8e4, 0x0000006d, /* 0000006d //C 0f8e4  2632 db	109 */
-0x0000f8e5, 0x00000000, /* 00000000 //C 0f8e5  2632 db */
-0x0000f8e6, 0x0000f1cf, /* 0000f1cf //C 0f8e6  2633 dd	cmd_d */
-0x0000f8e7, 0x00000064, /* 00000064 //C 0f8e7  2634 db	100 */
-0x0000f8e8, 0x00000000, /* 00000000 //C 0f8e8  2634 db */
-0x0000f8e9, 0x0000f1cf, /* 0000f1cf //C 0f8e9  2635 dd	cmd_d */
-0x0000f8ea, 0x00000064, /* 00000064 //C 0f8ea  2636 db	100 */
-0x0000f8eb, 0x00000075, /* 00000075 //C 0f8eb  2636 db	117 */
-0x0000f8ec, 0x0000006d, /* 0000006d //C 0f8ec  2636 db	109 */
-0x0000f8ed, 0x00000070, /* 00000070 //C 0f8ed  2636 db	112 */
-0x0000f8ee, 0x00000000, /* 00000000 //C 0f8ee  2636 db */
-0x0000f8ef, 0x0000f202, /* 0000f202 //C 0f8ef  2637 dd	cmd_l */
-0x0000f8f0, 0x0000006c, /* 0000006c //C 0f8f0  2638 db	108 */
-0x0000f8f1, 0x00000000, /* 00000000 //C 0f8f1  2638 db */
-0x0000f8f2, 0x0000f202, /* 0000f202 //C 0f8f2  2639 dd	cmd_l */
-0x0000f8f3, 0x0000006c, /* 0000006c //C 0f8f3  2640 db	108 */
-0x0000f8f4, 0x0000006f, /* 0000006f //C 0f8f4  2640 db	111 */
-0x0000f8f5, 0x00000061, /* 00000061 //C 0f8f5  2640 db	97 */
-0x0000f8f6, 0x00000064, /* 00000064 //C 0f8f6  2640 db	100 */
-0x0000f8f7, 0x00000000, /* 00000000 //C 0f8f7  2640 db */
-0x0000f8f8, 0x0000f278, /* 0000f278 //C 0f8f8  2641 dd	cmd_g */
-0x0000f8f9, 0x00000067, /* 00000067 //C 0f8f9  2642 db	103 */
-0x0000f8fa, 0x00000000, /* 00000000 //C 0f8fa  2642 db */
-0x0000f8fb, 0x0000f278, /* 0000f278 //C 0f8fb  2643 dd	cmd_g */
-0x0000f8fc, 0x00000067, /* 00000067 //C 0f8fc  2644 db	103 */
-0x0000f8fd, 0x0000006f, /* 0000006f //C 0f8fd  2644 db	111 */
-0x0000f8fe, 0x00000000, /* 00000000 //C 0f8fe  2644 db */
-0x0000f8ff, 0x0000f278, /* 0000f278 //C 0f8ff  2645 dd	cmd_g */
-0x0000f900, 0x00000072, /* 00000072 //C 0f900  2646 db	114 */
-0x0000f901, 0x00000075, /* 00000075 //C 0f901  2646 db	117 */
-0x0000f902, 0x0000006e, /* 0000006e //C 0f902  2646 db	110 */
-0x0000f903, 0x00000000, /* 00000000 //C 0f903  2646 db */
-0x0000f904, 0x0000f2b7, /* 0000f2b7 //C 0f904  2647 dd	cmd_h */
-0x0000f905, 0x0000003f, /* 0000003f //C 0f905  2648 db	63 */
-0x0000f906, 0x00000000, /* 00000000 //C 0f906  2648 db */
-0x0000f907, 0x0000f2b7, /* 0000f2b7 //C 0f907  2649 dd	cmd_h */
-0x0000f908, 0x00000068, /* 00000068 //C 0f908  2650 db	104 */
-0x0000f909, 0x00000000, /* 00000000 //C 0f909  2650 db */
-0x0000f90a, 0x0000f2b7, /* 0000f2b7 //C 0f90a  2651 dd	cmd_h */
-0x0000f90b, 0x00000068, /* 00000068 //C 0f90b  2652 db	104 */
-0x0000f90c, 0x00000065, /* 00000065 //C 0f90c  2652 db	101 */
-0x0000f90d, 0x0000006c, /* 0000006c //C 0f90d  2652 db	108 */
-0x0000f90e, 0x00000070, /* 00000070 //C 0f90e  2652 db	112 */
-0x0000f90f, 0x00000000, /* 00000000 //C 0f90f  2652 db */
-0x0000f910, 0x0000f31e, /* 0000f31e //C 0f910  2653 dd	cmd_r */
-0x0000f911, 0x00000072, /* 00000072 //C 0f911  2654 db	114 */
-0x0000f912, 0x00000000, /* 00000000 //C 0f912  2654 db */
-0x0000f913, 0x0000f31e, /* 0000f31e //C 0f913  2655 dd	cmd_r */
-0x0000f914, 0x00000072, /* 00000072 //C 0f914  2656 db	114 */
-0x0000f915, 0x00000065, /* 00000065 //C 0f915  2656 db	101 */
-0x0000f916, 0x00000067, /* 00000067 //C 0f916  2656 db	103 */
-0x0000f917, 0x00000000, /* 00000000 //C 0f917  2656 db */
-0x0000f918, 0x0000f31e, /* 0000f31e //C 0f918  2657 dd	cmd_r */
-0x0000f919, 0x00000072, /* 00000072 //C 0f919  2658 db	114 */
-0x0000f91a, 0x00000065, /* 00000065 //C 0f91a  2658 db	101 */
-0x0000f91b, 0x00000067, /* 00000067 //C 0f91b  2658 db	103 */
-0x0000f91c, 0x00000073, /* 00000073 //C 0f91c  2658 db	115 */
-0x0000f91d, 0x00000000, /* 00000000 //C 0f91d  2658 db */
-0x0000f91e, 0x0000f3ae, /* 0000f3ae //C 0f91e  2659 dd	cmd_sp */
-0x0000f91f, 0x00000073, /* 00000073 //C 0f91f  2660 db	115 */
-0x0000f920, 0x00000070, /* 00000070 //C 0f920  2660 db	112 */
-0x0000f921, 0x00000000, /* 00000000 //C 0f921  2660 db */
-0x0000f922, 0x0000f3b1, /* 0000f3b1 //C 0f922  2661 dd	cmd_lr */
-0x0000f923, 0x0000006c, /* 0000006c //C 0f923  2662 db	108 */
-0x0000f924, 0x00000072, /* 00000072 //C 0f924  2662 db	114 */
-0x0000f925, 0x00000000, /* 00000000 //C 0f925  2662 db */
-0x0000f926, 0x0000f3b4, /* 0000f3b4 //C 0f926  2663 dd	cmd_pc */
-0x0000f927, 0x00000070, /* 00000070 //C 0f927  2664 db	112 */
-0x0000f928, 0x00000063, /* 00000063 //C 0f928  2664 db	99 */
-0x0000f929, 0x00000000, /* 00000000 //C 0f929  2664 db */
-0x0000f92a, 0x0000f3b7, /* 0000f3b7 //C 0f92a  2665 dd	cmd_f */
-0x0000f92b, 0x00000066, /* 00000066 //C 0f92b  2666 db	102 */
-0x0000f92c, 0x00000000, /* 00000000 //C 0f92c  2666 db */
-0x0000f92d, 0x0000f3ba, /* 0000f3ba //C 0f92d  2667 dd	cmd_v */
-0x0000f92e, 0x00000076, /* 00000076 //C 0f92e  2668 db	118 */
-0x0000f92f, 0x00000065, /* 00000065 //C 0f92f  2668 db	101 */
-0x0000f930, 0x00000072, /* 00000072 //C 0f930  2668 db	114 */
-0x0000f931, 0x00000000, /* 00000000 //C 0f931  2668 db */
-0x0000f932, 0x0000f3ba, /* 0000f3ba //C 0f932  2669 dd	cmd_v */
-0x0000f933, 0x00000076, /* 00000076 //C 0f933  2670 db	118 */
-0x0000f934, 0x00000000, /* 00000000 //C 0f934  2670 db */
-0x0000f935, 0x00000000, /* 00000000 //C 0f935  2671 dd	0 */
+0x0000f8d0, 0x00000000, /* 00000000 //C 0f8d0  2623 db	0 */
+0x0000f8d1, 0x00000000, /* 00000000 //C 0f8d1  2624 sc_buffer:	ds	10 */
+0x0000f8db, 0x0000f1ac, /* 0000f1ac //C 0f8db  2628 dd	cmd_sm */
+0x0000f8dc, 0x00000073, /* 00000073 //C 0f8dc  2629 db	115 */
+0x0000f8dd, 0x0000006d, /* 0000006d //C 0f8dd  2629 db	109 */
+0x0000f8de, 0x00000000, /* 00000000 //C 0f8de  2629 db */
+0x0000f8df, 0x0000f153, /* 0000f153 //C 0f8df  2630 dd	cmd_m */
+0x0000f8e0, 0x0000006d, /* 0000006d //C 0f8e0  2631 db	109 */
+0x0000f8e1, 0x00000000, /* 00000000 //C 0f8e1  2631 db */
+0x0000f8e2, 0x0000f153, /* 0000f153 //C 0f8e2  2632 dd	cmd_m */
+0x0000f8e3, 0x0000006d, /* 0000006d //C 0f8e3  2633 db	109 */
+0x0000f8e4, 0x00000065, /* 00000065 //C 0f8e4  2633 db	101 */
+0x0000f8e5, 0x0000006d, /* 0000006d //C 0f8e5  2633 db	109 */
+0x0000f8e6, 0x00000000, /* 00000000 //C 0f8e6  2633 db */
+0x0000f8e7, 0x0000f1cf, /* 0000f1cf //C 0f8e7  2634 dd	cmd_d */
+0x0000f8e8, 0x00000064, /* 00000064 //C 0f8e8  2635 db	100 */
+0x0000f8e9, 0x00000000, /* 00000000 //C 0f8e9  2635 db */
+0x0000f8ea, 0x0000f1cf, /* 0000f1cf //C 0f8ea  2636 dd	cmd_d */
+0x0000f8eb, 0x00000064, /* 00000064 //C 0f8eb  2637 db	100 */
+0x0000f8ec, 0x00000075, /* 00000075 //C 0f8ec  2637 db	117 */
+0x0000f8ed, 0x0000006d, /* 0000006d //C 0f8ed  2637 db	109 */
+0x0000f8ee, 0x00000070, /* 00000070 //C 0f8ee  2637 db	112 */
+0x0000f8ef, 0x00000000, /* 00000000 //C 0f8ef  2637 db */
+0x0000f8f0, 0x0000f202, /* 0000f202 //C 0f8f0  2638 dd	cmd_l */
+0x0000f8f1, 0x0000006c, /* 0000006c //C 0f8f1  2639 db	108 */
+0x0000f8f2, 0x00000000, /* 00000000 //C 0f8f2  2639 db */
+0x0000f8f3, 0x0000f202, /* 0000f202 //C 0f8f3  2640 dd	cmd_l */
+0x0000f8f4, 0x0000006c, /* 0000006c //C 0f8f4  2641 db	108 */
+0x0000f8f5, 0x0000006f, /* 0000006f //C 0f8f5  2641 db	111 */
+0x0000f8f6, 0x00000061, /* 00000061 //C 0f8f6  2641 db	97 */
+0x0000f8f7, 0x00000064, /* 00000064 //C 0f8f7  2641 db	100 */
+0x0000f8f8, 0x00000000, /* 00000000 //C 0f8f8  2641 db */
+0x0000f8f9, 0x0000f278, /* 0000f278 //C 0f8f9  2642 dd	cmd_g */
+0x0000f8fa, 0x00000067, /* 00000067 //C 0f8fa  2643 db	103 */
+0x0000f8fb, 0x00000000, /* 00000000 //C 0f8fb  2643 db */
+0x0000f8fc, 0x0000f278, /* 0000f278 //C 0f8fc  2644 dd	cmd_g */
+0x0000f8fd, 0x00000067, /* 00000067 //C 0f8fd  2645 db	103 */
+0x0000f8fe, 0x0000006f, /* 0000006f //C 0f8fe  2645 db	111 */
+0x0000f8ff, 0x00000000, /* 00000000 //C 0f8ff  2645 db */
+0x0000f900, 0x0000f278, /* 0000f278 //C 0f900  2646 dd	cmd_g */
+0x0000f901, 0x00000072, /* 00000072 //C 0f901  2647 db	114 */
+0x0000f902, 0x00000075, /* 00000075 //C 0f902  2647 db	117 */
+0x0000f903, 0x0000006e, /* 0000006e //C 0f903  2647 db	110 */
+0x0000f904, 0x00000000, /* 00000000 //C 0f904  2647 db */
+0x0000f905, 0x0000f2b7, /* 0000f2b7 //C 0f905  2648 dd	cmd_h */
+0x0000f906, 0x0000003f, /* 0000003f //C 0f906  2649 db	63 */
+0x0000f907, 0x00000000, /* 00000000 //C 0f907  2649 db */
+0x0000f908, 0x0000f2b7, /* 0000f2b7 //C 0f908  2650 dd	cmd_h */
+0x0000f909, 0x00000068, /* 00000068 //C 0f909  2651 db	104 */
+0x0000f90a, 0x00000000, /* 00000000 //C 0f90a  2651 db */
+0x0000f90b, 0x0000f2b7, /* 0000f2b7 //C 0f90b  2652 dd	cmd_h */
+0x0000f90c, 0x00000068, /* 00000068 //C 0f90c  2653 db	104 */
+0x0000f90d, 0x00000065, /* 00000065 //C 0f90d  2653 db	101 */
+0x0000f90e, 0x0000006c, /* 0000006c //C 0f90e  2653 db	108 */
+0x0000f90f, 0x00000070, /* 00000070 //C 0f90f  2653 db	112 */
+0x0000f910, 0x00000000, /* 00000000 //C 0f910  2653 db */
+0x0000f911, 0x0000f31e, /* 0000f31e //C 0f911  2654 dd	cmd_r */
+0x0000f912, 0x00000072, /* 00000072 //C 0f912  2655 db	114 */
+0x0000f913, 0x00000000, /* 00000000 //C 0f913  2655 db */
+0x0000f914, 0x0000f31e, /* 0000f31e //C 0f914  2656 dd	cmd_r */
+0x0000f915, 0x00000072, /* 00000072 //C 0f915  2657 db	114 */
+0x0000f916, 0x00000065, /* 00000065 //C 0f916  2657 db	101 */
+0x0000f917, 0x00000067, /* 00000067 //C 0f917  2657 db	103 */
+0x0000f918, 0x00000000, /* 00000000 //C 0f918  2657 db */
+0x0000f919, 0x0000f31e, /* 0000f31e //C 0f919  2658 dd	cmd_r */
+0x0000f91a, 0x00000072, /* 00000072 //C 0f91a  2659 db	114 */
+0x0000f91b, 0x00000065, /* 00000065 //C 0f91b  2659 db	101 */
+0x0000f91c, 0x00000067, /* 00000067 //C 0f91c  2659 db	103 */
+0x0000f91d, 0x00000073, /* 00000073 //C 0f91d  2659 db	115 */
+0x0000f91e, 0x00000000, /* 00000000 //C 0f91e  2659 db */
+0x0000f91f, 0x0000f3ae, /* 0000f3ae //C 0f91f  2660 dd	cmd_sp */
+0x0000f920, 0x00000073, /* 00000073 //C 0f920  2661 db	115 */
+0x0000f921, 0x00000070, /* 00000070 //C 0f921  2661 db	112 */
+0x0000f922, 0x00000000, /* 00000000 //C 0f922  2661 db */
+0x0000f923, 0x0000f3b1, /* 0000f3b1 //C 0f923  2662 dd	cmd_lr */
+0x0000f924, 0x0000006c, /* 0000006c //C 0f924  2663 db	108 */
+0x0000f925, 0x00000072, /* 00000072 //C 0f925  2663 db	114 */
+0x0000f926, 0x00000000, /* 00000000 //C 0f926  2663 db */
+0x0000f927, 0x0000f3b4, /* 0000f3b4 //C 0f927  2664 dd	cmd_pc */
+0x0000f928, 0x00000070, /* 00000070 //C 0f928  2665 db	112 */
+0x0000f929, 0x00000063, /* 00000063 //C 0f929  2665 db	99 */
+0x0000f92a, 0x00000000, /* 00000000 //C 0f92a  2665 db */
+0x0000f92b, 0x0000f3b7, /* 0000f3b7 //C 0f92b  2666 dd	cmd_f */
+0x0000f92c, 0x00000066, /* 00000066 //C 0f92c  2667 db	102 */
+0x0000f92d, 0x00000000, /* 00000000 //C 0f92d  2667 db */
+0x0000f92e, 0x0000f3ba, /* 0000f3ba //C 0f92e  2668 dd	cmd_v */
+0x0000f92f, 0x00000076, /* 00000076 //C 0f92f  2669 db	118 */
+0x0000f930, 0x00000065, /* 00000065 //C 0f930  2669 db	101 */
+0x0000f931, 0x00000072, /* 00000072 //C 0f931  2669 db	114 */
+0x0000f932, 0x00000000, /* 00000000 //C 0f932  2669 db */
+0x0000f933, 0x0000f3ba, /* 0000f3ba //C 0f933  2670 dd	cmd_v */
+0x0000f934, 0x00000076, /* 00000076 //C 0f934  2671 db	118 */
+0x0000f935, 0x00000000, /* 00000000 //C 0f935  2671 db */
 0x0000f936, 0x00000000, /* 00000000 //C 0f936  2672 dd	0 */
-0x0000f937, 0x0000006d, /* 0000006d //C 0f937  2674 db	109 */
-0x0000f938, 0x0000005b, /* 0000005b //C 0f938  2674 db	91 */
-0x0000f939, 0x00000065, /* 00000065 //C 0f939  2674 db	101 */
-0x0000f93a, 0x0000006d, /* 0000006d //C 0f93a  2674 db	109 */
-0x0000f93b, 0x0000005d, /* 0000005d //C 0f93b  2674 db	93 */
-0x0000f93c, 0x00000020, /* 00000020 //C 0f93c  2674 db	32 */
-0x0000f93d, 0x00000061, /* 00000061 //C 0f93d  2674 db	97 */
-0x0000f93e, 0x00000064, /* 00000064 //C 0f93e  2674 db	100 */
-0x0000f93f, 0x00000064, /* 00000064 //C 0f93f  2674 db	100 */
-0x0000f940, 0x00000072, /* 00000072 //C 0f940  2674 db	114 */
-0x0000f941, 0x00000020, /* 00000020 //C 0f941  2674 db	32 */
-0x0000f942, 0x0000005b, /* 0000005b //C 0f942  2674 db	91 */
-0x0000f943, 0x00000076, /* 00000076 //C 0f943  2674 db	118 */
-0x0000f944, 0x00000061, /* 00000061 //C 0f944  2674 db	97 */
-0x0000f945, 0x0000006c, /* 0000006c //C 0f945  2674 db	108 */
-0x0000f946, 0x0000005d, /* 0000005d //C 0f946  2674 db	93 */
-0x0000f947, 0x00000020, /* 00000020 //C 0f947  2674 db	32 */
-0x0000f948, 0x00000020, /* 00000020 //C 0f948  2674 db	32 */
-0x0000f949, 0x00000047, /* 00000047 //C 0f949  2674 db	71 */
-0x0000f94a, 0x00000065, /* 00000065 //C 0f94a  2674 db	101 */
-0x0000f94b, 0x00000074, /* 00000074 //C 0f94b  2674 db	116 */
-0x0000f94c, 0x0000002f, /* 0000002f //C 0f94c  2674 db	47 */
-0x0000f94d, 0x00000073, /* 00000073 //C 0f94d  2674 db	115 */
-0x0000f94e, 0x00000065, /* 00000065 //C 0f94e  2674 db	101 */
-0x0000f94f, 0x00000074, /* 00000074 //C 0f94f  2674 db	116 */
-0x0000f950, 0x00000020, /* 00000020 //C 0f950  2674 db	32 */
-0x0000f951, 0x0000006d, /* 0000006d //C 0f951  2674 db	109 */
-0x0000f952, 0x00000065, /* 00000065 //C 0f952  2674 db	101 */
-0x0000f953, 0x0000006d, /* 0000006d //C 0f953  2674 db	109 */
-0x0000f954, 0x0000006f, /* 0000006f //C 0f954  2674 db	111 */
-0x0000f955, 0x00000072, /* 00000072 //C 0f955  2674 db	114 */
-0x0000f956, 0x00000079, /* 00000079 //C 0f956  2674 db	121 */
-0x0000f957, 0x0000000a, /* 0000000a //C 0f957  2674 db	10 */
-0x0000f958, 0x00000000, /* 00000000 //C 0f958  2674 db */
-0x0000f959, 0x00000064, /* 00000064 //C 0f959  2675 db	100 */
-0x0000f95a, 0x0000005b, /* 0000005b //C 0f95a  2675 db	91 */
-0x0000f95b, 0x00000075, /* 00000075 //C 0f95b  2675 db	117 */
-0x0000f95c, 0x0000006d, /* 0000006d //C 0f95c  2675 db	109 */
-0x0000f95d, 0x00000070, /* 00000070 //C 0f95d  2675 db	112 */
-0x0000f95e, 0x0000005d, /* 0000005d //C 0f95e  2675 db	93 */
-0x0000f95f, 0x00000020, /* 00000020 //C 0f95f  2675 db	32 */
-0x0000f960, 0x00000073, /* 00000073 //C 0f960  2675 db	115 */
-0x0000f961, 0x00000074, /* 00000074 //C 0f961  2675 db	116 */
-0x0000f962, 0x00000061, /* 00000061 //C 0f962  2675 db	97 */
-0x0000f963, 0x00000072, /* 00000072 //C 0f963  2675 db	114 */
-0x0000f964, 0x00000074, /* 00000074 //C 0f964  2675 db	116 */
-0x0000f965, 0x00000020, /* 00000020 //C 0f965  2675 db	32 */
-0x0000f966, 0x00000065, /* 00000065 //C 0f966  2675 db	101 */
-0x0000f967, 0x0000006e, /* 0000006e //C 0f967  2675 db	110 */
-0x0000f968, 0x00000064, /* 00000064 //C 0f968  2675 db	100 */
-0x0000f969, 0x00000020, /* 00000020 //C 0f969  2675 db	32 */
-0x0000f96a, 0x00000020, /* 00000020 //C 0f96a  2675 db	32 */
-0x0000f96b, 0x00000044, /* 00000044 //C 0f96b  2675 db	68 */
-0x0000f96c, 0x00000075, /* 00000075 //C 0f96c  2675 db	117 */
-0x0000f96d, 0x0000006d, /* 0000006d //C 0f96d  2675 db	109 */
-0x0000f96e, 0x00000070, /* 00000070 //C 0f96e  2675 db	112 */
-0x0000f96f, 0x00000020, /* 00000020 //C 0f96f  2675 db	32 */
-0x0000f970, 0x0000006d, /* 0000006d //C 0f970  2675 db	109 */
-0x0000f971, 0x00000065, /* 00000065 //C 0f971  2675 db	101 */
-0x0000f972, 0x0000006d, /* 0000006d //C 0f972  2675 db	109 */
-0x0000f973, 0x0000006f, /* 0000006f //C 0f973  2675 db	111 */
-0x0000f974, 0x00000072, /* 00000072 //C 0f974  2675 db	114 */
-0x0000f975, 0x00000079, /* 00000079 //C 0f975  2675 db	121 */
-0x0000f976, 0x00000020, /* 00000020 //C 0f976  2675 db	32 */
-0x0000f977, 0x00000063, /* 00000063 //C 0f977  2675 db	99 */
-0x0000f978, 0x0000006f, /* 0000006f //C 0f978  2675 db	111 */
-0x0000f979, 0x0000006e, /* 0000006e //C 0f979  2675 db	110 */
-0x0000f97a, 0x00000074, /* 00000074 //C 0f97a  2675 db	116 */
-0x0000f97b, 0x00000065, /* 00000065 //C 0f97b  2675 db	101 */
-0x0000f97c, 0x0000006e, /* 0000006e //C 0f97c  2675 db	110 */
-0x0000f97d, 0x00000074, /* 00000074 //C 0f97d  2675 db	116 */
-0x0000f97e, 0x0000000a, /* 0000000a //C 0f97e  2675 db	10 */
-0x0000f97f, 0x00000000, /* 00000000 //C 0f97f  2675 db */
-0x0000f980, 0x0000006c, /* 0000006c //C 0f980  2676 db	108 */
-0x0000f981, 0x0000005b, /* 0000005b //C 0f981  2676 db	91 */
-0x0000f982, 0x0000006f, /* 0000006f //C 0f982  2676 db	111 */
-0x0000f983, 0x00000061, /* 00000061 //C 0f983  2676 db	97 */
-0x0000f984, 0x00000064, /* 00000064 //C 0f984  2676 db	100 */
-0x0000f985, 0x0000005d, /* 0000005d //C 0f985  2676 db	93 */
-0x0000f986, 0x00000020, /* 00000020 //C 0f986  2676 db	32 */
-0x0000f987, 0x00000020, /* 00000020 //C 0f987  2676 db	32 */
-0x0000f988, 0x00000020, /* 00000020 //C 0f988  2676 db	32 */
-0x0000f989, 0x00000020, /* 00000020 //C 0f989  2676 db	32 */
-0x0000f98a, 0x00000020, /* 00000020 //C 0f98a  2676 db	32 */
-0x0000f98b, 0x00000020, /* 00000020 //C 0f98b  2676 db	32 */
-0x0000f98c, 0x00000020, /* 00000020 //C 0f98c  2676 db	32 */
-0x0000f98d, 0x00000020, /* 00000020 //C 0f98d  2676 db	32 */
-0x0000f98e, 0x00000020, /* 00000020 //C 0f98e  2676 db	32 */
-0x0000f98f, 0x00000020, /* 00000020 //C 0f98f  2676 db	32 */
-0x0000f990, 0x00000020, /* 00000020 //C 0f990  2676 db	32 */
-0x0000f991, 0x00000020, /* 00000020 //C 0f991  2676 db	32 */
-0x0000f992, 0x0000004c, /* 0000004c //C 0f992  2676 db	76 */
-0x0000f993, 0x0000006f, /* 0000006f //C 0f993  2676 db	111 */
-0x0000f994, 0x00000061, /* 00000061 //C 0f994  2676 db	97 */
-0x0000f995, 0x00000064, /* 00000064 //C 0f995  2676 db	100 */
-0x0000f996, 0x00000020, /* 00000020 //C 0f996  2676 db	32 */
-0x0000f997, 0x00000068, /* 00000068 //C 0f997  2676 db	104 */
-0x0000f998, 0x00000065, /* 00000065 //C 0f998  2676 db	101 */
-0x0000f999, 0x00000078, /* 00000078 //C 0f999  2676 db	120 */
-0x0000f99a, 0x00000020, /* 00000020 //C 0f99a  2676 db	32 */
-0x0000f99b, 0x00000066, /* 00000066 //C 0f99b  2676 db	102 */
-0x0000f99c, 0x00000069, /* 00000069 //C 0f99c  2676 db	105 */
-0x0000f99d, 0x0000006c, /* 0000006c //C 0f99d  2676 db	108 */
-0x0000f99e, 0x00000065, /* 00000065 //C 0f99e  2676 db	101 */
-0x0000f99f, 0x00000020, /* 00000020 //C 0f99f  2676 db	32 */
-0x0000f9a0, 0x00000074, /* 00000074 //C 0f9a0  2676 db	116 */
-0x0000f9a1, 0x0000006f, /* 0000006f //C 0f9a1  2676 db	111 */
-0x0000f9a2, 0x00000020, /* 00000020 //C 0f9a2  2676 db	32 */
-0x0000f9a3, 0x0000006d, /* 0000006d //C 0f9a3  2676 db	109 */
-0x0000f9a4, 0x00000065, /* 00000065 //C 0f9a4  2676 db	101 */
-0x0000f9a5, 0x0000006d, /* 0000006d //C 0f9a5  2676 db	109 */
-0x0000f9a6, 0x0000006f, /* 0000006f //C 0f9a6  2676 db	111 */
-0x0000f9a7, 0x00000072, /* 00000072 //C 0f9a7  2676 db	114 */
-0x0000f9a8, 0x00000079, /* 00000079 //C 0f9a8  2676 db	121 */
-0x0000f9a9, 0x0000000a, /* 0000000a //C 0f9a9  2676 db	10 */
-0x0000f9aa, 0x00000000, /* 00000000 //C 0f9aa  2676 db */
-0x0000f9ab, 0x00000067, /* 00000067 //C 0f9ab  2677 db	103 */
-0x0000f9ac, 0x0000005b, /* 0000005b //C 0f9ac  2677 db	91 */
-0x0000f9ad, 0x0000006f, /* 0000006f //C 0f9ad  2677 db	111 */
-0x0000f9ae, 0x0000005d, /* 0000005d //C 0f9ae  2677 db	93 */
-0x0000f9af, 0x0000007c, /* 0000007c //C 0f9af  2677 db	124 */
-0x0000f9b0, 0x00000072, /* 00000072 //C 0f9b0  2677 db	114 */
-0x0000f9b1, 0x00000075, /* 00000075 //C 0f9b1  2677 db	117 */
-0x0000f9b2, 0x0000006e, /* 0000006e //C 0f9b2  2677 db	110 */
-0x0000f9b3, 0x00000020, /* 00000020 //C 0f9b3  2677 db	32 */
-0x0000f9b4, 0x0000005b, /* 0000005b //C 0f9b4  2677 db	91 */
-0x0000f9b5, 0x00000061, /* 00000061 //C 0f9b5  2677 db	97 */
-0x0000f9b6, 0x00000064, /* 00000064 //C 0f9b6  2677 db	100 */
-0x0000f9b7, 0x00000064, /* 00000064 //C 0f9b7  2677 db	100 */
-0x0000f9b8, 0x00000072, /* 00000072 //C 0f9b8  2677 db	114 */
-0x0000f9b9, 0x0000005d, /* 0000005d //C 0f9b9  2677 db	93 */
-0x0000f9ba, 0x00000020, /* 00000020 //C 0f9ba  2677 db	32 */
-0x0000f9bb, 0x00000020, /* 00000020 //C 0f9bb  2677 db	32 */
-0x0000f9bc, 0x00000020, /* 00000020 //C 0f9bc  2677 db	32 */
-0x0000f9bd, 0x00000052, /* 00000052 //C 0f9bd  2677 db	82 */
-0x0000f9be, 0x00000075, /* 00000075 //C 0f9be  2677 db	117 */
-0x0000f9bf, 0x0000006e, /* 0000006e //C 0f9bf  2677 db	110 */
-0x0000f9c0, 0x00000020, /* 00000020 //C 0f9c0  2677 db	32 */
-0x0000f9c1, 0x00000066, /* 00000066 //C 0f9c1  2677 db	102 */
-0x0000f9c2, 0x00000072, /* 00000072 //C 0f9c2  2677 db	114 */
-0x0000f9c3, 0x0000006f, /* 0000006f //C 0f9c3  2677 db	111 */
-0x0000f9c4, 0x0000006d, /* 0000006d //C 0f9c4  2677 db	109 */
-0x0000f9c5, 0x00000020, /* 00000020 //C 0f9c5  2677 db	32 */
-0x0000f9c6, 0x00000061, /* 00000061 //C 0f9c6  2677 db	97 */
-0x0000f9c7, 0x00000064, /* 00000064 //C 0f9c7  2677 db	100 */
-0x0000f9c8, 0x00000064, /* 00000064 //C 0f9c8  2677 db	100 */
-0x0000f9c9, 0x00000072, /* 00000072 //C 0f9c9  2677 db	114 */
-0x0000f9ca, 0x00000065, /* 00000065 //C 0f9ca  2677 db	101 */
-0x0000f9cb, 0x00000073, /* 00000073 //C 0f9cb  2677 db	115 */
-0x0000f9cc, 0x00000073, /* 00000073 //C 0f9cc  2677 db	115 */
-0x0000f9cd, 0x0000000a, /* 0000000a //C 0f9cd  2677 db	10 */
-0x0000f9ce, 0x00000000, /* 00000000 //C 0f9ce  2677 db */
-0x0000f9cf, 0x00000072, /* 00000072 //C 0f9cf  2678 db	114 */
-0x0000f9d0, 0x0000005b, /* 0000005b //C 0f9d0  2678 db	91 */
-0x0000f9d1, 0x00000065, /* 00000065 //C 0f9d1  2678 db	101 */
-0x0000f9d2, 0x00000067, /* 00000067 //C 0f9d2  2678 db	103 */
-0x0000f9d3, 0x0000005b, /* 0000005b //C 0f9d3  2678 db	91 */
-0x0000f9d4, 0x00000073, /* 00000073 //C 0f9d4  2678 db	115 */
-0x0000f9d5, 0x0000005d, /* 0000005d //C 0f9d5  2678 db	93 */
-0x0000f9d6, 0x0000005d, /* 0000005d //C 0f9d6  2678 db	93 */
-0x0000f9d7, 0x00000020, /* 00000020 //C 0f9d7  2678 db	32 */
-0x0000f9d8, 0x00000020, /* 00000020 //C 0f9d8  2678 db	32 */
-0x0000f9d9, 0x00000020, /* 00000020 //C 0f9d9  2678 db	32 */
-0x0000f9da, 0x00000020, /* 00000020 //C 0f9da  2678 db	32 */
-0x0000f9db, 0x00000020, /* 00000020 //C 0f9db  2678 db	32 */
-0x0000f9dc, 0x00000020, /* 00000020 //C 0f9dc  2678 db	32 */
-0x0000f9dd, 0x00000020, /* 00000020 //C 0f9dd  2678 db	32 */
-0x0000f9de, 0x00000020, /* 00000020 //C 0f9de  2678 db	32 */
-0x0000f9df, 0x00000020, /* 00000020 //C 0f9df  2678 db	32 */
-0x0000f9e0, 0x00000020, /* 00000020 //C 0f9e0  2678 db	32 */
-0x0000f9e1, 0x00000050, /* 00000050 //C 0f9e1  2678 db	80 */
-0x0000f9e2, 0x00000072, /* 00000072 //C 0f9e2  2678 db	114 */
-0x0000f9e3, 0x00000069, /* 00000069 //C 0f9e3  2678 db	105 */
-0x0000f9e4, 0x0000006e, /* 0000006e //C 0f9e4  2678 db	110 */
-0x0000f9e5, 0x00000074, /* 00000074 //C 0f9e5  2678 db	116 */
-0x0000f9e6, 0x00000020, /* 00000020 //C 0f9e6  2678 db	32 */
-0x0000f9e7, 0x00000072, /* 00000072 //C 0f9e7  2678 db	114 */
-0x0000f9e8, 0x00000065, /* 00000065 //C 0f9e8  2678 db	101 */
-0x0000f9e9, 0x00000067, /* 00000067 //C 0f9e9  2678 db	103 */
-0x0000f9ea, 0x00000069, /* 00000069 //C 0f9ea  2678 db	105 */
-0x0000f9eb, 0x00000073, /* 00000073 //C 0f9eb  2678 db	115 */
-0x0000f9ec, 0x00000074, /* 00000074 //C 0f9ec  2678 db	116 */
-0x0000f9ed, 0x00000065, /* 00000065 //C 0f9ed  2678 db	101 */
-0x0000f9ee, 0x00000072, /* 00000072 //C 0f9ee  2678 db	114 */
-0x0000f9ef, 0x00000073, /* 00000073 //C 0f9ef  2678 db	115 */
-0x0000f9f0, 0x0000000a, /* 0000000a //C 0f9f0  2678 db	10 */
-0x0000f9f1, 0x00000000, /* 00000000 //C 0f9f1  2678 db */
-0x0000f9f2, 0x00000072, /* 00000072 //C 0f9f2  2679 db	114 */
-0x0000f9f3, 0x00000058, /* 00000058 //C 0f9f3  2679 db	88 */
-0x0000f9f4, 0x00000020, /* 00000020 //C 0f9f4  2679 db	32 */
-0x0000f9f5, 0x0000005b, /* 0000005b //C 0f9f5  2679 db	91 */
-0x0000f9f6, 0x00000076, /* 00000076 //C 0f9f6  2679 db	118 */
-0x0000f9f7, 0x00000061, /* 00000061 //C 0f9f7  2679 db	97 */
-0x0000f9f8, 0x0000006c, /* 0000006c //C 0f9f8  2679 db	108 */
-0x0000f9f9, 0x0000005d, /* 0000005d //C 0f9f9  2679 db	93 */
-0x0000f9fa, 0x00000020, /* 00000020 //C 0f9fa  2679 db	32 */
-0x0000f9fb, 0x00000020, /* 00000020 //C 0f9fb  2679 db	32 */
-0x0000f9fc, 0x00000020, /* 00000020 //C 0f9fc  2679 db	32 */
-0x0000f9fd, 0x00000020, /* 00000020 //C 0f9fd  2679 db	32 */
-0x0000f9fe, 0x00000020, /* 00000020 //C 0f9fe  2679 db	32 */
-0x0000f9ff, 0x00000020, /* 00000020 //C 0f9ff  2679 db	32 */
-0x0000fa00, 0x00000020, /* 00000020 //C 0fa00  2679 db	32 */
-0x0000fa01, 0x00000020, /* 00000020 //C 0fa01  2679 db	32 */
-0x0000fa02, 0x00000020, /* 00000020 //C 0fa02  2679 db	32 */
-0x0000fa03, 0x00000020, /* 00000020 //C 0fa03  2679 db	32 */
-0x0000fa04, 0x00000047, /* 00000047 //C 0fa04  2679 db	71 */
-0x0000fa05, 0x00000065, /* 00000065 //C 0fa05  2679 db	101 */
-0x0000fa06, 0x00000074, /* 00000074 //C 0fa06  2679 db	116 */
-0x0000fa07, 0x0000002f, /* 0000002f //C 0fa07  2679 db	47 */
-0x0000fa08, 0x00000073, /* 00000073 //C 0fa08  2679 db	115 */
-0x0000fa09, 0x00000065, /* 00000065 //C 0fa09  2679 db	101 */
-0x0000fa0a, 0x00000074, /* 00000074 //C 0fa0a  2679 db	116 */
-0x0000fa0b, 0x00000020, /* 00000020 //C 0fa0b  2679 db	32 */
-0x0000fa0c, 0x00000052, /* 00000052 //C 0fa0c  2679 db	82 */
-0x0000fa0d, 0x00000058, /* 00000058 //C 0fa0d  2679 db	88 */
-0x0000fa0e, 0x0000000a, /* 0000000a //C 0fa0e  2679 db	10 */
-0x0000fa0f, 0x00000000, /* 00000000 //C 0fa0f  2679 db */
-0x0000fa10, 0x00000073, /* 00000073 //C 0fa10  2680 db	115 */
-0x0000fa11, 0x00000070, /* 00000070 //C 0fa11  2680 db	112 */
-0x0000fa12, 0x00000020, /* 00000020 //C 0fa12  2680 db	32 */
-0x0000fa13, 0x0000005b, /* 0000005b //C 0fa13  2680 db	91 */
-0x0000fa14, 0x00000076, /* 00000076 //C 0fa14  2680 db	118 */
-0x0000fa15, 0x00000061, /* 00000061 //C 0fa15  2680 db	97 */
-0x0000fa16, 0x0000006c, /* 0000006c //C 0fa16  2680 db	108 */
-0x0000fa17, 0x0000005d, /* 0000005d //C 0fa17  2680 db	93 */
-0x0000fa18, 0x00000020, /* 00000020 //C 0fa18  2680 db	32 */
-0x0000fa19, 0x00000020, /* 00000020 //C 0fa19  2680 db	32 */
-0x0000fa1a, 0x00000020, /* 00000020 //C 0fa1a  2680 db	32 */
-0x0000fa1b, 0x00000020, /* 00000020 //C 0fa1b  2680 db	32 */
-0x0000fa1c, 0x00000020, /* 00000020 //C 0fa1c  2680 db	32 */
-0x0000fa1d, 0x00000020, /* 00000020 //C 0fa1d  2680 db	32 */
-0x0000fa1e, 0x00000020, /* 00000020 //C 0fa1e  2680 db	32 */
-0x0000fa1f, 0x00000020, /* 00000020 //C 0fa1f  2680 db	32 */
-0x0000fa20, 0x00000020, /* 00000020 //C 0fa20  2680 db	32 */
-0x0000fa21, 0x00000020, /* 00000020 //C 0fa21  2680 db	32 */
-0x0000fa22, 0x00000047, /* 00000047 //C 0fa22  2680 db	71 */
-0x0000fa23, 0x00000065, /* 00000065 //C 0fa23  2680 db	101 */
-0x0000fa24, 0x00000074, /* 00000074 //C 0fa24  2680 db	116 */
-0x0000fa25, 0x0000002f, /* 0000002f //C 0fa25  2680 db	47 */
-0x0000fa26, 0x00000073, /* 00000073 //C 0fa26  2680 db	115 */
-0x0000fa27, 0x00000065, /* 00000065 //C 0fa27  2680 db	101 */
-0x0000fa28, 0x00000074, /* 00000074 //C 0fa28  2680 db	116 */
-0x0000fa29, 0x00000020, /* 00000020 //C 0fa29  2680 db	32 */
-0x0000fa2a, 0x00000052, /* 00000052 //C 0fa2a  2680 db	82 */
-0x0000fa2b, 0x00000031, /* 00000031 //C 0fa2b  2680 db	49 */
-0x0000fa2c, 0x00000033, /* 00000033 //C 0fa2c  2680 db	51 */
-0x0000fa2d, 0x0000000a, /* 0000000a //C 0fa2d  2680 db	10 */
-0x0000fa2e, 0x00000000, /* 00000000 //C 0fa2e  2680 db */
-0x0000fa2f, 0x0000006c, /* 0000006c //C 0fa2f  2681 db	108 */
-0x0000fa30, 0x00000072, /* 00000072 //C 0fa30  2681 db	114 */
-0x0000fa31, 0x00000020, /* 00000020 //C 0fa31  2681 db	32 */
-0x0000fa32, 0x0000005b, /* 0000005b //C 0fa32  2681 db	91 */
-0x0000fa33, 0x00000076, /* 00000076 //C 0fa33  2681 db	118 */
-0x0000fa34, 0x00000061, /* 00000061 //C 0fa34  2681 db	97 */
-0x0000fa35, 0x0000006c, /* 0000006c //C 0fa35  2681 db	108 */
-0x0000fa36, 0x0000005d, /* 0000005d //C 0fa36  2681 db	93 */
-0x0000fa37, 0x00000020, /* 00000020 //C 0fa37  2681 db	32 */
-0x0000fa38, 0x00000020, /* 00000020 //C 0fa38  2681 db	32 */
-0x0000fa39, 0x00000020, /* 00000020 //C 0fa39  2681 db	32 */
-0x0000fa3a, 0x00000020, /* 00000020 //C 0fa3a  2681 db	32 */
-0x0000fa3b, 0x00000020, /* 00000020 //C 0fa3b  2681 db	32 */
-0x0000fa3c, 0x00000020, /* 00000020 //C 0fa3c  2681 db	32 */
-0x0000fa3d, 0x00000020, /* 00000020 //C 0fa3d  2681 db	32 */
-0x0000fa3e, 0x00000020, /* 00000020 //C 0fa3e  2681 db	32 */
-0x0000fa3f, 0x00000020, /* 00000020 //C 0fa3f  2681 db	32 */
-0x0000fa40, 0x00000020, /* 00000020 //C 0fa40  2681 db	32 */
-0x0000fa41, 0x00000047, /* 00000047 //C 0fa41  2681 db	71 */
-0x0000fa42, 0x00000065, /* 00000065 //C 0fa42  2681 db	101 */
-0x0000fa43, 0x00000074, /* 00000074 //C 0fa43  2681 db	116 */
-0x0000fa44, 0x0000002f, /* 0000002f //C 0fa44  2681 db	47 */
-0x0000fa45, 0x00000073, /* 00000073 //C 0fa45  2681 db	115 */
-0x0000fa46, 0x00000065, /* 00000065 //C 0fa46  2681 db	101 */
-0x0000fa47, 0x00000074, /* 00000074 //C 0fa47  2681 db	116 */
-0x0000fa48, 0x00000020, /* 00000020 //C 0fa48  2681 db	32 */
-0x0000fa49, 0x00000052, /* 00000052 //C 0fa49  2681 db	82 */
-0x0000fa4a, 0x00000031, /* 00000031 //C 0fa4a  2681 db	49 */
-0x0000fa4b, 0x00000034, /* 00000034 //C 0fa4b  2681 db	52 */
-0x0000fa4c, 0x0000000a, /* 0000000a //C 0fa4c  2681 db	10 */
-0x0000fa4d, 0x00000000, /* 00000000 //C 0fa4d  2681 db */
-0x0000fa4e, 0x00000070, /* 00000070 //C 0fa4e  2682 db	112 */
-0x0000fa4f, 0x00000063, /* 00000063 //C 0fa4f  2682 db	99 */
-0x0000fa50, 0x00000020, /* 00000020 //C 0fa50  2682 db	32 */
-0x0000fa51, 0x0000005b, /* 0000005b //C 0fa51  2682 db	91 */
-0x0000fa52, 0x00000076, /* 00000076 //C 0fa52  2682 db	118 */
-0x0000fa53, 0x00000061, /* 00000061 //C 0fa53  2682 db	97 */
-0x0000fa54, 0x0000006c, /* 0000006c //C 0fa54  2682 db	108 */
-0x0000fa55, 0x0000005d, /* 0000005d //C 0fa55  2682 db	93 */
-0x0000fa56, 0x00000020, /* 00000020 //C 0fa56  2682 db	32 */
-0x0000fa57, 0x00000020, /* 00000020 //C 0fa57  2682 db	32 */
-0x0000fa58, 0x00000020, /* 00000020 //C 0fa58  2682 db	32 */
-0x0000fa59, 0x00000020, /* 00000020 //C 0fa59  2682 db	32 */
-0x0000fa5a, 0x00000020, /* 00000020 //C 0fa5a  2682 db	32 */
-0x0000fa5b, 0x00000020, /* 00000020 //C 0fa5b  2682 db	32 */
-0x0000fa5c, 0x00000020, /* 00000020 //C 0fa5c  2682 db	32 */
-0x0000fa5d, 0x00000020, /* 00000020 //C 0fa5d  2682 db	32 */
-0x0000fa5e, 0x00000020, /* 00000020 //C 0fa5e  2682 db	32 */
-0x0000fa5f, 0x00000020, /* 00000020 //C 0fa5f  2682 db	32 */
-0x0000fa60, 0x00000047, /* 00000047 //C 0fa60  2682 db	71 */
-0x0000fa61, 0x00000065, /* 00000065 //C 0fa61  2682 db	101 */
-0x0000fa62, 0x00000074, /* 00000074 //C 0fa62  2682 db	116 */
-0x0000fa63, 0x0000002f, /* 0000002f //C 0fa63  2682 db	47 */
-0x0000fa64, 0x00000073, /* 00000073 //C 0fa64  2682 db	115 */
-0x0000fa65, 0x00000065, /* 00000065 //C 0fa65  2682 db	101 */
-0x0000fa66, 0x00000074, /* 00000074 //C 0fa66  2682 db	116 */
-0x0000fa67, 0x00000020, /* 00000020 //C 0fa67  2682 db	32 */
-0x0000fa68, 0x00000052, /* 00000052 //C 0fa68  2682 db	82 */
-0x0000fa69, 0x00000031, /* 00000031 //C 0fa69  2682 db	49 */
-0x0000fa6a, 0x00000035, /* 00000035 //C 0fa6a  2682 db	53 */
-0x0000fa6b, 0x0000000a, /* 0000000a //C 0fa6b  2682 db	10 */
-0x0000fa6c, 0x00000000, /* 00000000 //C 0fa6c  2682 db */
-0x0000fa6d, 0x00000066, /* 00000066 //C 0fa6d  2683 db	102 */
-0x0000fa6e, 0x00000020, /* 00000020 //C 0fa6e  2683 db	32 */
-0x0000fa6f, 0x0000005b, /* 0000005b //C 0fa6f  2683 db	91 */
-0x0000fa70, 0x00000076, /* 00000076 //C 0fa70  2683 db	118 */
-0x0000fa71, 0x00000061, /* 00000061 //C 0fa71  2683 db	97 */
-0x0000fa72, 0x0000006c, /* 0000006c //C 0fa72  2683 db	108 */
-0x0000fa73, 0x0000005d, /* 0000005d //C 0fa73  2683 db	93 */
-0x0000fa74, 0x00000020, /* 00000020 //C 0fa74  2683 db	32 */
-0x0000fa75, 0x00000020, /* 00000020 //C 0fa75  2683 db	32 */
-0x0000fa76, 0x00000020, /* 00000020 //C 0fa76  2683 db	32 */
-0x0000fa77, 0x00000020, /* 00000020 //C 0fa77  2683 db	32 */
-0x0000fa78, 0x00000020, /* 00000020 //C 0fa78  2683 db	32 */
-0x0000fa79, 0x00000020, /* 00000020 //C 0fa79  2683 db	32 */
-0x0000fa7a, 0x00000020, /* 00000020 //C 0fa7a  2683 db	32 */
-0x0000fa7b, 0x00000020, /* 00000020 //C 0fa7b  2683 db	32 */
-0x0000fa7c, 0x00000020, /* 00000020 //C 0fa7c  2683 db	32 */
-0x0000fa7d, 0x00000020, /* 00000020 //C 0fa7d  2683 db	32 */
-0x0000fa7e, 0x00000020, /* 00000020 //C 0fa7e  2683 db	32 */
-0x0000fa7f, 0x00000047, /* 00000047 //C 0fa7f  2683 db	71 */
-0x0000fa80, 0x00000065, /* 00000065 //C 0fa80  2683 db	101 */
-0x0000fa81, 0x00000074, /* 00000074 //C 0fa81  2683 db	116 */
-0x0000fa82, 0x0000002f, /* 0000002f //C 0fa82  2683 db	47 */
-0x0000fa83, 0x00000073, /* 00000073 //C 0fa83  2683 db	115 */
-0x0000fa84, 0x00000065, /* 00000065 //C 0fa84  2683 db	101 */
-0x0000fa85, 0x00000074, /* 00000074 //C 0fa85  2683 db	116 */
-0x0000fa86, 0x00000020, /* 00000020 //C 0fa86  2683 db	32 */
-0x0000fa87, 0x00000066, /* 00000066 //C 0fa87  2683 db	102 */
-0x0000fa88, 0x0000006c, /* 0000006c //C 0fa88  2683 db	108 */
-0x0000fa89, 0x00000061, /* 00000061 //C 0fa89  2683 db	97 */
-0x0000fa8a, 0x00000067, /* 00000067 //C 0fa8a  2683 db	103 */
-0x0000fa8b, 0x00000073, /* 00000073 //C 0fa8b  2683 db	115 */
-0x0000fa8c, 0x0000000a, /* 0000000a //C 0fa8c  2683 db	10 */
-0x0000fa8d, 0x00000000, /* 00000000 //C 0fa8d  2683 db */
-0x0000fa8e, 0x00000076, /* 00000076 //C 0fa8e  2684 db	118 */
-0x0000fa8f, 0x0000005b, /* 0000005b //C 0fa8f  2684 db	91 */
-0x0000fa90, 0x00000065, /* 00000065 //C 0fa90  2684 db	101 */
-0x0000fa91, 0x00000072, /* 00000072 //C 0fa91  2684 db	114 */
-0x0000fa92, 0x0000005d, /* 0000005d //C 0fa92  2684 db	93 */
-0x0000fa93, 0x00000020, /* 00000020 //C 0fa93  2684 db	32 */
-0x0000fa94, 0x00000020, /* 00000020 //C 0fa94  2684 db	32 */
-0x0000fa95, 0x00000020, /* 00000020 //C 0fa95  2684 db	32 */
-0x0000fa96, 0x00000020, /* 00000020 //C 0fa96  2684 db	32 */
-0x0000fa97, 0x00000020, /* 00000020 //C 0fa97  2684 db	32 */
-0x0000fa98, 0x00000020, /* 00000020 //C 0fa98  2684 db	32 */
-0x0000fa99, 0x00000020, /* 00000020 //C 0fa99  2684 db	32 */
-0x0000fa9a, 0x00000020, /* 00000020 //C 0fa9a  2684 db	32 */
-0x0000fa9b, 0x00000020, /* 00000020 //C 0fa9b  2684 db	32 */
-0x0000fa9c, 0x00000020, /* 00000020 //C 0fa9c  2684 db	32 */
-0x0000fa9d, 0x00000020, /* 00000020 //C 0fa9d  2684 db	32 */
-0x0000fa9e, 0x00000020, /* 00000020 //C 0fa9e  2684 db	32 */
-0x0000fa9f, 0x00000020, /* 00000020 //C 0fa9f  2684 db	32 */
-0x0000faa0, 0x00000050, /* 00000050 //C 0faa0  2684 db	80 */
-0x0000faa1, 0x00000072, /* 00000072 //C 0faa1  2684 db	114 */
-0x0000faa2, 0x00000069, /* 00000069 //C 0faa2  2684 db	105 */
-0x0000faa3, 0x0000006e, /* 0000006e //C 0faa3  2684 db	110 */
-0x0000faa4, 0x00000074, /* 00000074 //C 0faa4  2684 db	116 */
-0x0000faa5, 0x00000020, /* 00000020 //C 0faa5  2684 db	32 */
-0x0000faa6, 0x00000070, /* 00000070 //C 0faa6  2684 db	112 */
-0x0000faa7, 0x0000006d, /* 0000006d //C 0faa7  2684 db	109 */
-0x0000faa8, 0x0000006f, /* 0000006f //C 0faa8  2684 db	111 */
-0x0000faa9, 0x0000006e, /* 0000006e //C 0faa9  2684 db	110 */
-0x0000faaa, 0x00000020, /* 00000020 //C 0faaa  2684 db	32 */
-0x0000faab, 0x00000061, /* 00000061 //C 0faab  2684 db	97 */
-0x0000faac, 0x0000006e, /* 0000006e //C 0faac  2684 db	110 */
-0x0000faad, 0x00000064, /* 00000064 //C 0faad  2684 db	100 */
-0x0000faae, 0x00000020, /* 00000020 //C 0faae  2684 db	32 */
-0x0000faaf, 0x00000063, /* 00000063 //C 0faaf  2684 db	99 */
-0x0000fab0, 0x00000070, /* 00000070 //C 0fab0  2684 db	112 */
-0x0000fab1, 0x00000075, /* 00000075 //C 0fab1  2684 db	117 */
-0x0000fab2, 0x00000020, /* 00000020 //C 0fab2  2684 db	32 */
-0x0000fab3, 0x00000076, /* 00000076 //C 0fab3  2684 db	118 */
-0x0000fab4, 0x00000065, /* 00000065 //C 0fab4  2684 db	101 */
-0x0000fab5, 0x00000072, /* 00000072 //C 0fab5  2684 db	114 */
-0x0000fab6, 0x00000073, /* 00000073 //C 0fab6  2684 db	115 */
-0x0000fab7, 0x00000069, /* 00000069 //C 0fab7  2684 db	105 */
-0x0000fab8, 0x0000006f, /* 0000006f //C 0fab8  2684 db	111 */
-0x0000fab9, 0x0000006e, /* 0000006e //C 0fab9  2684 db	110 */
-0x0000faba, 0x0000000a, /* 0000000a //C 0faba  2684 db	10 */
-0x0000fabb, 0x00000000, /* 00000000 //C 0fabb  2684 db */
-0x0000fabc, 0x00000068, /* 00000068 //C 0fabc  2685 db	104 */
-0x0000fabd, 0x0000005b, /* 0000005b //C 0fabd  2685 db	91 */
-0x0000fabe, 0x00000065, /* 00000065 //C 0fabe  2685 db	101 */
-0x0000fabf, 0x0000006c, /* 0000006c //C 0fabf  2685 db	108 */
-0x0000fac0, 0x00000070, /* 00000070 //C 0fac0  2685 db	112 */
-0x0000fac1, 0x0000005d, /* 0000005d //C 0fac1  2685 db	93 */
-0x0000fac2, 0x0000002c, /* 0000002c //C 0fac2  2685 db	44 */
-0x0000fac3, 0x0000003f, /* 0000003f //C 0fac3  2685 db	63 */
-0x0000fac4, 0x00000020, /* 00000020 //C 0fac4  2685 db	32 */
-0x0000fac5, 0x00000020, /* 00000020 //C 0fac5  2685 db	32 */
-0x0000fac6, 0x00000020, /* 00000020 //C 0fac6  2685 db	32 */
-0x0000fac7, 0x00000020, /* 00000020 //C 0fac7  2685 db	32 */
-0x0000fac8, 0x00000020, /* 00000020 //C 0fac8  2685 db	32 */
-0x0000fac9, 0x00000020, /* 00000020 //C 0fac9  2685 db	32 */
-0x0000faca, 0x00000020, /* 00000020 //C 0faca  2685 db	32 */
-0x0000facb, 0x00000020, /* 00000020 //C 0facb  2685 db	32 */
-0x0000facc, 0x00000020, /* 00000020 //C 0facc  2685 db	32 */
-0x0000facd, 0x00000020, /* 00000020 //C 0facd  2685 db	32 */
-0x0000face, 0x00000048, /* 00000048 //C 0face  2685 db	72 */
-0x0000facf, 0x00000065, /* 00000065 //C 0facf  2685 db	101 */
-0x0000fad0, 0x0000006c, /* 0000006c //C 0fad0  2685 db	108 */
-0x0000fad1, 0x00000070, /* 00000070 //C 0fad1  2685 db	112 */
-0x0000fad2, 0x0000000a, /* 0000000a //C 0fad2  2685 db	10 */
-0x0000fad3, 0x00000000, /* 00000000 //C 0fad3  2685 db */
-0x0000fad4, 0x00000000, /* 00000000 //C 0fad4  2686 dd	0 */
-0x0000fad5, 0x00000000, /* 00000000 //C 0fad5  2690 dd	0 */
+0x0000f937, 0x00000000, /* 00000000 //C 0f937  2673 dd	0 */
+0x0000f938, 0x0000006d, /* 0000006d //C 0f938  2675 db	109 */
+0x0000f939, 0x0000005b, /* 0000005b //C 0f939  2675 db	91 */
+0x0000f93a, 0x00000065, /* 00000065 //C 0f93a  2675 db	101 */
+0x0000f93b, 0x0000006d, /* 0000006d //C 0f93b  2675 db	109 */
+0x0000f93c, 0x0000005d, /* 0000005d //C 0f93c  2675 db	93 */
+0x0000f93d, 0x00000020, /* 00000020 //C 0f93d  2675 db	32 */
+0x0000f93e, 0x00000061, /* 00000061 //C 0f93e  2675 db	97 */
+0x0000f93f, 0x00000064, /* 00000064 //C 0f93f  2675 db	100 */
+0x0000f940, 0x00000064, /* 00000064 //C 0f940  2675 db	100 */
+0x0000f941, 0x00000072, /* 00000072 //C 0f941  2675 db	114 */
+0x0000f942, 0x00000020, /* 00000020 //C 0f942  2675 db	32 */
+0x0000f943, 0x0000005b, /* 0000005b //C 0f943  2675 db	91 */
+0x0000f944, 0x00000076, /* 00000076 //C 0f944  2675 db	118 */
+0x0000f945, 0x00000061, /* 00000061 //C 0f945  2675 db	97 */
+0x0000f946, 0x0000006c, /* 0000006c //C 0f946  2675 db	108 */
+0x0000f947, 0x0000005d, /* 0000005d //C 0f947  2675 db	93 */
+0x0000f948, 0x00000020, /* 00000020 //C 0f948  2675 db	32 */
+0x0000f949, 0x00000020, /* 00000020 //C 0f949  2675 db	32 */
+0x0000f94a, 0x00000047, /* 00000047 //C 0f94a  2675 db	71 */
+0x0000f94b, 0x00000065, /* 00000065 //C 0f94b  2675 db	101 */
+0x0000f94c, 0x00000074, /* 00000074 //C 0f94c  2675 db	116 */
+0x0000f94d, 0x0000002f, /* 0000002f //C 0f94d  2675 db	47 */
+0x0000f94e, 0x00000073, /* 00000073 //C 0f94e  2675 db	115 */
+0x0000f94f, 0x00000065, /* 00000065 //C 0f94f  2675 db	101 */
+0x0000f950, 0x00000074, /* 00000074 //C 0f950  2675 db	116 */
+0x0000f951, 0x00000020, /* 00000020 //C 0f951  2675 db	32 */
+0x0000f952, 0x0000006d, /* 0000006d //C 0f952  2675 db	109 */
+0x0000f953, 0x00000065, /* 00000065 //C 0f953  2675 db	101 */
+0x0000f954, 0x0000006d, /* 0000006d //C 0f954  2675 db	109 */
+0x0000f955, 0x0000006f, /* 0000006f //C 0f955  2675 db	111 */
+0x0000f956, 0x00000072, /* 00000072 //C 0f956  2675 db	114 */
+0x0000f957, 0x00000079, /* 00000079 //C 0f957  2675 db	121 */
+0x0000f958, 0x0000000a, /* 0000000a //C 0f958  2675 db	10 */
+0x0000f959, 0x00000000, /* 00000000 //C 0f959  2675 db */
+0x0000f95a, 0x00000064, /* 00000064 //C 0f95a  2676 db	100 */
+0x0000f95b, 0x0000005b, /* 0000005b //C 0f95b  2676 db	91 */
+0x0000f95c, 0x00000075, /* 00000075 //C 0f95c  2676 db	117 */
+0x0000f95d, 0x0000006d, /* 0000006d //C 0f95d  2676 db	109 */
+0x0000f95e, 0x00000070, /* 00000070 //C 0f95e  2676 db	112 */
+0x0000f95f, 0x0000005d, /* 0000005d //C 0f95f  2676 db	93 */
+0x0000f960, 0x00000020, /* 00000020 //C 0f960  2676 db	32 */
+0x0000f961, 0x00000073, /* 00000073 //C 0f961  2676 db	115 */
+0x0000f962, 0x00000074, /* 00000074 //C 0f962  2676 db	116 */
+0x0000f963, 0x00000061, /* 00000061 //C 0f963  2676 db	97 */
+0x0000f964, 0x00000072, /* 00000072 //C 0f964  2676 db	114 */
+0x0000f965, 0x00000074, /* 00000074 //C 0f965  2676 db	116 */
+0x0000f966, 0x00000020, /* 00000020 //C 0f966  2676 db	32 */
+0x0000f967, 0x00000065, /* 00000065 //C 0f967  2676 db	101 */
+0x0000f968, 0x0000006e, /* 0000006e //C 0f968  2676 db	110 */
+0x0000f969, 0x00000064, /* 00000064 //C 0f969  2676 db	100 */
+0x0000f96a, 0x00000020, /* 00000020 //C 0f96a  2676 db	32 */
+0x0000f96b, 0x00000020, /* 00000020 //C 0f96b  2676 db	32 */
+0x0000f96c, 0x00000044, /* 00000044 //C 0f96c  2676 db	68 */
+0x0000f96d, 0x00000075, /* 00000075 //C 0f96d  2676 db	117 */
+0x0000f96e, 0x0000006d, /* 0000006d //C 0f96e  2676 db	109 */
+0x0000f96f, 0x00000070, /* 00000070 //C 0f96f  2676 db	112 */
+0x0000f970, 0x00000020, /* 00000020 //C 0f970  2676 db	32 */
+0x0000f971, 0x0000006d, /* 0000006d //C 0f971  2676 db	109 */
+0x0000f972, 0x00000065, /* 00000065 //C 0f972  2676 db	101 */
+0x0000f973, 0x0000006d, /* 0000006d //C 0f973  2676 db	109 */
+0x0000f974, 0x0000006f, /* 0000006f //C 0f974  2676 db	111 */
+0x0000f975, 0x00000072, /* 00000072 //C 0f975  2676 db	114 */
+0x0000f976, 0x00000079, /* 00000079 //C 0f976  2676 db	121 */
+0x0000f977, 0x00000020, /* 00000020 //C 0f977  2676 db	32 */
+0x0000f978, 0x00000063, /* 00000063 //C 0f978  2676 db	99 */
+0x0000f979, 0x0000006f, /* 0000006f //C 0f979  2676 db	111 */
+0x0000f97a, 0x0000006e, /* 0000006e //C 0f97a  2676 db	110 */
+0x0000f97b, 0x00000074, /* 00000074 //C 0f97b  2676 db	116 */
+0x0000f97c, 0x00000065, /* 00000065 //C 0f97c  2676 db	101 */
+0x0000f97d, 0x0000006e, /* 0000006e //C 0f97d  2676 db	110 */
+0x0000f97e, 0x00000074, /* 00000074 //C 0f97e  2676 db	116 */
+0x0000f97f, 0x0000000a, /* 0000000a //C 0f97f  2676 db	10 */
+0x0000f980, 0x00000000, /* 00000000 //C 0f980  2676 db */
+0x0000f981, 0x0000006c, /* 0000006c //C 0f981  2677 db	108 */
+0x0000f982, 0x0000005b, /* 0000005b //C 0f982  2677 db	91 */
+0x0000f983, 0x0000006f, /* 0000006f //C 0f983  2677 db	111 */
+0x0000f984, 0x00000061, /* 00000061 //C 0f984  2677 db	97 */
+0x0000f985, 0x00000064, /* 00000064 //C 0f985  2677 db	100 */
+0x0000f986, 0x0000005d, /* 0000005d //C 0f986  2677 db	93 */
+0x0000f987, 0x00000020, /* 00000020 //C 0f987  2677 db	32 */
+0x0000f988, 0x00000020, /* 00000020 //C 0f988  2677 db	32 */
+0x0000f989, 0x00000020, /* 00000020 //C 0f989  2677 db	32 */
+0x0000f98a, 0x00000020, /* 00000020 //C 0f98a  2677 db	32 */
+0x0000f98b, 0x00000020, /* 00000020 //C 0f98b  2677 db	32 */
+0x0000f98c, 0x00000020, /* 00000020 //C 0f98c  2677 db	32 */
+0x0000f98d, 0x00000020, /* 00000020 //C 0f98d  2677 db	32 */
+0x0000f98e, 0x00000020, /* 00000020 //C 0f98e  2677 db	32 */
+0x0000f98f, 0x00000020, /* 00000020 //C 0f98f  2677 db	32 */
+0x0000f990, 0x00000020, /* 00000020 //C 0f990  2677 db	32 */
+0x0000f991, 0x00000020, /* 00000020 //C 0f991  2677 db	32 */
+0x0000f992, 0x00000020, /* 00000020 //C 0f992  2677 db	32 */
+0x0000f993, 0x0000004c, /* 0000004c //C 0f993  2677 db	76 */
+0x0000f994, 0x0000006f, /* 0000006f //C 0f994  2677 db	111 */
+0x0000f995, 0x00000061, /* 00000061 //C 0f995  2677 db	97 */
+0x0000f996, 0x00000064, /* 00000064 //C 0f996  2677 db	100 */
+0x0000f997, 0x00000020, /* 00000020 //C 0f997  2677 db	32 */
+0x0000f998, 0x00000068, /* 00000068 //C 0f998  2677 db	104 */
+0x0000f999, 0x00000065, /* 00000065 //C 0f999  2677 db	101 */
+0x0000f99a, 0x00000078, /* 00000078 //C 0f99a  2677 db	120 */
+0x0000f99b, 0x00000020, /* 00000020 //C 0f99b  2677 db	32 */
+0x0000f99c, 0x00000066, /* 00000066 //C 0f99c  2677 db	102 */
+0x0000f99d, 0x00000069, /* 00000069 //C 0f99d  2677 db	105 */
+0x0000f99e, 0x0000006c, /* 0000006c //C 0f99e  2677 db	108 */
+0x0000f99f, 0x00000065, /* 00000065 //C 0f99f  2677 db	101 */
+0x0000f9a0, 0x00000020, /* 00000020 //C 0f9a0  2677 db	32 */
+0x0000f9a1, 0x00000074, /* 00000074 //C 0f9a1  2677 db	116 */
+0x0000f9a2, 0x0000006f, /* 0000006f //C 0f9a2  2677 db	111 */
+0x0000f9a3, 0x00000020, /* 00000020 //C 0f9a3  2677 db	32 */
+0x0000f9a4, 0x0000006d, /* 0000006d //C 0f9a4  2677 db	109 */
+0x0000f9a5, 0x00000065, /* 00000065 //C 0f9a5  2677 db	101 */
+0x0000f9a6, 0x0000006d, /* 0000006d //C 0f9a6  2677 db	109 */
+0x0000f9a7, 0x0000006f, /* 0000006f //C 0f9a7  2677 db	111 */
+0x0000f9a8, 0x00000072, /* 00000072 //C 0f9a8  2677 db	114 */
+0x0000f9a9, 0x00000079, /* 00000079 //C 0f9a9  2677 db	121 */
+0x0000f9aa, 0x0000000a, /* 0000000a //C 0f9aa  2677 db	10 */
+0x0000f9ab, 0x00000000, /* 00000000 //C 0f9ab  2677 db */
+0x0000f9ac, 0x00000067, /* 00000067 //C 0f9ac  2678 db	103 */
+0x0000f9ad, 0x0000005b, /* 0000005b //C 0f9ad  2678 db	91 */
+0x0000f9ae, 0x0000006f, /* 0000006f //C 0f9ae  2678 db	111 */
+0x0000f9af, 0x0000005d, /* 0000005d //C 0f9af  2678 db	93 */
+0x0000f9b0, 0x0000007c, /* 0000007c //C 0f9b0  2678 db	124 */
+0x0000f9b1, 0x00000072, /* 00000072 //C 0f9b1  2678 db	114 */
+0x0000f9b2, 0x00000075, /* 00000075 //C 0f9b2  2678 db	117 */
+0x0000f9b3, 0x0000006e, /* 0000006e //C 0f9b3  2678 db	110 */
+0x0000f9b4, 0x00000020, /* 00000020 //C 0f9b4  2678 db	32 */
+0x0000f9b5, 0x0000005b, /* 0000005b //C 0f9b5  2678 db	91 */
+0x0000f9b6, 0x00000061, /* 00000061 //C 0f9b6  2678 db	97 */
+0x0000f9b7, 0x00000064, /* 00000064 //C 0f9b7  2678 db	100 */
+0x0000f9b8, 0x00000064, /* 00000064 //C 0f9b8  2678 db	100 */
+0x0000f9b9, 0x00000072, /* 00000072 //C 0f9b9  2678 db	114 */
+0x0000f9ba, 0x0000005d, /* 0000005d //C 0f9ba  2678 db	93 */
+0x0000f9bb, 0x00000020, /* 00000020 //C 0f9bb  2678 db	32 */
+0x0000f9bc, 0x00000020, /* 00000020 //C 0f9bc  2678 db	32 */
+0x0000f9bd, 0x00000020, /* 00000020 //C 0f9bd  2678 db	32 */
+0x0000f9be, 0x00000052, /* 00000052 //C 0f9be  2678 db	82 */
+0x0000f9bf, 0x00000075, /* 00000075 //C 0f9bf  2678 db	117 */
+0x0000f9c0, 0x0000006e, /* 0000006e //C 0f9c0  2678 db	110 */
+0x0000f9c1, 0x00000020, /* 00000020 //C 0f9c1  2678 db	32 */
+0x0000f9c2, 0x00000066, /* 00000066 //C 0f9c2  2678 db	102 */
+0x0000f9c3, 0x00000072, /* 00000072 //C 0f9c3  2678 db	114 */
+0x0000f9c4, 0x0000006f, /* 0000006f //C 0f9c4  2678 db	111 */
+0x0000f9c5, 0x0000006d, /* 0000006d //C 0f9c5  2678 db	109 */
+0x0000f9c6, 0x00000020, /* 00000020 //C 0f9c6  2678 db	32 */
+0x0000f9c7, 0x00000061, /* 00000061 //C 0f9c7  2678 db	97 */
+0x0000f9c8, 0x00000064, /* 00000064 //C 0f9c8  2678 db	100 */
+0x0000f9c9, 0x00000064, /* 00000064 //C 0f9c9  2678 db	100 */
+0x0000f9ca, 0x00000072, /* 00000072 //C 0f9ca  2678 db	114 */
+0x0000f9cb, 0x00000065, /* 00000065 //C 0f9cb  2678 db	101 */
+0x0000f9cc, 0x00000073, /* 00000073 //C 0f9cc  2678 db	115 */
+0x0000f9cd, 0x00000073, /* 00000073 //C 0f9cd  2678 db	115 */
+0x0000f9ce, 0x0000000a, /* 0000000a //C 0f9ce  2678 db	10 */
+0x0000f9cf, 0x00000000, /* 00000000 //C 0f9cf  2678 db */
+0x0000f9d0, 0x00000072, /* 00000072 //C 0f9d0  2679 db	114 */
+0x0000f9d1, 0x0000005b, /* 0000005b //C 0f9d1  2679 db	91 */
+0x0000f9d2, 0x00000065, /* 00000065 //C 0f9d2  2679 db	101 */
+0x0000f9d3, 0x00000067, /* 00000067 //C 0f9d3  2679 db	103 */
+0x0000f9d4, 0x0000005b, /* 0000005b //C 0f9d4  2679 db	91 */
+0x0000f9d5, 0x00000073, /* 00000073 //C 0f9d5  2679 db	115 */
+0x0000f9d6, 0x0000005d, /* 0000005d //C 0f9d6  2679 db	93 */
+0x0000f9d7, 0x0000005d, /* 0000005d //C 0f9d7  2679 db	93 */
+0x0000f9d8, 0x00000020, /* 00000020 //C 0f9d8  2679 db	32 */
+0x0000f9d9, 0x00000020, /* 00000020 //C 0f9d9  2679 db	32 */
+0x0000f9da, 0x00000020, /* 00000020 //C 0f9da  2679 db	32 */
+0x0000f9db, 0x00000020, /* 00000020 //C 0f9db  2679 db	32 */
+0x0000f9dc, 0x00000020, /* 00000020 //C 0f9dc  2679 db	32 */
+0x0000f9dd, 0x00000020, /* 00000020 //C 0f9dd  2679 db	32 */
+0x0000f9de, 0x00000020, /* 00000020 //C 0f9de  2679 db	32 */
+0x0000f9df, 0x00000020, /* 00000020 //C 0f9df  2679 db	32 */
+0x0000f9e0, 0x00000020, /* 00000020 //C 0f9e0  2679 db	32 */
+0x0000f9e1, 0x00000020, /* 00000020 //C 0f9e1  2679 db	32 */
+0x0000f9e2, 0x00000050, /* 00000050 //C 0f9e2  2679 db	80 */
+0x0000f9e3, 0x00000072, /* 00000072 //C 0f9e3  2679 db	114 */
+0x0000f9e4, 0x00000069, /* 00000069 //C 0f9e4  2679 db	105 */
+0x0000f9e5, 0x0000006e, /* 0000006e //C 0f9e5  2679 db	110 */
+0x0000f9e6, 0x00000074, /* 00000074 //C 0f9e6  2679 db	116 */
+0x0000f9e7, 0x00000020, /* 00000020 //C 0f9e7  2679 db	32 */
+0x0000f9e8, 0x00000072, /* 00000072 //C 0f9e8  2679 db	114 */
+0x0000f9e9, 0x00000065, /* 00000065 //C 0f9e9  2679 db	101 */
+0x0000f9ea, 0x00000067, /* 00000067 //C 0f9ea  2679 db	103 */
+0x0000f9eb, 0x00000069, /* 00000069 //C 0f9eb  2679 db	105 */
+0x0000f9ec, 0x00000073, /* 00000073 //C 0f9ec  2679 db	115 */
+0x0000f9ed, 0x00000074, /* 00000074 //C 0f9ed  2679 db	116 */
+0x0000f9ee, 0x00000065, /* 00000065 //C 0f9ee  2679 db	101 */
+0x0000f9ef, 0x00000072, /* 00000072 //C 0f9ef  2679 db	114 */
+0x0000f9f0, 0x00000073, /* 00000073 //C 0f9f0  2679 db	115 */
+0x0000f9f1, 0x0000000a, /* 0000000a //C 0f9f1  2679 db	10 */
+0x0000f9f2, 0x00000000, /* 00000000 //C 0f9f2  2679 db */
+0x0000f9f3, 0x00000072, /* 00000072 //C 0f9f3  2680 db	114 */
+0x0000f9f4, 0x00000058, /* 00000058 //C 0f9f4  2680 db	88 */
+0x0000f9f5, 0x00000020, /* 00000020 //C 0f9f5  2680 db	32 */
+0x0000f9f6, 0x0000005b, /* 0000005b //C 0f9f6  2680 db	91 */
+0x0000f9f7, 0x00000076, /* 00000076 //C 0f9f7  2680 db	118 */
+0x0000f9f8, 0x00000061, /* 00000061 //C 0f9f8  2680 db	97 */
+0x0000f9f9, 0x0000006c, /* 0000006c //C 0f9f9  2680 db	108 */
+0x0000f9fa, 0x0000005d, /* 0000005d //C 0f9fa  2680 db	93 */
+0x0000f9fb, 0x00000020, /* 00000020 //C 0f9fb  2680 db	32 */
+0x0000f9fc, 0x00000020, /* 00000020 //C 0f9fc  2680 db	32 */
+0x0000f9fd, 0x00000020, /* 00000020 //C 0f9fd  2680 db	32 */
+0x0000f9fe, 0x00000020, /* 00000020 //C 0f9fe  2680 db	32 */
+0x0000f9ff, 0x00000020, /* 00000020 //C 0f9ff  2680 db	32 */
+0x0000fa00, 0x00000020, /* 00000020 //C 0fa00  2680 db	32 */
+0x0000fa01, 0x00000020, /* 00000020 //C 0fa01  2680 db	32 */
+0x0000fa02, 0x00000020, /* 00000020 //C 0fa02  2680 db	32 */
+0x0000fa03, 0x00000020, /* 00000020 //C 0fa03  2680 db	32 */
+0x0000fa04, 0x00000020, /* 00000020 //C 0fa04  2680 db	32 */
+0x0000fa05, 0x00000047, /* 00000047 //C 0fa05  2680 db	71 */
+0x0000fa06, 0x00000065, /* 00000065 //C 0fa06  2680 db	101 */
+0x0000fa07, 0x00000074, /* 00000074 //C 0fa07  2680 db	116 */
+0x0000fa08, 0x0000002f, /* 0000002f //C 0fa08  2680 db	47 */
+0x0000fa09, 0x00000073, /* 00000073 //C 0fa09  2680 db	115 */
+0x0000fa0a, 0x00000065, /* 00000065 //C 0fa0a  2680 db	101 */
+0x0000fa0b, 0x00000074, /* 00000074 //C 0fa0b  2680 db	116 */
+0x0000fa0c, 0x00000020, /* 00000020 //C 0fa0c  2680 db	32 */
+0x0000fa0d, 0x00000052, /* 00000052 //C 0fa0d  2680 db	82 */
+0x0000fa0e, 0x00000058, /* 00000058 //C 0fa0e  2680 db	88 */
+0x0000fa0f, 0x0000000a, /* 0000000a //C 0fa0f  2680 db	10 */
+0x0000fa10, 0x00000000, /* 00000000 //C 0fa10  2680 db */
+0x0000fa11, 0x00000073, /* 00000073 //C 0fa11  2681 db	115 */
+0x0000fa12, 0x00000070, /* 00000070 //C 0fa12  2681 db	112 */
+0x0000fa13, 0x00000020, /* 00000020 //C 0fa13  2681 db	32 */
+0x0000fa14, 0x0000005b, /* 0000005b //C 0fa14  2681 db	91 */
+0x0000fa15, 0x00000076, /* 00000076 //C 0fa15  2681 db	118 */
+0x0000fa16, 0x00000061, /* 00000061 //C 0fa16  2681 db	97 */
+0x0000fa17, 0x0000006c, /* 0000006c //C 0fa17  2681 db	108 */
+0x0000fa18, 0x0000005d, /* 0000005d //C 0fa18  2681 db	93 */
+0x0000fa19, 0x00000020, /* 00000020 //C 0fa19  2681 db	32 */
+0x0000fa1a, 0x00000020, /* 00000020 //C 0fa1a  2681 db	32 */
+0x0000fa1b, 0x00000020, /* 00000020 //C 0fa1b  2681 db	32 */
+0x0000fa1c, 0x00000020, /* 00000020 //C 0fa1c  2681 db	32 */
+0x0000fa1d, 0x00000020, /* 00000020 //C 0fa1d  2681 db	32 */
+0x0000fa1e, 0x00000020, /* 00000020 //C 0fa1e  2681 db	32 */
+0x0000fa1f, 0x00000020, /* 00000020 //C 0fa1f  2681 db	32 */
+0x0000fa20, 0x00000020, /* 00000020 //C 0fa20  2681 db	32 */
+0x0000fa21, 0x00000020, /* 00000020 //C 0fa21  2681 db	32 */
+0x0000fa22, 0x00000020, /* 00000020 //C 0fa22  2681 db	32 */
+0x0000fa23, 0x00000047, /* 00000047 //C 0fa23  2681 db	71 */
+0x0000fa24, 0x00000065, /* 00000065 //C 0fa24  2681 db	101 */
+0x0000fa25, 0x00000074, /* 00000074 //C 0fa25  2681 db	116 */
+0x0000fa26, 0x0000002f, /* 0000002f //C 0fa26  2681 db	47 */
+0x0000fa27, 0x00000073, /* 00000073 //C 0fa27  2681 db	115 */
+0x0000fa28, 0x00000065, /* 00000065 //C 0fa28  2681 db	101 */
+0x0000fa29, 0x00000074, /* 00000074 //C 0fa29  2681 db	116 */
+0x0000fa2a, 0x00000020, /* 00000020 //C 0fa2a  2681 db	32 */
+0x0000fa2b, 0x00000052, /* 00000052 //C 0fa2b  2681 db	82 */
+0x0000fa2c, 0x00000031, /* 00000031 //C 0fa2c  2681 db	49 */
+0x0000fa2d, 0x00000033, /* 00000033 //C 0fa2d  2681 db	51 */
+0x0000fa2e, 0x0000000a, /* 0000000a //C 0fa2e  2681 db	10 */
+0x0000fa2f, 0x00000000, /* 00000000 //C 0fa2f  2681 db */
+0x0000fa30, 0x0000006c, /* 0000006c //C 0fa30  2682 db	108 */
+0x0000fa31, 0x00000072, /* 00000072 //C 0fa31  2682 db	114 */
+0x0000fa32, 0x00000020, /* 00000020 //C 0fa32  2682 db	32 */
+0x0000fa33, 0x0000005b, /* 0000005b //C 0fa33  2682 db	91 */
+0x0000fa34, 0x00000076, /* 00000076 //C 0fa34  2682 db	118 */
+0x0000fa35, 0x00000061, /* 00000061 //C 0fa35  2682 db	97 */
+0x0000fa36, 0x0000006c, /* 0000006c //C 0fa36  2682 db	108 */
+0x0000fa37, 0x0000005d, /* 0000005d //C 0fa37  2682 db	93 */
+0x0000fa38, 0x00000020, /* 00000020 //C 0fa38  2682 db	32 */
+0x0000fa39, 0x00000020, /* 00000020 //C 0fa39  2682 db	32 */
+0x0000fa3a, 0x00000020, /* 00000020 //C 0fa3a  2682 db	32 */
+0x0000fa3b, 0x00000020, /* 00000020 //C 0fa3b  2682 db	32 */
+0x0000fa3c, 0x00000020, /* 00000020 //C 0fa3c  2682 db	32 */
+0x0000fa3d, 0x00000020, /* 00000020 //C 0fa3d  2682 db	32 */
+0x0000fa3e, 0x00000020, /* 00000020 //C 0fa3e  2682 db	32 */
+0x0000fa3f, 0x00000020, /* 00000020 //C 0fa3f  2682 db	32 */
+0x0000fa40, 0x00000020, /* 00000020 //C 0fa40  2682 db	32 */
+0x0000fa41, 0x00000020, /* 00000020 //C 0fa41  2682 db	32 */
+0x0000fa42, 0x00000047, /* 00000047 //C 0fa42  2682 db	71 */
+0x0000fa43, 0x00000065, /* 00000065 //C 0fa43  2682 db	101 */
+0x0000fa44, 0x00000074, /* 00000074 //C 0fa44  2682 db	116 */
+0x0000fa45, 0x0000002f, /* 0000002f //C 0fa45  2682 db	47 */
+0x0000fa46, 0x00000073, /* 00000073 //C 0fa46  2682 db	115 */
+0x0000fa47, 0x00000065, /* 00000065 //C 0fa47  2682 db	101 */
+0x0000fa48, 0x00000074, /* 00000074 //C 0fa48  2682 db	116 */
+0x0000fa49, 0x00000020, /* 00000020 //C 0fa49  2682 db	32 */
+0x0000fa4a, 0x00000052, /* 00000052 //C 0fa4a  2682 db	82 */
+0x0000fa4b, 0x00000031, /* 00000031 //C 0fa4b  2682 db	49 */
+0x0000fa4c, 0x00000034, /* 00000034 //C 0fa4c  2682 db	52 */
+0x0000fa4d, 0x0000000a, /* 0000000a //C 0fa4d  2682 db	10 */
+0x0000fa4e, 0x00000000, /* 00000000 //C 0fa4e  2682 db */
+0x0000fa4f, 0x00000070, /* 00000070 //C 0fa4f  2683 db	112 */
+0x0000fa50, 0x00000063, /* 00000063 //C 0fa50  2683 db	99 */
+0x0000fa51, 0x00000020, /* 00000020 //C 0fa51  2683 db	32 */
+0x0000fa52, 0x0000005b, /* 0000005b //C 0fa52  2683 db	91 */
+0x0000fa53, 0x00000076, /* 00000076 //C 0fa53  2683 db	118 */
+0x0000fa54, 0x00000061, /* 00000061 //C 0fa54  2683 db	97 */
+0x0000fa55, 0x0000006c, /* 0000006c //C 0fa55  2683 db	108 */
+0x0000fa56, 0x0000005d, /* 0000005d //C 0fa56  2683 db	93 */
+0x0000fa57, 0x00000020, /* 00000020 //C 0fa57  2683 db	32 */
+0x0000fa58, 0x00000020, /* 00000020 //C 0fa58  2683 db	32 */
+0x0000fa59, 0x00000020, /* 00000020 //C 0fa59  2683 db	32 */
+0x0000fa5a, 0x00000020, /* 00000020 //C 0fa5a  2683 db	32 */
+0x0000fa5b, 0x00000020, /* 00000020 //C 0fa5b  2683 db	32 */
+0x0000fa5c, 0x00000020, /* 00000020 //C 0fa5c  2683 db	32 */
+0x0000fa5d, 0x00000020, /* 00000020 //C 0fa5d  2683 db	32 */
+0x0000fa5e, 0x00000020, /* 00000020 //C 0fa5e  2683 db	32 */
+0x0000fa5f, 0x00000020, /* 00000020 //C 0fa5f  2683 db	32 */
+0x0000fa60, 0x00000020, /* 00000020 //C 0fa60  2683 db	32 */
+0x0000fa61, 0x00000047, /* 00000047 //C 0fa61  2683 db	71 */
+0x0000fa62, 0x00000065, /* 00000065 //C 0fa62  2683 db	101 */
+0x0000fa63, 0x00000074, /* 00000074 //C 0fa63  2683 db	116 */
+0x0000fa64, 0x0000002f, /* 0000002f //C 0fa64  2683 db	47 */
+0x0000fa65, 0x00000073, /* 00000073 //C 0fa65  2683 db	115 */
+0x0000fa66, 0x00000065, /* 00000065 //C 0fa66  2683 db	101 */
+0x0000fa67, 0x00000074, /* 00000074 //C 0fa67  2683 db	116 */
+0x0000fa68, 0x00000020, /* 00000020 //C 0fa68  2683 db	32 */
+0x0000fa69, 0x00000052, /* 00000052 //C 0fa69  2683 db	82 */
+0x0000fa6a, 0x00000031, /* 00000031 //C 0fa6a  2683 db	49 */
+0x0000fa6b, 0x00000035, /* 00000035 //C 0fa6b  2683 db	53 */
+0x0000fa6c, 0x0000000a, /* 0000000a //C 0fa6c  2683 db	10 */
+0x0000fa6d, 0x00000000, /* 00000000 //C 0fa6d  2683 db */
+0x0000fa6e, 0x00000066, /* 00000066 //C 0fa6e  2684 db	102 */
+0x0000fa6f, 0x00000020, /* 00000020 //C 0fa6f  2684 db	32 */
+0x0000fa70, 0x0000005b, /* 0000005b //C 0fa70  2684 db	91 */
+0x0000fa71, 0x00000076, /* 00000076 //C 0fa71  2684 db	118 */
+0x0000fa72, 0x00000061, /* 00000061 //C 0fa72  2684 db	97 */
+0x0000fa73, 0x0000006c, /* 0000006c //C 0fa73  2684 db	108 */
+0x0000fa74, 0x0000005d, /* 0000005d //C 0fa74  2684 db	93 */
+0x0000fa75, 0x00000020, /* 00000020 //C 0fa75  2684 db	32 */
+0x0000fa76, 0x00000020, /* 00000020 //C 0fa76  2684 db	32 */
+0x0000fa77, 0x00000020, /* 00000020 //C 0fa77  2684 db	32 */
+0x0000fa78, 0x00000020, /* 00000020 //C 0fa78  2684 db	32 */
+0x0000fa79, 0x00000020, /* 00000020 //C 0fa79  2684 db	32 */
+0x0000fa7a, 0x00000020, /* 00000020 //C 0fa7a  2684 db	32 */
+0x0000fa7b, 0x00000020, /* 00000020 //C 0fa7b  2684 db	32 */
+0x0000fa7c, 0x00000020, /* 00000020 //C 0fa7c  2684 db	32 */
+0x0000fa7d, 0x00000020, /* 00000020 //C 0fa7d  2684 db	32 */
+0x0000fa7e, 0x00000020, /* 00000020 //C 0fa7e  2684 db	32 */
+0x0000fa7f, 0x00000020, /* 00000020 //C 0fa7f  2684 db	32 */
+0x0000fa80, 0x00000047, /* 00000047 //C 0fa80  2684 db	71 */
+0x0000fa81, 0x00000065, /* 00000065 //C 0fa81  2684 db	101 */
+0x0000fa82, 0x00000074, /* 00000074 //C 0fa82  2684 db	116 */
+0x0000fa83, 0x0000002f, /* 0000002f //C 0fa83  2684 db	47 */
+0x0000fa84, 0x00000073, /* 00000073 //C 0fa84  2684 db	115 */
+0x0000fa85, 0x00000065, /* 00000065 //C 0fa85  2684 db	101 */
+0x0000fa86, 0x00000074, /* 00000074 //C 0fa86  2684 db	116 */
+0x0000fa87, 0x00000020, /* 00000020 //C 0fa87  2684 db	32 */
+0x0000fa88, 0x00000066, /* 00000066 //C 0fa88  2684 db	102 */
+0x0000fa89, 0x0000006c, /* 0000006c //C 0fa89  2684 db	108 */
+0x0000fa8a, 0x00000061, /* 00000061 //C 0fa8a  2684 db	97 */
+0x0000fa8b, 0x00000067, /* 00000067 //C 0fa8b  2684 db	103 */
+0x0000fa8c, 0x00000073, /* 00000073 //C 0fa8c  2684 db	115 */
+0x0000fa8d, 0x0000000a, /* 0000000a //C 0fa8d  2684 db	10 */
+0x0000fa8e, 0x00000000, /* 00000000 //C 0fa8e  2684 db */
+0x0000fa8f, 0x00000076, /* 00000076 //C 0fa8f  2685 db	118 */
+0x0000fa90, 0x0000005b, /* 0000005b //C 0fa90  2685 db	91 */
+0x0000fa91, 0x00000065, /* 00000065 //C 0fa91  2685 db	101 */
+0x0000fa92, 0x00000072, /* 00000072 //C 0fa92  2685 db	114 */
+0x0000fa93, 0x0000005d, /* 0000005d //C 0fa93  2685 db	93 */
+0x0000fa94, 0x00000020, /* 00000020 //C 0fa94  2685 db	32 */
+0x0000fa95, 0x00000020, /* 00000020 //C 0fa95  2685 db	32 */
+0x0000fa96, 0x00000020, /* 00000020 //C 0fa96  2685 db	32 */
+0x0000fa97, 0x00000020, /* 00000020 //C 0fa97  2685 db	32 */
+0x0000fa98, 0x00000020, /* 00000020 //C 0fa98  2685 db	32 */
+0x0000fa99, 0x00000020, /* 00000020 //C 0fa99  2685 db	32 */
+0x0000fa9a, 0x00000020, /* 00000020 //C 0fa9a  2685 db	32 */
+0x0000fa9b, 0x00000020, /* 00000020 //C 0fa9b  2685 db	32 */
+0x0000fa9c, 0x00000020, /* 00000020 //C 0fa9c  2685 db	32 */
+0x0000fa9d, 0x00000020, /* 00000020 //C 0fa9d  2685 db	32 */
+0x0000fa9e, 0x00000020, /* 00000020 //C 0fa9e  2685 db	32 */
+0x0000fa9f, 0x00000020, /* 00000020 //C 0fa9f  2685 db	32 */
+0x0000faa0, 0x00000020, /* 00000020 //C 0faa0  2685 db	32 */
+0x0000faa1, 0x00000050, /* 00000050 //C 0faa1  2685 db	80 */
+0x0000faa2, 0x00000072, /* 00000072 //C 0faa2  2685 db	114 */
+0x0000faa3, 0x00000069, /* 00000069 //C 0faa3  2685 db	105 */
+0x0000faa4, 0x0000006e, /* 0000006e //C 0faa4  2685 db	110 */
+0x0000faa5, 0x00000074, /* 00000074 //C 0faa5  2685 db	116 */
+0x0000faa6, 0x00000020, /* 00000020 //C 0faa6  2685 db	32 */
+0x0000faa7, 0x00000070, /* 00000070 //C 0faa7  2685 db	112 */
+0x0000faa8, 0x0000006d, /* 0000006d //C 0faa8  2685 db	109 */
+0x0000faa9, 0x0000006f, /* 0000006f //C 0faa9  2685 db	111 */
+0x0000faaa, 0x0000006e, /* 0000006e //C 0faaa  2685 db	110 */
+0x0000faab, 0x00000020, /* 00000020 //C 0faab  2685 db	32 */
+0x0000faac, 0x00000061, /* 00000061 //C 0faac  2685 db	97 */
+0x0000faad, 0x0000006e, /* 0000006e //C 0faad  2685 db	110 */
+0x0000faae, 0x00000064, /* 00000064 //C 0faae  2685 db	100 */
+0x0000faaf, 0x00000020, /* 00000020 //C 0faaf  2685 db	32 */
+0x0000fab0, 0x00000063, /* 00000063 //C 0fab0  2685 db	99 */
+0x0000fab1, 0x00000070, /* 00000070 //C 0fab1  2685 db	112 */
+0x0000fab2, 0x00000075, /* 00000075 //C 0fab2  2685 db	117 */
+0x0000fab3, 0x00000020, /* 00000020 //C 0fab3  2685 db	32 */
+0x0000fab4, 0x00000076, /* 00000076 //C 0fab4  2685 db	118 */
+0x0000fab5, 0x00000065, /* 00000065 //C 0fab5  2685 db	101 */
+0x0000fab6, 0x00000072, /* 00000072 //C 0fab6  2685 db	114 */
+0x0000fab7, 0x00000073, /* 00000073 //C 0fab7  2685 db	115 */
+0x0000fab8, 0x00000069, /* 00000069 //C 0fab8  2685 db	105 */
+0x0000fab9, 0x0000006f, /* 0000006f //C 0fab9  2685 db	111 */
+0x0000faba, 0x0000006e, /* 0000006e //C 0faba  2685 db	110 */
+0x0000fabb, 0x0000000a, /* 0000000a //C 0fabb  2685 db	10 */
+0x0000fabc, 0x00000000, /* 00000000 //C 0fabc  2685 db */
+0x0000fabd, 0x00000068, /* 00000068 //C 0fabd  2686 db	104 */
+0x0000fabe, 0x0000005b, /* 0000005b //C 0fabe  2686 db	91 */
+0x0000fabf, 0x00000065, /* 00000065 //C 0fabf  2686 db	101 */
+0x0000fac0, 0x0000006c, /* 0000006c //C 0fac0  2686 db	108 */
+0x0000fac1, 0x00000070, /* 00000070 //C 0fac1  2686 db	112 */
+0x0000fac2, 0x0000005d, /* 0000005d //C 0fac2  2686 db	93 */
+0x0000fac3, 0x0000002c, /* 0000002c //C 0fac3  2686 db	44 */
+0x0000fac4, 0x0000003f, /* 0000003f //C 0fac4  2686 db	63 */
+0x0000fac5, 0x00000020, /* 00000020 //C 0fac5  2686 db	32 */
+0x0000fac6, 0x00000020, /* 00000020 //C 0fac6  2686 db	32 */
+0x0000fac7, 0x00000020, /* 00000020 //C 0fac7  2686 db	32 */
+0x0000fac8, 0x00000020, /* 00000020 //C 0fac8  2686 db	32 */
+0x0000fac9, 0x00000020, /* 00000020 //C 0fac9  2686 db	32 */
+0x0000faca, 0x00000020, /* 00000020 //C 0faca  2686 db	32 */
+0x0000facb, 0x00000020, /* 00000020 //C 0facb  2686 db	32 */
+0x0000facc, 0x00000020, /* 00000020 //C 0facc  2686 db	32 */
+0x0000facd, 0x00000020, /* 00000020 //C 0facd  2686 db	32 */
+0x0000face, 0x00000020, /* 00000020 //C 0face  2686 db	32 */
+0x0000facf, 0x00000048, /* 00000048 //C 0facf  2686 db	72 */
+0x0000fad0, 0x00000065, /* 00000065 //C 0fad0  2686 db	101 */
+0x0000fad1, 0x0000006c, /* 0000006c //C 0fad1  2686 db	108 */
+0x0000fad2, 0x00000070, /* 00000070 //C 0fad2  2686 db	112 */
+0x0000fad3, 0x0000000a, /* 0000000a //C 0fad3  2686 db	10 */
+0x0000fad4, 0x00000000, /* 00000000 //C 0fad4  2686 db */
+0x0000fad5, 0x00000000, /* 00000000 //C 0fad5  2687 dd	0 */
 0x0000fad6, 0x00000000, /* 00000000 //C 0fad6  2691 dd	0 */
 0x0000fad7, 0x00000000, /* 00000000 //C 0fad7  2692 dd	0 */
 0x0000fad8, 0x00000000, /* 00000000 //C 0fad8  2693 dd	0 */
@@ -2641,32 +2641,33 @@ t_mem pmon[]= {
 0x0000fada, 0x00000000, /* 00000000 //C 0fada  2695 dd	0 */
 0x0000fadb, 0x00000000, /* 00000000 //C 0fadb  2696 dd	0 */
 0x0000fadc, 0x00000000, /* 00000000 //C 0fadc  2697 dd	0 */
-0x0000fadd, 0x00220000, /* 00220000 //C 0fadd  2698 dd	0x00220000 */
-0x0000fade, 0x02000000, /* 02000000 //C 0fade  2699 dd	0x02000000 */
-0x0000fadf, 0x00000000, /* 00000000 //C 0fadf  2700 dd	0x00000000 */
-0x0000fae0, 0x00004000, /* 00004000 //C 0fae0  2701 dd	0x00004000 */
-0x0000fae1, 0x4f5b063f, /* 4f5b063f //C 0fae1  2702 dd	0x4f5b063f */
-0x0000fae2, 0x277d6d66, /* 277d6d66 //C 0fae2  2703 dd	0x277d6d66 */
-0x0000fae3, 0x00006fff, /* 00006fff //C 0fae3  2704 dd	0x00006fff */
-0x0000fae4, 0x00004800, /* 00004800 //C 0fae4  2705 dd	0x00004800 */
-0x0000fae5, 0x397c7700, /* 397c7700 //C 0fae5  2706 dd	0x397c7700 */
-0x0000fae6, 0x3d71795e, /* 3d71795e //C 0fae6  2707 dd	0x3d71795e */
-0x0000fae7, 0x001e3076, /* 001e3076 //C 0fae7  2708 dd	0x001e3076 */
-0x0000fae8, 0x3f543738, /* 3f543738 //C 0fae8  2709 dd	0x3f543738 */
-0x0000fae9, 0x6d500073, /* 6d500073 //C 0fae9  2710 dd	0x6d500073 */
-0x0000faea, 0x00003e78, /* 00003e78 //C 0faea  2711 dd	0x00003e78 */
-0x0000faeb, 0x39006e00, /* 39006e00 //C 0faeb  2712 dd	0x39006e00 */
-0x0000faec, 0x08000f00, /* 08000f00 //C 0faec  2713 dd	0x08000f00 */
-0x0000faed, 0x587c7700, /* 587c7700 //C 0faed  2714 dd	0x587c7700 */
-0x0000faee, 0x3d71795e, /* 3d71795e //C 0faee  2715 dd	0x3d71795e */
-0x0000faef, 0x001e0474, /* 001e0474 //C 0faef  2716 dd	0x001e0474 */
-0x0000faf0, 0x5c540038, /* 5c540038 //C 0faf0  2717 dd	0x5c540038 */
-0x0000faf1, 0x6d500073, /* 6d500073 //C 0faf1  2718 dd	0x6d500073 */
-0x0000faf2, 0x00001c78, /* 00001c78 //C 0faf2  2719 dd	0x00001c78 */
-0x0000faf3, 0x00000000, /* 00000000 //C 0faf3  2720 dd	0x00000000 */
+0x0000fadd, 0x00000000, /* 00000000 //C 0fadd  2698 dd	0 */
+0x0000fade, 0x00220000, /* 00220000 //C 0fade  2699 dd	0x00220000 */
+0x0000fadf, 0x02000000, /* 02000000 //C 0fadf  2700 dd	0x02000000 */
+0x0000fae0, 0x00000000, /* 00000000 //C 0fae0  2701 dd	0x00000000 */
+0x0000fae1, 0x00004000, /* 00004000 //C 0fae1  2702 dd	0x00004000 */
+0x0000fae2, 0x4f5b063f, /* 4f5b063f //C 0fae2  2703 dd	0x4f5b063f */
+0x0000fae3, 0x277d6d66, /* 277d6d66 //C 0fae3  2704 dd	0x277d6d66 */
+0x0000fae4, 0x00006fff, /* 00006fff //C 0fae4  2705 dd	0x00006fff */
+0x0000fae5, 0x00004800, /* 00004800 //C 0fae5  2706 dd	0x00004800 */
+0x0000fae6, 0x397c7700, /* 397c7700 //C 0fae6  2707 dd	0x397c7700 */
+0x0000fae7, 0x3d71795e, /* 3d71795e //C 0fae7  2708 dd	0x3d71795e */
+0x0000fae8, 0x001e3076, /* 001e3076 //C 0fae8  2709 dd	0x001e3076 */
+0x0000fae9, 0x3f543738, /* 3f543738 //C 0fae9  2710 dd	0x3f543738 */
+0x0000faea, 0x6d500073, /* 6d500073 //C 0faea  2711 dd	0x6d500073 */
+0x0000faeb, 0x00003e78, /* 00003e78 //C 0faeb  2712 dd	0x00003e78 */
+0x0000faec, 0x39006e00, /* 39006e00 //C 0faec  2713 dd	0x39006e00 */
+0x0000faed, 0x08000f00, /* 08000f00 //C 0faed  2714 dd	0x08000f00 */
+0x0000faee, 0x587c7700, /* 587c7700 //C 0faee  2715 dd	0x587c7700 */
+0x0000faef, 0x3d71795e, /* 3d71795e //C 0faef  2716 dd	0x3d71795e */
+0x0000faf0, 0x001e0474, /* 001e0474 //C 0faf0  2717 dd	0x001e0474 */
+0x0000faf1, 0x5c540038, /* 5c540038 //C 0faf1  2718 dd	0x5c540038 */
+0x0000faf2, 0x6d500073, /* 6d500073 //C 0faf2  2719 dd	0x6d500073 */
+0x0000faf3, 0x00001c78, /* 00001c78 //C 0faf3  2720 dd	0x00001c78 */
 0x0000faf4, 0x00000000, /* 00000000 //C 0faf4  2721 dd	0x00000000 */
-0x0000faf5, 0x00000000, /* 00000000 //C 0faf5  2726 ds	0x40 */
-0x0000fb35, 0x00000000, /* 00000000 //C 0fb35  2728 dd	0 */
-0x0000fb36, 0x00000000, /* 00000000 //C 0fb36     3  */
+0x0000faf5, 0x00000000, /* 00000000 //C 0faf5  2722 dd	0x00000000 */
+0x0000faf6, 0x00000000, /* 00000000 //C 0faf6  2727 ds	0x40 */
+0x0000fb36, 0x00000000, /* 00000000 //C 0fb36  2729 dd	0 */
+0x0000fb37, 0x00000000, /* 00000000 //C 0fb37     3  */
 0xffffffff, 0xffffffff
 };
