@@ -113,7 +113,7 @@ t_mem pmon[]= {
 0x0000f06a, 0x0400f690, /* 0400f690 //C 0f06a   141 call	putchar */
 0x0000f06b, 0x06020100, /* 06020100 //C 0f06b   142 rds	r0,sver */
 0x0000f06c, 0x01120001, /* 01120001 //C 0f06c   143 mvzl	r1,version_main */
-0x0000f06d, 0x01220005, /* 01220005 //C 0f06d   144 mvzl	r2,version_sub */
+0x0000f06d, 0x01220006, /* 01220006 //C 0f06d   144 mvzl	r2,version_sub */
 0x0000f06e, 0x0631c002, /* 0631c002 //C 0f06e   145 getbz	r3,r0,2 */
 0x0000f06f, 0x0641c001, /* 0641c001 //C 0f06f   146 getbz	r4,r0,1 */
 0x0000f070, 0x0651c000, /* 0651c000 //C 0f070   147 getbz	r5,r0,0 */
@@ -960,7 +960,7 @@ t_mem pmon[]= {
 0x0000f3b9, 0x01f2f379, /* 01f2f379 //C 0f3b9  1124 jmp	cmd_rx */
 0x0000f3ba, 0x0ded0000, /* 0ded0000 //C 0f3ba  1129 push	lr */
 0x0000f3bb, 0x01120001, /* 01120001 //C 0f3bb  1130 mvzl	r1,version_main */
-0x0000f3bc, 0x01220005, /* 01220005 //C 0f3bc  1131 mvzl	r2,version_sub */
+0x0000f3bc, 0x01220006, /* 01220006 //C 0f3bc  1131 mvzl	r2,version_sub */
 0x0000f3bd, 0x06020100, /* 06020100 //C 0f3bd  1132 rds	r0,SVER */
 0x0000f3be, 0x0631c002, /* 0631c002 //C 0f3be  1133 getbz	r3,r0,2 */
 0x0000f3bf, 0x0641c001, /* 0641c001 //C 0f3bf  1134 getbz	r4,r0,1 */
@@ -2030,7 +2030,7 @@ t_mem pmon[]= {
 0x0000f807, 0x0f0d0000, /* 0f0d0000 //C 0f807  2575 pop	r0 */
 0x0000f808, 0x00f00e00, /* 00f00e00 //C 0f808  2576 ret */
 0x0000f809, 0x0d1d0000, /* 0d1d0000 //C 0f809  2580 push	r1 */
-0x0000f80a, 0x01020005, /* 01020005 //C 0f80a  2581 mvzl	r0,version_sub */
+0x0000f80a, 0x01020006, /* 01020006 //C 0f80a  2581 mvzl	r0,version_sub */
 0x0000f80b, 0x01120001, /* 01120001 //C 0f80b  2582 mvzl	r1,version_main */
 0x0000f80c, 0x07018101, /* 07018101 //C 0f80c  2583 putb	r0,r1,1 */
 0x0000f80d, 0x0f1d0000, /* 0f1d0000 //C 0f80d  2584 pop	r1 */
