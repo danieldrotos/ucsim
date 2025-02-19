@@ -8,7 +8,7 @@ t_mem pmon[]= {
 0x0000f001, 0x01f2f01a, /* 01f2f01a //C 0f001    27 _f001:	jmp	enter_by_uart */
 0x0000f002, 0x01f2f681, /* 01f2f681 //C 0f002    28 _f002:	jmp	getchar */
 0x0000f003, 0x01f2f7fe, /* 01f2f7fe //C 0f003    29 _f003:	jmp	version */
-0x0000f004, 0x01f2f403, /* 01f2f403 //C 0f004    30 _f004:	jmp	itobcd */
+0x0000f004, 0x01f2f403, /* 01f2f403 //C 0f004    30 _f004:	jmp	mon_itobcd */
 0x0000f005, 0x01f2f040, /* 01f2f040 //C 0f005    31 _f005:	jmp	cold_start */
 0x0000f006, 0x01f2f475, /* 01f2f475 //C 0f006    32 _f006:	jmp	strchr */
 0x0000f007, 0x01f2f4e7, /* 01f2f4e7 //C 0f007    33 _f007:	jmp	streq */
