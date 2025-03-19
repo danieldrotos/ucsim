@@ -420,7 +420,7 @@ AC_ARG_ENABLE(z80-sim,
 
 AC_ARG_ENABLE(tlcs-sim,
 	      AS_HELP_STRING([--enable-tlcs-sim=ARG],
-			     [en/disable compile tlcs simulator]),
+			     [en/disable compile tlcs90 simulator]),
 	      ,
 	      enable_tlcs_sim=$def_tlcs)
 
@@ -1122,6 +1122,7 @@ src/sims/pdk.src/Makefile     src/sims/pdk.src/test/Makefile
 src/sims/s51.src/Makefile     src/sims/s51.src/test/Makefile
 src/sims/st7.src/Makefile     src/sims/st7.src/test/Makefile
 src/sims/stm8.src/Makefile    src/sims/stm8.src/test/Makefile
+src/sims/tlcs.src/Makefile    src/sims/tlcs.src/test/Makefile
 src/sims/tlcs.src/Makefile    src/sims/tlcs.src/test/Makefile
 src/sims/xa.src/Makefile      src/sims/xa.src/test/Makefile
 src/sims/z80.src/Makefile     src/sims/z80.src/test/Makefile
