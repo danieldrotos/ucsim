@@ -31,10 +31,28 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "uccl.h"
 
 
+#ifdef WORDS_BIGENDIAN
+# define PAIR(h,l) u8_t h, l
+#else
+# define PAIR(h,l) u8_t l, h
+#endif
+
+struct rbank_870c_t
+{
+  union { u16_t wa; struct { PAIR(w,a); } rwa; };
+  union { u16_t bc; struct { PAIR(b,c); } rbc; };
+  union { u16_t de; struct { PAIR(d,e); } rde; };
+  union { u16_t hl; struct { PAIR(h,l); } rhl; };
+};
+
+
 class cl_t870c: public cl_uc
 {
- public:
+protected:
+  struct rbank_870c_t *rbanks, *rbank;
+public:
   cl_t870c(class cl_sim *asim);
+  virtual int init(void);
 };
 
 

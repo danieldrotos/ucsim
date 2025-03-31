@@ -35,6 +35,7 @@ class cl_t870c1: public cl_t870c
 {
  public:
   cl_t870c1(class cl_sim *asim);
+  virtual int init(void);
 };
 
 

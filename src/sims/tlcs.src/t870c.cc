@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <stdlib.h>
+
 // local
 #include "t870ccl.h"
 
@@ -32,6 +34,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_t870c::cl_t870c(class cl_sim *asim):
   cl_uc(asim)
 {
+}
+
+int
+cl_t870c::init(void)
+{
+  rbanks= (struct rbank_870c_t *)malloc(sizeof(*rbanks));
+  rbank= &rbanks[0];
+  return 0;
 }
 
 
