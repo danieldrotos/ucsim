@@ -484,4 +484,18 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'X': /* mn in 4,5 byte */ snprintf(l,19,"0x%04x",(int)((c>>24)&0xffff)); s+= l; break;
 //	    case 'x': /* mn in 5,6 byte */ snprintf(l,19,"0x%04x",(int)((c>>32)&0xffff)); s+= l; break;
 
+struct cpu_entry cpus_tlcs[]=
+  {
+    { "TLCS90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+    { "90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+
+    { "TLCS870C"	, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "C"		, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "TLCS870C1"	, CPU_TLCS870C1, 0, "TLCS-870C1", "" },
+    { "C1"		, CPU_TLCS870C1, 0, "TLCS-870C1" , "" },
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+
 /* End of tlcs.src/glob.cc */

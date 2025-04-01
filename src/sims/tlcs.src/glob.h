@@ -32,6 +32,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 extern struct dis_entry disass_tlcs[];
 
+extern struct cpu_entry cpus_tlcs[];
+
 #endif
 
 /* End of tlcs.src/glob.h */

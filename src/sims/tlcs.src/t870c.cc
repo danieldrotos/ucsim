@@ -55,9 +55,48 @@ cl_t870c::cl_t870c(class cl_sim *asim):
 int
 cl_t870c::init(void)
 {
+  cl_uc::init();
+  mk_rbanks();
+  rF&= ~MRBS;
+  
+  reg_cell_var(&cW, &rW, "W", "W register");
+  reg_cell_var(&cA, &rA, "A", "A register");
+  reg_cell_var(&cB, &rB, "B", "B register");
+  reg_cell_var(&cC, &rC, "C", "C register");
+  reg_cell_var(&cD, &rD, "D", "D register");
+  reg_cell_var(&cE, &rE, "E", "E register");
+  reg_cell_var(&cH, &rH, "H", "H register");
+  reg_cell_var(&cL, &rL, "L", "L register");
+  reg_cell_var(&cF, &rF, "PSW", "PSW register");
+
+  reg_cell_var(&cWA, &rWA, "WA", "WA register");
+  reg_cell_var(&cBC, &rBC, "BC", "BC register");
+  reg_cell_var(&cDE, &rDE, "DE", "DE register");
+  reg_cell_var(&cHL, &rHL, "HL", "HL register");
+  reg_cell_var(&cIX, &rIX, "IX", "IX register");
+  reg_cell_var(&cIY, &rIY, "IY", "IY register");
+  reg_cell_var(&cSP, &rSP, "SP", "SP register");
+  return 0;
+}
+
+void
+cl_t870c::mk_rbanks(void)
+{
   rbanks= (struct rbank_870c_t *)malloc(sizeof(*rbanks));
   rbank= &rbanks[0];
-  return 0;
+}
+
+void
+cl_t870c::decode_regs(void)
+{
+  cW.decode(&rW);
+  cA.decode(&rA);
+  cB.decode(&rB);
+  cC.decode(&rC);
+  cD.decode(&rD);
+  cE.decode(&rE);
+  cH.decode(&rH);
+  cL.decode(&rL);
 }
 
 
