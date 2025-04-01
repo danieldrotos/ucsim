@@ -40,10 +40,15 @@ cl_t870c1::cl_t870c1(class cl_sim *asim):
 int
 cl_t870c1::init(void)
 {
-  rbanks= (struct rbank_870c_t *)malloc(sizeof(*rbanks));
-  rbank= &rbanks[0];
+  cl_t870c::init();
   return 0;
 }
 
+void
+cl_t870c1::mk_rbanks(void)
+{
+  rbanks= (struct rbank_870c_t *)malloc(sizeof(*rbanks));
+  rbank= &rbanks[0];
+}
 
 /* End of tlcs.src/t870c1.cc */

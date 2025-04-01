@@ -47,12 +47,44 @@ struct rbank_870c_t
 };
 
 
+#define rW (rbank->rwa.w)
+#define rA (rbank->rwa.a)
+#define rB (rbank->rbc.b)
+#define rC (rbank->rbc.c)
+#define rD (rbank->rde.d)
+#define rE (rbank->rde.e)
+#define rH (rbank->rhl.h)
+#define rL (rbank->rhl.l)
+#define rF (rPSW)
+
+#define rWA (rbank->wa)
+#define rBC (rbank->bc)
+#define rDE (rbank->de)
+#define rHL (rbank->hl)
+#define rIX (rbank->ix)
+#define rIY (rbank->iy)
+
+#define cF (cPSW)
+
+
+enum flag_mask_t {
+  MJF= (0x80),
+  MZF= (0x40),
+  MCF= (0x20),
+  MHF= (0x10),
+  MSF= (0x08),
+  MVF= (0x04),
+  MRBS= (0x02)
+};
+
+
 class cl_t870c: public cl_uc
 {
 protected:
   struct rbank_870c_t *rbanks, *rbank;
 public:
   u16_t rSP;
+  u8_t rPSW;
   class cl_cell8 cW, cA;
   class cl_cell8 cB, cC;
   class cl_cell8 cD, cE;
@@ -66,9 +98,12 @@ public:
   class cl_cell16 cIY;
   class cl_cell16 cSP;
   class cl_cell16 *regs16[8];
+  class cl_cell8 cPSW;
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
+  virtual void mk_rbanks();
+  virtual void decode_regs(void);
 };
 
 

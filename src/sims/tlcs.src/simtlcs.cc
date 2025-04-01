@@ -29,8 +29,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include "appcl.h"
 
 // local
-#include "simtlcscl.h"
 #include "tlcscl.h"
+#include "t870ccl.h"
+#include "t870c1cl.h"
+#include "glob.h"
+
+#include "simtlcscl.h"
 
 
 cl_simtlcs::cl_simtlcs(class cl_app *the_app):
@@ -40,7 +44,40 @@ cl_simtlcs::cl_simtlcs(class cl_app *the_app):
 class cl_uc *
 cl_simtlcs::mk_controller(void)
 {
-  return(new cl_tlcs(this));
+  int i;
+  const char *typ= 0;
+  class cl_optref type_option(this);
+  class cl_uc *uc;
+
+  type_option.init();
+  type_option.use("cpu_type");
+  i= 0;
+  if ((typ= type_option.get_value(typ)) == 0)
+    typ= "TLCS90";
+  while ((cpus_tlcs[i].type_str != NULL) &&
+	 (strcasecmp(typ, cpus_tlcs[i].type_str) != 0))
+    i++;
+  if (cpus_tlcs[i].type_str == NULL)
+    {
+      fprintf(stderr, "Unknown processor type. "
+	      "Use -H option to see known types.\n");
+      return(NULL);
+    }
+  switch (cpus_tlcs[i].type)
+    {
+    case CPU_TLCS90:
+      uc= new cl_tlcs(this);
+      return uc;
+    case CPU_TLCS870C:
+      uc= new cl_t870c(this);
+      return uc;
+    case CPU_TLCS870C1:
+      uc= new cl_t870c1(this);
+      return uc;
+    default:
+      return NULL;
+    }
+  return NULL;
 }
 
 
