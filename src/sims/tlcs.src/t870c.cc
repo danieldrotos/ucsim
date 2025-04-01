@@ -34,6 +34,22 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_t870c::cl_t870c(class cl_sim *asim):
   cl_uc(asim)
 {
+  regs8[0]= &cA;
+  regs8[1]= &cW;
+  regs8[2]= &cC;
+  regs8[3]= &cB;
+  regs8[4]= &cE;
+  regs8[5]= &cD;
+  regs8[6]= &cL;
+  regs8[7]= &cH;
+  regs16[0]= &cWA;
+  regs16[1]= &cBC;
+  regs16[2]= &cDE;
+  regs16[3]= &cHL;
+  regs16[4]= &cIX;
+  regs16[5]= &cIY;
+  regs16[6]= &cSP;
+  regs16[7]= &cHL;
 }
 
 int
