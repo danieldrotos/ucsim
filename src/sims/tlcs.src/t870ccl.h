@@ -43,6 +43,7 @@ struct rbank_870c_t
   union { u16_t bc; struct { PAIR(b,c); } rbc; };
   union { u16_t de; struct { PAIR(d,e); } rde; };
   union { u16_t hl; struct { PAIR(h,l); } rhl; };
+  u16_t ix, iy;
 };
 
 
@@ -50,6 +51,21 @@ class cl_t870c: public cl_uc
 {
 protected:
   struct rbank_870c_t *rbanks, *rbank;
+public:
+  u16_t rSP;
+  class cl_cell8 cW, cA;
+  class cl_cell8 cB, cC;
+  class cl_cell8 cD, cE;
+  class cl_cell8 cH, cL;
+  class cl_cell8 *regs8[8];
+  class cl_cell16 cWA;
+  class cl_cell16 cBC;
+  class cl_cell16 cDE;
+  class cl_cell16 cHL;
+  class cl_cell16 cIX;
+  class cl_cell16 cIY;
+  class cl_cell16 cSP;
+  class cl_cell16 *regs16[8];
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
