@@ -33,8 +33,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_t870: public cl_uc
 {
- public:
+public:
+  class cl_cell8 cW, cA;
+  class cl_cell8 cB, cC;
+  class cl_cell8 cD, cE;
+  class cl_cell8 cH, cL;
+  class cl_cell8 *regs8[8];
+  class cl_cell16 cWA;
+  class cl_cell16 cBC;
+  class cl_cell16 cDE;
+  class cl_cell16 cHL;
+  class cl_cell16 *regs16[8];
+public:
   cl_t870(class cl_sim *asim);
+  virtual int init(void);
 };
 
 
