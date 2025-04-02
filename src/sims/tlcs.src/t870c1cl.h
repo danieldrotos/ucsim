@@ -68,7 +68,7 @@ class cl_t870c1: public cl_t870c
   cl_t870c1(class cl_sim *asim);
   virtual void mk_rbanks();
   virtual int init(void);
-  virtual int  nas_size(void) { return 0x20000; }
+  virtual void make_memories(void);
 
   virtual void print_regs(class cl_console_base *con);
 };
