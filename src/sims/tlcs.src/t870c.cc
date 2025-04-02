@@ -117,7 +117,11 @@ cl_t870c::make_memories(void)
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_chip8("rom_chip", 0x8000, 8);
+  bootrom_chip= chip= new cl_chip8("bootrom_chip", 0x800, 8, 0xff);
+  chip->init();
+  memchips->add(chip);
+  
+  rom_chip= chip= new cl_chip8("rom_chip", 0x8000, 8, 0xff);
   chip->init();
   memchips->add(chip);
   
@@ -126,13 +130,34 @@ cl_t870c::make_memories(void)
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
-
-  chip= new cl_chip8("ram_chip", 0x800, 8);
+  
+  int rs= 0x400 * 3;
+  ram_chip= chip= new cl_chip8("ram_chip", rs, 8);
   chip->init();
   memchips->add(chip);
   
   ad= new cl_address_decoder(as= rom,
-                             chip, 0x40, 0x83f, 0);
+                             chip, 0x40, 0x40+rs-1, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  
+  chip= new cl_chip8("sfr_chip", 64, 8, 0);
+  chip->init();
+  memchips->add(chip);
+  
+  ad= new cl_address_decoder(as= rom,
+                             chip, 0, 63, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  chip= new cl_chip8("dbr_chip", 128, 8, 0);
+  chip->init();
+  memchips->add(chip);
+  
+  ad= new cl_address_decoder(as= rom,
+                             chip, 0xf80, 0xfff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);

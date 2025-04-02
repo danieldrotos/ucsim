@@ -100,6 +100,7 @@ public:
   class cl_cell16 *regs16[8];
   class cl_cell8 cPSW;
   class cl_address_space *asc, *asd;
+  class cl_memory_chip *ram_chip, *rom_chip, *bootrom_chip;
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
