@@ -2177,4 +2177,5 @@ cl_stm8_cpu::cfg_help(t_addr addr)
   return "Not used";
 }
 
+
 /* End of stm8.src/stm8.cc */

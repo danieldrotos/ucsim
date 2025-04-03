@@ -34,6 +34,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "t870c1cl.h"
 
 
+cl_t870c1_psw_op::cl_t870c1_psw_op(class cl_memory_cell *acell,
+				   class cl_t870c1 *auc):
+  cl_memory_operator(acell)
+{
+  uc= auc;
+}
+
+t_mem
+cl_t870c1_psw_op::write(t_mem val)
+{
+  val&= 0xfe;
+  return val;
+}
+
+
 cl_t870c1::cl_t870c1(class cl_sim *asim):
   cl_t870c(asim)
 {
@@ -46,6 +61,16 @@ cl_t870c1::init(void)
   cl_t870c::init();
   return 0;
 }
+
+void
+cl_t870c1::part_init(void)
+{
+  rF&= ~MRBS;
+  class cl_memory_operator *o= new cl_t870c1_psw_op(&cPSW, this);
+  o->init();
+  cPSW.append_operator(o);
+}
+
 
 void
 cl_t870c1::mk_rbanks(void)
@@ -134,6 +159,14 @@ cl_t870c1::make_memories(void)
 
 
 void
+cl_t870c1::make_cpu_hw(void)
+{
+  add_hw(cpu= new cl_t870c1_cpu(this));
+  cpu->init();
+}
+
+
+void
 cl_t870c1::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
@@ -166,6 +199,75 @@ cl_t870c1::print_regs(class cl_console_base *con)
   con->dd_printf("SP =0x%04x [SP]=%02x  ", rSP, asd->read(rSP));
   con->dd_printf("\n");
   print_disass(PC, con);
+}
+
+
+/**************************************************************************/
+
+cl_t870c1_cpu::cl_t870c1_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_DUMMY, 0, "cpu")
+{
+  uc= (class cl_t870c1 *)auc;
+}
+
+int
+cl_t870c1_cpu::init(void)
+{
+  cl_hw::init();
+  psw= register_cell(uc->asd, 0x3f);
+  return 0;
+}
+
+void
+cl_t870c1_cpu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (conf(cell, val))
+    return;
+  if (cell == psw)
+    {
+      *val= uc->rPSW;
+    }
+}
+
+t_mem
+cl_t870c1_cpu::read(class cl_memory_cell *cell)
+{
+  t_mem v= cell->get();
+  if (conf(cell, NULL))
+    return v;
+  if (cell == psw)
+    {
+      v= uc->rPSW;
+    }
+  return v;
+}
+
+t_mem
+cl_t870c1_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch ((enum t870c_cpu_cfg)addr)
+    {
+    case t870c1_sp_limit:
+      if (val)
+	uc->sp_limit= *val & 0xffff;
+      return uc->sp_limit;
+      break;
+    default:
+      if (val)
+	cell->set(*val);
+    }
+  return cell->get();
+}
+
+const char *
+cl_t870c1_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case t870c1_sp_limit:
+      return "Stack overflows when SP reaches this limit";
+    }
+  return "Not used";
 }
 
 
