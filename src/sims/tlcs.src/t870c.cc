@@ -165,6 +165,14 @@ cl_t870c::make_memories(void)
 
 
 void
+cl_t870c::make_cpu_hw(void)
+{
+  add_hw(cpu= new cl_t870c_cpu(this));
+  cpu->init();
+}
+
+
+void
 cl_t870c::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
@@ -181,6 +189,75 @@ cl_t870c::print_regs(class cl_console_base *con)
   con->dd_printf("SP =0x%04x [SP]=%02x  ", rSP, asd->read(rSP));
   con->dd_printf("\n");
   print_disass(PC, con);
+}
+
+
+/**************************************************************************/
+
+cl_t870c_cpu::cl_t870c_cpu(class cl_uc *auc):
+  cl_hw(auc, HW_DUMMY, 0, "cpu")
+{
+  uc= (class cl_t870c *)auc;
+}
+
+int
+cl_t870c_cpu::init(void)
+{
+  cl_hw::init();
+  psw= register_cell(uc->asd, 0x3f);
+  return 0;
+}
+
+void
+cl_t870c_cpu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (conf(cell, val))
+    return;
+  if (cell == psw)
+    {
+      *val= uc->rPSW;
+    }
+}
+
+t_mem
+cl_t870c_cpu::read(class cl_memory_cell *cell)
+{
+  t_mem v= cell->get();
+  if (conf(cell, NULL))
+    return v;
+  if (cell == psw)
+    {
+      v= uc->rPSW;
+    }
+  return v;
+}
+
+t_mem
+cl_t870c_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch ((enum t870c_cpu_cfg)addr)
+    {
+    case t870c_sp_limit:
+      if (val)
+	uc->sp_limit= *val & 0xffff;
+      return uc->sp_limit;
+      break;
+    default:
+      if (val)
+	cell->set(*val);
+    }
+  return cell->get();
+}
+
+const char *
+cl_t870c_cpu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+    case t870c_sp_limit:
+      return "Stack overflows when SP reaches this limit";
+    }
+  return "Not used";
 }
 
 
