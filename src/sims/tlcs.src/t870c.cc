@@ -34,6 +34,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "t870ccl.h"
 
 
+cl_t870c_psw_op::cl_t870c_psw_op(class cl_memory_cell *acell, class cl_t870c *auc):
+  cl_memory_operator(acell)
+{
+  uc= auc;
+}
+
+t_mem
+cl_t870c_psw_op::write(t_mem val)
+{
+  val&= 0xfc;
+  return val;
+}
+
+
 cl_t870c::cl_t870c(class cl_sim *asim):
   cl_uc(asim)
 {
@@ -62,7 +76,6 @@ cl_t870c::init(void)
 {
   cl_uc::init();
   mk_rbanks();
-  rF&= ~MRBS;
   
   reg_cell_var(&cW, &rW, "W", "W register");
   reg_cell_var(&cA, &rA, "A", "A register");
@@ -81,7 +94,17 @@ cl_t870c::init(void)
   reg_cell_var(&cIX, &rIX, "IX", "IX register");
   reg_cell_var(&cIY, &rIY, "IY", "IY register");
   reg_cell_var(&cSP, &rSP, "SP", "SP register");
+
+  part_init();
   return 0;
+}
+
+void
+cl_t870c::part_init(void)
+{
+  class cl_memory_operator *o= new cl_t870c_psw_op(&cPSW, this);
+  o->init();
+  cPSW.append_operator(o);
 }
 
 void

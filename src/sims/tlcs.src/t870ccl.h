@@ -78,6 +78,18 @@ enum flag_mask_t {
 };
 
 
+class cl_t870c;
+
+class cl_t870c_psw_op: public cl_memory_operator
+{
+protected:
+  class cl_t870c *uc;
+public:
+  cl_t870c_psw_op(class cl_memory_cell *acell, class cl_t870c *auc);
+  virtual t_mem write(t_mem val);
+};
+  
+
 class cl_t870c: public cl_uc
 {
 public:
@@ -104,6 +116,7 @@ public:
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
+  virtual void part_init(void);
   virtual void mk_rbanks();
   virtual void decode_regs(void);
   virtual void make_memories(void);
