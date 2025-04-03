@@ -80,9 +80,8 @@ enum flag_mask_t {
 
 class cl_t870c: public cl_uc
 {
-protected:
-  struct rbank_870c_t *rbanks, *rbank;
 public:
+  struct rbank_870c_t *rbanks, *rbank;
   u16_t rSP;
   u8_t rPSW;
   class cl_cell8 cW, cA;
@@ -101,14 +100,38 @@ public:
   class cl_cell8 cPSW;
   class cl_address_space *asc, *asd;
   class cl_memory_chip *ram_chip, *rom_chip, *bootrom_chip;
+  u16_t sp_limit;
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
   virtual void mk_rbanks();
   virtual void decode_regs(void);
   virtual void make_memories(void);
-  
+  virtual void make_cpu_hw(void);
+
   virtual void print_regs(class cl_console_base *con);
+};
+
+
+enum t870c_cpu_cfg
+  {
+    t870c_sp_limit = 0,
+    t870c_nuof     = 1
+  };
+  
+class cl_t870c_cpu: public cl_hw
+{
+public:
+  class cl_t870c *uc;
+  class cl_memory_cell *psw;
+public:
+  cl_t870c_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return t870c_nuof; }
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+  virtual const char *cfg_help(t_addr addr); 
 };
 
 
