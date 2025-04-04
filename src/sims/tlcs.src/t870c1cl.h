@@ -77,11 +77,20 @@ public:
 
 class cl_t870c1: public cl_t870c
 {
- public:
+public:
+  u8_t act_rbs; // RBS masked from PSW
+  class cl_cell8 cW0, cW1, cA0, cA1;
+  class cl_cell8 cB0, cB1, cC0, cC1;
+  class cl_cell8 cD0, cD1, cE0, cE1;
+  class cl_cell8 cH0, cH1, cL0, cL1;
+  class cl_cell16 cWA0, cWA1, cBC0, cBC1, cDE0, cDE1;
+  class cl_cell16 cHL0, cHL1, cIX0, cIX1, cIY0, cIY1;
+public:
   cl_t870c1(class cl_sim *asim);
-  virtual void mk_rbanks();
   virtual int init(void);
   virtual void part_init(void);
+  virtual void mk_rbanks();
+  virtual void change_bank(u8_t new_rbs);
   virtual void make_memories(void);
   virtual void make_cpu_hw(void);
 
