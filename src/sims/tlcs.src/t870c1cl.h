@@ -93,15 +93,16 @@ public:
   virtual void change_bank(u8_t new_rbs);
   virtual void make_memories(void);
   virtual void make_cpu_hw(void);
-
+  virtual void reset(void);
   virtual void print_regs(class cl_console_base *con);
 };
 
 
 enum t870c1_cpu_cfg
   {
-    t870c1_sp_limit = 0,
-    t870c1_nuof     = 1
+    t870c1_sp_limit	= 0,
+    t870c1_bootmode	= 1,
+    t870c1_nuof     	= 2
   };
   
 class cl_t870c1_cpu: public cl_hw
