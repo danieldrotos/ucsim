@@ -271,7 +271,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	    work.append("'");
 	  if ((fmt=="char8") == 0)
 	    {
-		
+	      
 	    }
 	  continue;
 	}
@@ -281,6 +281,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  switch (b[i])
 	    {
 	    case 'd': // Rd
+	      break;
 	    default:
 	      temp= "?";
 	      break;
