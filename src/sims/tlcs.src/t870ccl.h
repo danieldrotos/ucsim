@@ -114,6 +114,10 @@ public:
   virtual void make_cpu_hw(void);
   virtual void reset(void);
   virtual void print_regs(class cl_console_base *con);
+
+  virtual struct dis_entry *dis_tbl(void);
+  virtual char *disassc(t_addr addr, chars *comment);
+  virtual int longest_inst(void) { return 4; }
 };
 
 
