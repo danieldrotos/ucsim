@@ -117,7 +117,7 @@ public:
 
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);
-  virtual int longest_inst(void) { return 4; }
+  virtual int longest_inst(void) { return 5; }
 };
 
 
