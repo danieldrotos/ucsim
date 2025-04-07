@@ -66,6 +66,14 @@ struct rbank_870c_t
 
 #define cF (cPSW)
 
+#define MP    t_mem code
+#define RD    (vc.rd++)
+#define RD2   (vc.rd+=2)
+#define WR    (vc.wr++)
+#define WR2   (vc.wr+=2)
+#define RDWR  (vc.rd++,vc.wr++)
+#define WRRD  (vc.rd++,vc.wr++)
+
 
 enum flag_mask_t {
   MJF= (0x80),
@@ -118,6 +126,11 @@ public:
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int longest_inst(void) { return 5; }
+
+  virtual int exec_inst(void);
+
+#include "alias870c.h"
+  virtual int NOP(MP) { return resGO; }
 };
 
 
@@ -140,7 +153,7 @@ public:
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem read(class cl_memory_cell *cell);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
-  virtual const char *cfg_help(t_addr addr); 
+  virtual const char *cfg_help(t_addr addr);
 };
 
 
