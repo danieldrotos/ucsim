@@ -298,6 +298,13 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 }
 
 
+int
+cl_t870c::exec_inst(void)
+{
+  return exec_inst_uctab();
+}
+
+
 /**************************************************************************/
 
 cl_t870c_cpu::cl_t870c_cpu(class cl_uc *auc):
