@@ -201,6 +201,7 @@ cl_t870c::reset(void)
 {
   cl_uc::reset();
   PC= rom->read(0xffff) * 256 + rom->read(0xfffe);
+  rSP= 0x00ff;
 }
 
 
