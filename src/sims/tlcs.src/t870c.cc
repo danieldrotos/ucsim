@@ -344,6 +344,21 @@ cl_t870c::exec_inst(void)
 }
 
 
+void
+cl_t870c::sd_x(void)
+{
+  sda= fetch();
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_vw(void)
+{
+  sda= fetch() + (fetch()*256);
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+
 int
 cl_t870c::CLR_CF(MP)
 {
@@ -359,6 +374,19 @@ cl_t870c::SET_CF(MP)
 {
   rF&= ~MJF;
   rF|= MCF;
+  cF.W(rF);
+  return resGO;
+}
+
+
+int
+cl_t870c::CPL_CF(MP)
+{
+  if (rF & MCF)
+    rF|= MJF;
+  else
+    rF&= ~MJF;
+  rF^= MCF;
   cF.W(rF);
   return resGO;
 }

@@ -133,10 +133,20 @@ public:
 
   virtual int exec_inst(void);
 
+  virtual void sd_x(void);
+  virtual void sd_vw(void);
+  virtual void sd_bc(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rBC); }
+  virtual void sd_de(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rDE); }
+  virtual void sd_hl(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rHL); }
+  virtual void sd_ix(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIX); }
+  virtual void sd_iy(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIY); }
+  virtual void sd_sp(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rSP); }
+  
 #include "alias870c.h"
   virtual int NOP(MP) { return resGO; }
   virtual int CLR_CF(MP);
   virtual int SET_CF(MP);
+  virtual int CPL_CF(MP);
 };
 
 
