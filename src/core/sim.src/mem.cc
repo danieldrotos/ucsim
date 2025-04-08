@@ -1199,7 +1199,7 @@ cl_memory_cell::decode(void *data_ptr, t_mem bit_mask)
     }
   mask= bit_mask;
 }
-  
+
 t_mem
 cl_memory_cell::read(void)
 {
