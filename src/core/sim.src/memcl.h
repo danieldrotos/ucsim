@@ -350,6 +350,8 @@ class cl_memory_cell: public cl_cell_data
   virtual void decode(class cl_memory_chip *chip, t_addr addr);
   virtual void decode(void *data_ptr);
   virtual void decode(void *data_ptr, t_mem bit_mask);
+  virtual void decode(class cl_memory_cell *src_cell)
+  { decode(src_cell->get_data()); }
   
   virtual t_mem read(void);
   virtual t_mem R(void) { return read(); }
