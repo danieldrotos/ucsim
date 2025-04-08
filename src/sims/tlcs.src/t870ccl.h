@@ -135,6 +135,8 @@ public:
 
 #include "alias870c.h"
   virtual int NOP(MP) { return resGO; }
+  virtual int CLR_CF(MP);
+  virtual int SET_CF(MP);
 };
 
 
