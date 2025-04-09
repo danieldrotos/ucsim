@@ -141,6 +141,13 @@ public:
   virtual void sd_ix(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIX); }
   virtual void sd_iy(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIY); }
   virtual void sd_sp(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rSP); }
+  virtual void sd_ixd(void);
+  virtual void sd_iyd(void);
+  virtual void sd_spd(void);
+  virtual void sd_hld(void);
+  virtual void sd_pca(void);
+  virtual void sd_Psp(void);
+  virtual void sd_spM(void);
   
 #include "alias870c.h"
   virtual int NOP(MP) { return resGO; }
