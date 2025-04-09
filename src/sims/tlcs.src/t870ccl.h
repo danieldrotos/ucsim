@@ -153,16 +153,35 @@ public:
   // Common parametrized operations
   virtual int ld8(class cl_cell8 *reg, class cl_memory_cell *src);
   virtual int ldi8(class cl_cell8 *reg, u8_t n);
+  virtual int ldi8nz(class cl_cell8 *reg, u8_t n);
   virtual int ld16(class cl_cell16 *reg, u16_t addr);
   virtual int ldi16(class cl_cell16 *reg, u16_t n);
   virtual int st8(class cl_memory_cell *dst, u8_t n);
   virtual int st16(t_addr addr, u16_t n);
   
 #include "alias870c.h"
+  // 0 00
   virtual int NOP(MP) { return resGO; }
   virtual int CLR_CF(MP);
   virtual int SET_CF(MP);
   virtual int CPL_CF(MP);
+  // 0 10
+  virtual int LD_A_A(MP) { return ldi8(regs8[0], rA); }
+  virtual int LD_A_W(MP) { return ldi8(regs8[0], rW); }
+  virtual int LD_A_C(MP) { return ldi8(regs8[0], rC); }
+  virtual int LD_A_B(MP) { return ldi8(regs8[0], rB); }
+  virtual int LD_A_E(MP) { return ldi8(regs8[0], rE); }
+  virtual int LD_A_D(MP) { return ldi8(regs8[0], rD); }
+  virtual int LD_A_L(MP) { return ldi8(regs8[0], rL); }
+  virtual int LD_A_H(MP) { return ldi8(regs8[0], rH); }
+  virtual int LD_A_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_W_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_C_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_B_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_E_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_D_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_L_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_H_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
 };
 
 
