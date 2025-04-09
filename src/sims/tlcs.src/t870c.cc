@@ -270,6 +270,7 @@ cl_t870c::dis_tbl(void)
   return disass_t870c;
 }
 
+static chars r_names[8]= { "A", "W", "C", "B", "E", "D", "L", "H" };
 
 char *
 cl_t870c::disassc(t_addr addr, chars *comment)
@@ -309,9 +310,19 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  if (!b[i]) i--;
 	  if (fmt.empty())
 	    work.append("'");
-	  if ((fmt=="char8") == 0)
+	  if (fmt=="char8")
 	    {
 	      
+	    }
+	  else if (fmt=="r_0.0")
+	    {
+	      int r= code&7;
+	      work.append(r_names[r]);
+	    }
+	  else if (fmt=="n_1")
+	    {
+	      u8_t n= rom->get(addr+1);
+	      work.appendf("0x%02x", n);
 	    }
 	  continue;
 	}
@@ -425,6 +436,15 @@ cl_t870c::ldi8(class cl_cell8 *reg, u8_t n)
 {
   rF&= ~MZF;
   rF|= (MJF|(!n?MZF:0));
+  reg->W(n);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::ldi8nz(class cl_cell8 *reg, u8_t n)
+{
+  rF|= MJF;
   reg->W(n);
   cF.W(rF);
   return resGO;
