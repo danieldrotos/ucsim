@@ -414,6 +414,62 @@ cl_t870c::sd_spM(void)
 
 
 int
+cl_t870c::ld8(class cl_cell8 *reg, class cl_memory_cell *src)
+{
+  RD;
+  return ldi8(reg, src->R());
+}
+
+int
+cl_t870c::ldi8(class cl_cell8 *reg, u8_t n)
+{
+  rF&= ~MZF;
+  rF|= (MJF|(!n?MZF:0));
+  reg->W(n);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::ld16(class cl_cell16 *reg, u16_t addr)
+{
+  u16_t n;
+  RD2;
+  n= asd->read(addr) + asd->read(addr+1)*256;
+  reg->W(n);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::ldi16(class cl_cell16 *reg, u16_t n)
+{
+  reg->W(n);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::st8(class cl_memory_cell *dst, u8_t n)
+{
+  WR;
+  cF.W(rF|MJF);
+  dst->W(n);
+  return resGO;
+}
+
+int
+cl_t870c::st16(t_addr addr, u16_t n)
+{
+  WR2;
+  asd->write(addr, n);
+  asd->write(addr+1, n>>8);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+
+int
 cl_t870c::CLR_CF(MP)
 {
   rF|= MJF;

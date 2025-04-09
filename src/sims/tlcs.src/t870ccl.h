@@ -133,6 +133,7 @@ public:
 
   virtual int exec_inst(void);
 
+  // Set sdc/sda for indirect addressing modes
   virtual void sd_x(void);
   virtual void sd_vw(void);
   virtual void sd_bc(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rBC); }
@@ -145,9 +146,17 @@ public:
   virtual void sd_iyd(void);
   virtual void sd_spd(void);
   virtual void sd_hld(void);
-  virtual void sd_pca(void);
+  virtual void sd_pca(void); // uses actual PC
   virtual void sd_Psp(void);
   virtual void sd_spM(void);
+
+  // Common parametrized operations
+  virtual int ld8(class cl_cell8 *reg, class cl_memory_cell *src);
+  virtual int ldi8(class cl_cell8 *reg, u8_t n);
+  virtual int ld16(class cl_cell16 *reg, u16_t addr);
+  virtual int ldi16(class cl_cell16 *reg, u16_t n);
+  virtual int st8(class cl_memory_cell *dst, u8_t n);
+  virtual int st16(t_addr addr, u16_t n);
   
 #include "alias870c.h"
   virtual int NOP(MP) { return resGO; }
