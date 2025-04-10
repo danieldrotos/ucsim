@@ -134,11 +134,11 @@ public:
   virtual int exec_inst(void);
 
   // Set sdc/sda for indirect addressing modes
-  virtual void sd_x(void);
+  virtual class cl_cell8 *sd_x(void);
   virtual void sd_vw(void);
   virtual void sd_bc(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rBC); }
   virtual void sd_de(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rDE); }
-  virtual void sd_hl(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rHL); }
+  virtual class cl_cell8 *sd_hl(void) { return sdc= (class cl_cell8 *)asd->get_cell(sda= rHL); }
   virtual void sd_ix(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIX); }
   virtual void sd_iy(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIY); }
   virtual void sd_sp(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rSP); }
@@ -169,16 +169,18 @@ public:
   virtual int LDW_mhl_mn(MP);
   virtual int LD_mx_n(MP) { sd_x(); return st8(sdc, fetch()); }
   virtual int LD_mhl_n(MP) { sd_hl(); return st8(sdc, fetch()); }
+  virtual int LD_A_mx(MP) { return ld8(&cA, sd_x()); }
+  virtual int LD_A_mhl(MP) { return ld8(&cA, sd_hl()); }
   
   // 0 10 - 0 1f
-  virtual int LD_A_rA(MP) { return ldi8(regs8[0], rA); }
-  virtual int LD_A_rW(MP) { return ldi8(regs8[0], rW); }
-  virtual int LD_A_rC(MP) { return ldi8(regs8[0], rC); }
-  virtual int LD_A_rB(MP) { return ldi8(regs8[0], rB); }
-  virtual int LD_A_rE(MP) { return ldi8(regs8[0], rE); }
-  virtual int LD_A_rD(MP) { return ldi8(regs8[0], rD); }
-  virtual int LD_A_rL(MP) { return ldi8(regs8[0], rL); }
-  virtual int LD_A_rH(MP) { return ldi8(regs8[0], rH); }
+  virtual int LD_A_rA(MP) { return ldi8(&cA, rA); }
+  virtual int LD_A_rW(MP) { return ldi8(&cA, rW); }
+  virtual int LD_A_rC(MP) { return ldi8(&cA, rC); }
+  virtual int LD_A_rB(MP) { return ldi8(&cA, rB); }
+  virtual int LD_A_rE(MP) { return ldi8(&cA, rE); }
+  virtual int LD_A_rD(MP) { return ldi8(&cA, rD); }
+  virtual int LD_A_rL(MP) { return ldi8(&cA, rL); }
+  virtual int LD_A_rH(MP) { return ldi8(&cA, rH); }
   virtual int LD_rA_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
   virtual int LD_rW_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
   virtual int LD_rC_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
