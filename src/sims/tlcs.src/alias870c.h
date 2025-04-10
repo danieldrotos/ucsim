@@ -49,5 +49,17 @@
 #define LD_rrIY_mn              instruction_4d
 #define LD_rrSP_mn              instruction_4e
 
+// 0 e0 - 0 ef
+
 // 0 f0 - 0 ff
 #define LD_RBS                  instruction_f9
+
+// 1 40 - 1 4f
+#define LD_rA_g                 instruction_140
+#define LD_rW_g                 instruction_141
+#define LD_rC_g                 instruction_142
+#define LD_rB_g                 instruction_143
+#define LD_rE_g                 instruction_144
+#define LD_rD_g                 instruction_145
+#define LD_rL_g                 instruction_146
+#define LD_rH_g                 instruction_147

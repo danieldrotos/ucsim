@@ -488,6 +488,8 @@ struct dis_entry disass_tlcs[]= {
 struct dis_entry disass_t870c[]=
   {
     // code mask branch length mn iscall ticks info
+    { 0x000040e8, 0x0000f8f8, ' ', 2, "LD 'r_1.0','r_0.0'" },
+    
     { 0x00000000, 0x000000ff, ' ', 1, "NOP" },
     { 0x00000004, 0x000000ff, ' ', 1, "CLR CF" },
     { 0x00000005, 0x000000ff, ' ', 1, "SET CF" },
