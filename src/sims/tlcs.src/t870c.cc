@@ -382,11 +382,11 @@ cl_t870c::exec_inst(void)
 }
 
 
-void
+class cl_cell8 *
 cl_t870c::sd_x(void)
 {
   sda= fetch();
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  return sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
 
 void

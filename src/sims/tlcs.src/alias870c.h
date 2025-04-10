@@ -8,6 +8,9 @@
 #define LDW_mhl_mn              instruction_09
 #define LD_mx_n                 instruction_0a
 #define LD_mhl_n                instruction_0b
+#define LD_A_mx                 instruction_0c
+#define LD_A_mhl                instruction_0d
+
 
 // 0 10 - 0 1f
 #define LD_A_rA                 instruction_10
