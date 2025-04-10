@@ -130,8 +130,10 @@ public:
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int longest_inst(void) { return 5; }
+  virtual int inst_length(t_addr addr);
 
   virtual int exec_inst(void);
+  virtual int exec_inst_page(int page);
 
   // Set sdc/sda for indirect addressing modes
   virtual class cl_cell8 *sd_x(void);
@@ -208,8 +210,26 @@ public:
   virtual int LD_rrIX_mn(MP) { return ldi16(&cIX, mn()); }
   virtual int LD_rrIY_mn(MP) { return ldi16(&cIY, mn()); }
   virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
+  // 0 e0 - 0 ef
+  virtual int instruction_e8(MP) { sda=0; return exec_inst_page(0x100); }
+  virtual int instruction_e9(MP) { sda=1; return exec_inst_page(0x100); }
+  virtual int instruction_ea(MP) { sda=2; return exec_inst_page(0x100); }
+  virtual int instruction_eb(MP) { sda=3; return exec_inst_page(0x100); }
+  virtual int instruction_ec(MP) { sda=4; return exec_inst_page(0x100); }
+  virtual int instruction_ed(MP) { sda=5; return exec_inst_page(0x100); }
+  virtual int instruction_ee(MP) { sda=6; return exec_inst_page(0x100); }
+  virtual int instruction_ef(MP) { sda=7; return exec_inst_page(0x100); }
   // 0 f0 - 0 f1
   virtual int LD_RBS(MP);
+  // 1 40 - 1 4f
+  virtual int LD_rA_g(MP) { return ldi8(&cA, regs8[sda]->R()); }
+  virtual int LD_rW_g(MP) { return ldi8(&cW, regs8[sda]->R()); }
+  virtual int LD_rC_g(MP) { return ldi8(&cC, regs8[sda]->R()); }
+  virtual int LD_rB_g(MP) { return ldi8(&cB, regs8[sda]->R()); }
+  virtual int LD_rE_g(MP) { return ldi8(&cE, regs8[sda]->R()); }
+  virtual int LD_rD_g(MP) { return ldi8(&cD, regs8[sda]->R()); }
+  virtual int LD_rL_g(MP) { return ldi8(&cL, regs8[sda]->R()); }
+  virtual int LD_rH_g(MP) { return ldi8(&cH, regs8[sda]->R()); }
 };
 
 

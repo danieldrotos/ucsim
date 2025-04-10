@@ -277,18 +277,20 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 {
   chars work= chars(), temp= chars(), fmt;
   const char *b;
-  t_mem code, code4, data= 0;
+  t_mem code, code32, data= 0;
+  t_mem code0, code1, code2, code3, code4;
   int i;
   bool first;
   
-  code= rom->get(addr);
-  code4= rom->get(addr) +
-    rom->get(addr+1)*256 +
-    rom->get(addr+2)*256*256 +
-    rom->get(addr+3)*256*256*256;
+  code= code0= rom->get(addr);
+  code1= rom->get(addr+1);
+  code2= rom->get(addr+2);
+  code3= rom->get(addr+3);
+  code4= rom->get(addr+4);
+  code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
   
   i= 0;
-  while ((code4 & dis_tbl()[i].mask) != dis_tbl()[i].code &&
+  while ((code32 & dis_tbl()[i].mask) != dis_tbl()[i].code &&
 	 dis_tbl()[i].mnemonic)
     i++;
   if (dis_tbl()[i].mnemonic == NULL)
@@ -312,42 +314,16 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  while (b[i] && (b[i]!='\''))
 	    fmt.append(b[i++]);
 	  if (!b[i]) i--;
-	  if (fmt.empty())
-	    work.append("'");
-	  if (fmt=="char8")
-	    {
-	      
-	    }
-	  else if (fmt=="r_0.0")
-	    {
-	      int r= code&7;
-	      work.append(r_names[r]);
-	    }
-	  else if (fmt=="n_1")
-	    {
-	      u8_t n= rom->get(addr+1);
-	      work.appendf("0x%02x", n);
-	    }
-	  else if (fmt=="n_2")
-	    {
-	      u8_t n= rom->get(addr+2);
-	      work.appendf("0x%02x", n);
-	    }
-	  else if (fmt=="mn_1")
-	    {
-	      u16_t mn= rom->get(addr+1)+rom->get(addr+2)*256;
-	      work.appendf("0x%04x", mn);
-	    }
-	  else if (fmt=="mn_2")
-	    {
-	      u16_t mn= rom->get(addr+2)+rom->get(addr+3)*256;
-	      work.appendf("0x%04x", mn);
-	    }
-	  else if (fmt=="mn_3")
-	    {
-	      u16_t mn= rom->get(addr+3)+rom->get(addr+4)*256;
-	      work.appendf("0x%04x", mn);
-	    }
+	  if (fmt.empty()) work.append("'");
+	  else if (fmt=="r_0.0") work.append(r_names[code0&7]);
+	  else if (fmt=="r_1.0") work.append(r_names[code1&7]);
+	  else if (fmt=="r_2.0") work.append(r_names[code2&7]);
+	  else if (fmt=="r_3.0") work.append(r_names[code3&7]);
+	  else if (fmt=="n_1")   work.appendf("0x%02x", code1);
+	  else if (fmt=="n_2")   work.appendf("0x%02x", code2);
+	  else if (fmt=="mn_1")  work.appendf("0x%04x", code1+code2*256);
+	  else if (fmt=="mn_2")  work.appendf("0x%04x", code2+code3*256);
+	  else if (fmt=="mn_3")  work.appendf("0x%04x", code3+code4*256);
 	  continue;
 	}
       if (b[i] == '%')
@@ -380,9 +356,52 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 
 
 int
+cl_t870c::inst_length(t_addr addr)
+{
+  struct dis_entry *tabl= dis_tbl();
+  int i;
+  t_mem code;
+
+  if (!rom)
+    return(0);
+
+  code = rom->get(addr);
+  code+= rom->get(addr+1)<<8;
+  code+= rom->get(addr+2)<<16;
+  code+= rom->get(addr+3)<<24;
+  
+  for (i= 0; tabl[i].mnemonic && (code & tabl[i].mask) != tabl[i].code; i++) ;
+  return(tabl[i].mnemonic?tabl[i].length:1);
+}
+
+
+int
 cl_t870c::exec_inst(void)
 {
   return exec_inst_uctab();
+}
+
+/*
+ * Two byte opcode dispacher for memory prefixes
+ */
+
+int
+cl_t870c::exec_inst_page(int page)
+{
+  int res= resGO;
+  // prefix info fetched already
+  t_mem code2= fetch();
+  int page_code= code2|page;
+  if (uc_itab[page_code] == NULL)
+    {
+      PC= instPC;
+      return resNOT_DONE;
+    }
+  tickt(page_code);
+  res= (this->*uc_itab[page_code])(code2);
+  if (res == resNOT_DONE)
+    PC= instPC;
+  return res;
 }
 
 
@@ -589,6 +608,7 @@ cl_t870c::LD_RBS(MP)
     cF.W(rF&~MRBS);
   return resGO;
 }
+
 
 
 /**************************************************************************/
