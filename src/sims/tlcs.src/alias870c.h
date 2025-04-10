@@ -4,6 +4,9 @@
 #define SET_CF 			instruction_05
 #define CPL_CF 			instruction_06
 
+#define LDW_mx_mn               instruction_08
+#define LDW_mhl_mn              instruction_09
+
 // 0 10 - 0 1f
 #define LD_A_rA                 instruction_10
 #define LD_A_rW                 instruction_11
