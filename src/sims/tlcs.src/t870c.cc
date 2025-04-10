@@ -271,6 +271,9 @@ cl_t870c::dis_tbl(void)
 }
 
 static chars r_names[8]= { "A", "W", "C", "B", "E", "D", "L", "H" };
+static chars rr_names[8]= {
+  "WA", "BC", "DE", "HL", "IX", "IY", "SP", "HL"
+};
 
 char *
 cl_t870c::disassc(t_addr addr, chars *comment)
@@ -315,13 +318,17 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	    fmt.append(b[i++]);
 	  if (!b[i]) i--;
 	  if (fmt.empty()) work.append("'");
-	  else if (fmt=="r_0.0") work.append(r_names[code0&7]);
-	  else if (fmt=="r_1.0") work.append(r_names[code1&7]);
-	  else if (fmt=="r_2.0") work.append(r_names[code2&7]);
-	  else if (fmt=="r_3.0") work.append(r_names[code3&7]);
-	  else if (fmt=="n_1")   work.appendf("0x%02x", code1);
-	  else if (fmt=="n_2")   work.appendf("0x%02x", code2);
-	  else if (fmt=="mn_1")  work.appendf("0x%04x", code1+code2*256);
+	  else if (fmt=="r_0.0")  work.append(r_names[code0&7]);
+	  else if (fmt=="r_1.0")  work.append(r_names[code1&7]);
+	  else if (fmt=="r_2.0")  work.append(r_names[code2&7]);
+	  else if (fmt=="r_3.0")  work.append(r_names[code3&7]);
+	  else if (fmt=="rr_0.0") work.append(rr_names[code0&7]);
+	  else if (fmt=="rr_1.0") work.append(rr_names[code1&7]);
+	  else if (fmt=="rr_2.0") work.append(rr_names[code2&7]);
+	  else if (fmt=="rr_3.0") work.append(rr_names[code3&7]);
+	  else if (fmt=="n_1")    work.appendf("0x%02x", code1);
+	  else if (fmt=="n_2")    work.appendf("0x%02x", code2);
+	  else if (fmt=="mn_1")   work.appendf("0x%04x", code1+code2*256);
 	  else if (fmt=="mn_2")  work.appendf("0x%04x", code2+code3*256);
 	  else if (fmt=="mn_3")  work.appendf("0x%04x", code3+code4*256);
 	  continue;
