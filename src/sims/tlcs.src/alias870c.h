@@ -10,6 +10,8 @@
 #define LD_mhl_n                instruction_0b
 #define LD_A_mx                 instruction_0c
 #define LD_A_mhl                instruction_0d
+#define LD_mx_A                 instruction_0e
+#define LD_mhl_A                instruction_0f
 
 
 // 0 10 - 0 1f
@@ -39,4 +41,11 @@
 #define LD_rD_A                 instruction_45
 #define LD_rL_A                 instruction_46
 #define LD_rH_A                 instruction_47
+#define LD_rrWA_mn              instruction_48
+#define LD_rrBC_mn              instruction_49
+#define LD_rrDE_mn              instruction_4a
+#define LD_rrHL_mn              instruction_4b
+#define LD_rrIX_mn              instruction_4c
+#define LD_rrIY_mn              instruction_4d
+#define LD_rrSP_mn              instruction_4e
 
