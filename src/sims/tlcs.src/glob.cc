@@ -511,6 +511,9 @@ struct dis_entry disass_t870c[]=
     { 0x0000004c, 0x000000ff, ' ', 3, "LD IX,'mn_1'" },
     { 0x0000004d, 0x000000ff, ' ', 3, "LD IY,'mn_1'" },
     { 0x0000004e, 0x000000ff, ' ', 3, "LD SP,'mn_1'" },
+
+    { 0x000000f9, 0x0000ffff, ' ', 2, "LD RBS,0" },
+    { 0x000002f9, 0x0000ffff, ' ', 2, "LD RBS,1" },
     
     { 0, 0, ' ', 0, NULL }
   };

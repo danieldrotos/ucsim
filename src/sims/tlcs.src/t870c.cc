@@ -277,14 +277,18 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 {
   chars work= chars(), temp= chars(), fmt;
   const char *b;
-  t_mem code, data= 0;
+  t_mem code, code4, data= 0;
   int i;
   bool first;
   
   code= rom->get(addr);
-
+  code4= rom->get(addr) +
+    rom->get(addr+1)*256 +
+    rom->get(addr+2)*256*256 +
+    rom->get(addr+3)*256*256*256;
+  
   i= 0;
-  while ((code & dis_tbl()[i].mask) != dis_tbl()[i].code &&
+  while ((code4 & dis_tbl()[i].mask) != dis_tbl()[i].code &&
 	 dis_tbl()[i].mnemonic)
     i++;
   if (dis_tbl()[i].mnemonic == NULL)
@@ -573,6 +577,16 @@ cl_t870c::LDW_mhl_mn(MP)
   asd->write(rHL+1, mn= fetch());
   WR2;
   cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::LD_RBS(MP)
+{
+  if (fetch())
+    cF.W(rF|MRBS);
+  else
+    cF.W(rF&~MRBS);
   return resGO;
 }
 
