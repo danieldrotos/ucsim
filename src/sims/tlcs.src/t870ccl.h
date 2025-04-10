@@ -208,6 +208,8 @@ public:
   virtual int LD_rrIX_mn(MP) { return ldi16(&cIX, mn()); }
   virtual int LD_rrIY_mn(MP) { return ldi16(&cIY, mn()); }
   virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
+  // 0 f0 - 0 f1
+  virtual int LD_RBS(MP);
 };
 
 

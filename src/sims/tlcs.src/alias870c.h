@@ -49,3 +49,5 @@
 #define LD_rrIY_mn              instruction_4d
 #define LD_rrSP_mn              instruction_4e
 
+// 0 f0 - 0 ff
+#define LD_RBS                  instruction_f9
