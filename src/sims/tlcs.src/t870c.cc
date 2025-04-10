@@ -324,6 +324,16 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	      u8_t n= rom->get(addr+1);
 	      work.appendf("0x%02x", n);
 	    }
+	  else if (fmt=="mn_1")
+	    {
+	      u16_t mn= rom->get(addr+1)+rom->get(addr+2)*256;
+	      work.appendf("0x%04x", mn);
+	    }
+	  else if (fmt=="mn_2")
+	    {
+	      u16_t mn= rom->get(addr+2)+rom->get(addr+3)*256;
+	      work.appendf("0x%04x", mn);
+	    }
 	  continue;
 	}
       if (b[i] == '%')
@@ -331,7 +341,14 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  b++;
 	  switch (b[i])
 	    {
-	    case 'd': // Rd
+	    case 'x':
+	      {
+		u16_t x= rom->get(addr+1);
+		work.appendf("0x%02x", x);
+		if (comment)
+		  comment->appendf("; %02x %02x",
+				   asd->read(x), asd->read(x+1));
+	      }
 	      break;
 	    default:
 	      temp= "?";
@@ -498,7 +515,6 @@ cl_t870c::CLR_CF(MP)
   return resGO;
 }
 
-
 int
 cl_t870c::SET_CF(MP)
 {
@@ -507,7 +523,6 @@ cl_t870c::SET_CF(MP)
   cF.W(rF);
   return resGO;
 }
-
 
 int
 cl_t870c::CPL_CF(MP)
@@ -518,6 +533,27 @@ cl_t870c::CPL_CF(MP)
     rF&= ~MJF;
   rF^= MCF;
   cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::LDW_mx_mn(MP)
+{
+  u8_t mn;
+  sda= fetch();
+  asd->write(sda, mn= fetch());
+  asd->write(sda+1, mn= fetch());
+  WR2;
+  return resGO;
+}
+
+int
+cl_t870c::LDW_mhl_mn(MP)
+{
+  u8_t mn;
+  asd->write(rHL, mn= fetch());
+  asd->write(rHL+1, mn= fetch());
+  WR2;
   return resGO;
 }
 

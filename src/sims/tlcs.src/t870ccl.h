@@ -165,6 +165,9 @@ public:
   virtual int CLR_CF(MP);
   virtual int SET_CF(MP);
   virtual int CPL_CF(MP);
+  virtual int LDW_mx_mn(MP);
+  virtual int LDW_mhl_mn(MP);
+  
   // 0 10 - 0 1f
   virtual int LD_A_rA(MP) { return ldi8(regs8[0], rA); }
   virtual int LD_A_rW(MP) { return ldi8(regs8[0], rW); }
