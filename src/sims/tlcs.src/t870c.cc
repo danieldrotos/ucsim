@@ -392,7 +392,8 @@ cl_t870c::sd_x(void)
 void
 cl_t870c::sd_vw(void)
 {
-  sda= fetch() + (fetch()*256);
+  sda= fetch();
+  sda+= (fetch()*256);
   sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
 
@@ -448,6 +449,14 @@ cl_t870c::sd_spM(void)
   sda= rSP;
   cSP.W(rSP-1);
   sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+u16_t
+cl_t870c::mn(void)
+{
+  u16_t mn= fetch();
+  mn+= fetch()*256;
+  return mn;
 }
 
 

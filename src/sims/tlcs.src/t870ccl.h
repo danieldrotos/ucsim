@@ -149,7 +149,8 @@ public:
   virtual void sd_pca(void); // uses actual PC
   virtual void sd_Psp(void);
   virtual void sd_spM(void);
-
+  virtual u16_t mn(void);
+  
   // Common parametrized operations
   virtual int ld8(class cl_cell8 *reg, class cl_memory_cell *src);
   virtual int ldi8(class cl_cell8 *reg, u8_t n);
@@ -171,6 +172,8 @@ public:
   virtual int LD_mhl_n(MP) { sd_hl(); return st8(sdc, fetch()); }
   virtual int LD_A_mx(MP) { return ld8(&cA, sd_x()); }
   virtual int LD_A_mhl(MP) { return ld8(&cA, sd_hl()); }
+  virtual int LD_mx_A(MP) { return st8(sd_x(), rA); }
+  virtual int LD_mhl_A(MP) { return st8(sd_hl(), rA); }
   
   // 0 10 - 0 1f
   virtual int LD_A_rA(MP) { return ldi8(&cA, rA); }
@@ -181,23 +184,30 @@ public:
   virtual int LD_A_rD(MP) { return ldi8(&cA, rD); }
   virtual int LD_A_rL(MP) { return ldi8(&cA, rL); }
   virtual int LD_A_rH(MP) { return ldi8(&cA, rH); }
-  virtual int LD_rA_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
-  virtual int LD_rW_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
-  virtual int LD_rC_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
-  virtual int LD_rB_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
-  virtual int LD_rE_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
-  virtual int LD_rD_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
-  virtual int LD_rL_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
-  virtual int LD_rH_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rA_n(MP) { return ldi8nz(&cA, fetch()); }
+  virtual int LD_rW_n(MP) { return ldi8nz(&cW, fetch()); }
+  virtual int LD_rC_n(MP) { return ldi8nz(&cC, fetch()); }
+  virtual int LD_rB_n(MP) { return ldi8nz(&cB, fetch()); }
+  virtual int LD_rE_n(MP) { return ldi8nz(&cE, fetch()); }
+  virtual int LD_rD_n(MP) { return ldi8nz(&cD, fetch()); }
+  virtual int LD_rL_n(MP) { return ldi8nz(&cL, fetch()); }
+  virtual int LD_rH_n(MP) { return ldi8nz(&cH, fetch()); }
   // 0 40 - 0 4f
-  virtual int LD_rA_A(MP) { return ldi8(regs8[code&7], rA); }
-  virtual int LD_rW_A(MP) { return ldi8(regs8[code&7], rA); }
-  virtual int LD_rC_A(MP) { return ldi8(regs8[code&7], rA); }
-  virtual int LD_rB_A(MP) { return ldi8(regs8[code&7], rA); }
-  virtual int LD_rE_A(MP) { return ldi8(regs8[code&7], rA); }
-  virtual int LD_rD_A(MP) { return ldi8(regs8[code&7], rA); }
-  virtual int LD_rL_A(MP) { return ldi8(regs8[code&7], rA); }
-  virtual int LD_rH_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rA_A(MP) { return ldi8(&cA, rA); }
+  virtual int LD_rW_A(MP) { return ldi8(&cW, rA); }
+  virtual int LD_rC_A(MP) { return ldi8(&cC, rA); }
+  virtual int LD_rB_A(MP) { return ldi8(&cB, rA); }
+  virtual int LD_rE_A(MP) { return ldi8(&cE, rA); }
+  virtual int LD_rD_A(MP) { return ldi8(&cD, rA); }
+  virtual int LD_rL_A(MP) { return ldi8(&cL, rA); }
+  virtual int LD_rH_A(MP) { return ldi8(&cH, rA); }
+  virtual int LD_rrWA_mn(MP) { return ldi16(&cWA, mn()); }
+  virtual int LD_rrBC_mn(MP) { return ldi16(&cBC, mn()); }
+  virtual int LD_rrDE_mn(MP) { return ldi16(&cDE, mn()); }
+  virtual int LD_rrHL_mn(MP) { return ldi16(&cHL, mn()); }
+  virtual int LD_rrIX_mn(MP) { return ldi16(&cIX, mn()); }
+  virtual int LD_rrIY_mn(MP) { return ldi16(&cIY, mn()); }
+  virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
 };
 
 
