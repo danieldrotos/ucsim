@@ -488,12 +488,12 @@ struct dis_entry disass_tlcs[]= {
 struct dis_entry disass_t870c[]=
   {
     // code mask branch length mn iscall ticks info
-    { 0x00004fe8, 0x0000fff8, ' ', 2, "-- INVALID" },
-    { 0x00007fe8, 0x0000fff8, ' ', 2, "-- INVALID" },
-    { 0x0000dfe8, 0x0000fff8, ' ', 2, "-- INVALID" },
-    { 0x0000f8e8, 0x0000fff8, ' ', 2, "-- INVALID" },
-    { 0x0000f9e8, 0x0000fff8, ' ', 2, "-- INVALID" },
-    { 0x0000fce8, 0x0000fff8, ' ', 2, "-- INVALID" },
+    { 0x00004fe8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x00007fe8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000dfe8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000f8e8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000f9e8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000fce8, 0x0000fff8, ' ', 2, "INVALID" },
 
     { 0x000040e8, 0x0000f8f8, ' ', 2, "LD 'r_1.0','r_0.0'" },
     { 0x000048e8, 0x0000f8f8, ' ', 2, "LD 'rr_1.0','rr_0.0'" },
