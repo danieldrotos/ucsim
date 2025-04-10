@@ -324,6 +324,11 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	      u8_t n= rom->get(addr+1);
 	      work.appendf("0x%02x", n);
 	    }
+	  else if (fmt=="n_2")
+	    {
+	      u8_t n= rom->get(addr+2);
+	      work.appendf("0x%02x", n);
+	    }
 	  else if (fmt=="mn_1")
 	    {
 	      u16_t mn= rom->get(addr+1)+rom->get(addr+2)*256;
@@ -332,6 +337,11 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="mn_2")
 	    {
 	      u16_t mn= rom->get(addr+2)+rom->get(addr+3)*256;
+	      work.appendf("0x%04x", mn);
+	    }
+	  else if (fmt=="mn_3")
+	    {
+	      u16_t mn= rom->get(addr+3)+rom->get(addr+4)*256;
 	      work.appendf("0x%04x", mn);
 	    }
 	  continue;
@@ -451,9 +461,9 @@ cl_t870c::ld8(class cl_cell8 *reg, class cl_memory_cell *src)
 int
 cl_t870c::ldi8(class cl_cell8 *reg, u8_t n)
 {
+  reg->W(n);
   rF&= ~MZF;
   rF|= (MJF|(!n?MZF:0));
-  reg->W(n);
   cF.W(rF);
   return resGO;
 }
@@ -461,9 +471,8 @@ cl_t870c::ldi8(class cl_cell8 *reg, u8_t n)
 int
 cl_t870c::ldi8nz(class cl_cell8 *reg, u8_t n)
 {
-  rF|= MJF;
   reg->W(n);
-  cF.W(rF);
+  cF.W(rF|MJF);
   return resGO;
 }
 
@@ -471,8 +480,8 @@ int
 cl_t870c::ld16(class cl_cell16 *reg, u16_t addr)
 {
   u16_t n;
-  RD2;
   n= asd->read(addr) + asd->read(addr+1)*256;
+  RD2;
   reg->W(n);
   cF.W(rF|MJF);
   return resGO;
@@ -489,18 +498,18 @@ cl_t870c::ldi16(class cl_cell16 *reg, u16_t n)
 int
 cl_t870c::st8(class cl_memory_cell *dst, u8_t n)
 {
+  dst->W(n);
   WR;
   cF.W(rF|MJF);
-  dst->W(n);
   return resGO;
 }
 
 int
 cl_t870c::st16(t_addr addr, u16_t n)
 {
-  WR2;
   asd->write(addr, n);
   asd->write(addr+1, n>>8);
+  WR2;
   cF.W(rF|MJF);
   return resGO;
 }
@@ -509,9 +518,8 @@ cl_t870c::st16(t_addr addr, u16_t n)
 int
 cl_t870c::CLR_CF(MP)
 {
-  rF|= MJF;
   rF&= ~MCF;
-  cF.W(rF);
+  cF.W(rF|MJF);
   return resGO;
 }
 
@@ -544,6 +552,7 @@ cl_t870c::LDW_mx_mn(MP)
   asd->write(sda, mn= fetch());
   asd->write(sda+1, mn= fetch());
   WR2;
+  cF.W(rF|MJF);
   return resGO;
 }
 
@@ -554,6 +563,7 @@ cl_t870c::LDW_mhl_mn(MP)
   asd->write(rHL, mn= fetch());
   asd->write(rHL+1, mn= fetch());
   WR2;
+  cF.W(rF|MJF);
   return resGO;
 }
 

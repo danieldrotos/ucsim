@@ -167,6 +167,8 @@ public:
   virtual int CPL_CF(MP);
   virtual int LDW_mx_mn(MP);
   virtual int LDW_mhl_mn(MP);
+  virtual int LD_mx_n(MP) { sd_x(); return st8(sdc, fetch()); }
+  virtual int LD_mhl_n(MP) { sd_hl(); return st8(sdc, fetch()); }
   
   // 0 10 - 0 1f
   virtual int LD_A_rA(MP) { return ldi8(regs8[0], rA); }
