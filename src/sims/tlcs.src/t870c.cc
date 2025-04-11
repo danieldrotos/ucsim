@@ -571,6 +571,16 @@ cl_t870c::xch8_rr(class cl_cell8 *a, class cl_cell8 *b)
   return resGO;
 }
 
+int
+cl_t870c::xch16_rr(class cl_cell16 *a, class cl_cell16 *b)
+{
+  u16_t t= b->get();
+  b->W(a->get());
+  a->W(t);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
 
 int
 cl_t870c::CLR_CF(MP)

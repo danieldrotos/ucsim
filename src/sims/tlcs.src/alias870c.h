@@ -84,6 +84,13 @@
 #define XCH_rD_g                instruction_175
 #define XCH_rL_g                instruction_176
 #define XCH_rH_g                instruction_177
+#define XCH_rrWA_gg             instruction_178
+#define XCH_rrBC_gg             instruction_179
+#define XCH_rrDE_gg             instruction_17a
+#define XCH_rrHL_gg             instruction_17b
+#define XCH_rrIX_gg             instruction_17c
+#define XCH_rrIY_gg             instruction_17d
+#define XCH_rrSP_gg             instruction_17e
 
 // 1 d0 - 1 df
 #define LD_PSW_n		instruction_1de
