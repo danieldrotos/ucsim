@@ -215,6 +215,12 @@ public:
   virtual int LD_rrIX_mn(MP) { return ldi16(&cIX, mn()); }
   virtual int LD_rrIY_mn(MP) { return ldi16(&cIY, mn()); }
   virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
+  virtual int instruction_4f(MP) { sd_pca(); return exec_inst_page(0x200); }
+  // 0 d0 - 0 df
+  virtual int instruction_d4(MP) { sd_ixd(); return exec_inst_page(0x200); }
+  virtual int instruction_d5(MP) { sd_iyd(); return exec_inst_page(0x200); }
+  virtual int instruction_d6(MP) { sd_spd(); return exec_inst_page(0x200); }
+  virtual int instruction_d7(MP) { sd_hld(); return exec_inst_page(0x200); }
   // 0 e0 - 0 ef
   virtual int instruction_e0(MP) { sd_x(); return exec_inst_page(0x200); }
   virtual int instruction_e1(MP) { sd_vw(); return exec_inst_page(0x200); }
