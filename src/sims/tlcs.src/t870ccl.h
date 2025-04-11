@@ -232,6 +232,8 @@ public:
   virtual int LD_rH_g(MP) { return ldi8(&cH, regs8[sda]->R()); }
   // 1 d0 - 1 df
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
+  // 1 f0 - 1 ff
+  virtual int SWAP_g(MP);
 };
 
 

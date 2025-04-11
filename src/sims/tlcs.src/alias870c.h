@@ -73,3 +73,6 @@
 
 // 1 d0 - 1 df
 #define LD_PSW_n		instruction_1de
+
+// 1 f0 - 1 ff
+#define SWAP_g                  instruction_1ff

@@ -622,6 +622,17 @@ cl_t870c::LD_RBS(MP)
   return resGO;
 }
 
+int
+cl_t870c::SWAP_g(MP)
+{
+  u8_t v= regs8[sda]->get();
+  u8_t l= v&0xf;
+  v>>= 4;
+  v|= (l<<4);
+  regs8[sda]->W(v);
+  cF.W(rF|MJF);
+  return resGO;
+}
 
 
 /**************************************************************************/
