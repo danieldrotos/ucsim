@@ -137,7 +137,7 @@ public:
 
   // Set sdc/sda for indirect addressing modes
   virtual class cl_cell8 *sd_x(void);
-  virtual void sd_vw(void);
+  virtual class cl_cell8 *sd_vw(void);
   virtual void sd_bc(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rBC); }
   virtual void sd_de(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rDE); }
   virtual class cl_cell8 *sd_hl(void) { return sdc= (class cl_cell8 *)asd->get_cell(sda= rHL); }
@@ -162,6 +162,7 @@ public:
   virtual int st8(class cl_memory_cell *dst, u8_t n);
   virtual int st16(t_addr addr, u16_t n);
   virtual int xch8_rr(class cl_cell8 *a, class cl_cell8 *b);
+  virtual int xch8_rm(class cl_cell8 *a, class cl_cell8 *b);
   virtual int xch16_rr(class cl_cell16 *a, class cl_cell16 *b);
   
 #include "alias870c.h"
@@ -215,6 +216,14 @@ public:
   virtual int LD_rrIY_mn(MP) { return ldi16(&cIY, mn()); }
   virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
   // 0 e0 - 0 ef
+  virtual int instruction_e0(MP) { sd_x(); return exec_inst_page(0x200); }
+  virtual int instruction_e1(MP) { sd_vw(); return exec_inst_page(0x200); }
+  virtual int instruction_e2(MP) { sd_de(); return exec_inst_page(0x200); }
+  virtual int instruction_e3(MP) { sd_hl(); return exec_inst_page(0x200); }
+  virtual int instruction_e4(MP) { sd_ix(); return exec_inst_page(0x200); }
+  virtual int instruction_e5(MP) { sd_iy(); return exec_inst_page(0x200); }
+  virtual int instruction_e6(MP) { sd_Psp(); return exec_inst_page(0x200); }
+  virtual int instruction_e7(MP) { sd_spM(); return exec_inst_page(0x200); }
   virtual int instruction_e8(MP) { sda=0; return exec_inst_page(0x100); }
   virtual int instruction_e9(MP) { sda=1; return exec_inst_page(0x100); }
   virtual int instruction_ea(MP) { sda=2; return exec_inst_page(0x100); }

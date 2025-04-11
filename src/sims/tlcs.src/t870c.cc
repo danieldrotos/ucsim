@@ -425,12 +425,12 @@ cl_t870c::sd_x(void)
   return sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
 
-void
+class cl_cell8 *
 cl_t870c::sd_vw(void)
 {
   sda= fetch();
   sda+= (fetch()*256);
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  return sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
 
 void
@@ -568,6 +568,19 @@ cl_t870c::xch8_rr(class cl_cell8 *a, class cl_cell8 *b)
   b->W(a->get());
   a->W(t);
   cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::xch8_rm(class cl_cell8 *a, class cl_cell8 *b)
+{
+  rF&= ~MZF;
+  u8_t t= b->read();
+  if (!t) rF|= MZF;
+  b->W(a->get());
+  a->W(t);
+  cF.W(rF|MJF);
+  RDWR;
   return resGO;
 }
 
