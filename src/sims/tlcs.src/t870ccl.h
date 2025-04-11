@@ -176,7 +176,6 @@ public:
   virtual int LD_A_mhl(MP) { return ld8(&cA, sd_hl()); }
   virtual int LD_mx_A(MP) { return st8(sd_x(), rA); }
   virtual int LD_mhl_A(MP) { return st8(sd_hl(), rA); }
-  
   // 0 10 - 0 1f
   virtual int LD_A_rA(MP) { return ldi8(&cA, rA); }
   virtual int LD_A_rW(MP) { return ldi8(&cA, rW); }
@@ -194,6 +193,9 @@ public:
   virtual int LD_rD_n(MP) { return ldi8nz(&cD, fetch()); }
   virtual int LD_rL_n(MP) { return ldi8nz(&cL, fetch()); }
   virtual int LD_rH_n(MP) { return ldi8nz(&cH, fetch()); }
+  // 0 30 - 0 3f
+  virtual int LD_SP_Pd(MP);
+  virtual int LD_SP_Md(MP);
   // 0 40 - 0 4f
   virtual int LD_rA_A(MP) { return ldi8(&cA, rA); }
   virtual int LD_rW_A(MP) { return ldi8(&cW, rA); }

@@ -32,6 +32,10 @@
 #define LD_rL_n                 instruction_1e
 #define LD_rH_n                 instruction_1f
 
+// 0 30 - 0 3f
+#define LD_SP_Pd                instruction_37
+#define LD_SP_Md                instruction_3f
+
 // 0 40 - 0 4f
 #define LD_rA_A                 instruction_40
 #define LD_rW_A                 instruction_41
