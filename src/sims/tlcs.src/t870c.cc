@@ -634,6 +634,22 @@ cl_t870c::SWAP_g(MP)
   return resGO;
 }
 
+int
+cl_t870c::LD_SP_Pd(MP)
+{
+  cSP.W(rSP+fetch());
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::LD_SP_Md(MP)
+{
+  cSP.W(rSP-fetch());
+  cF.W(rF|MJF);
+  return resGO;
+}
+
 
 /**************************************************************************/
 
