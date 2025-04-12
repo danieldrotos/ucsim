@@ -391,21 +391,60 @@ cl_t870c::inst_length(t_addr addr)
 int
 cl_t870c::exec_inst(void)
 {
-  is_dst= false;
   return exec_inst_uctab();
 }
 
 /*
- * Two byte opcode dispacher for memory prefixes
+ * Two byte opcode dispachers for reg/memory prefixes
  */
 
 int
-cl_t870c::exec_inst_page(int page)
+cl_t870c::exec1(void)
 {
   int res= resGO;
   // prefix info fetched already
   t_mem code2= fetch();
-  int page_code= code2|page;
+  int page_code= code2|0x100;
+  if (uc_itab[page_code] == NULL)
+    {
+      PC= instPC;
+      return resNOT_DONE;
+    }
+  tickt(page_code);
+  res= (this->*uc_itab[page_code])(code2);
+  if (res == resNOT_DONE)
+    PC= instPC;
+  return res;
+}
+
+int
+cl_t870c::execS(void)
+{
+  int res= resGO;
+  // prefix info fetched already
+  t_mem code2= fetch();
+  int page_code= code2|0x200;
+  is_dst= false;
+  if (uc_itab[page_code] == NULL)
+    {
+      PC= instPC;
+      return resNOT_DONE;
+    }
+  tickt(page_code);
+  res= (this->*uc_itab[page_code])(code2);
+  if (res == resNOT_DONE)
+    PC= instPC;
+  return res;
+}
+
+int
+cl_t870c::execD(void)
+{
+  int res= resGO;
+  // prefix info fetched already
+  t_mem code2= fetch();
+  int page_code= code2|0x200;
+  is_dst= true;
   if (uc_itab[page_code] == NULL)
     {
       PC= instPC;
