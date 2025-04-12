@@ -285,6 +285,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   t_mem code0, code1, code2, code3, code4;
   int i;
   bool first;
+  u16_t u16;
   
   code= code0= rom->get(addr);
   code1= rom->get(addr+1);
@@ -332,8 +333,15 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="n_1")    work.appendf("0x%02x", code1);
 	  else if (fmt=="n_2")    work.appendf("0x%02x", code2);
 	  else if (fmt=="mn_1")   work.appendf("0x%04x", code1+code2*256);
-	  else if (fmt=="mn_2")  work.appendf("0x%04x", code2+code3*256);
-	  else if (fmt=="mn_3")  work.appendf("0x%04x", code3+code4*256);
+	  else if (fmt=="mn_2")   work.appendf("0x%04x", code2+code3*256);
+	  else if (fmt=="mn_3")   work.appendf("0x%04x", code3+code4*256);
+	  else if (fmt=="vw")
+	    {
+	      work.appendf("0x%04x", u16= code1+code2*256);
+	      if (comment)
+		comment->appendf("; %02x %02x",
+				 asd->read(u16), asd->read(u16+1));
+	    }
 	  continue;
 	}
       if (b[i] == '%')
@@ -598,6 +606,13 @@ cl_t870c::st8(MCELL *dst, u8_t n)
 }
 
 int
+cl_t870c::dst8(MCELL *dst, u8_t n)
+{
+  if (!is_dst) return resINV;
+  return st8(dst, n);
+}
+
+int
 cl_t870c::st16(t_addr addr, u16_t n)
 {
   asd->write(addr, n);
@@ -605,6 +620,13 @@ cl_t870c::st16(t_addr addr, u16_t n)
   WR2;
   cF.W(rF|MJF);
   return resGO;
+}
+
+int
+cl_t870c::dst16(t_addr addr, u16_t n)
+{
+  if (!is_dst) return resINV;
+  return st16(addr, n);
 }
 
 int

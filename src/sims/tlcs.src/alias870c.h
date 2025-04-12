@@ -3,7 +3,6 @@
 #define CLR_CF 			instruction_04
 #define SET_CF 			instruction_05
 #define CPL_CF 			instruction_06
-
 #define LDW_mx_mn               instruction_08
 #define LDW_mhl_mn              instruction_09
 #define LD_mx_n                 instruction_0a
@@ -12,7 +11,6 @@
 #define LD_A_mhl                instruction_0d
 #define LD_mx_A                 instruction_0e
 #define LD_mhl_A                instruction_0f
-
 
 // 0 10 - 0 1f
 #define LD_A_rA                 instruction_10
@@ -97,3 +95,13 @@
 
 // 1 f0 - 1 ff
 #define SWAP_g                  instruction_1ff
+
+// 2 70 - 2 7f
+#define LD_dst_rA               instruction_278
+#define LD_dst_rW               instruction_279
+#define LD_dst_rC               instruction_27a
+#define LD_dst_rB               instruction_27b
+#define LD_dst_rE               instruction_27c
+#define LD_dst_rD               instruction_27d
+#define LD_dst_rL               instruction_27e
+#define LD_dst_rH               instruction_27f

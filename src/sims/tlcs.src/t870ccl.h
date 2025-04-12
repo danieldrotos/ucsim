@@ -163,7 +163,9 @@ public:
   virtual int ld16(C16 *reg, u16_t addr);
   virtual int ldi16(C16 *reg, u16_t n);
   virtual int st8(MCELL *dst, u8_t n);
+  virtual int dst8(MCELL *dst, u8_t n);
   virtual int st16(t_addr addr, u16_t n);
+  virtual int dst16(t_addr addr, u16_t n);
   virtual int xch8_rr(C8 *a, C8 *b);
   virtual int xch8_rm(C8 *a, C8 *b);
   virtual int xch16_rr(C16 *a, C16 *b);
@@ -292,6 +294,15 @@ public:
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 f0 - 1 ff
   virtual int SWAP_g(MP);
+  // 2 70 - 2 7f
+  virtual int LD_dst_rA(MP) { return dst8(sdc, rA); }
+  virtual int LD_dst_rW(MP) { return dst8(sdc, rW); }
+  virtual int LD_dst_rC(MP) { return dst8(sdc, rC); }
+  virtual int LD_dst_rB(MP) { return dst8(sdc, rB); }
+  virtual int LD_dst_rE(MP) { return dst8(sdc, rE); }
+  virtual int LD_dst_rD(MP) { return dst8(sdc, rD); }
+  virtual int LD_dst_rL(MP) { return dst8(sdc, rL); }
+  virtual int LD_dst_rH(MP) { return dst8(sdc, rH); }
 };
 
 
