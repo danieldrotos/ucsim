@@ -458,19 +458,19 @@ cl_t870c::execD(void)
 }
 
 
-class cl_cell8 *
+C8 *
 cl_t870c::sd_x(void)
 {
   sda= fetch();
-  return sdc= (class cl_cell8 *)asd->get_cell(sda);
+  return sdc= (C8 *)asd->get_cell(sda);
 }
 
-class cl_cell8 *
+C8 *
 cl_t870c::sd_vw(void)
 {
   sda= fetch();
   sda+= (fetch()*256);
-  return sdc= (class cl_cell8 *)asd->get_cell(sda);
+  return sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
@@ -478,7 +478,7 @@ cl_t870c::sd_ixd(void)
 {
   i8_t d= fetch();
   sda= rIX+d;
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
@@ -486,7 +486,7 @@ cl_t870c::sd_iyd(void)
 {
   i8_t d= fetch();
   sda= rIY+d;
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
@@ -494,7 +494,7 @@ cl_t870c::sd_spd(void)
 {
   i8_t d= fetch();
   sda= rSP+d;
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
@@ -502,7 +502,7 @@ cl_t870c::sd_hld(void)
 {
   i8_t d= fetch();
   sda= rHL+d;
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
@@ -510,21 +510,21 @@ cl_t870c::sd_hlc(void)
 {
   i8_t d= rC;
   sda= rHL+d;
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
 cl_t870c::sd_pca(void)
 {
   sda= (PC+(i8_t)rA) & PCmask;
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
 cl_t870c::sd_Psp(void)
 {
   cSP.W(sda= rSP+1);
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 void
@@ -532,7 +532,7 @@ cl_t870c::sd_spM(void)
 {
   sda= rSP;
   cSP.W(rSP-1);
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  sdc= (C8 *)asd->get_cell(sda);
 }
 
 u16_t
@@ -545,14 +545,14 @@ cl_t870c::mn(void)
 
 
 int
-cl_t870c::ld8(class cl_cell8 *reg, class cl_memory_cell *src)
+cl_t870c::ld8(C8 *reg, MCELL *src)
 {
   RD;
   return ldi8(reg, src->R());
 }
 
 int
-cl_t870c::ldi8(class cl_cell8 *reg, u8_t n)
+cl_t870c::ldi8(C8 *reg, u8_t n)
 {
   reg->W(n);
   rF&= ~MZF;
@@ -562,7 +562,7 @@ cl_t870c::ldi8(class cl_cell8 *reg, u8_t n)
 }
 
 int
-cl_t870c::ldi8nz(class cl_cell8 *reg, u8_t n)
+cl_t870c::ldi8nz(C8 *reg, u8_t n)
 {
   reg->W(n);
   cF.W(rF|MJF);
@@ -570,7 +570,7 @@ cl_t870c::ldi8nz(class cl_cell8 *reg, u8_t n)
 }
 
 int
-cl_t870c::ld16(class cl_cell16 *reg, u16_t addr)
+cl_t870c::ld16(C16 *reg, u16_t addr)
 {
   u16_t n;
   n= asd->read(addr) + asd->read(addr+1)*256;
@@ -581,7 +581,7 @@ cl_t870c::ld16(class cl_cell16 *reg, u16_t addr)
 }
 
 int
-cl_t870c::ldi16(class cl_cell16 *reg, u16_t n)
+cl_t870c::ldi16(C16 *reg, u16_t n)
 {
   reg->W(n);
   cF.W(rF|MJF);
@@ -589,7 +589,7 @@ cl_t870c::ldi16(class cl_cell16 *reg, u16_t n)
 }
 
 int
-cl_t870c::st8(class cl_memory_cell *dst, u8_t n)
+cl_t870c::st8(MCELL *dst, u8_t n)
 {
   dst->W(n);
   WR;
@@ -608,7 +608,7 @@ cl_t870c::st16(t_addr addr, u16_t n)
 }
 
 int
-cl_t870c::xch8_rr(class cl_cell8 *a, class cl_cell8 *b)
+cl_t870c::xch8_rr(C8 *a, C8 *b)
 {
   rF&= ~MZF;
   u8_t t= b->get();
@@ -620,7 +620,7 @@ cl_t870c::xch8_rr(class cl_cell8 *a, class cl_cell8 *b)
 }
 
 int
-cl_t870c::xch8_rm(class cl_cell8 *a, class cl_cell8 *b)
+cl_t870c::xch8_rm(C8 *a, C8 *b)
 {
   rF&= ~MZF;
   u8_t t= b->read();
@@ -633,7 +633,7 @@ cl_t870c::xch8_rm(class cl_cell8 *a, class cl_cell8 *b)
 }
 
 int
-cl_t870c::xch16_rr(class cl_cell16 *a, class cl_cell16 *b)
+cl_t870c::xch16_rr(C16 *a, C16 *b)
 {
   u16_t t= b->get();
   b->W(a->get());
