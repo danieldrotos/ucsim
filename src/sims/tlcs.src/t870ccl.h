@@ -131,7 +131,9 @@ public:
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int longest_inst(void) { return 5; }
   virtual int inst_length(t_addr addr);
-
+  virtual u16_t aof_dstF(u32_t code32);
+  virtual u16_t aof_dst5(u32_t code32);
+  
   virtual int exec_inst(void);
   virtual int exec1(void);
   virtual int execS(void);
