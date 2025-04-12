@@ -391,6 +391,7 @@ cl_t870c::inst_length(t_addr addr)
 int
 cl_t870c::exec_inst(void)
 {
+  is_dst= false;
   return exec_inst_uctab();
 }
 
@@ -461,6 +462,14 @@ void
 cl_t870c::sd_hld(void)
 {
   i8_t d= fetch();
+  sda= rHL+d;
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_hlc(void)
+{
+  i8_t d= rC;
   sda= rHL+d;
   sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
