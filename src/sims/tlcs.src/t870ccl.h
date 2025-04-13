@@ -296,6 +296,14 @@ public:
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 f0 - 1 ff
   virtual int SWAP_g(MP);
+  // 2 60 - 2 6f
+  virtual int LD_dst_rrWA(MP) { return dst16(sda, rWA); }
+  virtual int LD_dst_rrBC(MP) { return dst16(sda, rBC); }
+  virtual int LD_dst_rrDE(MP) { return dst16(sda, rDE); }
+  virtual int LD_dst_rrHL(MP) { return dst16(sda, rHL); }
+  virtual int LD_dst_rrIX(MP) { return dst16(sda, rIX); }
+  virtual int LD_dst_rrIY(MP) { return dst16(sda, rIY); }
+  virtual int LD_dst_rrSP(MP) { return dst16(sda, rSP); }
   // 2 70 - 2 7f
   virtual int LD_dst_rA(MP) { return dst8(sdc, rA); }
   virtual int LD_dst_rW(MP) { return dst8(sdc, rW); }
