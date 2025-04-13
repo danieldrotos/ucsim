@@ -313,6 +313,8 @@ public:
   virtual int LD_dst_rD(MP) { return dst8(sdc, rD); }
   virtual int LD_dst_rL(MP) { return dst8(sdc, rL); }
   virtual int LD_dst_rH(MP) { return dst8(sdc, rH); }
+  // 2 f0 - 2 ff
+  virtual int LD_dst_n(MP) { return dst8(sdc, fetch()); }
 };
 
 
