@@ -406,6 +406,16 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 				   asd->read(a), asd->read(a+1));
 		}
 	    }
+	  else if (fmt=="src4")
+	    {
+	      work.appendf("PC+A");
+	      if (comment)
+		{
+		  u16_t a= (i8_t)rA + addr + 2;
+		  comment->appendf("; %02x %02x",
+				   asd->read(a), asd->read(a+1));
+		}
+	    }
 	  continue;
 	}
       if (b[i] == '%')
