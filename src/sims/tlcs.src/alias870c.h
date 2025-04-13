@@ -96,6 +96,16 @@
 // 1 f0 - 1 ff
 #define SWAP_g                  instruction_1ff
 
+// 2 40 - 2 4f
+#define LD_rA_src               instruction_240
+#define LD_rW_src               instruction_241
+#define LD_rC_src               instruction_242
+#define LD_rB_src               instruction_243
+#define LD_rE_src               instruction_244
+#define LD_rD_src               instruction_245
+#define LD_rL_src               instruction_246
+#define LD_rH_src               instruction_247
+
 // 2 60 - 2 6f
 #define LD_dst_rrWA             instruction_268
 #define LD_dst_rrBC             instruction_269
