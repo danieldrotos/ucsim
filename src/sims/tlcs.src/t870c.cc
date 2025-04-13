@@ -338,6 +338,8 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="rr_3.0") work.append(rr_names[code3&7]);
 	  else if (fmt=="n_1")    work.appendf("0x%02x", code1);
 	  else if (fmt=="n_2")    work.appendf("0x%02x", code2);
+	  else if (fmt=="n_3")    work.appendf("0x%02x", code3);
+	  else if (fmt=="n_4")    work.appendf("0x%02x", code4);
 	  else if (fmt=="mn_1")   work.appendf("0x%04x", code1+code2*256);
 	  else if (fmt=="mn_2")   work.appendf("0x%04x", code2+code3*256);
 	  else if (fmt=="mn_3")   work.appendf("0x%04x", code3+code4*256);

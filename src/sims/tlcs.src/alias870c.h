@@ -114,3 +114,6 @@
 #define LD_dst_rD               instruction_27d
 #define LD_dst_rL               instruction_27e
 #define LD_dst_rH               instruction_27f
+
+// 2 f0 - 2 ff
+#define LD_dst_n                instruction_2f9
