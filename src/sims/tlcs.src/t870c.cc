@@ -893,7 +893,7 @@ cl_t870c::st1m(C8 *dst, u8_t bitnr)
   if (rF&MCF)
     v|= m;
   else
-    v|= ~m;
+    v&= ~m;
   dst->W(v);
   WR;
   return resGO;
