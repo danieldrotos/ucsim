@@ -35,6 +35,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "t870ccl.h"
 
 
+// bit nr to bit mask converter
+u8_t bit_mask[8]= { 1, 2, 4, 8, 16, 32, 64, 128 };
+
+
 cl_t870c_psw_op::cl_t870c_psw_op(class cl_memory_cell *acell, class cl_t870c *auc):
   cl_memory_operator(acell)
 {
@@ -832,6 +836,17 @@ cl_t870c::xch16_rr(C16 *a, C16 *b)
   b->W(a->get());
   a->W(t);
   cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::ld1(MCELL *src, u8_t bitnr)
+{
+  rF&= ~(MCF|MJF);
+  if (src->read() & bit_mask[bitnr])
+    cF.W(rF|MCF);
+  else
+    cF.W(rF|MJF);
   return resGO;
 }
 
