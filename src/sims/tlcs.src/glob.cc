@@ -669,6 +669,8 @@ struct dis_entry disass_t870c[]=
     { 0x0000004e, 0x000000ff, ' ', 3, "LD SP,'mn_1'" },
 
     { 0x00000058, 0x000000f8, ' ', 2, "LD CF,(%x).%b" },
+
+    { 0x000000c0, 0x000000f8, ' ', 2, "SET (%x).%b" },
     
     // one byte invalids
     { 0x00000001, 0x000000ff, ' ', 1, "INVALID" },

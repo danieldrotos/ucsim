@@ -61,6 +61,16 @@
 #define LD_CF_mx_6              instruction_5e
 #define LD_CF_mx_7              instruction_5f
 
+// 0 c0 - 0 cf
+#define SET_mx_0                instruction_c0
+#define SET_mx_1                instruction_c1
+#define SET_mx_2                instruction_c2
+#define SET_mx_3                instruction_c3
+#define SET_mx_4                instruction_c4
+#define SET_mx_5                instruction_c5
+#define SET_mx_6                instruction_c6
+#define SET_mx_7                instruction_c7
+
 // 0 e0 - 0 ef
 
 // 0 f0 - 0 ff
