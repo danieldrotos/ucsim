@@ -440,9 +440,12 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		u16_t x= rom->get(addr+1);
 		work.appendf("0x%02x", x);
 		if (comment)
-		  comment->appendf("; %02x %02x",
-				   asd->read(x), asd->read(x+1));
+		  comment->appendf("; [%04x] %02x %02x",
+				   x, asd->read(x), asd->read(x+1));
 	      }
+	      break;
+	    case 'b':
+	      work.appendf("%d", code0&7);
 	      break;
 	    default:
 	      temp= "?";

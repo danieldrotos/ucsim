@@ -51,6 +51,16 @@
 #define LD_rrIY_mn              instruction_4d
 #define LD_rrSP_mn              instruction_4e
 
+// 0 50 - 0 5f
+#define LD_CF_mx_0              instruction_58
+#define LD_CF_mx_1              instruction_59
+#define LD_CF_mx_2              instruction_5a
+#define LD_CF_mx_3              instruction_5b
+#define LD_CF_mx_4              instruction_5c
+#define LD_CF_mx_5              instruction_5d
+#define LD_CF_mx_6              instruction_5e
+#define LD_CF_mx_7              instruction_5f
+
 // 0 e0 - 0 ef
 
 // 0 f0 - 0 ff
