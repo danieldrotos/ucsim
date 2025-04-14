@@ -869,6 +869,35 @@ cl_t870c::ld1m(C8 *src, u8_t bitnr)
   return resGO;
 }
 
+int
+cl_t870c::st1r(C8 *dst, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= dst->get();
+  if (rF&MCF)
+    v|= m;
+  else
+    v&= ~m;
+  dst->W(v);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::st1m(C8 *dst, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= dst->read();
+  RD;
+  cF.W(rF|MJF);
+  if (rF&MCF)
+    v|= m;
+  else
+    v|= ~m;
+  dst->W(v);
+  WR;
+  return resGO;
+}
 
 int
 cl_t870c::CLR_CF(MP)
