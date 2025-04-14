@@ -175,6 +175,8 @@ public:
   virtual int xch16_rr(C16 *a, C16 *b);
   virtual int ld1m(C8 *src, u8_t bitnr);
   virtual int ld1r(C8 *src, u8_t bitnr);
+  virtual int st1m(C8 *dst, u8_t bitnr);
+  virtual int st1r(C8 *dst, u8_t bitnr);
 #include "alias870c.h"
   // 0 00 - 0 00
   virtual int NOP(MP) { return resGO; }
