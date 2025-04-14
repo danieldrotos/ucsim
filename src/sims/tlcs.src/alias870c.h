@@ -83,6 +83,16 @@
 #define LD_rrIY_gg              instruction_14d
 #define LD_rrSP_gg              instruction_14e
 
+// 1 50 - 1 5f
+#define LD_CF_g_0               instruction_158
+#define LD_CF_g_1               instruction_159
+#define LD_CF_g_2               instruction_15a
+#define LD_CF_g_3               instruction_15b
+#define LD_CF_g_4               instruction_15c
+#define LD_CF_g_5               instruction_15d
+#define LD_CF_g_6               instruction_15e
+#define LD_CF_g_7               instruction_15f
+
 // 1 70 - 1 7f
 #define XCH_rA_g                instruction_170
 #define XCH_rW_g                instruction_171
