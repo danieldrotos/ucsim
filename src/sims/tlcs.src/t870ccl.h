@@ -316,6 +316,15 @@ public:
   virtual int XCH_rrSP_g(MP) { return xch16_rr(&cSP, regs16[sda]); }
   // 1 d0 - 1 df
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
+  // 1 e0 - 1 ef
+  virtual int LD_g_0_CF(MP) { return st1r(regs8[sda], 0); }
+  virtual int LD_g_1_CF(MP) { return st1r(regs8[sda], 1); }
+  virtual int LD_g_2_CF(MP) { return st1r(regs8[sda], 2); }
+  virtual int LD_g_3_CF(MP) { return st1r(regs8[sda], 3); }
+  virtual int LD_g_4_CF(MP) { return st1r(regs8[sda], 4); }
+  virtual int LD_g_5_CF(MP) { return st1r(regs8[sda], 5); }
+  virtual int LD_g_6_CF(MP) { return st1r(regs8[sda], 6); }
+  virtual int LD_g_7_CF(MP) { return st1r(regs8[sda], 7); }
   // 1 f0 - 1 ff
   virtual int SWAP_g(MP);
   // 2 40 - 2 4f
