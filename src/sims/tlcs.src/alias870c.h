@@ -113,6 +113,16 @@
 // 1 d0 - 1 df
 #define LD_PSW_n		instruction_1de
 
+// 1 e0 - 1 ef
+#define LD_g_0_CF               instruction_1e8
+#define LD_g_1_CF               instruction_1e9
+#define LD_g_2_CF               instruction_1ea
+#define LD_g_3_CF               instruction_1eb
+#define LD_g_4_CF               instruction_1ec
+#define LD_g_5_CF               instruction_1ed
+#define LD_g_6_CF               instruction_1ee
+#define LD_g_7_CF               instruction_1ef
+
 // 1 f0 - 1 ff
 #define SWAP_g                  instruction_1ff
 
