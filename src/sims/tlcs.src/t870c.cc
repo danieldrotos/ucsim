@@ -847,13 +847,25 @@ cl_t870c::xch16_rr(C16 *a, C16 *b)
 }
 
 int
-cl_t870c::ld1(MCELL *src, u8_t bitnr)
+cl_t870c::ld1r(C8 *src, u8_t bitnr)
+{
+  rF&= ~(MCF|MJF);
+  if (src->get() & bit_mask[bitnr])
+    cF.W(rF|MCF);
+  else
+    cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::ld1m(C8 *src, u8_t bitnr)
 {
   rF&= ~(MCF|MJF);
   if (src->read() & bit_mask[bitnr])
     cF.W(rF|MCF);
   else
     cF.W(rF|MJF);
+  RD;
   return resGO;
 }
 
