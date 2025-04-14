@@ -170,5 +170,15 @@
 #define LD_dst_rL               instruction_27e
 #define LD_dst_rH               instruction_27f
 
+// 2 e0 - 2 ef
+#define LD_src_0_CF             instruction_2e8
+#define LD_src_1_CF             instruction_2e9
+#define LD_src_2_CF             instruction_2ea
+#define LD_src_3_CF             instruction_2eb
+#define LD_src_4_CF             instruction_2ec
+#define LD_src_5_CF             instruction_2ed
+#define LD_src_6_CF             instruction_2ee
+#define LD_src_7_CF             instruction_2ef
+
 // 2 f0 - 2 ff
 #define LD_dst_n                instruction_2f9
