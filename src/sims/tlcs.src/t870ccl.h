@@ -246,6 +246,15 @@ public:
   virtual int LD_CF_mx_5(MP) { sd_x(); return ld1m(sdc, 5); }
   virtual int LD_CF_mx_6(MP) { sd_x(); return ld1m(sdc, 6); }
   virtual int LD_CF_mx_7(MP) { sd_x(); return ld1m(sdc, 7); }
+  // 0 c0 - 0 cf
+  virtual int SET_mx_0(MP) { sd_x(); return setm(sdc, 0); }
+  virtual int SET_mx_1(MP) { sd_x(); return setm(sdc, 1); }
+  virtual int SET_mx_2(MP) { sd_x(); return setm(sdc, 2); }
+  virtual int SET_mx_3(MP) { sd_x(); return setm(sdc, 3); }
+  virtual int SET_mx_4(MP) { sd_x(); return setm(sdc, 4); }
+  virtual int SET_mx_5(MP) { sd_x(); return setm(sdc, 5); }
+  virtual int SET_mx_6(MP) { sd_x(); return setm(sdc, 6); }
+  virtual int SET_mx_7(MP) { sd_x(); return setm(sdc, 7); }
   // 0 d0 - 0 df
   virtual int instruction_d4(MP) { sd_ixd(); return execS(); }
   virtual int instruction_d5(MP) { sd_iyd(); return execS(); }
