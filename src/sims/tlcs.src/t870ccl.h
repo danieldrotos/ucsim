@@ -85,6 +85,8 @@ enum flag_mask_t {
   MRBS= (0x02)
 };
 
+// bit nr to bit mask converter
+extern u8_t bit_mask[8];
 
 class cl_t870c;
 
@@ -171,6 +173,7 @@ public:
   virtual int xch8_rr(C8 *a, C8 *b);
   virtual int xch8_rm(C8 *a, C8 *b);
   virtual int xch16_rr(C16 *a, C16 *b);
+  virtual int ld1(MCELL *src, u8_t bitnr);
   
 #include "alias870c.h"
   // 0 00 - 0 00
