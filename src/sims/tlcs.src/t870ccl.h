@@ -368,6 +368,15 @@ public:
   virtual int LD_dst_rD(MP) { return st8(sdc, rD); }
   virtual int LD_dst_rL(MP) { return st8(sdc, rL); }
   virtual int LD_dst_rH(MP) { return st8(sdc, rH); }
+  // 2 e0 - 2 ef
+  virtual int LD_src_0_CF(MP) { return st1m(sdc, 0); }
+  virtual int LD_src_1_CF(MP) { return st1m(sdc, 1); }
+  virtual int LD_src_2_CF(MP) { return st1m(sdc, 2); }
+  virtual int LD_src_3_CF(MP) { return st1m(sdc, 3); }
+  virtual int LD_src_4_CF(MP) { return st1m(sdc, 4); }
+  virtual int LD_src_5_CF(MP) { return st1m(sdc, 5); }
+  virtual int LD_src_6_CF(MP) { return st1m(sdc, 6); }
+  virtual int LD_src_7_CF(MP) { return st1m(sdc, 7); }
   // 2 f0 - 2 ff
   virtual int LD_dst_n(MP) { return st8(sdc, fetch()); }
 };

@@ -617,6 +617,12 @@ struct dis_entry disass_t870c[]=
     { 0x007000d4, 0x00f800fc, ' ', 3, "XCH 'r_2.0',('srcD')" },
     { 0x0000704f, 0x0000f8ff, ' ', 2, "XCH 'r_1.0',('src4')" },
 
+    { 0x00e800e0, 0x00f800ff, ' ', 3, "LD (%x).'b_2.0',CF" },
+    { 0xe80000e1, 0xf80000ff, ' ', 4, "LD ('vw').'b_3.0',CF" },
+    { 0x0000e8e0, 0x0000f8f8, ' ', 2, "LD ('srcE').'b_1.0',CF" },
+    { 0x00e800d4, 0x00f800fc, ' ', 3, "LD ('srcD').'b_2.0',CF" },
+    { 0x0000e84f, 0x0000f8ff, ' ', 2, "LD ('src4').'b_1.0',CF" },
+
     // dst prefixes, code page 0x200
     { 0x006800f0, 0x00f800ff, ' ', 3, "LD (%x),'rr_2.0'" },
     { 0x680000f1, 0xf80000ff, ' ', 4, "LD ('vw'),'rr_3.0'" },
