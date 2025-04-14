@@ -371,7 +371,11 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	      i8_t d= code1;
 	      work.appendf("%s", dst5[code0&3]);
 	      if (d<0)
-		work.appendf("-%02x", code1);
+		{
+		  d= -d;
+		  code1= d;
+		  work.appendf("-%02x", code1);
+		}
 	      else
 		work.appendf("+%02x", code1);
 	      if (comment)
