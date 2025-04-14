@@ -905,9 +905,9 @@ cl_t870c::setr(C8 *reg, u8_t bitnr)
   u8_t m= bit_mask[bitnr];
   u8_t v= reg->get();
   if (v&m)
-    rF&= ~(MJF|MCF);
+    rF&= ~(MJF|MZF);
   else
-    rF|= (MJF|MCF);
+    rF|= (MJF|MZF);
   reg->W(v | m);
   cF.W(rF);
   return resGO;
@@ -920,9 +920,9 @@ cl_t870c::setm(C8 *reg, u8_t bitnr)
   u8_t v= reg->read();
   RD;
   if (v&m)
-    rF&= ~(MJF|MCF);
+    rF&= ~(MJF|MZF);
   else
-    rF|= (MJF|MCF);
+    rF|= (MJF|MZF);
   reg->W(v | m);
   WR;
   cF.W(rF);
@@ -935,9 +935,9 @@ cl_t870c::clrr(C8 *reg, u8_t bitnr)
   u8_t m= bit_mask[bitnr];
   u8_t v= reg->get();
   if (v&m)
-    rF&= ~(MJF|MCF);
+    rF&= ~(MJF|MZF);
   else
-    rF|= (MJF|MCF);
+    rF|= (MJF|MZF);
   reg->W(v & ~m);
   cF.W(rF);
   return resGO;
@@ -950,14 +950,15 @@ cl_t870c::clrm(C8 *reg, u8_t bitnr)
   u8_t v= reg->read();
   RD;
   if (v&m)
-    rF&= ~(MJF|MCF);
+    rF&= ~(MJF|MZF);
   else
-    rF|= (MJF|MCF);
+    rF|= (MJF|MZF);
   reg->W(v & ~m);
   WR;
   cF.W(rF);
   return resGO;
 }
+
 
 int
 cl_t870c::CLR_CF(MP)

@@ -128,6 +128,24 @@
 #define XCH_rrIY_gg             instruction_17d
 #define XCH_rrSP_gg             instruction_17e
 
+// 1 c0 - 1 cf
+#define SET_g_0                 instruction_1c0
+#define SET_g_1                 instruction_1c1
+#define SET_g_2                 instruction_1c2
+#define SET_g_3                 instruction_1c3
+#define SET_g_4                 instruction_1c4
+#define SET_g_5                 instruction_1c5
+#define SET_g_6                 instruction_1c6
+#define SET_g_7                 instruction_1c7
+#define CLR_g_0                 instruction_1c8
+#define CLR_g_1                 instruction_1c9
+#define CLR_g_2                 instruction_1ca
+#define CLR_g_3                 instruction_1cb
+#define CLR_g_4                 instruction_1cc
+#define CLR_g_5                 instruction_1cd
+#define CLR_g_6                 instruction_1ce
+#define CLR_g_7                 instruction_1cf
+
 // 1 d0 - 1 df
 #define LD_PSW_n		instruction_1de
 
