@@ -791,13 +791,6 @@ cl_t870c::st8(MCELL *dst, u8_t n)
 }
 
 int
-cl_t870c::dst8(MCELL *dst, u8_t n)
-{
-  if (!is_dst) return resINV;
-  return st8(dst, n);
-}
-
-int
 cl_t870c::st16(t_addr addr, u16_t n)
 {
   asd->write(addr, n);
@@ -805,13 +798,6 @@ cl_t870c::st16(t_addr addr, u16_t n)
   WR2;
   cF.W(rF|MJF);
   return resGO;
-}
-
-int
-cl_t870c::dst16(t_addr addr, u16_t n)
-{
-  if (!is_dst) return resINV;
-  return st16(addr, n);
 }
 
 int
