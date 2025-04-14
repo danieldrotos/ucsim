@@ -488,6 +488,7 @@ struct dis_entry disass_tlcs[]= {
 struct dis_entry disass_t870c[]=
   {
     // code mask branch length mn iscall ticks info
+    // reg prefixes
     { 0x00004fe8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
     { 0x00007fe8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
     { 0x0000dfe8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
@@ -495,6 +496,7 @@ struct dis_entry disass_t870c[]=
     { 0x0000f9e8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
     { 0x0000fce8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
 
+    // dst prefixes
     { 0x004f00f0, 0x00ff00ff, ' ', 3, "INVALID dst(x)" },
     { 0x4f0000f1, 0xff0000ff, ' ', 4, "INVALID dst(vw)" },
     { 0x00004ff0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
@@ -524,6 +526,7 @@ struct dis_entry disass_t870c[]=
     { 0x0000fff0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
     { 0x00ff0054, 0x00ff00fc, ' ', 3, "INVALID dst(rp+d)" },
 
+    // src prefixes
     { 0x004f00e0, 0x00ff00ff, ' ', 3, "INVALID src(x)" },
     { 0x4f0000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)" },
     { 0x00004fe0, 0x0000fff8, ' ', 2, "INVALID src(rp)" },
@@ -580,6 +583,7 @@ struct dis_entry disass_t870c[]=
     { 0x000000f9, 0x0000ffff, ' ', 2, "LD RBS,0" },
     { 0x000002f9, 0x0000ffff, ' ', 2, "LD RBS,1" },
 
+    // reg prefixes, code page 0x100
     { 0x000040e8, 0x0000f8f8, ' ', 2, "LD 'r_1.0','r_0.0'" },
     { 0x000048e8, 0x0000f8f8, ' ', 2, "LD 'rr_1.0','rr_0.0'" },
 
@@ -590,6 +594,7 @@ struct dis_entry disass_t870c[]=
 
     { 0x0000ffe8, 0x0000fff8, ' ', 2, "SWAP 'r_0.0'" },
 
+    // dst prefixes, code page 0x200
     { 0x004000e0, 0x00f800ff, ' ', 3, "LD 'r_2.0',(%x)" },
     { 0x400000e1, 0xf80000ff, ' ', 4, "LD 'r_3.0',('vw')" },
     { 0x000040e0, 0x0000f8f8, ' ', 2, "LD 'r_1.0',('srcE')" },
@@ -601,6 +606,7 @@ struct dis_entry disass_t870c[]=
     { 0x004800d4, 0x00f800fc, ' ', 3, "LD 'rr_2.0',('srcD')" },
     { 0x0000484f, 0x0000f8ff, ' ', 2, "LD 'rr_1.0',('src4')" },
 
+    // src prefixes, code page 0x200
     { 0x006800f0, 0x00f800ff, ' ', 3, "LD (%x),'rr_2.0'" },
     { 0x680000f1, 0xf80000ff, ' ', 4, "LD ('vw'),'rr_3.0'" },
     { 0x000068f0, 0x0000f8f8, ' ', 2, "LD ('dstF'),'rr_1.0'" },
@@ -614,7 +620,8 @@ struct dis_entry disass_t870c[]=
     { 0xf90000f1, 0xff0000ff, ' ', 5, "LD ('vw'),'n_4'" },
     { 0x0000f9f0, 0x0000fff8, ' ', 3, "LD ('dstF'),'n_2'" },
     { 0x00f90054, 0x00ff00fc, ' ', 4, "LD ('dst5'),'n_3'" },
-    
+
+    // one byte opcodes
     { 0x00000000, 0x000000ff, ' ', 1, "NOP" },
     { 0x00000004, 0x000000ff, ' ', 1, "CLR CF" },
     { 0x00000005, 0x000000ff, ' ', 1, "SET CF" },
@@ -643,6 +650,7 @@ struct dis_entry disass_t870c[]=
     { 0x0000004d, 0x000000ff, ' ', 3, "LD IY,'mn_1'" },
     { 0x0000004e, 0x000000ff, ' ', 3, "LD SP,'mn_1'" },
 
+    // one byte invalids
     { 0x00000001, 0x000000ff, ' ', 1, "INVALID" },
     { 0x00000002, 0x000000ff, ' ', 1, "INVALID" },
     { 0x00000003, 0x000000ff, ' ', 1, "INVALID" },
