@@ -336,6 +336,23 @@ public:
   virtual int XCH_rrIX_g(MP) { return xch16_rr(&cIX, regs16[sda]); }
   virtual int XCH_rrIY_g(MP) { return xch16_rr(&cIY, regs16[sda]); }
   virtual int XCH_rrSP_g(MP) { return xch16_rr(&cSP, regs16[sda]); }
+  // 1 c0 - 1 cf
+  virtual int SET_g_0(MP) { return setr(regs8[sda], 0); }
+  virtual int SET_g_1(MP) { return setr(regs8[sda], 1); }
+  virtual int SET_g_2(MP) { return setr(regs8[sda], 2); }
+  virtual int SET_g_3(MP) { return setr(regs8[sda], 3); }
+  virtual int SET_g_4(MP) { return setr(regs8[sda], 4); }
+  virtual int SET_g_5(MP) { return setr(regs8[sda], 5); }
+  virtual int SET_g_6(MP) { return setr(regs8[sda], 6); }
+  virtual int SET_g_7(MP) { return setr(regs8[sda], 7); }
+  virtual int CLR_g_0(MP) { return clrr(regs8[sda], 0); }
+  virtual int CLR_g_1(MP) { return clrr(regs8[sda], 1); }
+  virtual int CLR_g_2(MP) { return clrr(regs8[sda], 2); }
+  virtual int CLR_g_3(MP) { return clrr(regs8[sda], 3); }
+  virtual int CLR_g_4(MP) { return clrr(regs8[sda], 4); }
+  virtual int CLR_g_5(MP) { return clrr(regs8[sda], 5); }
+  virtual int CLR_g_6(MP) { return clrr(regs8[sda], 6); }
+  virtual int CLR_g_7(MP) { return clrr(regs8[sda], 7); }
   // 1 d0 - 1 df
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 e0 - 1 ef
