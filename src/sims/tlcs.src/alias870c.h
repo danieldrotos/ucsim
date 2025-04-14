@@ -70,6 +70,14 @@
 #define SET_mx_5                instruction_c5
 #define SET_mx_6                instruction_c6
 #define SET_mx_7                instruction_c7
+#define CLR_mx_0                instruction_c8
+#define CLR_mx_1                instruction_c9
+#define CLR_mx_2                instruction_ca
+#define CLR_mx_3                instruction_cb
+#define CLR_mx_4                instruction_cc
+#define CLR_mx_5                instruction_cd
+#define CLR_mx_6                instruction_ce
+#define CLR_mx_7                instruction_cf
 
 // 0 e0 - 0 ef
 
