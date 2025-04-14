@@ -177,6 +177,11 @@ public:
   virtual int ld1r(C8 *src, u8_t bitnr);
   virtual int st1m(C8 *dst, u8_t bitnr);
   virtual int st1r(C8 *dst, u8_t bitnr);
+  virtual int setr(C8 *reg, u8_t bitnr);
+  virtual int setm(C8 *reg, u8_t bitnr);
+  virtual int clrr(C8 *reg, u8_t bitnr);
+  virtual int clrm(C8 *reg, u8_t bitnr);
+  
 #include "alias870c.h"
   // 0 00 - 0 00
   virtual int NOP(MP) { return resGO; }
