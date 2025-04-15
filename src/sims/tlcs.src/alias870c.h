@@ -49,7 +49,21 @@
 #define DEC_rH                  instruction_2f
 
 // 0 30 - 0 3f
+#define INC_rrWA                instruction_30
+#define INC_rrBC                instruction_31
+#define INC_rrDE                instruction_32
+#define INC_rrHL                instruction_33
+#define INC_rrIX                instruction_34
+#define INC_rrIY                instruction_35
+#define INC_rrSP                instruction_36
 #define LD_SP_Pd                instruction_37
+#define DEC_rrWA                instruction_38
+#define DEC_rrBC                instruction_39
+#define DEC_rrDE                instruction_3a
+#define DEC_rrHL                instruction_3b
+#define DEC_rrIX                instruction_3c
+#define DEC_rrIY                instruction_3d
+#define DEC_rrSP                instruction_3e
 #define LD_SP_Md                instruction_3f
 
 // 0 40 - 0 4f
