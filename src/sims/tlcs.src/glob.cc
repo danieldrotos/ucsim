@@ -644,6 +644,12 @@ struct dis_entry disass_t870c[]=
     { 0x00e800d4, 0x00f800fc, ' ', 3, "LD ('srcD').'b_2.0',CF" },
     { 0x0000e84f, 0x0000f8ff, ' ', 2, "LD ('src4').'b_1.0',CF" },
 
+    { 0x00f200e0, 0x00ff00ff, ' ', 3, "SET (%x).A" },
+    { 0xf20000e1, 0xff0000ff, ' ', 4, "SET ('vw').A" },
+    { 0x0000f2e0, 0x0000fff8, ' ', 2, "SET ('srcE').A" },
+    { 0x00f200d4, 0x00ff00fc, ' ', 3, "SET ('srcD').A" },
+    { 0x0000f24f, 0x0000ffff, ' ', 2, "SET ('src4').A" },
+
     { 0x00f300e0, 0x00ff00ff, ' ', 3, "LD (%x).A,CF" },
     { 0xf30000e1, 0xff0000ff, ' ', 4, "LD ('vw').A,CF" },
     { 0x0000f3e0, 0x0000fff8, ' ', 2, "LD ('srcE').A,CF" },
