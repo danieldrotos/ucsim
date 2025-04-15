@@ -30,6 +30,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "uccl.h"
 
+#include "glob.h"
+
 
 #ifdef WORDS_BIGENDIAN
 # define PAIR(h,l) u8_t h, l
@@ -129,8 +131,8 @@ public:
   virtual void make_cpu_hw(void);
   virtual void reset(void);
   virtual void print_regs(class cl_console_base *con);
-  virtual void u8_t *base_ticks(void) { return base_ticks_870c; }
-  virtual void u8_t *extra_ticks(void) { return extra_ticks_870c; }
+  virtual u8_t *base_ticks(void) { return base_ticks_t870c; }
+  virtual u8_t *extra_ticks(void) { return extra_ticks_t870c; }
   
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);

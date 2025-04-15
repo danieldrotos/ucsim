@@ -484,7 +484,7 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'X': /* mn in 4,5 byte */ snprintf(l,19,"0x%04x",(int)((c>>24)&0xffff)); s+= l; break;
 //	    case 'x': /* mn in 5,6 byte */ snprintf(l,19,"0x%04x",(int)((c>>32)&0xffff)); s+= l; break;
 
-u8_t base_ticks_870c[]= {
+u8_t base_ticks_t870c[]= {
   /* page 0 */
   /*0*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,  
   /*1*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,  

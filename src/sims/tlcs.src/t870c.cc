@@ -1194,12 +1194,12 @@ cl_t870c::dec16m(C16 *src)
 int
 cl_t870c::jrst(u8_t code)
 {
-  i16_t v= code&0x1f;
-  if (code & 0x10)
+  i16_t v= code & 0x1f;
+  if (v & 0x10)
     v|= 0xffe0;
   if (rF & MJF)
     {
-      PC= (PC+2+a) & PCmask;
+      PC= (PC+2+v) & PCmask;
       tick(extra_ticks()[page|code]);
     }
   return resGO;
@@ -1208,12 +1208,12 @@ cl_t870c::jrst(u8_t code)
 int
 cl_t870c::jrsf(u8_t code)
 {
-  i16_t v= a;
-  if (a & 0x10)
+  i16_t v= code & 0x1f;
+  if (v & 0x10)
     v|= 0xffe0;
   if (!(rF & MJF))
     {
-      PC= (PC+2+a) & PCmask;
+      PC= (PC+2+v) & PCmask;
       tick(extra_ticks()[page|code]);
     }
   return resGO;
