@@ -385,6 +385,15 @@ public:
   virtual int LD_rrIX_src(MP) { return ld16(&cIX, sda); }
   virtual int LD_rrIY_src(MP) { return ld16(&cIY, sda); }
   virtual int LD_rrSP_src(MP) { return ld16(&cSP, sda); }
+  // 2 50 - 2 5f
+  virtual int LD_CF_src_0(MP) { return ld1m(sdc, 0); }
+  virtual int LD_CF_src_1(MP) { return ld1m(sdc, 1); }
+  virtual int LD_CF_src_2(MP) { return ld1m(sdc, 2); }
+  virtual int LD_CF_src_3(MP) { return ld1m(sdc, 3); }
+  virtual int LD_CF_src_4(MP) { return ld1m(sdc, 4); }
+  virtual int LD_CF_src_5(MP) { return ld1m(sdc, 5); }
+  virtual int LD_CF_src_6(MP) { return ld1m(sdc, 6); }
+  virtual int LD_CF_src_7(MP) { return ld1m(sdc, 7); }
   // 2 60 - 2 6f
   virtual int LD_dst_rrWA(MP) { return st16(sda, rWA); }
   virtual int LD_dst_rrBC(MP) { return st16(sda, rBC); }

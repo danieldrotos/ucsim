@@ -179,6 +179,16 @@
 #define LD_rrIY_src             instruction_24d
 #define LD_rrSP_src             instruction_24e
 
+// 2 50 - 2 5f
+#define LD_CF_src_0             instruction_258
+#define LD_CF_src_1             instruction_259
+#define LD_CF_src_2             instruction_25a
+#define LD_CF_src_3             instruction_25b
+#define LD_CF_src_4             instruction_25c
+#define LD_CF_src_5             instruction_25d
+#define LD_CF_src_6             instruction_25e
+#define LD_CF_src_7             instruction_25f
+
 // 2 60 - 2 6f
 #define LD_dst_rrWA             instruction_268
 #define LD_dst_rrBC             instruction_269
