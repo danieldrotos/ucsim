@@ -206,6 +206,24 @@
 #define LD_dst_rL               instruction_27e
 #define LD_dst_rH               instruction_27f
 
+// 2 c0 - 2 cf
+#define SET_src_0               instruction_2c0
+#define SET_src_1               instruction_2c1
+#define SET_src_2               instruction_2c2
+#define SET_src_3               instruction_2c3
+#define SET_src_4               instruction_2c4
+#define SET_src_5               instruction_2c5
+#define SET_src_6               instruction_2c6
+#define SET_src_7               instruction_2c7
+#define CLR_src_0               instruction_2c8
+#define CLR_src_1               instruction_2c9
+#define CLR_src_2               instruction_2ca
+#define CLR_src_3               instruction_2cb
+#define CLR_src_4               instruction_2cc
+#define CLR_src_5               instruction_2cd
+#define CLR_src_6               instruction_2ce
+#define CLR_src_7               instruction_2cf
+
 // 2 e0 - 2 ef
 #define LD_src_0_CF             instruction_2e8
 #define LD_src_1_CF             instruction_2e9
