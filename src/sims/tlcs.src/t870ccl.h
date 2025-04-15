@@ -207,8 +207,8 @@ public:
   virtual int dec16m(C16 *src);
 
   // jump
-  virtual int jrst(u8_t code);
-  virtual int jrsf(u8_t code);
+  virtual int jr(u8_t a);
+  virtual int jrs(u8_t code, bool cond);
   
 #include "alias870c.h"
   // 0 00 - 0 00
