@@ -1191,6 +1191,28 @@ cl_t870c::dec16m(C16 *src)
   return resGO;
 }
 
+int
+cl_t870c::jrst(u8_t a)
+{
+  i16_t v= a;
+  if (a & 0x10)
+    v|= 0xffe0;
+  if (rF & MJF)
+    PC= (PC+2+a) & PCmask;
+  return resGO;
+}
+
+int
+cl_t870c::jrsf(u8_t a)
+{
+  i16_t v= a;
+  if (a & 0x10)
+    v|= 0xffe0;
+  if (!(rF & MJF))
+    PC= (PC+2+a) & PCmask;
+  return resGO;
+}
+
 
 int
 cl_t870c::CLR_CF(MP)
