@@ -196,6 +196,14 @@
 #define LD_rrSP_src             instruction_24e
 
 // 2 50 - 2 5f
+#define XOR_CF_src_0            instruction_250
+#define XOR_CF_src_1            instruction_251
+#define XOR_CF_src_2            instruction_252
+#define XOR_CF_src_3            instruction_253
+#define XOR_CF_src_4            instruction_254
+#define XOR_CF_src_5            instruction_255
+#define XOR_CF_src_6            instruction_256
+#define XOR_CF_src_7            instruction_257
 #define LD_CF_src_0             instruction_258
 #define LD_CF_src_1             instruction_259
 #define LD_CF_src_2             instruction_25a
