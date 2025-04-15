@@ -117,7 +117,7 @@ public:
   // (src) or (dst) memory cell for 8/16 bit ops
   class cl_cell8 *sdc;
   t_addr sda;
-  bool is_dst;
+  bool is_dst, is_e8;
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
@@ -141,6 +141,7 @@ public:
   virtual int exec_inst(void);
   virtual int exec1(void);
   virtual int execS(void);
+  virtual int execE8(void);
   virtual int execD(void);
 
   // Set sdc/sda for indirect addressing modes
@@ -321,7 +322,7 @@ public:
   virtual int instruction_e5(MP) { sd_iy(); return execS(); }
   virtual int instruction_e6(MP) { sd_Psp(); return execS(); }
   virtual int instruction_e7(MP) { sd_hlc(); return execS(); }
-  virtual int instruction_e8(MP) { sda=0; return exec1(); }
+  virtual int instruction_e8(MP) { sda=0; return execE8(); }
   virtual int instruction_e9(MP) { sda=1; return exec1(); }
   virtual int instruction_ea(MP) { sda=2; return exec1(); }
   virtual int instruction_eb(MP) { sda=3; return exec1(); }
