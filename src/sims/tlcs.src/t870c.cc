@@ -1192,30 +1192,26 @@ cl_t870c::dec16m(C16 *src)
 }
 
 int
-cl_t870c::jrst(u8_t code)
+cl_t870c::jr(u8_t a)
 {
-  i16_t v= code & 0x1f;
-  if (v & 0x10)
-    v|= 0xffe0;
-  if (rF & MJF)
-    {
-      PC= (PC+2+v) & PCmask;
-      tick(extra_ticks()[page|code]);
-    }
+  i8_t v= a;
+  PC= (PC + a + 0) & PCmask;
+  cF.W(rF|MJF);
   return resGO;
 }
 
 int
-cl_t870c::jrsf(u8_t code)
+cl_t870c::jrs(u8_t code, bool cond)
 {
   i16_t v= code & 0x1f;
   if (v & 0x10)
     v|= 0xffe0;
-  if (!(rF & MJF))
+  if (cond)
     {
-      PC= (PC+2+v) & PCmask;
+      PC= (PC + v + 1) & PCmask;
       tick(extra_ticks()[page|code]);
     }
+  cF.W(rF|MJF);
   return resGO;
 }
 
