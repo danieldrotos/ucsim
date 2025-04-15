@@ -402,10 +402,10 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		{
 		  d= -d;
 		  code1= d;
-		  work.appendf("-%02x", code1);
+		  work.appendf("-0x%02x", code1);
 		}
 	      else
-		work.appendf("+%02x", code1);
+		work.appendf("+0x%02x", code1);
 	      if (comment)
 		{
 		  u16_t a= aof_srcD(code32);
@@ -421,6 +421,24 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		  u16_t a= (i8_t)rA + addr + 2;
 		  comment->appendf("; [%04x] %02x %02x",
 				   a, asd->read(a), asd->read(a+1));
+		}
+	    }
+	  else if (fmt=="a5")
+	    {
+	      i16_t d= code0 & 0x1f;
+	      if (d & 0x10) d|= 0xffe0;
+	      u16_t a= ((addr+1) + d + 1);
+	      if (d<0)
+		{
+		  d= -d;
+		  code1= d;
+		  work.appendf("-0x%02x", code1);
+		}
+	      else
+		work.appendf("+0x%02x", d);
+	      if (comment)
+		{
+		  comment->appendf("; %04x", a);
 		}
 	    }
 	  continue;
@@ -1195,7 +1213,7 @@ int
 cl_t870c::jr(u8_t a)
 {
   i8_t v= a;
-  PC= (PC + a + 0) & PCmask;
+  PC= (PC + v + 0) & PCmask;
   cF.W(rF|MJF);
   return resGO;
 }
