@@ -1060,11 +1060,13 @@ int
 cl_t870c::inc8m(C8 *src)
 {
   u8_t v= src->read()+1;
+  RD;
   if (v)
     rF&= ~(MJF|MZF);
   else
     rF|= MJF|MZF;
   src->W(v);
+  WR;
   cF.W(rF);
   return resGO;
 }
@@ -1086,11 +1088,13 @@ int
 cl_t870c::dec8m(C8 *src)
 {
   u8_t v= src->read()-1;
+  RD;
   if (v != 0xff)
     rF&= ~(MJF|MZF);
   else
     rF|= MJF|MZF;
   src->W(v);
+  WR;
   cF.W(rF);
   return resGO;
 }
