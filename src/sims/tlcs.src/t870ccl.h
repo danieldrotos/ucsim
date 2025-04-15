@@ -403,6 +403,14 @@ public:
   virtual int LD_rrIY_src(MP) { return ld16(&cIY, sda); }
   virtual int LD_rrSP_src(MP) { return ld16(&cSP, sda); }
   // 2 50 - 2 5f
+  virtual int XOR_CF_src_0(MP) { return xor1m(sdc, 0); }
+  virtual int XOR_CF_src_1(MP) { return xor1m(sdc, 1); }
+  virtual int XOR_CF_src_2(MP) { return xor1m(sdc, 2); }
+  virtual int XOR_CF_src_3(MP) { return xor1m(sdc, 3); }
+  virtual int XOR_CF_src_4(MP) { return xor1m(sdc, 4); }
+  virtual int XOR_CF_src_5(MP) { return xor1m(sdc, 5); }
+  virtual int XOR_CF_src_6(MP) { return xor1m(sdc, 6); }
+  virtual int XOR_CF_src_7(MP) { return xor1m(sdc, 7); }
   virtual int LD_CF_src_0(MP) { return ld1m(sdc, 0); }
   virtual int LD_CF_src_1(MP) { return ld1m(sdc, 1); }
   virtual int LD_CF_src_2(MP) { return ld1m(sdc, 2); }
