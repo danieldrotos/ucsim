@@ -1079,6 +1079,21 @@ cl_t870c::LD_src_A_CF(MP)
   return resGO;
 }
 
+int
+cl_t870c::LD_CF_src_A(MP)
+{
+  u8_t m= bit_mask[rA&7];
+  u8_t v= sdc->read();
+  RD;
+  rF&= ~(MJF|MCF);
+  if (v&m)
+    rF|= MCF;
+  else
+    rF|= MJF;
+  cF.W(rF);
+  return resGO;
+}
+
 
 /**************************************************************************/
 
