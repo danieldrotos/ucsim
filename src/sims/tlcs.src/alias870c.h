@@ -245,4 +245,5 @@
 #define LD_src_7_CF             instruction_2ef
 
 // 2 f0 - 2 ff
+#define LD_src_A_CF             instruction_2f3
 #define LD_dst_n                instruction_2f9
