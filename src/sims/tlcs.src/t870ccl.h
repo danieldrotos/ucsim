@@ -407,6 +407,23 @@ public:
   virtual int LD_dst_rD(MP) { return st8(sdc, rD); }
   virtual int LD_dst_rL(MP) { return st8(sdc, rL); }
   virtual int LD_dst_rH(MP) { return st8(sdc, rH); }
+  // 2 c0 - 2 cf
+  virtual int SET_src_0(MP) { return setm(sdc, 0); }
+  virtual int SET_src_1(MP) { return setm(sdc, 1); }
+  virtual int SET_src_2(MP) { return setm(sdc, 2); }
+  virtual int SET_src_3(MP) { return setm(sdc, 3); }
+  virtual int SET_src_4(MP) { return setm(sdc, 4); }
+  virtual int SET_src_5(MP) { return setm(sdc, 5); }
+  virtual int SET_src_6(MP) { return setm(sdc, 6); }
+  virtual int SET_src_7(MP) { return setm(sdc, 7); }
+  virtual int CLR_src_0(MP) { return clrm(sdc, 0); }
+  virtual int CLR_src_1(MP) { return clrm(sdc, 1); }
+  virtual int CLR_src_2(MP) { return clrm(sdc, 2); }
+  virtual int CLR_src_3(MP) { return clrm(sdc, 3); }
+  virtual int CLR_src_4(MP) { return clrm(sdc, 4); }
+  virtual int CLR_src_5(MP) { return clrm(sdc, 5); }
+  virtual int CLR_src_6(MP) { return clrm(sdc, 6); }
+  virtual int CLR_src_7(MP) { return clrm(sdc, 7); }
   // 2 e0 - 2 ef
   virtual int LD_src_0_CF(MP) { return st1m(sdc, 0); }
   virtual int LD_src_1_CF(MP) { return st1m(sdc, 1); }
