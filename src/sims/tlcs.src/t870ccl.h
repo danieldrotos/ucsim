@@ -182,6 +182,8 @@ public:
   virtual int setm(C8 *reg, u8_t bitnr);
   virtual int clrr(C8 *reg, u8_t bitnr);
   virtual int clrm(C8 *reg, u8_t bitnr);
+  virtual int cplm(C8 *src, u8_t bitnr);
+  virtual int cplr(C8 *src, u8_t bitnr);
   
 #include "alias870c.h"
   // 0 00 - 0 00
@@ -447,6 +449,7 @@ public:
   virtual int SET_src_A(MP) { return setm(sdc, rA&7); }
   virtual int LD_src_A_CF(MP);
   virtual int LD_dst_n(MP) { return st8(sdc, fetch()); }
+  virtual int CLR_src_A(MP) { return clrm(sdc, rA&7); }
   virtual int LD_CF_src_A(MP);
 };
 
