@@ -423,11 +423,29 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 				   a, asd->read(a), asd->read(a+1));
 		}
 	    }
-	  else if (fmt=="a5")
+	  else if (fmt=="ra5")
 	    {
 	      i16_t d= code0 & 0x1f;
 	      if (d & 0x10) d|= 0xffe0;
 	      u16_t a= ((addr+1) + d + 1);
+	      if (d<0)
+		{
+		  d= -d;
+		  code1= d;
+		  work.appendf("-0x%02x", code1);
+		}
+	      else
+		work.appendf("+0x%02x", d);
+	      if (comment)
+		{
+		  comment->appendf("; %04x", a);
+		}
+	    }
+	  else if (fmt=="ra8")
+	    {
+	      i16_t d= code0;
+	      if (d & 0x80) d|= 0xff00;
+	      u16_t a= ((addr+2) + d + 0);
 	      if (d<0)
 		{
 		  d= -d;

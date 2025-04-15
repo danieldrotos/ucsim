@@ -412,7 +412,7 @@ public:
   virtual int instruction_ed(MP) { sda=5; return exec1(); }
   virtual int instruction_ee(MP) { sda=6; return exec1(); }
   virtual int instruction_ef(MP) { sda=7; return exec1(); }
-  // 0 f0 - 0 f1
+  // 0 f0 - 0 ff
   virtual int instruction_f0(MP) { sd_x(); return execD(); }
   virtual int instruction_f1(MP) { sd_vw(); return execD(); }
   virtual int instruction_f2(MP) { sd_de(); return execD(); }
@@ -422,6 +422,7 @@ public:
   virtual int instruction_f6(MP) { sd_spM(); return execD(); }
   virtual int instruction_f7(MP) { sd_hlc(); return execD(); }
   virtual int LD_RBS(MP);
+  virtual int JR_a(MP) { return jr(fetch()); }
   // 1 40 - 1 4f
   virtual int LD_rA_g(MP) { return ldi8(&cA, regs8[sda]->R()); }
   virtual int LD_rW_g(MP) { return ldi8(&cW, regs8[sda]->R()); }
