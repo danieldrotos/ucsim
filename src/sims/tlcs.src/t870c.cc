@@ -555,7 +555,7 @@ cl_t870c::exec1(void)
   int res= resGO;
   // prefix info fetched already
   t_mem code2= fetch();
-  int page_code= code2|0x100;
+  int page_code= code2|(page=0x100);
   if (uc_itab[page_code] == NULL)
     {
       PC= instPC;
@@ -596,7 +596,7 @@ cl_t870c::execS(void)
   t_mem code2= fetch();
   if (!src_valids[code2])
     return resINV;
-  int page_code= code2|0x200;
+  int page_code= code2|(page=0x200);
   is_dst= false;
   is_e8= false;
   if (uc_itab[page_code] == NULL)
@@ -639,7 +639,7 @@ cl_t870c::execE8(void)
   t_mem code2= fetch();
   if (!e8_valids[code2])
     return resINV;
-  int page_code= code2|0x200;
+  int page_code= code2|(page=0x200);
   is_dst= false;
   is_e8= true;
   if (uc_itab[page_code] == NULL)
@@ -682,7 +682,7 @@ cl_t870c::execD(void)
   t_mem code2= fetch();
   if (!dst_valids[code2])
     return resINV;
-  int page_code= code2|0x200;
+  int page_code= code2|(page=0x200);
   is_dst= true;
   is_e8= false;
   if (uc_itab[page_code] == NULL)
@@ -1192,24 +1192,30 @@ cl_t870c::dec16m(C16 *src)
 }
 
 int
-cl_t870c::jrst(u8_t a)
+cl_t870c::jrst(u8_t code)
 {
-  i16_t v= a;
-  if (a & 0x10)
+  i16_t v= code&0x1f;
+  if (code & 0x10)
     v|= 0xffe0;
   if (rF & MJF)
-    PC= (PC+2+a) & PCmask;
+    {
+      PC= (PC+2+a) & PCmask;
+      tick(extra_ticks()[page|code]);
+    }
   return resGO;
 }
 
 int
-cl_t870c::jrsf(u8_t a)
+cl_t870c::jrsf(u8_t code)
 {
   i16_t v= a;
   if (a & 0x10)
     v|= 0xffe0;
   if (!(rF & MJF))
-    PC= (PC+2+a) & PCmask;
+    {
+      PC= (PC+2+a) & PCmask;
+      tick(extra_ticks()[page|code]);
+    }
   return resGO;
 }
 

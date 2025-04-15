@@ -118,6 +118,7 @@ public:
   class cl_cell8 *sdc;
   t_addr sda;
   bool is_dst, is_e8;
+  int page;
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
@@ -128,7 +129,9 @@ public:
   virtual void make_cpu_hw(void);
   virtual void reset(void);
   virtual void print_regs(class cl_console_base *con);
-
+  virtual void u8_t *base_ticks(void) { return base_ticks_870c; }
+  virtual void u8_t *extra_ticks(void) { return extra_ticks_870c; }
+  
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int longest_inst(void) { return 5; }
@@ -202,8 +205,8 @@ public:
   virtual int dec16m(C16 *src);
 
   // jump
-  virtual int jrst(u8_t a);
-  virtual int jrsf(u8_t a);
+  virtual int jrst(u8_t code);
+  virtual int jrsf(u8_t code);
   
 #include "alias870c.h"
   // 0 00 - 0 00
