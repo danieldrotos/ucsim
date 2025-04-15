@@ -359,6 +359,14 @@ public:
   // 1 d0 - 1 df
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 e0 - 1 ef
+  virtual int CPL_g_0(MP) { return cplr(regs8[sda], 0); }
+  virtual int CPL_g_1(MP) { return cplr(regs8[sda], 1); }
+  virtual int CPL_g_2(MP) { return cplr(regs8[sda], 2); }
+  virtual int CPL_g_3(MP) { return cplr(regs8[sda], 3); }
+  virtual int CPL_g_4(MP) { return cplr(regs8[sda], 4); }
+  virtual int CPL_g_5(MP) { return cplr(regs8[sda], 5); }
+  virtual int CPL_g_6(MP) { return cplr(regs8[sda], 6); }
+  virtual int CPL_g_7(MP) { return cplr(regs8[sda], 7); }
   virtual int LD_g_0_CF(MP) { return st1r(regs8[sda], 0); }
   virtual int LD_g_1_CF(MP) { return st1r(regs8[sda], 1); }
   virtual int LD_g_2_CF(MP) { return st1r(regs8[sda], 2); }

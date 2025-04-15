@@ -150,6 +150,14 @@
 #define LD_PSW_n		instruction_1de
 
 // 1 e0 - 1 ef
+#define CPL_g_0                 instruction_1e0
+#define CPL_g_1                 instruction_1e1
+#define CPL_g_2                 instruction_1e2
+#define CPL_g_3                 instruction_1e3
+#define CPL_g_4                 instruction_1e4
+#define CPL_g_5                 instruction_1e5
+#define CPL_g_6                 instruction_1e6
+#define CPL_g_7                 instruction_1e7
 #define LD_g_0_CF               instruction_1e8
 #define LD_g_1_CF               instruction_1e9
 #define LD_g_2_CF               instruction_1ea
