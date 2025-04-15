@@ -102,6 +102,14 @@
 #define LD_rrSP_gg              instruction_14e
 
 // 1 50 - 1 5f
+#define XOR_CF_g_0              instruction_150
+#define XOR_CF_g_1              instruction_151
+#define XOR_CF_g_2              instruction_152
+#define XOR_CF_g_3              instruction_153
+#define XOR_CF_g_4              instruction_154
+#define XOR_CF_g_5              instruction_155
+#define XOR_CF_g_6              instruction_156
+#define XOR_CF_g_7              instruction_157
 #define LD_CF_g_0               instruction_158
 #define LD_CF_g_1               instruction_159
 #define LD_CF_g_2               instruction_15a
