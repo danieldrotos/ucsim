@@ -187,9 +187,13 @@ public:
   virtual int xor1m(C8 *src, u8_t bitnr);
   virtual int xor1r(C8 *src, u8_t bitnr);
   virtual int inc8r(C8 *reg);
+  virtual int inc16r(C16 *reg);
   virtual int inc8m(C8 *src);
+  virtual int inc16m(C16 *src);
   virtual int dec8r(C8 *reg);
+  virtual int dec16r(C16 *reg);
   virtual int dec8m(C8 *src);
+  virtual int dec16m(C16 *src);
   
 #include "alias870c.h"
   // 0 00 - 0 00

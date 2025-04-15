@@ -1057,9 +1057,37 @@ cl_t870c::inc8r(C8 *reg)
 }
 
 int
+cl_t870c::inc16r(C16 *reg)
+{
+  u16_t v= reg->get()+1;
+  if (v)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= MJF|MZF;
+  reg->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::inc8m(C8 *src)
 {
   u8_t v= src->read()+1;
+  RD;
+  if (v)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= MJF|MZF;
+  src->W(v);
+  WR;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::inc16m(C16 *src)
+{
+  u16_t v= src->read()+1;
   RD;
   if (v)
     rF&= ~(MJF|MZF);
@@ -1085,11 +1113,39 @@ cl_t870c::dec8r(C8 *reg)
 }
 
 int
+cl_t870c::dec16r(C16 *reg)
+{
+  u16_t v= reg->get()-1;
+  if (v != 0xffff)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= MJF|MZF;
+  reg->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::dec8m(C8 *src)
 {
   u8_t v= src->read()-1;
   RD;
   if (v != 0xff)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= MJF|MZF;
+  src->W(v);
+  WR;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::dec16m(C16 *src)
+{
+  u16_t v= src->read()-1;
+  RD;
+  if (v != 0xffff)
     rF&= ~(MJF|MZF);
   else
     rF|= MJF|MZF;
