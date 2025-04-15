@@ -446,6 +446,14 @@ public:
   virtual int XCH_rrSP_src(MP)  { return xch16_rm(&cSP, sda); }
   virtual int XCH_rrHL7_src(MP) { return xch16_rm(&cHL, sda); }
   // 2 e0 - 2 ef
+  virtual int CPL_src_0(MP) { return cplm(sdc, 0); }
+  virtual int CPL_src_1(MP) { return cplm(sdc, 1); }
+  virtual int CPL_src_2(MP) { return cplm(sdc, 2); }
+  virtual int CPL_src_3(MP) { return cplm(sdc, 3); }
+  virtual int CPL_src_4(MP) { return cplm(sdc, 4); }
+  virtual int CPL_src_5(MP) { return cplm(sdc, 5); }
+  virtual int CPL_src_6(MP) { return cplm(sdc, 6); }
+  virtual int CPL_src_7(MP) { return cplm(sdc, 7); }
   virtual int LD_src_0_CF(MP) { return st1m(sdc, 0); }
   virtual int LD_src_1_CF(MP) { return st1m(sdc, 1); }
   virtual int LD_src_2_CF(MP) { return st1m(sdc, 2); }
