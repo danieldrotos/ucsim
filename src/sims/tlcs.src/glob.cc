@@ -662,6 +662,12 @@ struct dis_entry disass_t870c[]=
     { 0x00fa00d4, 0x00ff00fc, ' ', 3, "CLR ('srcD').A" },
     { 0x0000fa4f, 0x0000ffff, ' ', 2, "CLR ('src4').A" },
 
+    { 0x00fb00e0, 0x00ff00ff, ' ', 3, "CPL (%x).A" },
+    { 0xfb0000e1, 0xff0000ff, ' ', 4, "CPL ('vw').A" },
+    { 0x0000fbe0, 0x0000fff8, ' ', 2, "CPL ('srcE').A" },
+    { 0x00fb00d4, 0x00ff00fc, ' ', 3, "CPL ('srcD').A" },
+    { 0x0000fb4f, 0x0000ffff, ' ', 2, "CPL ('src4').A" },
+
     { 0x00fc00e0, 0x00ff00ff, ' ', 3, "LD CF,(%x).A" },
     { 0xfc0000e1, 0xff0000ff, ' ', 4, "LD CF,('vw').A" },
     { 0x0000fce0, 0x0000fff8, ' ', 2, "LD CF,('srcE').A" },
