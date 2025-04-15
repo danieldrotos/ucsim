@@ -443,7 +443,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	    }
 	  else if (fmt=="ra8")
 	    {
-	      i16_t d= code0;
+	      i16_t d= code1;
 	      if (d & 0x80) d|= 0xff00;
 	      u16_t a= ((addr+2) + d + 0);
 	      if (d<0)
