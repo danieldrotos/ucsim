@@ -316,6 +316,14 @@ public:
   virtual int LD_rrIY_gg(MP) { return ldi16(&cIY, regs16[sda]->R()); }
   virtual int LD_rrSP_gg(MP) { return ldi16(&cSP, regs16[sda]->R()); }
   // 1 50 - 1 5f
+  virtual int XOR_CF_g_0(MP) { return xor1r(regs8[sda], 0); }
+  virtual int XOR_CF_g_1(MP) { return xor1r(regs8[sda], 1); }
+  virtual int XOR_CF_g_2(MP) { return xor1r(regs8[sda], 2); }
+  virtual int XOR_CF_g_3(MP) { return xor1r(regs8[sda], 3); }
+  virtual int XOR_CF_g_4(MP) { return xor1r(regs8[sda], 4); }
+  virtual int XOR_CF_g_5(MP) { return xor1r(regs8[sda], 5); }
+  virtual int XOR_CF_g_6(MP) { return xor1r(regs8[sda], 6); }
+  virtual int XOR_CF_g_7(MP) { return xor1r(regs8[sda], 7); }
   virtual int LD_CF_g_0(MP) { return ld1r(regs8[sda], 0); }
   virtual int LD_CF_g_1(MP) { return ld1r(regs8[sda], 1); }
   virtual int LD_CF_g_2(MP) { return ld1r(regs8[sda], 2); }
