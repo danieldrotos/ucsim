@@ -847,6 +847,19 @@ cl_t870c::xch16_rr(C16 *a, C16 *b)
 }
 
 int
+cl_t870c::xch16_rm(C16 *a, u16_t addr)
+{
+  u16_t t= asd->read(addr) + asd->read(addr+1)*256;
+  RD2;
+  asd->write(addr, a->get());
+  asd->write(addr+1, a->get()>>8);
+  WR2;
+  a->W(t);  
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
 cl_t870c::ld1r(C8 *src, u8_t bitnr)
 {
   rF&= ~(MCF|MJF);
