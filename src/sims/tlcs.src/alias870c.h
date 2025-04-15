@@ -93,6 +93,42 @@
 #define LD_CF_mx_6              instruction_5e
 #define LD_CF_mx_7              instruction_5f
 
+// 0 80 - 0 8f
+#define JRS_T_a00               instruction_80
+#define JRS_T_a01               instruction_81
+#define JRS_T_a02               instruction_82
+#define JRS_T_a03               instruction_83
+#define JRS_T_a04               instruction_84
+#define JRS_T_a05               instruction_85
+#define JRS_T_a06               instruction_86
+#define JRS_T_a07               instruction_87
+#define JRS_T_a08               instruction_88
+#define JRS_T_a09               instruction_89
+#define JRS_T_a0a               instruction_8a
+#define JRS_T_a0b               instruction_8b
+#define JRS_T_a0c               instruction_8c
+#define JRS_T_a0d               instruction_8d
+#define JRS_T_a0e               instruction_8e
+#define JRS_T_a0f               instruction_8f
+
+// 0 90 - 0 9f
+#define JRS_T_a10               instruction_90
+#define JRS_T_a11               instruction_91
+#define JRS_T_a12               instruction_92
+#define JRS_T_a13               instruction_93
+#define JRS_T_a14               instruction_94
+#define JRS_T_a15               instruction_95
+#define JRS_T_a16               instruction_96
+#define JRS_T_a17               instruction_97
+#define JRS_T_a18               instruction_98
+#define JRS_T_a19               instruction_99
+#define JRS_T_a1a               instruction_9a
+#define JRS_T_a1b               instruction_9b
+#define JRS_T_a1c               instruction_9c
+#define JRS_T_a1d               instruction_9d
+#define JRS_T_a1e               instruction_9e
+#define JRS_T_a1f               instruction_9f
+
 // 0 c0 - 0 cf
 #define SET_mx_0                instruction_c0
 #define SET_mx_1                instruction_c1

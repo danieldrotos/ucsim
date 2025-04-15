@@ -164,6 +164,7 @@ public:
   virtual u16_t mn(void);
   
   // Common parametrized operations
+  // data movemenet
   virtual int ld8(C8 *reg, MCELL *src);
   virtual int ldi8(C8 *reg, u8_t n);
   virtual int ldi8nz(C8 *reg, u8_t n);
@@ -175,6 +176,8 @@ public:
   virtual int xch8_rm(C8 *a, C8 *b);
   virtual int xch16_rr(C16 *a, C16 *b);
   virtual int xch16_rm(C16 *a, u16_t addr);
+
+  // bit operations
   virtual int ld1m(C8 *src, u8_t bitnr);
   virtual int ld1r(C8 *src, u8_t bitnr);
   virtual int st1m(C8 *dst, u8_t bitnr);
@@ -187,6 +190,8 @@ public:
   virtual int cplr(C8 *src, u8_t bitnr);
   virtual int xor1m(C8 *src, u8_t bitnr);
   virtual int xor1r(C8 *src, u8_t bitnr);
+
+  // inc/dec
   virtual int inc8r(C8 *reg);
   virtual int inc16r(C16 *reg);
   virtual int inc8m(C8 *src);
@@ -195,6 +200,10 @@ public:
   virtual int dec16r(C16 *reg);
   virtual int dec8m(C8 *src);
   virtual int dec16m(C16 *src);
+
+  // jump
+  virtual int jrst(u8_t a);
+  virtual int jrsf(u8_t a);
   
 #include "alias870c.h"
   // 0 00 - 0 00
