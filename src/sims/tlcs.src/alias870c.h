@@ -245,6 +245,14 @@
 #define XCH_rrHL7_src           instruction_2df
 
 // 2 e0 - 2 ef
+#define CPL_src_0               instruction_2e0
+#define CPL_src_1               instruction_2e1
+#define CPL_src_2               instruction_2e2
+#define CPL_src_3               instruction_2e3
+#define CPL_src_4               instruction_2e4
+#define CPL_src_5               instruction_2e5
+#define CPL_src_6               instruction_2e6
+#define CPL_src_7               instruction_2e7
 #define LD_src_0_CF             instruction_2e8
 #define LD_src_1_CF             instruction_2e9
 #define LD_src_2_CF             instruction_2ea
