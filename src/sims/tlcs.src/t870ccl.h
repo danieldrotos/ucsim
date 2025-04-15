@@ -244,7 +244,21 @@ public:
   virtual int DEC_rL(MP) { return dec8r(&cL); }
   virtual int DEC_rH(MP) { return dec8r(&cH); }
   // 0 30 - 0 3f
+  virtual int INC_rrWA(MP) { return inc16r(&cWA); }
+  virtual int INC_rrBC(MP) { return inc16r(&cBC); }
+  virtual int INC_rrDE(MP) { return inc16r(&cDE); }
+  virtual int INC_rrHL(MP) { return inc16r(&cHL); }
+  virtual int INC_rrIX(MP) { return inc16r(&cIX); }
+  virtual int INC_rrIY(MP) { return inc16r(&cIY); }
+  virtual int INC_rrSP(MP) { return inc16r(&cSP); }
   virtual int LD_SP_Pd(MP);
+  virtual int DEC_rrWA(MP) { return dec16r(&cWA); }
+  virtual int DEC_rrBC(MP) { return dec16r(&cBC); }
+  virtual int DEC_rrDE(MP) { return dec16r(&cDE); }
+  virtual int DEC_rrHL(MP) { return dec16r(&cHL); }
+  virtual int DEC_rrIX(MP) { return dec16r(&cIX); }
+  virtual int DEC_rrIY(MP) { return dec16r(&cIY); }
+  virtual int DEC_rrSP(MP) { return dec16r(&cSP); }
   virtual int LD_SP_Md(MP);
   // 0 40 - 0 4f
   virtual int LD_rA_A(MP) { return ldi8(&cA, rA); }
