@@ -708,6 +708,7 @@ struct dis_entry disass_t870c[]=
     { 0x0000e0e8, 0x0000f8f8, ' ', 2, "CPL 'r_0.0'.'b_1.0'" },
     { 0x0000e8e8, 0x0000f8f8, ' ', 2, "LD 'r_0.0'.'b_1.0',CF" },
 
+    { 0x0000fee8, 0x0000fff8, ' ', 2, "JP 'rr_0.0'" },
     { 0x0000ffe8, 0x0000fff8, ' ', 2, "SWAP 'r_0.0'" },
 
     // src prefixes, code page 0x200
