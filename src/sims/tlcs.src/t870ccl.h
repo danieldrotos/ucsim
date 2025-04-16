@@ -436,6 +436,7 @@ public:
   virtual int instruction_f7(MP) { sd_hlc(); return execD(); }
   virtual int LD_RBS(MP);
   virtual int JR_a(MP) { return jr(fetch()); }
+  virtual int JP_mn(MP) { PC= fetch16(); return resGO; }
   // 1 40 - 1 4f
   virtual int LD_rA_g(MP) { return ldi8(&cA, regs8[sda]->R()); }
   virtual int LD_rW_g(MP) { return ldi8(&cW, regs8[sda]->R()); }

@@ -188,6 +188,7 @@
 // 0 f0 - 0 ff
 #define LD_RBS                  instruction_f9
 #define JR_a                    instruction_fc
+#define JP_mn                   instruction_fe
 
 // 1 40 - 1 4f
 #define LD_rA_g                 instruction_140

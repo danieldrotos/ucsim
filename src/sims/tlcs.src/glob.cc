@@ -873,6 +873,7 @@ struct dis_entry disass_t870c[]=
     { 0x000000c8, 0x000000f8, ' ', 2, "CLR (%x).%b" },
 
     { 0x000000fc, 0x000000ff, ' ', 2, "JR 'ra8'" },
+    { 0x000000fe, 0x000000ff, ' ', 3, "JP 'a16_1'" },
     
     // one byte invalids
     { 0x00000001, 0x000000ff, ' ', 1, "INVALID" },

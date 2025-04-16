@@ -459,6 +459,11 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		  comment->appendf("; %04x", a);
 		}
 	    }
+	  else if (fmt=="a16_1")
+	    {
+	      u16_t a= code1 + code2*256;
+	      work.appendf("0x%04x", a);
+	    }
 	  continue;
 	}
       if (b[i] == '%')
