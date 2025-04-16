@@ -149,6 +149,19 @@ public:
   virtual int execE8(void);
   virtual int execD(void);
 
+  // 16 bit helpers for data sp
+  virtual u16_t get16(u16_t addr)
+  { return asd->read(addr)+asd->read(addr+1)*256; }
+  virtual u16_t rd16(u16_t addr)
+  { RD2; return asd->read(addr)+asd->read(addr+1)*256; }
+  virtual void set16(u16_t addr, u16_t val)
+  { asd->write(addr, val); asd->write(addr+1, val>>8); }
+  virtual void wr16(u16_t addr, u16_t val)
+  { WR2; asd->write(addr, val); asd->write(addr+1, val>>8); }
+  // 16 bit helpers for code memory
+  virtual u16_t fetch16(void)
+  { u16_t v; v= fetch(); return v+fetch()*256; }
+  
   // Set sdc/sda for indirect addressing modes
   virtual C8 *sd_x(void);
   virtual C8 *sd_vw(void);
