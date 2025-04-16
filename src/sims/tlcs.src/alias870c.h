@@ -282,6 +282,7 @@
 #define LD_g_7_CF               instruction_1ef
 
 // 1 f0 - 1 ff
+#define JP_gg                   instruction_1fe
 #define SWAP_g                  instruction_1ff
 
 // 2 40 - 2 4f
