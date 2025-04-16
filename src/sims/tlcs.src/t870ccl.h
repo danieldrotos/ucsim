@@ -635,6 +635,7 @@ public:
   virtual int CPL_src_A(MP) { return cplm(sdc, rA&7); }
   virtual int CLR_src_A(MP) { return clrm(sdc, rA&7); }
   virtual int LD_CF_src_A(MP);
+  virtual int JP_src(MP) { PC= rd16(sda); return resGO; }
 };
 
 

@@ -814,6 +814,12 @@ struct dis_entry disass_t870c[]=
     { 0x00fc00d4, 0x00ff00fc, ' ', 3, "LD CF,('srcD').A" },
     { 0x0000fc4f, 0x0000ffff, ' ', 2, "LD CF,('src4').A" },
 
+    { 0x00fe00e0, 0x00ff00ff, ' ', 3, "JP (%x)" },
+    { 0xfe0000e1, 0xff0000ff, ' ', 4, "JP ('vw')" },
+    { 0x0000fee0, 0x0000fff8, ' ', 2, "JP ('srcE')" },
+    { 0x00fe00d4, 0x00ff00fc, ' ', 3, "JP ('srcD')" },
+    { 0x0000fe4f, 0x0000ffff, ' ', 2, "JP ('src4')" },
+
     // dst prefixes, code page 0x200
     { 0x006800f0, 0x00f800ff, ' ', 3, "LD (%x),'rr_2.0'" },
     { 0x680000f1, 0xf80000ff, ' ', 4, "LD ('vw'),'rr_3.0'" },
