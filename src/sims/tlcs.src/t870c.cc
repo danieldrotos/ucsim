@@ -744,8 +744,7 @@ cl_t870c::sd_x(void)
 C8 *
 cl_t870c::sd_vw(void)
 {
-  sda= fetch();
-  sda+= (fetch()*256);
+  sda= fetch16();
   return sdc= (C8 *)asd->get_cell(sda);
 }
 
@@ -814,8 +813,7 @@ cl_t870c::sd_spM(void)
 u16_t
 cl_t870c::mn(void)
 {
-  u16_t mn= fetch();
-  mn+= fetch()*256;
+  u16_t mn= fetch16();
   return mn;
 }
 
@@ -849,8 +847,7 @@ int
 cl_t870c::ld16(C16 *reg, u16_t addr)
 {
   u16_t n;
-  n= asd->read(addr) + asd->read(addr+1)*256;
-  RD2;
+  n= rd16(addr);
   reg->W(n);
   cF.W(rF|MJF);
   return resGO;
@@ -876,9 +873,7 @@ cl_t870c::st8(MCELL *dst, u8_t n)
 int
 cl_t870c::st16(t_addr addr, u16_t n)
 {
-  asd->write(addr, n);
-  asd->write(addr+1, n>>8);
-  WR2;
+  wr16(addr, n);
   cF.W(rF|MJF);
   return resGO;
 }
@@ -921,11 +916,8 @@ cl_t870c::xch16_rr(C16 *a, C16 *b)
 int
 cl_t870c::xch16_rm(C16 *a, u16_t addr)
 {
-  u16_t t= asd->read(addr) + asd->read(addr+1)*256;
-  RD2;
-  asd->write(addr, a->get());
-  asd->write(addr+1, a->get()>>8);
-  WR2;
+  u16_t t= rd16(addr);
+  wr16(addr, a->get());
   a->W(t);  
   cF.W(rF|MJF);
   return resGO;
