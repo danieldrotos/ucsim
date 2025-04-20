@@ -135,6 +135,13 @@ cl_qport::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 }
 
 
+t_mem
+cl_qport::get_odr(void)
+{
+  return pcell->get();
+}
+
+
 void
 cl_qport::print_info(class cl_console_base *con)
 {
