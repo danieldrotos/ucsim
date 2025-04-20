@@ -143,6 +143,13 @@ cl_qport::get_odr(void)
 
 
 void
+cl_qport::set_odr(t_mem val)
+{
+  pcell->set(val);
+}
+
+
+void
 cl_qport::print_info(class cl_console_base *con)
 {
   uchar data;

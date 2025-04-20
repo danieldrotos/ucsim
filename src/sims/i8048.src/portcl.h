@@ -67,6 +67,7 @@ class cl_qport: public cl_hw
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual t_mem get_odr(void);
+  virtual void set_odr(t_mem val);
   
   virtual void print_info(class cl_console_base *con);
 };
