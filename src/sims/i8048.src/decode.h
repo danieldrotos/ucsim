@@ -62,7 +62,8 @@ DEC( 35, DISTCNTI	, "dis tcnti"	, ' ', 1, false, 1, (void*)"8A42-" ) //48,41A,41
 DEC( 36, JT0		, "jt0 'a8'"	, ' ', 2, false, 2, (void*)"8A42-" ) //48,41A,41,22
 DEC( 37, CPLA		, "cpl a"	, ' ', 1, false, 1, (void*)"8A421" )
 // 38 undefined
-// 39 OUTL P1,A
+DEC( 39, OUTLP1A        , "outl p1,a"   , ' ', 1, false, 1, (void*)"8A421" )
+DEC( 3a, OUTLP2A        , "outl p2,a"   , ' ', 1, false, 1, (void*)"8A421" )
 // 3a OUTL P2,A
 // 3b undefined
 DEC( 3c, MOVDP4A	, "movd p4,a"	, ' ', 1, false, 2, (void*)"8A421" )

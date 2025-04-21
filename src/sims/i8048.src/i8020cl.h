@@ -390,6 +390,9 @@ protected:
   int MOVR5I8(MP) { R[5]->W(fetch()); return resGO; }
   int MOVR6I8(MP) { R[6]->W(fetch()); return resGO; }
   int MOVR7I8(MP) { R[7]->W(fetch()); return resGO; }
+
+  int OUTLP1A(MP) { WR; out(1); return resGO; }
+  int OUTLP2A(MP) { WR; out(1); return resGO; }
   
   // 21,22 specific instructions to implement
   int INP0(MP) { return in(0); }

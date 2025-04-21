@@ -52,6 +52,8 @@
 #define DISTCNTI instruction_35
 #define JT0 instruction_36
 #define CPLA instruction_37
+#define OUTLP1A instruction_39
+#define OUTLP2A instruction_3a
 #define MOVDP4A instruction_3c
 #define MOVDP5A instruction_3d
 #define MOVDP6A instruction_3e
