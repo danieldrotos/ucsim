@@ -137,6 +137,7 @@
 #define CPLF0 instruction_95
 #define JNZ instruction_96
 #define CLRC instruction_97
+#define ANLBUSI8 instruction_98
 #define ANLDP4A instruction_9c
 #define ANLDP5A instruction_9d
 #define ANLDP6A instruction_9e

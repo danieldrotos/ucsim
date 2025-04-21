@@ -148,7 +148,6 @@ DEC( 85, CLRF0		, "clr f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // 86 JNI 48
 // 87 undefined
 DEC( 88, ORLBUSI8	, "orl bus,'i8'", ' ', 1, false, 2, (void*)"8----" ) //48
-// 88 ORL BUS,#i8 48
 // 89 ORL P1,#i8 48,41A,41
 // 8a ORL P2,#i8 48,41A,41
 // 8b undefined
@@ -167,6 +166,7 @@ DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 DEC( 95, CPLF0		, "cpl f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 97, CLRC		, "clr c"	, ' ', 1, false, 1, (void*)"8A421" )
+DEC( 98, ANLBUSI8	, "anl bus,'i8'", ' ', 1, false, 2, (void*)"8----" ) //48
 // 98 ANL BUS,#i8 48
 // 99 ANL P1,#i8 48,41A,41
 // 9a ANL P2,#i8 48,41A,41
