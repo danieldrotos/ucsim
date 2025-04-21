@@ -147,6 +147,7 @@ DEC( 85, CLRF0		, "clr f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // 85 SEL AN0 22
 // 86 JNI 48
 // 87 undefined
+DEC( 88, ORLBUSI8	, "orl bus,'i8'", ' ', 1, false, 2, (void*)"8----" ) //48
 // 88 ORL BUS,#i8 48
 // 89 ORL P1,#i8 48,41A,41
 // 8a ORL P2,#i8 48,41A,41

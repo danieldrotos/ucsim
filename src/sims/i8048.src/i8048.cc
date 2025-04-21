@@ -145,6 +145,24 @@ cl_i8048::movxwr(u8_t addr, u8_t val)
 }
 
 int
+cl_i8048::orlbus(u8_t i8)
+{
+  RD;
+  WR;
+  bus->orl(i8);
+  return resGO;
+}
+
+int
+cl_i8048::anlbus(u8_t i8)
+{
+  RD;
+  WR;
+  bus->anl(i8);
+  return resGO;
+}
+
+int
 cl_i8048::OUTLB(MP)
 {
   bus->latch(rA);

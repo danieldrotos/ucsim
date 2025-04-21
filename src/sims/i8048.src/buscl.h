@@ -53,6 +53,8 @@ class cl_bus: public cl_hw
   virtual const char *cfg_help(t_addr addr);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual void latch(u8_t val);
+  virtual void orl(u8_t val);
+  virtual void anl(u8_t val);
 };
 
 

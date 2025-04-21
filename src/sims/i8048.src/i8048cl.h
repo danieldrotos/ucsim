@@ -57,6 +57,8 @@ class cl_i8048: public cl_i8020
   virtual void decode_regs(void);
   virtual u8_t movxrd(u8_t addr);
   virtual void movxwr(u8_t addr, u8_t val);
+  virtual int orlbus(u8_t i8);
+  virtual int anlbus(u8_t i8);
   // 48 specific insts to implement:
   int OUTLB(MP);
   int INS(MP);
@@ -79,6 +81,7 @@ class cl_i8048: public cl_i8020
   int SELMB0(MP) { mb= 0; return resGO; }
   int SELMB1(MP) { mb= 1; return resGO; }
   int ENT0CLK(MP) { return resGO; }
+  int ORLBUSI8(MP) { return orlbus(fetch()); }
 };
 
 

@@ -124,6 +124,7 @@
 #define RET instruction_83
 #define JMP4 instruction_84
 #define CLRF0 instruction_85
+#define ORLBUSI8 instruction_88
 #define ORLDP4A instruction_8c
 #define ORLDP5A instruction_8d
 #define ORLDP6A instruction_8e
