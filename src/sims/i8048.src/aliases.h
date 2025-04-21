@@ -125,6 +125,8 @@
 #define JMP4 instruction_84
 #define CLRF0 instruction_85
 #define ORLBUSI8 instruction_88
+#define ORLP1I8 instruction_89
+#define ORLP2I8 instruction_8a
 #define ORLDP4A instruction_8c
 #define ORLDP5A instruction_8d
 #define ORLDP6A instruction_8e
@@ -138,6 +140,8 @@
 #define JNZ instruction_96
 #define CLRC instruction_97
 #define ANLBUSI8 instruction_98
+#define ANLP1I8 instruction_99
+#define ANLP2I8 instruction_9a
 #define ANLDP4A instruction_9c
 #define ANLDP5A instruction_9d
 #define ANLDP6A instruction_9e

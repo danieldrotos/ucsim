@@ -177,4 +177,54 @@ cl_i8048::INS(MP)
 }
 
 
+int
+cl_i8048::ORLP1I8(MP)
+{
+  u8_t i8= fetch();
+  u8_t v= p1->get_odr();
+  RD;
+  v|= i8;
+  ports->write(1, v);
+  WR;
+  return resGO;
+}
+
+int
+cl_i8048::ORLP2I8(MP)
+{
+  u8_t i8= fetch();
+  u8_t v= p2->get_odr();
+  RD;
+  v|= i8;
+  ports->write(2, v);
+  WR;
+  return resGO;
+}
+
+
+int
+cl_i8048::ANLP1I8(MP)
+{
+  u8_t i8= fetch();
+  u8_t v= p1->get_odr();
+  RD;
+  v&= i8;
+  ports->write(1, v);
+  WR;
+  return resGO;
+}
+
+int
+cl_i8048::ANLP2I8(MP)
+{
+  u8_t i8= fetch();
+  u8_t v= p2->get_odr();
+  RD;
+  v&= i8;
+  ports->write(2, v);
+  WR;
+  return resGO;
+}
+
+
 /* End of i8048.src/i8048.cc */

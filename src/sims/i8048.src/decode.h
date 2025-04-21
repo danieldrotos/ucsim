@@ -147,9 +147,9 @@ DEC( 85, CLRF0		, "clr f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // 85 SEL AN0 22
 // 86 JNI 48
 // 87 undefined
-DEC( 88, ORLBUSI8	, "orl bus,'i8'", ' ', 1, false, 2, (void*)"8----" ) //48
-// 89 ORL P1,#i8 48,41A,41
-// 8a ORL P2,#i8 48,41A,41
+DEC( 88, ORLBUSI8	, "orl bus,'i8'", ' ', 2, false, 2, (void*)"8----" ) //48
+DEC( 89, ORLP1I8	, "orl p1,'i8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
+DEC( 8a, ORLP2I8	, "orl p2,'i8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 // 8b undefined
 DEC( 8c, ORLDP4A	, "orld p4,a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 8d, ORLDP5A	, "orld p5,a"	, ' ', 1, false, 2, (void*)"8A421" )
@@ -167,9 +167,8 @@ DEC( 95, CPLF0		, "cpl f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 97, CLRC		, "clr c"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 98, ANLBUSI8	, "anl bus,'i8'", ' ', 1, false, 2, (void*)"8----" ) //48
-// 98 ANL BUS,#i8 48
-// 99 ANL P1,#i8 48,41A,41
-// 9a ANL P2,#i8 48,41A,41
+DEC( 99, ANLP1I8	, "anl p1,'i8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
+DEC( 9a, ANLP2I8	, "anl p2,'i8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 9c, ANLDP4A	, "anl p4,a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 9d, ANLDP5A	, "anl p5,a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 9e, ANLDP6A	, "anl p6,a"	, ' ', 1, false, 2, (void*)"8A421" )

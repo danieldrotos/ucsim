@@ -83,6 +83,10 @@ class cl_i8048: public cl_i8020
   int ENT0CLK(MP) { return resGO; }
   int ORLBUSI8(MP) { return orlbus(fetch()); }
   int ANLBUSI8(MP) { return anlbus(fetch()); }
+  int ORLP1I8(MP);
+  int ORLP2I8(MP);
+  int ANLP1I8(MP);
+  int ANLP2I8(MP);
 };
 
 
