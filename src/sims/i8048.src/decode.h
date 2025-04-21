@@ -125,7 +125,7 @@ DEC( 70, ADCIR0		, "adc a,@r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 71, ADCIR1		, "adc a,@r1"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 72, JB3		, "jb3 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 74, CALL3  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
-// 75 ENT0 CLK 48
+DEC( 75, ENT0CLK        , "ent0 clk"    , ' ', 2, false, 2, (void*)"8----" )
 DEC( 76, JF1		, "jf1 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 77, RR		, "rr a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 78, ADCR0		, "adc a,r0"	, ' ', 1, false, 1, (void*)"8A421" )

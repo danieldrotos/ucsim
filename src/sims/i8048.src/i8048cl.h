@@ -78,6 +78,7 @@ class cl_i8048: public cl_i8020
   int MOVFA(MP) { cF.W(rA); return resGO; }
   int SELMB0(MP) { mb= 0; return resGO; }
   int SELMB1(MP) { mb= 1; return resGO; }
+  int ENT0CLK(MP) { return resGO; }
 };
 
 

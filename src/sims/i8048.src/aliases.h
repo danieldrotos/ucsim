@@ -108,6 +108,7 @@
 #define ADCIR1 instruction_71
 #define JB3 instruction_72
 #define CALL3 instruction_74
+#define ENT0CLK instruction_75
 #define JF1 instruction_76
 #define RR instruction_77
 #define ADCR0 instruction_78
