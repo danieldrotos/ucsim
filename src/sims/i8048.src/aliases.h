@@ -132,6 +132,7 @@
 #define ORLDP6A instruction_8e
 #define ORLDP7A instruction_8f
 #define MOVXIR0A instruction_90
+#define OUTLP0A instruction_90
 #define MOVXIR1A instruction_91
 #define JB4 instruction_92
 #define RETR instruction_93

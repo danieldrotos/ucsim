@@ -157,7 +157,7 @@ DEC( 8e, ORLDP6A	, "orld p6,a"	, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 8f, ORLDP7A	, "orld p7,a"	, ' ', 1, false, 2, (void*)"8A421" )
 
 DEC( 90, MOVXIR0A	, "movx @r0,a"	, ' ', 1, false, 2, (void*)"8----" ) //48
-// 90 OUTL P0,A 22,21
+DEC( 90, OUTLP0A        , "outl p1,a"   , ' ', 1, false, 2, (void*)"---21" ) //22,21
 // 90 MOV STS,A 41A
 DEC( 91, MOVXIR1A	, "movx @r1,a"	, ' ', 1, false, 2, (void*)"8----" ) //48
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
