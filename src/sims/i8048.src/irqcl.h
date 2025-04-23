@@ -40,6 +40,13 @@ class cl_irq: public cl_hw
  public:
  public:
   cl_irq(class cl_uc *auc);
+  virtual int init(void);
+  virtual void added_to_uc(void);
+  virtual void write(MC *cell, t_mem *val);
+  virtual int tick(int cycles);
+  virtual void reset(void);
+  //virtual void happen(class cl_hw *where, enum hw_event he, void *params);
+  virtual void print_info(class cl_console_base *con);
 };
 
 
