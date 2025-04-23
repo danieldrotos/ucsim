@@ -46,6 +46,11 @@ int
 cl_irq::init(void)
 {
   cl_hw::init();
+  cene.init();
+  cene.decode(&ene);
+  cent.decode(&ent);
+  crqe.decode(&rqe);
+  crqt.decode(&rqt);
   return 0;
 }
 
@@ -53,17 +58,27 @@ void
 cl_irq::added_to_uc(void)
 {
   class cl_it_src *is;
-  /*
+  
   uc->it_sources->add(is= new cl_it_src(uc, 0,
-					ie_cell, ie_mask,
-					src_cell, src_mask,
-					addr,
+					&cene, 1, // enable cell/mask
+					&crqe, 1, // requ cell/mask
+					3, // addr
 					true, //clr
 					false, // indirect
-					"External",
+					"External", // name
+					2 // priority
+					));
+  is->init();
+
+  uc->it_sources->add(is= new cl_it_src(uc, 0,
+					&cent, 1, // enable cell/mask
+					&crqt, 1, // requ cell/mask
+					7, // addr
+					true, //clr
+					false, // indirect
+					"Timer", // name
 					1 // priority
 					));
-  */
   is->init();
   
 }
@@ -83,6 +98,8 @@ cl_irq::tick(int cycles)
 void
 cl_irq::reset(void)
 {
+  ene= ent= 0;
+  rqe= rqt= 0;
 }
 
 void

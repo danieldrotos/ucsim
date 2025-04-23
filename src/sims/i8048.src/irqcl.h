@@ -38,6 +38,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_irq: public cl_hw
 {
  public:
+  u8_t ene, ent, rqe, rqt;
+  C8 cene, cent;
+  C8 crqe, crqt;
  public:
   cl_irq(class cl_uc *auc);
   virtual int init(void);

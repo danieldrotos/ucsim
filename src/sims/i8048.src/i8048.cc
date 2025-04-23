@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 #include "dregcl.h"
+#include "irqcl.h"
 
 #include "i8048cl.h"
 
@@ -83,6 +84,10 @@ cl_i8048::mk_hw_elements(void)
   timer->init();
   add_hw(timer);
 
+  irq= new cl_irq(this);
+  irq->init();
+  add_hw(irq);
+  
   bus= new cl_bus(this);
   bus->init();
   add_hw(bus);

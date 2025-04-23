@@ -174,9 +174,9 @@ cl_i8020::mk_hw_elements(void)
   timer->init();
   add_hw(timer);
 
-  h= new cl_irq(this);
-  h->init();
-  add_hw(h);
+  irq= new cl_irq(this);
+  irq->init();
+  add_hw(irq);
   
   bus= new cl_bus(this);
   bus->init();
