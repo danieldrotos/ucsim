@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "glob.h"
+#include "irqcl.h"
 
 #include "i8020cl.h"
 
@@ -173,6 +174,10 @@ cl_i8020::mk_hw_elements(void)
   timer->init();
   add_hw(timer);
 
+  h= new cl_irq(this);
+  h->init();
+  add_hw(h);
+  
   bus= new cl_bus(this);
   bus->init();
 
