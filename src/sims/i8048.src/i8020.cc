@@ -31,9 +31,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "dregcl.h"
 
-#include "glob.h"
-#include "irqcl.h"
-
 #include "i8020cl.h"
 
 /*
@@ -174,9 +171,12 @@ cl_i8020::mk_hw_elements(void)
   timer->init();
   add_hw(timer);
 
+  /*
   irq= new cl_irq(this);
   irq->init();
   add_hw(irq);
+  */
+  irq= NULL;
   
   bus= new cl_bus(this);
   bus->init();
@@ -563,7 +563,6 @@ cl_i8020::reset(void)
   ports->write(1, 0xff);
   ports->write(2, 0xff);
   // 7) disbale irq
-  ien= 0;
   // 8) stop timer
   // 9) clear timer flag
   // 10) Clear F0, F1
@@ -609,6 +608,19 @@ cl_i8022::cl_i8022(class cl_sim *asim):
   ram_size= 128;
   info_ch= '2';
 }
+
+
+void
+cl_i8022::mk_hw_elements(void)
+{
+  cl_i8021::mk_hw_elements();
+  class cl_hw *h;
+
+  irq= new cl_irq(this);
+  irq->init();
+  add_hw(irq);
+}
+
 
 cl_i8020_cpu::cl_i8020_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
@@ -662,11 +674,13 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       if (val)
 	{
 	  *val= (*val)?1:0;
-	  if ((cell->get() != 0) &&
-	      (*val == 0) &&
-	      (u->timer != NULL))
+	  if (u->timer)
 	    {
-	      u->timer->do_counter(1);
+	      if ((cell->get() != 0) &&
+		  (*val == 0))
+		{
+		  u->timer->do_counter(1);
+		}
 	    }
 	}
       break;

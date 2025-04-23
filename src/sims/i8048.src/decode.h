@@ -6,7 +6,7 @@ DEC( 02, OUTLB		, "outl bus,a"	, ' ', 1, false, 2, (void*)"8----" ) // 48
 DEC( 02, OUTDBB		, "out dbb,a"	, ' ', 1, false, 2, (void*)"-A4--" ) //41A,41
 DEC( 03, ADDI8		, "add a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 04, JMP0   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
-DEC( 05, ENI    	, "en i"	, ' ', 1, false, 1, (void*)"8A421" )
+DEC( 05, ENI    	, "en i"	, ' ', 1, false, 1, (void*)"8A42-" )
 // 06 undefined
 DEC( 07, DECA		, "dec a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 08, INS		, "ins a,bus"	, ' ', 1, false, 2, (void*)"8----" ) //48
@@ -24,7 +24,7 @@ DEC( 11, INCIR1 	, "inc @r1"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 12, JB0		, "jb0 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 13, ADCI8		, "addc a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 14, CALL0  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8A421" )
-DEC( 15, DISI		, "dis i"	, ' ', 1, false, 1, (void*)"8A421" )
+DEC( 15, DISI		, "dis i"	, ' ', 1, false, 1, (void*)"8A42-" )
 DEC( 16, JTF		, "jtf 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( 17, INCA   	, "inc a"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( 18, INCR0		, "inc r0"	, ' ', 1, false, 1, (void*)"8A421" )
@@ -145,6 +145,7 @@ DEC( 83, RET		, "ret"		, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 84, JMP4   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
 DEC( 85, CLRF0		, "clr f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // 85 SEL AN0 22
+DEC( 86, JNI		, "jni 'a8'"    , ' ', 2, false, 2, (void*)"8----" ) //4
 // 86 JNI 48
 // 87 undefined
 DEC( 88, ORLBUSI8	, "orl bus,'i8'", ' ', 2, false, 2, (void*)"8----" ) //48

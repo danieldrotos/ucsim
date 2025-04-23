@@ -31,16 +31,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 #include "pobjcl.h"
 #include "uccl.h"
-
 #include "newcmdcl.h"
+
+#include "i8020cl.h"
 
 
 class cl_irq: public cl_hw
 {
  public:
-  u8_t ene, ent, rqe, rqt;
-  C8 cene, cent;
+  u8_t INT, ene, rqe;
+  C8 cint, cene, cent;
   C8 crqe, crqt;
+  class cl_i8020 *u;
  public:
   cl_irq(class cl_uc *auc);
   virtual int init(void);
@@ -50,6 +52,8 @@ class cl_irq: public cl_hw
   virtual void reset(void);
   //virtual void happen(class cl_hw *where, enum hw_event he, void *params);
   virtual void print_info(class cl_console_base *con);
+  virtual void en_e(void) { ene= 1; }
+  virtual void dis_e(void) { ene= 0; }
 };
 
 

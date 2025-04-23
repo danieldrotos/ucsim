@@ -30,7 +30,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 #include "dregcl.h"
-#include "irqcl.h"
 
 #include "i8048cl.h"
 

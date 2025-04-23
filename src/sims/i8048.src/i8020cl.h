@@ -37,6 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "timercl.h"
 #include "buscl.h"
 #include "portcl.h"
+#include "irqcl.h"
 
 
 enum {
@@ -114,7 +115,7 @@ protected:
  public:
   u8_t psw;
   class cl_cell8 *cpsw;
-  u8_t flagF1, mb, rA, ien;
+  u8_t flagF1, mb, rA;
   class cl_bit_cell8 cflagF1, cmb;
   class cl_address_space *regs, *aspsw, *iram, *ports, *xram;
   class cl_cell8 cA, *R[8];
@@ -187,12 +188,8 @@ protected:
   
   /* Other instructions */
   int NOP(MP) { return resGO; }
-  int DISI(MP) { ien= 0; return resGO; }
-  int ENI(MP) { ien= 1; return resGO; }
   int CLRF0(MP) { cF.W(rF & ~flagF0); return resGO; }
   /* Timer */
-  int ENTCNTI(MP);
-  int DISTCNTI(MP);
   int JTF(MP);
   int MOVAT(MP);
   int MOVTA(MP);
@@ -398,6 +395,10 @@ protected:
   
   // 21,22 specific instructions to implement
   int INP0(MP) { return in(0); }
+
+  // Work if irq controller is present
+  int DISI(MP);
+  int ENI(MP);
 };
 
 
@@ -411,10 +412,13 @@ class cl_i8022: public cl_i8021
 {
  public:
   cl_i8022(class cl_sim *asim);
+  virtual void mk_hw_elements(void);
   //virtual void make_cpu_hw(void);
   // 8022 specific instructions
   int JNT0(MP) { return jif(cpu->cfg_read(i8020cpu_t0)==0); }
   int JT0 (MP) { return jif(cpu->cfg_read(i8020cpu_t0)!=0); }
+  int ENTCNTI(MP);
+  int DISTCNTI(MP);
 };
 
 

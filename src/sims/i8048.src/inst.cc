@@ -25,7 +25,30 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "i8020cl.h"
+#include "i8048cl.h"
+
+
+int
+CL2::DISI(MP)
+{
+  if (irq)
+    irq->dis_e();
+  return resGO;
+}
+
+int
+CL2::ENI(MP)
+{
+  if (irq)
+    irq->en_e();
+  return resGO;
+}
+
+int
+CL4::JNI(MP)
+{   
+  return jif(!(irq->INT));
+}
 
 
 /* End of i8048.src/inst.cc */

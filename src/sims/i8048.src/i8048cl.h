@@ -60,12 +60,15 @@ class cl_i8048: public cl_i8020
   virtual int orlbus(u8_t i8);
   virtual int anlbus(u8_t i8);
   // 48 specific insts to implement:
+  int ENTCNTI(MP);
+  int DISTCNTI(MP);
   int OUTLB(MP);
   int INS(MP);
   int JNT0(MP) { return jif(cpu->cfg_read(i8020cpu_t0)==0); }
   int JT0 (MP) { return jif(cpu->cfg_read(i8020cpu_t0)!=0); }
   int JF0 (MP) { return jif(psw & flagF0); }
   int JF1 (MP) { return jif(cflagF1.R() != 0); }
+  int JNI(MP);
   int MOVXAIR0(MP) { RD; cA.W(movxrd(R[0]->R())); return resGO; }
   int MOVXAIR1(MP) { RD; cA.W(movxrd(R[1]->R())); return resGO; }
   int MOVXIR0A(MP) { WR; movxwr(R[0]->R(), rA); return resGO; }

@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_irq::cl_irq(class cl_uc *auc):
   cl_hw(auc, HW_INTERRUPT, 0, "irq")
 {
+  u= (class cl_i8020 *)auc;
 }
 
 int
@@ -48,9 +49,10 @@ cl_irq::init(void)
   cl_hw::init();
   cene.init();
   cene.decode(&ene);
-  cent.decode(&ent);
+  crqe.init();
   crqe.decode(&rqe);
-  crqt.decode(&rqt);
+  cint.init();
+  cint.decode(&INT);
   return 0;
 }
 
@@ -58,7 +60,14 @@ void
 cl_irq::added_to_uc(void)
 {
   class cl_it_src *is;
-  
+
+  cent.init();
+  cent.decode(&u->timer->int_enabled);
+  crqt.decode(&u->timer->int_request);
+
+  /*
+    In 8022, external interrupt source is T0 pin!
+   */
   uc->it_sources->add(is= new cl_it_src(uc, 0,
 					&cene, 1, // enable cell/mask
 					&crqe, 1, // requ cell/mask
@@ -98,8 +107,8 @@ cl_irq::tick(int cycles)
 void
 cl_irq::reset(void)
 {
-  ene= ent= 0;
-  rqe= rqt= 0;
+  ene= rqe= 0;
+  INT= 1;
 }
 
 void
