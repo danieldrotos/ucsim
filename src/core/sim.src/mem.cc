@@ -1224,7 +1224,7 @@ cl_memory_cell::read(enum hw_cath skip)
 #endif
   if (ops && ops[0])
     {
-      t_mem r;
+      t_mem r= 0;
       for (int i=0; ops[i]; i++)
 	r= ops[i]->read(skip);
       return r;
