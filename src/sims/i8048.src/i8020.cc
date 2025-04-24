@@ -176,7 +176,7 @@ cl_i8020::mk_hw_elements(void)
   irq->init();
   add_hw(irq);
   */
-  irq= NULL;
+  ints= NULL;
   
   bus= new cl_bus(this);
   bus->init();
