@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_fpp13::cl_fpp13(int aid, class cl_pdk *the_puc, class cl_sim *asim):
   cl_fpp(aid, the_puc, asim)
 {
-  type= new struct cpu_entry;
+  type= (struct cpu_entry*)malloc(sizeof(struct cpu_entry));
   type->type= CPU_PDK13;
 }
 
