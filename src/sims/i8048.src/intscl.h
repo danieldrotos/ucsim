@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (irqcl.h)
+ * Simulator of microcontrollers (intscl.h)
  *
  * Copyright (C) 1999 Drotos Daniel
  * 
@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8020cl.h"
 
 
-class cl_irq: public cl_hw
+class cl_ints: public cl_hw
 {
  public:
   u8_t INT, ene, rqe;
@@ -44,7 +44,7 @@ class cl_irq: public cl_hw
   C8 crqe, crqt;
   class cl_i8020 *u;
  public:
-  cl_irq(class cl_uc *auc);
+  cl_ints(class cl_uc *auc);
   virtual int init(void);
   virtual void added_to_uc(void);
   virtual void write(MC *cell, t_mem *val);
@@ -59,4 +59,4 @@ class cl_irq: public cl_hw
 
 #endif
 
-/* End of i8048.src/interruptcl.h */
+/* End of i8048.src/intscl.h */

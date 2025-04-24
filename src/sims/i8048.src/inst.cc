@@ -31,23 +31,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 CL2::DISI(MP)
 {
-  if (irq)
-    irq->dis_e();
+  if (ints)
+    ints->dis_e();
   return resGO;
 }
 
 int
 CL2::ENI(MP)
 {
-  if (irq)
-    irq->en_e();
+  if (ints)
+    ints->en_e();
   return resGO;
 }
 
 int
 CL4::JNI(MP)
 {   
-  return jif(!(irq->INT));
+  return jif(!(ints->INT));
 }
 
 

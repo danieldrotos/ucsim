@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (interrupt.cc)
+ * Simulator of microcontrollers (ints.cc)
  *
  * Copyright (C) 1999 Drotos Daniel
  * 
@@ -34,17 +34,17 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itsrccl.h"
 
 // local
-#include "irqcl.h"
+#include "intscl.h"
 
 
-cl_irq::cl_irq(class cl_uc *auc):
+cl_ints::cl_ints(class cl_uc *auc):
   cl_hw(auc, HW_INTERRUPT, 0, "irq")
 {
   u= (class cl_i8020 *)auc;
 }
 
 int
-cl_irq::init(void)
+cl_ints::init(void)
 {
   cl_hw::init();
   cene.init();
@@ -57,7 +57,7 @@ cl_irq::init(void)
 }
 
 void
-cl_irq::added_to_uc(void)
+cl_ints::added_to_uc(void)
 {
   class cl_it_src *is;
 
@@ -93,26 +93,26 @@ cl_irq::added_to_uc(void)
 }
 
 void
-cl_irq::write(MC *cell, t_mem *val)
+cl_ints::write(MC *cell, t_mem *val)
 {
   
 }
 
 int
-cl_irq::tick(int cycles)
+cl_ints::tick(int cycles)
 {
   return resGO;
 }
 
 void
-cl_irq::reset(void)
+cl_ints::reset(void)
 {
   ene= rqe= 0;
   INT= 1;
 }
 
 void
-cl_irq::print_info(class cl_console_base *con)
+cl_ints::print_info(class cl_console_base *con)
 {
   int i;
 
@@ -148,4 +148,4 @@ cl_irq::print_info(class cl_console_base *con)
 }
 
 
-/* End of i8048.src/irq.cc */
+/* End of i8048.src/ints.cc */

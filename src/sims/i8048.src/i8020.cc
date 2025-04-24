@@ -616,9 +616,9 @@ cl_i8022::mk_hw_elements(void)
   cl_i8021::mk_hw_elements();
   class cl_hw *h;
 
-  irq= new cl_irq(this);
-  irq->init();
-  add_hw(irq);
+  ints= new cl_ints(this);
+  ints->init();
+  add_hw(ints);
 }
 
 

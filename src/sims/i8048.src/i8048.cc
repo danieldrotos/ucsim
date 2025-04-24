@@ -83,9 +83,9 @@ cl_i8048::mk_hw_elements(void)
   timer->init();
   add_hw(timer);
 
-  irq= new cl_irq(this);
-  irq->init();
-  add_hw(irq);
+  ints= new cl_ints(this);
+  ints->init();
+  add_hw(ints);
   
   bus= new cl_bus(this);
   bus->init();

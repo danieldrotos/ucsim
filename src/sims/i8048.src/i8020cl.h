@@ -37,7 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "timercl.h"
 #include "buscl.h"
 #include "portcl.h"
-#include "irqcl.h"
+#include "intscl.h"
 
 
 enum {
@@ -125,7 +125,7 @@ protected:
   class cl_qport *p0, *p1;
   class cl_p2 *p2;
   class cl_pext *pext;
-  class cl_irq *irq;
+  class cl_ints *ints;
  public:
   cl_i8020(class cl_sim *asim);
   virtual int init(void);
