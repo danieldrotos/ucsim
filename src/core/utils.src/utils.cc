@@ -753,7 +753,7 @@ ddfmod(double x, double y)
   return fmod(x, y);
 #else
   long int q;
-  q= x / y;
+  q= (long int)(x / y);
   return x - q * y;
 #endif  
 }
