@@ -69,9 +69,9 @@ enum {
 
 enum i8020cpu_confs
   {
-    i8020cpu_t0		= 0,
-    i8020cpu_t1		= 1,
-    i8020cpu_inner	= 2,
+    i8020cpu_inner	= 0,
+    i8020cpu_t0		= 1,
+    i8020cpu_t1		= 2,
     i8020cpu_nuof	= 3
   };
 
