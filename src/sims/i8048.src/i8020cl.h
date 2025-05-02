@@ -139,6 +139,7 @@ protected:
   virtual class cl_memory_operator *make_flagop(void);
   virtual void make_cpu_hw(void);
   virtual void mk_hw_elements(void);
+  virtual void mk_dport(void);
   virtual void make_memories(void);
   virtual void make_address_spaces(void);
   virtual void make_chips(void);
