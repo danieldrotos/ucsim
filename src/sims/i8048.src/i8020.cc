@@ -198,6 +198,23 @@ cl_i8020::mk_hw_elements(void)
   h= new cl_dreg(this, 0, "dreg");
   h->init();
   add_hw(h);
+
+  class cl_port_ui *u= new cl_port_ui(this, 0, "dport");
+  u->init();
+  add_hw(u);
+
+  class cl_port_data d;
+  d.init();
+  d.width= 8;
+
+  d.set_name("P1");
+  d.cell_dir= NULL;
+  d.cell_p  = p1->pcell;
+  d.cell_in = p1->pcell;
+  d.keyset  = keysets[0];
+  d.basx    = 1;
+  d.basy    = 5;
+  u->add_port(&d, 0);
 }
 
 void
