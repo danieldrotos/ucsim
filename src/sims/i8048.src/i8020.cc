@@ -668,12 +668,20 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     {
     case i8020cpu_t0:
       if (val)
-	*val= (*val)?1:0;
+	{
+	  *val= (*val)?1:0;
+	  ipins&= ~1;
+	  ipins|= (*val);
+	}
+      else
+	cell->set(ipins & 1);
       break;
     case i8020cpu_t1:
       if (val)
 	{
 	  *val= (*val)?1:0;
+	  ipins&= ~2;
+	  ipins|= (*val << 1);
 	  if (u->timer)
 	    {
 	      if ((cell->get() != 0) &&
@@ -683,6 +691,8 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 		}
 	    }
 	}
+      else
+	cell->set((ipins & 2) >> 1);
       break;
     case i8020cpu_inner:
       if (val)

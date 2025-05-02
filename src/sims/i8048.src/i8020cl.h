@@ -425,6 +425,8 @@ class cl_i8022: public cl_i8021
 class cl_i8020_cpu: public cl_hw
 {
 public:
+  u8_t ipins;
+public:
   cl_i8020_cpu(class cl_uc *auc);
   virtual int init(void);
   virtual unsigned int cfg_size(void) { return i8020cpu_nuof; }
