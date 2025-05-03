@@ -427,6 +427,7 @@ class cl_i8020_cpu: public cl_hw
 {
 public:
   u8_t ipins;
+  C8 cpins;
 public:
   cl_i8020_cpu(class cl_uc *auc);
   virtual int init(void);

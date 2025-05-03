@@ -675,6 +675,7 @@ cl_i8020_cpu::init(void)
 			      cfg_help(i8020cpu_inner)));
   v->init();
 
+  cpins.decode(&ipins);
   return 0;
 }
 
