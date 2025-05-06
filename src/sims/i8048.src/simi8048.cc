@@ -98,13 +98,8 @@ cl_simi8048::mk_controller(void)
       uc->set_id(cpus_8048[i].type_help);
       uc->type= &cpus_8048[i];
       return uc;
-    case CPU_I8041:
+    case CPU_I8041: case CPU_I8041A:
       uc= new cl_i8041(this, 4096, 256);
-      uc->set_id(cpus_8048[i].type_help);
-      uc->type= &cpus_8048[i];
-      return uc;
-    case CPU_I8041A:
-      uc= new cl_i8041A(this, 4096, 256);
       uc->set_id(cpus_8048[i].type_help);
       uc->type= &cpus_8048[i];
       return uc;
