@@ -86,28 +86,4 @@ cl_i8041::decode_regs(void)
 }
 
 
-cl_i8041A::cl_i8041A(class cl_sim *asim):
-  cl_i8041(asim)
-{
-  rom_size= 1024;
-  ram_size= 64;
-  info_ch= 'A';
-}
-
-cl_i8041A::cl_i8041A(class cl_sim *asim,
-		     unsigned int rom_siz,
-		     unsigned int ram_siz):
-  cl_i8041(asim, rom_siz, ram_siz)
-{
-  info_ch= 'A';
-}
-
-int
-cl_i8041A::init(void)
-{
-  cl_i8041::init();
-  return 0;
-}
-
-
 /* End of i8048.src/i8041.cc */

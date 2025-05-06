@@ -49,17 +49,6 @@ class cl_i8041: public cl_i8048
 };
 
 
-class cl_i8041A: public cl_i8041
-{
- public:
-  cl_i8041A(class cl_sim *asim);
-  cl_i8041A(class cl_sim *asim,
-	   unsigned int rom_siz,
-	   unsigned int ram_siz);
-  virtual int init(void);
-};
-
-
 #endif
 
 /* End of i8048.src/i8041cl.h */
