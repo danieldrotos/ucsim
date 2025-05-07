@@ -61,6 +61,20 @@ cl_i8020::cl_i8020(class cl_sim *asim):
   bus= NULL;
 }
 
+cl_i8020::cl_i8020(class cl_sim *asim,
+		   unsigned int rom_siz,
+		   unsigned int ram_siz):
+  cl_uc(asim)
+{
+  PCmask= 0xfff;
+  ram_size= ram_siz;
+  rom_size= rom_siz;
+  info_ch= '1';
+  timer= NULL;
+  inner_rom= rom_size;
+  bus= NULL;
+}
+
 int
 cl_i8020::init(void)
 {
@@ -632,12 +646,32 @@ cl_i8021::cl_i8021(class cl_sim *asim):
   info_ch= '1';
 }
 
+cl_i8021::cl_i8021(class cl_sim *asim,
+		   unsigned int rom_siz,
+		   unsigned int ram_siz):
+  cl_i8020(asim)
+{
+  rom_size= rom_siz;
+  ram_size= ram_siz;
+  info_ch= '1';
+}
+
 
 cl_i8022::cl_i8022(class cl_sim *asim):
   cl_i8021(asim)
 {
   rom_size= 2048;
   ram_size= 128;
+  info_ch= '2';
+}
+
+cl_i8022::cl_i8022(class cl_sim *asim,
+		   unsigned int rom_siz,
+		   unsigned int ram_siz):
+  cl_i8021(asim)
+{
+  rom_size= rom_siz;
+  ram_size= ram_siz;
   info_ch= '2';
 }
 

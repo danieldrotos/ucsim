@@ -128,6 +128,9 @@ protected:
   class cl_ints *ints;
  public:
   cl_i8020(class cl_sim *asim);
+  cl_i8020(class cl_sim *asim,
+	   unsigned int rom_siz,
+	   unsigned int ram_siz);
   virtual int init(void);
   virtual double def_xtal(void) { return 11000000; }
   virtual void set_inner(unsigned int inner) { inner_rom= inner; }
@@ -407,12 +410,18 @@ class cl_i8021: public cl_i8020
 {
  public:
   cl_i8021(class cl_sim *asim);
+  cl_i8021(class cl_sim *asim,
+	   unsigned int rom_siz,
+	   unsigned int ram_siz);
 };
 
 class cl_i8022: public cl_i8021
 {
  public:
   cl_i8022(class cl_sim *asim);
+  cl_i8022(class cl_sim *asim,
+	   unsigned int rom_siz,
+	   unsigned int ram_siz);
   virtual void mk_hw_elements(void);
   //virtual void make_cpu_hw(void);
   // 8022 specific instructions
