@@ -47,7 +47,7 @@ class cl_ints: public cl_hw
   cl_ints(class cl_uc *auc);
   virtual int init(void);
   virtual void added_to_uc(void);
-  virtual void write(MC *cell, t_mem *val);
+  virtual void write(MCELL *cell, t_mem *val);
   virtual int tick(int cycles);
   virtual void reset(void);
   //virtual void happen(class cl_hw *where, enum hw_event he, void *params);

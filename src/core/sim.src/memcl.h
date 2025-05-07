@@ -380,7 +380,8 @@ class cl_memory_cell: public cl_cell_data
   virtual void print_operators(const char *pre, class cl_console_base *con);
 };
 
-typedef class cl_memory_cell MC;
+typedef class cl_memory_cell MCELL;
+typedef class cl_memory_cell *MCELLP;
 
 /*
 class cl_bit_cell: public cl_memory_cell

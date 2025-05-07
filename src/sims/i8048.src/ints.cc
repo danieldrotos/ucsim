@@ -93,7 +93,7 @@ cl_ints::added_to_uc(void)
 }
 
 void
-cl_ints::write(MC *cell, t_mem *val)
+cl_ints::write(MCELL *cell, t_mem *val)
 {
   
 }
