@@ -60,6 +60,7 @@ enum {
 #define MP  t_mem code
 #define CL2 cl_i8020
 #define CL4 cl_i8048
+#define CL1 cl_i8041
 
 #define RD   (vc.rd++)
 #define WR   (vc.wr++)
