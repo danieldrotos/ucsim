@@ -121,6 +121,14 @@ cl_i8048::make_flagop(void)
 }
 
 void
+cl_i8048::make_cpu_hw(void)
+{
+  cpu= new cl_i8048_cpu(this);
+  add_hw(cpu);
+  cpu->init();
+}
+
+void
 cl_i8048::decode_regs(void)
 {
   int i;
@@ -230,6 +238,12 @@ cl_i8048::ANLP2I8(MP)
   ports->write(2, v);
   WR;
   return resGO;
+}
+
+
+cl_i8048_cpu::cl_i8048_cpu(class cl_uc *auc):
+  cl_i8020_cpu(auc)
+{
 }
 
 

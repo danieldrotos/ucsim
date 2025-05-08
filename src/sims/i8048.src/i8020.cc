@@ -759,6 +759,11 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     cell->set(*val);
   switch ((enum i8020cpu_confs)addr)
     {
+    case i8020cpu_inner:
+      if (val)
+	u->set_inner(*val);
+      cell->set(u->get_inner());
+      break;
     case i8020cpu_t0:
       if (val)
 	{
@@ -786,11 +791,6 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       else
 	cell->set((ipins & 2) >> 1);
-      break;
-    case i8020cpu_inner:
-      if (val)
-	u->set_inner(*val);
-      cell->set(u->get_inner());
       break;
     case i8020cpu_nuof: break;
     }

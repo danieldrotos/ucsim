@@ -54,6 +54,7 @@ class cl_i8048: public cl_i8020
   virtual int init(void);
   virtual void mk_hw_elements(void);
   virtual class cl_memory_operator *make_flagop(void);
+  virtual void make_cpu_hw(void);
   virtual void decode_regs(void);
   virtual u8_t movxrd(u8_t addr);
   virtual void movxwr(u8_t addr, u8_t val);
@@ -90,6 +91,20 @@ class cl_i8048: public cl_i8020
   int ORLP2I8(MP);
   int ANLP1I8(MP);
   int ANLP2I8(MP);
+};
+
+
+enum i8048cpu_confs
+  {
+    i8048cpu_int	= i8020cpu_nuof+0,
+    i8048cpu_nuof	= i8020cpu_nuof+1
+  };
+
+
+class cl_i8048_cpu: public cl_i8020_cpu
+{
+public:
+  cl_i8048_cpu(class cl_uc *auc);
 };
 
 
