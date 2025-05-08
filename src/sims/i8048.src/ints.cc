@@ -51,8 +51,12 @@ cl_ints::init(void)
   cene.decode(&ene);
   crqe.init();
   crqe.decode(&rqe);
-  cint.init();
-  cint.decode(&INT);
+  cent.init();
+  cent.decode(&(u->timer->int_enabled));
+  crqt.init();
+  crqt.decode(&(u->timer->int_request));
+  //cint.init();
+  //cint.decode(&INT);
   return 0;
 }
 
@@ -108,7 +112,7 @@ void
 cl_ints::reset(void)
 {
   ene= rqe= 0;
-  INT= 1;
+  //INT= 1;
 }
 
 void

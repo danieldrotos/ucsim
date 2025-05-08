@@ -413,6 +413,7 @@ class cl_i8021: public cl_i8020
   cl_i8021(class cl_sim *asim,
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
+  virtual int init(void);
 };
 
 class cl_i8022: public cl_i8021
@@ -422,6 +423,7 @@ class cl_i8022: public cl_i8021
   cl_i8022(class cl_sim *asim,
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
+  virtual int init(void);
   virtual void mk_hw_elements(void);
   //virtual void make_cpu_hw(void);
   // 8022 specific instructions

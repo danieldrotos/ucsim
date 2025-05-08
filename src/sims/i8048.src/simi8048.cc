@@ -90,7 +90,7 @@ cl_simi8048::mk_controller(void)
 	  rams= mem_sizes[j].ram_siz;
 	}
     }
-  if (cpus_8048[i].type | CPU_MCS21)
+  if (cpus_8048[i].type & CPU_MCS21)
     {
       if (!roms || !rams)
 	uc= new cl_i8021(this);
@@ -100,7 +100,7 @@ cl_simi8048::mk_controller(void)
       uc->type= &cpus_8048[i];
       return uc;
     }
-  else if (cpus_8048[i].type | CPU_MCS22)
+  else if (cpus_8048[i].type & CPU_MCS22)
     {
       if (!roms || !rams)
 	uc= new cl_i8022(this);
@@ -110,7 +110,7 @@ cl_simi8048::mk_controller(void)
       uc->type= &cpus_8048[i];
       return uc;
     }
-  else  if (cpus_8048[i].type | CPU_MCS48)
+  else  if (cpus_8048[i].type & CPU_MCS48)
     {
       if (!roms || !rams)
 	uc= new cl_i8048(this);
@@ -120,7 +120,7 @@ cl_simi8048::mk_controller(void)
       uc->type= &cpus_8048[i];
       return uc;
     }
-  else if (cpus_8048[i].type | CPU_MCS41)
+  else if (cpus_8048[i].type & CPU_MCS41)
     {
       if (!roms || !rams)
 	uc= new cl_i8041(this);

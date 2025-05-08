@@ -39,8 +39,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_ints: public cl_hw
 {
  public:
-  u8_t INT, ene, rqe;
-  C8 cint, cene, cent;
+  u8_t INT;
+  C8 cint;
+  u8_t ene, rqe;
+  C8 cene, cent;
   C8 crqe, crqt;
   class cl_i8020 *u;
  public:
