@@ -188,6 +188,17 @@ cl_i8048::call(MP)
 }
 
 int
+cl_i8048::accept_it(class it_level *il)
+{
+  in_isr= true;
+  // no tracking needed
+  push(true);
+  PC= il->addr;
+  delete il;
+  return resGO;
+}
+
+int
 cl_i8048::OUTLB(MP)
 {
   bus->latch(rA);

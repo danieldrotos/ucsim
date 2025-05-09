@@ -61,6 +61,7 @@ class cl_i8048: public cl_i8020
   virtual int orlbus(u8_t i8);
   virtual int anlbus(u8_t i8);
   virtual int call(MP);
+  virtual int accept_it(class it_level *il);
   // 48 specific insts to implement:
   int ENTCNTI(MP);
   int DISTCNTI(MP);

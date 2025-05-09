@@ -727,7 +727,9 @@ cl_i8022::accept_it(class it_level *il)
 {
   in_isr= true;
   // no tracking needed
-  if (il) delete il;
+  push(false);
+  PC= il->addr;
+  delete il;
   return resGO;
 }
 
