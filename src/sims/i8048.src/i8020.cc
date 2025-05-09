@@ -640,6 +640,14 @@ CL2::read_ir(int regnr)
 }
 
 int
+CL2::priority_of(uchar nuof)
+{
+  if (nuof==0) return 2;
+  if (nuof==1) return 1;
+  return 0;
+}
+
+int
 CL2::accept_it(class it_level *il)
 {
   if (il) delete il;

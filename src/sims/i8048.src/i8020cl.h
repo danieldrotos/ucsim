@@ -161,7 +161,7 @@ protected:
   virtual void print_regs(class cl_console_base *con);
   virtual i8_t *tick_tab(t_mem code) { return tick_tab20; }
   virtual bool it_enabled(void) { return !in_isr; }
-  virtual int priority_of(uchar nuof) { return nuof; }
+  virtual int priority_of(uchar nuof);
   virtual int priority_main(void) { return 0; }
   virtual int accept_it(class it_level *il);
   

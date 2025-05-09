@@ -76,10 +76,10 @@ cl_ints::added_to_uc(void)
 					&cene, 1, // enable cell/mask
 					&crqe, 1, // requ cell/mask
 					3, // addr
-					true, //clr
+					false, //clr
 					false, // indirect
 					"External", // name
-					2 // priority
+					1 // poll_priority
 					));
   is->init();
   is->src_value= 0; // External is low level
@@ -91,7 +91,7 @@ cl_ints::added_to_uc(void)
 					true, //clr
 					false, // indirect
 					"Timer", // name
-					1 // priority
+					2 // poll_priority
 					));
   is->init();
   
