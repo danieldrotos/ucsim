@@ -46,6 +46,8 @@ class cl_i8041: public cl_i8048
   // UPI41 sepcific instructions to implement
   //OUTDBB
   //INDBB
+  //JOBF
+  //JNIBF
 };
 
 

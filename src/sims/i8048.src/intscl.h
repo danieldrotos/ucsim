@@ -36,14 +36,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8020cl.h"
 
 
+class cl_hw;
+
 class cl_ints: public cl_hw
 {
  public:
-  u8_t INT;
-  C8 cint;
-  u8_t ene, rqe;
-  C8 cene, cent;
-  C8 crqe, crqt;
+  u8_t INT; // external req (copy of T0 in 2022)
+  u8_t ene; // enable for external
+  C8 cene, cent; // enable cells
+  C8 crqe, crqt; // request cells
   class cl_i8020 *u;
  public:
   cl_ints(class cl_uc *auc);

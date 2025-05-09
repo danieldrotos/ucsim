@@ -50,7 +50,7 @@ cl_ints::init(void)
   cene.init();
   cene.decode(&ene);
   crqe.init();
-  crqe.decode(&rqe);
+  crqe.decode(&INT);
   cent.init();
   cent.decode(&(u->timer->int_enabled));
   crqt.init();
@@ -82,8 +82,9 @@ cl_ints::added_to_uc(void)
 					2 // priority
 					));
   is->init();
+  is->src_value= 0; // External is low level
 
-  uc->it_sources->add(is= new cl_it_src(uc, 0,
+  uc->it_sources->add(is= new cl_it_src(uc, 1,
 					&cent, 1, // enable cell/mask
 					&crqt, 1, // requ cell/mask
 					7, // addr
@@ -111,8 +112,8 @@ cl_ints::tick(int cycles)
 void
 cl_ints::reset(void)
 {
-  ene= rqe= 0;
-  //INT= 1;
+  ene= 0;
+  INT= 1;
 }
 
 void

@@ -536,7 +536,7 @@ cl_i8020::print_regs(class cl_console_base *con)
 }
 
 void
-cl_i8020::push(void)
+cl_i8020::push(bool pushf)
 {
   u8_t spb= psw&7;
   u8_t spa= (spb+1)&7;
@@ -544,7 +544,8 @@ cl_i8020::push(void)
   iram->write(ib, PC);
   WR;
   u8_t h= (PC>>8) & 0xf;
-  h|= (psw & 0xf0);
+  if (pushf)
+    h|= (psw & 0xf0);
   iram->write(ib+1, h);
   WR;
   psw&= ~7;
@@ -597,6 +598,7 @@ void
 cl_i8020::reset(void)
 {
   cl_uc::reset();
+  in_isr= false;
   // 1) PC=0
   cPC.W(0);
   // 2) SP=0, 3) regbank=0
@@ -635,6 +637,13 @@ CL2::read_ir(int regnr)
   u8_t a= R[regnr&1]->read();
   RD;
   return iram->read(a);
+}
+
+int
+CL2::accept_it(class it_level *il)
+{
+  if (il) delete il;
+  return resGO;
 }
 
 
@@ -713,6 +722,24 @@ cl_i8022::mk_hw_elements(void)
   add_hw(ints);
 }
 
+int
+cl_i8022::accept_it(class it_level *il)
+{
+  in_isr= true;
+  // no tracking needed
+  if (il) delete il;
+  return resGO;
+}
+
+int
+cl_i8022::RETI(MP)
+{
+  in_isr= false;
+  return RET(code);
+}
+
+
+/**************************************************************************/
 
 cl_i8020_cpu::cl_i8020_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")

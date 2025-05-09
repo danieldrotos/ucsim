@@ -38,6 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "buscl.h"
 #include "portcl.h"
 #include "intscl.h"
+#include "itsrccl.h"
 
 
 enum {
@@ -60,6 +61,7 @@ enum {
 #define MP  t_mem code
 #define CL2 cl_i8020
 #define CL4 cl_i8048
+#define CL8 cl_i8048
 #define CL1 cl_i8041
 
 #define RD   (vc.rd++)
@@ -127,6 +129,7 @@ protected:
   class cl_p2 *p2;
   class cl_pext *pext;
   class cl_ints *ints;
+  bool in_isr; // true during ISR
  public:
   cl_i8020(class cl_sim *asim);
   cl_i8020(class cl_sim *asim,
@@ -157,8 +160,12 @@ protected:
   virtual int inst_length(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
   virtual i8_t *tick_tab(t_mem code) { return tick_tab20; }
-
-  virtual void push(void);
+  virtual bool it_enabled(void) { return !in_isr; }
+  virtual int priority_of(uchar nuof) { return nuof; }
+  virtual int priority_main(void) { return 0; }
+  virtual int accept_it(class it_level *il);
+  
+  virtual void push(bool pushf);
   virtual u16_t pop(bool popf);
   virtual void stack_check_overflow(t_addr sp_after);
   
@@ -426,12 +433,14 @@ class cl_i8022: public cl_i8021
 	   unsigned int ram_siz);
   virtual int init(void);
   virtual void mk_hw_elements(void);
+  virtual int accept_it(class it_level *il);
   //virtual void make_cpu_hw(void);
   // 8022 specific instructions
   int JNT0(MP) { return jif(cpu->cfg_read(i8020cpu_t0)==0); }
   int JT0 (MP) { return jif(cpu->cfg_read(i8020cpu_t0)!=0); }
   int ENTCNTI(MP);
   int DISTCNTI(MP);
+  int RETI(MP);
 };
 
 

@@ -145,8 +145,8 @@ DEC( 83, RET		, "ret"		, ' ', 1, false, 2, (void*)"8A421" )
 DEC( 84, JMP4   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8A421" )
 DEC( 85, CLRF0		, "clr f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 // 85 SEL AN0 22
-DEC( 86, JNI		, "jni 'a8'"    , ' ', 2, false, 2, (void*)"8----" ) //4
-// 86 JNI 48
+DEC( 86, JNI		, "jni 'a8'"    , ' ', 2, false, 2, (void*)"8----" ) //48
+DEC( 86, JOBF		, "jobf 'a8'"   , ' ', 2, false, 2, (void*)"-A4--" ) //41,41A
 // 87 undefined
 DEC( 88, ORLBUSI8	, "orl bus,'i8'", ' ', 2, false, 2, (void*)"8----" ) //48
 DEC( 89, ORLP1I8	, "orl p1,'i8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
@@ -163,6 +163,7 @@ DEC( 90, OUTLP0A        , "outl p1,a"   , ' ', 1, false, 2, (void*)"---21" ) //2
 DEC( 91, MOVXIR1A	, "movx @r1,a"	, ' ', 1, false, 2, (void*)"8----" ) //48
 DEC( 92, JB4		, "jb4 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC( 93, RETR		, "retr"	, ' ', 1, false, 2, (void*)"8A4--" ) //48,41A,41
+DEC( 93, RETI		, "ret i"	, ' ', 1, false, 2, (void*)"---2-" ) //22
 DEC( 94, CALL4  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 DEC( 95, CPLF0		, "cpl f0"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 DEC( 96, JNZ		, "jnz 'a8'"	, ' ', 2, false, 2, (void*)"8A421" )
@@ -232,7 +233,7 @@ DEC( d2, JB6		, "jb6 'a8'"	, ' ', 2, false, 2, (void*)"8A4--" ) //48,41A,41
 DEC (d3, XRLI8		, "xrl a,'i8'"	, ' ', 2, false, 2, (void*)"8A421" )
 DEC( d4, CALL6  	, "call 'a11'"	, ' ', 2, false, 2, (void*)"8--2-" ) //48,22
 DEC( d5, SELRB1		, "sel rb1"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
-// d6 JNIBF 41A,41
+DEC( d6, JNIBF 		, "jnibf 'a8'" 	, ' ', 2, false, 2, (void*)"-A4--" ) //41A,41
 DEC( d7, MOVFA		, "mov psw,a"	, ' ', 1, false, 1, (void*)"8A4--" ) //48,41A,41
 DEC( d8, XRLR0		, "xrl a,r0"	, ' ', 1, false, 1, (void*)"8A421" )
 DEC( d9, XRLR1		, "xrl a,r1"	, ' ', 1, false, 1, (void*)"8A421" )

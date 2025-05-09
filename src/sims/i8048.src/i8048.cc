@@ -177,6 +177,17 @@ cl_i8048::anlbus(u8_t i8)
 }
 
 int
+cl_i8048::call(MP)
+{
+  u16_t a= (code&0xe0)<<3;
+  a+= fetch();
+  if (A11) a|= 0x800;
+  push(true);
+  PC= a;
+  return resGO;
+}
+
+int
 cl_i8048::OUTLB(MP)
 {
   bus->latch(rA);
@@ -239,6 +250,14 @@ cl_i8048::ANLP2I8(MP)
   WR;
   return resGO;
 }
+
+int
+cl_i8048::RETR(MP)
+{
+  PC= pop(true);
+  return resGO;
+}
+
 
 
 cl_i8048_cpu::cl_i8048_cpu(class cl_uc *auc):

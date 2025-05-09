@@ -60,6 +60,7 @@ class cl_i8048: public cl_i8020
   virtual void movxwr(u8_t addr, u8_t val);
   virtual int orlbus(u8_t i8);
   virtual int anlbus(u8_t i8);
+  virtual int call(MP);
   // 48 specific insts to implement:
   int ENTCNTI(MP);
   int DISTCNTI(MP);
@@ -91,6 +92,7 @@ class cl_i8048: public cl_i8020
   int ORLP2I8(MP);
   int ANLP1I8(MP);
   int ANLP2I8(MP);
+  int RETR(MP);
 };
 
 
