@@ -243,6 +243,7 @@ cl_i8022::DISTCNTI(MP)
     {
       timer->int_enabled= 0;
       timer->overflow_flag= 0;
+      timer->int_request= 0;
     }
   return resGO;
 }
@@ -254,6 +255,7 @@ CL4::DISTCNTI(MP)
     {
       timer->int_enabled= 0;
       timer->overflow_flag= 0;
+      timer->int_request= 0;
     }
   return resGO;
 }
