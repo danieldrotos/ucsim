@@ -47,7 +47,7 @@ CL2::ENI(MP)
 int
 CL4::JNI(MP)
 {   
-  return jif(!(ints->INT));
+  return jif(!(((class cl_i8020_cpu*)cpu)->ipins & ipm_int));
 }
 
 

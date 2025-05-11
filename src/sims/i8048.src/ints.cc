@@ -49,52 +49,12 @@ cl_ints::init(void)
   cl_hw::init();
   cene.init();
   cene.decode(&ene);
-  crqe.init();
-  crqe.decode(&INT);
-  cent.init();
-  cent.decode(&(u->timer->int_enabled));
-  crqt.init();
-  crqt.decode(&(u->timer->int_request));
-  //cint.init();
-  //cint.decode(&INT);
   return 0;
 }
 
 void
 cl_ints::added_to_uc(void)
 {
-  class cl_it_src *is;
-
-  cent.init();
-  cent.decode(&u->timer->int_enabled);
-  crqt.decode(&u->timer->int_request);
-
-  /*
-    In 8022, external interrupt source is T0 pin!
-   */
-  uc->it_sources->add(is= new cl_it_src(uc, 0,
-					&cene, 1, // enable cell/mask
-					&crqe, 1, // requ cell/mask
-					3, // addr
-					false, //clr
-					false, // indirect
-					"External", // name
-					1 // poll_priority
-					));
-  is->init();
-  is->src_value= 0; // External is low level
-
-  uc->it_sources->add(is= new cl_it_src(uc, 1,
-					&cent, 1, // enable cell/mask
-					&crqt, 1, // requ cell/mask
-					7, // addr
-					true, //clr
-					false, // indirect
-					"Timer", // name
-					2 // poll_priority
-					));
-  is->init();
-  
 }
 
 void
@@ -113,7 +73,6 @@ void
 cl_ints::reset(void)
 {
   ene= 0;
-  INT= 1;
 }
 
 void

@@ -58,6 +58,7 @@ class cl_timer: public cl_hw
   unsigned int pre, pre16, tmr;
   enum timer_modes mode;
   u8_t int_enabled, int_request;
+  C8 cint_enabled, cint_request;
   bool overflow_flag, timer_flag;
  public:
   cl_timer(class cl_uc *auc);

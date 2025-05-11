@@ -69,7 +69,39 @@ cl_i8048::cl_i8048(class cl_sim *asim,
 int
 cl_i8048::init(void)
 {
+  class cl_it_src *is;
+
   cl_i8020::init();
+
+  it_sources->add
+    (
+     is= new cl_it_src
+     (this, 0,
+      &ints->cene, 1, // enable cell/mask
+      &((class cl_i8020_cpu*)cpu)->cpins, ipm_int, // requ cell/mask
+      3, // addr
+      false, //clr
+      false, // indirect
+      "External", // name
+      1 // poll_priority
+      ));
+  is->init();
+  is->src_value= 0; // External is low level
+
+  it_sources->add
+    (
+     is= new cl_it_src
+     (this, 1,
+      &timer->cint_enabled, 1, // enable cell/mask
+      &timer->cint_request, 1, // requ cell/mask
+      7, // addr
+      true, //clr
+      false, // indirect
+      "Timer", // name
+      2 // poll_priority
+      ));
+  is->init();
+
   return 0;
 }
 

@@ -78,6 +78,14 @@ enum i8020cpu_confs
     i8020cpu_nuof	= 3
   };
 
+// Input Pin Masks
+enum ipm_t {
+  ipm_t0	= 1,
+  ipm_t1	= 2,
+  ipm_int	= 4,
+  ipm_wr	= 8
+};
+
 
 /*
  * Special handling of flags
@@ -452,6 +460,7 @@ public:
 public:
   cl_i8020_cpu(class cl_uc *auc);
   virtual int init(void);
+  virtual void reset(void);
   virtual unsigned int cfg_size(void) { return i8020cpu_nuof; }
   virtual const char *cfg_help(t_addr addr);
 

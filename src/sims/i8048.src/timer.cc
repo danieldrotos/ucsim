@@ -50,6 +50,8 @@ cl_timer::init(void)
   uc->vars->add("timer0_flag", cfg, tcfg_tflag, cfg_help(tcfg_tflag));
   uc->vars->add("timer0_int_enabled", cfg, tcfg_ien, cfg_help(tcfg_ien));
   uc->vars->add("timer0_int_request", cfg, tcfg_irq, cfg_help(tcfg_irq));
+  cint_enabled.decode(&int_enabled);
+  cint_request.decode(&int_request);
   return 0;
 }
 
