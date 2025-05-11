@@ -80,8 +80,8 @@ cl_ints::print_info(class cl_console_base *con)
 {
   int i;
 
-  con->dd_printf("Interrupts are %s. Interrupt sources:\n",
-		 (uc->it_enabled())?"enabled":"disabled");
+  con->dd_printf("Execuing %s. Interrupt sources:\n",
+		 (uc->it_enabled())?"MAIN":"ISR");
   con->dd_printf("  Handler  En  Pr Req Act Name\n");
   for (i= 0; i < uc->it_sources->count; i++)
     {

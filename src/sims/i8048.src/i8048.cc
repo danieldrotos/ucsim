@@ -297,6 +297,7 @@ cl_i8048::ANLP2I8(MP)
 int
 cl_i8048::RETR(MP)
 {
+  in_isr= false;
   PC= pop(true);
   return resGO;
 }
