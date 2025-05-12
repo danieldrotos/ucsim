@@ -309,5 +309,55 @@ cl_i8048_cpu::cl_i8048_cpu(class cl_uc *auc):
 {
 }
 
+int
+cl_i8048_cpu::init(void)
+{
+  cl_var *v;
+  cl_i8020_cpu::init();
+  // variables...
+  uc->vars->add(v= new cl_var("INT", cfg, i8048cpu_int,
+			      cfg_help(i8048cpu_int)));
+  v->init();
+  return 0;
+}
+
+const char *
+cl_i8048_cpu::cfg_help(t_addr addr)
+{
+  if (addr < i8020cpu_nuof)
+    return cl_i8020_cpu::cfg_help(addr);
+  switch (addr)
+    {
+    case i8048cpu_int: return "INT input pin (bool, RW)";
+    default:
+      return "Not Used";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_i8048_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  class cl_i8020 *u= (class cl_i8020 *)uc;
+  if (val)
+    cell->set(*val);
+  if (addr < i8020cpu_nuof)
+    return cl_i8048_cpu::conf_op(cell, addr, val);
+  switch (addr)
+    {
+    case i8048cpu_int:
+      if (val)
+	{
+	  *val= (*val)?1:0;
+	  ipins&= ~ipm_int;
+	  ipins|= (*val)?ipm_int:0;
+	}
+      else
+	cell->set(ipins & ipm_int)?1:0;
+      break;
+    }
+  return cell->get();
+}
+
 
 /* End of i8048.src/i8048.cc */
