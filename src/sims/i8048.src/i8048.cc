@@ -353,7 +353,7 @@ cl_i8048_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  ipins|= (*val)?ipm_int:0;
 	}
       else
-	cell->set(ipins & ipm_int)?1:0;
+	cell->set((ipins & ipm_int)?1:0);
       break;
     }
   return cell->get();

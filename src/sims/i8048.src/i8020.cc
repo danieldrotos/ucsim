@@ -854,7 +854,7 @@ cl_i8020_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  ipins|= (*val)?ipm_t0:0;
 	}
       else
-	cell->set(ipins & ipm_t0)?1:0;
+	cell->set((ipins & ipm_t0)?1:0);
       break;
     case i8020cpu_t1:
       if (val)
