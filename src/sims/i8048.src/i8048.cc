@@ -342,7 +342,7 @@ cl_i8048_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   if (val)
     cell->set(*val);
   if (addr < i8020cpu_nuof)
-    return cl_i8048_cpu::conf_op(cell, addr, val);
+    return cl_i8020_cpu::conf_op(cell, addr, val);
   switch (addr)
     {
     case i8048cpu_int:
