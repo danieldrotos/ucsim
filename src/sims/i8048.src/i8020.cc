@@ -126,6 +126,7 @@ cl_i8020::init(void)
 	uc_itab[i]= uc_itab[0x100];
       }
   //reset();
+  make_irq_sources();
   return 0;
 }
 
@@ -715,9 +716,14 @@ cl_i8022::cl_i8022(class cl_sim *asim,
 int
 cl_i8022::init(void)
 {
-  class cl_it_src *is;
-
   cl_i8021::init();
+  return 0;
+}
+
+void
+cl_i8022::make_irq_sources(void)
+{
+  class cl_it_src *is;
 
   /*
     In 8022, external interrupt source is T0 pin!
@@ -750,8 +756,6 @@ cl_i8022::init(void)
       2 // poll_priority
       ));
   is->init();
-
-  return 0;
 }
 
 void

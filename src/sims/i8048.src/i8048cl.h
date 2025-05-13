@@ -52,6 +52,7 @@ class cl_i8048: public cl_i8020
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
   virtual int init(void);
+  virtual void make_irq_sources(void);
   virtual void mk_hw_elements(void);
   virtual class cl_memory_operator *make_flagop(void);
   virtual void make_cpu_hw(void);

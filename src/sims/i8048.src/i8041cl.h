@@ -41,6 +41,8 @@ class cl_i8041: public cl_i8048
 	   unsigned int ram_siz);
   virtual int init(void);
   virtual class cl_memory_operator *make_flagop(void);
+  virtual void make_irq_sources(void);
+  virtual void make_cpu_hw(void);
   virtual void decode_regs(void);
   
   // UPI41 sepcific instructions to implement
@@ -48,6 +50,24 @@ class cl_i8041: public cl_i8048
   //INDBB
   //JOBF
   //JNIBF
+};
+
+
+enum i8041cpu_confs
+  {
+    i8041cpu_wr		= i8020cpu_nuof+0,
+    i8041cpu_nuof	= i8020cpu_nuof+1
+  };
+
+
+class cl_i8041_cpu: public cl_i8020_cpu
+{
+public:
+  cl_i8041_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return i8041cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
 
 

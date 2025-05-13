@@ -55,9 +55,24 @@ cl_i8041::cl_i8041(class cl_sim *asim,
 int
 cl_i8041::init(void)
 {
-  class cl_it_src *is;
-
   cl_i8048::init();
+  return 0;
+}
+
+class cl_memory_operator *
+cl_i8041::make_flagop(void)
+{
+  class cl_memory_operator *o;
+  o= new cl_flag48_op(cpsw);
+  o->init();
+  o->set_name("MCS41 flag operator");
+  return o;
+}
+
+void
+cl_i8041::make_irq_sources()
+{
+  class cl_it_src *is;
 
   it_sources->add
     (
@@ -87,18 +102,15 @@ cl_i8041::init(void)
       2 // poll_priority
       ));
   is->init();
-
-  return 0;
 }
 
-class cl_memory_operator *
-cl_i8041::make_flagop(void)
+
+void
+cl_i8041::make_cpu_hw(void)
 {
-  class cl_memory_operator *o;
-  o= new cl_flag48_op(cpsw);
-  o->init();
-  o->set_name("MCS41 flag operator");
-  return o;
+  cpu= new cl_i8041_cpu(this);
+  add_hw(cpu);
+  cpu->init();
 }
 
 void
@@ -115,6 +127,63 @@ cl_i8041::decode_regs(void)
   cpsw->write(0);
   for (i= 0; i < 8; i++)
     R[i]= (cl_cell8*)regs->get_cell(i);
+}
+
+
+
+cl_i8041_cpu::cl_i8041_cpu(class cl_uc *auc):
+  cl_i8020_cpu(auc)
+{
+}
+
+int
+cl_i8041_cpu::init(void)
+{
+  cl_var *v;
+  cl_i8020_cpu::init();
+  // variables...
+  uc->vars->add(v= new cl_var("WR", cfg, i8041cpu_wr,
+			      cfg_help(i8041cpu_wr)));
+  v->init();
+  return 0;
+}
+
+const char *
+cl_i8041_cpu::cfg_help(t_addr addr)
+{
+  if (addr < i8020cpu_nuof)
+    return cl_i8020_cpu::cfg_help(addr);
+  switch (addr)
+    {
+    case i8041cpu_wr: return "WR input pin (bool, RW)";
+    default:
+      return "Not Used";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  class cl_i8020 *u= (class cl_i8020 *)uc;
+  if (val)
+    cell->set(*val);
+  if (addr < i8020cpu_nuof)
+    return cl_i8020_cpu::conf_op(cell, addr, val);
+  switch (addr)
+    {
+    case i8041cpu_wr:
+      if (val)
+	{
+	  *val= (*val)?1:0;
+	  ipins&= ~ipm_wr;
+	  ipins|= (*val)?ipm_wr:0;
+	}
+      else
+	cell->set((ipins & ipm_wr)?1:0);
+      break;
+    }
+  return cell->get();
 }
 
 

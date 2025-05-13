@@ -153,6 +153,7 @@ protected:
   virtual t_mem fetch(void);
   virtual class cl_memory_operator *make_flagop(void);
   virtual void make_cpu_hw(void);
+  virtual void make_irq_sources(void) {}
   virtual void mk_hw_elements(void);
   virtual void mk_dport(void);
   virtual void make_memories(void);
@@ -440,6 +441,7 @@ class cl_i8022: public cl_i8021
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
   virtual int init(void);
+  virtual void make_irq_sources(void);
   virtual void mk_hw_elements(void);
   virtual int accept_it(class it_level *il);
   //virtual void make_cpu_hw(void);
