@@ -69,8 +69,27 @@ cl_i8048::cl_i8048(class cl_sim *asim,
 int
 cl_i8048::init(void)
 {
+  class cl_memory_operator *o;
+
   cl_i8020::init();
+
+  cflagF1.init();
+  cflagF1.decode(&flagF1);
+  o= new cl_bool_op(&cflagF1);
+  o->init();
+  cflagF1.append_operator(o);
+  cflagF1.set_mask(1);
+
+  mk_cvar(&cflagF1, "F1", "CPU flag F1");
+
   return 0;
+}
+
+void
+cl_i8048::reset(void)
+{
+  cl_i8020::reset();
+  cflagF1.W(0);
 }
 
 void
@@ -232,6 +251,70 @@ cl_i8048::accept_it(class it_level *il)
   delete il;
   return resGO;
 }
+
+
+void
+cl_i8048::print_regs(class cl_console_base *con)
+{
+  int start, stop, i;
+  //t_mem data;
+  u16_t dp;
+  // show regs
+  start= (psw & flagBS)?24:0;
+  con->dd_color("answer");
+  con->dd_printf("        R0 R1 R2 R3 R4 R5 R6 R7    PSW= CAF%c-SSS    ACC= ",
+		 (type->type & CPU_MCS21)?'-':'B');
+  con->dd_color("dump_number");
+  con->dd_printf("0x%02x %+3d %c", ACC, ACC, (isprint(ACC)?ACC:'?'));
+  con->dd_printf("\n");
+  con->dd_cprintf("dump_address", "   0x%02x", start);
+  for (int ii= 0; ii < 8; ii++)
+    con->dd_cprintf("dump_number", " %02x", iram->get(start + ii));
+  con->dd_cprintf("dump_number", "    0x%02x ", psw);
+  con->dd_color("dump_number");
+  con->print_bin(psw, 8);
+  con->dd_printf("    DBF=%d F1=%d", mb, flagF1);
+  con->dd_printf("\n");
+  // show indirectly addressed IRAM and some basic regs
+  start= R[0]->get();
+  stop= start+7;
+  con->dd_color("answer");
+  con->dd_printf("R0=");
+  class cl_dump_ads ads(start, stop);
+  iram->dump(0, /*start, stop*/&ads, 8, con);
+  start= R[1]->get();
+  stop= start+7;
+  con->dd_color("answer");
+  con->dd_printf("R1=");
+  ads._ss(start, stop);
+  iram->dump(0, /*start, stop*/&ads, 8, con);
+
+  con->dd_cprintf("answer", "SP=%d", psw&7);
+  start= 8;
+  stop= psw&7;
+  for (i= 7; i>=0; i--)
+    {
+      dp= iram->read(start+2*i+1) * 256 + iram->read(start+2*i);
+      con->dd_cprintf("dump_address", " %x", dp>>12);
+      if (i<stop)
+	con->dd_color("dump_address");
+      else
+	con->dd_color("dump_number");
+      con->dd_printf(".%03x", dp&0xfff);
+    }
+  con->dd_printf("\n ");
+  con->dd_color("answer");
+  for (i= 7; i>=0; i--)
+    {
+      con->dd_printf("    %d", i);
+      con->dd_printf("%c", (i==(psw&7))?'^':' ');
+	
+    }
+  con->dd_printf("\n");
+
+  print_disass(PC, con);
+}
+
 
 int
 cl_i8048::OUTLB(MP)

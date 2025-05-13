@@ -84,13 +84,6 @@ cl_i8020::init(void)
   o->init();
   cPC.append_operator(o);
 
-  cflagF1.init();
-  cflagF1.decode(&flagF1);
-  o= new cl_bool_op(&cflagF1);
-  o->init();
-  cflagF1.append_operator(o);
-  cflagF1.set_mask(1);
-
   cmb.init();
   cmb.decode(&mb);
   o= new cl_bool_op(&cmb);
@@ -100,7 +93,6 @@ cl_i8020::init(void)
 
   cl_uc::init();
 
-  mk_cvar(&cflagF1, "F1", "CPU flag F1");
   mk_cvar(&cmb, "DBF", "CPU code bank selector");
   mk_cvar(&cmb, "A11", "CPU code bank selector");
   reg_cell_var(&cA, &rA, "ACC", "Accumulator");
@@ -494,7 +486,7 @@ cl_i8020::print_regs(class cl_console_base *con)
   con->dd_cprintf("dump_number", "    0x%02x ", psw);
   con->dd_color("dump_number");
   con->print_bin(psw, 8);
-  con->dd_printf("    DBF=%d F1=%d", mb, flagF1);
+  con->dd_printf("    DBF=%d", mb);
   con->dd_printf("\n");
   // show indirectly addressed IRAM and some basic regs
   start= R[0]->get();
@@ -615,7 +607,6 @@ cl_i8020::reset(void)
   // 8) stop timer
   // 9) clear timer flag
   // 10) Clear F0, F1
-  cflagF1.W(0);
   // 11) disable clock output from T0
 }
 

@@ -46,10 +46,16 @@ class cl_i8041: public cl_i8048
   virtual void decode_regs(void);
   
   // UPI41 sepcific instructions to implement
-  //OUTDBB
-  //INDBB
-  //JOBF
-  //JNIBF
+  //02 OUT DBB,A
+  //22 IN A,DBB
+  //90 MOV STS,A
+  //f5 EN FLAGS
+  //e5 EN DMA
+  //a5 CLR F1
+  //b5 CPL F1
+  //76 'a8' JF1
+  //86 'a8' JOBF
+  //d6 'a8' JNIBF
 };
 
 
@@ -64,9 +70,15 @@ enum i8041cpu_confs
   };
 
 enum i8041_status {
+  // Output Buffer Full: OUTDBB->1, external read->0
   stat_obf	= 1,
+  // Input Buffer Full: External write->1, INDBB->0
   stat_ibf	= 2,
+  // General flag: copy of PSW.F0 ??
   stat_f0	= 4,
+  // A0 address input: set by external write (data or ctrl)
+  // or CLR F1, CPL F1
+  // uc.flagF1, uc.cflagF1
   stat_f1	= 8
 };
 

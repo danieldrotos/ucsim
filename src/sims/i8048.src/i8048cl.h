@@ -46,12 +46,16 @@ public:
 
 class cl_i8048: public cl_i8020
 {
+public:
+  u8_t flagF1;
+  class cl_bit_cell8 cflagF1;
  public:
   cl_i8048(class cl_sim *asim);
   cl_i8048(class cl_sim *asim,
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
   virtual int init(void);
+  virtual void reset(void);
   virtual void make_irq_sources(void);
   virtual void mk_hw_elements(void);
   virtual class cl_memory_operator *make_flagop(void);
@@ -63,6 +67,7 @@ class cl_i8048: public cl_i8020
   virtual int anlbus(u8_t i8);
   virtual int call(MP);
   virtual int accept_it(class it_level *il);
+  virtual void print_regs(class cl_console_base *con);
   // 48 specific insts to implement:
   int ENTCNTI(MP);
   int DISTCNTI(MP);

@@ -126,8 +126,8 @@ protected:
  public:
   u8_t psw;
   class cl_cell8 *cpsw;
-  u8_t flagF1, mb, rA;
-  class cl_bit_cell8 cflagF1, cmb;
+  u8_t mb, rA;
+  class cl_bit_cell8 cmb;
   class cl_address_space *regs, *aspsw, *iram, *ports, *xram;
   class cl_cell8 cA, *R[8];
   class cl_memory_chip *rom_chip, *iram_chip, *ports_chip, *xram_chip;
