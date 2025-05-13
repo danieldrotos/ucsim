@@ -130,6 +130,9 @@ cl_i8041::decode_regs(void)
 }
 
 
+/*
+                               8041 CPU
+*/
 
 cl_i8041_cpu::cl_i8041_cpu(class cl_uc *auc):
   cl_i8020_cpu(auc)
@@ -148,6 +151,12 @@ cl_i8041_cpu::init(void)
   return 0;
 }
 
+void
+cl_i8041_cpu::reset(void)
+{
+  cfg_set(i8041cpu_status, 0);
+}
+
 const char *
 cl_i8041_cpu::cfg_help(t_addr addr)
 {
@@ -156,6 +165,10 @@ cl_i8041_cpu::cfg_help(t_addr addr)
   switch (addr)
     {
     case i8041cpu_wr: return "WR input pin (bool, RW)";
+    case i8041cpu_in: return "Input Buffer (Data) register (int, RW)";
+    case i8041cpu_ctrl: return "Input Buffer (Control) register (int, RW)";
+    case i8041cpu_out: return "Output Buffer register (int, RW)";
+    case i8041cpu_status: return "Status register (int, RW)";
     default:
       return "Not Used";
     }
@@ -181,6 +194,14 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       else
 	cell->set((ipins & ipm_wr)?1:0);
+      break;
+    case i8041cpu_in: // input buffer, A0=0 -> F1=0
+      break;
+    case i8041cpu_ctrl: // input buffer, A0=1 -> F1=1
+      break;
+    case i8041cpu_out:
+      break;
+    case i8041cpu_status:
       break;
     }
   return cell->get();

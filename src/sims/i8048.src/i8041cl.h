@@ -55,16 +55,27 @@ class cl_i8041: public cl_i8048
 
 enum i8041cpu_confs
   {
-    i8041cpu_wr		= i8020cpu_nuof+0,
-    i8041cpu_nuof	= i8020cpu_nuof+1
+    i8041cpu_wr		= i8020cpu_nuof+0, // TODO: use IBF instead
+    i8041cpu_in		= i8020cpu_nuof+1,
+    i8041cpu_ctrl	= i8020cpu_nuof+2,
+    i8041cpu_out	= i8020cpu_nuof+3,
+    i8041cpu_status	= i8020cpu_nuof+4,
+    i8041cpu_nuof	= i8020cpu_nuof+5
   };
 
+enum i8041_status {
+  stat_obf	= 1,
+  stat_ibf	= 2,
+  stat_f0	= 4,
+  stat_f1	= 8
+};
 
 class cl_i8041_cpu: public cl_i8020_cpu
 {
 public:
   cl_i8041_cpu(class cl_uc *auc);
   virtual int init(void);
+  virtual void reset(void);
   virtual unsigned int cfg_size(void) { return i8041cpu_nuof; }
   virtual const char *cfg_help(t_addr addr);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);

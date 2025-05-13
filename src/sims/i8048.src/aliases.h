@@ -125,6 +125,7 @@
 #define JMP4 instruction_84
 #define CLRF0 instruction_85
 #define JNI instruction_86
+#define JOBF instruction_86
 #define ORLBUSI8 instruction_88
 #define ORLP1I8 instruction_89
 #define ORLP2I8 instruction_8a
@@ -137,6 +138,7 @@
 #define MOVXIR1A instruction_91
 #define JB4 instruction_92
 #define RETR instruction_93
+#define RETI instruction_93
 #define CALL4 instruction_94
 #define CPLF0 instruction_95
 #define JNZ instruction_96
@@ -195,6 +197,7 @@
 #define XRLI8 instruction_d3
 #define CALL6 instruction_d4
 #define SELRB1 instruction_d5
+#define JNIBF instruction_d6
 #define MOVFA instruction_d7
 #define XRLR0 instruction_d8
 #define XRLR1 instruction_d9
