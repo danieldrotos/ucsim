@@ -173,7 +173,7 @@ cl_i8041_cpu::cfg_help(t_addr addr)
 t_mem
 cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 {
-  class cl_i8020 *u= (class cl_i8020 *)uc;
+  class cl_i8041 *u= (class cl_i8041 *)uc;
   if (val)
     cell->set(*val);
   if (addr < i8020cpu_nuof)
@@ -181,12 +181,52 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   switch (addr)
     {
     case i8041cpu_in: // input buffer, A0=0 -> F1=0
+      if (*val)
+	{
+	  cell->set(*val & 0xff);
+	  u->flagF1= 0;
+	  u8_t stat= cfg_get(i8041cpu_status);
+	  stat|= ~stat_ibf;
+	  cfg_set(i8041cpu_status, stat);
+	}
       break;
     case i8041cpu_ctrl: // input buffer, A0=1 -> F1=1
+      if (*val)
+	{
+	  cell->set(*val & 0xff);
+	  u->flagF1= 1;
+	  u8_t stat= cfg_get(i8041cpu_status);
+	  stat|= ~stat_ibf;
+	  cfg_set(i8041cpu_status, stat);
+	}
       break;
     case i8041cpu_out:
+      if (*val)
+	cell->set(*val & 0xff);
+      else
+	{
+	  u8_t stat= cfg_get(i8041cpu_status);
+	  stat&= ~stat_obf;
+	  cfg_set(i8041cpu_status, stat);
+	}
       break;
     case i8041cpu_status:
+      // replace F0, F1 bits from CPU
+      if (*val)
+	{
+	  *val&= 0xff;
+	  *val&= ~(stat_f0|stat_f1);
+	  if (u->flagF1) *val|= stat_f1;
+	  if (u->psw & flagF0) *val|= stat_f0;
+	  cell->set(*val);
+	}
+      else
+	{
+	  u8_t stat= cell->get() & ~(stat_f0|stat_f1);
+	  if (u->flagF1) stat|= stat_f1;
+	  if (u->psw & flagF0) stat|= stat_f0;
+	  cell->set(stat);
+	}
       break;
     }
   return cell->get();
