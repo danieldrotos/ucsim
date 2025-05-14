@@ -185,6 +185,21 @@ cl_p2::cl_p2(class cl_uc *auc, int aid,
 	     enum port_widths awidth):
   cl_qport(auc, aid, apas, aaddr, awidth)
 {
+  flags41= 0xff;
+}
+
+
+t_mem
+cl_p2::read(class cl_memory_cell *cell)
+{
+  if (cell == pcell)
+    {
+      u8_t v= cell->get() & cfg_get(port_pin);
+      v&= flags41;
+      return(v);
+    }
+  conf(cell, NULL);
+  return cell->get();
 }
 
 void

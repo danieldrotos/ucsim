@@ -38,7 +38,8 @@ enum i8041cpu_confs
     i8041cpu_ctrl	= i8020cpu_nuof+1,
     i8041cpu_out	= i8020cpu_nuof+2,
     i8041cpu_status	= i8020cpu_nuof+3,
-    i8041cpu_nuof	= i8020cpu_nuof+4
+    i8041cpu_enflags	= i8020cpu_nuof+4,
+    i8041cpu_nuof	= i8020cpu_nuof+5
   };
 
 enum i8041_status {
@@ -76,6 +77,7 @@ class cl_i8041: public cl_i8048
   //90 MOV STS,A
   virtual int MOVSTSA(MP);
   //f5 EN FLAGS
+  virtual int ENFLAGS(MP);
   //e5 EN DMA
   virtual int ENDMA(MP) { return resGO; }
   //86 'a8' JOBF

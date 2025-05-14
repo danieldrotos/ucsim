@@ -75,10 +75,13 @@ class cl_qport: public cl_hw
 
 class cl_p2: public cl_qport
 {
+public:
+  u8_t flags41;
  public:
   cl_p2(class cl_uc *auc, int aid,
 	class cl_address_space *apas, t_addr aaddr,
 	enum port_widths awidth);
+  virtual t_mem read(class cl_memory_cell *cell);
   virtual void set_low(u8_t val);
 };
 
