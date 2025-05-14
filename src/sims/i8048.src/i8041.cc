@@ -79,7 +79,7 @@ cl_i8041::make_irq_sources()
      is= new cl_it_src
      (this, 0,
       &ints->cene, 1, // enable cell/mask
-      &((class cl_i8020_cpu*)cpu)->cpins, ipm_wr, // requ cell/mask
+      cpu->cfg_cell(i8041cpu_status), stat_ibf, // requ cell/mask
       3, // addr
       false, //clr
       false, // indirect
@@ -87,7 +87,6 @@ cl_i8041::make_irq_sources()
       1 // poll_priority
       ));
   is->init();
-  is->src_value= 0; // External is low level
 
   it_sources->add
     (
@@ -145,9 +144,6 @@ cl_i8041_cpu::init(void)
   cl_var *v;
   cl_i8020_cpu::init();
   // variables...
-  uc->vars->add(v= new cl_var("WR", cfg, i8041cpu_wr,
-			      cfg_help(i8041cpu_wr)));
-  v->init();
   return 0;
 }
 
@@ -164,7 +160,6 @@ cl_i8041_cpu::cfg_help(t_addr addr)
     return cl_i8020_cpu::cfg_help(addr);
   switch (addr)
     {
-    case i8041cpu_wr: return "WR input pin (bool, RW)";
     case i8041cpu_in: return "Input Buffer (Data) register (int, RW)";
     case i8041cpu_ctrl: return "Input Buffer (Control) register (int, RW)";
     case i8041cpu_out: return "Output Buffer register (int, RW)";
@@ -185,16 +180,6 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     return cl_i8020_cpu::conf_op(cell, addr, val);
   switch (addr)
     {
-    case i8041cpu_wr:
-      if (val)
-	{
-	  *val= (*val)?1:0;
-	  ipins&= ~ipm_wr;
-	  ipins|= (*val)?ipm_wr:0;
-	}
-      else
-	cell->set((ipins & ipm_wr)?1:0);
-      break;
     case i8041cpu_in: // input buffer, A0=0 -> F1=0
       break;
     case i8041cpu_ctrl: // input buffer, A0=1 -> F1=1
