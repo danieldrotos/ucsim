@@ -82,6 +82,7 @@ public:
 	class cl_address_space *apas, t_addr aaddr,
 	enum port_widths awidth);
   virtual t_mem read(class cl_memory_cell *cell);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual void set_low(u8_t val);
 };
 

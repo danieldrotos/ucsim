@@ -328,5 +328,17 @@ cl_i8041_cpu::set_flags(void)
     u->p2->flags41= 0xff;
 }
 
+void
+cl_i8041_cpu::print_info(class cl_console_base *con)
+{
+  class cl_i8041 *u= (class cl_i8041 *)uc;
+   u8_t s= cfg_get(i8041cpu_status);
+  con->dd_printf("DBBIN = 0x%02x\n", cfg_get(i8041cpu_in));
+  con->dd_printf("DBBOUT= 0x%02x\n", cfg_get(i8041cpu_out));
+  con->dd_printf("STATUS= 0x%02x IBF=%d OBF=%d flags41=0x%02x\n",
+		 s, (s&stat_ibf)?1:0, (s&stat_obf)?1:0,
+		 u->p2->flags41);
+}
+
 
 /* End of i8048.src/i8041.cc */

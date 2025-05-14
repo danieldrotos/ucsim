@@ -98,6 +98,7 @@ public:
   virtual const char *cfg_help(t_addr addr);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual void set_flags(void);
+  virtual void print_info(class cl_console_base *con);
 };
 
 

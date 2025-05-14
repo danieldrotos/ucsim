@@ -188,6 +188,16 @@ cl_p2::cl_p2(class cl_uc *auc, int aid,
   flags41= 0xff;
 }
 
+t_mem
+cl_p2::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  if (addr == port_value)
+    {
+      cell->set(pcell->get() & cfg_get(port_pin) & mask & flags41);
+      return cell->get();
+    }
+  return cl_qport::conf_op(cell, addr, val);
+}
 
 t_mem
 cl_p2::read(class cl_memory_cell *cell)
