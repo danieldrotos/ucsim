@@ -51,6 +51,7 @@ class cl_i8041: public cl_i8048
   //22 IN A,DBB
   virtual int INADBB(MP);
   //90 MOV STS,A
+  virtual int MOVSTSA(MP);
   //f5 EN FLAGS
   //e5 EN DMA
   //86 'a8' JOBF
