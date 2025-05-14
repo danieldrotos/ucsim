@@ -178,7 +178,7 @@ COMMAND_DO_WORK_APP(cl_jaj_cmd)
 
 CMDHELP(cl_jaj_cmd,
 	"jaj [val]",
-	"Jaj",
+	"Internal command for developers",
 	"")
 
 /* End of cmd.src/cmd_conf.cc */
