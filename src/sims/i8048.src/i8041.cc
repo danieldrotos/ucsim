@@ -246,9 +246,9 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	{
 	  cell->set(*val&= 0xff);
 	  u->flagF1= 0;
-	  u8_t stat= cfg_get(i8041cpu_status);
+	  u8_t stat= cfg_read(i8041cpu_status);
 	  stat&= ~stat_ibf;
-	  cfg_set(i8041cpu_status, stat);
+	  cfg_write(i8041cpu_status, stat);
 	}
       break;
     case i8041cpu_ctrl: // input buffer, A0=1 -> F1=1
@@ -256,9 +256,9 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	{
 	  cell->set(*val&= 0xff);
 	  u->flagF1= 1;
-	  u8_t stat= cfg_get(i8041cpu_status);
+	  u8_t stat= cfg_read(i8041cpu_status);
 	  stat&= ~stat_ibf;
-	  cfg_set(i8041cpu_status, stat);
+	  cfg_write(i8041cpu_status, stat);
 	}
       break;
     case i8041cpu_out:
@@ -274,9 +274,9 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case i8041cpu_obfclear:
       if (val)
 	{
-	  u8_t stat= cfg_get(i8041cpu_status);
+	  u8_t stat= cfg_read(i8041cpu_status);
 	  stat&= ~stat_obf;
-	  cfg_set(i8041cpu_status, stat);
+	  cfg_write(i8041cpu_status, stat);
 	}
       cell->set(0);
       break;
@@ -317,9 +317,10 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  if ((*val= (*val)?1:0))
 	    {
 	      u8_t v= 0xff;
-	      if (!(*val & stat_obf))
+	      u8_t s= cfg_get(i8041cpu_status);
+	      if (!(s & stat_obf))
 		v&= ~0x10;
-	      if ((*val & stat_ibf))
+	      if ((s & stat_ibf))
 		v&= ~0x20;
 	      u->p2->flags41= v;
 	    }
