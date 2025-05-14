@@ -179,7 +179,22 @@ cl_i8041_cpu::init(void)
   cl_var *v;
   cl_i8020_cpu::init();
   // variables...
-
+  uc->vars->add(v= new cl_var("DBBIN_DATA", cfg, i8041cpu_in,
+			      cfg_help(i8041cpu_in)));
+  v->init();
+  uc->vars->add(v= new cl_var("DBBIN_CTRL", cfg, i8041cpu_ctrl,
+			      cfg_help(i8041cpu_ctrl)));
+  v->init();
+  uc->vars->add(v= new cl_var("DBBOUT", cfg, i8041cpu_out,
+			      cfg_help(i8041cpu_out)));
+  v->init();
+  uc->vars->add(v= new cl_var("STATUS", cfg, i8041cpu_status,
+			      cfg_help(i8041cpu_status)));
+  v->init();
+  uc->vars->add(v= new cl_var("ENFLAGS", cfg, i8041cpu_enflags,
+			      cfg_help(i8041cpu_enflags)));
+  v->init();
+  
   MCELL *cc= cfg_cell(i8041cpu_ctrl);
   MCELL *ci= cfg_cell(i8041cpu_in);
   cc->decode(ci);
@@ -201,11 +216,11 @@ cl_i8041_cpu::cfg_help(t_addr addr)
     return cl_i8020_cpu::cfg_help(addr);
   switch (addr)
     {
-    case i8041cpu_in: return "Input Buffer (Data) register (int, RW)";
-    case i8041cpu_ctrl: return "Input Buffer (Control) register (int, RW)";
+    case i8041cpu_in: return "Input Buffer (as Data) register (int, RW)";
+    case i8041cpu_ctrl: return "Input Buffer (as Control) register (int, RW)";
     case i8041cpu_out: return "Output Buffer register (int, RW)";
     case i8041cpu_status: return "Status register (int, RW)";
-    case i8041cpu_enflags: return "Flags mode enable (bool, RO)";
+    case i8041cpu_enflags: return "Flags mode enable (bool, RW)";
     default:
       return "Not Used";
     }
@@ -283,7 +298,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       break;
     case i8041cpu_enflags:
       if (*val)
-	*val= cell->get();
+	*val= (*val)?1:0;
       break;
     }
   return cell->get();
