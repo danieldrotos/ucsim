@@ -129,6 +129,14 @@ cl_i8041::decode_regs(void)
 }
 
 
+int
+cl_i8041::OUTDBBA(MP)
+{
+  cpu->cfg_write(i8041cpu_out, rA);
+  return resGO;
+}
+
+
 /*
                                8041 CPU
 */
@@ -144,6 +152,11 @@ cl_i8041_cpu::init(void)
   cl_var *v;
   cl_i8020_cpu::init();
   // variables...
+
+  MCELL *cc= cfg_cell(i8041cpu_ctrl);
+  MCELL *ci= cfg_cell(i8041cpu_in);
+  cc->decode(ci);
+  
   return 0;
 }
 
@@ -183,7 +196,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case i8041cpu_in: // input buffer, A0=0 -> F1=0
       if (*val)
 	{
-	  cell->set(*val & 0xff);
+	  cell->set(*val&= 0xff);
 	  u->flagF1= 0;
 	  u8_t stat= cfg_get(i8041cpu_status);
 	  stat|= ~stat_ibf;
@@ -193,7 +206,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case i8041cpu_ctrl: // input buffer, A0=1 -> F1=1
       if (*val)
 	{
-	  cell->set(*val & 0xff);
+	  cell->set(*val&= 0xff);
 	  u->flagF1= 1;
 	  u8_t stat= cfg_get(i8041cpu_status);
 	  stat|= ~stat_ibf;

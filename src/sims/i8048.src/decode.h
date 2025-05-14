@@ -3,7 +3,7 @@
 DEC( 00, NOP		, "nop"		, ' ', 1, false, 1, (void*)"8421" )
 // 01 undefined
 DEC( 02, OUTLB		, "outl bus,a"	, ' ', 1, false, 2, (void*)"8---" ) // 48
-DEC( 02, OUTDBB		, "out dbb,a"	, ' ', 1, false, 2, (void*)"-4--" ) //41
+DEC( 02, OUTDBBA	, "out dbb,a"	, ' ', 1, false, 2, (void*)"-4--" ) //41
 DEC( 03, ADDI8		, "add a,'i8'"	, ' ', 2, false, 2, (void*)"8421" )
 DEC( 04, JMP0   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8421" )
 DEC( 05, ENI    	, "en i"	, ' ', 1, false, 1, (void*)"842-" )

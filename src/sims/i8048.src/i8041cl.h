@@ -47,13 +47,11 @@ class cl_i8041: public cl_i8048
   
   // UPI41 sepcific instructions to implement
   //02 OUT DBB,A
+  virtual int OUTDBBA(MP);
   //22 IN A,DBB
   //90 MOV STS,A
   //f5 EN FLAGS
   //e5 EN DMA
-  //a5 CLR F1
-  //b5 CPL F1
-  //76 'a8' JF1
   //86 'a8' JOBF
   //d6 'a8' JNIBF
 };
