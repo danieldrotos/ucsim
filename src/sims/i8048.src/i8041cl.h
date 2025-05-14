@@ -38,8 +38,9 @@ enum i8041cpu_confs
     i8041cpu_ctrl	= i8020cpu_nuof+1,
     i8041cpu_out	= i8020cpu_nuof+2,
     i8041cpu_status	= i8020cpu_nuof+3,
-    i8041cpu_enflags	= i8020cpu_nuof+4,
-    i8041cpu_nuof	= i8020cpu_nuof+5
+    i8041cpu_obfclear	= i8020cpu_nuof+4,
+    i8041cpu_enflags	= i8020cpu_nuof+5,
+    i8041cpu_nuof	= i8020cpu_nuof+6
   };
 
 enum i8041_status {

@@ -194,6 +194,9 @@ cl_i8041_cpu::init(void)
   uc->vars->add(v= new cl_var("ENFLAGS", cfg, i8041cpu_enflags,
 			      cfg_help(i8041cpu_enflags)));
   v->init();
+  uc->vars->add(v= new cl_var("OBFCLEAR", cfg, i8041cpu_obfclear,
+			      cfg_help(i8041cpu_obfclear)));
+  v->init();
   
   MCELL *cc= cfg_cell(i8041cpu_ctrl);
   MCELL *ci= cfg_cell(i8041cpu_in);
@@ -220,6 +223,7 @@ cl_i8041_cpu::cfg_help(t_addr addr)
     case i8041cpu_ctrl: return "Input Buffer (as Control) register (int, RW)";
     case i8041cpu_out: return "Output Buffer register (int, RW)";
     case i8041cpu_status: return "Status register (int, RW)";
+    case i8041cpu_obfclear: return "Clear OBF when written (int, WO)";
     case i8041cpu_enflags: return "Flags mode enable (bool, RW)";
     default:
       return "Not Used";
@@ -243,7 +247,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set(*val&= 0xff);
 	  u->flagF1= 0;
 	  u8_t stat= cfg_get(i8041cpu_status);
-	  stat|= ~stat_ibf;
+	  stat&= ~stat_ibf;
 	  cfg_set(i8041cpu_status, stat);
 	}
       break;
@@ -253,19 +257,28 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set(*val&= 0xff);
 	  u->flagF1= 1;
 	  u8_t stat= cfg_get(i8041cpu_status);
-	  stat|= ~stat_ibf;
+	  stat&= ~stat_ibf;
 	  cfg_set(i8041cpu_status, stat);
 	}
       break;
     case i8041cpu_out:
       if (val)
 	cell->set(*val & 0xff);
-      else
+      /*else
+	{
+	  u8_t stat= cfg_get(i8041cpu_status);
+	  stat&= ~stat_obf;
+	  cfg_set(i8041cpu_status, stat);
+	  }*/
+      break;
+    case i8041cpu_obfclear:
+      if (val)
 	{
 	  u8_t stat= cfg_get(i8041cpu_status);
 	  stat&= ~stat_obf;
 	  cfg_set(i8041cpu_status, stat);
 	}
+      cell->set(0);
       break;
     case i8041cpu_status:
       // replace F0, F1 bits from CPU
