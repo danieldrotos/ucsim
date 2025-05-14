@@ -289,19 +289,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  if (u->flagF1) *val|= stat_f1;
 	  if (u->psw & flagF0) *val|= stat_f0;
 	  cell->set(*val);
-	  if (cfg_get(i8041cpu_enflags))
-	    {
-	      // p2.4= OBF
-	      // p2.5= ~IBF
-	      u8_t v= 0xff;
-	      if (!(*val & stat_obf))
-		v&= ~0x10;
-	      if ((*val & stat_ibf))
-		v&= ~0x20;
-	      u->p2->flags41= v;
-	    }
-	  else
-	    u->p2->flags41= 0xff;
+	  set_flags();
 	}
       else
 	{
@@ -314,22 +302,30 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
     case i8041cpu_enflags:
       if (val)
 	{
-	  if ((*val= (*val)?1:0))
-	    {
-	      u8_t v= 0xff;
-	      u8_t s= cfg_get(i8041cpu_status);
-	      if (!(s & stat_obf))
-		v&= ~0x10;
-	      if ((s & stat_ibf))
-		v&= ~0x20;
-	      u->p2->flags41= v;
-	    }
-	  else
-	    u->p2->flags41= 0xff;
+	  cell->set((*val)?1:0);
+	  set_flags();
 	}
       break;
     }
   return cell->get();
+}
+
+void
+cl_i8041_cpu::set_flags(void)
+{
+  class cl_i8041 *u= (class cl_i8041 *)uc;
+  if (cfg_get(i8041cpu_enflags))
+    {
+      u8_t v= 0xff;
+      u8_t s= cfg_get(i8041cpu_status);
+      if (!(s & stat_obf))
+	v&= ~0x10;
+      if ((s & stat_ibf))
+	v&= ~0x20;
+      u->p2->flags41= v;
+    }
+  else
+    u->p2->flags41= 0xff;
 }
 
 

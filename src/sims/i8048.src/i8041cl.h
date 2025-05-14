@@ -97,6 +97,7 @@ public:
   virtual unsigned int cfg_size(void) { return i8041cpu_nuof; }
   virtual const char *cfg_help(t_addr addr);
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+  virtual void set_flags(void);
 };
 
 
