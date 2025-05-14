@@ -136,6 +136,16 @@ cl_i8041::OUTDBBA(MP)
   return resGO;
 }
 
+int
+cl_i8041::INADBB(MP)
+{
+  cA.W(cpu->cfg_read(i8041cpu_in));
+  u8_t s= cpu->cfg_read(i8041cpu_status);
+  s&= ~stat_ibf;
+  cpu->cfg_set(i8041cpu_status, s);
+  return resGO;
+}
+
 
 /*
                                8041 CPU

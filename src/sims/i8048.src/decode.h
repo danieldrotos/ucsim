@@ -38,7 +38,7 @@ DEC( 1f, INCR7		, "inc r7"	, ' ', 1, false, 1, (void*)"8421" )
 
 DEC( 20, XCHIR0		, "xch a,@r0"	, ' ', 1, false, 1, (void*)"8421" )
 DEC( 21, XCHIR1		, "xch a,@r1"	, ' ', 1, false, 1, (void*)"8421" )
-DEC( 22, INDBB		, "in a,dbb"	, ' ', 1, false, 2, (void*)"-4--" ) //41
+DEC( 22, INADBB		, "in a,dbb"	, ' ', 1, false, 2, (void*)"-4--" ) //41
 DEC( 23, MOVAI8		, "mov a,'i8'"	, ' ', 2, false, 2, (void*)"8421" )
 DEC( 24, JMP1   	, "jmp 'a11'"   , ' ', 2, false, 2, (void*)"8421" )
 DEC( 25, ENTCNTI 	, "en tcnti"	, ' ', 1, false, 1, (void*)"842-" ) //48,41,22

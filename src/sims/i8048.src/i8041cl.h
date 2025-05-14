@@ -49,6 +49,7 @@ class cl_i8041: public cl_i8048
   //02 OUT DBB,A
   virtual int OUTDBBA(MP);
   //22 IN A,DBB
+  virtual int INADBB(MP);
   //90 MOV STS,A
   //f5 EN FLAGS
   //e5 EN DMA
@@ -67,9 +68,9 @@ enum i8041cpu_confs
   };
 
 enum i8041_status {
-  // Output Buffer Full: OUTDBB->1, external read->0
+  // Output Buffer Full: OUTDBBA->1, external read->0
   stat_obf	= 1,
-  // Input Buffer Full: External write->1, INDBB->0
+  // Input Buffer Full: External write->1, INADBB->0
   stat_ibf	= 2,
   // General flag: copy of PSW.F0 ??
   stat_f0	= 4,
