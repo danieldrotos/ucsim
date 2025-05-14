@@ -298,7 +298,19 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       break;
     case i8041cpu_enflags:
       if (*val)
-	*val= (*val)?1:0;
+	{
+	  if ((*val= (*val)?1:0))
+	    {
+	      u8_t v= 0xff;
+	      if (!(*val & stat_obf))
+		v&= ~0x10;
+	      if ((*val & stat_ibf))
+		v&= ~0x20;
+	      u->p2->flags41= v;
+	    }
+	  else
+	    u->p2->flags41= 0xff;
+	}
       break;
     }
   return cell->get();
