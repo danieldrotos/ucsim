@@ -287,6 +287,8 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 		v&= ~0x20;
 	      u->p2->flags41= v;
 	    }
+	  else
+	    u->p2->flags41= 0xff;
 	}
       else
 	{
