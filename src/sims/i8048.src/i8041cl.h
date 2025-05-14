@@ -32,6 +32,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i8048cl.h"
 
 
+enum i8041cpu_confs
+  {
+    i8041cpu_in		= i8020cpu_nuof+0,
+    i8041cpu_ctrl	= i8020cpu_nuof+1,
+    i8041cpu_out	= i8020cpu_nuof+2,
+    i8041cpu_status	= i8020cpu_nuof+3,
+    i8041cpu_nuof	= i8020cpu_nuof+4
+  };
+
+enum i8041_status {
+  // Output Buffer Full: OUTDBBA->1, external read->0
+  stat_obf	= 1,
+  // Input Buffer Full: External write->1, INADBB->0
+  stat_ibf	= 2,
+  // General flag: copy of PSW.F0 ??
+  stat_f0	= 4,
+  // A0 address input: set by external write (data or ctrl)
+  // or CLR F1, CPL F1
+  // uc.flagF1, uc.cflagF1
+  stat_f1	= 8
+};
+
+
 class cl_i8041: public cl_i8048
 {
  public:
@@ -54,32 +77,13 @@ class cl_i8041: public cl_i8048
   virtual int MOVSTSA(MP);
   //f5 EN FLAGS
   //e5 EN DMA
+  virtual int ENDMA(MP) { return resGO; }
   //86 'a8' JOBF
+  virtual int JOBF(MP) { return jif(cpu->cfg_get(i8041cpu_status) & stat_obf); }
   //d6 'a8' JNIBF
+  virtual int JNIBF(MP) { return jif(!(cpu->cfg_get(i8041cpu_status) & stat_ibf)); }
 };
 
-
-enum i8041cpu_confs
-  {
-    i8041cpu_in		= i8020cpu_nuof+0,
-    i8041cpu_ctrl	= i8020cpu_nuof+1,
-    i8041cpu_out	= i8020cpu_nuof+2,
-    i8041cpu_status	= i8020cpu_nuof+3,
-    i8041cpu_nuof	= i8020cpu_nuof+4
-  };
-
-enum i8041_status {
-  // Output Buffer Full: OUTDBBA->1, external read->0
-  stat_obf	= 1,
-  // Input Buffer Full: External write->1, INADBB->0
-  stat_ibf	= 2,
-  // General flag: copy of PSW.F0 ??
-  stat_f0	= 4,
-  // A0 address input: set by external write (data or ctrl)
-  // or CLR F1, CPL F1
-  // uc.flagF1, uc.cflagF1
-  stat_f1	= 8
-};
 
 class cl_i8041_cpu: public cl_i8020_cpu
 {
