@@ -238,7 +238,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   switch (addr)
     {
     case i8041cpu_in: // input buffer, A0=0 -> F1=0
-      if (*val)
+      if (val)
 	{
 	  cell->set(*val&= 0xff);
 	  u->flagF1= 0;
@@ -248,7 +248,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       break;
     case i8041cpu_ctrl: // input buffer, A0=1 -> F1=1
-      if (*val)
+      if (val)
 	{
 	  cell->set(*val&= 0xff);
 	  u->flagF1= 1;
@@ -258,7 +258,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       break;
     case i8041cpu_out:
-      if (*val)
+      if (val)
 	cell->set(*val & 0xff);
       else
 	{
@@ -269,7 +269,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
       break;
     case i8041cpu_status:
       // replace F0, F1 bits from CPU
-      if (*val)
+      if (val)
 	{
 	  *val&= 0xff;
 	  *val&= ~(stat_f0|stat_f1);
@@ -299,7 +299,7 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	}
       break;
     case i8041cpu_enflags:
-      if (*val)
+      if (val)
 	{
 	  if ((*val= (*val)?1:0))
 	    {
