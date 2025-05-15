@@ -467,6 +467,37 @@ cl_i8020::inst_length(t_addr addr)
 }
 
 void
+cl_i8020::analyze(t_addr addr)
+{
+  uint code;
+  struct dis_entry *tabl;
+  t_addr a;
+
+  code= rom->get(addr);
+  tabl= get_dis_entry(addr);
+  while (!inst_at(addr) && tabl)
+    {
+      set_inst_at(addr);
+      switch (tabl->branch)
+	{
+	  // break after CALL, return after JMP
+	case 'i': // conditional jump a8
+	  a= addr&0x0f00;
+	  a+= rom->get(addr+1);
+	  analyze_jump(addr, a, 'j');
+	  break;
+	case ' ': break;
+	case '_': return;
+	default: return;
+	}
+      addr= rom->validate_address(addr+tabl->length);
+      code= rom->get(addr);
+      tabl= get_dis_entry(addr);
+    }
+}
+
+
+void
 cl_i8020::print_regs(class cl_console_base *con)
 {
   int start, stop, i;
