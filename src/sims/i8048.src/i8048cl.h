@@ -58,6 +58,7 @@ public:
   virtual void reset(void);
   virtual void make_irq_sources(void);
   virtual void mk_hw_elements(void);
+  virtual void mk_dport(void);
   virtual class cl_memory_operator *make_flagop(void);
   virtual void make_cpu_hw(void);
   virtual void decode_regs(void);

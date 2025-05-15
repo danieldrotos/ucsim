@@ -877,10 +877,10 @@ cl_uc::build_cmdset(class cl_cmdset *cmdset)
   cmdset->add(cmd= new cl_hole_cmd("hole", 0));
   cmd->init();
   
-  cmdset->add(cmd= new cl_break_cmd("break", 0));
+  cmdset->add(cmd= new cl_tbreak_cmd("tbreak", 0));
   cmd->init();
 
-  cmdset->add(cmd= new cl_tbreak_cmd("tbreak", 0));
+  cmdset->add(cmd= new cl_break_cmd("break", 0));
   cmd->init();
 
   cmdset->add(cmd= new cl_clear_cmd("clear", 0));

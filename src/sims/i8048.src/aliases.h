@@ -1,6 +1,6 @@
 #define NOP instruction_00
 #define OUTLB instruction_02
-#define OUTDBB instruction_02
+#define OUTDBBA instruction_02
 #define ADDI8 instruction_03
 #define JMP0 instruction_04
 #define ENI instruction_05
@@ -31,7 +31,7 @@
 #define INCR7 instruction_1f
 #define XCHIR0 instruction_20
 #define XCHIR1 instruction_21
-#define INDBB instruction_22
+#define INADBB instruction_22
 #define MOVAI8 instruction_23
 #define JMP1 instruction_24
 #define ENTCNTI instruction_25
@@ -135,6 +135,7 @@
 #define ORLDP7A instruction_8f
 #define MOVXIR0A instruction_90
 #define OUTLP0A instruction_90
+#define MOVSTSA instruction_90
 #define MOVXIR1A instruction_91
 #define JB4 instruction_92
 #define RETR instruction_93
@@ -210,6 +211,7 @@
 #define MOVP3AIA instruction_e3
 #define JMP7 instruction_e4
 #define SELMB0 instruction_e5
+#define ENDMA instruction_e5
 #define JNC instruction_e6
 #define RL instruction_e7
 #define DJNZR0 instruction_e8
@@ -225,6 +227,7 @@
 #define JB7 instruction_f2
 #define CALL7 instruction_f4
 #define SELMB1 instruction_f5
+#define ENFLAGS instruction_f5
 #define JC instruction_f6
 #define RLC instruction_f7
 #define MOVAR0 instruction_f8

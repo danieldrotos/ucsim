@@ -212,31 +212,9 @@ cl_i8020::mk_hw_elements(void)
 void
 cl_i8020::mk_dport(void)
 {
-  class cl_port_ui *u= new cl_port_ui(this, 0, "dport");
-  u->init();
-  add_hw(u);
-
-  class cl_port_data d;
-  d.init();
-  d.width= 8;
-
-  d.set_name("P1");
-  d.cell_dir= NULL;
-  d.cell_p  = p1->pcell;
-  d.cell_in = p1->cfg_cell(port_pin);
-  d.keyset  = keysets[0];
-  d.basx    = 1;
-  d.basy    = 6;
-  u->add_port(&d, 0);
-
-  d.set_name("P2");
-  d.cell_dir= NULL;
-  d.cell_p  = p2->pcell;
-  d.cell_in = p2->cfg_cell(port_pin);
-  d.keyset  = keysets[1];
-  d.basx    = 1+20;
-  d.basy    = 6;
-  u->add_port(&d, 1);
+  dport= new cl_port_ui(this, 0, "dport");
+  dport->init();
+  add_hw(dport);
 }
 
 void
@@ -709,6 +687,42 @@ cl_i8021::init(void)
   return 0;
 }
 
+void
+cl_i8021::mk_dport(void)
+{
+  cl_i8020::mk_dport();
+  
+  class cl_port_data d;
+  d.init();
+  d.width= 8;
+
+  d.set_name("P0");
+  d.cell_dir= NULL;
+  d.cell_p  = p0->pcell;
+  d.cell_in = p0->cfg_cell(port_pin);
+  d.keyset  = keysets[0];
+  d.basx    = 1;
+  d.basy    = 6;
+  dport->add_port(&d, 0);
+
+  d.set_name("P1");
+  d.cell_dir= NULL;
+  d.cell_p  = p1->pcell;
+  d.cell_in = p1->cfg_cell(port_pin);
+  d.keyset  = keysets[1];
+  d.basx    = 1+20;
+  d.basy    = 6;
+  dport->add_port(&d, 1);
+
+  d.set_name("P2");
+  d.cell_dir= NULL;
+  d.cell_p  = p2->pcell;
+  d.cell_in = p2->cfg_cell(port_pin);
+  d.keyset  = keysets[2];
+  d.basx    = 1+20+20;
+  d.basy    = 6;
+  dport->add_port(&d, 2);
+}
 
 
 /****************************************************************************

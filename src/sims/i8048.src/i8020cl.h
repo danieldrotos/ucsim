@@ -137,6 +137,7 @@ protected:
   class cl_p2 *p2;
   class cl_pext *pext;
   class cl_ints *ints;
+  class cl_port_ui *dport;
   bool in_isr; // true during ISR
  public:
   cl_i8020(class cl_sim *asim);
@@ -431,6 +432,7 @@ class cl_i8021: public cl_i8020
 	   unsigned int rom_siz,
 	   unsigned int ram_siz);
   virtual int init(void);
+  virtual void mk_dport(void);
 };
 
 class cl_i8022: public cl_i8021

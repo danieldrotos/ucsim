@@ -129,6 +129,41 @@ cl_i8041::decode_regs(void)
 }
 
 
+int
+cl_i8041::OUTDBBA(MP)
+{
+  cpu->cfg_write(i8041cpu_out, rA);
+  return resGO;
+}
+
+int
+cl_i8041::INADBB(MP)
+{
+  cA.W(cpu->cfg_read(i8041cpu_in));
+  u8_t s= cpu->cfg_read(i8041cpu_status);
+  s&= ~stat_ibf;
+  cpu->cfg_write(i8041cpu_status, s);
+  return resGO;
+}
+
+int
+cl_i8041::MOVSTSA(MP)
+{
+  u8_t s= cpu->cfg_read(i8041cpu_status);
+  s&= 0x0f;
+  s|= (rA & 0xf0);
+  cpu->cfg_write(i8041cpu_status, s);
+  return resGO;
+}
+
+int
+cl_i8041::ENFLAGS(MP)
+{
+  cpu->cfg_set(i8041cpu_enflags, 1);
+  return resGO;
+}
+
+
 /*
                                8041 CPU
 */
@@ -144,6 +179,29 @@ cl_i8041_cpu::init(void)
   cl_var *v;
   cl_i8020_cpu::init();
   // variables...
+  uc->vars->add(v= new cl_var("DBBIN_DATA", cfg, i8041cpu_in,
+			      cfg_help(i8041cpu_in)));
+  v->init();
+  uc->vars->add(v= new cl_var("DBBIN_CTRL", cfg, i8041cpu_ctrl,
+			      cfg_help(i8041cpu_ctrl)));
+  v->init();
+  uc->vars->add(v= new cl_var("DBBOUT", cfg, i8041cpu_out,
+			      cfg_help(i8041cpu_out)));
+  v->init();
+  uc->vars->add(v= new cl_var("STATUS", cfg, i8041cpu_status,
+			      cfg_help(i8041cpu_status)));
+  v->init();
+  uc->vars->add(v= new cl_var("ENFLAGS", cfg, i8041cpu_enflags,
+			      cfg_help(i8041cpu_enflags)));
+  v->init();
+  uc->vars->add(v= new cl_var("OBFCLEAR", cfg, i8041cpu_obfclear,
+			      cfg_help(i8041cpu_obfclear)));
+  v->init();
+  
+  MCELL *cc= cfg_cell(i8041cpu_ctrl);
+  MCELL *ci= cfg_cell(i8041cpu_in);
+  cc->decode(ci);
+  
   return 0;
 }
 
@@ -151,6 +209,7 @@ void
 cl_i8041_cpu::reset(void)
 {
   cfg_set(i8041cpu_status, 0);
+  cfg_set(i8041cpu_enflags, 0);
 }
 
 const char *
@@ -160,10 +219,12 @@ cl_i8041_cpu::cfg_help(t_addr addr)
     return cl_i8020_cpu::cfg_help(addr);
   switch (addr)
     {
-    case i8041cpu_in: return "Input Buffer (Data) register (int, RW)";
-    case i8041cpu_ctrl: return "Input Buffer (Control) register (int, RW)";
+    case i8041cpu_in: return "Input Buffer (as Data) register (int, RW)";
+    case i8041cpu_ctrl: return "Input Buffer (as Control) register (int, RW)";
     case i8041cpu_out: return "Output Buffer register (int, RW)";
     case i8041cpu_status: return "Status register (int, RW)";
+    case i8041cpu_obfclear: return "Clear OBF when written (int, WO)";
+    case i8041cpu_enflags: return "Flags mode enable (bool, RW)";
     default:
       return "Not Used";
     }
@@ -181,44 +242,54 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   switch (addr)
     {
     case i8041cpu_in: // input buffer, A0=0 -> F1=0
-      if (*val)
+      if (val)
 	{
-	  cell->set(*val & 0xff);
+	  cell->set(*val&= 0xff);
 	  u->flagF1= 0;
-	  u8_t stat= cfg_get(i8041cpu_status);
-	  stat|= ~stat_ibf;
-	  cfg_set(i8041cpu_status, stat);
+	  u8_t stat= cfg_read(i8041cpu_status);
+	  stat&= ~stat_ibf;
+	  cfg_write(i8041cpu_status, stat);
 	}
       break;
     case i8041cpu_ctrl: // input buffer, A0=1 -> F1=1
-      if (*val)
+      if (val)
 	{
-	  cell->set(*val & 0xff);
+	  cell->set(*val&= 0xff);
 	  u->flagF1= 1;
-	  u8_t stat= cfg_get(i8041cpu_status);
-	  stat|= ~stat_ibf;
-	  cfg_set(i8041cpu_status, stat);
+	  u8_t stat= cfg_read(i8041cpu_status);
+	  stat&= ~stat_ibf;
+	  cfg_write(i8041cpu_status, stat);
 	}
       break;
     case i8041cpu_out:
-      if (*val)
+      if (val)
 	cell->set(*val & 0xff);
-      else
+      /*else
 	{
 	  u8_t stat= cfg_get(i8041cpu_status);
 	  stat&= ~stat_obf;
 	  cfg_set(i8041cpu_status, stat);
+	  }*/
+      break;
+    case i8041cpu_obfclear:
+      if (val)
+	{
+	  u8_t stat= cfg_read(i8041cpu_status);
+	  stat&= ~stat_obf;
+	  cfg_write(i8041cpu_status, stat);
 	}
+      cell->set(0);
       break;
     case i8041cpu_status:
       // replace F0, F1 bits from CPU
-      if (*val)
+      if (val)
 	{
 	  *val&= 0xff;
 	  *val&= ~(stat_f0|stat_f1);
 	  if (u->flagF1) *val|= stat_f1;
 	  if (u->psw & flagF0) *val|= stat_f0;
 	  cell->set(*val);
+	  set_flags();
 	}
       else
 	{
@@ -228,8 +299,45 @@ cl_i8041_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 	  cell->set(stat);
 	}
       break;
+    case i8041cpu_enflags:
+      if (val)
+	{
+	  cell->set((*val)?1:0);
+	  set_flags();
+	}
+      break;
     }
   return cell->get();
+}
+
+void
+cl_i8041_cpu::set_flags(void)
+{
+  class cl_i8041 *u= (class cl_i8041 *)uc;
+  if (cfg_get(i8041cpu_enflags))
+    {
+      u8_t v= 0xff;
+      u8_t s= cfg_get(i8041cpu_status);
+      if (!(s & stat_obf))
+	v&= ~0x10;
+      if ((s & stat_ibf))
+	v&= ~0x20;
+      u->p2->flags41= v;
+    }
+  else
+    u->p2->flags41= 0xff;
+}
+
+void
+cl_i8041_cpu::print_info(class cl_console_base *con)
+{
+  class cl_i8041 *u= (class cl_i8041 *)uc;
+   u8_t s= cfg_get(i8041cpu_status);
+  con->dd_printf("DBBIN = 0x%02x\n", cfg_get(i8041cpu_in));
+  con->dd_printf("DBBOUT= 0x%02x\n", cfg_get(i8041cpu_out));
+  con->dd_printf("STATUS= 0x%02x IBF=%d OBF=%d flags41=0x%02x\n",
+		 s, (s&stat_ibf)?1:0, (s&stat_obf)?1:0,
+		 u->p2->flags41);
 }
 
 
