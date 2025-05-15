@@ -833,12 +833,17 @@ cl_i8020_cpu::cl_i8020_cpu(class cl_uc *auc):
 int
 cl_i8020_cpu::init(void)
 {
+  class cl_i8020 *u= (class cl_i8020 *)uc;
+  cl_var *v;
+  
   cl_hw::init();
 
-  cl_var *v;
-  uc->vars->add(v= new cl_var("T0", cfg, i8020cpu_t0,
-			      cfg_help(i8020cpu_t0)));
-  v->init();
+  if (u->info_ch != '1')
+    {
+      uc->vars->add(v= new cl_var("T0", cfg, i8020cpu_t0,
+				  cfg_help(i8020cpu_t0)));
+      v->init();
+    }
   uc->vars->add(v= new cl_var("T1", cfg, i8020cpu_t1,
 			      cfg_help(i8020cpu_t1)));
   v->init();
@@ -862,9 +867,13 @@ cl_i8020_cpu::reset(void)
 const char *
 cl_i8020_cpu::cfg_help(t_addr addr)
 {
+  class cl_i8020 *u= (class cl_i8020 *)uc;
   switch (addr)
     {
-    case i8020cpu_t0: return "T0 input pin (bool, RW)";
+    case i8020cpu_t0:
+      if (u->info_ch == '1')
+	return "Not used";
+      return "T0 input pin (bool, RW)";
     case i8020cpu_t1: return "T1 input pin (bool, RW)";
     case i8020cpu_inner: return "Size of inner code memory (int, RW)";
     }

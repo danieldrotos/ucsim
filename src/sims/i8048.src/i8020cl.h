@@ -122,8 +122,8 @@ class cl_i8020: public cl_uc
 protected:
   unsigned int ram_size, rom_size, inner_rom;
   const char *id_str;
-  char info_ch;
  public:
+  char info_ch;
   u8_t psw;
   class cl_cell8 *cpsw;
   u8_t mb, rA;
