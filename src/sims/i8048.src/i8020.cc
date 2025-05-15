@@ -93,8 +93,6 @@ cl_i8020::init(void)
 
   cl_uc::init();
 
-  mk_cvar(&cmb, "DBF", "CPU code bank selector");
-  mk_cvar(&cmb, "A11", "CPU code bank selector");
   reg_cell_var(&cA, &rA, "ACC", "Accumulator");
 
   // prepare tables
@@ -495,7 +493,7 @@ cl_i8020::print_regs(class cl_console_base *con)
   con->dd_cprintf("dump_number", "    0x%02x ", psw);
   con->dd_color("dump_number");
   con->print_bin(psw, 8);
-  con->dd_printf("    DBF=%d", mb);
+  //con->dd_printf("    DBF=%d", mb);
   con->dd_printf("\n");
   // show indirectly addressed IRAM and some basic regs
   start= R[0]->get();

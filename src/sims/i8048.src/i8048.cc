@@ -80,6 +80,8 @@ cl_i8048::init(void)
   cflagF1.append_operator(o);
   cflagF1.set_mask(1);
 
+  mk_cvar(&cmb, "DBF", "CPU code bank selector");
+  mk_cvar(&cmb, "A11", "CPU code bank selector");
   mk_cvar(&cflagF1, "F1", "CPU flag F1");
 
   return 0;
