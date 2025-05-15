@@ -129,6 +129,35 @@ cl_i8048::mk_hw_elements(void)
   mk_dport();
 }
 
+
+void
+cl_i8048::mk_dport(void)
+{
+  cl_i8020::mk_dport();
+
+  class cl_port_data d;
+  d.init();
+  d.width= 8;
+
+  d.set_name("P1");
+  d.cell_dir= NULL;
+  d.cell_p  = p1->pcell;
+  d.cell_in = p1->cfg_cell(port_pin);
+  d.keyset  = keysets[1];
+  d.basx    = 1+20;
+  d.basy    = 6;
+  dport->add_port(&d, 0);
+
+  d.set_name("P2");
+  d.cell_dir= NULL;
+  d.cell_p  = p2->pcell;
+  d.cell_in = p2->cfg_cell(port_pin);
+  d.keyset  = keysets[2];
+  d.basx    = 1+20+20;
+  d.basy    = 6;
+  dport->add_port(&d, 1);
+}
+
 class cl_memory_operator *
 cl_i8048::make_flagop(void)
 {
