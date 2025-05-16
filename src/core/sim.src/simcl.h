@@ -49,7 +49,7 @@ public:
   class cl_app *app;
   int state; // See SIM_XXXX
   int argc; char **argv;
-
+  
   //class cl_commander *cmd;
   class cl_uc *uc;
   class cl_gui *gui;
@@ -65,7 +65,8 @@ public:
   cl_sim(class cl_app *the_app);
   virtual ~cl_sim(void);
   virtual int init(void);
-  
+
+  virtual struct cpu_entry *type_entry(chars type_str);
   virtual class cl_uc *mk_controller(void);
   virtual void build_cmdset(class cl_cmdset *cmdset);
 

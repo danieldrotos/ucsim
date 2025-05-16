@@ -129,15 +129,18 @@ cl_app::read_input_files(void)
   if (sim && (sim->uc != NULL))
     {
       int i;
+      bool read_some= false;
       for (i= 0; i < in_files->count; i++)
 	{
 	  const char *fname= (const char *)(in_files->at(i));
 	  long l;
 	  if ((l= sim->uc->read_file(fname, NULL)) >= 0)
 	    {
-	      sim->uc->reset();
+	      read_some= true;
 	    }
 	}
+      if (read_some)
+	sim->uc->reset();
     }
 }
 
@@ -600,19 +603,32 @@ cl_app::proc_arguments(int argc, char *argv[])
 	  cpu_type= case_string(case_upper, optarg);
 	  if (!options->set_value("cpu_type", this, /*optarg*/cpu_type))
 	    fprintf(stderr, "Warning: No \"cpu_type\" option found to set "
-		    "parameter of -t as type of controller\n");	
+		    "parameter of -t as type of controller\n");
+	  if (cpus)
+	    {
+	      int i= 0;
+	      while ((cpus[i].type_str != NULL) &&
+		     (strcasecmp(cpu_type, cpus[i].type_str) != 0))
+		i++;
+	      if (cpus[i].type_str == NULL)
+		{
+		  fprintf(stderr, "Unknown processor type. "
+			  "Use -H option to see known types.\n");
+		  exit(1);
+		}
+	    }
 	  break;
 	}
       case 's':
-      {
-	if (!options->set_value("serial0_in_file", this, /*(void*)Ser_in*/optarg))
-	  fprintf(stderr, "Warning: No \"serial0_in_file\" option found to set "
-		  "parameter of -s as serial input file\n");
-	if (!options->set_value("serial0_out_file", this, /*Ser_out*/optarg))
-	  fprintf(stderr, "Warning: No \"serial_out0_file\" option found "
-		  "to set parameter of -s as serial output file\n");
-	break;
-      }
+	{
+	  if (!options->set_value("serial0_in_file", this, /*(void*)Ser_in*/optarg))
+	    fprintf(stderr, "Warning: No \"serial0_in_file\" option found to set "
+		    "parameter of -s as serial input file\n");
+	  if (!options->set_value("serial0_out_file", this, /*Ser_out*/optarg))
+	    fprintf(stderr, "Warning: No \"serial_out0_file\" option found "
+		    "to set parameter of -s as serial output file\n");
+	  break;
+	}
 #ifdef SOCKET_AVAIL
       // socket serial I/O by Alexandre Frey <Alexandre.Frey@trusted-logic.fr>
       case 'k':

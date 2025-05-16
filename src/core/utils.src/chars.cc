@@ -679,6 +679,7 @@ operator+(char c, const chars &cs)
 
 
 // Boolean operators
+
 bool
 chars::equal(const char *s) const
 {
@@ -691,6 +692,24 @@ chars::equal(const char *s) const
       !s)
     return(1);
   return(strcmp(chars_string, s) == 0);
+}
+
+bool
+chars::iequal(const char *s) const
+{
+  if ((chars_string &&
+       !s) ||
+      (!chars_string &&
+       s))
+    return(0);
+  if (!chars_string &&
+      !s)
+    return(1);
+  int i=0, j=0;
+  while (chars_string[i] && s[j])
+    if (toupper(chars_string[i++]) != toupper(s[j++]))
+      return false;
+  return !chars_string[i] && !s[j];
 }
 
 bool

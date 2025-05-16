@@ -32,7 +32,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 cl_simf8::cl_simf8(class cl_app *the_app):
   cl_sim(the_app)
-{}
+{
+}
 
 class cl_uc *
 cl_simf8::mk_controller(void)

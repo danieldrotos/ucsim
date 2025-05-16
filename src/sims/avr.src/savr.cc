@@ -35,6 +35,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include "appcl.h"
 
 // local
+#include "glob.h"
 #include "simavrcl.h"
 
 
@@ -44,6 +45,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
   
   app_start_at= dnow();
+  cpus= cpus_avr;
   application= new cl_app();
   application->set_name("savr");
   application->init(argc, argv);

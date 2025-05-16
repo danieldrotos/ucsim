@@ -82,6 +82,32 @@ cl_sim::~cl_sim(void)
     delete uc;
 }
 
+struct cpu_entry *
+cl_sim::type_entry(chars type_str)
+{
+  const char *typ= 0;
+  if (cpus == NULL)
+    return NULL;
+  if (type_str.empty())
+    {
+      class cl_optref type_option(this);
+      type_option.init();
+      type_option.use("cpu_type");
+      if ((typ= type_option.get_value(typ)) == 0)
+	typ= cpus[0].type_str;
+      type_str= typ;
+    }
+  if (type_str.empty())
+    return NULL;
+  int i= 0;
+  while ((cpus[i].type_str != NULL) &&
+	 !type_str.iequal(cpus[i].type_str))
+    i++;
+  if (cpus[i].type_str == NULL)
+    return(NULL);
+  return &cpus[i];
+}
+
 class cl_uc *
 cl_sim::mk_controller(void)
 {

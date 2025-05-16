@@ -319,7 +319,8 @@ public:
   //t_addr sp_avg;
 
   bool vcd_break;
-
+  bool skip_cmdset;
+  
 public:
   cl_uc(class cl_sim *asim);
   virtual ~cl_uc(void);
