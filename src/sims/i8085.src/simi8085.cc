@@ -51,6 +51,8 @@ cl_simi8085::mk_controller(void)
     case CPU_I8085:
       uc= new cl_i8085(this);
       return uc;
+    default:
+      return NULL;
     }
   return NULL;
 }
