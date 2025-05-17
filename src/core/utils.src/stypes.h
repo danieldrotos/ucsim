@@ -242,7 +242,7 @@ enum cpu_type {
 
   // Motorola
   CPU_M6800	= 0x0001,
-  
+  CPU_M6809	= 0x0002,
   CPU_HC08      = 0x0001,
   CPU_HCS08     = 0x0002,
   CPU_ALL_HC08  = (CPU_HC08|CPU_HCS08),

@@ -33,12 +33,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simm6809cl.h"
 
 
+struct cpu_entry cpus_m6809[]=
+  {
+    {"M6809", CPU_M6809, 0, "M6809", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+
 int
 main(int argc, char *argv[])
 {
   class cl_sim *sim;
 
   app_start_at= dnow();
+  cpus= cpus_m6809;
   application= new cl_app();
   application->set_name("sm6809");
   application->init(argc, argv);
