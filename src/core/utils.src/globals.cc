@@ -659,6 +659,19 @@ struct cpu_entry cpus_oisc[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+struct cpu_entry cpus_p1516[]=
+  {
+    { "P2223"		, CPU_P2223, 0, "P2223", "" },
+    { "P1516"		, CPU_P1516, 0, "P1516", "" },
+    { "1"		, CPU_P1516, 0, "P1516", "" },
+    { "5"		, CPU_P1516, 0, "P1516", "" },
+    { "6"		, CPU_P1516, 0, "P1516", "" },
+    { "2"		, CPU_P2223, 0, "P2223", "" },
+    { "3"		, CPU_P2223, 0, "P2223", "" },
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
 
 struct cpu_collection cpus_coll[]=
   {
@@ -674,6 +687,7 @@ struct cpu_collection cpus_coll[]=
     { "m68hc1"	, "ucsim_m68hc1"	, cpus_m68hc11	},
     { "mos6502"	, "ucsim_mos6502"	, cpus_mos6502	},
     { "oisc"	, "ucsim_oisc"		, cpus_oisc	},
+    { "p2223"	, "ucsim_p1516"		, cpus_p1516	},
     
     { NULL, NULL, NULL }
   };
