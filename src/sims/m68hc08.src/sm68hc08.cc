@@ -36,23 +36,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simm68hc08cl.h"
 
 
-struct cpu_entry cpus_hc08[]=
-  {
-    {"HC08"   , CPU_HC08, 0			, ""		, ""},
-    
-    {"HCS08"  , CPU_HCS08,0			, ""		, ""},
-    
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
-
 int
 main(int argc, char *argv[])
 {
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_hc08;
+  cpus= cpus_m68hc08;
   application= new cl_app();
   application->set_name("shc08");
   application->init(argc, argv);

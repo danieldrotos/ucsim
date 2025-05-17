@@ -40,7 +40,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_6502;
+  cpus= cpus_mos6502;
   application= new cl_app();
   application->set_name("smos6502");
   application->init(argc, argv);

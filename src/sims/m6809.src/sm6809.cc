@@ -33,14 +33,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simm6809cl.h"
 
 
-struct cpu_entry cpus_m6809[]=
-  {
-    {"M6809", CPU_M6809, 0, "M6809", ""},
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
-
 int
 main(int argc, char *argv[])
 {

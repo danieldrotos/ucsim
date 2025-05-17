@@ -30,7 +30,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 // local
-#include "glob11.h"
 #include "simm68hc11cl.h"
 
 
@@ -40,7 +39,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_hc11;
+  cpus= cpus_m68hc11;
   application= new cl_app();
   application->set_name("sm68hc11");
   application->init(argc, argv);

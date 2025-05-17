@@ -33,14 +33,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simm6800cl.h"
 
 
-struct cpu_entry cpus_m6800[]=
-  {
-    {"M6800", CPU_M6800, 0, "M6800", ""},
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
-
 int
 main(int argc, char *argv[])
 {

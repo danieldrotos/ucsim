@@ -35,9 +35,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include "iwrap.h"
 
 
-extern struct cpu_entry cpus_hc11[];
-
-
 #endif
 
 /* End of motorola.src/glob11.h */

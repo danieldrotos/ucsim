@@ -28,7 +28,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simi8085cl.h"
 #include "i8080cl.h"
 #include "i8085cl.h"
-#include "glob.h"
 
 
 cl_simi8085::cl_simi8085(class cl_app *the_app):

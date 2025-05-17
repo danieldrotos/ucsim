@@ -34,7 +34,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 extern instruction_wrapper_fn itab[256];
 
-extern struct cpu_entry cpus_8085[];
 extern struct dis_entry disass_common[];
 extern struct dis_entry disass_8080[];
 extern struct dis_entry disass_8085[];

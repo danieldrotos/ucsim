@@ -42,26 +42,13 @@ cl_simmos6502::cl_simmos6502(class cl_app *the_app):
 class cl_uc *
 cl_simmos6502::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
   class cl_mos6502 *uc;
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "65C02S";
-  while ((cpus_6502[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_6502[i].type_str) != 0))
-    i++;
-  if (cpus_6502[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_6502[i].type)
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+  
+  switch (ct->type)
     {
     case CPU_6502:
       return(new cl_mos6502(this));
@@ -91,7 +78,6 @@ cl_simmos6502::mk_controller(void)
       printf("Not implemented yet.\n"); return(NULL); 
       return(new cl_mos65ce02(this));
     default:
-      fprintf(stderr, "Unknown processor type\n");
       return NULL;
     }
   return NULL;

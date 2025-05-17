@@ -570,14 +570,94 @@ struct cpu_entry cpus_i8048[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+struct cpu_entry cpus_i8085[]=
+  {
+    {"I8085"	, CPU_I8085, 0		, "I8085", ""},
+
+    {"I8080"	, CPU_I8080, 0		, "I8080", ""},
+    {"8080"	, CPU_I8080, 0		, "I8080", ""},
+    {"80"	, CPU_I8080, 0		, "I8080", ""},
+    {"0"	, CPU_I8080, 0		, "I8080", ""},
+    {"8085"	, CPU_I8085, 0		, "I8085", ""},
+    {"85"	, CPU_I8085, 0		, "I8085", ""},
+    {"5"	, CPU_I8085, 0		, "I8085", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m6800[]=
+  {
+    {"M6800", CPU_M6800, 0, "M6800", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m6809[]=
+  {
+    {"M6809", CPU_M6809, 0, "M6809", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m68hc08[]=
+  {
+    {"HC08"   , CPU_HC08, 0	, ""	, ""},
+    {"HCS08"  , CPU_HCS08,0	, ""	, ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m68hc11[]=
+  {
+    {"HC11"  , CPU_HC11, CPU_CMOS	, "hc11"	, "cmos"},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m68hc12[]=
+  {
+    {"HC12"  , CPU_HC12, CPU_CMOS	, "hc12"	, "cmos"},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_mos6502[]=
+  {
+    {"65C02S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"6502"	, CPU_6502, 0		, "MOS6502", ""},
+    {"02"	, CPU_6502, 0		, "MOS6502", ""},
+    {"7501"	, CPU_7501, 0		, "MOS7501", ""},
+    {"8501"	, CPU_8501, 0		, "MOS8501", ""},
+    {"65C02"	, CPU_65C02, 0		, "MOS65C02", ""},
+    {"C02"	, CPU_65C02, 0		, "MOS65C02", ""},
+    {"C"	, CPU_65C02, 0		, "MOS65C02", ""},
+    {"6510"	, CPU_6510, 0		, "MOS6510", ""},
+    {"10"	, CPU_6510, 0		, "MOS6510", ""},
+    {"8500"	, CPU_8500, 0		, "MOS8500", ""},
+    {"8502"	, CPU_8502, 0		, "MOS8502", ""},
+    {"65CE02"	, CPU_65CE02, 0		, "MOS65CE02", ""},
+    {"CE02"	, CPU_65CE02, 0		, "MOS65CE02", ""},
+    {"CE"	, CPU_65CE02, 0		, "MOS65CE02", ""},
+    {"C02S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"CS"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
 
 struct cpu_collection cpus_coll[]=
   {
-    { "mcs51"	, "ucsim_51"	, cpus_51	},
-    { "stm8"	, "ucsim_stm8"	, cpus_stm8	},
-    { "avr"	, "ucsim_avr"	, cpus_avr	},
-    { "f8"	, "ucsim_f8"	, cpus_f8	},
-    { "mcs48"	, "ucsim_i8048"	, cpus_i8048	},
+    { "mcs51"	, "ucsim_51"		, cpus_51	},
+    { "stm8"	, "ucsim_stm8"		, cpus_stm8	},
+    { "avr"	, "ucsim_avr"		, cpus_avr	},
+    { "f8"	, "ucsim_f8"		, cpus_f8	},
+    { "mcs48"	, "ucsim_i8048"		, cpus_i8048	},
+    { "mcs85"	, "ucsim_i8085"		, cpus_i8085	},
+    { "m6800"	, "ucsim_m6800"		, cpus_m6800	},
+    { "m6809"	, "ucsim_m6809"		, cpus_m6809	},
+    { "m68hc08"	, "ucsim_m68hc08"	, cpus_m68hc08	},
+    { "m68hc1"	, "ucsim_m68hc1"	, cpus_m68hc11	},
+    { "mos6502"	, "ucsim_mos6502"	, cpus_mos6502	},
     
     { NULL, NULL, NULL }
   };

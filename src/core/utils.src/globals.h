@@ -51,6 +51,13 @@ extern struct cpu_entry cpus_stm8[];
 extern struct cpu_entry cpus_avr[];
 extern struct cpu_entry cpus_f8[];
 extern struct cpu_entry cpus_i8048[];
+extern struct cpu_entry cpus_i8085[];
+extern struct cpu_entry cpus_m6800[];
+extern struct cpu_entry cpus_m6809[];
+extern struct cpu_entry cpus_m68hc08[];
+extern struct cpu_entry cpus_m68hc11[];
+extern struct cpu_entry cpus_m68hc12[];
+extern struct cpu_entry cpus_mos6502[];
 
 extern struct cpu_collection cpus_coll[];
 

@@ -30,7 +30,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 // local
-#include "glob.h"
 #include "simm68hc12cl.h"
 
 
@@ -40,7 +39,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_hc12;
+  cpus= cpus_m68hc12;
   application= new cl_app();
   application->set_name("sm68hc12");
   application->init(argc, argv);

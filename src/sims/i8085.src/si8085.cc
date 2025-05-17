@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "i8080cl.h"
 #include "simi8085cl.h"
-#include "glob.h"
+#include "globals.h"
 
 int
 main(int argc, char *argv[])
@@ -40,7 +40,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_8085;
+  cpus= cpus_i8085;
   /* Replace 1s to flagP in p table */
   for (int i= 0; i<256; i++)
     if (ptab[i])
