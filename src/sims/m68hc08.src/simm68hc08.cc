@@ -42,31 +42,17 @@ cl_simm68hc08::cl_simm68hc08(class cl_app *the_app):
 class cl_uc *
 cl_simm68hc08::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
+  class cl_i8020 *uc;
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "HC08";
-
-  while ((cpus_hc08[i].type_str != NULL) &&
-	 (strcmp(typ, cpus_hc08[i].type_str) != 0))
-    i++;
-  if (cpus_hc08[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-
-  switch (cpus_hc08[i].type)
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+  
+  switch (ct->type)
     {
     case CPU_HC08:
     case CPU_HCS08:
-      return(new cl_hc08(&cpus_hc08[i], this));
+      return(new cl_hc08(ct, this));
     default:
       return NULL;
     }

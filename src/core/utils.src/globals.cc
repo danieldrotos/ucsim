@@ -400,15 +400,6 @@ struct cpu_entry cpus_51[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
-struct cpu_entry cpus_hc08[]=
-  {
-    {"HC08"   , CPU_HC08, 0			, ""		, ""},
-    
-    {"HCS08"  , CPU_HCS08,0			, ""		, ""},
-    
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
 struct cpu_entry cpus_stm8[]=
   {
     {"S"		, CPU_STM8S, DEV_STM8S208	, "S"		, "208"},
