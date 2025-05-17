@@ -164,10 +164,6 @@ enum cpu_type {
   
   CPU_XA	= 0x0001,
   CPU_ALL_XA	= (CPU_XA),
-
-  CPU_HC11      = 0x0004,
-  CPU_HC12      = 0x0008,
-  CPU_ALL_HC12  = (CPU_HC11|CPU_HC12),
   
   CPU_PBLAZE_3	= 0x0001,
   CPU_PBLAZE_6	= 0x0002,
@@ -242,10 +238,11 @@ enum cpu_type {
 
   // Motorola
   CPU_M6800	= 0x0001,
-  CPU_M6809	= 0x0002,
-  CPU_HC08      = 0x0001,
-  CPU_HCS08     = 0x0002,
-  CPU_ALL_HC08  = (CPU_HC08|CPU_HCS08),
+  CPU_HC08      = 0x0002,
+  CPU_HCS08     = 0x0004,
+  CPU_M6809	= 0x0008,
+  CPU_HC11      = 0x0010,
+  CPU_HC12      = 0x0020,
   
   // MOS6502 and variants
   CPU_6502	= 0x0001,	// NMOS
