@@ -340,13 +340,6 @@ struct dis_entry disass_f8[]=
   };
 
 
-struct cpu_entry cpus_f8[]=
-  {
-    {"F8"	, CPU_F8, 0		, "F8", ""},
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
 u16_t tick_tab_f8[256]= {
   /*           _0    _1    _2    _3      _4    _5    _6    _7      _8    _9    _a    _b      _c    _d    _e    _f */
   /* 0_ */    0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0, 

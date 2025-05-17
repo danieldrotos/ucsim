@@ -29,7 +29,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "simi8048cl.h"
 #include "i8041cl.h"
-#include "glob.h"
 
 
 struct {

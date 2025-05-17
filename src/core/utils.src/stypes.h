@@ -318,6 +318,13 @@ struct cpu_entry
   const char *sub_help;
 };
 
+struct cpu_collection
+{
+  const char *family;
+  const char *exe;
+  struct cpu_entry *entries;
+};
+
 /* Classes of memories, this is index on the list */
 enum mem_class
 {

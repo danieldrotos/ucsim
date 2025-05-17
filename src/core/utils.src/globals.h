@@ -48,6 +48,11 @@ extern const char *copying;
 extern struct cpu_entry *cpus;
 extern struct cpu_entry cpus_51[];
 extern struct cpu_entry cpus_stm8[];
+extern struct cpu_entry cpus_avr[];
+extern struct cpu_entry cpus_f8[];
+extern struct cpu_entry cpus_i8048[];
+
+extern struct cpu_collection cpus_coll[];
 
 #endif
 

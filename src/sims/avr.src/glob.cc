@@ -152,10 +152,4 @@ struct dis_entry disass_avr[]= {
 };
 
 
-struct cpu_entry cpus_avr[]= {
-  {"AVR", CPU_AVR, 0, "AVR", ""},
-  {NULL, CPU_NONE, 0, "", ""}
-};
-
-
 /* End of avr.src/glob.cc */

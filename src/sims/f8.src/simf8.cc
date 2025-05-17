@@ -27,7 +27,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "simf8cl.h"
 #include "f8cl.h"
-#include "glob.h"
 
 
 cl_simf8::cl_simf8(class cl_app *the_app):

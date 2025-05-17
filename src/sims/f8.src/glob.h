@@ -35,7 +35,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 extern instruction_wrapper_fn itab[256];
 
 extern u8_t ptab[256];
-extern struct cpu_entry cpus_f8[];
 extern struct dis_entry disass_f8[];
 extern u16_t tick_tab_f8[256];
 extern u8_t allowed_prefs[256];
