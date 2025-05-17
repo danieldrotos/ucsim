@@ -672,6 +672,18 @@ struct cpu_entry cpus_p1516[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+struct cpu_entry cpus_pblaze[] =
+{
+  {"KCPSM3", CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
+  {"KCPSM6", CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
+  {"PB3"   , CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
+  {"PB6"   , CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
+  {"3"     , CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
+  {"6"     , CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
+
+  {NULL, CPU_NONE, 0, NULL, NULL}
+};
+
 
 struct cpu_collection cpus_coll[]=
   {
@@ -688,6 +700,7 @@ struct cpu_collection cpus_coll[]=
     { "mos6502"	, "ucsim_mos6502"	, cpus_mos6502	},
     { "oisc"	, "ucsim_oisc"		, cpus_oisc	},
     { "p2223"	, "ucsim_p1516"		, cpus_p1516	},
+    { "pblaze"	, "ucsim_pblaze"	, cpus_pblaze	},
     
     { NULL, NULL, NULL }
   };

@@ -282,16 +282,4 @@ struct name_entry bit_tab[] =
 };
 
 
-struct cpu_entry cpus_pblaze[] =
-{
-  {"KCPSM3", CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
-  {"KCPSM6", CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
-  {"PB3"   , CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
-  {"PB6"   , CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
-  {"3"     , CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
-  {"6"     , CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
-
-  {NULL, CPU_NONE, 0, NULL, NULL}
-};
-
 /* End of pblaze.src/glob.cc */
