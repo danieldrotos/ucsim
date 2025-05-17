@@ -40,7 +40,6 @@ extern struct dis_entry disass_pdk_16[];
 
 /*extern struct dis_entry disass_pdk_16[];*/
 
-extern struct cpu_entry cpus_pdk[];
 extern struct fppinfo_t fppinfo[];
 
 

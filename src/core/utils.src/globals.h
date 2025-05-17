@@ -61,6 +61,7 @@ extern struct cpu_entry cpus_mos6502[];
 extern struct cpu_entry cpus_oisc[];
 extern struct cpu_entry cpus_p1516[];
 extern struct cpu_entry cpus_pblaze[];
+extern struct cpu_entry cpus_pdk[];
 
 extern struct cpu_collection cpus_coll[];
 

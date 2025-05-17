@@ -684,6 +684,22 @@ struct cpu_entry cpus_pblaze[] =
   {NULL, CPU_NONE, 0, NULL, NULL}
 };
 
+struct cpu_entry cpus_pdk[]=
+  {
+    {"14"      , CPU_PDK14, 0			, "PDK14"		, ""},
+    {"PDK14"   , CPU_PDK14, 0			, "PDK14"		, ""},
+    
+    {"13"      , CPU_PDK13, 0			, "PDK13"		, ""},
+    {"PDK13"   , CPU_PDK13, 0			, "PDK13"		, ""},
+    
+    {"15"      , CPU_PDK15, 0			, "PDK15"		, ""},
+    {"PDK15"   , CPU_PDK15, 0			, "PDK15"		, ""},
+
+    {"16"      , CPU_PDK16, 0			, "PDK16"		, ""},
+    {"PDK16"   , CPU_PDK16, 0			, "PDK16"		, ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
 
 struct cpu_collection cpus_coll[]=
   {
@@ -701,6 +717,7 @@ struct cpu_collection cpus_coll[]=
     { "oisc"	, "ucsim_oisc"		, cpus_oisc	},
     { "p2223"	, "ucsim_p1516"		, cpus_p1516	},
     { "pblaze"	, "ucsim_pblaze"	, cpus_pblaze	},
+    { "pdk"	, "ucsim_pdk"		, cpus_pdk	},
     
     { NULL, NULL, NULL }
   };
