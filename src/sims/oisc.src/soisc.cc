@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // local
 #include "simoisccl.h"
-#include "glob.h"
+
 
 int
 main(int argc, char *argv[])

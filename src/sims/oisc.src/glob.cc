@@ -29,17 +29,4 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
-struct cpu_entry cpus_oisc[]=
-  {
-    {"OISC"	, CPU_OISC, 0		, "OISC", ""},
-    {"URISC"	, CPU_URISC, 0		, "USISC", ""},
-    {"U"	, CPU_URISC, 0		, "USISC", ""},
-    {"MISC16"	, CPU_MISC16, 0		, "MISC16", ""},
-    {"M"	, CPU_MISC16, 0		, "MISC16", ""},
-    {"EM"	, CPU_EM, 0		, "EM", ""},
-    {"E"	, CPU_EM, 0		, "EM", ""},
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
 /* End of oisc.src/glob.cc */

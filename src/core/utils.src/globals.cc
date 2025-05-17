@@ -645,6 +645,21 @@ struct cpu_entry cpus_mos6502[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+struct cpu_entry cpus_oisc[]=
+  {
+    {"EM"	, CPU_EM, 0		, "EM", ""},
+
+    {"OISC"	, CPU_OISC, 0		, "OISC", ""},
+    {"URISC"	, CPU_URISC, 0		, "USISC", ""},
+    {"U"	, CPU_URISC, 0		, "USISC", ""},
+    {"MISC16"	, CPU_MISC16, 0		, "MISC16", ""},
+    {"M"	, CPU_MISC16, 0		, "MISC16", ""},
+    {"E"	, CPU_EM, 0		, "EM", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+
 struct cpu_collection cpus_coll[]=
   {
     { "mcs51"	, "ucsim_51"		, cpus_51	},
@@ -658,6 +673,7 @@ struct cpu_collection cpus_coll[]=
     { "m68hc08"	, "ucsim_m68hc08"	, cpus_m68hc08	},
     { "m68hc1"	, "ucsim_m68hc1"	, cpus_m68hc11	},
     { "mos6502"	, "ucsim_mos6502"	, cpus_mos6502	},
+    { "oisc"	, "ucsim_oisc"		, cpus_oisc	},
     
     { NULL, NULL, NULL }
   };
