@@ -737,6 +737,25 @@ struct cpu_entry cpus_xa[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+struct cpu_entry cpus_z80[]=
+  {
+    {"Z80"    , CPU_Z80,     0			, ""		, ""},
+
+    {"Z180"   , CPU_Z180,    0			, ""		, ""},
+
+    {"GB80"   , CPU_GB80,    0			, ""		, ""},
+    {"LR35902", CPU_LR35902, 0			, ""		, ""},
+    {"LR"     , CPU_LR35902, 0			, ""		, ""},
+
+    {"EZ80"   , CPU_EZ80,    0			, ""		, ""},
+
+    {"Z80N"   , CPU_Z80N,    0                  , ""            , ""},
+
+    {"R800"   , CPU_R800,    0                  , ""            , ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
 struct cpu_collection cpus_coll[]=
   {
     { "mcs51"	, "ucsim_51"		, cpus_51	},
@@ -757,6 +776,7 @@ struct cpu_collection cpus_coll[]=
     { "rxk"	, "ucsim_rxk"		, cpus_rxk	},
     { "st7"	, "ucsim_st7"		, cpus_st7	},
     { "xa"	, "ucsim_xa"		, cpus_xa	},
+    { "z80"	, "ucsim_z80"		, cpus_z80	},
     
     { NULL, NULL, NULL }
   };
