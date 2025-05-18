@@ -701,6 +701,30 @@ struct cpu_entry cpus_pdk[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+struct cpu_entry cpus_rxk[]=
+  {
+    {"R2K"	, CPU_R2K , 0, "Rabbit 2000", ""},
+    {"2K"	, CPU_R2K , 0, "Rabbit 2000", ""},
+    {"2"	, CPU_R2K , 0, "Rabbit 2000", ""},
+    {"R3KA"	, CPU_R3KA, 0, "Rabbit 3000A", ""},
+    {"3KA"	, CPU_R3KA, 0, "Rabbit 3000A", ""},
+    {"3A"	, CPU_R3KA, 0, "Rabbit 3000A", ""},
+    {"R3K"	, CPU_R3K , 0, "Rabbit 3000", ""},
+    {"3K"	, CPU_R3K , 0, "Rabbit 3000", ""},
+    {"3"	, CPU_R3K , 0, "Rabbit 3000", ""},
+    {"R4K"	, CPU_R4K , 0, "Rabbit 4000", ""},
+    {"4K"	, CPU_R4K , 0, "Rabbit 4000", ""},
+    {"4"	, CPU_R4K , 0, "Rabbit 4000", ""},
+    {"R5K"	, CPU_R5K , 0, "Rabbit 5000", ""},
+    {"5K"	, CPU_R5K , 0, "Rabbit 5000", ""},
+    {"5"	, CPU_R5K , 0, "Rabbit 5000", ""},
+    {"R6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {"6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {"6"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+
 struct cpu_collection cpus_coll[]=
   {
     { "mcs51"	, "ucsim_51"		, cpus_51	},
@@ -718,6 +742,7 @@ struct cpu_collection cpus_coll[]=
     { "p2223"	, "ucsim_p1516"		, cpus_p1516	},
     { "pblaze"	, "ucsim_pblaze"	, cpus_pblaze	},
     { "pdk"	, "ucsim_pdk"		, cpus_pdk	},
+    { "rxk"	, "ucsim_rxk"		, cpus_rxk	},
     
     { NULL, NULL, NULL }
   };
