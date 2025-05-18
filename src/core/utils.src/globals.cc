@@ -723,10 +723,16 @@ struct cpu_entry cpus_rxk[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
-
 struct cpu_entry cpus_st7[]=
   {
     {"st7", CPU_ST7, 0, "st7", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_xa[]=
+  {
+    {"xa", CPU_XA, 0, "xa", ""},
 
     {NULL, CPU_NONE, 0, "", ""}
   };
@@ -750,6 +756,7 @@ struct cpu_collection cpus_coll[]=
     { "pdk"	, "ucsim_pdk"		, cpus_pdk	},
     { "rxk"	, "ucsim_rxk"		, cpus_rxk	},
     { "st7"	, "ucsim_st7"		, cpus_st7	},
+    { "xa"	, "ucsim_xa"		, cpus_xa	},
     
     { NULL, NULL, NULL }
   };

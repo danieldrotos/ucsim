@@ -64,6 +64,7 @@ extern struct cpu_entry cpus_pblaze[];
 extern struct cpu_entry cpus_pdk[];
 extern struct cpu_entry cpus_rxk[];
 extern struct cpu_entry cpus_st7[];
+extern struct cpu_entry cpus_xa[];
 
 extern struct cpu_collection cpus_coll[];
 
