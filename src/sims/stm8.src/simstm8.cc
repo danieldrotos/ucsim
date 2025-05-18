@@ -43,32 +43,18 @@ cl_simstm8::cl_simstm8(class cl_app *the_app):
 class cl_uc *
 cl_simstm8::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "STM8S";
-  while ((cpus_stm8[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_stm8[i].type_str) != 0))
-    i++;
-  if (cpus_stm8[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_stm8[i].type)
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+
+  switch (ct->type)
     {
     case CPU_STM8S:
     case CPU_STM8L:
     case CPU_STM8L101:
-      return(new cl_stm8(&cpus_stm8[i], this));
+      return(new cl_stm8(ct, this));
     default:
-      fprintf(stderr, "Unknown processor type\n");
       return NULL;
     }
   return NULL;
