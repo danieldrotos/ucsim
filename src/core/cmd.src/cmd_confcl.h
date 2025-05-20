@@ -49,6 +49,9 @@ COMMAND_ON(uc,cl_conf_cmd);
 // CONF OBJECTS
 COMMAND_ON(app,cl_conf_objects_cmd);
 
+// CONF TYPES
+COMMAND_ON(app,cl_conf_types_cmd);
+
 // VER
 COMMAND_ON(app,cl_ver_cmd);
 

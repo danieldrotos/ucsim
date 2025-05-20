@@ -1,6 +1,7 @@
 app
 G	conf
 G	conf objects
+G	conf types
 G	help,?
 G	quit
 G	kill

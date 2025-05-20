@@ -1114,6 +1114,8 @@ cl_app::build_cmdset(class cl_cmdset *cmdset)
     cmd->init();
     cset->add(cmd= new cl_conf_objects_cmd("objects", 0));
     cmd->init();
+    cset->add(cmd= new cl_conf_types_cmd("types", 0));
+    cmd->init();
   }
   cmdset->add(cmd= new cl_super_cmd("conf", 0, cset));
   cmd->init();
