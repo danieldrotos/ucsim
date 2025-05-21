@@ -141,6 +141,7 @@ COMMAND_DO_WORK_APP(cl_conf_types_cmd)
   if (!cpus)
     {
       con->dd_printf("CPU type is not selectable\n");
+      return false;
     }
   int i= 0;
   con->dd_printf("%-20s%-30s%-30s\n", "Parameter", "Family", "Subtype");
