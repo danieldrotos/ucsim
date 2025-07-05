@@ -610,6 +610,7 @@ cl_tlcs::exec_inst(void)
     case 0x43: case 0x4b: return resINV_INST;
     case 0x47: case 0x4f: return exec_inst2(c1);
     case 0x53: case 0x57: case 0x5b: case 0x5f: return resINV_INST;
+    case 0x87: case 0x8f: return exec_inst2(c1);
     case 0x97: c2= fetch(); inst_inc16(t_addr(0xff00+c2)); break; // INCW (0ffn)
     case 0x9b: return resINV_INST;
     case 0x9F: c2= fetch(); inst_dec16(t_addr(0xff00+c2)); break; // DECW (0ffn)
