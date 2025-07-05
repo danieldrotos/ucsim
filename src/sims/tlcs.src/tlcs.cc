@@ -572,6 +572,7 @@ cl_tlcs::exec_inst(void)
     case 0x01: tick(2); res= resHALT; break; // HALT
     case 0x02: reg.raf.f&= ~FLAG_I; break; // DI
     case 0x03: reg.raf.f|= FLAG_I; break; // EI
+    case 0x04: case 0x05: case 0x06: return resINV_INST;
     case 0x08: res= ex_de_hl(); break;
     case 0x09: res= ex_af_alt_af(); break;
     case 0x0a: res= exx(); break;
@@ -589,6 +590,7 @@ cl_tlcs::exec_inst(void)
       break;
     case 0x1e: res= inst_ret(); break;
     case 0x1f: tick(4); res= inst_reti(); break;
+    case 0x27: case 0x2f: return exec_inst2(c1);
     case 0x37:  // LD (0ffw),n
       c2= fetch();
       c3= fetch();
@@ -596,6 +598,7 @@ cl_tlcs::exec_inst(void)
       vc.wr++;
       tick(8);
       break;
+    case 0x3b: return resINV_INST;
     case 0x3F: // LDW (0ffw),mn
       c2= fetch();
       c3= fetch();
@@ -604,7 +607,11 @@ cl_tlcs::exec_inst(void)
       vc.wr+= 2;
       tick(12);
       break;
+    case 0x43: case 0x4b: return resINV_INST;
+    case 0x47: case 0x4f: return exec_inst2(c1);
+    case 0x53: case 0x57: case 0x5b: case 0x5f: return resINV_INST;
     case 0x97: c2= fetch(); inst_inc16(t_addr(0xff00+c2)); break; // INCW (0ffn)
+    case 0x9b: return resINV_INST;
     case 0x9F: c2= fetch(); inst_dec16(t_addr(0xff00+c2)); break; // DECW (0ffn)
     case 0xa0: reg.raf.a= op_rlc(reg.raf.a, false); break; // RLCA
     case 0xa1: reg.raf.a= op_rrc(reg.raf.a, false); break; // RRCA
