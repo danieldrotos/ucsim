@@ -181,6 +181,7 @@ cl_ras::set(t_addr addr, t_mem val)
     {
       err_inv_addr(addr);
       dummy->set(val);
+      return;
     }
   cella[addr].set(val);
 }
@@ -193,10 +194,11 @@ cl_ras::set(t_addr addr, t_mem val)
 void
 cl_ras::phset(t_addr phaddr, t_mem val)
 {
-  if (phaddr >- chip->get_size())
+  if (phaddr >= chip->get_size())
     {
       err_inv_addr(phaddr);
       dummy->set(val);
+      return;
     }
   u8_t *slot= (u8_t*)(chip->get_slot(phaddr));
   *slot= val;
