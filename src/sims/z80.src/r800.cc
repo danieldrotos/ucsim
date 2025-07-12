@@ -111,8 +111,8 @@ cl_r800::inst_ed_(t_mem code)
     case 0xc3: case 0xd3: case 0xe3: case 0xf3:
       {
 	unsigned long result = (unsigned long)(regs.HL) *  (unsigned long)(regrp_ss_read((code >> 4)&3));
-	regs.HL = (result >> 0) & 0xff;
-	regs.DE = (result >> 16) & 0xff;
+	regs.HL = (result >> 0) & 0xffff;
+	regs.DE = (result >> 16) & 0xffff;
 	regs.raf.F &= ~(BIT_S | BIT_Z | BIT_P | BIT_C);
 	if (!result)
 	  regs.raf.F |= BIT_Z;
