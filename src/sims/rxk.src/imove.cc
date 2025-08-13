@@ -340,6 +340,21 @@ cl_rxk::LD_iIXd_HL(t_mem code)
 }
 
 int
+cl_rxk::LD_iIRd_HL(t_mem code)
+{
+  class cl_cell16 *ir= cIR;
+  if (cIR == &cIX)
+    ir= &cHL;
+  i8_t d= fetch();
+  u16_t a= ir->get() + d;
+  rwas->write(a, rL);
+  rwas->write(a+1, rH);
+  vc.wr+= 2;
+  tick5p1(10);
+  return resGO;
+}
+
+int
 cl_rxk::LD_iSPn_HL(t_mem code)
 {
   u8_t n= fetch();
