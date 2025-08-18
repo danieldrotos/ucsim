@@ -109,7 +109,7 @@ cl_hc08::reset(void)
 const char *
 cl_hc08::id_string(void)
 {
-  return("unspecified HC08");
+  return("HC08");
 }
 
 
@@ -729,6 +729,12 @@ cl_s08::cl_s08(struct cpu_entry *Itype, class cl_sim *asim):
 {
 }
 
+const char *
+cl_s08::id_string(void)
+{
+  return("HCS08");
+}
+
 
 /*
  * 9S08
@@ -737,6 +743,12 @@ cl_s08::cl_s08(struct cpu_entry *Itype, class cl_sim *asim):
 cl_9s08::cl_9s08(struct cpu_entry *Itype, class cl_sim *asim):
   cl_s08(Itype, asim)
 {
+}
+
+const char *
+cl_9s08::id_string(void)
+{
+  return("9S08");
 }
 
 
