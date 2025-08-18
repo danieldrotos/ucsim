@@ -26,6 +26,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 #include <stdlib.h>
+#include <ctype.h>
+
+#include "utils.h"
 
 // local
 #include "t870ccl.h"
@@ -97,6 +100,50 @@ cl_t870c::decode_regs(void)
   cE.decode(&rE);
   cH.decode(&rH);
   cL.decode(&rL);
+}
+
+
+void
+cl_t870c::make_memories(void)
+{
+  class cl_address_space *as;
+
+  rom= nas= as= new cl_address_space("nas", 0, nas_size(), 8);
+  as->init();
+  address_spaces->add(as);
+
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+
+  chip= new cl_chip8("nas_chip", nas_size(), 8);
+  chip->init();
+  memchips->add(chip);
+  
+  ad= new cl_address_decoder(as= nas,
+                             chip, 0, nas_size()-1, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+}
+
+
+void
+cl_t870c::print_regs(class cl_console_base *con)
+{
+  con->dd_color("answer");
+  con->dd_printf("JZCHSV--  Flags= 0x%02x  ", rF);
+  con->dd_printf("A= 0x%02x %3d %c\n",
+		 rA, rA, isprint(rA)?rA:'.');
+  con->dd_printf("%s\n", cbin(rF,8).c_str());
+  con->dd_printf("WA0=0x%04x [WA]=%02x  ", rWA, nas->read(rWA));
+  con->dd_printf("BC0=0x%04x [BC]=%02x  ", rBC, nas->read(rBC));
+  con->dd_printf("DE0=0x%04x [DE]=%02x\n", rDE, nas->read(rDE));
+  con->dd_printf("HL0=0x%04x [HL]=%02x  ", rHL, nas->read(rHL));
+  con->dd_printf("IX0=0x%04x [IX]=%02x  ", rIX, nas->read(rIX));
+  con->dd_printf("IY0=0x%04x [IY]=%02x\n", rIY, nas->read(rIY));
+  con->dd_printf("SP =0x%04x [SP]=%02x  ", rSP, nas->read(rSP));
+  con->dd_printf("\n");
+  print_disass(PC, con);
 }
 
 
