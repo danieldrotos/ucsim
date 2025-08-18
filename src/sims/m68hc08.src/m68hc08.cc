@@ -721,11 +721,21 @@ cl_hc08::get_2(t_addr addr)
 
 
 /*
+ * S08
+ */
+
+cl_s08::cl_s08(struct cpu_entry *Itype, class cl_sim *asim):
+  cl_hc08(Itype, asim)
+{
+}
+
+
+/*
  * 9S08
  */
 
 cl_9s08::cl_9s08(struct cpu_entry *Itype, class cl_sim *asim):
-  cl_hc08(Itype, asim)
+  cl_s08(Itype, asim)
 {
 }
 
