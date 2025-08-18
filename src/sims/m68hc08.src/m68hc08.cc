@@ -720,6 +720,20 @@ cl_hc08::get_2(t_addr addr)
 }
 
 
+/*
+ * 9S08
+ */
+
+cl_9s08::cl_9s08(struct cpu_entry *Itype, class cl_sim *asim):
+  cl_hc08(Itype, asim)
+{
+}
+
+
+/*
+ * HC08 CPU options
+ */
+
 cl_hc08_cpu::cl_hc08_cpu(class cl_uc *auc):
   cl_hw(auc, HW_CPU, 0, "cpu")
 {
