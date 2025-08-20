@@ -614,7 +614,36 @@ cl_tlcs::op_add16(t_mem op1, t_mem op2)
   if ((r & 0xffff) == 0)
     reg.raf.f|= FLAG_Z;
   if (r > 0xffff)
-    reg.raf.f|= FLAG_C|FLAG_X;
+    reg.raf.f|= (FLAG_C|FLAG_X);
+  if (newc15 ^ (r&0x10000))
+    reg.raf.f|= FLAG_V;
+  
+  return r & 0xffff;
+}
+
+
+// ADC 16-bit
+u16_t
+cl_tlcs::op_adc16(t_mem op1, t_mem op2)
+{
+  u16_t d1, d;
+  int r, newc15;
+  int orgc= (reg.raf.f&FLAG_C)?1:0;
+  
+  reg.raf.f&= ~(FLAG_S|FLAG_Z|FLAG_X|FLAG_N|FLAG_C);
+
+  d1= op1;
+  d= op2;
+
+  r= d1 + d + orgc;
+  newc15= (((d1&0x7fff)+(d&0x7fff)) > 0x7fff)?0x10000:0;
+  
+  if (r & 0x8000)
+    reg.raf.f|= FLAG_S;
+  if ((r & 0xffff) == 0)
+    reg.raf.f|= FLAG_Z;
+  if (r > 0xffff)
+    reg.raf.f|= (FLAG_C|FLAG_X);
   if (newc15 ^ (r&0x10000))
     reg.raf.f|= FLAG_V;
   
@@ -638,6 +667,28 @@ cl_tlcs::op_add_hl_a(t_addr addr)
 }
 
 
+// ADD HL,gg (do not modify S,Z,V bits!)
+u16_t
+cl_tlcs::op_add_hl_gg(t_mem val)
+{
+  u16_t d1, d;
+  int r;//, newc15;
+  
+  reg.raf.f&= ~(FLAG_X|FLAG_N|FLAG_C);
+
+  d1= reg.hl;
+  d= val;
+
+  r= d1 + d;
+  //newc15= (((d1&0x7fff)+(d&0x7fff)) > 0x7fff)?0x10000:0;
+  
+  if (r > 0xffff)
+    reg.raf.f|= (FLAG_C|FLAG_X);
+  
+  return r & 0xffff;
+}
+
+
 // ADD HL,16-bit
 u16_t
 cl_tlcs::op_add_hl_v(t_mem val)
@@ -650,12 +701,13 @@ cl_tlcs::op_add_hl_v(t_mem val)
 u16_t
 cl_tlcs::op_adc_hl_v(t_mem val)
 {
+  /*
   u8_t dl= val & 0xff;
   u8_t dh= val / 256;
   u16_t d= dh*256 + dl;
   int oldc= (reg.raf.f & FLAG_C)?1:0;
-  
-  return op_add_hl_v(d + oldc);
+  */
+  return op_adc16(reg.hl, val);//op_add_hl_v(d + oldc);
 }
 
 
@@ -666,10 +718,10 @@ cl_tlcs::op_adc_hl_a(t_addr addr)
   u8_t dl= nas->read(addr);
   u8_t dh= nas->read(addr+1);
   u16_t d= dh*256 + dl;
-  int oldc= (reg.raf.f & FLAG_C)?1:0;
+  //int oldc= (reg.raf.f & FLAG_C)?1:0;
   vc.rd+= 2;
   
-  return op_add_hl_v(d + oldc);
+  return op_adc16(reg.hl, d);//op_add_hl_v(d + oldc);
 }
 
 
