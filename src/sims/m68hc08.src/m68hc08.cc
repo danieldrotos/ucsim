@@ -815,6 +815,13 @@ cl_9s08::make_memories(void)
   ad->activate(0);
 }
 
+void
+cl_9s08::reset(void)
+{
+  cl_s08::reset();
+  rom->write(0x78, 2);
+}
+
 
 /*
  * HC08 CPU options
