@@ -131,11 +131,13 @@ class cl_mmu: public cl_hw
 public:
   class cl_address_space *las;
   class cl_memory_chip *las_chip;
+  class cl_memory_cell *ppage, *lap2, *lap1, *lap0,
+    *lwp, *lbp, *lb, *lapab;
 public:
   cl_mmu(class cl_uc *auc,
 	 class cl_address_space *Ilas,
 	 class cl_memory_chip *Ilas_chip);
-    
+  virtual int init(void);
 };
 
 

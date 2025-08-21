@@ -889,4 +889,19 @@ cl_mmu::cl_mmu(class cl_uc *auc,
   las_chip= Ilas_chip;
 }
 
+int
+cl_mmu::init(void)
+{
+  ppage= register_cell(uc->rom, 0x78);
+  lap2 = register_cell(uc->rom, 0x79);
+  lap1 = register_cell(uc->rom, 0x7a);
+  lap0 = register_cell(uc->rom, 0x7b);
+  lwp  = register_cell(uc->rom, 0x7c);
+  lbp  = register_cell(uc->rom, 0x7d);
+  lb   = register_cell(uc->rom, 0x7e);
+  lapab= register_cell(uc->rom, 0x7f);
+  return 0;
+}
+
+
 /* End of m68hc08.src/m68hc08.cc */
