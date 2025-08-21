@@ -416,6 +416,14 @@ cl_hc08::disass(t_addr addr)
 		++immed_offset;
 		break;
 	      }
+	    case 'C': // 9s08 CALL page,a16
+	      {
+		operand= rom->get(addr+1);
+		temp.format("%d", operand);
+		operand= rom->get(addr+2)*256+rom->get(addr+3);
+		temp.appendf(",$%04x", operand);
+		break;
+	      }
 	    default:
 	      temp= "?";
 	      break;
@@ -835,6 +843,54 @@ cl_9s08::reset(void)
 {
   cl_s08::reset();
   rom->write(0x78, 2);
+}
+
+
+const char *
+cl_9s08::get_disasm_info(t_addr addr,
+			 int *ret_len,
+			 int *ret_branch,
+			 int *immed_offset,
+			 struct dis_entry **dentry)
+{
+  u8_t code= rom->get(addr++);
+  int immed_n = 0;
+  int i, len;
+  int start_addr = addr;
+  struct dis_entry *dis_e;
+
+  for (i=0;
+       disass_9s08[i].mnemonic &&
+	 ((code & disass_9s08[i].mask) != disass_9s08[i].code);
+       i++)
+    ;
+  if (disass_9s08[i].mnemonic == NULL)
+    return cl_s08::get_disasm_info(addr,
+				   ret_len,
+				   ret_branch,
+				   immed_offset,
+				   dentry);
+  dis_e= &disass_9s08[i];
+
+  if (ret_branch) {
+    *ret_branch = dis_e->branch;
+  }
+
+  if (immed_offset) {
+    if (immed_n > 0)
+         *immed_offset = immed_n;
+    else *immed_offset = (addr - start_addr);
+  }
+
+  len= dis_e->length;
+
+  if (ret_len)
+    *ret_len = len;
+
+  if (dentry)
+    *dentry= dis_e;
+  
+  return dis_e->mnemonic;
 }
 
 
