@@ -602,6 +602,7 @@ struct cpu_entry cpus_m68hc08[]=
   {
     {"HC08"   , CPU_HC08, 0	, ""	, ""},
     {"HCS08"  , CPU_HCS08,0	, ""	, ""},
+    {"9S08"   , CPU_9S08, 0	, ""	, ""},
     
     {NULL, CPU_NONE, 0, "", ""}
   };

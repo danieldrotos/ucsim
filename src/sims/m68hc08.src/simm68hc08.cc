@@ -53,6 +53,8 @@ cl_simm68hc08::mk_controller(void)
     case CPU_HC08:
     case CPU_HCS08:
       return(new cl_hc08(ct, this));
+    case CPU_9S08:
+      return(new cl_9s08(ct, this));
     default:
       return NULL;
     }
