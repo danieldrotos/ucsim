@@ -815,6 +815,21 @@ cl_9s08::make_memories(void)
   ad->activate(0);
 }
 
+int
+cl_9s08::init(void)
+{
+  cl_s08::init();
+  mk_mvar(rom, 0x78, "PPAGE", "Program page register");
+  mk_mvar(rom, 0x79, "LAP2" , "Linear address pointer register 2");
+  mk_mvar(rom, 0x7a, "LAP1" , "Linear address pointer register 1");
+  mk_mvar(rom, 0x7b, "LAP0" , "Linear address pointer register 0");
+  mk_mvar(rom, 0x7c, "LWP"  , "Linear word post increment register");
+  mk_mvar(rom, 0x7d, "LBP"  , "Linear byte post increment register");
+  mk_mvar(rom, 0x7e, "LB"   , "Linear byte register");
+  mk_mvar(rom, 0x7f, "LAPAB", "Linear address pointer add byte register");
+  return 0;
+}
+
 void
 cl_9s08::reset(void)
 {
