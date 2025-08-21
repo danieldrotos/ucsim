@@ -85,7 +85,7 @@ cl_hc08::init(void)
     ram->set((t_addr) i, 0);
   }
 
-  sp_limit= 0x7000;
+  sp_limit= 0x0080;//0x7000;
   return(0);
 }
 
@@ -485,6 +485,8 @@ cl_hc08::exec_inst(void)
   if (fetch(&code))
     return(resBREAKPOINT);
   tick(1);
+  if (code == 0xac) return inst_call();
+  if (code == 0x8d) return inst_rtc();
   switch ((code >> 4) & 0xf) {
   case 0x0: return(inst_bittestsetclear(code, /*FALSE*/0));
   case 0x1: return(inst_bitsetclear(code, /*FALSE*/0));
@@ -891,6 +893,33 @@ cl_9s08::get_disasm_info(t_addr addr,
     *dentry= dis_e;
   
   return dis_e->mnemonic;
+}
+
+
+int
+cl_9s08::inst_call(void)
+{
+  u8_t p= fetch();
+  t_addr a= fetch2();
+  push2(PC);
+  push1(rom->read(0x78));
+  rom->write(0x78, p);
+  PC= a;
+  tick(5);
+  return resGO;
+}
+
+int
+cl_9s08::inst_rtc(void)
+{
+  u8_t p;
+  t_addr a;
+  pop1(p);
+  pop2(a);
+  rom->write(0x78, p);
+  PC= a;
+  tick(6);
+  return resGO;
 }
 
 

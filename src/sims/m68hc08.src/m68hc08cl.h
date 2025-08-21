@@ -77,6 +77,8 @@ public:
   
   virtual void reset(void);
 #include "instcl.h"
+  virtual int inst_call(void) { return resINV; }
+  virtual int inst_rtc(void) { return resINV; }
 };
 
 
@@ -104,12 +106,13 @@ public:
   virtual void make_memories(void);
   virtual int init(void);
   virtual void reset(void);
-
   virtual const char *get_disasm_info(t_addr addr,
 				      int *ret_len,
 				      int *ret_branch,
 				      int *immed_offset,
 				      struct dis_entry **dentry);
+  virtual int inst_call(void);
+  virtual int inst_rtc(void);
 };
 
 
