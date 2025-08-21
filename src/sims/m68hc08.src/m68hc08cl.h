@@ -95,10 +95,13 @@ class cl_9s08: public cl_s08
 {
 public:
   class cl_mmu *mmu;
+  class cl_address_space *las;
+  class cl_memory_chip *las_chip;
 public:
   cl_9s08(struct cpu_entry *Itype, class cl_sim *asim);
   virtual const char *id_string(void);
   virtual void mk_hw_elements(void);
+  virtual void make_memories(void);
 };
 
 
