@@ -53,6 +53,8 @@ cl_t870c::cl_t870c(class cl_sim *asim):
   regs16[5]= &cIY;
   regs16[6]= &cSP;
   regs16[7]= &cHL;
+
+  def_data= 0xff;
 }
 
 int
@@ -108,19 +110,54 @@ cl_t870c::make_memories(void)
 {
   class cl_address_space *as;
 
-  rom= nas= as= new cl_address_space("nas", 0, nas_size(), 8);
+  rom= asc= asd= as= new cl_address_space("nas", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
   class cl_address_decoder *ad;
   class cl_memory_chip *chip;
 
-  chip= new cl_chip8("nas_chip", nas_size(), 8);
+  bootrom_chip= chip= new cl_chip8("bootrom_chip", 0x800, 8, 0xff);
   chip->init();
   memchips->add(chip);
   
-  ad= new cl_address_decoder(as= nas,
-                             chip, 0, nas_size()-1, 0);
+  rom_chip= chip= new cl_chip8("rom_chip", 0x8000, 8, 0xff);
+  chip->init();
+  memchips->add(chip);
+  
+  ad= new cl_address_decoder(as= rom,
+                             chip, 0x8000, 0xffff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  
+  int rs= 0x400 * 3;
+  ram_chip= chip= new cl_chip8("ram_chip", rs, 8);
+  chip->init();
+  memchips->add(chip);
+  
+  ad= new cl_address_decoder(as= rom,
+                             chip, 0x40, 0x40+rs-1, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  
+  chip= new cl_chip8("sfr_chip", 64, 8, 0);
+  chip->init();
+  memchips->add(chip);
+  
+  ad= new cl_address_decoder(as= rom,
+                             chip, 0, 63, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+
+  chip= new cl_chip8("dbr_chip", 128, 8, 0);
+  chip->init();
+  memchips->add(chip);
+  
+  ad= new cl_address_decoder(as= rom,
+                             chip, 0xf80, 0xfff, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -135,13 +172,13 @@ cl_t870c::print_regs(class cl_console_base *con)
   con->dd_printf("A= 0x%02x %3d %c\n",
 		 rA, rA, isprint(rA)?rA:'.');
   con->dd_printf("%s\n", cbin(rF,8).c_str());
-  con->dd_printf("WA0=0x%04x [WA]=%02x  ", rWA, nas->read(rWA));
-  con->dd_printf("BC0=0x%04x [BC]=%02x  ", rBC, nas->read(rBC));
-  con->dd_printf("DE0=0x%04x [DE]=%02x\n", rDE, nas->read(rDE));
-  con->dd_printf("HL0=0x%04x [HL]=%02x  ", rHL, nas->read(rHL));
-  con->dd_printf("IX0=0x%04x [IX]=%02x  ", rIX, nas->read(rIX));
-  con->dd_printf("IY0=0x%04x [IY]=%02x\n", rIY, nas->read(rIY));
-  con->dd_printf("SP =0x%04x [SP]=%02x  ", rSP, nas->read(rSP));
+  con->dd_printf("WA0=0x%04x [WA]=%02x  ", rWA, asd->read(rWA));
+  con->dd_printf("BC0=0x%04x [BC]=%02x  ", rBC, asd->read(rBC));
+  con->dd_printf("DE0=0x%04x [DE]=%02x\n", rDE, asd->read(rDE));
+  con->dd_printf("HL0=0x%04x [HL]=%02x  ", rHL, asd->read(rHL));
+  con->dd_printf("IX0=0x%04x [IX]=%02x  ", rIX, asd->read(rIX));
+  con->dd_printf("IY0=0x%04x [IY]=%02x\n", rIY, asd->read(rIY));
+  con->dd_printf("SP =0x%04x [SP]=%02x  ", rSP, asd->read(rSP));
   con->dd_printf("\n");
   print_disass(PC, con);
 }
