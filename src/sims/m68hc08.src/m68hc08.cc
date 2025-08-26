@@ -109,7 +109,7 @@ cl_hc08::reset(void)
 const char *
 cl_hc08::id_string(void)
 {
-  return("unspecified HC08");
+  return("HC08");
 }
 
 
@@ -729,6 +729,12 @@ cl_s08::cl_s08(struct cpu_entry *Itype, class cl_sim *asim):
 {
 }
 
+const char *
+cl_s08::id_string(void)
+{
+  return("HCS08");
+}
+
 
 /*
  * 9S08
@@ -737,6 +743,20 @@ cl_s08::cl_s08(struct cpu_entry *Itype, class cl_sim *asim):
 cl_9s08::cl_9s08(struct cpu_entry *Itype, class cl_sim *asim):
   cl_s08(Itype, asim)
 {
+}
+
+const char *
+cl_9s08::id_string(void)
+{
+  return("9S08");
+}
+
+void
+cl_9s08::mk_hw_elements(void)
+{
+  cl_s08::mk_hw_elements();
+  add_hw(mmu= new cl_mmu(this));
+  mmu->init();
 }
 
 
@@ -792,5 +812,14 @@ cl_hc08_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return cell->get();
 }
 
+
+/*
+ * Memory Management Unit
+ */
+
+cl_mmu::cl_mmu(class cl_uc *auc):
+  cl_hw(auc, (enum hw_cath)HW_MMU, 0, "mmu")
+{
+}
 
 /* End of m68hc08.src/m68hc08.cc */

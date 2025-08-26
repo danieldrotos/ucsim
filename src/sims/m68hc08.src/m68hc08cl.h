@@ -84,13 +84,21 @@ class cl_s08: public cl_hc08
 {
 public:
   cl_s08(struct cpu_entry *Itype, class cl_sim *asim);
+public:
+  virtual const char *id_string(void);
 };
 
+
+class cl_mmu;
 
 class cl_9s08: public cl_s08
 {
 public:
+  class cl_mmu *mmu;
+public:
   cl_9s08(struct cpu_entry *Itype, class cl_sim *asim);
+  virtual const char *id_string(void);
+  virtual void mk_hw_elements(void);
 };
 
 
@@ -110,6 +118,17 @@ public:
 
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
 };
+
+
+enum { HW_MMU= 0x2000 }; // final place: stypes.h
+
+class cl_mmu: public cl_hw
+{
+public:
+  cl_mmu(class cl_uc *auc);
+    
+};
+
 
 #endif
 
