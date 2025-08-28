@@ -759,6 +759,62 @@ cl_9s08::mk_hw_elements(void)
   mmu->init();
 }
 
+void
+cl_9s08::make_memories(void)
+{
+  class cl_address_space *as;
+
+  cl_s08::make_memories();
+
+  las= as= new cl_address_space("las", 0, 0x20000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  class cl_address_decoder *ad;
+
+  las_chip= new cl_chip8("las_chip", 0x20000, 8);
+  las_chip->init();
+  memchips->add(las_chip);
+  ad= new cl_address_decoder(las, las_chip, 0, 0x1ffff, 0);
+  ad->init();
+  las->decoders->add(ad);
+  ad->activate(0);
+
+  rom->undecode_area(NULL, 0x2080, 0x3fff, NULL);
+  ad= new cl_address_decoder(rom, las_chip, 0x2080, 0x3fff, 0x2080);
+  ad->init();
+  rom->decoders->add(ad);
+  ad->activate(0);
+
+  rom->undecode_area(NULL, 0x4000, 0x7fff, NULL);
+  ad= new cl_address_decoder(rom, las_chip, 0x4000, 0x7fff, 0x4000);
+  ad->init();
+  rom->decoders->add(ad);
+  ad->activate(0);
+  
+  rom->undecode_area(NULL, 0x8000, 0xbfff, NULL);
+  class cl_banker *b;
+  b= new cl_banker(rom, 0x78, 7,
+		   rom, 0x8000, 0xbfff);
+  b->init();
+  b->add_bank(0, las_chip, 0x00000);
+  b->add_bank(1, las_chip, 0x04000);
+  b->add_bank(2, las_chip, 0x08000);
+  b->add_bank(3, las_chip, 0x0c000);
+  b->add_bank(4, las_chip, 0x10000);
+  b->add_bank(5, las_chip, 0x14000);
+  b->add_bank(6, las_chip, 0x18000);
+  b->add_bank(7, las_chip, 0x1c000);
+  rom->decoders->add(b);
+  b->activate(0);
+  
+  rom->undecode_area(NULL, 0xc000, 0xffff, NULL);
+  ad= new cl_address_decoder(rom, las_chip, 0xc000, 0xffff, 0xc000);
+  ad->init();
+  rom->decoders->add(ad);
+  ad->activate(0);
+}
+
 
 /*
  * HC08 CPU options
