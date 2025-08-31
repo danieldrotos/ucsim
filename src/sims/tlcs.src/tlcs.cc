@@ -1172,7 +1172,7 @@ cl_tlcs::exec_inst2_f8gg(u8_t c1, u8_t c2)
         case 0x6c: n= fetch(); *ga= op_and8(*ga, n); break; // AND g,n
         case 0x6d: n= fetch(); *ga= op_xor8(*ga, n); break; // XOR g,n
         case 0x6e: n= fetch(); *ga= op_or8(*ga, n); break; // OR g,n
-        case 0x6f: n= fetch(); *ga= op_cp8(*ga, n); break; // CP g,n
+        case 0x6f: n= fetch(); op_cp8(*ga, n); break; // CP g,n
           // non-fix 2nd byte cases
         default:
           if ((c2 & 0xfc) == 0x14) // ADD ix,gg
