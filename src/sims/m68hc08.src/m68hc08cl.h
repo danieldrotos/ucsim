@@ -128,7 +128,12 @@ enum { HW_MMU= 0x2000 }; // final place: stypes.h
 class cl_mmu: public cl_hw
 {
 public:
-  cl_mmu(class cl_uc *auc);
+  class cl_address_space *las;
+  class cl_memory_chip *las_chip;
+public:
+  cl_mmu(class cl_uc *auc,
+	 class cl_address_space *Ilas,
+	 class cl_memory_chip *Ilas_chip);
     
 };
 

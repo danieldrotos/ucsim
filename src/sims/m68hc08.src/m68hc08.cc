@@ -755,7 +755,7 @@ void
 cl_9s08::mk_hw_elements(void)
 {
   cl_s08::mk_hw_elements();
-  add_hw(mmu= new cl_mmu(this));
+  add_hw(mmu= new cl_mmu(this, las, las_chip));
   mmu->init();
 }
 
@@ -873,9 +873,13 @@ cl_hc08_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
  * Memory Management Unit
  */
 
-cl_mmu::cl_mmu(class cl_uc *auc):
+cl_mmu::cl_mmu(class cl_uc *auc,
+	       class cl_address_space *Ilas,
+	       class cl_memory_chip *Ilas_chip):
   cl_hw(auc, (enum hw_cath)HW_MMU, 0, "mmu")
 {
+  las= Ilas;
+  las_chip= Ilas_chip;
 }
 
 /* End of m68hc08.src/m68hc08.cc */
