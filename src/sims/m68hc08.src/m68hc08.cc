@@ -815,6 +815,13 @@ cl_9s08::make_memories(void)
   ad->activate(0);
 }
 
+void
+cl_9s08::reset(void)
+{
+  cl_s08::reset();
+  rom->write(0x78, 2);
+}
+
 
 /*
  * HC08 CPU options
@@ -881,5 +888,20 @@ cl_mmu::cl_mmu(class cl_uc *auc,
   las= Ilas;
   las_chip= Ilas_chip;
 }
+
+int
+cl_mmu::init(void)
+{
+  ppage= register_cell(uc->rom, 0x78);
+  lap2 = register_cell(uc->rom, 0x79);
+  lap1 = register_cell(uc->rom, 0x7a);
+  lap0 = register_cell(uc->rom, 0x7b);
+  lwp  = register_cell(uc->rom, 0x7c);
+  lbp  = register_cell(uc->rom, 0x7d);
+  lb   = register_cell(uc->rom, 0x7e);
+  lapab= register_cell(uc->rom, 0x7f);
+  return 0;
+}
+
 
 /* End of m68hc08.src/m68hc08.cc */
