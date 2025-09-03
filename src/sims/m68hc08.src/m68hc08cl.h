@@ -102,6 +102,7 @@ public:
   virtual const char *id_string(void);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
+  virtual int init(void);
   virtual void reset(void);
 };
 
