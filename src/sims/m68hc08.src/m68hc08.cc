@@ -915,7 +915,97 @@ cl_mmu::init(void)
   lbp  = register_cell(uc->rom, 0x7d);
   lb   = register_cell(uc->rom, 0x7e);
   lapab= register_cell(uc->rom, 0x7f);
+  lap2->set(0);
+  lap1->set(0);
+  lap0->set(0);
+  lin_addr= 0;
   return 0;
+}
+
+t_mem
+cl_mmu::read(class cl_memory_cell *cell)
+{
+  if (cell == ppage)
+    {
+    }
+  else if (cell == lap2)
+    {
+      cell->set(lin_addr >> 16);
+    }
+  else if (cell == lap1)
+    {
+      cell->set(lin_addr >> 8);      
+    }
+  else if (cell == lap0)
+    {
+      cell->set(lin_addr & 0xff);
+    }
+  else if (cell == lwp)
+    {
+      cell->set(las->read(lin_addr));
+      lin_addr= (lin_addr+1) & 0x1ffff;
+    }
+  else if (cell == lbp)
+    {
+      cell->set(las->read(lin_addr));
+      lin_addr= (lin_addr+1) & 0x1ffff;
+    }
+  else if (cell == lb)
+    {
+      cell->set(las->read(lin_addr));
+    }
+  else if (cell == lapab)
+    {
+      cell->set(0);
+    }
+  conf(cell, NULL);
+  return cell->get();
+}
+
+void
+cl_mmu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (conf(cell, val))
+    return;
+  if (cell == ppage)
+    {
+    }
+  else if (cell == lap2)
+    {
+      lin_addr&= 0xffff;
+      lin_addr|= ((*val & 1) << 16);
+    }
+  else if (cell == lap1)
+    {
+      lin_addr&= 0x100ff;
+      lin_addr|= ((*val & 0xff) << 8);
+    }
+  else if (cell == lap0)
+    {
+      lin_addr&= 0x1ff00;
+      lin_addr|= (*val & 0xff);
+    }
+  else if (cell == lwp)
+    {
+      las->write(lin_addr, *val);
+      lin_addr= (lin_addr+1) & 0x1ffff;
+    }
+  else if (cell == lbp)
+    {
+      las->write(lin_addr, *val);
+      lin_addr= (lin_addr+1) & 0x1ffff;
+    }
+  else if (cell == lb)
+    {
+      las->write(lin_addr, *val);
+    }
+  else if (cell == lapab)
+    {
+      i8_t v= (*val & 0xff);
+      lin_addr+= v;
+      lin_addr&= 0x1ffff;
+    }
+  cell->set(*val);
 }
 
 
