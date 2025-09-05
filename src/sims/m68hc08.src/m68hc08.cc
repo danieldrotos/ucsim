@@ -907,6 +907,7 @@ cl_mmu::cl_mmu(class cl_uc *auc,
 int
 cl_mmu::init(void)
 {
+  cl_hw::init();
   ppage= register_cell(uc->rom, 0x78);
   lap2 = register_cell(uc->rom, 0x79);
   lap1 = register_cell(uc->rom, 0x7a);
@@ -919,6 +920,7 @@ cl_mmu::init(void)
   lap1->set(0);
   lap0->set(0);
   lin_addr= 0;
+  uc->mk_mvar(cfg, 1, "LAP", "Linear address pointer");
   return 0;
 }
 
@@ -1006,6 +1008,34 @@ cl_mmu::write(class cl_memory_cell *cell, t_mem *val)
       lin_addr&= 0x1ffff;
     }
   cell->set(*val);
+}
+
+const char *
+cl_mmu::cfg_help(t_addr addr)
+{
+  switch (addr)
+    {
+      //case 0: return "";
+    case 1: return "Linear address";
+    }
+  return "Not used";
+}
+
+t_mem
+cl_mmu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  switch (addr)
+    {
+    case 0: break;
+    case 1:
+      if (val)
+	{
+	  lin_addr= (*val&= 0x1ffff);
+	}
+      cell->set(lin_addr);
+      break;
+    }
+  return cell->get();
 }
 
 
