@@ -35,6 +35,7 @@ extern struct dis_entry disass_hc08[];
 
 extern struct dis_entry disass_hc08_9e[];
 
+extern struct dis_entry disass_9s08[];
 
 #endif
 
