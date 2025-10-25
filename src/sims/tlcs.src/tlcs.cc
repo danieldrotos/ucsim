@@ -1176,7 +1176,7 @@ cl_tlcs::exec_inst2_f8gg(u8_t c1, u8_t c2)
           // non-fix 2nd byte cases
         default:
           if ((c2 & 0xfc) == 0x14) // ADD ix,gg
-            *aof_reg16_ix(c2)= op_add16(*aof_reg16_ix(c2), *gga);
+            *aof_reg16_ix(c2)= op_add16_noszv(*aof_reg16_ix(c2), *gga);
           else
             switch (c2 & 0xf8)
               {

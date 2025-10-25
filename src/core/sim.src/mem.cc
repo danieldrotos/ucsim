@@ -1554,6 +1554,7 @@ cl_address_space::init(void)
   cl_memory::init();
   class cl_memory_cell *cell= cell_template();
   unsigned int i, s= sizeof(class cl_cell32);
+  printf("%d\n",s);
   //cell->as= this;
   u8_t *p1= (u8_t*)cella;
   cell->init();

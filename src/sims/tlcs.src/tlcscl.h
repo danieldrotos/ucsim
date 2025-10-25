@@ -308,6 +308,7 @@ class cl_tlcs: public cl_uc
   virtual u16_t op_or_hl_v(t_mem val);		// OR HL,16-bit
   virtual u16_t op_or_hl_a(t_addr addr);	// OR HL,mem
   virtual u16_t op_add16(t_mem op1, t_mem op2);	// ADD 16-bit
+  virtual u16_t op_add16_noszv(t_mem op1, t_mem op2);	// ADD 16-bit
   virtual u16_t op_adc16(t_mem op1, t_mem op2);	// ADC 16-bit
   virtual u16_t op_sub16(t_mem op1, t_mem op2);	// SUB 16-bit
 

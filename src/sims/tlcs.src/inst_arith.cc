@@ -621,6 +621,25 @@ cl_tlcs::op_add16(t_mem op1, t_mem op2)
   return r & 0xffff;
 }
 
+// ADD 16-bit, but modify fewer flags
+u16_t
+cl_tlcs::op_add16_noszv(t_mem op1, t_mem op2)
+{
+  u16_t d1, d;
+  int r, newc15;
+  
+  reg.raf.f&= ~(FLAG_X|FLAG_N|FLAG_C);
+
+  d1= op1;
+  d= op2;
+
+  r= d1 + d;
+  
+  if (r > 0xffff)
+    reg.raf.f|= (FLAG_C|FLAG_X);
+  
+  return r & 0xffff;
+}
 
 // ADC 16-bit
 u16_t
@@ -666,28 +685,12 @@ cl_tlcs::op_add_hl_a(t_addr addr)
   return op_add16(reg.hl, d);
 }
 
-
 // ADD HL,gg (do not modify S,Z,V bits!)
 u16_t
 cl_tlcs::op_add_hl_gg(t_mem val)
 {
-  u16_t d1, d;
-  int r;//, newc15;
-  
-  reg.raf.f&= ~(FLAG_X|FLAG_N|FLAG_C);
-
-  d1= reg.hl;
-  d= val;
-
-  r= d1 + d;
-  //newc15= (((d1&0x7fff)+(d&0x7fff)) > 0x7fff)?0x10000:0;
-  
-  if (r > 0xffff)
-    reg.raf.f|= (FLAG_C|FLAG_X);
-  
-  return r & 0xffff;
+  return op_add16_noszv(reg.hl, val);
 }
-
 
 // ADD HL,16-bit
 u16_t
