@@ -62,15 +62,52 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define rIX1 (rbanks[1].ix)
 #define rIY1 (rbanks[1].iy)
 
+
+class cl_t870c1;
+
+class cl_t870c1_psw_op: public cl_memory_operator
+{
+protected:
+  class cl_t870c1 *uc;
+public:
+  cl_t870c1_psw_op(class cl_memory_cell *acell, class cl_t870c1 *auc);
+  virtual t_mem write(t_mem val);
+};
+  
+
 class cl_t870c1: public cl_t870c
 {
  public:
   cl_t870c1(class cl_sim *asim);
   virtual void mk_rbanks();
   virtual int init(void);
+  virtual void part_init(void);
   virtual void make_memories(void);
+  virtual void make_cpu_hw(void);
 
   virtual void print_regs(class cl_console_base *con);
+};
+
+
+enum t870c1_cpu_cfg
+  {
+    t870c1_sp_limit = 0,
+    t870c1_nuof     = 1
+  };
+  
+class cl_t870c1_cpu: public cl_hw
+{
+public:
+  class cl_t870c1 *uc;
+  class cl_memory_cell *psw;
+public:
+  cl_t870c1_cpu(class cl_uc *auc);
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return t870c1_nuof; }
+  virtual void write(class cl_memory_cell *cell, t_mem *val);
+  virtual t_mem read(class cl_memory_cell *cell);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+  virtual const char *cfg_help(t_addr addr); 
 };
 
 
