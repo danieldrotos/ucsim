@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 // local
+#include "glob.h"
 #include "t870ccl.h"
 
 
@@ -220,6 +221,79 @@ cl_t870c::print_regs(class cl_console_base *con)
   con->dd_printf("SP =0x%04x [SP]=%02x  ", rSP, asd->read(rSP));
   con->dd_printf("\n");
   print_disass(PC, con);
+}
+
+
+struct dis_entry *
+cl_t870c::dis_tbl(void)
+{
+  return disass_t870c;
+}
+
+
+char *
+cl_t870c::disassc(t_addr addr, chars *comment)
+{
+  chars work= chars(), temp= chars(), fmt;
+  const char *b;
+  t_mem code, data= 0;
+  int i;
+  bool first;
+  
+  code= rom->get(addr);
+
+  i= 0;
+  while ((code & dis_tbl()[i].mask) != dis_tbl()[i].code &&
+	 dis_tbl()[i].mnemonic)
+    i++;
+  if (dis_tbl()[i].mnemonic == NULL)
+    {
+      return strdup("-- UNKNOWN/INVALID");
+    }
+  b= dis_tbl()[i].mnemonic;
+  
+  first= true;
+  for (i=0; b[i]; i++)
+    {
+      if ((b[i] == ' ') && first)
+	{
+	  first= false;
+	  while (work.len() < 8) work.append(' ');
+	}
+      if (b[i] == '\'')
+	{
+	  fmt= "";
+	  i++;
+	  while (b[i] && (b[i]!='\''))
+	    fmt.append(b[i++]);
+	  if (!b[i]) i--;
+	  if (fmt.empty())
+	    work.append("'");
+	  if ((fmt=="char8") == 0)
+	    {
+	      
+	    }
+	  continue;
+	}
+      if (b[i] == '%')
+	{
+	  b++;
+	  switch (b[i])
+	    {
+	    case 'd': // Rd
+	      break;
+	    default:
+	      temp= "?";
+	      break;
+	    }
+	  if (comment && temp.nempty())
+	    comment->append(temp);
+	}
+      else
+	work+= b[i];
+    }
+
+  return strdup(work.c_str());
 }
 
 
