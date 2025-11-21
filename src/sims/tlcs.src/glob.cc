@@ -499,6 +499,7 @@ struct dis_entry disass_tlcs[]= {
 //	    case 'x': /* mn in 5,6 byte */ snprintf(l,19,"0x%04x",(int)((c>>32)&0xffff)); s+= l; break;
 
 
+
 struct dis_entry disass_t870c[]=
   {
     // code mask branch length mn iscall ticks info
