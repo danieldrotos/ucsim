@@ -319,6 +319,18 @@ cl_ez80::get_disasm_info(t_addr addr,
 }
 
 int
+cl_ez80::inst_length(t_addr addr)
+{
+  return cl_z80::inst_length(addr);
+}
+
+int
+cl_ez80::exec_inst(void)
+{
+  return cl_z80::exec_inst();
+}
+
+int
 cl_ez80::inst_ed_ez80(t_mem code)
 {
   i8_t d;

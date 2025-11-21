@@ -42,7 +42,10 @@ class cl_ez80: public cl_z80
 				      int *ret_branch,
 				      int *immed_offset,
 				      struct dis_entry **dentry);
-  
+
+  virtual int inst_length(t_addr addr);
+  virtual int exec_inst(void);
+
   virtual int inst_ed_ez80(t_mem code);    
   virtual int inst_ed(t_mem prefix);
   virtual int inst_dd_spec(t_mem code);
