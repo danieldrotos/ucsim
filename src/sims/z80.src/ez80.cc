@@ -205,6 +205,12 @@ cl_ez80::id_string(void)
   return ("EZ80");
 }
 
+void
+cl_ez80::reset(void)
+{
+  adl= false;
+  cl_z80::reset();
+}
 
 const char *
 cl_ez80::get_disasm_info(t_addr addr,
