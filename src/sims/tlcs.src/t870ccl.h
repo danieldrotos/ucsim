@@ -113,6 +113,10 @@ public:
   class cl_memory_chip *ram_chip, *rom_chip, *bootrom_chip;
   u16_t sp_limit;
 public:
+  // (src) or (dst) memory cell for 8/16 bit ops
+  class cl_cell8 *sdc;
+  t_addr sda;
+public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
   virtual void part_init(void);

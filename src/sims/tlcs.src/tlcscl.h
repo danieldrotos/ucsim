@@ -50,7 +50,7 @@ enum tlcs_flags {
 
 class cl_tlcs: public cl_uc
 {
- protected:
+protected:
   struct {
     union {
       u16_t af;
@@ -155,14 +155,14 @@ class cl_tlcs: public cl_uc
     };
   } reg;
 
- public:
+public:
   class cl_address_space *nas;
   class cl_address_space *xas;
   class cl_address_space *yas;
   class cl_address_space *regs8;
   class cl_address_space *regs16;
   t_addr sp_limit;
- public:
+public:
   cl_tlcs(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
