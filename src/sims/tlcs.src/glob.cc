@@ -504,6 +504,8 @@ struct dis_entry disass_t870c[]=
   {
     // code mask branch length mn iscall ticks info
     { 0x00000000, 0x000000ff, ' ', 1, "NOP" },
+    { 0x00000004, 0x000000ff, ' ', 1, "CLR CF" },
+    { 0x00000005, 0x000000ff, ' ', 1, "SET CF" },
 
     { 0, 0, ' ', 0, NULL }
   };

@@ -344,6 +344,26 @@ cl_t870c::exec_inst(void)
 }
 
 
+int
+cl_t870c::CLR_CF(MP)
+{
+  rF|= MJF;
+  rF&= ~MCF;
+  cF.W(rF);
+  return resGO;
+}
+
+
+int
+cl_t870c::SET_CF(MP)
+{
+  rF&= ~MJF;
+  rF|= MCF;
+  cF.W(rF);
+  return resGO;
+}
+
+
 /**************************************************************************/
 
 cl_t870c_cpu::cl_t870c_cpu(class cl_uc *auc):
