@@ -34,8 +34,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_m6801: public cl_m6800
 {
 public:
+  class cl_cell16 cD;
+public:
   cl_m6801(class cl_sim *asim);
   virtual const char *id_string(void);
+  virtual int init(void);
+  virtual void print_regs(class cl_console_base *con);
 };
 
 
