@@ -254,6 +254,7 @@ enum cpu_type {
   CPU_HC11      = 0x0010,
   CPU_HC12      = 0x0020,
   CPU_9S08      = 0x0040,
+  CPU_M6801	= 0x0080,
   
   // MOS6502 and variants
   CPU_6502	= 0x0001,	// NMOS

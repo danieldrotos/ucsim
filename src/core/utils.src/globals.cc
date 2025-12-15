@@ -587,6 +587,9 @@ struct cpu_entry cpus_i8085[]=
 struct cpu_entry cpus_m6800[]=
   {
     {"M6800", CPU_M6800, 0, "M6800", ""},
+    {"6800" , CPU_M6800, 0, "M6800", ""},
+    {"M6801", CPU_M6801, 0, "M6801", ""},
+    {"6801" , CPU_M6801, 0, "M6801", ""},
 
     {NULL, CPU_NONE, 0, "", ""}
   };

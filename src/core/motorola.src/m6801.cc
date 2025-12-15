@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (simm6800.cc)
+ * Simulator of microcontrollers (m6801.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -25,33 +25,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-// local
-#include "simm6800cl.h"
-#include "m6800cl.h"
 #include "m6801cl.h"
 
 
-cl_simm6800::cl_simm6800(class cl_app *the_app):
-  cl_sim(the_app)
-{}
-
-class cl_uc *
-cl_simm6800::mk_controller(void)
+cl_m6801::cl_m6801(class cl_sim *asim):
+  cl_m6800(asim)
 {
-  class cl_i8020 *uc;
-  struct cpu_entry *ct;
-
-  if ((ct= type_entry("")) == NULL)
-    return NULL;
-
-  if (ct->type == CPU_M6800)
-    return(new cl_m6800(this));
-
-  if (ct->type == CPU_M6801)
-    return new cl_m6801(this);
-  
-  return NULL;
 }
 
 
-/* End of motorola.src/simm6800.cc */
+const char *
+cl_m6801::id_string(void)
+{
+  return "M6801";
+}
+
+
+/* End of motorola.src/m6801.cc */
