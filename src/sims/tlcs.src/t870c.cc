@@ -358,6 +358,60 @@ cl_t870c::sd_vw(void)
   sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
 
+void
+cl_t870c::sd_ixd(void)
+{
+  i8_t d= fetch();
+  sda= rIX+d;
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_iyd(void)
+{
+  i8_t d= fetch();
+  sda= rIY+d;
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_spd(void)
+{
+  i8_t d= fetch();
+  sda= rSP+d;
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_hld(void)
+{
+  i8_t d= fetch();
+  sda= rHL+d;
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_pca(void)
+{
+  sda= (PC+(i8_t)rA) & PCmask;
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_Psp(void)
+{
+  cSP.W(sda= rSP+1);
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_spM(void)
+{
+  sda= rSP;
+  cSP.W(rSP-1);
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
 
 int
 cl_t870c::CLR_CF(MP)
