@@ -39,6 +39,8 @@ public:
   cl_m6801(class cl_sim *asim);
   virtual const char *id_string(void);
   virtual int init(void);
+  virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
 };
 

@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdio.h>
 #include <ctype.h>
 
+#include "glob68.h"
+
 #include "m6801cl.h"
 
 
@@ -53,6 +55,31 @@ cl_m6801::init(void)
 #undef RCV
 
   return 0;
+}
+
+
+struct dis_entry *
+cl_m6801::dis_tbl(void)
+{
+  return(disass_m6801);
+}
+
+
+struct dis_entry *
+cl_m6801::get_dis_entry(t_addr addr)
+{
+  struct dis_entry *dt= dis_tbl();
+  int i= 0;
+  t_mem code= rom->get(addr);
+
+  if (dt == NULL)
+    return NULL;
+  while (((code & dt[i].mask) != dt[i].code) &&
+	 dt[i].mnemonic)
+    i++;
+  if (dt[i].mnemonic)
+    return &dt[i];
+  return cl_m6800::get_dis_entry(addr);
 }
 
 

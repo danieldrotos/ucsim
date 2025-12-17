@@ -248,4 +248,12 @@ struct dis_entry disass_m6800[]=
     { 0, 0, 0, 0, 0, 0 }
   };
 
+// code mask branch len mn call tick
+struct dis_entry disass_m6801[]=
+  {
+
+    { 0, 0, 0, 0, 0, 0 }
+  };
+
+  
 /* End of motorola.src/glob68.cc */
