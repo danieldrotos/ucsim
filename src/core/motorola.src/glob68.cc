@@ -251,7 +251,8 @@ struct dis_entry disass_m6800[]=
 // code mask branch len mn call tick
 struct dis_entry disass_m6801[]=
   {
-
+    { 0x21, 0xff, ' ', 2, "BRN %r" },
+      
     { 0, 0, 0, 0, 0, 0 }
   };
 

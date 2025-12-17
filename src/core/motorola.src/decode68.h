@@ -28,6 +28,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef DECODE68_HEADER
 #define DECODE68_HEADER
 
+
 #define NOP   instruction_01
 #define TAP   instruction_06
 #define TPA   instruction_07
@@ -241,6 +242,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADDBe instruction_fb
 #define LDXe  instruction_fe
 #define STXe  instruction_ff
+
+
+/* 6801 sepcific additions */
+
+#define BRN   instruction_21
+
 
 #endif
 

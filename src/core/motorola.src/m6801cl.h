@@ -42,10 +42,12 @@ public:
   virtual const char *id_string(void);
   virtual int init(void);
 
-  virtual i8_t *tick_tab(t_mem code) { return p0ticks; }
+  virtual i8_t *tick_tab(t_mem code) { return m6801ticks; }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
+
+  virtual int BRN(t_mem code) { fetch(); return resGO; }
 };
 
 
