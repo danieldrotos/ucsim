@@ -133,6 +133,7 @@ public:
 
   virtual int exec_inst(void);
 
+  // Set sdc/sda for indirect addressing modes
   virtual void sd_x(void);
   virtual void sd_vw(void);
   virtual void sd_bc(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rBC); }
@@ -145,15 +146,51 @@ public:
   virtual void sd_iyd(void);
   virtual void sd_spd(void);
   virtual void sd_hld(void);
-  virtual void sd_pca(void);
+  virtual void sd_pca(void); // uses actual PC
   virtual void sd_Psp(void);
   virtual void sd_spM(void);
+
+  // Common parametrized operations
+  virtual int ld8(class cl_cell8 *reg, class cl_memory_cell *src);
+  virtual int ldi8(class cl_cell8 *reg, u8_t n);
+  virtual int ldi8nz(class cl_cell8 *reg, u8_t n);
+  virtual int ld16(class cl_cell16 *reg, u16_t addr);
+  virtual int ldi16(class cl_cell16 *reg, u16_t n);
+  virtual int st8(class cl_memory_cell *dst, u8_t n);
+  virtual int st16(t_addr addr, u16_t n);
   
 #include "alias870c.h"
+  // 0 00 - 0 00
   virtual int NOP(MP) { return resGO; }
   virtual int CLR_CF(MP);
   virtual int SET_CF(MP);
   virtual int CPL_CF(MP);
+  // 0 10 - 0 1f
+  virtual int LD_A_rA(MP) { return ldi8(regs8[0], rA); }
+  virtual int LD_A_rW(MP) { return ldi8(regs8[0], rW); }
+  virtual int LD_A_rC(MP) { return ldi8(regs8[0], rC); }
+  virtual int LD_A_rB(MP) { return ldi8(regs8[0], rB); }
+  virtual int LD_A_rE(MP) { return ldi8(regs8[0], rE); }
+  virtual int LD_A_rD(MP) { return ldi8(regs8[0], rD); }
+  virtual int LD_A_rL(MP) { return ldi8(regs8[0], rL); }
+  virtual int LD_A_rH(MP) { return ldi8(regs8[0], rH); }
+  virtual int LD_rA_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rW_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rC_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rB_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rE_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rD_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rL_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  virtual int LD_rH_n(MP) { return ldi8nz(regs8[code&7], fetch()); }
+  // 0 40 - 0 4f
+  virtual int LD_rA_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rW_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rC_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rB_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rE_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rD_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rL_A(MP) { return ldi8(regs8[code&7], rA); }
+  virtual int LD_rH_A(MP) { return ldi8(regs8[code&7], rA); }
 };
 
 
