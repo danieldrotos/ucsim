@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "m6800cl.h"
 
 
+extern i8_t m6801ticks[256];
+
 class cl_m6801: public cl_m6800
 {
 public:
@@ -39,6 +41,8 @@ public:
   cl_m6801(class cl_sim *asim);
   virtual const char *id_string(void);
   virtual int init(void);
+
+  virtual i8_t *tick_tab(t_mem code) { return p0ticks; }
   virtual struct dis_entry *dis_tbl(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
