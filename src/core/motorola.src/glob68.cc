@@ -252,6 +252,7 @@ struct dis_entry disass_m6800[]=
 struct dis_entry disass_m6801[]=
   {
     { 0x21, 0xff, ' ', 2, "BRN %r" },
+    { 0x3b, 0xff, ' ', 1, "MUL" },
       
     { 0, 0, 0, 0, 0, 0 }
   };
