@@ -47,9 +47,15 @@ public:
   virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
 
+  virtual int add16(class cl_memory_cell &dest, u16_t op);
+  
   virtual int BRN(t_mem code) { fetch(); return resGO; }
   virtual int ABX(t_mem code);
   virtual int MUL(t_mem code);
+  virtual int ADDD16(t_mem code) { return add16(cD, i16()); }
+  virtual int ADDDd (t_mem code) { return add16(cD, dop16()); }
+  virtual int ADDDe (t_mem code) { return add16(cD, eop16()); }
+  virtual int ADDDi (t_mem code) { return add16(cD, iop16()); }
 };
 
 

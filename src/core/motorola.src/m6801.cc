@@ -131,6 +131,26 @@ cl_m6801::print_regs(class cl_console_base *con)
 
 
 int
+cl_m6801::add16(class cl_memory_cell &dest, u16_t op)
+{
+  u8_t f= rF & ~(flagN|flagZ|flagV|flagC);
+  u16_t a= dest.read(), b= op, r;
+  u8_t a15, b15, r15, na15, nb15, nr15;
+  r= a+b;
+  a15= a&0x8000; na15= a15^0x8000;
+  b15= b&0x8000; nb15= b15^0x8000;
+  r15= r&0x8000; nr15= r15^0x8000;
+  if (r15) f|= flagN;
+  if (!r) f|= flagZ;
+  if ((a15&b15&nr15) | (na15&nb15&r15)) f|= flagV;
+  if ((a15&b15) | (b15&nr15) | (nr15&a15)) f|= flagC;
+  dest.W(r);
+  cCC.W(f);
+  return resGO;
+}
+
+
+int
 cl_m6801::ABX(t_mem code)
 {
   u16_t op= rB;

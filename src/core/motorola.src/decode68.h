@@ -251,6 +251,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ABX   instruction_3a
 #define MUL   instruction_3d
 
+#define ADDD16 instruction_c3
+
+#define ADDDd  instruction_d3
+
+#define ADDDe  instruction_f3
+
+#define ADDDi  instruction_e3
+
+
 #endif
 
 /* End of m6800.src/decode68.h */
