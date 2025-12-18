@@ -262,6 +262,11 @@ struct dis_entry disass_m6801[]=
     { 0xf3, 0xff, ' ', 3, "ADDD %E" },
     { 0xe3, 0xff, ' ', 2, "ADDD %X" },
 
+    { 0xcc, 0xff, ' ', 3, "LDD %B" },
+    { 0xdc, 0xff, ' ', 2, "LDD %D" },
+    { 0xfc, 0xff, ' ', 3, "LDD %E" },
+    { 0xec, 0xff, ' ', 2, "LDD %X" },
+
     { 0, 0, 0, 0, 0, 0 }
   };
 

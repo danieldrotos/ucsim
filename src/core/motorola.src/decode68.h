@@ -254,7 +254,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADDDd  instruction_d3
 #define ADDDe  instruction_f3
 #define ADDDi  instruction_e3
-
+#define LDD16  instruction_cc
+#define LDDd   instruction_dc
+#define LDDe   instruction_fc
+#define LDDi   instruction_ec
 
 #endif
 

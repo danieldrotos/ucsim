@@ -151,6 +151,20 @@ cl_m6801::add16(class cl_memory_cell &dest, u16_t op)
 
 
 int
+cl_m6801::ldd(u16_t op)
+{
+  rF&= ~(flagN|flagZ|flagV);
+  cD.W(op);
+  if (!op)
+    rF|= flagZ;
+  if (op&0x8000)
+    rF|= flagN;
+  cCC.W(rF);
+  return resGO;
+}
+
+
+int
 cl_m6801::ASLD(t_mem code)
 {
   u8_t newc= (rD&0x8000)?flagC:0;
