@@ -52,6 +52,7 @@ public:
   virtual int std(t_addr addr);
   
   virtual int BRN(t_mem code) { fetch(); return resGO; }
+  virtual int JSRd(t_mem code) { return call(daddr()); }
   virtual int LSRD(t_mem code);
   virtual int ASLD(t_mem code);
   virtual int ABX(t_mem code);
