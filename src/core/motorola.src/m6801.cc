@@ -81,16 +81,9 @@ cl_m6801::init(void)
 
 
 struct dis_entry *
-cl_m6801::dis_tbl(void)
-{
-  return(disass_m6801);
-}
-
-
-struct dis_entry *
 cl_m6801::get_dis_entry(t_addr addr)
 {
-  struct dis_entry *dt= dis_tbl();
+  struct dis_entry *dt= disass_m6801;
   int i= 0;
   t_mem code= rom->get(addr);
 
