@@ -4,7 +4,6 @@
 #define SET_CF 			instruction_05
 #define CPL_CF 			instruction_06
 
-<<<<<<< HEAD
 #define LDW_mx_mn               instruction_08
 #define LDW_mhl_mn              instruction_09
 #define LD_mx_n                 instruction_0a
@@ -15,8 +14,6 @@
 #define LD_mhl_A                instruction_0f
 
 
-=======
->>>>>>> 9c3452dec1a9428f31f7523f35d3ad99c0c99fc0
 // 0 10 - 0 1f
 #define LD_A_rA                 instruction_10
 #define LD_A_rW                 instruction_11
@@ -44,7 +41,6 @@
 #define LD_rD_A                 instruction_45
 #define LD_rL_A                 instruction_46
 #define LD_rH_A                 instruction_47
-<<<<<<< HEAD
 #define LD_rrWA_mn              instruction_48
 #define LD_rrBC_mn              instruction_49
 #define LD_rrDE_mn              instruction_4a
@@ -67,6 +63,3 @@
 #define LD_rD_g                 instruction_145
 #define LD_rL_g                 instruction_146
 #define LD_rH_g                 instruction_147
-=======
-
->>>>>>> 9c3452dec1a9428f31f7523f35d3ad99c0c99fc0
