@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 i8_t m6801ticks[256]= {
   /*      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  */
-  /* 0 */ 0, 2, 0, 0, 0, 0, 2, 2, 4, 4, 2, 2, 2, 2, 2, 2,
+  /* 0 */ 0, 2, 0, 0, 0, 3, 2, 2, 4, 4, 2, 2, 2, 2, 2, 2,
   /* 1 */ 2, 2, 0, 0, 0, 0, 2, 2, 0, 2, 0, 2, 0, 0, 0, 0,
   /* 2 */ 4, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
   /* 3 */ 4, 4, 4, 4, 4, 4, 4, 4, 0, 5, 3,10, 0,10, 9,12,
@@ -146,6 +146,23 @@ cl_m6801::add16(class cl_memory_cell &dest, u16_t op)
   if ((a15&b15) | (b15&nr15) | (nr15&a15)) f|= flagC;
   dest.W(r);
   cCC.W(f);
+  return resGO;
+}
+
+
+int
+cl_m6801::ASLD(t_mem code)
+{
+  u8_t newc= (rD&0x8000)?flagC:0;
+  u16_t r= rD<<1;
+  u8_t newn= (r&0x8000)?flagN:0;
+  rF&= ~(flagN|flagZ|flagV|flagC);
+  u8_t newv= (newn && !newc) || (!newn && newc);
+  newv= newv?flagV:0;
+  cD.W(r);
+  if (!r)
+    rF|= flagZ;
+  cCC.W(rF|newc|newn|newv);
   return resGO;
 }
 

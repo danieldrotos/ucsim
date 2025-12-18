@@ -50,6 +50,7 @@ public:
   virtual int add16(class cl_memory_cell &dest, u16_t op);
   
   virtual int BRN(t_mem code) { fetch(); return resGO; }
+  virtual int ASLD(t_mem code);
   virtual int ABX(t_mem code);
   virtual int MUL(t_mem code);
   virtual int ADDD16(t_mem code) { return add16(cD, i16()); }
