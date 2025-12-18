@@ -152,7 +152,7 @@ static struct dis_entry de7f;
 struct dis_entry *
 cl_r4k::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr);
+  u8_t code= rom->get(addr), mode= (edmr&0xc0)>>6;
   int i;
   struct dis_entry *dt;
   
@@ -214,9 +214,13 @@ cl_r4k::dis_entry(t_addr addr)
       return NULL;
     }
 
-  if ((code == 0x6d) && (edmr & 0xc0))
+  if ((code == 0x6d) &&
+      (
+       (mode == 1) || (mode == 2) || (mode == 3)
+       )
+      )
     {
-      // 6d page exists in 4k mode only!
+      // 6d page exists in 4k mode only! (plus 01 and 10 non-documented modes)
       return dis_6d_entry(addr);
     }
 
@@ -585,6 +589,18 @@ cl_r4k::mode3k(void)
 }
 
 void
+cl_r4k::mode01(void)
+{
+  itab[0x6d]= instruction_wrapper_4k6d;
+}
+
+void
+cl_r4k::mode10(void)
+{
+  itab[0x6d]= instruction_wrapper_4k6d;
+}
+
+void
 cl_r4k::mode4k(void)
 {
   itab[0x40]= instruction_wrapper_4knone;
@@ -866,10 +882,14 @@ cl_r4k_cpu::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (cell == edmr)
     {
-      if (*val & 0xc0)
-	r4uc->mode4k();
-      else
-	r4uc->mode3k();
+      u8_t m= (*val & 0xc0) >> 6;
+      switch (m)
+	{
+	case 0: r4uc->mode3k(); break;
+	case 1: r4uc->mode01(); break;
+	case 2: r4uc->mode10(); break;
+	case 3: r4uc->mode4k(); break;
+	}
     }
   
   if (cell == dataseg)
