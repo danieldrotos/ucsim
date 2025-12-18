@@ -254,6 +254,7 @@ struct dis_entry disass_m6801[]=
     { 0x21, 0xff, ' ', 2, "BRN %r" },
     { 0x9d, 0xff, 'd', 2, "JSR %d" },
     { 0x3c, 0xff, ' ', 1, "PSHX" },
+    { 0x38, 0xff, ' ', 1, "PULX" },
 
     { 0x04, 0xff, ' ', 1, "LSRD" },
     { 0x05, 0xff, ' ', 1, "ASLD" },
