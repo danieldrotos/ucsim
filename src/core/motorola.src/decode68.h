@@ -246,6 +246,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 /* 6801 sepcific additions */
 
+#define LSRD   instruction_04
 #define ASLD   instruction_05
 #define BRN    instruction_21
 #define ABX    instruction_3a

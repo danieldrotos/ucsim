@@ -51,6 +51,7 @@ public:
   virtual int ldd(u16_t op);
   
   virtual int BRN(t_mem code) { fetch(); return resGO; }
+  virtual int LSRD(t_mem code);
   virtual int ASLD(t_mem code);
   virtual int ABX(t_mem code);
   virtual int MUL(t_mem code);
