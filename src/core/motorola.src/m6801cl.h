@@ -48,6 +48,7 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int BRN(t_mem code) { fetch(); return resGO; }
+  virtual int ABX(t_mem code);
   virtual int MUL(t_mem code);
 };
 

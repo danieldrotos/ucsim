@@ -248,6 +248,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define BRN   instruction_21
 
+#define ABX   instruction_3a
 #define MUL   instruction_3d
 
 #endif
