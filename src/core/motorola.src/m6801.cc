@@ -165,6 +165,22 @@ cl_m6801::ldd(u16_t op)
 
 
 int
+cl_m6801::std(t_addr addr)
+{
+  rF&= ~(flagN|flagZ|flagV);
+  if (rD & 0x8000)
+    rF|= flagN;
+  if (!rD)
+    rF|= flagZ;
+  cCC.W(rF);
+  rom->write(addr, rA);
+  rom->write(addr+1, rB);
+  vc.wr+= 2;
+  return resGO;
+}
+
+
+int
 cl_m6801::LSRD(t_mem code)
 {
   u8_t newc= (rD&0x1)?flagC:0;

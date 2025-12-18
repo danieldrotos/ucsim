@@ -49,6 +49,7 @@ public:
 
   virtual int add16(class cl_memory_cell &dest, u16_t op);
   virtual int ldd(u16_t op);
+  virtual int std(t_addr addr);
   
   virtual int BRN(t_mem code) { fetch(); return resGO; }
   virtual int LSRD(t_mem code);
@@ -63,6 +64,9 @@ public:
   virtual int LDDd  (t_mem code) { return ldd(dop16()); }
   virtual int LDDe  (t_mem code) { return ldd(eop16()); }
   virtual int LDDi  (t_mem code) { return ldd(iop16()); }
+  virtual int STDd  (t_mem code) { return std(daddr()); }
+  virtual int STDe  (t_mem code) { return std(eaddr()); }
+  virtual int STDi  (t_mem code) { return std(iaddr()); }
 };
 
 
