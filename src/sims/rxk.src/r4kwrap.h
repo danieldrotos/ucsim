@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 extern int instruction_wrapper_4knone(class cl_uc *uc, t_mem code);
 
+extern int instruction_wrapper_4k42(class cl_uc *uc, t_mem code);
 extern int instruction_wrapper_4k45(class cl_uc *uc, t_mem code);
 extern int instruction_wrapper_4k48(class cl_uc *uc, t_mem code);
 extern int instruction_wrapper_4k4c(class cl_uc *uc, t_mem code);
