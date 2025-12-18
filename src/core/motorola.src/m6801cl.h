@@ -48,6 +48,7 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int add16(class cl_memory_cell &dest, u16_t op);
+  virtual int sub16(class cl_memory_cell &dest, u16_t op);
   virtual int ldd(u16_t op);
   virtual int std(t_addr addr);
   
@@ -60,6 +61,10 @@ public:
   virtual int ADDDd (t_mem code) { return add16(cD, dop16()); }
   virtual int ADDDe (t_mem code) { return add16(cD, eop16()); }
   virtual int ADDDi (t_mem code) { return add16(cD, iop16()); }
+  virtual int SUBD16(t_mem code) { return sub16(cD, i16()); }
+  virtual int SUBDd (t_mem code) { return sub16(cD, dop16()); }
+  virtual int SUBDe (t_mem code) { return sub16(cD, eop16()); }
+  virtual int SUBDi (t_mem code) { return sub16(cD, iop16()); }
   virtual int LDD16 (t_mem code) { return ldd(i16()); }
   virtual int LDDd  (t_mem code) { return ldd(dop16()); }
   virtual int LDDe  (t_mem code) { return ldd(eop16()); }
