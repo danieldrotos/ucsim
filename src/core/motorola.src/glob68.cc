@@ -252,7 +252,9 @@ struct dis_entry disass_m6800[]=
 struct dis_entry disass_m6801[]=
   {
     { 0x21, 0xff, ' ', 2, "BRN %r" },
-    
+    { 0x9d, 0xff, 'd', 2, "JSR %d" },
+    { 0x3c, 0xff, ' ', 1, "PSHX" },
+
     { 0x04, 0xff, ' ', 1, "LSRD" },
     { 0x05, 0xff, ' ', 1, "ASLD" },
     { 0x3a, 0xff, ' ', 1, "ABX" },
@@ -274,8 +276,6 @@ struct dis_entry disass_m6801[]=
     { 0xdd, 0xff, ' ', 2, "STD %D" },
     { 0xfd, 0xff, ' ', 3, "STD %E" },
     { 0xed, 0xff, ' ', 2, "STD %X" },
-
-    { 0x9d, 0xff, ' ', 2, "JSR %d" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

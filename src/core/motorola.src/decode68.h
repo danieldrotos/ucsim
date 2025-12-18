@@ -267,6 +267,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define STDe   instruction_fd
 #define STDi   instruction_ed
 #define JSRd   instruction_9d
+#define PSHX   instruction_3c
 
 
 #endif
