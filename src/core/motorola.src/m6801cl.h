@@ -48,6 +48,7 @@ public:
 
   virtual int add16(class cl_memory_cell &dest, u16_t op);
   virtual int sub16(class cl_memory_cell &dest, u16_t op);
+  virtual int cpx(u16_t op);
   virtual int ldd(u16_t op);
   virtual int std(t_addr addr);
   
