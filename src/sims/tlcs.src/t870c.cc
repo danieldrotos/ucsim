@@ -145,6 +145,7 @@ cl_t870c::part_init(void)
   class cl_memory_operator *o= new cl_t870c_psw_op(&cPSW, this);
   o->init();
   cPSW.append_operator(o);
+  uc_itab[0xf9]= &cl_itab::invalid_instruction;
 }
 
 void
@@ -271,6 +272,9 @@ cl_t870c::dis_tbl(void)
 }
 
 static chars r_names[8]= { "A", "W", "C", "B", "E", "D", "L", "H" };
+static chars rr_names[8]= {
+  "WA", "BC", "DE", "HL", "IX", "IY", "SP", "HL"
+};
 
 char *
 cl_t870c::disassc(t_addr addr, chars *comment)
@@ -288,14 +292,16 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   code3= rom->get(addr+3);
   code4= rom->get(addr+4);
   code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
-  
+
+  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
+    return strdup("INVALID");
   i= 0;
   while ((code32 & dis_tbl()[i].mask) != dis_tbl()[i].code &&
 	 dis_tbl()[i].mnemonic)
     i++;
   if (dis_tbl()[i].mnemonic == NULL)
     {
-      return strdup("-- UNKNOWN/INVALID");
+      return strdup("UNKNOWN/INVALID");
     }
   b= dis_tbl()[i].mnemonic;
   
@@ -315,13 +321,17 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	    fmt.append(b[i++]);
 	  if (!b[i]) i--;
 	  if (fmt.empty()) work.append("'");
-	  else if (fmt=="r_0.0") work.append(r_names[code0&7]);
-	  else if (fmt=="r_1.0") work.append(r_names[code1&7]);
-	  else if (fmt=="r_2.0") work.append(r_names[code2&7]);
-	  else if (fmt=="r_3.0") work.append(r_names[code3&7]);
-	  else if (fmt=="n_1")   work.appendf("0x%02x", code1);
-	  else if (fmt=="n_2")   work.appendf("0x%02x", code2);
-	  else if (fmt=="mn_1")  work.appendf("0x%04x", code1+code2*256);
+	  else if (fmt=="r_0.0")  work.append(r_names[code0&7]);
+	  else if (fmt=="r_1.0")  work.append(r_names[code1&7]);
+	  else if (fmt=="r_2.0")  work.append(r_names[code2&7]);
+	  else if (fmt=="r_3.0")  work.append(r_names[code3&7]);
+	  else if (fmt=="rr_0.0") work.append(rr_names[code0&7]);
+	  else if (fmt=="rr_1.0") work.append(rr_names[code1&7]);
+	  else if (fmt=="rr_2.0") work.append(rr_names[code2&7]);
+	  else if (fmt=="rr_3.0") work.append(rr_names[code3&7]);
+	  else if (fmt=="n_1")    work.appendf("0x%02x", code1);
+	  else if (fmt=="n_2")    work.appendf("0x%02x", code2);
+	  else if (fmt=="mn_1")   work.appendf("0x%04x", code1+code2*256);
 	  else if (fmt=="mn_2")  work.appendf("0x%04x", code2+code3*256);
 	  else if (fmt=="mn_3")  work.appendf("0x%04x", code3+code4*256);
 	  continue;
@@ -360,16 +370,19 @@ cl_t870c::inst_length(t_addr addr)
 {
   struct dis_entry *tabl= dis_tbl();
   int i;
-  t_mem code;
+  t_mem code, code0;
 
   if (!rom)
     return(0);
 
-  code = rom->get(addr);
+  code0= rom->get(addr);
+  code = code0;
   code+= rom->get(addr+1)<<8;
   code+= rom->get(addr+2)<<16;
   code+= rom->get(addr+3)<<24;
-  
+
+  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
+    return 1;
   for (i= 0; tabl[i].mnemonic && (code & tabl[i].mask) != tabl[i].code; i++) ;
   return(tabl[i].mnemonic?tabl[i].length:1);
 }

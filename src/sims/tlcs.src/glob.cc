@@ -503,8 +503,16 @@ struct dis_entry disass_tlcs[]= {
 struct dis_entry disass_t870c[]=
   {
     // code mask branch length mn iscall ticks info
+    { 0x00004fe8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x00007fe8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000dfe8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000f8e8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000f9e8, 0x0000fff8, ' ', 2, "INVALID" },
+    { 0x0000fce8, 0x0000fff8, ' ', 2, "INVALID" },
+
     { 0x000040e8, 0x0000f8f8, ' ', 2, "LD 'r_1.0','r_0.0'" },
-    
+    { 0x000048e8, 0x0000f8f8, ' ', 2, "LD 'rr_1.0','rr_0.0'" },
+            
     { 0x00000000, 0x000000ff, ' ', 1, "NOP" },
     { 0x00000004, 0x000000ff, ' ', 1, "CLR CF" },
     { 0x00000005, 0x000000ff, ' ', 1, "SET CF" },
@@ -531,6 +539,12 @@ struct dis_entry disass_t870c[]=
 
     { 0x000000f9, 0x0000ffff, ' ', 2, "LD RBS,0" },
     { 0x000002f9, 0x0000ffff, ' ', 2, "LD RBS,1" },
+
+    { 0x00000001, 0x000000ff, ' ', 1, "-- INVALID" },
+    { 0x00000002, 0x000000ff, ' ', 1, "-- INVALID" },
+    { 0x00000003, 0x000000ff, ' ', 1, "-- INVALID" },
+    { 0x000000f8, 0x000000ff, ' ', 1, "-- INVALID" },
+    { 0x00000068, 0x000000f8, ' ', 1, "-- INVALID" },
     
     { 0, 0, ' ', 0, NULL }
   };

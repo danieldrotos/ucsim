@@ -63,3 +63,10 @@
 #define LD_rD_g                 instruction_145
 #define LD_rL_g                 instruction_146
 #define LD_rH_g                 instruction_147
+#define LD_rrWA_gg              instruction_148
+#define LD_rrBC_gg              instruction_149
+#define LD_rrDE_gg              instruction_14a
+#define LD_rrHL_gg              instruction_14b
+#define LD_rrIX_gg              instruction_14c
+#define LD_rrIY_gg              instruction_14d
+#define LD_rrSP_gg              instruction_14e
