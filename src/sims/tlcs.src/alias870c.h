@@ -70,3 +70,9 @@
 #define LD_rrIX_gg              instruction_14c
 #define LD_rrIY_gg              instruction_14d
 #define LD_rrSP_gg              instruction_14e
+
+// 1 d0 - 1 df
+#define LD_PSW_n		instruction_1de
+
+// 1 f0 - 1 ff
+#define SWAP_g                  instruction_1ff
