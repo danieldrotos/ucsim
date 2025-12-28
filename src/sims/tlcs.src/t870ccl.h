@@ -161,6 +161,8 @@ public:
   virtual int ldi16(class cl_cell16 *reg, u16_t n);
   virtual int st8(class cl_memory_cell *dst, u8_t n);
   virtual int st16(t_addr addr, u16_t n);
+  virtual int xch8_rr(class cl_cell8 *a, class cl_cell8 *b);
+  virtual int xch16_rr(class cl_cell16 *a, class cl_cell16 *b);
   
 #include "alias870c.h"
   // 0 00 - 0 00
@@ -176,7 +178,6 @@ public:
   virtual int LD_A_mhl(MP) { return ld8(&cA, sd_hl()); }
   virtual int LD_mx_A(MP) { return st8(sd_x(), rA); }
   virtual int LD_mhl_A(MP) { return st8(sd_hl(), rA); }
-  
   // 0 10 - 0 1f
   virtual int LD_A_rA(MP) { return ldi8(&cA, rA); }
   virtual int LD_A_rW(MP) { return ldi8(&cA, rW); }
@@ -194,6 +195,9 @@ public:
   virtual int LD_rD_n(MP) { return ldi8nz(&cD, fetch()); }
   virtual int LD_rL_n(MP) { return ldi8nz(&cL, fetch()); }
   virtual int LD_rH_n(MP) { return ldi8nz(&cH, fetch()); }
+  // 0 30 - 0 3f
+  virtual int LD_SP_Pd(MP);
+  virtual int LD_SP_Md(MP);
   // 0 40 - 0 4f
   virtual int LD_rA_A(MP) { return ldi8(&cA, rA); }
   virtual int LD_rW_A(MP) { return ldi8(&cW, rA); }
@@ -230,6 +234,29 @@ public:
   virtual int LD_rD_g(MP) { return ldi8(&cD, regs8[sda]->R()); }
   virtual int LD_rL_g(MP) { return ldi8(&cL, regs8[sda]->R()); }
   virtual int LD_rH_g(MP) { return ldi8(&cH, regs8[sda]->R()); }
+  virtual int LD_rrWA_gg(MP) { return ldi16(&cWA, regs16[sda]->R()); }
+  virtual int LD_rrBC_gg(MP) { return ldi16(&cBC, regs16[sda]->R()); }
+  virtual int LD_rrDE_gg(MP) { return ldi16(&cDE, regs16[sda]->R()); }
+  virtual int LD_rrHL_gg(MP) { return ldi16(&cHL, regs16[sda]->R()); }
+  virtual int LD_rrIX_gg(MP) { return ldi16(&cIX, regs16[sda]->R()); }
+  virtual int LD_rrIY_gg(MP) { return ldi16(&cIY, regs16[sda]->R()); }
+  virtual int LD_rrSP_gg(MP) { return ldi16(&cSP, regs16[sda]->R()); }
+  // 1 70 - 1 7f
+  virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
+  virtual int XCH_rW_g(MP) { return xch8_rr(&cW, regs8[sda]); }
+  virtual int XCH_rC_g(MP) { return xch8_rr(&cC, regs8[sda]); }
+  virtual int XCH_rB_g(MP) { return xch8_rr(&cB, regs8[sda]); }
+  virtual int XCH_rE_g(MP) { return xch8_rr(&cE, regs8[sda]); }
+  virtual int XCH_rD_g(MP) { return xch8_rr(&cD, regs8[sda]); }
+  virtual int XCH_rL_g(MP) { return xch8_rr(&cL, regs8[sda]); }
+  virtual int XCH_rH_g(MP) { return xch8_rr(&cH, regs8[sda]); }
+  virtual int XCH_rrWA_g(MP) { return xch16_rr(&cWA, regs16[sda]); }
+  virtual int XCH_rrBC_g(MP) { return xch16_rr(&cBC, regs16[sda]); }
+  virtual int XCH_rrDE_g(MP) { return xch16_rr(&cDE, regs16[sda]); }
+  virtual int XCH_rrHL_g(MP) { return xch16_rr(&cHL, regs16[sda]); }
+  virtual int XCH_rrIX_g(MP) { return xch16_rr(&cIX, regs16[sda]); }
+  virtual int XCH_rrIY_g(MP) { return xch16_rr(&cIY, regs16[sda]); }
+  virtual int XCH_rrSP_g(MP) { return xch16_rr(&cSP, regs16[sda]); }
   // 1 d0 - 1 df
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 f0 - 1 ff

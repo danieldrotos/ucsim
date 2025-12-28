@@ -559,6 +559,28 @@ cl_t870c::st16(t_addr addr, u16_t n)
   return resGO;
 }
 
+int
+cl_t870c::xch8_rr(class cl_cell8 *a, class cl_cell8 *b)
+{
+  rF&= ~MZF;
+  u8_t t= b->get();
+  if (!t) rF|= MZF;
+  b->W(a->get());
+  a->W(t);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::xch16_rr(class cl_cell16 *a, class cl_cell16 *b)
+{
+  u16_t t= b->get();
+  b->W(a->get());
+  a->W(t);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
 
 int
 cl_t870c::CLR_CF(MP)
@@ -630,6 +652,22 @@ cl_t870c::SWAP_g(MP)
   v>>= 4;
   v|= (l<<4);
   regs8[sda]->W(v);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::LD_SP_Pd(MP)
+{
+  cSP.W(rSP+fetch());
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::LD_SP_Md(MP)
+{
+  cSP.W(rSP-fetch());
   cF.W(rF|MJF);
   return resGO;
 }
