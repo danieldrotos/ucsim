@@ -395,16 +395,56 @@ cl_t870c::exec_inst(void)
 }
 
 /*
- * Two byte opcode dispacher for memory prefixes
+ * Two byte opcode dispachers for reg/memory prefixes
  */
 
 int
-cl_t870c::exec_inst_page(int page)
+cl_t870c::exec1(void)
 {
   int res= resGO;
   // prefix info fetched already
   t_mem code2= fetch();
-  int page_code= code2|page;
+  int page_code= code2|0x100;
+  if (uc_itab[page_code] == NULL)
+    {
+      PC= instPC;
+      return resNOT_DONE;
+    }
+  tickt(page_code);
+  res= (this->*uc_itab[page_code])(code2);
+  if (res == resNOT_DONE)
+    PC= instPC;
+  return res;
+}
+
+int
+cl_t870c::execS(void)
+{
+  int res= resGO;
+  // prefix info fetched already
+  t_mem code2= fetch();
+  int page_code= code2|0x200;
+  is_dst= false;
+  if (uc_itab[page_code] == NULL)
+    {
+      PC= instPC;
+      return resNOT_DONE;
+    }
+  tickt(page_code);
+  res= (this->*uc_itab[page_code])(code2);
+  if (res == resNOT_DONE)
+    PC= instPC;
+  return res;
+}
+
+int
+cl_t870c::execD(void)
+{
+  int res= resGO;
+  // prefix info fetched already
+  t_mem code2= fetch();
+  int page_code= code2|0x200;
+  is_dst= true;
   if (uc_itab[page_code] == NULL)
     {
       PC= instPC;
@@ -425,12 +465,12 @@ cl_t870c::sd_x(void)
   return sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
 
-void
+class cl_cell8 *
 cl_t870c::sd_vw(void)
 {
   sda= fetch();
   sda+= (fetch()*256);
-  sdc= (class cl_cell8 *)asd->get_cell(sda);
+  return sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
 
 void
@@ -461,6 +501,14 @@ void
 cl_t870c::sd_hld(void)
 {
   i8_t d= fetch();
+  sda= rHL+d;
+  sdc= (class cl_cell8 *)asd->get_cell(sda);
+}
+
+void
+cl_t870c::sd_hlc(void)
+{
+  i8_t d= rC;
   sda= rHL+d;
   sdc= (class cl_cell8 *)asd->get_cell(sda);
 }
@@ -568,6 +616,19 @@ cl_t870c::xch8_rr(class cl_cell8 *a, class cl_cell8 *b)
   b->W(a->get());
   a->W(t);
   cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::xch8_rm(class cl_cell8 *a, class cl_cell8 *b)
+{
+  rF&= ~MZF;
+  u8_t t= b->read();
+  if (!t) rF|= MZF;
+  b->W(a->get());
+  a->W(t);
+  cF.W(rF|MJF);
+  RDWR;
   return resGO;
 }
 

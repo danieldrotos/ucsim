@@ -116,6 +116,7 @@ public:
   // (src) or (dst) memory cell for 8/16 bit ops
   class cl_cell8 *sdc;
   t_addr sda;
+  bool is_dst;
 public:
   cl_t870c(class cl_sim *asim);
   virtual int init(void);
@@ -133,11 +134,13 @@ public:
   virtual int inst_length(t_addr addr);
 
   virtual int exec_inst(void);
-  virtual int exec_inst_page(int page);
+  virtual int exec1(void);
+  virtual int execS(void);
+  virtual int execD(void);
 
   // Set sdc/sda for indirect addressing modes
   virtual class cl_cell8 *sd_x(void);
-  virtual void sd_vw(void);
+  virtual class cl_cell8 *sd_vw(void);
   virtual void sd_bc(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rBC); }
   virtual void sd_de(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rDE); }
   virtual class cl_cell8 *sd_hl(void) { return sdc= (class cl_cell8 *)asd->get_cell(sda= rHL); }
@@ -148,6 +151,7 @@ public:
   virtual void sd_iyd(void);
   virtual void sd_spd(void);
   virtual void sd_hld(void);
+  virtual void sd_hlc(void);
   virtual void sd_pca(void); // uses actual PC
   virtual void sd_Psp(void);
   virtual void sd_spM(void);
@@ -162,6 +166,7 @@ public:
   virtual int st8(class cl_memory_cell *dst, u8_t n);
   virtual int st16(t_addr addr, u16_t n);
   virtual int xch8_rr(class cl_cell8 *a, class cl_cell8 *b);
+  virtual int xch8_rm(class cl_cell8 *a, class cl_cell8 *b);
   virtual int xch16_rr(class cl_cell16 *a, class cl_cell16 *b);
   
 #include "alias870c.h"
@@ -214,16 +219,43 @@ public:
   virtual int LD_rrIX_mn(MP) { return ldi16(&cIX, mn()); }
   virtual int LD_rrIY_mn(MP) { return ldi16(&cIY, mn()); }
   virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
+  virtual int instruction_4f(MP) { sd_pca(); return execS(); }
+  // 0 50 - 0 5f
+  virtual int instruction_54(MP) { sd_ixd(); return execD(); }
+  virtual int instruction_55(MP) { sd_iyd(); return execD(); }
+  virtual int instruction_56(MP) { sd_spd(); return execD(); }
+  virtual int instruction_57(MP) { sd_hld(); return execD(); }
+  // 0 d0 - 0 df
+  virtual int instruction_d4(MP) { sd_ixd(); return execS(); }
+  virtual int instruction_d5(MP) { sd_iyd(); return execS(); }
+  virtual int instruction_d6(MP) { sd_spd(); return execS(); }
+  virtual int instruction_d7(MP) { sd_hld(); return execS(); }
   // 0 e0 - 0 ef
-  virtual int instruction_e8(MP) { sda=0; return exec_inst_page(0x100); }
-  virtual int instruction_e9(MP) { sda=1; return exec_inst_page(0x100); }
-  virtual int instruction_ea(MP) { sda=2; return exec_inst_page(0x100); }
-  virtual int instruction_eb(MP) { sda=3; return exec_inst_page(0x100); }
-  virtual int instruction_ec(MP) { sda=4; return exec_inst_page(0x100); }
-  virtual int instruction_ed(MP) { sda=5; return exec_inst_page(0x100); }
-  virtual int instruction_ee(MP) { sda=6; return exec_inst_page(0x100); }
-  virtual int instruction_ef(MP) { sda=7; return exec_inst_page(0x100); }
+  virtual int instruction_e0(MP) { sd_x(); return execS(); }
+  virtual int instruction_e1(MP) { sd_vw(); return execS(); }
+  virtual int instruction_e2(MP) { sd_de(); return execS(); }
+  virtual int instruction_e3(MP) { sd_hl(); return execS(); }
+  virtual int instruction_e4(MP) { sd_ix(); return execS(); }
+  virtual int instruction_e5(MP) { sd_iy(); return execS(); }
+  virtual int instruction_e6(MP) { sd_Psp(); return execS(); }
+  virtual int instruction_e7(MP) { sd_hlc(); return execS(); }
+  virtual int instruction_e8(MP) { sda=0; return exec1(); }
+  virtual int instruction_e9(MP) { sda=1; return exec1(); }
+  virtual int instruction_ea(MP) { sda=2; return exec1(); }
+  virtual int instruction_eb(MP) { sda=3; return exec1(); }
+  virtual int instruction_ec(MP) { sda=4; return exec1(); }
+  virtual int instruction_ed(MP) { sda=5; return exec1(); }
+  virtual int instruction_ee(MP) { sda=6; return exec1(); }
+  virtual int instruction_ef(MP) { sda=7; return exec1(); }
   // 0 f0 - 0 f1
+  virtual int instruction_f0(MP) { sd_x(); return execD(); }
+  virtual int instruction_f1(MP) { sd_vw(); return execD(); }
+  virtual int instruction_f2(MP) { sd_de(); return execD(); }
+  virtual int instruction_f3(MP) { sd_hl(); return execD(); }
+  virtual int instruction_f4(MP) { sd_ix(); return execD(); }
+  virtual int instruction_f5(MP) { sd_iy(); return execD(); }
+  virtual int instruction_f6(MP) { sd_spM(); return execD(); }
+  virtual int instruction_f7(MP) { sd_hlc(); return execD(); }
   virtual int LD_RBS(MP);
   // 1 40 - 1 4f
   virtual int LD_rA_g(MP) { return ldi8(&cA, regs8[sda]->R()); }
