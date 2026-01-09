@@ -104,11 +104,10 @@ public:
   struct rbank_870c_t *rbanks, *rbank;
   u16_t rSP;
   u8_t rPSW;
-  class cl_cell8 cW, cA, cB, cC, cD, cE, cH, cL;
-  class cl_cell8 *regs8[8];
-  class cl_cell16 cWA, cBC, cDE, cHL, cIX, cIY, cSP;
-  class cl_cell16 *regs16[8];
-  class cl_cell8 cPSW;
+  C8 cW, cA, cB, cC, cD, cE, cH, cL, cPSW;
+  C8 *regs8[8];
+  C16 cWA, cBC, cDE, cHL, cIX, cIY, cSP;
+  C16 *regs16[8];
   class cl_address_space *asc, *asd;
   class cl_memory_chip *ram_chip, *rom_chip, *bootrom_chip;
   u16_t sp_limit;
@@ -139,14 +138,14 @@ public:
   virtual int execD(void);
 
   // Set sdc/sda for indirect addressing modes
-  virtual class cl_cell8 *sd_x(void);
-  virtual class cl_cell8 *sd_vw(void);
-  virtual void sd_bc(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rBC); }
-  virtual void sd_de(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rDE); }
-  virtual class cl_cell8 *sd_hl(void) { return sdc= (class cl_cell8 *)asd->get_cell(sda= rHL); }
-  virtual void sd_ix(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIX); }
-  virtual void sd_iy(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rIY); }
-  virtual void sd_sp(void) { sdc= (class cl_cell8 *)asd->get_cell(sda= rSP); }
+  virtual C8 *sd_x(void);
+  virtual C8 *sd_vw(void);
+  virtual void sd_bc(void) { sdc= (C8 *)asd->get_cell(sda= rBC); }
+  virtual void sd_de(void) { sdc= (C8 *)asd->get_cell(sda= rDE); }
+  virtual C8 *sd_hl(void) { return sdc= (C8 *)asd->get_cell(sda= rHL); }
+  virtual void sd_ix(void) { sdc= (C8 *)asd->get_cell(sda= rIX); }
+  virtual void sd_iy(void) { sdc= (C8 *)asd->get_cell(sda= rIY); }
+  virtual void sd_sp(void) { sdc= (C8 *)asd->get_cell(sda= rSP); }
   virtual void sd_ixd(void);
   virtual void sd_iyd(void);
   virtual void sd_spd(void);
@@ -158,16 +157,18 @@ public:
   virtual u16_t mn(void);
   
   // Common parametrized operations
-  virtual int ld8(class cl_cell8 *reg, class cl_memory_cell *src);
-  virtual int ldi8(class cl_cell8 *reg, u8_t n);
-  virtual int ldi8nz(class cl_cell8 *reg, u8_t n);
-  virtual int ld16(class cl_cell16 *reg, u16_t addr);
-  virtual int ldi16(class cl_cell16 *reg, u16_t n);
-  virtual int st8(class cl_memory_cell *dst, u8_t n);
+  virtual int ld8(C8 *reg, MCELL *src);
+  virtual int ldi8(C8 *reg, u8_t n);
+  virtual int ldi8nz(C8 *reg, u8_t n);
+  virtual int ld16(C16 *reg, u16_t addr);
+  virtual int ldi16(C16 *reg, u16_t n);
+  virtual int st8(MCELL *dst, u8_t n);
+  virtual int dst8(MCELL *dst, u8_t n);
   virtual int st16(t_addr addr, u16_t n);
-  virtual int xch8_rr(class cl_cell8 *a, class cl_cell8 *b);
-  virtual int xch8_rm(class cl_cell8 *a, class cl_cell8 *b);
-  virtual int xch16_rr(class cl_cell16 *a, class cl_cell16 *b);
+  virtual int dst16(t_addr addr, u16_t n);
+  virtual int xch8_rr(C8 *a, C8 *b);
+  virtual int xch8_rm(C8 *a, C8 *b);
+  virtual int xch16_rr(C16 *a, C16 *b);
   
 #include "alias870c.h"
   // 0 00 - 0 00
@@ -293,6 +294,15 @@ public:
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 f0 - 1 ff
   virtual int SWAP_g(MP);
+  // 2 70 - 2 7f
+  virtual int LD_dst_rA(MP) { return dst8(sdc, rA); }
+  virtual int LD_dst_rW(MP) { return dst8(sdc, rW); }
+  virtual int LD_dst_rC(MP) { return dst8(sdc, rC); }
+  virtual int LD_dst_rB(MP) { return dst8(sdc, rB); }
+  virtual int LD_dst_rE(MP) { return dst8(sdc, rE); }
+  virtual int LD_dst_rD(MP) { return dst8(sdc, rD); }
+  virtual int LD_dst_rL(MP) { return dst8(sdc, rL); }
+  virtual int LD_dst_rH(MP) { return dst8(sdc, rH); }
 };
 
 
