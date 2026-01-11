@@ -199,7 +199,7 @@ cl_rxk::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  chip= new cl_chip8("ioi_chip", 0x10000, 8);
+  chip= new cl_chip8("ioi_chip", 0x10000, 8, 0);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as,
@@ -212,7 +212,7 @@ cl_rxk::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  chip= new cl_chip8("ioe_chip", 0x10000, 8);
+  chip= new cl_chip8("ioe_chip", 0x10000, 8, 0);
   chip->init();
   memchips->add(chip);
   ad= new cl_address_decoder(as,

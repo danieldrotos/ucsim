@@ -135,6 +135,8 @@ cl_r4k::id_string(void)
 void
 cl_r4k::reset(void)
 {
+  ioi->set(0x1b, 0); // stacksegh
+  ioi->set(0x1f, 0); // datasegh
   cl_r3ka::reset();
   //edmr= 0;
   mode3k();  
