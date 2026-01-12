@@ -275,6 +275,12 @@ static chars r_names[8]= { "A", "W", "C", "B", "E", "D", "L", "H" };
 static chars rr_names[8]= {
   "WA", "BC", "DE", "HL", "IX", "IY", "SP", "HL"
 };
+static chars dstF[8]= {
+  "x", "vw", "DE", "HL", "IX", "IY", "SP+", "HL+C"
+};
+static chars dst5[4]= {
+  "IX", "IY", "SP", "HL"
+};
 
 char *
 cl_t870c::disassc(t_addr addr, chars *comment)
@@ -342,6 +348,31 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		comment->appendf("; %02x %02x",
 				 asd->read(u16), asd->read(u16+1));
 	    }
+	  else if (fmt=="dstF")
+	    {
+	      work.appendf("%s", dstF[code0&7]);
+	      if (comment)
+		{
+		  u16_t a= aof_dstF(code32);
+		  comment->appendf("; %02x %02x",
+				   asd->read(a), asd->read(a+1));
+		}
+	    }
+	  else if (fmt=="dst5")
+	    {
+	      i8_t d= code1;
+	      work.appendf("%s", dst5[(code0&7)/2]);
+	      if (code1<0)
+		work.appendf("-%02x", -d);
+	      else
+		work.appendf("+%02x", d);
+	      if (comment)
+		{
+		  u16_t a= aof_dst5(code32);
+		  comment->appendf("; %02x %02x",
+				   asd->read(a), asd->read(a+1));
+		}
+	    }
 	  continue;
 	}
       if (b[i] == '%')
@@ -395,6 +426,35 @@ cl_t870c::inst_length(t_addr addr)
   return(tabl[i].mnemonic?tabl[i].length:1);
 }
 
+u16_t
+cl_t870c::aof_dstF(u32_t code32)
+{
+  switch (code32&7)
+    {
+    case 0: return (code32>>8)&0xff;
+    case 1: return (code32>>8)&0xffff;
+    case 2: return rDE;
+    case 3: return rHL;
+    case 4: return rIX;
+    case 5: return rIY;
+    case 6: return rSP;
+    case 7: return (i8_t)rC + rHL;
+    }
+  return 0;
+}
+
+u16_t
+cl_t870c::aof_dst5(u32_t code32)
+{
+  switch (code32&0x7)
+    {
+    case 4: return (i8_t)((code32>>8)&0xff) + rIX;
+    case 5: return (i8_t)((code32>>8)&0xff) + rIY;
+    case 6: return (i8_t)((code32>>8)&0xff) + rSP;
+    case 7: return (i8_t)((code32>>8)&0xff) + rHL;
+    }
+  return 0;
+}
 
 int
 cl_t870c::exec_inst(void)
