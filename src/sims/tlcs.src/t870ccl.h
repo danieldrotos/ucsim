@@ -221,7 +221,7 @@ public:
   virtual int dec16m(C16 *src);
 
   // additions
-  virtual int addi8(C8 *reg, u8_t n);
+  virtual int addi8(C8 *reg, u8_t n, bool c);
   
   // jump
   virtual int jr(u8_t a);
@@ -323,7 +323,7 @@ public:
   virtual int LD_CF_mx_6(MP) { sd_x(); return ld1m(sdc, 6); }
   virtual int LD_CF_mx_7(MP) { sd_x(); return ld1m(sdc, 7); }
   // 0 60 - 0 6f
-  virtual int ADD_A_n(MP) { return addi8(&cA, fetch()); }
+  virtual int ADD_A_n(MP) { return addi8(&cA, fetch(), false); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }

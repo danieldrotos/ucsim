@@ -1225,16 +1225,17 @@ cl_t870c::dec16m(C16 *src)
 }
 
 int
-cl_t870c::addi8(C8 *reg, u8_t n)
+cl_t870c::addi8(C8 *reg, u8_t n, bool c)
 {
-  rF&= ~MALL;
   u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0;
   op1= reg->get();
   op2= n;
-  res= op1 + op2;
+  res= op1 + op2 + (c?((rF&MCF)?1:0):0);
   op1_7= op1 & 0x7f;
   op2_7= op2 & 0x7f;
   res_7= op1_7 + op2_7;
+
+  rF&= ~MALL;
   if (res > 0xff)
     (rF|= MCF|MJF), c8=1;
   if (res & 0x80)
@@ -1246,6 +1247,7 @@ cl_t870c::addi8(C8 *reg, u8_t n)
     rF|= MZF;
   if (((op1&0xf) + (op2&0xf)) > 0xf)
     rF|= MHF;
+
   reg->W(res);
   cF.W(rF);
   return resGO;
