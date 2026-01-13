@@ -228,6 +228,9 @@
 #define LD_CF_g_6               instruction_15e
 #define LD_CF_g_7               instruction_15f
 
+// 1 60 - 1 6f
+#define ADD_g_n                 instruction_161
+
 // 1 70 - 1 7f
 #define XCH_rA_g                instruction_170
 #define XCH_rW_g                instruction_171
