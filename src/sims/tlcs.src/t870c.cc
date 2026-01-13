@@ -330,10 +330,13 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  if (!b[i]) i--;
 	  if (fmt.empty()) work.append("'");
 	  else if (fmt=="r_0.0")  work.append(r_names[code0&7]);
+	  else if (fmt=="r_0.3")  work.append(r_names[(code0&0X38)>>3]);
 	  else if (fmt=="r_1.0")  work.append(r_names[code1&7]);
 	  else if (fmt=="r_1.3")  work.append(r_names[(code1&0x38)>>3]);
 	  else if (fmt=="r_2.0")  work.append(r_names[code2&7]);
+	  else if (fmt=="r_2.3")  work.append(r_names[(code2&0x38)>>3]);
 	  else if (fmt=="r_3.0")  work.append(r_names[code3&7]);
+	  else if (fmt=="r_3.3")  work.append(r_names[(code3&0x38)>>3]);
 	  else if (fmt=="rr_0.0") work.append(rr_names[code0&7]);
 	  else if (fmt=="rr_1.0") work.append(rr_names[code1&7]);
 	  else if (fmt=="rr_2.0") work.append(rr_names[code2&7]);
