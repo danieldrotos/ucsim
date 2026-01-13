@@ -331,6 +331,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  if (fmt.empty()) work.append("'");
 	  else if (fmt=="r_0.0")  work.append(r_names[code0&7]);
 	  else if (fmt=="r_1.0")  work.append(r_names[code1&7]);
+	  else if (fmt=="r_1.3")  work.append(r_names[(code1&0x38)>>3]);
 	  else if (fmt=="r_2.0")  work.append(r_names[code2&7]);
 	  else if (fmt=="r_3.0")  work.append(r_names[code3&7]);
 	  else if (fmt=="rr_0.0") work.append(rr_names[code0&7]);
@@ -1205,7 +1206,7 @@ cl_t870c::dec16m(C16 *src)
 }
 
 int
-cl_t870c::addi8(C8 *reg, u8_t n, bool c)
+cl_t870c::add8(C8 *reg, u8_t n, bool c)
 {
   u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0;
   op1= reg->get();
