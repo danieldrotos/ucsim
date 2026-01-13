@@ -276,9 +276,15 @@ static chars rr_names[8]= {
   "WA", "BC", "DE", "HL", "IX", "IY", "SP", "HL"
 };
 static chars dstF[8]= {
-  "x", "vw", "DE", "HL", "IX", "IY", "SP+", "HL+C"
+  "x", "vw", "DE", "HL", "IX", "IY", "SP-", "HL+C"
 };
 static chars dst5[4]= {
+  "IX", "IY", "SP", "HL"
+};
+static chars srcE[8]= {
+  "x", "vw", "DE", "HL", "IX", "IY", "+SP", "HL+C"
+};
+static chars srcD[4]= {
   "IX", "IY", "SP", "HL"
 };
 
@@ -338,6 +344,8 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="rr_3.0") work.append(rr_names[code3&7]);
 	  else if (fmt=="n_1")    work.appendf("0x%02x", code1);
 	  else if (fmt=="n_2")    work.appendf("0x%02x", code2);
+	  else if (fmt=="n_3")    work.appendf("0x%02x", code3);
+	  else if (fmt=="n_4")    work.appendf("0x%02x", code4);
 	  else if (fmt=="mn_1")   work.appendf("0x%04x", code1+code2*256);
 	  else if (fmt=="mn_2")   work.appendf("0x%04x", code2+code3*256);
 	  else if (fmt=="mn_3")   work.appendf("0x%04x", code3+code4*256);
@@ -369,6 +377,31 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	      if (comment)
 		{
 		  u16_t a= aof_dst5(code32);
+		  comment->appendf("; %02x %02x",
+				   asd->read(a), asd->read(a+1));
+		}
+	    }
+	  else if (fmt=="srcE")
+	    {
+	      work.appendf("%s", srcE[code0&7]);
+	      if (comment)
+		{
+		  u16_t a= aof_srcE(code32);
+		  comment->appendf("; %02x %02x",
+				   asd->read(a), asd->read(a+1));
+		}
+	    }
+	  else if (fmt=="srcD")
+	    {
+	      i8_t d= code1;
+	      work.appendf("%s", srcD[(code0&7)/2]);
+	      if (code1<0)
+		work.appendf("-%02x", -d);
+	      else
+		work.appendf("+%02x", d);
+	      if (comment)
+		{
+		  u16_t a= aof_srcD(code32);
 		  comment->appendf("; %02x %02x",
 				   asd->read(a), asd->read(a+1));
 		}
@@ -445,6 +478,36 @@ cl_t870c::aof_dstF(u32_t code32)
 
 u16_t
 cl_t870c::aof_dst5(u32_t code32)
+{
+  switch (code32&0x7)
+    {
+    case 4: return (i8_t)((code32>>8)&0xff) + rIX;
+    case 5: return (i8_t)((code32>>8)&0xff) + rIY;
+    case 6: return (i8_t)((code32>>8)&0xff) + rSP;
+    case 7: return (i8_t)((code32>>8)&0xff) + rHL;
+    }
+  return 0;
+}
+
+u16_t
+cl_t870c::aof_srcE(u32_t code32)
+{
+  switch (code32&7)
+    {
+    case 0: return (code32>>8)&0xff;
+    case 1: return (code32>>8)&0xffff;
+    case 2: return rDE;
+    case 3: return rHL;
+    case 4: return rIX;
+    case 5: return rIY;
+    case 6: return rSP+1;
+    case 7: return (i8_t)rC + rHL;
+    }
+  return 0;
+}
+
+u16_t
+cl_t870c::aof_srcD(u32_t code32)
 {
   switch (code32&0x7)
     {

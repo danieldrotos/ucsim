@@ -96,6 +96,25 @@
 // 1 f0 - 1 ff
 #define SWAP_g                  instruction_1ff
 
+// 2 40 - 2 4f
+#define LD_rA_src               instruction_240
+#define LD_rW_src               instruction_241
+#define LD_rC_src               instruction_242
+#define LD_rB_src               instruction_243
+#define LD_rE_src               instruction_244
+#define LD_rD_src               instruction_245
+#define LD_rL_src               instruction_246
+#define LD_rH_src               instruction_247
+
+// 2 60 - 2 6f
+#define LD_dst_rrWA             instruction_268
+#define LD_dst_rrBC             instruction_269
+#define LD_dst_rrDE             instruction_26a
+#define LD_dst_rrHL             instruction_26b
+#define LD_dst_rrIX             instruction_26c
+#define LD_dst_rrIY             instruction_26d
+#define LD_dst_rrSP             instruction_26e
+
 // 2 70 - 2 7f
 #define LD_dst_rA               instruction_278
 #define LD_dst_rW               instruction_279
@@ -105,3 +124,6 @@
 #define LD_dst_rD               instruction_27d
 #define LD_dst_rL               instruction_27e
 #define LD_dst_rH               instruction_27f
+
+// 2 f0 - 2 ff
+#define LD_dst_n                instruction_2f9
