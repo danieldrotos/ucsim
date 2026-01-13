@@ -310,6 +310,7 @@
 #define ADD_rD_src		instruction_229
 #define ADD_rL_src		instruction_231
 #define ADD_rH_src		instruction_239
+#define ADD_src_n               instruction_261
 
 // 2 40 - 2 4f
 #define LD_rA_src               instruction_240
