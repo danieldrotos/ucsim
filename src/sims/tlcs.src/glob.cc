@@ -705,6 +705,9 @@ struct dis_entry disass_t870c[]=
     { 0x000002f9, 0x0000ffff, ' ', 2, "LD RBS,1" },
 
     // reg prefixes, code page 0x100
+    //  E8 only
+    { 0x0000dee8, 0x0000ffff, ' ', 3, "LD PSW,'n_2'" },
+    //  all
     { 0x000040e8, 0x0000f8f8, ' ', 2, "LD 'r_1.0','r_0.0'" },
     { 0x000048e8, 0x0000f8f8, ' ', 2, "LD 'rr_1.0','rr_0.0'" },
 
@@ -719,7 +722,6 @@ struct dis_entry disass_t870c[]=
     { 0x0000c0e8, 0x0000f8f8, ' ', 2, "SET 'r_0.0'.'b_1.0'" },
     { 0x0000c8e8, 0x0000f8f8, ' ', 2, "CLR 'r_0.0'.'b_1.0'" },
       
-    { 0x0000dee8, 0x0000fff8, ' ', 3, "LD PSW,'n_2'" },
 
     { 0x0000e0e8, 0x0000f8f8, ' ', 2, "CPL 'r_0.0'.'b_1.0'" },
     { 0x0000e8e8, 0x0000f8f8, ' ', 2, "LD 'r_0.0'.'b_1.0',CF" },
