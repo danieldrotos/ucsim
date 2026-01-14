@@ -307,6 +307,13 @@ public:
   virtual int LD_rD_src(MP) { return ld8(&cD, sdc); }
   virtual int LD_rL_src(MP) { return ld8(&cL, sdc); }
   virtual int LD_rH_src(MP) { return ld8(&cH, sdc); }
+  virtual int LD_rrWA_src(MP) { return ld16(&cWA, sda); }
+  virtual int LD_rrBC_src(MP) { return ld16(&cBC, sda); }
+  virtual int LD_rrDE_src(MP) { return ld16(&cDE, sda); }
+  virtual int LD_rrHL_src(MP) { return ld16(&cHL, sda); }
+  virtual int LD_rrIX_src(MP) { return ld16(&cIX, sda); }
+  virtual int LD_rrIY_src(MP) { return ld16(&cIY, sda); }
+  virtual int LD_rrSP_src(MP) { return ld16(&cSP, sda); }
   // 2 60 - 2 6f
   virtual int LD_dst_rrWA(MP) { return dst16(sda, rWA); }
   virtual int LD_dst_rrBC(MP) { return dst16(sda, rBC); }

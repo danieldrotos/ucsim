@@ -105,6 +105,13 @@
 #define LD_rD_src               instruction_245
 #define LD_rL_src               instruction_246
 #define LD_rH_src               instruction_247
+#define LD_rrWA_src             instruction_248
+#define LD_rrBC_src             instruction_249
+#define LD_rrDE_src             instruction_24a
+#define LD_rrHL_src             instruction_24b
+#define LD_rrIX_src             instruction_24c
+#define LD_rrIY_src             instruction_24d
+#define LD_rrSP_src             instruction_24e
 
 // 2 60 - 2 6f
 #define LD_dst_rrWA             instruction_268

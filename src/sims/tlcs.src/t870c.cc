@@ -271,20 +271,20 @@ cl_t870c::dis_tbl(void)
   return disass_t870c;
 }
 
-static chars r_names[8]= { "A", "W", "C", "B", "E", "D", "L", "H" };
-static chars rr_names[8]= {
+static const char *r_names[8]= { "A", "W", "C", "B", "E", "D", "L", "H" };
+static const char *rr_names[8]= {
   "WA", "BC", "DE", "HL", "IX", "IY", "SP", "HL"
 };
-static chars dstF[8]= {
+static const char *dstF[8]= {
   "x", "vw", "DE", "HL", "IX", "IY", "SP-", "HL+C"
 };
-static chars dst5[4]= {
+static const char *dst5[4]= {
   "IX", "IY", "SP", "HL"
 };
-static chars srcE[8]= {
+static const char *srcE[8]= {
   "x", "vw", "DE", "HL", "IX", "IY", "+SP", "HL+C"
 };
-static chars srcD[4]= {
+static const char *srcD[4]= {
   "IX", "IY", "SP", "HL"
 };
 
@@ -294,7 +294,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   chars work= chars(), temp= chars(), fmt;
   const char *b;
   t_mem code, code32, data= 0;
-  t_mem code0, code1, code2, code3, code4;
+  u8_t code0, code1, code2, code3, code4;
   int i;
   bool first;
   u16_t u16;
@@ -362,23 +362,23 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	      if (comment)
 		{
 		  u16_t a= aof_dstF(code32);
-		  comment->appendf("; %02x %02x",
-				   asd->read(a), asd->read(a+1));
+		  comment->appendf("; [%04] %02x %02x",
+				   a, asd->read(a), asd->read(a+1));
 		}
 	    }
 	  else if (fmt=="dst5")
 	    {
 	      i8_t d= code1;
-	      work.appendf("%s", dst5[(code0&7)/2]);
-	      if (code1<0)
-		work.appendf("-%02x", -d);
+	      work.appendf("%s", dst5[code0&3]);
+	      if (d<0)
+		work.appendf("-%02x", code1);
 	      else
-		work.appendf("+%02x", d);
+		work.appendf("+%02x", code1);
 	      if (comment)
 		{
 		  u16_t a= aof_dst5(code32);
-		  comment->appendf("; %02x %02x",
-				   asd->read(a), asd->read(a+1));
+		  comment->appendf("; [%04x] %02x %02x",
+				   a, asd->read(a), asd->read(a+1));
 		}
 	    }
 	  else if (fmt=="srcE")
@@ -387,23 +387,37 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	      if (comment)
 		{
 		  u16_t a= aof_srcE(code32);
-		  comment->appendf("; %02x %02x",
-				   asd->read(a), asd->read(a+1));
+		  comment->appendf("; [%04x] %02x %02x",
+				   a, asd->read(a), asd->read(a+1));
 		}
 	    }
 	  else if (fmt=="srcD")
 	    {
 	      i8_t d= code1;
-	      work.appendf("%s", srcD[(code0&7)/2]);
-	      if (code1<0)
-		work.appendf("-%02x", -d);
+	      work.appendf("%s", srcD[code0&3]);
+	      if (d<0)
+		{
+		  d= -d;
+		  code1= d;
+		  work.appendf("-%02x", code1);
+		}
 	      else
-		work.appendf("+%02x", d);
+		work.appendf("+%02x", code1);
 	      if (comment)
 		{
 		  u16_t a= aof_srcD(code32);
-		  comment->appendf("; %02x %02x",
-				   asd->read(a), asd->read(a+1));
+		  comment->appendf("; [%04x] %02x %02x",
+				   a, asd->read(a), asd->read(a+1));
+		}
+	    }
+	  else if (fmt=="src4")
+	    {
+	      work.appendf("PC+A");
+	      if (comment)
+		{
+		  u16_t a= (i8_t)rA + addr + 2;
+		  comment->appendf("; [%04x] %02x %02x",
+				   a, asd->read(a), asd->read(a+1));
 		}
 	    }
 	  continue;
@@ -548,12 +562,34 @@ cl_t870c::exec1(void)
   return res;
 }
 
+static const u8_t src_valids[256]=
+  {
+    /*0*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*1*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*2*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*3*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*4*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 0,
+    /*5*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*6*/ 1, 1, 1, 1,   1, 1, 1, 1,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*7*/ 1, 1, 1, 1,   1, 1, 1, 1,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*8*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*9*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*a*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*b*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*c*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*d*/ 0, 0, 0, 0,   0, 0, 0, 0,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*e*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*f*/ 1, 0, 1, 1,   0, 0, 1, 1,   1, 1, 1, 1,   1, 1, 1, 0
+  };
+
 int
 cl_t870c::execS(void)
 {
   int res= resGO;
   // prefix info fetched already
   t_mem code2= fetch();
+  if (!src_valids[code2])
+    return resINV;
   int page_code= code2|0x200;
   is_dst= false;
   if (uc_itab[page_code] == NULL)
@@ -568,12 +604,34 @@ cl_t870c::execS(void)
   return res;
 }
 
+static const u8_t dst_valids[256]=
+  {
+    /*0*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*1*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*2*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*3*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*4*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*5*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*6*/ 0, 0, 0, 0,   0, 0, 0, 0,   1, 1, 1, 1,   1, 1, 1, 0,
+    /*7*/ 0, 0, 0, 0,   0, 0, 0, 0,   1, 1, 1, 1,   1, 1, 1, 1,
+    /*8*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*9*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*a*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*b*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*c*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*d*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*e*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    /*f*/ 0, 0, 0, 0,   0, 0, 0, 0,   0, 1, 0, 0,   0, 0, 0, 0
+  };
+
 int
 cl_t870c::execD(void)
 {
   int res= resGO;
   // prefix info fetched already
   t_mem code2= fetch();
+  if (!dst_valids[code2])
+    return resINV;
   int page_code= code2|0x200;
   is_dst= true;
   if (uc_itab[page_code] == NULL)
