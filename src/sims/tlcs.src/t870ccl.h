@@ -223,6 +223,7 @@ public:
   virtual int add8(C8 *reg, u8_t n, bool c);
   virtual int sub8(C8 *reg, u8_t n, bool b);
   virtual int and8(C8 *reg, u8_t n);
+  virtual int xor8(C8 *reg, u8_t n);
   
   // jump
   virtual int jr(u8_t a);
@@ -329,6 +330,7 @@ public:
   virtual int SUBB_A_n(MP) { return sub8(&cA, fetch(), true); }
   virtual int SUB_A_n(MP) { return sub8(&cA, fetch(), false); }
   virtual int AND_A_n(MP) { return and8(&cA, fetch()); }
+  virtual int XOR_A_n(MP) { return xor8(&cA, fetch()); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }
@@ -489,6 +491,14 @@ public:
   virtual int AND_rD_g(MP) { return and8(&cD, regs8[sda]->R()); }
   virtual int AND_rL_g(MP) { return and8(&cL, regs8[sda]->R()); }
   virtual int AND_rH_g(MP) { return and8(&cH, regs8[sda]->R()); }
+  virtual int XOR_rA_g(MP) { return xor8(&cA, regs8[sda]->R()); }
+  virtual int XOR_rW_g(MP) { return xor8(&cW, regs8[sda]->R()); }
+  virtual int XOR_rC_g(MP) { return xor8(&cC, regs8[sda]->R()); }
+  virtual int XOR_rB_g(MP) { return xor8(&cB, regs8[sda]->R()); }
+  virtual int XOR_rE_g(MP) { return xor8(&cE, regs8[sda]->R()); }
+  virtual int XOR_rD_g(MP) { return xor8(&cD, regs8[sda]->R()); }
+  virtual int XOR_rL_g(MP) { return xor8(&cL, regs8[sda]->R()); }
+  virtual int XOR_rH_g(MP) { return xor8(&cH, regs8[sda]->R()); }
   
   // 1 40 - 1 4f
   virtual int LD_rA_g(MP) { return ldi8(&cA, regs8[sda]->R()); }
@@ -529,6 +539,7 @@ public:
   virtual int SUBB_g_n(MP) { return sub8(regs8[sda], fetch(), true); }
   virtual int SUB_g_n(MP) { return sub8(regs8[sda], fetch(), false); }
   virtual int AND_g_n(MP) { return and8(regs8[sda], fetch()); }
+  virtual int XOR_g_n(MP) { return xor8(regs8[sda], fetch()); }
   // 1 70 - 1 7f
   virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
   virtual int XCH_rW_g(MP) { return xch8_rr(&cW, regs8[sda]); }
@@ -625,6 +636,14 @@ public:
   virtual int AND_rD_src(MP) { return and8(&cD, sdc->R()); }
   virtual int AND_rL_src(MP) { return and8(&cL, sdc->R()); }
   virtual int AND_rH_src(MP) { return and8(&cH, sdc->R()); }
+  virtual int XOR_rA_src(MP) { return xor8(&cA, sdc->R()); }
+  virtual int XOR_rW_src(MP) { return xor8(&cW, sdc->R()); }
+  virtual int XOR_rC_src(MP) { return xor8(&cC, sdc->R()); }
+  virtual int XOR_rB_src(MP) { return xor8(&cB, sdc->R()); }
+  virtual int XOR_rE_src(MP) { return xor8(&cE, sdc->R()); }
+  virtual int XOR_rD_src(MP) { return xor8(&cD, sdc->R()); }
+  virtual int XOR_rL_src(MP) { return xor8(&cL, sdc->R()); }
+  virtual int XOR_rH_src(MP) { return xor8(&cH, sdc->R()); }
   // 2 40 - 2 4f
   virtual int LD_rA_src(MP) { return ld8(&cA, sdc); }
   virtual int LD_rW_src(MP) { return ld8(&cW, sdc); }
@@ -664,6 +683,7 @@ public:
   virtual int SUBB_src_n(MP)  { return sub8(sdc, fetch(), true); }
   virtual int SUB_src_n(MP)  { return sub8(sdc, fetch(), false); }
   virtual int AND_src_n(MP)  { return and8(sdc, fetch()); }
+  virtual int XOR_src_n(MP)  { return xor8(sdc, fetch()); }
   virtual int LD_dst_rrWA(MP) { return st16(sda, rWA); }
   virtual int LD_dst_rrBC(MP) { return st16(sda, rBC); }
   virtual int LD_dst_rrDE(MP) { return st16(sda, rDE); }
