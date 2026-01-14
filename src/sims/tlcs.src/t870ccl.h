@@ -325,6 +325,8 @@ public:
   // 0 60 - 0 6f
   virtual int ADCC_A_n(MP) { return add8(&cA, fetch(), true); }
   virtual int ADD_A_n(MP) { return add8(&cA, fetch(), false); }
+  virtual int SUBB_A_n(MP) { return sub8(&cA, fetch(), true); }
+  virtual int SUB_A_n(MP) { return sub8(&cA, fetch(), false); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }
