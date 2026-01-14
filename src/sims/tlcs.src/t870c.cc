@@ -1242,7 +1242,7 @@ cl_t870c::sub8(C8 *reg, u8_t n, bool b)
 {
   u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0;
   op1= reg->get();
-  op2= n;
+  op2= ~n & 0xff;
   res= op1 + op2 + (b?((rF&MCF)?0:1):1);
   op1_7= op1 & 0x7f;
   op2_7= op2 & 0x7f;
