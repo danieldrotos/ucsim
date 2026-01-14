@@ -641,6 +641,8 @@ public:
   // 2 60 - 2 6f
   virtual int ADDC_src_n(MP)  { return add8(sdc, fetch(), true); }
   virtual int ADD_src_n(MP)  { return add8(sdc, fetch(), false); }
+  virtual int SUBB_src_n(MP)  { return sub8(sdc, fetch(), true); }
+  virtual int SUB_src_n(MP)  { return sub8(sdc, fetch(), false); }
   virtual int LD_dst_rrWA(MP) { return st16(sda, rWA); }
   virtual int LD_dst_rrBC(MP) { return st16(sda, rBC); }
   virtual int LD_dst_rrDE(MP) { return st16(sda, rDE); }
