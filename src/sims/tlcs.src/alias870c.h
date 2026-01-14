@@ -98,6 +98,7 @@
 #define ADD_A_n                 instruction_61
 #define SUBB_A_n		instruction_62
 #define SUB_A_n			instruction_63
+#define AND_A_n                 instruction_64
 
 // 0 80 - 0 8f
 #define JRS_T_a00               instruction_80
@@ -233,6 +234,15 @@
 #define SUB_rL_g		instruction_133
 #define SUB_rH_g		instruction_13b
 
+#define AND_rA_g		instruction_104
+#define AND_rW_g		instruction_10c
+#define AND_rC_g		instruction_114
+#define AND_rB_g		instruction_11c
+#define AND_rE_g		instruction_124
+#define AND_rD_g		instruction_12c
+#define AND_rL_g		instruction_134
+#define AND_rH_g		instruction_13c
+
 // 1 40 - 1 4f
 #define LD_rA_g                 instruction_140
 #define LD_rW_g                 instruction_141
@@ -273,6 +283,7 @@
 #define ADD_g_n                 instruction_161
 #define SUBB_g_n                instruction_162
 #define SUB_g_n                 instruction_163
+#define AND_g_n                 instruction_164
 
 // 1 70 - 1 7f
 #define XCH_rA_g                instruction_170
@@ -371,6 +382,15 @@
 #define SUB_rL_src		instruction_233
 #define SUB_rH_src		instruction_23b
 
+#define AND_rA_src		instruction_204
+#define AND_rW_src		instruction_20c
+#define AND_rC_src		instruction_214
+#define AND_rB_src		instruction_21c
+#define AND_rE_src		instruction_224
+#define AND_rD_src		instruction_22c
+#define AND_rL_src		instruction_234
+#define AND_rH_src		instruction_23c
+
 // 2 40 - 2 4f
 #define LD_rA_src               instruction_240
 #define LD_rW_src               instruction_241
@@ -411,6 +431,7 @@
 #define ADD_src_n               instruction_261
 #define SUBB_src_n              instruction_262
 #define SUB_src_n               instruction_263
+#define AND_src_n               instruction_264
 #define LD_dst_rrWA             instruction_268
 #define LD_dst_rrBC             instruction_269
 #define LD_dst_rrDE             instruction_26a
