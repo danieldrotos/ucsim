@@ -1240,10 +1240,11 @@ cl_t870c::add8(C8 *reg, u8_t n, bool c)
 int
 cl_t870c::sub8(C8 *reg, u8_t n, bool b)
 {
-  u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0;
+  u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0, cin;
   op1= reg->get();
-  op2= ~n & 0xff;
-  res= op1 + op2 + (b?((rF&MCF)?0:1):1);
+  cin= b?((rF&MCF)?0:1):1;
+  op2= (~n + cin) & 0xff;
+  res= op1 + op2;
   op1_7= op1 & 0x7f;
   op2_7= op2 & 0x7f;
   res_7= op1_7 + op2_7;
@@ -1263,6 +1264,35 @@ cl_t870c::sub8(C8 *reg, u8_t n, bool b)
   rF^= (MCF|MJF|MHF);
   
   reg->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::cmp8(C8 *reg, u8_t n)
+{
+  u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0;
+  op1= reg->get();
+  op2= (~n + 1) & 0xff;
+  res= op1 + op2;
+  op1_7= op1 & 0x7f;
+  op2_7= op2 & 0x7f;
+  res_7= op1_7 + op2_7;
+
+  rF&= ~MALL;
+  if (res > 0xff)
+    (rF|= MCF|MJF), c8=1;
+  if (res & 0x80)
+    rF|= MSF;
+  c7= (res_7>0x7f)?1:0;
+  if (c7^c8)
+    rF|= MVF;
+  if ((res & 0xff) == 0)
+    rF|= MZF;
+  if (((op1&0xf) + (op2&0xf)) > 0xf)
+    rF|= MHF;
+  rF^= (MCF|MJF|MHF);
+  
   cF.W(rF);
   return resGO;
 }
