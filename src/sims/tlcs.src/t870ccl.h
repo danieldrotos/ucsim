@@ -221,11 +221,17 @@ public:
 
   // ALU
   virtual int add8(C8 *reg, u8_t n, bool c);
+  virtual int add16(C16 *reg, u16_t n, bool c);
   virtual int sub8(C8 *reg, u8_t n, bool b);
+  virtual int sub16(C16 *reg, u16_t n, bool b);
   virtual int cmp8(C8 *reg, u8_t n);
+  virtual int cmp16(C16 *reg, u16_t n);
   virtual int and8(C8 *reg, u8_t n);
+  virtual int and16(C16 *reg, u16_t n);
   virtual int xor8(C8 *reg, u8_t n);
+  virtual int xor16(C16 *reg, u16_t n);
   virtual int or8(C8 *reg, u8_t n);
+  virtual int or16(C16 *reg, u16_t n);
   
   // jump
   virtual int jr(u8_t a);
