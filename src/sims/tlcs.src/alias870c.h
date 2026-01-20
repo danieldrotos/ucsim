@@ -363,6 +363,15 @@
 #define SUBB_rrSP_gg		instruction_1b2
 #define SUBB_rrHLb_gg		instruction_1ba
 
+#define SUB_rrWA_gg		instruction_183
+#define SUB_rrBC_gg		instruction_18b
+#define SUB_rrDE_gg		instruction_193
+#define SUB_rrHL9_gg		instruction_19b
+#define SUB_rrIX_gg		instruction_1a3
+#define SUB_rrIY_gg		instruction_1ab
+#define SUB_rrSP_gg		instruction_1b3
+#define SUB_rrHLb_gg		instruction_1bb
+
 // 1 c0 - 1 cf
 #define SET_g_0                 instruction_1c0
 #define SET_g_1                 instruction_1c1
