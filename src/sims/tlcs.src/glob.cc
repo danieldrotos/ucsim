@@ -503,16 +503,102 @@ struct dis_entry disass_tlcs[]= {
 struct dis_entry disass_t870c[]=
   {
     // code mask branch length mn iscall ticks info
-    { 0x00004fe8, 0x0000fff8, ' ', 2, "INVALID" },
-    { 0x00007fe8, 0x0000fff8, ' ', 2, "INVALID" },
-    { 0x0000dfe8, 0x0000fff8, ' ', 2, "INVALID" },
-    { 0x0000f8e8, 0x0000fff8, ' ', 2, "INVALID" },
-    { 0x0000f9e8, 0x0000fff8, ' ', 2, "INVALID" },
-    { 0x0000fce8, 0x0000fff8, ' ', 2, "INVALID" },
+    // reg prefixes
+    { 0x00004fe8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
+    { 0x00007fe8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
+    { 0x0000dfe8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
+    { 0x0000f8e8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
+    { 0x0000f9e8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
+    { 0x0000fce8, 0x0000fff8, ' ', 2, "INVALID g/gg" },
 
+    // dst prefixes
+    { 0x004f00f0, 0x00ff00ff, ' ', 3, "INVALID dst(x)" },
+    { 0x4f0000f1, 0xff0000ff, ' ', 4, "INVALID dst(vw)" },
+    { 0x00004ff0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
+    { 0x004f0054, 0x00ff00fc, ' ', 3, "INVALID dst(rp+d)" },
+    { 0x005f00f0, 0x00ff00ff, ' ', 3, "INVALID dst(x)" },
+    { 0x5f0000f1, 0xff0000ff, ' ', 4, "INVALID dst(vw)" },
+    { 0x00005ff0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
+    { 0x005f0054, 0x00ff00fc, ' ', 3, "INVALID dst(rp+d)" },
+    { 0x00d000f0, 0x00f800ff, ' ', 3, "INVALID dst(x)" },
+    { 0xd00000f1, 0xf80000ff, ' ', 4, "INVALID dst(vw)" },
+    { 0x0000d0f0, 0x0000f8f8, ' ', 2, "INVALID dst(rp)" },
+    { 0x00d00054, 0x00f800fc, ' ', 3, "INVALID dst(rp+d)" },
+    { 0x00f100f0, 0x00ff00ff, ' ', 3, "INVALID dst(x)" },
+    { 0xf10000f1, 0xff0000ff, ' ', 4, "INVALID dst(vw)" },
+    { 0x0000f1f0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
+    { 0x00f10054, 0x00ff00fc, ' ', 3, "INVALID dst(rp+d)" },
+    { 0x00f400f0, 0x00ff00ff, ' ', 3, "INVALID dst(x)" },
+    { 0xf40000f1, 0xff0000ff, ' ', 4, "INVALID dst(vw)" },
+    { 0x0000f4f0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
+    { 0x00f40054, 0x00ff00fc, ' ', 3, "INVALID dst(rp+d)" },
+    { 0x00f500f0, 0x00ff00ff, ' ', 3, "INVALID dst(x)" },
+    { 0xf50000f1, 0xff0000ff, ' ', 4, "INVALID dst(vw)" },
+    { 0x0000f5f0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
+    { 0x00f50054, 0x00ff00fc, ' ', 3, "INVALID dst(rp+d)" },
+    { 0x00ff00f0, 0x00ff00ff, ' ', 3, "INVALID dst(x)" },
+    { 0xff0000f1, 0xff0000ff, ' ', 4, "INVALID dst(vw)" },
+    { 0x0000fff0, 0x0000fff8, ' ', 2, "INVALID dst(rp)" },
+    { 0x00ff0054, 0x00ff00fc, ' ', 3, "INVALID dst(rp+d)" },
+
+    // src prefixes
+    { 0x004f00e0, 0x00ff00ff, ' ', 3, "INVALID src(x)" },
+    { 0x4f0000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)" },
+    { 0x00004fe0, 0x0000fff8, ' ', 2, "INVALID src(rp)" },
+    { 0x004f00d4, 0x00ff00fc, ' ', 3, "INVALID src(rp+d)" },
+    { 0x00004f4f, 0x0000ffff, ' ', 2, "INVALID src(pc+a)" },
+    { 0x006f00e0, 0x00ff00ff, ' ', 3, "INVALID src(x)" },
+    { 0x6f0000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)" },
+    { 0x00006fe0, 0x0000fff8, ' ', 2, "INVALID src(rp)" },
+    { 0x006f00d4, 0x00ff00fc, ' ', 3, "INVALID src(rp+d)" },
+    { 0x00006f4f, 0x0000ffff, ' ', 2, "INVALID src(pc+a)" },
+    { 0x00d000e0, 0x00f800ff, ' ', 3, "INVALID src(x)" },
+    { 0xd00000e1, 0xf80000ff, ' ', 4, "INVALID src(vw)" },
+    { 0x0000d0e0, 0x0000f8f8, ' ', 2, "INVALID src(rp)" },
+    { 0x00d000d4, 0x00f800fc, ' ', 3, "INVALID src(rp+d)" },
+    { 0x0000d04f, 0x0000f8ff, ' ', 2, "INVALID src(pc+a)" },
+    { 0x00f100e0, 0x00ff00ff, ' ', 3, "INVALID src(x)" },
+    { 0xf10000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)" },
+    { 0x0000f1e0, 0x0000fff8, ' ', 2, "INVALID src(rp)" },
+    { 0x00f100d4, 0x00ff00fc, ' ', 3, "INVALID src(rp+d)" },
+    { 0x0000f14f, 0x0000ffff, ' ', 2, "INVALID src(pc+a)" },
+    { 0x00f400e0, 0x00ff00ff, ' ', 3, "INVALID src(x)" },
+    { 0xf40000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)" },
+    { 0x0000f4e0, 0x0000fff8, ' ', 2, "INVALID src(rp)" },
+    { 0x00f400d4, 0x00ff00fc, ' ', 3, "INVALID src(rp+d)" },
+    { 0x0000f44f, 0x0000ffff, ' ', 2, "INVALID src(pc+a)" },
+    { 0x00f500e0, 0x00ff00ff, ' ', 3, "INVALID src(x)" },
+    { 0xf50000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)" },
+    { 0x0000f5e0, 0x0000fff8, ' ', 2, "INVALID src(rp)" },
+    { 0x00f500d4, 0x00ff00fc, ' ', 3, "INVALID src(rp+d)" },
+    { 0x0000f54f, 0x0000ffff, ' ', 2, "INVALID src(pc+a)" },
+    { 0x00ff00e0, 0x00ff00ff, ' ', 3, "INVALID src(x)" },
+    { 0xff0000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)" },
+    { 0x0000ffe0, 0x0000fff8, ' ', 2, "INVALID src(rp)" },
+    { 0x00ff00d4, 0x00ff00fc, ' ', 3, "INVALID src(rp+d)" },
+    { 0x0000ff4f, 0x0000ffff, ' ', 2, "INVALID src(pc+a)" },
+
+    // src prefix, dst code
+    { 0x006800e0, 0x00f800ff, ' ', 3, "INVALID src(x)-dst" },
+    { 0x680000e1, 0xf80000ff, ' ', 4, "INVALID src(vw)-dst" },
+    { 0x000068e0, 0x0000f8f8, ' ', 2, "INVALID src(rp)-dst" },
+    { 0x006800d4, 0x00f800fc, ' ', 3, "INVALID src(rp+d)-dst" },
+    { 0x0000684f, 0x0000f8ff, ' ', 2, "INVALID src(pc+a)-dst" },
+    { 0x007800e0, 0x00f800ff, ' ', 3, "INVALID src(x)-dst" },
+    { 0x780000e1, 0xf80000ff, ' ', 4, "INVALID src(vw)-dst" },
+    { 0x000078e0, 0x0000f8f8, ' ', 2, "INVALID src(rp)-dst" },
+    { 0x007800d4, 0x00f800fc, ' ', 3, "INVALID src(rp+d)-dst" },
+    { 0x0000784f, 0x0000f8ff, ' ', 2, "INVALID src(pc+a)-dst" },
+    { 0x00f900e0, 0x00ff00ff, ' ', 3, "INVALID src(x)-dst" },
+    { 0xf90000e1, 0xff0000ff, ' ', 4, "INVALID src(vw)-dst" },
+    { 0x0000f9e0, 0x0000fff8, ' ', 2, "INVALID src(rp)-dst" },
+    { 0x00f900d4, 0x00ff00fc, ' ', 3, "INVALID src(rp+d)-dst" },
+    { 0x0000f94f, 0x0000ffff, ' ', 2, "INVALID src(pc+a)-dst" },
+    
     { 0x000000f9, 0x0000ffff, ' ', 2, "LD RBS,0" },
     { 0x000002f9, 0x0000ffff, ' ', 2, "LD RBS,1" },
 
+    // reg prefixes, code page 0x100
     { 0x000040e8, 0x0000f8f8, ' ', 2, "LD 'r_1.0','r_0.0'" },
     { 0x000048e8, 0x0000f8f8, ' ', 2, "LD 'rr_1.0','rr_0.0'" },
 
@@ -523,6 +609,7 @@ struct dis_entry disass_t870c[]=
 
     { 0x0000ffe8, 0x0000fff8, ' ', 2, "SWAP 'r_0.0'" },
 
+    // dst prefixes, code page 0x200
     { 0x004000e0, 0x00f800ff, ' ', 3, "LD 'r_2.0',(%x)" },
     { 0x400000e1, 0xf80000ff, ' ', 4, "LD 'r_3.0',('vw')" },
     { 0x000040e0, 0x0000f8f8, ' ', 2, "LD 'r_1.0',('srcE')" },
@@ -534,6 +621,7 @@ struct dis_entry disass_t870c[]=
     { 0x004800d4, 0x00f800fc, ' ', 3, "LD 'rr_2.0',('srcD')" },
     { 0x0000484f, 0x0000f8ff, ' ', 2, "LD 'rr_1.0',('src4')" },
 
+    // src prefixes, code page 0x200
     { 0x006800f0, 0x00f800ff, ' ', 3, "LD (%x),'rr_2.0'" },
     { 0x680000f1, 0xf80000ff, ' ', 4, "LD ('vw'),'rr_3.0'" },
     { 0x000068f0, 0x0000f8f8, ' ', 2, "LD ('dstF'),'rr_1.0'" },
@@ -547,7 +635,8 @@ struct dis_entry disass_t870c[]=
     { 0xf90000f1, 0xff0000ff, ' ', 5, "LD ('vw'),'n_4'" },
     { 0x0000f9f0, 0x0000fff8, ' ', 3, "LD ('dstF'),'n_2'" },
     { 0x00f90054, 0x00ff00fc, ' ', 4, "LD ('dst5'),'n_3'" },
-    
+
+    // one byte opcodes
     { 0x00000000, 0x000000ff, ' ', 1, "NOP" },
     { 0x00000004, 0x000000ff, ' ', 1, "CLR CF" },
     { 0x00000005, 0x000000ff, ' ', 1, "SET CF" },
@@ -576,11 +665,12 @@ struct dis_entry disass_t870c[]=
     { 0x0000004d, 0x000000ff, ' ', 3, "LD IY,'mn_1'" },
     { 0x0000004e, 0x000000ff, ' ', 3, "LD SP,'mn_1'" },
 
-    { 0x00000001, 0x000000ff, ' ', 1, "-- INVALID" },
-    { 0x00000002, 0x000000ff, ' ', 1, "-- INVALID" },
-    { 0x00000003, 0x000000ff, ' ', 1, "-- INVALID" },
-    { 0x000000f8, 0x000000ff, ' ', 1, "-- INVALID" },
-    { 0x00000068, 0x000000f8, ' ', 1, "-- INVALID" },
+    // one byte invalids
+    { 0x00000001, 0x000000ff, ' ', 1, "INVALID" },
+    { 0x00000002, 0x000000ff, ' ', 1, "INVALID" },
+    { 0x00000003, 0x000000ff, ' ', 1, "INVALID" },
+    { 0x000000f8, 0x000000ff, ' ', 1, "INVALID" },
+    { 0x00000068, 0x000000f8, ' ', 1, "INVALID" },
     
     { 0, 0, ' ', 0, NULL }
   };
