@@ -372,6 +372,15 @@
 #define SUB_rrSP_gg		instruction_1b3
 #define SUB_rrHLb_gg		instruction_1bb
 
+#define AND_rrWA_gg		instruction_184
+#define AND_rrBC_gg		instruction_18c
+#define AND_rrDE_gg		instruction_194
+#define AND_rrHL9_gg		instruction_19c
+#define AND_rrIX_gg		instruction_1a4
+#define AND_rrIY_gg		instruction_1ac
+#define AND_rrSP_gg		instruction_1b4
+#define AND_rrHLb_gg		instruction_1bc
+
 // 1 c0 - 1 cf
 #define SET_g_0                 instruction_1c0
 #define SET_g_1                 instruction_1c1
