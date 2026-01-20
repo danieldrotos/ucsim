@@ -602,6 +602,15 @@
 #define LD_dst_rL               instruction_27e
 #define LD_dst_rH               instruction_27f
 
+// 2 80 - 2 bf ALU16 rr,(src)
+#define ADDC_rrWA_src		instruction_280
+#define ADDC_rrBC_src		instruction_288
+#define ADDC_rrDE_src		instruction_290
+#define ADDC_rrHL9_src		instruction_298
+#define ADDC_rrIX_src		instruction_2a0
+#define ADDC_rrIY_src		instruction_2a8
+#define ADDC_rrSP_src		instruction_2b0
+#define ADDC_rrHLb_src		instruction_2b8
 // 2 c0 - 2 cf
 #define SET_src_0               instruction_2c0
 #define SET_src_1               instruction_2c1
