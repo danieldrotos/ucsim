@@ -335,6 +335,16 @@
 #define XCH_rrIY_gg             instruction_17d
 #define XCH_rrSP_gg             instruction_17e
 
+// 1 80 - 1 bf ALU rr,gg
+#define ADDC_rrWA_gg		instruction_180
+#define ADDC_rrBC_gg		instruction_188
+#define ADDC_rrDE_gg		instruction_190
+#define ADDC_rrHL9_gg		instruction_198
+#define ADDC_rrIX_gg		instruction_1a0
+#define ADDC_rrIY_gg		instruction_1a8
+#define ADDC_rrSP_gg		instruction_1b0
+#define ADDC_rrHLb_gg		instruction_1b8
+
 // 1 c0 - 1 cf
 #define SET_g_0                 instruction_1c0
 #define SET_g_1                 instruction_1c1

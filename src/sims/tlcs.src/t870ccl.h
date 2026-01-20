@@ -149,7 +149,7 @@ public:
   virtual int execS(void);
   virtual int execD(void);
 
-  // 16 bit helpers for data sp
+  // 16 bit helpers for data op
   virtual u16_t get16(u16_t addr)
   { return asd->read(addr)+asd->read(addr+1)*256; }
   virtual u16_t rd16(u16_t addr)
@@ -577,13 +577,22 @@ public:
   virtual int XCH_rD_g(MP) { return xch8_rr(&cD, regs8[sda]); }
   virtual int XCH_rL_g(MP) { return xch8_rr(&cL, regs8[sda]); }
   virtual int XCH_rH_g(MP) { return xch8_rr(&cH, regs8[sda]); }
-  virtual int XCH_rrWA_g(MP) { return xch16_rr(&cWA, regs16[sda]); }
-  virtual int XCH_rrBC_g(MP) { return xch16_rr(&cBC, regs16[sda]); }
-  virtual int XCH_rrDE_g(MP) { return xch16_rr(&cDE, regs16[sda]); }
-  virtual int XCH_rrHL_g(MP) { return xch16_rr(&cHL, regs16[sda]); }
-  virtual int XCH_rrIX_g(MP) { return xch16_rr(&cIX, regs16[sda]); }
-  virtual int XCH_rrIY_g(MP) { return xch16_rr(&cIY, regs16[sda]); }
-  virtual int XCH_rrSP_g(MP) { return xch16_rr(&cSP, regs16[sda]); }
+  virtual int XCH_rrWA_gg(MP) { return xch16_rr(&cWA, regs16[sda]); }
+  virtual int XCH_rrBC_gg(MP) { return xch16_rr(&cBC, regs16[sda]); }
+  virtual int XCH_rrDE_gg(MP) { return xch16_rr(&cDE, regs16[sda]); }
+  virtual int XCH_rrHL_gg(MP) { return xch16_rr(&cHL, regs16[sda]); }
+  virtual int XCH_rrIX_gg(MP) { return xch16_rr(&cIX, regs16[sda]); }
+  virtual int XCH_rrIY_gg(MP) { return xch16_rr(&cIY, regs16[sda]); }
+  virtual int XCH_rrSP_gg(MP) { return xch16_rr(&cSP, regs16[sda]); }
+  // 1 80 - 1 bf ALU rr,gg
+  virtual int ADDC_rrWA_gg(MP)  { return add16(&cWA, regs16[sda]->R(), true); }
+  virtual int ADDC_rrBC_gg(MP)  { return add16(&cBC, regs16[sda]->R(), true); }
+  virtual int ADDC_rrDE_gg(MP)  { return add16(&cDE, regs16[sda]->R(), true); }
+  virtual int ADDC_rrHL9_gg(MP) { return add16(&cHL, regs16[sda]->R(), true); }
+  virtual int ADDC_rrIX_gg(MP)  { return add16(&cIX, regs16[sda]->R(), true); }
+  virtual int ADDC_rrIY_gg(MP)  { return add16(&cIY, regs16[sda]->R(), true); }
+  virtual int ADDC_rrSP_gg(MP)  { return add16(&cSP, regs16[sda]->R(), true); }
+  virtual int ADDC_rrHLb_gg(MP) { return add16(&cHL, regs16[sda]->R(), true); }
   // 1 c0 - 1 cf
   virtual int SET_g_0(MP) { return setr(regs8[sda], 0); }
   virtual int SET_g_1(MP) { return setr(regs8[sda], 1); }
