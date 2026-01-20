@@ -317,6 +317,14 @@
 #define XOR_g_n                 instruction_165
 #define OR_g_n                  instruction_166
 #define CMP_g_n                 instruction_167
+#define ADDC_gg_mn              instruction_168
+#define ADD_gg_mn               instruction_169
+#define SUBB_gg_mn              instruction_16a
+#define SUB_gg_mn               instruction_16b
+#define AND_gg_mn               instruction_16c
+#define XOR_gg_mn               instruction_16d
+#define OR_gg_mn                instruction_16e
+#define CMP_gg_mn               instruction_16f
 
 // 1 70 - 1 7f
 #define XCH_rA_g                instruction_170
