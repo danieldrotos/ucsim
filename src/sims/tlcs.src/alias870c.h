@@ -648,6 +648,15 @@
 #define SUB_rrSP_src		instruction_2b3
 #define SUB_rrHLb_src		instruction_2bb
 
+#define AND_rrWA_src		instruction_284
+#define AND_rrBC_src		instruction_28c
+#define AND_rrDE_src		instruction_294
+#define AND_rrHL9_src		instruction_29c
+#define AND_rrIX_src		instruction_2a4
+#define AND_rrIY_src		instruction_2ac
+#define AND_rrSP_src		instruction_2b4
+#define AND_rrHLb_src		instruction_2bc
+
 // 2 c0 - 2 cf
 #define SET_src_0               instruction_2c0
 #define SET_src_1               instruction_2c1
