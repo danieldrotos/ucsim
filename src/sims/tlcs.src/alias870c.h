@@ -467,6 +467,7 @@
 // 1 f0 - 1 ff
 #define MUL_gg			instruction_1f2
 #define DIV_gg			instruction_1f3
+#define NEG_gg			instruction_1fa
 #define JP_gg                   instruction_1fe
 #define SWAP_g                  instruction_1ff
 
