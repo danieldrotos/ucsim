@@ -620,6 +620,16 @@
 #define ADDC_rrIY_src		instruction_2a8
 #define ADDC_rrSP_src		instruction_2b0
 #define ADDC_rrHLb_src		instruction_2b8
+
+#define ADD_rrWA_src		instruction_281
+#define ADD_rrBC_src		instruction_289
+#define ADD_rrDE_src		instruction_291
+#define ADD_rrHL9_src		instruction_299
+#define ADD_rrIX_src		instruction_2a1
+#define ADD_rrIY_src		instruction_2a9
+#define ADD_rrSP_src		instruction_2b1
+#define ADD_rrHLb_src		instruction_2b9
+
 // 2 c0 - 2 cf
 #define SET_src_0               instruction_2c0
 #define SET_src_1               instruction_2c1
