@@ -884,6 +884,14 @@ public:
   virtual int OR_rrIY_src(MP)   { return or16(&cIY, rd16(sda)); }
   virtual int OR_rrSP_src(MP)   { return or16(&cSP, rd16(sda)); }
   virtual int OR_rrHLb_src(MP)  { return or16(&cHL, rd16(sda)); }
+  virtual int CMP_rrWA_src(MP)  { return cmp16(&cWA, rd16(sda)); }
+  virtual int CMP_rrBC_src(MP)  { return cmp16(&cBC, rd16(sda)); }
+  virtual int CMP_rrDE_src(MP)  { return cmp16(&cDE, rd16(sda)); }
+  virtual int CMP_rrHL9_src(MP) { return cmp16(&cHL, rd16(sda)); }
+  virtual int CMP_rrIX_src(MP)  { return cmp16(&cIX, rd16(sda)); }
+  virtual int CMP_rrIY_src(MP)  { return cmp16(&cIY, rd16(sda)); }
+  virtual int CMP_rrSP_src(MP)  { return cmp16(&cSP, rd16(sda)); }
+  virtual int CMP_rrHLb_src(MP) { return cmp16(&cHL, rd16(sda)); }
   // 2 c0 - 2 cf
   virtual int SET_src_0(MP) { return setm(sdc, 0); }
   virtual int SET_src_1(MP) { return setm(sdc, 1); }
