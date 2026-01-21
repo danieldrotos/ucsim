@@ -639,6 +639,15 @@
 #define SUBB_rrSP_src		instruction_2b2
 #define SUBB_rrHLb_src		instruction_2ba
 
+#define SUB_rrWA_src		instruction_283
+#define SUB_rrBC_src		instruction_28b
+#define SUB_rrDE_src		instruction_293
+#define SUB_rrHL9_src		instruction_29b
+#define SUB_rrIX_src		instruction_2a3
+#define SUB_rrIY_src		instruction_2ab
+#define SUB_rrSP_src		instruction_2b3
+#define SUB_rrHLb_src		instruction_2bb
+
 // 2 c0 - 2 cf
 #define SET_src_0               instruction_2c0
 #define SET_src_1               instruction_2c1
