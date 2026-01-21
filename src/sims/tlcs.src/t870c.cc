@@ -356,6 +356,8 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="b_1.0")  work.appendf("%d", code1&7);
 	  else if (fmt=="b_2.0")  work.appendf("%d", code2&7);
 	  else if (fmt=="b_3.0")  work.appendf("%d", code3&7);
+	  else if (fmt=="rr_0.0h") work.append(rr_names[code0&7][0]);
+	  else if (fmt=="rr_0.0l") work.append(rr_names[code0&7][1]);
 	  else if (fmt=="vw")
 	    {
 	      work.appendf("0x%04x", u16= code1+code2*256);
@@ -1452,6 +1454,23 @@ cl_t870c::or16(C16 *reg, u16_t n)
   if (!r)
     rF|= (MJF|MZF);
   reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::mul(C16 *rr)
+{
+  u8_t op1, op2;
+  u16_t r, res;
+  rF&= ~(MJF|MZF);
+  r= rr->R();
+  op1= r>>8;
+  op2= r&0xff;
+  res= op1*op2;
+  if  ((res & 0xff00) == 0)
+    rF|= (MJF|MZF);
+  rr->W(res);
   cF.W(rF);
   return resGO;
 }
