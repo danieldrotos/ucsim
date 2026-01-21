@@ -1476,6 +1476,32 @@ cl_t870c::mul(C16 *rr)
 }
 
 int
+cl_t870c::div(C16 *rr)
+{
+  u16_t op1= rr->R();
+  u8_t op2= cC.R();
+  u16_t q= 0, rem= 0, res;
+  rF&= ~(MJF|MZF|MCF);
+  if (op2 == 0)
+    {
+      rF|= MCF;
+    }
+  else
+    {
+      q= op1/op2;
+      rem= op1%op2;
+      if (q > 0x100)
+	rF|= MCF;
+      if (rem == 0)
+	rF|= (MJF|MZF);
+    }
+  res= (rem << 8) + (q & 0xff);
+  rr->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::jr(u8_t a)
 {
   i8_t v= a;

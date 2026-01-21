@@ -234,6 +234,7 @@ public:
   virtual int or16 (C16 *reg, u16_t n);
 
   virtual int mul(C16 *rr);
+  virtual int div(C16 *rr);
   
   // jump
   virtual int jr(u8_t a);
@@ -697,6 +698,7 @@ public:
   virtual int LD_g_7_CF(MP) { return st1r(regs8[sda], 7); }
   // 1 f0 - 1 ff
   virtual int MUL_gg(MP) { return mul(regs16[sda]); }
+  virtual int DIV_gg(MP) { return div(regs16[sda]); }
   virtual int JP_gg(MP) { PC= regs16[sda]->get(); return resGO; }
   virtual int SWAP_g(MP);
   // 2 00 - 2 3f ALU r,(src)
