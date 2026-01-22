@@ -444,6 +444,7 @@
 #define CLR_g_7                 instruction_1cf
 
 // 1 d0 - 1 df
+#define DAA_g			instruction_1da
 #define LD_PSW_n		instruction_1de
 
 // 1 e0 - 1 ef

@@ -1512,6 +1512,34 @@ cl_t870c::NEG_gg(MP)
   return resGO;
 }
 
+#include "dec_adj_tab.cc"
+
+int
+cl_t870c::DAA_g(MP)
+{
+  C8 *g= regs8[sda];
+  u8_t adj;
+  int cc= (rF&MCF)?2:0 + (rF&MHF)?1:0;
+  adj= daa_adj_tab[g->get()] >> (cc*8);
+
+  u16_t op1, op2, res;
+  op1= g->get();
+  op2= adj;
+  res= op1 + op2;
+
+  rF&= ~(MJF|MCF|MZF|MHF);
+  if (res > 0xff)
+    (rF|= MCF|MJF);
+  if ((res & 0xff) == 0)
+    rF|= MZF;
+  if (((op1&0xf) + (op2&0xf)) > 0xf)
+    rF|= MHF;
+
+  g->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
 int
 cl_t870c::jr(u8_t a)
 {
