@@ -700,6 +700,7 @@ public:
   virtual int LD_g_7_CF(MP) { return st1r(regs8[sda], 7); }
   // 1 f0 - 1 ff
   virtual int SHLCA_gg(MP);
+  virtual int SHRCA_gg(MP);
   virtual int MUL_gg(MP) { return mul(regs16[sda]); }
   virtual int DIV_gg(MP) { return div(regs16[sda]); }
   virtual int SHLC_g(MP);
