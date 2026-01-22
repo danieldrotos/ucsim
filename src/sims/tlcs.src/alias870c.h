@@ -467,6 +467,7 @@
 #define LD_g_7_CF               instruction_1ef
 
 // 1 f0 - 1 ff
+#define SHLCA_gg		instruction_1f0
 #define MUL_gg			instruction_1f2
 #define DIV_gg			instruction_1f3
 #define SHLC_g			instruction_1f4
