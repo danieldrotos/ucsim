@@ -679,6 +679,7 @@ public:
   virtual int CLR_g_7(MP) { return clrr(regs8[sda], 7); }
   // 1 d0 - 1 df
   virtual int DAA_g(MP);
+  virtual int DAS_g(MP);
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 e0 - 1 ef
   virtual int CPL_g_0(MP) { return cplr(regs8[sda], 0); }
