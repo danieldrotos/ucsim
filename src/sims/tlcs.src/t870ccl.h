@@ -702,6 +702,7 @@ public:
   virtual int MUL_gg(MP) { return mul(regs16[sda]); }
   virtual int DIV_gg(MP) { return div(regs16[sda]); }
   virtual int SHLC_g(MP);
+  virtual int SHRC_g(MP);
   virtual int NEG_gg(MP);
   virtual int JP_gg(MP) { PC= regs16[sda]->get(); return resGO; }
   virtual int SWAP_g(MP);
