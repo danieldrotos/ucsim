@@ -1502,6 +1502,22 @@ cl_t870c::div(C16 *rr)
 }
 
 int
+cl_t870c::SHLC_g(MP)
+{
+  C8 *g= regs8[sda];
+  rF&= ~(MJF|MCF|MZF);
+  u16_t r= g->R();
+  r<<= 1;
+  if (r & 0x100)
+    rF|= (MJF|MCF);
+  if ((r & 0xff) == 0)
+    rF|= MZF;
+  g->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::NEG_gg(MP)
 {
   rF|= MJF;
