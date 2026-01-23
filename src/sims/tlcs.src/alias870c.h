@@ -123,6 +123,14 @@
 #define LD_dst_rrSP             instruction_26e
 
 // 2 70 - 2 7f
+#define XCH_rA_src              instruction_270
+#define XCH_rW_src              instruction_271
+#define XCH_rC_src              instruction_272
+#define XCH_rB_src              instruction_273
+#define XCH_rE_src              instruction_274
+#define XCH_rD_src              instruction_275
+#define XCH_rL_src              instruction_276
+#define XCH_rH_src              instruction_277
 #define LD_dst_rA               instruction_278
 #define LD_dst_rW               instruction_279
 #define LD_dst_rC               instruction_27a

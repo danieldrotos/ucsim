@@ -321,6 +321,14 @@ public:
   virtual int LD_dst_rrIY(MP) { return st16(sda, rIY); }
   virtual int LD_dst_rrSP(MP) { return st16(sda, rSP); }
   // 2 70 - 2 7f
+  virtual int XCH_rA_src(MP) { return xch8_rm(&cA, sdc); }
+  virtual int XCH_rW_src(MP) { return xch8_rm(&cW, sdc); }
+  virtual int XCH_rC_src(MP) { return xch8_rm(&cC, sdc); }
+  virtual int XCH_rB_src(MP) { return xch8_rm(&cB, sdc); }
+  virtual int XCH_rE_src(MP) { return xch8_rm(&cE, sdc); }
+  virtual int XCH_rD_src(MP) { return xch8_rm(&cD, sdc); }
+  virtual int XCH_rL_src(MP) { return xch8_rm(&cL, sdc); }
+  virtual int XCH_rH_src(MP) { return xch8_rm(&cH, sdc); }
   virtual int LD_dst_rA(MP) { return st8(sdc, rA); }
   virtual int LD_dst_rW(MP) { return st8(sdc, rW); }
   virtual int LD_dst_rC(MP) { return st8(sdc, rC); }
