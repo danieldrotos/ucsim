@@ -2491,11 +2491,18 @@ cl_uc::get_max_hw_id(enum hw_cath cath)
  * Help of the command interpreter
  */
 
+static struct dis_entry dis_empty= { 0, 0, 0, 0, NULL };
+
 struct dis_entry *
 cl_uc::dis_tbl(void)
 {
-  static struct dis_entry empty= { 0, 0, 0, 0, NULL };
-  return(&empty);
+  return(&dis_empty);
+}
+
+struct dis_entry *
+cl_uc::get_dis_entry(t_addr addr)
+{
+  return &dis_empty;
 }
 
 char *
