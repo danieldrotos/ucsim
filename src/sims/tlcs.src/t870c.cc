@@ -283,6 +283,26 @@ static const char *srcD[4]= {
   "IX", "IY", "SP", "HL"
 };
 
+/* Byte index +1 */
+static const u8_t code_loc[256]= {
+  /* 0 */ 1,0,0,0, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 1 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 2 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 3 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 4 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,2,
+  /* 5 */ 1,1,1,1, 3,3,3,3, 1,1,1,1, 1,1,1,1,
+  /* 6 */ 1,1,1,1, 1,1,1,1, 0,0,0,0, 0,0,0,0,
+  /* 7 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 8 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 9 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* a */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* b */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* c */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* d */ 1,1,1,1, 3,3,3,3, 1,1,1,1, 1,1,1,1,
+  /* e */ 3,4,2,2, 2,2,2,2, 2,2,2,2, 2,2,2,2,
+  /* f */ 3,4,2,2, 2,2,2,2, 0,1,1,1, 1,1,1,1
+};
+
 char *
 cl_t870c::disassc(t_addr addr, chars *comment)
 {
@@ -293,6 +313,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   int i;
   bool first;
   u16_t u16;
+  struct dis_entry *dtab, *de;
   
   code= code0= rom->get(addr);
   code1= rom->get(addr+1);
@@ -301,17 +322,22 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   code4= rom->get(addr+4);
   code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
 
+  dtab= dis_tbl();
+  u32_t cloc, cmask;
+  cloc= code_loc[code0]-1;
+  cmask= 0x000000ff << (8*cloc);
   if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
     return strdup("INVALID");
   i= 0;
-  while ((code32 & dis_tbl()[i].mask) != dis_tbl()[i].code &&
-	 dis_tbl()[i].mnemonic)
+  while ((code32 & dtab[i].mask) != dtab[i].code &&
+	 (dtab[i].mask & cmask) &&
+	 dtab[i].mnemonic)
     i++;
-  if (dis_tbl()[i].mnemonic == NULL)
+  if (dtab[i].mnemonic == NULL)
     {
       return strdup("UNKNOWN/INVALID");
     }
-  b= dis_tbl()[i].mnemonic;
+  b= dtab[i].mnemonic;
   
   first= true;
   for (i=0; b[i]; i++)
