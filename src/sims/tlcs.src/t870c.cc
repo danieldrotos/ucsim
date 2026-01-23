@@ -35,6 +35,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "t870ccl.h"
 
 
+// bit nr to bit mask converter
+u8_t bit_mask[8]= { 1, 2, 4, 8, 16, 32, 64, 128 };
+
+
 cl_t870c_psw_op::cl_t870c_psw_op(class cl_memory_cell *acell, class cl_t870c *auc):
   cl_memory_operator(acell)
 {
@@ -349,6 +353,10 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="mn_1")   work.appendf("0x%04x", code1+code2*256);
 	  else if (fmt=="mn_2")   work.appendf("0x%04x", code2+code3*256);
 	  else if (fmt=="mn_3")   work.appendf("0x%04x", code3+code4*256);
+	  else if (fmt=="b_0.0")  work.appendf("%d", code0&7);
+	  else if (fmt=="b_1.0")  work.appendf("%d", code1&7);
+	  else if (fmt=="b_2.0")  work.appendf("%d", code2&7);
+	  else if (fmt=="b_3.0")  work.appendf("%d", code3&7);
 	  else if (fmt=="vw")
 	    {
 	      work.appendf("0x%04x", u16= code1+code2*256);
@@ -436,9 +444,12 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		u16_t x= rom->get(addr+1);
 		work.appendf("0x%02x", x);
 		if (comment)
-		  comment->appendf("; %02x %02x",
-				   asd->read(x), asd->read(x+1));
+		  comment->appendf("; [%04x] %02x %02x",
+				   x, asd->read(x), asd->read(x+1));
 	      }
+	      break;
+	    case 'b':
+	      work.appendf("%d", code0&7);
 	      break;
 	    default:
 	      temp= "?";
@@ -832,6 +843,119 @@ cl_t870c::xch16_rr(C16 *a, C16 *b)
   b->W(a->get());
   a->W(t);
   cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::ld1r(C8 *src, u8_t bitnr)
+{
+  rF&= ~(MCF|MJF);
+  if (src->get() & bit_mask[bitnr])
+    cF.W(rF|MCF);
+  else
+    cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::ld1m(C8 *src, u8_t bitnr)
+{
+  rF&= ~(MCF|MJF);
+  if (src->read() & bit_mask[bitnr])
+    cF.W(rF|MCF);
+  else
+    cF.W(rF|MJF);
+  RD;
+  return resGO;
+}
+
+int
+cl_t870c::st1r(C8 *dst, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= dst->get();
+  if (rF&MCF)
+    v|= m;
+  else
+    v&= ~m;
+  dst->W(v);
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::st1m(C8 *dst, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= dst->read();
+  RD;
+  if (rF&MCF)
+    v|= m;
+  else
+    v&= ~m;
+  dst->W(v);
+  WR;
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::setr(C8 *reg, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= reg->get();
+  if (v&m)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= (MJF|MZF);
+  reg->W(v | m);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::setm(C8 *reg, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= reg->read();
+  RD;
+  if (v&m)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= (MJF|MZF);
+  reg->W(v | m);
+  WR;
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::clrr(C8 *reg, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= reg->get();
+  if (v&m)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= (MJF|MZF);
+  reg->W(v & ~m);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::clrm(C8 *reg, u8_t bitnr)
+{
+  u8_t m= bit_mask[bitnr];
+  u8_t v= reg->read();
+  RD;
+  if (v&m)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= (MJF|MZF);
+  reg->W(v & ~m);
+  WR;
+  cF.W(rF);
   return resGO;
 }
 

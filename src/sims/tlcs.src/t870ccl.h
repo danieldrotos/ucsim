@@ -85,6 +85,8 @@ enum flag_mask_t {
   MRBS= (0x02)
 };
 
+// bit nr to bit mask converter
+extern u8_t bit_mask[8];
 
 class cl_t870c;
 
@@ -171,6 +173,14 @@ public:
   virtual int xch8_rr(C8 *a, C8 *b);
   virtual int xch8_rm(C8 *a, C8 *b);
   virtual int xch16_rr(C16 *a, C16 *b);
+  virtual int ld1m(C8 *src, u8_t bitnr);
+  virtual int ld1r(C8 *src, u8_t bitnr);
+  virtual int st1m(C8 *dst, u8_t bitnr);
+  virtual int st1r(C8 *dst, u8_t bitnr);
+  virtual int setr(C8 *reg, u8_t bitnr);
+  virtual int setm(C8 *reg, u8_t bitnr);
+  virtual int clrr(C8 *reg, u8_t bitnr);
+  virtual int clrm(C8 *reg, u8_t bitnr);
   
 #include "alias870c.h"
   // 0 00 - 0 00
@@ -228,6 +238,31 @@ public:
   virtual int instruction_55(MP) { sd_iyd(); return execD(); }
   virtual int instruction_56(MP) { sd_spd(); return execD(); }
   virtual int instruction_57(MP) { sd_hld(); return execD(); }
+  virtual int LD_CF_mx_0(MP) { sd_x(); return ld1m(sdc, 0); }
+  virtual int LD_CF_mx_1(MP) { sd_x(); return ld1m(sdc, 1); }
+  virtual int LD_CF_mx_2(MP) { sd_x(); return ld1m(sdc, 2); }
+  virtual int LD_CF_mx_3(MP) { sd_x(); return ld1m(sdc, 3); }
+  virtual int LD_CF_mx_4(MP) { sd_x(); return ld1m(sdc, 4); }
+  virtual int LD_CF_mx_5(MP) { sd_x(); return ld1m(sdc, 5); }
+  virtual int LD_CF_mx_6(MP) { sd_x(); return ld1m(sdc, 6); }
+  virtual int LD_CF_mx_7(MP) { sd_x(); return ld1m(sdc, 7); }
+  // 0 c0 - 0 cf
+  virtual int SET_mx_0(MP) { sd_x(); return setm(sdc, 0); }
+  virtual int SET_mx_1(MP) { sd_x(); return setm(sdc, 1); }
+  virtual int SET_mx_2(MP) { sd_x(); return setm(sdc, 2); }
+  virtual int SET_mx_3(MP) { sd_x(); return setm(sdc, 3); }
+  virtual int SET_mx_4(MP) { sd_x(); return setm(sdc, 4); }
+  virtual int SET_mx_5(MP) { sd_x(); return setm(sdc, 5); }
+  virtual int SET_mx_6(MP) { sd_x(); return setm(sdc, 6); }
+  virtual int SET_mx_7(MP) { sd_x(); return setm(sdc, 7); }
+  virtual int CLR_mx_0(MP) { sd_x(); return clrm(sdc, 0); }
+  virtual int CLR_mx_1(MP) { sd_x(); return clrm(sdc, 1); }
+  virtual int CLR_mx_2(MP) { sd_x(); return clrm(sdc, 2); }
+  virtual int CLR_mx_3(MP) { sd_x(); return clrm(sdc, 3); }
+  virtual int CLR_mx_4(MP) { sd_x(); return clrm(sdc, 4); }
+  virtual int CLR_mx_5(MP) { sd_x(); return clrm(sdc, 5); }
+  virtual int CLR_mx_6(MP) { sd_x(); return clrm(sdc, 6); }
+  virtual int CLR_mx_7(MP) { sd_x(); return clrm(sdc, 7); }
   // 0 d0 - 0 df
   virtual int instruction_d4(MP) { sd_ixd(); return execS(); }
   virtual int instruction_d5(MP) { sd_iyd(); return execS(); }
@@ -276,6 +311,15 @@ public:
   virtual int LD_rrIX_gg(MP) { return ldi16(&cIX, regs16[sda]->R()); }
   virtual int LD_rrIY_gg(MP) { return ldi16(&cIY, regs16[sda]->R()); }
   virtual int LD_rrSP_gg(MP) { return ldi16(&cSP, regs16[sda]->R()); }
+  // 1 50 - 1 5f
+  virtual int LD_CF_g_0(MP) { return ld1r(regs8[sda], 0); }
+  virtual int LD_CF_g_1(MP) { return ld1r(regs8[sda], 1); }
+  virtual int LD_CF_g_2(MP) { return ld1r(regs8[sda], 2); }
+  virtual int LD_CF_g_3(MP) { return ld1r(regs8[sda], 3); }
+  virtual int LD_CF_g_4(MP) { return ld1r(regs8[sda], 4); }
+  virtual int LD_CF_g_5(MP) { return ld1r(regs8[sda], 5); }
+  virtual int LD_CF_g_6(MP) { return ld1r(regs8[sda], 6); }
+  virtual int LD_CF_g_7(MP) { return ld1r(regs8[sda], 7); }
   // 1 70 - 1 7f
   virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
   virtual int XCH_rW_g(MP) { return xch8_rr(&cW, regs8[sda]); }
@@ -292,8 +336,34 @@ public:
   virtual int XCH_rrIX_g(MP) { return xch16_rr(&cIX, regs16[sda]); }
   virtual int XCH_rrIY_g(MP) { return xch16_rr(&cIY, regs16[sda]); }
   virtual int XCH_rrSP_g(MP) { return xch16_rr(&cSP, regs16[sda]); }
+  // 1 c0 - 1 cf
+  virtual int SET_g_0(MP) { return setr(regs8[sda], 0); }
+  virtual int SET_g_1(MP) { return setr(regs8[sda], 1); }
+  virtual int SET_g_2(MP) { return setr(regs8[sda], 2); }
+  virtual int SET_g_3(MP) { return setr(regs8[sda], 3); }
+  virtual int SET_g_4(MP) { return setr(regs8[sda], 4); }
+  virtual int SET_g_5(MP) { return setr(regs8[sda], 5); }
+  virtual int SET_g_6(MP) { return setr(regs8[sda], 6); }
+  virtual int SET_g_7(MP) { return setr(regs8[sda], 7); }
+  virtual int CLR_g_0(MP) { return clrr(regs8[sda], 0); }
+  virtual int CLR_g_1(MP) { return clrr(regs8[sda], 1); }
+  virtual int CLR_g_2(MP) { return clrr(regs8[sda], 2); }
+  virtual int CLR_g_3(MP) { return clrr(regs8[sda], 3); }
+  virtual int CLR_g_4(MP) { return clrr(regs8[sda], 4); }
+  virtual int CLR_g_5(MP) { return clrr(regs8[sda], 5); }
+  virtual int CLR_g_6(MP) { return clrr(regs8[sda], 6); }
+  virtual int CLR_g_7(MP) { return clrr(regs8[sda], 7); }
   // 1 d0 - 1 df
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
+  // 1 e0 - 1 ef
+  virtual int LD_g_0_CF(MP) { return st1r(regs8[sda], 0); }
+  virtual int LD_g_1_CF(MP) { return st1r(regs8[sda], 1); }
+  virtual int LD_g_2_CF(MP) { return st1r(regs8[sda], 2); }
+  virtual int LD_g_3_CF(MP) { return st1r(regs8[sda], 3); }
+  virtual int LD_g_4_CF(MP) { return st1r(regs8[sda], 4); }
+  virtual int LD_g_5_CF(MP) { return st1r(regs8[sda], 5); }
+  virtual int LD_g_6_CF(MP) { return st1r(regs8[sda], 6); }
+  virtual int LD_g_7_CF(MP) { return st1r(regs8[sda], 7); }
   // 1 f0 - 1 ff
   virtual int SWAP_g(MP);
   // 2 40 - 2 4f
@@ -337,6 +407,32 @@ public:
   virtual int LD_dst_rD(MP) { return st8(sdc, rD); }
   virtual int LD_dst_rL(MP) { return st8(sdc, rL); }
   virtual int LD_dst_rH(MP) { return st8(sdc, rH); }
+  // 2 c0 - 2 cf
+  virtual int SET_src_0(MP) { return setm(sdc, 0); }
+  virtual int SET_src_1(MP) { return setm(sdc, 1); }
+  virtual int SET_src_2(MP) { return setm(sdc, 2); }
+  virtual int SET_src_3(MP) { return setm(sdc, 3); }
+  virtual int SET_src_4(MP) { return setm(sdc, 4); }
+  virtual int SET_src_5(MP) { return setm(sdc, 5); }
+  virtual int SET_src_6(MP) { return setm(sdc, 6); }
+  virtual int SET_src_7(MP) { return setm(sdc, 7); }
+  virtual int CLR_src_0(MP) { return clrm(sdc, 0); }
+  virtual int CLR_src_1(MP) { return clrm(sdc, 1); }
+  virtual int CLR_src_2(MP) { return clrm(sdc, 2); }
+  virtual int CLR_src_3(MP) { return clrm(sdc, 3); }
+  virtual int CLR_src_4(MP) { return clrm(sdc, 4); }
+  virtual int CLR_src_5(MP) { return clrm(sdc, 5); }
+  virtual int CLR_src_6(MP) { return clrm(sdc, 6); }
+  virtual int CLR_src_7(MP) { return clrm(sdc, 7); }
+  // 2 e0 - 2 ef
+  virtual int LD_src_0_CF(MP) { return st1m(sdc, 0); }
+  virtual int LD_src_1_CF(MP) { return st1m(sdc, 1); }
+  virtual int LD_src_2_CF(MP) { return st1m(sdc, 2); }
+  virtual int LD_src_3_CF(MP) { return st1m(sdc, 3); }
+  virtual int LD_src_4_CF(MP) { return st1m(sdc, 4); }
+  virtual int LD_src_5_CF(MP) { return st1m(sdc, 5); }
+  virtual int LD_src_6_CF(MP) { return st1m(sdc, 6); }
+  virtual int LD_src_7_CF(MP) { return st1m(sdc, 7); }
   // 2 f0 - 2 ff
   virtual int LD_dst_n(MP) { return st8(sdc, fetch()); }
 };
