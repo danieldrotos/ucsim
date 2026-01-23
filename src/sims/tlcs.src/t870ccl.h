@@ -136,6 +136,7 @@ public:
   virtual u8_t *extra_ticks(void) { return extra_ticks_t870c; }
   
   virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int longest_inst(void) { return 5; }
   virtual int inst_length(t_addr addr);
