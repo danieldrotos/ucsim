@@ -173,6 +173,7 @@ public:
   virtual int xch8_rr(C8 *a, C8 *b);
   virtual int xch8_rm(C8 *a, C8 *b);
   virtual int xch16_rr(C16 *a, C16 *b);
+  virtual int xch16_rm(C16 *a, u16_t addr);
   virtual int ld1m(C8 *src, u8_t bitnr);
   virtual int ld1r(C8 *src, u8_t bitnr);
   virtual int st1m(C8 *dst, u8_t bitnr);
@@ -424,6 +425,15 @@ public:
   virtual int CLR_src_5(MP) { return clrm(sdc, 5); }
   virtual int CLR_src_6(MP) { return clrm(sdc, 6); }
   virtual int CLR_src_7(MP) { return clrm(sdc, 7); }
+  // 2 c0 - c8
+  virtual int XCH_rrWA_src(MP)  { return xch16_rm(&cWA, sda); }
+  virtual int XCH_rrBC_src(MP)  { return xch16_rm(&cBC, sda); }
+  virtual int XCH_rrDE_src(MP)  { return xch16_rm(&cDE, sda); }
+  virtual int XCH_rrHL3_src(MP) { return xch16_rm(&cHL, sda); }
+  virtual int XCH_rrIX_src(MP)  { return xch16_rm(&cIX, sda); }
+  virtual int XCH_rrIY_src(MP)  { return xch16_rm(&cIY, sda); }
+  virtual int XCH_rrSP_src(MP)  { return xch16_rm(&cSP, sda); }
+  virtual int XCH_rrHL7_src(MP) { return xch16_rm(&cHL, sda); }
   // 2 e0 - 2 ef
   virtual int LD_src_0_CF(MP) { return st1m(sdc, 0); }
   virtual int LD_src_1_CF(MP) { return st1m(sdc, 1); }

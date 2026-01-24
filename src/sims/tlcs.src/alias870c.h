@@ -224,6 +224,16 @@
 #define CLR_src_6               instruction_2ce
 #define CLR_src_7               instruction_2cf
 
+// 2 d0 - 2 df
+#define XCH_rrWA_src            instruction_2d8
+#define XCH_rrBC_src            instruction_2d9
+#define XCH_rrDE_src            instruction_2da
+#define XCH_rrHL3_src           instruction_2db
+#define XCH_rrIX_src            instruction_2dc
+#define XCH_rrIY_src            instruction_2dd
+#define XCH_rrSP_src            instruction_2de
+#define XCH_rrHL7_src           instruction_2df
+
 // 2 e0 - 2 ef
 #define LD_src_0_CF             instruction_2e8
 #define LD_src_1_CF             instruction_2e9
