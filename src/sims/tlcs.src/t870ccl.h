@@ -88,6 +88,25 @@ enum flag_mask_t {
   MALL= MJF|MZF|MCF|MHF|MSF|MVF
 };
 
+#define COND_Z		(rF&MZF)
+#define COND_NZ		(!(rF&MZF))
+#define COND_CS		(rF&MCF)
+#define COND_CC		(!(rF&MCF))
+#define COND_LE		(rF&(MCF|MZF))
+#define COND_GT		(!(rF&(MCF|MZF)))
+#define COND_T		(rF&MJF)
+#define COND_F		(!(rF&MJF))
+
+#define S_XOR_V		(((rF&MSF)?1:0)^((rF&MVF)?1:0))
+#define COND_M		(rF&MSF)
+#define COND_P		(!(rF&MSF))
+#define COND_SLT	(S_XOR_V)
+#define COND_SGE	(!S_XOR_V)
+#define COND_SLE        (S_XOR_V || COND_Z)
+#define COND_SGT	(!S_XOR_V && COND_NZ)
+#define COND_VS		(rF&MVF)
+#define COND_VC		(!(rF&MVF))
+
 // bit nr to bit mask converter
 extern u8_t bit_mask[8];
 
@@ -240,6 +259,7 @@ public:
   // jump
   virtual int jr(u8_t a);
   virtual int jrs(u8_t code, bool cond);
+  virtual int jr_cc(u8_t a, bool cond);
   
 #include "alias870c.h"
   // 0 00 - 0 00
@@ -435,6 +455,14 @@ public:
   virtual int instruction_d5(MP) { sd_iyd(); return execS(); }
   virtual int instruction_d6(MP) { sd_spd(); return execS(); }
   virtual int instruction_d7(MP) { sd_hld(); return execS(); }
+  virtual int JR_Z(MP)  { return jr_cc(fetch(), COND_Z); }
+  virtual int JR_NZ(MP) { return jr_cc(fetch(), COND_NZ); }
+  virtual int JR_CS(MP) { return jr_cc(fetch(), COND_CS); }
+  virtual int JR_CC(MP) { return jr_cc(fetch(), COND_CC); }
+  virtual int JR_LE(MP) { return jr_cc(fetch(), COND_LE); }
+  virtual int JR_GT(MP) { return jr_cc(fetch(), COND_GT); }
+  virtual int JR_T(MP)  { return jr_cc(fetch(), COND_T); }
+  virtual int JR_F(MP)  { return jr_cc(fetch(), COND_F); }
   // 0 e0 - 0 ef
   virtual int instruction_e0(MP) { sd_x(); return execS(); }
   virtual int instruction_e1(MP) { sd_vw(); return execS(); }
@@ -679,6 +707,14 @@ public:
   virtual int CLR_g_6(MP) { return clrr(regs8[sda], 6); }
   virtual int CLR_g_7(MP) { return clrr(regs8[sda], 7); }
   // 1 d0 - 1 df
+  virtual int JR_M(MP)   { return jr_cc(fetch(), COND_M); }
+  virtual int JR_P(MP)   { return jr_cc(fetch(), COND_P); }
+  virtual int JR_SLT(MP) { return jr_cc(fetch(), COND_SLT); }
+  virtual int JR_SGE(MP) { return jr_cc(fetch(), COND_SGE); }
+  virtual int JR_SLE(MP) { return jr_cc(fetch(), COND_SLE); }
+  virtual int JR_SGT(MP) { return jr_cc(fetch(), COND_SGT); }
+  virtual int JR_VS(MP)  { return jr_cc(fetch(), COND_VS); }
+  virtual int JR_VC(MP)  { return jr_cc(fetch(), COND_VC); }
   virtual int DAA_g(MP);
   virtual int DAS_g(MP);
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }

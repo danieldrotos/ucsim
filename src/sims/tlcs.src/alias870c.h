@@ -193,6 +193,16 @@
 #define CLR_mx_6                instruction_ce
 #define CLR_mx_7                instruction_cf
 
+// 0 d0 - 0 df
+#define JR_Z			instruction_d8
+#define JR_NZ			instruction_d9
+#define JR_CS			instruction_da
+#define JR_CC			instruction_db
+#define JR_LE			instruction_dc
+#define JR_GT			instruction_dd
+#define JR_T			instruction_de
+#define JR_F			instruction_df
+
 // 0 e0 - 0 ef
 
 // 0 f0 - 0 ff
@@ -444,6 +454,14 @@
 #define CLR_g_7                 instruction_1cf
 
 // 1 d0 - 1 df
+#define JR_M			instruction_1d0
+#define JR_P			instruction_1d1
+#define JR_SLT			instruction_1d2
+#define JR_SGE			instruction_1d3
+#define JR_SLE			instruction_1d4
+#define JR_SGT			instruction_1d5
+#define JR_VS			instruction_1d6
+#define JR_VC			instruction_1d7
 #define DAA_g			instruction_1da
 #define DAS_g			instruction_1db
 #define LD_PSW_n		instruction_1de
