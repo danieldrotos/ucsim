@@ -374,7 +374,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   code4= rom->get(addr+4);
   code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
 
-  if ((de= get_dis_entry(addr)) == NULL)
+  if (((de= get_dis_entry(addr)) == NULL) || (de->mnemonic == NULL))
     return strdup("UNKNOWN/INVALID");
   b= de->mnemonic;
   
