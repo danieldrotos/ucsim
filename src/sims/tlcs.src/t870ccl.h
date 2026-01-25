@@ -378,6 +378,21 @@ public:
   virtual int CMP_A_n(MP) { return cmp8(&cA, fetch()); }
   // 0 70 - 0 7f
   virtual int CALLV_0(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_1(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_2(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_3(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_4(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_5(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_6(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_7(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_8(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_9(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_a(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_b(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_c(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_d(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_e(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_f(MP) { return call(rd16(vector_start+2*(code&0xf))); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }
