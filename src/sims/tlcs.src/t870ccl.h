@@ -128,6 +128,7 @@ public:
   struct rbank_870c_t *rbanks, *rbank;
   u16_t rSP;
   u8_t rPSW;
+  u8_t imf; // interrupt mask flag (0 or 1)
   C8 cW, cA, cB, cC, cD, cE, cH, cL, cPSW;
   C8 *regs8[8];
   C16 cWA, cBC, cDE, cHL, cIX, cIY, cSP;
