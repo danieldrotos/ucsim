@@ -215,6 +215,8 @@ public:
   virtual int xch16_rr(C16 *a, C16 *b);
   virtual int xch16_rm(C16 *a, u16_t addr);
 
+  virtual int pop(MCELL *reg);
+  
   // bit operations
   virtual int ld1m(C8 *src, u8_t bitnr);
   virtual int ld1r(C8 *src, u8_t bitnr);
@@ -451,6 +453,10 @@ public:
   virtual int CLR_mx_6(MP) { sd_x(); return clrm(sdc, 6); }
   virtual int CLR_mx_7(MP) { sd_x(); return clrm(sdc, 7); }
   // 0 d0 - 0 df
+  virtual int POP_rrWA(MP) { return pop(&cWA); }
+  virtual int POP_rrBC(MP) { return pop(&cBC); }
+  virtual int POP_rrDE(MP) { return pop(&cDE); }
+  virtual int POP_rrHL(MP) { return pop(&cHL); }
   virtual int instruction_d4(MP) { sd_ixd(); return execS(); }
   virtual int instruction_d5(MP) { sd_iyd(); return execS(); }
   virtual int instruction_d6(MP) { sd_spd(); return execS(); }
@@ -715,6 +721,7 @@ public:
   virtual int JR_SGT(MP) { return jr_cc(fetch(), COND_SGT); }
   virtual int JR_VS(MP)  { return jr_cc(fetch(), COND_VS); }
   virtual int JR_VC(MP)  { return jr_cc(fetch(), COND_VC); }
+  virtual int POP_gg(MP) { return pop(regs16[sda]); }
   virtual int DAA_g(MP);
   virtual int DAS_g(MP);
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }

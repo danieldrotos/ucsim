@@ -992,6 +992,17 @@ cl_t870c::xch16_rm(C16 *a, u16_t addr)
 }
 
 int
+cl_t870c::pop(MCELL *reg)
+{
+  u16_t a= rSP+1;
+  u16_t v;
+  v= rd16(a);
+  cSP.W(a+1);
+  reg->W(v);
+  return resGO;
+}
+
+int
 cl_t870c::ld1r(C8 *src, u8_t bitnr)
 {
   rF&= ~(MCF|MJF);
