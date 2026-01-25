@@ -216,6 +216,7 @@ public:
   virtual int xch16_rm(C16 *a, u16_t addr);
 
   virtual int pop(MCELL *reg);
+  virtual int push(MCELL *reg);
   
   // bit operations
   virtual int ld1m(C8 *src, u8_t bitnr);
@@ -346,6 +347,10 @@ public:
   virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
   virtual int instruction_4f(MP) { sd_pca(); return execS(); }
   // 0 50 - 0 5f
+  virtual int PUSH_rrWA(MP) { return push(&cWA); }
+  virtual int PUSH_rrBC(MP) { return push(&cBC); }
+  virtual int PUSH_rrDE(MP) { return push(&cDE); }
+  virtual int PUSH_rrHL(MP) { return push(&cHL); }
   virtual int instruction_54(MP) { sd_ixd(); return execD(); }
   virtual int instruction_55(MP) { sd_iyd(); return execD(); }
   virtual int instruction_56(MP) { sd_spd(); return execD(); }
@@ -721,6 +726,7 @@ public:
   virtual int JR_SGT(MP) { return jr_cc(fetch(), COND_SGT); }
   virtual int JR_VS(MP)  { return jr_cc(fetch(), COND_VS); }
   virtual int JR_VC(MP)  { return jr_cc(fetch(), COND_VC); }
+  virtual int PUSH_gg(MP) { return push(regs16[sda]); }
   virtual int POP_gg(MP) { return pop(regs16[sda]); }
   virtual int DAA_g(MP);
   virtual int DAS_g(MP);
