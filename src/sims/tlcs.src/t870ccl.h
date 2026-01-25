@@ -444,7 +444,9 @@ public:
   virtual int LD_src_6_CF(MP) { return st1m(sdc, 6); }
   virtual int LD_src_7_CF(MP) { return st1m(sdc, 7); }
   // 2 f0 - 2 ff
+  virtual int LD_src_A_CF(MP);
   virtual int LD_dst_n(MP) { return st8(sdc, fetch()); }
+  virtual int LD_CF_src_A(MP);
 };
 
 

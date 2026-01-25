@@ -1063,6 +1063,37 @@ cl_t870c::LD_SP_Md(MP)
   return resGO;
 }
 
+int
+cl_t870c::LD_src_A_CF(MP)
+{
+  u8_t m= bit_mask[rA&7];
+  u8_t v= sdc->read();
+  RD;
+  if (rF & MCF)
+    v|= m;
+  else
+    v&= ~m;
+  sdc->write(v);
+  WR;
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::LD_CF_src_A(MP)
+{
+  u8_t m= bit_mask[rA&7];
+  u8_t v= sdc->read();
+  RD;
+  rF&= ~(MJF|MCF);
+  if (v&m)
+    rF|= MCF;
+  else
+    rF|= MJF;
+  cF.W(rF);
+  return resGO;
+}
+
 
 /**************************************************************************/
 

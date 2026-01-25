@@ -648,16 +648,28 @@ struct dis_entry disass_t870c[]=
     { 0x0000c84f, 0x0000f8ff, ' ', 2, "CLR ('src4').'b_1.0'" },
 
     { 0x00d800e0, 0x00f800ff, ' ', 3, "XCH 'rr_2.0',(%x)" },
-    { 0xd80000e1, 0xf80000ff, ' ', 4, "XCH 'rr_3.0'.('vw')" },
-    { 0x0000d8e0, 0x0000f8f8, ' ', 2, "XCH 'rr_1.0'.('srcE')" },
-    { 0x00d800d4, 0x00f800fc, ' ', 3, "XCH 'rr_2.0'.('srcD')" },
-    { 0x0000d84f, 0x0000f8ff, ' ', 2, "XCH 'rr_1.0'.('src4')" },
+    { 0xd80000e1, 0xf80000ff, ' ', 4, "XCH 'rr_3.0',('vw')" },
+    { 0x0000d8e0, 0x0000f8f8, ' ', 2, "XCH 'rr_1.0',('srcE')" },
+    { 0x00d800d4, 0x00f800fc, ' ', 3, "XCH 'rr_2.0',('srcD')" },
+    { 0x0000d84f, 0x0000f8ff, ' ', 2, "XCH 'rr_1.0',('src4')" },
 
     { 0x00e800e0, 0x00f800ff, ' ', 3, "LD (%x).'b_2.0',CF" },
     { 0xe80000e1, 0xf80000ff, ' ', 4, "LD ('vw').'b_3.0',CF" },
     { 0x0000e8e0, 0x0000f8f8, ' ', 2, "LD ('srcE').'b_1.0',CF" },
     { 0x00e800d4, 0x00f800fc, ' ', 3, "LD ('srcD').'b_2.0',CF" },
     { 0x0000e84f, 0x0000f8ff, ' ', 2, "LD ('src4').'b_1.0',CF" },
+
+    { 0x00f300e0, 0x00ff00ff, ' ', 3, "LD (%x).A,CF" },
+    { 0xf30000e1, 0xff0000ff, ' ', 4, "LD ('vw').A,CF" },
+    { 0x0000f3e0, 0x0000fff8, ' ', 2, "LD ('srcE').A,CF" },
+    { 0x00f300d4, 0x00ff00fc, ' ', 3, "LD ('srcD').A,CF" },
+    { 0x0000f34f, 0x0000ffff, ' ', 2, "LD ('src4').A,CF" },
+
+    { 0x00fc00e0, 0x00ff00ff, ' ', 3, "LD CF,(%x).A" },
+    { 0xfc0000e1, 0xff0000ff, ' ', 4, "LD CF,('vw').A" },
+    { 0x0000fce0, 0x0000fff8, ' ', 2, "LD CF,('srcE').A" },
+    { 0x00fc00d4, 0x00ff00fc, ' ', 3, "LD CF,('srcD').A" },
+    { 0x0000fc4f, 0x0000ffff, ' ', 2, "LD CF,('src4').A" },
 
     // dst prefixes, code page 0x200
     { 0x006800f0, 0x00f800ff, ' ', 3, "LD (%x),'rr_2.0'" },
