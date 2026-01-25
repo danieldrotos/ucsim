@@ -3,6 +3,7 @@
 #define CLR_CF 			instruction_04
 #define SET_CF 			instruction_05
 #define CPL_CF 			instruction_06
+#define CMP_x_n			instruction_07
 #define LDW_mx_mn               instruction_08
 #define LDW_mhl_mn              instruction_09
 #define LD_mx_n                 instruction_0a
