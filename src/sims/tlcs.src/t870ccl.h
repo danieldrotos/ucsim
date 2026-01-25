@@ -163,6 +163,7 @@ public:
   virtual u16_t aof_dst5(u32_t code32);
   virtual u16_t aof_srcE(u32_t code32);
   virtual u16_t aof_srcD(u32_t code32);
+  virtual void stack_check_overflow(class cl_stack_op *op);
   
   virtual int exec_inst(void);
   virtual int exec1(void);
