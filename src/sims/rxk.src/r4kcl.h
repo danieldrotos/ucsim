@@ -139,6 +139,8 @@ public:
   virtual int jp_cx_mn(bool cond);				// 2f,7t,0w,0r
   
   virtual void mode3k(void);
+  virtual void mode01(void);
+  virtual void mode10(void);
   virtual void mode4k(void);
 
   virtual int EXX(t_mem code);
