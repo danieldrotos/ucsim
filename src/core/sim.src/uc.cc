@@ -563,6 +563,7 @@ cl_uc::cl_uc(class cl_sim *asim):
   //sp_avg= 0;
   inst_exec= false;
   hist= new cl_exec_hist(this);
+  skip_cmdset= false;
 }
 
 
@@ -643,7 +644,8 @@ cl_uc::init(void)
   make_cpu_hw();
   mk_hw_elements();
   class cl_cmdset *cs= sim->app->get_commander()->cmdset;
-  build_cmdset(cs);
+  if (!skip_cmdset)
+    build_cmdset(cs);
   irq= false;
   vcd_break= false;
   //reset();
@@ -2489,11 +2491,18 @@ cl_uc::get_max_hw_id(enum hw_cath cath)
  * Help of the command interpreter
  */
 
+static struct dis_entry dis_empty= { 0, 0, 0, 0, NULL };
+
 struct dis_entry *
 cl_uc::dis_tbl(void)
 {
-  static struct dis_entry empty= { 0, 0, 0, 0, NULL };
-  return(&empty);
+  return(&dis_empty);
+}
+
+struct dis_entry *
+cl_uc::get_dis_entry(t_addr addr)
+{
+  return &dis_empty;
 }
 
 char *

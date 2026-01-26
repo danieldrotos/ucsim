@@ -1026,7 +1026,7 @@ cl_rxk::adc_hl_ss(u16_t op)
 {
   class cl_cell16 &hl= destHL();
   class cl_cell8 &f= destF();
-  u32_t res= rHL + op + ((rF&flagC)?1:0);
+  u32_t res2, res= rHL + op + ((rF&flagC)?1:0);
   u8_t forg= rF & ~flagAll;
   u16_t c1= 0, c2;
   if (res > 0xffff)
@@ -1036,8 +1036,8 @@ cl_rxk::adc_hl_ss(u16_t op)
     }
   if (!res) forg|= flagZ;
   if (res & 0x8000) forg|= flagS;
-  res= (rHL&0x7fff)+(op&0x7fff)+((rF&flagC)?1:0);
-  c2= res&0x8000;
+  res2= (rHL&0x7fff)+(op&0x7fff)+((rF&flagC)?1:0);
+  c2= res2 & 0x8000;
   if (c1^c2) forg|= flagV;
   f.W(forg);
   hl.W(res);

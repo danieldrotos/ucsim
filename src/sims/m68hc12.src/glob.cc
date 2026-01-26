@@ -29,12 +29,5 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 
-struct cpu_entry cpus_hc12[]=
-  {
-    {"HC12"  , CPU_HC12, CPU_CMOS	, "hc12"	, "cmos"},
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
 
 /* End of m68hc12.src/glob.cc */

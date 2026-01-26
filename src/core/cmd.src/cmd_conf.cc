@@ -132,6 +132,38 @@ CMDHELP(cl_conf_objects_cmd,
 
 
 /*
+ * Command: conf types
+ *----------------------------------------------------------------------------
+ */
+
+COMMAND_DO_WORK_APP(cl_conf_types_cmd)
+{
+  if (!cpus)
+    {
+      con->dd_printf("CPU type is not selectable\n");
+      return false;
+    }
+  int i= 0;
+  con->dd_printf("%-20s%-30s%-30s\n", "Parameter", "Family", "Subtype");
+  while (cpus[i].type_str != NULL)
+    {
+      con->dd_printf("%-20s%-30s%-30s\n",
+		     cpus[i].type_str,
+		     cpus[i].type_help,
+		     cpus[i].sub_help);
+      i++;
+    }
+  return(false);
+}
+
+CMDHELP(cl_conf_types_cmd,
+	"conf types",
+	"Show available CPU types",
+	"This command lists all available CPU types, like the -H\n"
+	"option of the simulator executable.")
+
+
+/*
  * Command: ver
  *----------------------------------------------------------------------------
  */

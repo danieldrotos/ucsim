@@ -35,28 +35,12 @@ cl_simpblaze::cl_simpblaze(class cl_app *the_app):
 class cl_uc *
 cl_simpblaze::mk_controller(void)
 {
-  int i = 0;
-  const char *type= NULL;
-  class cl_optref type_option(this);
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
 
-  if ((type = type_option.get_value(type)) == NULL)
-    type = "KCPSM3"; // default cpu type
-
-  while ((cpus_pblaze[i].type_str != NULL) && (strcmp(type, cpus_pblaze[i].type_str) != 0))
-    i++;
-
-  if (cpus_pblaze[i].type_str == NULL)
-  {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-
-      return(NULL);
-  }
-
-  return(new cl_pblaze(&cpus_pblaze[i], this));
+  return(new cl_pblaze(ct, this));
 }
 
 /* End of pblaze.src/simpblaze.cc */

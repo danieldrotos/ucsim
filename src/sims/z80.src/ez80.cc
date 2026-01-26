@@ -205,6 +205,20 @@ cl_ez80::id_string(void)
   return ("EZ80");
 }
 
+void
+cl_ez80::reset(void)
+{
+  adl= false;
+  cl_z80::reset();
+}
+
+void
+cl_ez80::make_cpu_hw(void)
+{
+  add_hw(cpu= new cl_ez80_cpu(this));
+  cpu->init();
+}
+
 
 const char *
 cl_ez80::get_disasm_info(t_addr addr,
@@ -316,6 +330,18 @@ cl_ez80::get_disasm_info(t_addr addr,
     *dentry= dis_e;
   
   return b;
+}
+
+int
+cl_ez80::inst_length(t_addr addr)
+{
+  return cl_z80::inst_length(addr);
+}
+
+int
+cl_ez80::exec_inst(void)
+{
+  return cl_z80::exec_inst();
 }
 
 int
@@ -855,6 +881,68 @@ cl_ez80::inst_fd_spec(t_mem code)
     }
 
   return -1;
+}
+
+
+/***************************************************** CPU periph */
+
+int
+cl_ez80_cpu::init(void)
+{
+  cl_z80_cpu::init();
+  
+  cl_var *v;
+  uc->vars->add(v= new cl_var("ADL", cfg, ez80cpu_adl,
+			      cfg_help(ez80cpu_adl)));
+  v->init();
+  return 0;
+}
+
+const char *
+cl_ez80_cpu::cfg_help(t_addr addr)
+{
+  if (addr < z80cpu_nuof)
+    return cl_z80_cpu::cfg_help(addr);
+  switch (addr)
+    {
+    case ez80cpu_adl:
+      return "ADL mode bit (bool, RW)";
+    default:
+      return "Not used";
+    }
+  return "Not used";
+}
+
+
+t_mem
+cl_ez80_cpu::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
+{
+  class cl_ez80 *u= (class cl_ez80 *)uc;
+  if (addr < z80cpu_nuof)
+    return cl_z80_cpu::conf_op(cell, addr, val);
+  
+  if (val)
+    cell->set(*val);
+  switch ((enum ez80cpu_confs)addr)
+    {
+    case ez80cpu_adl:
+      if (val)
+	u->adl= *val;
+      else
+	cell->set(u->adl?1:0);
+      break;
+    case ez80cpu_nuof: break;
+    }
+  return cell->get();
+}
+
+
+void
+cl_ez80_cpu::print_info(class cl_console_base *con)
+{
+  class cl_ez80 *u= (class cl_ez80 *)uc;
+  cl_z80_cpu::print_info(con);
+  con->dd_printf("ADL= %d\n", u->adl?1:0);
 }
 
 

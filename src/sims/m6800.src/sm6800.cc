@@ -39,6 +39,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
+  cpus= cpus_m6800;
   application= new cl_app();
   application->set_name("sm6800");
   application->init(argc, argv);

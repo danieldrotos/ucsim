@@ -27,42 +27,31 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "simf8cl.h"
 #include "f8cl.h"
-#include "glob.h"
 
 
 cl_simf8::cl_simf8(class cl_app *the_app):
   cl_sim(the_app)
-{}
+{
+}
 
 class cl_uc *
 cl_simf8::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
   class cl_f8 *uc;
+  struct cpu_entry *ct;
 
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+  
   /* Replace 1s to flagO in p table */
   for (int ii= 0; ii<256; ii++)
-    if (!ptab[ii]) // odd=1, even=0
+    if (ptab[ii]==1) // odd=1, even=0
       ptab[ii]= flagO;
     else
       ptab[ii]= 0;
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "F8";
-  while ((cpus_f8[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_f8[i].type_str) != 0))
-    i++;
-  if (cpus_f8[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_f8[i].type)
+
+
+  switch (ct->type)
     {
     case CPU_F8:
       uc= new cl_f8(this);

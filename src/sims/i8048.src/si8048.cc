@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // local
 #include "simi8048cl.h"
-#include "glob.h"
+
 
 int
 main(int argc, char *argv[])
@@ -39,7 +39,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_8048;
+  cpus= cpus_i8048;
   /* Replace 1s to flagP in p table */
   /*for (int i= 0; i<256; i++)
     if (ptab[i])

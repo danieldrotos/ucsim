@@ -349,15 +349,6 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      word->appendf("0x%04x,%s", nn, a16_name(prefs));
 	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
 	    }
-	  if (strcmp(fmt.c_str(), "dsp_16") == 0)
-	    {
-	      d= rom->read(addr+1);
-	      if (d&0x80) d|= 0xff00;
-	      a= rSP+d;
-	      a&= 0xffff;
-	      word->appendf("+%d,sp", d);
-	      comment->appendf("; [0x%04x]= 0x%04x", a, read_addr(rom,a));
-	    }
 
 	  continue;
 	}

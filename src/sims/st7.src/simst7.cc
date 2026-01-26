@@ -38,7 +38,16 @@ cl_simst7::cl_simst7(class cl_app *the_app):
 class cl_uc *
 cl_simst7::mk_controller(void)
 {
-  return(new cl_st7(this));
+  struct cpu_entry *ct;
+
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+
+  if (ct->type == CPU_ST7)
+    {
+      return(new cl_st7(this));
+    }
+  return NULL;
 }
 
 

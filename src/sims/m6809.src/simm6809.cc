@@ -37,7 +37,16 @@ cl_simm6809::cl_simm6809(class cl_app *the_app):
 class cl_uc *
 cl_simm6809::mk_controller(void)
 {
-  return(new cl_m6809(this));
+  class cl_i8020 *uc;
+  struct cpu_entry *ct;
+
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+
+  if (ct->type == CPU_M6809)
+    return(new cl_m6809(this));
+
+  return NULL;
 }
 
 

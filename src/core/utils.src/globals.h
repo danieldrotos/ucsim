@@ -47,8 +47,27 @@ extern const char *copying;
 
 extern struct cpu_entry *cpus;
 extern struct cpu_entry cpus_51[];
-extern struct cpu_entry cpus_hc08[];
 extern struct cpu_entry cpus_stm8[];
+extern struct cpu_entry cpus_avr[];
+extern struct cpu_entry cpus_f8[];
+extern struct cpu_entry cpus_i8048[];
+extern struct cpu_entry cpus_i8085[];
+extern struct cpu_entry cpus_m6800[];
+extern struct cpu_entry cpus_m6809[];
+extern struct cpu_entry cpus_m68hc08[];
+extern struct cpu_entry cpus_m68hc11[];
+extern struct cpu_entry cpus_m68hc12[];
+extern struct cpu_entry cpus_mos6502[];
+extern struct cpu_entry cpus_oisc[];
+extern struct cpu_entry cpus_p1516[];
+extern struct cpu_entry cpus_pblaze[];
+extern struct cpu_entry cpus_pdk[];
+extern struct cpu_entry cpus_rxk[];
+extern struct cpu_entry cpus_st7[];
+extern struct cpu_entry cpus_xa[];
+extern struct cpu_entry cpus_z80[];
+
+extern struct cpu_collection cpus_coll[];
 
 #endif
 

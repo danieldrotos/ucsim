@@ -80,7 +80,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define LD_IR_imn	instruction_dd_2a
 #define LD_HL_IR	instruction_dd_7c
 #define LD_IR_HL	instruction_dd_7d
-#define LD_iHLd_HL	instruction_dd_f4
+#define LD_iIRd_HL	instruction_dd_f4
 
 #define LDP_iIR_HL	instruction_dd_64
 #define LDP_imn_IR	instruction_dd_65

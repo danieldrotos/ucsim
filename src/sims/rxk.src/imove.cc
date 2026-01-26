@@ -340,6 +340,21 @@ cl_rxk::LD_iIXd_HL(t_mem code)
 }
 
 int
+cl_rxk::LD_iIRd_HL(t_mem code)
+{
+  class cl_cell16 *ir= cIR;
+  if (cIR == &cIX)
+    ir= &cHL;
+  i8_t d= fetch();
+  u16_t a= ir->get() + d;
+  rwas->write(a, rL);
+  rwas->write(a+1, rH);
+  vc.wr+= 2;
+  tick5p1(10);
+  return resGO;
+}
+
+int
 cl_rxk::LD_iSPn_HL(t_mem code)
 {
   u8_t n= fetch();
@@ -558,10 +573,11 @@ cl_rxk::ld_imn_ss(u16_t src)
 int
 cl_rxk::ldp_irp_rp(u16_t addr, u16_t src)
 {
-  t_addr a= ((u32_t)rA << 16) + addr;
+  u32_t rAl= rA & 0xf;
+  t_addr a= ((u32_t)rAl << 16) + addr;
   mem->phwrite(a, src&0xff);
   addr++;
-  a= ((u32_t)rA << 16) + addr; // LDP wraps around 64k page boundary
+  a= ((u32_t)rAl << 16) + addr; // LDP wraps around 64k page boundary
   mem->phwrite(a, (src>>8)&0xff);
   vc.wr+= 2;
   tick(11);
@@ -571,10 +587,11 @@ cl_rxk::ldp_irp_rp(u16_t addr, u16_t src)
 int
 cl_rxk::ldp_rp_irp(class cl_cell16 &dest, u16_t addr)
 {
-  t_addr a= ((u32_t)rA >> 16) + addr;
+  u32_t rAl= rA & 0xf;
+  t_addr a= ((u32_t)rAl << 16) + addr;
   u8_t l= mem->phread(a);
   addr++;
-  a= ((u32_t)rA >> 16) + addr;
+  a= ((u32_t)rAl << 16) + addr;
   u8_t h= mem->phread(a);
   dest.W(h*256+l);
   vc.rd+= 2;

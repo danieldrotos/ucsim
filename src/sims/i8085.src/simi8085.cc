@@ -28,7 +28,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "simi8085cl.h"
 #include "i8080cl.h"
 #include "i8085cl.h"
-#include "glob.h"
 
 
 cl_simi8085::cl_simi8085(class cl_app *the_app):
@@ -38,26 +37,13 @@ cl_simi8085::cl_simi8085(class cl_app *the_app):
 class cl_uc *
 cl_simi8085::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
   class cl_i8085 *uc;
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "I8085";
-  while ((cpus_8085[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_8085[i].type_str) != 0))
-    i++;
-  if (cpus_8085[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_8085[i].type)
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+
+  switch (ct->type)
     {
     case CPU_I8080:
       return(new cl_i8080(this));
@@ -65,7 +51,6 @@ cl_simi8085::mk_controller(void)
       uc= new cl_i8085(this);
       return uc;
     default:
-      fprintf(stderr, "Unknown processor type\n");
       return NULL;
     }
   return NULL;

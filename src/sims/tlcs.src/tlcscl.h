@@ -50,7 +50,7 @@ enum tlcs_flags {
 
 class cl_tlcs: public cl_uc
 {
- protected:
+protected:
   struct {
     union {
       u16_t af;
@@ -155,14 +155,14 @@ class cl_tlcs: public cl_uc
     };
   } reg;
 
- public:
+public:
   class cl_address_space *nas;
   class cl_address_space *xas;
   class cl_address_space *yas;
   class cl_address_space *regs8;
   class cl_address_space *regs16;
   t_addr sp_limit;
- public:
+public:
   cl_tlcs(class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
@@ -292,6 +292,7 @@ class cl_tlcs: public cl_uc
   virtual u16_t inst_dec16(t_addr addr);	// DECW mem
   virtual u16_t inst_dec16gg(u8_t gg,t_addr addr);// DECW mem
   virtual u16_t inst_dec16ix(u8_t ix,t_addr addr);// DECW mem
+  virtual u16_t op_add_hl_gg(t_mem val);        // ADD HL,gg
   virtual u16_t op_add_hl_v(t_mem val);		// ADD HL,16-bit
   virtual u16_t op_add_hl_a(t_addr addr);	// ADD HL,mem
   virtual u16_t op_adc_hl_v(t_mem val);		// ADC HL,16-bit
@@ -307,6 +308,8 @@ class cl_tlcs: public cl_uc
   virtual u16_t op_or_hl_v(t_mem val);		// OR HL,16-bit
   virtual u16_t op_or_hl_a(t_addr addr);	// OR HL,mem
   virtual u16_t op_add16(t_mem op1, t_mem op2);	// ADD 16-bit
+  virtual u16_t op_add16_noszv(t_mem op1, t_mem op2);	// ADD 16-bit
+  virtual u16_t op_adc16(t_mem op1, t_mem op2);	// ADC 16-bit
   virtual u16_t op_sub16(t_mem op1, t_mem op2);	// SUB 16-bit
 
   // (6) cpu control and others

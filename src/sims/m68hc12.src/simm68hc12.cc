@@ -38,32 +38,19 @@ cl_simm68hc12::cl_simm68hc12(class cl_app *the_app):
 class cl_uc *
 cl_simm68hc12::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
+  class cl_i8020 *uc;
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "HC12";
-  while ((cpus_hc12[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_hc12[i].type_str) != 0))
-    i++;
-  if (cpus_hc12[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_hc12[i].type)
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+  
+  switch (ct->type)
     {
     case CPU_HC11:
       return(new cl_m68hc11(this));
     case CPU_HC12:
       return(new cl_m68hc12(this));
     default:
-      fprintf(stderr, "Unknown processor type\n");
       return NULL;
     }
   return(NULL);

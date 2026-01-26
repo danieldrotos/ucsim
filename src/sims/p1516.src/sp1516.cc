@@ -31,7 +31,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // local
 #include "simp1516cl.h"
-#include "glob.h"
 
 
 int

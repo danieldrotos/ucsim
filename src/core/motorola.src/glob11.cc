@@ -30,12 +30,4 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob11.h"
 
 
-struct cpu_entry cpus_hc11[]=
-  {
-    {"HC11"  , CPU_HC11, CPU_CMOS	, "hc11"	, "cmos"},
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
-
 /* End of motorola.src/glob11.cc */

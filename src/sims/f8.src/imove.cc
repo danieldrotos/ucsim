@@ -160,8 +160,8 @@ cl_f8::XCH_F_NSP(t_mem code)
 int
 cl_f8::LDW_DSP_A(t_mem code)
 {
-  i8_t d= fetch();
-  u16_t pa= rSP+d;
+  u8_t n= fetch();
+  u16_t pa= rSP+n;
   u16_t a= read_addr(rom, pa);
   vc.rd+= 2;
   u16_t v= acc16->get();

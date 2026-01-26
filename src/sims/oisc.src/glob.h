@@ -31,9 +31,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 
 
-extern struct cpu_entry cpus_oisc[];
-
-
 #endif
 
 /* End of oisc.src/glob.h */

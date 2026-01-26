@@ -44,44 +44,30 @@ cl_simpdk::cl_simpdk(class cl_app *the_app):
 class cl_uc *
 cl_simpdk::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
   class cl_uc *u;
+  struct cpu_entry *ct;
+
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
   
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "PDK14";
-  while ((cpus_pdk[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_pdk[i].type_str) != 0))
-    i++;
-  if (cpus_pdk[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_pdk[i].type)
+  switch (ct->type)
     {
     case CPU_PDK13: // SYM_84B
-      u= new cl_pdk(&cpus_pdk[i], this);
+      u= new cl_pdk(ct, this);
       return u;
     case CPU_PDK14: // SYM_85A
-      u= new cl_pdk(&cpus_pdk[i], this);
+      u= new cl_pdk(ct, this);
       return u;
     case CPU_PDK15: // SYM_86B
-      u= new cl_pdk(&cpus_pdk[i], this);
+      u= new cl_pdk(ct, this);
       return u;
     case CPU_PDK16: // SYM_83A
-      u= new cl_pdk(&cpus_pdk[i], this);
+      u= new cl_pdk(ct, this);
       return u;
     case CPU_PDKX:
-      u= new cl_pdk(&cpus_pdk[i], this);
+      u= new cl_pdk(ct, this);
       return u;
     default:
-      fprintf(stderr, "Unknown processor type\n");
       return NULL;
     }
   return NULL;

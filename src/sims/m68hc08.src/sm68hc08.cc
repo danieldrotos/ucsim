@@ -42,7 +42,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
-  cpus= cpus_hc08;
+  cpus= cpus_m68hc08;
   application= new cl_app();
   application->set_name("shc08");
   application->init(argc, argv);

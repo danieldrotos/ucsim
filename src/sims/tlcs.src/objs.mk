@@ -4,4 +4,5 @@ OBJECTS		= stlcs.o \
 		  glob.o \
 		  simtlcs.o tlcs.o \
 		  inst_block.o inst_cpu_others.o inst_rot_sh.o \
-		  inst_jump.o inst_move.o inst_arith.o inst_bit.o
+		  inst_jump.o inst_move.o inst_arith.o inst_bit.o \
+		  t870c.o t870c1.o

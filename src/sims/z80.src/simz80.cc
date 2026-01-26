@@ -47,32 +47,17 @@ cl_simz80::cl_simz80(class cl_app *the_app):
 class cl_uc *
 cl_simz80::mk_controller(void)
 {
-  int i;
-  const char *typ= NULL;
-  class cl_optref type_option(this);
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == NULL)
-    typ= "Z80";
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
 
-  while ((cpus_z80[i].type_str != NULL) &&
-	 (strcmp(typ, cpus_z80[i].type_str) != 0))
-    i++;
-  if (cpus_z80[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-
-  switch (cpus_z80[i].type)
+  switch (ct->type)
     {
     case CPU_Z80:
     case CPU_Z180:
     case CPU_Z80N:
-      return(new cl_z80(&cpus_z80[i], this));
+      return(new cl_z80(ct, this));
     // Add Rabbits, etc here.
 
     case CPU_R2K:
@@ -83,15 +68,15 @@ cl_simz80::mk_controller(void)
       }
       
     case CPU_LR35902:
-      return(new cl_lr35902(&cpus_z80[i], this));
+      return(new cl_lr35902(ct, this));
     case CPU_GB80:
-      return(new cl_gb80(&cpus_z80[i], this));
+      return(new cl_gb80(ct, this));
 
     case CPU_EZ80:
-      return(new cl_ez80(&cpus_z80[i], this));
+      return(new cl_ez80(ct, this));
 
     case CPU_R800:
-      return(new cl_r800(&cpus_z80[i], this));
+      return(new cl_r800(ct, this));
       
     default:
       return NULL;

@@ -400,20 +400,10 @@ struct cpu_entry cpus_51[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
-struct cpu_entry cpus_hc08[]=
-  {
-    {"HC08"   , CPU_HC08, 0			, ""		, ""},
-    
-    {"HCS08"  , CPU_HCS08,0			, ""		, ""},
-    
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
 struct cpu_entry cpus_stm8[]=
   {
-    {"S"		, CPU_STM8S, DEV_STM8S208	, "S"		, "208"},
-    
     {"STM8S"  		, CPU_STM8S, DEV_STM8S208	, "S"		, "208"},
+    {"S"		, CPU_STM8S, DEV_STM8S208	, "S"		, "208"},
 
     {"S903"		, CPU_STM8S, DEV_STM8S903	, "S"		, "903"},
     {"STM8S903"		, CPU_STM8S, DEV_STM8S903	, "S"		, "903"},
@@ -507,6 +497,292 @@ struct cpu_entry cpus_stm8[]=
     {"STM8L101" 	, CPU_STM8L101, DEV_STM8L101	, "L101"	, "L101xx"},
 
     {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_avr[]= {
+  {"AVR", CPU_AVR, 0, "AVR", ""},
+  {NULL, CPU_NONE, 0, "", ""}
+};
+
+
+struct cpu_entry cpus_f8[]=
+  {
+    {"F8"	, CPU_F8, 0		, "F8", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_i8048[]=
+  {
+    {"I8050"	, CPU_I8050, 0		, "I8050", ""},
+
+    {"I8021"	, CPU_I8021, 0		, "I8021", ""},
+    {"8021"	, CPU_I8021, 0		, "I8021", ""},
+    {"21"	, CPU_I8021, 0		, "I8021", ""},
+    {"1"	, CPU_I8021, 0		, "I8021", ""},
+    {"I8022"	, CPU_I8022, 0		, "I8022", ""},
+    {"8022"	, CPU_I8022, 0		, "I8022", ""},
+    {"22"	, CPU_I8022, 0		, "I8022", ""},
+    {"2"	, CPU_I8022, 0		, "I8022", ""},
+
+    {"I8035"	, CPU_I8035, 0		, "I8035", ""},
+    {"8035"	, CPU_I8035, 0		, "I8035", ""},
+    {"35"	, CPU_I8035, 0		, "I8035", ""},
+    {"I8039"	, CPU_I8039, 0		, "I8039", ""},
+    {"8039"	, CPU_I8039, 0		, "I8039", ""},
+    {"39"	, CPU_I8039, 0		, "I8039", ""},
+    {"I8040"	, CPU_I8040, 0		, "I8040", ""},
+    {"8040"	, CPU_I8040, 0		, "I8040", ""},
+    {"40"	, CPU_I8040, 0		, "I8040", ""},
+
+    {"I8048"	, CPU_I8048, 0		, "I8048", ""},
+    {"8048"	, CPU_I8048, 0		, "I8048", ""},
+    {"48"	, CPU_I8048, 0		, "I8048", ""},
+    {"8"	, CPU_I8048, 0		, "I8048", ""},
+    {"I8049"	, CPU_I8049, 0		, "I8049", ""},
+    {"8049"	, CPU_I8049, 0		, "I8049", ""},
+    {"49"	, CPU_I8049, 0		, "I8049", ""},
+    {"9"	, CPU_I8049, 0		, "I8049", ""},
+    {"8050"	, CPU_I8050, 0		, "I8050", ""},
+    {"50"	, CPU_I8050, 0		, "I8050", ""},
+    //{"5"	, CPU_I8050, 0		, "I8050", ""},
+
+    {"I8041"	, CPU_I8041, 0		, "I8041", ""},
+    {"8041"	, CPU_I8041, 0		, "I8041", ""},
+    {"41"	, CPU_I8041, 0		, "I8041", ""},
+    {"I8041A"	, CPU_I8041, 0		, "I8041", ""},
+    {"8041A"	, CPU_I8041, 0		, "I8041", ""},
+    {"41A"	, CPU_I8041, 0		, "I8041", ""},
+    {"I8041AH"	, CPU_I8041, 0		, "I8041", ""},
+    {"8041AH"	, CPU_I8041, 0		, "I8041", ""},
+    {"41AH"	, CPU_I8041, 0		, "I8041", ""},
+    {"I8042"	, CPU_I8042, 0		, "I8042", ""},
+    {"8042"	, CPU_I8042, 0		, "I8042", ""},
+    {"42"	, CPU_I8042, 0		, "I8042", ""},
+    {"I80C42"	, CPU_I8042, 0		, "I8042", ""},
+    {"80C42"	, CPU_I8042, 0		, "I8042", ""},
+    {"C42"	, CPU_I8042, 0		, "I8042", ""},
+    {"I80L42"	, CPU_I8042, 0		, "I8042", ""},
+    {"80L42"	, CPU_I8042, 0		, "I8042", ""},
+    {"L42"	, CPU_I8042, 0		, "I8042", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_i8085[]=
+  {
+    {"I8085"	, CPU_I8085, 0		, "I8085", ""},
+
+    {"I8080"	, CPU_I8080, 0		, "I8080", ""},
+    {"8080"	, CPU_I8080, 0		, "I8080", ""},
+    {"80"	, CPU_I8080, 0		, "I8080", ""},
+    {"0"	, CPU_I8080, 0		, "I8080", ""},
+    {"8085"	, CPU_I8085, 0		, "I8085", ""},
+    {"85"	, CPU_I8085, 0		, "I8085", ""},
+    {"5"	, CPU_I8085, 0		, "I8085", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m6800[]=
+  {
+    {"M6800", CPU_M6800, 0, "M6800", ""},
+    {"6800" , CPU_M6800, 0, "M6800", ""},
+    {"M6801", CPU_M6801, 0, "M6801", ""},
+    {"6801" , CPU_M6801, 0, "M6801", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m6809[]=
+  {
+    {"M6809", CPU_M6809, 0, "M6809", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m68hc08[]=
+  {
+    {"HC08"   , CPU_HC08, 0	, ""	, ""},
+    {"HCS08"  , CPU_HCS08,0	, ""	, ""},
+    {"9S08"   , CPU_9S08, 0	, ""	, ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m68hc11[]=
+  {
+    {"HC11"  , CPU_HC11, CPU_CMOS	, "hc11"	, "cmos"},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_m68hc12[]=
+  {
+    {"HC12"  , CPU_HC12, CPU_CMOS	, "hc12"	, "cmos"},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_mos6502[]=
+  {
+    {"65C02S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"6502"	, CPU_6502, 0		, "MOS6502", ""},
+    {"02"	, CPU_6502, 0		, "MOS6502", ""},
+    {"7501"	, CPU_7501, 0		, "MOS7501", ""},
+    {"8501"	, CPU_8501, 0		, "MOS8501", ""},
+    {"65C02"	, CPU_65C02, 0		, "MOS65C02", ""},
+    {"C02"	, CPU_65C02, 0		, "MOS65C02", ""},
+    {"C"	, CPU_65C02, 0		, "MOS65C02", ""},
+    {"6510"	, CPU_6510, 0		, "MOS6510", ""},
+    {"10"	, CPU_6510, 0		, "MOS6510", ""},
+    {"8500"	, CPU_8500, 0		, "MOS8500", ""},
+    {"8502"	, CPU_8502, 0		, "MOS8502", ""},
+    {"65CE02"	, CPU_65CE02, 0		, "MOS65CE02", ""},
+    {"CE02"	, CPU_65CE02, 0		, "MOS65CE02", ""},
+    {"CE"	, CPU_65CE02, 0		, "MOS65CE02", ""},
+    {"C02S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"CS"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_oisc[]=
+  {
+    {"EM"	, CPU_EM, 0		, "EM", ""},
+
+    {"OISC"	, CPU_OISC, 0		, "OISC", ""},
+    {"URISC"	, CPU_URISC, 0		, "USISC", ""},
+    {"U"	, CPU_URISC, 0		, "USISC", ""},
+    {"MISC16"	, CPU_MISC16, 0		, "MISC16", ""},
+    {"M"	, CPU_MISC16, 0		, "MISC16", ""},
+    {"E"	, CPU_EM, 0		, "EM", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_p1516[]=
+  {
+    { "P2223"		, CPU_P2223, 0, "P2223", "" },
+    { "P1516"		, CPU_P1516, 0, "P1516", "" },
+    { "1"		, CPU_P1516, 0, "P1516", "" },
+    { "5"		, CPU_P1516, 0, "P1516", "" },
+    { "6"		, CPU_P1516, 0, "P1516", "" },
+    { "2"		, CPU_P2223, 0, "P2223", "" },
+    { "3"		, CPU_P2223, 0, "P2223", "" },
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_pblaze[] =
+{
+  {"KCPSM3", CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
+  {"KCPSM6", CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
+  {"PB3"   , CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
+  {"PB6"   , CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
+  {"3"     , CPU_PBLAZE_3, CPU_CMOS, "PicoBlaze 3", "fpga" },
+  {"6"     , CPU_PBLAZE_6, CPU_CMOS, "PicoBlaze 6", "fpga" },
+
+  {NULL, CPU_NONE, 0, NULL, NULL}
+};
+
+struct cpu_entry cpus_pdk[]=
+  {
+    {"14"      , CPU_PDK14, 0			, "PDK14"		, ""},
+    {"PDK14"   , CPU_PDK14, 0			, "PDK14"		, ""},
+    
+    {"13"      , CPU_PDK13, 0			, "PDK13"		, ""},
+    {"PDK13"   , CPU_PDK13, 0			, "PDK13"		, ""},
+    
+    {"15"      , CPU_PDK15, 0			, "PDK15"		, ""},
+    {"PDK15"   , CPU_PDK15, 0			, "PDK15"		, ""},
+
+    {"16"      , CPU_PDK16, 0			, "PDK16"		, ""},
+    {"PDK16"   , CPU_PDK16, 0			, "PDK16"		, ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_rxk[]=
+  {
+    {"R2K"	, CPU_R2K , 0, "Rabbit 2000", ""},
+    {"2K"	, CPU_R2K , 0, "Rabbit 2000", ""},
+    {"2"	, CPU_R2K , 0, "Rabbit 2000", ""},
+    {"R3KA"	, CPU_R3KA, 0, "Rabbit 3000A", ""},
+    {"3KA"	, CPU_R3KA, 0, "Rabbit 3000A", ""},
+    {"3A"	, CPU_R3KA, 0, "Rabbit 3000A", ""},
+    {"R3K"	, CPU_R3K , 0, "Rabbit 3000", ""},
+    {"3K"	, CPU_R3K , 0, "Rabbit 3000", ""},
+    {"3"	, CPU_R3K , 0, "Rabbit 3000", ""},
+    {"R4K"	, CPU_R4K , 0, "Rabbit 4000", ""},
+    {"4K"	, CPU_R4K , 0, "Rabbit 4000", ""},
+    {"4"	, CPU_R4K , 0, "Rabbit 4000", ""},
+    {"R5K"	, CPU_R5K , 0, "Rabbit 5000", ""},
+    {"5K"	, CPU_R5K , 0, "Rabbit 5000", ""},
+    {"5"	, CPU_R5K , 0, "Rabbit 5000", ""},
+    {"R6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {"6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {"6"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_st7[]=
+  {
+    {"st7", CPU_ST7, 0, "st7", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_xa[]=
+  {
+    {"xa", CPU_XA, 0, "xa", ""},
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_entry cpus_z80[]=
+  {
+    {"Z80"    , CPU_Z80,     0			, ""		, ""},
+
+    {"Z180"   , CPU_Z180,    0			, ""		, ""},
+
+    {"GB80"   , CPU_GB80,    0			, ""		, ""},
+    {"LR35902", CPU_LR35902, 0			, ""		, ""},
+    {"LR"     , CPU_LR35902, 0			, ""		, ""},
+
+    {"EZ80"   , CPU_EZ80,    0			, ""		, ""},
+
+    {"Z80N"   , CPU_Z80N,    0                  , ""            , ""},
+
+    {"R800"   , CPU_R800,    0                  , ""            , ""},
+    
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+struct cpu_collection cpus_coll[]=
+  {
+    { "mcs51"	, "ucsim_51"		, cpus_51	},
+    { "stm8"	, "ucsim_stm8"		, cpus_stm8	},
+    { "avr"	, "ucsim_avr"		, cpus_avr	},
+    { "f8"	, "ucsim_f8"		, cpus_f8	},
+    { "mcs48"	, "ucsim_i8048"		, cpus_i8048	},
+    { "mcs85"	, "ucsim_i8085"		, cpus_i8085	},
+    { "m6800"	, "ucsim_m6800"		, cpus_m6800	},
+    { "m6809"	, "ucsim_m6809"		, cpus_m6809	},
+    { "m68hc08"	, "ucsim_m68hc08"	, cpus_m68hc08	},
+    { "m68hc1"	, "ucsim_m68hc1"	, cpus_m68hc11	},
+    { "mos6502"	, "ucsim_mos6502"	, cpus_mos6502	},
+    { "oisc"	, "ucsim_oisc"		, cpus_oisc	},
+    { "p2223"	, "ucsim_p1516"		, cpus_p1516	},
+    { "pblaze"	, "ucsim_pblaze"	, cpus_pblaze	},
+    { "pdk"	, "ucsim_pdk"		, cpus_pdk	},
+    { "rxk"	, "ucsim_rxk"		, cpus_rxk	},
+    { "st7"	, "ucsim_st7"		, cpus_st7	},
+    { "xa"	, "ucsim_xa"		, cpus_xa	},
+    { "z80"	, "ucsim_z80"		, cpus_z80	},
+    
+    { NULL, NULL, NULL }
   };
 
 

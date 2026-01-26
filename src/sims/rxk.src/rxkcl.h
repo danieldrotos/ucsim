@@ -468,6 +468,7 @@ public:
   virtual int EX_DE_HL(t_mem code);
   virtual int LD_HL_iIXd(t_mem code);
   virtual int LD_iIXd_HL(t_mem code);
+  virtual int LD_iIRd_HL(t_mem code);
   virtual int AND_n(t_mem code) { tick(2); return and8(destA(), rA, fetch()); }
   virtual int JP_HL(t_mem code) { tick(3); PC= rHL; return resGO; }
   virtual int XOR_n(t_mem code) { tick(3); return xor8(destA(), rA, fetch()); }

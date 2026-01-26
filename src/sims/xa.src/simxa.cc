@@ -38,7 +38,16 @@ cl_simxa::cl_simxa(class cl_app *the_app):
 class cl_uc *
 cl_simxa::mk_controller(void)
 {
-  return(new cl_xa(this));
+  struct cpu_entry *ct;
+
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+
+  if (ct->type == CPU_XA)
+    {
+      return(new cl_xa(this));
+    }
+  return NULL;
 }
 
 

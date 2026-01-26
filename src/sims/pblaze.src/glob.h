@@ -23,7 +23,6 @@
 
 #include "stypes.h"
 
-extern struct cpu_entry cpus_pblaze[];
 
 extern struct dis_entry_pblaze disass_pblaze3[];
 extern struct dis_entry_pblaze disass_pblaze6[];

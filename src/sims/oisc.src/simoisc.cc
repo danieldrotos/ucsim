@@ -40,45 +40,31 @@ cl_simoisc::cl_simoisc(class cl_app *the_app):
 class cl_uc *
 cl_simoisc::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
   class cl_oisc *uc;
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "EM";
-  while ((cpus_oisc[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_oisc[i].type_str) != 0))
-    i++;
-  if (cpus_oisc[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_oisc[i].type)
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+  
+  switch (ct->type)
     {
     case CPU_OISC:
       uc= new cl_oisc(this);
-      uc->type= &cpus_oisc[i];
+      uc->type= ct;
       return uc;
     case CPU_URISC:
       uc= new cl_urisc(this);
-      uc->type= &cpus_oisc[i];
+      uc->type= ct;
       return uc;
     case CPU_MISC16:
       uc= new cl_misc16(this);
-      uc->type= &cpus_oisc[i];
+      uc->type= ct;
       return uc;
     case CPU_EM:
       uc= new cl_em(this);
-      uc->type= &cpus_oisc[i];
+      uc->type= ct;
       return uc;
     default:
-      fprintf(stderr, "Unknown processor type\n");
       return NULL;
     }
   return NULL;

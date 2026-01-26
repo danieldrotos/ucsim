@@ -28,31 +28,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 //#include "ddconfig.h"
 
 #include <stdio.h>
-//#include <stdlib.h>
-//#include <ctype.h>
-//#include <errno.h>
 #include <strings.h>
-//#include "i_string.h"
 
 #include "globals.h"
-//#include "utils.h"
-//#include "cmdutil.h"
-//#include "charscl.h"
-
 #include "sim51cl.h"
-//#include "cmd51cl.h"
-//#include "uc51cl.h"
-//#include "uc52cl.h"
-//#include "uc521cl.h"
 #include "uc517cl.h"
-//#include "uc51rcl.h"
-//#include "uc89c51rcl.h"
 #include "uc251cl.h"
 #include "uc390cl.h"
 #include "uc88xcl.h"
 #include "uc320cl.h"
 #include "uc380cl.h"
-//#include "glob.h"
 
 
 cl_sim51::cl_sim51(class cl_app *the_app):
@@ -63,50 +48,36 @@ cl_sim51::cl_sim51(class cl_app *the_app):
 class cl_uc *
 cl_sim51::mk_controller(void)
 {
-  int i;
-  const char *typ= 0;
-  class cl_optref type_option(this);
+  struct cpu_entry *ct;
 
-  type_option.init();
-  type_option.use("cpu_type");
-  i= 0;
-  if ((typ= type_option.get_value(typ)) == 0)
-    typ= "C52";
-  while ((cpus_51[i].type_str != NULL) &&
-	 (strcasecmp(typ, cpus_51[i].type_str) != 0))
-    i++;
-  if (cpus_51[i].type_str == NULL)
-    {
-      fprintf(stderr, "Unknown processor type. "
-	      "Use -H option to see known types.\n");
-      return(NULL);
-    }
-  switch (cpus_51[i].type)
+  if ((ct= type_entry("")) == NULL)
+    return NULL;
+
+  switch (ct->type)
     {
     case CPU_51: case CPU_31:
-      return(new cl_51core(&cpus_51[i], this));
+      return(new cl_51core(ct, this));
     case CPU_52: case CPU_32:
-      return(new cl_uc52(&cpus_51[i], this));
+      return(new cl_uc52(ct, this));
     case CPU_51R:
-      return(new cl_uc51r(&cpus_51[i], this));
+      return(new cl_uc51r(ct, this));
     case CPU_89C51R:
-      return(new cl_uc89c51r(&cpus_51[i], this));
+      return(new cl_uc89c51r(ct, this));
     case CPU_C521:
-      return(new cl_uc521(&cpus_51[i], this));
+      return(new cl_uc521(ct, this));
     case CPU_517:
-      return(new cl_uc517(&cpus_51[i], this));
+      return(new cl_uc517(ct, this));
     case CPU_XC88X:
-      return(new cl_uc88x(&cpus_51[i], this));
+      return(new cl_uc88x(ct, this));
     case CPU_F380:
-      return(new cl_uc380(&cpus_51[i], this));
+      return(new cl_uc380(ct, this));
     case CPU_251:
-      return(new cl_uc251(&cpus_51[i], this));
+      return(new cl_uc251(ct, this));
     case CPU_DS320:
-      return(new cl_uc320(&cpus_51[i], this));
+      return(new cl_uc320(ct, this));
     case CPU_DS390: case CPU_DS390F:
-      return(new cl_uc390(&cpus_51[i], this));
+      return(new cl_uc390(ct, this));
     default:
-      fprintf(stderr, "Unknown processor type\n");
       return NULL;
     }
   return(NULL);

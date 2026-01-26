@@ -60,7 +60,7 @@
     <dl>
 
       <dt><span style="font-family: monospace;"><b>-a
-      nr</b></span></dt>
+	nr</b></span></dt>
       
       <dd>Set size of variable space. Default is 256.</dd>
 
@@ -86,18 +86,19 @@
       
       <dt><span style="font-family: monospace;"><b>-C cfg_file</b></span></dt>
 
-      <dd>Read and execute initial commands from specified file.</dd>
+      <dd>Read and execute initial commands from specified file
+      (before input files).</dd>
 
-<!--       
-      <dt><tt>-d portnum</tt></dt>
+      <!--       
+	   <dt><tt>-d portnum</tt></dt>
 
-      <dd>Act as gdbserver, listen on <b>portnum</b> for gdb connections.</dd>
--->
+	   <dd>Act as gdbserver, listen on <b>portnum</b> for gdb connections.</dd>
+	 -->
       
       <dt><b><tt>-e command</tt></b></dt>
 
-      <dd>Execute command at program startup (before config
-      file).</dd>
+      <dd>Execute command at program startup (after config
+	file and input files).</dd>
 
 
       <dt><tt><b>-E</b></tt></dt>
@@ -123,7 +124,7 @@
       <dd>Print out a short help about the options and stop. </dd>
       
 
-      <dt><tt><b>-H</b></tt> </dt>
+      <dt><tt><b><a name="H-option">-H</a></b></tt> </dt>
 
       <dd>Print out types of known CPUs. Names printed out by this option can be
         used to determine CPU type using <tt><b>-t</b></tt> option. </dd>
@@ -302,24 +303,24 @@
         compiled with sdcc -mds390.<br>
         <tt>-H</tt> option can be used to list all of recognized CPU
         types.<br>  See <a href="cpu_types.html">how to select CPU
-        type</a>. </dd>
+          type</a>. </dd>
 
 
       <dt><tt><b>-U uartnr</b></tt></dt>
 
       <dd>Connect console of standard io to uart as
-      a <a href="display.html#uart_display">display</a> of it. ID of
-      the uart must be specified as parameter to -U option.</dd>
+	a <a href="display.html#uart_display">display</a> of it. ID of
+	the uart must be specified as parameter to -U option.</dd>
 
 
       <dt><tt><b>-u hw</b></tt></dt>
 
       <dd>Connect console of standard io to a hardware element
-      specified as option parameter as
-      a <a href="display.html#uart_display">display</a>. Hardware
-      element can be specified in the same way as
-      in <a href="cmd_general.html#info_hardware">info hardware</a>
-      command.
+	specified as option parameter as
+	a <a href="display.html#uart_display">display</a>. Hardware
+	element can be specified in the same way as
+	in <a href="cmd_general.html#info_hardware">info hardware</a>
+	command.
       </dd>
 
       
@@ -375,7 +376,7 @@
         a console is using telnet to portnum.
 
 	<br> See <a href="mulcons.html">how to use multiple
-	consoles</a>. </dd>
+	  consoles</a>. </dd>
       
 
       <!-- ----------------------------------------------------------------------------- -->

@@ -111,6 +111,7 @@ public:
   chars &operator+=(const char *s) { return(append(s)); }
   // Boolean
   bool equal(const char *) const;
+  bool iequal(const char *) const;
   bool operator==(const char *s) const;
   bool operator!=(const char *s) const;
 };

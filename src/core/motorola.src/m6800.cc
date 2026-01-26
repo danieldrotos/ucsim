@@ -727,4 +727,5 @@ cl_m6800::raddr(void)
   return (PC+a)&0xffff;
 }
 
+
 /* End of motorola.src/m6800.cc */

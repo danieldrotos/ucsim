@@ -1279,7 +1279,7 @@ cl_uc390::print_regs (class cl_console_base *con)
   con->dd_printf ("  ACC= 0x%02x %3d %c  B= 0x%02x",
                   sfr->get (ACC), sfr->get (ACC),
                   isprint (sfr->get (ACC)) ?
-                  (sfr->get (ACC)) : '.', sfr->get (B));
+                  (sfr->get (ACC)) : '.', sfr->get (SFR_B));
   con->dd_printf("\n");
   
   eram2xram ();

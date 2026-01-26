@@ -319,7 +319,8 @@ public:
   //t_addr sp_avg;
 
   bool vcd_break;
-
+  bool skip_cmdset;
+  
 public:
   cl_uc(class cl_sim *asim);
   virtual ~cl_uc(void);
@@ -472,6 +473,7 @@ public:
   virtual char *disass(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment= NULL) { return disass(addr); }
   virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual int print_disass(t_addr addr, class cl_console_base *con, bool nl);
   virtual int print_disass(t_addr addr, class cl_console_base *con);
   virtual void print_regs(class cl_console_base *con);
