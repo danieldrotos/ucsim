@@ -228,7 +228,7 @@ cl_r4k::dis_entry(t_addr addr)
       return dis_6d_entry(addr);
     }
 
-  if ((code == 0x7f) && (edmr & 0xc0))
+  if ((code == 0x7f) && (mode == 3))
     {
       // 7f page is special in 4k mode
       code= rom->get(addr+1);
@@ -260,6 +260,20 @@ cl_r4k::dis_entry(t_addr addr)
 	}
       return NULL;
     }
+
+  if ((code == 0x7f) && (mode == 2))
+    {
+      // 7f page in mode 10 is same as 4k insts on main page
+      code= rom->get(addr+1);
+      dt= disass_p0m4;
+      i= 0;
+      while (((code & dt[i].mask) != dt[i].code) &&
+	     dt[i].mnemonic)
+	i++;
+      if (dt[i].mnemonic == NULL)
+	return NULL;
+      return &dt[i];
+    }
   
   dt= disass_rxk;
   i= 0;
@@ -269,7 +283,7 @@ cl_r4k::dis_entry(t_addr addr)
   if (dt[i].mnemonic != NULL)
     return &dt[i];
 
-  if (edmr & 0xc0)
+  if (mode == 3)
     {
       // mode: 4k
       dt= disass_p0m4;
