@@ -116,6 +116,7 @@ cl_r4k::init(void)
 #undef RCV
   //mode2k();
   fill_7f_wrappers(itab_7f);
+  fill_7f10_wrappers(itab_7f10);
 
   LXPC= new cl_cell16(12);
   reg_cell_var(LXPC, mem->aof_lxpc(),

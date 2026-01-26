@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "iwrap.h"
 
 extern void fill_7f_wrappers(instruction_wrapper_fn itab[]);
+extern void fill_7f10_wrappers(instruction_wrapper_fn itab[]);
 
 #endif
 

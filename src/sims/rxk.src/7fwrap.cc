@@ -152,6 +152,88 @@ int instruction_wrapper_7f_bd(class cl_uc *uc, t_mem code) { return ((class cl_r
 int instruction_wrapper_7f_be(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_be(code); }
 int instruction_wrapper_7f_bf(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_bf(code); }
 
+int instruction_wrapper_7f10_42(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_42(code); }
+int instruction_wrapper_7f10_45(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_45(code); }
+int instruction_wrapper_7f10_48(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_48(code); }
+int instruction_wrapper_7f10_4c(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_4c(code); }
+int instruction_wrapper_7f10_4d(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_4d(code); }
+
+int instruction_wrapper_7f10_50(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_50(code); }
+int instruction_wrapper_7f10_51(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_51(code); }
+int instruction_wrapper_7f10_54(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_54(code); }
+int instruction_wrapper_7f10_55(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_55(code); }
+
+int instruction_wrapper_7f10_60(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_60(code); }
+int instruction_wrapper_7f10_61(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_61(code); }
+int instruction_wrapper_7f10_62(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_62(code); }
+int instruction_wrapper_7f10_63(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_63(code); }
+int instruction_wrapper_7f10_65(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_65(code); }
+int instruction_wrapper_7f10_6d(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_6d(code); }
+
+int instruction_wrapper_7f10_7f(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_7f(code); }
+
+int instruction_wrapper_7f10_81(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_81(code); }
+int instruction_wrapper_7f10_82(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_82(code); }
+int instruction_wrapper_7f10_83(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_83(code); }
+int instruction_wrapper_7f10_84(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_84(code); }
+int instruction_wrapper_7f10_85(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_85(code); }
+int instruction_wrapper_7f10_86(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_86(code); }
+int instruction_wrapper_7f10_87(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_87(code); }
+int instruction_wrapper_7f10_89(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_89(code); }
+int instruction_wrapper_7f10_8a(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_8a(code); }
+int instruction_wrapper_7f10_8b(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_8b(code); }
+int instruction_wrapper_7f10_8c(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_8c(code); }
+int instruction_wrapper_7f10_8d(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_8d(code); }
+int instruction_wrapper_7f10_8e(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_8e(code); }
+int instruction_wrapper_7f10_8f(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_8f(code); }
+
+int instruction_wrapper_7f10_91(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_91(code); }
+int instruction_wrapper_7f10_92(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_92(code); }
+int instruction_wrapper_7f10_93(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_93(code); }
+int instruction_wrapper_7f10_94(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_94(code); }
+int instruction_wrapper_7f10_95(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_95(code); }
+int instruction_wrapper_7f10_96(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_96(code); }
+int instruction_wrapper_7f10_97(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_97(code); }
+int instruction_wrapper_7f10_98(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_98(code); }
+int instruction_wrapper_7f10_99(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_99(code); }
+int instruction_wrapper_7f10_9a(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_9a(code); }
+int instruction_wrapper_7f10_9b(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_9b(code); }
+int instruction_wrapper_7f10_9c(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_9c(code); }
+int instruction_wrapper_7f10_9d(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_9d(code); }
+int instruction_wrapper_7f10_9e(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_9e(code); }
+int instruction_wrapper_7f10_9f(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_9f(code); }
+
+int instruction_wrapper_7f10_a0(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a0(code); }
+int instruction_wrapper_7f10_a1(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a1(code); }
+int instruction_wrapper_7f10_a2(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a2(code); }
+int instruction_wrapper_7f10_a3(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a3(code); }
+int instruction_wrapper_7f10_a4(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a4(code); }
+int instruction_wrapper_7f10_a5(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a5(code); }
+int instruction_wrapper_7f10_a6(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a6(code); }
+int instruction_wrapper_7f10_a7(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a7(code); }
+int instruction_wrapper_7f10_a8(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a8(code); }
+int instruction_wrapper_7f10_a9(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_a9(code); }
+int instruction_wrapper_7f10_aa(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_aa(code); }
+int instruction_wrapper_7f10_ab(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_ab(code); }
+int instruction_wrapper_7f10_ac(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_ac(code); }
+int instruction_wrapper_7f10_ad(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_ad(code); }
+int instruction_wrapper_7f10_ae(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_ae(code); }
+
+int instruction_wrapper_7f10_b0(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b0(code); }
+int instruction_wrapper_7f10_b1(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b1(code); }
+int instruction_wrapper_7f10_b2(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b2(code); }
+int instruction_wrapper_7f10_b3(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b3(code); }
+int instruction_wrapper_7f10_b4(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b4(code); }
+int instruction_wrapper_7f10_b5(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b5(code); }
+int instruction_wrapper_7f10_b6(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b6(code); }
+int instruction_wrapper_7f10_b8(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b8(code); }
+int instruction_wrapper_7f10_b9(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_b9(code); }
+int instruction_wrapper_7f10_ba(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_ba(code); }
+int instruction_wrapper_7f10_bb(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_bb(code); }
+int instruction_wrapper_7f10_bc(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_bc(code); }
+int instruction_wrapper_7f10_bd(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_bd(code); }
+int instruction_wrapper_7f10_be(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_be(code); }
+int instruction_wrapper_7f10_bf(class cl_uc *uc, t_mem code) { return ((class cl_rxk *)uc)->instruction_bf(code); }
 
 void fill_7f_wrappers(instruction_wrapper_fn itab[])
 {
@@ -280,6 +362,113 @@ void fill_7f_wrappers(instruction_wrapper_fn itab[])
   itab[0xbd]= instruction_wrapper_7f_bd;
   itab[0xbe]= instruction_wrapper_7f_be;
   itab[0xbf]= instruction_wrapper_7f_bf;
+}
+
+void fill_7f10_wrappers(instruction_wrapper_fn itab[])
+{
+  int i;
+  for (i=0; i<256; i++)
+    {
+      itab[i]= instruction_wrapper_7f_none;
+    }
+  itab[0x42]= instruction_wrapper_7f10_42;
+  itab[0x45]= instruction_wrapper_7f10_45;
+  itab[0x48]= instruction_wrapper_7f10_48;
+  itab[0x4c]= instruction_wrapper_7f10_4c;
+  itab[0x4d]= instruction_wrapper_7f10_4d;
+
+  itab[0x50]= instruction_wrapper_7f10_50;
+  itab[0x51]= instruction_wrapper_7f10_51;
+  itab[0x54]= instruction_wrapper_7f10_54;
+  itab[0x55]= instruction_wrapper_7f10_55;
+
+  itab[0x60]= instruction_wrapper_7f10_60;
+  itab[0x61]= instruction_wrapper_7f10_61;
+  itab[0x62]= instruction_wrapper_7f10_62;
+  itab[0x63]= instruction_wrapper_7f10_63;
+  itab[0x65]= instruction_wrapper_7f10_65;
+  itab[0x6d]= instruction_wrapper_7f10_6d;
+
+  itab[0x7f]= instruction_wrapper_7f10_7f;
+
+  itab[0x81]= instruction_wrapper_7f10_81;
+  itab[0x82]= instruction_wrapper_7f10_82;
+  itab[0x83]= instruction_wrapper_7f10_83;
+  itab[0x84]= instruction_wrapper_7f10_84;
+  itab[0x85]= instruction_wrapper_7f10_85;
+  itab[0x86]= instruction_wrapper_7f10_86;
+  itab[0x87]= instruction_wrapper_7f10_87;
+  itab[0x89]= instruction_wrapper_7f10_89;
+  itab[0x8a]= instruction_wrapper_7f10_8a;
+  itab[0x8b]= instruction_wrapper_7f10_8b;
+  itab[0x8c]= instruction_wrapper_7f10_8c;
+  itab[0x8d]= instruction_wrapper_7f10_8d;
+  itab[0x8e]= instruction_wrapper_7f10_8e;
+  itab[0x8f]= instruction_wrapper_7f10_8f;
+
+  itab[0x91]= instruction_wrapper_7f10_91;
+  itab[0x92]= instruction_wrapper_7f10_92;
+  itab[0x93]= instruction_wrapper_7f10_93;
+  itab[0x94]= instruction_wrapper_7f10_94;
+  itab[0x95]= instruction_wrapper_7f10_95;
+  itab[0x96]= instruction_wrapper_7f10_96;
+  itab[0x97]= instruction_wrapper_7f10_97;
+  itab[0x98]= instruction_wrapper_7f10_98;
+  itab[0x99]= instruction_wrapper_7f10_99;
+  itab[0x9a]= instruction_wrapper_7f10_9a;
+  itab[0x9b]= instruction_wrapper_7f10_9b;
+  itab[0x9c]= instruction_wrapper_7f10_9c;
+  itab[0x9d]= instruction_wrapper_7f10_9d;
+  itab[0x9e]= instruction_wrapper_7f10_9e;
+  itab[0x9f]= instruction_wrapper_7f10_9f;
+
+  itab[0x91]= instruction_wrapper_7f10_91;
+  itab[0x92]= instruction_wrapper_7f10_92;
+  itab[0x93]= instruction_wrapper_7f10_93;
+  itab[0x94]= instruction_wrapper_7f10_94;
+  itab[0x95]= instruction_wrapper_7f10_95;
+  itab[0x96]= instruction_wrapper_7f10_96;
+  itab[0x97]= instruction_wrapper_7f10_97;
+  itab[0x98]= instruction_wrapper_7f10_98;
+  itab[0x99]= instruction_wrapper_7f10_99;
+  itab[0x9a]= instruction_wrapper_7f10_9a;
+  itab[0x9b]= instruction_wrapper_7f10_9b;
+  itab[0x9c]= instruction_wrapper_7f10_9c;
+  itab[0x9d]= instruction_wrapper_7f10_9d;
+  itab[0x9e]= instruction_wrapper_7f10_9e;
+  itab[0x9f]= instruction_wrapper_7f10_9f;
+
+  itab[0xa0]= instruction_wrapper_7f10_a0;
+  itab[0xa1]= instruction_wrapper_7f10_a1;
+  itab[0xa2]= instruction_wrapper_7f10_a2;
+  itab[0xa3]= instruction_wrapper_7f10_a3;
+  itab[0xa4]= instruction_wrapper_7f10_a4;
+  itab[0xa5]= instruction_wrapper_7f10_a5;
+  itab[0xa6]= instruction_wrapper_7f10_a6;
+  itab[0xa7]= instruction_wrapper_7f10_a7;
+  itab[0xa8]= instruction_wrapper_7f10_a8;
+  itab[0xa9]= instruction_wrapper_7f10_a9;
+  itab[0xaa]= instruction_wrapper_7f10_aa;
+  itab[0xab]= instruction_wrapper_7f10_ab;
+  itab[0xac]= instruction_wrapper_7f10_ac;
+  itab[0xad]= instruction_wrapper_7f10_ad;
+  itab[0xae]= instruction_wrapper_7f10_ae;
+
+  itab[0xb0]= instruction_wrapper_7f10_b0;
+  itab[0xb1]= instruction_wrapper_7f10_b1;
+  itab[0xb2]= instruction_wrapper_7f10_b2;
+  itab[0xb3]= instruction_wrapper_7f10_b3;
+  itab[0xb4]= instruction_wrapper_7f10_b4;
+  itab[0xb5]= instruction_wrapper_7f10_b5;
+  itab[0xb6]= instruction_wrapper_7f10_b6;
+  itab[0xb8]= instruction_wrapper_7f10_b8;
+  itab[0xb9]= instruction_wrapper_7f10_b9;
+  itab[0xba]= instruction_wrapper_7f10_ba;
+  itab[0xbb]= instruction_wrapper_7f10_bb;
+  itab[0xbc]= instruction_wrapper_7f10_bc;
+  itab[0xbd]= instruction_wrapper_7f10_bd;
+  itab[0xbe]= instruction_wrapper_7f10_be;
+  itab[0xbf]= instruction_wrapper_7f10_bf;
 }
 
 /* End of rxk.src/7fwrap.cc */
