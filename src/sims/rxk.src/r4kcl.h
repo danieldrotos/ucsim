@@ -59,6 +59,7 @@ public:
   class cl_cell8 cHTR;
   class cl_cell16 *LXPC;
   class cl_cell32 *cIRR, *caIRR;
+  u8_t kmode;
  public:
   cl_r4k(class cl_sim *asim);
   virtual int init();
