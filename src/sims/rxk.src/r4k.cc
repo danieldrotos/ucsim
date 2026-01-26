@@ -737,13 +737,14 @@ cl_r4k::EXX(t_mem code)
 int
 cl_r4k::PAGE_4K7F(t_mem code)
 {
+  t_mem code_org= code;
   code= fetch();
   if (kmode == 3)
     return itab_7f[code](this, code);
   else if (kmode == 2)
     return itab_7f10[code](this, code);
   else
-    return instruction_7f(code);
+    return instruction_7f(code_org);
 }
 
 int
