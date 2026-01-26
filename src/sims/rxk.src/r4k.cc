@@ -92,6 +92,7 @@ cl_r4k::cl_r4k(class cl_sim *asim):
 int
 cl_r4k::init(void)
 {
+  kmode= 0;
   cl_r3ka::init();
 #define RCV(R) reg_cell_var(&c ## R , &r ## R , "" #R "" , "CPU register " #R "")
   RCV(BCDE);
@@ -484,6 +485,7 @@ cl_r4k::print_regs(class cl_console_base *con)
 void
 cl_r4k::mode3k(void)
 {
+  kmode= 0;
   itab[0x40]= instruction_wrapper_40;
   itab[0x41]= instruction_wrapper_41;
   itab[0x43]= instruction_wrapper_43;
@@ -594,18 +596,22 @@ cl_r4k::mode3k(void)
 void
 cl_r4k::mode01(void)
 {
+  kmode= 1;
   itab[0x6d]= instruction_wrapper_4k6d;
 }
 
 void
 cl_r4k::mode10(void)
 {
+  kmode= 2;
   itab[0x6d]= instruction_wrapper_4k6d;
+  itab[0x7f]= instruction_wrapper_4k7f;
 }
 
 void
 cl_r4k::mode4k(void)
 {
+  kmode= 3;
   itab[0x40]= instruction_wrapper_4knone;
   itab[0x41]= instruction_wrapper_4knone;
   itab[0x43]= instruction_wrapper_4knone;
@@ -732,7 +738,12 @@ int
 cl_r4k::PAGE_4K7F(t_mem code)
 {
   code= fetch();
-  return itab_7f[code](this, code);
+  if (kmode == 3)
+    return itab_7f[code](this, code);
+  else if (kmode == 2)
+    return itab_7f10[code](this, code);
+  else
+    return instruction_7f(code);
 }
 
 int
