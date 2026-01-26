@@ -272,7 +272,9 @@ cl_r4k::dis_entry(t_addr addr)
 	i++;
       if (dt[i].mnemonic == NULL)
 	return NULL;
-      return &dt[i];
+      memcpy(&de7f, &dt[i], sizeof(struct dis_entry));
+      de7f.length++;
+      return &de7f;
     }
   
   dt= disass_rxk;
