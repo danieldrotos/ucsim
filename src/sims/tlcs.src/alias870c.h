@@ -102,6 +102,14 @@
 #define LD_rrSP_gg              instruction_14e
 
 // 1 50 - 1 5f
+#define XOR_CF_g_0              instruction_150
+#define XOR_CF_g_1              instruction_151
+#define XOR_CF_g_2              instruction_152
+#define XOR_CF_g_3              instruction_153
+#define XOR_CF_g_4              instruction_154
+#define XOR_CF_g_5              instruction_155
+#define XOR_CF_g_6              instruction_156
+#define XOR_CF_g_7              instruction_157
 #define LD_CF_g_0               instruction_158
 #define LD_CF_g_1               instruction_159
 #define LD_CF_g_2               instruction_15a
@@ -150,6 +158,14 @@
 #define LD_PSW_n		instruction_1de
 
 // 1 e0 - 1 ef
+#define CPL_g_0                 instruction_1e0
+#define CPL_g_1                 instruction_1e1
+#define CPL_g_2                 instruction_1e2
+#define CPL_g_3                 instruction_1e3
+#define CPL_g_4                 instruction_1e4
+#define CPL_g_5                 instruction_1e5
+#define CPL_g_6                 instruction_1e6
+#define CPL_g_7                 instruction_1e7
 #define LD_g_0_CF               instruction_1e8
 #define LD_g_1_CF               instruction_1e9
 #define LD_g_2_CF               instruction_1ea
@@ -178,6 +194,24 @@
 #define LD_rrIX_src             instruction_24c
 #define LD_rrIY_src             instruction_24d
 #define LD_rrSP_src             instruction_24e
+
+// 2 50 - 2 5f
+#define XOR_CF_src_0            instruction_250
+#define XOR_CF_src_1            instruction_251
+#define XOR_CF_src_2            instruction_252
+#define XOR_CF_src_3            instruction_253
+#define XOR_CF_src_4            instruction_254
+#define XOR_CF_src_5            instruction_255
+#define XOR_CF_src_6            instruction_256
+#define XOR_CF_src_7            instruction_257
+#define LD_CF_src_0             instruction_258
+#define LD_CF_src_1             instruction_259
+#define LD_CF_src_2             instruction_25a
+#define LD_CF_src_3             instruction_25b
+#define LD_CF_src_4             instruction_25c
+#define LD_CF_src_5             instruction_25d
+#define LD_CF_src_6             instruction_25e
+#define LD_CF_src_7             instruction_25f
 
 // 2 60 - 2 6f
 #define LD_dst_rrWA             instruction_268
@@ -235,6 +269,14 @@
 #define XCH_rrHL7_src           instruction_2df
 
 // 2 e0 - 2 ef
+#define CPL_src_0               instruction_2e0
+#define CPL_src_1               instruction_2e1
+#define CPL_src_2               instruction_2e2
+#define CPL_src_3               instruction_2e3
+#define CPL_src_4               instruction_2e4
+#define CPL_src_5               instruction_2e5
+#define CPL_src_6               instruction_2e6
+#define CPL_src_7               instruction_2e7
 #define LD_src_0_CF             instruction_2e8
 #define LD_src_1_CF             instruction_2e9
 #define LD_src_2_CF             instruction_2ea
@@ -245,7 +287,10 @@
 #define LD_src_7_CF             instruction_2ef
 
 // 2 f0 - 2 ff
+#define SET_src_A               instruction_2f2
 #define LD_src_A_CF             instruction_2f3
 #define LD_dst_n                instruction_2f9
+#define CLR_src_A               instruction_2fa
+#define CPL_src_A               instruction_2fb
 #define LD_CF_src_A             instruction_2fc
 
