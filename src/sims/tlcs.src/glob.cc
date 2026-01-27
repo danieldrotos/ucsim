@@ -679,6 +679,12 @@ struct dis_entry disass_t870c[]=
     { 0x00e800d4, 0x00f800fc, ' ', 3, "LD ('srcD').'b_2.0',CF" },
     { 0x0000e84f, 0x0000f8ff, ' ', 2, "LD ('src4').'b_1.0',CF" },
 
+    { 0x00f000e0, 0x00ff00ff, ' ', 3, "INC (%x)" },
+    { 0xf00000e1, 0xff0000ff, ' ', 4, "INC ('vw')" },
+    { 0x0000f0e0, 0x0000fff8, ' ', 2, "INC ('srcE')" },
+    { 0x00f000d4, 0x00ff00fc, ' ', 3, "INC ('srcD')" },
+    { 0x0000f04f, 0x0000ffff, ' ', 2, "INC ('src4')" },
+
     { 0x00f200e0, 0x00ff00ff, ' ', 3, "SET (%x).A" },
     { 0xf20000e1, 0xff0000ff, ' ', 4, "SET ('vw').A" },
     { 0x0000f2e0, 0x0000fff8, ' ', 2, "SET ('srcE').A" },
@@ -690,6 +696,12 @@ struct dis_entry disass_t870c[]=
     { 0x0000f3e0, 0x0000fff8, ' ', 2, "LD ('srcE').A,CF" },
     { 0x00f300d4, 0x00ff00fc, ' ', 3, "LD ('srcD').A,CF" },
     { 0x0000f34f, 0x0000ffff, ' ', 2, "LD ('src4').A,CF" },
+
+    { 0x00f800e0, 0x00ff00ff, ' ', 3, "DEC (%x)" },
+    { 0xf80000e1, 0xff0000ff, ' ', 4, "DEC ('vw')" },
+    { 0x0000f8e0, 0x0000fff8, ' ', 2, "DEC ('srcE')" },
+    { 0x00f800d4, 0x00ff00fc, ' ', 3, "DEC ('srcD')" },
+    { 0x0000f84f, 0x0000ffff, ' ', 2, "DEC ('src4')" },
 
     { 0x00fa00e0, 0x00ff00ff, ' ', 3, "CLR (%x).A" },
     { 0xfa0000e1, 0xff0000ff, ' ', 4, "CLR ('vw').A" },

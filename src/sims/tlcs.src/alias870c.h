@@ -319,8 +319,10 @@
 #define LD_src_7_CF             instruction_2ef
 
 // 2 f0 - 2 ff
+#define INC_src                 instruction_2f0
 #define SET_src_A               instruction_2f2
 #define LD_src_A_CF             instruction_2f3
+#define DEC_src                 instruction_2f8
 #define LD_dst_n                instruction_2f9
 #define CLR_src_A               instruction_2fa
 #define CPL_src_A               instruction_2fb
