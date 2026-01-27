@@ -103,6 +103,9 @@ int cl_fpp::init(void) {
       n.format("PC%d", id);
       d.format("Program counter of FPP%d", id);
       puc->mk_cvar(&cPC, n, d);
+
+      delete fbrk;
+      fbrk = puc->fbrk;
     }
   
   return (0);
