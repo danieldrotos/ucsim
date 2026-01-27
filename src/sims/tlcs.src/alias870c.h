@@ -30,8 +30,40 @@
 #define LD_rL_n                 instruction_1e
 #define LD_rH_n                 instruction_1f
 
+// 0 20 - 0 2f
+#define INC_rA                  instruction_20
+#define INC_rW                  instruction_21
+#define INC_rC                  instruction_22
+#define INC_rB                  instruction_23
+#define INC_rE                  instruction_24
+#define INC_rD                  instruction_25
+#define INC_rL                  instruction_26
+#define INC_rH                  instruction_27
+#define DEC_rA                  instruction_28
+#define DEC_rW                  instruction_29
+#define DEC_rC                  instruction_2a
+#define DEC_rB                  instruction_2b
+#define DEC_rE                  instruction_2c
+#define DEC_rD                  instruction_2d
+#define DEC_rL                  instruction_2e
+#define DEC_rH                  instruction_2f
+
 // 0 30 - 0 3f
+#define INC_rrWA                instruction_30
+#define INC_rrBC                instruction_31
+#define INC_rrDE                instruction_32
+#define INC_rrHL                instruction_33
+#define INC_rrIX                instruction_34
+#define INC_rrIY                instruction_35
+#define INC_rrSP                instruction_36
 #define LD_SP_Pd                instruction_37
+#define DEC_rrWA                instruction_38
+#define DEC_rrBC                instruction_39
+#define DEC_rrDE                instruction_3a
+#define DEC_rrHL                instruction_3b
+#define DEC_rrIX                instruction_3c
+#define DEC_rrIY                instruction_3d
+#define DEC_rrSP                instruction_3e
 #define LD_SP_Md                instruction_3f
 
 // 0 40 - 0 4f
@@ -287,8 +319,10 @@
 #define LD_src_7_CF             instruction_2ef
 
 // 2 f0 - 2 ff
+#define INC_src                 instruction_2f0
 #define SET_src_A               instruction_2f2
 #define LD_src_A_CF             instruction_2f3
+#define DEC_src                 instruction_2f8
 #define LD_dst_n                instruction_2f9
 #define CLR_src_A               instruction_2fa
 #define CPL_src_A               instruction_2fb
