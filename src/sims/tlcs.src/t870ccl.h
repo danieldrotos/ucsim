@@ -226,6 +226,23 @@ public:
   virtual int LD_rD_n(MP) { return ldi8nz(&cD, fetch()); }
   virtual int LD_rL_n(MP) { return ldi8nz(&cL, fetch()); }
   virtual int LD_rH_n(MP) { return ldi8nz(&cH, fetch()); }
+  // 0 20 - 0 2f
+  virtual int INC_rA(MP) { return inc8r(&cA); }
+  virtual int INC_rW(MP) { return inc8r(&cW); }
+  virtual int INC_rC(MP) { return inc8r(&cC); }
+  virtual int INC_rB(MP) { return inc8r(&cB); }
+  virtual int INC_rE(MP) { return inc8r(&cE); }
+  virtual int INC_rD(MP) { return inc8r(&cD); }
+  virtual int INC_rL(MP) { return inc8r(&cL); }
+  virtual int INC_rH(MP) { return inc8r(&cH); }
+  virtual int DEC_rA(MP) { return dec8r(&cA); }
+  virtual int DEC_rW(MP) { return dec8r(&cW); }
+  virtual int DEC_rC(MP) { return dec8r(&cC); }
+  virtual int DEC_rB(MP) { return dec8r(&cB); }
+  virtual int DEC_rE(MP) { return dec8r(&cE); }
+  virtual int DEC_rD(MP) { return dec8r(&cD); }
+  virtual int DEC_rL(MP) { return dec8r(&cL); }
+  virtual int DEC_rH(MP) { return dec8r(&cH); }
   // 0 30 - 0 3f
   virtual int LD_SP_Pd(MP);
   virtual int LD_SP_Md(MP);

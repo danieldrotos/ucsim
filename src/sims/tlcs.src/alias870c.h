@@ -30,6 +30,24 @@
 #define LD_rL_n                 instruction_1e
 #define LD_rH_n                 instruction_1f
 
+// 0 20 - 0 2f
+#define INC_rA                  instruction_20
+#define INC_rW                  instruction_21
+#define INC_rC                  instruction_22
+#define INC_rB                  instruction_23
+#define INC_rE                  instruction_24
+#define INC_rD                  instruction_25
+#define INC_rL                  instruction_26
+#define INC_rH                  instruction_27
+#define DEC_rA                  instruction_28
+#define DEC_rW                  instruction_29
+#define DEC_rC                  instruction_2a
+#define DEC_rB                  instruction_2b
+#define DEC_rE                  instruction_2c
+#define DEC_rD                  instruction_2d
+#define DEC_rL                  instruction_2e
+#define DEC_rH                  instruction_2f
+
 // 0 30 - 0 3f
 #define LD_SP_Pd                instruction_37
 #define LD_SP_Md                instruction_3f
