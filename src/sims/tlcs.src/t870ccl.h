@@ -185,7 +185,10 @@ public:
   virtual int cplm(C8 *src, u8_t bitnr);
   virtual int cplr(C8 *src, u8_t bitnr);
   virtual int xor1m(C8 *src, u8_t bitnr);
-  virtual int xor1r(C8 *src, u8_t bitnr);  
+  virtual int xor1r(C8 *src, u8_t bitnr);
+  virtual int inc8r(C8 *reg);
+  virtual int inc8m(C8 *src);
+  
 #include "alias870c.h"
   // 0 00 - 0 00
   virtual int NOP(MP) { return resGO; }
