@@ -1069,6 +1069,32 @@ cl_t870c::inc8m(C8 *src)
   return resGO;
 }
 
+int
+cl_t870c::dec8r(C8 *reg)
+{
+  u8_t v= reg->get()-1;
+  if (v != 0xff)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= MJF|MZF;
+  reg->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::dec8m(C8 *src)
+{
+  u8_t v= src->read()-1;
+  if (v != 0xff)
+    rF&= ~(MJF|MZF);
+  else
+    rF|= MJF|MZF;
+  src->W(v);
+  cF.W(rF);
+  return resGO;
+}
+
 
 int
 cl_t870c::CLR_CF(MP)
