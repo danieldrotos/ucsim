@@ -402,10 +402,10 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		{
 		  d= -d;
 		  code1= d;
-		  work.appendf("-%02x", code1);
+		  work.appendf("-0x%02x", code1);
 		}
 	      else
-		work.appendf("+%02x", code1);
+		work.appendf("+0x%02x", code1);
 	      if (comment)
 		{
 		  u16_t a= aof_srcD(code32);
@@ -422,6 +422,47 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		  comment->appendf("; [%04x] %02x %02x",
 				   a, asd->read(a), asd->read(a+1));
 		}
+	    }
+	  else if (fmt=="ra5")
+	    {
+	      i16_t d= code0 & 0x1f;
+	      if (d & 0x10) d|= 0xffe0;
+	      u16_t a= ((addr+1) + d + 1);
+	      if (d<0)
+		{
+		  d= -d;
+		  code1= d;
+		  work.appendf("-0x%02x", code1);
+		}
+	      else
+		work.appendf("+0x%02x", d);
+	      if (comment)
+		{
+		  comment->appendf("; %04x", a);
+		}
+	    }
+	  else if (fmt=="ra8")
+	    {
+	      i16_t d= code1;
+	      if (d & 0x80) d|= 0xff00;
+	      u16_t a= ((addr+2) + d + 0);
+	      if (d<0)
+		{
+		  d= -d;
+		  code1= d;
+		  work.appendf("-0x%02x", code1);
+		}
+	      else
+		work.appendf("+0x%02x", d);
+	      if (comment)
+		{
+		  comment->appendf("; %04x", a);
+		}
+	    }
+	  else if (fmt=="a16_1")
+	    {
+	      u16_t a= code1 + code2*256;
+	      work.appendf("0x%04x", a);
 	    }
 	  continue;
 	}
@@ -555,7 +596,7 @@ cl_t870c::exec1(void)
   int res= resGO;
   // prefix info fetched already
   t_mem code2= fetch();
-  int page_code= code2|0x100;
+  int page_code= code2|(page=0x100);
   if (uc_itab[page_code] == NULL)
     {
       PC= instPC;
@@ -596,7 +637,7 @@ cl_t870c::execS(void)
   t_mem code2= fetch();
   if (!src_valids[code2])
     return resINV;
-  int page_code= code2|0x200;
+  int page_code= code2|(page=0x200);
   is_dst= false;
   is_e8= false;
   if (uc_itab[page_code] == NULL)
@@ -639,7 +680,7 @@ cl_t870c::execE8(void)
   t_mem code2= fetch();
   if (!e8_valids[code2])
     return resINV;
-  int page_code= code2|0x200;
+  int page_code= code2|(page=0x200);
   is_dst= false;
   is_e8= true;
   if (uc_itab[page_code] == NULL)
@@ -682,7 +723,7 @@ cl_t870c::execD(void)
   t_mem code2= fetch();
   if (!dst_valids[code2])
     return resINV;
-  int page_code= code2|0x200;
+  int page_code= code2|(page=0x200);
   is_dst= true;
   is_e8= false;
   if (uc_itab[page_code] == NULL)
@@ -708,8 +749,7 @@ cl_t870c::sd_x(void)
 C8 *
 cl_t870c::sd_vw(void)
 {
-  sda= fetch();
-  sda+= (fetch()*256);
+  sda= fetch16();
   return sdc= (C8 *)asd->get_cell(sda);
 }
 
@@ -778,8 +818,7 @@ cl_t870c::sd_spM(void)
 u16_t
 cl_t870c::mn(void)
 {
-  u16_t mn= fetch();
-  mn+= fetch()*256;
+  u16_t mn= fetch16();
   return mn;
 }
 
@@ -813,8 +852,7 @@ int
 cl_t870c::ld16(C16 *reg, u16_t addr)
 {
   u16_t n;
-  n= asd->read(addr) + asd->read(addr+1)*256;
-  RD2;
+  n= rd16(addr);
   reg->W(n);
   cF.W(rF|MJF);
   return resGO;
@@ -840,9 +878,7 @@ cl_t870c::st8(MCELL *dst, u8_t n)
 int
 cl_t870c::st16(t_addr addr, u16_t n)
 {
-  asd->write(addr, n);
-  asd->write(addr+1, n>>8);
-  WR2;
+  wr16(addr, n);
   cF.W(rF|MJF);
   return resGO;
 }
@@ -885,11 +921,8 @@ cl_t870c::xch16_rr(C16 *a, C16 *b)
 int
 cl_t870c::xch16_rm(C16 *a, u16_t addr)
 {
-  u16_t t= asd->read(addr) + asd->read(addr+1)*256;
-  RD2;
-  asd->write(addr, a->get());
-  asd->write(addr+1, a->get()>>8);
-  WR2;
+  u16_t t= rd16(addr);
+  wr16(addr, a->get());
   a->W(t);  
   cF.W(rF|MJF);
   return resGO;
@@ -1188,6 +1221,30 @@ cl_t870c::dec16m(C16 *src)
   src->W(v);
   WR;
   cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::jr(u8_t a)
+{
+  i8_t v= a;
+  PC= (PC + v + 0) & PCmask;
+  cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::jrs(u8_t code, bool cond)
+{
+  i16_t v= code & 0x1f;
+  if (v & 0x10)
+    v|= 0xffe0;
+  if (cond)
+    {
+      PC= (PC + v + 1) & PCmask;
+      tick(extra_ticks()[page|code]);
+    }
+  cF.W(rF|MJF);
   return resGO;
 }
 
