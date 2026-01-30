@@ -663,7 +663,6 @@ cl_t870c::execS(void)
     return resINV;
   int page_code= code2|(page=0x200);
   is_dst= false;
-  //is_e8= false;
   if (uc_itab[page_code] == NULL)
     {
       PC= instPC;
@@ -676,49 +675,6 @@ cl_t870c::execS(void)
   return res;
 }
 
-static const u8_t e8_valids[256]=
-  {
-    /*0*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*1*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*2*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*3*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*4*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 0,
-    /*5*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*6*/ 1, 1, 1, 1,   1, 1, 1, 1,   0, 0, 0, 0,   0, 0, 0, 0,
-    /*7*/ 1, 1, 1, 1,   1, 1, 1, 1,   0, 0, 0, 0,   0, 0, 0, 0,
-    /*8*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*9*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*a*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*b*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*c*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*d*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*e*/ 1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,   1, 1, 1, 1,
-    /*f*/ 1, 0, 1, 1,   0, 0, 1, 1,   1, 1, 1, 1,   1, 1, 1, 0
-  };
-/*
-int
-cl_t870c::execE8(void)
-{
-  int res= resGO;
-  // prefix info fetched already
-  t_mem code2= fetch();
-  if (!e8_valids[code2])
-    return resINV;
-  int page_code= code2|(page=0x200);
-  is_dst= false;
-  is_e8= true;
-  if (uc_itab[page_code] == NULL)
-    {
-      PC= instPC;
-      return resNOT_DONE;
-    }
-  tickt(page_code);
-  res= (this->*uc_itab[page_code])(code2);
-  if (res == resNOT_DONE)
-    PC= instPC;
-  return res;
-}
-*/
 
 static const u8_t dst_valids[256]=
   {
@@ -750,7 +706,6 @@ cl_t870c::execD(void)
     return resINV;
   int page_code= code2|(page=0x200);
   is_dst= true;
-  //is_e8= false;
   if (uc_itab[page_code] == NULL)
     {
       PC= instPC;

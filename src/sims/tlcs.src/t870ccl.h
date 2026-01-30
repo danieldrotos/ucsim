@@ -120,7 +120,7 @@ public:
   // (src) or (dst) memory cell for 8/16 bit ops
   class cl_cell8 *sdc;
   t_addr sda;
-  bool is_dst;//, is_e8;
+  bool is_dst;
   int page;
 public:
   cl_t870c(class cl_sim *asim);
@@ -147,7 +147,6 @@ public:
   virtual int exec_inst(void);
   virtual int exec1(void);
   virtual int execS(void);
-  //virtual int execE8(void);
   virtual int execD(void);
 
   // 16 bit helpers for data sp
