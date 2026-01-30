@@ -84,7 +84,8 @@ enum flag_mask_t {
   MHF= (0x10),
   MSF= (0x08),
   MVF= (0x04),
-  MRBS= (0x02)
+  MRBS= (0x02),
+  MALL= MJF|MZF|MCF|MHF|MSF|MVF
 };
 
 // bit nr to bit mask converter
@@ -219,6 +220,9 @@ public:
   virtual int dec8m(C8 *src);
   virtual int dec16m(C16 *src);
 
+  // additions
+  virtual int addi8(C8 *reg, u8_t n);
+  
   // jump
   virtual int jr(u8_t a);
   virtual int jrs(u8_t code, bool cond);
@@ -318,6 +322,8 @@ public:
   virtual int LD_CF_mx_5(MP) { sd_x(); return ld1m(sdc, 5); }
   virtual int LD_CF_mx_6(MP) { sd_x(); return ld1m(sdc, 6); }
   virtual int LD_CF_mx_7(MP) { sd_x(); return ld1m(sdc, 7); }
+  // 0 60 - 0 6f
+  virtual int ADD_A_n(MP) { return addi8(&cA, fetch()); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }

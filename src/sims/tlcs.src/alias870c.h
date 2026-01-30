@@ -93,6 +93,9 @@
 #define LD_CF_mx_6              instruction_5e
 #define LD_CF_mx_7              instruction_5f
 
+// 0 60 - 0 6f
+#define ADD_A_n                 instruction_61
+
 // 0 80 - 0 8f
 #define JRS_T_a00               instruction_80
 #define JRS_T_a01               instruction_81
