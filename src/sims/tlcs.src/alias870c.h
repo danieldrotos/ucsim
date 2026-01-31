@@ -94,6 +94,7 @@
 #define LD_CF_mx_7              instruction_5f
 
 // 0 60 - 0 6f
+#define ADC_A_n                 instruction_60
 #define ADD_A_n                 instruction_61
 
 // 0 80 - 0 8f
@@ -194,6 +195,15 @@
 #define JP_mn                   instruction_fe
 
 // 1 00 - 1 3f ALU r,g
+#define ADDC_rA_g	        instruction_100
+#define ADDC_rW_g	        instruction_108
+#define ADDC_rC_g	        instruction_110
+#define ADDC_rB_g	        instruction_118
+#define ADDC_rE_g	        instruction_120
+#define ADDC_rD_g	        instruction_128
+#define ADDC_rL_g	        instruction_130
+#define ADDC_rH_g	        instruction_138
+
 #define ADD_rA_g	        instruction_101
 #define ADD_rW_g	        instruction_109
 #define ADD_rC_g	        instruction_111
@@ -239,6 +249,7 @@
 #define LD_CF_g_7               instruction_15f
 
 // 1 60 - 1 6f
+#define ADDC_g_n                instruction_160
 #define ADD_g_n                 instruction_161
 
 // 1 70 - 1 7f
@@ -302,6 +313,15 @@
 #define SWAP_g                  instruction_1ff
 
 // 2 00 - 2 3f ALU r,(src)
+#define ADDC_rA_src		instruction_200
+#define ADDC_rW_src		instruction_208
+#define ADDC_rC_src		instruction_210
+#define ADDC_rB_src		instruction_218
+#define ADDC_rE_src		instruction_220
+#define ADDC_rD_src		instruction_228
+#define ADDC_rL_src		instruction_230
+#define ADDC_rH_src		instruction_238
+
 #define ADD_rA_src		instruction_201
 #define ADD_rW_src		instruction_209
 #define ADD_rC_src		instruction_211
@@ -310,7 +330,6 @@
 #define ADD_rD_src		instruction_229
 #define ADD_rL_src		instruction_231
 #define ADD_rH_src		instruction_239
-#define ADD_src_n               instruction_261
 
 // 2 40 - 2 4f
 #define LD_rA_src               instruction_240
@@ -348,6 +367,7 @@
 #define LD_CF_src_7             instruction_25f
 
 // 2 60 - 2 6f
+#define ADD_src_n               instruction_261
 #define LD_dst_rrWA             instruction_268
 #define LD_dst_rrBC             instruction_269
 #define LD_dst_rrDE             instruction_26a

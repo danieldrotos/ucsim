@@ -322,6 +322,7 @@ public:
   virtual int LD_CF_mx_6(MP) { sd_x(); return ld1m(sdc, 6); }
   virtual int LD_CF_mx_7(MP) { sd_x(); return ld1m(sdc, 7); }
   // 0 60 - 0 6f
+  virtual int ADCC_A_n(MP) { return add8(&cA, fetch(), true); }
   virtual int ADD_A_n(MP) { return add8(&cA, fetch(), false); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
@@ -443,6 +444,14 @@ public:
   virtual int JR_a(MP) { return jr(fetch()); }
   virtual int JP_mn(MP) { PC= fetch16(); return resGO; }
   // 1 00 - 1 3f ALU r,g
+  virtual int ADDC_rA_g(MP) { return add8(&cA, regs8[sda]->R(), true); }
+  virtual int ADDC_rW_g(MP) { return add8(&cW, regs8[sda]->R(), true); }
+  virtual int ADDC_rC_g(MP) { return add8(&cC, regs8[sda]->R(), true); }
+  virtual int ADDC_rB_g(MP) { return add8(&cB, regs8[sda]->R(), true); }
+  virtual int ADDC_rE_g(MP) { return add8(&cE, regs8[sda]->R(), true); }
+  virtual int ADDC_rD_g(MP) { return add8(&cD, regs8[sda]->R(), true); }
+  virtual int ADDC_rL_g(MP) { return add8(&cL, regs8[sda]->R(), true); }
+  virtual int ADDC_rH_g(MP) { return add8(&cH, regs8[sda]->R(), true); }
   virtual int ADD_rA_g(MP) { return add8(&cA, regs8[sda]->R(), false); }
   virtual int ADD_rW_g(MP) { return add8(&cW, regs8[sda]->R(), false); }
   virtual int ADD_rC_g(MP) { return add8(&cC, regs8[sda]->R(), false); }
@@ -485,6 +494,7 @@ public:
   virtual int LD_CF_g_6(MP) { return ld1r(regs8[sda], 6); }
   virtual int LD_CF_g_7(MP) { return ld1r(regs8[sda], 7); }
   // 1 60 - 1 6f
+  virtual int ADDC_g_n(MP) { return add8(regs8[sda], fetch(), true); }
   virtual int ADD_g_n(MP) { return add8(regs8[sda], fetch(), false); }
   // 1 70 - 1 7f
   virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
@@ -542,6 +552,14 @@ public:
   virtual int JP_gg(MP) { PC= regs16[sda]->get(); return resGO; }
   virtual int SWAP_g(MP);
   // 2 00 - 2 3f ALU r,(src)
+  virtual int ADDC_rA_src(MP) { return add8(&cA, sdc->R(), true); }
+  virtual int ADDC_rW_src(MP) { return add8(&cW, sdc->R(), true); }
+  virtual int ADDC_rC_src(MP) { return add8(&cC, sdc->R(), true); }
+  virtual int ADDC_rB_src(MP) { return add8(&cB, sdc->R(), true); }
+  virtual int ADDC_rE_src(MP) { return add8(&cE, sdc->R(), true); }
+  virtual int ADDC_rD_src(MP) { return add8(&cD, sdc->R(), true); }
+  virtual int ADDC_rL_src(MP) { return add8(&cL, sdc->R(), true); }
+  virtual int ADDC_rH_src(MP) { return add8(&cH, sdc->R(), true); }
   virtual int ADD_rA_src(MP) { return add8(&cA, sdc->R(), false); }
   virtual int ADD_rW_src(MP) { return add8(&cW, sdc->R(), false); }
   virtual int ADD_rC_src(MP) { return add8(&cC, sdc->R(), false); }
@@ -550,7 +568,6 @@ public:
   virtual int ADD_rD_src(MP) { return add8(&cD, sdc->R(), false); }
   virtual int ADD_rL_src(MP) { return add8(&cL, sdc->R(), false); }
   virtual int ADD_rH_src(MP) { return add8(&cH, sdc->R(), false); }
-  virtual int ADD_src_n(MP)  { return add8(sdc, fetch() , false); }
   // 2 40 - 2 4f
   virtual int LD_rA_src(MP) { return ld8(&cA, sdc); }
   virtual int LD_rW_src(MP) { return ld8(&cW, sdc); }
@@ -585,6 +602,8 @@ public:
   virtual int LD_CF_src_6(MP) { return ld1m(sdc, 6); }
   virtual int LD_CF_src_7(MP) { return ld1m(sdc, 7); }
   // 2 60 - 2 6f
+  virtual int ADDC_src_n(MP)  { return add8(sdc, fetch(), true); }
+  virtual int ADD_src_n(MP)  { return add8(sdc, fetch(), false); }
   virtual int LD_dst_rrWA(MP) { return st16(sda, rWA); }
   virtual int LD_dst_rrBC(MP) { return st16(sda, rBC); }
   virtual int LD_dst_rrDE(MP) { return st16(sda, rDE); }
