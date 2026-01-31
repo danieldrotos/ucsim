@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "mos65c02cl.h"
 #include "mos65c02scl.h"
 #include "mos65ce02cl.h"
+#include "huc6280cl.h"
 #include "glob.h"
 
 
@@ -77,6 +78,8 @@ cl_simmos6502::mk_controller(void)
     case CPU_65CE02:
       printf("Not implemented yet.\n"); return(NULL); 
       return(new cl_mos65ce02(this));
+    case CPU_HUC6280:
+      return new cl_huc6280(this);
     default:
       return NULL;
     }

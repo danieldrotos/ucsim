@@ -49,4 +49,4 @@ public:
 
 #endif
 
-/* End of mos6502.src/mos65ce02.cc */
+/* End of mos6502.src/mos65ce02cl.h */

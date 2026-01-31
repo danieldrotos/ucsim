@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (mos6510cl.h)
+ * Simulator of microcontrollers (huc6280cl.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -25,29 +25,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef MOS6510CL_HEADER
-#define MOS6510CL_HEADER
+#ifndef HUC6280CL_HEADER
+#define HUC6280CL_HEADER
 
-#include "mos6502cl.h"
+#include "mos65c02scl.h"
 
 
-class cl_mos6510: public cl_mos6502
+class cl_huc6280: public cl_mos65c02s
 {
  public:
-  cl_mos6510(class cl_sim *asim);
-  virtual int init(void);
-  virtual void mk_hw_elements(void);
-};
-
-class cl_mos8502: public cl_mos6510
-{
- public:
-  cl_mos8502(class cl_sim *asim);
-  virtual int init(void);
-  virtual double def_xtal(void) { return 2000000; }
+  cl_huc6280(class cl_sim *asim);
 };
 
 
 #endif
 
-/* End of mos6502.src/mos6510cl.h */
+
+/* End of mos6502.src/huc6280cl.h */

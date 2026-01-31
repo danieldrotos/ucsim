@@ -644,6 +644,9 @@ struct cpu_entry cpus_mos6502[]=
     {"C02S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
     {"CS"	, CPU_65C02S, 0		, "MOS65C02S", ""},
     {"S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"HUC6280"  , CPU_HUC6280, 0	, "HUC6280", "" },
+    {"HUC"	, CPU_HUC6280, 0	, "HUC6280", "" },
+    {"6280"	, CPU_HUC6280, 0	, "HUC6280", "" },
     
     {NULL, CPU_NONE, 0, "", ""}
   };
