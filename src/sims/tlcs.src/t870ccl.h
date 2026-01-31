@@ -550,6 +550,7 @@ public:
   virtual int ADD_rD_src(MP) { return add8(&cD, sdc->R(), false); }
   virtual int ADD_rL_src(MP) { return add8(&cL, sdc->R(), false); }
   virtual int ADD_rH_src(MP) { return add8(&cH, sdc->R(), false); }
+  virtual int ADD_src_n(MP)  { return add8(sdc, fetch() , false); }
   // 2 40 - 2 4f
   virtual int LD_rA_src(MP) { return ld8(&cA, sdc); }
   virtual int LD_rW_src(MP) { return ld8(&cW, sdc); }
