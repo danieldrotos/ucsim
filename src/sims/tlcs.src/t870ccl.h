@@ -220,7 +220,7 @@ public:
   virtual int dec16m(C16 *src);
 
   // additions
-  virtual int addi8(C8 *reg, u8_t n, bool c);
+  virtual int add8(C8 *reg, u8_t n, bool c);
   
   // jump
   virtual int jr(u8_t a);
@@ -322,7 +322,7 @@ public:
   virtual int LD_CF_mx_6(MP) { sd_x(); return ld1m(sdc, 6); }
   virtual int LD_CF_mx_7(MP) { sd_x(); return ld1m(sdc, 7); }
   // 0 60 - 0 6f
-  virtual int ADD_A_n(MP) { return addi8(&cA, fetch(), false); }
+  virtual int ADD_A_n(MP) { return add8(&cA, fetch(), false); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }
@@ -442,6 +442,15 @@ public:
   virtual int LD_RBS(MP);
   virtual int JR_a(MP) { return jr(fetch()); }
   virtual int JP_mn(MP) { PC= fetch16(); return resGO; }
+  // 1 00 - 1 3f (ALU r,g)
+  virtual int ADD_rA_g(MP) { return add8(&cA, regs8[sda]->R(), false); }
+  virtual int ADD_rW_g(MP) { return add8(&cW, regs8[sda]->R(), false); }
+  virtual int ADD_rC_g(MP) { return add8(&cC, regs8[sda]->R(), false); }
+  virtual int ADD_rB_g(MP) { return add8(&cB, regs8[sda]->R(), false); }
+  virtual int ADD_rE_g(MP) { return add8(&cE, regs8[sda]->R(), false); }
+  virtual int ADD_rD_g(MP) { return add8(&cD, regs8[sda]->R(), false); }
+  virtual int ADD_rL_g(MP) { return add8(&cL, regs8[sda]->R(), false); }
+  virtual int ADD_rH_g(MP) { return add8(&cH, regs8[sda]->R(), false); }
   // 1 40 - 1 4f
   virtual int LD_rA_g(MP) { return ldi8(&cA, regs8[sda]->R()); }
   virtual int LD_rW_g(MP) { return ldi8(&cW, regs8[sda]->R()); }
@@ -476,7 +485,7 @@ public:
   virtual int LD_CF_g_6(MP) { return ld1r(regs8[sda], 6); }
   virtual int LD_CF_g_7(MP) { return ld1r(regs8[sda], 7); }
   // 1 60 - 1 6f
-  virtual int ADD_g_n(MP) { return addi8(regs8[sda], fetch(), false); }
+  virtual int ADD_g_n(MP) { return add8(regs8[sda], fetch(), false); }
   // 1 70 - 1 7f
   virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
   virtual int XCH_rW_g(MP) { return xch8_rr(&cW, regs8[sda]); }
