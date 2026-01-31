@@ -49,6 +49,20 @@ cl_huc6280::init(void)
   memchips->add(mprch);
   mpras->decoders->add(mprad);
   mprad->activate(0);
+  sh.init();
+  dh.init();
+  lh.init();
+  mk_mvar(mpras, 0, "MPR0", "Mapping Register 0");
+  mk_mvar(mpras, 1, "MPR1", "Mapping Register 1");
+  mk_mvar(mpras, 2, "MPR2", "Mapping Register 2");
+  mk_mvar(mpras, 3, "MPR3", "Mapping Register 3");
+  mk_mvar(mpras, 4, "MPR4", "Mapping Register 4");
+  mk_mvar(mpras, 5, "MPR5", "Mapping Register 5");
+  mk_mvar(mpras, 6, "MPR6", "Mapping Register 6");
+  mk_mvar(mpras, 7, "MPR7", "Mapping Register 7");
+  mk_cvar(&sh, "SH", "Source High register");
+  mk_cvar(&sh, "DH", "Destination High register");
+  mk_cvar(&sh, "LH", "Lenght High register");
   return 0;
 }
 
