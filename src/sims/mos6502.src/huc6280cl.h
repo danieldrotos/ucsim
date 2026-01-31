@@ -40,7 +40,8 @@ public:
   class cl_cell8 sh, dh, lh;
  public:
   cl_huc6280(class cl_sim *asim);
-  virtual int init(void);
+  virtual void reset(void);
+   virtual int init(void);
   virtual void make_memories(void);
 };
 

@@ -118,6 +118,7 @@ cl_mos6502::cl_mos6502(class cl_sim *asim):
 {
   my_id= new chars();
   *my_id= "MOS6502";
+  SPh= 0x0100;
 }
 
 int
@@ -647,7 +648,7 @@ cl_mos6502::print_regs(class cl_console_base *con)
   con->dd_printf("   NV BDIZC\n");
 
   con->dd_printf("S= ");
-  class cl_dump_ads ads(0x100+SP, 0x100+SP+7);
+  class cl_dump_ads ads(SPh+SP, SPh+SP+7);
   rom->dump(0, /*0x100+SP, 0x100+SP+7*/&ads, 8, con);
   con->dd_color("answer");
   
@@ -717,7 +718,7 @@ cl_mos6502::accept_it(class it_level *il)
 
   tick(2);
   push_addr(PC);
-  rom->write(0x0100 + rSP, rF|0x20);
+  rom->write(SPh + rSP, rF|0x20);
   if (set_b)
     rF&= ~flagB;
   cSP.W(rSP-1);
@@ -745,9 +746,9 @@ cl_mos6502::it_enabled(void)
 void
 cl_mos6502::push_addr(t_addr a)
 {
-  rom->write(0x0100 + rSP, (a>>8));
+  rom->write(SPh + rSP, (a>>8));
   cSP.W(rSP-1);
-  rom->write(0x0100 + rSP, (a));
+  rom->write(SPh + rSP, (a));
   cSP.W(rSP-1);
   tick(2);
   vc.wr+= 2;
@@ -758,9 +759,9 @@ cl_mos6502::pop_addr(void)
 {
   u8_t h, l;
   cSP.W(rSP+1);
-  l= rom->read(0x0100 + rSP);
+  l= rom->read(SPh + rSP);
   cSP.W(rSP+1);
-  h= rom->read(0x0100 + rSP);
+  h= rom->read(SPh + rSP);
   tick(2);
   vc.rd+= 2;
   return h*256+l;

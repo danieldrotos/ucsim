@@ -55,6 +55,8 @@ enum {
   flagV	= 0x40,
   mO	= 0x40,
   flagO	= 0x40,
+  mT    = 0x20, // HUC6280 specific flag:
+  flagT = 0x20, // Memory operation flag
   mB	= 0x10,
   flagB	= 0x10,
   mD	= 0x08,
@@ -102,6 +104,7 @@ class cl_mos6502: public cl_uc
 {
 public:
   u8_t A, X, Y, SP, CC, i8d;
+  u16_t SPh;
   class cl_cell8 cA, cX, cY, cSP, cCC, ci8;
   class cl_it_src *src_irq, *src_nmi, *src_brk;
   bool set_b;

@@ -38,7 +38,16 @@ cl_huc6280::cl_huc6280(class cl_sim *asim):
   mprch->init();
   mpras->init();
   mprad->init();
+  SPh= 0x2100;
 };
+
+
+void
+cl_huc6280::reset(void)
+{
+  mpras->write(7, 0);
+  cl_uc::reset();
+}
 
 
 int
