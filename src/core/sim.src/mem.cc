@@ -2840,11 +2840,23 @@ cl_banker::print_info(const char *pre, class cl_console_base *con)
 
   class cl_address_decoder *dc;
   int i;
+  bool dotted= false;
   for (i= 0; i < nuof_banks; i++)
     {
       dc= (class cl_address_decoder *)(banks[i]);
+      if (nuof_banks > 8)
+	{
+	  if ((i != 0) && (i != nuof_banks-1))
+	    {
+	      if (!dotted)
+		con->dd_printf(pre),
+		  con->dd_printf("      ....\n"),
+		  dotted= true;
+	      continue;
+	    }
+	}
       con->dd_printf(pre);
-      con->dd_printf("    %c %2d. ", (b==i)?'*':' ', i);
+      con->dd_printf("    %c %3d. ", (b==i)?'*':' ', i);
       if (dc)
 	{
 	  if (dc->memchip)
