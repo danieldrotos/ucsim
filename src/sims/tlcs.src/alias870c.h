@@ -193,7 +193,7 @@
 #define JR_a                    instruction_fc
 #define JP_mn                   instruction_fe
 
-// 1 00 - 1 3f  (ALU r,g)
+// 1 00 - 1 3f ALU r,g
 #define ADD_rA_g	        instruction_101
 #define ADD_rW_g	        instruction_109
 #define ADD_rC_g	        instruction_111
@@ -300,6 +300,16 @@
 // 1 f0 - 1 ff
 #define JP_gg                   instruction_1fe
 #define SWAP_g                  instruction_1ff
+
+// 2 00 - 2 3f ALU r,(src)
+#define ADD_rA_src		instruction_201
+#define ADD_rW_src		instruction_209
+#define ADD_rC_src		instruction_211
+#define ADD_rB_src		instruction_219
+#define ADD_rE_src		instruction_221
+#define ADD_rD_src		instruction_229
+#define ADD_rL_src		instruction_231
+#define ADD_rH_src		instruction_239
 
 // 2 40 - 2 4f
 #define LD_rA_src               instruction_240
