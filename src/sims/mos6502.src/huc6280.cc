@@ -67,4 +67,35 @@ cl_huc6280::init(void)
 }
 
 
+void
+cl_huc6280::make_memories(void)
+{
+  class cl_address_space *as;
+  class cl_address_decoder *ad;
+  class cl_memory_chip *chip;
+  class cl_banker *b;
+  
+  rom= as= new cl_as65("rom", 0, 0x10000, 8);
+  as->init();
+  address_spaces->add(as);
+
+  chip= new cl_chip8("rom_chip", 0x200000, 8);
+  chip->init();
+  memchips->add(chip);
+
+  int pagenr;
+  int i;
+  for (pagenr= 0; pagenr < 8; pagenr++)
+    {
+      b= new cl_banker(mpras, pagenr, 0xff,
+		       rom, pagenr * 0x2000, pagenr*0x2000 + 0x1fff);
+      b->init();
+      rom->decoders->add(b);
+      for (i= 0; i<0x100; i++)
+	b->add_bank(i, chip, i*0x2000);
+      b->activate(0);
+    }
+}
+
+
 /* End of mos6502.src/huc6280.cc */

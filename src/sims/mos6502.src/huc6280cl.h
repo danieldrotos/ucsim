@@ -41,6 +41,7 @@ public:
  public:
   cl_huc6280(class cl_sim *asim);
   virtual int init(void);
+  virtual void make_memories(void);
 };
 
 
