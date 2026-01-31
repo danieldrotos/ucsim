@@ -33,8 +33,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_huc6280: public cl_mos65c02s
 {
+public:
+  class cl_address_space *mpras;
+  class cl_memory_chip *mprch;
+  class cl_address_decoder *mprad;
  public:
   cl_huc6280(class cl_sim *asim);
+  virtual int init(void);
 };
 
 
