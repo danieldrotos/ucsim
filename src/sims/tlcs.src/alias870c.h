@@ -271,6 +271,8 @@
 // 1 60 - 1 6f
 #define ADDC_g_n                instruction_160
 #define ADD_g_n                 instruction_161
+#define SUBB_g_n                instruction_162
+#define SUB_g_n                 instruction_163
 
 // 1 70 - 1 7f
 #define XCH_rA_g                instruction_170

@@ -515,6 +515,8 @@ public:
   // 1 60 - 1 6f
   virtual int ADDC_g_n(MP) { return add8(regs8[sda], fetch(), true); }
   virtual int ADD_g_n(MP) { return add8(regs8[sda], fetch(), false); }
+  virtual int SUBB_g_n(MP) { return sub8(regs8[sda], fetch(), true); }
+  virtual int SUB_g_n(MP) { return sub8(regs8[sda], fetch(), false); }
   // 1 70 - 1 7f
   virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
   virtual int XCH_rW_g(MP) { return xch8_rr(&cW, regs8[sda]); }
