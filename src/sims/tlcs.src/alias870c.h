@@ -407,7 +407,10 @@
 #define LD_CF_src_7             instruction_25f
 
 // 2 60 - 2 6f
+#define ADDC_src_n              instruction_260
 #define ADD_src_n               instruction_261
+#define SUBB_src_n              instruction_262
+#define SUB_src_n               instruction_263
 #define LD_dst_rrWA             instruction_268
 #define LD_dst_rrBC             instruction_269
 #define LD_dst_rrDE             instruction_26a
