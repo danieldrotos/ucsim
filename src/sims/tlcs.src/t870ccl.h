@@ -463,6 +463,22 @@ public:
   virtual int ADD_rD_g(MP) { return add8(&cD, regs8[sda]->R(), false); }
   virtual int ADD_rL_g(MP) { return add8(&cL, regs8[sda]->R(), false); }
   virtual int ADD_rH_g(MP) { return add8(&cH, regs8[sda]->R(), false); }
+  virtual int SUBB_rA_g(MP) { return sub8(&cA, regs8[sda]->R(), true); }
+  virtual int SUBB_rW_g(MP) { return sub8(&cW, regs8[sda]->R(), true); }
+  virtual int SUBB_rC_g(MP) { return sub8(&cC, regs8[sda]->R(), true); }
+  virtual int SUBB_rB_g(MP) { return sub8(&cB, regs8[sda]->R(), true); }
+  virtual int SUBB_rE_g(MP) { return sub8(&cE, regs8[sda]->R(), true); }
+  virtual int SUBB_rD_g(MP) { return sub8(&cD, regs8[sda]->R(), true); }
+  virtual int SUBB_rL_g(MP) { return sub8(&cH, regs8[sda]->R(), true); }
+  virtual int SUBB_rH_g(MP) { return sub8(&cH, regs8[sda]->R(), true); }
+  virtual int SUB_rA_g(MP) { return sub8(&cA, regs8[sda]->R(), false); }
+  virtual int SUB_rW_g(MP) { return sub8(&cW, regs8[sda]->R(), false); }
+  virtual int SUB_rC_g(MP) { return sub8(&cC, regs8[sda]->R(), false); }
+  virtual int SUB_rB_g(MP) { return sub8(&cB, regs8[sda]->R(), false); }
+  virtual int SUB_rE_g(MP) { return sub8(&cE, regs8[sda]->R(), false); }
+  virtual int SUB_rD_g(MP) { return sub8(&cD, regs8[sda]->R(), false); }
+  virtual int SUB_rL_g(MP) { return sub8(&cH, regs8[sda]->R(), false); }
+  virtual int SUB_rH_g(MP) { return sub8(&cH, regs8[sda]->R(), false); }
   // 1 40 - 1 4f
   virtual int LD_rA_g(MP) { return ldi8(&cA, regs8[sda]->R()); }
   virtual int LD_rW_g(MP) { return ldi8(&cW, regs8[sda]->R()); }

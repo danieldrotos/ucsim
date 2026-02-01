@@ -215,6 +215,24 @@
 #define ADD_rL_g	        instruction_131
 #define ADD_rH_g	        instruction_139
 
+#define SUBB_rA_g		instruction_102
+#define SUBB_rW_g		instruction_10a
+#define SUBB_rC_g		instruction_112
+#define SUBB_rB_g		instruction_11a
+#define SUBB_rE_g		instruction_122
+#define SUBB_rD_g		instruction_12a
+#define SUBB_rL_g		instruction_132
+#define SUBB_rH_g		instruction_13a
+
+#define SUB_rA_g		instruction_103
+#define SUB_rW_g		instruction_10b
+#define SUB_rC_g		instruction_113
+#define SUB_rB_g		instruction_11b
+#define SUB_rE_g		instruction_123
+#define SUB_rD_g		instruction_12b
+#define SUB_rL_g		instruction_133
+#define SUB_rH_g		instruction_13b
+
 // 1 40 - 1 4f
 #define LD_rA_g                 instruction_140
 #define LD_rW_g                 instruction_141
