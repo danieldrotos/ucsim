@@ -96,6 +96,8 @@
 // 0 60 - 0 6f
 #define ADC_A_n                 instruction_60
 #define ADD_A_n                 instruction_61
+#define SUBB_A_n		instruction_62
+#define SUB_A_n			instruction_63
 
 // 0 80 - 0 8f
 #define JRS_T_a00               instruction_80
