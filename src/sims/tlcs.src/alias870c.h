@@ -353,6 +353,24 @@
 #define ADD_rL_src		instruction_231
 #define ADD_rH_src		instruction_239
 
+#define SUBB_rA_src		instruction_202
+#define SUBB_rW_src		instruction_20a
+#define SUBB_rC_src		instruction_212
+#define SUBB_rB_src		instruction_21a
+#define SUBB_rE_src		instruction_222
+#define SUBB_rD_src		instruction_22a
+#define SUBB_rL_src		instruction_232
+#define SUBB_rH_src		instruction_23a
+
+#define SUB_rA_src		instruction_203
+#define SUB_rW_src		instruction_20b
+#define SUB_rC_src		instruction_213
+#define SUB_rB_src		instruction_21b
+#define SUB_rE_src		instruction_223
+#define SUB_rD_src		instruction_22b
+#define SUB_rL_src		instruction_233
+#define SUB_rH_src		instruction_23b
+
 // 2 40 - 2 4f
 #define LD_rA_src               instruction_240
 #define LD_rW_src               instruction_241
