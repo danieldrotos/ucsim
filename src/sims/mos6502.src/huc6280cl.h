@@ -37,12 +37,12 @@ public:
   class cl_address_space *mpras;
   class cl_memory_chip *mprch;
   class cl_address_decoder *mprad;
-  class cl_cell8 sh, dh, lh;
  public:
   cl_huc6280(class cl_sim *asim);
   virtual void reset(void);
    virtual int init(void);
   virtual void make_memories(void);
+  virtual void print_regs(class cl_console_base *con);
 };
 
 

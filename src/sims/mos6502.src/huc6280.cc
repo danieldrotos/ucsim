@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include <ctype.h>
+
 #include "huc6280cl.h"
 
 
@@ -58,9 +60,6 @@ cl_huc6280::init(void)
   memchips->add(mprch);
   mpras->decoders->add(mprad);
   mprad->activate(0);
-  sh.init();
-  dh.init();
-  lh.init();
   mk_mvar(mpras, 0, "MPR0", "Mapping Register 0");
   mk_mvar(mpras, 1, "MPR1", "Mapping Register 1");
   mk_mvar(mpras, 2, "MPR2", "Mapping Register 2");
@@ -69,9 +68,6 @@ cl_huc6280::init(void)
   mk_mvar(mpras, 5, "MPR5", "Mapping Register 5");
   mk_mvar(mpras, 6, "MPR6", "Mapping Register 6");
   mk_mvar(mpras, 7, "MPR7", "Mapping Register 7");
-  mk_cvar(&sh, "SH", "Source High register");
-  mk_cvar(&sh, "DH", "Destination High register");
-  mk_cvar(&sh, "LH", "Lenght High register");
   return 0;
 }
 
@@ -104,6 +100,26 @@ cl_huc6280::make_memories(void)
 	b->add_bank(i, chip, i*0x2000);
       b->activate(0);
     }
+}
+
+
+void
+cl_huc6280::print_regs(class cl_console_base *con)
+{
+  con->dd_color("answer");
+  con->dd_printf("A= $%02x %3d %+4d %c  ", A, A, (i8_t)A, isprint(A)?A:'.');
+  con->dd_printf("X= $%02x %3d %+4d %c  ", X, X, (i8_t)X, isprint(X)?X:'.');
+  con->dd_printf("Y= $%02x %3d %+4d %c  ", Y, Y, (i8_t)Y, isprint(Y)?Y:'.');
+  con->dd_printf("\n");
+  con->dd_printf("P= "); con->print_bin(CC, 8); con->dd_printf("\n");
+  con->dd_printf("   NVTBDIZC\n");
+
+  con->dd_printf("S= ");
+  class cl_dump_ads ads(SPh+SP, SPh+SP+7);
+  rom->dump(0, /*0x100+SP, 0x100+SP+7*/&ads, 8, con);
+  con->dd_color("answer");
+  
+  print_disass(PC, con);
 }
 
 
