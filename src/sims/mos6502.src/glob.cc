@@ -44,6 +44,7 @@ instruction_wrapper_fn itab[256];
 	3 (ind)
 	4 (zind)
 	L log2(imm8)
+	T block transfer params: SL,SH,DL,DH,LL,LH
 */
 
 // code mask branch len mn call tick
@@ -313,6 +314,7 @@ struct dis_entry disass_huc6280[]=
     { 0x23, 0xff, ' ', 2, "ST2 %#" },
     { 0x43, 0xff, ' ', 2, "TMA %L" },
     { 0x53, 0xff, ' ', 2, "TAM %L" },
+    { 0x73, 0xff, ' ', 7, "TII %T" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

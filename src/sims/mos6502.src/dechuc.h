@@ -40,6 +40,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ST2		instruction_23
 #define TMA		instruction_43
 #define TAM		instruction_53
+#define TII		instruction_73
 
 
 #endif

@@ -498,6 +498,14 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      a= L2i(a);
 	      work.appendf("%d", a);
 	      break;
+	    case 'T': // block transfer params: SL,SH,DL,DH,LL,LH
+	      {
+		u16_t s= rom->read(addr+1) + 256*rom->read(addr+2);
+		u16_t d= rom->read(addr+3) + 256*rom->read(addr+4);
+		u16_t l= rom->read(addr+5) + 256*rom->read(addr+6);
+		work.appendf("$%04x,$%04x,$%04x", s, d, l);
+		break;
+	      }
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);
