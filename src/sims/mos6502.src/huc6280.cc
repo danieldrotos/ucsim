@@ -27,6 +27,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include <ctype.h>
 
+#include "glob.h"
+
 #include "huc6280cl.h"
 
 
@@ -103,6 +105,22 @@ cl_huc6280::make_memories(void)
 }
 
 
+struct dis_entry *
+cl_huc6280::get_dis_entry(t_addr addr)
+{
+  struct dis_entry *de;
+  
+  t_mem code= rom->read(addr);
+  for (de = disass_huc6280; de && de->mnemonic; de++)
+    {
+      if ((code & de->mask) == de->code)
+        return de;
+    }
+  
+  return cl_mos65c02s::get_dis_entry(addr);
+}
+
+
 void
 cl_huc6280::print_regs(class cl_console_base *con)
 {
@@ -120,6 +138,16 @@ cl_huc6280::print_regs(class cl_console_base *con)
   con->dd_color("answer");
   
   print_disass(PC, con);
+}
+
+
+int
+cl_huc6280::SXY(MP)
+{
+  u8_t t= rX;
+  cX.W(rY);
+  cY.W(t);
+  return resGO;
 }
 
 

@@ -34,6 +34,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itsrccl.h"
 
 
+#define MP	t_mem code
+
 #define rA  (A)
 #define rX  (X)
 #define rY  (Y)

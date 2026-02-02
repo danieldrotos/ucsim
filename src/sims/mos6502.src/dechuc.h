@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (huc6280cl.h)
+ * Simulator of microcontrollers (dechuc.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -23,34 +23,15 @@ You should have received a copy of the GNU General Public License
 along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
-/*@1@*/
 
-#ifndef HUC6280CL_HEADER
-#define HUC6280CL_HEADER
-
-#include "mos65c02scl.h"
-#include "dechuc.h"
+#ifndef DECHUC_HEADER
+#define DECHUC_HEADER
 
 
-class cl_huc6280: public cl_mos65c02s
-{
-public:
-  class cl_address_space *mpras;
-  class cl_memory_chip *mprch;
-  class cl_address_decoder *mprad;
- public:
-  cl_huc6280(class cl_sim *asim);
-  virtual void reset(void);
-  virtual int init(void);
-  virtual void make_memories(void);
-  virtual struct dis_entry *get_dis_entry(t_addr addr);
-  virtual void print_regs(class cl_console_base *con);
-
-  virtual int SXY(MP);
-};
+#define SXY		instruction_02
 
 
 #endif
 
 
-/* End of mos6502.src/huc6280cl.h */
+/* End of mos6502.src/dechuc.h */
