@@ -47,6 +47,7 @@ public:
   virtual void print_regs(class cl_console_base *con);
 
   virtual int SXY(MP);
+  virtual int SAX(MP);
 };
 
 

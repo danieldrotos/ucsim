@@ -147,6 +147,17 @@ cl_huc6280::SXY(MP)
   u8_t t= rX;
   cX.W(rY);
   cY.W(t);
+  tick(2);
+  return resGO;
+}
+
+int
+cl_huc6280::SAX(MP)
+{
+  u8_t t= rX;
+  cX.W(rA);
+  cA.W(t);
+  tick(2);
   return resGO;
 }
 
