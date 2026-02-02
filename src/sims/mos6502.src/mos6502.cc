@@ -771,10 +771,20 @@ cl_mos6502::it_enabled(void)
 void
 cl_mos6502::push_addr(t_addr a)
 {
-  rom->write(SPh + rSP, (a>>8));
+  t_addr bef=rSP;
+  u8_t d;
+  class cl_stack_push *o;
+  rom->write(SPh + rSP, d= (a>>8));
   cSP.W(rSP-1);
-  rom->write(SPh + rSP, (a));
+  o= new cl_stack_push(instPC, d, bef, rSP);
+  o->init();
+  stack_write(o);
+  bef= rSP;
+  rom->write(SPh + rSP, d= (a));
   cSP.W(rSP-1);
+  o= new cl_stack_push(instPC, d, bef, rSP);
+  o->init();
+  stack_write(o);
   tick(2);
   vc.wr+= 2;
 }
@@ -782,16 +792,28 @@ cl_mos6502::push_addr(t_addr a)
 void
 cl_mos6502::push_reg(C8 *r)
 {
-  rom->write(SPh + rSP, r->read());
+  t_addr bef=rSP;
+  t_mem d;
+  class cl_stack_push *o;
+  rom->write(SPh + rSP, d= r->read());
   cSP.W(rSP-1);
+  o= new cl_stack_push(instPC, d, bef, rSP);
+  o->init();
+  stack_write(o);
   WR;
 }
 
 void
 cl_mos6502::push(u8_t v)
 {
-  rom->write(SPh + rSP, v);
+  t_addr bef=rSP;
+  t_mem d;
+  class cl_stack_push *o;
+  rom->write(SPh + rSP, d= v);
   cSP.W(rSP-1);
+  o= new cl_stack_push(instPC, d, bef, rSP);
+  o->init();
+  stack_write(o);
   WR;
 }
 
