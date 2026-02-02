@@ -50,6 +50,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TST_imzpx	instruction_a3
 #define TST_imabx	instruction_b3
 
+#define BSR		instruction_44
+
 
 #endif
 

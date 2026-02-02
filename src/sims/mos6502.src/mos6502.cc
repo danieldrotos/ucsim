@@ -316,6 +316,7 @@ cl_mos6502::analyze(t_addr addr)
 	      target= rom->read(addr+1) + (rom->read(addr+2) << 8);
 	      break;
 	      
+	    case 'S': // Call by relative addr
 	    case 'b': // Conditional branches
 	      target= addr + 2 + (i8_t)rom->read(addr+1);
 	      break;
@@ -753,7 +754,7 @@ cl_mos6502::is_call(t_addr addr)
   struct dis_entry *de= get_dis_entry(addr);
   if (!de)
     return false;
-  return de->branch == 's';
+  return (de->branch == 's') || (de->branch == 'S');
 }
 
 int

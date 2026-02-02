@@ -69,6 +69,8 @@ public:
   virtual int TST_impab(MP) { return tst(fetch(), abs()); }
   virtual int TST_impzpx(MP) { return tst(fetch(), zpgX()); }
   virtual int TST_impabx(MP) { return tst(fetch(), absX()); }
+
+  virtual int BSR(MP);
 };
 
 

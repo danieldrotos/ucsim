@@ -381,5 +381,22 @@ cl_huc6280::tst(u8_t n, C8 &c)
   return resGO;
 }
 
+int
+cl_huc6280::BSR(MP)
+{
+  t_addr pc= PC;
+  i8_t rel= fetch();
+  u16_t a= PC+rel;
+  u8_t spbef= rSP;
+  push_addr(pc);
+  if ((u16_t)(PC&0xff00) != (u16_t)(a&0xff00))
+    tick(1);
+  class cl_stack_call *op= new cl_stack_call(instPC, a, PC, spbef, rSP);
+  op->init();
+  stack_write(op);
+  PC= a;
+  return resGO;
+}
+
 
 /* End of mos6502.src/huc6280.cc */
