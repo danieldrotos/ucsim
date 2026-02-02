@@ -35,6 +35,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CLX		instruction_82
 #define CLY		instruction_c2
 
+#define STO		instruction_03
+
 
 #endif
 

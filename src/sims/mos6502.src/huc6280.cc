@@ -79,16 +79,16 @@ cl_huc6280::make_memories(void)
 {
   class cl_address_space *as;
   class cl_address_decoder *ad;
-  class cl_memory_chip *chip;
+  //class cl_memory_chip *chip;
   class cl_banker *b;
   
   rom= as= new cl_as65("rom", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
-  chip= new cl_chip8("rom_chip", 0x200000, 8);
-  chip->init();
-  memchips->add(chip);
+  romchip= new cl_chip8("rom_chip", 0x200000, 8);
+  romchip->init();
+  memchips->add(romchip);
 
   int pagenr;
   int i;
@@ -99,7 +99,7 @@ cl_huc6280::make_memories(void)
       b->init();
       rom->decoders->add(b);
       for (i= 0; i<0x100; i++)
-	b->add_bank(i, chip, i*0x2000);
+	b->add_bank(i, romchip, i*0x2000);
       b->activate(0);
     }
 }
@@ -168,6 +168,21 @@ cl_huc6280::SAY(MP)
   cY.W(rA);
   cA.W(t);
   tick(2);
+  return resGO;
+}
+
+/* 1FE000
+   0001.1111.1110. 0000.0000.0000
+      20   16   12    8    4    0
+*/
+
+int
+cl_huc6280::STO(MP)
+{
+  u8_t v= fetch();
+  romchip->set(0x1fe000, v);
+  WR;
+  tick(3);
   return resGO;
 }
 

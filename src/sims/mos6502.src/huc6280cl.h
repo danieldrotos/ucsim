@@ -36,7 +36,7 @@ class cl_huc6280: public cl_mos65c02s
 {
 public:
   class cl_address_space *mpras;
-  class cl_memory_chip *mprch;
+  class cl_chip8 *mprch, *romchip;
   class cl_address_decoder *mprad;
  public:
   cl_huc6280(class cl_sim *asim);
@@ -52,6 +52,8 @@ public:
   virtual int CLA(MP) { cA.W(0); tick(1); return resGO; }
   virtual int CLX(MP) { cX.W(0); tick(1); return resGO; }
   virtual int CLY(MP) { cY.W(0); tick(1); return resGO; }
+
+  virtual int STO(MP);
 };
 
 

@@ -36,6 +36,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define MP	t_mem code
 
+#define WR	(vc.wr++)
+#define WR2	(vc.wr+=2)
+#define RD	(vc.rd++)
+#define RD2	(vc.rd+=2)
+#define RDWR	(vc.rd++,vc.wr++)
+#define WRRD	(vc.rd++,vc.wr++)
+
 #define rA  (A)
 #define rX  (X)
 #define rY  (Y)
