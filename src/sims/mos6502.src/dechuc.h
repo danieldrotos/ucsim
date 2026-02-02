@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SAX		instruction_22
 #define SAY		instruction_42
 #define CLA		instruction_62
+#define CLX		instruction_82
 
 
 #endif
