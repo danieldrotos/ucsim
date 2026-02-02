@@ -186,7 +186,8 @@ public:
   virtual class cl_cell8 &rmwindY(void) { vc.rd++;vc.wr++;tick(1); return indY(); }
   //virtual u8_t i8(void) { return fetch(); }
   virtual u16_t i16(void) { u8_t h, l; l=fetch(); h= fetch(); return h*256+l; }
-
+  virtual u8_t L2i(u8_t L);
+  
   virtual int NOP(t_mem code);
   virtual int BRK(t_mem code);
   virtual int RTI(t_mem code);

@@ -43,6 +43,7 @@ instruction_wrapper_fn itab[256];
 	# imm8
 	3 (ind)
 	4 (zind)
+	L log2(imm8)
 */
 
 // code mask branch len mn call tick
@@ -310,6 +311,7 @@ struct dis_entry disass_huc6280[]=
     { 0x03, 0xff, ' ', 2, "STO %#" },
     { 0x13, 0xff, ' ', 2, "ST1 %#" },
     { 0x23, 0xff, ' ', 2, "ST2 %#" },
+    { 0x43, 0xff, ' ', 2, "TMA %L" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

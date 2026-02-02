@@ -492,7 +492,12 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      a= read_addr(rom, a);
 	      addr_name(a, rom, &work);
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
-	      break;	      
+	      break;
+	    case 'L': // log2(imm8)
+	      a= rom->read(addr+1);
+	      a= L2i(a);
+	      work.appendf("%d", a);
+	      break;
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);
@@ -632,6 +637,18 @@ cl_mos6502::indY(void)
   if ((a1&0xff00) != (a2&0xff00))
     tick(1);
   return *c;
+}
+
+u8_t
+cl_mos6502::L2i(u8_t L)
+{
+  u8_t m, i;
+  for (m= 0x80, i=7; m; m>>=1, i--)
+    {
+      if (L & m)
+	return i;
+    }
+  return 0;
 }
 
 void

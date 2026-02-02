@@ -38,6 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define STO		instruction_03
 #define ST1		instruction_13
 #define ST2		instruction_23
+#define TMA		instruction_43
 
 
 #endif

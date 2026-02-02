@@ -56,6 +56,7 @@ public:
   virtual int STO(MP);
   virtual int ST1(MP);
   virtual int ST2(MP);
+  virtual int TMA(MP);
 };
 
 

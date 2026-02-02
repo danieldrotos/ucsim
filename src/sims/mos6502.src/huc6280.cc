@@ -57,7 +57,7 @@ cl_huc6280::reset(void)
 int
 cl_huc6280::init(void)
 {
-  cl_mos65c02s::init();
+  cl_mos6502::init();
   address_spaces->add(mpras);
   memchips->add(mprch);
   mpras->decoders->add(mprad);
@@ -202,6 +202,16 @@ cl_huc6280::ST2(MP)
   u8_t v= fetch();
   romchip->set(0x1fe000+3, v);
   WR;
+  tick(3);
+  return resGO;
+}
+
+int
+cl_huc6280::TMA(MP)
+{
+  u8_t i= L2i(fetch()) & 7;
+  u8_t v= mpras->read(i);
+  cA.W(v);
   tick(3);
   return resGO;
 }
