@@ -51,6 +51,7 @@ public:
   virtual int SAY(MP);
   virtual int CLA(MP) { cA.W(0); tick(1); return resGO; }
   virtual int CLX(MP) { cX.W(0); tick(1); return resGO; }
+  virtual int CLY(MP) { cY.W(0); tick(1); return resGO; }
 };
 
 

@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SAY		instruction_42
 #define CLA		instruction_62
 #define CLX		instruction_82
+#define CLY		instruction_c2
 
 
 #endif
