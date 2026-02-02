@@ -54,6 +54,8 @@ public:
   virtual int CLY(MP) { cY.W(0); tick(1); return resGO; }
 
   virtual int STO(MP);
+  virtual int ST1(MP);
+  virtual int ST2(MP);
 };
 
 

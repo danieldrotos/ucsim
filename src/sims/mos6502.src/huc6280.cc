@@ -186,5 +186,25 @@ cl_huc6280::STO(MP)
   return resGO;
 }
 
+int
+cl_huc6280::ST1(MP)
+{
+  u8_t v= fetch();
+  romchip->set(0x1fe000+2, v);
+  WR;
+  tick(3);
+  return resGO;
+}
+
+int
+cl_huc6280::ST2(MP)
+{
+  u8_t v= fetch();
+  romchip->set(0x1fe000+3, v);
+  WR;
+  tick(3);
+  return resGO;
+}
+
 
 /* End of mos6502.src/huc6280.cc */
