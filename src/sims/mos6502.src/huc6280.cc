@@ -395,6 +395,7 @@ cl_huc6280::BSR(MP)
   op->init();
   stack_write(op);
   PC= a;
+  tick(5);
   return resGO;
 }
 
