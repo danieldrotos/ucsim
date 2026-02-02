@@ -44,6 +44,7 @@ public:
   virtual int init(void);
   virtual void make_memories(void);
   virtual struct dis_entry *get_dis_entry(t_addr addr);
+  virtual int longest_inst(void) { return 7; }
   virtual void print_regs(class cl_console_base *con);
 
   virtual int SXY(MP);
@@ -60,6 +61,7 @@ public:
   virtual int TAM(MP);
   virtual int TII(MP);
   virtual int TDD(MP);
+  virtual int TIN(MP);
 };
 
 

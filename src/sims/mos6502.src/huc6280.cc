@@ -251,7 +251,7 @@ cl_huc6280::TII(MP)
   do {
     u8_t v= rom->read(s);
     rom->write(d, v);
-    d++, s++, l--;
+    s++, d++, l--;
     RDWR;
     tick(6);
   }
@@ -276,7 +276,32 @@ cl_huc6280::TDD(MP)
   do {
     u8_t v= rom->read(s);
     rom->write(d, v);
-    d--, s--, l--;
+    s--, d--, l--;
+    RDWR;
+    tick(6);
+  }
+  while (l);
+  pop_reg(&cX);
+  pop_reg(&cA);
+  pop_reg(&cY);
+  return resGO;
+}
+
+int
+cl_huc6280::TIN(MP)
+{
+  u16_t s, d, l;
+  s= fetch(); s+= 256*fetch();
+  d= fetch(); d+= 256*fetch();
+  l= fetch(); l+= 256*fetch();
+  push_reg(&cY);
+  push_reg(&cA);
+  push_reg(&cX);
+  tick(16);
+  do {
+    u8_t v= rom->read(s);
+    rom->write(d, v);
+    s++, l--;
     RDWR;
     tick(6);
   }
