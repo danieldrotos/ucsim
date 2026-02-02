@@ -49,6 +49,7 @@ public:
   virtual int SXY(MP);
   virtual int SAX(MP);
   virtual int SAY(MP);
+  virtual int CLA(MP) { cA.W(0); tick(1); return resGO; }
 };
 
 
