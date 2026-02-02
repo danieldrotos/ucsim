@@ -59,6 +59,7 @@ public:
   virtual int TMA(MP);
   virtual int TAM(MP);
   virtual int TII(MP);
+  virtual int TDD(MP);
 };
 
 
