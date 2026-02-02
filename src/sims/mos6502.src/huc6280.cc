@@ -57,7 +57,19 @@ cl_huc6280::reset(void)
 int
 cl_huc6280::init(void)
 {
+  int i;
   cl_mos6502::init();
+  // Map all 0x_b into NOP 1,1
+  for (i=0x0b; i<=0xfb; i+= 0x10)
+    itab[i]= instruction_wrapper_03;
+  // some other non-codes
+  itab[0xe2]= instruction_wrapper_03;
+  itab[0x33]= instruction_wrapper_03;
+  itab[0x63]= instruction_wrapper_03;
+  itab[0x5c]= instruction_wrapper_03;
+  itab[0xdc]= instruction_wrapper_03;
+  itab[0xfc]= instruction_wrapper_03;
+  
   address_spaces->add(mpras);
   memchips->add(mprch);
   mpras->decoders->add(mprad);
