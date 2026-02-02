@@ -228,5 +228,14 @@ cl_huc6280::TMA(MP)
   return resGO;
 }
 
+int
+cl_huc6280::TAM(MP)
+{
+  u8_t i= L2i(fetch()) & 7;
+  mpras->write(i, rA);
+  tick(4);
+  return resGO;
+}
+
 
 /* End of mos6502.src/huc6280.cc */

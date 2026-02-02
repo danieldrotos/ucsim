@@ -146,8 +146,12 @@ public:
   virtual int priority_of(uchar nuof_it) { return nuof_it; }
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void);
-  virtual void push_addr(t_addr a);
+  virtual void push_addr(t_addr a); // tick(2)
+  virtual void push_reg(C8 *r); // tick(0)
+  virtual void push(u8_t v); // tick(0)
   virtual t_addr pop_addr(void);
+  virtual void pop_reg(C8 *r); // tick(0)
+  virtual u8_t pop(void); // tick(0)
   virtual void stack_check_overflow(class cl_stack_op *op);
   
   virtual class cl_cell8 &imm8(void);

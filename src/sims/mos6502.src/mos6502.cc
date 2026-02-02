@@ -771,6 +771,22 @@ cl_mos6502::push_addr(t_addr a)
   vc.wr+= 2;
 }
 
+void
+cl_mos6502::push_reg(C8 *r)
+{
+  rom->write(SPh + rSP, r->read());
+  cSP.W(rSP-1);
+  WR;
+}
+
+void
+cl_mos6502::push(u8_t v)
+{
+  rom->write(SPh + rSP, v);
+  cSP.W(rSP-1);
+  WR;
+}
+
 t_addr
 cl_mos6502::pop_addr(void)
 {
@@ -782,6 +798,26 @@ cl_mos6502::pop_addr(void)
   tick(2);
   vc.rd+= 2;
   return h*256+l;
+}
+
+void
+cl_mos6502::pop_reg(C8 *r)
+{
+  u8_t l;
+  cSP.W(rSP+1);
+  l= rom->read(SPh + rSP);
+  RD;
+  r->write(l);
+}
+
+u8_t
+cl_mos6502::pop(void)
+{
+  u8_t l;
+  cSP.W(rSP+1);
+  l= rom->read(SPh + rSP);
+  RD;
+  return l;
 }
 
 void
