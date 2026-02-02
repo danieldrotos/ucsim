@@ -161,5 +161,15 @@ cl_huc6280::SAX(MP)
   return resGO;
 }
 
+int
+cl_huc6280::SAY(MP)
+{
+  u8_t t= rY;
+  cY.W(rA);
+  cA.W(t);
+  tick(2);
+  return resGO;
+}
+
 
 /* End of mos6502.src/huc6280.cc */

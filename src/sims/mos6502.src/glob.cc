@@ -302,6 +302,7 @@ struct dis_entry disass_huc6280[]=
   {
     { 0x02, 0xff, ' ', 1, "SXY" },
     { 0x22, 0xff, ' ', 1, "SAX" },
+    { 0x42, 0xff, ' ', 1, "SAY" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

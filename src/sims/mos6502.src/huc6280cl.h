@@ -48,6 +48,7 @@ public:
 
   virtual int SXY(MP);
   virtual int SAX(MP);
+  virtual int SAY(MP);
 };
 
 
