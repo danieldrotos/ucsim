@@ -62,6 +62,8 @@ public:
   virtual int TII(MP);
   virtual int TDD(MP);
   virtual int TIN(MP);
+  virtual int TIA(MP);
+  virtual int TAI(MP);
 };
 
 

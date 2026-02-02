@@ -317,6 +317,8 @@ struct dis_entry disass_huc6280[]=
     { 0x73, 0xff, ' ', 7, "TII %T" },
     { 0xc3, 0xff, ' ', 7, "TDD %T" },
     { 0xd3, 0xff, ' ', 7, "TIN %T" },
+    { 0xe3, 0xff, ' ', 7, "TIA %T" },
+    { 0xf3, 0xff, ' ', 7, "TAI %T" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

@@ -43,6 +43,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TII		instruction_73
 #define TDD		instruction_c3
 #define TIN		instruction_d3
+#define TIA		instruction_e3
+#define TAI		instruction_f3
 
 
 #endif
