@@ -64,6 +64,11 @@ public:
   virtual int TIN(MP);
   virtual int TIA(MP);
   virtual int TAI(MP);
+  virtual int tst(u8_t n, C8 &c);
+  virtual int TST_impzp(MP) { return tst(fetch(), zpg()); }
+  virtual int TST_impab(MP) { return tst(fetch(), abs()); }
+  virtual int TST_impzpx(MP) { return tst(fetch(), zpgX()); }
+  virtual int TST_impabx(MP) { return tst(fetch(), absX()); }
 };
 
 

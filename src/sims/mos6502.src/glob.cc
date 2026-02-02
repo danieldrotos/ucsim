@@ -33,16 +33,21 @@ instruction_wrapper_fn itab[256];
 /*	Formats
 	x (ind,X)
 	y (ind),Y
-	a abs
-	z zpg
-	X zpg,X
+	a abs   -- addr[1]
+	A abs   -- addr[2]
+	z zpg   -- addr[1]
+	Z zpg   -- addr[2]
+	X zpg,X -- addr[1]
+	5 zpg,X -- addr[2]
 	Y zpg,Y
 	i abs,X
+	6 abs,X -- addr[2]
 	p abs.Y
 	r rel
 	# imm8
-	3 (ind)
+	3 (ind16)
 	4 (zind)
+	I (abs,X)
 	L log2(imm8)
 	T block transfer params: SL,SH,DL,DH,LL,LH
 */
@@ -319,6 +324,10 @@ struct dis_entry disass_huc6280[]=
     { 0xd3, 0xff, ' ', 7, "TIN %T" },
     { 0xe3, 0xff, ' ', 7, "TIA %T" },
     { 0xf3, 0xff, ' ', 7, "TAI %T" },
+    { 0x83, 0xff, ' ', 3, "TST %#,%Z" },
+    { 0x93, 0xff, ' ', 3, "TST %#,%5" },
+    { 0xa3, 0xff, ' ', 4, "TST %#,%A" },
+    { 0xb3, 0xff, ' ', 4, "TST %#,%6" },
     
     { 0, 0, 0, 0, 0, 0 }
   };

@@ -45,6 +45,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TIN		instruction_d3
 #define TIA		instruction_e3
 #define TAI		instruction_f3
+#define TST_imzp	instruction_83
+#define TST_imab	instruction_93
+#define TST_imzpx	instruction_a3
+#define TST_imabx	instruction_b3
 
 
 #endif

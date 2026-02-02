@@ -396,6 +396,14 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      addr_name(a, rom, &work);
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
+	    case 'A': // abs -- addr[2]
+	      l= rom->read(addr+1+1);
+	      h= rom->read(addr+2+1);
+	      a= h*256+l;
+	      work.appendf("$%04x", a);
+	      addr_name(a, rom, &work);
+	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
+	      break;
 	    case 'j': // JMP abs
 	      l= rom->read(addr+1);
 	      h= rom->read(addr+2);
@@ -418,8 +426,23 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      addr_name(a, rom, &work);
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
+	    case 'Z': // zpg -- addr[2]
+	      l= rom->read(addr+1+1);
+	      work.appendf("$%04x", a= l);
+	      addr_name(a, rom, &work);
+	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
+	      break;
 	    case 'X': // zpg.X
 	      l= rom->read(addr+1);
+	      work.appendf("$%04x", l);
+	      addr_name(l, rom, &work);
+	      work.append(",X");
+	      l+= rX;
+	      a= l;
+	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
+	      break;
+	    case '%': // zpg.X -- addr[2]
+	      l= rom->read(addr+1+1);
 	      work.appendf("$%04x", l);
 	      addr_name(l, rom, &work);
 	      work.append(",X");
@@ -447,6 +470,16 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	    case 'i': // abs,X
 	      l= rom->read(addr+1);
 	      h= rom->read(addr+2);
+	      a= h*256+l;
+	      work.appendf("$%04x", a);
+	      addr_name(a, rom, &work);
+	      work.append(",X");
+	      a+= rX;
+	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
+	      break;
+	    case '6': // abs,X -- addr[2]
+	      l= rom->read(addr+1+1);
+	      h= rom->read(addr+2+1);
 	      a= h*256+l;
 	      work.appendf("$%04x", a);
 	      addr_name(a, rom, &work);

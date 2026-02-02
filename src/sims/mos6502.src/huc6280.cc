@@ -364,5 +364,22 @@ cl_huc6280::TAI(MP)
   return resGO;
 }
 
+int
+cl_huc6280::tst(u8_t n, C8 &c)
+{
+  u8_t v= c.R();
+  RD;
+  rF&= ~(mN|mV|mZ);
+  if ((rA & v) == 0)
+    rF|= mZ;
+  if (v & 0x80)
+    rF|= mN;
+  if (v & 0x40)
+    rF|= mV;
+  cF.W(rF);
+  tick(4);
+  return resGO;
+}
+
 
 /* End of mos6502.src/huc6280.cc */
