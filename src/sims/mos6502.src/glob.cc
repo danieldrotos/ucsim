@@ -329,7 +329,10 @@ struct dis_entry disass_huc6280[]=
     { 0xa3, 0xff, ' ', 4, "TST %#,%A" },
     { 0xb3, 0xff, ' ', 4, "TST %#,%6" },
     
-    { 0x44, 0xff, 'S', 4, "BSR %r" },
+    { 0x44, 0xff, 'S', 2, "BSR %r" },
+
+    { 0x54, 0xff, ' ', 1, "CSL" },
+    { 0xd4, 0xff, ' ', 1, "CSH" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

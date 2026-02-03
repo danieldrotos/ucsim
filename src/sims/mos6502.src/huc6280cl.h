@@ -71,6 +71,9 @@ public:
   virtual int TST_impabx(MP) { return tst(fetch(), absX()); }
 
   virtual int BSR(MP);
+
+  virtual int CSL(MP) { tick(2); return resNOT_DONE; }
+  virtual int CSH(MP) { tick(2); return resNOT_DONE; }
 };
 
 

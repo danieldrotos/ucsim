@@ -52,6 +52,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define BSR		instruction_44
 
+#define CSL		instruction_54
+#define CSH		instruction_d4
+
 
 #endif
 
