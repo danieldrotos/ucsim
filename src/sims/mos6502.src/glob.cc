@@ -333,6 +333,7 @@ struct dis_entry disass_huc6280[]=
 
     { 0x54, 0xff, ' ', 1, "CSL" },
     { 0xd4, 0xff, ' ', 1, "CSH" },
+    { 0xf4, 0xff, ' ', 1, "SET" },
 
     { 0, 0, 0, 0, 0, 0 }
   };

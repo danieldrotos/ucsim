@@ -74,6 +74,15 @@ public:
 
   virtual int CSL(MP) { tick(2); return resNOT_DONE; }
   virtual int CSH(MP) { tick(2); return resNOT_DONE; }
+  virtual int SET(MP) { tick(1); cF.W(rF|mT); return resGO; }
+
+  // modified insts
+  virtual int PHP(MP);
+  virtual int PLP(MP);
+  virtual int ora(class cl_cell8 &op);
+  virtual int And(class cl_cell8 &op);
+  virtual int eor(class cl_cell8 &op);
+  virtual int adc(class cl_cell8 &op);
 };
 
 

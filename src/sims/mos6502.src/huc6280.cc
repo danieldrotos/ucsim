@@ -399,4 +399,131 @@ cl_huc6280::BSR(MP)
 }
 
 
+int
+cl_huc6280::PHP(MP)
+{
+  cF.W(rF & ~mT);
+  return cl_mos6502::PHP(code);
+}
+
+int
+cl_huc6280::PLP(MP)
+{
+  int r= cl_mos6502::PLP(code);
+  cF.W(rF & ~mT);
+  return r;
+}
+
+int
+cl_huc6280::ora(class cl_cell8 &op)
+{
+  if (!(rF & mT))
+    return cl_mos6502::ora(op);
+  u8_t f= rF & ~(flagZ|flagS|mT);
+  C8 *m= (C8*)rom->get_cell(rX);
+  u8_t v= m->read();
+  v|= op.R();
+  m->write(v);
+  if (!v) f|= flagZ;
+  if (v&0x80) f|= flagS;
+  cF.W(f);
+  RDWR;
+  tick(3);
+  return resGO;
+}
+
+
+int
+cl_huc6280::And(class cl_cell8 &op)
+{
+  if (!(rF & mT))
+    return cl_mos6502::And(op);
+  u8_t f= rF & ~(flagZ|flagS|mT);
+  C8 *m= (C8*)rom->get_cell(rX);
+  u8_t v= m->read();
+  v&= op.R();
+  m->write(v);
+  if (!v) f|= flagZ;
+  if (v&0x80) f|= flagS;
+  cF.W(f);
+  RDWR;
+  tick(3);
+  return resGO;
+}
+
+
+int
+cl_huc6280::eor(class cl_cell8 &op)
+{
+  if (!(rF & mT))
+    return cl_mos6502::eor(op);
+  u8_t f= rF & ~(flagZ|flagS|mT);
+  C8 *m= (C8*)rom->get_cell(rX);
+  u8_t v= m->read();
+  v^= op.R();
+  m->write(v);
+  if (!v) f|= flagZ;
+  if (v&0x80) f|= flagS;
+  cF.W(f);
+  RDWR;
+  tick(3);
+  return resGO;
+}
+
+int
+cl_huc6280::adc(class cl_cell8 &op)
+{
+  if (!(rF & mT))
+    return cl_mos6502::adc(op);
+
+  C8 *m= (C8*)rom->get_cell(rX);
+  u8_t Op= op.R(), f, oA= m->read();;
+  u16_t res;
+  u8_t C= (rF&flagC)?1:0;
+  f= rF & ~(flagZ|flagC|flagN|mT);
+
+  if (!(rF & flagD))
+    {
+      f&= ~flagV;
+      res= rA + Op + C;
+      m->write(res);
+      if (!rA) f|= flagZ;
+      if (rA & 0x80) f|= flagN;
+      if (res > 255) f|= flagC;
+      if ( ((res^oA)&0x80) && !((oA^Op)&0x80) ) f|= flagV;
+    }
+  else
+    {
+      int opint= ((Op & 0xf0) >> 4) * 10;
+      opint+= (Op & 0x0f);
+      int accint= ((oA & 0xf0) >> 4) * 10;
+      accint+= (oA & 0x0f);
+      int sum= opint + accint + C;
+      if (sum > 99)
+	{
+	  f|= flagC;
+	  sum-= 100;
+	}
+      else
+	{
+	  f&= ~flagC;
+	}
+      u8_t resA= 0;
+      if (sum >= 0 && sum < 100)
+	{
+	  int tens= sum/10;
+	  int units= sum%10;
+	  resA= ((u8_t)tens << 4 | (u8_t)units);
+	}
+      m->write(resA);
+      if (!resA) f|= flagZ;
+      if (resA&0x80) f|= flagN;
+    }
+  cF.W(f);
+  RDWR;
+  tick(3);
+  return resGO;
+}
+
+
 /* End of mos6502.src/huc6280.cc */
