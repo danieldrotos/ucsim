@@ -1280,6 +1280,18 @@ cl_t870c::and8(C8 *reg, u8_t n)
 }
 
 int
+cl_t870c::xor8(C8 *reg, u8_t n)
+{
+  rF&= ~(MJF|MZF);
+  u8_t r= reg->R() ^ n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::jr(u8_t a)
 {
   i8_t v= a;
