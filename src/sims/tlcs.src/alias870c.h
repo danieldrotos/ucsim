@@ -390,6 +390,15 @@
 #define XOR_rrSP_gg		instruction_1b5
 #define XOR_rrHLb_gg		instruction_1bd
 
+#define OR_rrWA_gg		instruction_186
+#define OR_rrBC_gg		instruction_18e
+#define OR_rrDE_gg		instruction_196
+#define OR_rrHL9_gg		instruction_19e
+#define OR_rrIX_gg		instruction_1a6
+#define OR_rrIY_gg		instruction_1ae
+#define OR_rrSP_gg		instruction_1b6
+#define OR_rrHLb_gg		instruction_1be
+
 // 1 c0 - 1 cf
 #define SET_g_0                 instruction_1c0
 #define SET_g_1                 instruction_1c1
