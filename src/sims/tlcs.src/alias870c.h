@@ -381,6 +381,15 @@
 #define AND_rrSP_gg		instruction_1b4
 #define AND_rrHLb_gg		instruction_1bc
 
+#define XOR_rrWA_gg		instruction_185
+#define XOR_rrBC_gg		instruction_18d
+#define XOR_rrDE_gg		instruction_195
+#define XOR_rrHL9_gg		instruction_19d
+#define XOR_rrIX_gg		instruction_1a5
+#define XOR_rrIY_gg		instruction_1ad
+#define XOR_rrSP_gg		instruction_1b5
+#define XOR_rrHLb_gg		instruction_1bd
+
 // 1 c0 - 1 cf
 #define SET_g_0                 instruction_1c0
 #define SET_g_1                 instruction_1c1
