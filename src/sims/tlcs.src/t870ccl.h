@@ -641,6 +641,14 @@ public:
   virtual int OR_rrIY_gg(MP)  { return or16(&cIY, regs16[sda]->R()); }
   virtual int OR_rrSP_gg(MP)  { return or16(&cSP, regs16[sda]->R()); }
   virtual int OR_rrHLb_gg(MP) { return or16(&cHL, regs16[sda]->R()); }
+  virtual int CMP_rrWA_gg(MP)  { return cmp16(&cWA, regs16[sda]->R()); }
+  virtual int CMP_rrBC_gg(MP)  { return cmp16(&cBC, regs16[sda]->R()); }
+  virtual int CMP_rrDE_gg(MP)  { return cmp16(&cDE, regs16[sda]->R()); }
+  virtual int CMP_rrHL9_gg(MP) { return cmp16(&cHL, regs16[sda]->R()); }
+  virtual int CMP_rrIX_gg(MP)  { return cmp16(&cIX, regs16[sda]->R()); }
+  virtual int CMP_rrIY_gg(MP)  { return cmp16(&cIY, regs16[sda]->R()); }
+  virtual int CMP_rrSP_gg(MP)  { return cmp16(&cSP, regs16[sda]->R()); }
+  virtual int CMP_rrHLb_gg(MP) { return cmp16(&cHL, regs16[sda]->R()); }
   // 1 c0 - 1 cf
   virtual int SET_g_0(MP) { return setr(regs8[sda], 0); }
   virtual int SET_g_1(MP) { return setr(regs8[sda], 1); }

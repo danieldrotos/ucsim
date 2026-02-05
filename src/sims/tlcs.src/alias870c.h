@@ -399,6 +399,15 @@
 #define OR_rrSP_gg		instruction_1b6
 #define OR_rrHLb_gg		instruction_1be
 
+#define CMP_rrWA_gg		instruction_187
+#define CMP_rrBC_gg		instruction_18f
+#define CMP_rrDE_gg		instruction_197
+#define CMP_rrHL9_gg		instruction_19f
+#define CMP_rrIX_gg		instruction_1a7
+#define CMP_rrIY_gg		instruction_1af
+#define CMP_rrSP_gg		instruction_1b7
+#define CMP_rrHLb_gg		instruction_1bf
+
 // 1 c0 - 1 cf
 #define SET_g_0                 instruction_1c0
 #define SET_g_1                 instruction_1c1
