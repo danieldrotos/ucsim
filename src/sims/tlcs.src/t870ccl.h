@@ -827,6 +827,15 @@ public:
   virtual int LD_dst_rD(MP) { return st8(sdc, rD); }
   virtual int LD_dst_rL(MP) { return st8(sdc, rL); }
   virtual int LD_dst_rH(MP) { return st8(sdc, rH); }
+  // 2 80 - 2 bf ALU rr,(src)
+  virtual int ADDC_rWA_src(MP) { return add16(&cWA, rd16(sda), true); }
+  virtual int ADDC_rBC_src(MP) { return add16(&cBC, rd16(sda), true); }
+  virtual int ADDC_rDE_src(MP) { return add16(&cDE, rd16(sda), true); }
+  virtual int ADDC_rHL9_src(MP) { return add16(&cHL, rd16(sda), true); }
+  virtual int ADDC_rIX_src(MP) { return add16(&cIX, rd16(sda), true); }
+  virtual int ADDC_rIY_src(MP) { return add16(&cIY, rd16(sda), true); }
+  virtual int ADDC_rSP_src(MP) { return add16(&cSP, rd16(sda), true); }
+  virtual int ADDC_rHLb_src(MP) { return add16(&cHL, rd16(sda), true); }
   // 2 c0 - 2 cf
   virtual int SET_src_0(MP) { return setm(sdc, 0); }
   virtual int SET_src_1(MP) { return setm(sdc, 1); }
