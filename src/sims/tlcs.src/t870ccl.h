@@ -568,6 +568,14 @@ public:
   virtual int XOR_g_n(MP) { return xor8(regs8[sda], fetch()); }
   virtual int OR_g_n(MP) { return or8(regs8[sda], fetch()); }
   virtual int CMP_g_n(MP) { return cmp8(regs8[sda], fetch()); }
+  virtual int ADDC_gg_mn(MP) { return add16(regs16[sda], fetch16(), true); }
+  virtual int ADD_gg_mn(MP) { return add16(regs16[sda], fetch16(), false); }
+  virtual int SUBB_gg_mn(MP) { return sub16(regs16[sda], fetch16(), true); }
+  virtual int SUB_gg_mn(MP) { return sub16(regs16[sda], fetch16(), false); }
+  virtual int AND_gg_mn(MP) { return and16(regs16[sda], fetch16()); }
+  virtual int XOR_gg_mn(MP) { return xor16(regs16[sda], fetch16()); }
+  virtual int OR_gg_mn(MP) { return or16(regs16[sda], fetch16()); }
+  virtual int CMP_gg_mn(MP) { return cmp16(regs16[sda], fetch16()); }
   // 1 70 - 1 7f
   virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
   virtual int XCH_rW_g(MP) { return xch8_rr(&cW, regs8[sda]); }
