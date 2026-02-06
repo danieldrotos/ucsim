@@ -362,6 +362,15 @@
 #define ADD_rrSP_gg		instruction_1b1
 #define ADD_rrHLb_gg		instruction_1b9
 
+#define ADD_rrWA_gg		instruction_181
+#define ADD_rrBC_gg		instruction_189
+#define ADD_rrDE_gg		instruction_191
+#define ADD_rrHL9_gg		instruction_199
+#define ADD_rrIX_gg		instruction_1a1
+#define ADD_rrIY_gg		instruction_1a9
+#define ADD_rrSP_gg		instruction_1b1
+#define ADD_rrHLb_gg		instruction_1b9
+
 #define SUBB_rrWA_gg		instruction_182
 #define SUBB_rrBC_gg		instruction_18a
 #define SUBB_rrDE_gg		instruction_192
