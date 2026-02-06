@@ -844,6 +844,14 @@ public:
   virtual int ADD_rrIY_src(MP) { return add16(&cIY, rd16(sda), false); }
   virtual int ADD_rrSP_src(MP) { return add16(&cSP, rd16(sda), false); }
   virtual int ADD_rrHLb_src(MP) { return add16(&cHL, rd16(sda), false); }
+  virtual int SUBB_rrWA_src(MP) { return sub16(&cWA, rd16(sda), true); }
+  virtual int SUBB_rrBC_src(MP) { return sub16(&cBC, rd16(sda), true); }
+  virtual int SUBB_rrDE_src(MP) { return sub16(&cDE, rd16(sda), true); }
+  virtual int SUBB_rrHL9_src(MP) { return sub16(&cHL, rd16(sda), true); }
+  virtual int SUBB_rrIX_src(MP) { return sub16(&cIX, rd16(sda), true); }
+  virtual int SUBB_rrIY_src(MP) { return sub16(&cIY, rd16(sda), true); }
+  virtual int SUBB_rrSP_src(MP) { return sub16(&cSP, rd16(sda), true); }
+  virtual int SUBB_rrHLb_src(MP) { return sub16(&cHL, rd16(sda), true); }
   // 2 c0 - 2 cf
   virtual int SET_src_0(MP) { return setm(sdc, 0); }
   virtual int SET_src_1(MP) { return setm(sdc, 1); }

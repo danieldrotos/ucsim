@@ -825,6 +825,12 @@ struct dis_entry disass_t870c[]=
     { 0x008100d4, 0x00c700fc, ' ', 3, "ADD 'rr_2.3',('srcD')" },
     { 0x0000814f, 0x0000c7ff, ' ', 2, "ADD 'rr_1.3',('src4')" },
 
+    { 0x008200e0, 0x00c700ff, ' ', 3, "SUBB 'rr_2.3',(%x)" },
+    { 0x820000e1, 0xc70000ff, ' ', 4, "SUBB 'rr_3.3',('vw')" },
+    { 0x000082e0, 0x0000c7f8, ' ', 2, "SUBB 'rr_1.3',('srcE')" },
+    { 0x008200d4, 0x00c700fc, ' ', 3, "SUBB 'rr_2.3',('srcD')" },
+    { 0x0000824f, 0x0000c7ff, ' ', 2, "SUBB 'rr_1.3',('src4')" },
+
     // OP (src),n
     { 0x006000e0, 0x00ff00ff, ' ', 4, "ADDC (%x),'n_3'" },
     { 0x600000e1, 0xff0000ff, ' ', 5, "ADDC ('vw'),'n_4'" },
