@@ -657,6 +657,15 @@
 #define AND_rrSP_src		instruction_2b4
 #define AND_rrHLb_src		instruction_2bc
 
+#define XOR_rrWA_src		instruction_285
+#define XOR_rrBC_src		instruction_28d
+#define XOR_rrDE_src		instruction_295
+#define XOR_rrHL9_src		instruction_29d
+#define XOR_rrIX_src		instruction_2a5
+#define XOR_rrIY_src		instruction_2ad
+#define XOR_rrSP_src		instruction_2b5
+#define XOR_rrHLb_src		instruction_2bd
+
 // 2 c0 - 2 cf
 #define SET_src_0               instruction_2c0
 #define SET_src_1               instruction_2c1
