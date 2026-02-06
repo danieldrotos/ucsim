@@ -675,6 +675,15 @@
 #define OR_rrSP_src		instruction_2b6
 #define OR_rrHLb_src		instruction_2be
 
+#define CMP_rrWA_src		instruction_287
+#define CMP_rrBC_src		instruction_28f
+#define CMP_rrDE_src		instruction_297
+#define CMP_rrHL9_src		instruction_29f
+#define CMP_rrIX_src		instruction_2a7
+#define CMP_rrIY_src		instruction_2af
+#define CMP_rrSP_src		instruction_2b7
+#define CMP_rrHLb_src		instruction_2bf
+
 // 2 c0 - 2 cf
 #define SET_src_0               instruction_2c0
 #define SET_src_1               instruction_2c1
