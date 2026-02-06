@@ -860,6 +860,14 @@ public:
   virtual int SUB_rrIY_src(MP) { return sub16(&cIY, rd16(sda), false); }
   virtual int SUB_rrSP_src(MP) { return sub16(&cSP, rd16(sda), false); }
   virtual int SUB_rrHLb_src(MP) { return sub16(&cHL, rd16(sda), false); }
+  virtual int AND_rrWA_src(MP) { return and16(&cWA, rd16(sda)); }
+  virtual int AND_rrBC_src(MP) { return and16(&cBC, rd16(sda)); }
+  virtual int AND_rrDE_src(MP) { return and16(&cDE, rd16(sda)); }
+  virtual int AND_rrHL9_src(MP) { return and16(&cHL, rd16(sda)); }
+  virtual int AND_rrIX_src(MP) { return and16(&cIX, rd16(sda)); }
+  virtual int AND_rrIY_src(MP) { return and16(&cIY, rd16(sda)); }
+  virtual int AND_rrSP_src(MP) { return and16(&cSP, rd16(sda)); }
+  virtual int AND_rrHLb_src(MP) { return and16(&cHL, rd16(sda)); }
   // 2 c0 - 2 cf
   virtual int SET_src_0(MP) { return setm(sdc, 0); }
   virtual int SET_src_1(MP) { return setm(sdc, 1); }
