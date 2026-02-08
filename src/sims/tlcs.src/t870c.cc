@@ -1502,6 +1502,17 @@ cl_t870c::div(C16 *rr)
 }
 
 int
+cl_t870c::NEG_gg(MP)
+{
+  rF|= MJF;
+  if (rF & MCF)
+    {
+      regs16[sda]->W(-(regs16[sda]->R()));
+    }
+  return resGO;
+}
+
+int
 cl_t870c::jr(u8_t a)
 {
   i8_t v= a;

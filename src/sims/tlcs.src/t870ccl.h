@@ -699,6 +699,7 @@ public:
   // 1 f0 - 1 ff
   virtual int MUL_gg(MP) { return mul(regs16[sda]); }
   virtual int DIV_gg(MP) { return div(regs16[sda]); }
+  virtual int NEG_gg(MP);
   virtual int JP_gg(MP) { PC= regs16[sda]->get(); return resGO; }
   virtual int SWAP_g(MP);
   // 2 00 - 2 3f ALU r,(src)
