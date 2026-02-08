@@ -338,9 +338,13 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="r_3.0")  work.append(r_names[code3&7]);
 	  else if (fmt=="r_3.3")  work.append(r_names[(code3&0x38)>>3]);
 	  else if (fmt=="rr_0.0") work.append(rr_names[code0&7]);
+	  else if (fmt=="rr_0.3") work.append(rr_names[(code0&0x38)>>3]);
 	  else if (fmt=="rr_1.0") work.append(rr_names[code1&7]);
+	  else if (fmt=="rr_1.3") work.append(rr_names[(code1&0x38)>>3]);
 	  else if (fmt=="rr_2.0") work.append(rr_names[code2&7]);
+	  else if (fmt=="rr_2.3") work.append(rr_names[(code2&0x38)>>3]);
 	  else if (fmt=="rr_3.0") work.append(rr_names[code3&7]);
+	  else if (fmt=="rr_3.3") work.append(rr_names[(code3&0x38)>>3]);
 	  else if (fmt=="n_1")    work.appendf("0x%02x", code1);
 	  else if (fmt=="n_2")    work.appendf("0x%02x", code2);
 	  else if (fmt=="n_3")    work.appendf("0x%02x", code3);
@@ -1238,6 +1242,33 @@ cl_t870c::add8(C8 *reg, u8_t n, bool c)
 }
 
 int
+cl_t870c::add16(C16 *reg, u16_t n, bool c)
+{
+  u32_t op1, op1_15, op2, op2_15, res, res_15, c15, c16= 0;
+  op1= reg->get();
+  op2= n;
+  res= op1 + op2 + (c?((rF&MCF)?1:0):0);
+  op1_15= op1 & 0x7fff;
+  op2_15= op2 & 0x7fff;
+  res_15= op1_15 + op2_15;
+
+  rF&= ~MALL;
+  if (res > 0xffff)
+    (rF|= MCF|MJF), c16=1;
+  if (res & 0x8000)
+    rF|= MSF;
+  c15= (res_15>0x7fff)?1:0;
+  if (c15^c16)
+    rF|= MVF;
+  if ((res & 0xffff) == 0)
+    rF|= MZF;
+
+  reg->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::sub8(C8 *reg, u8_t n, bool b)
 {
   u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0, cin;
@@ -1262,6 +1293,35 @@ cl_t870c::sub8(C8 *reg, u8_t n, bool b)
   if (((op1&0xf) + (op2&0xf)) > 0xf)
     rF|= MHF;
   rF^= (MCF|MJF|MHF);
+  
+  reg->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::sub16(C16 *reg, u16_t n, bool b)
+{
+  u32_t op1, op1_15, op2, op2_15, res, res_15, c15, c16= 0, cin;
+  op1= reg->get();
+  cin= b?((rF&MCF)?0:1):1;
+  op2= (~n + cin) & 0xffff;
+  res= op1 + op2;
+  op1_15= op1 & 0x7fff;
+  op2_15= op2 & 0x7fff;
+  res_15= op1_15 + op2_15;
+
+  rF&= ~MALL;
+  if (res > 0xffff)
+    (rF|= MCF|MJF), c16=1;
+  if (res & 0x8000)
+    rF|= MSF;
+  c15= (res_15>0x7fff)?1:0;
+  if (c15^c16)
+    rF|= MVF;
+  if ((res & 0xffff) == 0)
+    rF|= MZF;
+  rF^= (MCF|MJF);
   
   reg->W(res);
   cF.W(rF);
@@ -1298,10 +1358,49 @@ cl_t870c::cmp8(C8 *reg, u8_t n)
 }
 
 int
+cl_t870c::cmp16(C16 *reg, u16_t n)
+{
+  u32_t op1, op1_15, op2, op2_15, res, res_15, c15, c16= 0;
+  op1= reg->get();
+  op2= (~n + 1) & 0xffff;
+  res= op1 + op2;
+  op1_15= op1 & 0x7fff;
+  op2_15= op2 & 0x7fff;
+  res_15= op1_15 + op2_15;
+
+  rF&= ~MALL;
+  if (res > 0xffff)
+    (rF|= MCF|MJF), c16=1;
+  if (res & 0x8000)
+    rF|= MSF;
+  c15= (res_15>0x7fff)?1:0;
+  if (c15^c16)
+    rF|= MVF;
+  if ((res & 0xffff) == 0)
+    rF|= MZF;
+  rF^= (MCF|MJF);
+  
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::and8(C8 *reg, u8_t n)
 {
   rF&= ~(MJF|MZF);
   u8_t r= reg->R() & n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::and16(C16 *reg, u16_t n)
+{
+  rF&= ~(MJF|MZF);
+  u16_t r= reg->R() & n;
   if (!r)
     rF|= (MJF|MZF);
   reg->W(r);
@@ -1322,10 +1421,34 @@ cl_t870c::xor8(C8 *reg, u8_t n)
 }
 
 int
+cl_t870c::xor16(C16 *reg, u16_t n)
+{
+  rF&= ~(MJF|MZF);
+  u16_t r= reg->R() ^ n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::or8(C8 *reg, u8_t n)
 {
   rF&= ~(MJF|MZF);
   u8_t r= reg->R() | n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::or16(C16 *reg, u16_t n)
+{
+  rF&= ~(MJF|MZF);
+  u16_t r= reg->R() | n;
   if (!r)
     rF|= (MJF|MZF);
   reg->W(r);
