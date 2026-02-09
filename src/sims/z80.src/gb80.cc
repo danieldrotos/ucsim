@@ -309,12 +309,12 @@ cl_gb80::get_disasm_info(t_addr addr,
   int start_addr = addr;
   struct dis_entry *dis_e;
 
-  code= rom->get(addr++);
+  code= rom->read(addr++);
   dis_e = NULL;
 
   switch(code) {
     case 0xcb:  /* ESC code to lots of op-codes, all 2-byte */
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       i= 0;
       while ((code & disass_gb80_cb[i].mask) != disass_gb80_cb[i].code &&
         disass_gb80_cb[i].mnemonic)
@@ -387,18 +387,18 @@ cl_gb80::disass(t_addr addr)
           switch (*(b++))
             {
             case 'd': // d    jump relative target, signed? byte immediate operand
-              temp.format("#%d", (char)rom->get(addr+immed_offset));
+              temp.format("#%d", (char)rom->read(addr+immed_offset));
               ++immed_offset;
               break;
             case 'w': // w    word immediate operand
               temp.format("#0x%04x",
-                 (uint)((rom->get(addr+immed_offset)) |
-                        (rom->get(addr+immed_offset+1)<<8)) );
+                 (uint)((rom->read(addr+immed_offset)) |
+                        (rom->read(addr+immed_offset+1)<<8)) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'b': // b    byte immediate operand
-              temp.format("#0x%02x", (uint)rom->get(addr+immed_offset));
+              temp.format("#0x%02x", (uint)rom->read(addr+immed_offset));
               ++immed_offset;
               break;
             default:
