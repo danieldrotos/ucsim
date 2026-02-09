@@ -236,11 +236,11 @@ cl_ez80::get_disasm_info(t_addr addr,
   int immed_n = 0;
   struct dis_entry *dis_e= NULL;
   
-  code= rom->get(addr++);
+  code= rom->read(addr++);
   switch (code)
     {
     case 0xed:
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       i= 0;
       while ((code & disass_ez80_ed[i].mask) != disass_ez80_ed[i].code &&
 	     disass_ez80_ed[i].mnemonic)
@@ -262,7 +262,7 @@ cl_ez80::get_disasm_info(t_addr addr,
       break;
 
     case 0xdd:
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       i= 0;
       while ((code & disass_ez80_dd[i].mask) != disass_ez80_dd[i].code &&
 	     disass_ez80_dd[i].mnemonic)
@@ -285,7 +285,7 @@ cl_ez80::get_disasm_info(t_addr addr,
       break;
 
     case 0xfd:
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       i= 0;
       while ((code & disass_ez80_fd[i].mask) != disass_ez80_fd[i].code &&
 	     disass_ez80_fd[i].mnemonic)
