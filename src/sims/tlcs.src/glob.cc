@@ -764,6 +764,7 @@ struct dis_entry disass_t870c[]=
 
     { 0x0000f2e8, 0x0000fffc, ' ', 2, "MUL 'rr_0.0h','rr_0.0l'" }, // WA,BC,DE,HL only
     { 0x0000f3e8, 0x0000fffc, ' ', 2, "DIV 'rr_0.0',C" }, // WA,BC,DE,HL only
+    { 0x0000f4e8, 0x0000fff8, ' ', 2, "SHLC 'r_0.0'" },
     { 0x0000fae8, 0x0000fff8, ' ', 2, "NEG CS,'rr_0.0'" },
     { 0x0000fee8, 0x0000fff8, ' ', 2, "JP 'rr_0.0'" },
     { 0x0000ffe8, 0x0000fff8, ' ', 2, "SWAP 'r_0.0'" },
