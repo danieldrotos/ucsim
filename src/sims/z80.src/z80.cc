@@ -536,25 +536,25 @@ cl_z80::disass(t_addr addr)
           switch (*(b++))
             {
             case 'd': // jump relative target, signed? byte immediate operand
-              temp.format("%d", (signed char)(rom->get(addr+immed_offset)));
+              temp.format("%d", (signed char)(rom->read(addr+immed_offset)));
               ++immed_offset;
               break;
             case 'w': // word immediate operand, little endian
               temp.format("0x%04x",
-			  (uint)((rom->get(addr+immed_offset)) |
-				 (rom->get(addr+immed_offset+1)<<8)) );
+			  (uint)((rom->read(addr+immed_offset)) |
+				 (rom->read(addr+immed_offset+1)<<8)) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'W': // word immediate operand, big endian
               temp.format("0x%04x",
-			  (uint)((rom->get(addr+immed_offset)<<8) |
-				 (rom->get(addr+immed_offset+1))) );
+			  (uint)((rom->read(addr+immed_offset)<<8) |
+				 (rom->read(addr+immed_offset+1))) );
               ++immed_offset;
               ++immed_offset;
               break;
             case 'b': // byte immediate operand
-              temp.format("0x%02x", (uint)rom->get(addr+immed_offset));
+              temp.format("0x%02x", (uint)rom->read(addr+immed_offset));
               ++immed_offset;
               break;
             default:
@@ -581,28 +581,28 @@ cl_z80::print_regs(class cl_console_base *con)
                  regs.raf.A, regs.raf.A, isprint(regs.raf.A)?regs.raf.A:'.');
   con->dd_printf("%s\n", cbin(regs.raf.F, 8).c_str());
   con->dd_printf("BC= 0x%04x [BC]= %02x %3d %c  ",
-                 regs.BC, ram->get(regs.BC), ram->get(regs.BC),
-                 isprint(ram->get(regs.BC))?ram->get(regs.BC):'.');
+                 regs.BC, ram->read(regs.BC), ram->read(regs.BC),
+                 isprint(ram->read(regs.BC))?ram->read(regs.BC):'.');
   con->dd_printf("DE= 0x%04x [DE]= %02x %3d %c  ",
-                 regs.DE, ram->get(regs.DE), ram->get(regs.DE),
-                 isprint(ram->get(regs.DE))?ram->get(regs.DE):'.');
+                 regs.DE, ram->read(regs.DE), ram->read(regs.DE),
+                 isprint(ram->read(regs.DE))?ram->read(regs.DE):'.');
   con->dd_printf("HL= 0x%04x [HL]= %02x %3d %c\n",
-                 regs.HL, ram->get(regs.HL), ram->get(regs.HL),
-                 isprint(ram->get(regs.HL))?ram->get(regs.HL):'.');
+                 regs.HL, ram->read(regs.HL), ram->read(regs.HL),
+                 isprint(ram->read(regs.HL))?ram->read(regs.HL):'.');
   con->dd_printf("IX= 0x%04x [IX]= %02x %3d %c  ",
-                 regs.IX, ram->get(regs.IX), ram->get(regs.IX),
-                 isprint(ram->get(regs.IX))?ram->get(regs.IX):'.');
+                 regs.IX, ram->read(regs.IX), ram->read(regs.IX),
+                 isprint(ram->read(regs.IX))?ram->read(regs.IX):'.');
   con->dd_printf("IY= 0x%04x [IY]= %02x %3d %c  ",
-                 regs.IY, ram->get(regs.IY), ram->get(regs.IY),
-                 isprint(ram->get(regs.IY))?ram->get(regs.IY):'.');
+                 regs.IY, ram->read(regs.IY), ram->read(regs.IY),
+                 isprint(ram->read(regs.IY))?ram->read(regs.IY):'.');
   con->dd_printf("AF= 0x%04x [AF]= %02x %3d %c\n",
-                 regs.AF, ram->get(regs.AF), ram->get(regs.AF),
-                 isprint(ram->get(regs.AF))?ram->get(regs.AF):'.');
+                 regs.AF, ram->read(regs.AF), ram->read(regs.AF),
+                 isprint(ram->read(regs.AF))?ram->read(regs.AF):'.');
   con->dd_printf("SP limit= 0x%04x\n", AU(sp_limit));
   
   /*con->dd_printf("SP= 0x%04x ",
-                 regs.SP, ram->get(regs.SP), ram->get(regs.SP),
-                 isprint(ram->get(regs.SP))?ram->get(regs.SP):'.');
+                 regs.SP, ram->read(regs.SP), ram->read(regs.SP),
+                 isprint(ram->read(regs.SP))?ram->read(regs.SP):'.');
   */
   int i;
   con->dd_cprintf("answer", "SP= ");
