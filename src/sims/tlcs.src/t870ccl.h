@@ -704,6 +704,7 @@ public:
   virtual int SHLC_g(MP);
   virtual int SHRC_g(MP);
   virtual int ROLC_g(MP);
+  virtual int RORC_g(MP);
   virtual int NEG_gg(MP);
   virtual int JP_gg(MP) { PC= regs16[sda]->get(); return resGO; }
   virtual int SWAP_g(MP);

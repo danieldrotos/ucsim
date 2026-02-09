@@ -472,6 +472,7 @@
 #define SHLC_g			instruction_1f4
 #define SHRC_g			instruction_1f5
 #define ROLC_g			instruction_1f6
+#define RORC_g			instruction_1f7
 #define NEG_gg			instruction_1fa
 #define JP_gg                   instruction_1fe
 #define SWAP_g                  instruction_1ff
