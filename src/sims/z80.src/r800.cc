@@ -61,6 +61,67 @@ cl_r800::id_string(void)
   return ("R800");
 }
 
+
+struct dis_entry disass_r800[]= {
+  { 0xf9ed, 0xffff, ' ', 2, "MULUB A,A" },
+  { 0xc1ed, 0xffff, ' ', 2, "MULUB A,B" },
+  { 0xc9ed, 0xffff, ' ', 2, "MULUB A,C" },
+  { 0xd1ed, 0xffff, ' ', 2, "MULUB A,D" },
+  { 0xd9ed, 0xffff, ' ', 2, "MULUB A,E" },
+  { 0xe1ed, 0xffff, ' ', 2, "MULUB A,H" },
+  { 0xe9ed, 0xffff, ' ', 2, "MULUB A,L" },
+
+  { 0xc3ed, 0xffff, ' ', 2, "MULUW HL,BC" },
+  { 0xd3ed, 0xffff, ' ', 2, "MULUW HL,DE" },
+  { 0xe3ed, 0xffff, ' ', 2, "MULUW HL,HL" },
+  { 0xf3ed, 0xffff, ' ', 2, "MULUW HL,SP" },
+
+  { 0, 0, ' ', 0, NULL }
+};
+
+const char *
+cl_r800::get_disasm_info(t_addr addr,
+			 int *ret_len,
+			 int *ret_branch,
+			 int *immed_offset,
+			 struct dis_entry **dentry)
+{
+  uint c0, c1;
+  struct dis_entry *de;
+  c0= rom->read(addr);
+  c1= rom->read(addr+1);
+  if (c0 == 0xed)
+    {
+      // Z280/R800 multu HL=A*r
+      // ED 11rr r001
+      // Z280/R800 multuw
+      // multuw DE:HL= HL*ss
+      // ED 11ss 0011
+      if ( ((c1 & 0xc7) == 0xc1) ||
+	   ((c1 & 0xcf) == 0xc3) )
+	{
+	  int i;
+	  for (i= 0; disass_r800[i].mnemonic; i++)
+	    {
+	      if (disass_r800[i].code == c1*256+c0)
+		{
+		  de= &disass_r800[i];
+		  if (ret_len) *ret_len= de->length;
+		  if (ret_branch) *ret_branch= de->branch;
+		  if (immed_offset) *immed_offset= 0;
+		  if (dentry) *dentry= de;
+		  return de->mnemonic;
+		}
+	    }
+	}
+    }
+  return cl_ez80::get_disasm_info(addr,
+				  ret_len,
+				  ret_branch,
+				  immed_offset,
+				  dentry);
+}
+
 /*
   dd/fd 88+p   ADC   A,IXYp
   dd/fd 80+p   ADD   A,IXYp

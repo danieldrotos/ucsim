@@ -376,12 +376,12 @@ cl_z80::get_disasm_info(t_addr addr,
   int start_addr = addr;
   struct dis_entry *dis_e;
 
-  code= rom->get(addr++);
+  code= rom->read(addr++);
   dis_e = NULL;
 
   switch(code) {
     case 0xcb:  /* ESC code to lots of op-codes, all 2-byte */
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       i= 0;
       while ((code & disass_z80_cb[i].mask) != disass_z80_cb[i].code &&
         disass_z80_cb[i].mnemonic)
@@ -393,7 +393,7 @@ cl_z80::get_disasm_info(t_addr addr,
     break;
 
     case 0xed: /* ESC code to about 80 opcodes of various lengths */
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       if (type->type == CPU_Z80N)
 	{
 	  i= 0;
@@ -418,11 +418,11 @@ cl_z80::get_disasm_info(t_addr addr,
     break;
 
     case 0xdd: /* ESC codes,about 284, vary lengths, IX centric */
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       if (code == 0xcb) {
         immed_n = 2;
         addr++;  // pass up immed data
-        code= rom->get(addr++);
+        code= rom->read(addr++);
         i= 0;
         while ((code & disass_z80_ddcb[i].mask) != disass_z80_ddcb[i].code &&
           disass_z80_ddcb[i].mnemonic)
@@ -444,11 +444,11 @@ cl_z80::get_disasm_info(t_addr addr,
     break;
 
     case 0xfd: /* ESC codes,sme as dd but IY centric */
-      code= rom->get(addr++);
+      code= rom->read(addr++);
       if (code == 0xcb) {
         immed_n = 2;
         addr++;  // pass up immed data
-        code= rom->get(addr++);
+        code= rom->read(addr++);
         i= 0;
         while ((code & disass_z80_fdcb[i].mask) != disass_z80_fdcb[i].code &&
           disass_z80_fdcb[i].mnemonic)
