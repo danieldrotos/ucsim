@@ -1518,6 +1518,22 @@ cl_t870c::SHLC_g(MP)
 }
 
 int
+cl_t870c::SHRC_g(MP)
+{
+  C8 *g= regs8[sda];
+  rF&= ~(MJF|MCF|MZF);
+  u8_t r= g->R();
+  if (r & 1)
+    rF|= (MJF|MCF);
+  r>>= 1;
+  if (!r)
+    rF|= MZF;
+  g->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::NEG_gg(MP)
 {
   rF|= MJF;
