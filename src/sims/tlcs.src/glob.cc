@@ -762,7 +762,8 @@ struct dis_entry disass_t870c[]=
     { 0x0000e0e8, 0x0000f8f8, ' ', 2, "CPL 'r_0.0'.'b_1.0'" },
     { 0x0000e8e8, 0x0000f8f8, ' ', 2, "LD 'r_0.0'.'b_1.0',CF" },
 
-    { 0x0000f0e8, 0x0000fff8, ' ', 2, "SHLC 'rr_0.0'" },
+    { 0x0000f0e8, 0x0000fff8, ' ', 2, "SHLCA 'rr_0.0'" },
+    { 0x0000f1e8, 0x0000fff8, ' ', 2, "SHRCA 'rr_0.0'" },
     { 0x0000f2e8, 0x0000fffc, ' ', 2, "MUL 'rr_0.0h','rr_0.0l'" }, // WA,BC,DE,HL only
     { 0x0000f3e8, 0x0000fffc, ' ', 2, "DIV 'rr_0.0',C" }, // WA,BC,DE,HL only
     { 0x0000f4e8, 0x0000fff8, ' ', 2, "SHLC 'r_0.0'" },

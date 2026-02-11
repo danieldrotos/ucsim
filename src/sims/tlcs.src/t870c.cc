@@ -1480,6 +1480,24 @@ cl_t870c::SHLCA_gg(MP)
 }
 
 int
+cl_t870c::SHRCA_gg(MP)
+{
+  C16 *gg= regs16[sda];
+  rF&= ~(MJF|MCF|MZF|MSF|MVF);
+  i16_t ro= gg->R(), rn;
+  if (ro & 1)
+    rF|= (MJF|MCF);
+  rn= ro >> 1;
+  if (!rn)
+    rF|= MZF;
+  if (rn & 0x8000)
+    rF|= MSF;
+  gg->W(rn);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::mul(C16 *rr)
 {
   u8_t op1, op2;
