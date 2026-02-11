@@ -407,15 +407,28 @@ cl_z80::get_disasm_info(t_addr addr,
 	      break;
 	    }
 	}
+      if (type->type == CPU_Z180 || type->type == CPU_EZ80)
+	{
+	  i= 0;
+	  while ((code & disass_z180_ed[i].mask) != disass_z180_ed[i].code &&
+		 disass_z180_ed[i].mnemonic)
+	    i++;
+	  b= disass_z180_ed[i].mnemonic;
+	  if (b != NULL)
+	    {
+	      len += (disass_z180_ed[i].length + 1);
+	      break;
+	    }
+	}
       i= 0;
       while ((code & disass_z80_ed[i].mask) != disass_z80_ed[i].code &&
-        disass_z80_ed[i].mnemonic)
-        i++;
+	     disass_z80_ed[i].mnemonic)
+	i++;
       dis_e = &disass_z80_ed[i];
       b= disass_z80_ed[i].mnemonic;
       if (b != NULL)
-        len += (disass_z80_ed[i].length + 1);
-    break;
+	len += (disass_z80_ed[i].length + 1);
+      break;
 
     case 0xdd: /* ESC codes,about 284, vary lengths, IX centric */
       code= rom->read(addr++);

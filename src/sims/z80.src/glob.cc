@@ -367,6 +367,14 @@ struct dis_entry disass_z80n_ed[]=
    { 0, 0, 0, 0, NULL }
 };
 
+struct dis_entry disass_z180_ed[]= {
+  { 0x004c, 0x00ff, ' ', 1, "MLT BC" },
+  { 0x005c, 0x00ff, ' ', 1, "MLT DE" },
+  { 0x006c, 0x00ff, ' ', 1, "MLT HL" },
+  { 0x007c, 0x00ff, ' ', 1, "MLT SP" },
+  { 0, 0, 0, 0, NULL }
+};
+  
 struct dis_entry disass_z80_ed[]= {
   { 0x0000, 0x00ff, ' ', 1, "RLC B" },
   { 0x0040, 0x00ff, ' ', 1, "IN B,(C)" },
