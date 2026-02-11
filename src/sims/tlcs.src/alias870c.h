@@ -745,7 +745,7 @@
 #define INC_src                 instruction_2f0
 #define SET_src_A               instruction_2f2
 #define LD_src_A_CF             instruction_2f3
-#define ROLD_A_src		instruction_ff6
+#define ROLD_A_src		instruction_2f6
 #define DEC_src                 instruction_2f8
 #define LD_dst_n                instruction_2f9
 #define CLR_src_A               instruction_2fa
