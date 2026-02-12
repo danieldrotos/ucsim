@@ -37,7 +37,8 @@ class cl_r3ka: public cl_r3k
 {
 public:
   u8_t rSU;
-  u8_t edmr;
+  //u8_t edmr;
+  bool sysmode;
   class cl_cell8 cSU;
 public:
   cl_r3ka(class cl_sim *asim);
