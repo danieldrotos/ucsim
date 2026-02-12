@@ -467,6 +467,8 @@
 #define LD_g_7_CF               instruction_1ef
 
 // 1 f0 - 1 ff
+#define SHLCA_gg		instruction_1f0
+#define SHRCA_gg		instruction_1f1
 #define MUL_gg			instruction_1f2
 #define DIV_gg			instruction_1f3
 #define SHLC_g			instruction_1f4
@@ -743,6 +745,7 @@
 #define INC_src                 instruction_2f0
 #define SET_src_A               instruction_2f2
 #define LD_src_A_CF             instruction_2f3
+#define ROLD_A_src		instruction_2f6
 #define DEC_src                 instruction_2f8
 #define LD_dst_n                instruction_2f9
 #define CLR_src_A               instruction_2fa

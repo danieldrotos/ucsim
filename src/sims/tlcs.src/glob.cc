@@ -762,6 +762,8 @@ struct dis_entry disass_t870c[]=
     { 0x0000e0e8, 0x0000f8f8, ' ', 2, "CPL 'r_0.0'.'b_1.0'" },
     { 0x0000e8e8, 0x0000f8f8, ' ', 2, "LD 'r_0.0'.'b_1.0',CF" },
 
+    { 0x0000f0e8, 0x0000fff8, ' ', 2, "SHLCA 'rr_0.0'" },
+    { 0x0000f1e8, 0x0000fff8, ' ', 2, "SHRCA 'rr_0.0'" },
     { 0x0000f2e8, 0x0000fffc, ' ', 2, "MUL 'rr_0.0h','rr_0.0l'" }, // WA,BC,DE,HL only
     { 0x0000f3e8, 0x0000fffc, ' ', 2, "DIV 'rr_0.0',C" }, // WA,BC,DE,HL only
     { 0x0000f4e8, 0x0000fff8, ' ', 2, "SHLC 'r_0.0'" },
@@ -998,6 +1000,12 @@ struct dis_entry disass_t870c[]=
     { 0x0000f3e0, 0x0000fff8, ' ', 2, "LD ('srcE').A,CF" },
     { 0x00f300d4, 0x00ff00fc, ' ', 3, "LD ('srcD').A,CF" },
     { 0x0000f34f, 0x0000ffff, ' ', 2, "LD ('src4').A,CF" },
+
+    { 0x00f600e0, 0x00ff00ff, ' ', 3, "ROLD A,(%x)" },
+    { 0xf60000e1, 0xff0000ff, ' ', 4, "ROLD A,('vw')" },
+    { 0x0000f6e0, 0x0000fff8, ' ', 2, "ROLD A,('srcE')" },
+    { 0x00f600d4, 0x00ff00fc, ' ', 3, "ROLD A,('srcD')" },
+    { 0x0000f64f, 0x0000ffff, ' ', 2, "ROLD A,('src4')" },
 
     { 0x00f800e0, 0x00ff00ff, ' ', 3, "DEC (%x)" },
     { 0xf80000e1, 0xff0000ff, ' ', 4, "DEC ('vw')" },

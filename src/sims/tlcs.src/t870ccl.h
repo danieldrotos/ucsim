@@ -699,6 +699,8 @@ public:
   virtual int LD_g_6_CF(MP) { return st1r(regs8[sda], 6); }
   virtual int LD_g_7_CF(MP) { return st1r(regs8[sda], 7); }
   // 1 f0 - 1 ff
+  virtual int SHLCA_gg(MP);
+  virtual int SHRCA_gg(MP);
   virtual int MUL_gg(MP) { return mul(regs16[sda]); }
   virtual int DIV_gg(MP) { return div(regs16[sda]); }
   virtual int SHLC_g(MP);
@@ -951,6 +953,7 @@ public:
   virtual int INC_src(MP) { return inc8m(sdc); }
   virtual int SET_src_A(MP) { return setm(sdc, rA&7); }
   virtual int LD_src_A_CF(MP);
+  virtual int ROLD_A_src(MP);
   virtual int DEC_src(MP) { return dec8m(sdc); }
   virtual int LD_dst_n(MP) { return st8(sdc, fetch()); }
   virtual int CPL_src_A(MP) { return cplm(sdc, rA&7); }

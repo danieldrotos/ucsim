@@ -465,7 +465,7 @@ class cl_r4k_cpu: public cl_rxk_cpu
 {
 protected:
   class cl_r4k *r4uc;
-  class cl_cell8 *edmr;
+  class cl_memory_cell *edmr;
   class cl_memory_cell *stacksegl, *stacksegh;
   class cl_memory_cell *datasegl , *datasegh;
 public:

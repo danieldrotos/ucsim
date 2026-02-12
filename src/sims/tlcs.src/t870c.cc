@@ -1458,6 +1458,45 @@ cl_t870c::or16(C16 *reg, u16_t n)
   return resGO;
 }
 
+
+int
+cl_t870c::SHLCA_gg(MP)
+{
+  C16 *gg= regs16[sda];
+  rF&= ~(MJF|MCF|MZF|MSF|MVF);
+  u16_t ro= gg->R(), rn;
+  if (ro & 0x8000)
+    rF|= (MJF|MCF);
+  rn= ro << 1;
+  if ((rn ^ ro) & 0x8000)
+    rF|= MVF;
+  if (!rn)
+    rF|= MZF;
+  if (rn & 0x8000)
+    rF|= MSF;
+  gg->W(rn);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::SHRCA_gg(MP)
+{
+  C16 *gg= regs16[sda];
+  rF&= ~(MJF|MCF|MZF|MSF|MVF);
+  i16_t ro= gg->R(), rn;
+  if (ro & 1)
+    rF|= (MJF|MCF);
+  rn= ro >> 1;
+  if (!rn)
+    rF|= MZF;
+  if (rn & 0x8000)
+    rF|= MSF;
+  gg->W(rn);
+  cF.W(rF);
+  return resGO;
+}
+
 int
 cl_t870c::mul(C16 *rr)
 {
@@ -1763,6 +1802,21 @@ cl_t870c::LD_src_A_CF(MP)
   sdc->write(v);
   WR;
   cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::ROLD_A_src(MP)
+{
+  u8_t v= sdc->read();
+  u8_t vh= v>>4;
+  RD;
+  v= (v<<4) + (rA&0xf);
+  rA= (rA&0xf0) + vh;
+  cF.W(rF|MJF);
+  cA.W(rA);
+  sdc->write(v);
+  WR;
   return resGO;
 }
 
