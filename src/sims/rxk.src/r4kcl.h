@@ -131,7 +131,7 @@ public:
   virtual int test16(u16_t op);					// 0f,2t,0w,0r
   virtual int test32(u32_t op);					// 0f,2t,0w,0r
   virtual int flag_cc_hl(t_mem code);				// 0f,4t,0w,0r
-  
+
   // branch
   virtual int lljp_cx(t_mem code);				// 4f,14t,0w,0r
   virtual int lljp_cc(t_mem code);				// 4f,14t,0w,0r
@@ -152,6 +152,7 @@ public:
   virtual int SUB_HL_JK(t_mem code) { return subhl(destHL(), rJK); }
   virtual int SUB_HL_DE(t_mem code) { return subhl(destHL(), rDE); }
   virtual int TEST_HL(t_mem code) { return test16(rHL); }
+  virtual int NEG_HL(t_mem code);
   virtual int CP_HL_D(t_mem code);
   virtual int RLC_BC(t_mem code) { return rot16left(destBC(), rBC); }
   virtual int RLC_DE(t_mem code) { return rot16left(destDE(), rDE); }
