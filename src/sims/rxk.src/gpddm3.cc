@@ -37,7 +37,7 @@ struct dis_entry disass_pddm3[]=
     { 0x39, 0xff, ' ', 2, "ADD %I,SP" },
     { 0x34, 0xff, ' ', 3, "INC (%I%d)" },
     { 0x35, 0xff, ' ', 3, "DEC (%I%d)" },
-    { 0xbe, 0xff, ' ', 3, "CP (%I%d)" },
+    { 0xbe, 0xff, ' ', 3, "CP A,(%I%d)" },
     { 0x9e, 0xff, ' ', 3, "SBC A,(%I%d)" },
     { 0x96, 0xff, ' ', 3, "SUB A,(%I%d)" },
     { 0x86, 0xff, ' ', 3, "ADD A,(%I%d)" },
