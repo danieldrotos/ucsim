@@ -1078,7 +1078,7 @@ cl_rxk::sub8(u8_t op2, bool cy)
   i8_t r= op1-o2;
   if (cy && (rF&flagC)) r--;
   res= r;
-  forg= rF & ~(flagS|flagZ|flagV|flagC);
+  forg= rF & ~(flagS|flagZ|flagV);
   a7= v1&0x80; na7= a7^0x80;
   b7= op2&0x80; nb7= b7^0x80;
   r7= res&0x80; nr7= r7^0x80;
@@ -1118,7 +1118,7 @@ cl_rxk::sub16(u16_t op2, bool cy)
   i16_t r= op1-o2;
   if (cy && (rF&flagC)) r--;
   res= r;
-  forg= rF & ~(flagS|flagZ|flagV|flagC);
+  forg= rF & ~(flagS|flagZ|flagV);
   a15= v1&0x8000; na15= a15^0x8000;
   b15= op2&0x8000; nb15= b15^0x8000;
   r15= res&0x8000; nr15= r15^0x8000;
@@ -1146,7 +1146,7 @@ cl_rxk::sub32(u32_t op1, u32_t op2, class cl_cell32 &cRes, bool cy)
   i32_t r= op1-o2;
   if (cy && (rF&flagC)) r--;
   res= r;
-  forg= rF & ~(flagZ|flagS|flagV|flagC);
+  forg= rF & ~(flagZ|flagS|flagV);
   a31=  v1&0x80000000; na31= a31^0x80000000;
   b31= op2&0x80000000; nb31= b31^0x80000000;
   r31= res&0x80000000; nr31= r31^0x80000000;
@@ -1302,7 +1302,7 @@ cl_r4k::NEG_HL(t_mem code)
   bool cy= false;
   //if (cy && (rF&flagC)) r--;
   res= r;
-  forg= rF & ~(flagS|flagZ|flagV|flagC);
+  forg= rF & ~(flagS|flagZ|flagV);
   a15= v1&0x8000; na15= a15^0x8000;
   b15= op2&0x8000; nb15= b15^0x8000;
   r15= res&0x8000; nr15= r15^0x8000;
