@@ -329,15 +329,18 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
     return strdup("INVALID");
   i= 0;
-  while ((code32 & dtab[i].mask) != dtab[i].code &&
-	 (dtab[i].mask & cmask) &&
+  while (
+	 ((code32 & dtab[i].mask) != dtab[i].code ||
+	  !(dtab[i].mask & cmask))
+	 &&
 	 dtab[i].mnemonic)
     i++;
-  if (dtab[i].mnemonic == NULL)
+  de= &dtab[i];
+  if (de->mnemonic == NULL)
     {
       return strdup("UNKNOWN/INVALID");
     }
-  b= dtab[i].mnemonic;
+  b= de->mnemonic;
   
   first= true;
   for (i=0; b[i]; i++)
