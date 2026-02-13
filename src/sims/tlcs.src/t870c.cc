@@ -303,6 +303,39 @@ static const u8_t code_loc[256]= {
   /* f */ 3,4,2,2, 2,2,2,2, 0,1,1,1, 1,1,1,1
 };
 
+struct dis_entry *
+cl_t870c::get_dis_entry(t_addr addr)
+{
+  t_mem code32;
+  u8_t code0, code1, code2, code3, code4;
+  int i;
+  struct dis_entry *dtab, *de;
+  
+  code0= rom->get(addr);
+  code1= rom->get(addr+1);
+  code2= rom->get(addr+2);
+  code3= rom->get(addr+3);
+  code4= rom->get(addr+4);
+  code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
+
+  if ((dtab= dis_tbl()) == NULL)
+    return NULL;
+  u32_t cloc, cmask;
+  cloc= code_loc[code0]-1;
+  cmask= 0x000000ff << (8*cloc);
+  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
+    return NULL;
+  i= 0;
+  while (
+	 ((code32 & dtab[i].mask) != dtab[i].code ||
+	  !(dtab[i].mask & cmask))
+	 &&
+	 dtab[i].mnemonic)
+    i++;
+  de= &dtab[i];
+  return de;
+}
+
 char *
 cl_t870c::disassc(t_addr addr, chars *comment)
 {
@@ -322,24 +355,8 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   code4= rom->get(addr+4);
   code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
 
-  dtab= dis_tbl();
-  u32_t cloc, cmask;
-  cloc= code_loc[code0]-1;
-  cmask= 0x000000ff << (8*cloc);
-  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
-    return strdup("INVALID");
-  i= 0;
-  while (
-	 ((code32 & dtab[i].mask) != dtab[i].code ||
-	  !(dtab[i].mask & cmask))
-	 &&
-	 dtab[i].mnemonic)
-    i++;
-  de= &dtab[i];
-  if (de->mnemonic == NULL)
-    {
-      return strdup("UNKNOWN/INVALID");
-    }
+  if ((de= get_dis_entry(addr)) == NULL)
+    return strdup("UNKNOWN/INVALID");
   b= de->mnemonic;
   
   first= true;
@@ -540,23 +557,11 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 int
 cl_t870c::inst_length(t_addr addr)
 {
-  struct dis_entry *tabl= dis_tbl();
-  int i;
-  t_mem code, code0;
+  struct dis_entry *de= get_dis_entry(addr);
 
-  if (!rom)
-    return(0);
-
-  code0= rom->get(addr);
-  code = code0;
-  code+= rom->get(addr+1)<<8;
-  code+= rom->get(addr+2)<<16;
-  code+= rom->get(addr+3)<<24;
-
-  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
+  if ((de == NULL) || (de->mnemonic == NULL))
     return 1;
-  for (i= 0; tabl[i].mnemonic && (code & tabl[i].mask) != tabl[i].code; i++) ;
-  return(tabl[i].mnemonic?tabl[i].length:1);
+  return de->length;
 }
 
 u16_t
