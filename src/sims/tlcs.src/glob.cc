@@ -707,6 +707,7 @@ struct dis_entry disass_t870c[]=
 
     // reg prefixes, code page 0x100
     //  E8 only
+    { 0x0000d0e8, 0x0000f8ff, ' ', 3, "JR 'cc1','ra8_2'" },
     { 0x0000dee8, 0x0000ffff, ' ', 3, "LD PSW,'n_2'" },
     //  all
     { 0x000000e8, 0x0000c7f8, ' ', 2, "ADDC 'r_1.3','r_0.0'" },
@@ -1105,6 +1106,8 @@ struct dis_entry disass_t870c[]=
     { 0x000000c0, 0x000000f8, ' ', 2, "SET (%x).%b" },
     { 0x000000c8, 0x000000f8, ' ', 2, "CLR (%x).%b" },
 
+    { 0x000000d8, 0x000000f8, ' ', 2, "JR 'cc','ra8'" },
+    
     { 0x000000fc, 0x000000ff, ' ', 2, "JR 'ra8'" },
     { 0x000000fe, 0x000000ff, ' ', 3, "JP 'a16_1'" },
     

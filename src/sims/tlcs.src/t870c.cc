@@ -282,6 +282,25 @@ static const char *srcE[8]= {
 static const char *srcD[4]= {
   "IX", "IY", "SP", "HL"
 };
+static const char *cc[16]= {
+  "M",
+  "P",
+  "SLT",
+  "SGE",
+  "SLE",
+  "SGT",
+  "VS",
+  "VC",
+
+  "EQ/Z",
+  "NE/NZ",
+  "LT/CS",
+  "GE/CC",
+  "LE",
+  "GT",
+  "T",
+  "F"
+};
 
 /* Byte index +1 */
 static const u8_t code_loc[256]= {
@@ -402,8 +421,10 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="b_1.0")  work.appendf("%d", code1&7);
 	  else if (fmt=="b_2.0")  work.appendf("%d", code2&7);
 	  else if (fmt=="b_3.0")  work.appendf("%d", code3&7);
-	  else if (fmt=="rr_0.0h") work.append(rr_names[code0&7][0]);
-	  else if (fmt=="rr_0.0l") work.append(rr_names[code0&7][1]);
+	  else if (fmt=="rr_0.0h")work.append(rr_names[code0&7][0]);
+	  else if (fmt=="rr_0.0l")work.append(rr_names[code0&7][1]);
+	  else if (fmt=="cc")     work.append(cc[code0&0xf]);
+	  else if (fmt=="cc1")    work.append(cc[code1&0xf]);
 	  else if (fmt=="vw")
 	    {
 	      work.appendf("0x%04x", u16= code1+code2*256);
@@ -507,6 +528,24 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		  d= -d;
 		  code1= d;
 		  work.appendf("-0x%02x", code1);
+		}
+	      else
+		work.appendf("+0x%02x", d);
+	      if (comment)
+		{
+		  comment->appendf("; %04x", a);
+		}
+	    }
+	  else if (fmt=="ra8_2")
+	    {
+	      i16_t d= code2;
+	      if (d & 0x80) d|= 0xff00;
+	      u16_t a= ((addr+2) + d + 0);
+	      if (d<0)
+		{
+		  d= -d;
+		  code2= d;
+		  work.appendf("-0x%02x", code2);
 		}
 	      else
 		work.appendf("+0x%02x", d);
@@ -1718,6 +1757,17 @@ cl_t870c::jr(u8_t a)
 }
 
 int
+cl_t870c::jr_cc(u8_t a, bool cond)
+{
+  i8_t v= a;
+  if (cond)
+    PC= (PC + v + 0) & PCmask;
+  else
+    cF.W(rF|MJF);
+  return resGO;
+}
+
+int
 cl_t870c::jrs(u8_t code, bool cond)
 {
   i16_t v= code & 0x1f;
@@ -1728,7 +1778,8 @@ cl_t870c::jrs(u8_t code, bool cond)
       PC= (PC + v + 1) & PCmask;
       tick(extra_ticks()[page|code]);
     }
-  cF.W(rF|MJF);
+  else
+    cF.W(rF|MJF);
   return resGO;
 }
 
