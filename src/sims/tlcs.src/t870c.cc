@@ -663,6 +663,25 @@ cl_t870c::aof_srcD(u32_t code32)
   return 0;
 }
 
+void
+cl_t870c::stack_check_overflow(class cl_stack_op *op)
+{
+  if (op)
+    {
+      if (op->get_op() & stack_write_operation)
+	{
+	  t_addr a= op->get_after();
+	  if (a < sp_limit)
+	    {
+              class cl_error_stack_overflow *e=
+                new cl_error_stack_overflow(op);
+              e->init();
+              error(e);
+	    }
+	}
+    }
+}
+
 int
 cl_t870c::exec_inst(void)
 {
@@ -1005,9 +1024,14 @@ cl_t870c::pop(MCELL *reg)
 int
 cl_t870c::push(MCELL *reg)
 {
+  t_addr sp_before= rSP;
   u16_t a= rSP-1;
-  wr16(a, reg->R());
+  t_mem val;
+  wr16(a, val= reg->R());
   cSP.W(a-1);
+  class cl_stack_push *o= new cl_stack_push(instPC, val, sp_before, rSP);
+  o->init();
+  stack_write(o);
   return resGO;
 }
 
