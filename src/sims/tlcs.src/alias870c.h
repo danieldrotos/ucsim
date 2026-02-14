@@ -194,6 +194,10 @@
 #define CLR_mx_7                instruction_cf
 
 // 0 d0 - 0 df
+#define POP_rrWA		instruction_50
+#define POP_rrBC		instruction_51
+#define POP_rrDE		instruction_52
+#define POP_rrHL		instruction_53
 #define JR_Z			instruction_d8
 #define JR_NZ			instruction_d9
 #define JR_CS			instruction_da
@@ -462,6 +466,7 @@
 #define JR_SGT			instruction_1d5
 #define JR_VS			instruction_1d6
 #define JR_VC			instruction_1d7
+#define POP_gg			instruction_1d9
 #define DAA_g			instruction_1da
 #define DAS_g			instruction_1db
 #define LD_PSW_n		instruction_1de
