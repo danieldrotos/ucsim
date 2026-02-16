@@ -55,6 +55,7 @@ cl_t870c1_psw_op::write(t_mem val)
 cl_t870c1::cl_t870c1(class cl_sim *asim):
   cl_t870c(asim)
 {
+  vector_start= 0xffa0;
 }
 
 

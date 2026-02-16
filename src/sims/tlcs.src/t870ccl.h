@@ -135,6 +135,7 @@ public:
   class cl_address_space *asc, *asd;
   class cl_memory_chip *ram_chip, *rom_chip, *bootrom_chip;
   u16_t sp_limit;
+  u16_t vector_start;
 public:
   // (src) or (dst) memory cell for 8/16 bit ops
   class cl_cell8 *sdc;
@@ -375,6 +376,8 @@ public:
   virtual int XOR_A_n(MP) { return xor8(&cA, fetch()); }
   virtual int OR_A_n(MP) { return or8(&cA, fetch()); }
   virtual int CMP_A_n(MP) { return cmp8(&cA, fetch()); }
+  // 0 70 - 0 7f
+  virtual int CALLV_0(MP) { return call(rd16(vector_start+2*(code&0xf))); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }

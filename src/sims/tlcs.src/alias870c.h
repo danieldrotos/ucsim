@@ -108,6 +108,24 @@
 #define OR_A_n                  instruction_66
 #define CMP_A_n                 instruction_67
 
+// 0 70 - 0 7f
+#define CALLV_0			instruction_70
+#define CALLV_1			instruction_71
+#define CALLV_2			instruction_72
+#define CALLV_3			instruction_73
+#define CALLV_4			instruction_74
+#define CALLV_5			instruction_75
+#define CALLV_6			instruction_76
+#define CALLV_7			instruction_77
+#define CALLV_8			instruction_78
+#define CALLV_9			instruction_79
+#define CALLV_a			instruction_7a
+#define CALLV_b			instruction_7b
+#define CALLV_c			instruction_7c
+#define CALLV_d			instruction_7d
+#define CALLV_e			instruction_7e
+#define CALLV_f			instruction_7f
+
 // 0 80 - 0 8f
 #define JRS_T_a00               instruction_80
 #define JRS_T_a01               instruction_81

@@ -104,6 +104,8 @@ cl_t870c::cl_t870c(class cl_sim *asim):
   uc_itab[0x2f4]= &cl_itab::invalid_instruction;
   uc_itab[0x2f5]= &cl_itab::invalid_instruction;
   uc_itab[0x2ff]= &cl_itab::invalid_instruction;
+
+  vector_start= 0xffc0;
 }
 
 int
@@ -558,6 +560,15 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	    {
 	      u16_t a= code1 + code2*256;
 	      work.appendf("0x%04x", a);
+	    }
+	  else if (fmt=="vn")
+	    {
+	      u16_t a= vector_start;
+	      u16_t n= code0 & 0xf;
+	      a+= n*2;
+	      work.appendf("%d", n);
+	      if (comment)
+		comment->appendf("; [%04x]=%04x", a, get16(a));
 	    }
 	  continue;
 	}
