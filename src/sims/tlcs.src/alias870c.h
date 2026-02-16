@@ -506,6 +506,7 @@
 #define ROLC_g			instruction_1f6
 #define RORC_g			instruction_1f7
 #define NEG_gg			instruction_1fa
+#define CALL_gg			instruction_1fd
 #define JP_gg                   instruction_1fe
 #define SWAP_g                  instruction_1ff
 

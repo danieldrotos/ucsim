@@ -762,6 +762,7 @@ public:
   virtual int ROLC_g(MP);
   virtual int RORC_g(MP);
   virtual int NEG_gg(MP);
+  virtual int CALL_gg(MP) { return call(regs16[sda]->get()); }
   virtual int JP_gg(MP) { PC= regs16[sda]->get(); return resGO; }
   virtual int SWAP_g(MP);
   // 2 00 - 2 3f ALU r,(src)
