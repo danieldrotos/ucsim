@@ -783,4 +783,5 @@
 #define CLR_src_A               instruction_2fa
 #define CPL_src_A               instruction_2fb
 #define LD_CF_src_A             instruction_2fc
+#define CALL_src		instruction_2fd
 #define JP_src                  instruction_2fe

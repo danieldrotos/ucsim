@@ -1041,6 +1041,12 @@ struct dis_entry disass_t870c[]=
     { 0x00fc00d4, 0x00ff00fc, ' ', 3, "LD CF,('srcD').A" },
     { 0x0000fc4f, 0x0000ffff, ' ', 2, "LD CF,('src4').A" },
 
+    { 0x00fd00e0, 0x00ff00ff, ' ', 3, "CALL (%x)" },
+    { 0xfd0000e1, 0xff0000ff, ' ', 4, "CALL ('vw')" },
+    { 0x0000fde0, 0x0000fff8, ' ', 2, "CALL ('srcE')" },
+    { 0x00fd00d4, 0x00ff00fc, ' ', 3, "CALL ('srcD')" },
+    { 0x0000fd4f, 0x0000ffff, ' ', 2, "CALL ('src4')" },
+
     { 0x00fe00e0, 0x00ff00ff, ' ', 3, "JP (%x)" },
     { 0xfe0000e1, 0xff0000ff, ' ', 4, "JP ('vw')" },
     { 0x0000fee0, 0x0000fff8, ' ', 2, "JP ('srcE')" },
