@@ -272,6 +272,7 @@ public:
   virtual int CLR_CF(MP);
   virtual int SET_CF(MP);
   virtual int CPL_CF(MP);
+  virtual int CMP_x_n(MP) { sd_x(); return cmp8(sdc, fetch()); }
   virtual int LDW_mx_mn(MP);
   virtual int LDW_mhl_mn(MP);
   virtual int LD_mx_n(MP) { sd_x(); return st8(sdc, fetch()); }
