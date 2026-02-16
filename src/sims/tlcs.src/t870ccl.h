@@ -264,6 +264,7 @@ public:
   virtual int jr(u8_t a);
   virtual int jrs(u8_t code, bool cond);
   virtual int jr_cc(u8_t a, bool cond);
+  virtual int call(u16_t a);
   
 #include "alias870c.h"
   // 0 00 - 0 00
@@ -502,7 +503,9 @@ public:
   virtual int instruction_f6(MP) { sd_spM(); return execD(); }
   virtual int instruction_f7(MP) { sd_hlc(); return execD(); }
   virtual int LD_RBS(MP);
+  virtual int RET(MP) { return pop(&cPC); }
   virtual int JR_a(MP) { return jr(fetch()); }
+  virtual int CALL_mn(MP) { return call(fetch16()); }
   virtual int JP_mn(MP) { PC= fetch16(); return resGO; }
   // 1 00 - 1 3f ALU r,g
   virtual int ADDC_rA_g(MP) { return add8(&cA, regs8[sda]->R(), true); }

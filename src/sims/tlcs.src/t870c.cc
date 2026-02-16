@@ -1801,17 +1801,6 @@ cl_t870c::jr(u8_t a)
 }
 
 int
-cl_t870c::jr_cc(u8_t a, bool cond)
-{
-  i8_t v= a;
-  if (cond)
-    PC= (PC + v + 0) & PCmask;
-  else
-    cF.W(rF|MJF);
-  return resGO;
-}
-
-int
 cl_t870c::jrs(u8_t code, bool cond)
 {
   i16_t v= code & 0x1f;
@@ -1827,6 +1816,24 @@ cl_t870c::jrs(u8_t code, bool cond)
   return resGO;
 }
 
+int
+cl_t870c::jr_cc(u8_t a, bool cond)
+{
+  i8_t v= a;
+  if (cond)
+    PC= (PC + v + 0) & PCmask;
+  else
+    cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::call(u16_t a)
+{
+  push(&cPC);
+  cPC.W(a);
+  return resGO;
+}
 
 int
 cl_t870c::CLR_CF(MP)

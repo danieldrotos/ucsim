@@ -215,7 +215,9 @@
 
 // 0 f0 - 0 ff
 #define LD_RBS                  instruction_f9
+#define RET			instruction_fa
 #define JR_a                    instruction_fc
+#define CALL_mn			instruction_fd
 #define JP_mn                   instruction_fe
 
 // 1 00 - 1 3f ALU r,g
