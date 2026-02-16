@@ -1011,6 +1011,12 @@ struct dis_entry disass_t870c[]=
     { 0x00f600d4, 0x00ff00fc, ' ', 3, "ROLD A,('srcD')" },
     { 0x0000f64f, 0x0000ffff, ' ', 2, "ROLD A,('src4')" },
 
+    { 0x00f700e0, 0x00ff00ff, ' ', 3, "RORD A,(%x)" },
+    { 0xf70000e1, 0xff0000ff, ' ', 4, "RORD A,('vw')" },
+    { 0x0000f7e0, 0x0000fff8, ' ', 2, "RORD A,('srcE')" },
+    { 0x00f700d4, 0x00ff00fc, ' ', 3, "RORD A,('srcD')" },
+    { 0x0000f74f, 0x0000ffff, ' ', 2, "RORD A,('src4')" },
+
     { 0x00f800e0, 0x00ff00ff, ' ', 3, "DEC (%x)" },
     { 0xf80000e1, 0xff0000ff, ' ', 4, "DEC ('vw')" },
     { 0x0000f8e0, 0x0000fff8, ' ', 2, "DEC ('srcE')" },

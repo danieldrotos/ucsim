@@ -1009,6 +1009,7 @@ public:
   virtual int SET_src_A(MP) { return setm(sdc, rA&7); }
   virtual int LD_src_A_CF(MP);
   virtual int ROLD_A_src(MP);
+  virtual int RORD_A_src(MP);
   virtual int DEC_src(MP) { return dec8m(sdc); }
   virtual int LD_dst_n(MP) { return st8(sdc, fetch()); }
   virtual int CPL_src_A(MP) { return cplm(sdc, rA&7); }

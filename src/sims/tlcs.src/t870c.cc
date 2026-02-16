@@ -1957,6 +1957,21 @@ cl_t870c::ROLD_A_src(MP)
 }
 
 int
+cl_t870c::RORD_A_src(MP)
+{
+  u8_t v= sdc->read();
+  u8_t vl= v & 0xf;
+  RD;
+  v= ((rA&0xf)<<4) + (v>>4);
+  rA= (rA&0xf0) + vl;
+  cF.W(rF|MJF);
+  cA.W(rA);
+  sdc->write(v);
+  WR;
+  return resGO;
+}
+
+int
 cl_t870c::LD_CF_src_A(MP)
 {
   u8_t m= bit_mask[rA&7];
