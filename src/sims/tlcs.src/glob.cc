@@ -708,6 +708,8 @@ struct dis_entry disass_t870c[]=
     // reg prefixes, code page 0x100
     //  E8 only
     { 0x0000d0e8, 0x0000f8ff, ' ', 3, "JR 'cc1','ra8_2'" },
+    { 0x0000dce8, 0x0000ffff, ' ', 2, "PUSH PSW" },
+    { 0x0000dde8, 0x0000ffff, ' ', 2, "POP PSW" },
     { 0x0000dee8, 0x0000ffff, ' ', 3, "LD PSW,'n_2'" },
     //  all
     { 0x000000e8, 0x0000c7f8, ' ', 2, "ADDC 'r_1.3','r_0.0'" },

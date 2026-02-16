@@ -1033,6 +1033,18 @@ cl_t870c::pop(MCELL *reg)
 }
 
 int
+cl_t870c::POP_PSW(MP)
+{
+  u16_t a= rSP+1;
+  u8_t v;
+  v= asd->read(a);
+  RD;
+  cSP.W(a);
+  cF.W(v);
+  return resGO;
+}
+
+int
 cl_t870c::push(MCELL *reg)
 {
   t_addr sp_before= rSP;
@@ -1040,6 +1052,20 @@ cl_t870c::push(MCELL *reg)
   t_mem val;
   wr16(a, val= reg->R());
   cSP.W(a-1);
+  class cl_stack_push *o= new cl_stack_push(instPC, val, sp_before, rSP);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
+cl_t870c::PUSH_PSW(MP)
+{
+  t_addr sp_before= rSP;
+  t_mem val;
+  asd->write(sp_before, val= rF);
+  WR;
+  cSP.W(rSP-1);
   class cl_stack_push *o= new cl_stack_push(instPC, val, sp_before, rSP);
   o->init();
   stack_write(o);

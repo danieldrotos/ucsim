@@ -495,6 +495,8 @@
 #define POP_gg			instruction_1d9
 #define DAA_g			instruction_1da
 #define DAS_g			instruction_1db
+#define PUSH_PSW		instruction_1dc
+#define POP_PSW			instruction_1dd
 #define LD_PSW_n		instruction_1de
 
 // 1 e0 - 1 ef
