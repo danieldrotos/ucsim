@@ -66,6 +66,7 @@ extern struct cpu_entry cpus_rxk[];
 extern struct cpu_entry cpus_st7[];
 extern struct cpu_entry cpus_xa[];
 extern struct cpu_entry cpus_z80[];
+extern struct cpu_entry cpus_tlcs[];
 
 extern struct cpu_collection cpus_coll[];
 

@@ -763,6 +763,21 @@ struct cpu_entry cpus_z80[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+
+struct cpu_entry cpus_tlcs[]=
+  {
+    { "TLCS90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+    { "90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+
+    { "TLCS870C"	, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "C"		, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "TLCS870C1"	, CPU_TLCS870C1, 0, "TLCS-870C1", "" },
+    { "C1"		, CPU_TLCS870C1, 0, "TLCS-870C1" , "" },
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+
 struct cpu_collection cpus_coll[]=
   {
     { "mcs51"	, "ucsim_51"		, cpus_51	},
@@ -784,6 +799,7 @@ struct cpu_collection cpus_coll[]=
     { "st7"	, "ucsim_st7"		, cpus_st7	},
     { "xa"	, "ucsim_xa"		, cpus_xa	},
     { "z80"	, "ucsim_z80"		, cpus_z80	},
+    { "tlcs"    , "ucsim_tlcs"          , cpus_tlcs     },
     
     { NULL, NULL, NULL }
   };

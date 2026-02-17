@@ -1146,17 +1146,4 @@ struct dis_entry disass_t870c[]=
   };
 
 
-struct cpu_entry cpus_tlcs[]=
-  {
-    { "TLCS90"		, CPU_TLCS90, 0, "TLCS-90", "" },
-    { "90"		, CPU_TLCS90, 0, "TLCS-90", "" },
-
-    { "TLCS870C"	, CPU_TLCS870C , 0, "TLCS-870C" , "" },
-    { "C"		, CPU_TLCS870C , 0, "TLCS-870C" , "" },
-    { "TLCS870C1"	, CPU_TLCS870C1, 0, "TLCS-870C1", "" },
-    { "C1"		, CPU_TLCS870C1, 0, "TLCS-870C1" , "" },
-
-    {NULL, CPU_NONE, 0, "", ""}
-  };
-
 /* End of tlcs.src/glob.cc */
