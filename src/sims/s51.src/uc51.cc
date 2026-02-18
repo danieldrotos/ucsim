@@ -1423,7 +1423,7 @@ cl_51core::print_regs(class cl_console_base *con)
   con->dd_printf("@R0 %02x %c", data, isprint(data) ? data : '.');
 
   con->dd_printf("  ACC= 0x%02x %3d %c  B= 0x%02x\n", sfr->get(ACC), sfr->get(ACC),
-              isprint(sfr->get(ACC))?(sfr->get(ACC)):'.', sfr->get(B));
+              isprint(sfr->get(ACC))?(sfr->get(ACC)):'.', sfr->get(SFR_B));
   data= iram->get(iram->get(start+1));
   con->dd_printf("@R1 %02x %c", data, isprint(data) ? data : '.');
   data= psw->get();
@@ -1711,7 +1711,7 @@ cl_51core::clear_sfr(void)
   prev_p1= /*port_pins[1] &*/ sfr->/*get*/read(P1);
   prev_p3= /*port_pins[3] &*/ sfr->/*get*/read(P3);
   sfr->write(ACC, 0);
-  sfr->write(B, 0);
+  sfr->write(SFR_B, 0);
   sfr->write(PSW, 0);
   sfr->write(SP, 7);
   sfr->write(DPL, 0);

@@ -34,6 +34,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itsrccl.h"
 
 
+#define MP	t_mem code
+
+#define WR	(vc.wr++)
+#define WR2	(vc.wr+=2)
+#define RD	(vc.rd++)
+#define RD2	(vc.rd+=2)
+#define RDWR	(vc.rd++,vc.wr++)
+#define WRRD	(vc.rd++,vc.wr++)
+
 #define rA  (A)
 #define rX  (X)
 #define rY  (Y)
@@ -55,6 +64,8 @@ enum {
   flagV	= 0x40,
   mO	= 0x40,
   flagO	= 0x40,
+  mT    = 0x20, // HUC6280 specific flag:
+  flagT = 0x20, // Memory operation flag
   mB	= 0x10,
   flagB	= 0x10,
   mD	= 0x08,
@@ -102,6 +113,7 @@ class cl_mos6502: public cl_uc
 {
 public:
   u8_t A, X, Y, SP, CC, i8d;
+  u16_t SPh;
   class cl_cell8 cA, cX, cY, cSP, cCC, ci8;
   class cl_it_src *src_irq, *src_nmi, *src_brk;
   bool set_b;
@@ -129,13 +141,18 @@ public:
   virtual void print_regs(class cl_console_base *con);
   virtual int inst_length(t_addr addr);
   virtual bool is_call(t_addr addr);
+  virtual int longest_inst(void) { return 3; }
 
   virtual int exec_inst(void);
   virtual int priority_of(uchar nuof_it) { return nuof_it; }
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void);
-  virtual void push_addr(t_addr a);
+  virtual void push_addr(t_addr a); // tick(2)
+  virtual void push_reg(C8 *r); // tick(0)
+  virtual void push(u8_t v); // tick(0)
   virtual t_addr pop_addr(void);
+  virtual void pop_reg(C8 *r); // tick(0)
+  virtual u8_t pop(void); // tick(0)
   virtual void stack_check_overflow(class cl_stack_op *op);
   
   virtual class cl_cell8 &imm8(void);
@@ -174,7 +191,8 @@ public:
   virtual class cl_cell8 &rmwindY(void) { vc.rd++;vc.wr++;tick(1); return indY(); }
   //virtual u8_t i8(void) { return fetch(); }
   virtual u16_t i16(void) { u8_t h, l; l=fetch(); h= fetch(); return h*256+l; }
-
+  virtual u8_t L2i(u8_t L);
+  
   virtual int NOP(t_mem code);
   virtual int BRK(t_mem code);
   virtual int RTI(t_mem code);
@@ -379,4 +397,4 @@ public:
 
 #endif
 
-/* End of mos6502.src/mos6502.cc */
+/* End of mos6502.src/mos6502cl.h */

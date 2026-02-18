@@ -3,6 +3,10 @@
 - Bugfixes, pre-relases of 0.10: partial implmentations of
   new features
 
+- New device type in m6800 simulator: m6801.
+
+- New device type in mos6502 simulator: huc6280.
+
 
 0.9
 

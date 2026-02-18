@@ -169,7 +169,7 @@ enum cpu_type {
   CPU_TLCS870X	= 0x0010,
   CPU_TLCS900	= 0x0020,
   CPU_ALL_TLCS	= (CPU_TLCS90|
-		   CPU_TLCS870|CPU_TLCS870C,CPU_TLCS870C1|CPU_TLCS870X|
+		   CPU_TLCS870|CPU_TLCS870C|CPU_TLCS870C1|CPU_TLCS870X|
 		   CPU_TLCS900),
 
   CPU_XA	= 0x0001,
@@ -253,6 +253,8 @@ enum cpu_type {
   CPU_M6809	= 0x0008,
   CPU_HC11      = 0x0010,
   CPU_HC12      = 0x0020,
+  CPU_9S08      = 0x0040,
+  CPU_M6801	= 0x0080,
   
   // MOS6502 and variants
   CPU_6502	= 0x0001,	// NMOS
@@ -267,7 +269,8 @@ enum cpu_type {
   CPU_65C02	= 0x0100,	// extended inst.set
   CPU_65C02S	= 0x0200,      	// 65C02 variant, different inst.set
   CPU_65CE02	= 0x0400,	// extension of 65C02
-
+  CPU_HUC6280   = 0x0800,	// extension of 65C02S
+  
   // Intel 8080, 8085
   CPU_I8080	= 0x0001,
   CPU_I8085	= 0x0002,

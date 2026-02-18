@@ -3709,7 +3709,6 @@ if test $in_sdcc == "yes" ; then
     def_i8048="no"
     def_i8085="no"
     def_avr="no"
-    def_m6800="no"
     def_m6809="no"
     def_m68hc11="no"
     def_m68hc12="no"

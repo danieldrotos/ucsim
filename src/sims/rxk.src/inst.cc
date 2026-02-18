@@ -248,7 +248,7 @@ cl_r3ka::instruction_5b(t_mem code)
   ld_r_g(destE(), rE);
   if (!altd)
     {
-      if ((edmr&1) && (rSU&1))
+      if (sysmode && (rSU&1))
 	{
 	  // TODO: set System Violation interrupt flag
 	}

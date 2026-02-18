@@ -1125,7 +1125,7 @@ cl_rxk::sub16(u16_t op2, bool cy)
   if ((a15&nb15&nr15) | (na15&b15&r15)) forg|= flagV;
   //if (res > 0xffff) forg|= flagC;
   if (rHL<op2) forg|= flagC;
-  if ((rHL>op2) || (!cy && (rA==op2))) forg&= ~flagC;
+  if ((rHL>op2) || (!cy && (rHL==op2))) forg&= ~flagC;
   if (!(res & 0xffff)) forg|= flagZ;
   if (res & 0x8000) forg|= flagS;
   hl.W(res);
@@ -1283,6 +1283,37 @@ cl_r4k::subhl(class cl_cell16 &dest, u16_t op)
   if (v & 0xffff0000) forg|= flagC;
   destF().W(forg);
   dest.W(v);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_r4k::NEG_HL(t_mem code)
+{
+  class cl_cell16 &hl= destHL();
+  class cl_cell8 &f= destF();
+  u16_t v1= 0, op2= rHL;
+  u8_t forg;
+  u32_t res;//= //v1+(~op2)+(cy?((rF&flagC)?1:0):1);
+  u16_t a15, b15, r15, na15, nb15, nr15;
+  i16_t op1= 0;
+  i16_t o2= rHL;
+  i16_t r= op1-o2;
+  bool cy= false;
+  //if (cy && (rF&flagC)) r--;
+  res= r;
+  forg= rF & ~(flagS|flagZ|flagV);
+  a15= v1&0x8000; na15= a15^0x8000;
+  b15= op2&0x8000; nb15= b15^0x8000;
+  r15= res&0x8000; nr15= r15^0x8000;
+  if ((a15&nb15&nr15) | (na15&b15&r15)) forg|= flagV;
+  //if (res > 0xffff) forg|= flagC;
+  if (v1<op2) forg|= flagC;
+  if ((v1>op2) || (!cy && (v1==op2))) forg&= ~flagC;
+  if (!(res & 0xffff)) forg|= flagZ;
+  if (res & 0x8000) forg|= flagS;
+  hl.W(res);
+  f.W(forg);
   tick(1);
   return resGO;
 }

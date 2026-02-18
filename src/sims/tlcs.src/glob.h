@@ -30,9 +30,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "stypes.h"
 
-extern struct dis_entry disass_tlcs[];
 
-extern struct cpu_entry cpus_tlcs[];
+extern struct dis_entry disass_tlcs[];
+extern struct dis_entry disass_t870c[];
+extern u8_t base_ticks_t870c[];
+extern u8_t extra_ticks_t870c[];
+
 
 #endif
 

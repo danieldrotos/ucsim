@@ -88,4 +88,4 @@ public:
 
 #endif
 
-/* End of mos6502.src/mos65c02s.cc */
+/* End of mos6502.src/mos65c02scl.h */

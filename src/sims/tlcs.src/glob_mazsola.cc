@@ -707,9 +707,6 @@ struct dis_entry disass_t870c[]=
 
     // reg prefixes, code page 0x100
     //  E8 only
-    { 0x0000d0e8, 0x0000f8ff, ' ', 3, "JR 'cc1','ra8_2'" },
-    { 0x0000dce8, 0x0000ffff, ' ', 2, "PUSH PSW" },
-    { 0x0000dde8, 0x0000ffff, ' ', 2, "POP PSW" },
     { 0x0000dee8, 0x0000ffff, ' ', 3, "LD PSW,'n_2'" },
     //  all
     { 0x000000e8, 0x0000c7f8, ' ', 2, "ADDC 'r_1.3','r_0.0'" },
@@ -758,25 +755,11 @@ struct dis_entry disass_t870c[]=
     
     { 0x0000c0e8, 0x0000f8f8, ' ', 2, "SET 'r_0.0'.'b_1.0'" },
     { 0x0000c8e8, 0x0000f8f8, ' ', 2, "CLR 'r_0.0'.'b_1.0'" },
+      
 
-    { 0x0000d8e8, 0x0000fff8, ' ', 2, "PUSH 'rr_0.0'" },
-    { 0x0000d9e8, 0x0000fff8, ' ', 2, "POP 'rr_0.0'" },
-    { 0x0000dae8, 0x0000fff8, ' ', 2, "DAA 'r_0.0'" },
-    { 0x0000dbe8, 0x0000fff8, ' ', 2, "DAS 'r_0.0'" },
-    
     { 0x0000e0e8, 0x0000f8f8, ' ', 2, "CPL 'r_0.0'.'b_1.0'" },
     { 0x0000e8e8, 0x0000f8f8, ' ', 2, "LD 'r_0.0'.'b_1.0',CF" },
 
-    { 0x0000f0e8, 0x0000fff8, ' ', 2, "SHLCA 'rr_0.0'" },
-    { 0x0000f1e8, 0x0000fff8, ' ', 2, "SHRCA 'rr_0.0'" },
-    { 0x0000f2e8, 0x0000fffc, ' ', 2, "MUL 'rr_0.0h','rr_0.0l'" }, // WA,BC,DE,HL only
-    { 0x0000f3e8, 0x0000fffc, ' ', 2, "DIV 'rr_0.0',C" }, // WA,BC,DE,HL only
-    { 0x0000f4e8, 0x0000fff8, ' ', 2, "SHLC 'r_0.0'" },
-    { 0x0000f5e8, 0x0000fff8, ' ', 2, "SHRC 'r_0.0'" },
-    { 0x0000f6e8, 0x0000fff8, ' ', 2, "ROLC 'r_0.0'" },
-    { 0x0000f7e8, 0x0000fff8, ' ', 2, "RORC 'r_0.0'" },
-    { 0x0000fae8, 0x0000fff8, ' ', 2, "NEG CS,'rr_0.0'" },
-    { 0x0000fde8, 0x0000fff8, ' ', 2, "CALL 'rr_0.0'" },
     { 0x0000fee8, 0x0000fff8, ' ', 2, "JP 'rr_0.0'" },
     { 0x0000ffe8, 0x0000fff8, ' ', 2, "SWAP 'r_0.0'" },
 
@@ -1007,18 +990,6 @@ struct dis_entry disass_t870c[]=
     { 0x00f300d4, 0x00ff00fc, ' ', 3, "LD ('srcD').A,CF" },
     { 0x0000f34f, 0x0000ffff, ' ', 2, "LD ('src4').A,CF" },
 
-    { 0x00f600e0, 0x00ff00ff, ' ', 3, "ROLD A,(%x)" },
-    { 0xf60000e1, 0xff0000ff, ' ', 4, "ROLD A,('vw')" },
-    { 0x0000f6e0, 0x0000fff8, ' ', 2, "ROLD A,('srcE')" },
-    { 0x00f600d4, 0x00ff00fc, ' ', 3, "ROLD A,('srcD')" },
-    { 0x0000f64f, 0x0000ffff, ' ', 2, "ROLD A,('src4')" },
-
-    { 0x00f700e0, 0x00ff00ff, ' ', 3, "RORD A,(%x)" },
-    { 0xf70000e1, 0xff0000ff, ' ', 4, "RORD A,('vw')" },
-    { 0x0000f7e0, 0x0000fff8, ' ', 2, "RORD A,('srcE')" },
-    { 0x00f700d4, 0x00ff00fc, ' ', 3, "RORD A,('srcD')" },
-    { 0x0000f74f, 0x0000ffff, ' ', 2, "RORD A,('src4')" },
-
     { 0x00f800e0, 0x00ff00ff, ' ', 3, "DEC (%x)" },
     { 0xf80000e1, 0xff0000ff, ' ', 4, "DEC ('vw')" },
     { 0x0000f8e0, 0x0000fff8, ' ', 2, "DEC ('srcE')" },
@@ -1042,12 +1013,6 @@ struct dis_entry disass_t870c[]=
     { 0x0000fce0, 0x0000fff8, ' ', 2, "LD CF,('srcE').A" },
     { 0x00fc00d4, 0x00ff00fc, ' ', 3, "LD CF,('srcD').A" },
     { 0x0000fc4f, 0x0000ffff, ' ', 2, "LD CF,('src4').A" },
-
-    { 0x00fd00e0, 0x00ff00ff, ' ', 3, "CALL (%x)" },
-    { 0xfd0000e1, 0xff0000ff, ' ', 4, "CALL ('vw')" },
-    { 0x0000fde0, 0x0000fff8, ' ', 2, "CALL ('srcE')" },
-    { 0x00fd00d4, 0x00ff00fc, ' ', 3, "CALL ('srcD')" },
-    { 0x0000fd4f, 0x0000ffff, ' ', 2, "CALL ('src4')" },
 
     { 0x00fe00e0, 0x00ff00ff, ' ', 3, "JP (%x)" },
     { 0xfe0000e1, 0xff0000ff, ' ', 4, "JP ('vw')" },
@@ -1076,7 +1041,6 @@ struct dis_entry disass_t870c[]=
     { 0x00000004, 0x000000ff, ' ', 1, "CLR CF" },
     { 0x00000005, 0x000000ff, ' ', 1, "SET CF" },
     { 0x00000006, 0x000000ff, ' ', 1, "CPL CF" },
-    { 0x00000007, 0x000000ff, ' ', 3, "CMP (%x),'n_2'" },
     { 0x00000008, 0x000000ff, ' ', 4, "LDW (%x),'mn_2'" },
     { 0x00000009, 0x000000ff, ' ', 3, "LDW (HL),'mn_1'" },
     { 0x0000000a, 0x000000ff, ' ', 3, "LD (%x),'n_2'" },
@@ -1106,7 +1070,6 @@ struct dis_entry disass_t870c[]=
     { 0x0000004d, 0x000000ff, ' ', 3, "LD IY,'mn_1'" },
     { 0x0000004e, 0x000000ff, ' ', 3, "LD SP,'mn_1'" },
 
-    { 0x00000050, 0x000000fc, ' ', 1, "PUSH 'rr_0.0'" },
     { 0x00000058, 0x000000f8, ' ', 2, "LD CF,(%x).%b" },
 
     { 0x00000060, 0x000000ff, ' ', 2, "ADDC A,'n_1'" },
@@ -1117,8 +1080,6 @@ struct dis_entry disass_t870c[]=
     { 0x00000065, 0x000000ff, ' ', 2, "XOR A,'n_1'" },
     { 0x00000066, 0x000000ff, ' ', 2, "OR A,'n_1'" },
     { 0x00000067, 0x000000ff, ' ', 2, "CMP A,'n_1'" },
-
-    { 0x00000070, 0x000000f0, ' ', 1, "CALLV 'vn'" },
     
     { 0x00000080, 0x000000e0, ' ', 1, "JRS T,'ra5'" },
 
@@ -1127,12 +1088,7 @@ struct dis_entry disass_t870c[]=
     { 0x000000c0, 0x000000f8, ' ', 2, "SET (%x).%b" },
     { 0x000000c8, 0x000000f8, ' ', 2, "CLR (%x).%b" },
 
-    { 0x000000fa, 0x000000ff, ' ', 1, "RET" },
-    { 0x000000d0, 0x000000fc, ' ', 1, "POP 'rr_0.0'" },
-    { 0x000000d8, 0x000000f8, ' ', 2, "JR 'cc','ra8'" },
-    
     { 0x000000fc, 0x000000ff, ' ', 2, "JR 'ra8'" },
-    { 0x000000fd, 0x000000ff, ' ', 3, "CALL 'a16_1'" },
     { 0x000000fe, 0x000000ff, ' ', 3, "JP 'a16_1'" },
     
     // one byte invalids
@@ -1145,5 +1101,18 @@ struct dis_entry disass_t870c[]=
     { 0, 0, ' ', 0, NULL }
   };
 
+
+struct cpu_entry cpus_tlcs[]=
+  {
+    { "TLCS90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+    { "90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+
+    { "TLCS870C"	, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "C"		, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "TLCS870C1"	, CPU_TLCS870C1, 0, "TLCS-870C1", "" },
+    { "C1"		, CPU_TLCS870C1, 0, "TLCS-870C1" , "" },
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
 
 /* End of tlcs.src/glob.cc */

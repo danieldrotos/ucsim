@@ -50,4 +50,4 @@ class cl_mos8502: public cl_mos6510
 
 #endif
 
-/* End of mos6502.src/mos6510cl.cc */
+/* End of mos6502.src/mos6510cl.h */

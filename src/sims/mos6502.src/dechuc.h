@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.h)
+ * Simulator of microcontrollers (dechuc.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -23,23 +23,41 @@ You should have received a copy of the GNU General Public License
 along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
-/*@1@*/
 
-#ifndef GLOB_HEADER
-#define GLOB_HEADER
-
-#include "stypes.h"
-#include "iwrap.h"
+#ifndef DECHUC_HEADER
+#define DECHUC_HEADER
 
 
-extern instruction_wrapper_fn itab[256];
+#define SXY		instruction_02
+#define SAX		instruction_22
+#define SAY		instruction_42
+#define CLA		instruction_62
+#define CLX		instruction_82
+#define CLY		instruction_c2
 
-extern struct dis_entry disass_mos6502[];
-extern struct dis_entry disass_mos65c02[];
-extern struct dis_entry disass_mos65c02s[];
-extern struct dis_entry disass_huc6280[];
+#define STO		instruction_03
+#define ST1		instruction_13
+#define ST2		instruction_23
+#define TMA		instruction_43
+#define TAM		instruction_53
+#define TII		instruction_73
+#define TDD		instruction_c3
+#define TIN		instruction_d3
+#define TIA		instruction_e3
+#define TAI		instruction_f3
+#define TST_imzp	instruction_83
+#define TST_imab	instruction_93
+#define TST_imzpx	instruction_a3
+#define TST_imabx	instruction_b3
+
+#define BSR		instruction_44
+
+#define CSL		instruction_54
+#define CSH		instruction_d4
+#define SET		instruction_f4
 
 
 #endif
 
-/* End of mos6502.src/glob.h */
+
+/* End of mos6502.src/dechuc.h */

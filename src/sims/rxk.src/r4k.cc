@@ -139,8 +139,8 @@ cl_r4k::reset(void)
 {
   ioi->set(0x1b, 0); // stacksegh
   ioi->set(0x1f, 0); // datasegh
+  ioi->set(0x420, 0); // edmr
   cl_r3ka::reset();
-  //edmr= 0;
   mode3k();  
 }
 
@@ -156,7 +156,7 @@ static struct dis_entry de7f;
 struct dis_entry *
 cl_r4k::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr), mode= (edmr&0xc0)>>6;
+  u8_t code= rom->get(addr), mode= kmode;
   int i;
   struct dis_entry *dt;
   
@@ -431,15 +431,24 @@ cl_r4k::print_regs(class cl_console_base *con)
                  rA, rA, isprint(rA)?rA:'.');
   con->dd_printf("F= "); con->print_bin(rF, 8);
   con->dd_printf(" 0x%02x %3d %c  ", rF, rF, isprint(rF)?rF:'.');
-  if (edmr & 0xc0)
+  switch (kmode)
     {
+    case 3:
       con->dd_color("ui_mkey");
       con->dd_printf("Mode:4k");
-    }
-  else
-    {
+      break;
+    case 2:
+      con->dd_color("ui_title");
+      con->dd_printf("Mode:10");
+      break;
+    case 1:
+      con->dd_color("ui_title");
+      con->dd_printf("Mode:01");
+      break;
+    case 0:
       con->dd_color("ui_title");
       con->dd_printf("Mode:3k");
+      break;
     }
   con->dd_printf("\n");
   con->dd_color("answer");
@@ -885,10 +894,8 @@ cl_r4k_cpu::init(void)
 {
   cl_rxk_cpu::init();
 
-  uc->reg_cell_var(edmr, &(r4uc->edmr),
-		   "EDMR", "Enable dual-mode register");
-  edmr->add_hw(this);
-
+  edmr= register_cell(ruc->ioi, 0x420,
+		      "EDMR", "Enable dual-mode register");
   stacksegl= register_cell(ruc->ioi, 0x1a,
 			   "STACKSEGL", "MMU register STACKSEGL");
   stacksegh= register_cell(ruc->ioi, 0x1b,

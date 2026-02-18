@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /* Address of SFR registers */
 
 #define ACC	0xe0 /* Accumulator */
-#define B	0xf0 /* B register (secondary accumulator) */
+#define SFR_B	0xf0 /* B register (secondary accumulator) */
 #define PSW	0xd0 /* Program Status Word */
 #define SP	0x81 /* Stack Pointer */
 #define DPL	0x82 /* Data Pointer Low byte */

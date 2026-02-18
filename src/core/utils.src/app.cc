@@ -910,6 +910,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	set_option_s("color_prompt_console", "blue:bwhite");
 	set_option_s("color_command", "blue:bwhite");
 	set_option_s("color_answer", "black:bwhite");
+	set_option_s("color_gray_answer", "black:white");
 	set_option_s("color_result", "bblue:bwhite");
 	set_option_s("color_dump_address", "blue:bwhite");
 	set_option_s("color_dump_number", "bblack:bwhite");
@@ -1360,6 +1361,11 @@ cl_app::mk_options(void)
 					      "Answer color"));
   o->init();
   o->set_value("bwhite:black");
+  
+  options->new_option(o= new cl_string_option(this, "color_gray_answer",
+					      "Gray answer color"));
+  o->init();
+  o->set_value("white:black");
   
   options->new_option(o= new cl_string_option(this, "color_result",
 					      "Result of expression"));

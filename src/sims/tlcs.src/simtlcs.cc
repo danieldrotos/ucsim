@@ -26,7 +26,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 /*@1@*/
 
 // sim.src
-//#include "appcl.h"
+#include "globals.h"
 
 // local
 #include "tlcscl.h"
@@ -47,7 +47,7 @@ cl_simtlcs::mk_controller(void)
   int i;
   const char *typ= 0;
   class cl_optref type_option(this);
-  class cl_uc *uc;
+  class cl_uc *uc= NULL;
 
   type_option.init();
   type_option.use("cpu_type");
@@ -67,17 +67,18 @@ cl_simtlcs::mk_controller(void)
     {
     case CPU_TLCS90:
       uc= new cl_tlcs(this);
-      return uc;
+      break;
     case CPU_TLCS870C:
       uc= new cl_t870c(this);
-      return uc;
+      break;
     case CPU_TLCS870C1:
       uc= new cl_t870c1(this);
-      return uc;
+      break;
     default:
       return NULL;
     }
-  return NULL;
+  if (uc) uc->type= &cpus_tlcs[i];
+  return uc;
 }
 
 

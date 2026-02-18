@@ -1148,7 +1148,7 @@ cl_tlcs::exec_inst2_f8gg(u8_t c1, u8_t c2)
         case 0x65: inst_xor_a(*ga); break; // XOR A,g
         case 0x66: inst_or_a(*ga); break; // OR A,g
         case 0x67: op_cp_a(*ga); break; // CP A,g
-        case 0x70: reg.hl= op_add_hl_v(*gga); break; // ADD HL,gg
+        case 0x70: reg.hl= op_add_hl_gg(*gga); break; // ADD HL,gg
         case 0x71: reg.hl= op_adc_hl_v(*gga); break; // ADC HL,gg
         case 0x72: reg.hl= op_sub_hl_v(*gga); break; // SUB HL,gg
         case 0x73: reg.hl= op_sbc_hl_v(*gga); break; // SBC HL,gg
@@ -1172,11 +1172,11 @@ cl_tlcs::exec_inst2_f8gg(u8_t c1, u8_t c2)
         case 0x6c: n= fetch(); *ga= op_and8(*ga, n); break; // AND g,n
         case 0x6d: n= fetch(); *ga= op_xor8(*ga, n); break; // XOR g,n
         case 0x6e: n= fetch(); *ga= op_or8(*ga, n); break; // OR g,n
-        case 0x6f: n= fetch(); *ga= op_cp8(*ga, n); break; // CP g,n
+        case 0x6f: n= fetch(); op_cp8(*ga, n); break; // CP g,n
           // non-fix 2nd byte cases
         default:
           if ((c2 & 0xfc) == 0x14) // ADD ix,gg
-            *aof_reg16_ix(c2)= op_add16(*aof_reg16_ix(c2), *gga);
+            *aof_reg16_ix(c2)= op_add16_noszv(*aof_reg16_ix(c2), *gga);
           else
             switch (c2 & 0xf8)
               {

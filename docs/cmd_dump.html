@@ -4,62 +4,86 @@
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
     <title>Dump commands of &micro;Csim</title>
   </head>
+
   <body style="background-color: white;">
+
     <h2>Dump commands of &micro;Csim</h2>
+
     <a name="dump">
       <h3>dump <i>[/format] memory_type [start [end [bytes_per_line]]]</i>
         <br>
         dump <i>bit...</i></h3>
     </a>
-    The first form can be used get the contents of memory while the second form can be
-    used to check the value of one or more bits.
+    
+    The first form can be used to get the contents of memory while the
+    second form can be used to check the value of one or more bits.
+    
     <blockquote>
       <a name="dump_memory">
         <h4>dump <i>[/format] memory_name [start [end
             [bytes_per_line]]]</i></h4>
       </a>
+
       Dump a memory region.
-      <p>The optional <b>/format</b> specifies how memory is to be dumped.
-      <dl>
-        <dt><b>/b</b> - binary</dt>
-          <dd>Dumps raw binary data. The output MUST be redirected to a file.</dd>
-        <dt><b>/h</b> - hexadecimal</dt>
-          <dd>Dumps data in a tabular hexadecimal format with an accompanying
-              table of equivalent characters to the right.</dd>
-        <dt><b>/i</b> - ihex</dt>
+
+      <p>The optional <b>/format</b> specifies how memory is dumped.
+
+	<dl>
+
+	  <dt><b>/b</b> - binary</dt>
+          <dd>Dumps raw binary data. The output must be redirected to
+            a file.</dd>
+	  
+          <dt><b>/h</b> - hexadecimal</dt>
+          <dd>Dumps data in a tabular hexadecimal format with an
+              accompanying table of equivalent characters to the
+              right.</dd>
+
+	  <dt><b>/i</b> - ihex</dt>
           <dd>Dumps data in ihex format.</dd>
-        <dt><b>/s</b> - string</dt>
-          <dd>Dumps a single, null terminated string starting at <b>start</b>.</dd>
-      </dl>
-      If no <b>format</b> is given dump uses a "smart" mode. This will disassemble
-      where the <a href="analyzer.html"> code analyzer</a> has identified executable
-      code otherwise it is similar to
-      the hexadecimal format except that where labels (vars that name an address)
-      are found they are shown between the address and data and where HW
-      registers (vars that name an address AND specify the full bit range)
-      are found that address is shown on a line of its own and the data is
-      given as binary, character, hex, unsigned decimal and, if the high bit
-      is set, signed decimal. Note that smart mode only applies if
+	  
+          <dt><b>/s</b> - string</dt>
+          <dd>Dumps a single, null terminated string starting
+            at <b>start</b>.</dd>
+	  
+	</dl>
+	
+      If no <b>format</b> is given dump uses a "smart" mode. This will
+      disassemble where the <a href="analyzer.html"> code analyzer</a>
+      has identified executable code otherwise it is similar to the
+      hexadecimal format except that where labels (vars that name an
+      address) are found they are shown between the address and data
+      and where HW registers (vars that name an address AND specify
+      the full bit range) are found that address is shown on a line of
+      its own and the data is given as binary, character, hex,
+      unsigned decimal and, if the high bit is set, signed
+      decimal. Note that smart mode only applies if
       <b>memory_name</b> is an address space since vars can only be set for
       cells within an address space. If <b>memory_name</b> is a chip the
       output is the same as hexadecimal (<b>/h</b>) output.
       </p>
-      <p><b>memory_name</b> specifies
-      memory. It can be the name of an address space or a chip, and can be
-      checked using <a href="cmd_general.html#info_memory">info memory</a>
+      
+      <p><b>memory_name</b> specifies memory. It can be the name of an
+      address space or a chip, and can be checked
+      using <a href="cmd_general.html#info_memory">info memory</a>
       command which lists size and name of all available memories.
       </p>
-      <p><b>start</b> and <b>end</b> parameters can be used to specify the
-        first and last address of the dumped region. If <b>end</b> is omitted
-        then 64 memory locations are dumped. If both <b>start</b> and <b>end</b>
-        are omitted then the next 64 memory locations will be dumped out. Every
-        time when dump command is used the address of the last dumped memory
-        location is stored and next dump command automatically continues at
-        the next address.
+      
+      <p><b>start</b> and <b>end</b> parameters can be used to specify
+        the first and last address of the dumped region. If <b>end</b>
+        is omitted then 64 memory locations are dumped. If
+        both <b>start</b> and <b>end</b> are omitted then the next 64
+        memory locations will be dumped out. Every time when dump
+        command is used the address of the last dumped memory location
+        is stored and next dump command automatically continues at the
+        next address.
       </p>
-      <p><b>bytes_per_line</b> can be used to specify how many memory locations
-        should be dumped out in one line. It is 8 by default.
+      
+      <p><b>bytes_per_line</b> can be used to specify how many memory
+        locations should be dumped out in one line. It is 8 by
+        default.
       </p>
+      
       <pre>$ <font color="#118811">ucsim_51</font>
 uCsim 0.6-pre34, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -146,24 +170,34 @@ F 0x000515
 </pre>
 
 
-<hr>
+      <hr>
 
-<a name="dump_bit">
+      <a name="dump_bit">
         <h4>dump <i>bit_name...</i></h4>
-      </a>This command can be used to print out values of bit(s). <a href="syntax.html#bit_param">Any
-        form of bit address</a> can be used as parameter:
+      </a>This command can be used to print out values of
+        bit(s). <a href="syntax.html#bit_param">Any form of bit
+        address</a> can be used as parameter:
+      
       <pre>0&gt; <font color="#118811">dump AC P1.2 0x21</font>
 0xd6      AC:                       0b0 0x00 '.'   0
 0x90.2                              0b-----1-- 0x01 '.'   1
 0x24.1                              0b------0- 0x00 '.'   0
 0&gt; 
-</pre> </blockquote>
-    <hr> <a name="dch">
+      </pre>
+    </blockquote>
+
+    <hr>
+
+    <a name="dch">
       <h3>dch <i>[start [stop]]</i></h3>
-    </a> Hexadecimal dump of code memory area from address <b>start</b> to
-    address <b>stop</b>. Default value of start address is address of following
-    memory cell which was dumped by previous <b>dch</b> command. If <b>stop</b>
-    parameter is not given <b>dch</b> command lists 10 lines 8 bytes per line.
+    </a>
+
+    Hexadecimal dump of code memory area from address <b>start</b> to
+    address <b>stop</b>. Default value of start address is address of
+    following memory cell which was dumped by previous <b>dch</b>
+    command. If <b>stop</b> parameter is not given <b>dch</b> command
+    lists 10 lines 8 bytes per line.
+
     <pre>$ <font color="#118811">ucsim_51 remo.hex</font>
 ucsim 0.2.24, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -183,17 +217,24 @@ under certain conditions; type `show c' for details.
 001412 6e 64 61 79 2e 00 4d 6f nday..Mo
 00141a 6e 64 61 79 2e 00 54 68 nday..Th
 001422 75 65 73 64 61 79 2e 00 uesday..
-&gt; </pre>
-    First element in every lines is address of first byte dumped out in the
-    line. Next elements are hexadecimal values of bytes followed by ASCII
-    characters of bytes dumped out in the line. If value of the memory cell is
-    not printable than a dot is dumped out.
+      &gt; </pre>
+    
+    First element in every lines is address of first byte dumped out
+    in the line. Next elements are hexadecimal values of bytes
+    followed by ASCII characters of bytes dumped out in the line. If
+    value of the memory cell is not printable than a dot is dumped
+    out.
+    
     <hr> <a name="dc">
       <h3>dc <i>[start [stop]]</i></h3>
-    </a> Disassembled dump of code memory area. This command simply produces
-    disassembled list of memory area specified by the parameters. Default value
-    of <b>start</b> parameter is last address listed by previous <b>dc</b>
-    command. If <b>stop</b> parameter is not given 20 lines are listed.
+    </a>
+
+    Disassembled dump of code memory area. This command simply
+    produces disassembled list of memory area specified by the
+    parameters. Default value of <b>start</b> parameter is last
+    address listed by previous <b>dc</b> command. If <b>stop</b>
+    parameter is not given 20 lines are listed.
+    
     <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font> 
 ucsim 0.2.12, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -223,21 +264,30 @@ under certain conditions; type `show c' for details.
  * 00001b ff       MOV   R7,A
  * 00001c ff       MOV   R7,A
 &gt; </pre>
-    <hr> <a name="disassemble">
+
+    <hr>
+
+    <a name="disassemble">
       <h3>disassemble <i>[start [offset [lines]]]</i></h3>
-    </a> Disassemble code. This command can be used to list disassembled
-    instructions which discovered by the <a href="analyzer.html">code analyser</a>.
-    First two parameters specify the address where the list starts. First
-    parameter is address where the command starts to search an instruction. This
-    search goes forward. When the first instruction marked by code analyzer
-    found the simulator skips as many instructions as you specify in second
-    parameter. If <b>offset</b> is negative the simulator goes backward and
-    skips specified number of instructions. Default value of <b>start</b>
-    parameter is last address which was listed by previous <b>dis</b> command
-    and default value of <b>offset</b> is -1. It means you can make continuous
-    list repeating parameterless <b>dis</b> command.
-    <p>In third parameter you can specify how many instructions you want to
-      list. Default value is 20. </p>
+    </a>
+
+    Disassemble code. This command can be used to list disassembled
+    instructions which discovered by the <a href="analyzer.html">code
+    analyser</a>.  First two parameters specify the address where the
+    list starts. First parameter is address where the command starts
+    to search an instruction. This search goes forward. When the first
+    instruction marked by code analyzer found the simulator skips as
+    many instructions as you specify in second
+    parameter. If <b>offset</b> is negative the simulator goes
+    backward and skips specified number of instructions. Default value
+    of <b>start</b> parameter is last address which was listed by
+    previous <b>dis</b> command and default value of <b>offset</b> is
+    -1. It means you can make continuous list repeating
+    parameterless <b>dis</b> command.
+
+    <p>In third parameter you can specify how many instructions you
+      want to list. Default value is 20. </p>
+    
     <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font>
 ucsim 0.2.12, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -278,22 +328,29 @@ D  000189 22       RET
    00018a 90 09 ec MOV   DPTR,#09ec
    00018d ae 83    MOV   R6,DPH
 &gt; </pre>
-    If there is an <b>F</b> or <b>D</b> character at the beginning of the
-    line, it means that there is a fix or dynamic fetch breakpoint at listed
-    address. Next element on the list can be an asterisk (<b>*</b>) which means
-    that the listed address is not marked by the code analyzer. <b>dis</b>
-    lists marked instructions only so asterisk never appears in the list. Next
-    element of the list is address displayed as six digit hexadecimal number.
-    Address is followed by hexadecimal dump of instruction's code. Last element
-    of the list is disassembled instruction. Every number appeared on the list
-    is hexadecimal number.
+
+    If there is an <b>F</b> or <b>D</b> character at the beginning of
+    the line, it means that there is a fix or dynamic fetch breakpoint
+    at listed address. Next element on the list can be an asterisk
+    (<b>*</b>) which means that the listed address is not marked by
+    the code analyzer. <b>dis</b> lists marked instructions only so
+    asterisk never appears in the list. Next element of the list is
+    address displayed as six digit hexadecimal number.  Address is
+    followed by hexadecimal dump of instruction's code. Last element
+    of the list is disassembled instruction. Every number appeared on
+    the list is hexadecimal number.
+
     <hr> <a name="di">
       <h3>di <i>[start [stop]]</i></h3>
-    </a> Hexadecimal dump of <b>iram</b> named address space area from address
+    </a>
+
+    Hexadecimal dump of <b>iram</b> named address space area from
+    address
     <b>start</b> to address <b>stop</b>. Default value of start address is
     address of following memory cell which was dumped by previous <b>di</b>
     command. If <b>stop</b> parameter is not given <b>di</b> command lists 10
     lines 8 bytes per line.
+    
     <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font>
 ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -318,13 +375,18 @@ F 000023
 000048 00 00 00 00 00 00 00 00 ........
 0&gt;
 </pre>
+
     <hr> <a name="dx">
       <h3>dx <i>[start [stop]]</i></h3>
-    </a> Hexadecimal dump of <b>xram</b> named address space area from address
+    </a>
+
+    Hexadecimal dump of <b>xram</b> named address space area from
+    address
     <b>start</b> to address <b>stop</b>. Default value of start address is
     address of following memory cell which was dumped by previous <b>dx</b>
     command. If <b>stop</b> parameter is not given <b>dx</b> command lists 10
     lines 8 bytes per line.
+
     <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font>
 ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -349,12 +411,19 @@ F 000023
 000148 02 00 24 00 00 00 00 00 ..$.....
 0&gt;
 </pre>
-    <hr> <a name="ds">
+
+    <hr>
+
+    <a name="ds">
       <h3>ds <i>[start [stop]]</i></h3>
-    </a> Hexadecimal dump of <b>sfr</b> named address space area from address <b>start</b>
-    to address <b>stop</b>. Default value of start address is address of
-    following memory cell which was dumped by previous <b>ds</b> command. If <b>stop</b>
-    parameter is not given <b>ds</b> command lists 10 lines 8 bytes per line.
+    </a>
+
+    Hexadecimal dump of <b>sfr</b> named address space area from
+    address <b>start</b> to address <b>stop</b>. Default value of
+    start address is address of following memory cell which was dumped
+    by previous <b>ds</b> command. If <b>stop</b> parameter is not
+    given <b>ds</b> command lists 10 lines 8 bytes per line.
+
     <pre>$ <font color="#118811">ucsim_51 remo.hex</font>
 ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -378,7 +447,8 @@ F 000023
 0xc0 00 00 00 00 00 00 00 00 ........
 0xc8 00 00 00 00 00 00 00 00 ........
 0&gt;
-</pre>
+    </pre>
+    
     <hr>
   </body>
 </html>

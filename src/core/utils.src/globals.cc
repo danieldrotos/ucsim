@@ -587,6 +587,9 @@ struct cpu_entry cpus_i8085[]=
 struct cpu_entry cpus_m6800[]=
   {
     {"M6800", CPU_M6800, 0, "M6800", ""},
+    {"6800" , CPU_M6800, 0, "M6800", ""},
+    {"M6801", CPU_M6801, 0, "M6801", ""},
+    {"6801" , CPU_M6801, 0, "M6801", ""},
 
     {NULL, CPU_NONE, 0, "", ""}
   };
@@ -602,6 +605,7 @@ struct cpu_entry cpus_m68hc08[]=
   {
     {"HC08"   , CPU_HC08, 0	, ""	, ""},
     {"HCS08"  , CPU_HCS08,0	, ""	, ""},
+    {"9S08"   , CPU_9S08, 0	, ""	, ""},
     
     {NULL, CPU_NONE, 0, "", ""}
   };
@@ -640,6 +644,9 @@ struct cpu_entry cpus_mos6502[]=
     {"C02S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
     {"CS"	, CPU_65C02S, 0		, "MOS65C02S", ""},
     {"S"	, CPU_65C02S, 0		, "MOS65C02S", ""},
+    {"HUC6280"  , CPU_HUC6280, 0	, "HUC6280", "" },
+    {"HUC"	, CPU_HUC6280, 0	, "HUC6280", "" },
+    {"6280"	, CPU_HUC6280, 0	, "HUC6280", "" },
     
     {NULL, CPU_NONE, 0, "", ""}
   };

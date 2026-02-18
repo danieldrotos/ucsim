@@ -392,4 +392,12 @@ struct dis_entry disass_hc08_9e[]= {
 };
 
 
+struct dis_entry disass_9s08[]= {
+  { 0x00ac, 0x00ff, ' ', 4, "call %C" },
+  { 0x008d, 0x00ff, ' ', 1, "rtc" },
+  
+  { 0, 0, 0, 0, NULL }
+};
+
+
 /* End of m68hc08.src/glob.cc */

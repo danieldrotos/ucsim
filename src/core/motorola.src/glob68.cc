@@ -248,4 +248,38 @@ struct dis_entry disass_m6800[]=
     { 0, 0, 0, 0, 0, 0 }
   };
 
+// code mask branch len mn call tick
+struct dis_entry disass_m6801[]=
+  {
+    { 0x21, 0xff, ' ', 2, "BRN %r" },
+    { 0x9d, 0xff, 'd', 2, "JSR %d" },
+    { 0x3c, 0xff, ' ', 1, "PSHX" },
+    { 0x38, 0xff, ' ', 1, "PULX" },
+
+    { 0x04, 0xff, ' ', 1, "LSRD" },
+    { 0x05, 0xff, ' ', 1, "ASLD" },
+    { 0x3a, 0xff, ' ', 1, "ABX" },
+    { 0x3b, 0xff, ' ', 1, "MUL" },
+      
+    { 0xc3, 0xff, ' ', 3, "ADDD %B" },
+    { 0xd3, 0xff, ' ', 2, "ADDD %D" },
+    { 0xf3, 0xff, ' ', 3, "ADDD %E" },
+    { 0xe3, 0xff, ' ', 2, "ADDD %X" },
+    { 0x83, 0xff, ' ', 3, "SUBD %B" },
+    { 0x93, 0xff, ' ', 2, "SUBD %D" },
+    { 0xb3, 0xff, ' ', 3, "SUBD %E" },
+    { 0xa3, 0xff, ' ', 2, "SUBD %X" },
+
+    { 0xcc, 0xff, ' ', 3, "LDD %B" },
+    { 0xdc, 0xff, ' ', 2, "LDD %D" },
+    { 0xfc, 0xff, ' ', 3, "LDD %E" },
+    { 0xec, 0xff, ' ', 2, "LDD %X" },
+    { 0xdd, 0xff, ' ', 2, "STD %D" },
+    { 0xfd, 0xff, ' ', 3, "STD %E" },
+    { 0xed, 0xff, ' ', 2, "STD %X" },
+
+    { 0, 0, 0, 0, 0, 0 }
+  };
+
+  
 /* End of motorola.src/glob68.cc */

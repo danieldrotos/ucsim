@@ -30,24 +30,52 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "z80cl.h"
 
+
 class cl_ez80: public cl_z80
 {
  public:
+  bool adl;
  public:
   cl_ez80(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
+  virtual void reset(void);
+
+  virtual void make_cpu_hw(void);
+
   virtual const char *get_disasm_info(t_addr addr,
 				      int *ret_len,
 				      int *ret_branch,
 				      int *immed_offset,
 				      struct dis_entry **dentry);
-  
+
+  virtual int inst_length(t_addr addr);
+  virtual int exec_inst(void);
+
   virtual int inst_ed_ez80(t_mem code);    
   virtual int inst_ed(t_mem prefix);
   virtual int inst_dd_spec(t_mem code);
   virtual int inst_fd_spec(t_mem code);
 };
+
+
+enum ez80cpu_confs
+  {
+    ez80cpu_adl		= z80cpu_nuof+0,
+    ez80cpu_nuof	= z80cpu_nuof+1
+  };
+
+class cl_ez80_cpu: public cl_z80_cpu
+{
+public:
+  cl_ez80_cpu(class cl_uc *auc): cl_z80_cpu(auc) {}
+  virtual int init(void);
+  virtual unsigned int cfg_size(void) { return ez80cpu_nuof; }
+  virtual const char *cfg_help(t_addr addr);
+  virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
+  virtual void print_info(class cl_console_base *con);
+};
+
 
 #endif
 

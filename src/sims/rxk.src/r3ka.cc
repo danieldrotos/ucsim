@@ -63,7 +63,8 @@ void
 cl_r3ka::reset(void)
 {
   cl_r3k::reset();
-  edmr= 0;
+  ioi->set(0x420, 0); // edmr
+  sysmode= false;
   //mode3k();  
 }
 
