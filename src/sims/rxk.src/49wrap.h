@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (r6k.cc)
+ * Simulator of microcontrollers (7fwrap.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -25,51 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#include "glob.h"
-#include "49wrap.h"
+#ifndef _49WRAP_HEADER
+#define _49WRAP_HEADER
 
-#include "r6kcl.h"
+#include "iwrap.h"
 
+extern void fill_49_wrappers(instruction_wrapper_fn itab[]);
 
-cl_r6k::cl_r6k(class cl_sim *asim):
-  cl_r5k(asim)
-{
-  fill_49_wrappers(itab_49);
-}
+#endif
 
-const char *
-cl_r6k::id_string(void)
-{
-  return "R6K";
-}
-
-
-void
-cl_r6k::mode3k(void)
-{
-  cl_r5k::mode3k();
-}
-
-
-void
-cl_r6k::mode01(void)
-{
-  cl_r5k::mode01();
-}
-
-
-void
-cl_r6k::mode10(void)
-{
-  cl_r5k::mode10();
-}
-
-void
-cl_r6k::mode4k(void)
-{
-  cl_r5k::mode4k();
-  itab[0x43]= instruction_wrapper_6k11_43;
-}
-
-
-/* End of rxk.src/r6k.cc */
+/* End of rxk.src/49wrap.h */
