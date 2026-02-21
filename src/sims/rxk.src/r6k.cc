@@ -40,4 +40,31 @@ cl_r6k::id_string(void)
 }
 
 
+void
+cl_r6k::mode3k(void)
+{
+  cl_r5k::mode3k();
+}
+
+
+void
+cl_r6k::mode01(void)
+{
+  cl_r5k::mode01();
+}
+
+
+void
+cl_r6k::mode10(void)
+{
+  cl_r5k::mode10();
+}
+
+void
+cl_r6k::mode4k(void)
+{
+  cl_r5k::mode4k();
+}
+
+
 /* End of rxk.src/r6k.cc */
