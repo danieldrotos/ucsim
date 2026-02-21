@@ -36,6 +36,7 @@ instruction_wrapper_fn itab_ed[256];
 instruction_wrapper_fn itab_fd[256];
 instruction_wrapper_fn itab_7f[256];
 instruction_wrapper_fn itab_7f10[256];
+instruction_wrapper_fn itab_49[256];
 
 u8_t sbox_tab[256];
 u8_t ibox_tab[256];
