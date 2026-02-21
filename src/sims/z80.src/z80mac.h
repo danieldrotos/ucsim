@@ -340,10 +340,10 @@
     --var;								\
     regs.raf.F &= ~(BIT_N |BIT_P |BIT_A |BIT_Z |BIT_S);  /* clear these */ \
     regs.raf.F |= BIT_N;  /* Not add */					\
-    if (var == 0)          regs.raf.F |= BIT_Z;				\
-    if (var == 0x7f)       regs.raf.F |= BIT_P;				\
-    if (var & 0x80)        regs.raf.F |= BIT_S;				\
-    if ((var & 0x0f) == 0) regs.raf.F |= BIT_A;				\
+    if (var == 0)           regs.raf.F |= BIT_Z;			\
+    if (var == 0x7f)        regs.raf.F |= BIT_P;			\
+    if (var & 0x80)         regs.raf.F |= BIT_S;			\
+    if ((var & 0xf) == 0xf) regs.raf.F |= BIT_A;			\
     xy(var);								\
   }
 
