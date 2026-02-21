@@ -36,6 +36,11 @@ class cl_r6k: public cl_r5k
  public:
   cl_r6k(class cl_sim *asim);
   virtual const char *id_string(void);
+
+  virtual void mode3k(void);
+  virtual void mode01(void);
+  virtual void mode10(void);
+  virtual void mode4k(void);
 };
 
 
