@@ -104,12 +104,15 @@ enum {
 
 #define CPU ((class cl_rxk_cpu *)cpu)
 
+#define MP t_mem code
+
 
 class cl_rxk_base: public cl_uc
 {
 public:
   cl_rxk_base(class cl_sim *asim);
 #include "r4kcl_instructions.h"
+#include "r6kcl_instructions.h"
 #include "dd_instructions.h"
 #include "ed_instructions.h"
 };

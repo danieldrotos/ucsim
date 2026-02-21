@@ -41,6 +41,8 @@ class cl_r6k: public cl_r5k
   virtual void mode01(void);
   virtual void mode10(void);
   virtual void mode4k(void);
+
+  virtual int JP_GE_MN(MP){return resGO;}
 };
 
 
