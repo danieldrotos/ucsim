@@ -101,6 +101,8 @@ enum {
 #define cond_LT(f)	( ((f) ^ ((f)<<5)) & 0x80 )
 #define cond_LTU(f)	( (f)&flagC )
 #define cond_V(f)	( (f)&flagV )
+#define cond_GE(f)	( !cond_LT(f) )
+#define cond_LE(f)	( cond_LT(f) || (f & flagZ) )
 
 #define CPU ((class cl_rxk_cpu *)cpu)
 
