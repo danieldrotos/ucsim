@@ -233,7 +233,7 @@ cl_rxk::dis_tbl(void)
 struct dis_entry *
 cl_rxk::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr);
+  u8_t code= rom->read(addr);
   int i;
   struct dis_entry *dt;
   i= 0;
@@ -241,7 +241,7 @@ cl_rxk::dis_entry(t_addr addr)
   if (code == 0xed)
     {
       dt= disass_pedm3;
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
@@ -260,7 +260,7 @@ cl_rxk::dis_entry(t_addr addr)
 	  cIR= &cIY;
 	}
       dt= disass_pddm3;
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;

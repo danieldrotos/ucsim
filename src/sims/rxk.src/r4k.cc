@@ -156,13 +156,13 @@ static struct dis_entry de7f;
 struct dis_entry *
 cl_r4k::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr), mode= kmode;
+  u8_t code= rom->read(addr), mode= kmode;
   int i;
   struct dis_entry *dt;
   
   if (code == 0xed)
     {
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       
       dt= disass_pedm3;
       i= 0;
@@ -200,7 +200,7 @@ cl_r4k::dis_entry(t_addr addr)
 	{
 	  cIR= &cIY;
 	}
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       dt= disass_pddm3;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
@@ -231,7 +231,7 @@ cl_r4k::dis_entry(t_addr addr)
   if ((code == 0x7f) && (mode == 3))
     {
       // 7f page is special in 4k mode
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       if ((code <= 0x3f) || (code >= 0xc0))
 	return NULL;
       if ((code >= 0x40) && (code <= 0x6f))
@@ -264,7 +264,7 @@ cl_r4k::dis_entry(t_addr addr)
   if ((code == 0x7f) && (mode == 2))
     {
       // 7f page in mode 10 is same as 4k insts on main page
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       dt= disass_p0m4;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
@@ -322,7 +322,7 @@ char mnemo[100];
 struct dis_entry *
 cl_r4k::dis_6d_entry(t_addr addr)
 {
-  u8_t h, l, code= rom->get(addr+1);
+  u8_t h, l, code= rom->read(addr+1);
   chars op, idx, offset;
   
   if (code == 0x6d)
@@ -364,7 +364,7 @@ cl_r4k::dis_6d_entry(t_addr addr)
     {
     case 0:
       {
-	u8_t d= rom->get(addr+2);
+	u8_t d= rom->read(addr+2);
 	disass_6d[0].length= 3;
 	if (l&1)
 	  offset.format("+%u", d);

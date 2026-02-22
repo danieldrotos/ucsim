@@ -43,6 +43,12 @@ cl_r6k::id_string(void)
   return "R6K";
 }
 
+struct dis_entry *
+cl_r6k::dis_entry(t_addr addr)
+{
+  return cl_r5k::dis_entry(addr);
+}
+
 
 void
 cl_r6k::mode3k(void)
