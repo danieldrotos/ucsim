@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DP0M6_HEADER
 
 #define JP_GE_MN		instruction_6k11_43
+#define JP_LE_MN		instruction_6k11_53
 
 #endif
 

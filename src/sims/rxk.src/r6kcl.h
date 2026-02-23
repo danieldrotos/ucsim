@@ -46,6 +46,7 @@ class cl_r6k: public cl_r5k
   virtual void mode4k(void);
 
   virtual int JP_GE_MN(MP) { return jp_f_mn(cond_GE(rF)); }
+  virtual int JP_LE_MN(MP) { return jp_f_mn(cond_LE(rF)); }
 };
 
 
