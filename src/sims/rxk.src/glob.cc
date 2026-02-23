@@ -210,6 +210,12 @@ struct dis_entry disass_rxk[]=
     { 0, 0, 0, 0, 0, 0, 0 }
   };
 
+struct dis_entry disass_r6k[]=
+  {
+    { 0x30043, 0x00ff, ' ', 3, "JP GE,%w" },
+    
+    { 0, 0, 0, 0, 0, 0, 0 }
+  };
 
 #define ROTL8(x,shift) ((/*u8_t*/u8_t) ((x) << (shift)) | ((x) >> (8 - (shift))))
 
