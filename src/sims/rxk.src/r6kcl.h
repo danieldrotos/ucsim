@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "r5kcl.h"
 #include "r6kwrap.h"
+#include "dp0m6.h"
 
 
 class cl_r6k: public cl_r5k
