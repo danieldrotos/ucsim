@@ -44,6 +44,7 @@ extern u8_t sbox_tab[256];
 extern u8_t ibox_tab[256];
 
 extern struct dis_entry disass_rxk[];
+extern struct dis_entry disass_r6k[];
 
 extern void init_sbox();
 

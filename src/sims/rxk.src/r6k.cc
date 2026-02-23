@@ -46,6 +46,25 @@ cl_r6k::id_string(void)
 struct dis_entry *
 cl_r6k::dis_entry(t_addr addr)
 {
+  u8_t code0= rom->read(addr);
+  t_mem codew= code0 + 256*(rom->read(addr+1));
+  struct dis_entry *de;
+  int i;
+  i= 0;
+  while (disass_r6k[i].mnemonic)
+    {
+      int em;
+      de= &disass_r6k[i];
+      em= de->code >> 16;
+      if (em == kmode)
+	{
+	  t_mem mc= codew & de->mask;
+	  t_mem cc= de->code & 0xffff;
+	  if (mc == cc)
+	    return de;
+	}
+      i++;
+    }
   return cl_r5k::dis_entry(addr);
 }
 
