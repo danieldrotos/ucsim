@@ -220,6 +220,7 @@ struct dis_entry disass_rxk[]=
 struct dis_entry disass_r6k[]=
   {
     { 0x80043, 0x00ff, ' ', 3, "JP GE,%w" },
+    { 0x80053, 0x00ff, ' ', 3, "JP LE,%w" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };
