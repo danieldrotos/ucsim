@@ -53,10 +53,11 @@ cl_r6k::dis_entry(t_addr addr)
   i= 0;
   while (disass_r6k[i].mnemonic)
     {
-      int em;
+      int em, km;
       de= &disass_r6k[i];
       em= de->code >> 16;
-      if (em == kmode)
+      km= 1<<kmode;
+      if (em & km)
 	{
 	  t_mem mc= codew & de->mask;
 	  t_mem cc= de->code & 0xffff;
