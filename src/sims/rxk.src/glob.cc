@@ -210,9 +210,16 @@ struct dis_entry disass_rxk[]=
     { 0, 0, 0, 0, 0, 0, 0 }
   };
 
+/*
+  3rd byte is a bit mask, shows if inst avail in a mode:
+  1000 (8) inst avail in mode3 (11)
+  0100 (4) inst avail in mode2 (10)
+  0010 (2) inst avail in mode1 (01)
+  0001 (1) inst avail in mode0 (00) 
+ */
 struct dis_entry disass_r6k[]=
   {
-    { 0x30043, 0x00ff, ' ', 3, "JP GE,%w" },
+    { 0x80043, 0x00ff, ' ', 3, "JP GE,%w" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };
