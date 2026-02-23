@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "r6kcl.h"
 
 extern int instruction_wrapper_6k11_43(class cl_uc *uc, t_mem code);
+extern int instruction_wrapper_6k11_53(class cl_uc *uc, t_mem code);
 
 
 #endif

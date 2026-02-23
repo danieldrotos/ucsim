@@ -27,6 +27,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "glob.h"
 #include "49wrap.h"
+#include "r6kwrap.h"
 
 #include "r6kcl.h"
 
@@ -95,6 +96,7 @@ cl_r6k::mode4k(void)
 {
   cl_r5k::mode4k();
   itab[0x43]= instruction_wrapper_6k11_43;
+  itab[0x53]= instruction_wrapper_6k11_53;
 }
 
 

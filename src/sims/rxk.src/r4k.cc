@@ -511,117 +511,14 @@ void
 cl_r4k::mode3k(void)
 {
   kmode= 0;
-  itab[0x40]= instruction_wrapper_40;
-  itab[0x41]= instruction_wrapper_41;
-  itab[0x43]= instruction_wrapper_43;
-  itab[0x44]= instruction_wrapper_44;
-  itab[0x49]= instruction_wrapper_49;
-  itab[0x4a]= instruction_wrapper_4a;
-  itab[0x4b]= instruction_wrapper_4b;
-  itab[0x52]= instruction_wrapper_52;
-  itab[0x53]= instruction_wrapper_53;
-  itab[0x58]= instruction_wrapper_58;
-  itab[0x59]= instruction_wrapper_59;
-  itab[0x5a]= instruction_wrapper_5a;
-  itab[0x5c]= instruction_wrapper_5c;
-  itab[0x5d]= instruction_wrapper_5d;
-  itab[0x64]= instruction_wrapper_64;
-  itab[0x68]= instruction_wrapper_68;
-  itab[0x69]= instruction_wrapper_69;
-  itab[0x6a]= instruction_wrapper_6a;
-  itab[0x6b]= instruction_wrapper_6b;
-  itab[0x6c]= instruction_wrapper_6c;
-  itab[0x80]= instruction_wrapper_80;
-  itab[0x88]= instruction_wrapper_88;
-  itab[0x90]= instruction_wrapper_90;
-
-  itab[0x45]= instruction_wrapper_45;
-  itab[0x48]= instruction_wrapper_48;
-  itab[0x4c]= instruction_wrapper_4c;
-  itab[0x4d]= instruction_wrapper_4d;
-
-  itab[0x50]= instruction_wrapper_50;
-  itab[0x51]= instruction_wrapper_51;
-  itab[0x54]= instruction_wrapper_54;
-  itab[0x55]= instruction_wrapper_55;
-
-  itab[0x60]= instruction_wrapper_60;
-  itab[0x61]= instruction_wrapper_61;
-  itab[0x62]= instruction_wrapper_62;
-  itab[0x63]= instruction_wrapper_63;
-  itab[0x65]= instruction_wrapper_65;
-  itab[0x6d]= instruction_wrapper_6d;
-
-  itab[0x7f]= instruction_wrapper_7f;
-
-  itab[0x81]= instruction_wrapper_81;
-  itab[0x82]= instruction_wrapper_82;
-  itab[0x83]= instruction_wrapper_83;
-  itab[0x84]= instruction_wrapper_84;
-  itab[0x85]= instruction_wrapper_85;
-  itab[0x86]= instruction_wrapper_86;
-  itab[0x87]= instruction_wrapper_87;
-  itab[0x89]= instruction_wrapper_89;
-  itab[0x8a]= instruction_wrapper_8a;
-  itab[0x8b]= instruction_wrapper_8b;
-  itab[0x8c]= instruction_wrapper_8c;
-  itab[0x8d]= instruction_wrapper_8d;
-  itab[0x8e]= instruction_wrapper_8e;
-  itab[0x8f]= instruction_wrapper_8f;
-
-  itab[0x91]= instruction_wrapper_91;
-  itab[0x92]= instruction_wrapper_92;
-  itab[0x93]= instruction_wrapper_93;
-  itab[0x94]= instruction_wrapper_94;
-  itab[0x95]= instruction_wrapper_95;
-  itab[0x96]= instruction_wrapper_96;
-  itab[0x97]= instruction_wrapper_97;
-  itab[0x98]= instruction_wrapper_98;
-  itab[0x99]= instruction_wrapper_99;
-  itab[0x9a]= instruction_wrapper_9a;
-  itab[0x9b]= instruction_wrapper_9b;
-  itab[0x9c]= instruction_wrapper_9c;
-  itab[0x9d]= instruction_wrapper_9d;
-  itab[0x9e]= instruction_wrapper_9e;
-  itab[0x9f]= instruction_wrapper_9f;
-
-  itab[0xa0]= instruction_wrapper_a0;
-  itab[0xa1]= instruction_wrapper_a1;
-  itab[0xa2]= instruction_wrapper_a2;
-  itab[0xa3]= instruction_wrapper_a3;
-  itab[0xa4]= instruction_wrapper_a4;
-  itab[0xa5]= instruction_wrapper_a5;
-  itab[0xa6]= instruction_wrapper_a6;
-  itab[0xa7]= instruction_wrapper_a7;
-  itab[0xa8]= instruction_wrapper_a8;
-  itab[0xa9]= instruction_wrapper_a9;
-  itab[0xaa]= instruction_wrapper_aa;
-  itab[0xab]= instruction_wrapper_ab;
-  itab[0xac]= instruction_wrapper_ac;
-  itab[0xad]= instruction_wrapper_ad;
-  itab[0xae]= instruction_wrapper_ae;
-
-  itab[0xb0]= instruction_wrapper_b0;
-  itab[0xb1]= instruction_wrapper_b1;
-  itab[0xb2]= instruction_wrapper_b2;
-  itab[0xb3]= instruction_wrapper_b3;
-  itab[0xb4]= instruction_wrapper_b4;
-  itab[0xb5]= instruction_wrapper_b5;
-  itab[0xb6]= instruction_wrapper_b6;
-  itab[0xb8]= instruction_wrapper_b8;
-  itab[0xb9]= instruction_wrapper_b9;
-  itab[0xba]= instruction_wrapper_ba;
-  itab[0xbb]= instruction_wrapper_bb;
-  itab[0xbc]= instruction_wrapper_bc;
-  itab[0xbd]= instruction_wrapper_bd;
-  itab[0xbe]= instruction_wrapper_be;
-  itab[0xbf]= instruction_wrapper_bf;
+  fill_def_wrappers(itab);
 }
 
 void
 cl_r4k::mode01(void)
 {
   kmode= 1;
+  fill_def_wrappers(itab);
   itab[0x6d]= instruction_wrapper_4k6d;
 }
 
@@ -629,6 +526,7 @@ void
 cl_r4k::mode10(void)
 {
   kmode= 2;
+  fill_def_wrappers(itab);
   itab[0x6d]= instruction_wrapper_4k6d;
   itab[0x7f]= instruction_wrapper_4k7f;
 }
@@ -637,6 +535,7 @@ void
 cl_r4k::mode4k(void)
 {
   kmode= 3;
+  fill_def_wrappers(itab);
   itab[0x40]= instruction_wrapper_4knone;
   itab[0x41]= instruction_wrapper_4knone;
   itab[0x43]= instruction_wrapper_4knone;
