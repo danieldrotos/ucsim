@@ -30,6 +30,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #define JP_GE_MN		instruction_6k11_43
 #define JP_LE_MN		instruction_6k11_53
+#define JR_GE_E			instruction_6k11_80
+#define JR_LE_E			instruction_6k11_90
 
 #endif
 
