@@ -25,20 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#define WRAPPER_SOURCE
+
 #include "r6kwrap.h"
-
-#define W(X) int \
-  instruction_wrapper_ ##X \
-  (class cl_uc *uc, t_mem code) \
-  { return ((class cl_r6k *)uc)->instruction_ ##X (code); }
-
-W(6k11_43)
-W(6k11_53)
-W(6k11_80)
-W(6k11_90)
-W(6k11_4b)
-W(6k11_88)
-
-#undef W
 
 /* End of rxk.src/r6kwrap.cc */

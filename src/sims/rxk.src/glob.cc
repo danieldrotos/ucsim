@@ -225,6 +225,7 @@ struct dis_entry disass_r6k[]=
     { 0x80080, 0x00ff, ' ', 2, "JR GE,%r" },
     { 0x80090, 0x00ff, ' ', 2, "JR LE,%r" },
     { 0x80088, 0x00ff, ' ', 2, "JR LEU,%r" },
+    { 0x80044, 0x00ff, ' ', 2, "EX JKHL,BCDE'" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };

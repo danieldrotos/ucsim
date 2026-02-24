@@ -30,14 +30,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "r6kcl.h"
 
-#define WH(X) extern int instruction_wrapper_ ##X ( class cl_uc *uc, t_mem code)
+#define WHEAD(X) int instruction_wrapper_ ##X ( class cl_uc *uc, t_mem code)
+#define WDECL(X) extern WHEAD(X);
+#define WCODE(X) WHEAD(X) \
+  { return ((class cl_r6k *)uc)->instruction_ ##X (code); }
 
-WH(6k11_43);
-WH(6k11_53);
-WH(6k11_80);
-WH(6k11_90);
-WH(6k11_4b);
-WH(6k11_88);
+#ifdef WRAPPER_SOURCE
+#define W(X) WCODE(X)
+#else
+#define W(X) WDECL(X)
+#endif
+
+W(6k11_43)
+W(6k11_53)
+W(6k11_80)
+W(6k11_90)
+W(6k11_4b)
+W(6k11_88)
+W(6k11_44)
+
+#undef W
+#undef WCODE
+#undef WDECL
+#undef WHEAD
 
 #endif
 
