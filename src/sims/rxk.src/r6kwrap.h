@@ -48,6 +48,8 @@ W(6k11_90)
 W(6k11_4b)
 W(6k11_88)
 W(6k11_44)
+W(6k11_59)
+W(6k11_69)
 
 #undef W
 #undef WCODE

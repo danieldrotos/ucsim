@@ -53,6 +53,8 @@ class cl_r6k: public cl_r5k
   virtual int JR_LE_E(MP) { return jr_cc(cond_LE(rF)); }
   virtual int JR_LEU_E(MP) { return jr_cc(cond_LEU(rF)); }
   virtual int EX_JKHL_BCDE_(MP);
+  virtual int MUL_HL_DE(MP);
+  virtual int MULU_HL_DE(MP);
 };
 
 

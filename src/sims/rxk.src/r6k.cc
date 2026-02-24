@@ -118,5 +118,23 @@ cl_r6k::EX_JKHL_BCDE_(MP)
   return resGO;
 }
 
+int
+cl_r6k::MUL_HL_DE(MP)
+{
+  i32_t a= (i16_t)rHL;
+  i32_t b= (i16_t)rDE;
+  destJKHL().W(a * b);
+  tick(10);
+  return resGO;
+}
+
+int
+cl_r6k::MULU_HL_DE(MP)
+{
+  destJKHL().W((u32_t)rHL * (u32_t)rDE);
+  tick(10);
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
