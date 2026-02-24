@@ -27,7 +27,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "r6kwrap.h"
 
-int instruction_wrapper_6k11_43(class cl_uc *uc, t_mem code) { return ((class cl_r6k *)uc)->instruction_6k11_43(code); }
-int instruction_wrapper_6k11_53(class cl_uc *uc, t_mem code) { return ((class cl_r6k *)uc)->instruction_6k11_53(code); }
+#define W(X) int \
+  instruction_wrapper_ ##X \
+  (class cl_uc *uc, t_mem code) \
+  { return ((class cl_r6k *)uc)->instruction_ ##X (code); }
+
+W(6k11_43)
+W(6k11_53)
+W(6k11_80)
+W(6k11_90)
+
+#undef W
 
 /* End of rxk.src/r6kwrap.cc */
