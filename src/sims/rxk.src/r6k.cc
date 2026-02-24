@@ -99,5 +99,24 @@ cl_r6k::mode4k(void)
   itab[0x53]= instruction_wrapper_6k11_53;
 }
 
+int
+cl_r6k::EX_JKHL_BCDE_(MP)
+{
+  u32_t t;
+  if (altd)
+    {
+      t= rJKHL;
+      cJKHL.W(raBCDE);
+      caBCDE.W(t);
+    }
+  else
+    {
+      t= raJKHL;
+      caJKHL.W(raBCDE);
+      caBCDE.W(t);
+    }
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
