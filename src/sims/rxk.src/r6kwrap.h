@@ -42,14 +42,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #endif
 
 W(6k11_43)
-W(6k11_53)
-W(6k11_80)
-W(6k11_90)
-W(6k11_4b)
-W(6k11_88)
 W(6k11_44)
+W(6k11_4b)
+W(6k11_53)
 W(6k11_59)
 W(6k11_69)
+W(6k11_80)
+W(6k11_88)
+W(6k11_90)
 
 #undef W
 #undef WCODE

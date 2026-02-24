@@ -96,7 +96,14 @@ cl_r6k::mode4k(void)
 {
   cl_r5k::mode4k();
   itab[0x43]= instruction_wrapper_6k11_43;
+  itab[0x44]= instruction_wrapper_6k11_44;
+  itab[0x4b]= instruction_wrapper_6k11_4b;
   itab[0x53]= instruction_wrapper_6k11_53;
+  itab[0x59]= instruction_wrapper_6k11_59;
+  itab[0x69]= instruction_wrapper_6k11_69;
+  itab[0x80]= instruction_wrapper_6k11_80;
+  itab[0x88]= instruction_wrapper_6k11_88;
+  itab[0x90]= instruction_wrapper_6k11_90;
 }
 
 int

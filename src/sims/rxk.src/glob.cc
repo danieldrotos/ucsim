@@ -220,14 +220,14 @@ struct dis_entry disass_rxk[]=
 struct dis_entry disass_r6k[]=
   {
     { 0x80043, 0x00ff, ' ', 3, "JP GE,%w" },
-    { 0x80053, 0x00ff, ' ', 3, "JP LE,%w" },
-    { 0x8004b, 0x00ff, ' ', 3, "JP LEU,%w" },
-    { 0x80080, 0x00ff, ' ', 2, "JR GE,%r" },
-    { 0x80090, 0x00ff, ' ', 2, "JR LE,%r" },
-    { 0x80088, 0x00ff, ' ', 2, "JR LEU,%r" },
     { 0x80044, 0x00ff, ' ', 2, "EX JKHL,BCDE'" },
+    { 0x8004b, 0x00ff, ' ', 3, "JP LEU,%w" },
+    { 0x80053, 0x00ff, ' ', 3, "JP LE,%w" },
     { 0x80059, 0x00ff, ' ', 2, "MUL HL,DE" },
     { 0x80069, 0x00ff, ' ', 2, "MULU HL,DE" },
+    { 0x80080, 0x00ff, ' ', 2, "JR GE,%r" },
+    { 0x80088, 0x00ff, ' ', 2, "JR LEU,%r" },
+    { 0x80090, 0x00ff, ' ', 2, "JR LE,%r" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };

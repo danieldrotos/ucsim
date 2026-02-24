@@ -29,14 +29,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define DP0M6_HEADER
 
 #define JP_GE_MN		instruction_6k11_43
-#define JP_LE_MN		instruction_6k11_53
-#define JP_LEU_MN		instruction_6k11_4b
-#define JR_GE_E			instruction_6k11_80
-#define JR_LE_E			instruction_6k11_90
-#define JR_LEU_E		instruction_6k11_88
 #define EX_JKHL_BCDE_		instruction_6k11_44
+#define JP_LEU_MN		instruction_6k11_4b
+#define JP_LE_MN		instruction_6k11_53
 #define MUL_HL_DE		instruction_6k11_59
 #define MULU_HL_DE		instruction_6k11_69
+#define JR_GE_E			instruction_6k11_80
+#define JR_LEU_E		instruction_6k11_88
+#define JR_LE_E			instruction_6k11_90
 
 #endif
 
