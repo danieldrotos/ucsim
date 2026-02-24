@@ -223,12 +223,22 @@ struct dis_entry disass_r6k[]=
     { 0x80044, 0x00ff, ' ', 2, "EX JKHL,BCDE'" },
     { 0x8004b, 0x00ff, ' ', 3, "JP LEU,%w" },
     { 0x80053, 0x00ff, ' ', 3, "JP LE,%w" },
-    { 0x80059, 0x00ff, ' ', 2, "MUL HL,DE" },
-    { 0x80069, 0x00ff, ' ', 2, "MULU HL,DE" },
+    { 0x80059, 0x00ff, ' ', 1, "MUL HL,DE" },
+    { 0x80069, 0x00ff, ' ', 1, "MULU HL,DE" },
     { 0x80080, 0x00ff, ' ', 2, "JR GE,%r" },
     { 0x80088, 0x00ff, ' ', 2, "JR LEU,%r" },
     { 0x80090, 0x00ff, ' ', 2, "JR LE,%r" },
-    
+
+    { 0x4437f, 0xffff, ' ', 4, "JP GE,%w" },
+    { 0x4447f, 0xffff, ' ', 4, "EX JKHL,BCDE'" },
+    { 0x44b7f, 0xffff, ' ', 4, "JP LEU,%w" },
+    { 0x4537f, 0xffff, ' ', 4, "JP LE,%w" },
+    { 0x4597f, 0xffff, ' ', 2, "MUL HL,DE" },
+    { 0x4697f, 0xffff, ' ', 2, "MULU HL,DE" },
+    { 0x4807f, 0xffff, ' ', 3, "JR GE,%r" },
+    { 0x4887f, 0xffff, ' ', 3, "JR LEU,%r" },
+    { 0x4907f, 0xffff, ' ', 3, "JR LE,%r" },
+
     { 0, 0, 0, 0, 0, 0, 0 }
   };
 

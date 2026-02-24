@@ -36,6 +36,16 @@ cl_r6k::cl_r6k(class cl_sim *asim):
   cl_r5k(asim)
 {
   fill_49_wrappers(itab_49);
+  // 6k specific stuff on 7f page in 10 mode
+  itab_7f10[0x43]= instruction_wrapper_6k11_43;
+  itab_7f10[0x44]= instruction_wrapper_6k11_44;
+  itab_7f10[0x4b]= instruction_wrapper_6k11_4b;
+  itab_7f10[0x53]= instruction_wrapper_6k11_53;
+  itab_7f10[0x59]= instruction_wrapper_6k11_59;
+  itab_7f10[0x69]= instruction_wrapper_6k11_69;
+  itab_7f10[0x80]= instruction_wrapper_6k11_80;
+  itab_7f10[0x88]= instruction_wrapper_6k11_88;
+  itab_7f10[0x90]= instruction_wrapper_6k11_90;
 }
 
 const char *
