@@ -48,8 +48,10 @@ class cl_r6k: public cl_r5k
 
   virtual int JP_GE_MN(MP) { return jp_f_mn(cond_GE(rF)); }
   virtual int JP_LE_MN(MP) { return jp_f_mn(cond_LE(rF)); }
+  virtual int JP_LEU_MN(MP) { return jp_f_mn(cond_LEU(rF)); }
   virtual int JR_GE_E(MP) { return jr_cc(cond_GE(rF)); }
   virtual int JR_LE_E(MP) { return jr_cc(cond_LE(rF)); }
+  virtual int JR_LEU_E(MP) { return jr_cc(cond_LEU(rF)); }
 };
 
 

@@ -103,6 +103,7 @@ enum {
 #define cond_V(f)	( (f)&flagV )
 #define cond_GE(f)	( !cond_LT(f) )
 #define cond_LE(f)	( cond_LT(f) || (f & flagZ) )
+#define cond_LEU(f)	( (f & flagC) || (f & flagZ) )
 
 #define CPU ((class cl_rxk_cpu *)cpu)
 
