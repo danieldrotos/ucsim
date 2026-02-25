@@ -53,8 +53,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SWAP_L			instruction_6ked_d7
 #define SWAP_DE			instruction_6ked_df
 #define LLJP_GE_LXPC_MN		instruction_6ked_e2
+#define JRE_GE_EE		instruction_6ked_e3
 #define SWAP_HL			instruction_6ked_ef
 #define LLJP_LE_LXPC_MN		instruction_6ked_f2
+#define JRE_LE_EE		instruction_6ked_f3
 #define SWAP_A			instruction_6ked_f7
 #define SWAP_JK			instruction_6ked_ff
 
