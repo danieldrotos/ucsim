@@ -253,7 +253,9 @@ struct dis_entry disass_r6k[]=
     { 0xfcfed, 0xffff, ' ', 2, "SWAP BC" },
     { 0xfd7ed, 0xffff, ' ', 2, "SWAP L" },
     { 0xfdfed, 0xffff, ' ', 2, "SWAP DE" },
+    { 0xfe2ed, 0xffff, ' ', 6, "LLJP GE,%X,%w" },
     { 0xfefed, 0xffff, ' ', 2, "SWAP HL" },
+    { 0xff2ed, 0xffff, ' ', 6, "LLJP LE,%X,%w" },
     { 0xff7ed, 0xffff, ' ', 2, "SWAP A" },
     { 0xfffed, 0xffff, ' ', 2, "SWAP JK" },
     

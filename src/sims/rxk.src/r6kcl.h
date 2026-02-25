@@ -79,6 +79,8 @@ class cl_r6k: public cl_r5k
   virtual int SWAP_JK(MP) { return swap_rp(rJK, destJK()); }
   virtual int lljp_cc(bool cond);
   virtual int LLJP_LEU_LXPC_MN(MP) { return lljp_cc((bool)cond_LEU(rF)); }
+  virtual int LLJP_GE_LXPC_MN(MP) { return lljp_cc((bool)cond_GE(rF)); }
+  virtual int LLJP_LE_LXPC_MN(MP) { return lljp_cc((bool)cond_LE(rF)); }
 };
 
 
