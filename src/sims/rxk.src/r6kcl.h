@@ -65,6 +65,7 @@ class cl_r6k: public cl_r5k
   virtual int TSTNULL_PZ(MP) { return tstnull_pp(rPZ); }
   virtual int swap_r(C8 &r);
   virtual int SWAP_B(MP) { return swap_r(destB()); }
+  virtual int SWAP_C(MP) { return swap_r(destC()); }
 };
 
 
