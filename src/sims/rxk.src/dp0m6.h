@@ -39,6 +39,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JR_LE_E			instruction_6k11_90
 
 #define TSTNULL_PW		instruction_6ked_86
+#define TSTNULL_PX		instruction_6ked_96
+#define TSTNULL_PY		instruction_6ked_a6
+#define TSTNULL_PZ		instruction_6ked_b6
 
 #endif
 
