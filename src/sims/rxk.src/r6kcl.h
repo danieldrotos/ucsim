@@ -60,6 +60,9 @@ class cl_r6k: public cl_r5k
   // page ed
   virtual int tstnull_pp(u32_t pp);
   virtual int TSTNULL_PW(MP) { return tstnull_pp(rPW); }
+  virtual int TSTNULL_PX(MP) { return tstnull_pp(rPX); }
+  virtual int TSTNULL_PY(MP) { return tstnull_pp(rPY); }
+  virtual int TSTNULL_PZ(MP) { return tstnull_pp(rPZ); }
 };
 
 

@@ -240,6 +240,9 @@ struct dis_entry disass_r6k[]=
     { 0x4907f, 0xffff, ' ', 3, "JR LE,%r" },
 
     { 0xf86ed, 0xffff, ' ', 2, "TSTNULL PW" },
+    { 0xf96ed, 0xffff, ' ', 2, "TSTNULL PX" },
+    { 0xfa6ed, 0xffff, ' ', 2, "TSTNULL PY" },
+    { 0xfb6ed, 0xffff, ' ', 2, "TSTNULL PZ" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };
