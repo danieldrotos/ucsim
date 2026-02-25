@@ -64,6 +64,7 @@ cl_r6k::init(void)
   itab_ed[0x87]= instruction_wrapper_6ked_87;
   itab_ed[0x96]= instruction_wrapper_6ked_96;
   itab_ed[0x97]= instruction_wrapper_6ked_97;
+  itab_ed[0x9a]= instruction_wrapper_6ked_9a;
   itab_ed[0xa6]= instruction_wrapper_6ked_a6;
   itab_ed[0xa7]= instruction_wrapper_6ked_a7;
   itab_ed[0xb6]= instruction_wrapper_6ked_b6;
@@ -213,6 +214,24 @@ cl_r6k::swap_rp(u16_t sr, C16 &dr)
   u16_t v2= (sr<<8)|(sr>>8);
   dr.W(v2);
   tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::lljp_cc(bool cond)
+{
+  u16_t mn, lxpc;
+  mn= fetch();
+  mn+= fetch() * 256;
+  lxpc= fetch();
+  lxpc+= fetch() * 256;
+  lxpc&= 0xfff;
+  if (cond)
+    {
+      PC= mn;
+      LXPC->W(lxpc);
+    }
+  tick(13);
   return resGO;
 }
 
