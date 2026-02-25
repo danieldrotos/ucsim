@@ -56,7 +56,12 @@ W(6ked_87)
 W(6ked_96)
 W(6ked_97)
 W(6ked_a6)
+W(6ked_a7)
 W(6ked_b6)
+W(6ked_b7)
+W(6ked_c7)
+W(6ked_d7)
+W(6ked_f7)
 
 #undef W
 #undef WCODE

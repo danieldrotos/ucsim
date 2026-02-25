@@ -43,7 +43,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define TSTNULL_PX		instruction_6ked_96
 #define SWAP_C			instruction_6ked_97
 #define TSTNULL_PY		instruction_6ked_a6
+#define SWAP_D			instruction_6ked_a7
 #define TSTNULL_PZ		instruction_6ked_b6
+#define SWAP_E			instruction_6ked_b7
+#define SWAP_H			instruction_6ked_c7
+#define SWAP_L			instruction_6ked_d7
+#define SWAP_A			instruction_6ked_f7
 
 #endif
 

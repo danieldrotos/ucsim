@@ -63,9 +63,14 @@ class cl_r6k: public cl_r5k
   virtual int TSTNULL_PX(MP) { return tstnull_pp(rPX); }
   virtual int TSTNULL_PY(MP) { return tstnull_pp(rPY); }
   virtual int TSTNULL_PZ(MP) { return tstnull_pp(rPZ); }
-  virtual int swap_r(C8 &r);
-  virtual int SWAP_B(MP) { return swap_r(destB()); }
-  virtual int SWAP_C(MP) { return swap_r(destC()); }
+  virtual int swap_r(u8_t sr, C8 &dr);
+  virtual int SWAP_B(MP) { return swap_r(rB, destB()); }
+  virtual int SWAP_C(MP) { return swap_r(rC, destC()); }
+  virtual int SWAP_D(MP) { return swap_r(rD, destD()); }
+  virtual int SWAP_E(MP) { return swap_r(rE, destE()); }
+  virtual int SWAP_H(MP) { return swap_r(rH, destH()); }
+  virtual int SWAP_L(MP) { return swap_r(rL, destL()); }
+  virtual int SWAP_A(MP) { return swap_r(rA, destA()); }
 };
 
 
