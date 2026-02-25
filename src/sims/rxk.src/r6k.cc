@@ -68,8 +68,12 @@ cl_r6k::init(void)
   itab_ed[0xb6]= instruction_wrapper_6ked_b6;
   itab_ed[0xb7]= instruction_wrapper_6ked_b7;
   itab_ed[0xc7]= instruction_wrapper_6ked_c7;
+  itab_ed[0xcf]= instruction_wrapper_6ked_cf;
   itab_ed[0xd7]= instruction_wrapper_6ked_d7;
+  itab_ed[0xdf]= instruction_wrapper_6ked_df;
+  itab_ed[0xef]= instruction_wrapper_6ked_ef;
   itab_ed[0xf7]= instruction_wrapper_6ked_f7;
+  itab_ed[0xff]= instruction_wrapper_6ked_ff;
   return 0;
 }
 
@@ -197,6 +201,15 @@ cl_r6k::swap_r(u8_t sr, C8 &dr)
       v2>>= 1;
       v2|= ((sr&m)?0x80:0);
     }
+  dr.W(v2);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::swap_rp(u16_t sr, C16 &dr)
+{
+  u16_t v2= (sr<<8)|(sr>>8);
   dr.W(v2);
   tick(3);
   return resGO;

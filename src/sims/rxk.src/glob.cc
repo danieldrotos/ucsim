@@ -248,8 +248,12 @@ struct dis_entry disass_r6k[]=
     { 0xfb6ed, 0xffff, ' ', 2, "TSTNULL PZ" },
     { 0xfb7ed, 0xffff, ' ', 2, "SWAP E" },
     { 0xfc7ed, 0xffff, ' ', 2, "SWAP H" },
+    { 0xfcfed, 0xffff, ' ', 2, "SWAP BC" },
     { 0xfd7ed, 0xffff, ' ', 2, "SWAP L" },
+    { 0xfdfed, 0xffff, ' ', 2, "SWAP DE" },
+    { 0xfefed, 0xffff, ' ', 2, "SWAP HL" },
     { 0xff7ed, 0xffff, ' ', 2, "SWAP A" },
+    { 0xfffed, 0xffff, ' ', 2, "SWAP JK" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };

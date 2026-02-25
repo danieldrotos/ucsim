@@ -60,8 +60,12 @@ W(6ked_a7)
 W(6ked_b6)
 W(6ked_b7)
 W(6ked_c7)
+W(6ked_cf)
 W(6ked_d7)
+W(6ked_df)
+W(6ked_ef)
 W(6ked_f7)
+W(6ked_ff)
 
 #undef W
 #undef WCODE
