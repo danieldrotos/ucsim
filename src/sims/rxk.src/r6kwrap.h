@@ -51,6 +51,8 @@ W(6k11_80)
 W(6k11_88)
 W(6k11_90)
 
+W(6ked_86)
+
 #undef W
 #undef WCODE
 #undef WDECL
