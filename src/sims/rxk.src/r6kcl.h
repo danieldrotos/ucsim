@@ -38,6 +38,7 @@ class cl_r6k: public cl_r5k
  public:
   cl_r6k(class cl_sim *asim);
   virtual const char *id_string(void);
+  virtual int init(void);
 
   virtual struct dis_entry *dis_entry(t_addr addr);
 
@@ -46,6 +47,7 @@ class cl_r6k: public cl_r5k
   virtual void mode10(void);
   virtual void mode4k(void);
 
+  // page0 (mode11) and page 7f (mode10)
   virtual int JP_GE_MN(MP) { return jp_f_mn(cond_GE(rF)); }
   virtual int JP_LE_MN(MP) { return jp_f_mn(cond_LE(rF)); }
   virtual int JP_LEU_MN(MP) { return jp_f_mn(cond_LEU(rF)); }
@@ -55,6 +57,9 @@ class cl_r6k: public cl_r5k
   virtual int EX_JKHL_BCDE_(MP);
   virtual int MUL_HL_DE(MP);
   virtual int MULU_HL_DE(MP);
+  // page ed
+  virtual int tstnull_pp(u32_t pp);
+  virtual int TSTNULL_PW(MP) { return tstnull_pp(rPW); }
 };
 
 

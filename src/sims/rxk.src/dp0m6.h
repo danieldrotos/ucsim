@@ -38,6 +38,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define JR_LEU_E		instruction_6k11_88
 #define JR_LE_E			instruction_6k11_90
 
+#define TSTNULL_PW		instruction_6ked_86
+
 #endif
 
 /* End of rxk.src/dp0m6.h */
