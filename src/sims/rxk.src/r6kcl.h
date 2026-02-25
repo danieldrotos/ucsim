@@ -58,6 +58,7 @@ class cl_r6k: public cl_r5k
   virtual int MUL_HL_DE(MP);
   virtual int MULU_HL_DE(MP);
   // page ed
+  virtual int TEST_DE(MP) { return test16(rDE); }
   virtual int tstnull_pp(u32_t pp);
   virtual int TSTNULL_PW(MP) { return tstnull_pp(rPW); }
   virtual int TSTNULL_PX(MP) { return tstnull_pp(rPX); }
