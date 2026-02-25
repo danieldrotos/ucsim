@@ -71,6 +71,11 @@ class cl_r6k: public cl_r5k
   virtual int SWAP_H(MP) { return swap_r(rH, destH()); }
   virtual int SWAP_L(MP) { return swap_r(rL, destL()); }
   virtual int SWAP_A(MP) { return swap_r(rA, destA()); }
+  virtual int swap_rp(u16_t sr, C16 &dr);
+  virtual int SWAP_BC(MP) { return swap_rp(rBC, destBC()); }
+  virtual int SWAP_DE(MP) { return swap_rp(rDE, destDE()); }
+  virtual int SWAP_HL(MP) { return swap_rp(rHL, destHL()); }
+  virtual int SWAP_JK(MP) { return swap_rp(rJK, destJK()); }
 };
 
 
