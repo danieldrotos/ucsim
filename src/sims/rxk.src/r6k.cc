@@ -60,6 +60,7 @@ cl_r6k::init(void)
   itab_7f10[0x90]= instruction_wrapper_6k11_90;
   // 6k specific stuff on ed pade
   itab_ed[0x86]= instruction_wrapper_6ked_86;
+  itab_ed[0x87]= instruction_wrapper_6ked_87;
   itab_ed[0x96]= instruction_wrapper_6ked_96;
   itab_ed[0xa6]= instruction_wrapper_6ked_a6;
   itab_ed[0xb6]= instruction_wrapper_6ked_b6;
@@ -176,6 +177,21 @@ cl_r6k::tstnull_pp(u32_t pp)
   if (pp == 0)
     f|= flagZ;
   rf.W(f);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::swap_r(C8 &r)
+{
+  u8_t v= r.R(), v2= 0;
+  int i, m;
+  for (i= 0, m= 0x80; i<8; i++, m>>=1)
+    {
+      v2>>= 1;
+      v2|= ((v&m)?0x80:0);
+    }
+  r.W(v2);
   tick(3);
   return resGO;
 }

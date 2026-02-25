@@ -52,6 +52,7 @@ W(6k11_88)
 W(6k11_90)
 
 W(6ked_86)
+W(6ked_87)
 W(6ked_96)
 W(6ked_a6)
 W(6ked_b6)
