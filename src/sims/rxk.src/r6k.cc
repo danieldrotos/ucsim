@@ -65,6 +65,7 @@ cl_r6k::init(void)
   itab_ed[0x96]= instruction_wrapper_6ked_96;
   itab_ed[0x97]= instruction_wrapper_6ked_97;
   itab_ed[0x9a]= instruction_wrapper_6ked_9a;
+  itab_ed[0x9b]= instruction_wrapper_6ked_9b;
   itab_ed[0xa6]= instruction_wrapper_6ked_a6;
   itab_ed[0xa7]= instruction_wrapper_6ked_a7;
   itab_ed[0xb6]= instruction_wrapper_6ked_b6;
