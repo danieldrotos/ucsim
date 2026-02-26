@@ -246,6 +246,7 @@ struct dis_entry disass_r6k[]=
     { 0xf97ed, 0xffff, ' ', 2, "SWAP C" },
     { 0xf9aed, 0xffff, ' ', 6, "LLJP LEU,%X,%w" },
     { 0xf9bed, 0xffff, ' ', 4, "JRE LEU,%R" },
+    { 0xf9ced, 0xffff, ' ', 2, "FLAG LEU,HL" },
     { 0xfa6ed, 0xffff, ' ', 2, "TSTNULL PY" },
     { 0xfa7ed, 0xffff, ' ', 2, "SWAP D" },
     { 0xfb6ed, 0xffff, ' ', 2, "TSTNULL PZ" },
