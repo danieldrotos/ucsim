@@ -28,6 +28,29 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef DP0M6_HEADER
 #define DP0M6_HEADER
 
+/*
+add iy, #d
+and hl, d(ix)
+and hl, n(sp)
+cp hl, d(ix)
+cp hl, n(sp)
++ jp ge, mn
++ jp le, mn
++ jp leu, mn
++ jr ge, e
++ jr le, e
++ jr leu, e
+or hl, d(ix)
+or hl, n(sp)
+sbc hl, d(ix)
+sbc hl, n(sp)
++ swap bc
++ swap de
++ swap hl
+xor hl, d(ix)
+xor hl, n(sp)
+*/
+
 #define JP_GE_MN		instruction_6k11_43
 #define EX_JKHL_BCDE_		instruction_6k11_44
 #define JP_LEU_MN		instruction_6k11_4b
