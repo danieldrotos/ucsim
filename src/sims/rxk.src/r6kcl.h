@@ -83,6 +83,7 @@ class cl_r6k: public cl_r5k
   virtual int LLJP_LE_LXPC_MN(MP) { return lljp_cc((bool)cond_LE(rF)); }
   virtual int JRE_GE_EE(MP) { return jre_cx_cc(cond_GE(rF)); }
   virtual int JRE_LE_EE(MP) { return jre_cx_cc(cond_LE(rF)); }
+  virtual int JRE_LEU_EE(MP) { return jre_cx_cc(cond_LEU(rF)); }
   virtual int FLAG_GE_HL(MP) { destHL().W(cond_GE(rF)?1:0); tick(3); return resGO; }
   virtual int FLAG_LE_HL(MP) { destHL().W(cond_LE(rF)?1:0); tick(3); return resGO; }
 };
