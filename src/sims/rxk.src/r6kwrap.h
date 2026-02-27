@@ -77,6 +77,8 @@ W(6ked_f4)
 W(6ked_f7)
 W(6ked_ff)
 
+W(6kdd_a1)
+
 #undef W
 #undef WCODE
 #undef WDECL

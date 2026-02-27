@@ -836,6 +836,13 @@ cl_rxk::op16_HL(void)
   return h*256+l;
 }
 
+u16_t
+cl_rxk::op16_iIRd(void)
+{
+  i8_t d= fetch();
+  u16_t a= cIR->get() + d;
+  return read16(a);
+}
 
 /*
  * CPU peripheral: MMU functions
