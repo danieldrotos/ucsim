@@ -35,7 +35,7 @@ and hl, d(ix)	fd/dd 80
 cp hl, d(ix)	fd/dd b1
 or hl, d(ix)	fd/dd b0
 sbc hl, d(ix)	fd/dd 91
-xor hl, d(ix)	fd/dd a1
++ xor hl, d(ix)	fd/dd a1
 
 and hl, n(sp)	49 ca
 cp hl, n(sp)	49 fa
