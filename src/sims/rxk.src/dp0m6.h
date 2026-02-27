@@ -28,27 +28,31 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef DP0M6_HEADER
 #define DP0M6_HEADER
 
+
 /*
-add iy, #d
-and hl, d(ix)
-and hl, n(sp)
-cp hl, d(ix)
-cp hl, n(sp)
-+ jp ge, mn
-+ jp le, mn
-+ jp leu, mn
-+ jr ge, e
-+ jr le, e
-+ jr leu, e
-or hl, d(ix)
-or hl, n(sp)
-sbc hl, d(ix)
-sbc hl, n(sp)
-+ swap bc
-+ swap de
-+ swap hl
-xor hl, d(ix)
-xor hl, n(sp)
+add iy, #d	fd/dd c5
+and hl, d(ix)	fd/dd 80
+cp hl, d(ix)	fd/dd b1
+or hl, d(ix)	fd/dd b0
+sbc hl, d(ix)	fd/dd 91
+xor hl, d(ix)	fd/dd a1
+
+and hl, n(sp)	49 ca
+cp hl, n(sp)	49 fa
+or hl, n(sp)	49 ea
+sbc hl, n(sp)	49 ba
+xor hl, n(sp)	49 da
+
++ jp ge, mn	00-m11 43
++ jp le, mn	00-m11 53
++ jp leu, mn	00-m11 4b
++ jr ge, e	00-m11 80
++ jr le, e	00-m11 90
++ jr leu, e	00-m11 88
+
++ swap bc	ed 87
++ swap de	ed a7
++ swap hl	ed c7
 */
 
 #define JP_GE_MN		instruction_6k11_43
@@ -86,6 +90,9 @@ xor hl, n(sp)
 #define FLAG_LE_HL		instruction_6ked_f4
 #define SWAP_A			instruction_6ked_f7
 #define SWAP_JK			instruction_6ked_ff
+
+#define XOR_HL_iIRd		instruction_6kdd_a1
+
 
 #endif
 

@@ -83,6 +83,8 @@ cl_r6k::init(void)
   itab_ed[0xf4]= instruction_wrapper_6ked_f4;
   itab_ed[0xf7]= instruction_wrapper_6ked_f7;
   itab_ed[0xff]= instruction_wrapper_6ked_ff;
+  // 6k specific stuff on dd/fd pade
+  itab_dd[0xa1]= instruction_wrapper_6kdd_a1;
   return 0;
 }
 

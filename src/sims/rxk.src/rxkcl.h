@@ -215,10 +215,11 @@ public:
   u16_t op16_BC(void);
   u16_t op16_DE(void);
   u16_t op16_HL(void);
+  u16_t op16_iIRd(void);
   void write8(u16_t a, u8_t v) { vc.wr++; rom->write(a, v); }
   void write8io(u16_t a, u8_t v) { vc.wr++; rwas->write(a, v); }
   void write16(u16_t a, u16_t v) { vc.wr+=2;
-    rom->write(a, v); rom->write(a+1, v>>8);
+    /*rom*/rwas->write(a, v); /*rom*/rwas->write(a+1, v>>8);
   }
   void write16io(u16_t a, u16_t v) { vc.wr+=2;
     rwas->write(a, v); rwas->write(a+1, v>>8);
@@ -226,7 +227,7 @@ public:
   u8_t read8(u16_t a) { vc.rd++; return rom->read(a); }
   u8_t read8io(u16_t a) { vc.rd++; return rwas->read(a); }
   u16_t read16(u16_t a) { u8_t l, h; vc.rd+=2;
-    l= rom->read(a); h= rom->read(a+1);
+    l= /*rom*/rwas->read(a); h= /*rom*/rwas->read(a+1);
     return h*256+l;
   }
   u16_t read16io(u16_t a) { u8_t l, h; vc.rd+=2;
