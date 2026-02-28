@@ -832,6 +832,21 @@ cl_rxk::xor16(class cl_cell16 &dest, u16_t op1, u16_t op2)
 }
 
 int
+cl_rxk::xor32(class cl_cell32 &dest, u32_t op1, u32_t op2)
+{
+  class cl_cell8 &f= destF();
+  u8_t forg= f.R() & ~flagAll;
+  u32_t res= op1 ^ op2;
+  dest.W(res);
+  if (res & 0x8000) forg|= flagS;
+  if (!res) forg|= flagZ;
+  if (res&0xf000) forg|= flagL;
+  f.W(forg);
+  tick5m2(3);
+  return resGO;
+}
+
+int
 cl_rxk::or8(class cl_cell8 &dest, u8_t op1, u8_t op2)
 {
   class cl_cell8 &f= destF();
@@ -867,6 +882,25 @@ cl_rxk::or16(class cl_cell16 &dest, u16_t op1, u16_t op2)
 }
 
 int
+cl_rxk::or32(class cl_cell32 &dest, u32_t op1, u32_t op2)
+{
+  class cl_cell8 &f= destF();
+  u32_t res= op1 | op2;
+  u8_t forg= rF & ~flagAll;
+  dest.W(res);
+  if (res & 0x8000)
+    forg|= flagS;
+  if (!res)
+    forg|= flagZ;
+  // flagL?
+  if (res & 0xf000)
+    forg|= flagL;
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+int
 cl_rxk::and8(class cl_cell8 &dest, u8_t op1, u8_t op2)
 {
   class cl_cell8 &f= destF();
@@ -884,8 +918,26 @@ int
 cl_rxk::and16(class cl_cell16 &dest, u16_t op1, u16_t op2)
 {
   class cl_cell8 &f= destF();
-  //class cl_cell16 &dhl= destHL();
-  u16_t res= op1/*rHL*/ & op2/*rDE*/;
+  u16_t res= op1 & op2;
+  u8_t forg= rF & ~flagAll;
+  dest.W(res);
+  if (res & 0x8000)
+    forg|= flagS;
+  if (!res)
+    forg|= flagZ;
+  // flagL?
+  if (res & 0xf000)
+    forg|= flagL;
+  f.W(forg);
+  tick(1);
+  return resGO;
+}
+
+int
+cl_rxk::and32(class cl_cell32 &dest, u32_t op1, u32_t op2)
+{
+  class cl_cell8 &f= destF();
+  u32_t res= op1 & op2;
   u8_t forg= rF & ~flagAll;
   dest.W(res);
   if (res & 0x8000)
