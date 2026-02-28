@@ -315,12 +315,13 @@ public:
   virtual int add_ir_xy(u16_t op);				// 0f,4t,0r,0r
   virtual int xor8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
   virtual int xor16(class cl_cell16 &dest, u16_t op1,u16_t op2);// 0f,4t,0r,0w
+  virtual int xor32(class cl_cell32 &dest, u32_t op1,u32_t op2);// 0f,?t,0r,0w
   virtual int or8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
-  virtual int or16(class cl_cell16 &dest,
-		    u16_t op1, u16_t op2);			// 0f,1t,0r,0w
+  virtual int or16(class cl_cell16 &dest, u16_t op1,u16_t op2);	// 0f,1t,0r,0w
+  virtual int or32(class cl_cell32 &dest,u32_t op1,u32_t op2);	// 0f,?t,0r,0w
   virtual int and8(class cl_cell8 &dest, u8_t op1, u8_t op2);	// 0f,1t,0r,0w
-  virtual int and16(class cl_cell16 &dest,
-		    u16_t op1, u16_t op2);			// 0f,1t,0r,0w
+  virtual int and16(class cl_cell16 &dest,u16_t op1,u16_t op2);	// 0f,1t,0r,0w
+  virtual int and32(class cl_cell32 &dest,u32_t op1,u32_t op2);	// 0f,?t,0r,0w
   virtual int cp8(u8_t op1, u8_t op2);				// 0f,3t,0r,0w
   virtual int cp16(u16_t op1, u16_t op2);			// 0f,4t,0r,0w
   virtual int cp32(u32_t op1, u32_t op2);			// 0f,4t,0r,0w
