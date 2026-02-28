@@ -25,8 +25,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#define WRAPPER_SOURCE
+#include "r6kcl.h"
 
-#include "r6kwrap.h"
+#define WRAPPER_SOURCE
+#include "gen6k.h"
+#undef WRAPPER_SOURCE
 
 /* End of rxk.src/r6kwrap.cc */

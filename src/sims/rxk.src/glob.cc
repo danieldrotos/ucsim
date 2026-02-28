@@ -31,6 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 instruction_wrapper_fn itab[256];
+instruction_wrapper_fn itab_11[256]; // dummy, not used
 instruction_wrapper_fn itab_dd[256];
 instruction_wrapper_fn itab_ed[256];
 instruction_wrapper_fn itab_fd[256];
@@ -265,8 +266,12 @@ struct dis_entry disass_r6k[]=
     { 0xff7ed, 0xffff, ' ', 2, "SWAP A" },
     { 0xfffed, 0xffff, ' ', 2, "SWAP JK" },
 
+    { 0xfa0dd, 0xffff, ' ', 3, "AND HL,(IX%d)" },
+    { 0xfa0fd, 0xffff, ' ', 3, "AND HL,(IY%d)" },
     { 0xfa1dd, 0xffff, ' ', 3, "XOR HL,(IX%d)" },
     { 0xfa1fd, 0xffff, ' ', 3, "XOR HL,(IY%d)" },
+    { 0xfb0dd, 0xffff, ' ', 3, "OR HL,(IX%d)" },
+    { 0xfb0fd, 0xffff, ' ', 3, "OR HL,(IY%d)" },
     
     { 0, 0, 0, 0, 0, 0, 0 }
   };

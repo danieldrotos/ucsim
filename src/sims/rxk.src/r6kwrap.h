@@ -28,61 +28,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef R6KWRAP_HEADER
 #define R6KWRAP_HEADER
 
-#include "r6kcl.h"
 
-#define WHEAD(X) int instruction_wrapper_ ##X ( class cl_uc *uc, t_mem code)
-#define WDECL(X) extern WHEAD(X);
-#define WCODE(X) WHEAD(X) \
-  { return ((class cl_r6k *)uc)->instruction_ ##X (code); }
+#define WRAPPER_HEADER
+#include "gen6k.h"
+#undef WRAPPER_HEADER
 
-#ifdef WRAPPER_SOURCE
-#define W(X) WCODE(X)
-#else
-#define W(X) WDECL(X)
-#endif
-
-W(6k11_43)
-W(6k11_44)
-W(6k11_4b)
-W(6k11_53)
-W(6k11_59)
-W(6k11_69)
-W(6k11_80)
-W(6k11_88)
-W(6k11_90)
-
-W(6ked_5c)
-W(6ked_86)
-W(6ked_87)
-W(6ked_96)
-W(6ked_97)
-W(6ked_9a)
-W(6ked_9b)
-W(6ked_9c)
-W(6ked_a6)
-W(6ked_a7)
-W(6ked_b6)
-W(6ked_b7)
-W(6ked_c7)
-W(6ked_cf)
-W(6ked_d7)
-W(6ked_df)
-W(6ked_e2)
-W(6ked_e3)
-W(6ked_e4)
-W(6ked_ef)
-W(6ked_f2)
-W(6ked_f3)
-W(6ked_f4)
-W(6ked_f7)
-W(6ked_ff)
-
-W(6kdd_a1)
-
-#undef W
-#undef WCODE
-#undef WDECL
-#undef WHEAD
 
 #endif
 
