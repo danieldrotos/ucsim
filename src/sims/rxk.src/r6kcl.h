@@ -95,6 +95,7 @@ public:
   virtual int OR_HL_iIRd(MP) { tick(8); return or16(destHL(), rHL, op16_iIRd()); }
   virtual int CP_HL_iIRd(MP) { tick(8); return cp16(rHL, op16_iIRd()); }
   virtual int ADD_IR_D(MP);
+  virtual int SBC_HL_iIRd(MP) { tick(8); return sub16(op16_iIRd(), true); }
 };
 
 
