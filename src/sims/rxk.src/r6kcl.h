@@ -35,6 +35,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 class cl_r6k: public cl_r5k
 {
+public:
+  
  public:
   cl_r6k(class cl_sim *asim);
   virtual const char *id_string(void);
@@ -88,7 +90,9 @@ class cl_r6k: public cl_r5k
   virtual int FLAG_LE_HL(MP) { destHL().W(cond_LE(rF)?1:0); tick(3); return resGO; }
   virtual int FLAG_LEU_HL(MP) { destHL().W(cond_LEU(rF)?1:0); tick(3); return resGO; }
   // page dd/fd
+  virtual int AND_HL_iIRd(MP) { tick(8); return and16(destHL(), rHL, op16_iIRd()); }
   virtual int XOR_HL_iIRd(MP) { tick(8); return xor16(destHL(), rHL, op16_iIRd()); }
+  virtual int OR_HL_iIRd(MP) { tick(8); return or16(destHL(), rHL, op16_iIRd()); }
 };
 
 

@@ -58,33 +58,11 @@ cl_r6k::init(void)
   itab_7f10[0x80]= instruction_wrapper_6k11_80;
   itab_7f10[0x88]= instruction_wrapper_6k11_88;
   itab_7f10[0x90]= instruction_wrapper_6k11_90;
-  // 6k specific stuff on ed pade
-  itab_ed[0x5c]= instruction_wrapper_6ked_5c;
-  itab_ed[0x86]= instruction_wrapper_6ked_86;
-  itab_ed[0x87]= instruction_wrapper_6ked_87;
-  itab_ed[0x96]= instruction_wrapper_6ked_96;
-  itab_ed[0x97]= instruction_wrapper_6ked_97;
-  itab_ed[0x9a]= instruction_wrapper_6ked_9a;
-  itab_ed[0x9b]= instruction_wrapper_6ked_9b;
-  itab_ed[0xa6]= instruction_wrapper_6ked_a6;
-  itab_ed[0xa7]= instruction_wrapper_6ked_a7;
-  itab_ed[0xb6]= instruction_wrapper_6ked_b6;
-  itab_ed[0xb7]= instruction_wrapper_6ked_b7;
-  itab_ed[0xc7]= instruction_wrapper_6ked_c7;
-  itab_ed[0xcf]= instruction_wrapper_6ked_cf;
-  itab_ed[0xd7]= instruction_wrapper_6ked_d7;
-  itab_ed[0xdf]= instruction_wrapper_6ked_df;
-  itab_ed[0xe2]= instruction_wrapper_6ked_e2;
-  itab_ed[0xe3]= instruction_wrapper_6ked_e3;
-  itab_ed[0xe4]= instruction_wrapper_6ked_e4;
-  itab_ed[0xef]= instruction_wrapper_6ked_ef;
-  itab_ed[0xf2]= instruction_wrapper_6ked_f2;
-  itab_ed[0xf3]= instruction_wrapper_6ked_f3;
-  itab_ed[0xf4]= instruction_wrapper_6ked_f4;
-  itab_ed[0xf7]= instruction_wrapper_6ked_f7;
-  itab_ed[0xff]= instruction_wrapper_6ked_ff;
-  // 6k specific stuff on dd/fd pade
-  itab_dd[0xa1]= instruction_wrapper_6kdd_a1;
+
+#define WRAPPER_FILLER
+#include "gen6k.h"
+#undef WRAPPER_FILLER
+  
   return 0;
 }
 
