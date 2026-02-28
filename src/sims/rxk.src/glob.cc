@@ -266,6 +266,8 @@ struct dis_entry disass_r6k[]=
     { 0xff7ed, 0xffff, ' ', 2, "SWAP A" },
     { 0xfffed, 0xffff, ' ', 2, "SWAP JK" },
 
+    { 0xf91dd, 0xffff, ' ', 3, "SBC HL,(IX,%d)" },
+    { 0xf91fd, 0xffff, ' ', 3, "SBC HL,(IY,%d)" },
     { 0xfa0dd, 0xffff, ' ', 3, "AND HL,(IX%d)" },
     { 0xfa0fd, 0xffff, ' ', 3, "AND HL,(IY%d)" },
     { 0xfa1dd, 0xffff, ' ', 3, "XOR HL,(IX%d)" },

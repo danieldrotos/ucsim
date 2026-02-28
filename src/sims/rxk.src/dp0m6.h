@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 + and hl, d(ix)	fd/dd a0
 + cp hl, d(ix)	fd/dd b1
 + or hl, d(ix)	fd/dd b0
-sbc hl, d(ix)	fd/dd 91
++ sbc hl, d(ix)	fd/dd 91
 + xor hl, d(ix)	fd/dd a1
 
 and hl, n(sp)	49 ca
@@ -91,6 +91,7 @@ xor hl, n(sp)	49 da
 #define SWAP_A			instruction_6ked_f7
 #define SWAP_JK			instruction_6ked_ff
 
+#define SBC_HL_iIRd		instruction_6kdd_91
 #define AND_HL_iIRd		instruction_6kdd_a0
 #define XOR_HL_iIRd		instruction_6kdd_a1
 #define OR_HL_iIRd		instruction_6kdd_b0
