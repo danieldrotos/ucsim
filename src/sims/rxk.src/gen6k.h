@@ -56,6 +56,8 @@ GEN(ed,f4)
 GEN(ed,f7)
 GEN(ed,ff)
 
+GEN(dd,80)
+GEN(dd,81)
 GEN(dd,90)
 GEN(dd,91)
 GEN(dd,a0)
