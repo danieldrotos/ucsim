@@ -59,6 +59,8 @@ GEN(ed,ff)
 GEN(dd,a0)
 GEN(dd,a1)
 GEN(dd,b0)
+GEN(dd,b1)
+GEN(dd,c5)
 
 #undef WRAP_HEAD
 #undef GEN

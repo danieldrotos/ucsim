@@ -222,5 +222,22 @@ cl_r6k::lljp_cc(bool cond)
   return resGO;
 }
 
+int
+cl_r6k::ADD_IR_D(MP)
+{
+  u8_t forg= rF & ~flagC;
+  u32_t v= cIR->get();
+  i8_t d= fetch();
+  v+= d;
+  if (v > 0xffff)
+    forg|= flagC;
+  else
+    forg&= ~flagC;
+  destF().W(forg);
+  cIR->W(v);
+  tick(5);
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
