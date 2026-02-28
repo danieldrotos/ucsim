@@ -223,6 +223,16 @@ cl_r6k::lljp_cc(bool cond)
 }
 
 int
+cl_r6k::swap_32(u32_t sr, C32 &dr)
+{
+  sr= ((sr << 8) & 0xFF00FF00) | ((sr >> 8) & 0x00FF00FF);
+  sr= (sr << 16) | (sr >> 16);
+  dr.W(sr);
+  tick(3);
+  return resGO;
+}
+
+int
 cl_r6k::ADD_IR_D(MP)
 {
   u8_t forg= rF & ~flagC;

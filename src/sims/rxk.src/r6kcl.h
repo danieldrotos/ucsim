@@ -90,6 +90,8 @@ public:
   virtual int FLAG_LE_HL(MP) { destHL().W(cond_LE(rF)?1:0); tick(3); return resGO; }
   virtual int FLAG_LEU_HL(MP) { destHL().W(cond_LEU(rF)?1:0); tick(3); return resGO; }
   // page dd/fd
+  virtual int swap_32(u32_t sr, C32 &dr);
+  virtual int SWAP_IRR(MP) { return swap_32(cIRR->get(), *cIRR); }
   virtual int AND_HL_iIRd(MP) { tick(8); return and16(destHL(), rHL, op16_iIRd()); }
   virtual int XOR_HL_iIRd(MP) { tick(8); return xor16(destHL(), rHL, op16_iIRd()); }
   virtual int OR_HL_iIRd(MP) { tick(8); return or16(destHL(), rHL, op16_iIRd()); }
