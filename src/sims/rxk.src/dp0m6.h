@@ -30,10 +30,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 /*
-add iy, #d	fd/dd c5
-and hl, d(ix)	fd/dd 80
-cp hl, d(ix)	fd/dd b1
-or hl, d(ix)	fd/dd b0
++ add iy, #d	fd/dd c5
++ and hl, d(ix)	fd/dd a0
++ cp hl, d(ix)	fd/dd b1
++ or hl, d(ix)	fd/dd b0
 sbc hl, d(ix)	fd/dd 91
 + xor hl, d(ix)	fd/dd a1
 
@@ -95,6 +95,7 @@ xor hl, n(sp)	49 da
 #define XOR_HL_iIRd		instruction_6kdd_a1
 #define OR_HL_iIRd		instruction_6kdd_b0
 #define CP_HL_iIRd		instruction_6kdd_b1
+#define ADD_IR_D		instruction_6kdd_c5
 
 
 #endif

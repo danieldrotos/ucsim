@@ -1104,6 +1104,28 @@ cl_rxk::add8(u8_t op2, bool cy)
 }
 
 int
+cl_rxk::add16(u16_t op1, u16_t op2, class cl_cell16 &cRes, bool cy)
+{
+  class cl_cell8 &f= destF();
+  u16_t v1= op1;
+  u8_t forg;
+  u32_t res= v1+op2+(cy?((rF&flagC)?1:0):0);
+  u16_t a15, b15, r15, na15, nb15, nr15;
+  forg= rF & ~flagAll;
+  a15= v1&0x8000; na15= a15^0x8000;
+  b15= op2&0x8000; nb15= b15^0x8000;
+  r15= res&0x8000; nr15= r15^0x8000;
+  if ((a15&b15&nr15) | (na15&nb15&r15)) forg|= flagV;
+  if (res > 0xffff) forg|= flagC;
+  if (!(res & 0xffff)) forg|= flagZ;
+  if (res & 0x8000) forg|= flagS;
+  cRes.W(res);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
 cl_rxk::sub8(u8_t op2, bool cy)
 {
   class cl_cell8 &a= destA(), &f= destF();
