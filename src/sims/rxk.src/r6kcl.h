@@ -111,6 +111,7 @@ public:
   virtual int SUB_JKHL_iIRd(MP) { tick(12); return sub32(rJKHL, op32_iIRd(), destJKHL(), false); }
   virtual int SBC_HL_iIRd(MP) { tick(8); return sub16(op16_iIRd(), true); }
   virtual int SBC_JKHL_iIRd(MP) { tick(12); return sub32(rJKHL, op32_iIRd(), destJKHL(), true); }
+  int PAGE_6K49(MP);
 };
 
 
