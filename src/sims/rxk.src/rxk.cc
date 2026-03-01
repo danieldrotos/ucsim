@@ -784,7 +784,7 @@ cl_rxk::inst_unknown(t_mem code)
 u8_t
 cl_rxk::op8_BC(void)
 {
-  u8_t v= rom->read(rBC);
+  u8_t v= rwas->read(rBC);
   vc.rd++;
   return v;
 }
@@ -792,7 +792,7 @@ cl_rxk::op8_BC(void)
 u8_t
 cl_rxk::op8_DE(void)
 {
-  u8_t v= rom->read(rDE);
+  u8_t v= rwas->read(rDE);
   vc.rd++;
   return v;
 }
@@ -801,7 +801,7 @@ cl_rxk::op8_DE(void)
 u8_t
 cl_rxk::op8_HL(void)
 {
-  u8_t v= rom->read(rHL);
+  u8_t v= rwas->read(rHL);
   vc.rd++;
   return v;
 }
@@ -810,8 +810,8 @@ u16_t
 cl_rxk::op16_BC(void)
 {
   u8_t l, h;
-  l= rom->read(rBC);
-  h= rom->read(rBC+1);
+  l= rwas->read(rBC);
+  h= rwas->read(rBC+1);
   vc.rd+= 2;
   return h*256+l;
 }
@@ -820,8 +820,8 @@ u16_t
 cl_rxk::op16_DE(void)
 {
   u8_t l, h;
-  l= rom->read(rDE);
-  h= rom->read(rDE+1);
+  l= rwas->read(rDE);
+  h= rwas->read(rDE+1);
   vc.rd+= 2;
   return h*256+l;
 }
@@ -830,8 +830,8 @@ u16_t
 cl_rxk::op16_HL(void)
 {
   u8_t l, h;
-  l= rom->read(rHL);
-  h= rom->read(rHL+1);
+  l= rwas->read(rHL);
+  h= rwas->read(rHL+1);
   vc.rd+= 2;
   return h*256+l;
 }
@@ -841,7 +841,15 @@ cl_rxk::op16_iIRd(void)
 {
   i8_t d= fetch();
   u16_t a= cIR->get() + d;
-  return read16(a);
+  return read16io(a);
+}
+
+u32_t
+cl_rxk::op32_iIRd(void)
+{
+  i8_t d= fetch();
+  u16_t a= cIR->get() + d;
+  return read32io(a);
 }
 
 /*
