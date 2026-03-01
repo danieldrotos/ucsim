@@ -290,6 +290,8 @@ struct dis_entry disass_r6k[]=
     { 0xfb1fd, 0xffff, ' ', 3, "CP HL,(IY%d)" },
     { 0xfb2dd, 0xffff, ' ', 3, "OR JKHL,(IX%d)" },
     { 0xfb2fd, 0xffff, ' ', 3, "OR JKHL,(IY%d)" },
+    { 0xfb3dd, 0xffff, ' ', 3, "CP JKHL,(IX%d)" },
+    { 0xfb3fd, 0xffff, ' ', 3, "CP JKHL,(IY%d)" },
     { 0xfc5dd, 0xffff, ' ', 3, "ADD IX,%d" },
     { 0xfc5fd, 0xffff, ' ', 3, "ADD IY,%d" },
     
