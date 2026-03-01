@@ -94,6 +94,7 @@ xor hl, n(sp)	49 da
 #define SWAP_IRR		instruction_6kdd_32
 #define ADD_HL_iIRd		instruction_6kdd_80
 #define ADC_HL_iIRd		instruction_6kdd_81
+#define ADD_JKHL_iIRd		instruction_6kdd_82
 #define SUB_HL_iIRd		instruction_6kdd_90
 #define SBC_HL_iIRd		instruction_6kdd_91
 #define AND_HL_iIRd		instruction_6kdd_a0
