@@ -68,6 +68,7 @@ GEN(dd,a3)
 GEN(dd,b0)
 GEN(dd,b1)
 GEN(dd,b2)
+GEN(dd,b3)
 GEN(dd,c5)
 
 #undef WRAP_HEAD
