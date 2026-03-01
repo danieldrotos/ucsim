@@ -78,6 +78,7 @@ xor hl, n(sp)	49 da
 #define TSTNULL_PZ		instruction_6ked_b6
 #define SWAP_E			instruction_6ked_b7
 #define SWAP_H			instruction_6ked_c7
+#define ADC_JKHL_BCDE		instruction_6ked_ce
 #define SWAP_BC			instruction_6ked_cf
 #define SWAP_L			instruction_6ked_d7
 #define SWAP_DE			instruction_6ked_df
