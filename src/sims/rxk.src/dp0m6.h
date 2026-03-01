@@ -82,6 +82,7 @@ xor hl, n(sp)	49 da
 #define SWAP_BC			instruction_6ked_cf
 #define SWAP_L			instruction_6ked_d7
 #define SWAP_DE			instruction_6ked_df
+#define SBC_JKHL_BCDE		instruction_6ked_de
 #define LLJP_GE_LXPC_MN		instruction_6ked_e2
 #define JRE_GE_EE		instruction_6ked_e3
 #define FLAG_GE_HL		instruction_6ked_e4
