@@ -94,6 +94,11 @@ cl_r6k::dis_entry(t_addr addr)
 }
 
 
+int page49_wrapper(class cl_uc *uc, t_mem code)
+{
+  return ((class cl_r6k *)uc)->PAGE_6K49(code);
+}
+
 void
 cl_r6k::mode3k(void)
 {
@@ -105,6 +110,7 @@ void
 cl_r6k::mode01(void)
 {
   cl_r5k::mode01();
+  itab[0x49]= page49_wrapper;
 }
 
 
@@ -112,6 +118,7 @@ void
 cl_r6k::mode10(void)
 {
   cl_r5k::mode10();
+  itab[0x49]= page49_wrapper;
 }
 
 void
@@ -120,6 +127,7 @@ cl_r6k::mode4k(void)
   cl_r5k::mode4k();
   itab[0x43]= instruction_wrapper_6k11_43;
   itab[0x44]= instruction_wrapper_6k11_44;
+  itab[0x49]= page49_wrapper;
   itab[0x4b]= instruction_wrapper_6k11_4b;
   itab[0x53]= instruction_wrapper_6k11_53;
   itab[0x59]= instruction_wrapper_6k11_59;
@@ -247,6 +255,13 @@ cl_r6k::ADD_IR_D(MP)
   cIR->W(v);
   tick(5);
   return resGO;
+}
+
+int
+cl_r6k::PAGE_6K49(MP)
+{
+  code= fetch();
+  return itab_49[code](this, code);
 }
 
 
