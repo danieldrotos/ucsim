@@ -1090,7 +1090,7 @@ cl_rxk::add8(u8_t op2, bool cy)
   u16_t res= v1+op2+(cy?((rF&flagC)?1:0):0);
   u8_t a7, b7, r7, na7, nb7, nr7;
   forg= rF & ~flagAll;
-  a7= v1&0x80; na7= a7^0x80;
+  a7=  v1&0x80; na7= a7^0x80;
   b7= op2&0x80; nb7= b7^0x80;
   r7= res&0x80; nr7= r7^0x80;
   if ((a7&b7&nr7) | (na7&nb7&r7)) forg|= flagV;
@@ -1112,13 +1112,35 @@ cl_rxk::add16(u16_t op1, u16_t op2, class cl_cell16 &cRes, bool cy)
   u32_t res= v1+op2+(cy?((rF&flagC)?1:0):0);
   u16_t a15, b15, r15, na15, nb15, nr15;
   forg= rF & ~flagAll;
-  a15= v1&0x8000; na15= a15^0x8000;
+  a15=  v1&0x8000; na15= a15^0x8000;
   b15= op2&0x8000; nb15= b15^0x8000;
   r15= res&0x8000; nr15= r15^0x8000;
   if ((a15&b15&nr15) | (na15&nb15&r15)) forg|= flagV;
   if (res > 0xffff) forg|= flagC;
   if (!(res & 0xffff)) forg|= flagZ;
   if (res & 0x8000) forg|= flagS;
+  cRes.W(res);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::add32(u32_t op1, u32_t op2, class cl_cell32 &cRes, bool cy)
+{
+  class cl_cell8 &f= destF();
+  u32_t v1= op1;
+  u8_t forg;
+  u64_t res= v1+op2+(cy?((rF&flagC)?1:0):0);
+  u32_t a31, b31, r31, na31, nb31, nr31;
+  forg= rF & ~flagAll;
+  a31=  v1&0x80000000; na31= a31^0x80000000;
+  b31= op2&0x80000000; nb31= b31^0x80000000;
+  r31= res&0x80000000; nr31= r31^0x80000000;
+  if ((a31&b31&nr31) | (na31&nb31&r31)) forg|= flagV;
+  if (res > 0xffffffff) forg|= flagC;
+  if (!(res & 0xffffffff)) forg|= flagZ;
+  if (res & 0x80000000) forg|= flagS;
   cRes.W(res);
   f.W(forg);
   tick(3);
@@ -1138,7 +1160,7 @@ cl_rxk::sub8(u8_t op2, bool cy)
   if (cy && (rF&flagC)) r--;
   res= r;
   forg= rF & ~(flagS|flagZ|flagV);
-  a7= v1&0x80; na7= a7^0x80;
+  a7=  v1&0x80; na7= a7^0x80;
   b7= op2&0x80; nb7= b7^0x80;
   r7= res&0x80; nr7= r7^0x80;
   if ((a7&nb7&nr7) | (na7&b7&r7)) forg|= flagV;
@@ -1178,7 +1200,7 @@ cl_rxk::sub16(u16_t op2, bool cy)
   if (cy && (rF&flagC)) r--;
   res= r;
   forg= rF & ~(flagS|flagZ|flagV);
-  a15= v1&0x8000; na15= a15^0x8000;
+  a15=  v1&0x8000; na15= a15^0x8000;
   b15= op2&0x8000; nb15= b15^0x8000;
   r15= res&0x8000; nr15= r15^0x8000;
   if ((a15&nb15&nr15) | (na15&b15&r15)) forg|= flagV;
