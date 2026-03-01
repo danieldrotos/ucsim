@@ -106,6 +106,7 @@ public:
   virtual int ADC_HL_iIRd(MP) { tick(8); return add16(rHL, op16_iIRd(), destHL(), true); }
   virtual int ADC_JKHL_iIRd(MP) { tick(12); return add32(rJKHL, op32_iIRd(), destJKHL(), true); }
   virtual int SUB_HL_iIRd(MP) { tick(8); return sub16(op16_iIRd(), false); }
+  virtual int SUB_JKHL_iIRd(MP) { tick(12); return sub32(rJKHL, op32_iIRd(), destJKHL(), false); }
   virtual int SBC_HL_iIRd(MP) { tick(8); return sub16(op16_iIRd(), true); }
 };
 
