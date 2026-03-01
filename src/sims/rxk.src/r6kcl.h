@@ -89,6 +89,7 @@ public:
   virtual int FLAG_GE_HL(MP) { destHL().W(cond_GE(rF)?1:0); tick(3); return resGO; }
   virtual int FLAG_LE_HL(MP) { destHL().W(cond_LE(rF)?1:0); tick(3); return resGO; }
   virtual int FLAG_LEU_HL(MP) { destHL().W(cond_LEU(rF)?1:0); tick(3); return resGO; }
+  virtual int ADC_JKHL_BCDE(MP) {return add32(rJKHL, rBCDE, destJKHL(), true); }
   // page dd/fd
   virtual int swap_32(u32_t sr, C32 &dr);
   virtual int SWAP_IRR(MP) { return swap_32(cIRR->get(), *cIRR); }
