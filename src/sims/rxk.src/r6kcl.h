@@ -97,6 +97,7 @@ public:
   virtual int XOR_HL_iIRd(MP) { tick(8); return xor16(destHL(), rHL, op16_iIRd()); }
   virtual int XOR_JKHL_iIRd(MP) { tick(15); return xor32(destJKHL(), rJKHL, op32_iIRd()); }
   virtual int OR_HL_iIRd(MP) { tick(8); return or16(destHL(), rHL, op16_iIRd()); }
+  virtual int OR_JKHL_iIRd(MP) { tick(15); return or32(destJKHL(), rJKHL, op32_iIRd()); }
   virtual int CP_HL_iIRd(MP) { tick(8); return cp16(rHL, op16_iIRd()); }
   virtual int ADD_IR_D(MP);
   virtual int ADD_HL_iIRd(MP) { tick(8); return add16(rHL, op16_iIRd(), destHL(), false); }
