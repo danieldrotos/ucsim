@@ -274,6 +274,8 @@ struct dis_entry disass_r6k[]=
     { 0xf81fd, 0xffff, ' ', 3, "ADC HL,(IY,%d)" },
     { 0xf82dd, 0xffff, ' ', 3, "ADD JKHL,(IX,%d)" },
     { 0xf82fd, 0xffff, ' ', 3, "ADD JKHL,(IY,%d)" },
+    { 0xf83dd, 0xffff, ' ', 3, "ADC JKHL,(IX,%d)" },
+    { 0xf83fd, 0xffff, ' ', 3, "ADC JKHL,(IY,%d)" },
     { 0xf90dd, 0xffff, ' ', 3, "SUB HL,(IX,%d)" },
     { 0xf90fd, 0xffff, ' ', 3, "SUB HL,(IY,%d)" },
     { 0xf91dd, 0xffff, ' ', 3, "SBC HL,(IX,%d)" },
