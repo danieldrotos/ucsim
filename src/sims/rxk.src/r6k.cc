@@ -137,6 +137,30 @@ cl_r6k::mode4k(void)
   itab[0x90]= instruction_wrapper_6k11_90;
 }
 
+u8_t
+cl_r6k::op8_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read8io(a);
+}
+
+u16_t
+cl_r6k::op16_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read16io(a);
+}
+
+u32_t
+cl_r6k::op32_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read32io(a);
+}
+
 int
 cl_r6k::EX_JKHL_BCDE_(MP)
 {

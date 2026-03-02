@@ -49,6 +49,10 @@ public:
   virtual void mode10(void);
   virtual void mode4k(void);
 
+  virtual u8_t  op8_iSPn(void);
+  virtual u16_t op16_iSPn(void);
+  virtual u32_t op32_iSPn(void);
+    
   // page0 (mode11) and page 7f (mode10)
   virtual int JP_GE_MN(MP) { return jp_f_mn(cond_GE(rF)); }
   virtual int JP_LE_MN(MP) { return jp_f_mn(cond_LE(rF)); }
