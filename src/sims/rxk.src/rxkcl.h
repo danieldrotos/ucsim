@@ -147,6 +147,7 @@ public:
   class cl_address_space *ioi, *ioe;
   class cl_address_space *rwas;
   bool prefix, altd, atomic;
+  u8_t kmode;
 public:
   cl_rxk(class cl_sim *asim);
   virtual int init(void);

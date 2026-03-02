@@ -112,6 +112,8 @@ xor hl, n(sp)	49 da
 #define CP_JKHL_iIRd		instruction_6kdd_b3
 #define ADD_IR_D		instruction_6kdd_c5
 
+#define ADD_HL_iSPn		instruction_6k49_8a
+
 
 #endif
 
