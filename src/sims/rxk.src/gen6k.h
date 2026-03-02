@@ -79,6 +79,7 @@ GEN(dd,c5)
 
 GEN(49,8a)
 GEN(49,9a)
+GEN(49,aa)
 
 #undef WRAP_HEAD
 #undef GEN

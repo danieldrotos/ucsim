@@ -307,6 +307,7 @@ struct dis_entry disass_r6k[]=
     
     { 0xe8a49, 0xffff, ' ', 3, "ADD HL,(SP+%b)" },
     { 0xe9a49, 0xffff, ' ', 3, "ADC HL,(SP+%b)" },
+    { 0xeaa49, 0xffff, ' ', 3, "SUB HL,(SP+%b)" },
 
     { 0, 0, 0, 0, 0, 0, 0 }
   };
