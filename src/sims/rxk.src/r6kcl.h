@@ -123,6 +123,9 @@ public:
   virtual int SUB_HL_iSPn(MP) { tick(8); return sub16(rHL, op16_iSPn(), destHL(), false); }
   virtual int SBC_HL_iSPn(MP) { tick(8); return sub16(rHL, op16_iSPn(), destHL(), true); }
   virtual int AND_HL_iSPn(MP) { tick(10); return and16(destHL(), rHL, op16_iSPn()); }
+  virtual int XOR_HL_iSPn(MP) { tick(8); return xor16(destHL(), rHL, op16_iSPn()); }
+  virtual int OR_HL_iSPn(MP) { tick(10); return or16(destHL(), rHL, op16_iSPn()); }
+  virtual int CP_HL_iSPn(MP) { tick(8); return cp16(rHL, op16_iSPn()); }
 };
 
 
