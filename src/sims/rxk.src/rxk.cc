@@ -67,6 +67,7 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   caRtab[4]= &caH;
   caRtab[5]= &caL;
   caRtab[7]= &caA;
+  kmode= 0;
 }
 
 int
@@ -304,13 +305,16 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   
   dt= dis_entry(addr);
   if (code == 0xed)
-    code= rom->get(++addr);
+    code= rom->read(++addr);
   else if ((code == 0xdd) || (code == 0xfd))
     {
-      code= rom->get(++addr);
+      code= rom->read(++addr);
       if (code == 0xcb)
 	return disassc_dd_cb(addr-1, comment);
     }
+  else if ((code == 0x49) && (kmode > 0))
+    code= rom->read(++addr);
+  
   if (!dt)
     return strdup("-- unknown");
 

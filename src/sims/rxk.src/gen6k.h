@@ -77,5 +77,7 @@ GEN(dd,b2)
 GEN(dd,b3)
 GEN(dd,c5)
 
+GEN(49,8a)
+
 #undef WRAP_HEAD
 #undef GEN
