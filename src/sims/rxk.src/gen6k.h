@@ -81,6 +81,7 @@ GEN(49,8a)
 GEN(49,9a)
 GEN(49,aa)
 GEN(49,ba)
+GEN(49,ca)
 
 #undef WRAP_HEAD
 #undef GEN
