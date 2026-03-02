@@ -37,11 +37,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 + sbc hl, d(ix)	fd/dd 91
 + xor hl, d(ix)	fd/dd a1
 
-and hl, n(sp)	49 ca
-cp hl, n(sp)	49 fa
-or hl, n(sp)	49 ea
-sbc hl, n(sp)	49 ba
-xor hl, n(sp)	49 da
++ and hl, n(sp)	49 ca
++ cp hl, n(sp)	49 fa
++ or hl, n(sp)	49 ea
++ sbc hl, n(sp)	49 ba
++ xor hl, n(sp)	49 da
 
 + jp ge, mn	00-m11 43
 + jp le, mn	00-m11 53
