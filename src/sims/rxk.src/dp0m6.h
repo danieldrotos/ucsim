@@ -115,6 +115,7 @@ xor hl, n(sp)	49 da
 #define ADD_HL_iSPn		instruction_6k49_8a
 #define ADC_HL_iSPn		instruction_6k49_9a
 #define SUB_HL_iSPn		instruction_6k49_aa
+#define SBC_HL_iSPn		instruction_6k49_ba
 
 
 #endif

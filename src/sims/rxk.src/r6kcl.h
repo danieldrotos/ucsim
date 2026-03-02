@@ -121,6 +121,7 @@ public:
   virtual int ADD_HL_iSPn(MP) { tick(8); return add16(rHL, op16_iSPn(), destHL(), false); }
   virtual int ADC_HL_iSPn(MP) { tick(8); return add16(rHL, op16_iSPn(), destHL(), true); }
   virtual int SUB_HL_iSPn(MP) { tick(8); return sub16(rHL, op16_iSPn(), destHL(), false); }
+  virtual int SBC_HL_iSPn(MP) { tick(8); return sub16(rHL, op16_iSPn(), destHL(), true); }
 };
 
 
