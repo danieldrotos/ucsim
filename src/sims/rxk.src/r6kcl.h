@@ -126,6 +126,14 @@ public:
   virtual int XOR_HL_iSPn(MP) { tick(8); return xor16(destHL(), rHL, op16_iSPn()); }
   virtual int OR_HL_iSPn(MP) { tick(10); return or16(destHL(), rHL, op16_iSPn()); }
   virtual int CP_HL_iSPn(MP) { tick(8); return cp16(rHL, op16_iSPn()); }
+  virtual int ADD_A_iSPn(MP) { tick(8); return add8(op8_iSPn(), false); }
+  virtual int ADC_A_iSPn(MP) { tick(8); return add8(op8_iSPn(), true); }
+  virtual int SUB_A_iSPn(MP) { tick(8); return sub8(op8_iSPn(), false); }
+  virtual int SBC_A_iSPn(MP) { tick(8); return sub8(op8_iSPn(), true); }
+  virtual int AND_A_iSPn(MP) { tick(10); return and8(destA(), rA, op8_iSPn()); }
+  virtual int XOR_A_iSPn(MP) { tick(8); return xor8(destA(), rA, op8_iSPn()); }
+  virtual int OR_A_iSPn(MP) { tick(10); return or8(destA(), rA, op8_iSPn()); }
+  virtual int CP_A_iSPn(MP) { tick(8); return cp8(rA, op8_iSPn()); }
 };
 
 

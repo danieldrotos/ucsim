@@ -112,13 +112,21 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CP_JKHL_iIRd		instruction_6kdd_b3
 #define ADD_IR_D		instruction_6kdd_c5
 
+#define ADD_A_iSPn		instruction_6k49_89
 #define ADD_HL_iSPn		instruction_6k49_8a
+#define ADC_A_iSPn		instruction_6k49_99
 #define ADC_HL_iSPn		instruction_6k49_9a
+#define SUB_A_iSPn		instruction_6k49_a9
 #define SUB_HL_iSPn		instruction_6k49_aa
+#define SBC_A_iSPn		instruction_6k49_b9
 #define SBC_HL_iSPn		instruction_6k49_ba
+#define AND_A_iSPn		instruction_6k49_c9
 #define AND_HL_iSPn		instruction_6k49_ca
+#define XOR_A_iSPn		instruction_6k49_d9
 #define XOR_HL_iSPn		instruction_6k49_da
+#define OR_A_iSPn		instruction_6k49_e9
 #define OR_HL_iSPn		instruction_6k49_ea
+#define CP_A_iSPn		instruction_6k49_f9
 #define CP_HL_iSPn		instruction_6k49_fa
 
 
