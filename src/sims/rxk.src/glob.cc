@@ -307,20 +307,28 @@ struct dis_entry disass_r6k[]=
     
     { 0xe8949, 0xffff, ' ', 3, "ADD A,(SP+%b)" },
     { 0xe8a49, 0xffff, ' ', 3, "ADD HL,(SP+%b)" },
+    { 0xe8b49, 0xffff, ' ', 3, "ADD JKHL,(SP+%b)" },
     { 0xe9949, 0xffff, ' ', 3, "ADC A,(SP+%b)" },
     { 0xe9a49, 0xffff, ' ', 3, "ADC HL,(SP+%b)" },
+    { 0xe9b49, 0xffff, ' ', 3, "ADC JKHL,(SP+%b)" },
     { 0xea949, 0xffff, ' ', 3, "SUB A,(SP+%b)" },
     { 0xeaa49, 0xffff, ' ', 3, "SUB HL,(SP+%b)" },
+    { 0xeab49, 0xffff, ' ', 3, "SUB JKHL,(SP+%b)" },
     { 0xeb949, 0xffff, ' ', 3, "SBC A,(SP+%b)" },
     { 0xeba49, 0xffff, ' ', 3, "SBC HL,(SP+%b)" },
+    { 0xebb49, 0xffff, ' ', 3, "SBC JKHL,(SP+%b)" },
     { 0xec949, 0xffff, ' ', 3, "AND A,(SP+%b)" },
     { 0xeca49, 0xffff, ' ', 3, "AND HL,(SP+%b)" },
+    { 0xecb49, 0xffff, ' ', 3, "AND JKHL,(SP+%b)" },
     { 0xed949, 0xffff, ' ', 3, "XOR A,(SP+%b)" },
     { 0xeda49, 0xffff, ' ', 3, "XOR HL,(SP+%b)" },
+    { 0xedb49, 0xffff, ' ', 3, "XOR JKHL,(SP+%b)" },
     { 0xee949, 0xffff, ' ', 3, "OR A,(SP+%b)" },
     { 0xeea49, 0xffff, ' ', 3, "OR HL,(SP+%b)" },
+    { 0xeeb49, 0xffff, ' ', 3, "OR JKHL,(SP+%b)" },
     { 0xef949, 0xffff, ' ', 3, "CP A,(SP+%b)" },
     { 0xefa49, 0xffff, ' ', 3, "CP HL,(SP+%b)" },
+    { 0xefb49, 0xffff, ' ', 3, "CP JKHL,(SP+%b)" },
 
     { 0, 0, 0, 0, 0, 0, 0 }
   };
