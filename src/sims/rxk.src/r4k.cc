@@ -448,6 +448,44 @@ cl_r4k::op32_iSPn(void)
   return read32io(a);
 }
 
+u8_t
+cl_r4k::op8_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  vc.rd++;
+  return mem->pxread(a);
+}
+
+u16_t
+cl_r4k::op16_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  u32_t h= a & 0xffff0000;
+  u16_t l= a;
+  u16_t v;
+  v= mem->pxread(a);
+  l++;
+  v+= 256 * (mem->pxread(h|l));
+  vc.rd+= 2;
+  return v;
+}
+
+u32_t
+cl_r4k::op32_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  u32_t h= a & 0xffff0000;
+  u16_t l= a;
+  u32_t v, v0, v1, v2, v3;
+  v0= mem->pxread(a);l++;
+  v1=(mem->pxread(h|l)); l++;
+  v2=(mem->pxread(h|l)); l++;
+  v3=(mem->pxread(h|l));
+  vc.rd+= 4;
+  v= (v3<<24) | (v2<<16) | (v1<<8) | v0;
+  return v;
+}
+
 void
 cl_r4k::print_regs(class cl_console_base *con)
 {

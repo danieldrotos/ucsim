@@ -87,6 +87,9 @@ public:
   virtual u8_t  op8_iSPn(void);
   virtual u16_t op16_iSPn(void);
   virtual u32_t op32_iSPn(void);
+  virtual u8_t  op8_iPSd(u32_t ps, i8_t d);
+  virtual u16_t op16_iPSd(u32_t ps, i8_t d);
+  virtual u32_t op32_iPSd(u32_t ps, i8_t d);
   
   virtual void print_regs(class cl_console_base *con);
 
