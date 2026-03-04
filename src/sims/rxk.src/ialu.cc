@@ -1104,7 +1104,7 @@ cl_rxk::add8(u8_t op2, bool cy)
 }
 
 int
-cl_rxk::add16(u16_t op1, u16_t op2, class cl_cell16 &cRes, bool cy)
+cl_rxk::add16(class cl_cell16 &cRes, u16_t op1, u16_t op2, bool cy)
 {
   class cl_cell8 &f= destF();
   u16_t v1= op1;
@@ -1147,7 +1147,7 @@ cl_rxk::add8(class cl_cell16 &cRes, u8_t op1, u8_t op2, bool cy)
 }
 
 int
-cl_rxk::add32(u32_t op1, u32_t op2, class cl_cell32 &cRes, bool cy)
+cl_rxk::add32(class cl_cell32 &cRes, u32_t op1, u32_t op2, bool cy)
 {
   class cl_cell8 &f= destF();
   u32_t v1= op1;
