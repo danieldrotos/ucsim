@@ -126,8 +126,8 @@ public:
   // ALU 16 bit, SP+n
   virtual int ADD_HL_iSPn(MP) { tick(8);  return add16(destHL(), rHL, op16_iSPn(), false); }
   virtual int ADC_HL_iSPn(MP) { tick(8);  return add16(destHL(), rHL, op16_iSPn(), true); }
-  virtual int SUB_HL_iSPn(MP) { tick(8);  return sub16(rHL, op16_iSPn(), destHL(), false); }
-  virtual int SBC_HL_iSPn(MP) { tick(8);  return sub16(rHL, op16_iSPn(), destHL(), true); }
+  virtual int SUB_HL_iSPn(MP) { tick(8);  return sub16(destHL(), rHL, op16_iSPn(), false); }
+  virtual int SBC_HL_iSPn(MP) { tick(8);  return sub16(destHL(), rHL, op16_iSPn(), true); }
   virtual int AND_HL_iSPn(MP) { tick(10); return and16(destHL(), rHL, op16_iSPn()); }
   virtual int XOR_HL_iSPn(MP) { tick(8);  return xor16(destHL(), rHL, op16_iSPn()); }
   virtual int OR_HL_iSPn(MP)  { tick(10); return or16 (destHL(), rHL, op16_iSPn()); }
