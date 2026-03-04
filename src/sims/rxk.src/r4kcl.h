@@ -84,9 +84,11 @@ public:
   virtual class cl_cell32 &destJKHL(void) { return altd?caJKHL:cJKHL; }
   virtual class cl_cell16 &destJK(void) { return altd?caJK:cJK; }
 
+  // operands, addressed by SP+n
   virtual u8_t  op8_iSPn(void);
   virtual u16_t op16_iSPn(void);
   virtual u32_t op32_iSPn(void);
+  // operands, addressed by ps(PW,PX,PY,PZ)+d
   virtual u8_t  op8_iPSd(u32_t ps, i8_t d);
   virtual u16_t op16_iPSd(u32_t ps, i8_t d);
   virtual u32_t op32_iPSd(u32_t ps, i8_t d);
