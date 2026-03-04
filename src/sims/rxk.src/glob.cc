@@ -335,6 +335,11 @@ struct dis_entry disass_r6k[]=
     { 0xe5849, 0xfcff, ' ', 3, "XOR HL,('ps0.0'%d)'" },
     { 0xe5c49, 0xfcff, ' ', 3, "XOR JKHL,('ps0.0'%d)'" },
 
+    { 0xe6049, 0xfcff, ' ', 2, "OR JKHL,'ps0.0'" },
+    { 0xe6449, 0xfcff, ' ', 3, "OR A,('ps0.0'%d)'" },
+    { 0xe6849, 0xfcff, ' ', 3, "OR HL,('ps0.0'%d)'" },
+    { 0xe6c49, 0xfcff, ' ', 3, "OR JKHL,('ps0.0'%d)'" },
+
     { 0xe8949, 0xffff, ' ', 3, "ADD A,(SP+%b)" },
     { 0xe8a49, 0xffff, ' ', 3, "ADD HL,(SP+%b)" },
     { 0xe8b49, 0xffff, ' ', 3, "ADD JKHL,(SP+%b)" },
