@@ -1169,6 +1169,16 @@ cl_rxk::add32(class cl_cell32 &cRes, u32_t op1, u32_t op2, bool cy)
 }
 
 int
+cl_rxk::NEG(t_mem code)
+{
+  u8_t org= destA().get();
+  destA().set(0);
+  sub8(org, false);
+  tick5p9(0);
+  return resGO;
+}
+
+int
 cl_rxk::sub8(u8_t op2, bool cy)
 {
   class cl_cell8 &a= destA(), &f= destF();
@@ -1193,16 +1203,6 @@ cl_rxk::sub8(u8_t op2, bool cy)
   a.W(res);
   f.W(forg);
   tick(3);
-  return resGO;
-}
-
-int
-cl_rxk::NEG(t_mem code)
-{
-  u8_t org= destA().get();
-  destA().set(0);
-  sub8(org, false);
-  tick5p9(0);
   return resGO;
 }
 
@@ -1237,7 +1237,34 @@ cl_rxk::sub16(u16_t op2, bool cy)
 }
 
 int
-cl_rxk::sub16(u16_t op1, u16_t op2, class cl_cell16 &cRes, bool cy)
+cl_rxk::sub8(class cl_cell8 &cRes, u8_t op1, u8_t op2, bool cy)
+{
+  class cl_cell8 &f= destF();
+  u8_t v1= op1;
+  u8_t forg;
+  u8_t res;
+  u8_t a7, b7, r7, na7, nb7, nr7;
+  i8_t o2= op2;
+  i8_t r= op1-o2;
+  if (cy && (rF&flagC)) r--;
+  res= r;
+  forg= rF & ~(flagZ|flagS|flagV);
+  a7=  v1&0x80; na7= a7^0x80;
+  b7= op2&0x80; nb7= b7^0x80;
+  r7= res&0x80; nr7= r7^0x80;
+  if ((a7&nb7&nr7) | (na7&b7&r7)) forg|= flagV;
+  if (op1<op2) forg|= flagC;
+  if ((op1>op2) || (!cy && (op1==op2))) forg&= ~flagC;
+  if (!res) forg|= flagZ;
+  if (res & 0x80) forg|= flagS;
+  cRes.W(res);
+  f.W(forg);
+  tick(3);
+  return resGO;
+}
+
+int
+cl_rxk::sub16(class cl_cell16 &cRes, u16_t op1, u16_t op2, bool cy)
 {
   class cl_cell8 &f= destF();
   u16_t v1= op1;
