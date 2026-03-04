@@ -141,6 +141,23 @@ public:
   virtual int XOR_JKHL_iSPn(MP) { tick(12); return xor32(destJKHL(), rJKHL, op32_iSPn()); }
   virtual int OR_JKHL_iSPn(MP) { tick(14); return or32(destJKHL(), rJKHL, op32_iSPn()); }
   virtual int CP_JKHL_iSPn(MP) { tick(12); return cp32(rJKHL, op32_iSPn()); }
+  // 00-10
+  virtual int ADD_JKHL_PW(MP)   { return add32(rJKHL, rPW, destJKHL(), false); }
+  virtual int ADD_JKHL_PX(MP)   { return add32(rJKHL, rPX, destJKHL(), false); }
+  virtual int ADD_JKHL_PY(MP)   { return add32(rJKHL, rPY, destJKHL(), false); }
+  virtual int ADD_JKHL_PZ(MP)   { return add32(rJKHL, rPZ, destJKHL(), false); }
+  virtual int ADD_A_iPWd(MP)    { tick(6); return add8 (op8_iPSd(rPW, fetch()), false); }
+  virtual int ADD_A_iPXd(MP)    { tick(6); return add8 (op8_iPSd(rPW, fetch()), false); }
+  virtual int ADD_A_iPYd(MP)    { tick(6); return add8 (op8_iPSd(rPW, fetch()), false); }
+  virtual int ADD_A_iPZd(MP)    { tick(6); return add8 (op8_iPSd(rPW, fetch()), false); }
+  virtual int ADD_HL_iPWd(MP)   { tick(8); return add16(rHL, op16_iPSd(rPW, fetch()), destHL(), false); }
+  virtual int ADD_HL_iPXd(MP)   { tick(8); return add16(rHL, op16_iPSd(rPX, fetch()), destHL(), false); }
+  virtual int ADD_HL_iPYd(MP)   { tick(8); return add16(rHL, op16_iPSd(rPY, fetch()), destHL(), false); }
+  virtual int ADD_HL_iPZd(MP)   { tick(8); return add16(rHL, op16_iPSd(rPZ, fetch()), destHL(), false); }
+  virtual int ADD_JKHL_iPWd(MP) { tick(12); return add32(rJKHL, op32_iPSd(rPW, fetch()), destJKHL(), false); }
+  virtual int ADD_JKHL_iPXd(MP) { tick(12); return add32(rJKHL, op32_iPSd(rPX, fetch()), destJKHL(), false); }
+  virtual int ADD_JKHL_iPYd(MP) { tick(12); return add32(rJKHL, op32_iPSd(rPY, fetch()), destJKHL(), false); }
+  virtual int ADD_JKHL_iPZd(MP) { tick(12); return add32(rJKHL, op32_iPSd(rPZ, fetch()), destJKHL(), false); }
 };
 
 
