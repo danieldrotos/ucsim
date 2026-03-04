@@ -460,13 +460,11 @@ u16_t
 cl_r4k::op16_iPSd(u32_t ps, i8_t d)
 {
   u32_t a= px8se(ps, d);
-  u32_t h= a & 0xffff0000;
-  u16_t l= a;
-  u16_t v;
-  v= mem->pxread(a);
-  l++;
-  v+= 256 * (mem->pxread(h|l));
+  u16_t v, v0, v1;
+  v0= mem->pxread(a);
+  v1= mem->pxread(px8(a, 1));
   vc.rd+= 2;
+  v= (v1<<8) | v0;
   return v;
 }
 
@@ -474,13 +472,11 @@ u32_t
 cl_r4k::op32_iPSd(u32_t ps, i8_t d)
 {
   u32_t a= px8se(ps, d);
-  u32_t h= a & 0xffff0000;
-  u16_t l= a;
   u32_t v, v0, v1, v2, v3;
-  v0= mem->pxread(a);l++;
-  v1=(mem->pxread(h|l)); l++;
-  v2=(mem->pxread(h|l)); l++;
-  v3=(mem->pxread(h|l));
+  v0= mem->pxread(a);
+  v1= mem->pxread(px8(a, 1));
+  v2= mem->pxread(px8(a, 2));
+  v3= mem->pxread(px8(a, 3));
   vc.rd+= 4;
   v= (v3<<24) | (v2<<16) | (v1<<8) | v0;
   return v;
