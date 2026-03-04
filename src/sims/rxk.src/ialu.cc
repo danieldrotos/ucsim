@@ -1291,7 +1291,7 @@ cl_rxk::sub16(class cl_cell16 &cRes, u16_t op1, u16_t op2, bool cy)
 }
 
 int
-cl_rxk::sub32(u32_t op1, u32_t op2, class cl_cell32 &cRes, bool cy)
+cl_rxk::sub32(class cl_cell32 &cRes, u32_t op1, u32_t op2, bool cy)
 {
   class cl_cell8 &f= destF();
   u32_t v1= op1;
