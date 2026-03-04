@@ -209,6 +209,23 @@ public:
   virtual int SBC_JKHL_iPXd(MP) { tick(12); return sub32(destJKHL(), rJKHL, op32_iPSd(rPX, fetch()), true); }
   virtual int SBC_JKHL_iPYd(MP) { tick(12); return sub32(destJKHL(), rJKHL, op32_iPSd(rPY, fetch()), true); }
   virtual int SBC_JKHL_iPZd(MP) { tick(12); return sub32(destJKHL(), rJKHL, op32_iPSd(rPZ, fetch()), true); }
+  // 40-4f
+  virtual int AND_JKHL_PW(MP)   { return and32(destJKHL(), rJKHL, rPW); }
+  virtual int AND_JKHL_PX(MP)   { return and32(destJKHL(), rJKHL, rPX); }
+  virtual int AND_JKHL_PY(MP)   { return and32(destJKHL(), rJKHL, rPY); }
+  virtual int AND_JKHL_PZ(MP)   { return and32(destJKHL(), rJKHL, rPZ); }
+  virtual int AND_A_iPWd(MP)    { tick(6);  return and8 (destA   (),    rA, op8_iPSd (rPW, fetch())); }
+  virtual int AND_A_iPXd(MP)    { tick(6);  return and8 (destA   (),    rA, op8_iPSd (rPW, fetch())); }
+  virtual int AND_A_iPYd(MP)    { tick(6);  return and8 (destA   (),    rA, op8_iPSd (rPW, fetch())); }
+  virtual int AND_A_iPZd(MP)    { tick(6);  return and8 (destA   (),    rA, op8_iPSd (rPW, fetch())); }
+  virtual int AND_HL_iPWd(MP)   { tick(8);  return and16(destHL  (),   rHL, op16_iPSd(rPW, fetch())); }
+  virtual int AND_HL_iPXd(MP)   { tick(8);  return and16(destHL  (),   rHL, op16_iPSd(rPX, fetch())); }
+  virtual int AND_HL_iPYd(MP)   { tick(8);  return and16(destHL  (),   rHL, op16_iPSd(rPY, fetch())); }
+  virtual int AND_HL_iPZd(MP)   { tick(8);  return and16(destHL  (),   rHL, op16_iPSd(rPZ, fetch())); }
+  virtual int AND_JKHL_iPWd(MP) { tick(12); return and32(destJKHL(), rJKHL, op32_iPSd(rPW, fetch())); }
+  virtual int AND_JKHL_iPXd(MP) { tick(12); return and32(destJKHL(), rJKHL, op32_iPSd(rPX, fetch())); }
+  virtual int AND_JKHL_iPYd(MP) { tick(12); return and32(destJKHL(), rJKHL, op32_iPSd(rPY, fetch())); }
+  virtual int AND_JKHL_iPZd(MP) { tick(12); return and32(destJKHL(), rJKHL, op32_iPSd(rPZ, fetch())); }
 };
 
 
