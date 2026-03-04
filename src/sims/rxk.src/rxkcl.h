@@ -315,7 +315,7 @@ public:
   virtual int sub8(class cl_cell8 &cRes, u8_t op1, u8_t op2, bool cy);
   virtual int sub16(u16_t op2, bool cy);			// 0f,4t,0r,0w
   virtual int sub16(class cl_cell16 &cRes, u16_t op1, u16_t op2, bool cy);
-  virtual int sub32(u32_t op1, u32_t op2, class cl_cell32 &cRes, bool cy);
+  virtual int sub32(class cl_cell32 &cRes, u32_t op1, u32_t op2, bool cy);
   
   virtual int inc_i8(t_addr addr);
   virtual int dec_i8(t_addr addr);

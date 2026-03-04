@@ -90,7 +90,7 @@ public:
   virtual int FLAG_LE_HL(MP) { destHL().W(cond_LE(rF)?1:0); tick(3); return resGO; }
   virtual int FLAG_LEU_HL(MP) { destHL().W(cond_LEU(rF)?1:0); tick(3); return resGO; }
   virtual int ADC_JKHL_BCDE(MP) {return add32(destJKHL(), rJKHL, rBCDE, true); }
-  virtual int SBC_JKHL_BCDE(MP) {return sub32(rJKHL, rBCDE, destJKHL(), true); }
+  virtual int SBC_JKHL_BCDE(MP) {return sub32(destJKHL(), rJKHL, rBCDE, true); }
   // page dd/fd
   virtual int swap_32(u32_t sr, C32 &dr);
   virtual int SWAP_IRR(MP) { return swap_32(cIRR->get(), *cIRR); }
@@ -107,10 +107,10 @@ public:
   virtual int ADD_JKHL_iIRd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iIRd(), false); }
   virtual int ADC_HL_iIRd(MP)   { tick(8);  return add16(destHL(), rHL, op16_iIRd(), true); }
   virtual int ADC_JKHL_iIRd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iIRd(), true); }
-  virtual int SUB_HL_iIRd(MP)   { tick(8);  return sub16(op16_iIRd(), false); }
-  virtual int SUB_JKHL_iIRd(MP) { tick(12); return sub32(rJKHL, op32_iIRd(), destJKHL(), false); }
-  virtual int SBC_HL_iIRd(MP)   { tick(8);  return sub16(op16_iIRd(), true); }
-  virtual int SBC_JKHL_iIRd(MP) { tick(12); return sub32(rJKHL, op32_iIRd(), destJKHL(), true); }
+  virtual int SUB_HL_iIRd(MP)   { tick(8);  return sub16(destHL(), rHL, op16_iIRd(), false); }
+  virtual int SUB_JKHL_iIRd(MP) { tick(12); return sub32(destJKHL(), rJKHL, op32_iIRd(), false); }
+  virtual int SBC_HL_iIRd(MP)   { tick(8);  return sub16(destHL(), rHL, op16_iIRd(), true); }
+  virtual int SBC_JKHL_iIRd(MP) { tick(12); return sub32(destJKHL(), rJKHL, op32_iIRd(), true); }
 
   // page 49
   virtual int PAGE_6K49(MP);
@@ -135,8 +135,8 @@ public:
   // ALU 32 bit, SP+n
   virtual int ADD_JKHL_iSPn(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iSPn(), false); }
   virtual int ADC_JKHL_iSPn(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iSPn(), true); }
-  virtual int SUB_JKHL_iSPn(MP) { tick(12); return sub32(rJKHL, op32_iSPn(), destJKHL(), false); }
-  virtual int SBC_JKHL_iSPn(MP) { tick(12); return sub32(rJKHL, op32_iSPn(), destJKHL(), true); }
+  virtual int SUB_JKHL_iSPn(MP) { tick(12); return sub32(destJKHL(), rJKHL, op32_iSPn(), false); }
+  virtual int SBC_JKHL_iSPn(MP) { tick(12); return sub32(destJKHL(), rJKHL, op32_iSPn(), true); }
   virtual int AND_JKHL_iSPn(MP) { tick(14); return and32(destJKHL(), rJKHL, op32_iSPn()); }
   virtual int XOR_JKHL_iSPn(MP) { tick(12); return xor32(destJKHL(), rJKHL, op32_iSPn()); }
   virtual int OR_JKHL_iSPn(MP)  { tick(14); return or32 (destJKHL(), rJKHL, op32_iSPn()); }

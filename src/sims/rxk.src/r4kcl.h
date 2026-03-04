@@ -358,8 +358,8 @@ public:
   virtual int LD_iIXd_IRR(t_mem code) { return ld_iird_irr(cIX); }
   virtual int LD_iIYd_IRR(t_mem code) { return ld_iird_irr(cIY); }
   virtual int LD_iSPn_IRR(t_mem code);
-  virtual int NEG_IRR(t_mem coed) { return sub32(0, cIRR->get(),
-						 *cIRR, false); }
+  virtual int NEG_IRR(t_mem coed) { return sub32(*cIRR, 0, cIRR->get(),
+						 false); }
   virtual int POP_IRR(t_mem code);
   virtual int PUSH_IRR(t_mem code);
   virtual int RL_1_IRR(t_mem code) { return rot33left(*destIRR(),
