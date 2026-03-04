@@ -198,6 +198,23 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define AND_JKHL_iPXd		instruction_6k49_4d
 #define AND_JKHL_iPYd		instruction_6k49_4e
 #define AND_JKHL_iPZd		instruction_6k49_4f
+// 50-5f
+#define XOR_JKHL_PW		instruction_6k49_50
+#define XOR_JKHL_PX		instruction_6k49_51
+#define XOR_JKHL_PY		instruction_6k49_52
+#define XOR_JKHL_PZ		instruction_6k49_53
+#define XOR_A_iPWd		instruction_6k49_54
+#define XOR_A_iPXd		instruction_6k49_55
+#define XOR_A_iPYd		instruction_6k49_56
+#define XOR_A_iPZd		instruction_6k49_57
+#define XOR_HL_iPWd		instruction_6k49_58
+#define XOR_HL_iPXd		instruction_6k49_59
+#define XOR_HL_iPYd		instruction_6k49_5a
+#define XOR_HL_iPZd		instruction_6k49_5b
+#define XOR_JKHL_iPWd		instruction_6k49_5c
+#define XOR_JKHL_iPXd		instruction_6k49_5d
+#define XOR_JKHL_iPYd		instruction_6k49_5e
+#define XOR_JKHL_iPZd		instruction_6k49_5f
 // 80-8f
 #define ADD_A_iSPn		instruction_6k49_89
 #define ADD_HL_iSPn		instruction_6k49_8a
