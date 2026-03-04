@@ -112,27 +112,54 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CP_JKHL_iIRd		instruction_6kdd_b3
 #define ADD_IR_D		instruction_6kdd_c5
 
+// page 49
+// 00-0f
+#define ADD_JKHL_PW		instruction_6k49_00
+#define ADD_JKHL_PX		instruction_6k49_01
+#define ADD_JKHL_PY		instruction_6k49_02
+#define ADD_JKHL_PZ		instruction_6k49_03
+#define ADD_A_iPWd		instruction_6k49_04
+#define ADD_A_iPXd		instruction_6k49_05
+#define ADD_A_iPYd		instruction_6k49_06
+#define ADD_A_iPZd		instruction_6k49_07
+#define ADD_HL_iPWd		instruction_6k49_08
+#define ADD_HL_iPXd		instruction_6k49_09
+#define ADD_HL_iPYd		instruction_6k49_0a
+#define ADD_HL_iPZd		instruction_6k49_0b
+#define ADD_JKHL_iPWd		instruction_6k49_0c
+#define ADD_JKHL_iPXd		instruction_6k49_0d
+#define ADD_JKHL_iPYd		instruction_6k49_0e
+#define ADD_JKHL_iPZd		instruction_6k49_0f
+// 10-1f
+// 80-8f
 #define ADD_A_iSPn		instruction_6k49_89
 #define ADD_HL_iSPn		instruction_6k49_8a
 #define ADD_JKHL_iSPn		instruction_6k49_8b
+// 90-9f
 #define ADC_A_iSPn		instruction_6k49_99
 #define ADC_HL_iSPn		instruction_6k49_9a
 #define ADC_JKHL_iSPn		instruction_6k49_9b
+// a0-af
 #define SUB_A_iSPn		instruction_6k49_a9
 #define SUB_HL_iSPn		instruction_6k49_aa
 #define SUB_JKHL_iSPn		instruction_6k49_ab
+// b0-bf
 #define SBC_A_iSPn		instruction_6k49_b9
 #define SBC_HL_iSPn		instruction_6k49_ba
 #define SBC_JKHL_iSPn		instruction_6k49_bb
+// c0-cf
 #define AND_A_iSPn		instruction_6k49_c9
 #define AND_HL_iSPn		instruction_6k49_ca
 #define AND_JKHL_iSPn		instruction_6k49_cb
+// d0-df
 #define XOR_A_iSPn		instruction_6k49_d9
 #define XOR_HL_iSPn		instruction_6k49_da
 #define XOR_JKHL_iSPn		instruction_6k49_db
+// e0-ef
 #define OR_A_iSPn		instruction_6k49_e9
 #define OR_HL_iSPn		instruction_6k49_ea
 #define OR_JKHL_iSPn		instruction_6k49_eb
+// f0-ff
 #define CP_A_iSPn		instruction_6k49_f9
 #define CP_HL_iSPn		instruction_6k49_fa
 #define CP_JKHL_iSPn		instruction_6k49_fb
