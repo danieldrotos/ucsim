@@ -1104,6 +1104,27 @@ cl_rxk::add8(u8_t op2, bool cy)
 }
 
 int
+cl_rxk::add8(class cl_cell8 &cRes, u8_t op1, u8_t op2, bool cy)
+{
+  class cl_cell8 &f= destF();
+  u8_t v1= op1;
+  u8_t forg;
+  u16_t res= v1+op2+(cy?((rF&flagC)?1:0):0);
+  u8_t a7, b7, r7, na7, nb7, nr7;
+  forg= rF & ~flagAll;
+  a7=  v1; na7= a7^0x80;
+  b7= op2; nb7= b7^0x80;
+  r7= res; nr7= r7^0x80;
+  if (0x80 & ((a7&b7&nr7) | (na7&nb7&r7))) forg|= flagV;
+  if (res > 0xff) forg|= flagC;
+  if (!(res & 0xff)) forg|= flagZ;
+  if (res & 0x80) forg|= flagS;
+  cRes.W(res);
+  f.W(forg);
+  return resGO;
+}
+
+int
 cl_rxk::add16(class cl_cell16 &cRes, u16_t op1, u16_t op2, bool cy)
 {
   class cl_cell8 &f= destF();
@@ -1122,27 +1143,6 @@ cl_rxk::add16(class cl_cell16 &cRes, u16_t op1, u16_t op2, bool cy)
   cRes.W(res);
   f.W(forg);
   tick(3);
-  return resGO;
-}
-
-int
-cl_rxk::add8(class cl_cell16 &cRes, u8_t op1, u8_t op2, bool cy)
-{
-  class cl_cell8 &f= destF();
-  u8_t v1= op1;
-  u8_t forg;
-  u16_t res= v1+op2+(cy?((rF&flagC)?1:0):0);
-  u8_t a7, b7, r7, na7, nb7, nr7;
-  forg= rF & ~flagAll;
-  a7=  v1; na7= a7^0x80;
-  b7= op2; nb7= b7^0x80;
-  r7= res; nr7= r7^0x80;
-  if (0x80 & ((a7&b7&nr7) | (na7&nb7&r7))) forg|= flagV;
-  if (res > 0xff) forg|= flagC;
-  if (!(res & 0xff)) forg|= flagZ;
-  if (res & 0x80) forg|= flagS;
-  cRes.W(res);
-  f.W(forg);
   return resGO;
 }
 
