@@ -83,6 +83,10 @@ public:
   virtual class cl_cell32 &destBCDE(void) { return altd?caBCDE:cBCDE; }
   virtual class cl_cell32 &destJKHL(void) { return altd?caJKHL:cJKHL; }
   virtual class cl_cell16 &destJK(void) { return altd?caJK:cJK; }
+
+  virtual u8_t  op8_iSPn(void);
+  virtual u16_t op16_iSPn(void);
+  virtual u32_t op32_iSPn(void);
   
   virtual void print_regs(class cl_console_base *con);
 

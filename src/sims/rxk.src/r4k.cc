@@ -423,6 +423,31 @@ cl_r4k::select_IRR(bool dd)
   caIRR= dd?&caBCDE:&caJKHL;
 }
 
+
+u8_t
+cl_r4k::op8_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read8io(a);
+}
+
+u16_t
+cl_r4k::op16_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read16io(a);
+}
+
+u32_t
+cl_r4k::op32_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read32io(a);
+}
+
 void
 cl_r4k::print_regs(class cl_console_base *con)
 {
