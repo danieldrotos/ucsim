@@ -158,6 +158,23 @@ public:
   virtual int ADD_JKHL_iPXd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iPSd(rPX, fetch()), false); }
   virtual int ADD_JKHL_iPYd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iPSd(rPY, fetch()), false); }
   virtual int ADD_JKHL_iPZd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iPSd(rPZ, fetch()), false); }
+  // 10-1f
+  virtual int ADC_JKHL_PW(MP)   { return add32(destJKHL(), rJKHL, rPW, true); }
+  virtual int ADC_JKHL_PX(MP)   { return add32(destJKHL(), rJKHL, rPX, true); }
+  virtual int ADC_JKHL_PY(MP)   { return add32(destJKHL(), rJKHL, rPY, true); }
+  virtual int ADC_JKHL_PZ(MP)   { return add32(destJKHL(), rJKHL, rPZ, true); }
+  virtual int ADC_A_iPWd(MP)    { tick(6);  return add8 (destA   (),    rA, op8_iPSd (rPW, fetch()), true); }
+  virtual int ADC_A_iPXd(MP)    { tick(6);  return add8 (destA   (),    rA, op8_iPSd (rPW, fetch()), true); }
+  virtual int ADC_A_iPYd(MP)    { tick(6);  return add8 (destA   (),    rA, op8_iPSd (rPW, fetch()), true); }
+  virtual int ADC_A_iPZd(MP)    { tick(6);  return add8 (destA   (),    rA, op8_iPSd (rPW, fetch()), true); }
+  virtual int ADC_HL_iPWd(MP)   { tick(8);  return add16(destHL  (),   rHL, op16_iPSd(rPW, fetch()), true); }
+  virtual int ADC_HL_iPXd(MP)   { tick(8);  return add16(destHL  (),   rHL, op16_iPSd(rPX, fetch()), true); }
+  virtual int ADC_HL_iPYd(MP)   { tick(8);  return add16(destHL  (),   rHL, op16_iPSd(rPY, fetch()), true); }
+  virtual int ADC_HL_iPZd(MP)   { tick(8);  return add16(destHL  (),   rHL, op16_iPSd(rPZ, fetch()), true); }
+  virtual int ADC_JKHL_iPWd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iPSd(rPW, fetch()), true); }
+  virtual int ADC_JKHL_iPXd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iPSd(rPX, fetch()), true); }
+  virtual int ADC_JKHL_iPYd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iPSd(rPY, fetch()), true); }
+  virtual int ADC_JKHL_iPZd(MP) { tick(12); return add32(destJKHL(), rJKHL, op32_iPSd(rPZ, fetch()), true); }
 };
 
 
