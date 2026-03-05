@@ -52,6 +52,8 @@ public:
   // set flagC too
   virtual int inc_r(class cl_cell8 &cr, u8_t op);
   virtual int inc_i8(t_addr addr);
+  virtual int dec_r(class cl_cell8 &cr, u8_t op);
+  virtual int dec_i8(t_addr addr);
   
   // page0 (mode11) and page 7f (mode10)
   virtual int JP_GE_MN(MP) { return jp_f_mn(cond_GE(rF)); }
@@ -287,6 +289,11 @@ public:
   virtual int INC_iPXd(MP) { tick(11); return inc_iPSd(rPX, fetch()); }
   virtual int INC_iPYd(MP) { tick(11); return inc_iPSd(rPY, fetch()); }
   virtual int INC_iPZd(MP) { tick(11); return inc_iPSd(rPZ, fetch()); }
+  virtual int dec_iPSd(u32_t ps, i8_t d);
+  virtual int DEC_iPWd(MP) { tick(11); return dec_iPSd(rPW, fetch()); }
+  virtual int DEC_iPXd(MP) { tick(11); return dec_iPSd(rPX, fetch()); }
+  virtual int DEC_iPYd(MP) { tick(11); return dec_iPSd(rPY, fetch()); }
+  virtual int DEC_iPZd(MP) { tick(11); return dec_iPSd(rPZ, fetch()); }
 };
 
 

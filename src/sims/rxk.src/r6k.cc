@@ -280,6 +280,21 @@ cl_r6k::inc_i8(t_addr addr)
 }
 
 int
+cl_r6k::dec_r(class cl_cell8 &cr, u8_t op)
+{
+  return sub8(cr, op, 1, false);
+}
+
+int
+cl_r6k::dec_i8(t_addr addr)
+{
+  C8 *cell= (C8*)rwas->get_cell(addr);
+  vc.rd++;
+  vc.wr++;
+  return sub8(*cell, cell->R(), 1, false);
+}
+
+int
 cl_r6k::inc_iPSd(u32_t ps, i8_t d)
 {
   class cl_cell8 &f= destF();
@@ -293,6 +308,35 @@ cl_r6k::inc_iPSd(u32_t ps, i8_t d)
   if (!(org&0x80) && (res&0x80)) forg|= flagV;
   f.W(forg);
   mem->pxwrite(a, res);
+  vc.rd++;
+  vc.wr++;
+  return resGO;
+}
+
+int
+cl_r6k::dec_iPSd(u32_t ps, i8_t d)
+{
+  class cl_cell8 &f= destF();
+  t_addr a= px8se(ps, d);
+  u8_t org= mem->pxread(a);
+  u8_t v1= org, op1= org;
+  u8_t forg;
+  u8_t res;
+  u8_t a7, b7, r7, na7, nb7, nr7;
+  i8_t o2= 1, op2= 1;
+  i8_t r= org-o2;
+  res= r;
+  forg= rF & ~(flagZ|flagS|flagV);
+  a7=  v1&0x80; na7= a7^0x80;
+  b7= op2&0x80; nb7= b7^0x80;
+  r7= res&0x80; nr7= r7^0x80;
+  if ((a7&nb7&nr7) | (na7&b7&r7)) forg|= flagV;
+  if (op1<op2) forg|= flagC;
+  if ((op1>op2) || (op1==op2)) forg&= ~flagC;
+  if (!res) forg|= flagZ;
+  if (res & 0x80) forg|= flagS;
+  mem->pxwrite(a, res);
+  f.W(forg);
   vc.rd++;
   vc.wr++;
   return resGO;
