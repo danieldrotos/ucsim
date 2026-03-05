@@ -826,7 +826,8 @@ CLP2::inst_ext(t_mem code)
       if (code & 0x01000000)
 	{
 	  // LD direct
-	  RC[d]->W(rom->read(addr));
+	  //RC[d]->W(rom->read(addr));
+	  *RC[d]= rom->read(addr);
 	}
       else
 	{
