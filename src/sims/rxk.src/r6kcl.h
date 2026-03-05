@@ -48,7 +48,11 @@ public:
   virtual void mode01(void);
   virtual void mode10(void);
   virtual void mode4k(void);
-    
+
+  // set flagC too
+  virtual int inc_r(class cl_cell8 &cr, u8_t op);
+  virtual int inc_i8(t_addr addr);
+  
   // page0 (mode11) and page 7f (mode10)
   virtual int JP_GE_MN(MP) { return jp_f_mn(cond_GE(rF)); }
   virtual int JP_LE_MN(MP) { return jp_f_mn(cond_LE(rF)); }
@@ -277,6 +281,12 @@ public:
   virtual int CP_JKHL_iPXd(MP) { tick(12); return cp32(rJKHL, op32_iPSd(rPX, fetch())); }
   virtual int CP_JKHL_iPYd(MP) { tick(12); return cp32(rJKHL, op32_iPSd(rPY, fetch())); }
   virtual int CP_JKHL_iPZd(MP) { tick(12); return cp32(rJKHL, op32_iPSd(rPZ, fetch())); }
+  // inc-dec
+  virtual int inc_iPSd(u32_t ps, i8_t d);
+  virtual int INC_iPWd(MP) { tick(11); return inc_iPSd(rPW, fetch()); }
+  virtual int INC_iPXd(MP) { tick(11); return inc_iPSd(rPX, fetch()); }
+  virtual int INC_iPYd(MP) { tick(11); return inc_iPSd(rPY, fetch()); }
+  virtual int INC_iPZd(MP) { tick(11); return inc_iPSd(rPZ, fetch()); }
 };
 
 

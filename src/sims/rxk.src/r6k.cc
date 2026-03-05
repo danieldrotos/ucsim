@@ -264,5 +264,39 @@ cl_r6k::PAGE_6K49(MP)
   return itab_49[code](this, code);
 }
 
+int
+cl_r6k::inc_r(class cl_cell8 &cr, u8_t op)
+{
+  return add8(cr, op, 1, false);
+}
+
+int
+cl_r6k::inc_i8(t_addr addr)
+{
+  C8 *cell= (C8*)rwas->get_cell(addr);
+  vc.rd++;
+  vc.wr++;
+  return add8(*cell, cell->R(), 1, false);
+}
+
+int
+cl_r6k::inc_iPSd(u32_t ps, i8_t d)
+{
+  class cl_cell8 &f= destF();
+  t_addr a= px8se(ps, d);
+  u8_t forg= f.R() & ~(flagS|flagZ|flagV|flagC);
+  u8_t org= mem->pxread(a);
+  u16_t res= org+1;
+  if (res > 0xff) forg|= flagC;
+  if (res & 0x80) forg|= flagS;
+  if (!(res&0xff)) forg|= flagZ;
+  if (!(org&0x80) && (res&0x80)) forg|= flagV;
+  f.W(forg);
+  mem->pxwrite(a, res);
+  vc.rd++;
+  vc.wr++;
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
