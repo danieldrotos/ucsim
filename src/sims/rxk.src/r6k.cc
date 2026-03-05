@@ -362,6 +362,7 @@ cl_r6k::RL1REG(MP)
 int
 cl_r6k::SR1REG(MP)
 {
+  cJKHL.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -394,6 +395,8 @@ cl_r6k::RL2REG(MP)
 int
 cl_r6k::SR2REG(MP)
 {
+  cJKHL.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -410,9 +413,9 @@ cl_r6k::RR2REG(MP)
 int
 cl_r6k::SL3REG(MP)
 {
-  cJKHL.set(cPW.get());
-  cPW.set(cPX.get());
-  cPX.set(cPY.get());
+  cJKHL.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -427,6 +430,9 @@ cl_r6k::RL3REG(MP)
 int
 cl_r6k::SR3REG(MP)
 {
+  cJKHL.set(cPY.get());
+  cPY.set(cPW.get());
+  cPW.set(cPX.get());
   tick(3);
   return resGO;
 }
@@ -443,7 +449,7 @@ cl_r6k::RR3REG(MP)
 int
 cl_r6k::SL4REG(MP)
 {
-  cJKHL.set(cPW.get());
+  cJKHL.set(cPZ.get());
   cPW.set(cPX.get());
   cPX.set(cPY.get());
   cPY.set(cPZ.get());
@@ -461,6 +467,10 @@ cl_r6k::RL4REG(MP)
 int
 cl_r6k::SR4REG(MP)
 {
+  cJKHL.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -496,6 +506,11 @@ cl_r6k::RL5REG(MP)
 int
 cl_r6k::SR5REG(MP)
 {
+  cJKHL.set(caPW.get());
+  caPW.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -532,6 +547,12 @@ cl_r6k::RL6REG(MP)
 int
 cl_r6k::SR6REG(MP)
 {
+  cJKHL.set(caPX.get());
+  caPX.set(caPW.get());
+  caPW.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -569,6 +590,13 @@ cl_r6k::RL7REG(MP)
 int
 cl_r6k::SR7REG(MP)
 {
+  cJKHL.set(caPY.get());
+  caPY.set(caPX.get());
+  caPX.set(caPW.get());
+  caPW.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -607,6 +635,14 @@ cl_r6k::RL8REG(MP)
 int
 cl_r6k::SR8REG(MP)
 {
+  cJKHL.set(caPZ.get());
+  caPZ.set(caPY.get());
+  caPY.set(caPX.get());
+  caPX.set(caPW.get());
+  caPW.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
