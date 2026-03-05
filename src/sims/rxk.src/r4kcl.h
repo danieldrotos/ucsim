@@ -83,6 +83,15 @@ public:
   virtual class cl_cell32 &destBCDE(void) { return altd?caBCDE:cBCDE; }
   virtual class cl_cell32 &destJKHL(void) { return altd?caJKHL:cJKHL; }
   virtual class cl_cell16 &destJK(void) { return altd?caJK:cJK; }
+
+  // operands, addressed by SP+n
+  virtual u8_t  op8_iSPn(void);
+  virtual u16_t op16_iSPn(void);
+  virtual u32_t op32_iSPn(void);
+  // operands, addressed by ps(PW,PX,PY,PZ)+d
+  virtual u8_t  op8_iPSd(u32_t ps, i8_t d);
+  virtual u16_t op16_iPSd(u32_t ps, i8_t d);
+  virtual u32_t op32_iPSd(u32_t ps, i8_t d);
   
   virtual void print_regs(class cl_console_base *con);
 
@@ -349,8 +358,8 @@ public:
   virtual int LD_iIXd_IRR(t_mem code) { return ld_iird_irr(cIX); }
   virtual int LD_iIYd_IRR(t_mem code) { return ld_iird_irr(cIY); }
   virtual int LD_iSPn_IRR(t_mem code);
-  virtual int NEG_IRR(t_mem coed) { return sub32(0, cIRR->get(),
-						 *cIRR, false); }
+  virtual int NEG_IRR(t_mem coed) { return sub32(*cIRR, 0, cIRR->get(),
+						 false); }
   virtual int POP_IRR(t_mem code);
   virtual int PUSH_IRR(t_mem code);
   virtual int RL_1_IRR(t_mem code) { return rot33left(*destIRR(),

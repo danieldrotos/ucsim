@@ -112,27 +112,180 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define CP_JKHL_iIRd		instruction_6kdd_b3
 #define ADD_IR_D		instruction_6kdd_c5
 
+// page 49
+// 00-0f
+#define ADD_JKHL_PW		instruction_6k49_00
+#define ADD_JKHL_PX		instruction_6k49_01
+#define ADD_JKHL_PY		instruction_6k49_02
+#define ADD_JKHL_PZ		instruction_6k49_03
+#define ADD_A_iPWd		instruction_6k49_04
+#define ADD_A_iPXd		instruction_6k49_05
+#define ADD_A_iPYd		instruction_6k49_06
+#define ADD_A_iPZd		instruction_6k49_07
+#define ADD_HL_iPWd		instruction_6k49_08
+#define ADD_HL_iPXd		instruction_6k49_09
+#define ADD_HL_iPYd		instruction_6k49_0a
+#define ADD_HL_iPZd		instruction_6k49_0b
+#define ADD_JKHL_iPWd		instruction_6k49_0c
+#define ADD_JKHL_iPXd		instruction_6k49_0d
+#define ADD_JKHL_iPYd		instruction_6k49_0e
+#define ADD_JKHL_iPZd		instruction_6k49_0f
+// 10-1f
+#define ADC_JKHL_PW		instruction_6k49_10
+#define ADC_JKHL_PX		instruction_6k49_11
+#define ADC_JKHL_PY		instruction_6k49_12
+#define ADC_JKHL_PZ		instruction_6k49_13
+#define ADC_A_iPWd		instruction_6k49_14
+#define ADC_A_iPXd		instruction_6k49_15
+#define ADC_A_iPYd		instruction_6k49_16
+#define ADC_A_iPZd		instruction_6k49_17
+#define ADC_HL_iPWd		instruction_6k49_18
+#define ADC_HL_iPXd		instruction_6k49_19
+#define ADC_HL_iPYd		instruction_6k49_1a
+#define ADC_HL_iPZd		instruction_6k49_1b
+#define ADC_JKHL_iPWd		instruction_6k49_1c
+#define ADC_JKHL_iPXd		instruction_6k49_1d
+#define ADC_JKHL_iPYd		instruction_6k49_1e
+#define ADC_JKHL_iPZd		instruction_6k49_1f
+// 20-2f
+#define SUB_JKHL_PW		instruction_6k49_20
+#define SUB_JKHL_PX		instruction_6k49_21
+#define SUB_JKHL_PY		instruction_6k49_22
+#define SUB_JKHL_PZ		instruction_6k49_23
+#define SUB_A_iPWd		instruction_6k49_24
+#define SUB_A_iPXd		instruction_6k49_25
+#define SUB_A_iPYd		instruction_6k49_26
+#define SUB_A_iPZd		instruction_6k49_27
+#define SUB_HL_iPWd		instruction_6k49_28
+#define SUB_HL_iPXd		instruction_6k49_29
+#define SUB_HL_iPYd		instruction_6k49_2a
+#define SUB_HL_iPZd		instruction_6k49_2b
+#define SUB_JKHL_iPWd		instruction_6k49_2c
+#define SUB_JKHL_iPXd		instruction_6k49_2d
+#define SUB_JKHL_iPYd		instruction_6k49_2e
+#define SUB_JKHL_iPZd		instruction_6k49_2f
+// 30-3f
+#define SBC_JKHL_PW		instruction_6k49_30
+#define SBC_JKHL_PX		instruction_6k49_31
+#define SBC_JKHL_PY		instruction_6k49_32
+#define SBC_JKHL_PZ		instruction_6k49_33
+#define SBC_A_iPWd		instruction_6k49_34
+#define SBC_A_iPXd		instruction_6k49_35
+#define SBC_A_iPYd		instruction_6k49_36
+#define SBC_A_iPZd		instruction_6k49_37
+#define SBC_HL_iPWd		instruction_6k49_38
+#define SBC_HL_iPXd		instruction_6k49_39
+#define SBC_HL_iPYd		instruction_6k49_3a
+#define SBC_HL_iPZd		instruction_6k49_3b
+#define SBC_JKHL_iPWd		instruction_6k49_3c
+#define SBC_JKHL_iPXd		instruction_6k49_3d
+#define SBC_JKHL_iPYd		instruction_6k49_3e
+#define SBC_JKHL_iPZd		instruction_6k49_3f
+// 40-4f
+#define AND_JKHL_PW		instruction_6k49_40
+#define AND_JKHL_PX		instruction_6k49_41
+#define AND_JKHL_PY		instruction_6k49_42
+#define AND_JKHL_PZ		instruction_6k49_43
+#define AND_A_iPWd		instruction_6k49_44
+#define AND_A_iPXd		instruction_6k49_45
+#define AND_A_iPYd		instruction_6k49_46
+#define AND_A_iPZd		instruction_6k49_47
+#define AND_HL_iPWd		instruction_6k49_48
+#define AND_HL_iPXd		instruction_6k49_49
+#define AND_HL_iPYd		instruction_6k49_4a
+#define AND_HL_iPZd		instruction_6k49_4b
+#define AND_JKHL_iPWd		instruction_6k49_4c
+#define AND_JKHL_iPXd		instruction_6k49_4d
+#define AND_JKHL_iPYd		instruction_6k49_4e
+#define AND_JKHL_iPZd		instruction_6k49_4f
+// 50-5f
+#define XOR_JKHL_PW		instruction_6k49_50
+#define XOR_JKHL_PX		instruction_6k49_51
+#define XOR_JKHL_PY		instruction_6k49_52
+#define XOR_JKHL_PZ		instruction_6k49_53
+#define XOR_A_iPWd		instruction_6k49_54
+#define XOR_A_iPXd		instruction_6k49_55
+#define XOR_A_iPYd		instruction_6k49_56
+#define XOR_A_iPZd		instruction_6k49_57
+#define XOR_HL_iPWd		instruction_6k49_58
+#define XOR_HL_iPXd		instruction_6k49_59
+#define XOR_HL_iPYd		instruction_6k49_5a
+#define XOR_HL_iPZd		instruction_6k49_5b
+#define XOR_JKHL_iPWd		instruction_6k49_5c
+#define XOR_JKHL_iPXd		instruction_6k49_5d
+#define XOR_JKHL_iPYd		instruction_6k49_5e
+#define XOR_JKHL_iPZd		instruction_6k49_5f
+// 60-6f
+#define OR_JKHL_PW		instruction_6k49_60
+#define OR_JKHL_PX		instruction_6k49_61
+#define OR_JKHL_PY		instruction_6k49_62
+#define OR_JKHL_PZ		instruction_6k49_63
+#define OR_A_iPWd		instruction_6k49_64
+#define OR_A_iPXd		instruction_6k49_65
+#define OR_A_iPYd		instruction_6k49_66
+#define OR_A_iPZd		instruction_6k49_67
+#define OR_HL_iPWd		instruction_6k49_68
+#define OR_HL_iPXd		instruction_6k49_69
+#define OR_HL_iPYd		instruction_6k49_6a
+#define OR_HL_iPZd		instruction_6k49_6b
+#define OR_JKHL_iPWd		instruction_6k49_6c
+#define OR_JKHL_iPXd		instruction_6k49_6d
+#define OR_JKHL_iPYd		instruction_6k49_6e
+#define OR_JKHL_iPZd		instruction_6k49_6f
+// 70-7f
+#define CP_JKHL_PW		instruction_6k49_70
+#define CP_JKHL_PX		instruction_6k49_71
+#define CP_JKHL_PY		instruction_6k49_72
+#define CP_JKHL_PZ		instruction_6k49_73
+#define CP_A_iPWd		instruction_6k49_74
+#define CP_A_iPXd		instruction_6k49_75
+#define CP_A_iPYd		instruction_6k49_76
+#define CP_A_iPZd		instruction_6k49_77
+#define CP_HL_iPWd		instruction_6k49_78
+#define CP_HL_iPXd		instruction_6k49_79
+#define CP_HL_iPYd		instruction_6k49_7a
+#define CP_HL_iPZd		instruction_6k49_7b
+#define CP_JKHL_iPWd		instruction_6k49_7c
+#define CP_JKHL_iPXd		instruction_6k49_7d
+#define CP_JKHL_iPYd		instruction_6k49_7e
+#define CP_JKHL_iPZd		instruction_6k49_7f
+// 80-8f
 #define ADD_A_iSPn		instruction_6k49_89
 #define ADD_HL_iSPn		instruction_6k49_8a
 #define ADD_JKHL_iSPn		instruction_6k49_8b
+// 90-9f
 #define ADC_A_iSPn		instruction_6k49_99
 #define ADC_HL_iSPn		instruction_6k49_9a
 #define ADC_JKHL_iSPn		instruction_6k49_9b
+// a0-af
+#define INC_iPWd		instruction_6k49_a4
+#define INC_iPXd		instruction_6k49_a5
+#define INC_iPYd		instruction_6k49_a6
+#define INC_iPZd		instruction_6k49_a7
 #define SUB_A_iSPn		instruction_6k49_a9
 #define SUB_HL_iSPn		instruction_6k49_aa
 #define SUB_JKHL_iSPn		instruction_6k49_ab
+// b0-bf
+#define DEC_iPWd		instruction_6k49_b4
+#define DEC_iPXd		instruction_6k49_b5
+#define DEC_iPYd		instruction_6k49_b6
+#define DEC_iPZd		instruction_6k49_b7
 #define SBC_A_iSPn		instruction_6k49_b9
 #define SBC_HL_iSPn		instruction_6k49_ba
 #define SBC_JKHL_iSPn		instruction_6k49_bb
+// c0-cf
 #define AND_A_iSPn		instruction_6k49_c9
 #define AND_HL_iSPn		instruction_6k49_ca
 #define AND_JKHL_iSPn		instruction_6k49_cb
+// d0-df
 #define XOR_A_iSPn		instruction_6k49_d9
 #define XOR_HL_iSPn		instruction_6k49_da
 #define XOR_JKHL_iSPn		instruction_6k49_db
+// e0-ef
 #define OR_A_iSPn		instruction_6k49_e9
 #define OR_HL_iSPn		instruction_6k49_ea
 #define OR_JKHL_iSPn		instruction_6k49_eb
+// f0-ff
 #define CP_A_iSPn		instruction_6k49_f9
 #define CP_HL_iSPn		instruction_6k49_fa
 #define CP_JKHL_iSPn		instruction_6k49_fb

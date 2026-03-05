@@ -423,6 +423,65 @@ cl_r4k::select_IRR(bool dd)
   caIRR= dd?&caBCDE:&caJKHL;
 }
 
+
+u8_t
+cl_r4k::op8_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read8io(a);
+}
+
+u16_t
+cl_r4k::op16_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read16io(a);
+}
+
+u32_t
+cl_r4k::op32_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read32io(a);
+}
+
+u8_t
+cl_r4k::op8_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  vc.rd++;
+  return mem->pxread(a);
+}
+
+u16_t
+cl_r4k::op16_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  u16_t v, v0, v1;
+  v0= mem->pxread(a);
+  v1= mem->pxread(px8(a, 1));
+  vc.rd+= 2;
+  v= (v1<<8) | v0;
+  return v;
+}
+
+u32_t
+cl_r4k::op32_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  u32_t v, v0, v1, v2, v3;
+  v0= mem->pxread(a);
+  v1= mem->pxread(px8(a, 1));
+  v2= mem->pxread(px8(a, 2));
+  v3= mem->pxread(px8(a, 3));
+  vc.rd+= 4;
+  v= (v3<<24) | (v2<<16) | (v1<<8) | v0;
+  return v;
+}
+
 void
 cl_r4k::print_regs(class cl_console_base *con)
 {
