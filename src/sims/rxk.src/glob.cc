@@ -355,6 +355,7 @@ struct dis_entry disass_r6k[]=
     { 0xea949, 0xffff, ' ', 3, "SUB A,(SP+%b)" },
     { 0xeaa49, 0xffff, ' ', 3, "SUB HL,(SP+%b)" },
     { 0xeab49, 0xffff, ' ', 3, "SUB JKHL,(SP+%b)" },
+    { 0xeb449, 0xfcff, ' ', 3, "DEC ('ps0.0'%d)" },
     { 0xeb949, 0xffff, ' ', 3, "SBC A,(SP+%b)" },
     { 0xeba49, 0xffff, ' ', 3, "SBC HL,(SP+%b)" },
     { 0xebb49, 0xffff, ' ', 3, "SBC JKHL,(SP+%b)" },
