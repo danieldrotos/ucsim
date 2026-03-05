@@ -253,10 +253,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define ADD_A_iSPn		instruction_6k49_89
 #define ADD_HL_iSPn		instruction_6k49_8a
 #define ADD_JKHL_iSPn		instruction_6k49_8b
+#define SL1REG			instruction_6k49_8c
+#define RL1REG			instruction_6k49_8d
+#define SR1REG			instruction_6k49_8e
+#define RR1REG			instruction_6k49_8f
 // 90-9f
 #define ADC_A_iSPn		instruction_6k49_99
 #define ADC_HL_iSPn		instruction_6k49_9a
 #define ADC_JKHL_iSPn		instruction_6k49_9b
+#define SL2REG			instruction_6k49_9c
+#define RL2REG			instruction_6k49_9d
+#define SR2REG			instruction_6k49_9e
+#define RR2REG			instruction_6k49_9f
 // a0-af
 #define INC_iPWd		instruction_6k49_a4
 #define INC_iPXd		instruction_6k49_a5
@@ -265,6 +273,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SUB_A_iSPn		instruction_6k49_a9
 #define SUB_HL_iSPn		instruction_6k49_aa
 #define SUB_JKHL_iSPn		instruction_6k49_ab
+#define SL3REG			instruction_6k49_ac
+#define RL3REG			instruction_6k49_ad
+#define SR3REG			instruction_6k49_ae
+#define RR3REG			instruction_6k49_af
 // b0-bf
 #define DEC_iPWd		instruction_6k49_b4
 #define DEC_iPXd		instruction_6k49_b5
@@ -273,22 +285,42 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SBC_A_iSPn		instruction_6k49_b9
 #define SBC_HL_iSPn		instruction_6k49_ba
 #define SBC_JKHL_iSPn		instruction_6k49_bb
+#define SL4REG			instruction_6k49_bc
+#define RL4REG			instruction_6k49_bd
+#define SR4REG			instruction_6k49_be
+#define RR4REG			instruction_6k49_bf
 // c0-cf
 #define AND_A_iSPn		instruction_6k49_c9
 #define AND_HL_iSPn		instruction_6k49_ca
 #define AND_JKHL_iSPn		instruction_6k49_cb
+#define SL5REG			instruction_6k49_cc
+#define RL5REG			instruction_6k49_cd
+#define SR5REG			instruction_6k49_ce
+#define RR5REG			instruction_6k49_cf
 // d0-df
 #define XOR_A_iSPn		instruction_6k49_d9
 #define XOR_HL_iSPn		instruction_6k49_da
 #define XOR_JKHL_iSPn		instruction_6k49_db
+#define SL6REG			instruction_6k49_dc
+#define RL6REG			instruction_6k49_dd
+#define SR6REG			instruction_6k49_de
+#define RR6REG			instruction_6k49_df
 // e0-ef
 #define OR_A_iSPn		instruction_6k49_e9
 #define OR_HL_iSPn		instruction_6k49_ea
 #define OR_JKHL_iSPn		instruction_6k49_eb
+#define SL7REG			instruction_6k49_ec
+#define RL7REG			instruction_6k49_ed
+#define SR7REG			instruction_6k49_ee
+#define RR7REG			instruction_6k49_ef
 // f0-ff
 #define CP_A_iSPn		instruction_6k49_f9
 #define CP_HL_iSPn		instruction_6k49_fa
 #define CP_JKHL_iSPn		instruction_6k49_fb
+#define SL8REG			instruction_6k49_fc
+#define RL8REG			instruction_6k49_fd
+#define SR8REG			instruction_6k49_fe
+#define RR8REG			instruction_6k49_ff
 
 
 #endif
