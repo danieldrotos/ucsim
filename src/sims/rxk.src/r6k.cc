@@ -342,5 +342,244 @@ cl_r6k::dec_iPSd(u32_t ps, i8_t d)
   return resGO;
 }
 
+/* shift/rotate regs */
+
+int
+cl_r6k::SL1REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL1REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR1REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR1REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+/* shift/rotate regs */
+
+int
+cl_r6k::SL2REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL2REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR2REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR2REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+/* shift/rotate regs */
+
+int
+cl_r6k::SL3REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL3REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR3REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR3REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+/* shift/rotate regs */
+
+int
+cl_r6k::SL4REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL4REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR4REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR4REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+/* shift/rotate regs */
+
+int
+cl_r6k::SL5REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL5REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR5REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR5REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+/* shift/rotate regs */
+
+int
+cl_r6k::SL6REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL6REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR6REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR6REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+/* shift/rotate regs */
+
+int
+cl_r6k::SL7REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL7REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR7REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR7REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+/* shift/rotate regs */
+
+int
+cl_r6k::SL8REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RL8REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::SR8REG(MP)
+{
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::RR8REG(MP)
+{
+  tick(3);
+  return resGO;
+}
 
 /* End of rxk.src/r6k.cc */

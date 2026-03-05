@@ -294,6 +294,39 @@ public:
   virtual int DEC_iPXd(MP) { tick(11); return dec_iPSd(rPX, fetch()); }
   virtual int DEC_iPYd(MP) { tick(11); return dec_iPSd(rPY, fetch()); }
   virtual int DEC_iPZd(MP) { tick(11); return dec_iPSd(rPZ, fetch()); }
+  // shift-rotate reg
+  virtual int SL1REG(MP);
+  virtual int RL1REG(MP);
+  virtual int SR1REG(MP);
+  virtual int RR1REG(MP);
+  virtual int SL2REG(MP);
+  virtual int RL2REG(MP);
+  virtual int SR2REG(MP);
+  virtual int RR2REG(MP);
+  virtual int SL3REG(MP);
+  virtual int RL3REG(MP);
+  virtual int SR3REG(MP);
+  virtual int RR3REG(MP);
+  virtual int SL4REG(MP);
+  virtual int RL4REG(MP);
+  virtual int SR4REG(MP);
+  virtual int RR4REG(MP);
+  virtual int SL5REG(MP);
+  virtual int RL5REG(MP);
+  virtual int SR5REG(MP);
+  virtual int RR5REG(MP);
+  virtual int SL6REG(MP);
+  virtual int RL6REG(MP);
+  virtual int SR6REG(MP);
+  virtual int RR6REG(MP);
+  virtual int SL7REG(MP);
+  virtual int RL7REG(MP);
+  virtual int SR7REG(MP);
+  virtual int RR7REG(MP);
+  virtual int SL8REG(MP);
+  virtual int RL8REG(MP);
+  virtual int SR8REG(MP);
+  virtual int RR8REG(MP);
 };
 
 
