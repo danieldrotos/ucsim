@@ -379,7 +379,7 @@ class cl_memory_cell: public cl_cell_data
   virtual void print_info(const char *pre, class cl_console_base *con);
   virtual void print_operators(const char *pre, class cl_console_base *con);
 
-  virtual class cl_memory_cell &operator=(u8_t v8);
+  virtual class cl_memory_cell &operator=(t_mem v);
 };
 
 typedef class cl_memory_cell MCELL;
