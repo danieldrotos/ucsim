@@ -373,6 +373,9 @@ cl_r6k::SR1REG(MP)
 int
 cl_r6k::RR1REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
@@ -411,6 +414,10 @@ cl_r6k::SR2REG(MP)
 int
 cl_r6k::RR2REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPX.get());
+  cPX.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
@@ -452,6 +459,11 @@ cl_r6k::SR3REG(MP)
 int
 cl_r6k::RR3REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
@@ -496,6 +508,12 @@ cl_r6k::SR4REG(MP)
 int
 cl_r6k::RR4REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
@@ -543,6 +561,13 @@ cl_r6k::SR5REG(MP)
 int
 cl_r6k::RR5REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(caPW.get());
+  caPW.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
@@ -646,6 +671,15 @@ cl_r6k::SR7REG(MP)
 int
 cl_r6k::RR7REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(caPY.get());
+  caPY.set(caPX.get());
+  caPX.set(caPW.get());
+  caPW.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
@@ -702,6 +736,16 @@ cl_r6k::SR8REG(MP)
 int
 cl_r6k::RR8REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(caPZ.get());
+  caPZ.set(caPY.get());
+  caPY.set(caPX.get());
+  caPX.set(caPW.get());
+  caPW.set(cPZ.get());
+  cPZ.set(cPY.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
