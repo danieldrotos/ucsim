@@ -139,8 +139,8 @@ cl_r4k::reset(void)
 {
   ioi->set(0x1b, 0); // stacksegh
   ioi->set(0x1f, 0); // datasegh
+  ioi->set(0x420, 0); // edmr
   cl_r3ka::reset();
-  //edmr= 0;
   mode3k();  
 }
 
@@ -156,13 +156,13 @@ static struct dis_entry de7f;
 struct dis_entry *
 cl_r4k::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr), mode= (edmr&0xc0)>>6;
+  u8_t code= rom->read(addr), mode= kmode;
   int i;
   struct dis_entry *dt;
   
   if (code == 0xed)
     {
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       
       dt= disass_pedm3;
       i= 0;
@@ -200,7 +200,7 @@ cl_r4k::dis_entry(t_addr addr)
 	{
 	  cIR= &cIY;
 	}
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       dt= disass_pddm3;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
@@ -231,7 +231,7 @@ cl_r4k::dis_entry(t_addr addr)
   if ((code == 0x7f) && (mode == 3))
     {
       // 7f page is special in 4k mode
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       if ((code <= 0x3f) || (code >= 0xc0))
 	return NULL;
       if ((code >= 0x40) && (code <= 0x6f))
@@ -264,7 +264,7 @@ cl_r4k::dis_entry(t_addr addr)
   if ((code == 0x7f) && (mode == 2))
     {
       // 7f page in mode 10 is same as 4k insts on main page
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       dt= disass_p0m4;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
@@ -322,7 +322,7 @@ char mnemo[100];
 struct dis_entry *
 cl_r4k::dis_6d_entry(t_addr addr)
 {
-  u8_t h, l, code= rom->get(addr+1);
+  u8_t h, l, code= rom->read(addr+1);
   chars op, idx, offset;
   
   if (code == 0x6d)
@@ -364,7 +364,7 @@ cl_r4k::dis_6d_entry(t_addr addr)
     {
     case 0:
       {
-	u8_t d= rom->get(addr+2);
+	u8_t d= rom->read(addr+2);
 	disass_6d[0].length= 3;
 	if (l&1)
 	  offset.format("+%u", d);
@@ -423,6 +423,65 @@ cl_r4k::select_IRR(bool dd)
   caIRR= dd?&caBCDE:&caJKHL;
 }
 
+
+u8_t
+cl_r4k::op8_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read8io(a);
+}
+
+u16_t
+cl_r4k::op16_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read16io(a);
+}
+
+u32_t
+cl_r4k::op32_iSPn(void)
+{
+  u8_t n= fetch();
+  t_addr a= (rSP + n) & 0xffff;
+  return read32io(a);
+}
+
+u8_t
+cl_r4k::op8_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  vc.rd++;
+  return mem->pxread(a);
+}
+
+u16_t
+cl_r4k::op16_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  u16_t v, v0, v1;
+  v0= mem->pxread(a);
+  v1= mem->pxread(px8(a, 1));
+  vc.rd+= 2;
+  v= (v1<<8) | v0;
+  return v;
+}
+
+u32_t
+cl_r4k::op32_iPSd(u32_t ps, i8_t d)
+{
+  u32_t a= px8se(ps, d);
+  u32_t v, v0, v1, v2, v3;
+  v0= mem->pxread(a);
+  v1= mem->pxread(px8(a, 1));
+  v2= mem->pxread(px8(a, 2));
+  v3= mem->pxread(px8(a, 3));
+  vc.rd+= 4;
+  v= (v3<<24) | (v2<<16) | (v1<<8) | v0;
+  return v;
+}
+
 void
 cl_r4k::print_regs(class cl_console_base *con)
 {
@@ -431,15 +490,24 @@ cl_r4k::print_regs(class cl_console_base *con)
                  rA, rA, isprint(rA)?rA:'.');
   con->dd_printf("F= "); con->print_bin(rF, 8);
   con->dd_printf(" 0x%02x %3d %c  ", rF, rF, isprint(rF)?rF:'.');
-  if (edmr & 0xc0)
+  switch (kmode)
     {
+    case 3:
       con->dd_color("ui_mkey");
       con->dd_printf("Mode:4k");
-    }
-  else
-    {
+      break;
+    case 2:
+      con->dd_color("ui_title");
+      con->dd_printf("Mode:10");
+      break;
+    case 1:
+      con->dd_color("ui_title");
+      con->dd_printf("Mode:01");
+      break;
+    case 0:
       con->dd_color("ui_title");
       con->dd_printf("Mode:3k");
+      break;
     }
   con->dd_printf("\n");
   con->dd_color("answer");
@@ -502,117 +570,14 @@ void
 cl_r4k::mode3k(void)
 {
   kmode= 0;
-  itab[0x40]= instruction_wrapper_40;
-  itab[0x41]= instruction_wrapper_41;
-  itab[0x43]= instruction_wrapper_43;
-  itab[0x44]= instruction_wrapper_44;
-  itab[0x49]= instruction_wrapper_49;
-  itab[0x4a]= instruction_wrapper_4a;
-  itab[0x4b]= instruction_wrapper_4b;
-  itab[0x52]= instruction_wrapper_52;
-  itab[0x53]= instruction_wrapper_53;
-  itab[0x58]= instruction_wrapper_58;
-  itab[0x59]= instruction_wrapper_59;
-  itab[0x5a]= instruction_wrapper_5a;
-  itab[0x5c]= instruction_wrapper_5c;
-  itab[0x5d]= instruction_wrapper_5d;
-  itab[0x64]= instruction_wrapper_64;
-  itab[0x68]= instruction_wrapper_68;
-  itab[0x69]= instruction_wrapper_69;
-  itab[0x6a]= instruction_wrapper_6a;
-  itab[0x6b]= instruction_wrapper_6b;
-  itab[0x6c]= instruction_wrapper_6c;
-  itab[0x80]= instruction_wrapper_80;
-  itab[0x88]= instruction_wrapper_88;
-  itab[0x90]= instruction_wrapper_90;
-
-  itab[0x45]= instruction_wrapper_45;
-  itab[0x48]= instruction_wrapper_48;
-  itab[0x4c]= instruction_wrapper_4c;
-  itab[0x4d]= instruction_wrapper_4d;
-
-  itab[0x50]= instruction_wrapper_50;
-  itab[0x51]= instruction_wrapper_51;
-  itab[0x54]= instruction_wrapper_54;
-  itab[0x55]= instruction_wrapper_55;
-
-  itab[0x60]= instruction_wrapper_60;
-  itab[0x61]= instruction_wrapper_61;
-  itab[0x62]= instruction_wrapper_62;
-  itab[0x63]= instruction_wrapper_63;
-  itab[0x65]= instruction_wrapper_65;
-  itab[0x6d]= instruction_wrapper_6d;
-
-  itab[0x7f]= instruction_wrapper_7f;
-
-  itab[0x81]= instruction_wrapper_81;
-  itab[0x82]= instruction_wrapper_82;
-  itab[0x83]= instruction_wrapper_83;
-  itab[0x84]= instruction_wrapper_84;
-  itab[0x85]= instruction_wrapper_85;
-  itab[0x86]= instruction_wrapper_86;
-  itab[0x87]= instruction_wrapper_87;
-  itab[0x89]= instruction_wrapper_89;
-  itab[0x8a]= instruction_wrapper_8a;
-  itab[0x8b]= instruction_wrapper_8b;
-  itab[0x8c]= instruction_wrapper_8c;
-  itab[0x8d]= instruction_wrapper_8d;
-  itab[0x8e]= instruction_wrapper_8e;
-  itab[0x8f]= instruction_wrapper_8f;
-
-  itab[0x91]= instruction_wrapper_91;
-  itab[0x92]= instruction_wrapper_92;
-  itab[0x93]= instruction_wrapper_93;
-  itab[0x94]= instruction_wrapper_94;
-  itab[0x95]= instruction_wrapper_95;
-  itab[0x96]= instruction_wrapper_96;
-  itab[0x97]= instruction_wrapper_97;
-  itab[0x98]= instruction_wrapper_98;
-  itab[0x99]= instruction_wrapper_99;
-  itab[0x9a]= instruction_wrapper_9a;
-  itab[0x9b]= instruction_wrapper_9b;
-  itab[0x9c]= instruction_wrapper_9c;
-  itab[0x9d]= instruction_wrapper_9d;
-  itab[0x9e]= instruction_wrapper_9e;
-  itab[0x9f]= instruction_wrapper_9f;
-
-  itab[0xa0]= instruction_wrapper_a0;
-  itab[0xa1]= instruction_wrapper_a1;
-  itab[0xa2]= instruction_wrapper_a2;
-  itab[0xa3]= instruction_wrapper_a3;
-  itab[0xa4]= instruction_wrapper_a4;
-  itab[0xa5]= instruction_wrapper_a5;
-  itab[0xa6]= instruction_wrapper_a6;
-  itab[0xa7]= instruction_wrapper_a7;
-  itab[0xa8]= instruction_wrapper_a8;
-  itab[0xa9]= instruction_wrapper_a9;
-  itab[0xaa]= instruction_wrapper_aa;
-  itab[0xab]= instruction_wrapper_ab;
-  itab[0xac]= instruction_wrapper_ac;
-  itab[0xad]= instruction_wrapper_ad;
-  itab[0xae]= instruction_wrapper_ae;
-
-  itab[0xb0]= instruction_wrapper_b0;
-  itab[0xb1]= instruction_wrapper_b1;
-  itab[0xb2]= instruction_wrapper_b2;
-  itab[0xb3]= instruction_wrapper_b3;
-  itab[0xb4]= instruction_wrapper_b4;
-  itab[0xb5]= instruction_wrapper_b5;
-  itab[0xb6]= instruction_wrapper_b6;
-  itab[0xb8]= instruction_wrapper_b8;
-  itab[0xb9]= instruction_wrapper_b9;
-  itab[0xba]= instruction_wrapper_ba;
-  itab[0xbb]= instruction_wrapper_bb;
-  itab[0xbc]= instruction_wrapper_bc;
-  itab[0xbd]= instruction_wrapper_bd;
-  itab[0xbe]= instruction_wrapper_be;
-  itab[0xbf]= instruction_wrapper_bf;
+  fill_def_wrappers(itab);
 }
 
 void
 cl_r4k::mode01(void)
 {
   kmode= 1;
+  fill_def_wrappers(itab);
   itab[0x6d]= instruction_wrapper_4k6d;
 }
 
@@ -620,6 +585,7 @@ void
 cl_r4k::mode10(void)
 {
   kmode= 2;
+  fill_def_wrappers(itab);
   itab[0x6d]= instruction_wrapper_4k6d;
   itab[0x7f]= instruction_wrapper_4k7f;
 }
@@ -628,6 +594,7 @@ void
 cl_r4k::mode4k(void)
 {
   kmode= 3;
+  fill_def_wrappers(itab);
   itab[0x40]= instruction_wrapper_4knone;
   itab[0x41]= instruction_wrapper_4knone;
   itab[0x43]= instruction_wrapper_4knone;
@@ -885,10 +852,8 @@ cl_r4k_cpu::init(void)
 {
   cl_rxk_cpu::init();
 
-  uc->reg_cell_var(edmr, &(r4uc->edmr),
-		   "EDMR", "Enable dual-mode register");
-  edmr->add_hw(this);
-
+  edmr= register_cell(ruc->ioi, 0x420,
+		      "EDMR", "Enable dual-mode register");
   stacksegl= register_cell(ruc->ioi, 0x1a,
 			   "STACKSEGL", "MMU register STACKSEGL");
   stacksegh= register_cell(ruc->ioi, 0x1b,

@@ -36,13 +36,12 @@ class cl_r800: public cl_ez80
   cl_r800(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
-  /*
   virtual const char *get_disasm_info(t_addr addr,
 				      int *ret_len,
 				      int *ret_branch,
 				      int *immed_offset,
 				      struct dis_entry **dentry);
-  
+  /*  
   virtual int inst_ed_ez80(t_mem code);    
   virtual int inst_ed(t_mem prefix);
   virtual int inst_dd_spec(t_mem code);

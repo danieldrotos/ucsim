@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.h)
+ * Simulator of microcontrollers (7fwrap.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -25,31 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GLOB_HEADER
-#define GLOB_HEADER
+#ifndef _49WRAP_HEADER
+#define _49WRAP_HEADER
 
-#include "stypes.h"
 #include "iwrap.h"
 
-
-extern instruction_wrapper_fn itab[256];
-extern instruction_wrapper_fn itab_11[256]; // dummy, not used
-extern instruction_wrapper_fn itab_dd[256];
-extern instruction_wrapper_fn itab_ed[256];
-extern instruction_wrapper_fn itab_fd[256];
-extern instruction_wrapper_fn itab_7f[256];
-extern instruction_wrapper_fn itab_7f10[256];
-extern instruction_wrapper_fn itab_49[256];
-
-extern u8_t sbox_tab[256];
-extern u8_t ibox_tab[256];
-
-extern struct dis_entry disass_rxk[];
-extern struct dis_entry disass_r6k[];
-
-extern void init_sbox();
-
+extern void fill_49_wrappers(instruction_wrapper_fn itab[]);
 
 #endif
 
-/* End of rxk.src/glob.h */
+/* End of rxk.src/49wrap.h */

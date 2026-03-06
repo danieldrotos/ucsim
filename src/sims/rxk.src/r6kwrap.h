@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (glob.h)
+ * Simulator of microcontrollers (r6kwrap.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -25,31 +25,15 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GLOB_HEADER
-#define GLOB_HEADER
-
-#include "stypes.h"
-#include "iwrap.h"
+#ifndef R6KWRAP_HEADER
+#define R6KWRAP_HEADER
 
 
-extern instruction_wrapper_fn itab[256];
-extern instruction_wrapper_fn itab_11[256]; // dummy, not used
-extern instruction_wrapper_fn itab_dd[256];
-extern instruction_wrapper_fn itab_ed[256];
-extern instruction_wrapper_fn itab_fd[256];
-extern instruction_wrapper_fn itab_7f[256];
-extern instruction_wrapper_fn itab_7f10[256];
-extern instruction_wrapper_fn itab_49[256];
-
-extern u8_t sbox_tab[256];
-extern u8_t ibox_tab[256];
-
-extern struct dis_entry disass_rxk[];
-extern struct dis_entry disass_r6k[];
-
-extern void init_sbox();
+#define WRAPPER_HEADER
+#include "gen6k.h"
+#undef WRAPPER_HEADER
 
 
 #endif
 
-/* End of rxk.src/glob.h */
+/* End of rxk.src/r6kwrap.h */

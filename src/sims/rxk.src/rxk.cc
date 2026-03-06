@@ -67,6 +67,7 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   caRtab[4]= &caH;
   caRtab[5]= &caL;
   caRtab[7]= &caA;
+  kmode= 0;
 }
 
 int
@@ -233,7 +234,7 @@ cl_rxk::dis_tbl(void)
 struct dis_entry *
 cl_rxk::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr);
+  u8_t code= rom->read(addr);
   int i;
   struct dis_entry *dt;
   i= 0;
@@ -241,7 +242,7 @@ cl_rxk::dis_entry(t_addr addr)
   if (code == 0xed)
     {
       dt= disass_pedm3;
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
@@ -260,7 +261,7 @@ cl_rxk::dis_entry(t_addr addr)
 	  cIR= &cIY;
 	}
       dt= disass_pddm3;
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       while (((code & dt[i].mask) != dt[i].code) &&
 	     dt[i].mnemonic)
 	i++;
@@ -290,7 +291,7 @@ cl_rxk::dis_entry(t_addr addr)
 char *
 cl_rxk::disassc(t_addr addr, chars *comment)
 {
-  chars work, temp;
+  chars work, temp, fmt;
   const char *b, *nIR;
   t_mem code= rom->get(addr);
   struct dis_entry *dt;//= dis_tbl();//, *dis_e;
@@ -304,13 +305,16 @@ cl_rxk::disassc(t_addr addr, chars *comment)
   
   dt= dis_entry(addr);
   if (code == 0xed)
-    code= rom->get(++addr);
+    code= rom->read(++addr);
   else if ((code == 0xdd) || (code == 0xfd))
     {
-      code= rom->get(++addr);
+      code= rom->read(++addr);
       if (code == 0xcb)
 	return disassc_dd_cb(addr-1, comment);
     }
+  else if ((code == 0x49) && (kmode > 0))
+    code= rom->read(++addr);
+  
   if (!dt)
     return strdup("-- unknown");
 
@@ -328,6 +332,27 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	{
 	  first= false;
 	  while (work.len() < 6) work.append(' ');
+	}
+      if (b[i] == '\'')
+	{
+	  fmt= "";
+	  i++;
+	  while (b[i] && (b[i]!='\''))
+	    fmt.append(b[i++]);
+	  if (!b[i]) i--;
+	  if (fmt.empty()) work.append("'");
+	  else if (fmt=="ps0.0")
+	    {
+	      int h= rom->read(addr) & 0x3;
+	      switch (h)
+		{
+		case 0: work.append("PW"); break;
+		case 1: work.append("PX"); break;
+		case 2: work.append("PY"); break;
+		case 3: work.append("PZ"); break;
+		}
+	    }
+	  continue;
 	}
       if (b[i] == '%')
 	{
@@ -784,7 +809,7 @@ cl_rxk::inst_unknown(t_mem code)
 u8_t
 cl_rxk::op8_BC(void)
 {
-  u8_t v= rom->read(rBC);
+  u8_t v= rwas->read(rBC);
   vc.rd++;
   return v;
 }
@@ -792,7 +817,7 @@ cl_rxk::op8_BC(void)
 u8_t
 cl_rxk::op8_DE(void)
 {
-  u8_t v= rom->read(rDE);
+  u8_t v= rwas->read(rDE);
   vc.rd++;
   return v;
 }
@@ -801,7 +826,7 @@ cl_rxk::op8_DE(void)
 u8_t
 cl_rxk::op8_HL(void)
 {
-  u8_t v= rom->read(rHL);
+  u8_t v= rwas->read(rHL);
   vc.rd++;
   return v;
 }
@@ -810,8 +835,8 @@ u16_t
 cl_rxk::op16_BC(void)
 {
   u8_t l, h;
-  l= rom->read(rBC);
-  h= rom->read(rBC+1);
+  l= rwas->read(rBC);
+  h= rwas->read(rBC+1);
   vc.rd+= 2;
   return h*256+l;
 }
@@ -820,8 +845,8 @@ u16_t
 cl_rxk::op16_DE(void)
 {
   u8_t l, h;
-  l= rom->read(rDE);
-  h= rom->read(rDE+1);
+  l= rwas->read(rDE);
+  h= rwas->read(rDE+1);
   vc.rd+= 2;
   return h*256+l;
 }
@@ -830,12 +855,27 @@ u16_t
 cl_rxk::op16_HL(void)
 {
   u8_t l, h;
-  l= rom->read(rHL);
-  h= rom->read(rHL+1);
+  l= rwas->read(rHL);
+  h= rwas->read(rHL+1);
   vc.rd+= 2;
   return h*256+l;
 }
 
+u16_t
+cl_rxk::op16_iIRd(void)
+{
+  i8_t d= fetch();
+  u16_t a= cIR->get() + d;
+  return read16io(a);
+}
+
+u32_t
+cl_rxk::op32_iIRd(void)
+{
+  i8_t d= fetch();
+  u16_t a= cIR->get() + d;
+  return read32io(a);
+}
 
 /*
  * CPU peripheral: MMU functions

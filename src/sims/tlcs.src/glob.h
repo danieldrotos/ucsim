@@ -36,8 +36,6 @@ extern struct dis_entry disass_t870c[];
 extern u8_t base_ticks_t870c[];
 extern u8_t extra_ticks_t870c[];
 
-extern struct cpu_entry cpus_tlcs[];
-
 
 #endif
 

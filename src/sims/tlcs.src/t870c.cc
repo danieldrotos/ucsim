@@ -104,6 +104,8 @@ cl_t870c::cl_t870c(class cl_sim *asim):
   uc_itab[0x2f4]= &cl_itab::invalid_instruction;
   uc_itab[0x2f5]= &cl_itab::invalid_instruction;
   uc_itab[0x2ff]= &cl_itab::invalid_instruction;
+
+  vector_start= 0xffc0;
 }
 
 int
@@ -237,6 +239,7 @@ cl_t870c::reset(void)
   cl_uc::reset();
   PC= rom->read(0xffff) * 256 + rom->read(0xfffe);
   rSP= 0x00ff;
+  imf= 0;
 }
 
 
@@ -282,6 +285,78 @@ static const char *srcE[8]= {
 static const char *srcD[4]= {
   "IX", "IY", "SP", "HL"
 };
+static const char *cc[16]= {
+  "M",
+  "P",
+  "SLT",
+  "SGE",
+  "SLE",
+  "SGT",
+  "VS",
+  "VC",
+
+  "EQ/Z",
+  "NE/NZ",
+  "LT/CS",
+  "GE/CC",
+  "LE",
+  "GT",
+  "T",
+  "F"
+};
+
+/* Byte index +1 */
+static const u8_t code_loc[256]= {
+  /* 0 */ 1,0,0,0, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 1 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 2 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 3 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 4 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,2,
+  /* 5 */ 1,1,1,1, 3,3,3,3, 1,1,1,1, 1,1,1,1,
+  /* 6 */ 1,1,1,1, 1,1,1,1, 0,0,0,0, 0,0,0,0,
+  /* 7 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 8 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* 9 */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* a */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* b */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* c */ 1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+  /* d */ 1,1,1,1, 3,3,3,3, 1,1,1,1, 1,1,1,1,
+  /* e */ 3,4,2,2, 2,2,2,2, 2,2,2,2, 2,2,2,2,
+  /* f */ 3,4,2,2, 2,2,2,2, 0,1,1,1, 1,1,1,1
+};
+
+struct dis_entry *
+cl_t870c::get_dis_entry(t_addr addr)
+{
+  t_mem code32;
+  u8_t code0, code1, code2, code3, code4;
+  int i;
+  struct dis_entry *dtab, *de;
+  
+  code0= rom->get(addr);
+  code1= rom->get(addr+1);
+  code2= rom->get(addr+2);
+  code3= rom->get(addr+3);
+  code4= rom->get(addr+4);
+  code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
+
+  if ((dtab= dis_tbl()) == NULL)
+    return NULL;
+  u32_t cloc, cmask;
+  cloc= code_loc[code0]-1;
+  cmask= 0x000000ff << (8*cloc);
+  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
+    return NULL;
+  i= 0;
+  while (
+	 ((code32 & dtab[i].mask) != dtab[i].code ||
+	  !(dtab[i].mask & cmask))
+	 &&
+	 dtab[i].mnemonic)
+    i++;
+  de= &dtab[i];
+  return de;
+}
 
 char *
 cl_t870c::disassc(t_addr addr, chars *comment)
@@ -293,6 +368,7 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   int i;
   bool first;
   u16_t u16;
+  struct dis_entry *dtab, *de;
   
   code= code0= rom->get(addr);
   code1= rom->get(addr+1);
@@ -301,17 +377,9 @@ cl_t870c::disassc(t_addr addr, chars *comment)
   code4= rom->get(addr+4);
   code32= (code3<<24) | (code2<<16) | (code1<<8) | (code0<<0);
 
-  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
-    return strdup("INVALID");
-  i= 0;
-  while ((code32 & dis_tbl()[i].mask) != dis_tbl()[i].code &&
-	 dis_tbl()[i].mnemonic)
-    i++;
-  if (dis_tbl()[i].mnemonic == NULL)
-    {
-      return strdup("UNKNOWN/INVALID");
-    }
-  b= dis_tbl()[i].mnemonic;
+  if (((de= get_dis_entry(addr)) == NULL) || (de->mnemonic == NULL))
+    return strdup("UNKNOWN/INVALID");
+  b= de->mnemonic;
   
   first= true;
   for (i=0; b[i]; i++)
@@ -338,9 +406,13 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="r_3.0")  work.append(r_names[code3&7]);
 	  else if (fmt=="r_3.3")  work.append(r_names[(code3&0x38)>>3]);
 	  else if (fmt=="rr_0.0") work.append(rr_names[code0&7]);
+	  else if (fmt=="rr_0.3") work.append(rr_names[(code0&0x38)>>3]);
 	  else if (fmt=="rr_1.0") work.append(rr_names[code1&7]);
+	  else if (fmt=="rr_1.3") work.append(rr_names[(code1&0x38)>>3]);
 	  else if (fmt=="rr_2.0") work.append(rr_names[code2&7]);
+	  else if (fmt=="rr_2.3") work.append(rr_names[(code2&0x38)>>3]);
 	  else if (fmt=="rr_3.0") work.append(rr_names[code3&7]);
+	  else if (fmt=="rr_3.3") work.append(rr_names[(code3&0x38)>>3]);
 	  else if (fmt=="n_1")    work.appendf("0x%02x", code1);
 	  else if (fmt=="n_2")    work.appendf("0x%02x", code2);
 	  else if (fmt=="n_3")    work.appendf("0x%02x", code3);
@@ -352,6 +424,10 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 	  else if (fmt=="b_1.0")  work.appendf("%d", code1&7);
 	  else if (fmt=="b_2.0")  work.appendf("%d", code2&7);
 	  else if (fmt=="b_3.0")  work.appendf("%d", code3&7);
+	  else if (fmt=="rr_0.0h")work.append(rr_names[code0&7][0]);
+	  else if (fmt=="rr_0.0l")work.append(rr_names[code0&7][1]);
+	  else if (fmt=="cc")     work.append(cc[code0&0xf]);
+	  else if (fmt=="cc1")    work.append(cc[code1&0xf]);
 	  else if (fmt=="vw")
 	    {
 	      work.appendf("0x%04x", u16= code1+code2*256);
@@ -463,10 +539,37 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 		  comment->appendf("; %04x", a);
 		}
 	    }
+	  else if (fmt=="ra8_2")
+	    {
+	      i16_t d= code2;
+	      if (d & 0x80) d|= 0xff00;
+	      u16_t a= ((addr+2) + d + 0);
+	      if (d<0)
+		{
+		  d= -d;
+		  code2= d;
+		  work.appendf("-0x%02x", code2);
+		}
+	      else
+		work.appendf("+0x%02x", d);
+	      if (comment)
+		{
+		  comment->appendf("; %04x", a);
+		}
+	    }
 	  else if (fmt=="a16_1")
 	    {
 	      u16_t a= code1 + code2*256;
 	      work.appendf("0x%04x", a);
+	    }
+	  else if (fmt=="vn")
+	    {
+	      u16_t a= vector_start;
+	      u16_t n= code0 & 0xf;
+	      a+= n*2;
+	      work.appendf("%d", n);
+	      if (comment)
+		comment->appendf("; [%04x]=%04x", a, get16(a));
 	    }
 	  continue;
 	}
@@ -505,23 +608,11 @@ cl_t870c::disassc(t_addr addr, chars *comment)
 int
 cl_t870c::inst_length(t_addr addr)
 {
-  struct dis_entry *tabl= dis_tbl();
-  int i;
-  t_mem code, code0;
+  struct dis_entry *de= get_dis_entry(addr);
 
-  if (!rom)
-    return(0);
-
-  code0= rom->get(addr);
-  code = code0;
-  code+= rom->get(addr+1)<<8;
-  code+= rom->get(addr+2)<<16;
-  code+= rom->get(addr+3)<<24;
-
-  if ((code0 == 0xf9) && (type->type == CPU_TLCS870C))
+  if ((de == NULL) || (de->mnemonic == NULL))
     return 1;
-  for (i= 0; tabl[i].mnemonic && (code & tabl[i].mask) != tabl[i].code; i++) ;
-  return(tabl[i].mnemonic?tabl[i].length:1);
+  return de->length;
 }
 
 u16_t
@@ -582,6 +673,25 @@ cl_t870c::aof_srcD(u32_t code32)
     case 7: return (i8_t)((code32>>8)&0xff) + rHL;
     }
   return 0;
+}
+
+void
+cl_t870c::stack_check_overflow(class cl_stack_op *op)
+{
+  if (op)
+    {
+      if (op->get_op() & stack_write_operation)
+	{
+	  t_addr a= op->get_after();
+	  if (a < sp_limit)
+	    {
+              class cl_error_stack_overflow *e=
+                new cl_error_stack_overflow(op);
+              e->init();
+              error(e);
+	    }
+	}
+    }
 }
 
 int
@@ -913,6 +1023,57 @@ cl_t870c::xch16_rm(C16 *a, u16_t addr)
 }
 
 int
+cl_t870c::pop(MCELL *reg)
+{
+  u16_t a= rSP+1;
+  u16_t v;
+  v= rd16(a);
+  cSP.W(a+1);
+  reg->W(v);
+  return resGO;
+}
+
+int
+cl_t870c::POP_PSW(MP)
+{
+  u16_t a= rSP+1;
+  u8_t v;
+  v= asd->read(a);
+  RD;
+  cSP.W(a);
+  cF.W(v);
+  return resGO;
+}
+
+int
+cl_t870c::push(MCELL *reg)
+{
+  t_addr sp_before= rSP;
+  u16_t a= rSP-1;
+  t_mem val;
+  wr16(a, val= reg->R());
+  cSP.W(a-1);
+  class cl_stack_push *o= new cl_stack_push(instPC, val, sp_before, rSP);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
+cl_t870c::PUSH_PSW(MP)
+{
+  t_addr sp_before= rSP;
+  t_mem val;
+  asd->write(sp_before, val= rF);
+  WR;
+  cSP.W(rSP-1);
+  class cl_stack_push *o= new cl_stack_push(instPC, val, sp_before, rSP);
+  o->init();
+  stack_write(o);
+  return resGO;
+}
+
+int
 cl_t870c::ld1r(C8 *src, u8_t bitnr)
 {
   rF&= ~(MCF|MJF);
@@ -1238,12 +1399,40 @@ cl_t870c::add8(C8 *reg, u8_t n, bool c)
 }
 
 int
+cl_t870c::add16(C16 *reg, u16_t n, bool c)
+{
+  u32_t op1, op1_15, op2, op2_15, res, res_15, c15, c16= 0;
+  op1= reg->get();
+  op2= n;
+  res= op1 + op2 + (c?((rF&MCF)?1:0):0);
+  op1_15= op1 & 0x7fff;
+  op2_15= op2 & 0x7fff;
+  res_15= op1_15 + op2_15;
+
+  rF&= ~MALL;
+  if (res > 0xffff)
+    (rF|= MCF|MJF), c16=1;
+  if (res & 0x8000)
+    rF|= MSF;
+  c15= (res_15>0x7fff)?1:0;
+  if (c15^c16)
+    rF|= MVF;
+  if ((res & 0xffff) == 0)
+    rF|= MZF;
+
+  reg->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::sub8(C8 *reg, u8_t n, bool b)
 {
-  u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0;
+  u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0, cin;
   op1= reg->get();
-  op2= ~n & 0xff;
-  res= op1 + op2 + (b?((rF&MCF)?0:1):1);
+  cin= b?((rF&MCF)?0:1):1;
+  op2= (~n + cin) & 0xff;
+  res= op1 + op2;
   op1_7= op1 & 0x7f;
   op2_7= op2 & 0x7f;
   res_7= op1_7 + op2_7;
@@ -1268,6 +1457,379 @@ cl_t870c::sub8(C8 *reg, u8_t n, bool b)
 }
 
 int
+cl_t870c::sub16(C16 *reg, u16_t n, bool b)
+{
+  u32_t op1, op1_15, op2, op2_15, res, res_15, c15, c16= 0, cin;
+  op1= reg->get();
+  cin= b?((rF&MCF)?0:1):1;
+  op2= (~n + cin) & 0xffff;
+  res= op1 + op2;
+  op1_15= op1 & 0x7fff;
+  op2_15= op2 & 0x7fff;
+  res_15= op1_15 + op2_15;
+
+  rF&= ~MALL;
+  if (res > 0xffff)
+    (rF|= MCF|MJF), c16=1;
+  if (res & 0x8000)
+    rF|= MSF;
+  c15= (res_15>0x7fff)?1:0;
+  if (c15^c16)
+    rF|= MVF;
+  if ((res & 0xffff) == 0)
+    rF|= MZF;
+  rF^= (MCF|MJF);
+  
+  reg->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::cmp8(C8 *reg, u8_t n)
+{
+  u16_t op1, op1_7, op2, op2_7, res, res_7, c7, c8= 0;
+  op1= reg->get();
+  op2= (~n + 1) & 0xff;
+  res= op1 + op2;
+  op1_7= op1 & 0x7f;
+  op2_7= op2 & 0x7f;
+  res_7= op1_7 + op2_7;
+
+  rF&= ~MALL;
+  if (res > 0xff)
+    (rF|= MCF|MJF), c8=1;
+  if (res & 0x80)
+    rF|= MSF;
+  c7= (res_7>0x7f)?1:0;
+  if (c7^c8)
+    rF|= MVF;
+  if ((res & 0xff) == 0)
+    rF|= MZF;
+  if (((op1&0xf) + (op2&0xf)) > 0xf)
+    rF|= MHF;
+  rF^= (MCF|MJF|MHF);
+  
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::cmp16(C16 *reg, u16_t n)
+{
+  u32_t op1, op1_15, op2, op2_15, res, res_15, c15, c16= 0;
+  op1= reg->get();
+  op2= (~n + 1) & 0xffff;
+  res= op1 + op2;
+  op1_15= op1 & 0x7fff;
+  op2_15= op2 & 0x7fff;
+  res_15= op1_15 + op2_15;
+
+  rF&= ~MALL;
+  if (res > 0xffff)
+    (rF|= MCF|MJF), c16=1;
+  if (res & 0x8000)
+    rF|= MSF;
+  c15= (res_15>0x7fff)?1:0;
+  if (c15^c16)
+    rF|= MVF;
+  if ((res & 0xffff) == 0)
+    rF|= MZF;
+  rF^= (MCF|MJF);
+  
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::and8(C8 *reg, u8_t n)
+{
+  rF&= ~(MJF|MZF);
+  u8_t r= reg->R() & n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::and16(C16 *reg, u16_t n)
+{
+  rF&= ~(MJF|MZF);
+  u16_t r= reg->R() & n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::xor8(C8 *reg, u8_t n)
+{
+  rF&= ~(MJF|MZF);
+  u8_t r= reg->R() ^ n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::xor16(C16 *reg, u16_t n)
+{
+  rF&= ~(MJF|MZF);
+  u16_t r= reg->R() ^ n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::or8(C8 *reg, u8_t n)
+{
+  rF&= ~(MJF|MZF);
+  u8_t r= reg->R() | n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::or16(C16 *reg, u16_t n)
+{
+  rF&= ~(MJF|MZF);
+  u16_t r= reg->R() | n;
+  if (!r)
+    rF|= (MJF|MZF);
+  reg->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+
+int
+cl_t870c::SHLCA_gg(MP)
+{
+  C16 *gg= regs16[sda];
+  rF&= ~(MJF|MCF|MZF|MSF|MVF);
+  u16_t ro= gg->R(), rn;
+  if (ro & 0x8000)
+    rF|= (MJF|MCF);
+  rn= ro << 1;
+  if ((rn ^ ro) & 0x8000)
+    rF|= MVF;
+  if (!rn)
+    rF|= MZF;
+  if (rn & 0x8000)
+    rF|= MSF;
+  gg->W(rn);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::SHRCA_gg(MP)
+{
+  C16 *gg= regs16[sda];
+  rF&= ~(MJF|MCF|MZF|MSF|MVF);
+  i16_t ro= gg->R(), rn;
+  if (ro & 1)
+    rF|= (MJF|MCF);
+  rn= ro >> 1;
+  if (!rn)
+    rF|= MZF;
+  if (rn & 0x8000)
+    rF|= MSF;
+  gg->W(rn);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::mul(C16 *rr)
+{
+  u8_t op1, op2;
+  u16_t r, res;
+  rF&= ~(MJF|MZF);
+  r= rr->R();
+  op1= r>>8;
+  op2= r&0xff;
+  res= op1*op2;
+  if  ((res & 0xff00) == 0)
+    rF|= (MJF|MZF);
+  rr->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::div(C16 *rr)
+{
+  u16_t op1= rr->R();
+  u8_t op2= cC.R();
+  u16_t q= 0, rem= 0, res;
+  rF&= ~(MJF|MZF|MCF);
+  if (op2 == 0)
+    {
+      rF|= MCF;
+    }
+  else
+    {
+      q= op1/op2;
+      rem= op1%op2;
+      if (q > 0x100)
+	rF|= MCF;
+      if (rem == 0)
+	rF|= (MJF|MZF);
+    }
+  res= (rem << 8) + (q & 0xff);
+  rr->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::SHLC_g(MP)
+{
+  C8 *g= regs8[sda];
+  rF&= ~(MJF|MCF|MZF);
+  u16_t r= g->R();
+  r<<= 1;
+  if (r & 0x100)
+    rF|= (MJF|MCF);
+  if ((r & 0xff) == 0)
+    rF|= MZF;
+  g->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::SHRC_g(MP)
+{
+  C8 *g= regs8[sda];
+  rF&= ~(MJF|MCF|MZF);
+  u8_t r= g->R();
+  if (r & 1)
+    rF|= (MJF|MCF);
+  r>>= 1;
+  if (!r)
+    rF|= MZF;
+  g->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::ROLC_g(MP)
+{
+  C8 *g= regs8[sda];
+  u8_t oldc= (rF&MCF)?1:0;
+  rF&= ~(MJF|MCF|MZF);
+  u8_t r= g->R();
+  if (r & 0x80)
+    rF|= (MJF|MCF);
+  r<<= 1;
+  r|= oldc;
+  if (!r)
+    rF|= MZF;
+  g->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::RORC_g(MP)
+{
+  C8 *g= regs8[sda];
+  u8_t oldc= (rF&MCF)?0x80:0;
+  rF&= ~(MJF|MCF|MZF);
+  u8_t r= g->R();
+  if (r & 0x01)
+    rF|= (MJF|MCF);
+  r>>= 1;
+  r|= oldc;
+  if (!r)
+    rF|= MZF;
+  g->W(r);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::NEG_gg(MP)
+{
+  rF|= MJF;
+  if (rF & MCF)
+    {
+      regs16[sda]->W(-(regs16[sda]->R()));
+    }
+  return resGO;
+}
+
+#include "dec_adj_tab.cc"
+
+int
+cl_t870c::DAA_g(MP)
+{
+  C8 *g= regs8[sda];
+  u8_t adj;
+  int cc= (rF&MCF)?2:0 + (rF&MHF)?1:0;
+  adj= daa_adj_tab[g->get()] >> (cc*8);
+
+  u16_t op1, op2, res;
+  op1= g->get();
+  op2= adj;
+  res= op1 + op2;
+
+  rF&= ~(MJF|MCF|MZF|MHF);
+  if (res > 0xff)
+    (rF|= MCF|MJF);
+  if ((res & 0xff) == 0)
+    rF|= MZF;
+  if (((op1&0xf) + (op2&0xf)) > 0xf)
+    rF|= MHF;
+
+  g->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
+cl_t870c::DAS_g(MP)
+{
+  C8 *g= regs8[sda];
+  u8_t adj;
+  int cc= (rF&MCF)?2:0 + (rF&MHF)?1:0;
+  adj= das_adj_tab[g->get()] >> (cc*8);
+
+  u16_t op1, op2, res;
+  op1= g->get();
+  op2= adj;
+  res= op1 + op2;
+
+  rF&= ~(MJF|MCF|MZF|MHF);
+  if (res > 0xff)
+    (rF|= MCF|MJF);
+  if ((res & 0xff) == 0)
+    rF|= MZF;
+  if (((op1&0xf) + (op2&0xf)) > 0xf)
+    rF|= MHF;
+  rF^= (MCF|MJF|MHF);
+  
+  g->W(res);
+  cF.W(rF);
+  return resGO;
+}
+
+int
 cl_t870c::jr(u8_t a)
 {
   i8_t v= a;
@@ -1287,10 +1849,29 @@ cl_t870c::jrs(u8_t code, bool cond)
       PC= (PC + v + 1) & PCmask;
       tick(extra_ticks()[page|code]);
     }
-  cF.W(rF|MJF);
+  else
+    cF.W(rF|MJF);
   return resGO;
 }
 
+int
+cl_t870c::jr_cc(u8_t a, bool cond)
+{
+  i8_t v= a;
+  if (cond)
+    PC= (PC + v + 0) & PCmask;
+  else
+    cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::call(u16_t a)
+{
+  push(&cPC);
+  cPC.W(a);
+  return resGO;
+}
 
 int
 cl_t870c::CLR_CF(MP)
@@ -1395,6 +1976,36 @@ cl_t870c::LD_src_A_CF(MP)
   sdc->write(v);
   WR;
   cF.W(rF|MJF);
+  return resGO;
+}
+
+int
+cl_t870c::ROLD_A_src(MP)
+{
+  u8_t v= sdc->read();
+  u8_t vh= v>>4;
+  RD;
+  v= (v<<4) + (rA&0xf);
+  rA= (rA&0xf0) + vh;
+  cF.W(rF|MJF);
+  cA.W(rA);
+  sdc->write(v);
+  WR;
+  return resGO;
+}
+
+int
+cl_t870c::RORD_A_src(MP)
+{
+  u8_t v= sdc->read();
+  u8_t vl= v & 0xf;
+  RD;
+  v= ((rA&0xf)<<4) + (v>>4);
+  rA= (rA&0xf0) + vl;
+  cF.W(rF|MJF);
+  cA.W(rA);
+  sdc->write(v);
+  WR;
   return resGO;
 }
 
