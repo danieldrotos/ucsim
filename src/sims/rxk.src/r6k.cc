@@ -355,6 +355,9 @@ cl_r6k::SL1REG(MP)
 int
 cl_r6k::RL1REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(t);
   tick(3);
   return resGO;
 }
@@ -388,6 +391,10 @@ cl_r6k::SL2REG(MP)
 int
 cl_r6k::RL2REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(t);
   tick(3);
   return resGO;
 }
@@ -413,9 +420,9 @@ cl_r6k::RR2REG(MP)
 int
 cl_r6k::SL3REG(MP)
 {
-  cJKHL.set(cPY.get());
-  cPY.set(cPX.get());
-  cPX.set(cPW.get());
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(cPY.get());
   tick(3);
   return resGO;
 }
@@ -423,6 +430,11 @@ cl_r6k::SL3REG(MP)
 int
 cl_r6k::RL3REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(cPY.get());
+  cPY.set(t);
   tick(3);
   return resGO;
 }
@@ -431,8 +443,8 @@ int
 cl_r6k::SR3REG(MP)
 {
   cJKHL.set(cPY.get());
-  cPY.set(cPW.get());
-  cPW.set(cPX.get());
+  cPY.set(cPX.get());
+  cPX.set(cPW.get());
   tick(3);
   return resGO;
 }
@@ -449,7 +461,7 @@ cl_r6k::RR3REG(MP)
 int
 cl_r6k::SL4REG(MP)
 {
-  cJKHL.set(cPZ.get());
+  cJKHL.set(cPW.get());
   cPW.set(cPX.get());
   cPX.set(cPY.get());
   cPY.set(cPZ.get());
@@ -460,6 +472,12 @@ cl_r6k::SL4REG(MP)
 int
 cl_r6k::RL4REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(cPY.get());
+  cPY.set(cPZ.get());
+  cPZ.set(t);
   tick(3);
   return resGO;
 }
@@ -499,6 +517,13 @@ cl_r6k::SL5REG(MP)
 int
 cl_r6k::RL5REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(cPY.get());
+  cPY.set(cPZ.get());
+  cPZ.set(caPW.get());
+  caPW.set(t);
   tick(3);
   return resGO;
 }
@@ -540,6 +565,14 @@ cl_r6k::SL6REG(MP)
 int
 cl_r6k::RL6REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(cPY.get());
+  cPY.set(cPZ.get());
+  cPZ.set(caPW.get());
+  caPW.set(caPX.get());
+  caPX.set(t);
   tick(3);
   return resGO;
 }
@@ -583,6 +616,15 @@ cl_r6k::SL7REG(MP)
 int
 cl_r6k::RL7REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(cPY.get());
+  cPY.set(cPZ.get());
+  cPZ.set(caPW.get());
+  caPW.set(caPX.get());
+  caPX.set(caPY.get());
+  caPY.set(t);
   tick(3);
   return resGO;
 }
@@ -628,6 +670,16 @@ cl_r6k::SL8REG(MP)
 int
 cl_r6k::RL8REG(MP)
 {
+  u32_t t= cJKHL.get();
+  cJKHL.set(cPW.get());
+  cPW.set(cPX.get());
+  cPX.set(cPY.get());
+  cPY.set(cPZ.get());
+  cPZ.set(caPW.get());
+  caPW.set(caPX.get());
+  caPX.set(caPY.get());
+  caPY.set(caPZ.get());
+  caPZ.set(t);
   tick(3);
   return resGO;
 }
