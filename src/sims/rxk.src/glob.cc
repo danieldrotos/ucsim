@@ -383,6 +383,7 @@ struct dis_entry disass_r6k[]=
     { 0xecd49, 0xffff, ' ', 2, "RL5REG" },
     { 0xece49, 0xffff, ' ', 2, "SR5REG" },
     { 0xecf49, 0xffff, ' ', 2, "RR5REG" },
+    { 0xed249, 0xffff, ' ', 2, "SHAF2" },
     { 0xed949, 0xffff, ' ', 3, "XOR A,(SP+%b)" },
     { 0xeda49, 0xffff, ' ', 3, "XOR HL,(SP+%b)" },
     { 0xedb49, 0xffff, ' ', 3, "XOR JKHL,(SP+%b)" },
