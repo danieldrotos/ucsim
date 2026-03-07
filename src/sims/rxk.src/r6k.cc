@@ -750,4 +750,18 @@ cl_r6k::RR8REG(MP)
   return resGO;
 }
 
+/* JKHL = ((PX ^ PY) & PW) ^ PY */
+
+int
+cl_r6k::SHAF1(MP)
+{
+  u32_t v= cPX.get() ^ cPY.get();
+  v&= cPW.get();
+  v^= cPY.get();
+  cJKHL.W(v);
+  tick(3);
+  return resGO;
+}
+
+
 /* End of rxk.src/r6k.cc */
