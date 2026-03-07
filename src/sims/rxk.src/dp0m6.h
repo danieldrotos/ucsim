@@ -291,6 +291,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RR4REG			instruction_6k49_bf
 // c0-cf
 #define SHAF1			instruction_6k49_c2
+#define MD5F1			instruction_6k49_c3
 #define AND_A_iSPn		instruction_6k49_c9
 #define AND_HL_iSPn		instruction_6k49_ca
 #define AND_JKHL_iSPn		instruction_6k49_cb
