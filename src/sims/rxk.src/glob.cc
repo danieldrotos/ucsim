@@ -376,6 +376,7 @@ struct dis_entry disass_r6k[]=
     { 0xebe49, 0xffff, ' ', 2, "SR4REG" },
     { 0xebf49, 0xffff, ' ', 2, "RR4REG" },
     { 0xec249, 0xffff, ' ', 2, "SHAF1" },
+    { 0xec349, 0xffff, ' ', 2, "MD5F1" },
     { 0xec949, 0xffff, ' ', 3, "AND A,(SP+%b)" },
     { 0xeca49, 0xffff, ' ', 3, "AND HL,(SP+%b)" },
     { 0xecb49, 0xffff, ' ', 3, "AND JKHL,(SP+%b)" },
