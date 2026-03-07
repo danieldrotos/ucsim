@@ -329,6 +329,7 @@ public:
   virtual int RR8REG(MP);
   // complex tasks
   virtual int SHAF1(MP);
+  virtual int SHAF2(MP);
 };
 
 

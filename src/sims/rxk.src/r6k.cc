@@ -763,5 +763,19 @@ cl_r6k::SHAF1(MP)
   return resGO;
 }
 
+/* JKHL = ((PW | PX) & PY) | (PW & PX) */
+
+int
+cl_r6k::SHAF2(MP)
+{
+  u32_t v1= cPW.get() | cPX.get();
+  v1&= cPY.get();
+  u32_t v2= cPW.get() & cPX.get();
+  v1|= v2;
+  cJKHL.W(v1);
+  tick(3);
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
