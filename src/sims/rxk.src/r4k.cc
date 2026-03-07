@@ -482,6 +482,25 @@ cl_r4k::op32_iPSd(u32_t ps, i8_t d)
   return v;
 }
 
+u8_t
+cl_r4k::pxreadio(u32_t ps)
+{
+  if (!prefix)
+    return mem->pxread(ps);
+  // Dirty hack: use low 16 bit part of the address
+  return rwas->read(ps & 0xffff);
+}
+
+void
+cl_r4k::pxwriteio(u32_t ps, u8_t v)
+{
+  if (!prefix)
+    mem->pxwrite(ps, v);
+  else
+    rwas->write(ps & 0xffff, v);
+}
+
+
 void
 cl_r4k::print_regs(class cl_console_base *con)
 {

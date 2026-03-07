@@ -92,7 +92,10 @@ public:
   virtual u8_t  op8_iPSd(u32_t ps, i8_t d);
   virtual u16_t op16_iPSd(u32_t ps, i8_t d);
   virtual u32_t op32_iPSd(u32_t ps, i8_t d);
-  
+  // IO prefixed ops addressed by Px
+  virtual u8_t pxreadio(u32_t ps);
+  virtual void pxwriteio(u32_t ps, u8_t v);
+    
   virtual void print_regs(class cl_console_base *con);
 
   virtual int convc_pp(class cl_cell32 &pp);
