@@ -805,4 +805,19 @@ cl_r6k::MD5F1(MP)
   return resGO;
 }
 
+/* JKHL = (PY & PW) | ((~PY) & PX) */
+
+int
+cl_r6k::MD5F2(MP)
+{
+  u32_t v1= cPY.get();
+  v1&= cPW.get();
+  u32_t v2= ~cPY.get();
+  v2&= cPX.get();
+  v1|= v2;
+  cJKHL.W(v1);
+  tick(3);
+  return resGO;
+}
+
 /* End of rxk.src/r6k.cc */

@@ -332,6 +332,7 @@ public:
   virtual int SHAF2(MP);
   virtual int SHAF3(MP);
   virtual int MD5F1(MP);
+  virtual int MD5F2(MP);
 };
 
 
