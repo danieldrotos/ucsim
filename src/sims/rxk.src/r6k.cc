@@ -1124,16 +1124,68 @@ cl_r6k::AESMC(MP)
   reg2arr(cPZ.get(), state, 3);
   for (i= 0; i < 4; i++)
     {
-      tmp[0] = xtime(state[0][i]) ^ (xtime(state[1][i]) ^ state[1][i]) ^ state[2][i] ^ state[3][i];
-      tmp[1] = state[0][i] ^ xtime(state[1][i]) ^ (xtime(state[2][i]) ^ state[2][i]) ^ state[3][i];
-      tmp[2] = state[0][i] ^ state[1][i] ^ xtime(state[2][i]) ^ (xtime(state[3][i]) ^ state[3][i]);
-      tmp[3] = (xtime(state[0][i]) ^ state[0][i]) ^ state[1][i] ^ state[2][i] ^ xtime(state[3][i]);
+      tmp[0]= xtime(state[0][i]) ^ (xtime(state[1][i]) ^ state[1][i]) ^ state[2][i] ^ state[3][i];
+      tmp[1]= state[0][i] ^ xtime(state[1][i]) ^ (xtime(state[2][i]) ^ state[2][i]) ^ state[3][i];
+      tmp[2]= state[0][i] ^ state[1][i] ^ xtime(state[2][i]) ^ (xtime(state[3][i]) ^ state[3][i]);
+      tmp[3]= (xtime(state[0][i]) ^ state[0][i]) ^ state[1][i] ^ state[2][i] ^ xtime(state[3][i]);
       
       state[0][i] = tmp[0];
       state[1][i] = tmp[1];
       state[2][i] = tmp[2];
       state[3][i] = tmp[3];
     }
+  cPW.W(arr2reg(state, 0));
+  cPX.W(arr2reg(state, 1));
+  cPY.W(arr2reg(state, 2));
+  cPZ.W(arr2reg(state, 3));
+  tick(3);
+  return resGO;
+}
+
+// Russian Peasant Multiplication)
+
+static u8_t
+gmul(u8_t a, u8_t b)
+{
+  u8_t p = 0;
+  int i;
+  for (i= 0; i < 8; i++)
+    {
+      if (b & 1)
+	p^= a;
+      u8_t hi_bit_set= a & 0x80;
+      a<<= 1;
+      if (hi_bit_set)
+	a^= 0x1b; // AES irreducibilis polinom
+      b>>= 1;
+    }
+  return p;
+}
+
+int
+cl_r6k::AESIMC(MP)
+{
+  u8_t state[4][4];
+  int i, j;
+  u8_t tmp[4];
+  reg2arr(cPW.get(), state, 0);
+  reg2arr(cPX.get(), state, 1);
+  reg2arr(cPY.get(), state, 2);
+  reg2arr(cPZ.get(), state, 3);
+  
+  u8_t column[4];
+  for (i= 0; i < 4; i++)
+    {
+      // Save actual column
+      for (j= 0; j < 4; j++)
+	column[j]= state[j][i];
+      // Multiply by the inverse matrix
+      state[0][i]= gmul(column[0], 0x0e) ^ gmul(column[1], 0x0b) ^ gmul(column[2], 0x0d) ^ gmul(column[3], 0x09);
+      state[1][i]= gmul(column[0], 0x09) ^ gmul(column[1], 0x0e) ^ gmul(column[2], 0x0b) ^ gmul(column[3], 0x0d);
+      state[2][i]= gmul(column[0], 0x0d) ^ gmul(column[1], 0x09) ^ gmul(column[2], 0x0e) ^ gmul(column[3], 0x0b);
+      state[3][i]= gmul(column[0], 0x0b) ^ gmul(column[1], 0x0d) ^ gmul(column[2], 0x09) ^ gmul(column[3], 0x0e);
+    }
+  
   cPW.W(arr2reg(state, 0));
   cPX.W(arr2reg(state, 1));
   cPY.W(arr2reg(state, 2));
