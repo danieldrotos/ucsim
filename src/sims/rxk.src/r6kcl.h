@@ -346,6 +346,7 @@ public:
   virtual int PLSIR(MP);
   virtual int PLSIDR(MP);
   virtual int PLSDR(MP);
+  virtual int PLSDDR(MP);
 };
 
 
