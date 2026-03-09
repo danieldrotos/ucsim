@@ -286,6 +286,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // b0-bf
 #define PLDIR			instruction_6k49_b0
 #define AESMC			instruction_6k49_b2
+#define AESIMC			instruction_6k49_b3
 #define DEC_iPWd		instruction_6k49_b4
 #define DEC_iPXd		instruction_6k49_b5
 #define DEC_iPYd		instruction_6k49_b6

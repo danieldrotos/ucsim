@@ -375,6 +375,7 @@ struct dis_entry disass_r6k[]=
     { 0xeaf49, 0xffff, ' ', 2, "RR3REG" },
     { 0xeb049, 0xffff, ' ', 2, "PLDIR" },
     { 0xeb249, 0xffff, ' ', 2, "AESMC" },
+    { 0xeb349, 0xffff, ' ', 2, "AESIMC" },
     { 0xeb449, 0xfcff, ' ', 3, "DEC ('ps0.0'%d)" },
     { 0xeb849, 0xffff, ' ', 2, "PLDDR" },
     { 0xeb949, 0xffff, ' ', 3, "SBC A,(SP+%b)" },
