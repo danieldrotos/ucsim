@@ -352,6 +352,7 @@ struct dis_entry disass_r6k[]=
     { 0xe8d49, 0xffff, ' ', 2, "RL1REG" },
     { 0xe8e49, 0xffff, ' ', 2, "SR1REG" },
     { 0xe8f49, 0xffff, ' ', 2, "RR1REG" },
+    { 0xe9049, 0xffff, ' ', 3, "PLDISR" },
     { 0xe9949, 0xffff, ' ', 3, "ADC A,(SP+%b)" },
     { 0xe9a49, 0xffff, ' ', 3, "ADC HL,(SP+%b)" },
     { 0xe9b49, 0xffff, ' ', 3, "ADC JKHL,(SP+%b)" },
