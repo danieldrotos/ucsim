@@ -862,6 +862,28 @@ cl_r6k::PLDIR(MP)
   return resGO;
 }
 
+/* IO:d (PX) = (PY); BC = BC-1; PY = PY+1; repeat while {BC != 0} */
+
+int
+cl_r6k::PLDISR(MP)
+{
+  u8_t f= cF.get(), v;
+  u32_t p, bc;
+  f&= ~flagV;
+  tick(6);
+  do {
+    v= mem->pxread(cPY.get());
+    pxwriteio(cPX.get(), v);
+    cBC.W(bc= cBC.get()-1);
+    p= px8(cPY.get(), 1);
+    cPY.W(p);
+    tick(6);
+  }
+  while (bc);
+  // TODO: how to set V?
+  return resGO;
+}
+
 /* IO:d  (PX) = (PY); BC = BC-1; PX = PX-1; PY = PY-1 */
 
 void

@@ -338,6 +338,7 @@ public:
   virtual void pldi(void);
   virtual int PLDI(MP) { tick(9); pldi(); return resGO; }
   virtual int PLDIR(MP);
+  virtual int PLDISR(MP);
   virtual void pldd(void);
   virtual int PLDD(MP) { tick(9); pldd(); return resGO; }
   virtual int PLDDR(MP);
