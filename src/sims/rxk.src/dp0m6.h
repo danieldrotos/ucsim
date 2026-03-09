@@ -269,6 +269,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define RR2REG			instruction_6k49_9f
 // a0-af
 #define PLDI			instruction_6k49_a0
+#define AESSR			instruction_6k49_a2
+#define AESISR			instruction_6k49_a3
 #define INC_iPWd		instruction_6k49_a4
 #define INC_iPXd		instruction_6k49_a5
 #define INC_iPYd		instruction_6k49_a6

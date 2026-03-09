@@ -1035,5 +1035,61 @@ cl_r6k::PLSDDR(MP)
   return resGO;
 }
 
+static u32_t
+rotlby(u32_t v, int by)
+{
+  u32_t s;
+  for (; by; by--)
+    {
+      s= v & 0x80000000;
+      v<<= 1;
+      if (s)
+	v|= 1;
+    }
+  return v;
+}
+
+static u32_t
+rotrby(u32_t v, int by)
+{
+  u32_t b0;
+  for (; by; by--)
+    {
+      b0= v & 1;
+      v>>= 1;
+      if (b0)
+	v|= 0x80000000;
+    }
+  return v;
+}
+
+int
+cl_r6k::AESSR(MP)
+{
+  // row 0 PW
+  // row 1 PX
+  cPX.W(rotlby(cPX.get(), 8));
+  // row 2 PY
+  cPY.W(rotlby(cPY.get(), 16));
+  // row 3 PZ
+  cPZ.W(rotlby(cPZ.get(), 24));
+  tick(3);
+  return resGO;
+}
+
+int
+cl_r6k::AESISR(MP)
+{
+  // row 0 PW
+  // row 1 PX
+  cPX.W(rotrby(cPX.get(), 8));
+  // row 2 PY
+  cPY.W(rotrby(cPY.get(), 16));
+  // row 3 PZ
+  cPZ.W(rotrby(cPZ.get(), 24));
+  tick(3);
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
