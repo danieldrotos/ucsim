@@ -350,6 +350,7 @@ public:
   // AES
   virtual int AESSR(MP);
   virtual int AESISR(MP);
+  virtual int AESMC(MP);
 };
 
 

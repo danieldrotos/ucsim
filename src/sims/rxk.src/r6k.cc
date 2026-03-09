@@ -1091,5 +1091,56 @@ cl_r6k::AESISR(MP)
   return resGO;
 }
 
+#define xtime(x) ((x << 1) ^ (((x >> 7) & 1) * 0x1b))
+
+static void
+reg2arr(u32_t reg, u8_t state[4][4], int row)
+{
+  state[row][0]= reg>>24;
+  state[row][1]= reg>>16;
+  state[row][2]= reg>>8;
+  state[row][3]= reg;
+}
+
+static u32_t
+arr2reg(u8_t state[4][4], int row)
+{
+  u32_t v= state[row][3];
+  v|= state[row][2]<<8;
+  v|= state[row][1]<<16;
+  v|= state[row][0]<<24;
+  return v;
+}
+
+int
+cl_r6k::AESMC(MP)
+{
+  u8_t state[4][4];
+  int i;
+  u8_t tmp[4];
+  reg2arr(cPW.get(), state, 0);
+  reg2arr(cPX.get(), state, 1);
+  reg2arr(cPY.get(), state, 2);
+  reg2arr(cPZ.get(), state, 3);
+  for (i= 0; i < 4; i++)
+    {
+      tmp[0] = xtime(state[0][i]) ^ (xtime(state[1][i]) ^ state[1][i]) ^ state[2][i] ^ state[3][i];
+      tmp[1] = state[0][i] ^ xtime(state[1][i]) ^ (xtime(state[2][i]) ^ state[2][i]) ^ state[3][i];
+      tmp[2] = state[0][i] ^ state[1][i] ^ xtime(state[2][i]) ^ (xtime(state[3][i]) ^ state[3][i]);
+      tmp[3] = (xtime(state[0][i]) ^ state[0][i]) ^ state[1][i] ^ state[2][i] ^ xtime(state[3][i]);
+      
+      state[0][i] = tmp[0];
+      state[1][i] = tmp[1];
+      state[2][i] = tmp[2];
+      state[3][i] = tmp[3];
+    }
+  cPW.W(arr2reg(state, 0));
+  cPX.W(arr2reg(state, 1));
+  cPY.W(arr2reg(state, 2));
+  cPZ.W(arr2reg(state, 3));
+  tick(3);
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
