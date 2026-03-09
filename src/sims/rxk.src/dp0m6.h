@@ -326,6 +326,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define SR7REG			instruction_6k49_ee
 #define RR7REG			instruction_6k49_ef
 // f0-ff
+#define PLSIR			instruction_6k49_f0
 #define CP_A_iSPn		instruction_6k49_f9
 #define CP_HL_iSPn		instruction_6k49_fa
 #define CP_JKHL_iSPn		instruction_6k49_fb

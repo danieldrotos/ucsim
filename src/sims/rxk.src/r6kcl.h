@@ -343,6 +343,7 @@ public:
   virtual int PLDD(MP) { tick(9); pldd(); return resGO; }
   virtual int PLDDR(MP);
   virtual int PLDDSR(MP);
+  virtual int PLSIR(MP);
 };
 
 

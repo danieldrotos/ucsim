@@ -929,15 +929,39 @@ cl_r6k::PLDDSR(MP)
   u8_t f= cF.get(), v;
   u32_t p, bc;
   f&= ~flagV;
+  tick(6);
   do {
     v= mem->pxread(cPY.get());
     pxwriteio(cPX.get(), v);
     cBC.W(bc= cBC.get()-1);
     p= px8se(cPY.get(), -1);
     cPY.W(p);
+    tick(6);
   }
   while (bc);
   // TODO: how to set V?
+  cF.W(f);
+  return resGO;
+}
+
+/* IO:s (PX) = (PY); BC = BC-1; PX = PX+1; PY = PY+1; repeat while {BC != 0} */
+
+int
+cl_r6k::PLSIR(MP)
+{
+  u8_t f= cF.get() & ~flagV, v;
+  u32_t p, bc;
+  do {
+    v= pxreadio(cPY.get());
+    mem->pxwrite(cPX.get(), v);
+    p= px8(cPX.get(), 1);
+    cPX.W(p);
+    p= px8(cPY.get(), 1);
+    cPY.W(p);
+    cBC.W(bc= cBC.get()-1);
+    tick(6);
+  }
+  while (bc);
   cF.W(f);
   return resGO;
 }
