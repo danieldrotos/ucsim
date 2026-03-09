@@ -848,17 +848,20 @@ cl_r6k::pldi(void)
   p= px8(cPY.get(), 1);
   cPY.W(p);
   // TODO: how to set V?
+  cF.W(f);
 }
 
 int
 cl_r6k::PLDIR(MP)
 {
+  u8_t f= cF.get() & ~flagV;
   tick(6);
   do {
     pldi();
     tick(6);
   }
   while (cBC.get());
+  cF.W(f);
   return resGO;
 }
 
@@ -881,6 +884,7 @@ cl_r6k::PLDISR(MP)
   }
   while (bc);
   // TODO: how to set V?
+  cF.W(f);
   return resGO;
 }
 
@@ -899,19 +903,44 @@ cl_r6k::pldd(void)
   p= px8se(cPY.get(), -1);
   cPY.W(p);
   // TODO: how to set V?
+  cF.W(f);
 }
 
 
 int
 cl_r6k::PLDDR(MP)
 {
+  u8_t f= cF.get() & ~flagV;
   tick(6);
   do {
     pldd();
     tick(6);
   }
   while (cBC.get());
+  cF.W(f);
   return resGO;
 }
+
+/* IO:d (PX) = (PY); BC = BC-1; PY = PY-1; repeat while {BC != 0} */
+
+int
+cl_r6k::PLDDSR(MP)
+{
+  u8_t f= cF.get(), v;
+  u32_t p, bc;
+  f&= ~flagV;
+  do {
+    v= mem->pxread(cPY.get());
+    pxwriteio(cPX.get(), v);
+    cBC.W(bc= cBC.get()-1);
+    p= px8se(cPY.get(), -1);
+    cPY.W(p);
+  }
+  while (bc);
+  // TODO: how to set V?
+  cF.W(f);
+  return resGO;
+}
+
 
 /* End of rxk.src/r6k.cc */
