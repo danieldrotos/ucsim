@@ -362,6 +362,8 @@ struct dis_entry disass_r6k[]=
     { 0xe9e49, 0xffff, ' ', 2, "SR2REG" },
     { 0xe9f49, 0xffff, ' ', 2, "RR2REG" },
     { 0xea049, 0xffff, ' ', 2, "PLDI" },
+    { 0xea249, 0xffff, ' ', 2, "AESSR" },
+    { 0xea349, 0xffff, ' ', 2, "AESISR" },
     { 0xea449, 0xfcff, ' ', 3, "INC ('ps0.0'%d)" },
     { 0xea849, 0xffff, ' ', 2, "PLDD" },
     { 0xea949, 0xffff, ' ', 3, "SUB A,(SP+%b)" },

@@ -347,6 +347,9 @@ public:
   virtual int PLSIDR(MP);
   virtual int PLSDR(MP);
   virtual int PLSDDR(MP);
+  // AES
+  virtual int AESSR(MP);
+  virtual int AESISR(MP);
 };
 
 
