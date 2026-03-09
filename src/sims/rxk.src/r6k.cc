@@ -951,6 +951,7 @@ cl_r6k::PLSIR(MP)
 {
   u8_t f= cF.get() & ~flagV, v;
   u32_t p, bc;
+  tick(6);
   do {
     v= pxreadio(cPY.get());
     mem->pxwrite(cPX.get(), v);
@@ -958,6 +959,28 @@ cl_r6k::PLSIR(MP)
     cPX.W(p);
     p= px8(cPY.get(), 1);
     cPY.W(p);
+    cBC.W(bc= cBC.get()-1);
+    tick(6);
+  }
+  while (bc);
+  cF.W(f);
+  return resGO;
+}
+
+
+/* IO:s (PX) = (PY); BC = BC-1; PX = PX+1; repeat while {BC != 0} */
+
+int
+cl_r6k::PLSIDR(MP)
+{
+  u8_t f= cF.get() & ~flagV, v;
+  u32_t p, bc;
+  tick(6);
+  do {
+    v= pxreadio(cPY.get());
+    mem->pxwrite(cPX.get(), v);
+    p= px8(cPX.get(), 1);
+    cPX.W(p);
     cBC.W(bc= cBC.get()-1);
     tick(6);
   }
