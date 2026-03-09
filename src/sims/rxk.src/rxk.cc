@@ -466,7 +466,7 @@ cl_rxk::disassc_cb(t_addr addr, chars *comment)
 	case 3: strcpy(b, "RR %r"); break;
 	case 4: strcpy(b, "SLA %r"); break;
 	case 5: strcpy(b, "SRA %r"); break;
-	case 6: return strdup("-- UNKNOWN/INVALID");
+	case 6: return disassc_cb_6(addr, comment);
 	case 7: strcpy(b, "SRL %r"); break;
 	}
       break;
@@ -506,6 +506,12 @@ cl_rxk::disassc_cb(t_addr addr, chars *comment)
     }
 
   return(strdup(work.c_str()));
+}
+
+char *
+cl_rxk::disassc_cb_6(t_addr addr, chars *comment)
+{
+  return strdup("-- UNKNOWN/INVALID");
 }
 
 char *
