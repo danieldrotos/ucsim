@@ -309,6 +309,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #define PLSIDR			instruction_6k49_d0
 #define SHAF2			instruction_6k49_d2
 #define MD5F2			instruction_6k49_d3
+#define PLSDDR			instruction_6k49_d8
 #define XOR_A_iSPn		instruction_6k49_d9
 #define XOR_HL_iSPn		instruction_6k49_da
 #define XOR_JKHL_iSPn		instruction_6k49_db

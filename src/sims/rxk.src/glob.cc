@@ -393,6 +393,7 @@ struct dis_entry disass_r6k[]=
     { 0xed049, 0xffff, ' ', 3, "PLSIDR" },
     { 0xed249, 0xffff, ' ', 2, "SHAF2" },
     { 0xed349, 0xffff, ' ', 2, "MD5F2" },
+    { 0xed849, 0xffff, ' ', 3, "PLSDDR" },
     { 0xed949, 0xffff, ' ', 3, "XOR A,(SP+%b)" },
     { 0xeda49, 0xffff, ' ', 3, "XOR HL,(SP+%b)" },
     { 0xedb49, 0xffff, ' ', 3, "XOR JKHL,(SP+%b)" },
