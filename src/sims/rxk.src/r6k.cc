@@ -93,6 +93,23 @@ cl_r6k::dis_entry(t_addr addr)
   return cl_r5k::dis_entry(addr);
 }
 
+char *
+cl_r6k::disassc_cb_6(t_addr addr, chars *comment)
+{
+  u8_t code= rom->read(addr);
+  switch (code & 7)
+    {
+    case 0: return strdup("LD    B,B");
+    case 1: return strdup("LD    C,C");
+    case 2: return strdup("LD    D,D");
+    case 3: return strdup("LD    E,E");
+    case 4: return strdup("LD    H,H");
+    case 5: return strdup("LD    L,L");
+    case 6: return strdup("-- UNKNOWN/INVALID");
+    case 7: return strdup("LD    A,A");
+    }
+  return strdup("");
+}
 
 int page49_wrapper(class cl_uc *uc, t_mem code)
 {
@@ -1191,6 +1208,25 @@ cl_r6k::AESIMC(MP)
   cPY.W(arr2reg(state, 2));
   cPZ.W(arr2reg(state, 3));
   tick(3);
+  return resGO;
+}
+
+
+int
+cl_r6k::page_cb_6(t_mem code)
+{
+  // code is the 2nd byte
+  switch (code & 0x7)
+    {
+    case 0: tick(2); return LD_B_B(code);
+    case 1: tick(2); return LD_C_C(code);
+    case 2: tick(2); return LD_D_D(code);
+    case 3: tick(2); return LD_E_E(code);
+    case 4: tick(2); return LD_H_H(code);
+    case 5: tick(2); return LD_L_L(code);
+    case 6: return resINV_INST;
+    case 7: tick(2); return LD_A_A(code);
+    }
   return resGO;
 }
 

@@ -43,7 +43,8 @@ public:
   virtual int init(void);
 
   virtual struct dis_entry *dis_entry(t_addr addr);
-
+  virtual char *disassc_cb_6(t_addr addr, chars *comment);
+  
   virtual void mode3k(void);
   virtual void mode01(void);
   virtual void mode10(void);
@@ -352,6 +353,9 @@ public:
   virtual int AESISR(MP);
   virtual int AESMC(MP);
   virtual int AESIMC(MP);
+
+  // R6K mod of page CB
+  virtual int page_cb_6(t_mem code);
 };
 
 

@@ -166,6 +166,7 @@ public:
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment= NULL);
   virtual char *disassc_cb(t_addr addr, chars *comment= NULL);
+  virtual char *disassc_cb_6(t_addr addr, chars *comment= NULL);
   virtual char *disassc_dd_cb(t_addr addr, chars *comment= NULL);
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
@@ -608,7 +609,8 @@ public:
   virtual int CP_A_A(t_mem code) { return cp8(rA, rA); }
 
   virtual int PAGE_CB(t_mem code);
-
+  virtual int page_cb_6(t_mem code) { return resINV_INST; }
+  
   // Page ED, 3k mode
   virtual int LD_EIR_A(t_mem code);
   virtual int LD_IIR_A(t_mem code);
