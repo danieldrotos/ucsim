@@ -727,7 +727,11 @@ struct cpu_entry cpus_rxk[]=
     {"R6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
     {"6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
     {"6"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {"R2KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R2K) , 0, "Rabbit 2000", ""},
+    {"R3KASDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R3KA) , 0, "Rabbit 3000A", ""},
     {"R4KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R4K) , 0, "Rabbit 4000", ""},
+    {"R5KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R5K) , 0, "Rabbit 5000", ""},
+    {"R6KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R6K) , 0, "Rabbit 6000", ""},
     {NULL, CPU_NONE, 0, "", ""}
   };
 

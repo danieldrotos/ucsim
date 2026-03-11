@@ -43,6 +43,12 @@ cl_r3ka::cl_r3ka(class cl_sim *asim):
 {
 }
 
+cl_r3ka::cl_r3ka(class cl_sim *asim, t_addr arom_size):
+  cl_r3k(asim)
+{
+  rom_size= arom_size;
+}
+
 int
 cl_r3ka::init(void)
 {
