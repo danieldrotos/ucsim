@@ -68,6 +68,7 @@ cl_rxk::cl_rxk(class cl_sim *asim):
   caRtab[5]= &caL;
   caRtab[7]= &caA;
   kmode= 0;
+  rom_size= 0;
 }
 
 int

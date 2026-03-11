@@ -727,6 +727,7 @@ struct cpu_entry cpus_rxk[]=
     {"R6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
     {"6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
     {"6"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {"R4KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R4K) , 0, "Rabbit 4000", ""},
     {NULL, CPU_NONE, 0, "", ""}
   };
 
