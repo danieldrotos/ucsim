@@ -37,7 +37,7 @@ public:
   class cl_memory_chip *chip;
 protected:
   RP(xpc,lxpc,hxpc,xpc);
-protected:
+public:
   u8_t segsize;
   u16_t dataseg, stackseg;
 public:
