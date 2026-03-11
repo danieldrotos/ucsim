@@ -143,6 +143,7 @@ public:
   class cl_cell16 caAF, caBC, caDE, caHL;
   class cl_cell16 *cIR;
   class cl_memory_cell *XPC;
+  t_addr rom_size;
   class cl_ras *mem;
   class cl_address_space *ioi, *ioe;
   class cl_address_space *rwas;
