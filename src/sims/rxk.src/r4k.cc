@@ -137,8 +137,10 @@ cl_r4k::id_string(void)
 void
 cl_r4k::reset(void)
 {
-  ioi->set(0x1b, 0); // stacksegh
-  ioi->set(0x1f, 0); // datasegh
+  //ioi->set(0x1b, 0); // stacksegh
+  mem->stackseg= 0;
+  //ioi->set(0x1f, 0); // datasegh
+  mem->dataseg= 0;
   ioi->set(0x420, 0); // edmr
   cl_r3ka::reset();
   mode3k();  
@@ -936,7 +938,7 @@ cl_r4k_cpu::write(class cl_memory_cell *cell, t_mem *val)
   else if (cell == stacksegl)
     {
       (*val)&= 0xff;
-      stackseg->set(*val);
+      stacksegl->set(*val);
       ruc->mem->set_stackseg(stacksegh->read() * 256 + *val);
     }
   else if (cell == stacksegh)
