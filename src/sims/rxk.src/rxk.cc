@@ -126,7 +126,7 @@ cl_rxk::init(void)
   ioi->set(0x11, 0); // stackseg
   ioi->set(0x12, 0); // dataseg
   ioi->set(0x13, 0xff); // segsize
-  mem->re_decode();
+  //mem->re_decode();
   
   return 0;
 }
@@ -147,7 +147,7 @@ cl_rxk::reset(void)
   mem->set_dataseg(0);
   mem->set_segsize(0xff);
   mem->set_stackseg(0);
-  mem->set_xpc(0);
+  mem->set_xpc(0); // calls re-decode
 
   rIP= 0xff;
   rIIR= 0;
