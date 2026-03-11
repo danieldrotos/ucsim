@@ -470,6 +470,8 @@ public:
   
   // Starter of extra pages
   virtual int PAGE_4K6D(t_mem code);
+  virtual int page_6dxd(t_mem code) { return resINV; }
+  virtual int page_6dxf(t_mem code) { return resINV; }
   virtual int PAGE_4K7F(t_mem code);
 };
 

@@ -764,8 +764,10 @@ cl_r4k::PAGE_4K6D(t_mem code)
   
   h= code>>4;
   l= code&0xf;
-  if ((l == 0xd) || (l == 0xf))
-    return resINV;
+  if (l == 0xd)
+    return page_6dxd(code);
+  if (l == 0xf)
+    return page_6dxf(code);
   
   switch (h&3)
     {

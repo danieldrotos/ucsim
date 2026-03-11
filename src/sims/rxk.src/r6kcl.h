@@ -356,6 +356,9 @@ public:
 
   // R6K mod of page CB
   virtual int page_cb_6(t_mem code);
+  // R6K mod of page 6D
+  virtual int page_6dxd(t_mem code);
+  virtual int page_6dxf(t_mem code);
 };
 
 
