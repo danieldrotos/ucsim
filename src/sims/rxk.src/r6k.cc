@@ -37,6 +37,12 @@ cl_r6k::cl_r6k(class cl_sim *asim):
 {
 }
 
+cl_r6k::cl_r6k(class cl_sim *asim, t_addr arom_size):
+  cl_r5k(asim)
+{
+  rom_size= arom_size;
+}
+
 const char *
 cl_r6k::id_string(void)
 {

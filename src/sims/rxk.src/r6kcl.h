@@ -39,6 +39,7 @@ public:
   
  public:
   cl_r6k(class cl_sim *asim);
+  cl_r6k(class cl_sim *asim, t_addr arom_size);
   virtual const char *id_string(void);
   virtual int init(void);
 

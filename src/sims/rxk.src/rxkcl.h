@@ -159,7 +159,7 @@ public:
   virtual void mk_hw_elements(void);
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
-  virtual t_addr chip_size() { return 0x100000; }
+  virtual t_addr chip_size() { return rom_size?rom_size:0x100000; }
 
   virtual double def_xtal(void) { return 1000000; }
   virtual int clock_per_cycle(void) { return 1; }
