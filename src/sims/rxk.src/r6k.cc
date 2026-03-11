@@ -1231,4 +1231,33 @@ cl_r6k::page_cb_6(t_mem code)
 }
 
 
+int
+cl_r6k::page_6dxd(t_mem code)
+{
+  // code is the 2nd byte
+  switch (code)
+    {
+    case 0x0d: return add32(destPW(), rPW, 1, false);
+    case 0x4d: return add32(destPX(), rPX, 1, false);
+    case 0x8d: return add32(destPY(), rPY, 1, false);
+    case 0xcd: return add32(destPZ(), rPZ, 1, false);
+    }
+  return resINV;
+}
+
+int
+cl_r6k::page_6dxf(t_mem code)
+{
+  // code is the 2nd byte
+  switch (code)
+    {
+    case 0x0f: return sub32(destPW(), rPW, 1, false);
+    case 0x4f: return sub32(destPX(), rPX, 1, false);
+    case 0x8f: return sub32(destPY(), rPY, 1, false);
+    case 0xcf: return sub32(destPZ(), rPZ, 1, false);
+    }
+  return resINV;
+}
+
+
 /* End of rxk.src/r6k.cc */

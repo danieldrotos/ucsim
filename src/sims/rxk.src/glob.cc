@@ -424,6 +424,14 @@ struct dis_entry disass_r6k[]=
     { 0xefe49, 0xffff, ' ', 2, "SR8REG" },
     { 0xeff49, 0xffff, ' ', 2, "RR8REG" },
 
+    { 0xe0d6d, 0xffff, ' ', 2, "INC PW" },
+    { 0xe4d6d, 0xffff, ' ', 2, "INC PX" },
+    { 0xe8d6d, 0xffff, ' ', 2, "INC PY" },
+    { 0xecd6d, 0xffff, ' ', 2, "INC PZ" },
+    { 0xe0f6d, 0xffff, ' ', 2, "DEC PW" },
+    { 0xe4f6d, 0xffff, ' ', 2, "DEC PX" },
+    { 0xe8f6d, 0xffff, ' ', 2, "DEC PY" },
+    { 0xecf6d, 0xffff, ' ', 2, "DEC PZ" },
     { 0, 0, 0, 0, 0, 0, 0 }
   };
 
