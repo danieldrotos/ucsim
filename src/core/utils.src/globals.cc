@@ -727,6 +727,11 @@ struct cpu_entry cpus_rxk[]=
     {"R6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
     {"6K"	, CPU_R6K , 0, "Rabbit 6000", ""},
     {"6"	, CPU_R6K , 0, "Rabbit 6000", ""},
+    {"R2KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R2K) , 0, "Rabbit 2000", ""},
+    {"R3KASDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R3KA) , 0, "Rabbit 3000A", ""},
+    {"R4KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R4K) , 0, "Rabbit 4000", ""},
+    {"R5KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R5K) , 0, "Rabbit 5000", ""},
+    {"R6KSDCC"	, (enum cpu_type)(CPU_RXK_SDCC|CPU_R6K) , 0, "Rabbit 6000", ""},
     {NULL, CPU_NONE, 0, "", ""}
   };
 
@@ -763,6 +768,21 @@ struct cpu_entry cpus_z80[]=
     {NULL, CPU_NONE, 0, "", ""}
   };
 
+
+struct cpu_entry cpus_tlcs[]=
+  {
+    { "TLCS90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+    { "90"		, CPU_TLCS90, 0, "TLCS-90", "" },
+
+    { "TLCS870C"	, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "C"		, CPU_TLCS870C , 0, "TLCS-870C" , "" },
+    { "TLCS870C1"	, CPU_TLCS870C1, 0, "TLCS-870C1", "" },
+    { "C1"		, CPU_TLCS870C1, 0, "TLCS-870C1" , "" },
+
+    {NULL, CPU_NONE, 0, "", ""}
+  };
+
+
 struct cpu_collection cpus_coll[]=
   {
     { "mcs51"	, "ucsim_51"		, cpus_51	},
@@ -784,6 +804,7 @@ struct cpu_collection cpus_coll[]=
     { "st7"	, "ucsim_st7"		, cpus_st7	},
     { "xa"	, "ucsim_xa"		, cpus_xa	},
     { "z80"	, "ucsim_z80"		, cpus_z80	},
+    { "tlcs"    , "ucsim_tlcs"          , cpus_tlcs     },
     
     { NULL, NULL, NULL }
   };

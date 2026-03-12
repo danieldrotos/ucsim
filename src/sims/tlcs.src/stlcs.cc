@@ -32,7 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "utils.h"
 
 // sim.src
-//#include "appcl.h"
+#include "globals.h"
 
 // local
 #include "simtlcscl.h"
@@ -44,6 +44,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
 
   app_start_at= dnow();
+  cpus= cpus_tlcs;
   application= new cl_app();
   application->set_name("stlcs");
   application->init(argc, argv);

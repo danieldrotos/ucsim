@@ -88,6 +88,25 @@ enum flag_mask_t {
   MALL= MJF|MZF|MCF|MHF|MSF|MVF
 };
 
+#define COND_Z		(rF&MZF)
+#define COND_NZ		(!(rF&MZF))
+#define COND_CS		(rF&MCF)
+#define COND_CC		(!(rF&MCF))
+#define COND_LE		(rF&(MCF|MZF))
+#define COND_GT		(!(rF&(MCF|MZF)))
+#define COND_T		(rF&MJF)
+#define COND_F		(!(rF&MJF))
+
+#define S_XOR_V		(((rF&MSF)?1:0)^((rF&MVF)?1:0))
+#define COND_M		(rF&MSF)
+#define COND_P		(!(rF&MSF))
+#define COND_SLT	(S_XOR_V)
+#define COND_SGE	(!S_XOR_V)
+#define COND_SLE        (S_XOR_V || COND_Z)
+#define COND_SGT	(!S_XOR_V && COND_NZ)
+#define COND_VS		(rF&MVF)
+#define COND_VC		(!(rF&MVF))
+
 // bit nr to bit mask converter
 extern u8_t bit_mask[8];
 
@@ -109,6 +128,7 @@ public:
   struct rbank_870c_t *rbanks, *rbank;
   u16_t rSP;
   u8_t rPSW;
+  u8_t imf; // interrupt mask flag (0 or 1)
   C8 cW, cA, cB, cC, cD, cE, cH, cL, cPSW;
   C8 *regs8[8];
   C16 cWA, cBC, cDE, cHL, cIX, cIY, cSP;
@@ -116,6 +136,7 @@ public:
   class cl_address_space *asc, *asd;
   class cl_memory_chip *ram_chip, *rom_chip, *bootrom_chip;
   u16_t sp_limit;
+  u16_t vector_start;
 public:
   // (src) or (dst) memory cell for 8/16 bit ops
   class cl_cell8 *sdc;
@@ -136,6 +157,7 @@ public:
   virtual u8_t *extra_ticks(void) { return extra_ticks_t870c; }
   
   virtual struct dis_entry *dis_tbl(void);
+  virtual struct dis_entry *get_dis_entry(t_addr addr);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int longest_inst(void) { return 5; }
   virtual int inst_length(t_addr addr);
@@ -143,6 +165,7 @@ public:
   virtual u16_t aof_dst5(u32_t code32);
   virtual u16_t aof_srcE(u32_t code32);
   virtual u16_t aof_srcD(u32_t code32);
+  virtual void stack_check_overflow(class cl_stack_op *op);
   
   virtual int exec_inst(void);
   virtual int exec1(void);
@@ -195,6 +218,9 @@ public:
   virtual int xch16_rr(C16 *a, C16 *b);
   virtual int xch16_rm(C16 *a, u16_t addr);
 
+  virtual int pop(MCELL *reg);
+  virtual int push(MCELL *reg);
+  
   // bit operations
   virtual int ld1m(C8 *src, u8_t bitnr);
   virtual int ld1r(C8 *src, u8_t bitnr);
@@ -232,10 +258,15 @@ public:
   virtual int xor16(C16 *reg, u16_t n);
   virtual int or8  (C8  *reg, u8_t  n);
   virtual int or16 (C16 *reg, u16_t n);
+
+  virtual int mul(C16 *rr);
+  virtual int div(C16 *rr);
   
   // jump
   virtual int jr(u8_t a);
   virtual int jrs(u8_t code, bool cond);
+  virtual int jr_cc(u8_t a, bool cond);
+  virtual int call(u16_t a);
   
 #include "alias870c.h"
   // 0 00 - 0 00
@@ -243,6 +274,7 @@ public:
   virtual int CLR_CF(MP);
   virtual int SET_CF(MP);
   virtual int CPL_CF(MP);
+  virtual int CMP_x_n(MP) { sd_x(); return cmp8(sdc, fetch()); }
   virtual int LDW_mx_mn(MP);
   virtual int LDW_mhl_mn(MP);
   virtual int LD_mx_n(MP) { sd_x(); return st8(sdc, fetch()); }
@@ -320,6 +352,10 @@ public:
   virtual int LD_rrSP_mn(MP) { return ldi16(&cSP, mn()); }
   virtual int instruction_4f(MP) { sd_pca(); return execS(); }
   // 0 50 - 0 5f
+  virtual int PUSH_rrWA(MP) { return push(&cWA); }
+  virtual int PUSH_rrBC(MP) { return push(&cBC); }
+  virtual int PUSH_rrDE(MP) { return push(&cDE); }
+  virtual int PUSH_rrHL(MP) { return push(&cHL); }
   virtual int instruction_54(MP) { sd_ixd(); return execD(); }
   virtual int instruction_55(MP) { sd_iyd(); return execD(); }
   virtual int instruction_56(MP) { sd_spd(); return execD(); }
@@ -341,6 +377,23 @@ public:
   virtual int XOR_A_n(MP) { return xor8(&cA, fetch()); }
   virtual int OR_A_n(MP) { return or8(&cA, fetch()); }
   virtual int CMP_A_n(MP) { return cmp8(&cA, fetch()); }
+  // 0 70 - 0 7f
+  virtual int CALLV_0(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_1(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_2(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_3(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_4(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_5(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_6(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_7(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_8(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_9(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_a(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_b(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_c(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_d(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_e(MP) { return call(rd16(vector_start+2*(code&0xf))); }
+  virtual int CALLV_f(MP) { return call(rd16(vector_start+2*(code&0xf))); }
   // 0 80 - 0 8f
   virtual int JRS_T_a10(MP) { return jrs(code, rF&MJF); }
   virtual int JRS_T_a11(MP) { return jrs(code, rF&MJF); }
@@ -427,10 +480,22 @@ public:
   virtual int CLR_mx_6(MP) { sd_x(); return clrm(sdc, 6); }
   virtual int CLR_mx_7(MP) { sd_x(); return clrm(sdc, 7); }
   // 0 d0 - 0 df
+  virtual int POP_rrWA(MP) { return pop(&cWA); }
+  virtual int POP_rrBC(MP) { return pop(&cBC); }
+  virtual int POP_rrDE(MP) { return pop(&cDE); }
+  virtual int POP_rrHL(MP) { return pop(&cHL); }
   virtual int instruction_d4(MP) { sd_ixd(); return execS(); }
   virtual int instruction_d5(MP) { sd_iyd(); return execS(); }
   virtual int instruction_d6(MP) { sd_spd(); return execS(); }
   virtual int instruction_d7(MP) { sd_hld(); return execS(); }
+  virtual int JR_Z(MP)  { return jr_cc(fetch(), COND_Z); }
+  virtual int JR_NZ(MP) { return jr_cc(fetch(), COND_NZ); }
+  virtual int JR_CS(MP) { return jr_cc(fetch(), COND_CS); }
+  virtual int JR_CC(MP) { return jr_cc(fetch(), COND_CC); }
+  virtual int JR_LE(MP) { return jr_cc(fetch(), COND_LE); }
+  virtual int JR_GT(MP) { return jr_cc(fetch(), COND_GT); }
+  virtual int JR_T(MP)  { return jr_cc(fetch(), COND_T); }
+  virtual int JR_F(MP)  { return jr_cc(fetch(), COND_F); }
   // 0 e0 - 0 ef
   virtual int instruction_e0(MP) { sd_x(); return execS(); }
   virtual int instruction_e1(MP) { sd_vw(); return execS(); }
@@ -458,7 +523,9 @@ public:
   virtual int instruction_f6(MP) { sd_spM(); return execD(); }
   virtual int instruction_f7(MP) { sd_hlc(); return execD(); }
   virtual int LD_RBS(MP);
+  virtual int RET(MP) { return pop(&cPC); }
   virtual int JR_a(MP) { return jr(fetch()); }
+  virtual int CALL_mn(MP) { return call(fetch16()); }
   virtual int JP_mn(MP) { PC= fetch16(); return resGO; }
   // 1 00 - 1 3f ALU r,g
   virtual int ADDC_rA_g(MP) { return add8(&cA, regs8[sda]->R(), true); }
@@ -568,6 +635,14 @@ public:
   virtual int XOR_g_n(MP) { return xor8(regs8[sda], fetch()); }
   virtual int OR_g_n(MP) { return or8(regs8[sda], fetch()); }
   virtual int CMP_g_n(MP) { return cmp8(regs8[sda], fetch()); }
+  virtual int ADDC_gg_mn(MP) { return add16(regs16[sda], fetch16(), true); }
+  virtual int ADD_gg_mn(MP) { return add16(regs16[sda], fetch16(), false); }
+  virtual int SUBB_gg_mn(MP) { return sub16(regs16[sda], fetch16(), true); }
+  virtual int SUB_gg_mn(MP) { return sub16(regs16[sda], fetch16(), false); }
+  virtual int AND_gg_mn(MP) { return and16(regs16[sda], fetch16()); }
+  virtual int XOR_gg_mn(MP) { return xor16(regs16[sda], fetch16()); }
+  virtual int OR_gg_mn(MP) { return or16(regs16[sda], fetch16()); }
+  virtual int CMP_gg_mn(MP) { return cmp16(regs16[sda], fetch16()); }
   // 1 70 - 1 7f
   virtual int XCH_rA_g(MP) { return xch8_rr(&cA, regs8[sda]); }
   virtual int XCH_rW_g(MP) { return xch8_rr(&cW, regs8[sda]); }
@@ -617,6 +692,38 @@ public:
   virtual int SUB_rrIY_gg(MP)  { return sub16(&cIY, regs16[sda]->R(), false); }
   virtual int SUB_rrSP_gg(MP)  { return sub16(&cSP, regs16[sda]->R(), false); }
   virtual int SUB_rrHLb_gg(MP) { return sub16(&cHL, regs16[sda]->R(), false); }
+  virtual int AND_rrWA_gg(MP)  { return and16(&cWA, regs16[sda]->R()); }
+  virtual int AND_rrBC_gg(MP)  { return and16(&cBC, regs16[sda]->R()); }
+  virtual int AND_rrDE_gg(MP)  { return and16(&cDE, regs16[sda]->R()); }
+  virtual int AND_rrHL9_gg(MP) { return and16(&cHL, regs16[sda]->R()); }
+  virtual int AND_rrIX_gg(MP)  { return and16(&cIX, regs16[sda]->R()); }
+  virtual int AND_rrIY_gg(MP)  { return and16(&cIY, regs16[sda]->R()); }
+  virtual int AND_rrSP_gg(MP)  { return and16(&cSP, regs16[sda]->R()); }
+  virtual int AND_rrHLb_gg(MP) { return and16(&cHL, regs16[sda]->R()); }
+  virtual int XOR_rrWA_gg(MP)  { return xor16(&cWA, regs16[sda]->R()); }
+  virtual int XOR_rrBC_gg(MP)  { return xor16(&cBC, regs16[sda]->R()); }
+  virtual int XOR_rrDE_gg(MP)  { return xor16(&cDE, regs16[sda]->R()); }
+  virtual int XOR_rrHL9_gg(MP) { return xor16(&cHL, regs16[sda]->R()); }
+  virtual int XOR_rrIX_gg(MP)  { return xor16(&cIX, regs16[sda]->R()); }
+  virtual int XOR_rrIY_gg(MP)  { return xor16(&cIY, regs16[sda]->R()); }
+  virtual int XOR_rrSP_gg(MP)  { return xor16(&cSP, regs16[sda]->R()); }
+  virtual int XOR_rrHLb_gg(MP) { return xor16(&cHL, regs16[sda]->R()); }
+  virtual int OR_rrWA_gg(MP)  { return or16(&cWA, regs16[sda]->R()); }
+  virtual int OR_rrBC_gg(MP)  { return or16(&cBC, regs16[sda]->R()); }
+  virtual int OR_rrDE_gg(MP)  { return or16(&cDE, regs16[sda]->R()); }
+  virtual int OR_rrHL9_gg(MP) { return or16(&cHL, regs16[sda]->R()); }
+  virtual int OR_rrIX_gg(MP)  { return or16(&cIX, regs16[sda]->R()); }
+  virtual int OR_rrIY_gg(MP)  { return or16(&cIY, regs16[sda]->R()); }
+  virtual int OR_rrSP_gg(MP)  { return or16(&cSP, regs16[sda]->R()); }
+  virtual int OR_rrHLb_gg(MP) { return or16(&cHL, regs16[sda]->R()); }
+  virtual int CMP_rrWA_gg(MP)  { return cmp16(&cWA, regs16[sda]->R()); }
+  virtual int CMP_rrBC_gg(MP)  { return cmp16(&cBC, regs16[sda]->R()); }
+  virtual int CMP_rrDE_gg(MP)  { return cmp16(&cDE, regs16[sda]->R()); }
+  virtual int CMP_rrHL9_gg(MP) { return cmp16(&cHL, regs16[sda]->R()); }
+  virtual int CMP_rrIX_gg(MP)  { return cmp16(&cIX, regs16[sda]->R()); }
+  virtual int CMP_rrIY_gg(MP)  { return cmp16(&cIY, regs16[sda]->R()); }
+  virtual int CMP_rrSP_gg(MP)  { return cmp16(&cSP, regs16[sda]->R()); }
+  virtual int CMP_rrHLb_gg(MP) { return cmp16(&cHL, regs16[sda]->R()); }
   // 1 c0 - 1 cf
   virtual int SET_g_0(MP) { return setr(regs8[sda], 0); }
   virtual int SET_g_1(MP) { return setr(regs8[sda], 1); }
@@ -635,6 +742,20 @@ public:
   virtual int CLR_g_6(MP) { return clrr(regs8[sda], 6); }
   virtual int CLR_g_7(MP) { return clrr(regs8[sda], 7); }
   // 1 d0 - 1 df
+  virtual int JR_M(MP)   { return jr_cc(fetch(), COND_M); }
+  virtual int JR_P(MP)   { return jr_cc(fetch(), COND_P); }
+  virtual int JR_SLT(MP) { return jr_cc(fetch(), COND_SLT); }
+  virtual int JR_SGE(MP) { return jr_cc(fetch(), COND_SGE); }
+  virtual int JR_SLE(MP) { return jr_cc(fetch(), COND_SLE); }
+  virtual int JR_SGT(MP) { return jr_cc(fetch(), COND_SGT); }
+  virtual int JR_VS(MP)  { return jr_cc(fetch(), COND_VS); }
+  virtual int JR_VC(MP)  { return jr_cc(fetch(), COND_VC); }
+  virtual int PUSH_gg(MP) { return push(regs16[sda]); }
+  virtual int POP_gg(MP) { return pop(regs16[sda]); }
+  virtual int DAA_g(MP);
+  virtual int DAS_g(MP);
+  virtual int PUSH_PSW(MP);
+  virtual int POP_PSW(MP);
   virtual int LD_PSW_n(MP) { cF.W(fetch()); return resGO; }
   // 1 e0 - 1 ef
   virtual int CPL_g_0(MP) { return cplr(regs8[sda], 0); }
@@ -654,6 +775,16 @@ public:
   virtual int LD_g_6_CF(MP) { return st1r(regs8[sda], 6); }
   virtual int LD_g_7_CF(MP) { return st1r(regs8[sda], 7); }
   // 1 f0 - 1 ff
+  virtual int SHLCA_gg(MP);
+  virtual int SHRCA_gg(MP);
+  virtual int MUL_gg(MP) { return mul(regs16[sda]); }
+  virtual int DIV_gg(MP) { return div(regs16[sda]); }
+  virtual int SHLC_g(MP);
+  virtual int SHRC_g(MP);
+  virtual int ROLC_g(MP);
+  virtual int RORC_g(MP);
+  virtual int NEG_gg(MP);
+  virtual int CALL_gg(MP) { return call(regs16[sda]->get()); }
   virtual int JP_gg(MP) { PC= regs16[sda]->get(); return resGO; }
   virtual int SWAP_g(MP);
   // 2 00 - 2 3f ALU r,(src)
@@ -665,14 +796,14 @@ public:
   virtual int ADDC_rD_src(MP) { return add8(&cD, sdc->R(), true); }
   virtual int ADDC_rL_src(MP) { return add8(&cL, sdc->R(), true); }
   virtual int ADDC_rH_src(MP) { return add8(&cH, sdc->R(), true); }
-  virtual int ADD_rA_src(MP) { return add8(&cA, sdc->R(), false); }
-  virtual int ADD_rW_src(MP) { return add8(&cW, sdc->R(), false); }
-  virtual int ADD_rC_src(MP) { return add8(&cC, sdc->R(), false); }
-  virtual int ADD_rB_src(MP) { return add8(&cB, sdc->R(), false); }
-  virtual int ADD_rE_src(MP) { return add8(&cE, sdc->R(), false); }
-  virtual int ADD_rD_src(MP) { return add8(&cD, sdc->R(), false); }
-  virtual int ADD_rL_src(MP) { return add8(&cL, sdc->R(), false); }
-  virtual int ADD_rH_src(MP) { return add8(&cH, sdc->R(), false); }
+  virtual int ADD_rA_src(MP)  { return add8(&cA, sdc->R(), false); }
+  virtual int ADD_rW_src(MP)  { return add8(&cW, sdc->R(), false); }
+  virtual int ADD_rC_src(MP)  { return add8(&cC, sdc->R(), false); }
+  virtual int ADD_rB_src(MP)  { return add8(&cB, sdc->R(), false); }
+  virtual int ADD_rE_src(MP)  { return add8(&cE, sdc->R(), false); }
+  virtual int ADD_rD_src(MP)  { return add8(&cD, sdc->R(), false); }
+  virtual int ADD_rL_src(MP)  { return add8(&cL, sdc->R(), false); }
+  virtual int ADD_rH_src(MP)  { return add8(&cH, sdc->R(), false); }
   virtual int SUBB_rA_src(MP) { return sub8(&cA, sdc->R(), true); }
   virtual int SUBB_rW_src(MP) { return sub8(&cW, sdc->R(), true); }
   virtual int SUBB_rC_src(MP) { return sub8(&cC, sdc->R(), true); }
@@ -681,46 +812,46 @@ public:
   virtual int SUBB_rD_src(MP) { return sub8(&cD, sdc->R(), true); }
   virtual int SUBB_rL_src(MP) { return sub8(&cL, sdc->R(), true); }
   virtual int SUBB_rH_src(MP) { return sub8(&cH, sdc->R(), true); }
-  virtual int SUB_rA_src(MP) { return sub8(&cA, sdc->R(), false); }
-  virtual int SUB_rW_src(MP) { return sub8(&cW, sdc->R(), false); }
-  virtual int SUB_rC_src(MP) { return sub8(&cC, sdc->R(), false); }
-  virtual int SUB_rB_src(MP) { return sub8(&cB, sdc->R(), false); }
-  virtual int SUB_rE_src(MP) { return sub8(&cE, sdc->R(), false); }
-  virtual int SUB_rD_src(MP) { return sub8(&cD, sdc->R(), false); }
-  virtual int SUB_rL_src(MP) { return sub8(&cL, sdc->R(), false); }
-  virtual int SUB_rH_src(MP) { return sub8(&cH, sdc->R(), false); }
-  virtual int AND_rA_src(MP) { return and8(&cA, sdc->R()); }
-  virtual int AND_rW_src(MP) { return and8(&cW, sdc->R()); }
-  virtual int AND_rC_src(MP) { return and8(&cC, sdc->R()); }
-  virtual int AND_rB_src(MP) { return and8(&cB, sdc->R()); }
-  virtual int AND_rE_src(MP) { return and8(&cE, sdc->R()); }
-  virtual int AND_rD_src(MP) { return and8(&cD, sdc->R()); }
-  virtual int AND_rL_src(MP) { return and8(&cL, sdc->R()); }
-  virtual int AND_rH_src(MP) { return and8(&cH, sdc->R()); }
-  virtual int XOR_rA_src(MP) { return xor8(&cA, sdc->R()); }
-  virtual int XOR_rW_src(MP) { return xor8(&cW, sdc->R()); }
-  virtual int XOR_rC_src(MP) { return xor8(&cC, sdc->R()); }
-  virtual int XOR_rB_src(MP) { return xor8(&cB, sdc->R()); }
-  virtual int XOR_rE_src(MP) { return xor8(&cE, sdc->R()); }
-  virtual int XOR_rD_src(MP) { return xor8(&cD, sdc->R()); }
-  virtual int XOR_rL_src(MP) { return xor8(&cL, sdc->R()); }
-  virtual int XOR_rH_src(MP) { return xor8(&cH, sdc->R()); }
-  virtual int OR_rA_src(MP) { return or8(&cA, sdc->R()); }
-  virtual int OR_rW_src(MP) { return or8(&cW, sdc->R()); }
-  virtual int OR_rC_src(MP) { return or8(&cC, sdc->R()); }
-  virtual int OR_rB_src(MP) { return or8(&cB, sdc->R()); }
-  virtual int OR_rE_src(MP) { return or8(&cE, sdc->R()); }
-  virtual int OR_rD_src(MP) { return or8(&cD, sdc->R()); }
-  virtual int OR_rL_src(MP) { return or8(&cL, sdc->R()); }
-  virtual int OR_rH_src(MP) { return or8(&cH, sdc->R()); }
-  virtual int CMP_rA_src(MP) { return cmp8(&cA, sdc->R()); }
-  virtual int CMP_rW_src(MP) { return cmp8(&cW, sdc->R()); }
-  virtual int CMP_rC_src(MP) { return cmp8(&cC, sdc->R()); }
-  virtual int CMP_rB_src(MP) { return cmp8(&cB, sdc->R()); }
-  virtual int CMP_rE_src(MP) { return cmp8(&cE, sdc->R()); }
-  virtual int CMP_rD_src(MP) { return cmp8(&cD, sdc->R()); }
-  virtual int CMP_rL_src(MP) { return cmp8(&cL, sdc->R()); }
-  virtual int CMP_rH_src(MP) { return cmp8(&cH, sdc->R()); }
+  virtual int SUB_rA_src(MP)  { return sub8(&cA, sdc->R(), false); }
+  virtual int SUB_rW_src(MP)  { return sub8(&cW, sdc->R(), false); }
+  virtual int SUB_rC_src(MP)  { return sub8(&cC, sdc->R(), false); }
+  virtual int SUB_rB_src(MP)  { return sub8(&cB, sdc->R(), false); }
+  virtual int SUB_rE_src(MP)  { return sub8(&cE, sdc->R(), false); }
+  virtual int SUB_rD_src(MP)  { return sub8(&cD, sdc->R(), false); }
+  virtual int SUB_rL_src(MP)  { return sub8(&cL, sdc->R(), false); }
+  virtual int SUB_rH_src(MP)  { return sub8(&cH, sdc->R(), false); }
+  virtual int AND_rA_src(MP)  { return and8(&cA, sdc->R()); }
+  virtual int AND_rW_src(MP)  { return and8(&cW, sdc->R()); }
+  virtual int AND_rC_src(MP)  { return and8(&cC, sdc->R()); }
+  virtual int AND_rB_src(MP)  { return and8(&cB, sdc->R()); }
+  virtual int AND_rE_src(MP)  { return and8(&cE, sdc->R()); }
+  virtual int AND_rD_src(MP)  { return and8(&cD, sdc->R()); }
+  virtual int AND_rL_src(MP)  { return and8(&cL, sdc->R()); }
+  virtual int AND_rH_src(MP)  { return and8(&cH, sdc->R()); }
+  virtual int XOR_rA_src(MP)  { return xor8(&cA, sdc->R()); }
+  virtual int XOR_rW_src(MP)  { return xor8(&cW, sdc->R()); }
+  virtual int XOR_rC_src(MP)  { return xor8(&cC, sdc->R()); }
+  virtual int XOR_rB_src(MP)  { return xor8(&cB, sdc->R()); }
+  virtual int XOR_rE_src(MP)  { return xor8(&cE, sdc->R()); }
+  virtual int XOR_rD_src(MP)  { return xor8(&cD, sdc->R()); }
+  virtual int XOR_rL_src(MP)  { return xor8(&cL, sdc->R()); }
+  virtual int XOR_rH_src(MP)  { return xor8(&cH, sdc->R()); }
+  virtual int OR_rA_src(MP)   { return or8(&cA, sdc->R()); }
+  virtual int OR_rW_src(MP)   { return or8(&cW, sdc->R()); }
+  virtual int OR_rC_src(MP)   { return or8(&cC, sdc->R()); }
+  virtual int OR_rB_src(MP)   { return or8(&cB, sdc->R()); }
+  virtual int OR_rE_src(MP)   { return or8(&cE, sdc->R()); }
+  virtual int OR_rD_src(MP)   { return or8(&cD, sdc->R()); }
+  virtual int OR_rL_src(MP)   { return or8(&cL, sdc->R()); }
+  virtual int OR_rH_src(MP)   { return or8(&cH, sdc->R()); }
+  virtual int CMP_rA_src(MP)  { return cmp8(&cA, sdc->R()); }
+  virtual int CMP_rW_src(MP)  { return cmp8(&cW, sdc->R()); }
+  virtual int CMP_rC_src(MP)  { return cmp8(&cC, sdc->R()); }
+  virtual int CMP_rB_src(MP)  { return cmp8(&cB, sdc->R()); }
+  virtual int CMP_rE_src(MP)  { return cmp8(&cE, sdc->R()); }
+  virtual int CMP_rD_src(MP)  { return cmp8(&cD, sdc->R()); }
+  virtual int CMP_rL_src(MP)  { return cmp8(&cL, sdc->R()); }
+  virtual int CMP_rH_src(MP)  { return cmp8(&cH, sdc->R()); }
   // 2 40 - 2 4f
   virtual int LD_rA_src(MP) { return ld8(&cA, sdc); }
   virtual int LD_rW_src(MP) { return ld8(&cW, sdc); }
@@ -755,13 +886,13 @@ public:
   virtual int LD_CF_src_6(MP) { return ld1m(sdc, 6); }
   virtual int LD_CF_src_7(MP) { return ld1m(sdc, 7); }
   // 2 60 - 2 6f
-  virtual int ADDC_src_n(MP)  { return add8(sdc, fetch(), true); }
+  virtual int ADDC_src_n(MP) { return add8(sdc, fetch(), true); }
   virtual int ADD_src_n(MP)  { return add8(sdc, fetch(), false); }
-  virtual int SUBB_src_n(MP)  { return sub8(sdc, fetch(), true); }
+  virtual int SUBB_src_n(MP) { return sub8(sdc, fetch(), true); }
   virtual int SUB_src_n(MP)  { return sub8(sdc, fetch(), false); }
   virtual int AND_src_n(MP)  { return and8(sdc, fetch()); }
   virtual int XOR_src_n(MP)  { return xor8(sdc, fetch()); }
-  virtual int OR_src_n(MP)  { return or8(sdc, fetch()); }
+  virtual int OR_src_n(MP)   { return or8(sdc, fetch()); }
   virtual int CMP_src_n(MP)  { return cmp8(sdc, fetch()); }
   virtual int LD_dst_rrWA(MP) { return st16(sda, rWA); }
   virtual int LD_dst_rrBC(MP) { return st16(sda, rBC); }
@@ -787,6 +918,71 @@ public:
   virtual int LD_dst_rD(MP) { return st8(sdc, rD); }
   virtual int LD_dst_rL(MP) { return st8(sdc, rL); }
   virtual int LD_dst_rH(MP) { return st8(sdc, rH); }
+  // 2 80 - 2 bf ALU rr,(src)
+  virtual int ADDC_rrWA_src(MP) { return add16(&cWA, rd16(sda), true); }
+  virtual int ADDC_rrBC_src(MP) { return add16(&cBC, rd16(sda), true); }
+  virtual int ADDC_rrDE_src(MP) { return add16(&cDE, rd16(sda), true); }
+  virtual int ADDC_rrHL9_src(MP){ return add16(&cHL, rd16(sda), true); }
+  virtual int ADDC_rrIX_src(MP) { return add16(&cIX, rd16(sda), true); }
+  virtual int ADDC_rrIY_src(MP) { return add16(&cIY, rd16(sda), true); }
+  virtual int ADDC_rrSP_src(MP) { return add16(&cSP, rd16(sda), true); }
+  virtual int ADDC_rrHLb_src(MP){ return add16(&cHL, rd16(sda), true); }
+  virtual int ADD_rrWA_src(MP)  { return add16(&cWA, rd16(sda), false); }
+  virtual int ADD_rrBC_src(MP)  { return add16(&cBC, rd16(sda), false); }
+  virtual int ADD_rrDE_src(MP)  { return add16(&cDE, rd16(sda), false); }
+  virtual int ADD_rrHL9_src(MP) { return add16(&cHL, rd16(sda), false); }
+  virtual int ADD_rrIX_src(MP)  { return add16(&cIX, rd16(sda), false); }
+  virtual int ADD_rrIY_src(MP)  { return add16(&cIY, rd16(sda), false); }
+  virtual int ADD_rrSP_src(MP)  { return add16(&cSP, rd16(sda), false); }
+  virtual int ADD_rrHLb_src(MP) { return add16(&cHL, rd16(sda), false); }
+  virtual int SUBB_rrWA_src(MP) { return sub16(&cWA, rd16(sda), true); }
+  virtual int SUBB_rrBC_src(MP) { return sub16(&cBC, rd16(sda), true); }
+  virtual int SUBB_rrDE_src(MP) { return sub16(&cDE, rd16(sda), true); }
+  virtual int SUBB_rrHL9_src(MP){ return sub16(&cHL, rd16(sda), true); }
+  virtual int SUBB_rrIX_src(MP) { return sub16(&cIX, rd16(sda), true); }
+  virtual int SUBB_rrIY_src(MP) { return sub16(&cIY, rd16(sda), true); }
+  virtual int SUBB_rrSP_src(MP) { return sub16(&cSP, rd16(sda), true); }
+  virtual int SUBB_rrHLb_src(MP){ return sub16(&cHL, rd16(sda), true); }
+  virtual int SUB_rrWA_src(MP)  { return sub16(&cWA, rd16(sda), false); }
+  virtual int SUB_rrBC_src(MP)  { return sub16(&cBC, rd16(sda), false); }
+  virtual int SUB_rrDE_src(MP)  { return sub16(&cDE, rd16(sda), false); }
+  virtual int SUB_rrHL9_src(MP) { return sub16(&cHL, rd16(sda), false); }
+  virtual int SUB_rrIX_src(MP)  { return sub16(&cIX, rd16(sda), false); }
+  virtual int SUB_rrIY_src(MP)  { return sub16(&cIY, rd16(sda), false); }
+  virtual int SUB_rrSP_src(MP)  { return sub16(&cSP, rd16(sda), false); }
+  virtual int SUB_rrHLb_src(MP) { return sub16(&cHL, rd16(sda), false); }
+  virtual int AND_rrWA_src(MP)  { return and16(&cWA, rd16(sda)); }
+  virtual int AND_rrBC_src(MP)  { return and16(&cBC, rd16(sda)); }
+  virtual int AND_rrDE_src(MP)  { return and16(&cDE, rd16(sda)); }
+  virtual int AND_rrHL9_src(MP) { return and16(&cHL, rd16(sda)); }
+  virtual int AND_rrIX_src(MP)  { return and16(&cIX, rd16(sda)); }
+  virtual int AND_rrIY_src(MP)  { return and16(&cIY, rd16(sda)); }
+  virtual int AND_rrSP_src(MP)  { return and16(&cSP, rd16(sda)); }
+  virtual int AND_rrHLb_src(MP) { return and16(&cHL, rd16(sda)); }
+  virtual int XOR_rrWA_src(MP)  { return xor16(&cWA, rd16(sda)); }
+  virtual int XOR_rrBC_src(MP)  { return xor16(&cBC, rd16(sda)); }
+  virtual int XOR_rrDE_src(MP)  { return xor16(&cDE, rd16(sda)); }
+  virtual int XOR_rrHL9_src(MP) { return xor16(&cHL, rd16(sda)); }
+  virtual int XOR_rrIX_src(MP)  { return xor16(&cIX, rd16(sda)); }
+  virtual int XOR_rrIY_src(MP)  { return xor16(&cIY, rd16(sda)); }
+  virtual int XOR_rrSP_src(MP)  { return xor16(&cSP, rd16(sda)); }
+  virtual int XOR_rrHLb_src(MP) { return xor16(&cHL, rd16(sda)); }
+  virtual int OR_rrWA_src(MP)   { return or16(&cWA, rd16(sda)); }
+  virtual int OR_rrBC_src(MP)   { return or16(&cBC, rd16(sda)); }
+  virtual int OR_rrDE_src(MP)   { return or16(&cDE, rd16(sda)); }
+  virtual int OR_rrHL9_src(MP)  { return or16(&cHL, rd16(sda)); }
+  virtual int OR_rrIX_src(MP)   { return or16(&cIX, rd16(sda)); }
+  virtual int OR_rrIY_src(MP)   { return or16(&cIY, rd16(sda)); }
+  virtual int OR_rrSP_src(MP)   { return or16(&cSP, rd16(sda)); }
+  virtual int OR_rrHLb_src(MP)  { return or16(&cHL, rd16(sda)); }
+  virtual int CMP_rrWA_src(MP)  { return cmp16(&cWA, rd16(sda)); }
+  virtual int CMP_rrBC_src(MP)  { return cmp16(&cBC, rd16(sda)); }
+  virtual int CMP_rrDE_src(MP)  { return cmp16(&cDE, rd16(sda)); }
+  virtual int CMP_rrHL9_src(MP) { return cmp16(&cHL, rd16(sda)); }
+  virtual int CMP_rrIX_src(MP)  { return cmp16(&cIX, rd16(sda)); }
+  virtual int CMP_rrIY_src(MP)  { return cmp16(&cIY, rd16(sda)); }
+  virtual int CMP_rrSP_src(MP)  { return cmp16(&cSP, rd16(sda)); }
+  virtual int CMP_rrHLb_src(MP) { return cmp16(&cHL, rd16(sda)); }
   // 2 c0 - 2 cf
   virtual int SET_src_0(MP) { return setm(sdc, 0); }
   virtual int SET_src_1(MP) { return setm(sdc, 1); }
@@ -834,11 +1030,14 @@ public:
   virtual int INC_src(MP) { return inc8m(sdc); }
   virtual int SET_src_A(MP) { return setm(sdc, rA&7); }
   virtual int LD_src_A_CF(MP);
+  virtual int ROLD_A_src(MP);
+  virtual int RORD_A_src(MP);
   virtual int DEC_src(MP) { return dec8m(sdc); }
   virtual int LD_dst_n(MP) { return st8(sdc, fetch()); }
   virtual int CPL_src_A(MP) { return cplm(sdc, rA&7); }
   virtual int CLR_src_A(MP) { return clrm(sdc, rA&7); }
   virtual int LD_CF_src_A(MP);
+  virtual int CALL_src(MP) { return call(rd16(sda)); }
   virtual int JP_src(MP) { PC= rd16(sda); return resGO; }
 };
 

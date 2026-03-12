@@ -144,7 +144,7 @@ cl_rxk::PAGE_CB(t_mem code)
 	case 3: return rr  (*destR(z), rR(z));
 	case 4: return sla8(*destR(z), rR(z));
 	case 5: return sra8(*destR(z), rR(z));
-	case 6: return resINV_INST;
+	case 6: return page_cb_6(code);
 	case 7: return srl8(*destR(z), rR(z));
 	}
       break;
@@ -248,7 +248,7 @@ cl_r3ka::instruction_5b(t_mem code)
   ld_r_g(destE(), rE);
   if (!altd)
     {
-      if ((edmr&1) && (rSU&1))
+      if (sysmode && (rSU&1))
 	{
 	  // TODO: set System Violation interrupt flag
 	}

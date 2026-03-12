@@ -41,21 +41,31 @@ cl_simrxk::mk_controller(void)
 
   if ((ct= type_entry("")) == NULL)
     return NULL;
-  
-  switch (ct->type)
+  #define SDCC_ROM_SIZE 0x90000
+  switch (ct->type & ~CPU_RXK_SDCC)
     {
     case CPU_R2K:
-      return(new cl_r2k(this));
+      if (ct->type & CPU_RXK_SDCC)
+	return new cl_r2k(this, SDCC_ROM_SIZE);
+      return new cl_r2k(this);
     case CPU_R3K:
       return(new cl_r3k(this));
     case CPU_R3KA:
+      if (ct->type & CPU_RXK_SDCC)
+	return new cl_r3ka(this, SDCC_ROM_SIZE);
       return(new cl_r3ka(this));
     case CPU_R4K:
-      return(new cl_r4k(this));
+      if (ct->type & CPU_RXK_SDCC)
+	return new cl_r4k(this, SDCC_ROM_SIZE);
+      return new cl_r4k(this);
     case CPU_R5K:
-      return(new cl_r5k(this));
+      if (ct->type & CPU_RXK_SDCC)
+	return new cl_r5k(this, SDCC_ROM_SIZE);
+      return new cl_r5k(this);
     case CPU_R6K:
-      return(new cl_r6k(this));
+      if (ct->type & CPU_RXK_SDCC)
+	return new cl_r6k(this, SDCC_ROM_SIZE);
+      return new cl_r6k(this);
     default:
       return NULL;
     }

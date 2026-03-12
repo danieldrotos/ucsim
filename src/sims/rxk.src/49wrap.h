@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (r5kcl.h)
+ * Simulator of microcontrollers (7fwrap.h)
  *
  * Copyright (C) 2020 Drotos Daniel
  * 
@@ -25,29 +25,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R5KCL_HEADER
-#define R5KCL_HEADER
+#ifndef _49WRAP_HEADER
+#define _49WRAP_HEADER
 
-#include "r4kcl.h"
+#include "iwrap.h"
 
-
-class cl_r5k: public cl_r4k
-{
- public:
-  cl_r5k(class cl_sim *asim);
-  cl_r5k(class cl_sim *asim, t_addr arom_size);
-  virtual const char *id_string(void);
-
-  virtual void tick5p1(int n) { tick(n+1); }
-  virtual void tick5p2(int n) { tick(n+2); }
-  virtual void tick5p3(int n) { tick(n+3); }
-  virtual void tick5p9(int n) { tick(n+9); }
-  virtual void tick5p12(int n) { tick(n+12); }
-  virtual void tick5m1(int n) { tick(n  ); }
-  virtual void tick5m2(int n) { tick(n  ); }
-};
-
+extern void fill_49_wrappers(instruction_wrapper_fn itab[]);
 
 #endif
 
-/* End of rxk.src/r5kcl.h */
+/* End of rxk.src/49wrap.h */

@@ -1498,6 +1498,13 @@ cl_memory_cell::print_operators(const char *pre, class cl_console_base *con)
     }
 }
 
+class cl_memory_cell &
+cl_memory_cell::operator=(t_mem v)
+{
+  write(v);
+  return *this;
+}
+
 
 /*
  * Dummy cell for non-existent addresses

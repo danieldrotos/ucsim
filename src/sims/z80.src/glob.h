@@ -31,7 +31,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 
 extern struct dis_entry disass_z80[];
-
+extern struct dis_entry disass_z180_ed[];
 extern struct dis_entry disass_z80n_ed[];
 extern struct dis_entry disass_z80_ed[];
 extern struct dis_entry disass_z80_cb[];
