@@ -7,6 +7,11 @@
 
 - New device type in mos6502 simulator: huc6280.
 
+- New device type in tlcs simulator: tlcs870c, tlcs870c1
+
+- Implement most of the R6K specific instructions of the Rabbit
+  simulator
+
 
 0.9
 
