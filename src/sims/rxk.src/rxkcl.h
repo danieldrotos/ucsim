@@ -145,7 +145,8 @@ public:
   class cl_memory_cell *XPC;
   t_addr rom_size;
   class cl_ras *mem;
-  class cl_address_space *ioi, *ioe;
+  class cl_ioi *ioi;
+  class cl_address_space *ioe;
   class cl_address_space *rwas;
   bool prefix, altd, atomic;
   u8_t kmode;

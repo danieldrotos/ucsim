@@ -70,6 +70,7 @@ cl_r3ka::reset(void)
 {
   cl_r3k::reset();
   ioi->set(0x420, 0); // edmr
+  ioi->write(0x10, 0); // MMIDR
   sysmode= false;
   //mode3k();  
 }
@@ -282,6 +283,10 @@ cl_r3ka_cpu::write(class cl_memory_cell *cell, t_mem *val)
     return;
   if (cell == mmidr)
     {
+      if (*val & 0x80)
+	ruc->ioi->addr_mask= 0xffff;
+      else
+	ruc->ioi->addr_mask= 0x00ff;
     }
 }
 
