@@ -74,6 +74,13 @@ cl_r3ka::reset(void)
   //mode3k();  
 }
 
+void
+cl_r3ka::make_cpu_hw(void)
+{
+  add_hw(cpu= new cl_r3ka_cpu(this));
+  cpu->init();
+}
+
 struct dis_entry *
 cl_r3ka::dis_entry(t_addr addr)
 {
@@ -247,5 +254,36 @@ cl_r3ka_cpu::cl_r3ka_cpu(class cl_uc *auc):
 {
   r3kauc= (class cl_r3ka *)auc;
 }
+
+int
+cl_r3ka_cpu::init(void)
+{
+  cl_rxk_cpu::init();
+
+  mmidr= register_cell(ruc->ioi, 0x10,
+		      "MMIDR", "MMU Instruction/data Register");
+  return 0;
+}
+
+t_mem
+cl_r3ka_cpu::read(class cl_memory_cell *cell)
+{
+  if (conf(cell, NULL))
+    return cell->get();
+  if (cell == mmidr)
+    return mmidr->get();
+  return cell->get();
+}
+
+void
+cl_r3ka_cpu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (conf(cell, val))
+    return;
+  if (cell == mmidr)
+    {
+    }
+}
+
 
 /* End of rxk.src/r3ka.cc */
