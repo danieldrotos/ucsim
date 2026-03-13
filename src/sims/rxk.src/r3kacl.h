@@ -75,7 +75,15 @@ public:
   virtual int instruction_5b(t_mem code);
 };
 
+class cl_r3ka_cpu: public cl_rxk_cpu
+{
+protected:
+  class cl_r3ka *r3kauc;
+public:
+  cl_r3ka_cpu(class cl_uc *auc);
+};
 
+  
 #endif
 
 /* End of rxk.src/r3kacl.h */
