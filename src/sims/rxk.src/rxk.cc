@@ -197,7 +197,8 @@ cl_rxk::make_memories(void)
   address_spaces->add(as);
 
   /* IO */
-  ioi= as= new cl_ioi("ioi", 0, 0x10000, 8);
+  ioi= new cl_ioi("ioi", 0, 0x10000, 8);
+  as= ioi;
   as->init();
   address_spaces->add(as);
 
