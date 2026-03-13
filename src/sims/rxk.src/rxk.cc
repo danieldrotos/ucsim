@@ -935,6 +935,8 @@ cl_rxk_cpu::cfg_help(t_addr addr)
 void
 cl_rxk_cpu::write(class cl_memory_cell *cell, t_mem *val)
 {
+  if (conf(cell, val))
+    return;
   if (cell == segsize)
     {
       ruc->mem->set_segsize(*val);

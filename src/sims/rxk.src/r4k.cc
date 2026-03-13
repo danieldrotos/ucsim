@@ -879,7 +879,7 @@ cl_r4k_cpu::cl_r4k_cpu(class cl_uc *auc):
 int
 cl_r4k_cpu::init(void)
 {
-  cl_rxk_cpu::init();
+  cl_r3ka_cpu::init();
 
   edmr= register_cell(ruc->ioi, 0x420,
 		      "EDMR", "Enable dual-mode register");
