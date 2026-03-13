@@ -239,4 +239,13 @@ cl_r3ka::print_regs(class cl_console_base *con)
   print_disass(PC, con);
 }
 
+
+/* R3KA CPU */
+
+cl_r3ka_cpu::cl_r3ka_cpu(class cl_uc *auc):
+  cl_rxk_cpu(auc)
+{
+  r3kauc= (class cl_r3ka *)auc;
+}
+
 /* End of rxk.src/r3ka.cc */

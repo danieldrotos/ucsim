@@ -476,7 +476,7 @@ public:
   virtual int PAGE_4K7F(t_mem code);
 };
 
-class cl_r4k_cpu: public cl_rxk_cpu
+class cl_r4k_cpu: public cl_r3ka_cpu
 {
 protected:
   class cl_r4k *r4uc;
