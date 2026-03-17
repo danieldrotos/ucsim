@@ -197,7 +197,8 @@ cl_rxk::make_memories(void)
   address_spaces->add(as);
 
   /* IO */
-  ioi= as= new cl_address_space("ioi", 0, 0x10000, 8);
+  ioi= new cl_ioi("ioi", 0, 0x10000, 8);
+  as= ioi;
   as->init();
   address_spaces->add(as);
 
@@ -935,6 +936,8 @@ cl_rxk_cpu::cfg_help(t_addr addr)
 void
 cl_rxk_cpu::write(class cl_memory_cell *cell, t_mem *val)
 {
+  if (conf(cell, val))
+    return;
   if (cell == segsize)
     {
       ruc->mem->set_segsize(*val);

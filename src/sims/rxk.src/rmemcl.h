@@ -72,6 +72,22 @@ public:
   virtual u8_t get_segsize() { return segsize; }
 };
 
+
+class cl_ioi: public cl_address_space
+{
+public:
+  u16_t addr_mask;
+public:
+  cl_ioi(const char *id, t_addr astart, t_addr asize, int awidth);
+  virtual t_mem read(t_addr addr);
+  virtual t_mem read(t_addr addr, enum hw_cath skip);
+  virtual t_mem get(t_addr addr);
+  virtual t_mem write(t_addr addr, t_mem val);
+  virtual void set(t_addr addr, t_mem val);
+  virtual class cl_memory_cell *get_cell(t_addr addr);
+};
+
+
 #endif
 
 /* End of rxk.src/rmemcl.h */

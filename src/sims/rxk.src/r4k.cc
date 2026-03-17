@@ -870,7 +870,7 @@ cl_r4k::PAGE_4K6D(t_mem code)
  */
 
 cl_r4k_cpu::cl_r4k_cpu(class cl_uc *auc):
-  cl_rxk_cpu(auc)
+  cl_r3ka_cpu(auc)
 {
   r4uc= (class cl_r4k *)auc;
   edmr= new cl_cell8();
@@ -879,7 +879,7 @@ cl_r4k_cpu::cl_r4k_cpu(class cl_uc *auc):
 int
 cl_r4k_cpu::init(void)
 {
-  cl_rxk_cpu::init();
+  cl_r3ka_cpu::init();
 
   edmr= register_cell(ruc->ioi, 0x420,
 		      "EDMR", "Enable dual-mode register");
