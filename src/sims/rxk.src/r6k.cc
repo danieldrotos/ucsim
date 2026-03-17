@@ -921,9 +921,9 @@ cl_r6k::pldd(void)
   u8_t v= mem->pxread(cPY.get());
   pxwriteio(cPX.get(), v);
   cBC.W(cBC.get()-1);
-  u32_t p= px8se(cPX.get(), -1);
+  u32_t p= px8se(cPX.get(), (u8_t)(-1));
   cPX.W(p);
-  p= px8se(cPY.get(), -1);
+  p= px8se(cPY.get(), (u8_t)(-1));
   cPY.W(p);
   // TODO: how to set V?
   cF.W(f);
@@ -957,7 +957,7 @@ cl_r6k::PLDDSR(MP)
     v= mem->pxread(cPY.get());
     pxwriteio(cPX.get(), v);
     cBC.W(bc= cBC.get()-1);
-    p= px8se(cPY.get(), -1);
+    p= px8se(cPY.get(), (u8_t)(-1));
     cPY.W(p);
     tick(6);
   }
@@ -1024,9 +1024,9 @@ cl_r6k::PLSDR(MP)
   do {
     v= pxreadio(cPY.get());
     mem->pxwrite(cPX.get(), v);
-    p= px8se(cPX.get(), -1);
+    p= px8se(cPX.get(), (u8_t)(-1));
     cPX.W(p);
-    p= px8se(cPY.get(), -1);
+    p= px8se(cPY.get(), (u8_t)(-1));
     cPY.W(p);
     cBC.W(bc= cBC.get()-1);
     tick(6);
@@ -1048,7 +1048,7 @@ cl_r6k::PLSDDR(MP)
   do {
     v= pxreadio(cPY.get());
     mem->pxwrite(cPX.get(), v);
-    p= px8se(cPX.get(), -1);
+    p= px8se(cPX.get(), (u8_t)(-1));
     cPX.W(p);
     cBC.W(bc= cBC.get()-1);
     tick(6);
