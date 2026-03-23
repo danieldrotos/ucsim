@@ -85,13 +85,13 @@ cl_r3ka::make_cpu_hw(void)
 struct dis_entry *
 cl_r3ka::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr);
+  u8_t code= rom->read(addr);
   int i;
   struct dis_entry *dt;
 
   if (code == 0xed)
     {
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
 
       dt= disass_pedm3;
       i= 0;
@@ -121,7 +121,7 @@ cl_r3ka::dis_entry(t_addr addr)
 	{
 	  cIR= &cIY;
 	}
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       dt= disass_pddm3;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
@@ -154,10 +154,10 @@ cl_r3ka::dis_entry(t_addr addr)
 char *
 cl_r3ka::disassc(t_addr addr, chars *comment)
 {
-  t_mem code= rom->get(addr);
+  t_mem code= rom->read(addr);
   if (code == 0x5b)
     {
-      if (rom->get(addr-1) != 0x76)
+      if (rom->read(addr-1) != 0x76)
 	return strdup("IDET");
     }
   return cl_r3k::disassc(addr, comment);
