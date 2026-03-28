@@ -2295,18 +2295,6 @@ cl_uc::del_inst_at(t_addr addr)
     rom->set_cell_flag(addr, false, CELL_INST);
 }
 
-bool
-cl_uc::there_is_inst(void)
-{
-  if (!rom)
-    return(0);
-  bool got= false;
-  t_addr addr;
-  for (addr= 0; rom->valid_address(addr) && !got; addr++)
-    got= rom->get_cell_flag(addr, CELL_INST);
-  return(got);
-}
-
 
 /*
  * Manipulating HW elements of the CPU

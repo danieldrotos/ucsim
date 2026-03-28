@@ -599,100 +599,13 @@ CMDHELP(cl_dc_cmd,
  *----------------------------------------------------------------------------
  */
 
-static int disass_last_stop= 0;
-
 //int
 //cl_disassemble_cmd::do_work(class cl_sim *sim,
 //			    class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_disassemble_cmd)
 {
-  t_addr start, realstart;
-  int offset= -1, dir, lines= 20;
-  bool run_analyze= false;
-  class cl_cmd_arg *params[4]= { cmdline->param(0),
-				 cmdline->param(1),
-				 cmdline->param(2),
-				 cmdline->param(3) };
-
-  start= disass_last_stop;
-  if (params[0] == 0) ;
-  else
-    {
-      char *s= (char*)(cmdline->tokens->at(0));
-      if (s && *s && (s[0]=='+'))
-	{
-	  run_analyze= true;
-	}
-      if (cmdline->syntax_match(uc, ADDRESS)) {
-	start= params[0]->value.address;
-      }
-      else if (cmdline->syntax_match(uc, ADDRESS NUMBER)) {
-	start= params[0]->value.address;
-	offset= params[1]->value.number;
-      }
-      else if (cmdline->syntax_match(uc, ADDRESS NUMBER NUMBER)) {
-	start= params[0]->value.address;
-	offset= params[1]->value.number;
-	lines= params[2]->value.number;
-      }
-      else
-	{
-	  syntax_error(con);
-	  return(false);
-	}
-    }
-
-  if (lines < 1)
-    {
-      con->dd_printf("Error: wrong `lines' parameter\n");
-      return(false);
-    }
-  if (run_analyze)
-    uc->analyze(start);
-  if (!uc->there_is_inst())
-    return(false);
-  realstart= start;
-  class cl_address_space *rom= uc->rom;
-  if (!rom)
-    return(false);
-  while (realstart <= rom->highest_valid_address() &&
-	 !uc->inst_at(realstart))
-    realstart= realstart+1;
-  if (offset)
-    {
-      dir= (offset < 0)?-1:+1;
-      while (offset)
-	{
-	  realstart= rom->inc_address(realstart, dir);
-	  while (!uc->inst_at(realstart))
-	    realstart= rom->inc_address(realstart, dir);
-	  offset+= -dir;
-	}
-    }
-  
-  i64_t a, n;
-  a= realstart;
-  while (lines)
-    {
-      int len;
-      t_addr ta, tn;
-      ta= (t_addr)a;
-      uc->print_disass(ta, con);
-      /* fix for #2383: start search next instruction after the actual one */
-      len= uc->inst_length(ta);
-      tn= rom->inc_address(ta, /*+1*/len) + rom->start_address;
-      while (!uc->inst_at(tn))
-        tn= rom->inc_address(tn, +1) + rom->start_address;
-      n= (i64_t)tn;
-      if (n <= a)
-	break;
-      a= n;
-      lines--;
-    }
-
-  disass_last_stop= realstart;
-
-  return(false);;
+  con->dd_printf("Removed command, use \"dc\" instead\n");
+  return false;
 }
 
 CMDHELP(cl_disassemble_cmd,

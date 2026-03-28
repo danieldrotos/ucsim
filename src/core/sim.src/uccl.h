@@ -384,7 +384,6 @@ public:
   virtual bool inst_at(t_addr addr);
   virtual void set_inst_at(t_addr addr);
   virtual void del_inst_at(t_addr addr);
-  virtual bool there_is_inst(void);
 
   // manipulating hw elements
   virtual void add_hw(class cl_hw *hw);
