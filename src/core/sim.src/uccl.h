@@ -378,9 +378,6 @@ public:
   virtual void set_analyzer(bool val);
   virtual t_addr reset_addr(void) { return 0; }
   void analyze_init(void);
-  virtual void analyze_start(void);
-  virtual void analyze(t_addr addr);
-  virtual void analyze_jump(t_addr addr, t_addr target, char type, unsigned int bit = 0);
   virtual bool inst_at(t_addr addr);
   virtual void set_inst_at(t_addr addr);
   virtual void del_inst_at(t_addr addr);
