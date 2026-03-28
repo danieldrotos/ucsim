@@ -212,8 +212,6 @@ COMMAND_DO_WORK_UC(cl_pc_cmd)
 	  if (addr > rom->highest_valid_address())
 	    addr= rom->highest_valid_address();
 	}
-      if (!uc->inst_at(addr))
-	con->dd_printf("Warning: maybe not instruction at 0x%06x\n", AU(addr));
       uc->set_PC(addr);
     }
   uc->print_disass(uc->PC, con);

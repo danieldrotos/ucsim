@@ -2157,38 +2157,6 @@ cl_uc::set_analyzer(bool val)
 
 
 /*
- * Handling instruction map
- *
- * `inst_at' is checking if the specified address is in instruction
- * map and `set_inst_at' marks the address in the map and
- * `del_inst_at' deletes the mark. `there_is_inst' checks if there is
- * any mark in the map
- */
-
-bool
-cl_uc::inst_at(t_addr addr)
-{
-  if (!rom)
-    return(0);
-  return(rom->get_cell_flag(addr, CELL_INST));
-}
-
-void
-cl_uc::set_inst_at(t_addr addr)
-{
-  if (rom)
-    rom->set_cell_flag(addr, true, CELL_INST);
-}
-
-void
-cl_uc::del_inst_at(t_addr addr)
-{
-  if (rom)
-    rom->set_cell_flag(addr, false, CELL_INST);
-}
-
-
-/*
  * Manipulating HW elements of the CPU
  *****************************************************************************
  */
@@ -2423,7 +2391,7 @@ cl_uc::print_disass(t_addr addr, class cl_console_base *con, bool nl)
   cdis= dis;
   len+= con->dd_cprintf("dump_address", rom->addr_format, addr);
   len+= con->dd_cprintf("answer", " %c", (b ? (b->perm == brkFIX ? 'F' : 'D') : ' '));
-  len+= con->dd_cprintf("answer", "%c", inst_at(addr)?' ':'?');
+  len+= con->dd_cprintf("answer", " ");
   l= inst_length(addr);
   for (i= 0; i < l; i++)
     {

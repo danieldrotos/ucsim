@@ -376,9 +376,6 @@ public:
   
   // instructions, code analyzer
   virtual void set_analyzer(bool val);
-  virtual bool inst_at(t_addr addr);
-  virtual void set_inst_at(t_addr addr);
-  virtual void del_inst_at(t_addr addr);
 
   // manipulating hw elements
   virtual void add_hw(class cl_hw *hw);
