@@ -336,19 +336,6 @@ cl_avr::disass(t_addr addr)
 }
 
 void
-cl_avr::analyze_start(void)
-{
-  return;
-}
-
-void
-cl_avr::analyze(t_addr addr)
-{
-  return;
-}
-
-
-void
 cl_avr::print_regs(class cl_console_base *con)
 {
   uchar data, sreg= ram->get(SREG);
