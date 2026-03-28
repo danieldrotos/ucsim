@@ -610,7 +610,7 @@ COMMAND_DO_WORK_UC(cl_disassemble_cmd)
 
 CMDHELP(cl_disassemble_cmd,
 	"disassemble [start [offset [lines]]]",
-	"Disassemble code",
+	"Removed command",
 	"")
 
 /*
@@ -972,41 +972,13 @@ CMDHELP(cl_rmvar_cmd,
 
 COMMAND_DO_WORK_UC(cl_analyze_cmd)
 {
-  if (cmdline->nuof_params() == 0)
-    uc->analyze_init();
-  else
-    for (int i = 0; i < cmdline->nuof_params(); i++)
-      {
-        class cl_cmd_arg *param = cmdline->param(i);
-        if (param)
-          {
-            /*if (param->as_bit(uc))
-              {
-                if (param->value.bit.mem == uc->rom)
-                  uc->analyze(param->value.bit.mem_address);
-                else
-                  {
-                    con->dd_printf("%s[", param->value.bit.mem->get_name());
-                    con->dd_printf(param->value.bit.mem->addr_format, param->value.bit.mem_address);
-                    con->dd_printf("]: addresses to analyze must be in %s\n", uc->rom->get_name());
-                  }
-              }
-            else
-	    con->dd_printf("%s cannot be interpreted as a rom address\n", cmdline->tokens->at(i));*/
-	    t_addr addr;
-	    if (param->get_address(uc, &addr))
-	      {
-		uc->analyze(addr);
-	      }
-          }
-      }
-
+  con->dd_printf("Removed command\n");
   return false;
 }
 
 CMDHELP(cl_analyze_cmd,
 	"analyze [addr...]",
-	"Analyze reachable code globally or from the address(es) given",
+	"Removed command",
 	"")
 
 /* End of cmd.src/cmd_uc.cc */
