@@ -168,7 +168,6 @@ protected:
   virtual struct dis_entry *dis_entry_of(u8_t code);
   virtual char *disassc(t_addr addr, chars *comment);
   virtual int inst_length(t_addr addr);
-  virtual void analyze(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
   virtual i8_t *tick_tab(t_mem code) { return tick_tab20; }
   virtual bool it_enabled(void) { return !in_isr; }
