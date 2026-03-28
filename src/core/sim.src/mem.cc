@@ -1476,8 +1476,6 @@ void
 cl_memory_cell::print_info(const char *pre, class cl_console_base *con)
 {
   con->dd_printf("%sFlags:", pre);
-  if (flags & CELL_INST)
-    con->dd_printf(" INST");
   if (flags & CELL_FETCH_BRK)
     con->dd_printf(" FBRK");
   if (flags & CELL_READ_ONLY)

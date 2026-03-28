@@ -45,14 +45,13 @@ class cl_event_handler;
 // Cell flags
 enum cell_flag {
   CELL_NONE		= 0x00,
-  CELL_INST		= 0x04,	/* Marked as instruction */
   CELL_FETCH_BRK	= 0x08,	/* Fetch breakpoint */
   CELL_READ_ONLY	= 0x10, /* Cell is readonly */
   CELL_NON_DECODED	= 0x40	/* Cell is not decoded (yet) */
 };
 
 
-#define CELL_GENERAL	(CELL_NORMAL|CELL_INST|CELL_FETCH_BRK)
+#define CELL_GENERAL	(CELL_NORMAL|CELL_FETCH_BRK)
 
 extern t_mem def_data;
 
