@@ -1841,11 +1841,6 @@ cl_51core::do_inst(void)
       pre_inst();
       PCsave= PC;
       result= exec_inst();
-      if (analyzer)
-	{
-	  if (result == resGO && !inst_at(PCsave))
-	    analyze(PCsave);
-	}
       post_inst();
     }
   else

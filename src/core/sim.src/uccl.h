@@ -376,8 +376,6 @@ public:
   
   // instructions, code analyzer
   virtual void set_analyzer(bool val);
-  virtual t_addr reset_addr(void) { return 0; }
-  void analyze_init(void);
   virtual bool inst_at(t_addr addr);
   virtual void set_inst_at(t_addr addr);
   virtual void del_inst_at(t_addr addr);

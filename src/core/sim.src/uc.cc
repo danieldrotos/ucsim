@@ -2153,27 +2153,6 @@ void
 cl_uc::set_analyzer(bool val)
 {
   analyzer= val;
-  if (rom)
-    analyze_init();
-}
-
-void
-cl_uc::analyze_init(void)
-{
-  // Forget everything we knew previously.
-  for (t_addr addr = rom->get_start_address(); addr < rom->highest_valid_address(); addr++)
-    del_inst_at(addr);
-
-  t_index i = 0;
-  while (i < vars->by_name.count)
-    {
-      class cl_cvar *v = vars->by_name.at(i);
-      if (*(v->get_name()) == '.')
-        vars->del(v->get_name());
-      else
-        i++;
-    }
-
 }
 
 
@@ -3119,16 +3098,6 @@ cl_uc::do_inst(void)
       if (res == resINV_INST)
 	/* backup to start of instruction */
 	PC= instPC;
-      else
-	{
-	  if (analyzer)
-	    {
-	      if (res == resGO && !inst_at(instPC))
-		{
-		  analyze(instPC);
-		}
-	    }
-	}
     }
   post_inst();
 
