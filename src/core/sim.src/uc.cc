@@ -2075,43 +2075,43 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool just_check)
     }
   if (!application->quiet)
     printf("Loading from %s\n", f->get_file_name());
-  if (is_p2h_file(f))
+  if (f->is_p2h_file())
     {
       l= read_p2h_file(f, just_check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
-  if (is_asc_file(f))
+  if (f->is_asc_file())
     {
       l= read_asc_file(f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
-  if (is_hex_file(f))
+  if (f->is_hex_file())
     {
       l= read_hex_file(f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
-  else if (is_s19_file(f))
+  else if (f->is_s19_file())
     {
       l= read_s19_file(f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
-  else if (is_omf_file(f))
+  else if (f->is_omf_file())
     {
       l= read_omf_file(f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
-  else if (is_cdb_file(f))
+  else if (f->is_cdb_file())
     {
       l= read_cdb_file(f);
       if (!application->quiet)
 	printf("%ld symbols read from %s\n", l, f->get_fname());
     }
-  else if (is_map_file(f))
+  else if (f->is_map_file())
     {
       l= read_map_file(f);
       if (!application->quiet)

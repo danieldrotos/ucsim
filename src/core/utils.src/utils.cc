@@ -233,69 +233,6 @@ valid_sym_name(char *s)
   return true;
 }
 
-
-bool
-filename_has_ext(class cl_f *f, const char *ext)
-{
-  chars n, e= ext;
-  if (!f)
-    return false;
-  n= f->get_file_name();
-  if (n.empty())
-    return false;
-  n.lowercase();
-  e.lowercase();
-  //if (strend(n.c_str(), e.c_str()))
-  if (n.ends_with(e))
-    return true;
-
-  return false;
-}
-
-bool
-is_hex_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".ihx") ||
-    filename_has_ext(f, ".hex") ||
-    filename_has_ext(f, ".ihex") ;
-}
-
-bool
-is_asc_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".asc");
-}
-
-bool
-is_p2h_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".p2h");
-}
-
-bool
-is_omf_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".omf");
-}
-
-bool
-is_cdb_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".cdb");
-}
-
-bool
-is_s19_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".s19");
-}
-
-bool
-is_map_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".map");
-}
-
 /*
   option_name=col_opt:col_opt
 
