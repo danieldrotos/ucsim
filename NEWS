@@ -12,6 +12,8 @@
 - Implement most of the R6K specific instructions of the Rabbit
   simulator
 
+- Code analyzer removed
+
 
 0.9
 
