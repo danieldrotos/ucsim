@@ -40,7 +40,6 @@ extern double app_start_at;
 extern char delimiters[];
 
 extern struct id_element error_type_names[];
-//extern char *case_string(enum letter_case lcase, const char *str);
 
 extern const char *warranty;
 extern const char *copying;

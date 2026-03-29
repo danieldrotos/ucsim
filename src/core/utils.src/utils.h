@@ -53,7 +53,6 @@ extern char *vformat_string(const char *format, va_list ap);
 extern char *format_string(const char *format, ...);
 extern void print_char_octal(char c, FILE *f);
 extern const char *object_name(class cl_base *o);
-extern char *case_string(enum letter_case lcase, const char *str);
 extern chars cbin(long data, int bits);
 
 extern int strispn(char *s, char c);
