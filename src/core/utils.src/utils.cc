@@ -215,24 +215,6 @@ strispn(char *s, char c)
   return p-s;
 }
 
-/* Return true if "search_in" string ends with string "what" */
-
-bool
-strend(const char *search_in, const char *what)
-{
-  if (!search_in ||
-      !what ||
-      !*search_in ||
-      !*what)
-    return false;
-  const char *start= strstr(search_in, what);
-  if (start == NULL)
-    return false;
-  if (start[strlen(what)] == '\0')
-    return true;
-  return false;
-}
-
 bool
 valid_sym_name(char *s)
 {
@@ -263,7 +245,8 @@ filename_has_ext(class cl_f *f, const char *ext)
     return false;
   n.lowercase();
   e.lowercase();
-  if (strend(n.c_str(), e.c_str()))
+  //if (strend(n.c_str(), e.c_str()))
+  if (n.ends_with(e))
     return true;
 
   return false;

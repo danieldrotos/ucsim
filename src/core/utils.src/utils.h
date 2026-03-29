@@ -56,7 +56,6 @@ extern const char *object_name(class cl_base *o);
 extern chars cbin(long data, int bits);
 
 extern int strispn(char *s, char c);
-extern bool strend(const char *search_in, const char *what);
 extern bool valid_sym_name(char *s);
 extern bool filename_has_ext(class cl_f *f, const char *ext);
 extern bool is_hex_file(class cl_f *f);
