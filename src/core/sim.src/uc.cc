@@ -1457,22 +1457,31 @@ ReadInt(cl_f *f, bool *ok, int bytes)
  *
  */
 
-void
-cl_uc::set_rom(class cl_memory *mem, t_addr addr, t_mem val)
+bool
+cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
 {
+  class cl_memory *mem= is->get_mem();
+  if (mem == NULL)
+    return false;
   t_addr size= mem->get_size();
   if (mem->is_chip())
     {
+      if (check)
+	{
+	  return val == mem->get(addr);
+	} 
       mem->set(addr, val);
-      return;
+      return true;
     }
   // address space
   t_addr la= mem->lowest_valid_address();
   t_addr ha= mem->highest_valid_address();
   if ((addr >= la) && (addr <= ha))
     {
+      if (check)
+	return val == rom->read(addr);
       rom->download(addr, val);
-      return;
+      return true;
     }
   t_addr bank, caddr;
   bank= addr / size;
@@ -1482,7 +1491,7 @@ cl_uc::set_rom(class cl_memory *mem, t_addr addr, t_mem val)
     {
       if (!d->is_banker())
 	{
-	  return;
+	  return true;
 	}
       d->switch_to(bank, NULL);
       rom->download(caddr, val);
@@ -1491,6 +1500,7 @@ cl_uc::set_rom(class cl_memory *mem, t_addr addr, t_mem val)
   else
     {
     }
+  return true;
 }
 
 long
@@ -1600,7 +1610,7 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 			{
 			  if (rom->width <= 8)
 			    {
-			      set_rom(rom, base+addr, rec[i]);
+			      set_rom(is, base+addr, rec[i]);
 			      addr++;
 			      written++;
 			    }
@@ -1610,7 +1620,7 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 				{
 				case 0: lows[0]= rec[i]; get_low++; break;
 				case 1: lows[1]= rec[i];
-				  set_rom(rom, base+addr, (lows[1]*256)+lows[0]);
+				  set_rom(is, base+addr, (lows[1]*256)+lows[0]);
 				  addr++;
 				  written++;
 				  get_low= 0;
@@ -1625,7 +1635,7 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 				case 1: lows[1]= rec[i]; get_low++; break;
 				case 2: lows[2]= rec[i]; get_low++; break;
 				case 3: lows[3]= rec[i];
-				  set_rom(rom, base+addr,
+				  set_rom(is, base+addr,
 					  (lows[3]<<24)+
 					  (lows[2]<<16)+
 					  (lows[1]<<8)+
@@ -1687,7 +1697,7 @@ cl_uc::read_omf_file(class cl_inspec *is, cl_f *f)
 	  int i= 3;
 	  while (i < rec.len)
 	    {
-	      set_rom(rom, addr+i, rec.rec[i]);
+	      set_rom(is, addr+i, rec.rec[i]);
 	      written++;
 	      i++;
 	    }
@@ -1724,7 +1734,7 @@ cl_uc::read_asc_file(class cl_inspec *is, cl_f *f)
 		if (isxdigit(*s))
 		  {
 		    t_mem d= chars(s).htoi();//strtoll(s, 0, 16);
-		    set_rom(rom, addr, d);
+		    set_rom(is, addr, d);
 		    addr++;
 		  }
 		line= "";
@@ -1748,7 +1758,7 @@ cl_uc::read_asc_file(class cl_inspec *is, cl_f *f)
 }
 
 long
-cl_uc::read_p2h_file(class cl_inspec *is, cl_f *f, bool just_check)
+cl_uc::read_p2h_file(class cl_inspec *is, cl_f *f, bool check)
 {
   chars line= chars();
   int c;
@@ -1769,7 +1779,7 @@ cl_uc::read_p2h_file(class cl_inspec *is, cl_f *f, bool just_check)
 		{
 		  t_mem v= w1.htoi();//strtol(w1.c_str(), 0, 16);
 		  t_addr a= w3.htoi();//strtol(w3.c_str(), 0, 16);
-		  if (just_check)
+		  if (check)
 		    {
 		      t_mem mv= rom->read(a);
 		      if (mv != v)
@@ -1779,7 +1789,7 @@ cl_uc::read_p2h_file(class cl_inspec *is, cl_f *f, bool just_check)
 			}
 		    }
 		  else
-		    set_rom(rom, a, v);
+		    set_rom(is, a, v);
 		  nr++;		  
 		}
 	    }
@@ -2033,7 +2043,7 @@ static t_addr a32(const char *s, int p)
   return a;
 }
 
-static int s19(class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes)
+static int s19(class cl_inspec *is, class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes)
 {
   int b= 0;
   if (data_bytes < 1)
@@ -2041,7 +2051,7 @@ static int s19(class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes)
   while (b < data_bytes)
     {
       u8_t d= h2(s, p);
-      uc->set_rom(uc->rom, a, d);
+      uc->set_rom(is, a, d);
       a++;
       p+= 2;
       b++;
@@ -2090,17 +2100,17 @@ cl_uc::read_s19_file(class cl_inspec *is, cl_f *f)
 	case '1':
 	  a= a16(s, 4);
 	  p=  8;
-	  written+= s19(this, a, s, p, cnt-2-1);
+	  written+= s19(is, this, a, s, p, cnt-2-1);
 	  break;
 	case '2':
 	  a= a24(s, 4);
 	  p= 10;
-	  written+= s19(this, a, s, p, cnt-3-1);
+	  written+= s19(is, this, a, s, p, cnt-3-1);
 	  break;
 	case '3':
 	  a= a32(s, 4);
 	  p= 12;
-	  written+= s19(this, a, s, p, cnt-4-1);
+	  written+= s19(is, this, a, s, p, cnt-4-1);
 	  break;
 	case '4': break;
 	case '5': break;
@@ -2167,7 +2177,7 @@ cl_uc::find_loadable_file(chars nam)
 }
 
 long
-cl_uc::read_file(chars nam, class cl_console_base *con, bool just_check)
+cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
 {
   class cl_inspec is(nam, this);
   is.init();
@@ -2192,7 +2202,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool just_check)
     printf("Loading from %s\n", f->get_file_name());
   if (f->is_p2h_file())
     {
-      l= read_p2h_file(&is, f, just_check);
+      l= read_p2h_file(&is, f, check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
