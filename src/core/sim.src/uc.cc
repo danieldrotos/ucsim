@@ -1495,6 +1495,8 @@ cl_uc::set_rom(class cl_memory *mem, t_addr addr, t_mem val)
 long
 cl_uc::read_hex_file(const char *nam)
 {
+  class cl_inspec is(nam);
+  chars *n= is.get_file_name();
   cl_f *f;
   
   if (!nam)
@@ -1503,12 +1505,12 @@ cl_uc::read_hex_file(const char *nam)
       return(-1);
     }
   else
-    if ((f= /*fopen*/mk_io(nam, "r")) == NULL)
+    if ((f= /*fopen*/mk_io(*n, "r")) == NULL)
       {
-	fprintf(stderr, "Can't open `%s': %s\n", nam, strerror(errno));
+	fprintf(stderr, "Can't open `%s': %s\n", n->cstr(), strerror(errno));
 	return(-1);
       }
-  long l= read_hex_file(f);
+  long l= read_hex_file(&is, f);
   delete f;
   return l;
 }
@@ -1522,12 +1524,13 @@ cl_uc::read_hex_file(cl_console_base *con)
   f= con->get_fin();
   if (f == NULL)
     return -1;
-  long l= read_hex_file(f);
+  class cl_inspec is;
+  long l= read_hex_file(&is, f);
   return l;
 }
 
 long
-cl_uc::read_hex_file(cl_f *f)
+cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 {
   int c;
   long written= 0, recnum= 0;
@@ -1665,7 +1668,7 @@ cl_uc::read_hex_file(cl_f *f)
 }
 
 long
-cl_uc::read_omf_file(cl_f *f)
+cl_uc::read_omf_file(class cl_inspec *is, cl_f *f)
 {
   long written= 0;
   class cl_omf_rec rec;
@@ -1688,7 +1691,7 @@ cl_uc::read_omf_file(cl_f *f)
 }
 
 long
-cl_uc::read_asc_file(cl_f *f)
+cl_uc::read_asc_file(class cl_inspec *is, cl_f *f)
 {
   int c;
   chars line= chars();
@@ -1739,7 +1742,7 @@ cl_uc::read_asc_file(cl_f *f)
 }
 
 long
-cl_uc::read_p2h_file(cl_f *f, bool just_check)
+cl_uc::read_p2h_file(class cl_inspec *is, cl_f *f, bool just_check)
 {
   chars line= chars();
   int c;
@@ -2041,7 +2044,7 @@ static int s19(class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes)
 }
 
 long
-cl_uc::read_s19_file(cl_f *f)
+cl_uc::read_s19_file(class cl_inspec *is, cl_f *f)
 {
   chars line;
   int cnt;
@@ -2177,31 +2180,31 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool just_check)
     printf("Loading from %s\n", f->get_file_name());
   if (f->is_p2h_file())
     {
-      l= read_p2h_file(f, just_check);
+      l= read_p2h_file(&is, f, just_check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
   if (f->is_asc_file())
     {
-      l= read_asc_file(f);
+      l= read_asc_file(&is, f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
   if (f->is_hex_file())
     {
-      l= read_hex_file(f);
+      l= read_hex_file(&is, f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
   else if (f->is_s19_file())
     {
-      l= read_s19_file(f);
+      l= read_s19_file(&is, f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
   else if (f->is_omf_file())
     {
-      l= read_omf_file(f);
+      l= read_omf_file(&is, f);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }

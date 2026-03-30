@@ -382,19 +382,20 @@ public:
   virtual void remove_chip(class cl_memory *chip);
   
   // file handling
+  virtual cl_f *find_loadable_file(chars nam);
   virtual long read_hex_file(cl_console_base *con);
+  virtual long read_hex_file(const char *nam);
   virtual long read_file(chars nam, class cl_console_base *con, bool just_check= false);
   virtual void set_rom(class cl_memory *mem, t_addr addr, t_mem val);
-  virtual long read_hex_file(const char *nam);
-
-  virtual long read_hex_file(cl_f *f);
-  virtual long read_omf_file(cl_f *f);
-  virtual long read_asc_file(cl_f *f);
-  virtual long read_p2h_file(cl_f *f, bool just_check= false);
+  // content loaders
+  virtual long read_hex_file(class cl_inspec *is, cl_f *f);
+  virtual long read_omf_file(class cl_inspec *is, cl_f *f);
+  virtual long read_asc_file(class cl_inspec *is, cl_f *f);
+  virtual long read_p2h_file(class cl_inspec *is, cl_f *f, bool just_check= false);
+  virtual long read_s19_file(class cl_inspec *is, cl_f *f);
+  // symbol loaders
   virtual long read_cdb_file(cl_f *f);
   virtual long read_map_file(cl_f *f);
-  virtual long read_s19_file(cl_f *f);
-  virtual cl_f *find_loadable_file(chars nam);
   
   // instructions, code analyzer
   virtual void set_analyzer(bool val);
