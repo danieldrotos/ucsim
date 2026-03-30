@@ -1463,6 +1463,7 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
   class cl_memory *mem= is->get_mem();
   if (mem == NULL)
     return false;
+  addr+= is->offset;
   t_addr size= mem->get_size();
   if (mem->is_chip())
     {
