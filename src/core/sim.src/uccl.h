@@ -254,24 +254,28 @@ public:
 };
   
 
+class cl_uc;
+
 /* Input data/file specifier */
 
 class cl_inspec: public cl_base
 {
 public:
+  class cl_uc *uc;
   chars ispec;
   bool inited;
   chars file_name;
   chars mem_name;
   chars offset_name;
   long int offset;
+  class cl_memory *mem;
 public:
-  cl_inspec(void);
-  cl_inspec(chars aspec);
-  virtual int init();
+  cl_inspec(chars aspec, class cl_uc *auc);
+  virtual int init(void);
   virtual chars *get_file_name(void);
   virtual chars *get_mem_name(void);
   virtual long int get_offset(void);
+  virtual class cl_memory *get_mem(void);
 };
 
 

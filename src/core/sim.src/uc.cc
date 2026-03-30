@@ -520,17 +520,7 @@ cl_exec_hist::get_insts()
  * Input specifier: filename, memoryname, offset
  */
 
-cl_inspec::cl_inspec(void)
-{
-  ispec= "";
-  inited= false;
-  file_name= "";
-  mem_name= "";
-  offset_name= "0";
-  offset= 0;
-}
-
-cl_inspec::cl_inspec(chars aspec)
+cl_inspec::cl_inspec(chars aspec, class cl_uc *auc)
 {
   ispec= aspec;
   inited= false;
@@ -538,10 +528,11 @@ cl_inspec::cl_inspec(chars aspec)
   mem_name= "";
   offset_name= "0";
   offset= 0;
+  uc= auc;
 }
 
 int
-cl_inspec::init()
+cl_inspec::init(void)
 {
   if (ispec.empty())
     {      
@@ -557,6 +548,7 @@ cl_inspec::init()
       i++;
       c= ispec.c(i);
     }
+  mem= uc->rom;
   int p= ispec.pos('@');
   if (p >= 0)
     {
@@ -569,6 +561,7 @@ cl_inspec::init()
 	  i++;
 	  c= ispec.c(i);
 	}
+      mem= uc->memory(mem_name);
     }
   offset= 0;
   p= ispec.pos(':');
@@ -614,6 +607,14 @@ cl_inspec::get_offset(void)
   if (!inited)
     init();
   return offset;
+}
+
+class cl_memory *
+cl_inspec::get_mem(void)
+{
+  if (!inited)
+    init();
+  return mem;
 }
 
 
@@ -1495,13 +1496,18 @@ cl_uc::set_rom(class cl_memory *mem, t_addr addr, t_mem val)
 long
 cl_uc::read_hex_file(const char *nam)
 {
-  class cl_inspec is(nam);
+  class cl_inspec is(nam, this);
+  if (is.get_mem() == NULL)
+    {
+      fprintf(stderr, "Memory %s can not be found\n", is.get_mem_name()->cstr());
+      return -1;
+    }
   chars *n= is.get_file_name();
   cl_f *f;
   
   if (!nam)
     {
-      fprintf(stderr, "cl_uc::read_hex_file File name not specified\n");
+      fprintf(stderr, "File name not specified\n");
       return(-1);
     }
   else
@@ -1524,7 +1530,7 @@ cl_uc::read_hex_file(cl_console_base *con)
   f= con->get_fin();
   if (f == NULL)
     return -1;
-  class cl_inspec is;
+  class cl_inspec is("", this);
   long l= read_hex_file(&is, f);
   return l;
 }
@@ -2163,17 +2169,23 @@ cl_uc::find_loadable_file(chars nam)
 long
 cl_uc::read_file(chars nam, class cl_console_base *con, bool just_check)
 {
-  class cl_inspec is(nam);
+  class cl_inspec is(nam, this);
   is.init();
+  if (is.get_mem() == NULL)
+    {
+      con->dd_printf("Memory %s can not be found\n",
+		     is.get_mem_name()->cstr());
+      return 0;
+    }
   cl_f *f= find_loadable_file(*is.get_file_name());
   long l= 0;
   
   if (!f)
     {
       if (con)
-	con->dd_printf("no loadable file found (%s)\n", nam.c_str());
+	con->dd_printf("no loadable file found (%s)\n", is.get_file_name()->c_str());
       else
-	printf("no loadable file found (%s)\n", nam.c_str());
+	printf("no loadable file found (%s)\n", is.get_file_name()->c_str());
       return 0;
     }
   if (!application->quiet)
