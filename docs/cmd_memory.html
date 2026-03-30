@@ -9,16 +9,25 @@
     <h2>Memory manipulation commands of &micro;Csim</h2>
     
     <a name="file">
-      <h3>file,load <i>"file"</i></h3>
+      <h3>file,load <i>"file[@memory][:offset]"</i></h3>
     </a>
 
-    Loads file named file into the simulated code memory. File must contain
-    data in Intel HEX format.
+    Loads named file into the simulated memory. File must contain data
+    in Intel HEX or Motorola s19 format. Filename can be extended with
+    a memory name using @ character. Content of the file is loaded
+    into the specified memory, either an address space or a chip. Code
+    memory of the controller is used by default. If offset parameter
+    is included (appended with : character) it is added to address
+    before value is stored in the memory.
+    
     <pre>&gt; <font color="#118811">file "../../remo.hex"</font>
 55470 words read from ../../remo.hex
 &gt; 
-</pre> Don't forget to enclose file name in quotes to make the parameter to be a
-    string.
+    </pre>
+
+    Don't forget to enclose file name in quotes to make the parameter
+    to be a string.
+    
     <hr> <a name="dl">
       <h3>download,dl</h3>
     </a> Download command. It is same as <a href="#l">load</a> above but it
