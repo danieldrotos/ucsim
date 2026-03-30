@@ -307,6 +307,23 @@ chars::replace(const char *any_in_set, char with)
 }
 
 void
+chars::replace(chars what, chars with)
+{
+  int p= pos(what);
+  if (p < 0)
+    return;
+  int e= p+what.len();
+  int nl= chars_length - what.len()+with.len();
+  char *b= (char*)malloc(nl+1);
+  strcpy(b, chars_string);
+  b[p]= 0;
+  strcat(b, with.cstr());
+  strcat(b, &chars_string[e]);
+  allocate_string(b);
+  free(b);
+}
+
+void
 chars::keep(int start, int maxlen)
 {
   if (!chars_string)

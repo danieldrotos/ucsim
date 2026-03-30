@@ -118,7 +118,7 @@ main(int argc, char *argv[])
       fprintf(stderr, "\n%f MFlop ", fd);
       fprintf(stderr, "%f kips\n", id);
     }
-  
+
   ret= application->run();
   application->done();
   return(ret);

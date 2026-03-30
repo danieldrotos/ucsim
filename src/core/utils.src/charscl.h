@@ -69,6 +69,7 @@ public:
   void uppercase(void);
   void lowercase(void);
   void replace(const char *any_in_set, char with);
+  void replace(chars what, chars with);
   void keep(int start, int maxlen);
   void ltrim(void);
   void rtrim(void);
