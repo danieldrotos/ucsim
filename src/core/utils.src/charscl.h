@@ -89,6 +89,7 @@ public:
   // search
   bool starts_with(const char *x) const;
   bool starts_with(chars x) const;
+  bool ends_with(chars x) const;
   bool contains(const char *x) const;
   bool contains(chars x) const;
   bool icontains(const char *x) const;

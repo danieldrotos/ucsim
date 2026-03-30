@@ -440,45 +440,6 @@ CLP2::disassc(t_addr addr, chars *comment)
   return strdup(work.c_str());
 }
 
-/*
-void
-CLP2::analyze_start(void)
-{
-}
-*/
-
-void
-CLP2::analyze(t_addr addr)
-{
-  struct dis_entry *de;
-  int i;
-  
-  while (!inst_at(addr))
-    {
-      t_mem code= rom->read(addr);
-      i= 0;
-      while ((code & dis_tbl()[i].mask) != dis_tbl()[i].code &&
-	     dis_tbl()[i].mnemonic)
-	i++;
-      de= &dis_tbl()[i];
-      if (de->mnemonic == NULL)
-	return;
-      set_inst_at(addr);
-      if (de->branch!=' ')
-	switch (de->branch)
-	  {
-	  case 'x': case '_': // non-followable
-	    return;
-	  case 'M': // LDL0 r15,#imm
-	    {
-	      t_addr target= rom->read(addr) & 0xffff;
-	      analyze_jump(addr, target, de->branch);
-	      break;
-	    }
-	  }
-      addr= rom->validate_address(addr+1);
-    }
-}
 
 t_addr
 CLP2::next_inst(t_addr addr)

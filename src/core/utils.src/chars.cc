@@ -543,6 +543,20 @@ chars::starts_with(chars x) const
 }
 
 bool
+chars::ends_with(chars x) const
+{
+  if (empty() ||
+      x.empty())
+    return false;
+  const char *start= strstr(chars_string, x.cstr());
+  if (start == NULL)
+    return false;
+  if (start[x.len()] == '\0')
+    return true;
+  return false;
+}
+
+bool
 chars::contains(const char *x) const
 {
   if (empty() ||

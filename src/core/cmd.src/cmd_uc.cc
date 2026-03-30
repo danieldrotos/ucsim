@@ -212,8 +212,6 @@ COMMAND_DO_WORK_UC(cl_pc_cmd)
 	  if (addr > rom->highest_valid_address())
 	    addr= rom->highest_valid_address();
 	}
-      if (!uc->inst_at(addr))
-	con->dd_printf("Warning: maybe not instruction at 0x%06x\n", AU(addr));
       uc->set_PC(addr);
     }
   uc->print_disass(uc->PC, con);
@@ -599,105 +597,18 @@ CMDHELP(cl_dc_cmd,
  *----------------------------------------------------------------------------
  */
 
-static int disass_last_stop= 0;
-
 //int
 //cl_disassemble_cmd::do_work(class cl_sim *sim,
 //			    class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_disassemble_cmd)
 {
-  t_addr start, realstart;
-  int offset= -1, dir, lines= 20;
-  bool run_analyze= false;
-  class cl_cmd_arg *params[4]= { cmdline->param(0),
-				 cmdline->param(1),
-				 cmdline->param(2),
-				 cmdline->param(3) };
-
-  start= disass_last_stop;
-  if (params[0] == 0) ;
-  else
-    {
-      char *s= (char*)(cmdline->tokens->at(0));
-      if (s && *s && (s[0]=='+'))
-	{
-	  run_analyze= true;
-	}
-      if (cmdline->syntax_match(uc, ADDRESS)) {
-	start= params[0]->value.address;
-      }
-      else if (cmdline->syntax_match(uc, ADDRESS NUMBER)) {
-	start= params[0]->value.address;
-	offset= params[1]->value.number;
-      }
-      else if (cmdline->syntax_match(uc, ADDRESS NUMBER NUMBER)) {
-	start= params[0]->value.address;
-	offset= params[1]->value.number;
-	lines= params[2]->value.number;
-      }
-      else
-	{
-	  syntax_error(con);
-	  return(false);
-	}
-    }
-
-  if (lines < 1)
-    {
-      con->dd_printf("Error: wrong `lines' parameter\n");
-      return(false);
-    }
-  if (run_analyze)
-    uc->analyze(start);
-  if (!uc->there_is_inst())
-    return(false);
-  realstart= start;
-  class cl_address_space *rom= uc->rom;
-  if (!rom)
-    return(false);
-  while (realstart <= rom->highest_valid_address() &&
-	 !uc->inst_at(realstart))
-    realstart= realstart+1;
-  if (offset)
-    {
-      dir= (offset < 0)?-1:+1;
-      while (offset)
-	{
-	  realstart= rom->inc_address(realstart, dir);
-	  while (!uc->inst_at(realstart))
-	    realstart= rom->inc_address(realstart, dir);
-	  offset+= -dir;
-	}
-    }
-  
-  i64_t a, n;
-  a= realstart;
-  while (lines)
-    {
-      int len;
-      t_addr ta, tn;
-      ta= (t_addr)a;
-      uc->print_disass(ta, con);
-      /* fix for #2383: start search next instruction after the actual one */
-      len= uc->inst_length(ta);
-      tn= rom->inc_address(ta, /*+1*/len) + rom->start_address;
-      while (!uc->inst_at(tn))
-        tn= rom->inc_address(tn, +1) + rom->start_address;
-      n= (i64_t)tn;
-      if (n <= a)
-	break;
-      a= n;
-      lines--;
-    }
-
-  disass_last_stop= realstart;
-
-  return(false);;
+  con->dd_printf("Removed command, use \"dc\" instead\n");
+  return false;
 }
 
 CMDHELP(cl_disassemble_cmd,
 	"disassemble [start [offset [lines]]]",
-	"Disassemble code",
+	"Removed command",
 	"")
 
 /*
@@ -1059,41 +970,13 @@ CMDHELP(cl_rmvar_cmd,
 
 COMMAND_DO_WORK_UC(cl_analyze_cmd)
 {
-  if (cmdline->nuof_params() == 0)
-    uc->analyze_init();
-  else
-    for (int i = 0; i < cmdline->nuof_params(); i++)
-      {
-        class cl_cmd_arg *param = cmdline->param(i);
-        if (param)
-          {
-            /*if (param->as_bit(uc))
-              {
-                if (param->value.bit.mem == uc->rom)
-                  uc->analyze(param->value.bit.mem_address);
-                else
-                  {
-                    con->dd_printf("%s[", param->value.bit.mem->get_name());
-                    con->dd_printf(param->value.bit.mem->addr_format, param->value.bit.mem_address);
-                    con->dd_printf("]: addresses to analyze must be in %s\n", uc->rom->get_name());
-                  }
-              }
-            else
-	    con->dd_printf("%s cannot be interpreted as a rom address\n", cmdline->tokens->at(i));*/
-	    t_addr addr;
-	    if (param->get_address(uc, &addr))
-	      {
-		uc->analyze(addr);
-	      }
-          }
-      }
-
+  con->dd_printf("Removed command\n");
   return false;
 }
 
 CMDHELP(cl_analyze_cmd,
 	"analyze [addr...]",
-	"Analyze reachable code globally or from the address(es) given",
+	"Removed command",
 	"")
 
 /* End of cmd.src/cmd_uc.cc */

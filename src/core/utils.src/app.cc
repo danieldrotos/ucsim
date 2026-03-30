@@ -461,7 +461,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 {
   int i, c;
   char opts[100], *cp, *subopts, *value;
-  char *cpu_type= NULL;
+  chars cpu_type;
   bool /*s_done= false,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
@@ -614,17 +614,16 @@ cl_app::proc_arguments(int argc, char *argv[])
 	break;
       case 't':
 	{
-	  if (cpu_type)
-	    free(cpu_type);
-	  cpu_type= case_string(case_upper, optarg);
-	  if (!options->set_value("cpu_type", this, /*optarg*/cpu_type))
+	  cpu_type= optarg;
+	  cpu_type.uppercase();
+	  if (!options->set_value("cpu_type", this, cpu_type.cstr()))
 	    fprintf(stderr, "Warning: No \"cpu_type\" option found to set "
 		    "parameter of -t as type of controller\n");
 	  if (cpus)
 	    {
 	      int i= 0;
 	      while ((cpus[i].type_str != NULL) &&
-		     (strcasecmp(cpu_type, cpus[i].type_str) != 0))
+		     !cpu_type.iequal(cpus[i].type_str))
 		i++;
 	      if (cpus[i].type_str == NULL)
 		{

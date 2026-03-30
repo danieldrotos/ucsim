@@ -370,6 +370,19 @@ cl_f::stop_use(void)
   return 0;
 }
 
+bool
+cl_f::filename_has_ext(chars ext)
+{
+  if (file_name.empty())
+    return false;
+  chars n= file_name;
+  n.lowercase();
+  ext.lowercase();
+  if (n.ends_with(ext))
+    return true;
+  return false;
+}
+
 cl_f::~cl_f(void)
 {
   delete hist;

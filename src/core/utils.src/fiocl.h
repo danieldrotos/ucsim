@@ -153,6 +153,20 @@ class cl_f: public cl_base
   virtual const char *get_file_name() { return file_name; };
   virtual const char *get_fname() { return file_name; };
   virtual class cl_f *get_echo_to() { return echo_to; }
+  virtual bool filename_has_ext(chars ext);
+  virtual bool is_hex_file() {
+    return
+      filename_has_ext(".ihx") ||
+      filename_has_ext(".hex") ||
+      filename_has_ext(".ihex");
+  }
+  virtual bool is_asc_file() {return filename_has_ext(".asc");} 
+  virtual bool is_p2h_file() {return filename_has_ext(".p2h");}
+  virtual bool is_omf_file() {return filename_has_ext(".omf");}
+  virtual bool is_cdb_file() {return filename_has_ext(".cdb");}
+  virtual bool is_s19_file() {return filename_has_ext(".s19");}
+  virtual bool is_map_file() {return filename_has_ext(".map");}
+
  protected:
   virtual int put(int c);
   virtual int get(void);
