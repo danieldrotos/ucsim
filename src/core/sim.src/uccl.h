@@ -385,8 +385,8 @@ public:
   virtual long read_hex_file(cl_console_base *con);
   virtual long read_file(chars nam, class cl_console_base *con, bool just_check= false);
   virtual void set_rom(class cl_memory *mem, t_addr addr, t_mem val);
-protected:
   virtual long read_hex_file(const char *nam);
+
   virtual long read_hex_file(cl_f *f);
   virtual long read_omf_file(cl_f *f);
   virtual long read_asc_file(cl_f *f);
@@ -395,7 +395,6 @@ protected:
   virtual long read_map_file(cl_f *f);
   virtual long read_s19_file(cl_f *f);
   virtual cl_f *find_loadable_file(chars nam);
-public:
   
   // instructions, code analyzer
   virtual void set_analyzer(bool val);

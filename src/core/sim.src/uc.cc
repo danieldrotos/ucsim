@@ -525,8 +525,9 @@ cl_inspec::cl_inspec(void)
   ispec= "";
   inited= false;
   file_name= "";
-  mem_name= "rom";
+  mem_name= "";
   offset_name= "0";
+  offset= 0;
 }
 
 cl_inspec::cl_inspec(chars aspec)
@@ -534,8 +535,9 @@ cl_inspec::cl_inspec(chars aspec)
   ispec= aspec;
   inited= false;
   file_name= "";
-  mem_name= "rom";
+  mem_name= "";
   offset_name= "0";
+  offset= 0;
 }
 
 int
@@ -568,6 +570,7 @@ cl_inspec::init()
 	  c= ispec.c(i);
 	}
     }
+  offset= 0;
   p= ispec.pos(':');
   if (p >= 0)
     {
@@ -580,7 +583,10 @@ cl_inspec::init()
 	  i++;
 	  c= ispec.c(i);
 	}
-      offset= strtol(offset_name.cstr(), 0, 0);
+      if (offset_name.empty())
+	offset= 0;
+      else
+	offset= strtol(offset_name.cstr(), 0, 0);
     }
   inited= true;
   return 0;
@@ -746,17 +752,6 @@ cl_uc::init(void)
   //reset();
 
   return 0;
-  for (i= 0; i < sim->app->in_files->count; i++)
-    {
-      const char *fname= (const char *)(sim->app->in_files->at(i));
-      long l;
-      if ((l= read_hex_file(fname)) >= 0)
-	{
-	  /*sim->app->get_commander()->all_*/printf("%ld words read from %s\n",
-						l, fname);
-	}
-    }
-  return(0);
 }
 
 const char *
