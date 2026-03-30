@@ -517,6 +517,101 @@ cl_exec_hist::get_insts()
 
 
 /*
+ * Input specifier: filename, memoryname, offset
+ */
+
+cl_inspec::cl_inspec(void)
+{
+  ispec= "";
+  inited= false;
+  file_name= "";
+  mem_name= "rom";
+  offset_name= "0";
+}
+
+cl_inspec::cl_inspec(chars aspec)
+{
+  ispec= aspec;
+  inited= false;
+  file_name= "";
+  mem_name= "rom";
+  offset_name= "0";
+}
+
+int
+cl_inspec::init()
+{
+  if (ispec.empty())
+    {      
+      return 0;
+    }
+  file_name= "";
+  int i= 0;
+  char c;
+  c= ispec.c(i);
+  while ((c != 0) && (c != '@') && (c != ':'))
+    {
+      file_name+= c;
+      i++;
+      c= ispec.c(i);
+    }
+  int p= ispec.pos('@');
+  if (p >= 0)
+    {
+      mem_name= "";
+      i= p+1;
+      c= ispec.c(i);
+      while ((c != 0) && (c != '@') && (c != ':'))
+	{
+	  mem_name+= c;
+	  i++;
+	  c= ispec.c(i);
+	}
+    }
+  p= ispec.pos(':');
+  if (p >= 0)
+    {
+      offset_name= "";
+      i= p+1;
+      c= ispec.c(i);
+      while ((c != 0) && (c != '@') && (c != ':'))
+	{
+	  offset_name+= c;
+	  i++;
+	  c= ispec.c(i);
+	}
+      offset= strtol(offset_name.cstr(), 0, 0);
+    }
+  inited= true;
+  return 0;
+}
+
+chars *
+cl_inspec::get_file_name(void)
+{
+  if (!inited)
+    init();
+  return &file_name;
+}
+
+chars *
+cl_inspec::get_mem_name(void)
+{
+  if (!inited)
+    init();
+  return &mem_name;
+}
+
+long int
+cl_inspec::get_offset(void)
+{
+  if (!inited)
+    init();
+  return offset;
+}
+
+
+/*
  * Abstract microcontroller
  ******************************************************************************
  */
@@ -1367,10 +1462,18 @@ ReadInt(cl_f *f, bool *ok, int bytes)
  */
 
 void
-cl_uc::set_rom(t_addr addr, t_mem val)
+cl_uc::set_rom(class cl_memory *mem, t_addr addr, t_mem val)
 {
-  t_addr size= rom->get_size();
-  if (addr < size)
+  t_addr size= mem->get_size();
+  if (mem->is_chip())
+    {
+      mem->set(addr, val);
+      return;
+    }
+  // address space
+  t_addr la= mem->lowest_valid_address();
+  t_addr ha= mem->highest_valid_address();
+  if ((addr >= la) && (addr <= ha))
     {
       rom->download(addr, val);
       return;
@@ -1493,7 +1596,7 @@ cl_uc::read_hex_file(cl_f *f)
 			{
 			  if (rom->width <= 8)
 			    {
-			      set_rom(base+addr, rec[i]);
+			      set_rom(rom, base+addr, rec[i]);
 			      addr++;
 			      written++;
 			    }
@@ -1503,7 +1606,7 @@ cl_uc::read_hex_file(cl_f *f)
 				{
 				case 0: lows[0]= rec[i]; get_low++; break;
 				case 1: lows[1]= rec[i];
-				  set_rom(base+addr, (lows[1]*256)+lows[0]);
+				  set_rom(rom, base+addr, (lows[1]*256)+lows[0]);
 				  addr++;
 				  written++;
 				  get_low= 0;
@@ -1518,7 +1621,7 @@ cl_uc::read_hex_file(cl_f *f)
 				case 1: lows[1]= rec[i]; get_low++; break;
 				case 2: lows[2]= rec[i]; get_low++; break;
 				case 3: lows[3]= rec[i];
-				  set_rom(base+addr,
+				  set_rom(rom, base+addr,
 					  (lows[3]<<24)+
 					  (lows[2]<<16)+
 					  (lows[1]<<8)+
@@ -1580,7 +1683,7 @@ cl_uc::read_omf_file(cl_f *f)
 	  int i= 3;
 	  while (i < rec.len)
 	    {
-	      set_rom(addr+i, rec.rec[i]);
+	      set_rom(rom, addr+i, rec.rec[i]);
 	      written++;
 	      i++;
 	    }
@@ -1617,7 +1720,7 @@ cl_uc::read_asc_file(cl_f *f)
 		if (isxdigit(*s))
 		  {
 		    t_mem d= chars(s).htoi();//strtoll(s, 0, 16);
-		    set_rom(addr, d);
+		    set_rom(rom, addr, d);
 		    addr++;
 		  }
 		line= "";
@@ -1672,7 +1775,7 @@ cl_uc::read_p2h_file(cl_f *f, bool just_check)
 			}
 		    }
 		  else
-		    set_rom(a, v);
+		    set_rom(rom, a, v);
 		  nr++;		  
 		}
 	    }
@@ -1934,7 +2037,7 @@ static int s19(class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes)
   while (b < data_bytes)
     {
       u8_t d= h2(s, p);
-      uc->set_rom(a, d);
+      uc->set_rom(uc->rom, a, d);
       a++;
       p+= 2;
       b++;
@@ -2062,7 +2165,9 @@ cl_uc::find_loadable_file(chars nam)
 long
 cl_uc::read_file(chars nam, class cl_console_base *con, bool just_check)
 {
-  cl_f *f= find_loadable_file(nam);
+  class cl_inspec is(nam);
+  is.init();
+  cl_f *f= find_loadable_file(*is.get_file_name());
   long l= 0;
   
   if (!f)
