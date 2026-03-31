@@ -83,10 +83,11 @@ public:
   void start_parse(int at) { pars_pos= at; }
   chars token(const char *delims);
   chars substr(int start, int len) const;
-  unsigned int htoi(void) const;
-  unsigned long long int htoll(void) const;
-  long int lint(void) const;
-  long int lint(int base) const;
+  unsigned int htoi(void) const; // hex string to int
+  unsigned long long int htoll(void) const; // hex string to Lint
+  long int toi(void) const; // c-style + 0{b,o,d,x} prefixes
+  long int lint(void) const; // decimal number to int
+  long int lint(int base) const; // number to int (0=c-style)
   // search
   bool starts_with(const char *x) const;
   bool starts_with(chars x) const;
