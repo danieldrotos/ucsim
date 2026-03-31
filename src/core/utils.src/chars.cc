@@ -424,7 +424,7 @@ chars::rrip(int nuof_chars)
  */
 
 chars
-chars::token(const char *delims) const
+chars::token(const char *delims)
 {
   chars c= (char*)NULL;
 
@@ -460,7 +460,7 @@ chars::token(const char *delims) const
 }
 
 chars
-chars::substr(int start, int len)
+chars::substr(int start, int len) const
 {
   chars c= (char*)NULL;
   if (empty() || (start >= chars_length))

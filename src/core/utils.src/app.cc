@@ -929,7 +929,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	}
       case 'o':
 	{
-	  const chars s= optarg;
+	  chars s= optarg;
 	  chars opt= s.token(",");
 	  while (opt.nempty())
 	    {
