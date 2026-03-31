@@ -254,6 +254,31 @@ public:
 };
   
 
+class cl_uc;
+
+/* Input data/file specifier */
+
+class cl_inspec: public cl_base
+{
+public:
+  class cl_uc *uc;
+  chars ispec;
+  bool inited;
+  chars file_name;
+  chars mem_name;
+  chars offset_name;
+  long int offset;
+  class cl_memory *mem;
+public:
+  cl_inspec(chars aspec, class cl_uc *auc);
+  virtual int init(void);
+  virtual chars *get_file_name(void);
+  virtual chars *get_mem_name(void);
+  virtual long int get_offset(void);
+  virtual class cl_memory *get_mem(void);
+};
+
+
 /* Abstract microcontroller */
 
 class cl_uc: public /*cl_base*/cl_itab
@@ -361,30 +386,23 @@ public:
   virtual void remove_chip(class cl_memory *chip);
   
   // file handling
-  virtual void set_rom(t_addr addr, t_mem val);
-  virtual long read_hex_file(const char *nam);
+  virtual cl_f *find_loadable_file(chars nam);
   virtual long read_hex_file(cl_console_base *con);
-  virtual long read_hex_file(cl_f *f);
-  virtual long read_omf_file(cl_f *f);
-  virtual long read_asc_file(cl_f *f);
-  virtual long read_p2h_file(cl_f *f, bool just_check= false);
+  virtual long read_hex_file(const char *nam);
+  virtual long read_file(chars nam, class cl_console_base *con, bool check= false);
+  virtual bool set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check= false);
+  // content loaders
+  virtual long read_hex_file(class cl_inspec *is, cl_f *f);
+  virtual long read_omf_file(class cl_inspec *is, cl_f *f);
+  virtual long read_asc_file(class cl_inspec *is, cl_f *f);
+  virtual long read_p2h_file(class cl_inspec *is, cl_f *f, bool check= false);
+  virtual long read_s19_file(class cl_inspec *is, cl_f *f);
+  // symbol loaders
   virtual long read_cdb_file(cl_f *f);
   virtual long read_map_file(cl_f *f);
-  virtual long read_s19_file(cl_f *f);
-  virtual cl_f *find_loadable_file(chars nam);
-  virtual long read_file(chars nam, class cl_console_base *con, bool just_check= false);
   
   // instructions, code analyzer
   virtual void set_analyzer(bool val);
-  virtual t_addr reset_addr(void) { return 0; }
-  void analyze_init(void);
-  virtual void analyze_start(void);
-  virtual void analyze(t_addr addr);
-  virtual void analyze_jump(t_addr addr, t_addr target, char type, unsigned int bit = 0);
-  virtual bool inst_at(t_addr addr);
-  virtual void set_inst_at(t_addr addr);
-  virtual void del_inst_at(t_addr addr);
-  virtual bool there_is_inst(void);
 
   // manipulating hw elements
   virtual void add_hw(class cl_hw *hw);

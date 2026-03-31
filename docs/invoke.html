@@ -40,7 +40,7 @@
       nr] [-c file] [-C cfg_file] [-e command] [-I if_optionlist] [-k
       portnum] [-o colorlist] [-p prompt] [-R seed]\n [-s file] [-S
       optionlist] [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]]\n [-z
-      portnum] [-Z portnum] [files...]</tt> </p>
+      portnum] [-Z portnum] [file[@memory][:offset]...]</tt> </p>
     
     <p>Specified files must be names of Intel hex or Motorola S19
       files. Some simulators may accept some other file formats, for
@@ -48,12 +48,20 @@
       of
       the <a href="https://danieldrotos.github.io/p12dev/">development
       system</a>. Simulator loads the files in the specified order
-      into the ROM of the simulated system. If the file is specified
+      into the memory of the simulated system. If the file is specified
       without extension, the simulator will try to find intel hex file
       (filename extended with .hex), omf file (with .omf) and cdb file
       (with .cdb extension). Simulator can interpret content of
       these <a href="https://sdcc.sourceforge.net/">SDCC</a> output
       files and reads information from them.</p>
+
+    <p>There can be a memory name (either address space or chip)
+    appended to the filename using @ character. Content of the file
+    will be loaded into the specified memory. If offset parameter is
+    specified (appended to input specification with : character), the
+    simulator will add the specified offset to address before storing
+    data into the simulated memory. Offset can be a signed number in
+    decimal, hexadecimal or octal form.</p>
     
     <p>Options: </p>
 

@@ -1075,7 +1075,6 @@ cl_pblaze::read_hex_file(const char *nam)
   else
     ret = std_read_hex_file(nam);
 
-  analyze_init();
   return ret;
 }
 

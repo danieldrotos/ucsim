@@ -92,7 +92,7 @@ main(int argc, char *argv[])
   class cl_sim *sim;
   volatile double fd, id;
   unsigned int i= 0;
-  
+
   app_start_at= dnow();
   {
     fd= 0;
@@ -107,17 +107,18 @@ main(int argc, char *argv[])
   if (sim->init())
     sim->state|= SIM_QUIT;
   application->set_simulator(sim);
-  /*
-  {
-    id= dnow();
-    i= 0;
-    while (++i < 1000000) sim->step();
-    id= dnow() - id;
-    id= (1.0*1000)/id;
-    fprintf(stderr, "\n%f MFlop ", fd);
-    fprintf(stderr, "%f kips\n", id);
-  }
-  */
+
+  if (application->measure_speed)
+    {
+      id= dnow();
+      i= 0;
+      while (++i < 1000000) sim->step();
+      id= dnow() - id;
+      id= (1.0*1000)/id;
+      fprintf(stderr, "\n%f MFlop ", fd);
+      fprintf(stderr, "%f kips\n", id);
+    }
+
   ret= application->run();
   application->done();
   return(ret);

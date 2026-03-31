@@ -101,6 +101,7 @@ public:
   enum hw_cath con_hw_cath;
   int con_hw_id;
   chars con_hw_name;
+  bool measure_speed;
 public:
   cl_app(void);
   virtual ~cl_app(void);

@@ -83,6 +83,7 @@ cl_app::cl_app(void)
   con_hw_cath= HW_DUMMY;
   con_hw_id= -1;
   con_hw_name= "";
+  measure_speed= 0;
 }
 
 cl_app::~cl_app(void)
@@ -348,6 +349,10 @@ print_help(const char *name)
 	 "       [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]] " ZOPT "\n"
 	 "\n"
 	 "       [files...]\n", name);
+  /*
+    -D devopt   Options for developers only
+       		cpu_speed Measure and print speed of machine
+  */
   printf
     (
      /*
@@ -440,16 +445,27 @@ static const char *I_opts[]= {
   NULL
 };
 
+enum {
+  DOPT_CPU_SPEED= 0,
+  DOPT_ERROR
+};
+
+static const char *D_opts[]= {
+  /*DOPT_CPU_SPPED*/	"cpu_speed",
+  NULL
+};
+
+
 int
 cl_app::proc_arguments(int argc, char *argv[])
 {
   int i, c;
   char opts[100], *cp, *subopts, *value;
-  char *cpu_type= NULL;
+  chars cpu_type;
   bool /*s_done= false,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
 
-  strcpy(opts, "qc:C:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:u:_");
+  strcpy(opts, "qc:C:D:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:u:_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:z:d:");
 #endif
@@ -598,17 +614,16 @@ cl_app::proc_arguments(int argc, char *argv[])
 	break;
       case 't':
 	{
-	  if (cpu_type)
-	    free(cpu_type);
-	  cpu_type= case_string(case_upper, optarg);
-	  if (!options->set_value("cpu_type", this, /*optarg*/cpu_type))
+	  cpu_type= optarg;
+	  cpu_type.uppercase();
+	  if (!options->set_value("cpu_type", this, cpu_type.cstr()))
 	    fprintf(stderr, "Warning: No \"cpu_type\" option found to set "
 		    "parameter of -t as type of controller\n");
 	  if (cpus)
 	    {
 	      int i= 0;
 	      while ((cpus[i].type_str != NULL) &&
-		     (strcasecmp(cpu_type, cpus[i].type_str) != 0))
+		     !cpu_type.iequal(cpus[i].type_str))
 		i++;
 	      if (cpus[i].type_str == NULL)
 		{
@@ -668,6 +683,31 @@ cl_app::proc_arguments(int argc, char *argv[])
 	rgdb_port= strtol(optarg, 0, 0);
 	break;
 #endif
+      case 'D':
+	{
+	  int so;
+	  subopts= optarg;
+	  while (*subopts != 0)
+	    {
+	      so= get_sub_opt(&subopts, D_opts, &value);
+	      switch (so)
+		{
+		case DOPT_ERROR:
+		  fprintf(stderr, "No value for -D suboption\n");
+		  exit(1);
+		  break;
+		case DOPT_CPU_SPEED:
+		  measure_speed= 1;
+		  break;
+		default:
+		  /* Unknown suboption. */
+		  fprintf(stderr, "Unknown suboption `%s' for -D\n", value);
+		  exit(1);
+		  break;
+		}
+	    }
+	  break;
+	}
       case 'S':
 	{
 	  char *iname= NULL, *oname= NULL;

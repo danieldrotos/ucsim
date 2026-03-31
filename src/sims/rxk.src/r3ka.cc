@@ -70,20 +70,28 @@ cl_r3ka::reset(void)
 {
   cl_r3k::reset();
   ioi->set(0x420, 0); // edmr
+  ioi->write(0x10, 0); // MMIDR
   sysmode= false;
   //mode3k();  
+}
+
+void
+cl_r3ka::make_cpu_hw(void)
+{
+  add_hw(cpu= new cl_r3ka_cpu(this));
+  cpu->init();
 }
 
 struct dis_entry *
 cl_r3ka::dis_entry(t_addr addr)
 {
-  u8_t code= rom->get(addr);
+  u8_t code= rom->read(addr);
   int i;
   struct dis_entry *dt;
 
   if (code == 0xed)
     {
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
 
       dt= disass_pedm3;
       i= 0;
@@ -113,7 +121,7 @@ cl_r3ka::dis_entry(t_addr addr)
 	{
 	  cIR= &cIY;
 	}
-      code= rom->get(addr+1);
+      code= rom->read(addr+1);
       dt= disass_pddm3;
       i= 0;
       while (((code & dt[i].mask) != dt[i].code) &&
@@ -146,10 +154,10 @@ cl_r3ka::dis_entry(t_addr addr)
 char *
 cl_r3ka::disassc(t_addr addr, chars *comment)
 {
-  t_mem code= rom->get(addr);
+  t_mem code= rom->read(addr);
   if (code == 0x5b)
     {
-      if (rom->get(addr-1) != 0x76)
+      if (rom->read(addr-1) != 0x76)
 	return strdup("IDET");
     }
   return cl_r3k::disassc(addr, comment);
@@ -238,5 +246,49 @@ cl_r3ka::print_regs(class cl_console_base *con)
   
   print_disass(PC, con);
 }
+
+
+/* R3KA CPU */
+
+cl_r3ka_cpu::cl_r3ka_cpu(class cl_uc *auc):
+  cl_rxk_cpu(auc)
+{
+  r3kauc= (class cl_r3ka *)auc;
+}
+
+int
+cl_r3ka_cpu::init(void)
+{
+  cl_rxk_cpu::init();
+
+  mmidr= register_cell(ruc->ioi, 0x10,
+		      "MMIDR", "MMU Instruction/data Register");
+  return 0;
+}
+
+t_mem
+cl_r3ka_cpu::read(class cl_memory_cell *cell)
+{
+  if (conf(cell, NULL))
+    return cell->get();
+  if (cell == mmidr)
+    return mmidr->get();
+  return cell->get();
+}
+
+void
+cl_r3ka_cpu::write(class cl_memory_cell *cell, t_mem *val)
+{
+  if (conf(cell, val))
+    return;
+  if (cell == mmidr)
+    {
+      if (*val & 0x80)
+	ruc->ioi->addr_mask= 0xffff;
+      else
+	ruc->ioi->addr_mask= 0x00ff;
+    }
+}
+
 
 /* End of rxk.src/r3ka.cc */

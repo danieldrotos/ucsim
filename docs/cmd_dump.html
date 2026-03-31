@@ -48,16 +48,14 @@
 	  
 	</dl>
 	
-      If no <b>format</b> is given dump uses a "smart" mode. This will
-      disassemble where the <a href="analyzer.html"> code analyzer</a>
-      has identified executable code otherwise it is similar to the
-      hexadecimal format except that where labels (vars that name an
-      address) are found they are shown between the address and data
-      and where HW registers (vars that name an address AND specify
-      the full bit range) are found that address is shown on a line of
-      its own and the data is given as binary, character, hex,
-      unsigned decimal and, if the high bit is set, signed
-      decimal. Note that smart mode only applies if
+      If no <b>format</b> is given dump uses a "smart" mode. It is
+      similar to the hexadecimal format except that where labels (vars
+      that name an address) are found they are shown between the
+      address and data and where HW registers (vars that name an
+      address AND specify the full bit range) are found that address
+      is shown on a line of its own and the data is given as binary,
+      character, hex, unsigned decimal and, if the high bit is set,
+      signed decimal. Note that smart mode only applies if
       <b>memory_name</b> is an address space since vars can only be set for
       cells within an address space. If <b>memory_name</b> is a chip the
       output is the same as hexadecimal (<b>/h</b>) output.
@@ -266,79 +264,6 @@ under certain conditions; type `show c' for details.
 &gt; </pre>
 
     <hr>
-
-    <a name="disassemble">
-      <h3>disassemble <i>[start [offset [lines]]]</i></h3>
-    </a>
-
-    Disassemble code. This command can be used to list disassembled
-    instructions which discovered by the <a href="analyzer.html">code
-    analyser</a>.  First two parameters specify the address where the
-    list starts. First parameter is address where the command starts
-    to search an instruction. This search goes forward. When the first
-    instruction marked by code analyzer found the simulator skips as
-    many instructions as you specify in second
-    parameter. If <b>offset</b> is negative the simulator goes
-    backward and skips specified number of instructions. Default value
-    of <b>start</b> parameter is last address which was listed by
-    previous <b>dis</b> command and default value of <b>offset</b> is
-    -1. It means you can make continuous list repeating
-    parameterless <b>dis</b> command.
-
-    <p>In third parameter you can specify how many instructions you
-      want to list. Default value is 20. </p>
-    
-    <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font>
-ucsim 0.2.12, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-This is free software, and you are welcome to redistribute it
-under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-&gt; <font color="#118811">dis</font>
-   000000 02 01 60 LJMP  0160
-   000160 c2 90    CLR   P1.0
-   000162 c2 97    CLR   P1.7
-   000164 d2 b5    SETB  P3.5
-   000166 d2 b4    SETB  P3.4
-   000168 75 81 22 MOV   SP,#22
-   00016b 75 d0 00 MOV   PSW,#00
-   00016e 7e 00    MOV   R6,#00
-   000170 7f 00    MOV   R7,#00
-   000172 79 04    MOV   R1,#04
-   000174 12 0d b8 LCALL 0db8
-   000177 0f       INC   R7
-   000178 d9 fa    DJNZ  R1,0174
-   00017a 75 0b 00 MOV   0b,#00
-   00017d 75 0c 00 MOV   0c,#00
-   000180 02 02 2a LJMP  022a
-   000183 78 22    MOV   R0,#22
-   000185 76 00    MOV   @R0,#00
-   000187 d8 fc    DJNZ  R0,0185
-&gt; <font color="#118811">br 0x180</font>
-&gt; <font color="#118811">tbr 0x189</font>
-&gt; <font color="#118811">dis 0x180 -3 10</font>
-   000178 d9 fa    DJNZ  R1,0174
-   00017a 75 0b 00 MOV   0b,#00
-   00017d 75 0c 00 MOV   0c,#00
-F  000180 02 02 2a LJMP  022a
-   000183 78 22    MOV   R0,#22
-   000185 76 00    MOV   @R0,#00
-   000187 d8 fc    DJNZ  R0,0185
-D  000189 22       RET
-   00018a 90 09 ec MOV   DPTR,#09ec
-   00018d ae 83    MOV   R6,DPH
-&gt; </pre>
-
-    If there is an <b>F</b> or <b>D</b> character at the beginning of
-    the line, it means that there is a fix or dynamic fetch breakpoint
-    at listed address. Next element on the list can be an asterisk
-    (<b>*</b>) which means that the listed address is not marked by
-    the code analyzer. <b>dis</b> lists marked instructions only so
-    asterisk never appears in the list. Next element of the list is
-    address displayed as six digit hexadecimal number.  Address is
-    followed by hexadecimal dump of instruction's code. Last element
-    of the list is disassembled instruction. Every number appeared on
-    the list is hexadecimal number.
 
     <hr> <a name="di">
       <h3>di <i>[start [stop]]</i></h3>

@@ -12,6 +12,10 @@
 - Implement most of the R6K specific instructions of the Rabbit
   simulator
 
+- Code analyzer removed
+
+- Use input specifier add parameters to input filename
+
 
 0.9
 

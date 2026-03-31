@@ -280,7 +280,7 @@ cl_memory::dump(int smart,
 
   while ((step>0)?(ads->start < ads->stop):(ads->start > ads->stop))
     {
-      if (smart && step > 0 && this == uc->rom && uc->inst_at(ads->start))
+      if (smart && step > 0 && this == uc->rom)
         {
           uc->print_disass(ads->start, con, true);
           ads->start += uc->inst_length(ads->start);
@@ -484,7 +484,7 @@ cl_memory::dump(int smart,
         {
           if (smart && n)
             {
-              if (uc->inst_at(ads->start+n*step) || (var = vi.first(this, ads->start+n*step)))
+              if ((var = vi.first(this, ads->start+n*step)))
                 break;
             }
           con->dd_printf(" ");
@@ -1476,8 +1476,6 @@ void
 cl_memory_cell::print_info(const char *pre, class cl_console_base *con)
 {
   con->dd_printf("%sFlags:", pre);
-  if (flags & CELL_INST)
-    con->dd_printf(" INST");
   if (flags & CELL_FETCH_BRK)
     con->dd_printf(" FBRK");
   if (flags & CELL_READ_ONLY)

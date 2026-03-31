@@ -124,7 +124,6 @@ public:
   
   virtual void   reset(void);
   virtual void   clear_sfr(void);
-  virtual void   analyze(t_addr addr);
 
   virtual int    do_inst(void);
   virtual int    do_emu(void);

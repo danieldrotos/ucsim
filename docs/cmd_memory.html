@@ -5,19 +5,29 @@
     <title>Memory manipulation commands of &micro;Csim</title>
   </head>
   <body style="           background-color: white;">
+
     <h2>Memory manipulation commands of &micro;Csim</h2>
-    Every command which changes content of ROM area such as <b><a href="#dl">dl</a></b>
-    or <b><a href="cmd_general#set_memory">set memory</a></b> deletes result of
-    <a href="analyzer.html">code analyser</a> and causes to re-analyse the code.
-    <hr> <a name="file">
-      <h3>file,load <i>"file"</i></h3>
-    </a> Loads file named file into the simulated code memory. File must contain
-    data in Intel HEX format.
+    
+    <a name="file">
+      <h3>file,load <i>"file[@memory][:offset]"</i></h3>
+    </a>
+
+    Loads named file into the simulated memory. File must contain data
+    in Intel HEX or Motorola s19 format. Filename can be extended with
+    a memory name using @ character. Content of the file is loaded
+    into the specified memory, either an address space or a chip. Code
+    memory of the controller is used by default. If offset parameter
+    is included (appended with : character) it is added to address
+    before value is stored in the memory.
+    
     <pre>&gt; <font color="#118811">file "../../remo.hex"</font>
 55470 words read from ../../remo.hex
 &gt; 
-</pre> Don't forget to enclose file name in quotes to make the parameter to be a
-    string.
+    </pre>
+
+    Don't forget to enclose file name in quotes to make the parameter
+    to be a string.
+    
     <hr> <a name="dl">
       <h3>download,dl</h3>
     </a> Download command. It is same as <a href="#l">load</a> above but it

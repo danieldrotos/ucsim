@@ -166,13 +166,11 @@ show_error_cmd_print_node(class cl_console_base *con,
     con->dd_printf(" ");
   const char *name= node->get_name("unknown");
   class cl_error_class *ec= (class cl_error_class *)(node);
-  char *str;
   con->dd_printf("%s: %s [%s/%s]\n",
-		 str= case_string(case_case, ec->get_type_name()),
+		 ec->get_type_name(),
 		 name, get_id_string(error_on_off_names,
 				     ec->get_on()),
 		 (ec->is_on())?"ON":"OFF");
-  free(str);
   class cl_base *c= node->first_child();
   while (c)
     {

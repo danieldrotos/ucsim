@@ -197,7 +197,8 @@ cl_rxk::make_memories(void)
   address_spaces->add(as);
 
   /* IO */
-  ioi= as= new cl_address_space("ioi", 0, 0x10000, 8);
+  ioi= new cl_ioi("ioi", 0, 0x10000, 8);
+  as= ioi;
   as->init();
   address_spaces->add(as);
 
@@ -292,6 +293,7 @@ cl_rxk::dis_entry(t_addr addr)
 char *
 cl_rxk::disassc(t_addr addr, chars *comment)
 {
+  t_addr inst_addr= addr;
   chars work, temp, fmt;
   const char *b, *nIR;
   t_mem code= rom->get(addr);
@@ -362,29 +364,47 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	  switch (b[i])
 	    {
 	    case 'l': // 24 bit unsigned
-	      l= rom->get(++addr);
-	      h= rom->get(++addr);
-	      x= rom->get(++addr);
+	      //l= rom->get(++addr);
+	      //h= rom->get(++addr);
+	      //x= rom->get(++addr);
+	      // use last 3 bytes
+	      addr+= 3;
+	      l= rom->read(inst_addr + dt->length-3);
+	      h= rom->read(inst_addr + dt->length-2);
+	      x= rom->read(inst_addr + dt->length-1);
 	      work.appendf("0x%06x", x*0x10000+h*256+l);
 	      break;
 	    case 'w': // 16 bit unsigned
-	      l= rom->get(++addr);
-	      h= rom->get(++addr);
+	      //l= rom->read(++addr);
+	      //h= rom->read(++addr);
+	      addr+= 2;
+	      // use last 2 bytes intead
+	      l= rom->read(inst_addr + dt->length-2);
+	      h= rom->read(inst_addr + dt->length-1);
 	      work.appendf("0x%04x", h*256+l);
 	      break;
 	    case 'b': // 8 bit unsigned
-	      l= rom->get(++addr);
+	      //l= rom->read(++addr);
+	      ++addr;
+	      l= rom->read(inst_addr + dt->length-1);
 	      work.appendf("0x%02x", l);
 	      break;
 	    case 'd': // 8 bit signed
 	      {
-		i8_t r= rom->read(++addr);
+		i8_t r;
+		//r= rom->read(++addr);
+		++addr;
+		// use last byte instead
+		r= rom->read(inst_addr + dt->length-1);
 		work.appendf("%+d", r);
 	      }
 	      break;
 	    case 'r': // 8 bit relative jump
 	      {
-		i8_t r= rom->get(++addr);
+		i8_t r;
+		//r= rom->read(++addr);
+		++addr;
+		r= rom->read(inst_addr + dt->length-1);
 		t_addr a= addr + 1 + r;
 		work.appendf("0x%04x", AU16(a));
 	      }
@@ -392,8 +412,11 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	    case 'R': // 16 bit signed PC relative
 	      {
 		u8_t el, eh;
-		el= rom->get(++addr);
-		eh= rom->get(++addr);
+		//el= rom->read(++addr);
+		//eh= rom->read(++addr);
+		addr+= 2;
+		el= rom->read(inst_addr + dt->length-2);
+		eh= rom->read(inst_addr + dt->length-1);
 		i16_t ee= eh*256+el;
 		t_addr a= (addr+1 + ee) & 0xffff;
 		work.appendf("0x%04x", a);
@@ -425,10 +448,10 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 	    case 'x': // 32 bit unsigned
 	      {
 		u32_t n, m, l, h;
-		n= rom->get(++addr);
-		m= rom->get(++addr);
-		l= rom->get(++addr);
-		h= rom->get(++addr);
+		n= rom->read(++addr);
+		m= rom->read(++addr);
+		l= rom->read(++addr);
+		h= rom->read(++addr);
 		work.appendf("0x%08x", (h<<24)+(l<<16)+(m<<8)+n);
 	      }
 	    }
@@ -445,7 +468,7 @@ cl_rxk::disassc(t_addr addr, chars *comment)
 char *
 cl_rxk::disassc_cb(t_addr addr, chars *comment)
 {
-  u8_t code= rom->get(++addr);
+  u8_t code= rom->read(++addr);
   u8_t x, y, z;
   chars work, temp;
   char b[100];
@@ -527,9 +550,9 @@ cl_rxk::disassc_dd_cb(t_addr addr, chars *comment)
   t_addr a;
   
   a= addr+2;
-  d= rom->get(a);
+  d= rom->read(a);
   a++;
-  code= rom->get(a);
+  code= rom->read(a);
   
   x= code>>6;
   y= (code>>3)&7;
@@ -607,12 +630,12 @@ cl_rxk::disassc_dd_cb(t_addr addr, chars *comment)
 int
 cl_rxk::inst_length(t_addr addr)
 {
-  u8_t code= rom->get(addr);
+  u8_t code= rom->read(addr);
   if (code == 0xcb)
     return 2;
   if ((code == 0xdd) || (code == 0xfd))
     {
-      if (rom->get(addr+1) == 0xcb)
+      if (rom->read(addr+1) == 0xcb)
 	return 4;
     }
   struct dis_entry *dt= dis_entry(addr);
@@ -935,6 +958,8 @@ cl_rxk_cpu::cfg_help(t_addr addr)
 void
 cl_rxk_cpu::write(class cl_memory_cell *cell, t_mem *val)
 {
+  if (conf(cell, val))
+    return;
   if (cell == segsize)
     {
       ruc->mem->set_segsize(*val);

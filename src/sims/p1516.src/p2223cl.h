@@ -87,8 +87,6 @@ public:
 
   virtual struct dis_entry *dis_tbl(void);
   virtual char *disassc(t_addr addr, chars *comment);
-  //virtual void analyze_start(void);
-  virtual void analyze(t_addr addr);
   virtual t_addr next_inst(t_addr addr);
   virtual void print_regs(class cl_console_base *con);
 

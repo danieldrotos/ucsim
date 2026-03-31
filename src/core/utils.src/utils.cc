@@ -189,37 +189,6 @@ object_name(class cl_base *o)
 }
 
 
-char *
-case_string(enum letter_case lcase, const char *str)
-{
-  char *p= strdup(str);
-  char *s= p;
-
-  switch (lcase)
-    {
-    case case_upper:
-      while (p && *p) {
-	*p= toupper(*p);
-	p++;
-      }
-      break;
-    case case_lower:
-      while (p && *p) {
-	*p= tolower(*p);
-	p++;
-      }
-      break;
-    case case_case:
-      if (!p || *p == '\0')
-	break;
-      while (isspace(*p)) p++;
-      if (*p)
-	*p= toupper(*p);
-      break;
-    }
-  return(s);
-}
-
 chars
 cbin(long data, int bits)
 {
@@ -246,24 +215,6 @@ strispn(char *s, char c)
   return p-s;
 }
 
-/* Return true if "search_in" string ends with string "what" */
-
-bool
-strend(const char *search_in, const char *what)
-{
-  if (!search_in ||
-      !what ||
-      !*search_in ||
-      !*what)
-    return false;
-  const char *start= strstr(search_in, what);
-  if (start == NULL)
-    return false;
-  if (start[strlen(what)] == '\0')
-    return true;
-  return false;
-}
-
 bool
 valid_sym_name(char *s)
 {
@@ -280,68 +231,6 @@ valid_sym_name(char *s)
 	return false;
     }
   return true;
-}
-
-
-bool
-filename_has_ext(class cl_f *f, const char *ext)
-{
-  chars n, e= ext;
-  if (!f)
-    return false;
-  n= f->get_file_name();
-  if (n.empty())
-    return false;
-  n.lowercase();
-  e.lowercase();
-  if (strend(n.c_str(), e.c_str()))
-    return true;
-
-  return false;
-}
-
-bool
-is_hex_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".ihx") ||
-    filename_has_ext(f, ".hex") ||
-    filename_has_ext(f, ".ihex") ;
-}
-
-bool
-is_asc_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".asc");
-}
-
-bool
-is_p2h_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".p2h");
-}
-
-bool
-is_omf_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".omf");
-}
-
-bool
-is_cdb_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".cdb");
-}
-
-bool
-is_s19_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".s19");
-}
-
-bool
-is_map_file(class cl_f *f)
-{
-  return filename_has_ext(f, ".map");
 }
 
 /*

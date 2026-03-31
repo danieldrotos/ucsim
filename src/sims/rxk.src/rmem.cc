@@ -288,4 +288,50 @@ cl_ras::set_stackseg(u16_t val)
     }
 }
 
+
+/* Address space of internal IO */
+
+cl_ioi::cl_ioi(const char *id, t_addr astart, t_addr asize, int awidth):
+  cl_address_space(id, astart, asize, awidth)
+{
+  addr_mask= 0xffff;
+}
+
+t_mem
+cl_ioi::read(t_addr addr)
+{
+  return cl_address_space::read(addr & addr_mask);
+}
+
+t_mem
+cl_ioi::read(t_addr addr, enum hw_cath skip)
+{
+  return cl_address_space::read(addr & addr_mask, skip);
+}
+
+t_mem
+cl_ioi::get(t_addr addr)
+{
+  return cl_address_space::get(addr & addr_mask);
+}
+
+t_mem
+cl_ioi::write(t_addr addr, t_mem val)
+{
+  return cl_address_space::write(addr & addr_mask, val);
+}
+
+void
+cl_ioi::set(t_addr addr, t_mem val)
+{
+  cl_address_space::set(addr & addr_mask, val);
+}
+
+class cl_memory_cell *
+cl_ioi::get_cell(t_addr addr)
+{
+  return cl_address_space::get_cell(addr & addr_mask);
+}
+
+
 /* End of rxk.src/rmem.cc */
