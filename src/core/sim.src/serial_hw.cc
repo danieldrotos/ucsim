@@ -483,17 +483,18 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return cell->get();
 }
 
-u8_t
-cl_serial_hw::get_input(void)
+bool
+cl_serial_hw::get_input(u8_t *in_byte)
 {
   if (!input_avail)
-    return 0;
+    return false;
   if (!sending_nl)
     {
       if (!is_nl(input))
 	{
 	  input_avail= false;
-	  return input;
+	  if (in_byte) *in_byte= input;
+	  return true;
 	}
       skip_nl= opposite_nl(input);
       sending_nl= true;
@@ -512,10 +513,12 @@ cl_serial_hw::get_input(void)
 	}
       else
 	nl_send_idx++;
-      return v;
+      if (in_byte) *in_byte= v;
+      return true;
     }
   input_avail= false;
-  return input;
+  if (in_byte) *in_byte= input;
+  return true;
 }
 
 void

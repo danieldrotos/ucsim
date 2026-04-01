@@ -228,7 +228,7 @@ cl_pc16550::set_help(class cl_console_base *con)
 int
 cl_pc16550::tick(int cycles)
 {
-  char c;
+  u8_t c;
   
   if (!on)
     return 0;
@@ -274,14 +274,14 @@ cl_pc16550::tick(int cycles)
   if (s_receiving &&
       (s_rec_bit >= bits))
     {
+      if (get_input(&c))
 	{
-	  c= get_input();
 	  //input_avail= false;
 	  s_in= c;
 	  received();
+	  s_receiving= false;
+	  s_rec_bit-= 8;
 	}
-      s_receiving= false;
-      s_rec_bit-= 8;
     }
   
   return(0);
