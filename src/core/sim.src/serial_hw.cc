@@ -488,6 +488,12 @@ cl_serial_hw::get_input(u8_t *in_byte)
 {
   if (!input_avail)
     return false;
+  u32_t nl_value= cfg_get(serconf_nl);
+  if ((nl_value & 0xff) == 0)
+    {
+      if (in_byte) *in_byte= input;
+      return true;
+    }
   if (!sending_nl)
     {
       if (!is_nl(input))
@@ -502,7 +508,6 @@ cl_serial_hw::get_input(u8_t *in_byte)
     }
   if (sending_nl)
     {
-      u32_t nl_value= cfg_get(serconf_nl);
       u8_t v= (nl_value >> (nl_send_idx*8)) & 0xff;
       u8_t vn= (nl_value >> ((nl_send_idx+1)*8)) & 0xff;
       if (vn == 0)
