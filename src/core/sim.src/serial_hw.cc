@@ -493,6 +493,8 @@ cl_serial_hw::get_input(u8_t *in_byte)
     {
       input_avail= false;
       if (in_byte) *in_byte= input;
+      uc->sim->app->debug("UART%d received %d,%c\n", id,
+			  input,isprint(input)?input:' ');
       return true;
     }
   if (!sending_nl)
@@ -501,6 +503,8 @@ cl_serial_hw::get_input(u8_t *in_byte)
 	{
 	  input_avail= false;
 	  if (in_byte) *in_byte= input;
+	  uc->sim->app->debug("UART%d received %d,%c\n", id,
+			      input,isprint(input)?input:' ');
 	  return true;
 	}
       skip_nl= opposite_nl(input);
@@ -520,10 +524,14 @@ cl_serial_hw::get_input(u8_t *in_byte)
       else
 	nl_send_idx++;
       if (in_byte) *in_byte= v;
+      uc->sim->app->debug("UART%d received %d,%c\n", id,
+			  v,isprint(v)?v:' ');
       return true;
     }
   input_avail= false;
   if (in_byte) *in_byte= input;
+  uc->sim->app->debug("UART%d received %d,%c\n", id,
+		      input,isprint(input)?input:' ');
   return true;
 }
 
