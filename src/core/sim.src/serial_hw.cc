@@ -491,6 +491,7 @@ cl_serial_hw::get_input(u8_t *in_byte)
   u32_t nl_value= cfg_get(serconf_nl);
   if ((nl_value & 0xff) == 0)
     {
+      input_avail= false;
       if (in_byte) *in_byte= input;
       return true;
     }
