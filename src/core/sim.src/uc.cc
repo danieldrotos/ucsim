@@ -2054,15 +2054,53 @@ static t_addr a32(const char *s, int p)
 static int s19(class cl_inspec *is, class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes)
 {
   int b= 0;
+  u8_t d, d0, d1, d2, d3;
+  t_mem v;
   if (data_bytes < 1)
     return 0;
+  if (is->get_mem()->width > 8)
+    {
+      if (is->get_mem()->width <= 16) a/= 2;
+      if (is->get_mem()->width <= 24) a/= 3;
+      if (is->get_mem()->width <= 32) a/= 4;
+    }
   while (b < data_bytes)
     {
-      u8_t d= h2(s, p);
-      uc->set_rom(is, a, d);
-      a++;
-      p+= 2;
-      b++;
+      if (is->get_mem()->width <= 8)
+	{
+	  d= h2(s, p);
+	  uc->set_rom(is, a, d);
+	  a++;
+	  p+= 2;
+	  b++;
+	}
+      else if (is->get_mem()->width <= 16)
+	{
+	  d0= h2(s, p); p+= 2; b++;
+	  d1= h2(s, p); p+= 2; b++;
+	  v= (d1<<8)+d0;
+	  uc->set_rom(is, a, v);
+	  a++;
+	}
+      else if (is->get_mem()->width <= 24)
+	{
+	  d0= h2(s, p); p+= 2; b++;
+	  d1= h2(s, p); p+= 2; b++;
+	  d2= h2(s, p); p+= 2; b++;
+	  v= (d2<<16)+(d1<<8)+d0;
+	  uc->set_rom(is, a, v);
+	  a++;
+	}
+      else if (is->get_mem()->width <= 32)
+	{
+	  d0= h2(s, p); p+= 2; b++;
+	  d1= h2(s, p); p+= 2; b++;
+	  d2= h2(s, p); p+= 2; b++;
+	  d3= h2(s, p); p+= 2; b++;
+	  v= (d3<<24)+(d2<<16)+(d1<<8)+d0;
+	  uc->set_rom(is, a, v);
+	  a++;
+	}
     }
   return data_bytes;
 }
