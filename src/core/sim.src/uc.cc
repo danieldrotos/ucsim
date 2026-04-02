@@ -2276,19 +2276,19 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
-  else if (f->is_cdb_file())
+  else if (!check && f->is_cdb_file())
     {
       l= read_cdb_file(f);
       if (!application->quiet)
 	printf("%ld symbols read from %s\n", l, f->get_fname());
     }
-  else if (f->is_map_file())
+  else if (!check && f->is_map_file())
     {
       l= read_map_file(f);
       if (!application->quiet)
 	printf("%ld symbols read from %s\n", l, f->get_fname());
     }
-  if (strcmp(nam, f->get_fname()) != 0)
+  if (!check && (strcmp(nam, f->get_fname()) != 0))
     {
       chars n= nam;
       n+= ".cdb";
@@ -2301,7 +2301,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
 	}
       delete c;
     }
-  if (strcmp(nam, f->get_fname()) != 0)
+  if (!check && (strcmp(nam, f->get_fname()) != 0))
     {
       chars n= nam;
       n+= ".map";
