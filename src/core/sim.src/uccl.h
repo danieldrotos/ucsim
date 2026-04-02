@@ -388,15 +388,15 @@ public:
   // file handling
   virtual cl_f *find_loadable_file(chars nam);
   virtual long read_hex_file(cl_console_base *con);
-  virtual long read_hex_file(const char *nam);
+  virtual long read_hex_file(const char *nam, bool check);
   virtual long read_file(chars nam, class cl_console_base *con, bool check= false);
-  virtual bool set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check= false);
+  virtual bool set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check);
   // content loaders
-  virtual long read_hex_file(class cl_inspec *is, cl_f *f);
-  virtual long read_omf_file(class cl_inspec *is, cl_f *f);
-  virtual long read_asc_file(class cl_inspec *is, cl_f *f);
-  virtual long read_p2h_file(class cl_inspec *is, cl_f *f, bool check= false);
-  virtual long read_s19_file(class cl_inspec *is, cl_f *f);
+  virtual long read_hex_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_omf_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_asc_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_p2h_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_s19_file(class cl_inspec *is, cl_f *f, bool check);
   // symbol loaders
   virtual long read_cdb_file(cl_f *f);
   virtual long read_map_file(cl_f *f);

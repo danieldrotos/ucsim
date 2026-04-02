@@ -987,7 +987,7 @@ ReadPblazeRomHex(FILE *f, bool *ok)
 }
 
 long
-cl_pblaze::read_hex_file(const char *nam)
+cl_pblaze::read_hex_file(const char *nam, bool check)
 {
   cl_option * opt = sim->app->options->get_option("pblaze_hex");
   bool value = false;
@@ -999,7 +999,7 @@ cl_pblaze::read_hex_file(const char *nam)
   if (value)
     ret = pblaze_read_hex_file(nam);
   else
-    ret = std_read_hex_file(nam);
+    ret = std_read_hex_file(nam, check);
 
   return ret;
 }
@@ -1062,7 +1062,7 @@ cl_pblaze::pblaze_read_hex_file(const char *nam)
 
 
 long
-cl_pblaze::std_read_hex_file(const char *nam)
+cl_pblaze::std_read_hex_file(const char *nam, bool check)
 {
   class cl_inspec is(nam, this);
   FILE *f;
@@ -1137,7 +1137,7 @@ cl_pblaze::std_read_hex_file(const char *nam)
                           if (rom->width <= 8)
                             {
                               //rom->set(addr, rec[i]);
-			      set_rom(&is, addr, rec[i]);
+			      set_rom(&is, addr, rec[i], check);
                               addr++;
                               written++;
                             }
@@ -1152,7 +1152,7 @@ cl_pblaze::std_read_hex_file(const char *nam)
                                 {
                                   high= rec[i];
                                   //rom->set(addr, (high*256)+low);
-				  set_rom(&is, addr, (high*256)+low);
+				  set_rom(&is, addr, (high*256)+low, check);
                                   addr++;
                                   written++;
                                   get_low= 1;
@@ -1175,7 +1175,9 @@ cl_pblaze::std_read_hex_file(const char *nam)
                                 {
                                   high= rec[i];
                                   //rom->set(addr, (high*256*256)+(middle*256)+low);
-				  set_rom(&is, addr, (high*256*256)+(middle*256)+low);
+				  set_rom(&is, addr,
+					  (high*256*256)+(middle*256)+low,
+					  check);
                                   addr++;
                                   written++;
                                   get_low= 1;
@@ -1199,7 +1201,7 @@ cl_pblaze::std_read_hex_file(const char *nam)
   if (rom->width > 8 &&
       !get_low)
     //rom->set(addr, low);
-    set_rom(&is, addr, low);
+    set_rom(&is, addr, low, check);
 
   if (nam)
     fclose(f);
