@@ -244,7 +244,7 @@ cl_serial::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
 int
 cl_serial::tick(int cycles)
 {
-  char c;
+  u8_t c;
 
   if (!en ||
       !clk_enabled)
@@ -288,14 +288,13 @@ cl_serial::tick(int cycles)
   if (s_receiving &&
       (s_rec_bit >= bits))
     {
+      if (get_input(&c))
 	{
-	  c= input;
-	  input_avail= false;
 	  s_in= c;
 	  received();
+	  s_receiving= false;
+	  s_rec_bit-= bits;
 	}
-      s_receiving= false;
-      s_rec_bit-= bits;
     }
   
   return(0);

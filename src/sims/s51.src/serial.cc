@@ -324,9 +324,6 @@ cl_serial::tick(int cycles)
     {
       if (get_input(&c))
 	{
-	  //uc->sim->app->debug("UART%d received %d,%c\n", id,
-	  //		      c,isprint(c)?c:' ');
-	  //input_avail= false;
 	  s_in= c;
 	  sbuf->set(s_in);
 	  received(c);

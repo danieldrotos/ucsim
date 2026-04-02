@@ -291,7 +291,6 @@ cl_uart::tick(int cycles)
     {
       if (get_input(&c))
 	{
-	  //input_avail= false;
 	  s_in= c;
 	  received();
 	  s_receiving= false;
