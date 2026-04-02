@@ -1789,11 +1789,11 @@ cl_uc::read_p2h_file(class cl_inspec *is, cl_f *f, bool check)
 		  t_addr a= w3.htoi();//strtol(w3.c_str(), 0, 16);
 		  if (check)
 		    {
-		      t_mem mv= rom->read(a);
+		      t_mem mv= rom->read(a+is->offset);
 		      if (mv != v)
 			{
 			  application->dd_printf("Diff at %08x, FILE=%08x MEM=%08x\n",
-						 AU32(a), MU32(v), MU32(mv));
+						 AU32(a+is->offset), MU32(v), MU32(mv));
 			}
 		    }
 		  else
