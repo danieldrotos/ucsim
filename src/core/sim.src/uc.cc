@@ -1563,7 +1563,7 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
   bool ok;
   int get_low= 0;
   uchar lows[4]= { 0, 0, 0, 0 };
-
+  class cl_memory *mem= is->get_mem();
   if (!rom)
     {
       sim->app->get_commander()->
@@ -1605,17 +1605,24 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 		{
 		  if (rtyp == 0)
 		    {
-		      if (rom->width > 8)
-			addr/= 2;
+		      if (mem->width > 8)
+			{
+			  if (mem->width <= 16)
+			    addr/= 2;
+			  if (mem->width <= 24)
+			    addr/= 3;
+			  if (mem->width <= 32)
+			    addr/= 4;
+			}
 		      for (i= 0; i < dnum; i++)
 			{
-			  if (rom->width <= 8)
+			  if (mem->width <= 8)
 			    {
 			      set_rom(is, base+addr, rec[i]);
 			      addr++;
 			      written++;
 			    }
-			  else if (rom->width <= 16)
+			  else if (mem->width <= 16)
 			    {
 			      switch (get_low)
 				{
@@ -1628,7 +1635,7 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 				  break;
 				}
 			    }
-			  else if (rom->width <= 32)
+			  else if (mem->width <= 32)
 			    {
 			      switch (get_low)
 				{
@@ -1670,15 +1677,15 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 	    fprintf(stderr, "Read error in record %ld.\n", recnum);
 	}
     }
-  if (rom->width > 8)
+  if (mem->width > 8)
     {
       for (i= get_low; i<4; i++)
 	lows[i]= 0;
-      rom->set(addr,
-	       (lows[3]<<24)+
-	       (lows[2]<<16)+
-	       (lows[1]<<8)+
-	       (lows[0]));
+      set_rom(is, addr,
+	      (lows[3]<<24)+
+	      (lows[2]<<16)+
+	      (lows[1]<<8)+
+	      (lows[0]));
     }
   
   return(written);
