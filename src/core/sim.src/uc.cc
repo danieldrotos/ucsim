@@ -1576,10 +1576,10 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f, bool check)
   int get_low= 0;
   uchar lows[4]= { 0, 0, 0, 0 };
   class cl_memory *mem= is->get_mem();
-  if (!rom)
+  if (!mem)
     {
       sim->app->get_commander()->
-	dd_printf("No ROM address space to read in.\n");
+	dd_printf("No memory %s to read in.\n", is->get_mem_name()->cstr());
       return(-1);
     }
 
@@ -1621,9 +1621,9 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f, bool check)
 			{
 			  if (mem->width <= 16)
 			    addr/= 2;
-			  if (mem->width <= 24)
+			  else if (mem->width <= 24)
 			    addr/= 3;
-			  if (mem->width <= 32)
+			  else if (mem->width <= 32)
 			    addr/= 4;
 			}
 		      for (i= 0; i < dnum; i++)
