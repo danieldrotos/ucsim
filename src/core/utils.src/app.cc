@@ -343,7 +343,7 @@ print_help(const char *name)
 #define DOPT
 #endif
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-bBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
+  printf("Usage: %s [-AbBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
 	 "       [-e command] [-I if_optionlist] " KOPT " [-o colorlist]\n"
 	 "       [-p prompt] [-R seed] [-s file] [-S optionlist]\n"
 	 "       [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]] " ZOPT "\n"
@@ -361,6 +361,7 @@ print_help(const char *name)
       */
      "Options:\n"
      "  -a nr        Specify size of variable space (default=256)\n"
+     "  -A           Force use colored output\n"
      "  -b           Black & white (non-color) theme\n"
      "  -B           Beep on breakpoints\n"
      "  -c file      Open command console on `file' (use `-' for std in/out)\n"
@@ -464,8 +465,9 @@ cl_app::proc_arguments(int argc, char *argv[])
   chars cpu_type;
   bool /*s_done= false,*/ k_done= false;
   //bool S_i_done= false, S_o_done= false;
-
-  strcpy(opts, "qc:C:D:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:u:_");
+  bool force_colors= false;
+  
+  strcpy(opts, "Aqc:C:D:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:u:_");
 #ifdef SOCKET_AVAIL
   strcat(opts, "Z:r:k:z:d:");
 #endif
@@ -564,6 +566,10 @@ cl_app::proc_arguments(int argc, char *argv[])
 		    "parameter of -p as default prompt\n");
 	  break;
 	}
+      case 'A':
+	options->set_value("force_colors", this, bool(true));
+	force_colors= true;
+	break;
       case 'b':
 	{
 	  if (!options->set_value("black_and_white", this, bool(true)))
@@ -1020,7 +1026,9 @@ cl_app::proc_arguments(int argc, char *argv[])
       default:
 	exit(c);
       }
-
+  if (force_colors)
+    options->set_value("black_and_white", this, bool(false));
+  
   for (i= optind; i < argc; i++)
     in_files->add(argv[i]);
 
@@ -1273,6 +1281,12 @@ cl_app::mk_options(void)
 					    "Use writable flash chip (-w)"));
   o->init();
   o->set_value((bool)false);
+  
+  options->new_option(o= new cl_bool_option(this, "force_colors",
+					    "Force use colored output (-A)"));
+  o->init();
+  bool fc= false;
+  o->set_value((bool)fc);
   
   options->new_option(o= new cl_bool_option(this, "black_and_white",
 					    "Non-color console (-b)"));
