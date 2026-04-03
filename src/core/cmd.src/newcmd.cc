@@ -167,7 +167,7 @@ cl_console_base::init(void)
 void
 cl_console_base::welcome(void)
 {
-  if (!(flags & CONS_NOWELCOME))
+  if (!(flags & CONS_NOWELCOME) && !app->nowelcome)
     {
       dd_printf("uCsim%s, Copyright (C) 1997 Daniel Drotos.\n"
         "uCsim comes with ABSOLUTELY NO WARRANTY; for details type "
@@ -690,7 +690,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
           class cl_cmdline *cmdline= 0;
           class cl_cmd *cm = 0;
           if (get_flag(CONS_ECHO))
-            dd_printf("%s\n", cmdstr);
+            dd_cprintf("command", "%s\n", cmdstr);
 	  do
 	    {
 	      un_redirect();

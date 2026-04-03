@@ -73,6 +73,7 @@ cl_app::cl_app(void)
   in_files= new cl_ustrings(2, 2, "input files");
   options= new cl_options();
   quiet= false;
+  nowelcome= false;
   if (app_start_at == 0)
     app_start_at= dnow();
   srnd(0);
@@ -448,11 +449,13 @@ static const char *I_opts[]= {
 
 enum {
   DOPT_CPU_SPEED= 0,
+  DOPT_NOWELCOME= 1,
   DOPT_ERROR
 };
 
 static const char *D_opts[]= {
-  /*DOPT_CPU_SPPED*/	"cpu_speed",
+  /*DOPT_CPU_SPEED*/	"cpu_speed",
+  /*DOPT_NOWELCOME*/    "nowelcome",
   NULL
 };
 
@@ -704,6 +707,9 @@ cl_app::proc_arguments(int argc, char *argv[])
 		  break;
 		case DOPT_CPU_SPEED:
 		  measure_speed= 1;
+		  break;
+		case DOPT_NOWELCOME:
+		  nowelcome= true;
 		  break;
 		default:
 		  /* Unknown suboption. */

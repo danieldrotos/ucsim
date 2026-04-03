@@ -95,7 +95,8 @@ public:
   chars startup_command;
   class cl_mc32 cperiod, ccyc;
   u32_t period, cyc, acyc;
-  bool quiet;
+  bool quiet; // -q
+  bool nowelcome; // -Dnowelcome
   class cl_console_stdout *ocon;
   int rgdb_port;
   enum hw_cath con_hw_cath;

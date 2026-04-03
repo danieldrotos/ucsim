@@ -348,7 +348,7 @@ COMMAND_DO_WORK_APP(cl_set_console_cmd)
   if (!s1)
     return false;
   
-  if (strstr(s1, "i") == s1)
+  if (strcmp(s1, "interactive") == 0)
     {
       // interactive
       int val;
@@ -356,21 +356,32 @@ COMMAND_DO_WORK_APP(cl_set_console_cmd)
 	val= 1;
       con->set_interactive(val);
     }
-  else if (strstr(s1, "n") == s1)
+  else if (strcmp(s1, "non-interactive") == 0)
     {
       // non-interactive
       con->set_interactive(false);
     }
-  else if (strstr(s1, "r") == s1)
+  else if (strcmp(s1, "raw") == 0)
     {
       // raw
       con->set_cooked(false);
     }
-  else if ((strstr(s1, "c") == s1) ||
-	   (strstr(s1, "e") == s1))
+  else if ((strcmp(s1, "non-raw") == 0) ||
+	   (strcmp(s1, "coocked") == 0) ||
+	   (strcmp(s1, "edited") == 0))
     {
       // cooked, edited
       con->set_cooked(true);
+    }
+  else if (strcmp(s1, "echo_on") == 0)
+    {
+      // echo
+      con->set_flag(CONS_ECHO, true);
+    }
+  else if (strcmp(s1, "echo_off") == 0)
+    {
+      // echo
+      con->set_flag(CONS_ECHO, false);
     }
   else
     syntax_error(con);
