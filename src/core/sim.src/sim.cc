@@ -57,6 +57,7 @@ cl_sim::cl_sim(class cl_app *the_app):
   app= the_app;
   uc= 0;
   state= SIM_NONE;
+  retval= 0;
   //arguments= new cl_list(2, 2);
   //accept_args= more_args?strdup(more_args):0;
   gui= new cl_gui(this);

@@ -225,6 +225,7 @@ cl_app::check_start_options(void)
 int
 cl_app::run(void)
 {
+  int ret= 0;
   int done= 0;
 
   cperiod.set(cperiod_value());
@@ -247,7 +248,10 @@ cl_app::run(void)
 	{
 	  acyc++;
 	  if (sim->state & SIM_QUIT)
-	    done= 1;
+	    {
+	      ret= sim->retval;
+	      done= 1;
+	    }
 	  else if (sim->state & SIM_GO)
 	    done= run_go();
 	  else if (sim->state & SIM_STARTEMU)
@@ -264,7 +268,7 @@ cl_app::run(void)
       //commander->check();
     }
     
-  return(0);
+  return ret;
 }
 
 int

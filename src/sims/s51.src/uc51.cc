@@ -1851,6 +1851,7 @@ cl_51core::do_inst(void)
 
   if ((result == resGO) && (PC == PCsave) && stop_selfjump)
     {
+      sim->retval= (sfr->get(DPH) << 8) | sfr->get(DPL);
       result= resSELFJUMP;
       return result;
     }
