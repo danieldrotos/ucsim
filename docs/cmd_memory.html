@@ -72,6 +72,40 @@ under certain conditions; type `show c' for details.
 
     <hr>
 
+    <a name="check">
+      <h3>check <i>"file[@memory][:offset]"</i></h3>
+    </a>
+
+    This command works as the file command but instead of storing data
+    in memory, it check if it equals to data from the file. If any
+    difference is found it is reported.
+    
+    <pre>
+0> file "remo.hex"
+Loading from remo.hex
+55755 words read from remo.hex
+0> dump /x rom   
+0x0000 02 01 60 02 00 3c ff ff ..`..<..
+0x0008 ff ff ff 02 2f 74 ff ff ..../t..
+0x0010 ff ff ff 02 00 ac ff ff ........
+0x0018 ff ff ff ff ff ff ff ff ........
+0x0020 ff ff ff 02 01 1c ff ff ........
+0x0028 ff ff ff 32 ff ff ff ff ...2....
+0x0030 02 0f a7 02 0e 9c 02 0d ........
+0x0038 d2 02 08 41 c0 82 c0 83 ...A....
+0x0040 c0 d0 c0 e0 c0 00 a2 90 ........
+0x0048 c0 d0 c2 90 78 18 06 30 ....x..0
+0> rom[0x38]++
+210
+0> check "remo.hex"
+Loading from remo.hex
+Diff at 00000038, FILE=000000d2 MEM=000000d3
+55755 words read from remo.hex
+0> 
+    </pre>
+    
+    <hr>
+    
     <a name="fill">
       <h3>fill <i>memory_type start end data</i></h3>
     </a>
