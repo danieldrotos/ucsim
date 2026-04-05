@@ -9,17 +9,14 @@
     <h2>Memory manipulation commands of &micro;Csim</h2>
     
     <a name="file">
-      <h3>file,load <i>"file[@memory][:offset]"</i></h3>
+      <h3>file,load <i>"file[@memory][:offset][#range]"</i></h3>
     </a>
 
-    Loads named file into the simulated memory. File must contain data
-    in Intel HEX, Motorola s19, p2h, asc or Intel OMF format. Filename
-    can be extended with a memory name using @ character. Content of
-    the file is loaded into the specified memory, either an address
-    space or a chip. Code memory of the controller is used by
-    default. If offset parameter is included (appended with :
-    character) it is added to address before value is stored in the
-    memory.
+    <p>Loads named file into the simulated memory. File must contain
+    data in Intel HEX, Motorola s19, p2h, asc or Intel OMF
+    format. Filename can be extended with some parameters. For
+    meanings of these parameters, see <a href="invoke.html#inspec">how to
+    invoke &micro;Csim</a>.</p>
     
     <pre>&gt; <font color="#118811">file "../../remo.hex"</font>
 55470 words read from ../../remo.hex

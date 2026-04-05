@@ -40,7 +40,11 @@
       nr] [-c file] [-C cfg_file] [-e command] [-I if_optionlist] [-k
       portnum] [-o colorlist] [-p prompt] [-R seed]\n [-s file] [-S
       optionlist] [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]]\n [-z
-      portnum] [-Z portnum] [file[@memory][:offset]...]</tt> </p>
+      portnum] [-Z portnum] [file[@memory][:offset][#range]...]</tt> </p>
+
+    <a name="inspec">
+    <h3>Input files</h3>
+    </a>
     
     <p>Specified files must be names of Intel hex or Motorola S19
       files. Some simulators may accept some other file formats, for
@@ -55,16 +59,23 @@
       these <a href="https://sdcc.sourceforge.net/">SDCC</a> output
       files and reads information from them.</p>
 
-    <p>There can be a memory name (either address space or chip)
-    appended to the filename using @ character. Content of the file
-    will be loaded into the specified memory. If offset parameter is
-    specified (appended to input specification with : character), the
-    simulator will add the specified offset to address before storing
-    data into the simulated memory. Offset can be a signed number in
-    decimal, hexadecimal or octal form.</p>
-    
-    <p>Options: </p>
+    <p>A memory name (either an address space or a chip) can be
+    appended to the filename using the @ character. The content of the
+    file will then be loaded into the specified memory. If an offset
+    parameter is provided (appended to the input specification using
+    the : character), the simulator will add this offset to the
+    address before storing data in the simulated memory. The offset
+    can be a signed number in decimal, hexadecimal, or octal
+    format. An address range can also be specified using the #
+    character in the form of min_address-max_address (default range is
+    0-0xffffffff). The simulator checks if the address from the data
+    file falls within this specified range; data is only stored in
+    memory if this check succeeds.</p>
 
+    <a name="options">
+    <h3>Options: </h3>
+    </a>
+    
     <dl>
 
       <dt><span style="font-family: monospace;"><b>-a
