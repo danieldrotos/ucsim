@@ -49,7 +49,6 @@ public:
   class cl_app *app;
   int state; // See SIM_XXXX
   int argc; char **argv;
-  int retval;
   
   //class cl_commander *cmd;
   class cl_uc *uc;

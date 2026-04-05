@@ -1851,7 +1851,6 @@ cl_51core::do_inst(void)
 
   if ((result == resGO) && (PC == PCsave) && stop_selfjump)
     {
-      sim->retval= (sfr->get(DPH) << 8) | sfr->get(DPL);
       result= resSELFJUMP;
       return result;
     }
@@ -1913,6 +1912,13 @@ cl_51core::do_emu(void)
     }
   return(result);
 }
+
+int
+cl_51core::sim_stop_result(void)
+{
+  return (sfr->get(DPH) << 8) | sfr->get(DPL);
+}
+
 
 /*
  * Abstract method to handle WDT

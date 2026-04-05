@@ -455,7 +455,9 @@ public:
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void) { return false; }
   virtual class cl_it_src *search_it_src(int cid_or_nr);
-  
+
+  virtual int sim_stop_result(void) { return 0; }
+
 #include "uccl_instructions.h"
   
   // stack tracking
