@@ -267,15 +267,24 @@ public:
   chars file_name;
   chars mem_name;
   chars offset_name;
+  chars range_name;
+  chars min_name;
+  chars max_name;
   long int offset;
   class cl_memory *mem;
+  t_addr use_min, use_max;
 public:
   cl_inspec(chars aspec, class cl_uc *auc);
   virtual int init(void);
-  virtual chars *get_file_name(void);
-  virtual chars *get_mem_name(void);
-  virtual long int get_offset(void);
-  virtual class cl_memory *get_mem(void);
+  virtual chars *get_file_name(void)     { init(); return &file_name; }
+  virtual chars *get_mem_name(void)      { init(); return &mem_name; }
+  virtual chars *get_range_name(void)    { init(); return &range_name; }
+  virtual chars *get_min_name()          { init(); return &min_name; }
+  virtual chars *get_max_name()          { init(); return &max_name; }
+  virtual long int get_offset(void)      { init(); return offset; }
+  virtual class cl_memory *get_mem(void) { init(); return mem; }
+  virtual t_addr get_min(void)           { init(); return use_min; }
+  virtual t_addr get_max(void)           { init(); return use_max; }
 };
 
 

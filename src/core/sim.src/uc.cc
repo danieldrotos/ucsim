@@ -526,14 +526,21 @@ cl_inspec::cl_inspec(chars aspec, class cl_uc *auc)
   inited= false;
   file_name= "";
   mem_name= "";
+  range_name= "";
+  min_name= "";
+  max_name= "";
   offset_name= "0";
   offset= 0;
   uc= auc;
+  use_min= 0;
+  use_max= 0xffffffff;
 }
 
 int
 cl_inspec::init(void)
 {
+  if (inited)
+    return 0;
   if (ispec.empty())
     {      
       return 0;
@@ -542,7 +549,7 @@ cl_inspec::init(void)
   int i= 0;
   char c;
   c= ispec.c(i);
-  while ((c != 0) && (c != '@') && (c != ':'))
+  while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
     {
       file_name+= c;
       i++;
@@ -555,7 +562,7 @@ cl_inspec::init(void)
       mem_name= "";
       i= p+1;
       c= ispec.c(i);
-      while ((c != 0) && (c != '@') && (c != ':'))
+      while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
 	{
 	  mem_name+= c;
 	  i++;
@@ -570,7 +577,7 @@ cl_inspec::init(void)
       offset_name= "";
       i= p+1;
       c= ispec.c(i);
-      while ((c != 0) && (c != '@') && (c != ':'))
+      while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
 	{
 	  offset_name+= c;
 	  i++;
@@ -581,40 +588,42 @@ cl_inspec::init(void)
       else
 	offset= strtol(offset_name.cstr(), 0, 0);
     }
+  p= ispec.pos('#');
+  if (p >= 0)
+    {
+      range_name= "";
+      i= p+1;
+      c= ispec.c(i);
+      while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
+	{
+	  range_name+= c;
+	  i++;
+	  c= ispec.c(i);
+	}
+      p= range_name.pos('-');
+      if (range_name.empty())
+	{
+	  min_name= "0";
+	  max_name= "0xffffffff";
+	}
+      else
+	{
+	  if (p < 0)
+	    {
+	      min_name= range_name;
+	      max_name= "0xffffffff";
+	    }
+	  else
+	    {
+	      min_name= range_name.substr(0, p);
+	      max_name= range_name.substr(p+1, range_name.len());
+	    }
+	}
+      use_min= min_name.toi();
+      use_max= max_name.toi();
+    }
   inited= true;
   return 0;
-}
-
-chars *
-cl_inspec::get_file_name(void)
-{
-  if (!inited)
-    init();
-  return &file_name;
-}
-
-chars *
-cl_inspec::get_mem_name(void)
-{
-  if (!inited)
-    init();
-  return &mem_name;
-}
-
-long int
-cl_inspec::get_offset(void)
-{
-  if (!inited)
-    init();
-  return offset;
-}
-
-class cl_memory *
-cl_inspec::get_mem(void)
-{
-  if (!inited)
-    init();
-  return mem;
 }
 
 
@@ -1465,6 +1474,11 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
   t_mem v;
   if (mem == NULL)
     return false;
+  t_addr mi= is->get_min(), ma= is->get_max();
+  if ((mi > 0) && (addr < mi))
+    return eq;
+  if ((ma < 0xffffffff) && (addr > ma))
+    return eq;
   addr+= is->offset;
   t_addr size= mem->get_size();
   if (mem->is_chip())
