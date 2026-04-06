@@ -36,7 +36,7 @@
 
     <p>The simulator can be started in the following way: </p>
 
-    <p><tt><font color="blue">$</font> ucsim_XXX [-bBEgGhHlPqVvw] [-a
+    <p><tt><font color="blue">$</font> ucsim_XXX [-bBEgGhHlmPqVvw] [-a
       nr] [-c file] [-C cfg_file] [-e command] [-I if_optionlist] [-k
       portnum] [-o colorlist] [-p prompt] [-R seed]\n [-s file] [-S
       optionlist] [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]]\n [-z
@@ -171,6 +171,13 @@
 
       <dd>Use colors of light theme (default is dark)</dd>
 
+
+      <dt><b><tt>-m</tt></b></dt>
+
+      <dd>Return value of the simulated main() function. The simulated
+      application must be compiled by
+      the <a href="https://sdcc.sourceforge.net/">SDCC</a>.</dd>
+      
 
       <dt><tt><b>-o colorsetting,...<br>
       </b></tt></dt>

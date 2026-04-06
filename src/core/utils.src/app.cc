@@ -74,6 +74,8 @@ cl_app::cl_app(void)
   options= new cl_options();
   quiet= false;
   nowelcome= false;
+  retmain= false;
+  retval= 0;
   if (app_start_at == 0)
     app_start_at= dnow();
   srnd(0);
@@ -264,7 +266,7 @@ cl_app::run(void)
       //commander->check();
     }
 
-  return sim->uc->sim_stop_result ();
+  return retmain?sim->uc->sim_stop_result():0;
 }
 
 int
@@ -344,7 +346,7 @@ print_help(const char *name)
 #define DOPT
 #endif
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-AbBEgGhHlPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
+  printf("Usage: %s [-AbBEgGhHlmPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
 	 "       [-e command] [-I if_optionlist] " KOPT " [-o colorlist]\n"
 	 "       [-p prompt] [-R seed] [-s file] [-S optionlist]\n"
 	 "       [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]] " ZOPT "\n"
@@ -381,6 +383,7 @@ print_help(const char *name)
      "                 out=file            specify output file for IO\n"
      "  -k portnum   Listen portnum for serial I/O (obsolete, use -S)\n"
      "  -l           Use light theme (default is dark)\n"
+     "  -m           Return value of simulated main()\n"
      "  -o colors    `colors' is a list of color specification: what=colspec,...\n"
      "               where colspec is : separated list of color options\n"
      "               e.g.: prompt=b:white:black (bold white on black)\n"
@@ -985,6 +988,9 @@ cl_app::proc_arguments(int argc, char *argv[])
 	set_option_s("color_btn_off", "black:bwhite");
 	set_option_s("color_sw_on", "bcyan:bwhite");
 	set_option_s("color_sw_off", "black:bwhite");
+	break;
+      case 'm':
+	retmain= true;
 	break;
       case 'B':
 	if (!options->set_value("beep_break", this, (bool)true))

@@ -63,7 +63,7 @@ main(int argc, char *argv[])
   application->done();
   delete application;
   
-  return(0/*retval*/);
+  return(retval);
 }
 
 /* End of s51.src/s51.cc */
