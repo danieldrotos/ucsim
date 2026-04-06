@@ -42,6 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 int
 main(int argc, char *argv[])
 {
+  int retval;
   class cl_sim *sim;
   
   app_start_at= dnow();
@@ -53,11 +54,10 @@ main(int argc, char *argv[])
   if (sim->init())
     sim->state|= SIM_QUIT;
   application->set_simulator(sim);
-  //sim->main();
-  application->run();
+  retval= application->run();
   application->done();
   delete application;
-  return(0);
+  return(retval);
 }
 
 

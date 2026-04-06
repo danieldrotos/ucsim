@@ -35,6 +35,7 @@
 int
 main(int argc, char *argv[])
 {
+  int retval;
   class cl_sim *sim;
 
   app_start_at= dnow();
@@ -44,11 +45,10 @@ main(int argc, char *argv[])
   sim= new cl_simpblaze(application);
   if (sim->init())
     return(1);
-
   application->set_simulator(sim);
-  application->run();
+  retval= application->run();
   delete application;
-  return(0);
+  return retval;
 }
 
 /* End of pblaze.src/spblaze.cc */

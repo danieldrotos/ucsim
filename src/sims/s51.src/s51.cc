@@ -59,11 +59,9 @@ main(int argc, char *argv[])
     sim->state|= SIM_QUIT;
   application->set_simulator(sim);
   retval= application->run();
-
   application->done();
-  delete application;
-  
-  return(retval);
+  delete application;  
+  return retval;
 }
 
 /* End of s51.src/s51.cc */
