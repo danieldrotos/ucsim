@@ -490,6 +490,45 @@ cl_irq_stop_option::option_changed(void)
 }
 
 
+/*
+ * Memory operator to pass bit operations to/from sfr
+ */
+
+cl_bitsfr::cl_bitsfr(MCELL *acell, class cl_address_space *the_sfr, t_addr bitaddr):
+  cl_memory_operator(acell)
+{
+  sfr= the_sfr;
+  addr= bitaddr/8;
+  bitmask= 1 << (bitaddr & 0x7);
+}
+
+t_mem
+cl_bitsfr::read(void)
+{
+  return cell->get();
+  t_mem v= sfr->read(addr);
+  t_mem b= (v&bitmask)?1:0;
+  return b;
+}
+
+t_mem
+cl_bitsfr::write(t_mem val)
+{
+  return val;
+  t_mem v;
+  // READ
+  v= sfr->read(addr);
+  // MODIFY
+  if (val)
+    v|= bitmask;
+  else
+    v&= ~bitmask;
+  // WRITE
+  sfr->write(addr, v);
+  return val;
+}
+
+
 //instruction_wrapper_fn itab51[256];
 
 /*
@@ -1127,6 +1166,16 @@ cl_51core::decode_bits(void)
   ad->set_name("def_bits_bander_80-ff");
   bits->decoders->add(ad);
   ad->activate(0);
+
+  t_addr ba;
+  for (ba= 128; ba <= 255; ba++)
+    {
+      MCELL *c= bits->get_cell(ba);
+      class cl_bitsfr *op= new cl_bitsfr(c,
+					 sfr,
+					 ba);
+      c->append_operator(op);
+    }
 }
 
 void

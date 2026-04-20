@@ -59,6 +59,20 @@ public:
   virtual void option_changed(void);
 };
 
+
+class cl_bitsfr: public cl_memory_operator
+{
+public:
+  class cl_address_space *sfr;
+  t_addr addr;
+  t_mem bitmask;
+public:
+  cl_bitsfr(MCELL *acell, class cl_address_space *the_sfr, t_addr bitaddr);
+  virtual t_mem read(void);
+  virtual t_mem write(t_mem val);
+};
+
+
 class cl_51core: public cl_uc
 {
 public:
