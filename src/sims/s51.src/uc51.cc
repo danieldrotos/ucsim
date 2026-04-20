@@ -517,7 +517,7 @@ cl_bitsfr::write(t_mem val)
   //return val;
   t_mem v;
   // READ
-  v= sfr->read(addr);
+  v= sfr->get(addr);
   // MODIFY
   if (val)
     v|= bitmask;
