@@ -78,7 +78,7 @@ public:
   virtual void make_memories(void);
   virtual void build_cmdset(class cl_cmdset *cmdset);
 
-  virtual long read_hex_file(const char *nam);
+  virtual long read_hex_file(const char *nam, bool check);
 
   virtual struct dis_entry *dis_tbl(void);
   virtual struct name_entry *sfr_tbl(void);
@@ -110,7 +110,7 @@ public:
 
 private:
   void init_uc_parameters(void);
-  virtual long std_read_hex_file(const char *nam);
+  virtual long std_read_hex_file(const char *nam, bool check);
   virtual long pblaze_read_hex_file(const char *nam);
 
 };

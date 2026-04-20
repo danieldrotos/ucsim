@@ -288,7 +288,7 @@ cl_serial::serial_bit_cnt(void)
 int
 cl_serial::tick(int cycles)
 {
-  char c;
+  u8_t c;
 
   serial_bit_cnt(/*_mode*/);
   if (s_sending &&
@@ -322,15 +322,14 @@ cl_serial::tick(int cycles)
   if (s_receiving &&
       (s_rec_bit >= _bits))
     {
-      c= input;
-      uc->sim->app->debug("UART%d received %d,%c\n", id,
-			  c,isprint(c)?c:' ');
-      input_avail= false;
-      s_in= c;
-      sbuf->set(s_in);
-      received(c);
-      s_receiving= false;
-      s_rec_bit-= _bits;
+      if (get_input(&c))
+	{
+	  s_in= c;
+	  sbuf->set(s_in);
+	  received(c);
+	  s_receiving= false;
+	  s_rec_bit-= _bits;
+	}
     }
   
   int l;

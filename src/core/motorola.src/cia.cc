@@ -289,7 +289,7 @@ cl_cia::set_help(class cl_console_base *con)
 int
 cl_cia::tick(int cycles)
 {
-  char c;
+  u8_t c;
 
   if (!on)
     return 0;
@@ -336,14 +336,13 @@ cl_cia::tick(int cycles)
   if (s_receiving &&
       (s_rec_bit >= bits))
     {
+      if (get_input(&c))
 	{
-	  c= input;
-	  input_avail= false;
 	  s_in= c;
 	  received();
+	  s_receiving= false;
+	  s_rec_bit-= bits;
 	}
-      s_receiving= false;
-      s_rec_bit-= bits;
     }
   
   return(0);

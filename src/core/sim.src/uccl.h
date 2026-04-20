@@ -267,15 +267,24 @@ public:
   chars file_name;
   chars mem_name;
   chars offset_name;
+  chars range_name;
+  chars min_name;
+  chars max_name;
   long int offset;
   class cl_memory *mem;
+  t_addr use_min, use_max;
 public:
   cl_inspec(chars aspec, class cl_uc *auc);
   virtual int init(void);
-  virtual chars *get_file_name(void);
-  virtual chars *get_mem_name(void);
-  virtual long int get_offset(void);
-  virtual class cl_memory *get_mem(void);
+  virtual chars *get_file_name(void)     { init(); return &file_name; }
+  virtual chars *get_mem_name(void)      { init(); return &mem_name; }
+  virtual chars *get_range_name(void)    { init(); return &range_name; }
+  virtual chars *get_min_name()          { init(); return &min_name; }
+  virtual chars *get_max_name()          { init(); return &max_name; }
+  virtual long int get_offset(void)      { init(); return offset; }
+  virtual class cl_memory *get_mem(void) { init(); return mem; }
+  virtual t_addr get_min(void)           { init(); return use_min; }
+  virtual t_addr get_max(void)           { init(); return use_max; }
 };
 
 
@@ -388,15 +397,15 @@ public:
   // file handling
   virtual cl_f *find_loadable_file(chars nam);
   virtual long read_hex_file(cl_console_base *con);
-  virtual long read_hex_file(const char *nam);
+  virtual long read_hex_file(const char *nam, bool check);
   virtual long read_file(chars nam, class cl_console_base *con, bool check= false);
-  virtual bool set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check= false);
+  virtual bool set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check);
   // content loaders
-  virtual long read_hex_file(class cl_inspec *is, cl_f *f);
-  virtual long read_omf_file(class cl_inspec *is, cl_f *f);
-  virtual long read_asc_file(class cl_inspec *is, cl_f *f);
-  virtual long read_p2h_file(class cl_inspec *is, cl_f *f, bool check= false);
-  virtual long read_s19_file(class cl_inspec *is, cl_f *f);
+  virtual long read_hex_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_omf_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_asc_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_p2h_file(class cl_inspec *is, cl_f *f, bool check);
+  virtual long read_s19_file(class cl_inspec *is, cl_f *f, bool check);
   // symbol loaders
   virtual long read_cdb_file(cl_f *f);
   virtual long read_map_file(cl_f *f);
@@ -455,7 +464,9 @@ public:
   virtual int accept_it(class it_level *il);
   virtual bool it_enabled(void) { return false; }
   virtual class cl_it_src *search_it_src(int cid_or_nr);
-  
+
+  virtual int sim_stop_result(void) { return 0; }
+
 #include "uccl_instructions.h"
   
   // stack tracking

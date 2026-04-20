@@ -167,7 +167,7 @@ cl_console_base::init(void)
 void
 cl_console_base::welcome(void)
 {
-  if (!(flags & CONS_NOWELCOME))
+  if (!(flags & CONS_NOWELCOME) && !app->nowelcome)
     {
       dd_printf("uCsim%s, Copyright (C) 1997 Daniel Drotos.\n"
         "uCsim comes with ABSOLUTELY NO WARRANTY; for details type "
@@ -282,16 +282,20 @@ cl_console_base::dd_printf(const char *format, ...)
 bool
 cl_console_base::opt_bw(void)
 {
-  bool bw= false;
+  bool bw= false, fc= false;
   class cl_f *fo= get_fout();
   class cl_option *o= application->options->get_option("black_and_white");
+  class cl_option *c= application->options->get_option("force_colors");
   
   if (o) o->get_value(&bw);
+  if (c) c->get_value(&fc);
   if (!fo ||
       (fo &&
       !fo->tty)
       )
     bw= true;
+  if (fc)
+    bw= false;
   if (non_color())
     bw= true;
   return bw;
@@ -326,20 +330,25 @@ cl_console_base::dd_cprintf(const char *color_name, const char *format, ...)
 chars
 cl_console_base::get_color_ansiseq(const char *color_name, bool add_reset)
 {
-  bool bw= non_color();
+  bool bw= non_color(), fc= false;
   char *cc;
   chars cce= "";
   class cl_f *fo= get_fout();
   class cl_option *o= application->options->get_option("black_and_white");
+  class cl_option *c= application->options->get_option("force_colors");
   if (o) o->get_value(&bw);
+  if (c) c->get_value(&fc);
 
-  if (!fo ||
-      (fo &&
-      !fo->tty) ||
-      bw
-      )
-    return cce;
-
+  if (!fc)
+    {
+      if (!fo ||
+	  (fo &&
+	   !fo->tty) ||
+	  bw
+	  )
+	return cce;
+    }
+  
   o= application->options->get_option(chars("", "color_%s", color_name));
   cc= NULL;
   if (o) o->get_value(&cc);
@@ -354,7 +363,7 @@ cl_console_base::get_color_ansiseq(const char *color_name, bool add_reset)
 void
 cl_console_base::dd_color(const char *color_name)
 {
-  if (!non_color())
+  if (!opt_bw())
     {
       chars c;
       const char *s;
@@ -681,7 +690,7 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
           class cl_cmdline *cmdline= 0;
           class cl_cmd *cm = 0;
           if (get_flag(CONS_ECHO))
-            dd_printf("%s\n", cmdstr);
+            dd_cprintf("command", "%s\n", cmdstr);
 	  do
 	    {
 	      un_redirect();

@@ -526,14 +526,21 @@ cl_inspec::cl_inspec(chars aspec, class cl_uc *auc)
   inited= false;
   file_name= "";
   mem_name= "";
+  range_name= "";
+  min_name= "";
+  max_name= "";
   offset_name= "0";
   offset= 0;
   uc= auc;
+  use_min= 0;
+  use_max= 0xffffffff;
 }
 
 int
 cl_inspec::init(void)
 {
+  if (inited)
+    return 0;
   if (ispec.empty())
     {      
       return 0;
@@ -542,7 +549,7 @@ cl_inspec::init(void)
   int i= 0;
   char c;
   c= ispec.c(i);
-  while ((c != 0) && (c != '@') && (c != ':'))
+  while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
     {
       file_name+= c;
       i++;
@@ -555,7 +562,7 @@ cl_inspec::init(void)
       mem_name= "";
       i= p+1;
       c= ispec.c(i);
-      while ((c != 0) && (c != '@') && (c != ':'))
+      while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
 	{
 	  mem_name+= c;
 	  i++;
@@ -570,7 +577,7 @@ cl_inspec::init(void)
       offset_name= "";
       i= p+1;
       c= ispec.c(i);
-      while ((c != 0) && (c != '@') && (c != ':'))
+      while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
 	{
 	  offset_name+= c;
 	  i++;
@@ -581,40 +588,42 @@ cl_inspec::init(void)
       else
 	offset= strtol(offset_name.cstr(), 0, 0);
     }
+  p= ispec.pos('#');
+  if (p >= 0)
+    {
+      range_name= "";
+      i= p+1;
+      c= ispec.c(i);
+      while ((c != 0) && (c != '@') && (c != ':') && (c != '#'))
+	{
+	  range_name+= c;
+	  i++;
+	  c= ispec.c(i);
+	}
+      p= range_name.pos('-');
+      if (range_name.empty())
+	{
+	  min_name= "0";
+	  max_name= "0xffffffff";
+	}
+      else
+	{
+	  if (p < 0)
+	    {
+	      min_name= range_name;
+	      max_name= "0xffffffff";
+	    }
+	  else
+	    {
+	      min_name= range_name.substr(0, p);
+	      max_name= range_name.substr(p+1, range_name.len());
+	    }
+	}
+      use_min= min_name.toi();
+      use_max= max_name.toi();
+    }
   inited= true;
   return 0;
-}
-
-chars *
-cl_inspec::get_file_name(void)
-{
-  if (!inited)
-    init();
-  return &file_name;
-}
-
-chars *
-cl_inspec::get_mem_name(void)
-{
-  if (!inited)
-    init();
-  return &mem_name;
-}
-
-long int
-cl_inspec::get_offset(void)
-{
-  if (!inited)
-    init();
-  return offset;
-}
-
-class cl_memory *
-cl_inspec::get_mem(void)
-{
-  if (!inited)
-    init();
-  return mem;
 }
 
 
@@ -1460,19 +1469,30 @@ ReadInt(cl_f *f, bool *ok, int bytes)
 bool
 cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
 {
+  bool eq= true;
   class cl_memory *mem= is->get_mem();
+  t_mem v;
   if (mem == NULL)
     return false;
+  t_addr mi= is->get_min(), ma= is->get_max();
+  if ((mi > 0) && (addr < mi))
+    return eq;
+  if ((ma < 0xffffffff) && (addr > ma))
+    return eq;
   addr+= is->offset;
   t_addr size= mem->get_size();
   if (mem->is_chip())
     {
       if (check)
 	{
-	  return val == mem->get(addr);
-	} 
-      mem->set(addr, val);
-      return true;
+	  v= mem->read(addr);
+	  if (!(eq= val == v))
+	    application->dd_printf("Diff at %08x, FILE=%08x MEM=%08x\n",
+				   AU32(addr), MU32(val), MU32(v));
+	}
+      else
+	mem->set(addr, val);
+      return eq;
     }
   // address space
   t_addr la= mem->lowest_valid_address();
@@ -1480,9 +1500,15 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
   if ((addr >= la) && (addr <= ha))
     {
       if (check)
-	return val == rom->read(addr);
-      rom->download(addr, val);
-      return true;
+	{
+	  v= rom->read(addr);
+	  if (!(eq= val == v))
+	    application->dd_printf("Diff at %08x, FILE=%08x MEM=%08x\n",
+				   AU32(addr), MU32(val), MU32(v));
+	}
+      else
+	rom->download(addr, val);
+      return eq;
     }
   t_addr bank, caddr;
   bank= addr / size;
@@ -1501,11 +1527,11 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
   else
     {
     }
-  return true;
+  return eq;
 }
 
 long
-cl_uc::read_hex_file(const char *nam)
+cl_uc::read_hex_file(const char *nam, bool check)
 {
   class cl_inspec is(nam, this);
   if (is.get_mem() == NULL)
@@ -1527,7 +1553,7 @@ cl_uc::read_hex_file(const char *nam)
 	fprintf(stderr, "Can't open `%s': %s\n", n->cstr(), strerror(errno));
 	return(-1);
       }
-  long l= read_hex_file(&is, f);
+  long l= read_hex_file(&is, f, check);
   delete f;
   return l;
 }
@@ -1542,12 +1568,12 @@ cl_uc::read_hex_file(cl_console_base *con)
   if (f == NULL)
     return -1;
   class cl_inspec is("", this);
-  long l= read_hex_file(&is, f);
+  long l= read_hex_file(&is, f, false);
   return l;
 }
 
 long
-cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
+cl_uc::read_hex_file(class cl_inspec *is, cl_f *f, bool check)
 {
   int c;
   long written= 0, recnum= 0;
@@ -1563,11 +1589,11 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
   bool ok;
   int get_low= 0;
   uchar lows[4]= { 0, 0, 0, 0 };
-
-  if (!rom)
+  class cl_memory *mem= is->get_mem();
+  if (!mem)
     {
       sim->app->get_commander()->
-	dd_printf("No ROM address space to read in.\n");
+	dd_printf("No memory %s to read in.\n", is->get_mem_name()->cstr());
       return(-1);
     }
 
@@ -1605,30 +1631,37 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 		{
 		  if (rtyp == 0)
 		    {
-		      if (rom->width > 8)
-			addr/= 2;
+		      if (mem->width > 8)
+			{
+			  if (mem->width <= 16)
+			    addr/= 2;
+			  else if (mem->width <= 24)
+			    addr/= 3;
+			  else if (mem->width <= 32)
+			    addr/= 4;
+			}
 		      for (i= 0; i < dnum; i++)
 			{
-			  if (rom->width <= 8)
+			  if (mem->width <= 8)
 			    {
-			      set_rom(is, base+addr, rec[i]);
+			      set_rom(is, base+addr, rec[i], check);
 			      addr++;
 			      written++;
 			    }
-			  else if (rom->width <= 16)
+			  else if (mem->width <= 16)
 			    {
 			      switch (get_low)
 				{
 				case 0: lows[0]= rec[i]; get_low++; break;
 				case 1: lows[1]= rec[i];
-				  set_rom(is, base+addr, (lows[1]*256)+lows[0]);
+				  set_rom(is, base+addr, (lows[1]*256)+lows[0], check);
 				  addr++;
 				  written++;
 				  get_low= 0;
 				  break;
 				}
 			    }
-			  else if (rom->width <= 32)
+			  else if (mem->width <= 32)
 			    {
 			      switch (get_low)
 				{
@@ -1640,7 +1673,8 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 					  (lows[3]<<24)+
 					  (lows[2]<<16)+
 					  (lows[1]<<8)+
-					  (lows[0]));
+					  (lows[0]),
+					  check);
 				  get_low= 0;
 				  lows[3]= lows[2]= lows[1]= lows[0]= 0;
 				  addr++;
@@ -1670,22 +1704,23 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f)
 	    fprintf(stderr, "Read error in record %ld.\n", recnum);
 	}
     }
-  if (rom->width > 8)
+  if (mem->width > 8)
     {
       for (i= get_low; i<4; i++)
 	lows[i]= 0;
-      rom->set(addr,
-	       (lows[3]<<24)+
-	       (lows[2]<<16)+
-	       (lows[1]<<8)+
-	       (lows[0]));
+      set_rom(is, addr,
+	      (lows[3]<<24)+
+	      (lows[2]<<16)+
+	      (lows[1]<<8)+
+	      (lows[0]),
+	      check);
     }
   
   return(written);
 }
 
 long
-cl_uc::read_omf_file(class cl_inspec *is, cl_f *f)
+cl_uc::read_omf_file(class cl_inspec *is, cl_f *f, bool check)
 {
   long written= 0;
   class cl_omf_rec rec;
@@ -1698,7 +1733,7 @@ cl_uc::read_omf_file(class cl_inspec *is, cl_f *f)
 	  int i= 3;
 	  while (i < rec.len)
 	    {
-	      set_rom(is, addr+i, rec.rec[i]);
+	      set_rom(is, addr+i, rec.rec[i], check);
 	      written++;
 	      i++;
 	    }
@@ -1708,7 +1743,7 @@ cl_uc::read_omf_file(class cl_inspec *is, cl_f *f)
 }
 
 long
-cl_uc::read_asc_file(class cl_inspec *is, cl_f *f)
+cl_uc::read_asc_file(class cl_inspec *is, cl_f *f, bool check)
 {
   int c;
   chars line= chars();
@@ -1734,8 +1769,8 @@ cl_uc::read_asc_file(class cl_inspec *is, cl_f *f)
 		s= word.c_str();
 		if (isxdigit(*s))
 		  {
-		    t_mem d= chars(s).htoi();//strtoll(s, 0, 16);
-		    set_rom(is, addr, d);
+		    t_mem d= chars(s).htoi();
+		    set_rom(is, addr, d, check);
 		    addr++;
 		  }
 		line= "";
@@ -1780,17 +1815,7 @@ cl_uc::read_p2h_file(class cl_inspec *is, cl_f *f, bool check)
 		{
 		  t_mem v= w1.htoi();//strtol(w1.c_str(), 0, 16);
 		  t_addr a= w3.htoi();//strtol(w3.c_str(), 0, 16);
-		  if (check)
-		    {
-		      t_mem mv= rom->read(a);
-		      if (mv != v)
-			{
-			  application->dd_printf("Diff at %08x, FILE=%08x MEM=%08x\n",
-						 AU32(a), MU32(v), MU32(mv));
-			}
-		    }
-		  else
-		    set_rom(is, a, v);
+		  set_rom(is, a, v, check);
 		  nr++;		  
 		}
 	    }
@@ -2044,24 +2069,62 @@ static t_addr a32(const char *s, int p)
   return a;
 }
 
-static int s19(class cl_inspec *is, class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes)
+static int s19(class cl_inspec *is, class cl_uc *uc, t_addr a, const char *s, int p, int data_bytes, bool check)
 {
   int b= 0;
+  u8_t d, d0, d1, d2, d3;
+  t_mem v;
   if (data_bytes < 1)
     return 0;
+  if (is->get_mem()->width > 8)
+    {
+      if (is->get_mem()->width <= 16) a/= 2;
+      if (is->get_mem()->width <= 24) a/= 3;
+      if (is->get_mem()->width <= 32) a/= 4;
+    }
   while (b < data_bytes)
     {
-      u8_t d= h2(s, p);
-      uc->set_rom(is, a, d);
-      a++;
-      p+= 2;
-      b++;
+      if (is->get_mem()->width <= 8)
+	{
+	  d= h2(s, p);
+	  uc->set_rom(is, a, d, check);
+	  a++;
+	  p+= 2;
+	  b++;
+	}
+      else if (is->get_mem()->width <= 16)
+	{
+	  d0= h2(s, p); p+= 2; b++;
+	  d1= h2(s, p); p+= 2; b++;
+	  v= (d1<<8)+d0;
+	  uc->set_rom(is, a, v, check);
+	  a++;
+	}
+      else if (is->get_mem()->width <= 24)
+	{
+	  d0= h2(s, p); p+= 2; b++;
+	  d1= h2(s, p); p+= 2; b++;
+	  d2= h2(s, p); p+= 2; b++;
+	  v= (d2<<16)+(d1<<8)+d0;
+	  uc->set_rom(is, a, v, check);
+	  a++;
+	}
+      else if (is->get_mem()->width <= 32)
+	{
+	  d0= h2(s, p); p+= 2; b++;
+	  d1= h2(s, p); p+= 2; b++;
+	  d2= h2(s, p); p+= 2; b++;
+	  d3= h2(s, p); p+= 2; b++;
+	  v= (d3<<24)+(d2<<16)+(d1<<8)+d0;
+	  uc->set_rom(is, a, v, check);
+	  a++;
+	}
     }
   return data_bytes;
 }
 
 long
-cl_uc::read_s19_file(class cl_inspec *is, cl_f *f)
+cl_uc::read_s19_file(class cl_inspec *is, cl_f *f, bool check)
 {
   chars line;
   int cnt;
@@ -2101,17 +2164,17 @@ cl_uc::read_s19_file(class cl_inspec *is, cl_f *f)
 	case '1':
 	  a= a16(s, 4);
 	  p=  8;
-	  written+= s19(is, this, a, s, p, cnt-2-1);
+	  written+= s19(is, this, a, s, p, cnt-2-1, check);
 	  break;
 	case '2':
 	  a= a24(s, 4);
 	  p= 10;
-	  written+= s19(is, this, a, s, p, cnt-3-1);
+	  written+= s19(is, this, a, s, p, cnt-3-1, check);
 	  break;
 	case '3':
 	  a= a32(s, 4);
 	  p= 12;
-	  written+= s19(is, this, a, s, p, cnt-4-1);
+	  written+= s19(is, this, a, s, p, cnt-4-1, check);
 	  break;
 	case '4': break;
 	case '5': break;
@@ -2209,41 +2272,41 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
     }
   if (f->is_asc_file())
     {
-      l= read_asc_file(&is, f);
+      l= read_asc_file(&is, f, check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
   if (f->is_hex_file())
     {
-      l= read_hex_file(&is, f);
+      l= read_hex_file(&is, f, check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
   else if (f->is_s19_file())
     {
-      l= read_s19_file(&is, f);
+      l= read_s19_file(&is, f, check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
   else if (f->is_omf_file())
     {
-      l= read_omf_file(&is, f);
+      l= read_omf_file(&is, f, check);
       if (!application->quiet)
 	printf("%ld words read from %s\n", l, f->get_fname());
     }
-  else if (f->is_cdb_file())
+  else if (!check && f->is_cdb_file())
     {
       l= read_cdb_file(f);
       if (!application->quiet)
 	printf("%ld symbols read from %s\n", l, f->get_fname());
     }
-  else if (f->is_map_file())
+  else if (!check && f->is_map_file())
     {
       l= read_map_file(f);
       if (!application->quiet)
 	printf("%ld symbols read from %s\n", l, f->get_fname());
     }
-  if (strcmp(nam, f->get_fname()) != 0)
+  if (!check && (strcmp(nam, f->get_fname()) != 0))
     {
       chars n= nam;
       n+= ".cdb";
@@ -2256,7 +2319,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
 	}
       delete c;
     }
-  if (strcmp(nam, f->get_fname()) != 0)
+  if (!check && (strcmp(nam, f->get_fname()) != 0))
     {
       chars n= nam;
       n+= ".map";

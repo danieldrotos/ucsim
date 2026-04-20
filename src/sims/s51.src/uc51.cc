@@ -490,6 +490,45 @@ cl_irq_stop_option::option_changed(void)
 }
 
 
+/*
+ * Memory operator to pass bit operations to/from sfr
+ */
+
+cl_bitsfr::cl_bitsfr(MCELL *acell, class cl_address_space *the_sfr, t_addr bitaddr):
+  cl_memory_operator(acell)
+{
+  sfr= the_sfr;
+  addr= bitaddr & 0xf8;
+  bitmask= 1 << (bitaddr & 0x7);
+}
+
+t_mem
+cl_bitsfr::read(void)
+{
+  //return cell->get();
+  t_mem v= sfr->read(addr);
+  t_mem b= (v&bitmask)?1:0;
+  return b;
+}
+
+t_mem
+cl_bitsfr::write(t_mem val)
+{
+  //return val;
+  t_mem v;
+  // READ
+  v= sfr->get(addr);
+  // MODIFY
+  if (val)
+    v|= bitmask;
+  else
+    v&= ~bitmask;
+  // WRITE
+  sfr->write(addr, v);
+  return val;
+}
+
+
 //instruction_wrapper_fn itab51[256];
 
 /*
@@ -514,189 +553,6 @@ cl_51core::cl_51core(struct cpu_entry *Itype, class cl_sim *asim):
 int
 cl_51core::init(void)
 {
-  //fill_def_wrappers(itab51);
-  /*
-  itab51[0x89]= itab51[0x88];
-  itab51[0x8a]= itab51[0x88];
-  itab51[0x8b]= itab51[0x88];
-  itab51[0x8c]= itab51[0x88];
-  itab51[0x8d]= itab51[0x88];
-  itab51[0x8e]= itab51[0x88];
-  itab51[0x8f]= itab51[0x88];
-
-  itab51[0xf9]= itab51[0xf8];
-  itab51[0xfa]= itab51[0xf8];
-  itab51[0xfb]= itab51[0xf8];
-  itab51[0xfc]= itab51[0xf8];
-  itab51[0xfd]= itab51[0xf8];
-  itab51[0xfe]= itab51[0xf8];
-  itab51[0xff]= itab51[0xf8];
-
-  itab51[0x21]= itab51[0x01];
-  itab51[0x41]= itab51[0x01];
-  itab51[0x61]= itab51[0x01];
-  itab51[0x81]= itab51[0x01];
-  itab51[0xa1]= itab51[0x01];
-  itab51[0xc1]= itab51[0x01];
-  itab51[0xe1]= itab51[0x01];
-
-  itab51[0x07]= itab51[0x06];
-
-  itab51[0x09]= itab51[0x08];
-  itab51[0x0a]= itab51[0x08];
-  itab51[0x0b]= itab51[0x08];
-  itab51[0x0c]= itab51[0x08];
-  itab51[0x0d]= itab51[0x08];
-  itab51[0x0e]= itab51[0x08];
-  itab51[0x0f]= itab51[0x08];
-
-  itab51[0x31]= itab51[0x11];
-  itab51[0x51]= itab51[0x11];
-  itab51[0x71]= itab51[0x11];
-  itab51[0x91]= itab51[0x11];
-  itab51[0xb1]= itab51[0x11];
-  itab51[0xd1]= itab51[0x11];
-  itab51[0xf1]= itab51[0x11];
-
-  itab51[0x17]= itab51[0x16];
-
-  itab51[0x19]= itab51[0x18];
-  itab51[0x1a]= itab51[0x18];
-  itab51[0x1b]= itab51[0x18];
-  itab51[0x1c]= itab51[0x18];
-  itab51[0x1d]= itab51[0x18];
-  itab51[0x1e]= itab51[0x18];
-  itab51[0x1f]= itab51[0x18];
-
-  itab51[0x29]= itab51[0x28];
-  itab51[0x2a]= itab51[0x28];
-  itab51[0x2b]= itab51[0x28];
-  itab51[0x2c]= itab51[0x28];
-  itab51[0x2d]= itab51[0x28];
-  itab51[0x2e]= itab51[0x28];
-  itab51[0x2f]= itab51[0x28];
-
-  itab51[0x27]= itab51[0x26];
-
-  itab51[0x37]= itab51[0x36];
-  
-  itab51[0x39]= itab51[0x38];
-  itab51[0x3a]= itab51[0x38];
-  itab51[0x3b]= itab51[0x38];
-  itab51[0x3c]= itab51[0x38];
-  itab51[0x3d]= itab51[0x38];
-  itab51[0x3e]= itab51[0x38];
-  itab51[0x3f]= itab51[0x38];
-
-  itab51[0x47]= itab51[0x46];
-
-  itab51[0x49]= itab51[0x48];
-  itab51[0x4a]= itab51[0x48];
-  itab51[0x4b]= itab51[0x48];
-  itab51[0x4c]= itab51[0x48];
-  itab51[0x4d]= itab51[0x48];
-  itab51[0x4e]= itab51[0x48];
-  itab51[0x4f]= itab51[0x48];
-
-  itab51[0x97]= itab51[0x96];
-
-  itab51[0x99]= itab51[0x98];
-  itab51[0x9a]= itab51[0x98];
-  itab51[0x9b]= itab51[0x98];
-  itab51[0x9c]= itab51[0x98];
-  itab51[0x9d]= itab51[0x98];
-  itab51[0x9e]= itab51[0x98];
-  itab51[0x9f]= itab51[0x98];
-
-  itab51[0xb7]= itab51[0xb6];
-
-  itab51[0xb9]= itab51[0xb8];
-  itab51[0xba]= itab51[0xb8];
-  itab51[0xbb]= itab51[0xb8];
-  itab51[0xbc]= itab51[0xb8];
-  itab51[0xbd]= itab51[0xb8];
-  itab51[0xbe]= itab51[0xb8];
-  itab51[0xbf]= itab51[0xb8];
-
-  itab51[0xd9]= itab51[0xd8];
-  itab51[0xda]= itab51[0xd8];
-  itab51[0xdb]= itab51[0xd8];
-  itab51[0xdc]= itab51[0xd8];
-  itab51[0xdd]= itab51[0xd8];
-  itab51[0xde]= itab51[0xd8];
-  itab51[0xdf]= itab51[0xd8];
-
-  itab51[0x57]= itab51[0x56];
-
-  itab51[0x59]= itab51[0x58];
-  itab51[0x5a]= itab51[0x58];
-  itab51[0x5b]= itab51[0x58];
-  itab51[0x5c]= itab51[0x58];
-  itab51[0x5d]= itab51[0x58];
-  itab51[0x5e]= itab51[0x58];
-  itab51[0x5f]= itab51[0x58];
-
-  itab51[0x67]= itab51[0x66];
-
-  itab51[0x69]= itab51[0x68];
-  itab51[0x6a]= itab51[0x68];
-  itab51[0x6b]= itab51[0x68];
-  itab51[0x6c]= itab51[0x68];
-  itab51[0x6d]= itab51[0x68];
-  itab51[0x6e]= itab51[0x68];
-  itab51[0x6f]= itab51[0x68];
-
-  itab51[0x77]= itab51[0x76];
-
-  itab51[0x79]= itab51[0x78];
-  itab51[0x7a]= itab51[0x78];
-  itab51[0x7b]= itab51[0x78];
-  itab51[0x7c]= itab51[0x78];
-  itab51[0x7d]= itab51[0x78];
-  itab51[0x7e]= itab51[0x78];
-  itab51[0x7f]= itab51[0x78];
-
-  itab51[0x87]= itab51[0x86];
-
-  itab51[0xa7]= itab51[0xa6];
-
-  itab51[0xa9]= itab51[0xa8];
-  itab51[0xaa]= itab51[0xa8];
-  itab51[0xab]= itab51[0xa8];
-  itab51[0xac]= itab51[0xa8];
-  itab51[0xad]= itab51[0xa8];
-  itab51[0xae]= itab51[0xa8];
-  itab51[0xaf]= itab51[0xa8];
-
-  itab51[0xc7]= itab51[0xc6];
-
-  itab51[0xc9]= itab51[0xc8];
-  itab51[0xca]= itab51[0xc8];
-  itab51[0xcb]= itab51[0xc8];
-  itab51[0xcc]= itab51[0xc8];
-  itab51[0xcd]= itab51[0xc8];
-  itab51[0xce]= itab51[0xc8];
-  itab51[0xcf]= itab51[0xc8];
-
-  itab51[0xd7]= itab51[0xd6];
-
-  itab51[0xe3]= itab51[0xe2];
-
-  itab51[0xe7]= itab51[0xe6];
-
-  itab51[0xe9]= itab51[0xe8];
-  itab51[0xea]= itab51[0xe8];
-  itab51[0xeb]= itab51[0xe8];
-  itab51[0xec]= itab51[0xe8];
-  itab51[0xed]= itab51[0xe8];
-  itab51[0xee]= itab51[0xe8];
-  itab51[0xef]= itab51[0xe8];
-
-  itab51[0xf3]= itab51[0xf2];
-
-  itab51[0xf7]= itab51[0xf6];
-  */
-  
   uc_itab[0x89]= uc_itab[0x88];
   uc_itab[0x8a]= uc_itab[0x88];
   uc_itab[0x8b]= uc_itab[0x88];
@@ -1127,6 +983,16 @@ cl_51core::decode_bits(void)
   ad->set_name("def_bits_bander_80-ff");
   bits->decoders->add(ad);
   ad->activate(0);
+
+  t_addr ba;
+  for (ba= 128; ba <= 255; ba++)
+    {
+      MCELL *c= bits->get_cell(ba);
+      class cl_bitsfr *op= new cl_bitsfr(c,
+					 sfr,
+					 ba);
+      c->append_operator(op);
+    }
 }
 
 void
@@ -1912,6 +1778,13 @@ cl_51core::do_emu(void)
     }
   return(result);
 }
+
+int
+cl_51core::sim_stop_result(void)
+{
+  return (sfr->get(DPH) << 8) | sfr->get(DPL);
+}
+
 
 /*
  * Abstract method to handle WDT

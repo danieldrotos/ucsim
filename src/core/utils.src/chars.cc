@@ -424,7 +424,7 @@ chars::rrip(int nuof_chars)
  */
 
 chars
-chars::token(const char *delims) const
+chars::token(const char *delims)
 {
   chars c= (char*)NULL;
 
@@ -460,7 +460,7 @@ chars::token(const char *delims) const
 }
 
 chars
-chars::substr(int start, int len)
+chars::substr(int start, int len) const
 {
   chars c= (char*)NULL;
   if (empty() || (start >= chars_length))
@@ -529,6 +529,32 @@ chars::lint(int base) const
   if (empty()) return 0;
   long int l= strtol(chars_string, 0, base);
   return l;
+}
+
+long int
+chars::toi(void) const
+{
+  long int v= 0;
+  int p= 0, s= +1, b= 10;
+  if (empty())
+    return 0;
+  if (chars_string[0] == '+') p= 1;
+  if (chars_string[0] == '-') p= 1, s= -1;
+  if (chars_string[p] == '0')
+    {
+      p++;
+      b= 8;
+      switch (chars_string[p])
+	{
+	case 'b': case 'B': p++; b=  2; break;
+	case 'o': case 'O': p++; b=  8; break;
+	case 'd': case 'D': p++; b= 10; break;
+	case 'x': case 'X': p++; b= 16; break;
+	}
+    }
+  v= strtol(&chars_string[p], NULL, b);
+  v*= s;
+  return v;
 }
 
 

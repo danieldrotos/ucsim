@@ -243,31 +243,8 @@ cl_pblaze::build_cmdset(class cl_cmdset *cmdset)
   class cl_super_cmd *super_cmd;
 
   cl_uc::build_cmdset(cmdset);
-  /*
-  cmdset->add(cmd= new cl_dc_cmd("dc", true,
-"dc [start [stop]]  Dump ROM",
-"long help of dc"));
-  cmd->init();
 
-  cmdset->add(cmd= new cl_di_cmd("di", true,
-"di [start [stop]]  Dump Internal RAM",
-"long help of di"));
-  cmd->init();
-
-  cmdset->add(cmd= new cl_dx_cmd("dx", true,
-"dx [start [stop]]  Dump External RAM",
-"long help of dx"));
-  cmd->init();
-
-  cmdset->add(cmd= new cl_ds_cmd("ds", true,
-"ds [start [stop]]  Dump SFR",
-"long help of ds"));
-  cmd->init();
-  */
-
-  cmdset->add(cmd= new cl_pbstate_cmd("pbstate", 0));//true,
-	      //"pbstate [\"file\"]   Prints PicoBlaze state to std output or specified file",
-	      //"long help of pbstate"));
+  cmdset->add(cmd= new cl_pbstate_cmd("pbstate", 0));
   cmd->init();
   
 
@@ -544,56 +521,56 @@ cl_pblaze::print_state(class cl_console_base *con, char *file_name)
   TiXmlElement * element;
   TiXmlText * text;
 
-	TiXmlDeclaration * decl = new TiXmlDeclaration( "1.0", "", "" );
-	doc.LinkEndChild( decl );
+  TiXmlDeclaration * decl = new TiXmlDeclaration( "1.0", "", "" );
+  doc.LinkEndChild( decl );
   root = new TiXmlElement( "picoblaze" );
-	root->SetAttribute("type", id_string());
-	doc.LinkEndChild( root );
+  root->SetAttribute("type", id_string());
+  doc.LinkEndChild( root );
 
-	// RAM
+  // RAM
   element = new TiXmlElement( "ram" );
-	element->SetAttribute("size", ram_size);
-	element->SetAttribute("bytes", 1);
+  element->SetAttribute("size", ram_size);
+  element->SetAttribute("bytes", 1);
   for (unsigned int i = 0; i<ram_size; i++)
     written += snprintf(buffer + written, buffer_size - written - 1,"%02x", ram->get(i));
-	text = new TiXmlText(buffer);
-	element->LinkEndChild( text );
-	root->LinkEndChild( element );
-
-	// STACK
+  text = new TiXmlText(buffer);
+  element->LinkEndChild( text );
+  root->LinkEndChild( element );
+  
+  // STACK
   element = new TiXmlElement( "stack" );
-	element->SetAttribute("size", stack_size);
-	element->SetAttribute("bytes", 2);
-	written = 0;
+  element->SetAttribute("size", stack_size);
+  element->SetAttribute("bytes", 2);
+  written = 0;
   for (unsigned int i = 0; i<stack_size; i++)
     written += snprintf(buffer + written, buffer_size - written - 1, "%04x", stack->get(i));
-	text = new TiXmlText(buffer);
-	element->LinkEndChild( text );
-	root->LinkEndChild( element );
-
-	// REGISTERS
+  text = new TiXmlText(buffer);
+  element->LinkEndChild( text );
+  root->LinkEndChild( element );
+  
+  // REGISTERS
   TiXmlElement * registers = new TiXmlElement( "registers" );
-	if (type->type == CPU_PBLAZE_6) {
+  if (type->type == CPU_PBLAZE_6) {
     registers->SetAttribute("activeRegbank", active_regbank == REGISTER_BANK_A ? "A" : "B");
   }
-	root->LinkEndChild( registers );
+  root->LinkEndChild( registers );
 
   // REGBANK A
   element = new TiXmlElement( "regbank" );
   if (type->type == CPU_PBLAZE_6) {
     element->SetAttribute("name", "A");
   }
-	written = 0;
+  written = 0;
   for (unsigned int i = 0; i<16; i++)
     written += snprintf(buffer + written, buffer_size - written - 1, "%02x", sfr->get(i));
-	text = new TiXmlText(buffer);
-	element->LinkEndChild( text );
-	registers->LinkEndChild( element );
-
+  text = new TiXmlText(buffer);
+  element->LinkEndChild( text );
+  registers->LinkEndChild( element );
+	
   // REGBANK B
   if (type->type == CPU_PBLAZE_6) {
     element = new TiXmlElement( "regbank" );
-      element->SetAttribute("name", "B");
+    element->SetAttribute("name", "B");
     written = 0;
     for (unsigned int i = 16; i<32; i++)
     written += snprintf(buffer + written, buffer_size - written - 1, "%02x", sfr->get(i));
@@ -648,58 +625,6 @@ cl_pblaze::print_state(class cl_console_base *con, char *file_name)
   else {
     doc.SaveFile( file_name );
   }
-
-
-    /*
-  const int buffer_size = 4096;
-  char buffer[buffer_size];
-  int written;
-
-  written = snprintf(buffer, buffer_size, "RAM:");
-  for (unsigned int i = 0; i<ram_size; i++)
-    written += snprintf(buffer + written, buffer_size - written - 1,"%02x", ram->get(i));
-  written += snprintf(buffer + written, buffer_size - written - 1, "\n");
-
-  written += snprintf(buffer + written, buffer_size - written - 1,"STACK:");
-  for (unsigned int i = 0; i<stack_size; i++)
-    written += snprintf(buffer + written, buffer_size - written - 1, "%02x", stack->get(i));
-  written += snprintf(buffer + written, buffer_size - written - 1, "\n");
-
-  if (type->type == CPU_PBLAZE_6) {
-    written += snprintf(buffer + written, buffer_size - written - 1, "ACTIVE_REGBANK:%s\n", active_regbank == REGISTER_BANK_A ? "A" : "B");
-  }
-
-  written += snprintf(buffer + written, buffer_size - written - 1, "REGBANK_A:");
-  for (unsigned int i = 0; i<16; i++)
-    written += snprintf(buffer + written, buffer_size - written - 1, "%02x", sfr->get(i));
-  written += snprintf(buffer + written, buffer_size - written - 1, "\n");
-
-  if (type->type == CPU_PBLAZE_6) {
-    written += snprintf(buffer + written, buffer_size - written - 1, "REGBANK_B:");
-    for (unsigned int i = 16; i<32; i++)
-      written += snprintf(buffer + written, buffer_size - written - 1, "%02x", sfr->get(i));
-    written += snprintf(buffer + written, buffer_size - written - 1, "\n");
-  }
-
-  written += snprintf(buffer + written, buffer_size - written - 1, "PC:%x\n", PC);
-  written += snprintf(buffer + written, buffer_size - written - 1, "SP:%x\n", sfr->get(INTERNAL_SP));
-  written += snprintf(buffer + written, buffer_size - written - 1, "FLAG_Z:%x\n", FLAGS_GET_Z ? 1:0);
-  written += snprintf(buffer + written, buffer_size - written - 1, "FLAG_C:%x\n", FLAGS_GET_C ? 1:0);
-  written += snprintf(buffer + written, buffer_size - written - 1, "FLAG_I:%x\n", FLAGS_GET_I ? 1:0);
-
-  if (file_name == NULL) {
-    con->dd_printf("%s", buffer);
-  }
-  else {
-    FILE *f = fopen(file_name, "w");
-    if (f == NULL) {
-      con->dd_printf("Cannot create file '%s'", file_name);
-      return;
-    }
-
-    fprintf(f, "%s", buffer);
-    fclose(f);
-  }*/
 }
 
 void
@@ -854,96 +779,97 @@ cl_pblaze::exec_inst(void)
 
   dis_entry_pblaze instruction = disass_pblaze[i];
 
-    switch (instruction.instruction) {
-        case ADD: return (inst_add(code, instruction.operands));
-        case ADDCY: return (inst_addcy(code, instruction.operands));
-        case AND: return (inst_and(code, instruction.operands));
-        case CALL:
-        case CALL_AT:
-        case CALL_C:
-        case CALL_Z:
-        case CALL_NC:
-        case CALL_NZ:
-          return (inst_call(code, instruction.instruction, instruction.operands));
-        case COMPARE:
-          return (inst_compare(code, instruction.operands));
-        case COMPARECY:
-          return (inst_comparecy(code, instruction.operands));
-        case DISABLE_INTERRUPT:
-          return (inst_interrupt(false));
-        case ENABLE_INTERRUPT:
-          return (inst_interrupt(true));
-        case FETCH:
-          return (inst_fetch(code, instruction.operands));
-        case HWBUILD:
-          return (inst_hwbuild(code, instruction.operands));
-        case IINPUT:
-          return (inst_input(code, instruction.operands));
-        case JUMP:
-        case JUMP_AT:
-        case JUMP_C:
-        case JUMP_NC:
-        case JUMP_NZ:
-        case JUMP_Z:
-          return (inst_jump(code, instruction.instruction, instruction.operands));
-        case LOAD:
-          return (inst_load(code, instruction.operands));
-        case LOAD_RETURN:
-          return (inst_load_return(code, instruction.operands));
-        case OR:
-          return (inst_or(code, instruction.operands));
-        case OUTPUT:
-          return (inst_output(code, instruction.operands));
-        case OUTPUTK:
-          return (inst_outputk(code, instruction.operands));
-        case REGBANK_A:
-          return (inst_regbank(REGISTER_BANK_A));
-        case REGBANK_B:
-          return (inst_regbank(REGISTER_BANK_B));
-        case RETURN:
-        case RETURN_C:
-        case RETURN_NC:
-        case RETURN_NZ:
-        case RETURN_Z:
-          return (inst_return(code, instruction.instruction));
-        case RETURNI_DISABLE:
-          return (inst_returni(false));
-        case RETURNI_ENABLE:
-          return (inst_returni(true));
-        case RL:
-          return (inst_rl(code, instruction.operands));
-        case RR:
-          return (inst_rr(code, instruction.operands));
-        case SL0:
-        case SL1:
-        case SLA:
-        case SLX:
-          return (inst_sl(code, instruction.instruction));
-        case SR0:
-        case SR1:
-        case SRA:
-        case SRX:
-          return (inst_sr(code, instruction.instruction));
-        case STAR:
-          return (inst_star(code, instruction.operands));
-        case STORE:
-          return (inst_store(code, instruction.operands));
-        case SUB:
-          return (inst_sub(code, instruction.operands));
-        case SUBCY:
-          return (inst_subcy(code, instruction.operands));
-        case TEST:
-          return (inst_test(code, instruction.operands));
-        case TESTCY:
-          return (inst_testcy(code, instruction.operands));
-        case XOR:
-          return (inst_xor(code, instruction.operands));
-
-        case BAD_OPCODE:
-        default:
-            break;
+  switch (instruction.instruction)
+    {
+    case ADD: return (inst_add(code, instruction.operands));
+    case ADDCY: return (inst_addcy(code, instruction.operands));
+    case AND: return (inst_and(code, instruction.operands));
+    case CALL:
+    case CALL_AT:
+    case CALL_C:
+    case CALL_Z:
+    case CALL_NC:
+    case CALL_NZ:
+      return (inst_call(code, instruction.instruction, instruction.operands));
+    case COMPARE:
+      return (inst_compare(code, instruction.operands));
+    case COMPARECY:
+      return (inst_comparecy(code, instruction.operands));
+    case DISABLE_INTERRUPT:
+      return (inst_interrupt(false));
+    case ENABLE_INTERRUPT:
+      return (inst_interrupt(true));
+    case FETCH:
+      return (inst_fetch(code, instruction.operands));
+    case HWBUILD:
+      return (inst_hwbuild(code, instruction.operands));
+    case IINPUT:
+      return (inst_input(code, instruction.operands));
+    case JUMP:
+    case JUMP_AT:
+    case JUMP_C:
+    case JUMP_NC:
+    case JUMP_NZ:
+    case JUMP_Z:
+      return (inst_jump(code, instruction.instruction, instruction.operands));
+    case LOAD:
+      return (inst_load(code, instruction.operands));
+    case LOAD_RETURN:
+      return (inst_load_return(code, instruction.operands));
+    case OR:
+      return (inst_or(code, instruction.operands));
+    case OUTPUT:
+      return (inst_output(code, instruction.operands));
+    case OUTPUTK:
+      return (inst_outputk(code, instruction.operands));
+    case REGBANK_A:
+      return (inst_regbank(REGISTER_BANK_A));
+    case REGBANK_B:
+      return (inst_regbank(REGISTER_BANK_B));
+    case RETURN:
+    case RETURN_C:
+    case RETURN_NC:
+    case RETURN_NZ:
+    case RETURN_Z:
+      return (inst_return(code, instruction.instruction));
+    case RETURNI_DISABLE:
+      return (inst_returni(false));
+    case RETURNI_ENABLE:
+      return (inst_returni(true));
+    case RL:
+      return (inst_rl(code, instruction.operands));
+    case RR:
+      return (inst_rr(code, instruction.operands));
+    case SL0:
+    case SL1:
+    case SLA:
+    case SLX:
+      return (inst_sl(code, instruction.instruction));
+    case SR0:
+    case SR1:
+    case SRA:
+    case SRX:
+      return (inst_sr(code, instruction.instruction));
+    case STAR:
+      return (inst_star(code, instruction.operands));
+    case STORE:
+      return (inst_store(code, instruction.operands));
+    case SUB:
+      return (inst_sub(code, instruction.operands));
+    case SUBCY:
+      return (inst_subcy(code, instruction.operands));
+    case TEST:
+      return (inst_test(code, instruction.operands));
+    case TESTCY:
+      return (inst_testcy(code, instruction.operands));
+    case XOR:
+      return (inst_xor(code, instruction.operands));
+      
+    case BAD_OPCODE:
+    default:
+      break;
     }
-
+  
   // this shouldn't be executed. If so, something bad happened in simulated program
   return(resINV_INST);
 }
@@ -968,7 +894,7 @@ cl_pblaze::do_interrupt(void)
 	   ticks->get_rtime(), (long int)(ticks->get_ticks()), AU(PC));
 
     tick(1);
-
+    
     //stack_push(PC);
     interrupt->preserved_flag_c = FLAGS_GET_C;
     interrupt->preserved_flag_z = FLAGS_GET_Z;
@@ -1061,7 +987,7 @@ ReadPblazeRomHex(FILE *f, bool *ok)
 }
 
 long
-cl_pblaze::read_hex_file(const char *nam)
+cl_pblaze::read_hex_file(const char *nam, bool check)
 {
   cl_option * opt = sim->app->options->get_option("pblaze_hex");
   bool value = false;
@@ -1073,7 +999,7 @@ cl_pblaze::read_hex_file(const char *nam)
   if (value)
     ret = pblaze_read_hex_file(nam);
   else
-    ret = std_read_hex_file(nam);
+    ret = std_read_hex_file(nam, check);
 
   return ret;
 }
@@ -1125,7 +1051,7 @@ cl_pblaze::pblaze_read_hex_file(const char *nam)
   // if read wasn't ok and not at the and of file, read error has occurred
   if (!ok && getc(f) != EOF)
   {
-      application->debug("Read error in record %ld.\n", written);
+    application->debug("Read error in record %ld.\n", written);
   }
 
   if (nam)
@@ -1136,8 +1062,9 @@ cl_pblaze::pblaze_read_hex_file(const char *nam)
 
 
 long
-cl_pblaze::std_read_hex_file(const char *nam)
+cl_pblaze::std_read_hex_file(const char *nam, bool check)
 {
+  class cl_inspec is(nam, this);
   FILE *f;
   int c;
   long written= 0, recnum= 0;
@@ -1152,10 +1079,10 @@ cl_pblaze::std_read_hex_file(const char *nam)
   bool ok, get_low= 1, get_middle = 0;
   uchar low= 0, middle=0, high=0;
 
-  if (!rom)
+  if (is.get_mem() == NULL)
     {
       sim->app->get_commander()->
-        dd_printf("No ROM address space to read in.\n");
+        dd_printf("No memory %s to read in.\n", is.get_mem_name()->cstr());
       return(-1);
     }
 
@@ -1166,9 +1093,9 @@ cl_pblaze::std_read_hex_file(const char *nam)
       return(-1);
     }
   else
-    if ((f= fopen(nam, "r")) == NULL)
+    if ((f= fopen(is.get_file_name()->cstr(), "r")) == NULL)
       {
-        fprintf(stderr, "Can't open `%s': %s\n", nam, strerror(errno));
+        fprintf(stderr, "Can't open `%s': %s\n", is.get_file_name()->cstr(), strerror(errno));
         return(-1);
       }
 
@@ -1209,7 +1136,8 @@ cl_pblaze::std_read_hex_file(const char *nam)
                         {
                           if (rom->width <= 8)
                             {
-                              rom->set(addr, rec[i]);
+                              //rom->set(addr, rec[i]);
+			      set_rom(&is, addr, rec[i], check);
                               addr++;
                               written++;
                             }
@@ -1223,7 +1151,8 @@ cl_pblaze::std_read_hex_file(const char *nam)
                               else
                                 {
                                   high= rec[i];
-                                  rom->set(addr, (high*256)+low);
+                                  //rom->set(addr, (high*256)+low);
+				  set_rom(&is, addr, (high*256)+low, check);
                                   addr++;
                                   written++;
                                   get_low= 1;
@@ -1245,7 +1174,10 @@ cl_pblaze::std_read_hex_file(const char *nam)
                               else
                                 {
                                   high= rec[i];
-                                  rom->set(addr, (high*256*256)+(middle*256)+low);
+                                  //rom->set(addr, (high*256*256)+(middle*256)+low);
+				  set_rom(&is, addr,
+					  (high*256*256)+(middle*256)+low,
+					  check);
                                   addr++;
                                   written++;
                                   get_low= 1;
@@ -1268,7 +1200,8 @@ cl_pblaze::std_read_hex_file(const char *nam)
     }
   if (rom->width > 8 &&
       !get_low)
-    rom->set(addr, low);
+    //rom->set(addr, low);
+    set_rom(&is, addr, low, check);
 
   if (nam)
     fclose(f);
@@ -1299,35 +1232,6 @@ cl_pblaze::read_interrupt_file(void)
       long interrupt_tick = strtol(element->GetText(), NULL, 0);
       stored_interrupts.push_back(interrupt_tick);
     }
-
-    /*
-    char *file = 0;
-    opt->get_value(&file);
-
-    FILE *f;
-    if ((f = fopen(file, "r")) == NULL)
-    {
-      fprintf(stderr, "Can't open file with interrupts `%s': %s\n", file, strerror(errno));
-    }
-    else {
-      while (true)
-      {
-        int i;
-        int res = fscanf(f, "%d", &i);
-        if (res == EOF)
-          break;
-        else if (res == 0) {
-          fprintf(stderr, "Error during reading file with interrupts `%s'\n", file);
-          break;
-        }
-
-        stored_interrupts.insert(i);
-
-        // skip white characters
-        res = fscanf(f, "*[ \n\r\t]");
-      }
-      fclose(f);
-    } */
   }
 }
 

@@ -9,32 +9,40 @@
     <h2>Memory manipulation commands of &micro;Csim</h2>
     
     <a name="file">
-      <h3>file,load <i>"file[@memory][:offset]"</i></h3>
+      <h3>file,load <i>"file[@memory][:offset][#range]"</i></h3>
     </a>
 
-    Loads named file into the simulated memory. File must contain data
-    in Intel HEX or Motorola s19 format. Filename can be extended with
-    a memory name using @ character. Content of the file is loaded
-    into the specified memory, either an address space or a chip. Code
-    memory of the controller is used by default. If offset parameter
-    is included (appended with : character) it is added to address
-    before value is stored in the memory.
+    <p>Loads named file into the simulated memory. File must contain
+    data in Intel HEX, Motorola s19, p2h, asc or Intel OMF
+    format. Filename can be extended with some parameters. For
+    meanings of these parameters, see <a href="invoke.html#inspec">how to
+    invoke &micro;Csim</a>.</p>
     
     <pre>&gt; <font color="#118811">file "../../remo.hex"</font>
 55470 words read from ../../remo.hex
 &gt; 
     </pre>
 
-    Don't forget to enclose file name in quotes to make the parameter
-    to be a string.
+    <p>Loading debug information is also possible. Recognized file
+    formats are cdb and map, both are outputs
+    of <a href="https://sdcc.sourceforge.net/">SDCC
+    compiler</a>. Simulator skips memory and offset parameters when
+    reads debug information.</p>
+    
+    <p>Don't forget to enclose file specifier in quotes to make the
+    parameter to be a string.</p>
     
     <hr> <a name="dl">
       <h3>download,dl</h3>
-    </a> Download command. It is same as <a href="#l">load</a> above but it
-    reads information from command console which is standard input by default.
-    This command stops read records when it detects an "END" record which is
-    normally the last record. This command has two equivalent forms <b>download</b>
+    </a>
+
+    Download command. It is same as <a href="#l">load</a> above but it
+    reads information from command console which is standard input by
+    default and it requires intel hex records.  This command stops
+    read records when it detects an "END" record which is normally the
+    last one. This command has two equivalent forms <b>download</b>
     and <b>dl</b>.
+
     <pre>$ <font color="#118811">ucsim_51 -V</font>
 ucsim 0.2.24, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -58,15 +66,57 @@ under certain conditions; type `show c' for details.
 :00000001FF</font>
 197 bytes loaded
 &gt; </pre>
-    <hr> <a name="fill">
+
+    <hr>
+
+    <a name="check">
+      <h3>check <i>"file[@memory][:offset]"</i></h3>
+    </a>
+
+    This command works as the <a href="#file">file</a> command but
+    instead of storing data in memory, it check if it equals to data
+    from the file. If any difference is found it is reported.
+    
+    <pre>
+0> file "remo.hex"
+Loading from remo.hex
+55755 words read from remo.hex
+0> dump /x rom   
+0x0000 02 01 60 02 00 3c ff ff ..`..<..
+0x0008 ff ff ff 02 2f 74 ff ff ..../t..
+0x0010 ff ff ff 02 00 ac ff ff ........
+0x0018 ff ff ff ff ff ff ff ff ........
+0x0020 ff ff ff 02 01 1c ff ff ........
+0x0028 ff ff ff 32 ff ff ff ff ...2....
+0x0030 02 0f a7 02 0e 9c 02 0d ........
+0x0038 d2 02 08 41 c0 82 c0 83 ...A....
+0x0040 c0 d0 c0 e0 c0 00 a2 90 ........
+0x0048 c0 d0 c2 90 78 18 06 30 ....x..0
+0> rom[0x38]++
+210
+0> check "remo.hex"
+Loading from remo.hex
+Diff at 00000038, FILE=000000d2 MEM=000000d3
+55755 words read from remo.hex
+0> 
+    </pre>
+    
+    <hr>
+    
+    <a name="fill">
       <h3>fill <i>memory_type start end data</i></h3>
-    </a> Fill memory region with specified data. First parameter specifies
-    memory. Name of the memory must be used, it can be checked using <a href="cmd_general.html#info_memory">info
-      memory</a> command which lists size and name of all available memories.
+    </a>
+
+    Fill memory region with specified data. First parameter specifies
+    memory. Name of the memory must be used, it can be checked
+    using <a href="cmd_general.html#info_memory">info memory</a>
+    command which lists size and name of all available memories.
+
     <p><b>start</b> and <b>end</b> parameters specify first and last address of
       the memory region to be filled. </p>
     <p><b>data</b> parameter specifies the data which is used to fill the memory
       region. </p>
+    
     <pre>$ <font color="#118811">ucsim_51</font> 
 ucsim 0.2.38-pre2, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -79,19 +129,28 @@ under certain conditions; type `show c' for details.
 0x0010 56 56 56 00 00 00 00 00 VVV.....
 0x0018 00 00 00 00 00 00 00 00 ........
 0x0020 00                      .
-&gt; </pre>
+      &gt; </pre>
+    
     <hr> <a name="where">
       <h3>where,Where <i>memory_type data...</i></h3>
-    </a> Searching for some data in memory. First parameter specifies memory.
-    Name of the memory must be used, it can be checked using <a href="cmd_general.html#info_memory">info
-      memory</a> command which lists size and name of all available memories.
-    <p>Other parameters can be mixed list of strings (characters between " and
-      ") and numbers. Strings can contain escape sequences. &micro;Csim merges all
-      parameters together and will search for merged list of values in specified
-      memory. </p>
-    <p><b>where</b> command do case unsensitive search while <b>Where</b>
-      command is for case sensitive search. </p>
-    <p>Search is done in whole memory and all matches are dumped out. </p>
+    </a>
+
+    Searching for some data in memory. First parameter specifies
+    memory.  Name of the memory must be used, it can be checked
+    using <a href="cmd_general.html#info_memory">info memory</a>
+    command which lists size and name of all available memories.
+    
+    <p>Other parameters can be mixed list of strings (characters
+      between " and ") and numbers. Strings can contain escape
+      sequences. &micro;Csim merges all parameters together and will
+      search for merged list of values in specified memory. </p>
+
+    <p><b>where</b> command do case unsensitive search
+      while <b>Where</b> command is for case sensitive search. </p>
+
+    <p>Search is done in whole memory and all matches are dumped
+      out. </p>
+    
     <pre>$ <font color="#118811">ucsim_51</font>
 ucsim 0.2.38-pre2, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -109,14 +168,17 @@ under certain conditions; type `show c' for details.
 &gt; <font color="#118811">Where xram "d ani"</font>
 0x0019 64 20 61 6e 69          d ani
 &gt; </pre>
+
     <hr> <a name="hole">
       <h3>hole <i>[memory [length [value]]]</i></h3>
     </a>
-    <p>Searching for a memory area where all locations are filled with value. By
-      default this command searches rom but any memory can be specified. Areas
-      shorter than specified length (default is 100) will not be listed.
-      Searched value is 0 (zero) by default but other can be specified as the
-      last parameter. </p>
+
+    <p>Searching for a memory area where all locations are filled with
+      value. By default this command searches rom but any memory can
+      be specified. Areas shorter than specified length (default is
+      100) will not be listed.  Searched value is 0 (zero) by default
+      but other can be specified as the last parameter. </p>
+
     <pre>$ <font color="#118811">ucsim_51</font>
 uCsim 0.6-pre55, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -138,24 +200,37 @@ under certain conditions; type `show c' for details.
 0x0000 511
 0x0201 65022
 0&gt; </pre>
-    <p> Data of found areas are listed in two columns. First column is the start
-      address of the area in hexadecimal and the second column is area length
-      (in decimal). </p>
-    <hr> <a name="memory">
+
+    <p> Data of found areas are listed in two columns. First column is
+      the start address of the area in hexadecimal and the second
+      column is area length (in decimal). </p>
+
+    <hr>
+
+    <a name="memory">
       <h3>memory</h3>
-    </a> This set of commands can be used to manipulate <a href="memory.html">memory
-      system</a> including <a href="memory.html#chip">chips</a>, <a href="memory.html#address_space">address
-      spaces</a> and <a href="memory.html#address_decoder">address decoders</a>.
+    </a>
+
+    This set of commands can be used to
+      manipulate <a href="memory.html">memory system</a>
+      including <a href="memory.html#chip">chips</a>, <a href="memory.html#address_space">address
+      spaces</a> and <a href="memory.html#address_decoder">address
+      decoders</a>.
+
     <p>Subcommands are: </p>
+
     <p><a href="#memory_create">memory create</a><br>
       <a href="#memory_remove">memory remove</a><br>
       <a href="#memory_info">memory info</a><br>
       memory cell</p>
+
     <a name="memory_create">
       <h3>memory create</h3>
     </a>
-    <p>This set of commands can be used to create new memory objects. It
-      requires a subcommand, which can be:</p>
+
+    <p>This set of commands can be used to create new memory
+      objects. It requires a subcommand, which can be:</p>
+
     <p><a href="#memory_create_chip">memory create chip</a><br>
       <a href="#memory_create_addressspace">memory create addressspace</a><br>
       <a href="#memory_create_addressdecoder">memory create addressdecoder</a><br>
@@ -163,29 +238,50 @@ under certain conditions; type `show c' for details.
       <a href="#memory_create_bank">memory create bank</a><br>
       <a href="#memory_create_bander">memory create bander</a></p>
     <p><a name="memory_createchip"></a></p>
-    <blockquote><a name="memory_createchip"> </a><a name="memory_create_chip">
-        <h4>memory create chip <i>id size cellsize</i></h4>
-      </a> This command creates a chip (array of storage elements). <b>id</b>
-      must be a unique name which will be used to identify the chip in other
-      commands. <b>size</b> is number of storage elements, <b>cellsize</b> is
-      number of bits stored in one element.
-      <hr> <a name="memory_create_addressspace">
-        <h4>memory create as|addressspace|addr|addrs|addrspace|aspace <i>id
+
+    <blockquote>
+
+      <a name="memory_createchip"> </a><a name="memory_create_chip">
+	<h4>memory create chip <i>id size cellsize</i></h4>
+      </a>
+
+      This command creates a chip (array of storage
+      elements). <b>id</b> must be a unique name which will be used to
+      identify the chip in other commands. <b>size</b> is number of
+      storage elements, <b>cellsize</b> is number of bits stored in
+      one element.
+      <hr>
+
+      <a name="memory_create_addressspace">
+        <h4>memory create
+            as|addressspace|addr|addrs|addrspace|aspace <i>id
             startaddr size</i></h4>
-      </a> This command should never be used. It defines an address space, names
-      it as <b>id</b>, sets its starting address and size. Simulator programs (<b>ucsim_51</b>,
+      </a>
+
+      This command should never be used. It defines an address space,
+      names it as <b>id</b>, sets its starting address and
+      size. Simulator programs (<b>ucsim_51</b>,
       <b>ucsim_avr</b>, etc.) define necessary address spaces for themself, so
       this command is not needed.
-      <hr> <a name="memory_create_addressdecoder">
-        <h4>memory create
+      
+      <hr>
+
+      <a name="memory_create_addressdecoder">
+
+	<h4>memory create
           ad|addrdec|addrdecoder|addressdec|addressdecoder|adec|adecoder <i>addressspace
-            begin end chip begin</i></h4>
-      </a> Address decoder maps a part of the address space to a chip area. <b>addressspace</b>
-      parameter is name of the address space, <b>begin</b> and <b>end</b>
-      specify address range of the address space to be mapped. <b>chip</b>
-      parameter is name of the memory chip and the second <b>begin</b>
-      parameter is the (start of the) chip address where the area is mapped to.
+          begin end chip begin</i></h4>
+      </a>
+
+      Address decoder maps a part of the address space to a chip
+      area. <b>addressspace</b> parameter is name of the address
+      space, <b>begin</b> and <b>end</b> specify address range of the
+      address space to be mapped. <b>chip</b> parameter is name of the
+      memory chip and the second <b>begin</b> parameter is the (start
+      of the) chip address where the area is mapped to.
+
       <p>Address space will be split if a "middle" area is mapped: </p>
+
       <pre>$ <font color="#118811">ucsim_51</font>
 uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -229,7 +325,10 @@ Address decoders:
  1 xram 0x04d2 0x07d0 -&gt; myram 0x00f activated
  2 xram 0x07d1 0xffff -&gt; xram_chip 0x07d1 activated
 0&gt; 
-</pre> It is easy to share chip area between address spaces:
+      </pre>
+
+      It is easy to share chip area between address spaces:
+
       <pre>$ <font color="#118811">ucsim_51</font>
 uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -258,19 +357,21 @@ Address decoders:
 0&gt; <font color="#118811">xram[0xf000]</font>
 171
 0&gt; 
-</pre>
-<hr>
+      </pre>
+      
+      <hr>
 
-<a name="memory_create_banker"><h4>memory create banker <i>switcher_addressspace
-  switcher_address switcher_mask banked_addressspace start end</i></h4></a>
+      <a name="memory_create_banker"><h4>memory create
+  banker <i>switcher_addressspace switcher_address switcher_mask
+  banked_addressspace start end</i></h4></a>
 
       This command creates a "banker", which is a controllable dynamic
       address decoder. This means that some part of an address space
       can be mapped to different chips and the actual map is
       controlled by a memory location.<br>
       
-      This command specifies the range of the address space and the control.<br>
-      Following parameters specify the controller:<br>
+      This command specifies the range of the address space and the
+      control.<br>  Following parameters specify the controller:<br>
       
       <ul>
         <li><b>switcher_addressspace</b> address space where the controller
@@ -297,22 +398,28 @@ Address decoders:
         <h4>memory create bank <i>addressspace begin bank_nr chip begin</i></h4>
       </a>
 
-      Define a bank. This command can be used to map a specified
-      bank of a banked area to a specific storage (chip). <b>addressspace</b>
-      parameter must be the name of the address space, <b>begin</b> must
-      be the same start address what used in banked space creation. <b>bank_nr</b> specifies the number of the bank, <b>chip</b> and following <b>begin</b> defaines
-      actual storage of the bank.
+      Define a bank. This command can be used to map a specified bank
+      of a banked area to a specific storage
+      (chip). <b>addressspace</b> parameter must be the name of the
+      address space, <b>begin</b> must be the same start address what
+      used in banked space creation. <b>bank_nr</b> specifies the
+      number of the bank, <b>chip</b> and following <b>begin</b>
+      defaines actual storage of the bank.
 
       <p>This command should be repeated several times to specify
-      storage for all banks. Number of banks depends on <b>switcher_mask</b> parameter, used in <a href="#memory_create_banker">memory create banker</a> command.
+      storage for all banks. Number of banks depends
+      on <b>switcher_mask</b> parameter, used
+      in <a href="#memory_create_banker">memory create banker</a>
+      command.
       
       <hr>
 
       <a name="memory_create_bander">
         <h4>memory create bander <i>addressspace begin end chip begin
-          bits_per_chip [distance]</i></h4>
-	
-      </a> Bander.
+         bits_per_chip [distance]</i></h4>
+      </a>
+
+      Bander.
 
     </blockquote>
 
@@ -352,12 +459,14 @@ Address decoders:
       <h3>var name [memory addr]</h3>
     </a>
 
-    This command assigns a name to a memory location. This name can be used
-    in <a href="cmd_general.html#expression">expression</a>s as variable. If
-    memory is not specified, next yet unnamed location will be used from a
-    special address space, called <b>variables</b>. This address space have 256
-    locations by default (32 bit each), but the size can be specified using <a
-      href="invoke.html">-a option</a> of the simulator program.
+    This command assigns a name to a memory location. This name can be
+    used in <a href="cmd_general.html#expression">expression</a>s as
+    variable. If memory is not specified, next yet unnamed location
+    will be used from a special address space,
+    called <b>variables</b>. This address space have 256 locations by
+    default (32 bit each), but the size can be specified
+    using <a href="invoke.html">-a option</a> of the simulator
+    program.
 
     <pre>0&gt; <font color="#118811">var abc</font>
 0&gt; <font color="#118811">i v abc</font>
@@ -382,9 +491,13 @@ other rom[0x002d] = 73d4d3c4
 
     <hr> <a name="var">
       <h3>rmvar name</h3>
-    </a> This command removes a variable.
+    </a>
+
+    This command removes a variable.
+
     <pre>0&gt; <font color="#118811">rmvar abc</font>
 No such variable
     </pre>
+    
   </body>
 </html>

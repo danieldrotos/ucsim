@@ -54,9 +54,8 @@ main(int argc, char *argv[])
   application->set_simulator(sim);
   retval= application->run();
   application->done();
-  delete application;
-  
-  return(retval);
+  delete application;  
+  return retval;
 }
 
 /* End of tlcs.src/stlcs.cc */

@@ -169,28 +169,7 @@ uart[0] terminal display, press ^u to access control menu
       <b>n</b>.</p>
 
 
-    <h3>Configure new line sequuence</h3>
-
-    <p>It is possible to configure the character sequence which will
-    be sent to UART when you press the ENTER key. The configuration is
-    stored in a variable, called:</p>
-
-    <p><tt>uartX_nl</tt></p>
-
-    <p>where X is ID number of the UART. Sequence is stored in bytes
-    of this 32 bit variable, where lowest byte is the first character
-    of the sequence. Last byte must be zero, so the max length of the
-    sequence is 3 characters.</p>
-
-    <p>Examples of different settings:</p>
-
-    <p><tt><pre>
-	expr uart0_nl='\r'  ; CR only
-	expr uart0_nl=10    ; LF only
-	expr uart0_nl=0xa0d ; CRLF
-    </pre></tt></p>
-
-    
+     
     <a name="register_display"><h2>Register display</h2></a>
 
     <p>Register set of the CPU is not a peripheral but could be

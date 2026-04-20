@@ -111,7 +111,7 @@ public:
   virtual t_mem conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val);
   virtual bool is_nl(char c) { return (c=='\n') || (c=='\r'); }
   virtual char opposite_nl(char c) { return (c=='\n')?'\r':((c=='\r')?'\n':c); }
-  virtual u8_t get_input(void);
+  virtual bool get_input(u8_t *in_byte);
 
   virtual void make_io(void);
   virtual void new_io(class cl_f *f_in, class cl_f *f_out);

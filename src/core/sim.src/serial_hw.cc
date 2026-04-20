@@ -483,17 +483,29 @@ cl_serial_hw::conf_op(cl_memory_cell *cell, t_addr addr, t_mem *val)
   return cell->get();
 }
 
-u8_t
-cl_serial_hw::get_input(void)
+bool
+cl_serial_hw::get_input(u8_t *in_byte)
 {
   if (!input_avail)
-    return 0;
+    return false;
+  u32_t nl_value= cfg_get(serconf_nl);
+  if ((nl_value & 0xff) == 0)
+    {
+      input_avail= false;
+      if (in_byte) *in_byte= input;
+      uc->sim->app->debug("UART%d received %d,%c\n", id,
+			  input,isprint(input)?input:' ');
+      return true;
+    }
   if (!sending_nl)
     {
       if (!is_nl(input))
 	{
 	  input_avail= false;
-	  return input;
+	  if (in_byte) *in_byte= input;
+	  uc->sim->app->debug("UART%d received %d,%c\n", id,
+			      input,isprint(input)?input:' ');
+	  return true;
 	}
       skip_nl= opposite_nl(input);
       sending_nl= true;
@@ -501,7 +513,6 @@ cl_serial_hw::get_input(void)
     }
   if (sending_nl)
     {
-      u32_t nl_value= cfg_get(serconf_nl);
       u8_t v= (nl_value >> (nl_send_idx*8)) & 0xff;
       u8_t vn= (nl_value >> ((nl_send_idx+1)*8)) & 0xff;
       if (vn == 0)
@@ -512,10 +523,16 @@ cl_serial_hw::get_input(void)
 	}
       else
 	nl_send_idx++;
-      return v;
+      if (in_byte) *in_byte= v;
+      uc->sim->app->debug("UART%d received %d,%c\n", id,
+			  v,isprint(v)?v:' ');
+      return true;
     }
   input_avail= false;
-  return input;
+  if (in_byte) *in_byte= input;
+  uc->sim->app->debug("UART%d received %d,%c\n", id,
+		      input,isprint(input)?input:' ');
+  return true;
 }
 
 void
