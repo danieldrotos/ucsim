@@ -53,29 +53,34 @@
 
     <p>See <a href="news.html">what's new</a> in current version.</p>
       
-      <h2><a name="download">Download</a></h2>
+    <h2><a name="download">Download</a></h2>
       
-      <p>You can download <i>&micro;Csim</i> from two places:</p>
+    <p>You can download <i>&micro;Csim</i> from the following
+    places:</p>
       
       
 	
-      <p><b>SDCC homepage.</b> <i>&micro;Csim</i> is part of the SDCC
-        (Small Device C Compiler) project. You can download source of
-        SDCC or precompiled binaries from <a href="http://sdcc.sf.net">http://sdcc.sf.net</a>.
-	  Please note, that SDCC binary package contains limited <i>&micro;Csim</i>,
-	including simulators for SDCC ports only.</p>
+    <p><b><i>&micro;Csim</i> site.</b> Standalone source package is
+      available on the <i>&micro;Csim</i> web site:
 	
-      <p><b><i>&micro;Csim</i> site.</b> Standalone source package is
-	  available on the <i>&micro;Csim</i> web site:
-	
-        <a href="https://github.com/danieldrotos/ucsim/releases">https://github.com/danieldrotos/ucsim/releases</a></p>
+      <a href="https://github.com/danieldrotos/ucsim/releases">https://github.com/danieldrotos/ucsim/releases</a></p>
 
-	  <p>Home site contains precompiled Debian (i386 and amd64
+    <p>Home site contains precompiled Debian (i386 and amd64
 	architectures) packages for all Debian based Linux
 	distributions, Windows installer and standalone Windows
-	    package.</p>
+	package.</p>
 	  
-	  <p>Older versions are available from the archive site: <a href="http://mazsola.iit.uni-miskolc.hu/ucsim/archive">http://mazsola.iit.uni-miskolc.hu/ucsim/download</a></p>
+
+    <p><b>SDCC homepage.</b> <i>&micro;Csim</i> is part of the SDCC
+        (Small Device C Compiler) project. You can download source of
+        SDCC or precompiled binaries
+        from <a href="http://sdcc.sf.net">http://sdcc.sf.net</a>.
+        Please note, that SDCC binary package contains
+        limited <i>&micro;Csim</i>, including simulators for SDCC
+        ports only.</p>
+	
+    <p>Older versions are available from the archive
+	  site: <a href="http://mazsola.iit.uni-miskolc.hu/ucsim/archive">http://mazsola.iit.uni-miskolc.hu/ucsim/download</a></p>
 	  
 	      
       <p><!-- INSTALL --></p>
@@ -88,21 +93,21 @@
 
       <p>Windows version distributed as a setup executable and as a
 	portable zip package.</p>
-
+      
       <h3>How to compile from source</h3>
       
-    <ol>
+      <ol>
 
-      <li>Get archive file, uncompress and untar it. These steps will
-        produce a directory <b>ucsim-X.Y.Z</b> where X.Y.Z is the
+	<li>Get archive file, uncompress and untar it. These steps
+        will produce a directory <b>ucsim-X.Y.Z</b> where X.Y.Z is the
         version number. </li>
       
-      <li>Make sure, that following packages are installed on your
+	<li>Make sure, that following packages are installed on your
       system: <b>make</b> (GNU make is required),
         <b>bison</b> (or yacc), <b>flex</b> (or lex), <b>libncurses-dev</b>.
         You will need a C++ compiler as well.</li>
       
-      <li>Go to the directory and configure the
+	<li>Go to the directory and configure the
         package. Issue <tt><b>./configure</b></tt> command. It will
         determine your system and produce <b>Makefile</b>.
         Installation directory can be specified
@@ -111,10 +116,10 @@
         is <tt>/usr/local</tt>.  Executable files will be placed
         in <tt>bin</tt> subdirectory.</li>
       
-      <li>Compile the package with <tt><b>make</b></tt> command,
+	<li>Compile the package with <tt><b>make</b></tt> command,
       or <b>gmake</b> if GNU make has that name. </li>
       
-      <li>Install
+	<li>Install
       executables <b>ucsim_i8051</b>, <b>ucsim_avr</b>, <b>ucsim_hc08</b>, <b>ucsim_xa</b>, <b>ucsim_z80,
       etc.</b> to any directory you want. It can be done
       with <tt><b>make install</b></tt> command which will place files
@@ -124,7 +129,7 @@
       special privilege to do this if installation directory is not
       writable by the user. </li>
       
-    </ol>
+      </ol>
     
     <!-- USE -->
     <h2><a name="use">How to use</a></h2>
@@ -132,7 +137,9 @@
       <li> <a href="invoke.html">Invocation</a>.<br>
         Starting the simulator program. </li>
     </ul>
+
     <p><b>Features of the simulator</b> </p>
+
     <ul>
       
       <li><a href="cpu_types.html">Processor types</a>. <br>
