@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // cmd
 #include "argcl.h"
+#include "cmdutil.h"
 
 // local
 #include "regs51.h"
