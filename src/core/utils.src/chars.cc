@@ -146,14 +146,13 @@ chars::append(const char *s)
     return(*this);
 
   char *temp= (char*)malloc(chars_length + strlen(s) + 1);
+  temp[0]= '\0';
   if (chars_string)
     {
       strcpy(temp, chars_string);
       if (dynamic)
 	free(chars_string);
     }
-  else
-    temp[0]= '\0';
   strcat(temp, s);
   chars_string= temp;
   chars_length+= strlen(s);
