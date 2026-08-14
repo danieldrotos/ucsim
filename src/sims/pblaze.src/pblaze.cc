@@ -1043,7 +1043,7 @@ cl_pblaze::pblaze_read_hex_file(const char *nam)
       written++;
 
       // skip unnecessary characters (white space etc)
-      if (fscanf(f, "%*[ \n\r\t]"))
+      if (fscanf(f, "%*[ \n\r\t]") > 0)
         {} // if statement only for prevent warning during compilation
     }
   }

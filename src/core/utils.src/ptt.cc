@@ -47,7 +47,7 @@ sim_thread(void *arg)
 	{
 	  steps--;
 	  if (done= steps == 0)
-	    printf("Sim: %s steps done\n", steps2go);
+	    printf("Sim: %ld steps done\n", steps2go);
 	}
       else if (steps2go == 0)
 	{
