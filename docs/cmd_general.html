@@ -29,9 +29,9 @@
       This command (without a subcommand) prints out configuration of
       the simulator:
 
-<!-- @BLOCK@ conf 7085d4c9946b7b0a799f26cf6e4a8863 -->
+<!-- @BLOCK@ conf 50d44a3fd60ceecbfee9ae7cdbd59b24 -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
-</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.8
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.9
 Type of microcontroller: C52 CMOS cmos
 Controller has 14 hardware element(s).
    on cpu[0]
@@ -130,9 +130,9 @@ DS390F              Dallas DS80C390F              cmos
 
     Print out the version of the program.
 
-<!-- @BLOCK@ version 35fa9b35a99403968a74bd17f9e02062 -->
+<!-- @BLOCK@ version 5995053aae65c1b68288c3b9c27797ba -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">version
-</span><span style="color: #ffffff; background-color: #000316">0.9.8
+</span><span style="color: #ffffff; background-color: #000316">0.9.9
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
       <!-- @END@ -->
@@ -215,9 +215,9 @@ Alternate name(s) of command: run start
 	the simulator. See for more information
 	about <a href="mulcons.html">using multiple consoles</a>. </p>
       
-<!-- @BLOCK@ quit 5283079c3d47a15f63376f140dab8790 -->
+<!-- @BLOCK@ quit d85c841984ac9267740444e44ab286ab -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.8, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -245,19 +245,19 @@ $
       current one) to execute the file. This means the "quit" command
       in the file will not exit the simulator:
 
-<!-- @BLOCK@ exec 5ae124f05eaa3fb3eede88bb26f84b4a -->
+<!-- @BLOCK@ exec 4a1f79cc8aaf4c8661d5d523bc8afb0c -->
 <pre class="eg">$ cat test.cmd
 conf
 quit
 get opt
 $ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.8, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">exec "test.cmd"
 </span><span style="color: #aa5500; background-color: #000316">2</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
-</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.8
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.9
 Type of microcontroller: C52 CMOS cmos
 Controller has 14 hardware element(s).
    on cpu[0]
@@ -436,9 +436,9 @@ Controller has 14 hardware element(s).
       <p>Parameters are interpreted as SFR names or addresses, and the
         values of addressed locations are dumped out. </p>
       
-<!-- @BLOCK@ get_sfr1 fa25c8433b99873f7714c2e99738cf1c -->
+<!-- @BLOCK@ get_sfr1 8fcf23b0514b0df45257bc89e07aae5d -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.8, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -456,9 +456,9 @@ Warning: Invalid address 256
 
 Some microcontrollers do not have SFR address space.
 
-<!-- @BLOCK@ get_sfr2 0733c33d85206ced7812fb7e972701fc -->
+<!-- @BLOCK@ get_sfr2 296b24b9abd32d173a23db78b335c47c -->
 <pre class="eg">$ ucsim_z80
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.8, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -480,9 +480,9 @@ under certain conditions; type `show c' for details.
           program. In this way, you can figure out which options can
           be used.
 
-<!-- @BLOCK@ get_option1 722d1ab54aa53d090dd0fcec41097ce9 -->
+<!-- @BLOCK@ get_option1 eb41a0a66a41c5ec513c93976825cad1 -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.8, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -558,11 +558,11 @@ under certain conditions; type `show c' for details.
           used as default value when a new instance of a console is
           created: </p>
 	
-<!-- @BLOCK@ get_option2 2732a5639e73f632f25834ed2df5be9a -->
+<!-- @BLOCK@ get_option2 8ed89cc7f0ea6b2fa83b4c4aad4ef2f0 -->
 <pre class="eg">$ cat getopt.cmd
 get opt debug
 $ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.8, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -619,9 +619,9 @@ under certain conditions; type `show c' for details.
           of <tt>1</tt>, <tt>t</tt>, <tt>T</tt>, <tt>y</tt>, <tt>Y</tt>,
           then value will be TRUE; otherwise it will be FALSE. </p>
 
-<!-- @BLOCK@ set_option c81cc993b17a069094868b8741589b53 -->
+<!-- @BLOCK@ set_option dede2d18accd148bab2b95f27c3881e2 -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.8, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -702,7 +702,7 @@ under certain conditions; type `show c' for details.
 
 	<hr>
 
-	<h4><a name="set_bit">set bit <i>address 0|1</i></a></h4>
+	<h4><a name="set_bit">set bit <i>bitaddress 0|1</i></a></h4>
 
 	Set one bit to 0 or 1. The first parameter specifies the
 	bit. It can be the address of the bit (number or symbolic
@@ -717,21 +717,18 @@ under certain conditions; type `show c' for details.
 
       <p>The modified memory location is dumped out. </p>
 
-      <pre>$ <font color="#118811">ucsim_51 </font>
-ucsim 0.2.38-pre2, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-This is free software, and you are welcome to redistribute it
-under certain conditions; type `show c' for details.
-&gt; <font color="#118811">set bit tf1 1</font>
-0x88 80 .
-&gt; <font color="#118811">set bit 130 0</font>
-0x80 fb .
-&gt; <font color="#118811">set bit pcon.2 1</font>
-0x87 04 .
-&gt; <font color="#118811">set bit 10.7 1</font>
-0x0a 80 .
-&gt; 
-	</pre>
+<!-- @BLOCK@ set_bit dfde4b9cb98c63abcb840e087f292df9 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit TF1 1
+</span><span style="color: #ffff00; background-color: #000316">0x8f     </span><span style="color: #00ff00; background-color: #000316"> TF1:                     </span><span style="color: #F5F1DE; background-color: #000316"> 0b1 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit 130 0
+</span><span style="color: #ffff00; background-color: #000316">0x80.2                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b-----0-- 0x00</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit PCON.2 1
+</span><span style="color: #ffff00; background-color: #000316">0x87.2                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b-----1-- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit 10.7 1
+</span><span style="color: #ffff00; background-color: #000316">0x21.7                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b1------- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
       <hr>
 
@@ -1318,6 +1315,8 @@ timer #3("unnamed") ON: 0 sec (0 clks)
     <hr>
   </body>
 </html>
+
+
 
 
 
