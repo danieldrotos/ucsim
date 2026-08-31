@@ -172,7 +172,7 @@ cl_f8::LDW_DSP_A(t_mem code)
 }
 
 int
-cl_f8::LDI_Y_Z(t_mem code)
+cl_f8::LDI_YREL_Z(t_mem code)
 {
   u8_t v= rom->read(rZ++);
   rom->write(a_n_y(), v);
@@ -185,7 +185,7 @@ cl_f8::LDI_Y_Z(t_mem code)
 }
 
 int
-cl_f8::LDWI_Y_Z(t_mem code)
+cl_f8::LDWI_YREL_Z(t_mem code)
 {
   u16_t addr = a_n_y();
   u16_t v= rom->read(rZ++);
@@ -471,25 +471,5 @@ cl_f8::CLRW_A(t_mem code)
   return resGO;
 }
 
-int
-cl_f8::xchb(int b)
-{
-  b&= 7;
-  u8_t mask= 1<<b;
-  class cl_cell8 &c= m_mm();
-  u8_t t= c.R(), a= acc8->get();
-  u8_t mbit= t&mask;
-  vc.rd++;
-  t&= ~mask;
-  if (a & 1) t|= mask;
-  acc8->W(mbit?1:0);
-  c.write(t);
-  rF&= ~flagZ;
-  if (!mbit) rF|= flagZ;
-  cF.W(rF);
-  vc.wr++;
-  return resGO;
-}
-
-
 /* End of f8.src/imove.cc */
+

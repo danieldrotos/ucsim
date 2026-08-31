@@ -236,8 +236,8 @@ public:
   int LDW_DSP_A(t_mem code);
   int LDW_X_AM(t_mem code)   { return ldw_r_m(acc16->get()); }
   // other moves
-  int LDI_Y_Z(t_mem code);
-  int LDWI_Y_Z(t_mem code);
+  int LDI_YREL_Z(t_mem code);
+  int LDWI_YREL_Z(t_mem code);
   int PUSH_M(t_mem code);
   int PUSH_NSP(t_mem code);
   int PUSH_A(t_mem code);
@@ -265,15 +265,6 @@ public:
   int CLRW_NSP(t_mem code);
   int CLRW_NNZ(t_mem code);
   int CLRW_A(t_mem code);
-  int xchb(int b);
-  int XCHB_0(t_mem code) { return xchb(0); }
-  int XCHB_1(t_mem code) { return xchb(1); }
-  int XCHB_2(t_mem code) { return xchb(2); }
-  int XCHB_3(t_mem code) { return xchb(3); }
-  int XCHB_4(t_mem code) { return xchb(4); }
-  int XCHB_5(t_mem code) { return xchb(5); }
-  int XCHB_6(t_mem code) { return xchb(6); }
-  int XCHB_7(t_mem code) { return xchb(7); }
   
   // arithmetic (ALU) instructions: ialu.cc
   // 8-bit 2-op-inst
