@@ -50,7 +50,7 @@ void
 cl_huc6280::reset(void)
 {
   mpras->write(7, 0);
-  cl_uc::reset();
+  cl_mos65c02s::reset();
 }
 
 
