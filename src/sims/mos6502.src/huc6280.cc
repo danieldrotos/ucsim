@@ -51,7 +51,7 @@ cl_huc6280::reset(void)
 {
   mpras->write(7, 0);
   //emulate 64k system:
-  //for (int i=0; i<8; i++) mpras->write(i,8+i);
+  for (int i=0; i<7; i++) mpras->write(i,7-i);
   cl_mos65c02s::reset();
 }
 
