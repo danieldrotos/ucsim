@@ -84,7 +84,6 @@ cl_huc6280::init(void)
   mk_mvar(mpras, 5, "MPR5", "Mapping Register 5");
   mk_mvar(mpras, 6, "MPR6", "Mapping Register 6");
   mk_mvar(mpras, 7, "MPR7", "Mapping Register 7");
-  printf("inited\n");
   // power-on values for MAP registers
   for (i=0;i<7;i++)
     mpras->write(i, 0xff);
@@ -120,7 +119,6 @@ cl_huc6280::make_memories(void)
 	b->add_bank(i, romchip, i*0x2000);
       b->activate(0);
     }
-  printf("banked\n");
 }
 
 
