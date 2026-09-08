@@ -2130,11 +2130,13 @@ cl_memory_chip::is_slot(void *data_ptr, t_addr *addr_of)
     return false;
   t_addr i= p - a;
   if (width <= 8)
-    /*i*/;
-  if (width <= 16)
+    i;
+  else if (width <= 16)
     i= i/2;
-  if (width <= 32)
+  else if (width <= 32)
     i= i/4;
+  else
+    return false;
   if (addr_of)
     *addr_of= i;
   return true;
