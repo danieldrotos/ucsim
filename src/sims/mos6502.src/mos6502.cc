@@ -136,6 +136,7 @@ cl_mos6502::init(void)
   RCV(Y);
   RCV(SP);
   RCV(P);
+  reg_cell_var(&cSPh, &SPh, "SPh", "High half of SP");
 #undef RCV
   ci8.decode(&i8d);
 

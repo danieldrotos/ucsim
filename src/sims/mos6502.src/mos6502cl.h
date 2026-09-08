@@ -114,6 +114,7 @@ class cl_mos6502: public cl_uc
 public:
   u8_t A, X, Y, SP, CC, i8d;
   u16_t SPh;
+  class cl_cell16 cSPh;
   class cl_cell8 cA, cX, cY, cSP, cCC, ci8;
   class cl_it_src *src_irq, *src_nmi, *src_brk;
   bool set_b;
