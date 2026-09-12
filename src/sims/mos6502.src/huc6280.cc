@@ -61,6 +61,16 @@ cl_huc6280::init(void)
 {
   int i;
   cl_mos6502::init();
+
+  BRK_AT	= 0xfff6;
+  IRQ_AT	= 0xfff8;
+  TIMER_AT	= 0xfffa;
+  NMI_AT	= 0xfffc;
+  RESET_AT	= 0xfffe;
+
+  // FIXME: should implement cl_huc6280::mk_hw_elements()
+  // since the interrupts are different from 6502
+  
   // Map all 0x_b into NOP 1,1
   for (i=0x0b; i<=0xfb; i+= 0x10)
     itab[i]= instruction_wrapper_03;
@@ -87,6 +97,10 @@ cl_huc6280::init(void)
   // power-on values for MAP registers
   for (i=0;i<7;i++)
     mpras->write(i, 0xff);
+
+  for (int i= 0; i<=0x1fffff; i++)
+    romchip->set(i,0);
+
   return 0;
 }
 
@@ -194,7 +208,7 @@ cl_huc6280::SAY(MP)
 */
 
 int
-cl_huc6280::STO(MP)
+cl_huc6280::ST0(MP)
 {
   u8_t v= fetch();
   romchip->set(0x1fe000, v);

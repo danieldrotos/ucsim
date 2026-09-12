@@ -143,6 +143,10 @@ cl_mos6502::init(void)
   class cl_memory_operator *op= new cl_cc_operator(&cCC);
   cCC.append_operator(op);
 
+  NMI_AT	= 0xfffa;
+  RESET_AT	= 0xfffc;
+  IRQ_AT	= 0xfffe;
+
   for (int i= 0; i<=0xffff; i++) rom->set(i,0);
   
   return 0;

@@ -78,14 +78,6 @@ enum {
   flagC	= 0x01
 };
 
-// Vectors
-enum {
-  NMI_AT	= 0xfffa,
-  RESET_AT	= 0xfffc,
-  IRQ_AT	= 0xfffe
-};
-
-
 class cl_c65: public cl_cell8
 {
 #ifdef DEVEL
@@ -119,6 +111,7 @@ public:
   class cl_it_src *src_irq, *src_nmi, *src_brk;
   bool set_b;
   chars *my_id;
+  u16_t IRQ_AT, NMI_AT, RESET_AT;
 public:
   cl_mos6502(class cl_sim *asim);
   virtual int init(void);

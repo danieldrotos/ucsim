@@ -38,6 +38,7 @@ public:
   class cl_address_space *mpras;
   class cl_chip8 *mprch, *romchip;
   class cl_address_decoder *mprad;
+  u16_t BRK_AT, TIMER_AT;
  public:
   cl_huc6280(class cl_sim *asim);
   virtual void reset(void);
@@ -54,7 +55,7 @@ public:
   virtual int CLX(MP) { cX.W(0); tick(1); return resGO; }
   virtual int CLY(MP) { cY.W(0); tick(1); return resGO; }
 
-  virtual int STO(MP);
+  virtual int ST0(MP);
   virtual int ST1(MP);
   virtual int ST2(MP);
   virtual int TMA(MP);
