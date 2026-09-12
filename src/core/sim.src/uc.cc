@@ -2247,8 +2247,12 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
   is.init();
   if (is.get_mem() == NULL)
     {
-      con->dd_printf("Memory %s can not be found\n",
-		     is.get_mem_name()->cstr());
+      if (con)
+	con->dd_printf("Memory %s can not be found\n",
+		       is.get_mem_name()->cstr());
+      else
+	fprintf(stderr, "Memory %s can not be found\n",
+		is.get_mem_name()->cstr());
       return 0;
     }
   cl_f *f= find_loadable_file(*is.get_file_name());
@@ -2259,7 +2263,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
       if (con)
 	con->dd_printf("no loadable file found (%s)\n", is.get_file_name()->c_str());
       else
-	application->dd_printf("no loadable file found (%s)\n", is.get_file_name()->c_str());
+	fprintf(stderr, "no loadable file found (%s)\n", is.get_file_name()->c_str());
       return 0;
     }
   if (!application->quiet)
