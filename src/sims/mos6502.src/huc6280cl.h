@@ -41,12 +41,17 @@ public:
   u16_t BRK_AT, TIMER_AT;
  public:
   cl_huc6280(class cl_sim *asim);
-  virtual void reset(void);
   virtual int init(void);
+  virtual void reset(void);
+
+  virtual void mk_hw_elements(void);
+  virtual void make_cpu_hw(void);
   virtual void make_memories(void);
+
   virtual struct dis_entry *get_dis_entry(t_addr addr);
-  virtual int longest_inst(void) { return 7; }
+
   virtual void print_regs(class cl_console_base *con);
+  virtual int longest_inst(void) { return 7; }
 
   virtual int SXY(MP);
   virtual int SAX(MP);

@@ -143,10 +143,6 @@ cl_mos6502::init(void)
   class cl_memory_operator *op= new cl_cc_operator(&cCC);
   cCC.append_operator(op);
 
-  NMI_AT	= 0xfffa;
-  RESET_AT	= 0xfffc;
-  IRQ_AT	= 0xfffe;
-
   for (int i= 0; i<=0xffff; i++) rom->set(i,0);
   
   return 0;
@@ -231,6 +227,9 @@ cl_mos6502::mk_hw_elements(void)
 void
 cl_mos6502::make_cpu_hw(void)
 {
+  NMI_AT	= 0xfffa;
+  RESET_AT	= 0xfffc;
+  IRQ_AT	= 0xfffe;
 }
 
 void
@@ -321,7 +320,7 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      l= rom->read(addr+1);
 	      work.appendf("($%02x", l);
 	      addr_name(l, rom, &work);
-	      work.append(",Y)");
+	      work.append("),Y");
 	      a= read_addr(rom, l) + rY;
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
