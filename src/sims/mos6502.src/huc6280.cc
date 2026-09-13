@@ -46,6 +46,7 @@ cl_huc6280::cl_huc6280(class cl_sim *asim):
   mpras->init();
   mprad->init();
   SPh= 0x2100;
+  ZPh= 0x2000;
 };
 
 

@@ -119,6 +119,7 @@ cl_mos6502::cl_mos6502(class cl_sim *asim):
   my_id= new chars();
   *my_id= "MOS6502";
   SPh= 0x0100;
+  ZPh= 0;
 }
 
 int
@@ -137,6 +138,7 @@ cl_mos6502::init(void)
   RCV(SP);
   RCV(P);
   reg_cell_var(&cSPh, &SPh, "SPh", "High half of SP");
+  reg_cell_var(&cSPh, &ZPh, "ZPh", "High half of ZP");
 #undef RCV
   ci8.decode(&i8d);
 
@@ -358,41 +360,41 @@ cl_mos6502::disassc(t_addr addr, chars *comment)
 	      break;
 	    case 'z': // zpg
 	      l= rom->read(addr+1);
-	      work.appendf("$%04x", a= l);
+	      work.appendf("$%04x", a= ZPh+l);
 	      addr_name(a, rom, &work);
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
 	    case 'Z': // zpg -- addr[2]
 	      l= rom->read(addr+1+1);
-	      work.appendf("$%04x", a= l);
+	      work.appendf("$%04x", a= ZPh+l);
 	      addr_name(a, rom, &work);
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
 	    case 'X': // zpg.X
 	      l= rom->read(addr+1);
-	      work.appendf("$%04x", l);
-	      addr_name(l, rom, &work);
+	      work.appendf("$%04x", a= ZPh+l);
+	      addr_name(a, rom, &work);
 	      work.append(",X");
 	      l+= rX;
-	      a= l;
+	      a= ZPh+l;
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
 	    case '%': // zpg.X -- addr[2]
 	      l= rom->read(addr+1+1);
-	      work.appendf("$%04x", l);
-	      addr_name(l, rom, &work);
+	      work.appendf("$%04x", a= ZPh+l);
+	      addr_name(a, rom, &work);
 	      work.append(",X");
 	      l+= rX;
-	      a= l;
+	      a= ZPh+l;
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
 	    case 'Y': // zpg.Y
 	      l= rom->read(addr+1);
-	      work.appendf("$%04x", l);
-	      addr_name(l, rom, &work);
+	      work.appendf("$%04x", a= ZPh+l);
+	      addr_name(a, rom, &work);
 	      work.append(",Y");
 	      l+= rY;
-	      a= l;
+	      a= ZPh+l;
 	      temp.appendf("; [$%04x]=$%02x", a, rom->read(a));
 	      break;
 	    case 'I': // (abs,X)
@@ -507,7 +509,7 @@ cl_mos6502::imm8(void)
 class cl_cell8 &
 cl_mos6502::zpg(void)
 {
-  u8_t a= fetch();
+  u8_t a= ZPh+fetch();
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd++;
   tick(2);
@@ -517,7 +519,7 @@ cl_mos6502::zpg(void)
 class cl_cell8 &
 cl_mos6502::zpgX(void)
 {
-  u8_t a= fetch() + rX;
+  u8_t a= ZPh+((fetch() + rX) & 0xff);
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd++;
   tick(3);
@@ -527,7 +529,7 @@ cl_mos6502::zpgX(void)
 class cl_cell8 &
 cl_mos6502::zpgY(void)
 {
-  u8_t a= fetch() + rY;
+  u8_t a= ZPh+((fetch() + rY)&0xff);
   class cl_cell8 *c= (class cl_cell8 *)rom->get_cell(a);
   vc.rd++;
   tick(3);
