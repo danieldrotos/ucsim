@@ -91,10 +91,10 @@ cl_huc6280::init(void)
   // power-on values for MAP registers
   for (i=0;i<7;i++)
     mpras->write(i, 0xff);
-
+  /*
   for (int i= 0; i<=0x1fffff; i++)
     romchip->set(i,0);
-
+  */
   return 0;
 }
 
@@ -174,7 +174,7 @@ cl_huc6280::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  romchip= new cl_chip8("rom_chip", 0x200000, 8);
+  romchip= new cl_chip8("rom_chip", 0x200000, 8, 0);
   romchip->init();
   memchips->add(romchip);
 
