@@ -145,7 +145,8 @@ already.
     Erik Petrich <epetrich@users.sourceforge.net>,
     Leland Morrison,
     Johan Knol <johan.knol@iduna.nl>,
-	Neil Johnson <neilj@ieee.org>
+    Neil Johnson <neilj@ieee.org>,
+	Gabriele Gorla <gorlik@users.sourceforge.net>
 	
     Maintainer of serialview: Timothy Hurman <ee62th@ee.surrey.ac.uk>,
     Maintainer of other parts: Daniel Drotos <dr.dkdb@gmail.com>
