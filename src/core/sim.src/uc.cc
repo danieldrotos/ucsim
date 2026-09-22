@@ -555,7 +555,7 @@ cl_inspec::init(void)
       i++;
       c= ispec.c(i);
     }
-  mem= uc->rom;
+  mem= uc->default_load_mem();
   int p= ispec.pos('@');
   if (p >= 0)
     {

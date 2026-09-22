@@ -392,6 +392,7 @@ public:
   virtual class cl_address_space *address_space(class cl_memory_cell *cell);
   virtual class cl_address_space *address_space(class cl_memory_cell *cell, t_addr *addr);
   virtual class cl_memory *memory(const char *id);
+  virtual class cl_memory *default_load_mem(void) { return rom; }
   virtual void remove_chip(class cl_memory *chip);
   
   // file handling

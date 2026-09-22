@@ -47,7 +47,7 @@ public:
   virtual void mk_hw_elements(void);
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
-
+  virtual class cl_memory *default_load_mem(void) { return romchip; }
   virtual struct dis_entry *get_dis_entry(t_addr addr);
 
   virtual void print_regs(class cl_console_base *con);
