@@ -93,7 +93,7 @@ cl_mos65c02::accept_it(class it_level *il)
 
   tick(2);
   push_addr(PC);
-  rom->write(0x0100 + rSP, rF|0x20);
+  rom->write(SPh + rSP, rF|0x20);
   if (set_b)
     rF&= ~flagB;
   // All interrupts (incl BRK) clear D flag
@@ -205,7 +205,7 @@ cl_mos65c02::stz(class cl_cell8 &op)
 int
 cl_mos65c02::PHY(t_mem code)
 {
-  rom->write(0x0100 + rSP, rY);
+  rom->write(SPh + rSP, rY);
   vc.wr++;
   t_addr spbef= rSP;
   cSP.W(rSP-1);
@@ -221,7 +221,7 @@ cl_mos65c02::PLY(t_mem code)
 {
   t_addr spbef= rSP;
   cSP.W(rSP+1);
-  cY.W(rom->read(0x0100 + rSP));
+  cY.W(rom->read(SPh + rSP));
   class cl_stack_pop *op= new cl_stack_pop(instPC, rY, spbef, rSP);
   op->init();
   stack_read(op);
@@ -237,7 +237,7 @@ cl_mos65c02::PLY(t_mem code)
 int
 cl_mos65c02::PHX(t_mem code)
 {
-  rom->write(0x0100 + rSP, rX);
+  rom->write(SPh + rSP, rX);
   vc.wr++;
   t_addr spbef= rSP;
   cSP.W(rSP-1);
@@ -253,7 +253,7 @@ cl_mos65c02::PLX(t_mem code)
 {
   t_addr spbef= rSP;
   cSP.W(rSP+1);
-  cX.W(rom->read(0x0100 + rSP));
+  cX.W(rom->read(SPh + rSP));
   class cl_stack_pop *op= new cl_stack_pop(instPC, rX, spbef, rSP);
   op->init();
   stack_read(op);
