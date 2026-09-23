@@ -38,9 +38,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * CPU
  */
 
-cl_f8::cl_f8(class cl_sim *asim):
+cl_f8::cl_f8(struct cpu_entry *Itype, class cl_sim *asim):
   cl_uc(asim)
 {
+  type= Itype;
 }
 
 int
@@ -73,7 +74,13 @@ cl_f8::init(void)
 const char *
 cl_f8::id_string(void)
 {
-  return "F8";
+   switch (type->type)
+    {
+    case CPU_F8L:
+      return "f8l";
+    default:
+      return "f8";
+    }
 }
 
 void
@@ -452,6 +459,8 @@ cl_f8::exec_inst(void)
       return resNOT_DONE;
     }
   tick(1);
+  if (type->type == CPU_F8L && (!f8l_instructions[code] || f8l_instructions[code] == 2 && (prefixes & P_SWAP)))
+    return resINV_INST;
   res= itab[code](this, code);
   if (res == resNOT_DONE)
     {

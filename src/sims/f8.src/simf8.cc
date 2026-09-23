@@ -54,7 +54,8 @@ cl_simf8::mk_controller(void)
   switch (ct->type)
     {
     case CPU_F8:
-      uc= new cl_f8(this);
+    case CPU_F8L:
+      uc= new cl_f8(ct, this);
       return uc;
     default:
       fprintf(stderr, "Unknown processor type\n");

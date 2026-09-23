@@ -129,7 +129,7 @@ public:
   class cl_cell16 *rop16; // The 16-bit register that acc8 is part of.
   int prefixes;
 public:
-  cl_f8(class cl_sim *asim);
+  cl_f8(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void reset(void);

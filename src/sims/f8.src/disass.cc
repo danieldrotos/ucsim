@@ -195,7 +195,7 @@ cl_f8::disassc(t_addr addr, chars *comment)
   de= get_dis_entry(addr);
   //code= rom->read(addr);
   
-  if (!de || !de->mnemonic)
+  if (!de || !de->mnemonic || type->type == CPU_F8L && !f8l_instructions[code])
     return strdup("-- UNKNOWN/INVALID");
 
   b= de->mnemonic;

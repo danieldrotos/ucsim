@@ -38,6 +38,7 @@ extern u8_t ptab[256];
 extern struct dis_entry disass_f8[];
 extern u16_t tick_tab_f8[256];
 extern u8_t allowed_prefs[256];
+extern u8_t f8l_instructions[256];
 
 
 #endif
