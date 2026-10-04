@@ -693,9 +693,26 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
       set_flag(CONS_FROZEN, false);
       retval = 0;
       do_print_prompt= 0;
+      // the line that arrived while the console was frozen
+      // was previously dropped here (early-out) - so a command pipelined after
+      // a run/step was consumed as the "user interrupt" and never executed.
+      // An EMPTY line (bare ENTER) should still just stop the run; a NON-EMPTY
+      // line should stop AND then be interpreted below. Fall through instead of
+      // returning when there is an actual command to run.
+      if (cmdstr && *cmdstr && *cmdstr != '\004')
+        {
+          do_print_prompt= 1;
+          // fall through to the interpret block below
+        }
+      else
+        {
+          if (!is_frozen())
+            un_redirect();
+          lbuf= 0;
+          return(retval);
+        }
     }
-  else
-    {
+  {
       if (cmdstr && *cmdstr == '\004')
         retval = 1;
       else
