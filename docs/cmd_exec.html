@@ -36,9 +36,15 @@
       more consoles can be used. See
       using <a href="mulcons.html">multiple consoles</a> for more
       information. Meanwhile, simulation can be stopped by pressing
-      the ENTER key on the frozen console (where the run command was
-      issued). </p>
+      the ENTER key (or type in a command and ENTER) on the frozen
+      console (where the run command was issued). </p>
 
+    <p>If run command is used in a script (standard input or file
+    parameter for -C option), the execution of the script is always
+    suspended on the run command. The script will continued only when
+    the execution stops.
+    </p>
+    
     <p>However, it is possible to start the simulation in the
     background by setting the <b>sim_run</b> variable to a logical
     TRUE (i.e. non-zero) value, like:</p>
