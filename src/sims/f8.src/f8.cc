@@ -2,7 +2,7 @@
  * Simulator of microcontrollers (i8080.cc)
  *
  * Copyright (C) 2022 Drotos Daniel
- * 
+ *
  * To contact author send email to dr.dkdb@gmail.com
  *
  */
@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "f8cl.h"
 
 
-/* 
+/*
  * CPU
  */
 
@@ -60,13 +60,13 @@ cl_f8::init(void)
 #undef RCV
   sp_limit= 0;
   prefixes= P_NONE;
-  
+
   cF.W(urnd());
   cX.W(urnd());
   cY.W(urnd());
   cZ.W(urnd());
   cSP.W(urnd());
-  
+
   reset();
   return 0;
 }
@@ -178,7 +178,7 @@ cl_f8::print_regs(class cl_console_base *con)
 		      (u8_t)(rom->read(al)));
     }
   con->dd_printf("\n");
-  
+
   print_disass(PC, con);
 }
 
@@ -459,12 +459,7 @@ cl_f8::exec_inst(void)
       return resNOT_DONE;
     }
   tick(1);
-  if (type->type == CPU_F8L &&
-      (
-       !f8l_instructions[code] ||
-       (f8l_instructions[code] == 2 && (prefixes & P_SWAP))
-       )
-      )
+  if (type->type == CPU_F8L && (!f8l_instructions[code] || (f8l_instructions[code] == 2 && (prefixes & P_SWAP))))
     return resINV_INST;
   res= itab[code](this, code);
   if (res == resNOT_DONE)
@@ -496,7 +491,7 @@ cl_f8_cpu::init(void)
   uc->vars->add(v= new cl_var("sp_limit", cfg, f8cpu_sp_limit,
 			      cfg_help(f8cpu_sp_limit)));
   v->init();
-  
+
   return 0;
 }
 
