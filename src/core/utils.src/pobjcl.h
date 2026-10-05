@@ -119,7 +119,8 @@ protected:
   void		   **Items;
   t_index	   Limit;
   t_index	   Delta;
-
+  t_index          actual_index;
+  
 public:
   cl_list(void);
   cl_list(t_index alimit, t_index adelta, const char *aname);
@@ -159,6 +160,11 @@ public:
 	  void	   for_each(iterator_func action, void *arg);
 
 	  void	   error(t_index code, t_index info);
+
+  virtual class cl_base *start(void);
+  virtual class cl_base *next(void);
+  virtual class cl_base *actual(void);
+  
 private:
   virtual void	   free_item(void *item);
 };
@@ -200,7 +206,9 @@ class cl_strings: public cl_sorted_list
 public:
   cl_strings(t_index alimit, t_index adelta, const char *aname);
   virtual ~cl_strings(void);
-  inline  const char *at(t_index index) { return (char *)cl_sorted_list::at(index); }
+  inline  const char *at(t_index index) {
+    return (char *)cl_sorted_list::at(index);
+  }
   
 private:
   virtual int	   compare(const void *key1, const void *key2);
