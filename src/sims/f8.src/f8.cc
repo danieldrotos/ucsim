@@ -459,7 +459,12 @@ cl_f8::exec_inst(void)
       return resNOT_DONE;
     }
   tick(1);
-  if (type->type == CPU_F8L && (!f8l_instructions[code] || f8l_instructions[code] == 2 && (prefixes & P_SWAP)))
+  if (type->type == CPU_F8L &&
+      (
+       !f8l_instructions[code] ||
+       (f8l_instructions[code] == 2 && (prefixes & P_SWAP))
+       )
+      )
     return resINV_INST;
   res= itab[code](this, code);
   if (res == resNOT_DONE)
