@@ -243,6 +243,10 @@ public:
   inline chars *at(t_index index) {
     return (chars *)(at(index));
   }
+  virtual t_index  add(chars *cs)
+  {
+    return add((void*)cs);
+  }
 };
 
 

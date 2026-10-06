@@ -70,7 +70,7 @@ cl_app::cl_app(void)
 {
   save_std_attribs();
   sim= 0;
-  in_files= new cl_ustrings(2, 2, "input files");
+  in_files= new cl_chars_list(2, 2, "input files");
   in_specs= new cl_chars_list(2, 2, "input specs");
   options= new cl_options();
   quiet= false;
@@ -141,9 +141,10 @@ cl_app::read_input_files(void)
       bool read_some= false;
       for (i= 0; i < in_files->count; i++)
 	{
-	  const char *fname= (const char *)(in_files->at(i));
+	  //const char *fname= (const char *)(in_files->at(i));
+	  chars *fname= in_files->at(i);
 	  long l;
-	  if ((l= sim->uc->read_file(fname, NULL)) >= 0)
+	  if ((l= sim->uc->read_file(*fname, NULL)) >= 0)
 	    {
 	      read_some= true;
 	    }
@@ -1092,7 +1093,10 @@ cl_app::proc_arguments(int argc, char *argv[])
     options->set_value("black_and_white", this, bool(false));
   
   for (i= optind; i < argc; i++)
-    in_files->add(argv[i]);
+    {
+      chars *cs= new chars(argv[i]);
+      in_files->add(cs);
+    }
 
   return(0);
 }
