@@ -89,6 +89,7 @@ protected:
 public:
   class cl_sim *sim;
   class cl_ustrings *in_files;
+  class cl_chars_list *in_specs;
   class cl_options *options;
   int going;
   long expr_result;
