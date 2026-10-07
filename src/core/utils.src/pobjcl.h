@@ -249,8 +249,7 @@ public:
   }
   virtual t_index  add(chars cs)
   {
-    chars *c= new chars(cs);
-    return cl_list::add((void*)c);
+    return cl_list::add((void*)(new chars(cs)));
   }
 };
 
