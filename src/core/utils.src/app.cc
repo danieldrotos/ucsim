@@ -933,8 +933,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	}
       case 'i':
 	{
-	  chars *c= new chars(optarg);
-	  in_specs->add(c);
+	  in_specs->add(chars(optarg));
 	  break;
 	}
       case 'I':
@@ -1093,11 +1092,8 @@ cl_app::proc_arguments(int argc, char *argv[])
     options->set_value("black_and_white", this, bool(false));
   
   for (i= optind; i < argc; i++)
-    {
-      chars *cs= new chars(argv[i]);
-      in_files->add(cs);
-    }
-
+    in_files->add(chars(argv[i]));
+    
   return(0);
 }
 

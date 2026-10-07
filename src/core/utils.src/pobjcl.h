@@ -241,11 +241,16 @@ public:
   cl_chars_list(t_index alimit, t_index adelta, const char *aname):
     cl_list(alimit, adelta, aname) {}
   inline chars *at(t_index index) {
-    return (chars *)(at(index));
+    return (chars *)(object_at(index));
   }
   virtual t_index  add(chars *cs)
   {
-    return add((void*)cs);
+    return cl_list::add((void*)cs);
+  }
+  virtual t_index  add(chars cs)
+  {
+    chars *c= new chars(cs);
+    return cl_list::add((void*)c);
   }
 };
 
