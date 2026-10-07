@@ -534,6 +534,24 @@ cl_inspec::cl_inspec(chars aspec, class cl_uc *auc)
   uc= auc;
   use_min= 0;
   use_max= 0xffffffff;
+  mem= uc->default_load_mem();
+}
+
+void
+cl_inspec::set(chars aspec)
+{
+  ispec= aspec;
+  inited= false;
+  file_name= "";
+  mem_name= "";
+  range_name= "";
+  min_name= "";
+  max_name= "";
+  offset_name= "0";
+  offset= 0;
+  use_min= 0;
+  use_max= 0xffffffff;
+  mem= uc->default_load_mem();
 }
 
 int
@@ -542,7 +560,8 @@ cl_inspec::init(void)
   if (inited)
     return 0;
   if (ispec.empty())
-    {      
+    {
+      inited= 1;
       return 0;
     }
   file_name= "";
@@ -1501,13 +1520,13 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
     {
       if (check)
 	{
-	  v= rom->read(addr);
+	  v= mem->read(addr);
 	  if (!(eq= val == v))
 	    application->dd_printf("Diff at %08x, FILE=%08x MEM=%08x\n",
 				   AU32(addr), MU32(val), MU32(v));
 	}
       else
-	rom->download(addr, val);
+	mem->download(addr, val);
       return eq;
     }
   t_addr bank, caddr;
@@ -1521,7 +1540,7 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
 	  return true;
 	}
       d->switch_to(bank, NULL);
-      rom->download(caddr, val);
+      mem->download(caddr, val);
       d->activate(NULL);
     }
   else
@@ -1559,7 +1578,7 @@ cl_uc::read_hex_file(const char *nam, bool check)
 }
 
 long
-cl_uc::read_hex_file(cl_console_base *con)
+cl_uc::read_hex_file(cl_console_base *con, chars *in_spec_str)
 {
   cl_f *f;
   if (con == NULL)
@@ -1568,6 +1587,8 @@ cl_uc::read_hex_file(cl_console_base *con)
   if (f == NULL)
     return -1;
   class cl_inspec is("", this);
+  if ((in_spec_str != 0) && (in_spec_str->nempty()))
+    is.set(*in_spec_str);
   long l= read_hex_file(&is, f, false);
   return l;
 }

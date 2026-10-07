@@ -208,6 +208,7 @@ public:
   //virtual t_mem get16(t_addr addr)=0;
   virtual t_mem write(t_addr addr, t_mem val)=0;
   virtual void set(t_addr addr, t_mem val)=0;
+  virtual void download(t_addr, t_mem val)=0;
 
   virtual void print_info(const char *pre, class cl_console_base *con);
 };
@@ -581,6 +582,7 @@ public:
   cl_chip_data(const char *id, t_addr asize, int awidth);
   virtual t_mem d(t_addr addr)= 0;
   virtual void d(t_addr addr, t_mem v)= 0;
+  virtual void download(t_addr, t_mem val)= 0;
 };
 
 class cl_memory_chip: public cl_chip_data
@@ -607,6 +609,7 @@ public:
   virtual t_mem get(t_addr addr) { return d(addr); }
   virtual t_mem write(t_addr addr, t_mem val) { d(addr, val); return(val); }
   virtual void set(t_addr addr, t_mem val) { d(addr, val); }
+  virtual void download(t_addr addr, t_mem val) { d(addr, val); }
 
   virtual void print_info(const char *pre, class cl_console_base *con);
 };
