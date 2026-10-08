@@ -140,7 +140,11 @@ cl_app::read_input_files(void)
       for (i= 0; i < in_files->count; i++)
 	{
 	  const char *fname= (const char *)(in_files->at(i));
+	  chars *iopt= in_specs->at(i);
 	  long l;
+	  if ((iopt != NULL) && (iopt->nempty()))
+	    {
+	    }
 	  if ((l= sim->uc->read_file(fname, NULL)) >= 0)
 	    {
 	      read_some= true;
