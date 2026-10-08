@@ -1,20 +1,23 @@
 0.9.x
 
 - Bugfixes, pre-relases of 0.10: partial implmentations of
-  new features
+  new features.
 
 - New device type in m6800 simulator: m6801.
 
 - New device type in mos6502 simulator: huc6280.
 
-- New device type in tlcs simulator: tlcs870c, tlcs870c1
+- New device type in tlcs simulator: tlcs870c, tlcs870c1.
+
+- New device type in f8 simulator: f8l.
 
 - Implement most of the R6K specific instructions of the Rabbit
-  simulator
+  simulator.
 
-- Code analyzer removed
+- Code analyzer removed.
 
-- Use input specifier add parameters to input filename
+- Use input specifier, add parameters to input filename, -i option
+  to provide specifiers as option parameters.
 
 
 0.9
