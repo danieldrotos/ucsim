@@ -798,7 +798,7 @@ Configuration memory of port
 
     The state of the simulator and the simulated microcontroller:
 
-<!-- @BLOCK@ state 0545b75facc98c680cff6fbe095d56b2 -->
+<!-- @BLOCK@ state df24deb15190d0ae4173688939f083bc -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
 </span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
 55755 words read from remo.hex
@@ -814,7 +814,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x28</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0197</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">60</span> <span style="color: #F5F1DE; background-color: #000316">05</span>   <span style="color: #00aa00; background-color: #000316"> JZ     0x019e</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000197
 </span>Simulated 204816 ticks (1.852e-02 sec)
-Host usage: 0.005086 sec, rate=3.641230
+Host usage: 0.003251 sec, rate=5.696565
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">state
 </span><span style="color: #ffffff; background-color: #000316">CPU state= OK PC= 0x000197 frequency= 11059200 HZ
 Operation since last reset= 28575 vclks
@@ -824,7 +824,7 @@ Time in isr = 0.000000000000000 sec (0 clks) 0.00%
 Time in idle= 0.000000000000000 sec (0 clks) 0.00%
 Most value of stack pointer= 0x000030
 Simulation: stopped
-Runtime: 0.061692 sec
+Runtime: 0.039484 sec
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
     <!-- @END@ -->
@@ -1083,25 +1083,26 @@ SP limit= 0xf000
 
 	<h5>Registers of XA family</h5>
 
-	<pre>
-0&gt; <font color="#118811">i r</font>
-CA---VNZ | R0:0100 R1:0302 R2:0504 R3:0706
-00---000 | R4:0908 R5:0b0a R6:0d0c SP:0100 ES:0000  DS:0000
-0x0000  ? 41 58             CMP   R2h,R4l
-0&gt; 
-	</pre>
+<!-- @BLOCK@ info_registers_xa 6c4eec8c803b0776bfaf46cd2fd542b1 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+	<!-- @END@ -->
+
+
 
 	<h5>Registers of HC08 family</h5>
 
-	<pre>
-0&gt; <font color="#118811">i r</font>
-V--HINZC  Flags= 0x60  96 `  A= 0x00   0 .
-0--00000      H= 0x00   0 .  X= 0x00   0 .
-SP= 0x00ff [SP+1]= 00   0 .  Limit= $7000
-0xf17c  ? 19 ee       bclr   #4,*$ee
-0&gt; 
-	</pre>
+<!-- @BLOCK@ info_registers_m68hc08 a6836090021f85bc38a4daf0f6a5f20a -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">i r
+</span><span style="color: #ffffff; background-color: #000316">V--HINZC  Flags= $60  96 `  A= $00   0 .
+0--00000      H= $00   0 .  X= $00   0 .
+SP= $00ff [SP+1]= 00   0 .  Limit= $0080
+</span><span style="color: #ffff00; background-color: #000316">0xf17c</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">19</span> <span style="color: #F5F1DE; background-color: #000316">ee</span>      <span style="color: #00aa00; background-color: #000316"> bclr   #4,*$ee</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+	<!-- @END@ -->
 
+	
 	<hr>
 
 	<h4><a name="info_hardware">info hardware|hw <i>identifier</i></a></h4>
@@ -1383,6 +1384,8 @@ timer #3("unnamed") ON: 0 sec (0 clks)
     <hr>
   </body>
 </html>
+
+
 
 
 

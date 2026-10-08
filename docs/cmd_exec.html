@@ -77,7 +77,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x2e</span> -&
       means that if there is a breakpoint at start address then it
       will not be hit. See following example: </p>
 
-<!-- @BLOCK@ run e9e4f90b5c8e14657ca54c4e5cb6fa03 -->
+<!-- @BLOCK@ run b1ec9e7f5954943bd64e845f3d74badc -->
 <pre class="eg">$ ucsim_51
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -102,7 +102,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #ffffff; background-color: #000316"> F</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000020
 </span>Simulated 192 ticks (1.736e-05 sec)
-Host usage: 0.000011 sec, rate=1.582995
+Host usage: 0.000007 sec, rate=2.510958
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
     <!-- @END@ -->
@@ -184,7 +184,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x28</span> -&
 	instructions to execute. Note that breakpoints will stop the
 	execution after the first instruction. </p>
 
-<!-- @BLOCK@ step f11eeb43f5f650c5cc77ecd5652ff83a -->
+<!-- @BLOCK@ step 4a5ece79b841250b286fc8041cd2d9bc -->
 <pre class="eg">$ ucsim_51
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -216,7 +216,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x26</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x4366</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">90</span> <span style="color: #F5F1DE; background-color: #000316">00</span> <span style="color: #F5F1DE; background-color: #000316">0a</span><span style="color: #00aa00; background-color: #000316"> MOV    DPTR,#0x000a</span>
 <span style="color: #ffffff; background-color: #000316">F 0x004366
 </span>Simulated 11059212 ticks (1.000e+00 sec)
-Host usage: 0.298880 sec, rate=3.345830
+Host usage: 0.214584 sec, rate=4.660182
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step 100 vclk
 </span><span style="color: #E850A8; background-color: #000316">
 Stop at 0x004396: (104) Breakpoint
@@ -229,7 +229,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x26</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x4396</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
 <span style="color: #ffffff; background-color: #000316">F 0x004396
 </span>Simulated 672 ticks (6.076e-05 sec)
-Host usage: 0.000022 sec, rate=2.770242
+Host usage: 0.000016 sec, rate=3.803914
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
 <!-- @END@ -->
@@ -281,7 +281,7 @@ Host usage: 0.000022 sec, rate=2.770242
       stopped interactively. But it can be stopped by other
       breakpoints.
 
-<!-- @BLOCK@ next c01b3818d40eaab3bfc7e26897446e2c -->
+<!-- @BLOCK@ next af2434ccb2715c3d62d7203b3627bd31 -->
 <pre class="eg">$ ucsim_51
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -303,7 +303,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x22</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0172</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">79</span> <span style="color: #F5F1DE; background-color: #000316">04</span>   <span style="color: #00aa00; background-color: #000316"> MOV    R1,#0x04</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000172
 </span>Simulated 144 ticks (1.302e-05 sec)
-Host usage: 0.000018 sec, rate=0.728178
+Host usage: 0.000015 sec, rate=0.880860
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">disass 0x172 0 5
 </span><span style="color: #ffffff; background-color: #000316">Removed command, use "dc" instead
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">next
@@ -329,7 +329,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x22</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0177</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">0f</span>      <span style="color: #00aa00; background-color: #000316"> INC    R7</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000177
 </span>Simulated 492 ticks (4.449e-05 sec)
-Host usage: 0.000040 sec, rate=1.110688
+Host usage: 0.000021 sec, rate=2.120404
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
       <!-- @END@ -->
@@ -385,7 +385,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&
 	This command (without a subcommand) prints out the last 10
 	elements of the command history in disassembled form.
 	
-<!-- @BLOCK@ history 1f2baed961911af27929063d697c616c -->
+<!-- @BLOCK@ history e0b1d21bab2a2d400e725c2e4819e06d -->
 <pre class="eg">$ ucsim_51
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -406,7 +406,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x22</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0174</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">12</span> <span style="color: #F5F1DE; background-color: #000316">09</span> <span style="color: #F5F1DE; background-color: #000316">f9</span><span style="color: #00aa00; background-color: #000316"> LCALL  0x09f9</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000174
 </span>Simulated 156 ticks (1.411e-05 sec)
-Host usage: 0.000018 sec, rate=0.778480
+Host usage: 0.000016 sec, rate=0.883051
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">history
 </span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">01</span> <span style="color: #F5F1DE; background-color: #000316">60</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x0160</span>
 <span style="color: #ffff00; background-color: #000316">0x0160</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">90</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0x900x90 &lt;P1&gt;.0</span>
@@ -429,7 +429,7 @@ Host usage: 0.000018 sec, rate=0.778480
 	
 	Print out information about execution history.
 
-<!-- @BLOCK@ history_info a645c7ebfe836ee1824d2fddb0cc1368 -->
+<!-- @BLOCK@ history_info 9f93660261a78d6dd0a1acbbd8ab961c -->
 <pre class="eg">$ ucsim_51
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -450,7 +450,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x27</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0a13</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">2f</span>      <span style="color: #00aa00; background-color: #000316"> ADD    A,R7</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000a13
 </span>Simulated 324 ticks (2.930e-05 sec)
-Host usage: 0.000029 sec, rate=1.007213
+Host usage: 0.000025 sec, rate=1.170286
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">history info
 </span><span style="color: #ffffff; background-color: #000316">len: 10000
 used: 20
@@ -476,7 +476,7 @@ insts: 20
 	  parameter that specifies how many records to print
 	  (defaults to 10):
 
-<!-- @BLOCK@ history_list eea14c3a2c3d500650052fe22005656b -->
+<!-- @BLOCK@ history_list de5ed5e9b32d6e6d6524e0b6363ed1c0 -->
 <pre class="eg">$ ucsim_51
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -497,7 +497,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x2a</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0201</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">a3</span>      <span style="color: #00aa00; background-color: #000316"> INC    DPTR</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000201
 </span>Simulated 20568 ticks (1.860e-03 sec)
-Host usage: 0.000520 sec, rate=3.576618
+Host usage: 0.000355 sec, rate=5.238821
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">history info
 </span><span style="color: #ffffff; background-color: #000316">len: 10000
 used: 1000
@@ -529,7 +529,7 @@ insts: 1000
 	  This command clears the history; it deletes all recorded
 	  elements.
 
-<!-- @BLOCK@ history_clear ba290ec742179a8c854d91656d01efcb -->
+<!-- @BLOCK@ history_clear 51f4581df1a5430fb5c83a701d695dd0 -->
 <pre class="eg">$ ucsim_51
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -550,7 +550,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x2a</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0201</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">a3</span>      <span style="color: #00aa00; background-color: #000316"> INC    DPTR</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000201
 </span>Simulated 20568 ticks (1.860e-03 sec)
-Host usage: 0.000462 sec, rate=4.025080
+Host usage: 0.000343 sec, rate=5.424621
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">history list 5
 </span><span style="color: #ffff00; background-color: #000316">0x01a2</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">70</span> <span style="color: #F5F1DE; background-color: #000316">03</span>   <span style="color: #00aa00; background-color: #000316"> JNZ    0x01a7</span>
 <span style="color: #ffff00; background-color: #000316">0x01a7</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">22</span>      <span style="color: #00aa00; background-color: #000316"> RET</span>
@@ -571,6 +571,8 @@ insts: 0
       <!--OK-->
   </body>
 </html>
+
+
 
 
 
