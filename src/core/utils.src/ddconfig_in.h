@@ -3,7 +3,6 @@
 #ifndef DDCONFIG_HEADER
 #define DDCONFIG_HEADER
 
-#include "version.h"
 
 /* Define to be the type of length parameter of accept (without the \*'). */
 //#undef ACCEPT_SOCKLEN_T

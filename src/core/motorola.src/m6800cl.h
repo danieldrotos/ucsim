@@ -103,7 +103,10 @@ enum flags68_t {
   mH	= 0x20,
   flagH	= 0x20,
   mA	= 0x40,
-  flagA	= 0x40
+  flagA	= 0x40,
+  //hc12
+  flagStop= 0x80,
+  flagX   = 0x40
 };
 
 #define ifCS	(rF&mC)

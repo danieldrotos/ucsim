@@ -28,6 +28,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef SIMIFCL_HEADER
 #define SIMIFCL_HEADER
 
+#include "version.h"
+
 // prj
 #include "fiocl.h"
 

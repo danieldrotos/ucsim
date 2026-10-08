@@ -40,10 +40,6 @@ class cl_hc12_cpu;
 
 typedef int (*hcwrapper_fn)(class CL12 *uc, t_mem code);
 
-enum {
-  flagStop	= 0x80,
-  flagX		= 0x40
-};
 
 #define rTMP2 (TMP2)
 #define rTMP3 (TMP3)
