@@ -47,13 +47,9 @@ else
   VERSION="0.0.0"
   AC_MSG_RESULT(unknown using 0.0.0)
 fi
-VERSIONHI=`echo $VERSION|$AWK 'BEGIN {FS="."} {print $1}'`
-VERSIONLO=`echo $VERSION|$AWK 'BEGIN {FS="."} {print $2}'`
 VERSIONP=`echo $VERSION|$AWK 'BEGIN {FS="."} {print $3}'`
 AC_SUBST(VERSION)
-AC_SUBST(VERSIONP)
 AC_DEFINE_UNQUOTED(VERSIONSTR, "${VERSION}", [XXX])
-AC_DEFINE_UNQUOTED(VERSIONP, $VERSIONP, [XXX])
 AC_ARG_PROGRAM
 # Some options
 #==============

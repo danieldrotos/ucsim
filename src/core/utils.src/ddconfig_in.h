@@ -257,9 +257,6 @@
 #undef UCSOCKET_T
 
 /* XXX */
-#undef VERSIONP
-
-/* XXX */
 #undef VERSIONSTR
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most

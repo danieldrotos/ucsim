@@ -685,7 +685,6 @@ enable_serio
 enable_feapp
 enable_dlso
 SILENT
-VERSIONP
 VERSION
 SED
 AWK
@@ -3290,18 +3289,12 @@ else
   { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: unknown using 0.0.0" >&5
 printf '%s\n' "unknown using 0.0.0" >&6; }
 fi
-VERSIONHI=`echo $VERSION|$AWK 'BEGIN {FS="."} {print $1}'`
-VERSIONLO=`echo $VERSION|$AWK 'BEGIN {FS="."} {print $2}'`
 VERSIONP=`echo $VERSION|$AWK 'BEGIN {FS="."} {print $3}'`
-
 
 
 cat >>confdefs.h <<_ACEOF
 #define VERSIONSTR "${VERSION}"
 _ACEOF
-
-
-printf '%s\n' "#define VERSIONP $VERSIONP" >>confdefs.h
 
 test "$program_prefix" != NONE &&
   program_transform_name="s&^&$program_prefix&;$program_transform_name"
