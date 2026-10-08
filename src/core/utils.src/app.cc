@@ -154,7 +154,7 @@ cl_app::read_input_files(void)
 	      chars t= iopt->token(",");
 	      while (t)
 		{
-		  if ((t.c(0)!='@') && (t.c(0)!=':') && (t.c(0)!='#'))
+		  if (strspn(t.cstr(), "@:#") <= 0)
 		    fprintf(stderr, "Wrong input specifier in -i option (%s)\n",
 			    t.cstr());
 		  else

@@ -117,6 +117,8 @@ public:
   bool iequal(const char *) const;
   bool operator==(const char *s) const;
   bool operator!=(const char *s) const;
+  // Esoteric
+  char operator[](int idx) { return c(idx); }
 };
 
 extern chars operator+(char s, const chars &cs);

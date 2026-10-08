@@ -129,7 +129,7 @@ chars::c(int idx) const
 {
   if (!chars_string)
     return 0;
-  if (idx>=chars_length)
+  if ((idx < 0) || (idx >= chars_length))
     return 0;
   return chars_string[idx];
 }
