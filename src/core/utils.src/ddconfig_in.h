@@ -257,9 +257,6 @@
 #undef UCSOCKET_T
 
 /* XXX */
-#undef VERSIONHI
-
-/* XXX */
 #undef VERSIONLO
 
 /* XXX */
