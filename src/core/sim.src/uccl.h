@@ -276,6 +276,7 @@ public:
 public:
   cl_inspec(chars aspec, class cl_uc *auc);
   virtual int init(void);
+  virtual void set(chars aspec);
   virtual chars *get_file_name(void)     { init(); return &file_name; }
   virtual chars *get_mem_name(void)      { init(); return &mem_name; }
   virtual chars *get_range_name(void)    { init(); return &range_name; }
@@ -397,7 +398,7 @@ public:
   
   // file handling
   virtual cl_f *find_loadable_file(chars nam);
-  virtual long read_hex_file(cl_console_base *con);
+  virtual long read_hex_file(cl_console_base *con, chars *in_spec_str= 0);
   virtual long read_hex_file(const char *nam, bool check);
   virtual long read_file(chars nam, class cl_console_base *con, bool check= false);
   virtual bool set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check);

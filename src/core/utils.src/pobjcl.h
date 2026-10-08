@@ -235,6 +235,25 @@ private:
 };
 
 
+class cl_chars_list: public cl_list
+{
+public:
+  cl_chars_list(t_index alimit, t_index adelta, const char *aname):
+    cl_list(alimit, adelta, aname) {}
+  inline chars *at(t_index index) {
+    return (chars *)(object_at(index));
+  }
+  virtual t_index  add(chars *cs)
+  {
+    return cl_list::add((void*)cs);
+  }
+  virtual t_index  add(chars cs)
+  {
+    return cl_list::add((void*)(new chars(cs)));
+  }
+};
+
+
 #endif
 
 /* End of utils.src/pobj.h */

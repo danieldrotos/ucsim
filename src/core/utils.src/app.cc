@@ -70,7 +70,8 @@ cl_app::cl_app(void)
 {
   save_std_attribs();
   sim= 0;
-  in_files= new cl_ustrings(2, 2, "input files");
+  in_files= new cl_chars_list(2, 2, "input files");
+  in_specs= new cl_chars_list(2, 2, "input specs");
   options= new cl_options();
   quiet= false;
   nowelcome= false;
@@ -97,6 +98,7 @@ cl_app::~cl_app(void)
   remove_simulator();
   delete commander;
   delete in_files;
+  delete in_specs;
   delete ocon;
   delete options;
 }
@@ -139,7 +141,7 @@ cl_app::read_input_files(void)
       bool read_some= false;
       for (i= 0; i < in_files->count; i++)
 	{
-	  const char *fname= (const char *)(in_files->at(i));
+	  chars *fname= in_files->at(i);
 	  chars *iopt= in_specs->at(i);
 	  long l;
 	  if ((iopt != NULL) && (iopt->nempty()))
@@ -353,15 +355,21 @@ print_help(const char *name)
 #define DOPT
 #endif
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-AbBEgGhHlmPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
+  printf("Usage: %s [-AbBEgGhHlmPqvVw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
 	 "       [-e command] [-I if_optionlist] " KOPT " [-o colorlist]\n"
 	 "       [-p prompt] [-R seed] [-s file] [-S optionlist]\n"
 	 "       [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]] " ZOPT "\n"
+	 "       [-i inspec[,...]]\n"
 	 "\n"
-	 "       [files...]\n", name);
+	 "       [file[@memory][:offset][#range]...]\n", name);
   /*
     -D devopt   Options for developers only
-       		cpu_speed Measure and print speed of machine
+       		cpu_speed    Measure and print speed of host machine
+		nowelcome    Supress printing welcome message
+		hideecho     Suppose non-interactive input console
+		showinput    Always print entered commands
+		html         = nowelcome hideecho showinput forcecolors
+		wtml         = hideecho showinput forcecolors
   */
   printf
     (
@@ -383,11 +391,13 @@ print_help(const char *name)
      "  -G           Go, start simulation, quit on stop\n"
      "  -h           Print out this help and quit\n"
      "  -H           Print out types of known CPUs and quit\n"
+     "  -i inspecs   Comma separated list of input specifiers: @mem:offset#range\n"
      "  -I options   `options' is a comma separated list of options according to\n"
      "               simulator interface. Known options are:\n"
      "                 if=memory[address]  turn on interface on given memory location\n"
      "                 in=file             specify input file for IO\n"
      "                 out=file            specify output file for IO\n"
+   //"  -J           jaj=true (hidden)\n"
      "  -k portnum   Listen portnum for serial I/O (obsolete, use -S)\n"
      "  -l           Use light theme (default is dark)\n"
      "  -m           Return value of simulated main()\n"
@@ -397,6 +407,7 @@ print_help(const char *name)
      "  -p prompt    Specify string for prompt\n"
      "  -P           Prompt is a null ('\\0') character\n"
      "  -q           Quiet mode (implies -b)\n"
+   //"  -r portnum   Same az Z\n"
      "  -R seed      Set the random number generator seed value\n"
      "  -s file      Connect serial interface uart0 to `file' (obsolete, use -S)\n"
      "  -S options   `options' is a comma separated list of options according to\n"
@@ -409,8 +420,8 @@ print_help(const char *name)
      "                  oport=nr  use localhost:nr as server for serial output\n"
      "                  raw       perform non-interactive communication even on tty\n"
      "  -t CPU       Type of CPU: 51, C52, 251, etc.\n"
-     "  -U uartnr    Use std console as terminal for UART id=uartnr\n"
      "  -u hw        Use std console as display for hardware element\n"
+     "  -U uartnr    Use std console as terminal for UART id=uartnr\n"
      "  -v           Print out version number and quit\n"
      "  -V           Verbose mode\n"
      "  -w           Writable flash\n"
@@ -488,9 +499,9 @@ cl_app::proc_arguments(int argc, char *argv[])
   //bool S_i_done= false, S_o_done= false;
   bool force_colors= false;
   
-  strcpy(opts, "Aqc:C:D:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:u:_");
+  strcpy(opts, "a:AbBc:C:D:e:EgGhHi:I:Jlmo:p:PqR:s:S:t:u:U:vVwX:_");
 #ifdef SOCKET_AVAIL
-  strcat(opts, "Z:r:k:z:d:");
+  strcat(opts, "d:k:r:z:Z:");
 #endif
 
   for (i= 0; i < argc; i++)
@@ -923,6 +934,11 @@ cl_app::proc_arguments(int argc, char *argv[])
 	    }
 	  break;
 	}
+      case 'i':
+	{
+	  in_specs->add(chars(optarg));
+	  break;
+	}
       case 'I':
 	{
 	  char *ifstr= NULL, *in= NULL, *out= NULL;
@@ -1079,8 +1095,8 @@ cl_app::proc_arguments(int argc, char *argv[])
     options->set_value("black_and_white", this, bool(false));
   
   for (i= optind; i < argc; i++)
-    in_files->add(argv[i]);
-
+    in_files->add(chars(argv[i]));
+    
   return(0);
 }
 

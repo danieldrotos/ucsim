@@ -62,9 +62,11 @@ uCsim \- Micro\-controller simulator
 .B \-G
 .B \-h
 .B \-H
+.B \-i inspecs
 .B \-I options
 .B \-k portnum
 .B \-l
+.B \-m
 .B \-o colors
 .B \-p prompt
 .B \-P
@@ -73,8 +75,8 @@ uCsim \- Micro\-controller simulator
 .B \-s file
 .B \-S options
 .B \-t cpu_type
-.B \-U uartnr
 .B \-u hw
+.B \-U uartnr
 .B \-v
 .B \-V
 .B \-w
@@ -151,6 +153,13 @@ Print out this help and quit.
 .TP
 .B \-H
 Print out types of known CPUs and quit.
+
+.TP
+.B \-i inspecs
+Comma separated list of input specifiers: @mem:offset#range,...
+This option can be used several times, given specifiers will be
+used when file parameters are loaded. Specifiers in first -i option
+will be used to load first file parameter, and so on.
 
 .TP
 .B \-I options
@@ -244,12 +253,12 @@ perform non-interactive communication even on tty.
 Specifies type of the controller. Use \-H to list possible values.
 
 .TP
-.B \-U uartnr
-Use std console as terminal for UART id=uartnr.
-
-.TP
 .B \-u hw
 Use std console as display for specified hw.
+
+.TP
+.B \-U uartnr
+Use std console as terminal for UART id=uartnr.
 
 .TP
 .B \-v
