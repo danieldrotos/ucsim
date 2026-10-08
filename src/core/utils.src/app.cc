@@ -154,10 +154,16 @@ cl_app::read_input_files(void)
 	      chars t= iopt->token(",");
 	      while (t)
 		{
-		  chars fi= *fname + t;
-		  if (sim->uc->read_file(fi, NULL))
-		    read_some= true;
-		  t= iopt->token(",");
+		  if ((t.c(0)!='@') && (t.c(0)!=':') && (t.c(0)!='#'))
+		    fprintf(stderr, "Wrong input specifier in -i option (%s)\n",
+			    t.cstr());
+		  else
+		    {
+		      chars fi= *fname + t;
+		      if (sim->uc->read_file(fi, NULL))
+			read_some= true;
+		    }
+		  t= iopt->token(",");		    
 		}
 	    }
 	  else
