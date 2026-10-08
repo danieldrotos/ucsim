@@ -258,12 +258,12 @@ COMMAND_DO_WORK_APP(cl_show_console)
       con->dd_printf("%d %s %s(%d) ", cn->get_id(), cn->get_name(),
 		     cn->prevent_quit()?"PrevQuit":"", cn->prev_quit);
       int f= cn->get_flags();
-      con->dd_printf("%c", 'D'|((f&CONS_DEBUG)?0:0x20));
-      con->dd_printf("%c", 'F'|((f&CONS_FROZEN)?0:0x20));
-      con->dd_printf("%c", 'A'|((!(f&CONS_INACTIVE))?0:0x20));
-      con->dd_printf("%c", 'W'|((!(f&CONS_NOWELCOME))?0:0x20));
-      con->dd_printf("%c", 'I'|((f&CONS_INTERACTIVE)?0:0x20));
-      con->dd_printf("%c", 'E'|((f&CONS_ECHO)?0:0x20));
+      con->dd_printf("%c", 'd'^((f&CONS_DEBUG)?0x20:0));
+      con->dd_printf("%c", 'f'^((f&CONS_FROZEN)?0x20:0));
+      con->dd_printf("%c", 'a'^((f&CONS_INACTIVE)?0x20:0));
+      con->dd_printf("%c", 'w'^((f&CONS_NOWELCOME)?0x20:0));
+      con->dd_printf("%c", 'i'^((f&CONS_INTERACTIVE)?0x20:0));
+      con->dd_printf("%c", 'e'^((f&CONS_ECHO)?0x20:0));
       con->dd_printf("\n");
       class cl_f *ff= cn->get_fin();
       con->dd_printf(" <");

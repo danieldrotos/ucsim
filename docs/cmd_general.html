@@ -1,11 +1,12 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="ucsim.css">
     <title>General commands of &micro;Csim</title>
   </head>
 
-  <body style="  background-color: white;">
+  <body>
 
     <h2>General commands of <i>&micro;Csim</i></h2>
 
@@ -28,21 +29,30 @@
       This command (without a subcommand) prints out configuration of
       the simulator:
 
-      <pre>0&gt; <font color="#118811">conf</font>
-ucsim version 0.5.0-pre3
-Type of microcontroller: 51 CMOS
-Controller has 9 hardware element(s).
-  timer0[0]
-  timer1[1]
-  uart[0]
-  port[0]
-  port[1]
-  port[2]
-  port[3]
-  irq[0]
-  _51_dummy[0]
-0&gt;
-      </pre>
+<!-- @BLOCK@ conf 50d44a3fd60ceecbfee9ae7cdbd59b24 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.9
+Type of microcontroller: C52 CMOS cmos
+Controller has 14 hardware element(s).
+   on cpu[0]
+   on simif[0]
+  off vcd[0]
+   on timer0[0]
+   on timer1[1]
+   on uart[0]
+   on dreg[0]
+   on dport[0]
+   on port[0]
+   on port[1]
+   on port[2]
+   on port[3]
+   on irq[0]
+   on timer2[2]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+      
+
 
       The first line contains version number of the program. The
       second line informs about type of the simulated
@@ -55,8 +65,9 @@ Controller has 9 hardware element(s).
       like <a href="invoke.html#H_option">-H option</a> of the
       simulator.
 
-      <pre>0&gt; <font color="#118811">conf types</font>
-Parameter           Family                        Subtype                       
+<!-- @BLOCK@ conf_types 6ca7c5676b5b65570ae02db49f09d471 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf types
+</span><span style="color: #ffffff; background-color: #000316">Parameter           Family                        Subtype                       
 C52                 mcs52                         cmos                          
 51                  mcs51                         hmos                          
 8051                mcs51                         hmos                          
@@ -102,9 +113,11 @@ XC888               Infineon XC88[68]             cmos
 DS320               Dallas DS80C320               cmos                          
 DS390               Dallas DS80C390               cmos                          
 DS390F              Dallas DS80C390F              cmos                          
-0&gt;
-      </pre>
-      
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+
       <h4><a name="conf_objects">conf <i>objects</i></a></h4>
       
       This command is for development only.
@@ -117,11 +130,14 @@ DS390F              Dallas DS80C390F              cmos
 
     Print out the version of the program.
 
-    <pre>0&gt; <font color="#118811">ver</font>
-0.6-pre58
-0&gt; 
-    </pre>
+<!-- @BLOCK@ version 5995053aae65c1b68288c3b9c27797ba -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">version
+</span><span style="color: #ffffff; background-color: #000316">0.9.9
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
+    
     <hr>
 
     <h3><a name="h">?,help <i>[command]</i></a></h3>
@@ -131,42 +147,48 @@ DS390F              Dallas DS80C390F              cmos
     <p>If a command name is given as a parameter then <i>&micro;Csim</i>
       prints out all commands that has similar names: </p>
     
-    <pre>0&gt; <font color="#118811">? s</font>
-show subcommand    Generic command for showing things about the uCsim
-set subcommand     Set, see `set' command for more help
-stop               Stop
-step               Step
-state              State of microcontroller
-statistic [mem [startaddr [endaddr]]]
-                   Statistic of memory accesses
-0&gt; <font color="#118811">? s o</font>
-show option [name] Show internal data of options
+<!-- @BLOCK@ help1 67bb369a92814bece68cb7b089f7c371 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">? s
+</span><span style="color: #ffffff; background-color: #000316">show subcommand     Generic command for showing things about
+set subcommand      Set value of different objects
+stop                Stop simulation.
+step [number [unit]]
+                    Execute one or specified instructions.
+state               State of microcontroller
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">? s o
+</span><span style="color: #ffffff; background-color: #000316">show option [name]  Show internal data of options
 set option name|nr value
-                   Set value of an option
-0&gt; 
-    </pre>
+                    Set value of an option
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
+    
     Some commands have more than one name, which can produce interesting
     result:
     
-    <pre>0&gt; <font color="#118811">? t r</font>
-timer delete id    Delete a timer
-timer start id     Start a timer
-0&gt; 
-    </pre>
+<!-- @BLOCK@ help2 168f437da34b82193a411530b001e4be -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">? t r
+</span><span style="color: #ffffff; background-color: #000316">timer delete id     Delete a timer
+timer start id      Start a timer
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
 
     It looks like the names of the listed subcommands start with no
     "r" but take a closer look at those commands:
     
-    <pre>0&gt; <font color="#118811">? t d</font>
-timer delete id    Delete a timer
-Names of command: delete remove
-long help of timer delete
-0&gt; <font color="#118811">? t start</font>
-timer start id     Start a timer
-Names of command: run start
-long help of timer run
-0&gt; </pre>
+<!-- @BLOCK@ help3 c68da22758c34497e9a6bab9273ae400 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">? t d
+</span><span style="color: #ffffff; background-color: #000316">timer delete id     Delete a timer
+Alternate name(s) of command: delete remove
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">? t start
+</span><span style="color: #ffffff; background-color: #000316">timer start id      Start a timer
+Alternate name(s) of command: run start
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
     <p>If parameter is unique name of a command then long description
       of the command is printed out. </p>
@@ -193,13 +215,18 @@ long help of timer run
 	the simulator. See for more information
 	about <a href="mulcons.html">using multiple consoles</a>. </p>
       
-      <pre>$ <font color="#118811">ucsim_51</font>
-ucsim 0.2.24, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<!-- @BLOCK@ quit d85c841984ac9267740444e44ab286ab -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-&gt; <font color="#118811">q</font>
-$ </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">quit
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+$
+</pre>
+      <!-- @END@ -->
+
 
       <hr>
 
@@ -218,35 +245,41 @@ $ </pre>
       current one) to execute the file. This means the "quit" command
       in the file will not exit the simulator:
 
-      <pre>drdani@emma:~$ <font color="#118811">cat /tmp/x</font>
-get opt
-quit
+<!-- @BLOCK@ exec 4a1f79cc8aaf4c8661d5d523bc8afb0c -->
+<pre class="eg">$ cat test.cmd
 conf
-drdani@emma:~$ <font color="#118811">ucsim_51</font>
-uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+quit
+get opt
+$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">exec "/tmp/x"</font>
-1&gt; get opt
- 0. config_file(by application) is hidden!
- 1. console_on(by application) is hidden!
- 2. cpu_type(by application) is hidden!
- 3. debug(by console1): FALSE - Debug messages to console1
- 4. debug(by console0): FALSE - Debug messages to console0
- 5. debug(by application): FALSE - Print debug messages (-V)
- 6. irq_stop(by mcs51_controller): FALSE - Stop when IRQ accepted
- 7. null_prompt(by application): FALSE - Use \0 as prompt (-P)
- 8. prompt(by console1): "" - Prompt string of console1
- 9. prompt(by console0): "" - Prompt string of console0
-10. prompt(by application): (null) - String of prompt (-p)
-11. serial_in_file(by application) is hidden!
-12. serial_out_file(by application) is hidden!
-13. xtal(by application): 11059200.000 - Frequency of XTAL in Hz
-1&gt; quit
-0&gt; 
-      </pre>
-      
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">exec "test.cmd"
+</span><span style="color: #aa5500; background-color: #000316">2</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.9
+Type of microcontroller: C52 CMOS cmos
+Controller has 14 hardware element(s).
+   on cpu[0]
+   on simif[0]
+  off vcd[0]
+   on timer0[0]
+   on timer1[1]
+   on uart[0]
+   on dreg[0]
+   on dport[0]
+   on port[0]
+   on port[1]
+   on port[2]
+   on port[3]
+   on irq[0]
+   on timer2[2]
+</span><span style="color: #aa5500; background-color: #000316">2</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">quit
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #aa5500; background-color: #000316">2</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+
       <hr>
       
       <h3><a name="expression">expression [/format] <i>expr</i></a></h3>
@@ -254,12 +287,16 @@ under certain conditions; type `show c' for details.
       Executes "expr" as an expression. For more about expressions,
 	see <a href="syntax.html">command syntax</a>.
 
-      <pre>0&gt; <font color="#118811">expr 1+2</font>
-3
-0&gt; <font color="#118811">expr xram[256*dph+dpl]= &amp;sp</font>
-129
-0&gt; 
-      </pre>
+<!-- @BLOCK@ expression1 12cb058a8adb908a111b8f312f6db78a -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">expr 1+2
+</span><span style="color: #ffff00; background-color: #000316">3
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">expr xram[256*dph+dpl]=&amp;SP
+</span><span style="color: #ffff00; background-color: #000316">129
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+      
+
 
       Following formats are supported:
 
@@ -275,15 +312,21 @@ under certain conditions; type `show c' for details.
 	<li><b>L</b> logical value in T/F form</li>
 	<li><b>c</b> character constant in 'c' form (non-printable values are
           escaped in c syntax)</li>
+	<li><b>n</b> do not print out result</li>
       </ul>
 
       If more than one format character is used, then all requested
       form will be printed:
 
-      <pre>0&gt; <font color="#118811">expr /bx 123</font>
-00000000000000000000000001111011
+<!-- @BLOCK@ expression2 e756f995cdc310f8bd1889f0222091d2 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">expr /bxc 123
+</span><span style="color: #ffff00; background-color: #000316">00000000000000000000000001111011
 7b
-0&gt;    </pre>
+'{'
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
 
       <hr>
 
@@ -335,19 +378,20 @@ under certain conditions; type `show c' for details.
 	command. Errors are organized in parent-child
 	relationship. Children are listed under the parent:
 
-	<pre>0&gt; <font color="#118811">sh er</font>
-Error: non-classified [on/ON]
-  Error: memory [on/ON]
-    Error: invalid_address [unset/ON]
-    Error: non_decoded [unset/ON]
-  Error: stack [off/OFF]
-    Error: stack_tracker [unset/OFF]
-      Error: stack_tracker_wrong_handle [unset/OFF]
-      Error: operation_on_empty_stack [unset/OFF]
-      Warning: stack_operation_unmatched_to_top_of_stack [unset/OFF]
-      Warning: stack_looks_corrupted [unset/OFF]
-0&gt; </pre>
+<!-- @BLOCK@ show_error f4cb8345a7afd2bca42d85d96d3ad260 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">show error
+</span><span style="color: #ffffff; background-color: #000316">error: non-classified [on/ON]
+  error: stack [on/ON]
+    error: stack_overflow [unset/ON]
+  error: memory [off/OFF]
+    error: invalid_address [unset/OFF]
+      error: non_decoded [unset/OFF]
+  error: unknown_code [off/OFF]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
+	
 	First element is the type (Error or Warning). An error stops the
 	simulation. A warning is just reported and simulation goes
 	on. Next element is the name of the error. Last element shows
@@ -392,22 +436,39 @@ Error: non-classified [on/ON]
       <p>Parameters are interpreted as SFR names or addresses, and the
         values of addressed locations are dumped out. </p>
       
-	<pre>$ <font color="#118811">ucsim_51 </font>
-ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<!-- @BLOCK@ get_sfr1 8fcf23b0514b0df45257bc89e07aae5d -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">get sfr pcon p1 0 0x80 kahd scon 256</font>
-0x87 00 .
-0x90 ff .
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get sfr PCON P1 0 0x80 kahd SCON 256
+</span><span style="color: #ffff00; background-color: #000316">0x87[135:1]                          </span><span style="color: #F5F1DE; background-color: #000316"> 0b0000000- 0x00000000</span><span style="color: #00aa00; background-color: #000316"> '.................'</span><span style="color: #F5F1DE; background-color: #000316">          0
+</span><span style="color: #ffff00; background-color: #000316">0x90[144:1]                          </span><span style="color: #F5F1DE; background-color: #000316"> 0b1111111- 0x0000007f</span><span style="color: #00aa00; background-color: #000316"> '..................'</span><span style="color: #F5F1DE; background-color: #000316">        127
 Warning: Invalid address 0
-0x80 ff .
+</span><span style="color: #ffff00; background-color: #000316">0x80[128:1]                          </span><span style="color: #F5F1DE; background-color: #000316"> 0b1111111- 0x00000000</span><span style="color: #00aa00; background-color: #000316"> '................'</span><span style="color: #F5F1DE; background-color: #000316">          0
 Warning: Invalid address kahd
-0x98 00 .
+</span><span style="color: #ffff00; background-color: #000316">0x98[152:1]                          </span><span style="color: #F5F1DE; background-color: #000316"> 0b0000000- 0x00000000</span><span style="color: #00aa00; background-color: #000316"> '...................'</span><span style="color: #F5F1DE; background-color: #000316">          0
 Warning: Invalid address 256
-0&gt; </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
-	<hr>
+Some microcontrollers do not have SFR address space.
+
+<!-- @BLOCK@ get_sfr2 296b24b9abd32d173a23db78b335c47c -->
+<pre class="eg">$ ucsim_z80
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get sfr 0
+</span><span style="color: #ffffff; background-color: #000316">Error: No SFR
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+<hr>
 
 	<h4><a name="get_option">get option <i>[name]</i></a></h4>
 
@@ -419,21 +480,63 @@ Warning: Invalid address 256
           program. In this way, you can figure out which options can
           be used.
 
-	<pre>$ <font color="#118811">ucsim_51 -V</font>
-ucsim 0.5.0, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<!-- @BLOCK@ get_option1 eb41a0a66a41c5ec513c93976825cad1 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">get opt</font>
- 3. debug(by console0): FALSE - Debug messages to console0
- 4. debug(by application): FALSE - Print debug messages (-V)
- 5. irq_stop(by mcs51_controller): FALSE - Stop when IRQ accepted
- 6. null_prompt(by application): FALSE - Use \0 as prompt (-P)
- 7. prompt(by console0): "" - Prompt string of console0
- 8. prompt(by application): (null) - String of prompt (-p)
-11. xtal(by application): 11059200.000 - Frequency of XTAL in Hz
-0&gt; 
-	</pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get option
+</span><span style="color: #ffffff; background-color: #000316"> 0. analyser(by mcs51_controller): FALSE - Analyse and label code
+ 1. analyzer(by mcs51_controller): FALSE - Analyze and label code
+ 2. beep_break(by s51): FALSE - Beep at breakpoint hit (-B)
+ 3. black_and_white(by s51): FALSE - Non-color console (-b)
+ 4. color_answer(by s51): "bwhite:black" - Answer color
+ 5. color_bg(by s51): "black" - Default background color
+ 6. color_btn_off(by s51): "white:black" - OFF button color on FPGA display
+ 7. color_btn_on(by s51): "bcyan:black" - ON button color on FPGA display
+ 8. color_command(by s51): "green:black" - Color of entered command
+ 9. color_comment(by s51): "magenta:black" - Comment color in disassembly
+10. color_debug(by s51): "magenta:black" - Color of debug messages
+11. color_dump_address(by s51): "byellow:black" - Address color in dump
+12. color_dump_char(by s51): "green:black" - Text color in dump
+13. color_dump_label(by s51): "bgreen:black" - Label color in dump
+14. color_dump_number(by s51): "white:black" - Value color in dump
+15. color_error(by s51): "red:black" - Text color in error messages
+16. color_fg(by s51): "white" - Default foreground color
+17. color_gray_answer(by s51): "white:black" - Gray answer color
+18. color_led_off(by s51): "white:black" - OFF LED color on FPGA display
+19. color_led_on(by s51): "b:green:black" - ON LED color on FPGA display
+20. color_prompt(by s51): "bwhite:black" - Prompt color
+21. color_prompt_console(by s51): "yellow:black" - Color of console number in prompt
+22. color_result(by s51): "byellow:black" - Result of expression
+23. color_sw_off(by s51): "white:black" - OFF switch color on FPGA display
+24. color_sw_on(by s51): "bcyan:black" - ON switch color on FPGA display
+25. color_ui_bit0(by s51): "white:black" - Bit 0 color on UI display
+26. color_ui_bit1(by s51): "bred:black" - Bit 1 color on UI display
+27. color_ui_label(by s51): "white:black" - Label color on UI display
+28. color_ui_mitem(by s51): "bwhite:black" - Menu-item color on UI display
+29. color_ui_mkey(by s51): "b:yellow:black" - Menu-key color on UI display
+30. color_ui_run(by s51): "black:green" - Run state color on UI display
+31. color_ui_stop(by s51): "white:red" - Stop state color on UI display
+32. color_ui_time(by s51): "bblue:black" - Color of time-value on UI display
+33. color_ui_title(by s51): "bmagenta:black" - Title color on UI display
+37. debug(by console0): FALSE - Debug messages to console0
+38. debug(by s51): FALSE - Print debug messages (-V)
+39. echo_script(by s51): FALSE - Print breakpoint script before execute
+41. expression_format(by s51): "d" - Format specifier to print expression result
+42. force_colors(by s51): TRUE - Force use colored output (-A)
+44. irq_stop(by mcs51_controller): FALSE - Stop when IRQ accepted
+45. label_width(by s51): -1 - Space to allow for labels in dumps and disassembly (-1 for auto)
+46. null_prompt(by s51): FALSE - Use \0 as prompt (-P)
+47. prompt(by console0): "" - Prompt string of console0
+48. prompt(by s51): (null) - String of prompt (-p)
+50. selfjump_stop(by mcs51_controller): FALSE - Stop when jump branches to itself
+58. writable_flash(by s51): FALSE - Use writable flash chip (-w)
+59. xtal(by s51): 0.000 - Frequency of XTAL in Hz
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
 	The first element of the list is the number of the option. It
 	is followed by the name of the option
@@ -455,29 +558,31 @@ under certain conditions; type `show c' for details.
           used as default value when a new instance of a console is
           created: </p>
 	
-	<pre>$ <font color="#118811">cat /tmp/x</font>
+<!-- @BLOCK@ get_option2 8ed89cc7f0ea6b2fa83b4c4aad4ef2f0 -->
+<pre class="eg">$ cat getopt.cmd
 get opt debug
-$ <font color="#118811">ucsim_51</font>
-uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">get opt debug</font>
- 3. debug(by console0): FALSE - Debug messages to console0
- 4. debug(by application): FALSE - Print debug messages (-V)
-0&gt; <font color="#118811">set opt 4 1</font>
-0&gt; <font color="#118811">get opt debug</font>
- 3. debug(by console0): FALSE - Debug messages to console0
- 4. debug(by application): TRUE - Print debug messages (-V)
-0&gt; <font color="#118811">exec "/tmp/x"</font>
-1&gt; get opt debug
- 3. debug(by console1): TRUE - Debug messages to console1
- 4. debug(by console0): FALSE - Debug messages to console0
- 5. debug(by application): TRUE - Print debug messages (-V)
-1&gt; 
-0&gt; 
-	</pre>
-	
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get option debug
+</span><span style="color: #ffffff; background-color: #000316">37. debug(by console0): FALSE - Debug messages to console0
+38. debug(by s51): FALSE - Print debug messages (-V)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set opt 38 1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get opt debug
+</span><span style="color: #ffffff; background-color: #000316">37. debug(by console0): FALSE - Debug messages to console0
+38. debug(by s51): TRUE - Print debug messages (-V)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">exec "getopt.cmd"
+</span><span style="color: #aa5500; background-color: #000316">2</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get opt debug
+</span><span style="color: #ffffff; background-color: #000316">37. debug(by console2): TRUE - Debug messages to console2
+38. debug(by console0): FALSE - Debug messages to console0
+39. debug(by s51): TRUE - Print debug messages (-V)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #aa5500; background-color: #000316">2</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+
 	<hr>
 
 	<h4><a name="get_error">get error</a></h4>
@@ -514,31 +619,27 @@ under certain conditions; type `show c' for details.
           of <tt>1</tt>, <tt>t</tt>, <tt>T</tt>, <tt>y</tt>, <tt>Y</tt>,
           then value will be TRUE; otherwise it will be FALSE. </p>
 
-      <pre>$ <font color="#118811">ucsim_51 -V</font>
-uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+<!-- @BLOCK@ set_option dede2d18accd148bab2b95f27c3881e2 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-&gt; <font color="#118811">get opt</font>
- 0. config_file(by application) is hidden!
- 1. console_on(by application) is hidden!
- 2. cpu_type(by application) is hidden!
- 3. debug(by console0): TRUE - Debug messages to console0
- 4. debug(by application): TRUE - Print debug messages (-V)
- 5. irq_stop(by mcs51_controller): FALSE - Stop when IRQ accepted
- 6. null_prompt(by application): FALSE - Use \0 as prompt (-P)
- 7. prompt(by console0): "" - Prompt string of console0
- 8. prompt(by application): (null) - String of prompt (-p)
- 9. serial_in_file(by application) is hidden!
-10. serial_out_file(by application) is hidden!
-11. xtal(by application): 11059200.000 - Frequency of XTAL in Hz
-&gt; <font color="#118811">set opt debug f</font>
-Ambiguous option name, use number instead
-&gt; <font color="#118811">set opt 3 f</font>
-&gt; <font color="#118811">get opt debug</font>
- 3. debug(by console0): FALSE - Debug messages to console0
- 4. debug(by application): TRUE - Print debug messages (-V)
-&gt; </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get option debug
+</span><span style="color: #ffffff; background-color: #000316">37. debug(by console0): FALSE - Debug messages to console0
+38. debug(by s51): FALSE - Print debug messages (-V)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set opt debug 1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get opt debug
+</span><span style="color: #ffffff; background-color: #000316">37. debug(by console0): TRUE - Debug messages to console0
+38. debug(by s51): FALSE - Print debug messages (-V)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set opt 38 t
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get opt debug
+</span><span style="color: #ffffff; background-color: #000316">37. debug(by console0): TRUE - Debug messages to console0
+38. debug(by s51): TRUE - Print debug messages (-V)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
 
       <hr>
 
@@ -565,7 +666,8 @@ Ambiguous option name, use number instead
 	<hr>
 	
 	<h4><a name="set_memory">set memory <i>memory_type address
-	data...</i></a></h4>
+	      data...
+	<br>set memory bitaddress data</i></a></h4>
 	
 	This command can be used to modify the content of any
 	simulated memory. First parameter must be a class name to
@@ -585,18 +687,22 @@ Ambiguous option name, use number instead
       
       <p>Modified memory locations will be dumped out. </p>
       
-	<pre>0&gt; <font color="#118811">set mem xram 1 "ab\tcd\0ef\012ghq" 2 "ABC"</font>
-0x0001 61 62 09 63 64 00 65 66 ab.cd.ef
-0x0009 0a 67 68 71 02 41 42 43 .ghq.ABC
-0&gt; <font color="#118811">set mem sfr pcon 0x34</font>
-0x87 34                      4
-0&gt; <font color="#118811">set mem xram_chip 1 2</font>
-0x0001 02                      .
-0&gt; </pre>
+<!-- @BLOCK@ set_memory 3ea898754b9936e3bffbd2b5085f71aa -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set mem xram 1 "ab\tcd\0ef\012ghq" 2 "ABC"
+</span><span style="color: #ffff00; background-color: #000316">0x0001                     </span><span style="color: #F5F1DE; background-color: #000316"> 61 62 09 63 64 00 65 66 </span><span style="color: #00aa00; background-color: #000316">ab.cd.ef
+</span><span style="color: #ffff00; background-color: #000316">0x0009                     </span><span style="color: #F5F1DE; background-color: #000316"> 0a 67 68 71 02 41 42 43 </span><span style="color: #00aa00; background-color: #000316">.ghq.ABC
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set mem sfr PCON 0x34
+</span><span style="color: #ffff00; background-color: #000316">0x87</span><span style="color: #00ff00; background-color: #000316"> PCON:               </span><span style="color: #F5F1DE; background-color: #000316"> 0b00110100 0x34</span><span style="color: #00aa00; background-color: #000316"> '4'</span><span style="color: #F5F1DE; background-color: #000316">  52
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set mem xram_chip 1 2
+</span><span style="color: #ffff00; background-color: #000316">0x0001                     </span><span style="color: #F5F1DE; background-color: #000316"> 02 </span><span style="color: #00aa00; background-color: #000316">.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
 
 	<hr>
 
-	<h4><a name="set_bit">set bit <i>address 0|1</i></a></h4>
+	<h4><a name="set_bit">set bit <i>bitaddress 0|1</i></a></h4>
 
 	Set one bit to 0 or 1. The first parameter specifies the
 	bit. It can be the address of the bit (number or symbolic
@@ -611,21 +717,18 @@ Ambiguous option name, use number instead
 
       <p>The modified memory location is dumped out. </p>
 
-      <pre>$ <font color="#118811">ucsim_51 </font>
-ucsim 0.2.38-pre2, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-This is free software, and you are welcome to redistribute it
-under certain conditions; type `show c' for details.
-&gt; <font color="#118811">set bit tf1 1</font>
-0x88 80 .
-&gt; <font color="#118811">set bit 130 0</font>
-0x80 fb .
-&gt; <font color="#118811">set bit pcon.2 1</font>
-0x87 04 .
-&gt; <font color="#118811">set bit 10.7 1</font>
-0x0a 80 .
-&gt; 
-	</pre>
+<!-- @BLOCK@ set_bit dfde4b9cb98c63abcb840e087f292df9 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit TF1 1
+</span><span style="color: #ffff00; background-color: #000316">0x8f     </span><span style="color: #00ff00; background-color: #000316"> TF1:                     </span><span style="color: #F5F1DE; background-color: #000316"> 0b1 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit 130 0
+</span><span style="color: #ffff00; background-color: #000316">0x80.2                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b-----0-- 0x00</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit PCON.2 1
+</span><span style="color: #ffff00; background-color: #000316">0x87.2                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b-----1-- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set bit 10.7 1
+</span><span style="color: #ffff00; background-color: #000316">0x21.7                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b1------- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
       <hr>
 
@@ -1212,3 +1315,32 @@ timer #3("unnamed") ON: 0 sec (0 clks)
     <hr>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

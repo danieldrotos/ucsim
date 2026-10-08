@@ -155,8 +155,9 @@ cl_console_base::init(void)
   debug_option->init();
   welcome();
   print_prompt();
-  if (get_fin() != NULL)
-    get_fin()->set_echo_color(get_color_ansiseq("command"));
+  //if (get_fin() != NULL)
+  //get_fin()->set_echo_color(get_color_ansiseq("command"));
+  dd_color("command");
   last_command= 0;
   //last_cmdline= 0;
   last_cmd= chars("");
@@ -167,6 +168,8 @@ cl_console_base::init(void)
 void
 cl_console_base::welcome(void)
 {
+  if (!opt_bw())
+    dd_cdef();
   if (!(flags & CONS_NOWELCOME) && !app->nowelcome)
     {
       dd_printf("uCsim%s, Copyright (C) 1997 Daniel Drotos.\n"
@@ -185,7 +188,7 @@ cl_console_base::print_prompt(void)
   if (flags & (CONS_FROZEN | CONS_INACTIVE))
     return;
 
-  if (!(flags & CONS_INTERACTIVE))
+  if (!(flags & (CONS_INTERACTIVE|CONS_ECHO)))
     return;
   
   if (null_prompt_option->get_value(bool(0)))
@@ -282,13 +285,10 @@ cl_console_base::dd_printf(const char *format, ...)
 bool
 cl_console_base::opt_bw(void)
 {
-  bool bw= false, fc= false;
+  bool bw= application->get_option_bw();
+  bool fc= application->get_option_fc();
   class cl_f *fo= get_fout();
-  class cl_option *o= application->options->get_option("black_and_white");
-  class cl_option *c= application->options->get_option("force_colors");
   
-  if (o) o->get_value(&bw);
-  if (c) c->get_value(&fc);
   if (!fo ||
       (fo &&
       !fo->tty)
@@ -327,29 +327,40 @@ cl_console_base::dd_cprintf(const char *color_name, const char *format, ...)
   return(ret);
 }
 
+int
+cl_console_base::dd_cdef(void)
+{
+  char *bg, *fg;
+  bool bw= opt_bw();
+  int ret;
+  if (bw)
+    return 0;
+  class cl_option *o= application->options->get_option("color_bg");
+  bg= NULL;
+  if (o) o->get_value(&bg);
+  o= application->options->get_option("color_fg");
+  fg= NULL;
+  if (o) o->get_value(&fg);
+  chars cce;
+  cce= fg;
+  cce+= ":";
+  cce+= bg;
+  cce= colopt2ansiseq(cce.str());
+  ret= dd_printf("%s", cce.cstr());
+  return ret;
+}
+
 chars
 cl_console_base::get_color_ansiseq(const char *color_name, bool add_reset)
 {
-  bool bw= non_color(), fc= false;
-  char *cc;
   chars cce= "";
-  class cl_f *fo= get_fout();
-  class cl_option *o= application->options->get_option("black_and_white");
-  class cl_option *c= application->options->get_option("force_colors");
-  if (o) o->get_value(&bw);
-  if (c) c->get_value(&fc);
+  if (opt_bw())
+    return cce;
 
-  if (!fc)
-    {
-      if (!fo ||
-	  (fo &&
-	   !fo->tty) ||
-	  bw
-	  )
-	return cce;
-    }
+  char *cc;
+  class cl_f *fo= get_fout();
   
-  o= application->options->get_option(chars("", "color_%s", color_name));
+  class cl_option *o= application->options->get_option(chars("", "color_%s", color_name));
   cc= NULL;
   if (o) o->get_value(&cc);
   if (add_reset)
@@ -455,14 +466,6 @@ cl_console_base::cmd_do_cprint(const char *color_name, const char *format, va_li
   int ret;
   class cl_f *fo= get_fout(), *fi= get_fin();
   bool bw= opt_bw();
-  char *cc;
-  chars cce;
-  class cl_option *o;
-      
-  o= application->options->get_option(chars("", "color_%s", color_name));
-  cc= NULL;
-  if (o) o->get_value(&cc);
-  cce= colopt2ansiseq(cc);
 
   if (fo)
     {
@@ -472,7 +475,17 @@ cl_console_base::cmd_do_cprint(const char *color_name, const char *format, va_li
 	{
 	  return 0;
 	}
-      if (!bw) fo->prntf("\033[0m%s", cce.c_str());
+      if (!bw)
+	{
+	  char *cc;
+	  chars cce;
+	  class cl_option *o;
+	  o= application->options->get_option(chars("", "color_%s", color_name));
+	  cc= NULL;
+	  if (o) o->get_value(&cc);
+	  cce= colopt2ansiseq(cc);
+	  fo->prntf("\033[0m%s", cce.c_str());
+	}
       ret= fo->vprintf(format, ap);
       if (!bw) fo->prntf("\033[0m");
       //fo->flush();
@@ -707,7 +720,10 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
           class cl_cmdline *cmdline= 0;
           class cl_cmd *cm = 0;
           if (get_flag(CONS_ECHO))
-            dd_cprintf("command", "%s\n", cmdstr);
+	    {
+	      print_prompt();
+	      dd_cprintf("command", "%s\n", cmdstr);
+	    }
 	  do
 	    {
 	      un_redirect();
@@ -744,8 +760,8 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
 		      print_expr_result(l, NULL);
 		    }
 		}
-	      if (get_fin() != NULL)
-		get_fin()->set_echo_color(get_color_ansiseq("command"));
+	      //if (get_fin() != NULL)
+	      //get_fin()->set_echo_color(get_color_ansiseq("command"));
 	      lbuf= cmdline->rest;
 	      cmdstr= lbuf;
 	      delete cmdline;
@@ -758,10 +774,13 @@ cl_console_base::proc_input(class cl_cmdset *cmdset)
   if (!retval &&
       //cmdstr &&
       do_print_prompt &&
-      !get_flag(CONS_REDIRECTED))
+      !get_flag(CONS_REDIRECTED) &&
+      !get_flag(CONS_ECHO))
     {
       print_prompt();
     }
+  //else if (!get_flag(CONS_ECHO)) print_prompt();
+  dd_color("command");
   lbuf= 0;
   return(retval);
 }
@@ -819,11 +838,10 @@ cl_console_stdout::init(void)
   null_prompt_option= 0;
   debug_option= 0;
   set_flag(CONS_NOWELCOME, true);
-  //cl_console_base::init();
-  if (get_fin() != NULL)
-    get_fin()->set_echo_color(get_color_ansiseq("command"));
+  //if (get_fin() != NULL)
+  //get_fin()->set_echo_color(get_color_ansiseq("command"));
+  dd_color("command");
   last_command= 0;
-  //last_cmdline= 0;
   last_cmd= chars("");
   prev_quit= -1;
   set_interactive(false);

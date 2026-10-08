@@ -257,21 +257,168 @@ valid_sym_name(char *s)
 
 */
 
-enum col_ctype_t
+struct color_list_t {
+  const char *name;
+  int color;
+  bool bright;
+};
+
+static struct color_list_t colors[]
   {
-   ct_none= 0,
-   ct_bold= 0x01,
-   ct_faint= 0x02,
-   ct_italic= 0x04,
-   ct_underl= 0x08,
-   ct_dunderl= 0x10,
-   ct_crossed= 0x20,
-   ct_overl= 0x40,
-   ct_blink= 0x80
+    { "black"	,  0, false },
+    { "bblack"	,  0, true },
+    { "red"	,  1, false },
+    { "bred"	,  1, true },
+    { "green"	,  2, false },
+    { "bgreen"	,  2, true },
+    { "yellow"	,  3, false },
+    { "byellow"	,  3, true },
+    { "blue"	,  4, false },
+    { "bblue"	,  4, true },
+    { "magenta"	,  5, false },
+    { "bmagenta",  5, true },
+    { "cyan"	,  6, false },
+    { "bcyan"	,  6, true },
+    { "white"	,  7, false },
+    { "bwhite"	,  7, true },
+    { NULL, 0, 0 }
   };
+
+cl_color_name::cl_color_name(void):
+  cl_base()
+{
+  ok= false;
+  color= 0;
+  bright= false;
+  rgb= false;
+  red= green= blue= 0;
+}
+
+void
+cl_color_name::init(chars n)
+{
+  if (n.empty())
+    return;
+  n.trim();
+  if (n.c(0) == '#')
+    {
+      chars c;
+      rgb= true;
+      c= n.substr(1,2);
+      red= c.htoi();
+      c= n.substr(3,2);
+      green= c.htoi();
+      c= n.substr(5,2);
+      blue= c.htoi();
+      ok= true;
+      return;
+    }
+  int i;
+  for (i=0; colors[i].name; i++)
+    {
+      if (n == colors[i].name)
+	{
+	  color= colors[i].color;
+	  bright= colors[i].bright;
+	  ok= true;
+	  break;
+	}
+    }
+}
 
 chars
 colopt2ansiseq(char *opt)
+{
+  chars r= "", tok, full= opt, co;
+  class cl_color_name n, bgn, fgn;
+  int i, ctype= ct_none;
+  bool first= true, bw= application->get_option_bw();
+  
+  if (!opt || !*opt) return r;
+
+  co= application->get_option("color_bg");
+  if (co.empty())
+    co= bw?"black":"white";
+  bgn.init(co);
+  fgn.init(application->get_option("color_fg"));
+  full.start_parse();
+  tok= full.token(":");
+  while (tok.nempty())
+    {
+      const char *s= tok.cstr();
+      n.init(tok);
+      if (n.ok)
+	{
+	  if (first)
+	    fgn.init(tok);
+	  else
+	    bgn.init(tok);
+	  first= false;
+	}
+      else
+	if (strcspn(s, "bBfFiIuUdDcCoOkKlL") == 0)
+	  for (int i=0; s[i]; i++)
+	    {
+	      switch (toupper(s[i]))
+		{
+		case 'B': ctype|= ct_bold; break;
+		case 'F': ctype|= ct_faint; break;
+		case 'I': ctype|= ct_italic; break;
+		case 'U': ctype|= ct_underl; break;
+		case 'D': ctype|= ct_dunderl; break;
+		case 'C': ctype|= ct_crossed; break;
+		case 'O': ctype|= ct_overl; break;
+		case 'K': ctype|= ct_blink; break;
+		case 'L': ctype|= ct_blink; break;
+		}
+	    }
+      tok= full.token(":");
+    }
+  
+  /* set character rendering mode */
+  if (ctype != ct_none)
+    {
+      if (ctype & ct_bold) 	r.append("\033[1m");
+      if (ctype & ct_faint)	r.append("\033[2m");
+      if (ctype & ct_italic)	r.append("\033[3m");
+      if (ctype & ct_underl)	r.append("\033[4m");
+      if (ctype & ct_dunderl)	r.append("\033[21m");
+      if (ctype & ct_crossed)	r.append("\033[9m");
+      if (ctype & ct_overl)	r.append("\033[53m");
+      if (ctype & ct_blink)	r.append("\033[5m");
+    }
+
+  if (bgn.ok)
+    {
+      if (bgn.rgb)
+	r.appendf("\033[48;2;%d;%d;%dm", bgn.red, bgn.green, bgn.blue);
+      else
+	{
+	  i= 40+bgn.color;
+	  if (bgn.bright)
+	    i+= 60;
+	  r.appendf("\033[%dm", i);
+	}
+    }
+  
+  if (fgn.ok)
+    {
+      if (fgn.rgb)
+	r.appendf("\033[38;2;%d;%d;%dm", fgn.red, fgn.green, fgn.blue);
+      else
+	{
+	  i= 30+fgn.color;
+	  if (fgn.bright)
+	    i+= 60;
+	  r.appendf("\033[%dm", i);
+	}
+    }
+  
+  return r;
+}
+
+chars
+colopt2ansiseq_old(char *opt)
 {
   bool fg_rgb= false, bg_rgb= false;
   bool fg_bright= false, bg_bright= false;

@@ -250,6 +250,7 @@ cl_list::cl_list(void):
   Delta= 10;
   set_limit(10);
   set_name("List");
+  actual_index= 0;
 }
 
 cl_list::cl_list(t_index alimit, t_index adelta, const char *aname):
@@ -261,6 +262,7 @@ cl_list::cl_list(t_index alimit, t_index adelta, const char *aname):
   Delta= adelta;
   set_limit(alimit);
   set_name(aname, "unnamed list");
+  actual_index= 0;
 }
 
 
@@ -610,6 +612,37 @@ cl_list::set_limit(t_index alimit)
       Items= AItems;
       Limit= alimit;
     }
+}
+
+
+class cl_base *
+cl_list::start(void)
+{
+  actual_index= 0;
+  if (actual_index >= count)
+    return 0;
+  return (cl_base *)(Items[0]);
+}
+
+
+class cl_base *
+cl_list::next(void)
+{
+  if (actual_index >= count)
+    return 0;
+  ++actual_index;
+  if (actual_index >= count)
+    return 0;
+  return object_at(actual_index);
+}
+
+
+class cl_base *
+cl_list::actual(void)
+{
+  if (actual_index >= count)
+    return 0;
+  return object_at(actual_index);
 }
 
 

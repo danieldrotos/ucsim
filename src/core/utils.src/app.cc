@@ -70,10 +70,14 @@ cl_app::cl_app(void)
 {
   save_std_attribs();
   sim= 0;
-  in_files= new cl_ustrings(2, 2, "input files");
+  in_files= new cl_chars_list(2, 2, "input files");
+  in_specs= new cl_chars_list(2, 2, "input specs");
   options= new cl_options();
   quiet= false;
   nowelcome= false;
+  hide_echo= false;
+  show_input= false;
+  opt_tml= false;
   retmain= false;
   retval= 0;
   if (app_start_at == 0)
@@ -94,6 +98,7 @@ cl_app::~cl_app(void)
   remove_simulator();
   delete commander;
   delete in_files;
+  delete in_specs;
   delete ocon;
   delete options;
 }
@@ -136,11 +141,35 @@ cl_app::read_input_files(void)
       bool read_some= false;
       for (i= 0; i < in_files->count; i++)
 	{
-	  const char *fname= (const char *)(in_files->at(i));
+	  chars *fname= in_files->at(i);
+	  chars *iopt= in_specs->at(i);
 	  long l;
-	  if ((l= sim->uc->read_file(fname, NULL)) >= 0)
+	  if ((iopt != NULL) && (iopt->nempty()))
 	    {
-	      read_some= true;
+	      int p;
+	      if ((p= fname->pos('@')) >= 0) fname->keep(0, p);
+	      if ((p= fname->pos(':')) >= 0) fname->keep(0, p);
+	      if ((p= fname->pos('#')) >= 0) fname->keep(0, p);
+	      iopt->start_parse();
+	      chars t= iopt->token(",");
+	      while (t)
+		{
+		  if (strspn(t.cstr(), "@:#") <= 0)
+		    fprintf(stderr, "Wrong input specifier in -i option (%s)\n",
+			    t.cstr());
+		  else
+		    {
+		      chars fi= *fname + t;
+		      if (sim->uc->read_file(fi, NULL))
+			read_some= true;
+		    }
+		  t= iopt->token(",");		    
+		}
+	    }
+	  else
+	    {
+	      if (sim->uc->read_file(*fname, NULL) >= 0)
+		read_some= true;
 	    }
 	}
       if (read_some)
@@ -346,15 +375,21 @@ print_help(const char *name)
 #define DOPT
 #endif
   printf("%s: %s\n", name, VERSIONSTR);
-  printf("Usage: %s [-AbBEgGhHlmPqVvw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
+  printf("Usage: %s [-AbBEgGhHlmPqvVw] [-a nr] [-c file] [-C cfg_file] " DOPT "\n"
 	 "       [-e command] [-I if_optionlist] " KOPT " [-o colorlist]\n"
 	 "       [-p prompt] [-R seed] [-s file] [-S optionlist]\n"
 	 "       [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]] " ZOPT "\n"
+	 "       [-i inspec[,...]]\n"
 	 "\n"
-	 "       [files...]\n", name);
+	 "       [file[@memory][:offset][#range]...]\n", name);
   /*
     -D devopt   Options for developers only
-       		cpu_speed Measure and print speed of machine
+       		cpu_speed    Measure and print speed of host machine
+		nowelcome    Supress printing welcome message
+		hideecho     Suppose non-interactive input console
+		showinput    Always print entered commands
+		html         = nowelcome hideecho showinput forcecolors
+		wtml         = hideecho showinput forcecolors
   */
   printf
     (
@@ -376,11 +411,13 @@ print_help(const char *name)
      "  -G           Go, start simulation, quit on stop\n"
      "  -h           Print out this help and quit\n"
      "  -H           Print out types of known CPUs and quit\n"
+     "  -i inspecs   Comma separated list of input specifiers: @mem:offset#range\n"
      "  -I options   `options' is a comma separated list of options according to\n"
      "               simulator interface. Known options are:\n"
      "                 if=memory[address]  turn on interface on given memory location\n"
      "                 in=file             specify input file for IO\n"
      "                 out=file            specify output file for IO\n"
+   //"  -J           jaj=true (hidden)\n"
      "  -k portnum   Listen portnum for serial I/O (obsolete, use -S)\n"
      "  -l           Use light theme (default is dark)\n"
      "  -m           Return value of simulated main()\n"
@@ -390,6 +427,7 @@ print_help(const char *name)
      "  -p prompt    Specify string for prompt\n"
      "  -P           Prompt is a null ('\\0') character\n"
      "  -q           Quiet mode (implies -b)\n"
+   //"  -r portnum   Same az Z\n"
      "  -R seed      Set the random number generator seed value\n"
      "  -s file      Connect serial interface uart0 to `file' (obsolete, use -S)\n"
      "  -S options   `options' is a comma separated list of options according to\n"
@@ -402,8 +440,8 @@ print_help(const char *name)
      "                  oport=nr  use localhost:nr as server for serial output\n"
      "                  raw       perform non-interactive communication even on tty\n"
      "  -t CPU       Type of CPU: 51, C52, 251, etc.\n"
-     "  -U uartnr    Use std console as terminal for UART id=uartnr\n"
      "  -u hw        Use std console as display for hardware element\n"
+     "  -U uartnr    Use std console as terminal for UART id=uartnr\n"
      "  -v           Print out version number and quit\n"
      "  -V           Verbose mode\n"
      "  -w           Writable flash\n"
@@ -453,12 +491,20 @@ static const char *I_opts[]= {
 enum {
   DOPT_CPU_SPEED= 0,
   DOPT_NOWELCOME= 1,
+  DOPT_HIDEECHO = 2,
+  DOPT_SHOWINPUT= 3,
+  DOPT_HTML     = 4,
+  DOPT_WTML     = 5,
   DOPT_ERROR
 };
 
 static const char *D_opts[]= {
   /*DOPT_CPU_SPEED*/	"cpu_speed",
   /*DOPT_NOWELCOME*/    "nowelcome",
+  /*DOPT_HIDEECHO */    "hideecho",
+  /*DOPT_SHOWINPUT*/	"showinput",
+  /*DOPT_HTML     */	"html",
+  /*DOPT_WTML     */    "wtml",
   NULL
 };
 
@@ -473,9 +519,9 @@ cl_app::proc_arguments(int argc, char *argv[])
   //bool S_i_done= false, S_o_done= false;
   bool force_colors= false;
   
-  strcpy(opts, "Aqc:C:D:e:p:PX:vVt:s:S:I:a:whHgGEJo:blBR:U:u:_");
+  strcpy(opts, "a:AbBc:C:D:e:EgGhHi:I:Jlmo:p:PqR:s:S:t:u:U:vVwX:_");
 #ifdef SOCKET_AVAIL
-  strcat(opts, "Z:r:k:z:d:");
+  strcat(opts, "d:k:r:z:Z:");
 #endif
 
   for (i= 0; i < argc; i++)
@@ -714,6 +760,27 @@ cl_app::proc_arguments(int argc, char *argv[])
 		case DOPT_NOWELCOME:
 		  nowelcome= true;
 		  break;
+		case DOPT_HIDEECHO:
+		  hide_echo= true;
+		  break;
+		case DOPT_SHOWINPUT:
+		  show_input= true;
+		  break;
+		case DOPT_HTML:
+		  nowelcome= true;
+		  hide_echo= true;
+		  show_input= true;
+		  force_colors= true;
+		  opt_tml= true;
+		  options->set_value("force_colors", this, bool(true));
+		  break;
+		case DOPT_WTML:
+		  hide_echo= true;
+		  show_input= true;
+		  force_colors= true;
+		  opt_tml= true;
+		  options->set_value("force_colors", this, bool(true));
+		  break;
 		default:
 		  /* Unknown suboption. */
 		  fprintf(stderr, "Unknown suboption `%s' for -D\n", value);
@@ -887,6 +954,11 @@ cl_app::proc_arguments(int argc, char *argv[])
 	    }
 	  break;
 	}
+      case 'i':
+	{
+	  in_specs->add(chars(optarg));
+	  break;
+	}
       case 'I':
 	{
 	  char *ifstr= NULL, *in= NULL, *out= NULL;
@@ -961,6 +1033,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 	}
       case 'l':
 	set_option_s("color_bg", "bwhite");
+	set_option_s("color_fg", "black");
 	set_option_s("color_prompt", "green:bwhite");
 	set_option_s("color_prompt_console", "blue:bwhite");
 	set_option_s("color_command", "blue:bwhite");
@@ -1042,8 +1115,8 @@ cl_app::proc_arguments(int argc, char *argv[])
     options->set_value("black_and_white", this, bool(false));
   
   for (i= optind; i < argc; i++)
-    in_files->add(argv[i]);
-
+    in_files->add(chars(argv[i]));
+    
   return(0);
 }
 
@@ -1413,6 +1486,11 @@ cl_app::mk_options(void)
   o->init();
   o->set_value("black");
   
+  options->new_option(o= new cl_string_option(this, "color_fg",
+					      "Default foreground color"));
+  o->init();
+  o->set_value("white");
+  
   options->new_option(o= new cl_string_option(this, "color_prompt_console",
 					      "Color of console number in prompt"));
   o->init();
@@ -1598,6 +1676,21 @@ cl_app::debug(const char *format, ...)
 }
 
 
+chars
+cl_app::get_option(chars name)
+{
+  chars r;
+  class cl_option *o= options->get_option(name.cstr());
+  if (o)
+    {
+      char *s= NULL;
+      o->get_value(&s);
+      if (s && *s)
+	r= s;
+    }
+  return r;
+}
+
 void
 cl_app::set_option_s(const char *opt_name, const char *new_value)
 {
@@ -1607,5 +1700,30 @@ cl_app::set_option_s(const char *opt_name, const char *new_value)
       o->set_value(new_value);
     }
 }
+
+
+bool
+cl_app::get_option_fc(void)
+{
+  class cl_option *c= options->get_option("force_colors");
+  if (!c)
+    return false;
+  bool fc;
+  c->get_value(&fc);
+  return fc;
+}
+
+
+bool
+cl_app::get_option_bw(void)
+{
+  class cl_option *c= options->get_option("black_and_white");
+  if (!c)
+    return false;
+  bool bw;
+  c->get_value(&bw);
+  return bw;
+}
+
 
 /* End of utils.src/app.cc */

@@ -1,10 +1,14 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="ucsim.css">
     <title>Command syntax of &micro;Csim</title>
   </head>
-  <body style=" background-color: white;"> Content:
+
+  <body>
+
+    Content:
     <ul>
       <li><a href="#syntax">Syntax</a> </li>
       <li><a href="#expr">Expressions</a> </li>
@@ -240,7 +244,7 @@ value printed (in decimal):</p>
     <h4>Number operands</h4>
     
     Numbers can be entered in decimal, octal (starting with 0 followed
-    by a number), or hexadecimal (started with 0x), or binary (started
+    by a number), or hexadecimal (started with 0x or $), or binary (started
     with 0b), or ascii code format (letter between apostrophes):
 
     <pre>0&gt; <font color="green">12</font>
@@ -248,6 +252,8 @@ value printed (in decimal):</p>
 0&gt; <font color="green">012</font>
 10
 0&gt; <font color="green">0x12</font>
+18
+0&gt; <font color="green">$12</font>
 18
 0&gt; <font color="green">0b010101</font>
 21
@@ -399,14 +405,14 @@ rom_loc rom[0x1234] = 0xff,255U,255
     Arithmetic operators and parenthesis work as usual.
     <p>Assignment operator can be used to modify memory cells and bits of the
       cells. Result will be the assigned value. </p>
-    <pre>0&gt; <font color="green">p0=23</font>
+    <pre>0&gt; <font color="green">P0=23</font>
 23
 0&gt; <font color="green">i h port[0]</font>
 port[0]
 P0    00010111 0x17  23 . (Value in SFR register)
 Pin0  11111111 0xff 255 . (Output of outside circuits)
 Port0 00010111 0x17  23 . (Value on the port pins)
-0&gt; <font color="green">p0.0= 0</font>
+0&gt; <font color="green">P0.0= 0</font>
 0
 0&gt; <font color="green">i h p[0]</font>
 port[0]
@@ -425,11 +431,11 @@ Port0 00010110 0x16  22 . (Value on the port pins)
 0x0000 6c                      l
 0&gt; <font color="green">0x6c</font>
 108
-0&gt; <font color="green">dump ea</font>
+0&gt; <font color="green">dump EA</font>
      IE0.7 0xa8 00 0
-0&gt; <font color="green">ea= 1111</font>
+0&gt; <font color="green">EA= 1111</font>
 1
-0&gt; <font color="green">dump ea</font>
+0&gt; <font color="green">dump EA</font>
      IE0.7 0xa8 80 1
 0&gt; 
 </pre> When a symbolic name of the SFR is used, it results value of the named
@@ -439,9 +445,9 @@ Port0 00010110 0x16  22 . (Value on the port pins)
 0
 0&gt; <font color="green">&amp;dpl</font>
 130
-0&gt; <font color="green">ea</font>
+0&gt; <font color="green">EA</font>
 1
-0&gt; <font color="green">&amp;ea</font>
+0&gt; <font color="green">&amp;EA</font>
 175
 0&gt; <font color="green">256*dph+dpl</font>
 46630
@@ -460,7 +466,7 @@ uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
 55470 words read from remo.hex
-0&gt; <font color="#118811">dump &gt;/tmp/rom.dump rom</font>
+0&gt; <font color="#118811">dump /x &gt;/tmp/rom.dump rom</font>
 0&gt; <font color="#118811">quit</font>
 $ <font color="#118811">cat /tmp/rom.dump</font>
 0x0000 02 01 60 02 00 3c 06 07 ..`..&lt;..
@@ -479,7 +485,7 @@ uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
 55470 words read from remo.hex
-0&gt; <font color="#118811">dump rom 0x50 &gt;&gt;/tmp/rom.dump</font>
+0&gt; <font color="#118811">dump /x rom 0x50 &gt;&gt;/tmp/rom.dump</font>
 0&gt; <font color="#118811">quit</font>
 $ <font color="#118811">cat /tmp/rom.dump</font>
 0x0000 02 01 60 02 00 3c 06 07 ..`..&lt;..

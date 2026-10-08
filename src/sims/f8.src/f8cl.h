@@ -65,9 +65,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 enum {
+
   flagO	 = 0x01,
-  flagZ	 = 0x02,
-  flagN	 = 0x04,
+  flagN	 = 0x02,
+  flagZ	 = 0x04,
   flagC	 = 0x08,
   flagH	 = 0x10,
 
@@ -128,7 +129,7 @@ public:
   class cl_cell16 *rop16; // The 16-bit register that acc8 is part of.
   int prefixes;
 public:
-  cl_f8(class cl_sim *asim);
+  cl_f8(struct cpu_entry *Itype, class cl_sim *asim);
   virtual int init(void);
   virtual const char *id_string(void);
   virtual void reset(void);
@@ -236,8 +237,8 @@ public:
   int LDW_DSP_A(t_mem code);
   int LDW_X_AM(t_mem code)   { return ldw_r_m(acc16->get()); }
   // other moves
-  int LDI_Y_Z(t_mem code);
-  int LDWI_Y_Z(t_mem code);
+  int LDI_YREL_Z(t_mem code);
+  int LDWI_YREL_Z(t_mem code);
   int PUSH_M(t_mem code);
   int PUSH_NSP(t_mem code);
   int PUSH_A(t_mem code);
@@ -265,15 +266,6 @@ public:
   int CLRW_NSP(t_mem code);
   int CLRW_NNZ(t_mem code);
   int CLRW_A(t_mem code);
-  int xchb(int b);
-  int XCHB_0(t_mem code) { return xchb(0); }
-  int XCHB_1(t_mem code) { return xchb(1); }
-  int XCHB_2(t_mem code) { return xchb(2); }
-  int XCHB_3(t_mem code) { return xchb(3); }
-  int XCHB_4(t_mem code) { return xchb(4); }
-  int XCHB_5(t_mem code) { return xchb(5); }
-  int XCHB_6(t_mem code) { return xchb(6); }
-  int XCHB_7(t_mem code) { return xchb(7); }
   
   // arithmetic (ALU) instructions: ialu.cc
   // 8-bit 2-op-inst

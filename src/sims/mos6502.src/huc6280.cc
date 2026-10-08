@@ -27,7 +27,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include <ctype.h>
 
+#include "dregcl.h"
+
 #include "glob.h"
+#include "irqcl.h"
 
 #include "huc6280cl.h"
 
@@ -43,6 +46,7 @@ cl_huc6280::cl_huc6280(class cl_sim *asim):
   mpras->init();
   mprad->init();
   SPh= 0x2100;
+  ZPh= 0x2000;
 };
 
 
@@ -50,7 +54,9 @@ void
 cl_huc6280::reset(void)
 {
   mpras->write(7, 0);
-  cl_uc::reset();
+  //emulate 64k system:
+  //for (int i=0; i<7; i++) mpras->write(i,7-i);
+  cl_mos65c02s::reset();
 }
 
 
@@ -59,6 +65,7 @@ cl_huc6280::init(void)
 {
   int i;
   cl_mos6502::init();
+
   // Map all 0x_b into NOP 1,1
   for (i=0x0b; i<=0xfb; i+= 0x10)
     itab[i]= instruction_wrapper_03;
@@ -82,9 +89,79 @@ cl_huc6280::init(void)
   mk_mvar(mpras, 5, "MPR5", "Mapping Register 5");
   mk_mvar(mpras, 6, "MPR6", "Mapping Register 6");
   mk_mvar(mpras, 7, "MPR7", "Mapping Register 7");
+  // power-on values for MAP registers
+  for (i=0;i<7;i++)
+    mpras->write(i, 0xff);
+  /*
+  for (int i= 0; i<=0x1fffff; i++)
+    romchip->set(i,0);
+  */
   return 0;
 }
 
+void
+cl_huc6280::mk_hw_elements(void)
+{
+  class cl_hw *h;
+  
+  cl_uc::mk_hw_elements();
+
+  add_hw(h= new cl_dreg(this, 0, "dreg"));
+  h->init();
+
+  // FIXME: Need to double check the interrupt setup & priority
+  // FIXME: need to add missing TIMER interrupt
+
+  add_hw(h= new cl_irq_hw(this));
+  h->init();
+
+  src_irq= new cl_it_src(this,
+			 irq_irq,
+			 &cCC, flagI,
+			 h->cfg_cell(m65_irq), 1,
+			 IRQ_AT, false, true,
+			 "Interrupt 1 (VDC)",
+			 0);
+  src_irq->set_cid('i');
+  src_irq->set_ie_value(0);
+  src_irq->init();
+  it_sources->add(src_irq);
+  
+  src_nmi= new cl_it_src(this,
+			 irq_nmi,
+			 h->cfg_cell(m65_nmi_en), 1,
+			 h->cfg_cell(m65_nmi), 1,
+			 NMI_AT, false, true,
+			 "Non-maskable interrupt request",
+			 0);
+  src_nmi->set_cid('n');
+  src_nmi->set_nmi(true);
+  src_nmi->init();
+  it_sources->add(src_nmi);
+  
+  src_brk= new cl_it_src(this,
+			 irq_brk,
+			 h->cfg_cell(m65_brk_en), 1,
+			 h->cfg_cell(m65_brk), 1,
+			 BRK_AT, true, true,
+			 "Interrupt 2 (BRK)",
+			 0);
+  src_brk->set_cid('b');
+  src_brk->init();
+  src_brk->set_nmi(true);
+  it_sources->add(src_brk);
+
+}
+
+void
+cl_huc6280::make_cpu_hw(void)
+{
+  BRK_AT	= 0xfff6;
+  IRQ_AT	= 0xfff8;
+  TIMER_AT	= 0xfffa;
+  NMI_AT	= 0xfffc;
+  RESET_AT	= 0xfffe;
+}
 
 void
 cl_huc6280::make_memories(void)
@@ -98,7 +175,7 @@ cl_huc6280::make_memories(void)
   as->init();
   address_spaces->add(as);
 
-  romchip= new cl_chip8("rom_chip", 0x200000, 8);
+  romchip= new cl_chip8("rom_chip", 0x200000, 8, 0);
   romchip->init();
   memchips->add(romchip);
 
@@ -189,7 +266,7 @@ cl_huc6280::SAY(MP)
 */
 
 int
-cl_huc6280::STO(MP)
+cl_huc6280::ST0(MP)
 {
   u8_t v= fetch();
   romchip->set(0x1fe000, v);

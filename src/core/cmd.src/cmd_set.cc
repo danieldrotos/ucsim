@@ -125,7 +125,7 @@ COMMAND_DO_WORK_UC(cl_set_mem_cmd)
                i++, addr++)
             mem->write(addr, array[i]);
           uc->check_errors();
-	  ads.stop= addr;
+	  ads.stop= addr-1;
           mem->dump(/*start, start+len-1*/&ads, 8, con);
         }
     }

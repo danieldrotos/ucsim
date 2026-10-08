@@ -1,11 +1,12 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="ucsim.css">
     <title>Dump commands of &micro;Csim</title>
   </head>
 
-  <body style="background-color: white;">
+  <body>
 
     <h2>Dump commands of &micro;Csim</h2>
 
@@ -34,7 +35,7 @@
           <dd>Dumps raw binary data. The output must be redirected to
             a file.</dd>
 	  
-          <dt><b>/h</b> - hexadecimal</dt>
+          <dt><b>/h</b>, <b>/x</B> - hexadecimal</dt>
           <dd>Dumps data in a tabular hexadecimal format with an
               accompanying table of equivalent characters to the
               right.</dd>
@@ -81,91 +82,117 @@
         locations should be dumped out in one line. It is 8 by
         default.
       </p>
-      
-      <pre>$ <font color="#118811">ucsim_51</font>
-uCsim 0.6-pre34, Copyright (C) 1997 Daniel Drotos.
+
+<!-- @BLOCK@ dump1 875cb333481d415799970d29407ed34c -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-&gt; <font color="#118811">dump regs</font>
-regs[0x0]      R0         0b00001000 0x08 '.'   8
-regs[0x1]      R1         0b01110000 0x70 'p' 112
-regs[0x2]      R2         0b11010100 0xd4 '.' 212 (212)
-regs[0x3]      R3         0b10110010 0xb2 '.' 178 (178)
-regs[0x4]      R4         0b10001010 0x8a '.' 138 (138)
-regs[0x5]      R5         0b00101001 0x29 ')'  41
-regs[0x6]      R6         0b01010100 0x54 'T'  84
-regs[0x7]      R7         0b01001000 0x48 'H'  72
-&gt; <font color="#118811">dump rom 0</font>
-0x0000            00 00 00 00 00 00 00 00 ........
-0x0008            00 00 00 00 00 00 00 00 ........
-0x0010            00 00 00 00 00 00 00 00 ........
-0x0018            00 00 00 00 00 00 00 00 ........
-0x0020            00 00 00 00 00 00 00 00 ........
-0x0028            00 00 00 00 00 00 00 00 ........
-0x0030            00 00 00 00 00 00 00 00 ........
-0x0038            00 00 00 00 00 00 00 00 ........
-0x0040            00 00 00 00 00 00 00 00 ........
-0x0048            00 00 00 00 00 00 00 00 ........
-&gt; <font color="#118811">var label1 rom 0x0016</font>
-&gt; <font color="#118811">var reg1 rom[0x0020][7:0]</font>
-&gt; <font color="#118811">var reg2 rom[0x0021][7:0]</font>
-&gt; <font color="#118811">dump rom 0</font>
-0x0000            00 00 00 00 00 00 00 00 ........
-0x0008            00 00 00 00 00 00 00 00 ........
-0x0010            00 00 00 00 00 00       ......
-0x0016 label1     00 00 00 00 00 00 00 00 ........
-0x001e            00 00                   ..
-0x0020 reg1       0b00000000 0x00 '.'   0
-0x0021 reg2       0b00000000 0x00 '.'   0
-0x0022            00 00 00 00 00 00 00 00 ........
-0x002a            00 00 00 00 00 00 00 00 ........
-0x0032            00 00 00 00 00 00 00 00 ........
-0x003a            00 00 00 00 00 00 00 00 ........
-0x0042            00 00 00 00 00 00 00 00 ........
-0x004a            00 00 00 00 00 00       ......
-&gt;
-</pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump regs
+</span><span style="color: #ffff00; background-color: #000316">0x0</span><span style="color: #00ff00; background-color: #000316"> R0:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b01000001 0x41</span><span style="color: #00aa00; background-color: #000316"> 'A'</span><span style="color: #F5F1DE; background-color: #000316">  65
+</span><span style="color: #ffff00; background-color: #000316">0x1</span><span style="color: #00ff00; background-color: #000316"> R1:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b01011000 0x58</span><span style="color: #00aa00; background-color: #000316"> 'X'</span><span style="color: #F5F1DE; background-color: #000316">  88
+</span><span style="color: #ffff00; background-color: #000316">0x2</span><span style="color: #00ff00; background-color: #000316"> R2:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b11111100 0xfc</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316"> 252 ( -4)
+</span><span style="color: #ffff00; background-color: #000316">0x3</span><span style="color: #00ff00; background-color: #000316"> R3:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b11001001 0xc9</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316"> 201 (-55)
+</span><span style="color: #ffff00; background-color: #000316">0x4</span><span style="color: #00ff00; background-color: #000316"> R4:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b10001011 0x8b</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316"> 139 (-117)
+</span><span style="color: #ffff00; background-color: #000316">0x5</span><span style="color: #00ff00; background-color: #000316"> R5:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b10111100 0xbc</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316"> 188 (-68)
+</span><span style="color: #ffff00; background-color: #000316">0x6</span><span style="color: #00ff00; background-color: #000316"> R6:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b10010101 0x95</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316"> 149 (-107)
+</span><span style="color: #ffff00; background-color: #000316">0x7</span><span style="color: #00ff00; background-color: #000316"> R7:                 </span><span style="color: #F5F1DE; background-color: #000316"> 0b01101011 0x6b</span><span style="color: #00aa00; background-color: #000316"> 'k'</span><span style="color: #F5F1DE; background-color: #000316"> 107
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump /x rom 0 0x1f
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0018</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump rom 0 5
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0001</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0002</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0003</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0004</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0005</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var label1 rom 0x0016
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var reg1 rom[0x0020][7:0]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var reg2 rom[0x0021][7:0]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump rom 0x15 0x24
+</span><span style="color: #ffff00; background-color: #000316">0x0015</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
 
-      <pre>$ <font color="#118811">ucsim_51</font>
-ucsim 0.2.38-pre2, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<span style="color: #ffff00; background-color: #000316">0x0016</span><span style="color: #ffffff; background-color: #000316">   </span><span style="color: #00ff00; background-color: #000316"> &lt;label1&gt;:
+</span><span style="color: #ffff00; background-color: #000316">0x0016</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0017</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0018</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0019</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x001a</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x001b</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x001c</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x001d</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x001e</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x001f</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+
+<span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #ffffff; background-color: #000316">   </span><span style="color: #00ff00; background-color: #000316"> &lt;reg1&gt;:
+</span><span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+
+<span style="color: #ffff00; background-color: #000316">0x0021</span><span style="color: #ffffff; background-color: #000316">   </span><span style="color: #00ff00; background-color: #000316"> &lt;reg2&gt;:
+</span><span style="color: #ffff00; background-color: #000316">0x0021</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0022</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0023</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0024</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump /x rom 0x15 0x24
+</span><span style="color: #ffff00; background-color: #000316">0x0015</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x001d</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+
+<!-- @BLOCK@ dump2 4a0454fafec0bb0db5d675aa015c69ad -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-&gt; 55470 words read from remo.hex
-55470 words read from remo.hex
-&gt; <font color="#118811">run</font>
-Simulation started, PC=0x000000
-
-Stop at 0x000515: (105) User stopped
-F 0x000515
-&gt; <font color="#118811">du rom 20</font>
-0x0014 00 ac ff ff ff ff ff ff ........
-0x001c ff ff ff ff ff ff ff 02 ........
-0x0024 01 1c ff ff ff ff ff 32 .......2
-0x002c ff ff ff ff 02 0f a7 02 ........
-0x0034 0e 9c 02 0d d2 02 08 41 .......A
-0x003c c0 82 c0 83 c0 d0 c0 e0 ........
-0x0044 c0 00 a2 90 c0 d0 c2 90 ........
-0x004c 78 18 06 30 03 4b 20 92 x..0.K .
-0x0054 48 30 07 05 c2 07 02 00 H0......
-0x005c 9d 30 08 05 20 93 3a c2 .0.. .:.
-&gt; <font color="#118811">du xram 10 20 10</font>
-0x000a ff 01 00 fa 01 01 40 01 01 44 ......@..D
-0x0014 01                            .
-&gt; <font color="#118811">du xram</font>
-0x0015 00 00 00 00 00 00 00 00 ........
-0x001d 00 10 01 00 ae 01 00 ae ........
-0x0025 02 12 e1 00 5a 85 00 01 ....Z...
-0x002d 00 3b 00 00 5a 85 00 ab .;..Z...
-0x0035 1f 80 00 00 01 00 01 00 ........
-0x003d fa 0c 02 01 00 fa 00 02 ........
-0x0045 00 01 00 ab 00 00 00 00 ........
-0x004d 00 00 5a 85 ff 00 01 00 ..Z.....
-0x0055 00 00 00 94 a7 01 0c a6 ........
-0x005d 00 6f ff 00 00 00 00 00 .o......
-&gt;
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step 1 sec
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x004364: (104) Breakpoint
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 0c</span><span style="color: #F5F1DE; background-color: #000316"> 01</span><span style="color: #F5F1DE; background-color: #000316"> 0b</span><span style="color: #F5F1DE; background-color: #000316"> 8f</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 86</span><span style="color: #F5F1DE; background-color: #000316"> 0c</span><span style="color: #F5F1DE; background-color: #000316"> 00</span>
+<span style="color: #ffffff; background-color: #000316">@R0 00 .  ACC= 0x00   0 .  B= 0x00
+@R1 01 .  PSW= 0xc0 CY=1 AC=1 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x26</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 2a</span><span style="color: #F5F1DE; background-color: #000316"> ae</span><span style="color: #F5F1DE; background-color: #000316"> 02</span><span style="color: #F5F1DE; background-color: #000316"> 2d</span><span style="color: #F5F1DE; background-color: #000316"> 3e</span><span style="color: #F5F1DE; background-color: #000316"> 37</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 00</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x000e @DPTR= 0x00   0 .
+</span><span style="color: #ffff00; background-color: #000316">0x4364</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">70</span> <span style="color: #F5F1DE; background-color: #000316">51</span>   <span style="color: #00aa00; background-color: #000316"> JNZ    0x43b7</span>
+<span style="color: #ffffff; background-color: #000316">F 0x004364
+</span>Simulated 11059212 ticks (1.000e+00 sec)
+Host usage: 0.135016 sec, rate=7.406540
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">du /x rom 20
+</span><span style="color: #ffff00; background-color: #000316">0x0014</span><span style="color: #F5F1DE; background-color: #000316"> 00 ac ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x001c</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff 02 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0024</span><span style="color: #F5F1DE; background-color: #000316"> 01 1c ff ff ff ff ff 32 </span><span style="color: #00aa00; background-color: #000316">.......2
+</span><span style="color: #ffff00; background-color: #000316">0x002c</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff 02 0f a7 02 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0034</span><span style="color: #F5F1DE; background-color: #000316"> 0e 9c 02 0d d2 02 08 41 </span><span style="color: #00aa00; background-color: #000316">.......A
+</span><span style="color: #ffff00; background-color: #000316">0x003c</span><span style="color: #F5F1DE; background-color: #000316"> c0 82 c0 83 c0 d0 c0 e0 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0044</span><span style="color: #F5F1DE; background-color: #000316"> c0 00 a2 90 c0 d0 c2 90 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x004c</span><span style="color: #F5F1DE; background-color: #000316"> 78 18 06 30 03 4b 20 92 </span><span style="color: #00aa00; background-color: #000316">x..0.K .
+</span><span style="color: #ffff00; background-color: #000316">0x0054</span><span style="color: #F5F1DE; background-color: #000316"> 48                      </span><span style="color: #00aa00; background-color: #000316">H
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">du xram 10 20 10
+</span><span style="color: #ffff00; background-color: #000316">0x000a                     </span><span style="color: #F5F1DE; background-color: #000316"> 02 00 08 00 00 01 40 01 01 44 </span><span style="color: #00aa00; background-color: #000316">......@..D
+</span><span style="color: #ffff00; background-color: #000316">0x0014                     </span><span style="color: #F5F1DE; background-color: #000316"> 01                            </span><span style="color: #00aa00; background-color: #000316">.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">du xram
+</span><span style="color: #ffff00; background-color: #000316">0x0015                     </span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x001d                     </span><span style="color: #F5F1DE; background-color: #000316"> 00 10 01 00 ae 01 00 ae </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0025                     </span><span style="color: #F5F1DE; background-color: #000316"> 02 12 e1 00 5a 85 00 01 </span><span style="color: #00aa00; background-color: #000316">....Z...
+</span><span style="color: #ffff00; background-color: #000316">0x002d                     </span><span style="color: #F5F1DE; background-color: #000316"> 00 3b 00 00 5a 85 00 ab </span><span style="color: #00aa00; background-color: #000316">.;..Z...
+</span><span style="color: #ffff00; background-color: #000316">0x0035                     </span><span style="color: #F5F1DE; background-color: #000316"> 1f 80 00 00 01 00 01 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x003d                     </span><span style="color: #F5F1DE; background-color: #000316"> fa 0c 02 01 00 fa 00 08 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0045                     </span><span style="color: #F5F1DE; background-color: #000316"> 00 01 00 ab 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x004d                     </span><span style="color: #F5F1DE; background-color: #000316"> 00 00 5a 85 ff 00 01 00 </span><span style="color: #00aa00; background-color: #000316">..Z.....
+</span><span style="color: #ffff00; background-color: #000316">0x0055                     </span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 94 a7 01 0c a6 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x005d                     </span><span style="color: #F5F1DE; background-color: #000316"> 00 6f ff 78 85 7f 08 b9 </span><span style="color: #00aa00; background-color: #000316">.o.x....
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
+<!-- @END@ -->
 
 
       <hr>
@@ -175,13 +202,17 @@ F 0x000515
       </a>This command can be used to print out values of
         bit(s). <a href="syntax.html#bit_param">Any form of bit
         address</a> can be used as parameter:
-      
-      <pre>0&gt; <font color="#118811">dump AC P1.2 0x21</font>
-0xd6      AC:                       0b0 0x00 '.'   0
-0x90.2                              0b-----1-- 0x01 '.'   1
-0x24.1                              0b------0- 0x00 '.'   0
-0&gt; 
-      </pre>
+
+<!-- @BLOCK@ dump_bit 31c18cc3f5d314097eb5627daaab7e18 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump AC P1.2 0x21
+</span><span style="color: #ffff00; background-color: #000316">0xd6     </span><span style="color: #00ff00; background-color: #000316"> AC:                      </span><span style="color: #F5F1DE; background-color: #000316"> 0b0 0x00</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   0
+</span><span style="color: #ffff00; background-color: #000316">0x90.2                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b-----1-- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #ffff00; background-color: #000316">0x24.1                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b------1- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+
     </blockquote>
 
     <hr>
@@ -196,27 +227,32 @@ F 0x000515
     command. If <b>stop</b> parameter is not given <b>dch</b> command
     lists 10 lines 8 bytes per line.
 
-    <pre>$ <font color="#118811">ucsim_51 remo.hex</font>
-ucsim 0.2.24, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<!-- @BLOCK@ dch 8db903e5b5b2b93194f0c3a1b4dd10e7 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-&gt; <font color="#118811">wc remo</font>
-0013da 52 65 6d 6f             Remo
-&gt; <font color="#118811">dch 0x13da</font>
-0013da 52 65 6d 6f 20 00 56 65 Remo .Ve
-0013e2 72 73 69 6f 6e 20 31 2e rsion 1.
-0013ea 30 20 00 43 6f 70 79 72 0 .Copyr
-0013f2 69 67 68 74 20 28 63 29 ight (c)
-0013fa 20 00 31 39 39 34 2c 39  .1994,9
-001402 35 20 00 54 61 6c 6b 65 5 .Talke
-00140a 72 20 42 74 2e 00 53 75 r Bt..Su
-001412 6e 64 61 79 2e 00 4d 6f nday..Mo
-00141a 6e 64 61 79 2e 00 54 68 nday..Th
-001422 75 65 73 64 61 79 2e 00 uesday..
-      &gt; </pre>
-    
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">where rom "remo"
+</span><span style="color: #ffff00; background-color: #000316">0x13da</span><span style="color: #F5F1DE; background-color: #000316"> 52 65 6d 6f </span><span style="color: #00aa00; background-color: #000316">Remo
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dch 0x13da
+</span><span style="color: #ffff00; background-color: #000316">0x13da</span><span style="color: #F5F1DE; background-color: #000316"> 52 65 6d 6f 20 00 56 65 </span><span style="color: #00aa00; background-color: #000316">Remo .Ve
+</span><span style="color: #ffff00; background-color: #000316">0x13e2</span><span style="color: #F5F1DE; background-color: #000316"> 72 73 69 6f 6e 20 31 2e </span><span style="color: #00aa00; background-color: #000316">rsion 1.
+</span><span style="color: #ffff00; background-color: #000316">0x13ea</span><span style="color: #F5F1DE; background-color: #000316"> 30 20 00 43 6f 70 79 72 </span><span style="color: #00aa00; background-color: #000316">0 .Copyr
+</span><span style="color: #ffff00; background-color: #000316">0x13f2</span><span style="color: #F5F1DE; background-color: #000316"> 69 67 68 74 20 28 63 29 </span><span style="color: #00aa00; background-color: #000316">ight (c)
+</span><span style="color: #ffff00; background-color: #000316">0x13fa</span><span style="color: #F5F1DE; background-color: #000316"> 20 00 31 39 39 34 2c 39 </span><span style="color: #00aa00; background-color: #000316"> .1994,9
+</span><span style="color: #ffff00; background-color: #000316">0x1402</span><span style="color: #F5F1DE; background-color: #000316"> 35 20 00 54 61 6c 6b 65 </span><span style="color: #00aa00; background-color: #000316">5 .Talke
+</span><span style="color: #ffff00; background-color: #000316">0x140a</span><span style="color: #F5F1DE; background-color: #000316"> 72 20 42 74 2e 00 53 75 </span><span style="color: #00aa00; background-color: #000316">r Bt..Su
+</span><span style="color: #ffff00; background-color: #000316">0x1412</span><span style="color: #F5F1DE; background-color: #000316"> 6e 64 61 79 2e 00 4d 6f </span><span style="color: #00aa00; background-color: #000316">nday..Mo
+</span><span style="color: #ffff00; background-color: #000316">0x141a</span><span style="color: #F5F1DE; background-color: #000316"> 6e                      </span><span style="color: #00aa00; background-color: #000316">n
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+
+
     First element in every lines is address of first byte dumped out
     in the line. Next elements are hexadecimal values of bytes
     followed by ASCII characters of bytes dumped out in the line. If
@@ -232,40 +268,38 @@ under certain conditions; type `show c' for details.
     parameters. Default value of <b>start</b> parameter is last
     address listed by previous <b>dc</b> command. If <b>stop</b>
     parameter is not given 20 lines are listed.
-    
-    <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font> 
-ucsim 0.2.12, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+
+<!-- @BLOCK@ dc bf0560093348b2cc07b4e7d9b2b11557 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-&gt; <font color="#118811">dc</font>
-   000000 02 01 60 LJMP  0160
- * 000003 02 00 3c LJMP  003c
- * 000006 ff       MOV   R7,A
- * 000007 ff       MOV   R7,A
- * 000008 ff       MOV   R7,A
- * 000009 ff       MOV   R7,A
- * 00000a ff       MOV   R7,A
- * 00000b 02 3b e0 LJMP  3be0
- * 00000e ff       MOV   R7,A
- * 00000f ff       MOV   R7,A
- * 000010 ff       MOV   R7,A
- * 000011 ff       MOV   R7,A
- * 000012 ff       MOV   R7,A
- * 000013 02 00 ac LJMP  00ac
- * 000016 ff       MOV   R7,A
- * 000017 ff       MOV   R7,A
- * 000018 ff       MOV   R7,A
- * 000019 ff       MOV   R7,A
- * 00001a ff       MOV   R7,A
- * 00001b ff       MOV   R7,A
- * 00001c ff       MOV   R7,A
-&gt; </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dc
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">01</span> <span style="color: #F5F1DE; background-color: #000316">60</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x0160</span>
+<span style="color: #ffff00; background-color: #000316">0x0003</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">00</span> <span style="color: #F5F1DE; background-color: #000316">3c</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x003c</span>
+<span style="color: #ffff00; background-color: #000316">0x0006</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0007</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0009</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x000a</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x000b</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">2f</span> <span style="color: #F5F1DE; background-color: #000316">74</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x2f74</span>
+<span style="color: #ffff00; background-color: #000316">0x000e</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x000f</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0011</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0012</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0013</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">00</span> <span style="color: #F5F1DE; background-color: #000316">ac</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x00ac</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
 
     <hr>
 
-    <hr> <a name="di">
+    <a name="di">
       <h3>di <i>[start [stop]]</i></h3>
     </a>
 
@@ -275,68 +309,101 @@ under certain conditions; type `show c' for details.
     address of following memory cell which was dumped by previous <b>di</b>
     command. If <b>stop</b> parameter is not given <b>di</b> command lists 10
     lines 8 bytes per line.
-    
-    <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font>
-ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+
+<!-- @BLOCK@ di1 f19a222d8fc7eed879bc2573e91bd749 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-0&gt; <font color="#118811">set opt irq_stop 1</font>
-0&gt; <font color="#118811">go</font>
-Simulation started, PC=0x000000
-Stop at 000023: (5) Interrupt
-F 000023
-0&gt; <font color="#118811">di</font>
-000000 18 02 16 ba 00 02 00 0a ........
-000008 00 00 00 00 00 00 00 00 ........
-000010 00 00 00 00 00 00 00 00 ........
-000018 4a 00 00 00 00 00 00 00 J.......
-000020 bc 27 06 2d 02 ee 35 8f .'.-..5.
-000028 31 e7 42 01 0e 01 0b 00 1.B.....
-000030 ec 0b 7f 10 7f a9 7e 08 ......~.
-000038 fe 03 09 00 00 00 af 08 ........
-000040 af 08 00 00 00 00 00 00 ........
-000048 00 00 00 00 00 00 00 00 ........
-0&gt;
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set opt irq_stop 1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step 1 sec
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x000023: (2) Interrupt
+</span><span style="color: #ffffff; background-color: #000316">F 0x000023
+</span>Simulated 3056952 ticks (2.764e-01 sec)
+Host usage: 0.031058 sec, rate=8.900008
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">di
+</span><span style="color: #ffff00; background-color: #000316">0x00</span><span style="color: #F5F1DE; background-color: #000316"> 18 02 13 1e 00 02 00 0a </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x08</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x10</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x18</span><span style="color: #F5F1DE; background-color: #000316"> 4a 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">J.......
+</span><span style="color: #ffff00; background-color: #000316">0x20</span><span style="color: #F5F1DE; background-color: #000316"> bc 27 06 2d 02 81 29 22 </span><span style="color: #00aa00; background-color: #000316">.'.-..)"
+</span><span style="color: #ffff00; background-color: #000316">0x28</span><span style="color: #F5F1DE; background-color: #000316"> 25 80 36 01 0a 01 08 00 </span><span style="color: #00aa00; background-color: #000316">%.6.....
+</span><span style="color: #ffff00; background-color: #000316">0x30</span><span style="color: #F5F1DE; background-color: #000316"> 2d 08 73 2e 73 c7 72 04 </span><span style="color: #00aa00; background-color: #000316">-.s.s.r.
+</span><span style="color: #ffff00; background-color: #000316">0x38</span><span style="color: #F5F1DE; background-color: #000316"> bf 03 09 00 00 00 f0 04 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x40</span><span style="color: #F5F1DE; background-color: #000316"> f0 04 3b 35 ae 9f 35 7c </span><span style="color: #00aa00; background-color: #000316">..;5..5|
+</span><span style="color: #ffff00; background-color: #000316">0x48</span><span style="color: #F5F1DE; background-color: #000316"> 28 75 4f b8 c9 4f 96 42 </span><span style="color: #00aa00; background-color: #000316">(uO..O.B
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
+    <!-- @END@ -->
+    
+This command is MCS51 specific and is not available in other simulators.
+
+<!-- @BLOCK@ di2 506e0d68760821e770695e6599e76b61 -->
+<pre class="eg">$ ucsim_p1516
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">di
+</span><span style="color: #aa0000; background-color: #000316">Parser error: syntax error
+</span><span style="color: #ffff00; background-color: #000316">0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+<!-- @END@ -->
 
     <hr> <a name="dx">
       <h3>dx <i>[start [stop]]</i></h3>
     </a>
 
-    Hexadecimal dump of <b>xram</b> named address space area from
-    address
+    MCS51 specific command to produce hexadecimal dump of <b>xram</b>
+    named address space area from address
     <b>start</b> to address <b>stop</b>. Default value of start address is
     address of following memory cell which was dumped by previous <b>dx</b>
     command. If <b>stop</b> parameter is not given <b>dx</b> command lists 10
     lines 8 bytes per line.
 
-    <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font>
-ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<!-- @BLOCK@ dx 623f434b0686d497f1643c25fe347007 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-0&gt; <font color="#118811">set opt irq_stop 1</font>
-0&gt; <font color="#118811">go</font>
-Simulation started, PC=0x000000
-Stop at 000023: (5) Interrupt
-F 000023
-0&gt; <font color="#118811">dx 0x100</font>
-000100 00 00 00 00 00 00 00 00 ........
-000108 00 00 00 00 00 00 00 00 ........
-000110 00 00 00 00 00 00 00 00 ........
-000118 00 00 00 00 00 00 00 00 ........
-000120 00 00 00 00 00 00 00 00 ........
-000128 00 00 00 00 00 00 00 44 .......D
-000130 61 6e 69 00 00 00 02 02 ani.....
-000138 07 00 00 ff 00 00 07 cb ........
-000140 08 0c 32 00 07 cb 06 05 ..2.....
-000148 02 00 24 00 00 00 00 00 ..$.....
-0&gt;
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step 1 sec
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x004364: (104) Breakpoint
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 0c</span><span style="color: #F5F1DE; background-color: #000316"> 01</span><span style="color: #F5F1DE; background-color: #000316"> 0b</span><span style="color: #F5F1DE; background-color: #000316"> 8f</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 86</span><span style="color: #F5F1DE; background-color: #000316"> 0c</span><span style="color: #F5F1DE; background-color: #000316"> 00</span>
+<span style="color: #ffffff; background-color: #000316">@R0 00 .  ACC= 0x00   0 .  B= 0x00
+@R1 01 .  PSW= 0xc0 CY=1 AC=1 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x26</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 2a</span><span style="color: #F5F1DE; background-color: #000316"> ae</span><span style="color: #F5F1DE; background-color: #000316"> 02</span><span style="color: #F5F1DE; background-color: #000316"> 2d</span><span style="color: #F5F1DE; background-color: #000316"> 3e</span><span style="color: #F5F1DE; background-color: #000316"> 37</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 00</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x000e @DPTR= 0x00   0 .
+</span><span style="color: #ffff00; background-color: #000316">0x4364</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">70</span> <span style="color: #F5F1DE; background-color: #000316">51</span>   <span style="color: #00aa00; background-color: #000316"> JNZ    0x43b7</span>
+<span style="color: #ffffff; background-color: #000316">F 0x004364
+</span>Simulated 11059212 ticks (1.000e+00 sec)
+Host usage: 0.136359 sec, rate=7.333592
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dx
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #F5F1DE; background-color: #000316"> 83 44 01 00 c0 7e 13 9d </span><span style="color: #00aa00; background-color: #000316">.D...~..
+</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #F5F1DE; background-color: #000316"> e6 ff 02 00 08 00 00 01 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #F5F1DE; background-color: #000316"> 40 01 01 44 01 00 00 00 </span><span style="color: #00aa00; background-color: #000316">@..D....
+</span><span style="color: #ffff00; background-color: #000316">0x0018</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 10 01 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #F5F1DE; background-color: #000316"> 00 ae 01 00 ae 02 12 e1 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0028</span><span style="color: #F5F1DE; background-color: #000316"> 00 5a 85 00 01 00 3b 00 </span><span style="color: #00aa00; background-color: #000316">.Z....;.
+</span><span style="color: #ffff00; background-color: #000316">0x0030</span><span style="color: #F5F1DE; background-color: #000316"> 00 5a 85 00 ab 1f 80 00 </span><span style="color: #00aa00; background-color: #000316">.Z......
+</span><span style="color: #ffff00; background-color: #000316">0x0038</span><span style="color: #F5F1DE; background-color: #000316"> 00 01 00 01 00 fa 0c 02 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0040</span><span style="color: #F5F1DE; background-color: #000316"> 01 00 fa 00 08 00 01 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0048</span><span style="color: #F5F1DE; background-color: #000316"> ab 00 00 00 00 00 00 5a </span><span style="color: #00aa00; background-color: #000316">.......Z
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
-
+    <!-- @END@ -->
+    
     <hr>
 
     <a name="ds">
@@ -349,31 +416,72 @@ F 000023
     by previous <b>ds</b> command. If <b>stop</b> parameter is not
     given <b>ds</b> command lists 10 lines 8 bytes per line.
 
-    <pre>$ <font color="#118811">ucsim_51 remo.hex</font>
-ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+    <p>This command is available in MCS51 simulator only.</p>
+
+<!-- @BLOCK@ ds fe703fbb75208ed356e7dfc9a01fe4c3 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-0&gt; <font color="#118811">set opt irq_stop 1</font>
-0&gt; <font color="#118811">go</font>
-Simulation started, PC=0x000000
-Stop at 000023: (5) Interrupt
-F 000023
-0&gt; <font color="#118811">ds</font>
-0x80 ff 2a 1e 13 00 00 00 80 .*......
-0x88 d5 21 f7 fd 50 fd 00 00 .!..P...
-0x90 fe 00 00 00 00 00 00 00 ........
-0x98 7e 0a 00 00 00 00 00 00 ~.......
-0xa0 ff 00 00 00 00 00 00 00 ........
-0xa8 97 00 00 00 00 00 00 00 ........
-0xb0 ff 00 00 00 00 00 00 00 ........
-0xb8 15 00 00 00 00 00 00 00 ........
-0xc0 00 00 00 00 00 00 00 00 ........
-0xc8 00 00 00 00 00 00 00 00 ........
-0&gt;
-    </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set opt irq_stop 1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">run
+</span><span style="color: #ffffff; background-color: #000316">Simulation started, PC=0x000000
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x000023: (2) Interrupt
+</span><span style="color: #ffffff; background-color: #000316">F 0x000023
+</span>Simulated 3056952 ticks (2.764e-01 sec)
+Host usage: 0.030704 sec, rate=9.002635
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">ds
+</span><span style="color: #ffff00; background-color: #000316">0x80</span><span style="color: #F5F1DE; background-color: #000316"> ff 2a 1e 13 00 00 00 80 </span><span style="color: #00aa00; background-color: #000316">.*......
+</span><span style="color: #ffff00; background-color: #000316">0x88</span><span style="color: #F5F1DE; background-color: #000316"> d5 21 f7 fd 50 fd 00 00 </span><span style="color: #00aa00; background-color: #000316">.!..P...
+</span><span style="color: #ffff00; background-color: #000316">0x90</span><span style="color: #F5F1DE; background-color: #000316"> fe 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x98</span><span style="color: #F5F1DE; background-color: #000316"> 7e 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">~.......
+</span><span style="color: #ffff00; background-color: #000316">0xa0</span><span style="color: #F5F1DE; background-color: #000316"> ff 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0xa8</span><span style="color: #F5F1DE; background-color: #000316"> 97 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0xb0</span><span style="color: #F5F1DE; background-color: #000316"> ff 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0xb8</span><span style="color: #F5F1DE; background-color: #000316"> 15 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0xc0</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0xc8</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
     
     <hr>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

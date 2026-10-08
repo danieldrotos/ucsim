@@ -129,7 +129,7 @@ chars::c(int idx) const
 {
   if (!chars_string)
     return 0;
-  if (idx>=chars_length)
+  if ((idx < 0) || (idx >= chars_length))
     return 0;
   return chars_string[idx];
 }
@@ -146,14 +146,13 @@ chars::append(const char *s)
     return(*this);
 
   char *temp= (char*)malloc(chars_length + strlen(s) + 1);
+  temp[0]= '\0';
   if (chars_string)
     {
       strcpy(temp, chars_string);
       if (dynamic)
 	free(chars_string);
     }
-  else
-    temp[0]= '\0';
   strcat(temp, s);
   chars_string= temp;
   chars_length+= strlen(s);
@@ -169,14 +168,13 @@ chars::append(char c)
     return(*this);
 
   char *temp= (char*)malloc(chars_length + 1 + 1);
+  temp[0]= '\0';
   if (chars_string)
     {
       strcpy(temp, chars_string);
       if (dynamic)
 	free(chars_string);
     }
-  else
-    temp[0]= '\0';
   char b[2];
   b[0]= c;
   b[1]= 0;
@@ -199,14 +197,13 @@ chars::appendf(const char *format, ...)
   va_end(ap);
 
   char *temp= (char*)malloc(chars_length + strlen(n) + 1);
+  temp[0]= '\0';
   if (chars_string)
     {
       strcpy(temp, chars_string);
       if (dynamic)
 	free(chars_string);
     }
-  else
-    temp[0]= '\0';
   strcat(temp, n);
   chars_string= temp;
   chars_length+= strlen(n);
@@ -219,14 +216,13 @@ chars &
 chars::appendn(const char *src, int n)
 {
   char *temp= (char*)malloc(chars_length + n + 1);
+  temp[0]= 0;
   if (chars_string)
     {
       strcpy(temp, chars_string);
       if (dynamic)
 	free(chars_string);
     }
-  else
-    temp[0]= 0;
   int s= 0;
   while (src[s] && (s<n))
     temp[chars_length++]= src[s++];
@@ -249,14 +245,13 @@ chars::format(const char *format, ...)
   va_end(ap);
 
   char *temp= (char*)malloc(chars_length + strlen(n) + 1);
+  temp[0]= '\0';
   if (chars_string)
     {
       strcpy(temp, chars_string);
       if (dynamic)
 	free(chars_string);
     }
-  else
-    temp[0]= '\0';
   strcat(temp, n);
   chars_string= temp;
   chars_length+= strlen(n);

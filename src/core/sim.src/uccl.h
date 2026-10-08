@@ -276,6 +276,7 @@ public:
 public:
   cl_inspec(chars aspec, class cl_uc *auc);
   virtual int init(void);
+  virtual void set(chars aspec);
   virtual chars *get_file_name(void)     { init(); return &file_name; }
   virtual chars *get_mem_name(void)      { init(); return &mem_name; }
   virtual chars *get_range_name(void)    { init(); return &range_name; }
@@ -392,11 +393,12 @@ public:
   virtual class cl_address_space *address_space(class cl_memory_cell *cell);
   virtual class cl_address_space *address_space(class cl_memory_cell *cell, t_addr *addr);
   virtual class cl_memory *memory(const char *id);
+  virtual class cl_memory *default_load_mem(void) { return rom; }
   virtual void remove_chip(class cl_memory *chip);
   
   // file handling
   virtual cl_f *find_loadable_file(chars nam);
-  virtual long read_hex_file(cl_console_base *con);
+  virtual long read_hex_file(cl_console_base *con, chars *in_spec_str= 0);
   virtual long read_hex_file(const char *nam, bool check);
   virtual long read_file(chars nam, class cl_console_base *con, bool check= false);
   virtual bool set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check);

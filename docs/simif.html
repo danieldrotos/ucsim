@@ -2,10 +2,13 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="ucsim.css">
     <title>&micro;Csim: Simulator interface</title>
   </head>
+
   <body>
+
     <h1>Simulator interface</h1>
     <p>Using the simulator interface the simulated program can control the
       simulation, it can get information about the interface, stop simulation
@@ -26,9 +29,11 @@
     <dl>
       <dt><span style="font-family: monospace;">if</span></dt>
       <dd>this setting is used to turn on the interface. Its value must be a
-        memory name and the address, like:<br>
-        <code>ucsim_51 -I if=xram[0xffff]<br>
-        </code>memory name must be followed by the address in square brackets.
+        memory name and the address, like:
+	<br>
+        <code>ucsim_51 -I if=xram[0xffff]</code>
+	<br>
+	memory name must be followed by the address in square brackets.
         Address can be specified in decimal, octal or hexadecimal.</dd>
       <dt><span style="font-family: monospace;">in</span></dt>
       <dd>value specifies name of the file which will be used by READ command.</dd>

@@ -152,6 +152,13 @@ cl_cia::cfg_help(t_addr addr)
 t_mem
 cl_cia::read(class cl_memory_cell *cell)
 {
+  if (!on)
+    {
+      // turned off: the device registers are transparent, the
+      // underlying memory shows through (config access still works)
+      conf(cell, NULL);
+      return cell->get();
+    }
   if (cell == regs[dr])
     {
       cfg_set(serconf_able_receive, 1);
@@ -169,6 +176,8 @@ cl_cia::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (conf(cell, val))
     return;
+  if (!on)
+    return; // turned off: the raw value is stored by the caller
   if (cell == regs[cr])
     {
       r_cr->set(*val);

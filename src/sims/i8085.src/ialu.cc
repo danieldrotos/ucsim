@@ -31,9 +31,11 @@ int
 cl_i8080::add8(u8_t op, bool add_c, bool is_daa)
 {
   u16_t res;
-  if (add_c && (rF & flagC))
-    op++;
-  res= rA+op;
+  /* Take the incoming carry as a separate term; do NOT fold it into op with
+     op++, which overflows the u8_t to 0x00 when op==0xff and then loses both
+     the carry-out and the half-carry (e.g. 0xff + 0xff + 1). */
+  u8_t carry_in = (add_c && (rF & flagC)) ? 1 : 0;
+  res= rA+op+carry_in;
   rF&= ~fAll_A;
   if (!is_daa) rF&= ~flagA;
   if (res>0xff) rF|= flagC;
@@ -41,7 +43,7 @@ cl_i8080::add8(u8_t op, bool add_c, bool is_daa)
   res&= 0xff;
   if (!res) rF|= flagZ;
   if (!is_daa)
-    if ((rA&0xf)+(op&0xf) > 0xf)
+    if ((rA&0xf)+(op&0xf)+carry_in > 0xf)
       rF|= flagA;
   rF|= ADDV8(rA,op,res);
   rF|= X5(res);
@@ -55,17 +57,27 @@ int
 cl_i8080::sub8(u8_t op, bool sub_c, bool cmp)
 {
   u16_t orga= rA, orgb= op;
-  if (sub_c && (rF & flagC))
+  u8_t borrow_in= (sub_c && (rF & flagC)) ? 1 : 0;
+  if (borrow_in)
     op++;
   op= ~op+1;
   u16_t res= rA+op;
   rF&= ~fAll;
-  if (/*res<=0xff*/orga<orgb) rF|= flagC;
+  /* A borrow (carry) occurs when A < operand + incoming-borrow.  orgb is a
+     u16_t so orgb+borrow_in does not overflow when the operand byte is 0xff. */
+  if (orga < orgb + borrow_in) rF|= flagC;
   if (res&0x80) rF|= flagS;
   res&= 0xff;
   if (!res) rF|= flagZ;
   if ((rA&0xf)+(op&0xf) > 0xf) rF|= flagA;
-  rF|= ADDV8(rA,op,res);
+  /* V (overflow) is carry-in XOR carry-out of bit 7 of the real ALU operation
+     A + ~b + carry. Applying the sign-based overflow formula to the two's-
+     complement operand (op) folds the +1 into the operand and loses the carry
+     propagation, giving the wrong V when ~b+1 itself overflows (b == 0x80). Use
+     the one's-complement of the original operand instead; res already carries
+     the +1, so ADDV8(A, ~orgb, res) matches the silicon (see Shirriff's 8085
+     flag analysis) and makes the K/X5 flag a correct signed comparison. */
+  rF|= ADDV8(rA,(u8_t)~orgb,res);
   rF|= X5(res);
   rF|= ptab[res];
   if (!cmp) cA.W(res);

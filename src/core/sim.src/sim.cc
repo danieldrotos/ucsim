@@ -347,7 +347,8 @@ cl_sim::stop(int reason)
 	uc->displays->do_display(NULL);	  
       if (con == cmd->frozen()) {
 	con->set_flag(CONS_FROZEN, false);
-	con->print_prompt();
+	if (!con->get_flag(CONS_ECHO))
+	  con->print_prompt();
       }
       cmd->freeze(0);
     }

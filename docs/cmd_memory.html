@@ -1,10 +1,12 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="ucsim.css">
     <title>Memory manipulation commands of &micro;Csim</title>
   </head>
-  <body style="           background-color: white;">
+
+  <body>
 
     <h2>Memory manipulation commands of &micro;Csim</h2>
     
@@ -33,16 +35,21 @@
     parameter to be a string.</p>
     
     <hr> <a name="dl">
-      <h3>download,dl</h3>
+      <h3>download,dl [@memory][:offset][#range]</h3>
     </a>
 
-    Download command. It is same as <a href="#l">load</a> above but it
-    reads information from command console which is standard input by
-    default and it requires intel hex records.  This command stops
+    Download command. It is same as <a href="#file">file</a> above but
+    it reads information from command console which is standard input
+    by default and it requires intel hex records.  This command stops
     read records when it detects an "END" record which is normally the
     last one. This command has two equivalent forms <b>download</b>
     and <b>dl</b>.
 
+    <p>To specify input <a href="invoke.html#inspec">specifiers
+    (@memory:offset#range)</a> you have to use it as parameter for the
+    command.
+    </p>
+    
     <pre>$ <font color="#118811">ucsim_51 -V</font>
 ucsim 0.2.24, Copyright (C) 1997 Daniel Drotos, Talker Bt.
 ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -70,12 +77,17 @@ under certain conditions; type `show c' for details.
     <hr>
 
     <a name="check">
-      <h3>check <i>"file[@memory][:offset]"</i></h3>
+      <h3>check <i>"filename[@memory][:offset][#range]"</i></h3>
     </a>
 
     This command works as the <a href="#file">file</a> command but
     instead of storing data in memory, it check if it equals to data
     from the file. If any difference is found it is reported.
+
+    <p>Filename can be extended with
+      an <a href="invoke.html#inspec">input specifier
+      (@memory:offset#range)</a>.
+    </p>
     
     <pre>
 0> file "remo.hex"
@@ -100,6 +112,7 @@ Diff at 00000038, FILE=000000d2 MEM=000000d3
 55755 words read from remo.hex
 0> 
     </pre>
+
     
     <hr>
     

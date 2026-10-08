@@ -128,8 +128,8 @@ COMMAND_DO_WORK_UC(cl_file_cmd)
 }
 
 CMDHELP(cl_file_cmd,
-	"file \"FILE\"",
-        "Load FILE into ROM",
+	"file \"filename[@mem][:offset][#range]\"",
+        "Load content of filename into rom or specified memory",
 	"")
 
 /*
@@ -158,8 +158,8 @@ COMMAND_DO_WORK_UC(cl_check_cmd)
 }
 
 CMDHELP(cl_check_cmd,
-	"check \"FILE\"",
-        "Compare FILE with ROM",
+	"check \"filename[@mem][:offset][#rage]\"",
+        "Compare content of filename with rom or specified memory",
 	"")
 
 /*
@@ -173,16 +173,21 @@ CMDHELP(cl_check_cmd,
 COMMAND_DO_WORK_UC(cl_dl_cmd)
 {
   long l;
+  chars iss= "";
   
-  if ((l= uc->read_hex_file(con)) >= 0)
+  if (cmdline->param(0) != 0)
+    {
+      iss= cmdline->param(0)->get_svalue();
+    }
+  if ((l= uc->read_hex_file(con, &iss)) >= 0)
     con->dd_printf("%ld words loaded\n", l);
 
   return(0);
 }
 
 CMDHELP(cl_dl_cmd,
-	"download",
-	"Load (intel.hex) data",
+	"download [@mem][:offset][#range]",
+	"Load (intel.hex) data from console into rom or specified memory",
 	"")
 
 

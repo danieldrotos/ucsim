@@ -40,7 +40,7 @@ cl_f8::TRAP(t_mem code)
   return resHALT;
 }
 
-// TODO: ?
+// Just return 0 for now, since we don't simulate f8 variants with multiple hardware threads yet.
 int
 cl_f8::THRD(t_mem code)
 {
@@ -50,3 +50,4 @@ cl_f8::THRD(t_mem code)
 
 
 /* End of f8.src/inst.cc */
+

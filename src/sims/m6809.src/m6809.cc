@@ -2263,7 +2263,9 @@ cl_m6809::inst_page1(t_mem code)
 	  inst_ld16(code, &(reg.S), op16);
       break;
     case 0xf: // STY, STS
-      if (code & 0x40)
+      // bit 6 selects the register, as in the LDY/LDS case above:
+      // clear = Y (STY = 10 9F/AF/BF), set = S (STS = 10 DF/EF/FF)
+      if ((code & 0x40) == 0)
 	inst_st16(code, reg.Y, ea);
       else
 	inst_st16(code, reg.S, ea);

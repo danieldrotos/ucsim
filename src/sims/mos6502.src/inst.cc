@@ -49,14 +49,14 @@ cl_mos6502::RTI(t_mem code)
 {
   u8_t f;
   cSP.W(rSP+1);
-  f= rom->read(0x0100 + rSP);
+  f= rom->read(SPh + rSP);
   f&= ~(0x20|flagB);
   cF.W(f);
   vc.rd+= 1;
   /*cSP.W(rSP+1);
-  l= rom->read(0x0100 + rSP);
+  l= rom->read(SPh + rSP);
   cSP.W(rSP+1);
-  h= rom->read(0x0100 + rSP);*/
+  h= rom->read(SPh + rSP);*/
   PC= pop_addr();//h*256 + l;
   {
     class it_level *il= (class it_level *)(it_levels->top());
@@ -91,7 +91,7 @@ int
 cl_mos6502::PHP(t_mem code)
 {
   u8_t v= rF|0x20|flagB;
-  rom->write(0x0100 + rSP, v);
+  rom->write(SPh + rSP, v);
   vc.wr++;
   t_addr spbef= rSP;
   cSP.W(rSP-1);
@@ -115,7 +115,7 @@ cl_mos6502::PLP(t_mem code)
 {
   t_addr spbef= rSP;
   cSP.W(rSP+1);
-  u8_t v= rom->read(0x0100 + rSP);
+  u8_t v= rom->read(SPh + rSP);
   v&= ~(0x20|flagB);
   class cl_stack_pop *op= new cl_stack_pop(instPC, v, spbef, rSP);
   op->init();
@@ -137,7 +137,7 @@ cl_mos6502::SEc(t_mem code)
 int
 cl_mos6502::PHA(t_mem code)
 {
-  rom->write(0x0100 + rSP, rA);
+  rom->write(SPh + rSP, rA);
   vc.wr++;
   t_addr spbef= rSP;
   cSP.W(rSP-1);
@@ -153,7 +153,7 @@ cl_mos6502::PLA(t_mem code)
 {
   t_addr spbef= rSP;
   cSP.W(rSP+1);
-  cA.W(rom->read(0x0100 + rSP));
+  cA.W(rom->read(SPh + rSP));
   class cl_stack_pop *op= new cl_stack_pop(instPC, rA, spbef, rSP);
   op->init();
   stack_read(op);

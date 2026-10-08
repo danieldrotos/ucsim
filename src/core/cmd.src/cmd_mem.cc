@@ -495,7 +495,7 @@ COMMAND_DO_WORK_UC(cl_memory_cell_cmd)
       t_addr ad;
       if (ch->is_slot(c->get_data(), &ad))
 	{
-	  con->dd_printf("  decoded to %s[%u]\n",
+	  con->dd_printf("  decoded to %s[0x%x]\n",
 			 ch->get_name(), AU(ad));
 	  break;
 	}

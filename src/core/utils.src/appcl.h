@@ -88,7 +88,8 @@ protected:
   class cl_commander_base *commander;
 public:
   class cl_sim *sim;
-  class cl_ustrings *in_files;
+  class cl_chars_list *in_files;
+  class cl_chars_list *in_specs;
   class cl_options *options;
   int going;
   long expr_result;
@@ -97,6 +98,9 @@ public:
   u32_t period, cyc, acyc;
   bool quiet; // -q
   bool nowelcome; // -Dnowelcome
+  bool hide_echo; // -Dhideecho
+  bool show_input; // -Dshowinput
+  bool opt_tml; // either -Dhtml or -Dwtml used
   bool retmain; // -m
   int retval;
   class cl_console_stdout *ocon;
@@ -150,7 +154,10 @@ public: // output functions
   virtual int debug(const char *format, ...);
 
 public:
+  virtual chars get_option(chars name);
   virtual void set_option_s(const char *opt_name, const char *new_value);
+  virtual bool get_option_fc(void);
+  virtual bool get_option_bw(void);
 };
 
 

@@ -761,11 +761,17 @@ CLP2::inst_mem(t_mem code)
     addr= opa_offset;
   
   if (code & 0x02000000)
-    // LD
-    RC[d]->W(rom->read(addr));
+    {
+      // LD
+      RC[d]->W(rom->read(addr));
+      vc.rd++;
+    }
   else
-    // ST
-    rom->write(addr, R[d]);
+    {
+      // ST
+      rom->write(addr, R[d]);
+      vc.wr++;
+    }
   
   if (w)
     RC[a]->W(opa_chg);
@@ -789,11 +795,13 @@ CLP2::inst_ext(t_mem code)
 	  // LD direct
 	  //RC[d]->W(rom->read(addr));
 	  *RC[d]= rom->read(addr);
+	  vc.rd++;
 	}
       else
 	{
 	  // ST direct
 	  rom->write(addr, R[d]);
+	  vc.wr++;
 	}
       return resGO;
     case 1:

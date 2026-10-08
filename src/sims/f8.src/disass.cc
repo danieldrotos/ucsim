@@ -2,7 +2,7 @@
  * Simulator of microcontrollers (disass.cc)
  *
  * Copyright (C) 2022 Drotos Daniel
- * 
+ *
  * To contact author send email to dr.dkdb@gmail.com
  *
  */
@@ -166,7 +166,7 @@ cl_f8::disassc(t_addr addr, chars *comment)
   u8_t h, l, /*r,*/ code;
   u16_t a, nn;
   i16_t d;
-  
+
   code= rom->read(addr);
   while (code == PREF_SWAPOP || code == PREF_ALT1 || code == PREF_ALT2 || code == PREF_ALT3 || code == PREF_ALT4 || code == PREF_ALT5)
     {
@@ -194,8 +194,8 @@ cl_f8::disassc(t_addr addr, chars *comment)
     }
   de= get_dis_entry(addr);
   //code= rom->read(addr);
-  
-  if (!de || !de->mnemonic)
+
+  if (!de || !de->mnemonic || (type->type == CPU_F8L && !f8l_instructions[code]))
     return strdup("-- UNKNOWN/INVALID");
 
   b= de->mnemonic;
@@ -390,7 +390,6 @@ cl_f8::disassc(t_addr addr, chars *comment)
 	      a= addr+2+d;
 	      word->appendf("0x%04x", a);
 	      break;
-	      
 	    }
 	  if (comment && temp.nempty())
 	    comment->append(temp);

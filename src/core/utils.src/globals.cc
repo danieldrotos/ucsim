@@ -507,7 +507,8 @@ struct cpu_entry cpus_avr[]= {
 
 struct cpu_entry cpus_f8[]=
   {
-    {"F8"	, CPU_F8, 0		, "F8", ""},
+    {"f8"	, CPU_F8, 0		, "f8", ""},
+    {"f8l"	, CPU_F8L, 0		, "f8", ""},
 
     {NULL, CPU_NONE, 0, "", ""}
   };

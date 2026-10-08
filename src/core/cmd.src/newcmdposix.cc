@@ -175,6 +175,8 @@ cl_console::replace_files(bool close_old, cl_f *new_in, cl_f *new_out)
 
 cl_console::~cl_console(void)
 {
+  if (get_flag(CONS_ECHO))
+    print_prompt();
   un_redirect();
   if (fout)
     {
@@ -493,11 +495,14 @@ cl_commander::init(void)
       class cl_f *in, *out;
       in= cp_io(fileno(stdin), "r");
       out= cp_io(fileno(stdout), "w");
-      in->interactive(out);
+      if (!application->hide_echo)
+	in->interactive(out);
       add_console(con= new cl_console(in, out, app));
       std_console= con;
       if (in->tty)
 	con->set_flag(CONS_INTERACTIVE, true);
+      if (application->show_input)
+	con->set_flag(CONS_ECHO, true);
     }
 
   class cl_f *i= NULL, *o;

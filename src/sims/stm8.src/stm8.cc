@@ -934,6 +934,12 @@ cl_stm8::disass(t_addr addr)
                 }
               temp.format("0x%02x", operand);
               break;
+	    case 'D':
+	      operand= (uint)rom->get(addr+immed_offset);
+	      operand*= 256;
+	      operand+= (uint)rom->get(addr+immed_offset+1);
+	      temp.format("0x%04x", operand);
+	      break;
             case '3': // 3    24bit index offset
               // Assumption: the 24bit offset address is the address of a
               // fixed table and the index register selects an entry.

@@ -1,11 +1,12 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="ucsim.css">
     <title>Breakpoints commands of &micro;Csim</title>
   </head>
 
-  <body style="   background-color: white;">
+  <body>
 
     <!-- BREAKPOINTS -->
     <h2>Commands of <i>&micro;Csim</i> to manage breakpoints</h2>
@@ -84,35 +85,54 @@
     expression. If it is specified, the expression is evaluated at
     every breakpoint hit and the breakpoint will be accepted only when
     the expression evaluates to TRUE.
+
     
-    <pre>$ <font color="#118811">ucsim_51 remoansi.hex</font>
-ucsim 0.2.24, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<!-- @BLOCK@ break 52d0f2775e74da304eca2065b34c0ab3 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-&gt; <font color="#118811">dc 0 0x10</font>
-   000000 02 01 60 LJMP  0160
- * 000003 02 00 3c LJMP  003c
- * 000006 ff       MOV   R7,A
- * 000007 ff       MOV   R7,A
- * 000008 ff       MOV   R7,A
- * 000009 ff       MOV   R7,A
- * 00000a ff       MOV   R7,A
- * 00000b 02 3b e0 LJMP  3be0
- * 00000e ff       MOV   R7,A
- * 00000f ff       MOV   R7,A
- * 000010 ff       MOV   R7,A
-&gt; <font color="#118811">break 0x160</font>
-Breakpoint 1 at 0x000160: CLR   P1.0
-&gt; <font color="#118811">tbreak 8 2</font>
-Breakpoint 2 at 0x000008: MOV   R7,A
-&gt; <font color="#118811">g</font>
-Simulation started, PC=0x000000
-Stop at 000160: (4) Breakpoint
-F 000160
-&gt; </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dc 0 0x10
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">01</span> <span style="color: #F5F1DE; background-color: #000316">60</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x0160</span>
+<span style="color: #ffff00; background-color: #000316">0x0003</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">00</span> <span style="color: #F5F1DE; background-color: #000316">3c</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x003c</span>
+<span style="color: #ffff00; background-color: #000316">0x0006</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0007</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0009</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x000a</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x000b</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">2f</span> <span style="color: #F5F1DE; background-color: #000316">74</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x2f74</span>
+<span style="color: #ffff00; background-color: #000316">0x000e</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x000f</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">break 0x160
+</span><span style="color: #ffffff; background-color: #000316">Breakpoint 1 at 0x000160 (cond="")
+</span><span style="color: #ffff00; background-color: #000316">0x0160</span><span style="color: #ffffff; background-color: #000316"> F</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">90</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0x900x90 &lt;P1&gt;.0</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tbreak 8 2
+</span><span style="color: #ffffff; background-color: #000316">Breakpoint 2 at 0x000008 (cond="")
+</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #ffffff; background-color: #000316"> D</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">run
+</span><span style="color: #ffffff; background-color: #000316">Simulation started, PC=0x000000
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x000160: (104) Breakpoint
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 41</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> 6b</span>
+<span style="color: #ffffff; background-color: #000316">@R0 76 v  ACC= 0x00   0 .  B= 0x00
+@R1 73 s  PSW= 0x00 CY=0 AC=0 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 6b</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> 41</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0000 @DPTR= 0x83 131 .
+</span><span style="color: #ffff00; background-color: #000316">0x0160</span><span style="color: #ffffff; background-color: #000316"> F</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">90</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0x900x90 &lt;P1&gt;.0</span>
+<span style="color: #ffffff; background-color: #000316">F 0x000160
+</span>Simulated 24 ticks (2.170e-06 sec)
+Host usage: 0.000006 sec, rate=0.364089
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
 
+    
     Breakpoint hits can be made more noticeable by printing a beep
     character on the console. This function can be turned on
     by <a href="cmd_general.html#set_option">setting the
@@ -132,22 +152,37 @@ F 000160
     <p>If parameter is not given then breakpoint at current PC will be
       deleted if it exists. If more than one address is specified then
       all breakpoints at specified addresses will be deleted. </p>
-    
-    <pre>&gt; <font color="#118811">i b</font>
-Num Type       Disp Hit   Cnt   Address  What
-1   fetch      keep 1     1     0x000160 CLR   P1.0
-2   fetch      del  1     1     0x000180 LJMP  022a
-1   event      keep 1     1     0x000006 wi
-&gt; <font color="#118811">clear 160</font>
-No breakpoint at 0000a0
-&gt; <font color="#118811">clear 0x160</font>
-&gt; <font color="#118811">i b</font>
-Num Type       Disp Hit   Cnt   Address  What
-2   fetch      del  1     1     0x000180 LJMP  022a
-1   event      keep 1     1     0x000006 wi
-&gt; </pre>
-    <hr>
 
+    
+<!-- @BLOCK@ clear dad17421542de33bbd1ba431af573571 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">break 0x160
+</span><span style="color: #ffffff; background-color: #000316">Breakpoint 1 at 0x000160 (cond="")
+</span><span style="color: #ffff00; background-color: #000316">0x0160</span><span style="color: #ffffff; background-color: #000316"> F</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">90</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0x900x90 &lt;P1&gt;.0</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tbreak 8 2
+</span><span style="color: #ffffff; background-color: #000316">Breakpoint 2 at 0x000008 (cond="")
+</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #ffffff; background-color: #000316"> D</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info break
+</span><span style="color: #ffffff; background-color: #000316">Num Type       Disp Hit   Cnt   Address  Cond
+1   fetch      keep 1     1     0x000160 true  
+2   fetch      del  2     2     0x000008 true  
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">clear 160
+</span><span style="color: #ffffff; background-color: #000316">No breakpoint at 0x0000a0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">clear 0x160
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">i b
+</span><span style="color: #ffffff; background-color: #000316">Num Type       Disp Hit   Cnt   Address  Cond
+2   fetch      del  2     2     0x000008 true  
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+    
 
     <!-- ----------------------------------------------------------------- -->
     <a name="delete">
@@ -197,32 +232,45 @@ Num Type       Disp Hit   Cnt   Address  What
     <p>If no <i>expr</i> argument is given, all defined expressions
       are listed and evaluated and values are printed.</p>
 
-    <pre>0&gt; <font color="#118811">disp R7</font>
-0&gt; <font color="#118811">disp ACC</font>
-0&gt; <font color="#118811">b 0x10</font>
-Breakpoint 1 at 0x000010 (cond="")
-0x0010 F? ff       MOV    R7,A
-0&gt; <font color="#118811">display</font>
-1: R7 = 107
-2: ACC = 0
-0&gt; <font color="#118811">run</font>
-Simulation started, PC=0x000000
 
-Stop at 0x000010: (104) Breakpoint
-     R0 R1 R2 R3 R4 R5 R6 R7
-     41 58 fc c9 8b bc 95 00
-@R0 76 v  ACC= 0x00   0 .  B= 0x00
-@R1 73 s  PSW= 0x00 CY=0 AC=0 OV=0 P=0
-SP 0x07 -> 00 95 bc 8b c9 fc 58 41
-   DPTR= 0x0000 @DPTR= 0x83 131 .
-0x0010 F  ff       MOV    R7,A
-F 0x000010
-Simulated 192 ticks (1.736e-05 sec)
-Host usage: 0.007306 sec, rate=0.002376
-1: R7 = 0
+<!-- @BLOCK@ display f100b57e1665c52e60bdf8c01a12724b -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">disp R7
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">disp ACC
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">break 0x9f9
+</span><span style="color: #ffffff; background-color: #000316">Breakpoint 1 at 0x0009f9 (cond="")
+</span><span style="color: #ffff00; background-color: #000316">0x09f9</span><span style="color: #ffffff; background-color: #000316"> F</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">a9</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0xa90xa8 &lt;IE&gt;.1</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">display
+</span><span style="color: #ffffff; background-color: #000316">1: R7 = 107
 2: ACC = 0
-0&gt;
-    </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">run
+</span><span style="color: #ffffff; background-color: #000316">Simulation started, PC=0x000000
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x0009f9: (104) Breakpoint
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 41</span><span style="color: #F5F1DE; background-color: #000316"> 04</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 00</span>
+<span style="color: #ffffff; background-color: #000316">@R0 76 v  ACC= 0x00   0 .  B= 0x00
+@R1 8b .  PSW= 0x00 CY=0 AC=0 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x24</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 01</span><span style="color: #F5F1DE; background-color: #000316"> 77</span><span style="color: #F5F1DE; background-color: #000316"> 1d</span><span style="color: #F5F1DE; background-color: #000316"> 84</span><span style="color: #F5F1DE; background-color: #000316"> 43</span><span style="color: #F5F1DE; background-color: #000316"> 31</span><span style="color: #F5F1DE; background-color: #000316"> 94</span><span style="color: #F5F1DE; background-color: #000316"> d0</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0000 @DPTR= 0x83 131 .
+</span><span style="color: #ffff00; background-color: #000316">0x09f9</span><span style="color: #ffffff; background-color: #000316"> F</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">a9</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0xa90xa8 &lt;IE&gt;.1</span>
+<span style="color: #ffffff; background-color: #000316">F 0x0009f9
+</span>Simulated 180 ticks (1.628e-05 sec)
+Host usage: 0.000013 sec, rate=1.264198
+<span style="color: #ffffff; background-color: #000316">1: R7 = 0
+2: ACC = 0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+
+    
     <hr>
     
     <!-- ----------------------------------------------------------------- -->
@@ -238,3 +286,35 @@ Host usage: 0.007306 sec, rate=0.002376
     
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

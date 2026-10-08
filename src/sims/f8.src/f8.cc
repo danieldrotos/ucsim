@@ -2,7 +2,7 @@
  * Simulator of microcontrollers (i8080.cc)
  *
  * Copyright (C) 2022 Drotos Daniel
- * 
+ *
  * To contact author send email to dr.dkdb@gmail.com
  *
  */
@@ -34,13 +34,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "f8cl.h"
 
 
-/* 
+/*
  * CPU
  */
 
-cl_f8::cl_f8(class cl_sim *asim):
+cl_f8::cl_f8(struct cpu_entry *Itype, class cl_sim *asim):
   cl_uc(asim)
 {
+  type= Itype;
 }
 
 int
@@ -59,13 +60,13 @@ cl_f8::init(void)
 #undef RCV
   sp_limit= 0;
   prefixes= P_NONE;
-  
+
   cF.W(urnd());
   cX.W(urnd());
   cY.W(urnd());
   cZ.W(urnd());
   cSP.W(urnd());
-  
+
   reset();
   return 0;
 }
@@ -73,7 +74,13 @@ cl_f8::init(void)
 const char *
 cl_f8::id_string(void)
 {
-  return "F8";
+   switch (type->type)
+    {
+    case CPU_F8L:
+      return "f8l";
+    default:
+      return "f8";
+    }
 }
 
 void
@@ -148,7 +155,7 @@ void
 cl_f8::print_regs(class cl_console_base *con)
 {
   con->dd_color("answer");
-  con->dd_printf("---HCNZO  Flags= 0x%02x\n", rF);
+  con->dd_printf("---HCZNO  Flags= 0x%02x\n", rF);
   con->dd_printf("%s\n", cbin(rF, 8).c_str());
   con->dd_printf("X= 0x%04x [X]= 0x%02x %3d %c\n",
                  rX, rom->get(rX), rom->get(rX),
@@ -171,7 +178,7 @@ cl_f8::print_regs(class cl_console_base *con)
 		      (u8_t)(rom->read(al)));
     }
   con->dd_printf("\n");
-  
+
   print_disass(PC, con);
 }
 
@@ -452,6 +459,8 @@ cl_f8::exec_inst(void)
       return resNOT_DONE;
     }
   tick(1);
+  if (type->type == CPU_F8L && (!f8l_instructions[code] || (f8l_instructions[code] == 2 && (prefixes & P_SWAP))))
+    return resINV_INST;
   res= itab[code](this, code);
   if (res == resNOT_DONE)
     {
@@ -482,7 +491,7 @@ cl_f8_cpu::init(void)
   uc->vars->add(v= new cl_var("sp_limit", cfg, f8cpu_sp_limit,
 			      cfg_help(f8cpu_sp_limit)));
   v->init();
-  
+
   return 0;
 }
 

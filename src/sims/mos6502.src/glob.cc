@@ -314,7 +314,7 @@ struct dis_entry disass_huc6280[]=
     { 0x82, 0xff, ' ', 1, "CLX" },
     { 0xc2, 0xff, ' ', 1, "CLY" },
 
-    { 0x03, 0xff, ' ', 2, "STO %#" },
+    { 0x03, 0xff, ' ', 2, "ST0 %#" },
     { 0x13, 0xff, ' ', 2, "ST1 %#" },
     { 0x23, 0xff, ' ', 2, "ST2 %#" },
     { 0x43, 0xff, ' ', 2, "TMA %L" },

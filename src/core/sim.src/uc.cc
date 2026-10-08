@@ -534,6 +534,24 @@ cl_inspec::cl_inspec(chars aspec, class cl_uc *auc)
   uc= auc;
   use_min= 0;
   use_max= 0xffffffff;
+  mem= uc->default_load_mem();
+}
+
+void
+cl_inspec::set(chars aspec)
+{
+  ispec= aspec;
+  inited= false;
+  file_name= "";
+  mem_name= "";
+  range_name= "";
+  min_name= "";
+  max_name= "";
+  offset_name= "0";
+  offset= 0;
+  use_min= 0;
+  use_max= 0xffffffff;
+  mem= uc->default_load_mem();
 }
 
 int
@@ -542,7 +560,8 @@ cl_inspec::init(void)
   if (inited)
     return 0;
   if (ispec.empty())
-    {      
+    {
+      inited= 1;
       return 0;
     }
   file_name= "";
@@ -555,7 +574,7 @@ cl_inspec::init(void)
       i++;
       c= ispec.c(i);
     }
-  mem= uc->rom;
+  mem= uc->default_load_mem();
   int p= ispec.pos('@');
   if (p >= 0)
     {
@@ -1501,13 +1520,13 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
     {
       if (check)
 	{
-	  v= rom->read(addr);
+	  v= mem->read(addr);
 	  if (!(eq= val == v))
 	    application->dd_printf("Diff at %08x, FILE=%08x MEM=%08x\n",
 				   AU32(addr), MU32(val), MU32(v));
 	}
       else
-	rom->download(addr, val);
+	mem->download(addr, val);
       return eq;
     }
   t_addr bank, caddr;
@@ -1521,7 +1540,7 @@ cl_uc::set_rom(class cl_inspec *is, t_addr addr, t_mem val, bool check)
 	  return true;
 	}
       d->switch_to(bank, NULL);
-      rom->download(caddr, val);
+      mem->download(caddr, val);
       d->activate(NULL);
     }
   else
@@ -1559,7 +1578,7 @@ cl_uc::read_hex_file(const char *nam, bool check)
 }
 
 long
-cl_uc::read_hex_file(cl_console_base *con)
+cl_uc::read_hex_file(cl_console_base *con, chars *in_spec_str)
 {
   cl_f *f;
   if (con == NULL)
@@ -1568,6 +1587,8 @@ cl_uc::read_hex_file(cl_console_base *con)
   if (f == NULL)
     return -1;
   class cl_inspec is("", this);
+  if ((in_spec_str != 0) && (in_spec_str->nempty()))
+    is.set(*in_spec_str);
   long l= read_hex_file(&is, f, false);
   return l;
 }
@@ -2247,8 +2268,12 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
   is.init();
   if (is.get_mem() == NULL)
     {
-      con->dd_printf("Memory %s can not be found\n",
-		     is.get_mem_name()->cstr());
+      if (con)
+	con->dd_printf("Memory %s can not be found\n",
+		       is.get_mem_name()->cstr());
+      else
+	fprintf(stderr, "Memory %s can not be found\n",
+		is.get_mem_name()->cstr());
       return 0;
     }
   cl_f *f= find_loadable_file(*is.get_file_name());
@@ -2259,52 +2284,57 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
       if (con)
 	con->dd_printf("no loadable file found (%s)\n", is.get_file_name()->c_str());
       else
-	printf("no loadable file found (%s)\n", is.get_file_name()->c_str());
+	fprintf(stderr, "no loadable file found (%s)\n", is.get_file_name()->c_str());
       return 0;
     }
   if (!application->quiet)
-    printf("Loading from %s\n", f->get_file_name());
+    application->dd_printf("Loading from %s\n", f->get_file_name());
   if (f->is_p2h_file())
     {
       l= read_p2h_file(&is, f, check);
       if (!application->quiet)
-	printf("%ld words read from %s\n", l, f->get_fname());
+	application->dd_printf("%ld words read from %s\n", l, f->get_fname());
     }
   if (f->is_asc_file())
     {
       l= read_asc_file(&is, f, check);
       if (!application->quiet)
-	printf("%ld words read from %s\n", l, f->get_fname());
+	application->dd_printf("%ld words read from %s\n", l, f->get_fname());
     }
   if (f->is_hex_file())
     {
       l= read_hex_file(&is, f, check);
       if (!application->quiet)
-	printf("%ld words read from %s\n", l, f->get_fname());
+	{
+	  if (!application->opt_tml)
+	    printf("%ld words read from %s\n", l, f->get_fname());
+	  else
+	    application->dd_printf("%ld words read from %s\n", l, f->get_fname());
+	}
     }
   else if (f->is_s19_file())
     {
       l= read_s19_file(&is, f, check);
       if (!application->quiet)
-	printf("%ld words read from %s\n", l, f->get_fname());
+	application->dd_printf("%ld words read from %s\n", l, f->get_fname());
     }
   else if (f->is_omf_file())
     {
       l= read_omf_file(&is, f, check);
       if (!application->quiet)
-	printf("%ld words read from %s\n", l, f->get_fname());
+	application->dd_printf("%ld words read from %s\n", l, f->get_fname());
     }
   else if (!check && f->is_cdb_file())
     {
       l= read_cdb_file(f);
       if (!application->quiet)
-	printf("%ld symbols read from %s\n", l, f->get_fname());
+	application->dd_printf("%ld symbols read from %s\n", l, f->get_fname());
     }
   else if (!check && f->is_map_file())
     {
       l= read_map_file(f);
       if (!application->quiet)
-	printf("%ld symbols read from %s\n", l, f->get_fname());
+	application->dd_printf("%ld symbols read from %s\n", l, f->get_fname());
     }
   if (!check && (strcmp(nam, f->get_fname()) != 0))
     {
@@ -2315,7 +2345,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
 	{
 	  l= read_cdb_file(c);
 	  if (!application->quiet)
-	    printf("%ld symbols read from %s\n", l, c->get_fname());
+	    application->dd_printf("%ld symbols read from %s\n", l, c->get_fname());
 	}
       delete c;
     }
@@ -2328,7 +2358,7 @@ cl_uc::read_file(chars nam, class cl_console_base *con, bool check)
 	{
 	  l= read_map_file(c);
 	  if (!application->quiet)
-	    printf("%ld symbols read from %s\n", l, c->get_fname());
+	    application->dd_printf("%ld symbols read from %s\n", l, c->get_fname());
 	}
       delete c;
     }

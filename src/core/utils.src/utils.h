@@ -38,6 +38,33 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "fiocl.h"
 
 
+enum col_ctype_t
+  {
+   ct_none= 0,
+   ct_bold= 0x01,
+   ct_faint= 0x02,
+   ct_italic= 0x04,
+   ct_underl= 0x08,
+   ct_dunderl= 0x10,
+   ct_crossed= 0x20,
+   ct_overl= 0x40,
+   ct_blink= 0x80
+  };
+
+class cl_color_name: public cl_base
+{
+public:
+  bool ok;
+  int color;
+  bool bright;
+  bool rgb;
+  int red, green, blue;
+ public:
+  cl_color_name(void);
+  virtual void init(chars n);
+};
+
+
 //#define TRACE printf
 #define TRACE   1 ? (void)0 : (*(void (*)(const char *, ...))0)
 

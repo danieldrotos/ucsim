@@ -237,6 +237,8 @@ cl_pia::read(class cl_memory_cell *cell)
 {
   class cl_memory_cell *r= reg(cell);
   conf(cell, NULL);
+  if (!on)
+    return cell->get(); // turned off: underlying memory shows through
   if (r != NULL)
     {
       if (r == ora)
@@ -262,6 +264,13 @@ void
 cl_pia::write(class cl_memory_cell *cell, t_mem *val)
 {
   class cl_memory_cell *r= reg(cell);
+  if (!on)
+    {
+      // turned off: config access still works, the raw value is
+      // stored by the caller
+      conf(cell, val);
+      return;
+    }
   if (val)
     {
       if (r == cra || r == crb)

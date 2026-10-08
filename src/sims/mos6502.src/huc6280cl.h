@@ -38,14 +38,20 @@ public:
   class cl_address_space *mpras;
   class cl_chip8 *mprch, *romchip;
   class cl_address_decoder *mprad;
+  u16_t BRK_AT, TIMER_AT;
  public:
   cl_huc6280(class cl_sim *asim);
-  virtual void reset(void);
   virtual int init(void);
+  virtual void reset(void);
+
+  virtual void mk_hw_elements(void);
+  virtual void make_cpu_hw(void);
   virtual void make_memories(void);
+  virtual class cl_memory *default_load_mem(void) { return romchip; }
   virtual struct dis_entry *get_dis_entry(t_addr addr);
-  virtual int longest_inst(void) { return 7; }
+
   virtual void print_regs(class cl_console_base *con);
+  virtual int longest_inst(void) { return 7; }
 
   virtual int SXY(MP);
   virtual int SAX(MP);
@@ -54,7 +60,7 @@ public:
   virtual int CLX(MP) { cX.W(0); tick(1); return resGO; }
   virtual int CLY(MP) { cY.W(0); tick(1); return resGO; }
 
-  virtual int STO(MP);
+  virtual int ST0(MP);
   virtual int ST1(MP);
   virtual int ST2(MP);
   virtual int TMA(MP);

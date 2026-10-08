@@ -1,10 +1,12 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="ucsim.css">
     <title>&micro;Csim: Invocation</title>
   </head>
-  <body style=" background-color: white;">
+  
+  <body>
     
     <h1>Starting the simulator</h1>
     
@@ -31,22 +33,23 @@
       PicoBlaze processor is simulated by <b>ucsim_pblaze</b> <br>
       p1516 processor is simulated by <b>ucsim_p1516</b> <br>
       f8 processor is simulated by <b>ucsim_f8</b> <br>
-      OISC processors are simulated ny <b>ucsim_oisc</b>
+      OISC processors are simulated by <b>ucsim_oisc</b>
     </p>
 
     <p>The simulator can be started in the following way: </p>
 
-    <p><tt><font color="blue">$</font> ucsim_XXX [-bBEgGhHlmPqVvw] [-a
-      nr] [-c file] [-C cfg_file] [-e command] [-I if_optionlist] [-k
-      portnum] [-o colorlist] [-p prompt] [-R seed]\n [-s file] [-S
-      optionlist] [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]]\n [-z
-      portnum] [-Z portnum] [file[@memory][:offset][#range]...]</tt> </p>
+    <p><tt><font color="blue">$</font> ucsim_XXX [-AbBEgGhHlmPqvVw]
+      [-a nr] [-c file] [-C cfg_file] [-e command] [-I if_optionlist]
+      [-k portnum] [-o colorlist] [-p prompt] [-R seed]\n [-s file]
+      [-S optionlist] [-t CPU] [-U uartnr] [-u hw] [-X freq[k|M]]\n
+      [-z portnum] [-Z portnum] [-i inspec[,...]]
+      [file[@memory][:offset][#range]...]</tt> </p>
 
     <a name="inspec">
-    <h3>Input files</h3>
+      <h3>Input files and specifiers</h3>
     </a>
     
-    <p>Specified files must be names of Intel hex or Motorola S19
+    <p>Specified files must be names of Intel HEX or OMF, or Motorola S19
       files. Some simulators may accept some other file formats, for
       example ucsim_p1516 accepts .p2h file which is internal format
       of
@@ -60,31 +63,40 @@
       files and reads information from them.</p>
 
     <p>A memory name (either an address space or a chip) can be
-    appended to the filename using the @ character. The content of the
-    file will then be loaded into the specified memory. If an offset
-    parameter is provided (appended to the input specification using
-    the : character), the simulator will add this offset to the
-    address before storing data in the simulated memory. The offset
-    can be a signed number in decimal, hexadecimal, or octal
-    format. An address range can also be specified using the #
-    character in the form of min_address-max_address (default range is
-    0-0xffffffff). The simulator checks if the address from the data
-    file falls within this specified range; data is only stored in
-    memory if this check succeeds.</p>
+      appended to the filename using the @ character. The content of
+      the file will then be loaded into the specified memory. If an
+      offset parameter is provided (appended to the input
+      specification using the : character), the simulator will add
+      this offset to the address before storing data in the simulated
+      memory. The offset can be a signed number in decimal,
+      hexadecimal, or octal format. An address range can also be
+      specified using the # character in the form of
+      min_address-max_address (default range is 0-0xffffffff). The
+      simulator checks if the address from the data file falls within
+      this specified range; data is only stored in memory if this
+      check succeeds. Range check is done <b>before</b> the
+      offset parameter is applied.</p>
 
+    <p>Input specifiers (@memory:offset#range) can be defined either
+    by appending them to the filename parameter or by using the -i
+    option. The parameter for the first -i option will be split by
+    comma and all specifiers will be used for loading the first
+    file. Subsequent uses of -i option define specifiers for second
+    file, and so on. If specifiers are provided via the -i option then
+    any specifiers included in filename parameter are ignored.</p>
+    
     <a name="options">
-    <h3>Options: </h3>
+      <h3>Options: </h3>
     </a>
     
     <dl>
 
-      <dt><span style="font-family: monospace;"><b>-a
-	nr</b></span></dt>
+      <dt><tt><b>-a nr</b></tt></dt>
       
       <dd>Set size of variable space. Default is 256.</dd>
 
 
-      <dt><b><span style="font-family: monospace;">-b</span></b></dt>
+      <dt><b><tt>-b</tt></b></dt>
 
       <dd>Black &amp; white (non-color) console.</dd>
 
@@ -103,10 +115,10 @@
         interface of the computer.</dd>
 
       
-      <dt><span style="font-family: monospace;"><b>-C cfg_file</b></span></dt>
+      <dt><tt><b>-C cfg_file</b></tt></dt>
 
       <dd>Read and execute initial commands from specified file
-      (before input files).</dd>
+	(before input files).</dd>
 
       <!--       
 	   <dt><tt>-d portnum</tt></dt>
@@ -149,6 +161,15 @@
         used to determine CPU type using <tt><b>-t</b></tt> option. </dd>
 
 
+      <dt><tt><b><a name="i-option">-i inspec</a></b></tt></dt>
+
+      <dd>Comma separated list of input specifiers:
+      @mem:offset#range,...  This option can be used several times,
+      given specifiers will be used when file parameters are
+      loaded. Specifiers in first -i option will be used to load first
+      file parameter, and so on.</dd>
+
+      
       <dt><tt><b>-I if=memory[address],in=file,out=file</b></tt></dt>
 
       <dd>Specify options (as comma separated list) for the simulator interface.
@@ -175,8 +196,8 @@
       <dt><b><tt>-m</tt></b></dt>
 
       <dd>Return value of the simulated main() function. The simulated
-      application must be compiled by
-      the <a href="https://sdcc.sourceforge.net/">SDCC</a>.</dd>
+	application must be compiled by
+	the <a href="https://sdcc.sourceforge.net/">SDCC</a>.</dd>
       
 
       <dt><tt><b>-o colorsetting,...<br>
@@ -327,7 +348,7 @@
         as DS390, but it starts already in 24 bit flat mode (ACON =
         0xFA instead of 0xF8). DS390F is needed to run programs
         compiled with sdcc -mds390.<br>
-        <tt>-H</tt> option can be used to list all of recognized CPU
+        <span class="nobrk"><tt>-H</tt></span> option can be used to list all of recognized CPU
         types.<br>  See <a href="cpu_types.html">how to select CPU
           type</a>. </dd>
 
@@ -336,7 +357,7 @@
 
       <dd>Connect console of standard io to uart as
 	a <a href="display.html#uart_display">display</a> of it. ID of
-	the uart must be specified as parameter to -U option.</dd>
+	the uart must be specified as parameter to <span class="nobrk"><tt>-U</tt></span> option.</dd>
 
 
       <dt><tt><b>-u hw</b></tt></dt>
@@ -363,7 +384,7 @@
       </dd>
 
 
-      <dt><span style="font-family: monospace;"><b>-w</b></span></dt>
+      <dt><tt><b>-w</b></tt></dt>
 
       <dd>Writable flash.</dd>
 
@@ -396,8 +417,8 @@
         serve multiple consoles. You can get a console by simply
         telnet into machine running <i>&micro;Csim</i> to
         port <b>portnumber</b>.  This option is not available on
-        platforms which doesn't support BSD networking. If -Z option
-        is used, instead of <a href="#lczoption">-z</a>, then default
+        platforms which doesn't support BSD networking. If <span class="nobrk"><tt>-Z</tt></span> option
+        is used, instead of <span class="nobrk"><a href="#lczoption"><tt>-z</tt></a></span>, then default
         console on stdio will not be opened, and the only way to open
         a console is using telnet to portnum.
 
