@@ -686,7 +686,6 @@ enable_feapp
 enable_dlso
 SILENT
 VERSIONP
-VERSIONLO
 VERSION
 SED
 AWK
@@ -3297,13 +3296,9 @@ VERSIONP=`echo $VERSION|$AWK 'BEGIN {FS="."} {print $3}'`
 
 
 
-
 cat >>confdefs.h <<_ACEOF
 #define VERSIONSTR "${VERSION}"
 _ACEOF
-
-
-printf '%s\n' "#define VERSIONLO $VERSIONLO" >>confdefs.h
 
 
 printf '%s\n' "#define VERSIONP $VERSIONP" >>confdefs.h
