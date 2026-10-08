@@ -5,6 +5,7 @@ local_clean:
 	rm -f *core *[%~] *.[oa] *.so ucsim.map
 	rm -f  ucsim$(EXEEXT) relay$(EXEEXT) ucsim.exe relay.exe
 	rm -f .[a-z]*~ ptt
+	rm -f version.h
 
 sub_clean:
 

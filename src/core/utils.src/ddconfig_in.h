@@ -3,6 +3,8 @@
 #ifndef DDCONFIG_HEADER
 #define DDCONFIG_HEADER
 
+#include "version.h"
+
 /* Define to be the type of length parameter of accept (without the \*'). */
 //#undef ACCEPT_SOCKLEN_T
 
@@ -257,7 +259,7 @@
 #undef UCSOCKET_T
 
 /* XXX */
-#undef VERSIONSTR
+//#undef VERSIONSTR
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */

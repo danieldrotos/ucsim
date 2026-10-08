@@ -17,9 +17,14 @@ top_srcdir	= @top_srcdir@
 
 # Compiling entire program or any subproject
 # ------------------------------------------
-all: libs
+all: prep libs
+
+prep: $(srcdir)/version.h
 
 include $(top_srcdir)/src/lib.mk
+
+$(srcdir)/version.h: $(top_srcdir)/.version
+	$(SED) 's/^/#define VERSIONSTR "/' $?|$(SED) 's/$$/"/' >$@
 
 
 # Performing self-test
