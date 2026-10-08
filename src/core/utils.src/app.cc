@@ -146,10 +146,24 @@ cl_app::read_input_files(void)
 	  long l;
 	  if ((iopt != NULL) && (iopt->nempty()))
 	    {
+	      int p;
+	      if ((p= fname->pos('@')) >= 0) fname->keep(0, p);
+	      if ((p= fname->pos(':')) >= 0) fname->keep(0, p);
+	      if ((p= fname->pos('#')) >= 0) fname->keep(0, p);
+	      iopt->start_parse();
+	      chars t= iopt->token(",");
+	      while (t)
+		{
+		  chars fi= *fname + t;
+		  if (sim->uc->read_file(fi, NULL))
+		    read_some= true;
+		  t= iopt->token(",");
+		}
 	    }
-	  if ((l= sim->uc->read_file(fname, NULL)) >= 0)
+	  else
 	    {
-	      read_some= true;
+	      if (sim->uc->read_file(*fname, NULL) >= 0)
+		read_some= true;
 	    }
 	}
       if (read_some)
