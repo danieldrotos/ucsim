@@ -29,9 +29,9 @@
       This command (without a subcommand) prints out configuration of
       the simulator:
 
-<!-- @BLOCK@ conf 50d44a3fd60ceecbfee9ae7cdbd59b24 -->
+<!-- @BLOCK@ conf e57ee06b7e80aa61d1528445fcd3adde -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
-</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.9
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.10
 Type of microcontroller: C52 CMOS cmos
 Controller has 14 hardware element(s).
    on cpu[0]
@@ -130,9 +130,9 @@ DS390F              Dallas DS80C390F              cmos
 
     Print out the version of the program.
 
-<!-- @BLOCK@ version 5995053aae65c1b68288c3b9c27797ba -->
+<!-- @BLOCK@ version 7dbce7756f5bd0633de2f2b27320b732 -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">version
-</span><span style="color: #ffffff; background-color: #000316">0.9.9
+</span><span style="color: #ffffff; background-color: #000316">0.9.10
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
       <!-- @END@ -->
@@ -215,9 +215,9 @@ Alternate name(s) of command: run start
 	the simulator. See for more information
 	about <a href="mulcons.html">using multiple consoles</a>. </p>
       
-<!-- @BLOCK@ quit d85c841984ac9267740444e44ab286ab -->
+<!-- @BLOCK@ quit dec8fcbfbbddfde0bf4283db78495e97 -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -245,19 +245,19 @@ $
       current one) to execute the file. This means the "quit" command
       in the file will not exit the simulator:
 
-<!-- @BLOCK@ exec 4a1f79cc8aaf4c8661d5d523bc8afb0c -->
+<!-- @BLOCK@ exec bc14575b3812dde9e7d636bb59dbdb0d -->
 <pre class="eg">$ cat test.cmd
 conf
 quit
 get opt
 $ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">exec "test.cmd"
 </span><span style="color: #aa5500; background-color: #000316">2</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
-</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.9
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.10
 Type of microcontroller: C52 CMOS cmos
 Controller has 14 hardware element(s).
    on cpu[0]
@@ -436,9 +436,9 @@ Controller has 14 hardware element(s).
       <p>Parameters are interpreted as SFR names or addresses, and the
         values of addressed locations are dumped out. </p>
       
-<!-- @BLOCK@ get_sfr1 8fcf23b0514b0df45257bc89e07aae5d -->
+<!-- @BLOCK@ get_sfr1 85f44525fd5f0ac2af3020b95cfffe43 -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -456,9 +456,9 @@ Warning: Invalid address 256
 
 Some microcontrollers do not have SFR address space.
 
-<!-- @BLOCK@ get_sfr2 296b24b9abd32d173a23db78b335c47c -->
+<!-- @BLOCK@ get_sfr2 8833e5e7e891672b72e9f5d3a67e059e -->
 <pre class="eg">$ ucsim_z80
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -480,9 +480,9 @@ under certain conditions; type `show c' for details.
           program. In this way, you can figure out which options can
           be used.
 
-<!-- @BLOCK@ get_option1 eb41a0a66a41c5ec513c93976825cad1 -->
+<!-- @BLOCK@ get_option1 7aef8dadfaafe52a91a5bac9ed05538f -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -558,11 +558,11 @@ under certain conditions; type `show c' for details.
           used as default value when a new instance of a console is
           created: </p>
 	
-<!-- @BLOCK@ get_option2 8ed89cc7f0ea6b2fa83b4c4aad4ef2f0 -->
+<!-- @BLOCK@ get_option2 590211d49685c1b985b5271f982efa81 -->
 <pre class="eg">$ cat getopt.cmd
 get opt debug
 $ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -619,9 +619,9 @@ under certain conditions; type `show c' for details.
           of <tt>1</tt>, <tt>t</tt>, <tt>T</tt>, <tt>y</tt>, <tt>Y</tt>,
           then value will be TRUE; otherwise it will be FALSE. </p>
 
-<!-- @BLOCK@ set_option dede2d18accd148bab2b95f27c3881e2 -->
+<!-- @BLOCK@ set_option 45d9e8e5535d9c098ea94b86c5cd6df8 -->
 <pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.9, Copyright (C) 1997 Daniel Drotos.
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
@@ -743,35 +743,52 @@ under certain conditions; type `show c' for details.
           that are connected to ports of the simulated controller. The
           first parameter specifies the port element (as an array),
           second is the new value. </p>
-      
-	<pre>0&gt; <font color="#118811">conf</font>
-Type of microcontroller: 51 CMOS
-Controller has 9 hardware element(s).
-  timer0[0]
-  timer1[1]
-  uart[0]
-  port[0]
-  port[1]
-  port[2]
-  port[3]
-  irq[0]
-  _51_dummy[0]
-0&gt; <font color="#118811">set hw port[0] 12</font>
-0&gt; <font color="#118811">i h po[0]</font>
-port[0]
+
+<!-- @BLOCK@ set_hardware 0818596769b873fe569c447bbdbca9a4 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.10
+Type of microcontroller: C52 CMOS cmos
+Controller has 14 hardware element(s).
+   on cpu[0]
+   on simif[0]
+  off vcd[0]
+   on timer0[0]
+   on timer1[1]
+   on uart[0]
+   on dreg[0]
+   on dport[0]
+   on port[0]
+   on port[1]
+   on port[2]
+   on port[3]
+   on irq[0]
+   on timer2[2]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw port[0] 12
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw port[0]
+</span><span style="color: #ffffff; background-color: #000316">port[0]
 P0    11111111 0xff 255 . (Value in SFR register)
 Pin0  00001100 0x0c  12 . (Output of outside circuits)
 Port0 00001100 0x0c  12 . (Value on the port pins)
-0&gt; <font color="#118811">set hw port[0] 23</font>
-0&gt; <font color="#118811">i h po[0]</font>
-port[0]
+Configuration memory of port
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn/get on/off state (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x01 </span><span style="color: #F5F1DE; background-color: #000316">0000000c </span><span style="color: #00aa00; background-color: #000316">.</span> Outside value of port pins (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x02 </span><span style="color: #F5F1DE; background-color: #000316">0000000c </span><span style="color: #00aa00; background-color: #000316">.</span> Value of the port (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x03 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Value of output register (int, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw port[0] 23
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw port[0]
+</span><span style="color: #ffffff; background-color: #000316">port[0]
 P0    11111111 0xff 255 . (Value in SFR register)
 Pin0  00010111 0x17  23 . (Output of outside circuits)
 Port0 00010111 0x17  23 . (Value on the port pins)
-0&gt; <font color="#118811">set hw irq[0] 12</font>
-Nothing to do
-0&gt; 
-	</pre>
+Configuration memory of port
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn/get on/off state (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x01 </span><span style="color: #F5F1DE; background-color: #000316">00000017 </span><span style="color: #00aa00; background-color: #000316">.</span> Outside value of port pins (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x02 </span><span style="color: #F5F1DE; background-color: #000316">00000017 </span><span style="color: #00aa00; background-color: #000316">.</span> Value of the port (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x03 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Value of output register (int, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
 
     </blockquote>
 
@@ -781,17 +798,38 @@ Nothing to do
 
     The state of the simulator and the simulated microcontroller:
 
-    <pre>&gt; <font color="#118811">state</font>
-CPU state= OK PC= 0x009c6c XTAL= 1.10592e+07
-Operation since last reset= (51682412 vclks)
-Inst= 51682412 Fetch= 51682412 Read= 0 Write= 0
-Total time since last reset= 56.079 sec (620188944 clks)
-Time in isr = 0 sec (0 clks)   0%
-Time in idle= 0 sec (0 clks)   0%
-Max value of stack pointer= 0x000007, avg= 0x000003
+<!-- @BLOCK@ state 0545b75facc98c680cff6fbe095d56b2 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step 10000
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x000197: (109) stepped 204816 ticks
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 09</span><span style="color: #F5F1DE; background-color: #000316"> ce</span>
+<span style="color: #ffffff; background-color: #000316">@R0 00 .  ACC= 0x5d  93 ]  B= 0x00
+@R1 00 .  PSW= 0x01 CY=0 AC=0 OV=0 P=1
+SP </span><span style="color: #ffff00; background-color: #000316">0x28</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 23</span><span style="color: #F5F1DE; background-color: #000316"> d9</span><span style="color: #F5F1DE; background-color: #000316"> 29</span><span style="color: #F5F1DE; background-color: #000316"> 81</span><span style="color: #F5F1DE; background-color: #000316"> 02</span><span style="color: #F5F1DE; background-color: #000316"> 2d</span><span style="color: #F5F1DE; background-color: #000316"> 00</span><span style="color: #F5F1DE; background-color: #000316"> 00</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0393 @DPTR= 0x2a  42 *
+</span><span style="color: #ffff00; background-color: #000316">0x0197</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">60</span> <span style="color: #F5F1DE; background-color: #000316">05</span>   <span style="color: #00aa00; background-color: #000316"> JZ     0x019e</span>
+<span style="color: #ffffff; background-color: #000316">F 0x000197
+</span>Simulated 204816 ticks (1.852e-02 sec)
+Host usage: 0.005086 sec, rate=3.641230
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">state
+</span><span style="color: #ffffff; background-color: #000316">CPU state= OK PC= 0x000197 frequency= 11059200 HZ
+Operation since last reset= 28575 vclks
+Inst= 10000 Fetch= 16351 Read= 7115 Write= 5109
+Total time since last reset= 0.018519965277780 sec (204816 clks)
+Time in isr = 0.000000000000000 sec (0 clks) 0.00%
+Time in idle= 0.000000000000000 sec (0 clks) 0.00%
+Most value of stack pointer= 0x000030
 Simulation: stopped
-&gt; 
-    </pre>
+Runtime: 0.061692 sec
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+
+
 
     The "CPU state" in the first line is an internal piece of
     information. PC is the value of the program counter. First line
@@ -815,69 +853,85 @@ Simulation: stopped
       
     Reset command. It resets the microcontroller. It has same effect
       as active signal on the RST pin.
-      
-      <pre>$ <font color="#118811">ucsim_51 -V remoansi.hex</font>
-ucsim 0.2.24, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-This is free software, and you are welcome to redistribute it
-under certain conditions; type `show c' for details.
-58659 bytes read from remoansi.hex
-&gt; <font color="#118811">i r</font>
-000000 00 00 00 00 00 00 00 00 ........
-000000 00 .  ACC= 0x00   0 .  B= 0x00   DPTR= 0x0000 @DPTR= 0x00   0 .
-000000 00 .  PSW= 0x00 CY=0 AC=0 OV=0 P=0
-   000000 02 01 60 LJMP  0160
-&gt; <font color="#118811">s</font>
-000000 00 00 00 00 00 00 00 00 ........
-000000 00 .  ACC= 0x00   0 .  B= 0x00   DPTR= 0x0000 @DPTR= 0x00   0 .
-000000 00 .  PSW= 0x00 CY=0 AC=0 OV=0 P=0
-   000160 c2 90    CLR   P1.0
-&gt; <font color="#118811">s</font>
-000000 00 00 00 00 00 00 00 00 ........
-000000 00 .  ACC= 0x00   0 .  B= 0x00   DPTR= 0x0000 @DPTR= 0x00   0 .
-000000 00 .  PSW= 0x00 CY=0 AC=0 OV=0 P=0
-   000162 c2 97    CLR   P1.7
-&gt; <font color="#118811">res</font>
-&gt; <font color="#118811">i r</font>
-000000 00 00 00 00 00 00 00 00 ........
-000000 00 .  ACC= 0x00   0 .  B= 0x00   DPTR= 0x0000 @DPTR= 0x00   0 .
-000000 00 .  PSW= 0x00 CY=0 AC=0 OV=0 P=0
-   000000 02 01 60 LJMP  0160
-&gt; </pre>
+
+<!-- @BLOCK@ reset 860fbc2139c2eaaa7eb811751568050d -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info reg
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 41</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> 6b</span>
+<span style="color: #ffffff; background-color: #000316">@R0 76 v  ACC= 0x00   0 .  B= 0x00
+@R1 73 s  PSW= 0x00 CY=0 AC=0 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 6b</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> 41</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0000 @DPTR= 0x83 131 .
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">01</span> <span style="color: #F5F1DE; background-color: #000316">60</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x0160</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x000160: (109) stepped 24 ticks
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 41</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> 6b</span>
+<span style="color: #ffffff; background-color: #000316">@R0 76 v  ACC= 0x00   0 .  B= 0x00
+@R1 73 s  PSW= 0x00 CY=0 AC=0 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 6b</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> 41</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0000 @DPTR= 0x83 131 .
+</span><span style="color: #ffff00; background-color: #000316">0x0160</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">90</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0x900x90 &lt;P1&gt;.0</span>
+<span style="color: #ffffff; background-color: #000316">F 0x000160
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x000162: (109) stepped 12 ticks
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 41</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> 6b</span>
+<span style="color: #ffffff; background-color: #000316">@R0 76 v  ACC= 0x00   0 .  B= 0x00
+@R1 73 s  PSW= 0x00 CY=0 AC=0 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 6b</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> 41</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0000 @DPTR= 0x83 131 .
+</span><span style="color: #ffff00; background-color: #000316">0x0162</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">c2</span> <span style="color: #F5F1DE; background-color: #000316">97</span>   <span style="color: #00aa00; background-color: #000316"> CLR    0x970x90 &lt;P1&gt;.7</span>
+<span style="color: #ffffff; background-color: #000316">F 0x000162
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">reset
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info reg
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 41</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> 6b</span>
+<span style="color: #ffffff; background-color: #000316">@R0 76 v  ACC= 0x00   0 .  B= 0x00
+@R1 73 s  PSW= 0x00 CY=0 AC=0 OV=0 P=0
+SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 6b</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> 41</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0000 @DPTR= 0x83 131 .
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">01</span> <span style="color: #F5F1DE; background-color: #000316">60</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x0160</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+
 
       Optional parameter can be the ID of a peripheral, a hardware
       element. In this case the specified peripheral will be reseted
       only.
 
-      <pre>$ <font color="#118811">ucsim_p1516</font>
-uCsim 0.8.9, Copyright (C) 1997 Daniel Drotos.
-uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-This is free software, and you are welcome to redistribute it
-under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">conf</font>
-ucsim version 0.8.9
-Type of microcontroller: p2223-2.2.1
-Controller has 17 hardware element(s).
+<!-- @BLOCK@ reset_hardware 4998191e91f3f112b14b35d94c04c47b -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.10
+Type of microcontroller: C52 CMOS cmos
+Controller has 14 hardware element(s).
+   on cpu[0]
    on simif[0]
   off vcd[0]
-   on dreg[0]
-   on pa[0]
-   on pb[0]
-   on pc[0]
-   on pd[0]
-   on pi[0]
-   on pj[0]
+   on timer0[0]
+   on timer1[1]
    on uart[0]
-   on clock[0]
+   on dreg[0]
    on dport[0]
-   on oports[0]
-   on iports[0]
-   on n4ddr[0]
-   on boolean[0]
-   on logsys[0]
-0&gt; <font color="#118811">reset uart</font>
-0&gt; </pre>
-      
+   on port[0]
+   on port[1]
+   on port[2]
+   on port[3]
+   on irq[0]
+   on timer2[2]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">reset uart
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+<!-- @END@ -->
+
+
+
       <hr>
       
       <h3><a name="info">info</a></h3>
@@ -899,18 +953,23 @@ Controller has 17 hardware element(s).
 
       This subcommand prints out information about breakpoints:
 
-      <pre>0&gt; <font color="#118811">b 12</font>
-Breakpoint 1 at 0x00000c: MOV   R7,A
-0&gt; <font color="#118811">tb 43</font>
-Breakpoint 2 at 0x00002b: MOV   R7,A
-0&gt; <font color="#118811">b sfr w 0x80</font>
-0&gt; <font color="#118811">i b</font>
-Num Type       Disp Hit   Cnt   Address  What
-1   fetch      keep 1     1     0x00000c MOV   R7,A
-2   fetch      del  1     1     0x00002b MOV   R7,A
+<!-- @BLOCK@ info_breakpoints 373794c93841a47d701a47d0628df8e7 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">break 12
+</span><span style="color: #ffffff; background-color: #000316">Breakpoint 1 at 0x00000c (cond="")
+</span><span style="color: #ffff00; background-color: #000316">0x000c</span><span style="color: #ffffff; background-color: #000316"> F</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tbreak 43
+</span><span style="color: #ffffff; background-color: #000316">Breakpoint 2 at 0x00002b (cond="")
+</span><span style="color: #ffff00; background-color: #000316">0x002b</span><span style="color: #ffffff; background-color: #000316"> D</span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">break sfr w 0x80
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">i b
+</span><span style="color: #ffffff; background-color: #000316">Num Type       Disp Hit   Cnt   Address  Cond
+1   fetch      keep 1     1     0x00000c true  
+2   fetch      del  1     1     0x00002b true  
 3   event      keep 1     1     0x000080 write
-0&gt; 
-      </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
 
       As you see above, the command can be shortened to "i b". The
 	list of breakpoints contains 7 columns:
@@ -932,10 +991,11 @@ Num Type       Disp Hit   Cnt   Address  What
             breakpoint is activated if it reaches zero. </dd>
         <dt><b>Address</b> </dt>
         <dd>Address where the breakpoint is set. </dd>
-        <dt><b>What</b> </dt>
-        <dd>For normal breakpoints this field contains disassembled instruction
-          where the breakpoint is set. For event breakpoints it contains type of
-          event. </dd>
+        <dt><b>Cond</b> </dt>
+        <dd>If any condition was defined for a breakpoint, this field
+         shows the evaluated value of the condition expression. For
+         event breakpoints this field shows if it breaks
+         at <i>read</i> or <i>write</i> operation.</dd>
       </dl>
 
       <hr>
@@ -945,19 +1005,23 @@ Num Type       Disp Hit   Cnt   Address  What
       This subcommand prints out full register set of the CPU. Output
 	of this command depends of type of CPU.
 
-	<h5>Registers of MCS51 family</h5>
-	
-	<pre>
-0&gt; <font color="#118811">i r</font>
-     R0 R1 R2 R3 R4 R5 R6 R7
-     41 58 fc c9 8b bc 95 6b
-@R0 76 v  ACC= 0x00   0 .  B= 0x00
+
+      <h5>Registers of MCS51 family</h5>
+
+<!-- @BLOCK@ info_registers_51 a8c59ad780e5ad231a0fbf19260403aa -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info reg
+</span><span style="color: #ffffff; background-color: #000316">     R0 R1 R2 R3 R4 R5 R6 R7
+    </span><span style="color: #F5F1DE; background-color: #000316"> 41</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> 6b</span>
+<span style="color: #ffffff; background-color: #000316">@R0 76 v  ACC= 0x00   0 .  B= 0x00
 @R1 73 s  PSW= 0x00 CY=0 AC=0 OV=0 P=0
-SP 0x07 -> 6b 95 bc 8b c9 fc 58 41
-   DPTR= 0x0000 @DPTR= 0x83 131 .
-0x0000  ? ff       MOV    R7,A
-0&gt;
-	</pre>
+SP </span><span style="color: #ffff00; background-color: #000316">0x07</span> -&gt;<span style="color: #F5F1DE; background-color: #000316"> 6b</span><span style="color: #F5F1DE; background-color: #000316"> 95</span><span style="color: #F5F1DE; background-color: #000316"> bc</span><span style="color: #F5F1DE; background-color: #000316"> 8b</span><span style="color: #F5F1DE; background-color: #000316"> c9</span><span style="color: #F5F1DE; background-color: #000316"> fc</span><span style="color: #F5F1DE; background-color: #000316"> 58</span><span style="color: #F5F1DE; background-color: #000316"> 41</span>
+<span style="color: #ffffff; background-color: #000316">   DPTR= 0x0000 @DPTR= 0x83 131 .
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+
 
 	In first two lines the actual register bank is dumped
 	out. Register banks reside in internal RAM, actual register
@@ -974,17 +1038,19 @@ SP 0x07 -> 6b 95 bc 8b c9 fc 58 41
 	<p>After register values, instruction at PC is disassembled.</p>
 	
 	<h5>Registers of AVR family</h5>
-	
-	<pre>
-&gt; <font color="#118811">i r</font>
-000000 00 2c 21 23 20 35 19 14 03 00 00 00 00 00 00 00 .,!# 5..........
-000010 00 01 1e 89 01 00 10 e2 14 00 01 10 00 00 00 00 ................
-ITHSVNZC  SREG= 0x03   3 .
-00000011  SP  = 0x000000
-X= 0x1001 [X]= 0x00   0 .  Y= 0x0000 [Y]= 0x00   0 .  Z= 0x0000 [Z]= 0x00   0 .
-0x0000  ? 5a41      subi   r0,161
-&gt; 
-	</pre>
+
+<!-- @BLOCK@ info_registers_avr 5a21825b88d0e8ebfd6d96147329d3ae -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">i r
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #F5F1DE; background-color: #000316"> 04 17 b7 70 1f 72 63 12 15 a3 e0 33 71 c1 1c a7 </span><span style="color: #00aa00; background-color: #000316">...p.rc....3q...
+</span><span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #F5F1DE; background-color: #000316"> 75 32 21 90 a5 fe dd 77 d5 15 d7 f1 0c 59 ad 86 </span><span style="color: #00aa00; background-color: #000316">u2!....w.....Y..
+</span><span style="color: #ffffff; background-color: #000316">ITHSVNZC  SREG= 0xbf 191 .
+10111111  SP  = 0x001df3
+X= 0xf1d7 [X]= 0x00   0 .  Y= 0x590c [Y]= 0x00   0 .  Z= 0x86ad [Z]= 0x00   0 .
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">5a41</span>     <span style="color: #00aa00; background-color: #000316"> subi   r0,161</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+	<!-- @END@ -->
+
 
 	First two lines show first 32 bytes of internal RAM which is
 	the register set of AVR controllers.
@@ -1001,18 +1067,20 @@ X= 0x1001 [X]= 0x00   0 .  Y= 0x0000 [Y]= 0x00   0 .  Z= 0x0000 [Z]= 0x00   0 .
 
 	<h5>Registers of Z80 family</h5>
 
-	<pre>
-0&gt; <font color="#118811">i r</font>
-SZ-A--P-C  Flags= 0x00   0 .  A= 0x00   0 .
-00-0--0-0
-BC= 0x0000 [BC]= 00   0 .  DE= 0x0000 [DE]= 00   0 .  HL= 0x0000 [HL]= 00   0 .
-IX= 0x0000 [IX]= 00   0 .  IY= 0x0000 [IY]= 00   0 .  SP= 0x0000 [SP]= 00   0 .
+<!-- @BLOCK@ info_registers_z80 57b5d5f587c8589ab0d30c224d47b255 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">i r
+</span><span style="color: #ffffff; background-color: #000316">SZ-A-PNC  Flags= 0xff 255 .  A= 0xff 255 .
+11111111
+BC= 0x0000 [BC]= 41  65 A  DE= 0x0000 [DE]= 41  65 A  HL= 0x0000 [HL]= 41  65 A
+IX= 0x0000 [IX]= 41  65 A  IY= 0x0000 [IY]= 41  65 A  AF= 0xffff [AF]= 00   0 .
 SP limit= 0xf000
-SP= 0xffff -> 0041 58fc c98b bc95 6b72 266b c55e af85 8cd8 65df a8d9 9fa6
-0x0000  ? 41          LD     B,C
-0&gt; 
-	</pre>
-	
+</span><span style="color: #ffffff; background-color: #000316">SP= </span><span style="color: #ffff00; background-color: #000316">0xffff -&gt;</span><span style="color: #F5F1DE; background-color: #000316"> 0041</span><span style="color: #F5F1DE; background-color: #000316"> 58fc</span><span style="color: #F5F1DE; background-color: #000316"> c98b</span><span style="color: #F5F1DE; background-color: #000316"> bc95</span><span style="color: #F5F1DE; background-color: #000316"> 6b72</span><span style="color: #F5F1DE; background-color: #000316"> 266b</span><span style="color: #F5F1DE; background-color: #000316"> c55e</span><span style="color: #F5F1DE; background-color: #000316"> af85</span><span style="color: #F5F1DE; background-color: #000316"> 8cd8</span><span style="color: #F5F1DE; background-color: #000316"> 65df</span><span style="color: #F5F1DE; background-color: #000316"> a8d9</span><span style="color: #F5F1DE; background-color: #000316"> 9fa6</span>
+<span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">41</span>         <span style="color: #00aa00; background-color: #000316"> LD     B,C</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+	<!-- @END@ -->
+
+
 	<h5>Registers of XA family</h5>
 
 	<pre>
@@ -1315,6 +1383,31 @@ timer #3("unnamed") ON: 0 sec (0 clks)
     <hr>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
