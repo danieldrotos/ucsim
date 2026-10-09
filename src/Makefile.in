@@ -29,6 +29,8 @@ sims: pkgs
 
 preps: utils_prep
 
+prep: preps
+
 apps: $(APPS)
 
 libs: utils_lib cmd_lib sim_lib gui_lib motorola_lib
