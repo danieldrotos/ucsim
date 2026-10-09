@@ -798,7 +798,7 @@ Configuration memory of port
 
     The state of the simulator and the simulated microcontroller:
 
-<!-- @BLOCK@ state df24deb15190d0ae4173688939f083bc -->
+<!-- @BLOCK@ state 79d3914e6a2399cef033c8ba639acb62 -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
 </span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
 55755 words read from remo.hex
@@ -814,7 +814,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x28</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0197</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">60</span> <span style="color: #F5F1DE; background-color: #000316">05</span>   <span style="color: #00aa00; background-color: #000316"> JZ     0x019e</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000197
 </span>Simulated 204816 ticks (1.852e-02 sec)
-Host usage: 0.003251 sec, rate=5.696565
+Host usage: 0.001796 sec, rate=10.311744
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">state
 </span><span style="color: #ffffff; background-color: #000316">CPU state= OK PC= 0x000197 frequency= 11059200 HZ
 Operation since last reset= 28575 vclks
@@ -824,7 +824,7 @@ Time in isr = 0.000000000000000 sec (0 clks) 0.00%
 Time in idle= 0.000000000000000 sec (0 clks) 0.00%
 Most value of stack pointer= 0x000030
 Simulation: stopped
-Runtime: 0.039484 sec
+Runtime: 0.036213 sec
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
     <!-- @END@ -->
@@ -1083,8 +1083,12 @@ SP limit= 0xf000
 
 	<h5>Registers of XA family</h5>
 
-<!-- @BLOCK@ info_registers_xa 6c4eec8c803b0776bfaf46cd2fd542b1 -->
-<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+<!-- @BLOCK@ info_registers_xa 362ac4e568937b84951865ed04383f84 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">i r
+</span><span style="color: #ffffff; background-color: #000316">CA---VNZ | R0:0d07 R1:b242 R2:3ecd R3:ecc3
+01---001 | R4:64ef R5:4773 R6:3bb3 SP:0100 ES:0000  DS:0000
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">41</span> <span style="color: #F5F1DE; background-color: #000316">58</span>            <span style="color: #00aa00; background-color: #000316"> CMP   R2h,R4l</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
 	<!-- @END@ -->
 
@@ -1120,52 +1124,103 @@ SP= $00ff [SP+1]= 00   0 .  Limit= $0080
           of the CPU too because requested unit can be different in
           different type of controller even in the same CPU
         family. </p>
-      
-	<pre>$ <font color="#118811">ucsim_51 -t 51</font>
-ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+
+<!-- @BLOCK@ info_hardware 07dbd8bc7885aced7fb8bf06d711186c -->
+<pre class="eg">$ ucsim_51 -t 51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">conf</font>
-ucsim version 0.5.0-pre3
-Type of microcontroller: 51 CMOS
-Controller has 8 hardware element(s).
-  timer0[0]
-  timer1[1]
-  uart[0]
-  port[0]
-  port[1]
-  port[2]
-  port[3]
-  irq[0]
-  _51_dummy[0]
-0&gt; <font color="#118811">i h port[2]</font>
-port[2]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.10
+Type of microcontroller: 51 HMOS hmos
+Controller has 13 hardware element(s).
+   on cpu[0]
+   on simif[0]
+  off vcd[0]
+   on timer0[0]
+   on timer1[1]
+   on uart[0]
+   on dreg[0]
+   on dport[0]
+   on port[0]
+   on port[1]
+   on port[2]
+   on port[3]
+   on irq[0]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw port[2]
+</span><span style="color: #ffffff; background-color: #000316">port[2]
 P2    11111111 0xff 255 . (Value in SFR register)
 Pin2  11111111 0xff 255 . (Output of outside circuits)
 Port2 11111111 0xff 255 . (Value on the port pins)
-0&gt; <font color="#118811">i h t[0]</font>
-timer0[0] 0x0000 13 bit timer OFF irq=0 dis prio=0
-0&gt; <font color="#118811">i h u</font>
-uart[0] Shift, fixed clock MultiProc=none irq=dis prio=0
-Receiver OFF RB8=0 irq=0
-Transmitter TB8=0 irq=0
-0&gt; 
-	</pre>
-
+Configuration memory of port
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn/get on/off state (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x01 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Outside value of port pins (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x02 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Value of the port (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x03 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Value of output register (int, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw timer0
+</span><span style="color: #ffffff; background-color: #000316">timer0[0] 0x0000 13 bit timer OFF irq=0 dis prio=0
+Configuration memory of timer0
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn ticking of this peripheral on/off (bool, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw uart[0]
+</span><span style="color: #ffffff; background-color: #000316">uart[0] on
+Input: Output: 
+Shift, fixed clock MultiProc=none irq=dis prio=0
+Receiver OFF RB8=0 irq=0 buf=0x00
+Transmitter TB8=0 irq=0 buf=0x00
+Configuration memory of mcs51_uart
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn ticking of UART on/off (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x01 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Check input file at every cycle (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x02 </span><span style="color: #F5F1DE; background-color: #000316">00000018 </span><span style="color: #00aa00; background-color: #000316">.</span> Escape char on display (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x03 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Not used
+<span style="color: #ffff00; background-color: #000316">0x04 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Received char written by simulator (int, R)
+<span style="color: #ffff00; background-color: #000316">0x05 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Flow-control simulation on/off (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x06 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> UART enabled to receive by flow-control (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x07 </span><span style="color: #F5F1DE; background-color: #000316">0000000a </span><span style="color: #00aa00; background-color: #000316">.</span> Characters to send as new line (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x08 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Not used
+<span style="color: #ffff00; background-color: #000316">0x09 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Not used
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+      
 	Timer #2 differs a little bit from other timers of MCS51:
 
-	<pre>$ <font color="#118811">ucsim_51 -t 52</font>
-ucsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
-ucsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+<!-- @BLOCK@ info_hardware_t2 384a4d2e36691b633651fcaef371028d -->
+<pre class="eg">$ ucsim_51 -t 52
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">i h timer0</font>
-timer0[0] 0x0000 13 bit timer OFF irq=0 dis prio=0
-0&gt; <font color="#118811">i h t[2]</font>
-timer2[2] 0x0000 reload 0x0000 timer OFF irq=0 dis prio=0
-0&gt; 
-	</pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.10
+Type of microcontroller: C52 HMOS hmos
+Controller has 14 hardware element(s).
+   on cpu[0]
+   on simif[0]
+  off vcd[0]
+   on timer0[0]
+   on timer1[1]
+   on uart[0]
+   on dreg[0]
+   on dport[0]
+   on port[0]
+   on port[1]
+   on port[2]
+   on port[3]
+   on irq[0]
+   on timer2[2]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw timer0
+</span><span style="color: #ffffff; background-color: #000316">timer0[0] 0x0000 13 bit timer OFF irq=0 dis prio=0
+Configuration memory of timer0
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn ticking of this peripheral on/off (bool, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw timer2
+</span><span style="color: #ffffff; background-color: #000316">timer2[2] 0x0000 reload 0x0000 timer OFF irq=0 dis prio=0
+Configuration memory of timer2
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn ticking of this peripheral on/off (bool, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+<!-- @END@ -->
+
 
 	<hr>
 
@@ -1178,30 +1233,48 @@ timer2[2] 0x0000 reload 0x0000 timer OFF irq=0 dis prio=0
 	This command shows information
 	about <a href="memory.html">memory system</a>: chips, address
 	     spaces and address decoders.
-	     
-	<pre>$ <font color="#118811">ucsim_51</font>
-uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+
+<!-- @BLOCK@ info_memory 58f292a7727e8196a3524889d2f0a812 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">i m</font>
-Memory chips:
-  0x000000-0x010000    65536 rom_chip (8,%02x,0x%04x)
-  0x000000-0x000080      128 iram_chip (8,%02x,0x%02x)
-  0x000000-0x010000    65536 xram_chip (8,%02x,0x%04x)
-  0x000000-0x000080      128 sfr_chip (8,%02x,0x%02x)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info mem
+</span><span style="color: #ffffff; background-color: #000316">Memory chips:
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
+  0x000000-0x00ffff    65536 rom_chip (8,%02x,0x%04x)
+  0x000000-0x0000ff      256 iram_chip (8,%02x,0x%02x)
+  0x000000-0x00ffff    65536 xram_chip (8,%02x,0x%04x)
+  0x000000-0x00007f      128 sfr_chip (8,%02x,0x%02x)
 Address spaces:
-  0x000000-0x010000    65536 rom (8,%02x,0x%04x)
-  0x000000-0x000080      128 iram (8,%02x,0x%02x)
-  0x000080-0x000080      128 sfr (8,%02x,0x%02x)
-  0x000000-0x010000    65536 xram (8,%02x,0x%04x)
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
+  0x000000-0x00ffff    65536 rom (8,%02x,0x%04x)
+  0x000000-0x0000ff      256 iram (8,%02x,0x%02x)
+  0x000080-0x0000ff      128 sfr (8,%02x,0x%02x)
+  0x000000-0x00ffff    65536 xram (8,%02x,0x%04x)
+  0x000000-0x000007        8 regs (8,%02x,0x%01x)
+  0x000000-0x0000ff      256 bits (1,%01x,0x%02x)
+  0x000000-0x000001        2 dptr (8,%02x,0x%01x)
 Address decoders:
- 0 rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
- 0 iram 0x00 0x7f -&gt; iram_chip 0x00 activated
- 0 sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
- 0 xram 0x0000 0xffff -&gt; xram_chip 0x0000 activated
-0&gt; 
-	</pre>
+  variables 0x00 0xff -&gt; variable_storage 0x00 activated
+  rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
+  iram 0x00 0xff -&gt; iram_chip 0x00 activated
+  sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
+  xram 0x0000 0xffff -&gt; xram_chip 0x0000 activated
+  regs 0x0 0x7 -&gt; banked
+    bank selector: sfr[0xd0] mask=0x18 banks=4 act=0
+    banks:
+      *   0. iram_chip 0x00
+          1. iram_chip 0x08
+          2. iram_chip 0x10
+          3. iram_chip 0x18
+  bits 0x00 0x7f -&gt; bander(8/1) iram_chip 0x20 activated
+  bits 0x80 0xff -&gt; bander(8/8) sfr_chip 0x00 activated
+  dptr 0x0 0x1 -&gt; sfr_chip 0x02 activated
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+	     <!-- @END@ -->
 
 	First column shows address ranges, next one is the size
 	followed by the name of the memory. This name can be used in
@@ -1220,23 +1293,30 @@ Address decoders:
 
       <p>Memory system of other controller family can be different. </p>
 
-      <pre>$ <font color="#118811">savr</font>
-uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+<!-- @BLOCK@ info_memory_avr ae3802bb6fb74f4ae563da4dfdd18d1e -->
+<pre class="eg">$ ucsim_avr
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">i m</font>
-Memory chips:
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info mem
+</span><span style="color: #ffffff; background-color: #000316">Memory chips:
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom_chip (16,%04x,0x%04x)
   0x000000-0x00007f      128 iram_chip (8,%02x,0x%02x)
 Address spaces:
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom (16,%04x,0x%04x)
   0x000000-0x00ffff    65536 iram (8,%02x,0x%04x)
 Address decoders:
- 0 rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
- 0 iram 0x0000 0x007f -&gt; iram_chip 0x00 activated
-0&gt; 
-	</pre>
+  variables 0x00 0xff -&gt; variable_storage 0x00 activated
+  rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
+  iram 0x0000 0x007f -&gt; iram_chip 0x00 activated
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
+
+
 
       <hr>
 
@@ -1384,6 +1464,15 @@ timer #3("unnamed") ON: 0 sec (0 clks)
     <hr>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
 
 
 
