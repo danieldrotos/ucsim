@@ -798,7 +798,7 @@ Configuration memory of port
 
     The state of the simulator and the simulated microcontroller:
 
-<!-- @BLOCK@ state 79d3914e6a2399cef033c8ba639acb62 -->
+<!-- @BLOCK@ state df94f29f22e88ec4712f4fccd4d4d12d -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
 </span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
 55755 words read from remo.hex
@@ -814,7 +814,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x28</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0197</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">60</span> <span style="color: #F5F1DE; background-color: #000316">05</span>   <span style="color: #00aa00; background-color: #000316"> JZ     0x019e</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000197
 </span>Simulated 204816 ticks (1.852e-02 sec)
-Host usage: 0.001796 sec, rate=10.311744
+Host usage: 0.003497 sec, rate=5.296132
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">state
 </span><span style="color: #ffffff; background-color: #000316">CPU state= OK PC= 0x000197 frequency= 11059200 HZ
 Operation since last reset= 28575 vclks
@@ -824,7 +824,7 @@ Time in isr = 0.000000000000000 sec (0 clks) 0.00%
 Time in idle= 0.000000000000000 sec (0 clks) 0.00%
 Most value of stack pointer= 0x000030
 Simulation: stopped
-Runtime: 0.036213 sec
+Runtime: 0.039994 sec
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
     <!-- @END@ -->
@@ -1336,32 +1336,23 @@ Address decoders:
 	  <li>/d List variables from debug info (cdb) file</li>
 	</ul>
 
-	<pre>0&gt; <font color="#118811">info var a</font>
-pa rom[0xf000] = 00000000
-  Data register of pa
-sim_real_time simif_0_cfg[0xa] = 00000000
-  Real time since reset in msec (int, RO)
-sim_reason simif_0_cfg[0x5] = 00000000
-  Reason of last stop (int, RO)
-sim_start simif_0_cfg[0x2] = 00000000
-  WR: start simulation, RD: true if running
-sim_xtal simif_0_cfg[0x6] = 00a8c000
+<!-- @BLOCK@ info_variables 856f7ada402723b668e635fe53e79619 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info var x
+</span><span style="color: #ffffff; background-color: #000316">cpu_movxri_addr cpu_0_cfg[0xa] = 0x000000a0,160U,160
+  Address where high address is in 'm' mode (int, RW)
+cpu_movxri_as cpu_0_cfg[0x9] = 0x00000073,115U,115,'s'
+  Address space where high address is in 'm' mode, 'i','s','x','c' (int, RW)
+cpu_movxri_mode cpu_0_cfg[0x8] = 0x0000006d,109U,109,'m'
+  Calc mode of high address for MOVX @Ri, 'm'=memory, 'e'=expr  (int, RW)
+sim_xtal simif_0_cfg[0x6] = 0x00a8c000,11059200U,11059200
   Xtal frequency in Hz (int, RW)
-0&gt; <font color="#118811">var abc</font>
-0&gt; <font color="#118811">i v a</font>
-abc variables[0x00] = 00000000
-pa rom[0xf000] = 00000000
-  Data register of pa
-sim_real_time simif_0_cfg[0xa] = 00000000
-  Real time since reset in msec (int, RO)
-sim_reason simif_0_cfg[0x5] = 00000000
-  Reason of last stop (int, RO)
-sim_start simif_0_cfg[0x2] = 00000000
-  WR: start simulation, RD: true if running
-sim_xtal simif_0_cfg[0x6] = 00a8c000
-  Xtal frequency in Hz (int, RW)
-0&gt;
-	</pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var xyz
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info var /u x
+</span><span style="color: #ffffff; background-color: #000316">xyz variables[0x00] = 0x00000000,0U,0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+	<!-- @END@ -->
+
 
 	First word is the name of the variable, followed by memory and the
 	address, last word is the actual value in hexadecimal. Predefined
@@ -1443,80 +1434,55 @@ sim_xtal simif_0_cfg[0x6] = 00a8c000
       To set value of the timer (number of xtal periods). <b>value</b>
 	is the new value.
 
-      <pre>0&gt; <font color="#118811">tim a 3</font>
-0&gt; <font color="#118811">tim g</font>
-timer #0("time") ON: 0.463255 sec (5123232 clks)
-timer #0("isr") ON: 0.0051888 sec (57384 clks)
-timer #0("idle") ON,ISR: 0 sec (0 clks)
-timer #3("unnamed") ON: 0 sec (0 clks)
-0&gt; <font color="#118811">tim a "a"</font>
-0&gt; <font color="#118811">tim g</font>
-timer #0("time") ON: 0.463255 sec (5123232 clks)
-timer #0("isr") ON: 0.0051888 sec (57384 clks)
-timer #0("idle") ON,ISR: 0 sec (0 clks)
-timer #1("a") ON: 0 sec (0 clks)
-timer #3("unnamed") ON: 0 sec (0 clks)
-0&gt; 
-      </pre>
+<!-- @BLOCK@ timer_set 4c92d3b460b5aa331ed55c9ce954e4ee -->
+<pre class="eg">$ ucsim_p1516
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">step 1000
+</span><span style="color: #E850A8; background-color: #000316">
+Stop at 0x00f688: (109) stepped 4000 ticks
+</span><span style="color: #ffffff; background-color: #000316">  F= 0x04  U=0 P=0 O=0 C=0 Z=1 S=0 
+ R0= 0x00000035  [R0]= 0x00000000  R1= 0x0000f05d  [R1]= 0x00000068
+ R2= 0x00000035  [R2]= 0x00000000  R3= 0x00000000  [R3]= 0x01f2f040
+ R4= 0x00000000  [R4]= 0x01f2f040  R5= 0x00000000  [R5]= 0x01f2f040
+ R6= 0x00000000  [R6]= 0x01f2f040  R7= 0x00000000  [R7]= 0x01f2f040
+ R8= 0x00000000  [R8]= 0x01f2f040  R9= 0x00000000  [R9]= 0x01f2f040
+R10= 0x00000000 [R10]= 0x01f2f040 R11= 0x00000000 [R11]= 0x01f2f040
+R12= 0x00000000 [R12]= 0x01f2f040 R13= 0x0000fb26 [R13]= 0x00000000
+R14= 0x0000f6b7 [R14]= 0x11f2f6af R15= 0x0000f688 [R15]= 0x11f2f686
+S0,Flag= 0x00000004 S1,Ver = 0x00020213 S2,Fea1= 0x0000000f S3,Fea2= 0x00000000 
+</span><span style="color: #ffff00; background-color: #000316">0x0f688</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">11f2f686</span><span style="color: #00aa00; background-color: #000316"> EQ jz    0xf686</span>
+<span style="color: #ffffff; background-color: #000316">F 0x00f688
+</span>Simulated 4000 ticks (1.600e-04 sec)
+Host usage: 0.000414 sec, rate=0.386572
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tim add 10
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tim get
+</span><span style="color: #ffffff; background-color: #000316">timer #1("time") ON 0.000160000000000 sec (4000 clks)
+timer #2("isr") ON,ISR 0.000000000000000 sec (0 clks)
+timer #3("idle") ON,IDLE 0.000000000000000 sec (0 clks)
+timer #4("halt") ON,HALT 0.000000000000000 sec (0 clks)
+timer #10("unnamed") ON 0.000000000000000 sec (0 clks)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tim add "a"
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tim set "a" 312
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tim get
+</span><span style="color: #ffffff; background-color: #000316">timer #1("time") ON 0.000160000000000 sec (4000 clks)
+timer #2("isr") ON,ISR 0.000000000000000 sec (0 clks)
+timer #3("idle") ON,IDLE 0.000000000000000 sec (0 clks)
+timer #4("halt") ON,HALT 0.000000000000000 sec (0 clks)
+timer #5("a") ON 0.000012480000000 sec (312 clks)
+timer #10("unnamed") ON 0.000000000000000 sec (0 clks)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+      <!-- @END@ -->
 
+      
     </blockquote>
 
     <hr>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

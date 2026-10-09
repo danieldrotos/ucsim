@@ -535,6 +535,7 @@ cl_inspec::cl_inspec(chars aspec, class cl_uc *auc)
   use_min= 0;
   use_max= 0xffffffff;
   mem= uc->default_load_mem();
+  show_on= 0;
 }
 
 void
@@ -1443,7 +1444,7 @@ cl_uc::remove_chip(class cl_memory *chip)
 
 
 static long
-ReadInt(cl_f *f, bool *ok, int bytes)
+ReadInt(class cl_inspec *is, cl_f *f, bool *ok, int bytes)
 {
   char s2[3];
   long l= 0;
@@ -1460,6 +1461,7 @@ ReadInt(cl_f *f, bool *ok, int bytes)
 	  (c > 0xff))
 	return 0;
       s2[0]= c;
+      if (is->show_on) is->show_on->dd_printf("%c", c);
       if (f->eof())
 	return(0);
       c= f->get_c();
@@ -1467,6 +1469,7 @@ ReadInt(cl_f *f, bool *ok, int bytes)
 	  (c == 0) ||
 	  (c > 0xff))
 	return 0;
+      if (is->show_on) is->show_on->dd_printf("%c", c);
       s2[1]= c;
       s2[2]= '\0';
       l= l*256 + strtol(s2, NULL, 16);
@@ -1589,6 +1592,7 @@ cl_uc::read_hex_file(cl_console_base *con, chars *in_spec_str)
   class cl_inspec is("", this);
   if ((in_spec_str != 0) && (in_spec_str->nempty()))
     is.set(*in_spec_str);
+  is.show_on= con;
   long l= read_hex_file(&is, f, false);
   return l;
 }
@@ -1624,28 +1628,31 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f, bool check)
 	 rtyp != 1)
     {
       while (((c= /*getc(f)*/f->get_c()) != ':') &&
-	     (/*c != EOF*/!f->eof()));
+	     (/*c != EOF*/!f->eof()))
+	{
+	  if (is->show_on) is->show_on->dd_printf("%c",c);
+	}
       if (c != ':')
 	{
 	  fprintf(stderr, ": not found\n");
 	  break;
 	}
       recnum++;
-      dnum= ReadInt(f, &ok, 1);
+      dnum= ReadInt(is, f, &ok, 1);
       chk = dnum;
-      addr= ReadInt(f, &ok, 2);
+      addr= ReadInt(is, f, &ok, 2);
       chk+= (addr & 0xff);
       chk+= ((addr >> 8) & 0xff);
-      rtyp= ReadInt(f, &ok, 1);
+      rtyp= ReadInt(is, f, &ok, 1);
       chk+= rtyp;
       for (i= 0; ok && (i < dnum); i++)
 	{
-	  rec[i]= ReadInt(f, &ok, 1);
+	  rec[i]= ReadInt(is, f, &ok, 1);
 	  chk+= rec[i];
 	}
       if (ok)
 	{
-	  sum= ReadInt(f, &ok, 1);
+	  sum= ReadInt(is, f, &ok, 1);
 	  if (ok)
 	    {
 	      if (((sum + chk) & 0xff) == 0)

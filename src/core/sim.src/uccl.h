@@ -273,6 +273,7 @@ public:
   long int offset;
   class cl_memory *mem;
   t_addr use_min, use_max;
+  cl_console_base *show_on;
 public:
   cl_inspec(chars aspec, class cl_uc *auc);
   virtual int init(void);
