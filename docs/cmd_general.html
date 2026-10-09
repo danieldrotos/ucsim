@@ -798,7 +798,7 @@ Configuration memory of port
 
     The state of the simulator and the simulated microcontroller:
 
-<!-- @BLOCK@ state df94f29f22e88ec4712f4fccd4d4d12d -->
+<!-- @BLOCK@ state 0b8822aa7ebfc37a4dc2d0f93f8ff7b7 -->
 <pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">load "remo.hex"
 </span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
 55755 words read from remo.hex
@@ -814,7 +814,7 @@ SP </span><span style="color: #ffff00; background-color: #000316">0x28</span> -&
 </span><span style="color: #ffff00; background-color: #000316">0x0197</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">60</span> <span style="color: #F5F1DE; background-color: #000316">05</span>   <span style="color: #00aa00; background-color: #000316"> JZ     0x019e</span>
 <span style="color: #ffffff; background-color: #000316">F 0x000197
 </span>Simulated 204816 ticks (1.852e-02 sec)
-Host usage: 0.003497 sec, rate=5.296132
+Host usage: 0.003233 sec, rate=5.728071
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">state
 </span><span style="color: #ffffff; background-color: #000316">CPU state= OK PC= 0x000197 frequency= 11059200 HZ
 Operation since last reset= 28575 vclks
@@ -824,7 +824,7 @@ Time in isr = 0.000000000000000 sec (0 clks) 0.00%
 Time in idle= 0.000000000000000 sec (0 clks) 0.00%
 Most value of stack pointer= 0x000030
 Simulation: stopped
-Runtime: 0.039994 sec
+Runtime: 0.038021 sec
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
     <!-- @END@ -->
@@ -1434,7 +1434,7 @@ sim_xtal simif_0_cfg[0x6] = 0x00a8c000,11059200U,11059200
       To set value of the timer (number of xtal periods). <b>value</b>
 	is the new value.
 
-<!-- @BLOCK@ timer_set 4c92d3b460b5aa331ed55c9ce954e4ee -->
+<!-- @BLOCK@ timer_set 0e6a4e91d92e5f46263f256d606993e3 -->
 <pre class="eg">$ ucsim_p1516
 <span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -1456,7 +1456,7 @@ S0,Flag= 0x00000004 S1,Ver = 0x00020213 S2,Fea1= 0x0000000f S3,Fea2= 0x00000000
 </span><span style="color: #ffff00; background-color: #000316">0x0f688</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">11f2f686</span><span style="color: #00aa00; background-color: #000316"> EQ jz    0xf686</span>
 <span style="color: #ffffff; background-color: #000316">F 0x00f688
 </span>Simulated 4000 ticks (1.600e-04 sec)
-Host usage: 0.000414 sec, rate=0.386572
+Host usage: 0.000448 sec, rate=0.357152
 <span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tim add 10
 </span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">tim get
 </span><span style="color: #ffffff; background-color: #000316">timer #1("time") ON 0.000160000000000 sec (4000 clks)
@@ -1483,6 +1483,8 @@ timer #10("unnamed") ON 0.000000000000000 sec (0 clks)
     <hr>
   </body>
 </html>
+
+
 
 
 

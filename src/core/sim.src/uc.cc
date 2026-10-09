@@ -1594,6 +1594,7 @@ cl_uc::read_hex_file(cl_console_base *con, chars *in_spec_str)
     is.set(*in_spec_str);
   is.show_on= con;
   long l= read_hex_file(&is, f, false);
+  con->dd_printf("\n");
   return l;
 }
 
@@ -1637,6 +1638,7 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f, bool check)
 	  fprintf(stderr, ": not found\n");
 	  break;
 	}
+      if (is->show_on) is->show_on->dd_printf("%c",c);
       recnum++;
       dnum= ReadInt(is, f, &ok, 1);
       chk = dnum;
