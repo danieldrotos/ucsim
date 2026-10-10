@@ -20,20 +20,7 @@
     meanings of these parameters, see <a href="invoke.html#inspec">how to
     invoke &micro;Csim</a>.</p>
 
-<!-- @BLOCK@ load cf2c2f9024ff947573f59233a5b4be29 -->
-<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">file "remo.hex"
-</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
-55755 words read from remo.hex
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dc 0 10
-</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">01</span> <span style="color: #F5F1DE; background-color: #000316">60</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x0160</span>
-<span style="color: #ffff00; background-color: #000316">0x0003</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">00</span> <span style="color: #F5F1DE; background-color: #000316">3c</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x003c</span>
-<span style="color: #ffff00; background-color: #000316">0x0006</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
-<span style="color: #ffff00; background-color: #000316">0x0007</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
-<span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
-<span style="color: #ffff00; background-color: #000316">0x0009</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
-<span style="color: #ffff00; background-color: #000316">0x000a</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
-<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
-</pre>
+<!-- @BLOCK@ load d41d8cd98f00b204e9800998ecf8427e -->
     <!-- @END@ -->
     
 
@@ -117,29 +104,7 @@ under certain conditions; type `show c' for details.
       (@memory:offset#range)</a>.
     </p>
 
-<!-- @BLOCK@ check b276bda0dfc492ff5b1ce9ceb6f857e2 -->
-<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">file "remo.hex"
-</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
-55755 words read from remo.hex
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump /x rom
-</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #F5F1DE; background-color: #000316"> 02 01 60 02 00 3c ff ff </span><span style="color: #00aa00; background-color: #000316">..`..&lt;..
-</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 02 2f 74 ff ff </span><span style="color: #00aa00; background-color: #000316">..../t..
-</span><span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 02 00 ac ff ff </span><span style="color: #00aa00; background-color: #000316">........
-</span><span style="color: #ffff00; background-color: #000316">0x0018</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
-</span><span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 02 01 1c ff ff </span><span style="color: #00aa00; background-color: #000316">........
-</span><span style="color: #ffff00; background-color: #000316">0x0028</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 32 ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">...2....
-</span><span style="color: #ffff00; background-color: #000316">0x0030</span><span style="color: #F5F1DE; background-color: #000316"> 02 0f a7 02 0e 9c 02 0d </span><span style="color: #00aa00; background-color: #000316">........
-</span><span style="color: #ffff00; background-color: #000316">0x0038</span><span style="color: #F5F1DE; background-color: #000316"> d2 02 08 41 c0 82 c0 83 </span><span style="color: #00aa00; background-color: #000316">...A....
-</span><span style="color: #ffff00; background-color: #000316">0x0040</span><span style="color: #F5F1DE; background-color: #000316"> c0 d0 c0 e0 c0 00 a2 90 </span><span style="color: #00aa00; background-color: #000316">........
-</span><span style="color: #ffff00; background-color: #000316">0x0048</span><span style="color: #F5F1DE; background-color: #000316"> c0 d0 c2 90 78 18 06 30 </span><span style="color: #00aa00; background-color: #000316">....x..0
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">rom[0x38]++
-</span><span style="color: #ffff00; background-color: #000316">210
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">check "remo.hex"
-</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
-Diff at 00000038, FILE=000000d2 MEM=000000d3
-55755 words read from remo.hex
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
-</pre>
+<!-- @BLOCK@ check d41d8cd98f00b204e9800998ecf8427e -->
     <!-- @END@ -->
 
     
@@ -160,17 +125,7 @@ Diff at 00000038, FILE=000000d2 MEM=000000d3
     <p><b>data</b> parameter specifies the data which is used to fill the memory
       region. </p>
 
-<!-- @BLOCK@ fill 4a1e6b2085acf0490db164bee4a3c64c -->
-<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0 0xfff 0
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 12 0x12 0x56
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump /x xram 0 0x20
-</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
-</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 56 56 56 56 </span><span style="color: #00aa00; background-color: #000316">....VVVV
-</span><span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #F5F1DE; background-color: #000316"> 56 56 56 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">VVV.....
-</span><span style="color: #ffff00; background-color: #000316">0x0018</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
-</span><span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #F5F1DE; background-color: #000316"> 00                      </span><span style="color: #00aa00; background-color: #000316">.
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
-</pre>
+<!-- @BLOCK@ fill d41d8cd98f00b204e9800998ecf8427e -->
     <!-- @END@ -->
 
 
@@ -194,21 +149,7 @@ Diff at 00000038, FILE=000000d2 MEM=000000d3
     <p>Search is done in whole memory and all matches are dumped
       out. </p>
 
-<!-- @BLOCK@ where 59e3b5f0d1a730750167f7a7539422a2 -->
-<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0 0xfff 0
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set mem xram 20 "Dani d ani D ani dani Dani"
-</span><span style="color: #ffff00; background-color: #000316">0x0014                     </span><span style="color: #F5F1DE; background-color: #000316"> 44 61 6e 69 20 64 20 61 </span><span style="color: #00aa00; background-color: #000316">Dani d a
-</span><span style="color: #ffff00; background-color: #000316">0x001c                     </span><span style="color: #F5F1DE; background-color: #000316"> 6e 69 20 44 20 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">ni D ani
-</span><span style="color: #ffff00; background-color: #000316">0x0024                     </span><span style="color: #F5F1DE; background-color: #000316"> 20 64 61 6e 69 20 44 61 </span><span style="color: #00aa00; background-color: #000316"> dani Da
-</span><span style="color: #ffff00; background-color: #000316">0x002c                     </span><span style="color: #F5F1DE; background-color: #000316"> 6e 69                   </span><span style="color: #00aa00; background-color: #000316">ni
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">where xram "dani"
-</span><span style="color: #ffff00; background-color: #000316">0x0014</span><span style="color: #F5F1DE; background-color: #000316"> 44 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">Dani
-</span><span style="color: #ffff00; background-color: #000316">0x0025</span><span style="color: #F5F1DE; background-color: #000316"> 64 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">dani
-</span><span style="color: #ffff00; background-color: #000316">0x002a</span><span style="color: #F5F1DE; background-color: #000316"> 44 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">Dani
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">Where xram "d ani"
-</span><span style="color: #ffff00; background-color: #000316">0x0019</span><span style="color: #F5F1DE; background-color: #000316"> 64 20 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">d ani
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
-</pre>
+<!-- @BLOCK@ where d41d8cd98f00b204e9800998ecf8427e -->
     <!-- @END@ -->
     
 
@@ -223,30 +164,7 @@ Diff at 00000038, FILE=000000d2 MEM=000000d3
       100) will not be listed.  Searched value is 0 (zero) by default
       but other can be specified as the last parameter. </p>
 
-<!-- @BLOCK@ hole 5ac305f4d329f212d1ed766516429ffb -->
-<pre class="eg">$ ucsim_51
-<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
-uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-This is free software, and you are welcome to redistribute it
-under certain conditions; type `show c' for details.
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill rom 0 0xffff 0
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole
-</span><span style="color: #ffffff; background-color: #000316">0x0000 65535
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole xram
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0x100 0x1ff 11
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole xram 50 11
-</span><span style="color: #ffffff; background-color: #000316">0x0100 255
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0x500 0x600 11
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole xram 50 11
-</span><span style="color: #ffffff; background-color: #000316">0x0100 255
-0x0500 256
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">rom[0x200]=1
-</span><span style="color: #ffff00; background-color: #000316">1
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole
-</span><span style="color: #ffffff; background-color: #000316">0x0000 511
-0x0201 65022
-</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
-</pre>
+<!-- @BLOCK@ hole d41d8cd98f00b204e9800998ecf8427e -->
     <!-- @END@ -->
     
     
@@ -332,82 +250,136 @@ under certain conditions; type `show c' for details.
 
       <p>Address space will be split if a "middle" area is mapped: </p>
 
-      <pre>$ <font color="#118811">ucsim_51</font>
-uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+<!-- @BLOCK@ memory_create_ad 363cd0a123934fd22dfd74d955f82421 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">i m</font>
-Memory chips:
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info mem
+</span><span style="color: #ffffff; background-color: #000316">Memory chips:
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom_chip (8,%02x,0x%04x)
-  0x000000-0x00007f      128 iram_chip (8,%02x,0x%02x)
+  0x000000-0x0000ff      256 iram_chip (8,%02x,0x%02x)
   0x000000-0x00ffff    65536 xram_chip (8,%02x,0x%04x)
   0x000000-0x00007f      128 sfr_chip (8,%02x,0x%02x)
 Address spaces:
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom (8,%02x,0x%04x)
-  0x000000-0x00007f      128 iram (8,%02x,0x%02x)
+  0x000000-0x0000ff      256 iram (8,%02x,0x%02x)
   0x000080-0x0000ff      128 sfr (8,%02x,0x%02x)
   0x000000-0x00ffff    65536 xram (8,%02x,0x%04x)
+  0x000000-0x000007        8 regs (8,%02x,0x%01x)
+  0x000000-0x0000ff      256 bits (1,%01x,0x%02x)
+  0x000000-0x000001        2 dptr (8,%02x,0x%01x)
 Address decoders:
- 0 rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
- 0 iram 0x00 0x7f -&gt; iram_chip 0x00 activated
- 0 sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
- 0 xram 0x0000 0xffff -&gt; xram_chip 0x0000 activated
-0&gt; <font color="#118811">mem cchip myram 0x1000 8</font>
-0&gt; <font color="#118811">mem createaddressdecoder xram 1234 2000 myram 15</font>
-0&gt; <font color="#118811">i m</font>
-Memory chips:
+  variables 0x00 0xff -&gt; variable_storage 0x00 activated
+  rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
+  iram 0x00 0xff -&gt; iram_chip 0x00 activated
+  sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
+  xram 0x0000 0xffff -&gt; xram_chip 0x0000 activated
+  regs 0x0 0x7 -&gt; banked
+    bank selector: sfr[0xd0] mask=0x18 banks=4 act=0
+    banks:
+      *   0. iram_chip 0x00
+          1. iram_chip 0x08
+          2. iram_chip 0x10
+          3. iram_chip 0x18
+  bits 0x00 0x7f -&gt; bander(8/1) iram_chip 0x20 activated
+  bits 0x80 0xff -&gt; bander(8/8) sfr_chip 0x00 activated
+  dptr 0x0 0x1 -&gt; sfr_chip 0x02 activated
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">mem create chip myram 0x1000 8
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">mem create addressdecoder xram 1234 2000 myram 15
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info mem
+</span><span style="color: #ffffff; background-color: #000316">Memory chips:
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom_chip (8,%02x,0x%04x)
-  0x000000-0x00007f      128 iram_chip (8,%02x,0x%02x)
+  0x000000-0x0000ff      256 iram_chip (8,%02x,0x%02x)
   0x000000-0x00ffff    65536 xram_chip (8,%02x,0x%04x)
   0x000000-0x00007f      128 sfr_chip (8,%02x,0x%02x)
   0x000000-0x000fff     4096 myram (8,%02x,0x%03x)
 Address spaces:
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom (8,%02x,0x%04x)
-  0x000000-0x00007f      128 iram (8,%02x,0x%02x)
+  0x000000-0x0000ff      256 iram (8,%02x,0x%02x)
   0x000080-0x0000ff      128 sfr (8,%02x,0x%02x)
   0x000000-0x00ffff    65536 xram (8,%02x,0x%04x)
+  0x000000-0x000007        8 regs (8,%02x,0x%01x)
+  0x000000-0x0000ff      256 bits (1,%01x,0x%02x)
+  0x000000-0x000001        2 dptr (8,%02x,0x%01x)
 Address decoders:
- 0 rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
- 0 iram 0x00 0x7f -&gt; iram_chip 0x00 activated
- 0 sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
- 0 xram 0x0000 0x04d1 -&gt; xram_chip 0x0000 activated
- 1 xram 0x04d2 0x07d0 -&gt; myram 0x00f activated
- 2 xram 0x07d1 0xffff -&gt; xram_chip 0x07d1 activated
-0&gt; 
-      </pre>
+  variables 0x00 0xff -&gt; variable_storage 0x00 activated
+  rom 0x0000 0xffff -&gt; rom_chip 0x0000 activated
+  iram 0x00 0xff -&gt; iram_chip 0x00 activated
+  sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
+  xram 0x0000 0x04d1 -&gt; xram_chip 0x0000 activated
+  xram 0x04d2 0x07d0 -&gt; myram 0x00f activated
+  xram 0x07d1 0xffff -&gt; xram_chip 0x07d1 activated
+  regs 0x0 0x7 -&gt; banked
+    bank selector: sfr[0xd0] mask=0x18 banks=4 act=0
+    banks:
+      *   0. iram_chip 0x00
+          1. iram_chip 0x08
+          2. iram_chip 0x10
+          3. iram_chip 0x18
+  bits 0x00 0x7f -&gt; bander(8/1) iram_chip 0x20 activated
+  bits 0x80 0xff -&gt; bander(8/8) sfr_chip 0x00 activated
+  dptr 0x0 0x1 -&gt; sfr_chip 0x02 activated
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+<!-- @END@ -->
+
 
       It is easy to share chip area between address spaces:
 
-      <pre>$ <font color="#118811">ucsim_51</font>
-uCsim 0.5.0-pre3, Copyright (C) 1997 Daniel Drotos, Talker Bt.
+<!-- @BLOCK@ memory_create_ad_share 8228765f0c58adbdc19c0565392b31d4 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0&gt; <font color="#118811">mem createaddressdecoder rom 0 0xfff xram_chip 0xf000</font>
-0&gt; <font color="#118811">i m</font>
-Memory chips:
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">mem create addressdecoder rom 0 0xfff xram_chip 0xf000
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info mem
+</span><span style="color: #ffffff; background-color: #000316">Memory chips:
+  0x000000-0x0000ff      256 variable_storage (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom_chip (8,%02x,0x%04x)
-  0x000000-0x00007f      128 iram_chip (8,%02x,0x%02x)
+  0x000000-0x0000ff      256 iram_chip (8,%02x,0x%02x)
   0x000000-0x00ffff    65536 xram_chip (8,%02x,0x%04x)
   0x000000-0x00007f      128 sfr_chip (8,%02x,0x%02x)
 Address spaces:
+  0x000000-0x0000ff      256 variables (32,%08x,0x%02x)
   0x000000-0x00ffff    65536 rom (8,%02x,0x%04x)
-  0x000000-0x00007f      128 iram (8,%02x,0x%02x)
+  0x000000-0x0000ff      256 iram (8,%02x,0x%02x)
   0x000080-0x0000ff      128 sfr (8,%02x,0x%02x)
   0x000000-0x00ffff    65536 xram (8,%02x,0x%04x)
+  0x000000-0x000007        8 regs (8,%02x,0x%01x)
+  0x000000-0x0000ff      256 bits (1,%01x,0x%02x)
+  0x000000-0x000001        2 dptr (8,%02x,0x%01x)
 Address decoders:
- 0 rom 0x0000 0x0fff -&gt; xram_chip 0xf000 activated
- 1 rom 0x1000 0xffff -&gt; rom_chip 0x1000 activated
- 0 iram 0x00 0x7f -&gt; iram_chip 0x00 activated
- 0 sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
- 0 xram 0x0000 0xffff -&gt; xram_chip 0x0000 activated
-0&gt; <font color="#118811">rom[0]=0xab</font>
-171
-0&gt; <font color="#118811">xram[0xf000]</font>
-171
-0&gt; 
-      </pre>
+  variables 0x00 0xff -&gt; variable_storage 0x00 activated
+  rom 0x0000 0x0fff -&gt; xram_chip 0xf000 activated
+  rom 0x1000 0xffff -&gt; rom_chip 0x1000 activated
+  iram 0x00 0xff -&gt; iram_chip 0x00 activated
+  sfr 0x80 0xff -&gt; sfr_chip 0x00 activated
+  xram 0x0000 0xffff -&gt; xram_chip 0x0000 activated
+  regs 0x0 0x7 -&gt; banked
+    bank selector: sfr[0xd0] mask=0x18 banks=4 act=0
+    banks:
+      *   0. iram_chip 0x00
+          1. iram_chip 0x08
+          2. iram_chip 0x10
+          3. iram_chip 0x18
+  bits 0x00 0x7f -&gt; bander(8/1) iram_chip 0x20 activated
+  bits 0x80 0xff -&gt; bander(8/8) sfr_chip 0x00 activated
+  dptr 0x0 0x1 -&gt; sfr_chip 0x02 activated
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">expr /x rom[0]=0xab
+</span><span style="color: #ffff00; background-color: #000316">ab
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">expr /x xram[0xf000]
+</span><span style="color: #ffff00; background-color: #000316">ab
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+<!-- @END@ -->
+
       
       <hr>
 
@@ -518,26 +490,33 @@ Address decoders:
     using <a href="invoke.html">-a option</a> of the simulator
     program.
 
-    <pre>0&gt; <font color="#118811">var abc</font>
-0&gt; <font color="#118811">i v abc</font>
-abc variables[0x00] = 00000000
-0&gt; <font color="#118811">abc=12</font>
-12
-0&gt; <font color="#118811">expr /b abc</font>
-00000000000000000000000000001100
-0&gt; 
-    </pre>
+<!-- @BLOCK@ var a3f2770ab812d4dedc0e378a9ba4772a -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var abc
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info var abc
+</span><span style="color: #ffffff; background-color: #000316">abc variables[0x00] = 0x00000000,0U,0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">abc=12
+</span><span style="color: #ffff00; background-color: #000316">12
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">expr /b abc
+</span><span style="color: #ffff00; background-color: #000316">00000000000000000000000000001100
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+    
 
     Memory location can be specified in two forms:
 
-    <pre>0&gt; <font color="#118811">var vname rom 45</font>
-0&gt; <font color="#118811">i var vname</font>
-vname rom[0x002d] = 73d4d3c4
-0&gt; <font color="#118811">var other rom[45]</font>
-0&gt; <font color="#118811">i v other</font>
-other rom[0x002d] = 73d4d3c4
-0&gt;
-    </pre>
+<!-- @BLOCK@ var2 f29f96fe6efd0bf34e92d7d1c2ee2ba9 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var vname rom 45
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info var vname
+</span><span style="color: #ffffff; background-color: #000316">vname rom[0x002d] = 0xff,255U,255
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var other rom[45]
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info var other
+</span><span style="color: #ffffff; background-color: #000316">other rom[0x002d] = 0xff,255U,255
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+
+
 
     <hr> <a name="var">
       <h3>rmvar name</h3>
@@ -545,12 +524,30 @@ other rom[0x002d] = 73d4d3c4
 
     This command removes a variable.
 
-    <pre>0&gt; <font color="#118811">rmvar abc</font>
-No such variable
-    </pre>
+<!-- @BLOCK@ rmvar 035d51d6f628d4f98067cbdaab35d966 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">var abc
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info var abc
+</span><span style="color: #ffffff; background-color: #000316">abc variables[0x00] = 0x00000000,0U,0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">rmvar abc
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info var abc
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
     
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
