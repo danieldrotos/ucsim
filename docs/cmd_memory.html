@@ -20,7 +20,20 @@
     meanings of these parameters, see <a href="invoke.html#inspec">how to
     invoke &micro;Csim</a>.</p>
 
-<!-- @BLOCK@ load d41d8cd98f00b204e9800998ecf8427e -->
+<!-- @BLOCK@ load cf2c2f9024ff947573f59233a5b4be29 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">file "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dc 0 10
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">01</span> <span style="color: #F5F1DE; background-color: #000316">60</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x0160</span>
+<span style="color: #ffff00; background-color: #000316">0x0003</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">02</span> <span style="color: #F5F1DE; background-color: #000316">00</span> <span style="color: #F5F1DE; background-color: #000316">3c</span><span style="color: #00aa00; background-color: #000316"> LJMP   0x003c</span>
+<span style="color: #ffff00; background-color: #000316">0x0006</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0007</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x0009</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #ffff00; background-color: #000316">0x000a</span><span style="color: #ffffff; background-color: #000316">  </span><span style="color: #ffffff; background-color: #000316"> </span> <span style="color: #F5F1DE; background-color: #000316">ff</span>      <span style="color: #00aa00; background-color: #000316"> MOV    R7,A</span>
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
     <!-- @END@ -->
     
 
@@ -104,7 +117,29 @@ under certain conditions; type `show c' for details.
       (@memory:offset#range)</a>.
     </p>
 
-<!-- @BLOCK@ check d41d8cd98f00b204e9800998ecf8427e -->
+<!-- @BLOCK@ check b276bda0dfc492ff5b1ce9ceb6f857e2 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">file "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump /x rom
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #F5F1DE; background-color: #000316"> 02 01 60 02 00 3c ff ff </span><span style="color: #00aa00; background-color: #000316">..`..&lt;..
+</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 02 2f 74 ff ff </span><span style="color: #00aa00; background-color: #000316">..../t..
+</span><span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 02 00 ac ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0018</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff ff ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 02 01 1c ff ff </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0028</span><span style="color: #F5F1DE; background-color: #000316"> ff ff ff 32 ff ff ff ff </span><span style="color: #00aa00; background-color: #000316">...2....
+</span><span style="color: #ffff00; background-color: #000316">0x0030</span><span style="color: #F5F1DE; background-color: #000316"> 02 0f a7 02 0e 9c 02 0d </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0038</span><span style="color: #F5F1DE; background-color: #000316"> d2 02 08 41 c0 82 c0 83 </span><span style="color: #00aa00; background-color: #000316">...A....
+</span><span style="color: #ffff00; background-color: #000316">0x0040</span><span style="color: #F5F1DE; background-color: #000316"> c0 d0 c0 e0 c0 00 a2 90 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0048</span><span style="color: #F5F1DE; background-color: #000316"> c0 d0 c2 90 78 18 06 30 </span><span style="color: #00aa00; background-color: #000316">....x..0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">rom[0x38]++
+</span><span style="color: #ffff00; background-color: #000316">210
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">check "remo.hex"
+</span><span style="color: #ffffff; background-color: #000316">Loading from remo.hex
+Diff at 00000038, FILE=000000d2 MEM=000000d3
+55755 words read from remo.hex
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
     <!-- @END@ -->
 
     
@@ -125,7 +160,17 @@ under certain conditions; type `show c' for details.
     <p><b>data</b> parameter specifies the data which is used to fill the memory
       region. </p>
 
-<!-- @BLOCK@ fill d41d8cd98f00b204e9800998ecf8427e -->
+<!-- @BLOCK@ fill 4a1e6b2085acf0490db164bee4a3c64c -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0 0xfff 0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 12 0x12 0x56
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump /x xram 0 0x20
+</span><span style="color: #ffff00; background-color: #000316">0x0000</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0008</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 56 56 56 56 </span><span style="color: #00aa00; background-color: #000316">....VVVV
+</span><span style="color: #ffff00; background-color: #000316">0x0010</span><span style="color: #F5F1DE; background-color: #000316"> 56 56 56 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">VVV.....
+</span><span style="color: #ffff00; background-color: #000316">0x0018</span><span style="color: #F5F1DE; background-color: #000316"> 00 00 00 00 00 00 00 00 </span><span style="color: #00aa00; background-color: #000316">........
+</span><span style="color: #ffff00; background-color: #000316">0x0020</span><span style="color: #F5F1DE; background-color: #000316"> 00                      </span><span style="color: #00aa00; background-color: #000316">.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
     <!-- @END@ -->
 
 
@@ -149,7 +194,21 @@ under certain conditions; type `show c' for details.
     <p>Search is done in whole memory and all matches are dumped
       out. </p>
 
-<!-- @BLOCK@ where d41d8cd98f00b204e9800998ecf8427e -->
+<!-- @BLOCK@ where 59e3b5f0d1a730750167f7a7539422a2 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0 0xfff 0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set mem xram 20 "Dani d ani D ani dani Dani"
+</span><span style="color: #ffff00; background-color: #000316">0x0014                     </span><span style="color: #F5F1DE; background-color: #000316"> 44 61 6e 69 20 64 20 61 </span><span style="color: #00aa00; background-color: #000316">Dani d a
+</span><span style="color: #ffff00; background-color: #000316">0x001c                     </span><span style="color: #F5F1DE; background-color: #000316"> 6e 69 20 44 20 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">ni D ani
+</span><span style="color: #ffff00; background-color: #000316">0x0024                     </span><span style="color: #F5F1DE; background-color: #000316"> 20 64 61 6e 69 20 44 61 </span><span style="color: #00aa00; background-color: #000316"> dani Da
+</span><span style="color: #ffff00; background-color: #000316">0x002c                     </span><span style="color: #F5F1DE; background-color: #000316"> 6e 69                   </span><span style="color: #00aa00; background-color: #000316">ni
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">where xram "dani"
+</span><span style="color: #ffff00; background-color: #000316">0x0014</span><span style="color: #F5F1DE; background-color: #000316"> 44 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">Dani
+</span><span style="color: #ffff00; background-color: #000316">0x0025</span><span style="color: #F5F1DE; background-color: #000316"> 64 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">dani
+</span><span style="color: #ffff00; background-color: #000316">0x002a</span><span style="color: #F5F1DE; background-color: #000316"> 44 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">Dani
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">Where xram "d ani"
+</span><span style="color: #ffff00; background-color: #000316">0x0019</span><span style="color: #F5F1DE; background-color: #000316"> 64 20 61 6e 69 </span><span style="color: #00aa00; background-color: #000316">d ani
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
     <!-- @END@ -->
     
 
@@ -164,7 +223,30 @@ under certain conditions; type `show c' for details.
       100) will not be listed.  Searched value is 0 (zero) by default
       but other can be specified as the last parameter. </p>
 
-<!-- @BLOCK@ hole d41d8cd98f00b204e9800998ecf8427e -->
+<!-- @BLOCK@ hole 5ac305f4d329f212d1ed766516429ffb -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill rom 0 0xffff 0
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole
+</span><span style="color: #ffffff; background-color: #000316">0x0000 65535
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole xram
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0x100 0x1ff 11
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole xram 50 11
+</span><span style="color: #ffffff; background-color: #000316">0x0100 255
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">fill xram 0x500 0x600 11
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole xram 50 11
+</span><span style="color: #ffffff; background-color: #000316">0x0100 255
+0x0500 256
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">rom[0x200]=1
+</span><span style="color: #ffff00; background-color: #000316">1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">hole
+</span><span style="color: #ffffff; background-color: #000316">0x0000 511
+0x0201 65022
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
     <!-- @END@ -->
     
     
@@ -536,6 +618,19 @@ Address decoders:
     
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

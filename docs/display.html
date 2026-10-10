@@ -18,9 +18,9 @@
 
     <p>Peripheral display can be turned on using <a href="cmd_general.html#set_console_hw">set console hw</a> command where <i>hw</i> is the name of the peripheral.</p>
 
-    <pre>
-0&gt; <font color="#118811">conf</font>
-ucsim version 0.8.4
+<!-- @BLOCK@ set_con_dport d87590cd1c945539bbf980af334bade9 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">conf
+</span><span style="color: #ffffff; background-color: #000316">ucsim version 0.9.10
 Type of microcontroller: C52 CMOS cmos
 Controller has 14 hardware element(s).
    on cpu[0]
@@ -37,8 +37,11 @@ Controller has 14 hardware element(s).
    on port[3]
    on irq[0]
    on timer2[2]
-0&gt; <font color="#118811">set con dport</font>
-    </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set con dport
+</span>
+</pre>
+    <!-- @END@ -->
+    
 
     <img src="dport_s51.png" border="0">
 
@@ -83,9 +86,9 @@ Controller has 14 hardware element(s).
       open display of them you will see the same information what you
       can check using <a href="">info hw</a> command.</p>
 
-    <pre>
-10&gt; <font color="#118811">i h irq</font>
-Interrupts are disabled. Interrupt sources:
+<!-- @BLOCK@ set_con_irq 11f0bb12baed0a2bcfe4519365ef8800 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw irq
+</span><span style="color: #ffffff; background-color: #000316">Interrupts are disabled. Interrupt sources:
   Handler  En  Pr Req Act Name
   0x000003 dis  0 no  act external #0
   0x00000b dis  0 no  act timer #0
@@ -98,9 +101,12 @@ Interrupts are disabled. Interrupt sources:
 Active interrupt service(s):
   Pr Handler  PC       Source
 Configuration memory of irq
-0x00 00000001 . Turn ticking of this peripheral on/off (bool, RW)
-10&gt; <font color="#118811">set con irq</font>
-    </pre>
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn ticking of this peripheral on/off (bool, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set con irq
+</span>
+</pre>
+    <!-- @END@ -->
+    
 
     <img src="irq_s51.png" border="0">
 
@@ -113,16 +119,19 @@ Configuration memory of irq
       pressing a special <i>escape</i> key. This
       escape key is CTRL-x by default, but you can configure it. </p>
 
-    <pre>
-$ <font color="#118811">ucsim_51</font>
-uCsim 0.8.4, Copyright (C) 1997 Daniel Drotos.
+<!-- @BLOCK@ set_con_uart 09e96e09afca0aa79656b4bf0104465a -->
+<pre class="eg">$ ucsim_51
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
 uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details.
-0> <font color="#118811">set con uart[0]</font>
-Converting console to display of uart[0]...
-uart[0] terminal display, press ^x to access control menu
-    </pre>
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set con uart[0]
+</span><span style="color: #ffffff; background-color: #000316">Converting console to display of uart[0]...
+</span>
+</pre>
+    <!-- @END@ -->
+
+
 
     <img src="uart_s51.png" border="0">
 
@@ -189,10 +198,9 @@ uart[0] terminal display, press ^u to access control menu
 
     <p>Examples of different settings:</p>
 
-    <p><tt><pre>
-expr uart0_nl='\r'  ; CR only
+    <tt><pre>expr uart0_nl='\r'  ; CR only
 expr uart0_nl=10    ; LF only
-expr uart0_nl=0xa0d ; CRLF</pre></tt></p>
+expr uart0_nl=0xa0d ; CRLF</pre></tt>
 
     <p>To turn off the line ending conversion, the uartX_nl variable
     must be set to 0.</p>    
@@ -217,3 +225,14 @@ expr uart0_nl=0xa0d ; CRLF</pre></tt></p>
 
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
