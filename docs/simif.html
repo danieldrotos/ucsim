@@ -44,27 +44,24 @@
     <p>If you check hardware elements of simulated processor with <a href="cmd_general.html#conf">conf</a>
       command, you will see one called <b>simif</b>. Setting of this
       peripheral will setup the simulator interface:</p>
-    <pre>0&gt; <span style="color: #009900;">conf</span>
-ucsim version 0.6-pre56
-Type of microcontroller: C52 CMOS cmos
-Controller has 12 hardware element(s).
-   on <b>simif[0]</b>
-   on vcd[0]
-   on timer0[0]
-   on timer1[1]
-   on uart[0]
-   on dport[0]
-   on port[0]
-   on port[1]
-   on port[2]
-   on port[3]
-   on irq[0]
-   on timer2[2]
-0&gt; </pre>
+
+<!-- @BLOCK@ simif_conf e56b705c5785f6df1f8de60e57c460db -->
+<pre class="eg">$ ucsim_51 -p "s51> "
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">s51&gt; </span>
+</pre>
+    <!-- @END@ -->
+
     <p>Using info command you can get state of the interface, known commands,
       and other information:</p>
-    <pre>0&gt; <span style="color: #009900;">info hw simif</span>
-uCsim simulator interface, version 1, at (null)[0x0]
+
+<!-- @BLOCK@ simif_info_hw_simif 4ef28b775f3bab72cbb50bfa045e998f -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw simif
+</span><span style="color: #ffffff; background-color: #000316">uCsim simulator interface, version 1, at (null)[0x0]
 Active command: none.
 Known commands:
 0x5f/_ if_detect: Detect existence of interface
@@ -80,23 +77,70 @@ Known commands:
 0x66/f fin_check: Check input file if input available
 0x72/r read input file: Read character from input file
 0x77/w write to output file: Write character to output file
+0x52/R reset cpu: Reset CPU
+0x4c/L set execution limit: Set execution limit for simulation
+0x6c/l get execution limit: Get value of simulation execution limit
 Input file: 
 Output file: 
-...</pre>
+Configuration memory of simif
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn simif on/off (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x01 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> WR: sets running state, RD: check if simulation is running
+<span style="color: #ffff00; background-color: #000316">0x02 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> WR: start simulation, RD: true if running
+<span style="color: #ffff00; background-color: #000316">0x03 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> WR: stop simulation, RD: true if stopped
+<span style="color: #ffff00; background-color: #000316">0x04 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Quit simulator (any, WO)
+<span style="color: #ffff00; background-color: #000316">0x05 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Reason of last stop (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x06 </span><span style="color: #F5F1DE; background-color: #000316">00a8c000 </span><span style="color: #00aa00; background-color: #000316">.</span> Xtal frequency in Hz (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x07 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Nuof ticks simulated so far (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x08 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Ticks spent in ISR (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x09 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Ticks spent in idle state (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x0a </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Real time since reset in msec (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x0b </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Nuof simulated virtual clocks (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x0c </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Print char on stdout (int, WO)
+<span style="color: #ffff00; background-color: #000316">0x0d </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Write char to simif output (int, WO)
+<span style="color: #ffff00; background-color: #000316">0x0e </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Limit of instructions to simulate by run (uint, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+
     <p>Use <a href="cmd_general.html#set_hardware">set hardware</a> command to
       setup the interface:</p>
-    <pre>0&gt; <span style="color: #009900;">set hw simif</span>
-set hardware simif memory address
+
+<!-- @BLOCK@ simif_set_hw_simif 4f6d8d8e71c3475b3942e6f933c5910e -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif
+</span><span style="color: #ffffff; background-color: #000316">set hardware simif memory address
 set hardware simif fin "input_file_name"
 set hardware simif fout "output_file_name"
-0&gt; 
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
+    <!-- @END@ -->
+    
     <p>To turn on the interface, use following command:</p>
-    <pre>0&gt; <span style="color: #009900;">set hw simif xram 0xffff</span>
-0&gt; <span style="color: #009900;">i h simif</span>
-uCsim simulator interface, version 1, at <b>xram[0xffff]</b><br>... </pre>
-    <p></p>
+
+<!-- @BLOCK@ simif_set_hw_simif_memory 65f6acbe7f52dc403c81519ea3d158e2 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif xram 0xffff
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw simif
+</span><span style="color: #ffffff; background-color: #000316">uCsim simulator interface, version 1, at xram[0xffff]
+</span>
+</pre>
+    <!-- @END@ -->
+    
+
+<p></p>
     <p>following commands can be used to specify input and output files:</p>
+
+<!-- @BLOCK@ simif_set_hw_simif_finout d88976e158e30773ca2dcd5fef29713b -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif fin "infile.txt"
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif fout "outfile.txt"
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw simif
+Input file: infile.txt
+Output file: outfile.txt
+</span>
+</pre>
+    <!-- @END@ -->
+    
     <pre>0&gt; <span style="color: #009900;">set hw simif fin "infile.txt"</span>
 0&gt; <span style="color: #009900;">set hw simif fout "outfile.txt"</span>
 0&gt; <span style="color: #009900;">i h simif</span>
@@ -416,3 +460,15 @@ fout_demo(char *s)
     <hr>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
