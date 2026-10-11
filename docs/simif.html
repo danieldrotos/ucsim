@@ -157,7 +157,7 @@ volatile unsigned char SIF_ADDRESS_SPACE * sif;<br><br>void
 main(void)
 {
   sif= (unsigned char SIF_ADDRESS_SPACE *) SIF_ADDRESS;
---><!-- code2html delete start --><pre>
+   --><!-- code2html delete start --><pre>
 <font color="0000ff"><strong>#define SIF_ADDRESS_SPACE_NAME	<font color="#008000">&quot;xram&quot;</font></strong></font>
 <font color="0000ff"><strong>#define SIF_ADDRESS_SPACE	__xdata</strong></font>
 <font color="0000ff"><strong>#define SIF_ADDRESS		0xffff</strong></font>
@@ -166,7 +166,7 @@ main(void)
 <font color="#2040a0">main</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
 <font color="4444FF"><strong>{</strong></font>
   <font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="4444FF">(</font><strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">SIF_ADDRESS_SPACE</font> <font color="4444FF">*</font><font color="4444FF">)</font> <font color="#2040a0">SIF_ADDRESS</font><font color="4444FF">;</font>
-</pre><!-- code2html delete stop -->
+   </pre><!-- code2html delete stop -->
     
 
     <p></p>
@@ -211,6 +211,7 @@ SIFCM_WRITE		= 'w',	// write to output file
     <p><b>Command: detect</b></p>
     <p>Command character: _<br>
       Answer: !</p>
+    
     <p>Following function can be used to detect if the interface is turned on or
       not:</p>
 
@@ -222,19 +223,20 @@ detect(void)
   *sif= SIFCM_DETECT;
   return *sif == DETECT_SIGN;
 }
---><!-- code2html delete start --><pre>
+       --><!-- code2html delete start --><pre>
 <strong>char</strong>
 <font color="#2040a0">detect</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
 <font color="4444FF"><strong>{</strong></font>
   <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_DETECT</font><font color="4444FF">;</font>
   <strong>return</strong> <font color="4444FF">*</font><font color="#2040a0">sif</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">DETECT_SIGN</font><font color="4444FF">;</font>
 <font color="4444FF"><strong>}</strong></font>
-</pre><!-- code2html delete stop -->
+       </pre><!-- code2html delete stop -->
     
     <p></p>
     <p><b>Command: commands</b></p>
     <p>Command character: i<br>
       Answer: nuof_commands, command_char_1, command_char_2, ...</p>
+    
     <p>This command can be used to retrieve all know command characters. First
       answer is the number of known commands, further reads will get command
       characters. Following example will read all commands:</p>
@@ -249,7 +251,7 @@ get_commands(void)
   int i;
   *sif= SIFCM_COMMANDS;
   nuof_commands= *sif;
-  for (i= 0; i &lt; nuof_commands; i++)
+  for (i= 0; i < nuof_commands; i++)
     commands[i]= *sif;
 }
        --><!-- code2html delete start --><pre>
@@ -262,7 +264,7 @@ get_commands(void)
   <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">;</font>
   <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_COMMANDS</font><font color="4444FF">;</font>
   <font color="#2040a0">nuof_commands</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
-  <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font> <font color="4444FF">&amp;</font><font color="#2040a0">lt</font><font color="4444FF">;</font> <font color="#2040a0">nuof_commands</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
+  <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font> <font color="4444FF">&lt;</font> <font color="#2040a0">nuof_commands</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
     <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
 <font color="4444FF"><strong>}</strong></font>
        </pre><!-- code2html delete stop -->
@@ -271,6 +273,7 @@ get_commands(void)
     <p><b>Command: ifver</b></p>
     <p>Command character: v<br>
       Answer: 1 byte version number</p>
+    
     <p>Following simple example is a function which returns the interface
       version:</p>
     
@@ -281,19 +284,21 @@ get_ifversion(void)
   *sif= SIFCM_IFVER;
   return(*sif);
 }
---><!-- code2html delete start --><pre>
+       --><!-- code2html delete start --><pre>
 <strong>int</strong>
 <font color="#2040a0">get_ifversion</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
 <font color="4444FF"><strong>{</strong></font>
   <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_IFVER</font><font color="4444FF">;</font>
   <strong>return</strong><font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">)</font><font color="4444FF">;</font>
 <font color="4444FF"><strong>}</strong></font>
-</pre><!-- code2html delete stop -->
+       </pre><!-- code2html delete stop -->
 
-    <p></p>
-    <p><b>Command: simver</b></p>
+<p></p>
+
+<p><b>Command: simver</b></p>
     <p>Command character: V<br>
       Answer: string</p>
+    
     <p>First byte of the string answer will be the length of the string, and
       after the last character a zero byte will arrive. Following function can
       be used to read string answer and store it (up to some limited length):</p>
@@ -304,7 +309,7 @@ void
 get_sim_version()
 {
   unsigned char c, i, n;
-  
+	 
   *sif= SIFCM_SIMVER;
   sim_version[0]= 0;
   n= *sif;
@@ -312,24 +317,24 @@ get_sim_version()
     {
       i= 0;
       c= *sif;
-      while (c &amp;&amp; (i&lt;14))
-	{
-	  sim_version[i++]= c;
-	  c= *sif;
-	}
+      while (c && (i<14))
+        {
+          sim_version[i++]= c;
+          c= *sif;
+        }
       while (c)
-	c= *sif;
+        c= *sif;
       sim_version[i]= 0;
     }
 }
---><!-- code2html delete start --><pre>
+       --><!-- code2html delete start --><pre>
 <strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#FF0000">15</font><font color="4444FF">]</font><font color="4444FF">;</font>
 
 <strong>void</strong>
 <font color="#2040a0">get_sim_version</font><font color="4444FF">(</font><font color="4444FF">)</font>
 <font color="4444FF"><strong>{</strong></font>
   <strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">c</font>, <font color="#2040a0">i</font>, <font color="#2040a0">n</font><font color="4444FF">;</font>
-  
+	 
   <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_SIMVER</font><font color="4444FF">;</font>
   <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
   <font color="#2040a0">n</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
@@ -337,27 +342,29 @@ get_sim_version()
     <font color="4444FF"><strong>{</strong></font>
       <font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
       <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
-      <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">c</font> <font color="4444FF">&amp;</font><font color="#2040a0">amp</font><font color="4444FF">;</font><font color="4444FF">&amp;</font><font color="#2040a0">amp</font><font color="4444FF">;</font> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">&amp;</font><font color="#2040a0">lt</font><font color="4444FF">;</font><font color="#FF0000">14</font><font color="4444FF">)</font><font color="4444FF">)</font>
-	<font color="4444FF"><strong>{</strong></font>
-	  <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="#2040a0">c</font><font color="4444FF">;</font>
-	  <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
-	<font color="4444FF"><strong>}</strong></font>
+      <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">c</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#FF0000">14</font><font color="4444FF">)</font><font color="4444FF">)</font>
+        <font color="4444FF"><strong>{</strong></font>
+          <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="#2040a0">c</font><font color="4444FF">;</font>
+          <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
       <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">c</font><font color="4444FF">)</font>
-	<font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+        <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
       <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
     <font color="4444FF"><strong>}</strong></font>
 <font color="4444FF"><strong>}</strong></font>
-</pre><!-- code2html delete stop -->
+       </pre><!-- code2html delete stop -->
 
     <p></p>
     <p><b>Command: ifreset</b></p>
     <p>Command character: @<br>
       Answer: -</p>
+    
     <p>This command resets the interface to default state.</p>
     <p><b>Command: cmdinfo</b></p>
     <p>Command character: I followed by a command character (which you would
       like to get info about)<br>
       Answer: array</p>
+    
     <dl>
       <dt>1st byte of the answer</dt>
       <dd>full length of the answer</dd>
@@ -379,17 +386,18 @@ get_sim_version()
         </dl>
       </dd>
     </dl>
-    <div><b>Command: cmdhelp</b></div>
-    <div><br>
-    </div>
-    <div>Command character: h followed by a command character (which you would
-      like to get info about)<br>
-      Answer: string</div>
-    <div><br>
-    </div>
-    <div>Returns textual information about. Following function prints
-      information about all commands (retrieved by "i" command, see above):</div>
-    <div>
+
+    <b>Command: cmdhelp</b>
+    
+    <p>Command character: h followed by a command character (which you would like to get info about)<br>
+    
+      Answer: string</p>
+
+
+    <p> 
+    Returns textual information about. Following function prints
+    information about all commands (retrieved by "i" command, see above):
+    </p>
       
       <!-- code2html add --language-mode=c
 enum sif_answer_type {
@@ -405,43 +413,42 @@ print_cmd_infos(void)
 {
   int i, j;
   unsigned char inf[5];
-  for (i= 0; i &lt; nuof_commands; i++)
+  for (i= 0; i < nuof_commands; i++)
     {
       printf("Command '%c' info:\n", commands[i]);
       *sif= SIFCM_CMDINFO;
       *sif= commands[i];
       inf[0]= *sif;
-      for (j= 0; j &lt; inf[0]; j++)
-	{
-	  inf[j+1]= *sif;
-	  //printf(" 0x%02x", inf[j+1]);
-	}
+      for (j= 0; j < inf[0]; j++)
+        {
+          inf[j+1]= *sif;
+          //printf(" 0x%02x", inf[j+1]);
+        }
       printf("  need %d params, answers as ", inf[1]);
       switch (inf[2])
-	{
-	case SIFAT_UNKNOWN	: printf("unknown"); break;
-	case SIFAT_BYTE		: printf("byte"); break;
-	case SIFAT_ARRAY	: printf("array"); break;
-	case SIFAT_STRING	: printf("string"); break;
-	case SIFAT_NONE		: printf("none"); break;
-	}
+        {
+          case SIFAT_UNKNOWN: printf("unknown"); break;
+          case SIFAT_BYTE   : printf("byte"); break;
+          case SIFAT_ARRAY  : printf("array"); break;
+          case SIFAT_STRING : printf("string"); break;
+          case SIFAT_NONE   : printf("none"); break;
+        }
       printf(": ");
       *sif= SIFCM_CMDHELP;
       *sif= commands[i];
       if (*sif)
-	{
-	  j= *sif;
-	  while (j)
-	    {
-	      putchar(j);
-	      j= *sif;
-	    }
-	}
+        {
+          j= *sif;
+          while (j)
+            {
+              putchar(j);
+              j= *sif;
+            }
+        }
       printf("\n");
     }
-  
 }
---><!-- code2html delete start --><pre>
+	 --><!-- code2html delete start --><pre>
 <strong>enum</strong> <font color="#2040a0">sif_answer_type</font> <font color="4444FF"><strong>{</strong></font>
   <font color="#2040a0">SIFAT_UNKNOWN</font>		<font color="4444FF">=</font> <font color="#FF0000">0x00</font>,	// <font color="#2040a0">we</font> <font color="#2040a0">don</font>'<font color="#2040a0">t</font> <font color="#2040a0">know</font>...
   <font color="#2040a0">SIFAT_BYTE</font>		<font color="4444FF">=</font> <font color="#FF0000">0x01</font>,	// <font color="#2040a0">just</font> <font color="#2040a0">a</font> <font color="#2040a0">byte</font>
@@ -455,67 +462,63 @@ print_cmd_infos(void)
 <font color="4444FF"><strong>{</strong></font>
   <strong>int</strong> <font color="#2040a0">i</font>, <font color="#2040a0">j</font><font color="4444FF">;</font>
   <strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">5</font><font color="4444FF">]</font><font color="4444FF">;</font>
-  <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font> <font color="4444FF">&amp;</font><font color="#2040a0">lt</font><font color="4444FF">;</font> <font color="#2040a0">nuof_commands</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
+  <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font> <font color="4444FF">&lt;</font> <font color="#2040a0">nuof_commands</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
     <font color="4444FF"><strong>{</strong></font>
       <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;Command '%c' info:<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
       <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_CMDINFO</font><font color="4444FF">;</font>
       <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
       <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
-      <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">j</font> <font color="4444FF">&amp;</font><font color="#2040a0">lt</font><font color="4444FF">;</font> <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
-	<font color="4444FF"><strong>{</strong></font>
-	  <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
-	  //<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot; 0x%02x&quot;</font>, <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
-	<font color="4444FF"><strong>}</strong></font>
+      <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">j</font> <font color="4444FF">&lt;</font> <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
+        <font color="4444FF"><strong>{</strong></font>
+          <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+          //<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot; 0x%02x&quot;</font>, <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
       <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;  need %d params, answers as &quot;</font>, <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
       <strong>switch</strong> <font color="4444FF">(</font><font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">2</font><font color="4444FF">]</font><font color="4444FF">)</font>
-	<font color="4444FF"><strong>{</strong></font>
-	<strong>case</strong> <font color="#2040a0">SIFAT_UNKNOWN</font>	<font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;unknown&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
-	<strong>case</strong> <font color="#2040a0">SIFAT_BYTE</font>		<font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;byte&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
-	<strong>case</strong> <font color="#2040a0">SIFAT_ARRAY</font>	<font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;array&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
-	<strong>case</strong> <font color="#2040a0">SIFAT_STRING</font>	<font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;string&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
-	<strong>case</strong> <font color="#2040a0">SIFAT_NONE</font>		<font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;none&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
-	<font color="4444FF"><strong>}</strong></font>
+        <font color="4444FF"><strong>{</strong></font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_UNKNOWN</font><font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;unknown&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_BYTE</font>   <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;byte&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_ARRAY</font>  <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;array&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_STRING</font> <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;string&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_NONE</font>   <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;none&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
       <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;: &quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
       <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_CMDHELP</font><font color="4444FF">;</font>
       <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
       <strong>if</strong> <font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">)</font>
-	<font color="4444FF"><strong>{</strong></font>
-	  <font color="#2040a0">j</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
-	  <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font>
-	    <font color="4444FF"><strong>{</strong></font>
-	      <font color="#2040a0">putchar</font><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">;</font>
-	      <font color="#2040a0">j</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
-	    <font color="4444FF"><strong>}</strong></font>
-	<font color="4444FF"><strong>}</strong></font>
+        <font color="4444FF"><strong>{</strong></font>
+          <font color="#2040a0">j</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+          <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+            <font color="4444FF"><strong>{</strong></font>
+              <font color="#2040a0">putchar</font><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">;</font>
+              <font color="#2040a0">j</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+            <font color="4444FF"><strong>}</strong></font>
+        <font color="4444FF"><strong>}</strong></font>
       <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
     <font color="4444FF"><strong>}</strong></font>
-  
 <font color="4444FF"><strong>}</strong></font>
-</pre><!-- code2html delete stop -->
-    </div>
-    <div><br>
-    </div>
-    <div><b>Command: stop</b></div>
-    <div><br>
-    </div>
-    <div>Command character: s<br>
-      Answer: -</div>
-    <div><br>
-    </div>
-    <div>Sending this command stops the simulation.</div>
-    <div><br>
-    </div>
-    <div><b>Command: print</b></div>
-    <div><br>
-    </div>
-    <div>Command character: p followed by a character to print<br>
-      Answer: -</div>
-    <div><br>
-    </div>
-    <div>This command can be used to print out a character on the simulator
-      console. Following functions can be used to print a character and a
-      string:</div>
-    <div>
+	 </pre><!-- code2html delete stop -->
+
+<p>
+  <b>Command: stop</b>
+</p>  
+
+<p>Command character: s<br>
+      Answer: -
+</p>
+
+<p>Sending this command stops the simulation.</p>
+	
+<p><b>Command: print</b></p>
+
+<p>Command character: p followed by a character to print<br>
+  Answer: -</p>
+
+<p>This command can be used to print out a character on the simulator
+  console. Following functions can be used to print a character and a
+  string:
+</p>
+
       
       <!-- code2html add --language-mode=c
 void
@@ -531,7 +534,7 @@ sif_print(char *s)
   while (*s)
     sif_putchar(*s++);
 }
---><!-- code2html delete start --><pre>
+	 --><!-- code2html delete start --><pre>
 <strong>void</strong>
 <font color="#2040a0">sif_putchar</font><font color="4444FF">(</font><strong>char</strong> <font color="#2040a0">c</font><font color="4444FF">)</font>
 <font color="4444FF"><strong>{</strong></font>
@@ -545,21 +548,16 @@ sif_print(char *s)
   <strong>while</strong> <font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">)</font>
     <font color="#2040a0">sif_putchar</font><font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font><font color="4444FF">;</font>
 <font color="4444FF"><strong>}</strong></font>
-</pre><!-- code2html delete stop -->
-    </div>
-    <div><br>
-    </div>
-    <div><b>Command: fin_check</b></div>
-    <div><br>
-    </div>
-    <div>Command character: f</div>
-    <div>Answer: 0 (if input file is not readable), or 1 (if input file is
-      readable)</div>
-    <div><br>
-    </div>
-    <div>This command checks if the input file is readable or not.Here is a
-      simple function which can be used to check readability of the input file:</div>
-    <div>
+	 </pre><!-- code2html delete stop -->
+
+<p><b>Command: fin_check</b></p>
+
+<p>Command character: f</div>
+  Answer: 0 (if input file is not readable), or 1 (if input file is
+  readable)</p>
+
+<p>This command checks if the input file is readable or not.Here is a
+  simple function which can be used to check readability of the input file:</p>
 
       <!-- code2html add --language-mode=c
 char
@@ -575,21 +573,17 @@ sif_fin_avail()
 <font color="4444FF"><strong>}</strong></font>
 </pre><!-- code2html delete stop -->
 
-<br>
-    </div>
-    <div><b>Command: read</b></div>
-    <div><br>
-    </div>
-    <div>Command character: r</div>
-    <div>Answer: next byte from input file</div>
-    <div><br>
-    </div>
-    <div>This command can be used to read next byte from the input file.
-      Remember, name of the input file must be set before use.</div>
-    <div><br>
-    </div>
-    <div>Following demonstration code prints out content of the input file:</div>
-    <div>
+<p><b>Command: read</b></p>
+
+<p>Command character: r<br>
+  Answer: next byte from input file</p>
+
+<p>This command can be used to read next byte from the input file.
+  Remember, name of the input file must be set before use.</p>
+    
+<p>Following demonstration code prints out content of the input file:</p>
+
+
 
       <!-- code2html add --language-mode=c
 void
@@ -600,7 +594,7 @@ fin_demo()
   while (i= sif_fin_avail())
     {
       c= sif_read();
-      if (c &gt; 31)
+      if (c > 31)
 	putchar(c);
     }
   printf("\nRead demo finished\n");
@@ -614,22 +608,20 @@ fin_demo()
   <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#2040a0">sif_fin_avail</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">)</font>
     <font color="4444FF"><strong>{</strong></font>
       <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="#2040a0">sif_read</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
-      <strong>if</strong> <font color="4444FF">(</font><font color="#2040a0">c</font> <font color="4444FF">&amp;</font><font color="#2040a0">gt</font><font color="4444FF">;</font> <font color="#FF0000">31</font><font color="4444FF">)</font>
+      <strong>if</strong> <font color="4444FF">(</font><font color="#2040a0">c</font> <font color="4444FF">&gt;</font> <font color="#FF0000">31</font><font color="4444FF">)</font>
 	<font color="#2040a0">putchar</font><font color="4444FF">(</font><font color="#2040a0">c</font><font color="4444FF">)</font><font color="4444FF">;</font>
     <font color="4444FF"><strong>}</strong></font>
   <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>Read demo finished<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
 <font color="4444FF"><strong>}</strong></font>
 </pre><!-- code2html delete stop -->
 
-    </div>
-    <div><b>Command: write</b></div>
-    <div><br>
-    </div>
-    <div>Command character: w, followed by a byte to write to output file</div>
-    <div>Answer: -</div>
-    <div><br>
-    </div>
-    <div>Following function can be used to write a string to the output file:</div>
+<p><b>Command: write</b></p>
+
+<p>Command character: w, followed by a byte to write to output file<br>
+  Answer: -</p>
+
+
+<p>Following function can be used to write a string to the output file:</p>
 
       <!-- code2html add --language-mode=c
 void
@@ -653,9 +645,9 @@ fout_demo(char *s)
 <font color="4444FF"><strong>}</strong></font>
 </pre><!-- code2html delete stop -->
 
-    Do not forget to specify name of the output file via setting of the
+<p>Do not forget to specify name of the output file via setting of the
     simulator interface. Be careful, simulator will overwrite content of the
-    output file!
+  output file!</p>
 
     <hr>
   </body>
