@@ -40,33 +40,55 @@
     unique. Help command can be used to check out if a command has
     more names:
 
-    <pre>&gt; <font color="green">help run</font>
-run [start [stop]] Go
-Names of command: <b>go r run</b>
-...
-    </pre>
+<!-- @BLOCK@ syntax_help_run 267c82c3b5c5ee2c80e5a1587fa67857 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">help run
+</span><span style="color: #ffffff; background-color: #000316">run [start [stop]]  Start execution in foreground
+Alternate name(s) of command: continue go r run
+</span>
+<span style="color: #ffffff; background-color: #000316">...</span>
+</pre>
+    <!-- @END@ -->
+    
+
 
     Some commands just groups other commands. These commands have a
     set of so-called <i>sub-commands</i>. Sub-command must be second
     word in the command line. For example:
-    
-    <pre>&gt; <font color="green">help set</font>
-set <b>subcommand</b>     Set, see `set' command for more help
-Names of command: set
-long help of set
-&gt; <font color="green">set</font>
+
+<!-- @BLOCK@ syntax_help_set 533593358da6b0710bb85aa2da8f640b -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">help set
+</span><span style="color: #ffffff; background-color: #000316">set subcommand      Set value of different objects
+Alternate name(s) of command: set
 "set" must be followed by the name of a subcommand
 List of subcommands:
-<b>set option</b> name|nr value
-                   Set value of an option
-<b>set error</b> on|off|unset
-                   Set value of an error
-<b>set memory</b> memory_type address data... or bitspec data
-                   Place list of data into memory
-<b>set bit</b> bitspec data   Set specified bit(s)
-<b>set hardware</b> category params...
-                   Set parameters of specified hardware element
-    </pre>
+set option name|nr value
+                    Set value of an option
+set error error_name on|off|unset
+                    Set value of an error
+set console interactive [on|off]|noninteractive|raw|edited
+                    Set console parameters
+set memory memory_type address data... | bit data
+                    Place list of data into memory OR set specified bit(s) to data
+set hardware category params...
+                    Set parameters of specified hardware element
+Long of set
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set
+</span><span style="color: #ffffff; background-color: #000316">"set" must be followed by the name of a subcommand
+List of subcommands:
+set option name|nr value
+                    Set value of an option
+set error error_name on|off|unset
+                    Set value of an error
+set console interactive [on|off]|noninteractive|raw|edited
+                    Set console parameters
+set memory memory_type address data... | bit data
+                    Place list of data into memory OR set specified bit(s) to data
+set hardware category params...
+                    Set parameters of specified hardware element
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+<!-- @END@ -->
+
     
     <h3>Type of parameters</h3>
     
@@ -77,26 +99,41 @@ List of subcommands:
     interpreted as string and actual parameter start with a letter (so
     it doesn't look to be a number) and doesn't contain space. Let's
     look an example:
-    
-    <pre>0&gt; <font color="green">set opt 7 <b>s51&gt;</b></font>
-0s51&gt;<font color="green">set opt 7 <b>".s51&gt; "</b></font>
-0.s51&gt; 
+
+<!-- @BLOCK@ syntax_string 5cf33d7c9868302d36fc7b6a6ec84f0a -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">get opt prompt
+</span><span style="color: #ffffff; background-color: #000316">47. prompt(by console0): "" - Prompt string of console0
+48. prompt(by s51): (null) - String of prompt (-p)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set opt 47 s51&gt;
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">s51&gt;</span><span style="color: #00aa00; background-color: #000316">set opt 47 ".s51&gt; "
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">.s51&gt; </span><span style="color: #00aa00; background-color: #000316">get opt prompt
+</span><span style="color: #ffffff; background-color: #000316">47. prompt(by console0): ".s51&gt; " - Prompt string of console0
+48. prompt(by s51): (null) - String of prompt (-p)
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">.s51&gt; </span>
 </pre>
+    <!-- @END@ -->
+    
+    
 
 <h4><a name="bit_type">Bit type</a></h4>
 
 If a parameter contains a dot (.) or a colon contained in square
     brackets ([...:...])  it is treated as a bit specification. If
-    there is a dot the part before the dot gives the memory address
+    there is a dot, the part before the dot gives the memory address
     and part after the dot gives the bit number. The bracketed form is
     used to specify a range of bits.
 
-<pre>0&gt; <font color="green">dump <b>p1.1</b></font>
-      P1.1 0x90 ff 1
-0&gt; <font color="green">dump <b>0x80.1</b></font>
-      P4.1 0x80 ff 1
-0&gt; 
+<!-- @BLOCK@ syntax_bit 565ee0dd139733ed0c959e27d650d03a -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump P1.1
+</span><span style="color: #ffff00; background-color: #000316">0x90.1                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b------1- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump 0x80.1
+</span><span style="color: #ffff00; background-color: #000316">0x80.1                             </span><span style="color: #F5F1DE; background-color: #000316"> 0b------1- 0x01</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">   1
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">dump P2[5:2]
+</span><span style="color: #ffff00; background-color: #000316">0xa0[5:2]                          </span><span style="color: #F5F1DE; background-color: #000316"> 0b--1111-- 0x0f</span><span style="color: #00aa00; background-color: #000316"> '.'</span><span style="color: #F5F1DE; background-color: #000316">  15
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
+<!-- @END@ -->
+
 
 <h4><a name="array_type">Array type</a></h4>
 
@@ -104,13 +141,21 @@ Parameters contain [ character are treated as arrays. Arrays can be
     used to specify hardware elements. Array index selects an object
     if more than one exists:
 
-<pre>0&gt; <font color="green">info hw <b>port[0]</b></font>
-port[0]
+<!-- @BLOCK@ syntax_array a3b711913cb34de684b44d2d994907ae -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw port[0]
+</span><span style="color: #ffffff; background-color: #000316">port[0]
 P0    11111111 0xff 255 . (Value in SFR register)
 Pin0  11111111 0xff 255 . (Output of outside circuits)
 Port0 11111111 0xff 255 . (Value on the port pins)
-0&gt; 
+Configuration memory of port
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn/get on/off state (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x01 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Outside value of port pins (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x02 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Value of the port (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x03 </span><span style="color: #F5F1DE; background-color: #000316">000000ff </span><span style="color: #00aa00; background-color: #000316">.</span> Value of output register (int, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
+<!-- @END@ -->
+
 
 <h4><a name="number_type">Number type</a></h4>
 
@@ -156,10 +201,15 @@ Data list can be any space separated list of numbers and strings. If
     you include a string in the list, it is broken to list of bytes
     where every byte is ASCII code of a string's character.
 
-<pre>&gt; <font color="green">where xram "ab" 0x43</font>
-0xf961 61 62 63                abc
-&gt; 
+<!-- @BLOCK@ syntax_datalist 11e57df651b85bc5b668e0f8ffcb23b5 -->
+<pre class="eg"><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set mem xram 0x100 0x61 0x62 0x63
+</span><span style="color: #ffff00; background-color: #000316">0x0100                     </span><span style="color: #F5F1DE; background-color: #000316"> 61 62 63 </span><span style="color: #00aa00; background-color: #000316">abc
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">where xram "ab" 0x63
+</span><span style="color: #ffff00; background-color: #000316">0x0100</span><span style="color: #F5F1DE; background-color: #000316"> 61 62 63 </span><span style="color: #00aa00; background-color: #000316">abc
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
+<!-- @END@ -->
+
 
 <h4><a name="memory_param">Memory parameters</a></h4>
 
