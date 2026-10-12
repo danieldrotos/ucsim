@@ -249,7 +249,7 @@ cl_xa::init(void)
   /* set PC from reset vector */
   PC = getcode2(2);
 
-  printf("The XA Simulator is in development, UNSTABLE, DEVELOPERS ONLY!\n");
+  //printf("The XA Simulator is in development, UNSTABLE, DEVELOPERS ONLY!\n");
 
   int i;
   for (i= 0; sfr_tabXA51[i].name != NULL; i++)

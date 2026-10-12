@@ -8,6 +8,11 @@ libs:
 pkgs:
 	$(MAKE) -C src pkgs
 
+preps:
+	$(MAKE) -C src preps
+
+prep: preps
+
 sims: pkgs
 
 apps:

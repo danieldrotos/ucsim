@@ -656,7 +656,7 @@ cl_pblaze::load_state(class cl_console_base *con, char *file_name)
     const char * text = element->GetText();
 
     // format string for sscanf - depends on bytes per memory cell
-    char format[5];
+    char format[20];
     sprintf(format,"%%%ds", size);
 
     for (unsigned int i=0; i<ram_size; i++) {
@@ -676,7 +676,7 @@ cl_pblaze::load_state(class cl_console_base *con, char *file_name)
     const char * text = element->GetText();
 
     // format string for sscanf - depends on bytes per memory cell
-    char format[5];
+    char format[20];
     sprintf(format,"%%%ds", size);
 
     for (unsigned int i=0; i<stack_size; i++) {

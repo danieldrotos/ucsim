@@ -35,9 +35,9 @@ samp {
 .eg {
     background-color: black;
     color: white;
-    padding: 4px;
+    padding: 6px;
     font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 1.0em;
+    font-size: 0.8em;
     white-space: pre;
 }
 

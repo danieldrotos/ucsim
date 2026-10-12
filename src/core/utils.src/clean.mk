@@ -6,6 +6,7 @@ local_clean:
 	rm -f  ucsim$(EXEEXT) relay$(EXEEXT) ucsim.exe relay.exe
 	rm -f .[a-z]*~ ptt
 
+
 sub_clean:
 
 distclean: local_distclean sub_distclean

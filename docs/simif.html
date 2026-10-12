@@ -44,27 +44,24 @@
     <p>If you check hardware elements of simulated processor with <a href="cmd_general.html#conf">conf</a>
       command, you will see one called <b>simif</b>. Setting of this
       peripheral will setup the simulator interface:</p>
-    <pre>0&gt; <span style="color: #009900;">conf</span>
-ucsim version 0.6-pre56
-Type of microcontroller: C52 CMOS cmos
-Controller has 12 hardware element(s).
-   on <b>simif[0]</b>
-   on vcd[0]
-   on timer0[0]
-   on timer1[1]
-   on uart[0]
-   on dport[0]
-   on port[0]
-   on port[1]
-   on port[2]
-   on port[3]
-   on irq[0]
-   on timer2[2]
-0&gt; </pre>
+
+<!-- @BLOCK@ simif_conf e56b705c5785f6df1f8de60e57c460db -->
+<pre class="eg">$ ucsim_51 -p "s51> "
+<span style="color: #F5F1DE; background-color: #000316">uCsim 0.9.10, Copyright (C) 1997 Daniel Drotos.
+uCsim comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">s51&gt; </span>
+</pre>
+    <!-- @END@ -->
+
     <p>Using info command you can get state of the interface, known commands,
       and other information:</p>
-    <pre>0&gt; <span style="color: #009900;">info hw simif</span>
-uCsim simulator interface, version 1, at (null)[0x0]
+
+<!-- @BLOCK@ simif_info_hw_simif 4ef28b775f3bab72cbb50bfa045e998f -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw simif
+</span><span style="color: #ffffff; background-color: #000316">uCsim simulator interface, version 1, at (null)[0x0]
 Active command: none.
 Known commands:
 0x5f/_ if_detect: Detect existence of interface
@@ -80,37 +77,79 @@ Known commands:
 0x66/f fin_check: Check input file if input available
 0x72/r read input file: Read character from input file
 0x77/w write to output file: Write character to output file
+0x52/R reset cpu: Reset CPU
+0x4c/L set execution limit: Set execution limit for simulation
+0x6c/l get execution limit: Get value of simulation execution limit
 Input file: 
 Output file: 
-...</pre>
+Configuration memory of simif
+</span><span style="color: #ffff00; background-color: #000316">0x00 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> Turn simif on/off (bool, RW)
+<span style="color: #ffff00; background-color: #000316">0x01 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> WR: sets running state, RD: check if simulation is running
+<span style="color: #ffff00; background-color: #000316">0x02 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> WR: start simulation, RD: true if running
+<span style="color: #ffff00; background-color: #000316">0x03 </span><span style="color: #F5F1DE; background-color: #000316">00000001 </span><span style="color: #00aa00; background-color: #000316">.</span> WR: stop simulation, RD: true if stopped
+<span style="color: #ffff00; background-color: #000316">0x04 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Quit simulator (any, WO)
+<span style="color: #ffff00; background-color: #000316">0x05 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Reason of last stop (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x06 </span><span style="color: #F5F1DE; background-color: #000316">00a8c000 </span><span style="color: #00aa00; background-color: #000316">.</span> Xtal frequency in Hz (int, RW)
+<span style="color: #ffff00; background-color: #000316">0x07 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Nuof ticks simulated so far (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x08 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Ticks spent in ISR (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x09 </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Ticks spent in idle state (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x0a </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Real time since reset in msec (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x0b </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Nuof simulated virtual clocks (int, RO)
+<span style="color: #ffff00; background-color: #000316">0x0c </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Print char on stdout (int, WO)
+<span style="color: #ffff00; background-color: #000316">0x0d </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Write char to simif output (int, WO)
+<span style="color: #ffff00; background-color: #000316">0x0e </span><span style="color: #F5F1DE; background-color: #000316">00000000 </span><span style="color: #00aa00; background-color: #000316">.</span> Limit of instructions to simulate by run (uint, RW)
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
+</pre>
+    <!-- @END@ -->
+
     <p>Use <a href="cmd_general.html#set_hardware">set hardware</a> command to
       setup the interface:</p>
-    <pre>0&gt; <span style="color: #009900;">set hw simif</span>
-set hardware simif memory address
+
+<!-- @BLOCK@ simif_set_hw_simif 4f6d8d8e71c3475b3942e6f933c5910e -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif
+</span><span style="color: #ffffff; background-color: #000316">set hardware simif memory address
 set hardware simif fin "input_file_name"
 set hardware simif fout "output_file_name"
-0&gt; 
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span>
 </pre>
+    <!-- @END@ -->
+    
     <p>To turn on the interface, use following command:</p>
-    <pre>0&gt; <span style="color: #009900;">set hw simif xram 0xffff</span>
-0&gt; <span style="color: #009900;">i h simif</span>
-uCsim simulator interface, version 1, at <b>xram[0xffff]</b><br>... </pre>
-    <p></p>
-    <p>following commands can be used to specify input and output files:</p>
-    <pre>0&gt; <span style="color: #009900;">set hw simif fin "infile.txt"</span>
-0&gt; <span style="color: #009900;">set hw simif fout "outfile.txt"</span>
-0&gt; <span style="color: #009900;">i h simif</span>
-...
-Input file: <b>infile.txt</b>
-Output file: <b>outfile.txt</b>
-...
+
+<!-- @BLOCK@ simif_set_hw_simif_memory 65f6acbe7f52dc403c81519ea3d158e2 -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif xram 0xffff
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw simif
+</span><span style="color: #ffffff; background-color: #000316">uCsim simulator interface, version 1, at xram[0xffff]
+</span>
 </pre>
-    <p></p>
+    <!-- @END@ -->
+    
+
+<p></p>
+    <p>following commands can be used to specify input and output files:</p>
+
+<!-- @BLOCK@ simif_set_hw_simif_finout d88976e158e30773ca2dcd5fef29713b -->
+<pre class="eg">$ ucsim_51
+<span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif fin "infile.txt"
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">set hw simif fout "outfile.txt"
+</span><span style="color: #aa5500; background-color: #000316">0</span><span style="color: #ffffff; background-color: #000316">&gt; </span><span style="color: #00aa00; background-color: #000316">info hw simif
+Input file: infile.txt
+Output file: outfile.txt
+</span>
+</pre>
+    <!-- @END@ -->
+    
+
+<p></p>
     <p><b>Access interface from simulated program</b></p>
     <p>To access memory content, you have to use C variable. If address is
       already known, you can setup a pointer with that address to access the
       content:</p>
-    <pre>#define SIF_ADDRESS_SPACE_NAME	"xram"
+
+<!-- code2html add --language-mode=c
+#define SIF_ADDRESS_SPACE_NAME	"xram"
 #define SIF_ADDRESS_SPACE	__xdata
 #define SIF_ADDRESS		0xffff
 
@@ -118,47 +157,92 @@ volatile unsigned char SIF_ADDRESS_SPACE * sif;<br><br>void
 main(void)
 {
   sif= (unsigned char SIF_ADDRESS_SPACE *) SIF_ADDRESS;
-... </pre>
+   --><!-- code2html delete start --><pre>
+<font color="0000ff"><strong>#define SIF_ADDRESS_SPACE_NAME	<font color="#008000">&quot;xram&quot;</font></strong></font>
+<font color="0000ff"><strong>#define SIF_ADDRESS_SPACE	__xdata</strong></font>
+<font color="0000ff"><strong>#define SIF_ADDRESS		0xffff</strong></font>
+
+<strong>volatile</strong> <strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">SIF_ADDRESS_SPACE</font> <font color="4444FF">*</font> <font color="#2040a0">sif</font><font color="4444FF">;</font><font color="4444FF">&lt;</font><font color="#2040a0">br</font><font color="4444FF">&gt;</font><font color="4444FF">&lt;</font><font color="#2040a0">br</font><font color="4444FF">&gt;</font><strong>void</strong>
+<font color="#2040a0">main</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="4444FF">(</font><strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">SIF_ADDRESS_SPACE</font> <font color="4444FF">*</font><font color="4444FF">)</font> <font color="#2040a0">SIF_ADDRESS</font><font color="4444FF">;</font>
+   </pre><!-- code2html delete stop -->
+    
+
     <p></p>
     <p>this example can be compiled with SDCC for MSC51 processor. Do not forget
       the <b>volatile</b> keyword! You can define names for command characters:</p>
-    <pre>enum sif_command {
-  DETECT_SIGN	        = '!',	// answer to detect command
-  SIFCM_DETECT		= '_',	// command used to detect the interface
-  SIFCM_COMMANDS	= 'i',	// get info about commands
-  SIFCM_IFVER		= 'v',	// interface version
-  SIFCM_SIMVER		= 'V',	// simulator version
-  SIFCM_IFRESET		= '@',	// reset the interface
-  SIFCM_CMDINFO		= 'I',	// info about a command
-  SIFCM_CMDHELP		= 'h',	// help about a command
-  SIFCM_STOP		= 's',	// stop simulation
-  SIFCM_PRINT		= 'p',	// print character
-  SIFCM_FIN_CHECK	= 'f',	// check input file for input
-  SIFCM_READ		= 'r',	// read from input file
-  SIFCM_WRITE		= 'w',	// write to output file
+
+    <!-- code2html add --language-mode=c
+enum sif_command {
+DETECT_SIGN	        = '!',	// answer to detect command
+SIFCM_DETECT		= '_',	// command used to detect the interface
+SIFCM_COMMANDS		= 'i',	// get info about commands
+SIFCM_IFVER		= 'v',	// interface version
+SIFCM_SIMVER		= 'V',	// simulator version
+SIFCM_IFRESET		= '@',	// reset the interface
+SIFCM_CMDINFO		= 'I',	// info about a command
+SIFCM_CMDHELP		= 'h',	// help about a command
+SIFCM_STOP		= 's',	// stop simulation
+SIFCM_PRINT		= 'p',	// print character
+SIFCM_FIN_CHECK		= 'f',	// check input file for input
+SIFCM_READ		= 'r',	// read from input file
+SIFCM_WRITE		= 'w',	// write to output file
 };
-</pre>
+       --><!-- code2html delete start --><pre>
+<strong>enum</strong> <font color="#2040a0">sif_command</font> <font color="4444FF"><strong>{</strong></font>
+<font color="#2040a0">DETECT_SIGN</font>	        <font color="4444FF">=</font> <font color="#008000">'!'</font>,	// <font color="#2040a0">answer</font> <font color="#2040a0">to</font> <font color="#2040a0">detect</font> <font color="#2040a0">command</font>
+<font color="#2040a0">SIFCM_DETECT</font>		<font color="4444FF">=</font> <font color="#008000">'_'</font>,	// <font color="#2040a0">command</font> <font color="#2040a0">used</font> <font color="#2040a0">to</font> <font color="#2040a0">detect</font> <font color="#2040a0">the</font> <font color="#2040a0">interface</font>
+<font color="#2040a0">SIFCM_COMMANDS</font>		<font color="4444FF">=</font> <font color="#008000">'i'</font>,	// <font color="#2040a0">get</font> <font color="#2040a0">info</font> <font color="#2040a0">about</font> <font color="#2040a0">commands</font>
+<font color="#2040a0">SIFCM_IFVER</font>		<font color="4444FF">=</font> <font color="#008000">'v'</font>,	// <font color="#2040a0">interface</font> <font color="#2040a0">version</font>
+<font color="#2040a0">SIFCM_SIMVER</font>		<font color="4444FF">=</font> <font color="#008000">'V'</font>,	// <font color="#2040a0">simulator</font> <font color="#2040a0">version</font>
+<font color="#2040a0">SIFCM_IFRESET</font>		<font color="4444FF">=</font> <font color="#008000">'@'</font>,	// <font color="#2040a0">reset</font> <font color="#2040a0">the</font> <font color="#2040a0">interface</font>
+<font color="#2040a0">SIFCM_CMDINFO</font>		<font color="4444FF">=</font> <font color="#008000">'I'</font>,	// <font color="#2040a0">info</font> <font color="#2040a0">about</font> <font color="#2040a0">a</font> <font color="#2040a0">command</font>
+<font color="#2040a0">SIFCM_CMDHELP</font>		<font color="4444FF">=</font> <font color="#008000">'h'</font>,	// <font color="#2040a0">help</font> <font color="#2040a0">about</font> <font color="#2040a0">a</font> <font color="#2040a0">command</font>
+<font color="#2040a0">SIFCM_STOP</font>		<font color="4444FF">=</font> <font color="#008000">'s'</font>,	// <font color="#2040a0">stop</font> <font color="#2040a0">simulation</font>
+<font color="#2040a0">SIFCM_PRINT</font>		<font color="4444FF">=</font> <font color="#008000">'p'</font>,	// <font color="#2040a0">print</font> <font color="#2040a0">character</font>
+<font color="#2040a0">SIFCM_FIN_CHECK</font>		<font color="4444FF">=</font> <font color="#008000">'f'</font>,	// <font color="#2040a0">check</font> <font color="#2040a0">input</font> <font color="#2040a0">file</font> <strong>for</strong> <font color="#2040a0">input</font>
+<font color="#2040a0">SIFCM_READ</font>		<font color="4444FF">=</font> <font color="#008000">'r'</font>,	// <font color="#2040a0">read</font> <font color="#2040a0">from</font> <font color="#2040a0">input</font> <font color="#2040a0">file</font>
+<font color="#2040a0">SIFCM_WRITE</font>		<font color="4444FF">=</font> <font color="#008000">'w'</font>,	// <font color="#2040a0">write</font> <font color="#2040a0">to</font> <font color="#2040a0">output</font> <font color="#2040a0">file</font>
+<font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+       </pre><!-- code2html delete stop -->
+    
     <p></p>
     <p><b>Command: detect</b></p>
     <p>Command character: _<br>
       Answer: !</p>
+    
     <p>Following function can be used to detect if the interface is turned on or
       not:</p>
-    <pre>char
+
+    
+    <!-- code2html add --language-mode=c
+char
 detect(void)
 {
   *sif= SIFCM_DETECT;
   return *sif == DETECT_SIGN;
 }
-</pre>
+       --><!-- code2html delete start --><pre>
+<strong>char</strong>
+<font color="#2040a0">detect</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_DETECT</font><font color="4444FF">;</font>
+  <strong>return</strong> <font color="4444FF">*</font><font color="#2040a0">sif</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">DETECT_SIGN</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+       </pre><!-- code2html delete stop -->
+    
     <p></p>
     <p><b>Command: commands</b></p>
     <p>Command character: i<br>
       Answer: nuof_commands, command_char_1, command_char_2, ...</p>
+    
     <p>This command can be used to retrieve all know command characters. First
       answer is the number of known commands, further reads will get command
       characters. Following example will read all commands:</p>
-    <pre>int nuof_commands;
+    
+    <!-- code2html add --language-mode=c
+int nuof_commands;
 unsigned char commands[100];
 
 void
@@ -167,37 +251,65 @@ get_commands(void)
   int i;
   *sif= SIFCM_COMMANDS;
   nuof_commands= *sif;
-  for (i= 0; i &lt; nuof_commands; i++)
+  for (i= 0; i < nuof_commands; i++)
     commands[i]= *sif;
 }
-</pre>
+       --><!-- code2html delete start --><pre>
+<strong>int</strong> <font color="#2040a0">nuof_commands</font><font color="4444FF">;</font>
+<strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#FF0000">100</font><font color="4444FF">]</font><font color="4444FF">;</font>
+
+<strong>void</strong>
+<font color="#2040a0">get_commands</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">;</font>
+  <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_COMMANDS</font><font color="4444FF">;</font>
+  <font color="#2040a0">nuof_commands</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+  <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font> <font color="4444FF">&lt;</font> <font color="#2040a0">nuof_commands</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
+    <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+       </pre><!-- code2html delete stop -->
+    
     <p></p>
     <p><b>Command: ifver</b></p>
     <p>Command character: v<br>
       Answer: 1 byte version number</p>
+    
     <p>Following simple example is a function which returns the interface
       version:</p>
-    <pre>int
+    
+    <!-- code2html add --language-mode=c
+int
 get_ifversion(void)
 {
   *sif= SIFCM_IFVER;
   return(*sif);
 }
-</pre>
-    <p></p>
-    <p><b>Command: simver</b></p>
+       --><!-- code2html delete start --><pre>
+<strong>int</strong>
+<font color="#2040a0">get_ifversion</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_IFVER</font><font color="4444FF">;</font>
+  <strong>return</strong><font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+       </pre><!-- code2html delete stop -->
+
+<p></p>
+
+<p><b>Command: simver</b></p>
     <p>Command character: V<br>
       Answer: string</p>
+    
     <p>First byte of the string answer will be the length of the string, and
       after the last character a zero byte will arrive. Following function can
       be used to read string answer and store it (up to some limited length):</p>
-    <pre>unsigned char sim_version[15];
+    <!-- code2html add --language-mode=c
+unsigned char sim_version[15];
 
 void
 get_sim_version()
 {
   unsigned char c, i, n;
-  
+	 
   *sif= SIFCM_SIMVER;
   sim_version[0]= 0;
   n= *sif;
@@ -205,26 +317,54 @@ get_sim_version()
     {
       i= 0;
       c= *sif;
-      while (c &amp;&amp; (i&lt;14))
-	{
-	  sim_version[i++]= c;
-	  c= *sif;
-	}
+      while (c && (i<14))
+        {
+          sim_version[i++]= c;
+          c= *sif;
+        }
       while (c)
-	c= *sif;
+        c= *sif;
       sim_version[i]= 0;
     }
 }
-</pre>
+       --><!-- code2html delete start --><pre>
+<strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#FF0000">15</font><font color="4444FF">]</font><font color="4444FF">;</font>
+
+<strong>void</strong>
+<font color="#2040a0">get_sim_version</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">c</font>, <font color="#2040a0">i</font>, <font color="#2040a0">n</font><font color="4444FF">;</font>
+	 
+  <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_SIMVER</font><font color="4444FF">;</font>
+  <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <font color="#2040a0">n</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+  <strong>if</strong> <font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+      <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+      <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">c</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#FF0000">14</font><font color="4444FF">)</font><font color="4444FF">)</font>
+        <font color="4444FF"><strong>{</strong></font>
+          <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="#2040a0">c</font><font color="4444FF">;</font>
+          <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">c</font><font color="4444FF">)</font>
+        <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+      <font color="#2040a0">sim_version</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+       </pre><!-- code2html delete stop -->
+
     <p></p>
     <p><b>Command: ifreset</b></p>
     <p>Command character: @<br>
       Answer: -</p>
+    
     <p>This command resets the interface to default state.</p>
     <p><b>Command: cmdinfo</b></p>
     <p>Command character: I followed by a command character (which you would
       like to get info about)<br>
       Answer: array</p>
+    
     <dl>
       <dt>1st byte of the answer</dt>
       <dd>full length of the answer</dd>
@@ -246,18 +386,21 @@ get_sim_version()
         </dl>
       </dd>
     </dl>
-    <div><b>Command: cmdhelp</b></div>
-    <div><br>
-    </div>
-    <div>Command character: h followed by a command character (which you would
-      like to get info about)<br>
-      Answer: string</div>
-    <div><br>
-    </div>
-    <div>Returns textual information about. Following function prints
-      information about all commands (retrieved by "i" command, see above):</div>
-    <div>
-      <pre>enum sif_answer_type {
+
+    <b>Command: cmdhelp</b>
+    
+    <p>Command character: h followed by a command character (which you would like to get info about)<br>
+    
+      Answer: string</p>
+
+
+    <p> 
+    Returns textual information about. Following function prints
+    information about all commands (retrieved by "i" command, see above):
+    </p>
+      
+      <!-- code2html add --language-mode=c
+enum sif_answer_type {
   SIFAT_UNKNOWN		= 0x00,	// we don't know...
   SIFAT_BYTE		= 0x01,	// just a byte
   SIFAT_ARRAY		= 0x02,	// array of some bytes
@@ -270,67 +413,115 @@ print_cmd_infos(void)
 {
   int i, j;
   unsigned char inf[5];
-  for (i= 0; i &lt; nuof_commands; i++)
+  for (i= 0; i < nuof_commands; i++)
     {
       printf("Command '%c' info:\n", commands[i]);
       *sif= SIFCM_CMDINFO;
       *sif= commands[i];
       inf[0]= *sif;
-      for (j= 0; j &lt; inf[0]; j++)
-	{
-	  inf[j+1]= *sif;
-	  //printf(" 0x%02x", inf[j+1]);
-	}
+      for (j= 0; j < inf[0]; j++)
+        {
+          inf[j+1]= *sif;
+          //printf(" 0x%02x", inf[j+1]);
+        }
       printf("  need %d params, answers as ", inf[1]);
       switch (inf[2])
-	{
-	case SIFAT_UNKNOWN	: printf("unknown"); break;
-	case SIFAT_BYTE		: printf("byte"); break;
-	case SIFAT_ARRAY	: printf("array"); break;
-	case SIFAT_STRING	: printf("string"); break;
-	case SIFAT_NONE		: printf("none"); break;
-	}
+        {
+          case SIFAT_UNKNOWN: printf("unknown"); break;
+          case SIFAT_BYTE   : printf("byte"); break;
+          case SIFAT_ARRAY  : printf("array"); break;
+          case SIFAT_STRING : printf("string"); break;
+          case SIFAT_NONE   : printf("none"); break;
+        }
       printf(": ");
       *sif= SIFCM_CMDHELP;
       *sif= commands[i];
       if (*sif)
-	{
-	  j= *sif;
-	  while (j)
-	    {
-	      putchar(j);
-	      j= *sif;
-	    }
-	}
+        {
+          j= *sif;
+          while (j)
+            {
+              putchar(j);
+              j= *sif;
+            }
+        }
       printf("\n");
     }
-  
 }
-</pre> </div>
-    <div><br>
-    </div>
-    <div><b>Command: stop</b></div>
-    <div><br>
-    </div>
-    <div>Command character: s<br>
-      Answer: -</div>
-    <div><br>
-    </div>
-    <div>Sending this command stops the simulation.</div>
-    <div><br>
-    </div>
-    <div><b>Command: print</b></div>
-    <div><br>
-    </div>
-    <div>Command character: p followed by a character to print<br>
-      Answer: -</div>
-    <div><br>
-    </div>
-    <div>This command can be used to print out a character on the simulator
-      console. Following functions can be used to print a character and a
-      string:</div>
-    <div>
-      <pre>void
+	 --><!-- code2html delete start --><pre>
+<strong>enum</strong> <font color="#2040a0">sif_answer_type</font> <font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">SIFAT_UNKNOWN</font>		<font color="4444FF">=</font> <font color="#FF0000">0x00</font>,	// <font color="#2040a0">we</font> <font color="#2040a0">don</font>'<font color="#2040a0">t</font> <font color="#2040a0">know</font>...
+  <font color="#2040a0">SIFAT_BYTE</font>		<font color="4444FF">=</font> <font color="#FF0000">0x01</font>,	// <font color="#2040a0">just</font> <font color="#2040a0">a</font> <font color="#2040a0">byte</font>
+  <font color="#2040a0">SIFAT_ARRAY</font>		<font color="4444FF">=</font> <font color="#FF0000">0x02</font>,	// <font color="#2040a0">array</font> <font color="#2040a0">of</font> <font color="#2040a0">some</font> <font color="#2040a0">bytes</font>
+  <font color="#2040a0">SIFAT_STRING</font>		<font color="4444FF">=</font> <font color="#FF0000">0x03</font>,	// <font color="#2040a0">a</font> <font color="#2040a0">string</font>
+  <font color="#2040a0">SIFAT_NONE</font>		<font color="4444FF">=</font> <font color="#FF0000">0x04</font>	// <font color="#2040a0">no</font> <font color="#2040a0">answer</font> <font color="#2040a0">at</font> <font color="#2040a0">all</font>
+<font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+
+<strong>void</strong>
+<font color="#2040a0">print_cmd_infos</font><font color="4444FF">(</font><strong>void</strong><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">i</font>, <font color="#2040a0">j</font><font color="4444FF">;</font>
+  <strong>unsigned</strong> <strong>char</strong> <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">5</font><font color="4444FF">]</font><font color="4444FF">;</font>
+  <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font> <font color="4444FF">&lt;</font> <font color="#2040a0">nuof_commands</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;Command '%c' info:<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_CMDINFO</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+      <strong>for</strong> <font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">j</font> <font color="4444FF">&lt;</font> <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font>
+        <font color="4444FF"><strong>{</strong></font>
+          <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+          //<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot; 0x%02x&quot;</font>, <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;  need %d params, answers as &quot;</font>, <font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <strong>switch</strong> <font color="4444FF">(</font><font color="#2040a0">inf</font><font color="4444FF">[</font><font color="#FF0000">2</font><font color="4444FF">]</font><font color="4444FF">)</font>
+        <font color="4444FF"><strong>{</strong></font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_UNKNOWN</font><font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;unknown&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_BYTE</font>   <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;byte&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_ARRAY</font>  <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;array&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_STRING</font> <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;string&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+          <strong>case</strong> <font color="#2040a0">SIFAT_NONE</font>   <font color="4444FF">:</font> <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;none&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font> <strong>break</strong><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;: &quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_CMDHELP</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">commands</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <strong>if</strong> <font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">)</font>
+        <font color="4444FF"><strong>{</strong></font>
+          <font color="#2040a0">j</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+          <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+            <font color="4444FF"><strong>{</strong></font>
+              <font color="#2040a0">putchar</font><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">;</font>
+              <font color="#2040a0">j</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">;</font>
+            <font color="4444FF"><strong>}</strong></font>
+        <font color="4444FF"><strong>}</strong></font>
+      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+	 </pre><!-- code2html delete stop -->
+
+<p>
+  <b>Command: stop</b>
+</p>  
+
+<p>Command character: s<br>
+      Answer: -
+</p>
+
+<p>Sending this command stops the simulation.</p>
+	
+<p><b>Command: print</b></p>
+
+<p>Command character: p followed by a character to print<br>
+  Answer: -</p>
+
+<p>This command can be used to print out a character on the simulator
+  console. Following functions can be used to print a character and a
+  string:
+</p>
+
+      
+      <!-- code2html add --language-mode=c
+void
 sif_putchar(char c)
 {
   *sif= SIFCM_PRINT;
@@ -343,41 +534,59 @@ sif_print(char *s)
   while (*s)
     sif_putchar(*s++);
 }
-</pre> </div>
-    <div><br>
-    </div>
-    <div><b>Command: fin_check</b></div>
-    <div><br>
-    </div>
-    <div>Command character: f</div>
-    <div>Answer: 0 (if input file is not readable), or 1 (if input file is
-      readable)</div>
-    <div><br>
-    </div>
-    <div>This command checks if the input file is readable or not.Here is a
-      simple function which can be used to check readability of the input file:</div>
-    <div>
-      <pre>char
+	 --><!-- code2html delete start --><pre>
+<strong>void</strong>
+<font color="#2040a0">sif_putchar</font><font color="4444FF">(</font><strong>char</strong> <font color="#2040a0">c</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_PRINT</font><font color="4444FF">;</font>
+  <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">c</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>void</strong>
+<font color="#2040a0">sif_print</font><font color="4444FF">(</font><strong>char</strong> <font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>while</strong> <font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">)</font>
+    <font color="#2040a0">sif_putchar</font><font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+	 </pre><!-- code2html delete stop -->
+
+<p><b>Command: fin_check</b></p>
+
+<p>Command character: f</div>
+  Answer: 0 (if input file is not readable), or 1 (if input file is
+  readable)</p>
+
+<p>This command checks if the input file is readable or not.Here is a
+  simple function which can be used to check readability of the input file:</p>
+
+      <!-- code2html add --language-mode=c
+char
 sif_fin_avail()
 {
   return sif_get(SIFCM_FIN_CHECK);
 }
-</pre><br>
-    </div>
-    <div><b>Command: read</b></div>
-    <div><br>
-    </div>
-    <div>Command character: r</div>
-    <div>Answer: next byte from input file</div>
-    <div><br>
-    </div>
-    <div>This command can be used to read next byte from the input file.
-      Remember, name of the input file must be set before use.</div>
-    <div><br>
-    </div>
-    <div>Following demonstration code prints out content of the input file:</div>
-    <div>
-      <pre>void
+--><!-- code2html delete start --><pre>
+<strong>char</strong>
+<font color="#2040a0">sif_fin_avail</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>return</strong> <font color="#2040a0">sif_get</font><font color="4444FF">(</font><font color="#2040a0">SIFCM_FIN_CHECK</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+</pre><!-- code2html delete stop -->
+
+<p><b>Command: read</b></p>
+
+<p>Command character: r<br>
+  Answer: next byte from input file</p>
+
+<p>This command can be used to read next byte from the input file.
+  Remember, name of the input file must be set before use.</p>
+    
+<p>Following demonstration code prints out content of the input file:</p>
+
+
+
+      <!-- code2html add --language-mode=c
+void
 fin_demo()
 {
   char i, c;
@@ -385,22 +594,37 @@ fin_demo()
   while (i= sif_fin_avail())
     {
       c= sif_read();
-      if (c &gt; 31)
+      if (c > 31)
 	putchar(c);
     }
   printf("\nRead demo finished\n");
 }
-</pre></div>
-    <div><b>Command: write</b></div>
-    <div><br>
-    </div>
-    <div>Command character: w, followed by a byte to write to output file</div>
-    <div>Answer: -</div>
-    <div><br>
-    </div>
-    <div>Following function can be used to write a string to the output file:</div>
-    <div>
-      <pre>void
+--><!-- code2html delete start --><pre>
+<strong>void</strong>
+<font color="#2040a0">fin_demo</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>char</strong> <font color="#2040a0">i</font>, <font color="#2040a0">c</font><font color="4444FF">;</font>
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;Reading input from SIMIF input file:<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font> <font color="#2040a0">sif_fin_avail</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">c</font><font color="4444FF">=</font> <font color="#2040a0">sif_read</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <strong>if</strong> <font color="4444FF">(</font><font color="#2040a0">c</font> <font color="4444FF">&gt;</font> <font color="#FF0000">31</font><font color="4444FF">)</font>
+	<font color="#2040a0">putchar</font><font color="4444FF">(</font><font color="#2040a0">c</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>Read demo finished<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+</pre><!-- code2html delete stop -->
+
+<p><b>Command: write</b></p>
+
+<p>Command character: w, followed by a byte to write to output file<br>
+  Answer: -</p>
+
+
+<p>Following function can be used to write a string to the output file:</p>
+
+      <!-- code2html add --language-mode=c
+void
 fout_demo(char *s)
 {
   while (*s)
@@ -409,10 +633,22 @@ fout_demo(char *s)
       *sif= *s++;
     }
 }
-</pre>Do not forget to specify name of the output file via setting of the
-      simulator interface. Be careful, simulator will overwrite content of the
-      output file!<br>
-    </div>
+--><!-- code2html delete start --><pre>
+<strong>void</strong>
+<font color="#2040a0">fout_demo</font><font color="4444FF">(</font><strong>char</strong> <font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>while</strong> <font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="#2040a0">SIFCM_WRITE</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">sif</font><font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">s</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+</pre><!-- code2html delete stop -->
+
+<p>Do not forget to specify name of the output file via setting of the
+    simulator interface. Be careful, simulator will overwrite content of the
+  output file!</p>
+
     <hr>
   </body>
 </html>

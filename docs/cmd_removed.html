@@ -593,6 +593,8 @@ under certain conditions; type `show c' for details.
       <h3>disassemble <i>[start [offset [lines]]]</i></h3>
     </a>
 
+    <font color="grey">
+      
     Disassemble code. This command can be used to list disassembled
     instructions which discovered by the code analyser.  First two
     parameters specify the address where the list starts. First
@@ -661,8 +663,12 @@ D  000189 22       RET
     of the list is disassembled instruction. Every number appeared on
     the list is hexadecimal number.
 
+    </font>
+    
     <h3><a name="analyse">analyse|analyze [<i>addr</i>]</a></h3>
 
+    <font color="grey">
+      
     <p>Runs the analyser to identify code.  If an address is given it
       is taken as the starting point and the results are added to any
       existing analysis. If no address is given or a file is loaded
@@ -670,6 +676,8 @@ D  000189 22       RET
       the <a href="cmd_memory.html#file">file,load</a> command, any
       existing analysis is cleared and a new one created using all the
       known hardware vectors as starting points.</p>
+
+    </font>
     
     <hr>
   </body>
