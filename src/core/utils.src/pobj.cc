@@ -295,7 +295,7 @@ cl_list::object_at(t_index index)
 {
   if (index < 0 ||
       index >= count)
-    error(1, index);
+    return 0;
   return((class cl_base *)(Items[index]));
 }
 
