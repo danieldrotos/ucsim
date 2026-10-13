@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (error.cc)
+ * Simulator of microcontrollers (serr.cc)
  *
  * Copyright (C) 1997 Drotos Daniel
  * 
@@ -29,7 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "i_string.h"
 
 // prj (local)
-#include "errorcl.h"
+#include "serrcl.h"
 #include "globals.h"
 #include "utils.h"
 
@@ -184,4 +184,4 @@ cl_error_registry::cl_error_registry(void)
     register_error(new cl_error_class(err_error, "non-classified", ERROR_ON));
 }
 
-/* End of sim.src/error.cc */
+/* End of sim.src/serr.cc */

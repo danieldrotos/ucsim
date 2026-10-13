@@ -574,7 +574,7 @@ public:
  * Errors
  */
 
-#include "errorcl.h"
+#include "serrcl.h"
 
 class cl_error_unknown_code: public cl_error
 {

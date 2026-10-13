@@ -797,7 +797,7 @@ public:
  * Errors in memory handling
  */
 
-#include "errorcl.h"
+#include "serrcl.h"
 
 class cl_error_mem: public cl_error
 {

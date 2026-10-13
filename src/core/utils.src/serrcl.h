@@ -1,5 +1,5 @@
 /*
- * Simulator of microcontrollers (errorcl.h)
+ * Simulator of microcontrollers (serrcl.h)
  *
  * Copyright (C) 1997 Drotos Daniel
  * 
@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef ERRORCL_HEADER
-#define ERRORCL_HEADER
+#ifndef SERRCL_HEADER
+#define SERRCL_HEADER
 
 #include <string.h>
 
@@ -124,4 +124,4 @@ public:
 
 #endif
 
-/* End of utils.src/errorcl.h */
+/* End of utils.src/serrcl.h */
