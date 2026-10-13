@@ -35,7 +35,7 @@ class cl_wd: public cl_hw
 {
 public:
   t_addr addr;
-  class cl_memory_cell *ctrl, *cntl, *cnth;
+  class cl_memory_cell *zero, *ctrl, *cntl, *cnth;
   u8_t pre;
   u16_t cnt;
 public:
@@ -45,6 +45,7 @@ public:
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual int tick(int cycles);
   virtual void check(void);
+  virtual void do_reset(u8_t reason);
   
   virtual void print_info(class cl_console_base *con);
 };

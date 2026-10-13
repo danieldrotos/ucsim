@@ -109,7 +109,7 @@ cl_f8::mk_hw_elements(void)
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
 
-  add_hw(h= new cl_wd(this, 0xff00, "wd"));
+  add_hw(h= new cl_wd(this, 0x0001, "wd"));
   h->init();
 }
 
@@ -126,13 +126,23 @@ cl_f8::make_memories(void)
 {
   class cl_address_space *as;
   class cl_address_decoder *ad;
-  class cl_memory_chip *ram_chip, *prom_chip;
+  class cl_memory_chip *io_chip, *ram_chip, *prom_chip;
 
   // Flat address space
   rom= as= new cl_address_space("rom", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
+  // IO
+  io_chip= new cl_chip8("io_chip", 0x2000, 8);
+  io_chip->init();
+  memchips->add(io_chip);
+  ad= new cl_address_decoder(as= rom,
+			     io_chip, 0x0000, 0x1fff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  
   // RAM
   ram_chip= new cl_chip8("ram_chip", 0x2000, 8);
   ram_chip->init();

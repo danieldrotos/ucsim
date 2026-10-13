@@ -33,6 +33,7 @@ cl_wd::cl_wd(class cl_uc *auc, t_addr the_addr, const char *aname):
 {
   addr= the_addr;
   set_name(aname);
+  zero= 0;
   ctrl= 0;
   cntl= 0;
   cnth= 0;
@@ -43,9 +44,10 @@ int
 cl_wd::init(void)
 {
   cl_hw::init();
+  zero= register_cell(uc->rom, 0);
   ctrl= register_cell(uc->rom, addr);
-  cntl= register_cell(uc->rom, addr+1);
-  cnth= register_cell(uc->rom, addr+2);
+  //cntl= register_cell(uc->rom, addr+1);
+  //cnth= register_cell(uc->rom, addr+2);
   ctrl->W(0);
   return 0;
 }
@@ -65,7 +67,12 @@ cl_wd::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (conf(cell, val))
     return;
-  if (cell == ctrl)
+  if (cell == zero)
+    {
+      do_reset(8);
+      *val= cell->get();
+    }
+  else if (cell == ctrl)
     {
       u8_t old= ctrl->R();
       if (((old & 1) == 0) && (*val & 1))
@@ -74,12 +81,12 @@ cl_wd::write(class cl_memory_cell *cell, t_mem *val)
 	  cnt= 0;
 	}
     }
-  else if (cell == cntl)
+  else if (cntl && (cell == cntl))
     {
       cnt&= 0xff00;
       cnt|= (*val & 0xff);
     }
-  else if (cell == cnth)
+  else if (cnth && (cell == cnth))
     {
       cnt&= 0x00ff;
       cnt|= ((*val & 0xff) << 8);
@@ -110,17 +117,30 @@ cl_wd::check(void)
 {
   if (cnt == 0xffff)
     {
-      u8_t old= ctrl->R();
-      uc->reset();
-      ctrl->W((old & 1) | 0x02);
+      do_reset(2);
     }
+}
+
+
+void
+cl_wd::do_reset(u8_t reason)
+{
+  u8_t old= ctrl->R();
+  uc->reset();
+  ctrl->W((old & 1) | reason);
 }
 
 
 void
 cl_wd::print_info(class cl_console_base *con)
 {
-  con->dd_printf("Ctrl= 0x%02x\n", MU(ctrl->R()));
+  u8_t v= ctrl->R();
+  con->dd_printf("Addr= 0x%04x\n", AU(addr));
+  con->dd_printf("Ctrl= 0x%02x ", v);
+  con->dd_printf("Active=%d ", (v&1)?1:0);
+  con->dd_printf("Dog=%d ", (v&2)?1:0);
+  con->dd_printf("Trap=%d ", (v&4)?1:0);
+  con->dd_printf("Null=%d\n1", (v&8)?1:0);
   con->dd_printf("Pre= %u             \n", pre);
   con->dd_printf("Cnt= %u             \n", cnt);
 }
