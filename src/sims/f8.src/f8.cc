@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "dregcl.h"
 
+#include "wdcl.h"
+
 #include "f8cl.h"
 
 
@@ -105,6 +107,9 @@ cl_f8::mk_hw_elements(void)
   cl_uc::mk_hw_elements();
 
   add_hw(h= new cl_dreg(this, 0, "dreg"));
+  h->init();
+
+  add_hw(h= new cl_wd(this, 0xff00, "wd"));
   h->init();
 }
 
