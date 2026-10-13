@@ -140,7 +140,7 @@ cl_wd::print_info(class cl_console_base *con)
   con->dd_printf("Active=%d ", (v&1)?1:0);
   con->dd_printf("Dog=%d ", (v&2)?1:0);
   con->dd_printf("Trap=%d ", (v&4)?1:0);
-  con->dd_printf("Null=%d\n1", (v&8)?1:0);
+  con->dd_printf("Null=%d\n", (v&8)?1:0);
   con->dd_printf("Pre= %u             \n", pre);
   con->dd_printf("Cnt= %u             \n", cnt);
 }
