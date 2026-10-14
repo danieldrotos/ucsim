@@ -40,6 +40,21 @@ cl_wd::cl_wd(class cl_uc *auc, t_addr the_addr, const char *aname):
 }
 
 
+/*
+	// Watchdog
+	localparam WATCHDOG_CONFIG_ADDR = WATCHDOGADDRBASE + 0;
+	localparam WATCHDOG_COUNTER_ADDR = WATCHDOGADDRBASE + 2;
+
+	logic [7:0] watchdog_config_dread;
+	logic [15:0] watchdog_counter_dread;
+	
+		WATCHDOG_CONFIG_ADDR / 2:
+			read_data_even = watchdog_config_dread;
+		WATCHDOG_COUNTER_ADDR / 2:
+			read_data_even = watchdog_counter_dread[7:0];
+		(WATCHDOG_COUNTER_ADDR + 1) / 2:
+			read_data_odd = watchdog_counter_dread[15:8];
+ */
 int
 cl_wd::init(void)
 {
