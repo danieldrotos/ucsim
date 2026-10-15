@@ -61,8 +61,8 @@ cl_wd::init(void)
   cl_hw::init();
   zero= register_cell(uc->rom, 0);
   ctrl= register_cell(uc->rom, addr);
-  //cntl= register_cell(uc->rom, addr+1);
-  //cnth= register_cell(uc->rom, addr+2);
+  cntl= register_cell(uc->rom, addr+2);
+  cnth= register_cell(uc->rom, addr+3);
   ctrl->W(0);
   return 0;
 }
@@ -77,12 +77,27 @@ cl_wd::reset(void)
 }
 
 
+t_mem
+cl_wd::read(class cl_memory_cell *cell)
+{
+  if (cell == cntl)
+    {
+      return cell->set(cnt&0xff);
+    }
+  else if (cell == cnth)
+    {
+      return cell->set( (cnt>>8)&0xff );
+    }
+  conf(cell, NULL);
+  return cell->get();
+}
+
 void
 cl_wd::write(class cl_memory_cell *cell, t_mem *val)
 {
   if (conf(cell, val))
     return;
-  if (cell == zero)
+  if (on && (cell == zero))
     {
       do_reset(8);
       *val= cell->get();
@@ -113,6 +128,8 @@ cl_wd::write(class cl_memory_cell *cell, t_mem *val)
 int
 cl_wd::tick(int cycles)
 {
+  if (!on)
+    return 0;
   if (ctrl->R() & 1)
     {
       pre+= cycles;
@@ -150,6 +167,8 @@ void
 cl_wd::print_info(class cl_console_base *con)
 {
   u8_t v= ctrl->R();
+  con->dd_printf("Simulation of %s[%d] is turned %s\n", get_name(), id,
+		 on?"ON":"OFF");
   con->dd_printf("Addr= 0x%04x\n", AU(addr));
   con->dd_printf("Ctrl= 0x%02x ", v);
   con->dd_printf("Active=%d ", (v&1)?1:0);

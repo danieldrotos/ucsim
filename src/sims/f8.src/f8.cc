@@ -183,7 +183,7 @@ cl_f8::mk_hw_elements(void)
   add_hw(h= new cl_dreg(this, 0, "dreg"));
   h->init();
 
-  add_hw(h= new cl_wd(this, 0x0001, "wd"));
+  add_hw(h= new cl_wd(this, 0x0020, "wd"));
   h->init();
 }
 

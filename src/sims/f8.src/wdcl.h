@@ -41,7 +41,8 @@ public:
 public:
   cl_wd(class cl_uc *auc, t_addr the_addr, const char *aname);
   virtual int init(void);
-  virtual void reset(void);    
+  virtual void reset(void);
+  virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
   virtual int tick(int cycles);
   virtual void check(void);
