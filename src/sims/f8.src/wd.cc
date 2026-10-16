@@ -128,8 +128,6 @@ cl_wd::write(class cl_memory_cell *cell, t_mem *val)
 int
 cl_wd::tick(int cycles)
 {
-  if (!on)
-    return 0;
   if (ctrl->R() & 1)
     {
       pre+= cycles;
