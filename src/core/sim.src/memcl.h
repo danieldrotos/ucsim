@@ -831,6 +831,10 @@ public:
 };
 
 
+extern class cl_address_space *
+create_memory(chars name, t_addr size, int width, int initial=-1);
+
+
 #endif
 
 /* End of sim.src/memcl.h */

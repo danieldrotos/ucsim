@@ -649,6 +649,9 @@ cl_uc::cl_uc(class cl_sim *asim):
   inst_exec= false;
   hist= new cl_exec_hist(this);
   skip_cmdset= false;
+
+  // virtual memory for messages between hws
+  hw8msg= create_memory(chars("hw8msg"), 1024, 8, 0);
 }
 
 

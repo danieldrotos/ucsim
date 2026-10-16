@@ -300,20 +300,21 @@ public:
   class brk_coll *fbrk;		// Collection of FETCH break-points
   class brk_coll *ebrk;		// Collection of EVENT breakpoints
   class cl_display_list *displays;// Collection of displayed exprs on break
-  class cl_sim *sim;
+  class cl_sim *sim;		// parent object
   class cl_time_measurer *stop_at_time;
  public:
-  class cl_hw *cpu;
-  class cl_hws *hws;
-  class cl_exec_hist *hist;
+  class cl_hw *cpu;		// hidden peripheral for configuration
+  class cl_hws *hws;		// list of peripherals
+  class cl_exec_hist *hist;	// list of executed insts
 
  public:
-  class cl_memory_list *memchips;      // v3
+  class cl_memory_list *memchips;// v3
   class cl_memory_list *address_spaces;
   class cl_address_space *rom;  // Required for almost every uc
   class cl_address_space *variables;
   class cl_var_list *vars;
-
+  class cl_address_space *hw8msg;// messages between hws via callbacks
+  
   bool irq;
   class cl_irqs *it_sources;	// Sources of interrupts
   class cl_list *it_levels;	// Follow interrupt services
