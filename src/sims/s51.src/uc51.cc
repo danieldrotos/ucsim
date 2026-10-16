@@ -1990,7 +1990,7 @@ cl_uc51_cpu::init(void)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
     }
-  cell_psw= sfr->get_cell(PSW);//use_cell(sfr, PSW);
+  cell_psw= sfr->get_cell(PSW);
   cell_acc= register_cell(sfr, ACC);
   cell_sp= register_cell(sfr, SP);
   for (i= 0; i < 8; i++)

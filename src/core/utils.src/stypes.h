@@ -404,13 +404,6 @@ enum brk_event
   brkACCESS
 };
 
-/* Interrupt levels */
-enum intr_levels {
-//IT_NO		= -1, /* not in interrupt service */
-  IT_LOW	= 1, /* low level interrupt service */
-  IT_HIGH	= 2 /* service of high priority interrupt */
-};
-
 /* cathegories of hw elements (peripherals) */
 enum hw_cath {
   HW_DUMMY	= 0x0000,
