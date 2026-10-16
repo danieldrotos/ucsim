@@ -2942,8 +2942,7 @@ cl_uc::tick_hw(int cycles)
       for (i= 0; i < hc; i++)
         {
           hw= (class cl_hw *)(hws->at(i));
-          if ((hw->flags & HWF_INSIDE) &&
-              (hw->on))
+          if (hw->on)
 	    {
 	      hw->tick(1);
 	    }

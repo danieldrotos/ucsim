@@ -433,19 +433,11 @@ enum hw_cath {
 
 // Events that can happen in peripherals
 enum hw_event {
-  EV_OVERFLOW,
-  EV_PORT_CHANGED,
-  EV_T2_MODE_CHANGED,
-  EV_CLK_ON,
-  EV_CLK_OFF
-};
-
-// flags of hw units
-enum hw_flags {
-  HWF_NONE	= 0,
-  HWF_INSIDE	= 0x0001,
-  HWF_OUTSIDE	= 0x0002,
-  HWF_MISC	= 0x0004
+  EV_OVERFLOW, // s51 only
+  EV_PORT_CHANGED, // s51 only
+  EV_T2_MODE_CHANGED, // s51 only
+  EV_CLK_ON, // stm8 only
+  EV_CLK_OFF // stm8 only
 };
 
 /* Letter cases */
