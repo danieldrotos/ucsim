@@ -32,9 +32,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // - consider ACON bits
 // - buy some memory to run s51 with 2*4 Meg ROM/XRAM
 
-// strcpy (mem(MEM_ROM) ->addr_format, "0x%06x");
-// strcpy (mem(MEM_XRAM)->addr_format, "0x%06x");
-
 //#include "ddconfig.h"
 
 #include <stdio.h>
