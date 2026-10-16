@@ -100,26 +100,6 @@ public:
 };
 
 
-class cl_analyzer_opt: public cl_bool_option
-{
-protected:
-  class cl_uc *uc;
-public:
-  cl_analyzer_opt(class cl_uc *Iuc);
-  virtual void set_value(const char *s);
-  virtual void set_raw(bool val) { value.bval= val; }
-};
-
-class cl_analyser_opt: public cl_bool_option
-{
-protected:
-  class cl_uc *uc;
-public:
-  cl_analyser_opt(class cl_uc *Iuc);
-  virtual void set_value(const char *s);
-  virtual void set_raw(bool val) { value.bval= val; }
-};
-
 struct vcounter_t {
   t_mem inst;
   t_mem fetch;
@@ -292,7 +272,7 @@ public:
 
 /* Abstract microcontroller */
 
-class cl_uc: public /*cl_base*/cl_itab
+class cl_uc: public cl_itab
 {
 private:
   double xtal;			// Clock speed
@@ -302,8 +282,6 @@ public:
   int state;			// GO, IDLE, PD
   class cl_xtal_option *xtal_option;
   class cl_stop_selfjump_option *stop_selfjump_option;
-  class cl_analyzer_opt *analyzer_opt;
-  class cl_analyser_opt *analyser_opt;
   
   t_addr PC, instPC, PCmask;	// Program Counter
   class cl_cell32 cPC;		// Cell of PC
@@ -317,14 +295,12 @@ public:
   struct vcounter_t vc;		// Virtual clk counter
   bool stop_selfjump;		// Whether it should stop on selfjump
   bool repeating;		// Repeating inst skips check of selfjump
-  bool analyzer;		// Whether the code analyzer is enabled
   
   int brk_counter;		// Number of breakpoints
   class brk_coll *fbrk;		// Collection of FETCH break-points
   class brk_coll *ebrk;		// Collection of EVENT breakpoints
   class cl_display_list *displays;// Collection of displayed exprs on break
   class cl_sim *sim;
-  //class cl_list *mems;
   class cl_time_measurer *stop_at_time;
  public:
   class cl_hw *cpu;
@@ -335,7 +311,6 @@ public:
   class cl_memory_list *memchips;      // v3
   class cl_memory_list *address_spaces;
   class cl_address_space *rom;  // Required for almost every uc
-  //class cl_list *address_decoders;
   class cl_address_space *variables;
   class cl_var_list *vars;
 
@@ -348,7 +323,6 @@ public:
   class cl_list *events;	// Events happened during inst exec
 
   t_addr sp_most;
-  //t_addr sp_avg;
 
   bool vcd_break;
   bool skip_cmdset;
@@ -409,9 +383,6 @@ public:
   virtual long read_cdb_file(cl_f *f);
   virtual long read_map_file(cl_f *f);
   
-  // instructions, code analyzer
-  virtual void set_analyzer(bool val);
-
   // manipulating hw elements
   virtual void add_hw(class cl_hw *hw);
   virtual void init_add_hw(class cl_hw *hw);
