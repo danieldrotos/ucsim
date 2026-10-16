@@ -36,7 +36,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "interruptcl.h"
 #include "regs51.h"
-//#include "uc51cl.h"
+#include "uc51cl.h"
 #include "types51.h"
 
 
@@ -50,7 +50,7 @@ int
 cl_interrupt::init(void)
 {
   cl_hw::init();
-  sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   if (sfr)
     {
       register_cell(sfr, IE);
@@ -67,7 +67,7 @@ cl_interrupt::init(void)
 void
 cl_interrupt::added_to_uc(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   class cl_it_src *is;
   
   uc->it_sources->add(is= new cl_it_src(uc, bmEX0,

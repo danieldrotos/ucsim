@@ -80,10 +80,6 @@ int cl_fpp::init(void) {
 
   //set_xtal(8000000);
 
-  // rom = address_space(MEM_ROM_ID);
-  // ram = mem(MEM_XRAM);
-  // ram = rom;
-
   // zero out ram(this is assumed in regression tests)
   // for (int i = 0x0; i < 0x8000; i++) {
   //   ram->set((t_addr)i, 0);
@@ -224,20 +220,6 @@ cl_fpp::build_cmdset(class cl_cmdset *cmdset)
 /*
  * Help command interpreter
  */
-/*
-struct dis_entry *cl_fppa::dis_tbl(void) {
-  switch (type->type) {
-    case CPU_PDK13:
-      return (disass_pdk_13);
-  case CPU_PDK14:
-    return (disass_pdk_14);
-  case CPU_PDK15:
-    return (disass_pdk_15);
-  default:
-    return NULL;//__builtin_unreachable();
-  }
-}
-*/
 
 int cl_fpp::inst_length(t_addr /*addr*/) {
   return 1;
@@ -268,21 +250,6 @@ const char *cl_fpp::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
   int immed_n = 0;
   int start_addr = addr;
   struct dis_entry *instructions= dis_tbl();
-  /*
-  switch (type->type) {
-      case CPU_PDK13:
-        instructions = disass_pdk_13;
-        break;
-      case CPU_PDK14:
-        instructions = disass_pdk_14;
-        break;
-      case CPU_PDK15:
-        instructions = disass_pdk_15;
-        break;
-      default:
-        return "";//__builtin_unreachable();
-  }
-  */
   uint code = rom->get(addr++);
   int i = 0;
   while ((code & instructions[i].mask) != instructions[i].code &&
@@ -308,89 +275,6 @@ const char *cl_fpp::get_disasm_info(t_addr addr, int *ret_len, int *ret_branch,
 
   return b;
 }
-/*
-char *cl_fppa::disass(t_addr addr)
-{
-  chars work, temp;
-  const char *b;
-  int len = 0;
-  int immed_offset = 0;
-  struct dis_entry *dis_e;
-  bool first= true;
-  
-  work= "";
-
-  b = get_disasm_info(addr, &len, NULL, &immed_offset, &dis_e);
-
-  if (b == NULL)
-    {
-      return (strdup("UNKNOWN/INVALID"));
-    }
-
-  while (*b)
-    {
-      if ((*b == ' ') && first)
-	{
-	  first= false;
-	  while (work.len() < 6) work.append(' ');
-	}
-      if (*b == '%')
-	{
-	  temp= "";
-	  b++;
-	  uint code = rom->get(addr) & ~(uint)dis_e->mask;
-	  switch (*(b++))
-	    {
-	    case 'k':  // k    immediate addressing
-	      temp.format("#0x%x", code);
-	      break;
-	    case 'm':  // m    memory addressing
-	      if (*b == 'n')
-		{
-		  code &= m_mask();
-		  b++;
-		}
-	      temp.format("0x%x", code);
-	      break;
-	    case 'i':  // i    IO addressing
-	      // TODO: Maybe add pretty printing.
-	      if (*b == 'n')
-		{
-		  code &= io_mask();
-		  ++b;
-		}
-	      temp.format("[0x%x]", code);
-	      break;
-	    case 'n':  // n    N-bit addressing
-	      uint n;
-	      switch (type->type) {
-	      case CPU_PDK13:
-		n = (code & 0xE0) >> 5;
-		break;
-	      case CPU_PDK14:
-		n = (code & 0x1C0) >> 6;
-		break;
-	      case CPU_PDK15:
-		n = (code & 0x380) >> 7;
-		break;
-	      default:
-		n= 0;//__builtin_unreachable();
-	      }
-	      temp.format("#0x%x", n);
-	      break;
-	    default:
-	      temp= "%?";
-	      break;
-	    }
-	  work+= temp;
-	}
-      else
-	work+= *(b++);
-    }
-
-  return strdup(work.c_str());
-}
-*/
 
 struct dis_entry *
 cl_fpp::get_dis_entry(t_addr addr)

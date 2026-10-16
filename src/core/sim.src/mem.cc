@@ -1711,6 +1711,17 @@ cl_address_space::get_cell(t_addr addr)
   return(&cella[idx]);
 }
 
+class cl_memory_cell &
+cl_address_space::operator[](t_addr addr)
+{
+  t_addr idx= addr-start_address;
+  if (idx >= size ||
+      addr < start_address)
+    {
+      return(*dummy);
+    }
+  return(cella[idx]);
+}
 
 int
 cl_address_space::get_cell_flag(t_addr addr)
@@ -2265,6 +2276,7 @@ cl_chip32::d(t_addr addr, t_mem v)
   v&= data_mask;
   ((u32_t*)array)[addr]= v;
 }
+
 
 class cl_memory_chip *
 new_chip(const char *id, int asize, int awidth, int initial)
@@ -3044,5 +3056,24 @@ cl_mem_error_registry::cl_mem_error_registry(void)
   prev = register_error(new cl_error_class(err_error, "invalid_address", prev));
   prev = register_error(new cl_error_class(err_error, "non_decoded", prev));
 }
+
+
+class cl_address_space *
+create_memory(chars name, t_addr size, int width, int initial)
+{
+  class cl_address_space *as;
+  as= new cl_address_space(name, 0, size, width);
+  as->init();
+  class cl_memory_chip *chip;
+  chip= new_chip(name+"_chip", size, width, initial);
+  chip->init();
+  class cl_address_decoder *ad;
+  ad= new cl_address_decoder(as, chip, 0, size-1, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  return as;
+}
+
 
 /* End of sim.src/mem.cc */

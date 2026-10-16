@@ -65,7 +65,6 @@ class cl_hw_io: public cl_console
 class cl_hw: public cl_guiobj
 {
  public:
-  int flags;
   class cl_uc *uc;
   enum hw_cath category;
   int id;

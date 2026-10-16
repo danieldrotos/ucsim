@@ -98,8 +98,6 @@ int
 cl_tlcs::init(void)
 {
   cl_uc::init(); /* Memories now exist */
-  //ram= address_space(MEM_IRAM_ID);
-  //rom= address_space(MEM_ROM_ID);
   sp_limit= 0xf000;
   
   // zero out ram(this is assumed in regression tests)

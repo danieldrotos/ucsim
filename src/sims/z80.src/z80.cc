@@ -80,10 +80,6 @@ cl_z80::init(void)
 
   cl_uc::init(); /* Memories now exist */
 
-  //rom= address_space(MEM_ROM_ID);
-//  ram= mem(MEM_XRAM);
-  //ram= rom;
-
   // zero out ram(this is assumed in regression tests)
   for (int i=0x8000; i<0x10000; i++) {
     ram->set((t_addr) i, 0);
@@ -131,19 +127,6 @@ cl_z80::id_string(void)
 /*
  * Making elements of the controller
  */
-/*
-t_addr
-cl_z80::get_mem_size(enum mem_class type)
-{
-  switch(type)
-    {
-    case MEM_ROM: return(0x10000);
-    case MEM_XRAM: return(0x10000);
-    default: return(0);
-    }
- return(cl_uc::get_mem_size(type));
-}
-*/
 
 void
 cl_z80::make_cpu_hw(void)

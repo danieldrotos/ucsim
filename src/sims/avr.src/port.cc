@@ -34,22 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_port::cl_port(class cl_uc *auc):
   cl_hw(auc, HW_PORT, 0, "port")
 {
-  //uc->register_hw_read(MEM_SFR, 2, this);
-  //uc->register_hw_read(MEM_SFR, 4, this);
 }
-
-/*ulong
-cl_port::read(class cl_mem *mem, long addr)
-{
-  switch (addr)
-    {
-    case 2:
-      return(22);
-    case 4:
-      return(44);
-    }
-  return(cl_hw::read(mem, addr));
-}*/
 
 
 /* End of avr.src/port.cc */

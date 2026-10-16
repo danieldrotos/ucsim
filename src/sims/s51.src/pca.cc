@@ -35,6 +35,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "pcacl.h"
 #include "regs51.h"
 #include "types51.h"
+#include "uc51cl.h"
 
 
 cl_pca::cl_pca(class cl_uc *auc, int aid):
@@ -49,7 +50,7 @@ int
 cl_pca::init(void)
 {
   cl_hw::init();
-  sfr= uc->address_space(MEM_SFR_ID);
+  sfr= ((cl_51core*)uc)->sfr;
   //t_addr CCAPL[5]= {CCAPL[0], CCAPL[1], CCAPL[2], CCAPL[3], CCAPL[4]};
   //t_addr CCAPH[5]= {CCAPH[0], CCAPH[1], CCAPH[2], CCAPH[3], CCAPH[4]};
   //t_addr CCAPM[5]= {CCAPM[0], CCAPM[1], CCAPM[2], CCAPM[3], CCAPM[4]};
@@ -80,7 +81,6 @@ cl_pca::init(void)
 void
 cl_pca::added_to_uc(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
   class cl_it_src *is;
   
   uc->it_sources->add_at(4, is= new cl_it_src(uc, bmEC,
@@ -176,22 +176,6 @@ cl_pca::write(class cl_memory_cell *cell, t_mem *val)
     }
 }
 
-/*void
-cl_pca::mem_cell_changed(class cl_m *mem, t_addr addr)
-{
-  class cl_m *sfr= uc->mem(MEM_SFR);
-
-  if (mem && sfr && mem == sfr)
-    {
-      if (addr == addr_ccapXl)
-	ccapXl= sfr->get_cell(addr_ccapXl);
-      else if (addr == addr_ccapXh)
-	ccapXh= sfr->get_cell(addr_ccapXh);
-      else if (addr == addr_ccapmX)
-	ccapmX= sfr->get_cell(addr_ccapmX);
-    }
-}*/
-
 int
 cl_pca::tick(int cycles)
 {
@@ -226,8 +210,6 @@ cl_pca::tick(int cycles)
 void
 cl_pca::do_pca_counter(int cycles)
 {
-  //class cl_m *sfr= uc->mem(MEM_SFR);
-
   while (cycles--)
     {
       if (cell_cl->set(cell_cl->get() + 1) == 0)

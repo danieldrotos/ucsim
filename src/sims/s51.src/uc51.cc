@@ -1982,15 +1982,15 @@ cl_uc51_cpu::cl_uc51_cpu(class cl_uc *auc):
 int
 cl_uc51_cpu::init(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID),
-    *bas= uc->address_space("bits");
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
+  class cl_address_space *bas= uc->address_space("bits");
   int i;
   cl_hw::init();
   if (!sfr)
     {
       fprintf(stderr, "No SFR to register %s[%d] into\n", id_string, id);
     }
-  cell_psw= sfr->get_cell(PSW);//use_cell(sfr, PSW);
+  cell_psw= sfr->get_cell(PSW);
   cell_acc= register_cell(sfr, ACC);
   cell_sp= register_cell(sfr, SP);
   for (i= 0; i < 8; i++)

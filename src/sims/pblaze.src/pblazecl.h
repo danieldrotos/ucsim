@@ -73,7 +73,6 @@ public:
   virtual const char *id_string(void);
 
   virtual cl_address_space * bit2mem(t_addr bitaddr, t_addr *memaddr, t_mem *bitmask);
-  virtual t_addr get_mem_size(enum mem_class type);
   virtual void mk_hw_elements(void);
   virtual void make_memories(void);
   virtual void build_cmdset(class cl_cmdset *cmdset);

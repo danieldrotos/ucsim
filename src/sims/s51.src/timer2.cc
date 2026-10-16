@@ -40,7 +40,7 @@ cl_timer2::cl_timer2(class cl_uc *auc, int aid, const char *aid_string,
   mask_TCLK= bmTCLK;
   mask_CP_RL2= bmCP_RL2;
   make_partner(HW_UART, 0);
-  sfr= uc->address_space(MEM_SFR_ID);
+  sfr= ((cl_51core*)uc)->sfr;
   if (features & (t2_down|t2_clock_out))
     {
       cell_t2mod= register_cell(sfr, T2MOD);
@@ -61,7 +61,7 @@ cl_timer2::init(void)
 void
 cl_timer2::added_to_uc(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   class cl_it_src *is;
   
   uc->it_sources->add(is= new cl_it_src(uc, bmET2,

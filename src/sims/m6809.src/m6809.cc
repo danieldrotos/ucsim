@@ -300,7 +300,7 @@ cl_m6809::make_memories(void)
 {
   class cl_address_space *as;
   
-  rom= as= new cl_address_space("rom"/*MEM_ROM_ID*/, 0, 0x10000, 8);
+  rom= as= new cl_address_space("rom", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
@@ -310,7 +310,7 @@ cl_m6809::make_memories(void)
   chip= new cl_chip8("rom_chip", 0x10000, 8);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as= rom/*address_space(MEM_ROM_ID)*/,
+  ad= new cl_address_decoder(as= rom,
 			     chip, 0, 0xffff, 0);
   ad->init();
   as->decoders->add(ad);

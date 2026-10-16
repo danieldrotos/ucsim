@@ -101,10 +101,6 @@ cl_stm8::init(void)
 
   //set_xtal(8000000);
 
-  //rom = address_space(MEM_ROM_ID);
-  //ram = mem(MEM_XRAM);
-  //ram = rom;
-
   //printf("******************** leave the RAM dirty now \n");
   // zero out ram(this is assumed in regression tests)
   //for (int i=0x0; i<0x8000; i++) {
@@ -157,19 +153,6 @@ cl_stm8::id_string(void)
 /*
  * Making elements of the controller
  */
-/*
-t_addr
-cl_stm8::get_mem_size(enum mem_class type)
-{
-  switch(type)
-    {
-    case MEM_ROM: return(0x10000);
-    case MEM_XRAM: return(0x10000);
-    default: return(0);
-    }
- return(cl_uc::get_mem_size(type));
-}
-*/
 
  /*
    L15x46 uid: 0x4926 00 5b 00 16 11 47 30 31 38 35 35 36

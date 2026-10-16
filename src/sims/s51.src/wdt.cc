@@ -44,7 +44,7 @@ cl_wdt::cl_wdt(class cl_uc *auc, long resetvalue):
 int
 cl_wdt::init(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
 
   cl_hw::init();
   if (!sfr)

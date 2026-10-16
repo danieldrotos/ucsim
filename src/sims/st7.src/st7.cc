@@ -71,18 +71,6 @@ cl_st7::init(void)
   cl_uc::init(); /* Memories now exist */
   sp_limit= 0;
 
-  ///set_xtal(8000000);
-
-  //rom = address_space(MEM_ROM_ID);
-//  ram = mem(MEM_XRAM);
-  //ram = rom;
-
-  // zero out ram(this is assumed in regression tests)
-  //printf("******************** leave the RAM dirty now \n");
-//  for (int i=0x0; i<0x8000; i++) {
-//    ram->set((t_addr) i, 0);
-//  }
-
   return(0);
 }
 
@@ -112,19 +100,6 @@ cl_st7::id_string(void)
 /*
  * Making elements of the controller
  */
-/*
-t_addr
-cl_st7::get_mem_size(enum mem_class type)
-{
-  switch(type)
-    {
-    case MEM_ROM: return(0x10000);
-    case MEM_XRAM: return(0x10000);
-    default: return(0);
-    }
- return(cl_uc::get_mem_size(type));
-}
-*/
 
 void
 cl_st7::make_cpu_hw(void)
@@ -202,19 +177,6 @@ cl_st7::dis_tbl(void)
 {
   return(disass_st7);
 }
-
-/*struct name_entry *
-cl_st7::sfr_tbl(void)
-{
-  return(0);
-}*/
-
-/*struct name_entry *
-cl_st7::bit_tbl(void)
-{
-  //FIXME
-  return(0);
-}*/
 
 int
 cl_st7::inst_length(t_addr addr)

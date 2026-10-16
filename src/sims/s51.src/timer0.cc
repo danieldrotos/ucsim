@@ -87,7 +87,7 @@ cl_timer0::cl_timer0(class cl_uc *auc, int aid, const char *aid_string):
 int
 cl_timer0::init(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   int i;
   
   cl_hw::init();
@@ -119,7 +119,7 @@ cl_timer0::init(void)
 void
 cl_timer0::added_to_uc(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   class cl_it_src *is;
   
   if (id == 0)
@@ -187,22 +187,6 @@ cl_timer0::write(class cl_memory_cell *cell, t_mem *val)
     }
 }
 
-/*void
-cl_timer0::mem_cell_changed(class cl_m *mem, t_addr addr)
-{
-  //class cl_m *sfr= uc->mem(MEM_SFR);
-  //t_mem d;
-
-  cl_hw::mem_cell_changed(mem, addr);
-
-  //d= cell_tmod->get();
-  //write(cell_tmod, &d);
-  //d= cell_tcon->get();
-  //write(cell_tcon, &d);
-  //if (addr == addr_tl) cell_tl= sfr->get_cell(addr_tl);
-  //if (addr == addr_th) cell_th= sfr->get_cell(addr_th);
-}*/
-
 int
 cl_timer0::tick(int cycles)
 {
@@ -222,7 +206,6 @@ cl_timer0::do_mode0(int cycles)
   if (!TR)
     return(0);
 
-  //t_mem p3= uc->mem(MEM_SFR)->get(P3);
   if (GATE)
     {
       if ((/*p3 & mask_*/INT) == 0)
@@ -262,7 +245,6 @@ cl_timer0::do_mode1(int cycles)
   if (!TR)
     return(0);
 
-  //t_mem p3= uc->mem(MEM_SFR)->get(P3);
   if (GATE)
     {
       if ((/*p3 & mask_*/INT) == 0)
@@ -301,7 +283,6 @@ cl_timer0::do_mode2(int cycles)
   if (!TR)
     return(0);
 
-  //t_mem p3= uc->mem(MEM_SFR)->get(P3);
   if (GATE)
     {
       if ((/*p3 & mask_*/INT) == 0)
@@ -338,7 +319,6 @@ int
 cl_timer0::do_mode3(int cycles)
 {
   int cyc= cycles;
-  //t_mem p3= uc->mem(MEM_SFR)->get(P3);
 
   if (!TR)
     goto do_th;
@@ -409,7 +389,7 @@ cl_timer0::print_info(class cl_console_base *con)
   const char *modes[]= { "13 bit", "16 bit", "8 bit autoreload", "2x8 bit" };
   //t_mem tmod= cell_tmod->get();
   int on;
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
 
   con->dd_printf("%s[%d] 0x%04x", id_string, id,
 		 256*cell_th->get()+cell_tl->get());

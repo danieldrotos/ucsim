@@ -37,13 +37,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdint.h>
 #endif
 
-//typedef int8_t TYPE_BYTE;
-//typedef uint8_t TYPE_UBYTE;
-//typedef int16_t TYPE_WORD;
-//typedef uint16_t TYPE_UWORD;
-//typedef int32_t TYPE_DWORD;
-//typedef uint32_t TYPE_UDWORD;
-
 typedef unsigned char	uchar;
 typedef unsigned int	uint;
 typedef unsigned long	ulong;
@@ -57,7 +50,7 @@ typedef unsigned TYPE_DWORD u32_t;
 typedef   signed TYPE_QWORD i64_t;
 typedef unsigned TYPE_QWORD u64_t;
 
-typedef /*i64_t*/u32_t		t_addr;		/* 32 bit max */
+typedef u32_t		t_addr;		/* 32 bit max */
 typedef u32_t		t_mem;		/* 32 bit max */
 typedef i32_t		t_smem;		/* signed 32 bit memory */
 
@@ -81,7 +74,8 @@ typedef i32_t		t_smem;		/* signed 32 bit memory */
 #define MU32(v)    (MU((v)&0xffffffff))
 
 enum {
-  max_mem_size= 0x40000000		/* 1 GB */
+  max_mem_size= 0x40000000,		/* 1 GB */
+  hwmsg_size  = 1024
 };
 
 struct id_element
@@ -342,26 +336,6 @@ struct cpu_collection
   struct cpu_entry *entries;
 };
 
-/* Classes of memories, this is index on the list */
-enum mem_class
-{
-  MEM_ROM= 0,
-  MEM_XRAM,
-  MEM_IRAM,
-  MEM_SFR,
-  MEM_DUMMY,
-  MEM_IXRAM,
-  MEM_STACK,
-  MEM_TYPES
-};
-
-#define MEM_SFR_ID	"sfr"
-#define MEM_XRAM_ID	"xram"
-#define MEM_IXRAM_ID	"ixram"
-#define MEM_IRAM_ID	"iram"
-#define MEM_STACK_ID	"stack"
-#define MEM_ROM_ID	"rom"
-
 // States of simulator
 enum sim_state {
   SIM_NONE	= 0,
@@ -394,14 +368,12 @@ enum inst_result {
   resINV	= 106,	/* Invalid instruction */
   resBITADDR	= 107,	/* Bit address is uninterpretable */
   resERROR	= 108,	/* Error happened during instruction exec */
-  resSTEP	= 109,	/* Step command done, no more exex needed */
+  resSTEP	= 109,	/* Step command done, no more exec needed */
   resSIMIF	= 110,	/* Stopped by simulated prog itself through sim interface */
   resNOT_DONE	= 111,	/* Instruction has not simulated */
   resEVENTBREAK = 112,  /* Event breakpoint */
   resSELFJUMP	= 113,  /* Jump to itself */
 };
-  
-#define BIT_MASK(bitaddr) (1 << (bitaddr & 0x07))
 
 
 /* Type of breakpoints */
@@ -432,13 +404,6 @@ enum brk_event
   brkACCESS
 };
 
-/* Interrupt levels */
-enum intr_levels {
-//IT_NO		= -1, /* not in interrupt service */
-  IT_LOW	= 1, /* low level interrupt service */
-  IT_HIGH	= 2 /* service of high priority interrupt */
-};
-
 /* cathegories of hw elements (peripherals) */
 enum hw_cath {
   HW_DUMMY	= 0x0000,
@@ -459,19 +424,11 @@ enum hw_cath {
 
 // Events that can happen in peripherals
 enum hw_event {
-  EV_OVERFLOW,
-  EV_PORT_CHANGED,
-  EV_T2_MODE_CHANGED,
-  EV_CLK_ON,
-  EV_CLK_OFF
-};
-
-// flags of hw units
-enum hw_flags {
-  HWF_NONE	= 0,
-  HWF_INSIDE	= 0x0001,
-  HWF_OUTSIDE	= 0x0002,
-  HWF_MISC	= 0x0004
+  EV_OVERFLOW, // s51 only
+  EV_PORT_CHANGED, // s51 only
+  EV_T2_MODE_CHANGED, // s51 only
+  EV_CLK_ON, // stm8 only
+  EV_CLK_OFF // stm8 only
 };
 
 /* Letter cases */
