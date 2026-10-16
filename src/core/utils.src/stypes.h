@@ -374,8 +374,6 @@ enum inst_result {
   resEVENTBREAK = 112,  /* Event breakpoint */
   resSELFJUMP	= 113,  /* Jump to itself */
 };
-  
-#define BIT_MASK(bitaddr) (1 << (bitaddr & 0x07))
 
 
 /* Type of breakpoints */
