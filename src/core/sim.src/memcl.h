@@ -380,6 +380,7 @@ class cl_memory_cell: public cl_cell_data
   virtual void print_operators(const char *pre, class cl_console_base *con);
 
   virtual class cl_memory_cell &operator=(t_mem v);
+  virtual operator t_mem() { return read(); }
 };
 
 
@@ -519,6 +520,7 @@ class cl_address_space: public cl_memory
   virtual void download(t_addr, t_mem val);
   
   virtual class cl_memory_cell *get_cell(t_addr addr);
+  virtual class cl_memory_cell &operator[](t_addr addr);
   virtual int get_cell_flag(t_addr addr);
   virtual bool get_cell_flag(t_addr addr, enum cell_flag flag);
   virtual void set_cell_flag(t_addr addr, bool set_to, enum cell_flag flag);

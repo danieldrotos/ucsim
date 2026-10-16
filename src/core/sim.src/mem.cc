@@ -1711,6 +1711,18 @@ cl_address_space::get_cell(t_addr addr)
   return(&cella[idx]);
 }
 
+class cl_memory_cell &
+cl_address_space::operator[](t_addr addr)
+{
+  t_addr idx= addr-start_address;
+  if (idx >= size ||
+      addr < start_address)
+    {
+      return(*dummy);
+    }
+  return(cella[idx]);
+}
+
 int
 cl_address_space::get_cell_flag(t_addr addr)
 {

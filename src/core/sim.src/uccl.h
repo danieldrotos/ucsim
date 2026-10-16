@@ -270,6 +270,8 @@ public:
 };
 
 
+#define ROM (*rom)
+
 /* Abstract microcontroller */
 
 class cl_uc: public cl_itab
