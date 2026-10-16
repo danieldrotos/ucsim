@@ -1711,7 +1711,6 @@ cl_address_space::get_cell(t_addr addr)
   return(&cella[idx]);
 }
 
-
 int
 cl_address_space::get_cell_flag(t_addr addr)
 {

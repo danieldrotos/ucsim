@@ -382,8 +382,6 @@ class cl_memory_cell: public cl_cell_data
   virtual class cl_memory_cell &operator=(t_mem v);
 };
 
-typedef class cl_memory_cell MCELL;
-typedef class cl_memory_cell *MCELLP;
 
 /*
 class cl_bit_cell: public cl_memory_cell
@@ -407,9 +405,6 @@ class cl_cell8: public cl_memory_cell
   virtual void dl(t_mem v);
 };
 
-typedef class cl_cell8 C8;
-typedef class cl_cell8 *CP8;
-
 class cl_bit_cell8: public cl_memory_cell
 {
  public:
@@ -432,9 +427,6 @@ class cl_cell16: public cl_memory_cell
   virtual void dl(t_mem v);
 };
 
-typedef class cl_cell16 C16;
-typedef class cl_cell16 *CP16;
-
 class cl_bit_cell16: public cl_memory_cell
 {
  public:
@@ -455,9 +447,6 @@ class cl_cell32: public cl_memory_cell
   virtual void d(t_mem v);
   virtual void dl(t_mem v);
 };
-
-typedef class cl_cell32 C32;
-typedef class cl_cell32 *CP32;
 
 class cl_mc32: public cl_cell32
 {
@@ -833,6 +822,11 @@ public:
 
 extern class cl_address_space *
 create_memory(chars name, t_addr size, int width, int initial=-1);
+
+typedef class cl_memory_cell MCELL;
+typedef class cl_cell8 C8;
+typedef class cl_cell16 C16;
+typedef class cl_cell32 C32;
 
 
 #endif
