@@ -1982,8 +1982,8 @@ cl_uc51_cpu::cl_uc51_cpu(class cl_uc *auc):
 int
 cl_uc51_cpu::init(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID),
-    *bas= uc->address_space("bits");
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
+  class cl_address_space *bas= uc->address_space("bits");
   int i;
   cl_hw::init();
   if (!sfr)

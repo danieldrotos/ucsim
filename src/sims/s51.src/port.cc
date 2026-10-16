@@ -35,6 +35,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "regs51.h"
 #include "types51.h"
+#include "uc51cl.h"
 
 #include "portcl.h"
 
@@ -88,7 +89,7 @@ cl_port::init(void)
       }
     default: break;//addr_p= P0; return(1);
     }
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   bas= uc->address_space("bits");
   if (!sfr)
     {

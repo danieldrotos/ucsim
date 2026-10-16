@@ -37,13 +37,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <stdint.h>
 #endif
 
-//typedef int8_t TYPE_BYTE;
-//typedef uint8_t TYPE_UBYTE;
-//typedef int16_t TYPE_WORD;
-//typedef uint16_t TYPE_UWORD;
-//typedef int32_t TYPE_DWORD;
-//typedef uint32_t TYPE_UDWORD;
-
 typedef unsigned char	uchar;
 typedef unsigned int	uint;
 typedef unsigned long	ulong;
@@ -342,26 +335,6 @@ struct cpu_collection
   const char *exe;
   struct cpu_entry *entries;
 };
-
-/* Classes of memories, this is index on the list */
-enum mem_class
-{
-  MEM_ROM= 0,
-  MEM_XRAM,
-  MEM_IRAM,
-  MEM_SFR,
-  MEM_DUMMY,
-  MEM_IXRAM,
-  MEM_STACK,
-  MEM_TYPES
-};
-
-#define MEM_SFR_ID	"sfr"
-#define MEM_XRAM_ID	"xram"
-#define MEM_IXRAM_ID	"ixram"
-#define MEM_IRAM_ID	"iram"
-#define MEM_STACK_ID	"stack"
-#define MEM_ROM_ID	"rom"
 
 // States of simulator
 enum sim_state {

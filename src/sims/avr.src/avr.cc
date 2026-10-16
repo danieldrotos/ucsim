@@ -172,7 +172,7 @@ cl_avr::make_memories(void)
   rom= as= new cl_address_space("rom", 0, 0x10000, 16);
   as->init();
   address_spaces->add(as);
-  ram= as= new cl_address_space(MEM_IRAM_ID, 0, 0x10000, 8);
+  ram= as= new cl_address_space("iram", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 

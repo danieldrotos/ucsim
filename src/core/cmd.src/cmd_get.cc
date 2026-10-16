@@ -64,7 +64,7 @@ set_get_help(class cl_cmd *cmd)
 //			class cl_cmdline *cmdline, class cl_console *con)
 COMMAND_DO_WORK_UC(cl_get_sfr_cmd)
 {
-  class cl_address_space *mem= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *mem= uc->address_space("sfr");
   class cl_cmd_arg *parm;
   int i;
 
