@@ -1,3 +1,8 @@
+#
+# uCsim Makefile
+#
+# (c) Drotos Daniel 1997
+#
 
 all:
 	$(MAKE) -C src all
