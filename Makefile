@@ -41,7 +41,6 @@ distclean: local_distclean sub_distclean
 local_distclean: local_clean
 	rm -f config.log config.status
 	rm -rf autom4te.cache
-	rm -f Makefile
 
 sub_distclean:
 	$(MAKE) -C src  -f clean.mk distclean
