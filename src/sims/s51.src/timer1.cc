@@ -61,7 +61,7 @@ cl_timer1::print_info(class cl_console_base *con)
   const char *modes[]= { "13 bit", "16 bit", "8 bit autoreload", "stop" };
   //int tmod= cell_tmod->get();
   int on;
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   class cl_memory_cell *iec= NULL;
   u8_t ier= 0;
   

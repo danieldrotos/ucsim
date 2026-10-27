@@ -153,7 +153,7 @@ CMDHELP(cl_show_option_cmd,
 	"")
 
 // prj
-#include "errorcl.h"
+#include "serrcl.h"
 
 static void
 show_error_cmd_print_node(class cl_console_base *con,

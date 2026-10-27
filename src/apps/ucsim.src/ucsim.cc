@@ -41,12 +41,13 @@ public:
   virtual int exec_inst()
   {
     t_mem code;
+    class cl_memory_cell *c;
     if (fetch(&code))
       return resBREAKPOINT;
     tick(1);
-    r= rom->read(PC);
+    r= ROM[PC];
     vc.rd++;
-    rom->write(PC, r+1);
+    ROM[PC]= r+1;
     vc.wr++;
     r= 34;
     return resGO;

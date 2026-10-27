@@ -753,7 +753,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 		{
 		case DOPT_ERROR:
 		  fprintf(stderr, "No value for -D suboption\n");
-		  exit(1);
+		  //exit(1);
 		  break;
 		case DOPT_CPU_SPEED:
 		  measure_speed= 1;
@@ -785,7 +785,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 		default:
 		  /* Unknown suboption. */
 		  fprintf(stderr, "Unknown suboption `%s' for -D\n", value);
-		  exit(1);
+		  //exit(1);
 		  break;
 		}
 	    }
@@ -810,7 +810,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 		{
 		case SOPT_ERROR:
 		  fprintf(stderr, "No value for -S suboption\n");
-		  exit(1);
+		  //exit(1);
 		  break;
 		case SOPT_RAW:
 		  raw= 1;
@@ -841,7 +841,7 @@ cl_app::proc_arguments(int argc, char *argv[])
 		default:
 		  /* Unknown suboption. */
 		  fprintf(stderr, "Unknown suboption `%s' for -S\n", value);
-		  exit(1);
+		  //exit(1);
 		  break;
 		}
 	    }
@@ -971,23 +971,26 @@ cl_app::proc_arguments(int argc, char *argv[])
 		case IOPT_IF:
 		  if (value == NULL) {
 		    fprintf(stderr, "No value for -I if\n");
-		    exit(1);
+		    //exit(1);
 		  }
-		  ifstr= value;
+		  else
+		    ifstr= value;
 		  break;
 		case IOPT_IN:
 		  if (value == NULL) {
 		    fprintf(stderr, "No value for -I in\n");
-		    exit(1);
+		    //exit(1);
 		  }
-		  in= value;
+		  else
+		    in= value;
 		  break;
 		case IOPT_OUT:
 		  if (value == NULL) {
 		    fprintf(stderr, "No value for -I out\n");
-		    exit(1);
+		    //exit(1);
 		  }
-		  out= value;
+		  else
+		    out= value;
 		  break;
 		}
 	    }
@@ -1107,10 +1110,11 @@ cl_app::proc_arguments(int argc, char *argv[])
 	  fprintf(stderr, "Unknown option `-%c'.\n", optopt);
 	else
 	  fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
-	return(1);
+	//return(1);
 	break;
       default:
-	exit(c);
+	//exit(c);
+	break;
       }
   if (force_colors)
     options->set_value("black_and_white", this, bool(false));

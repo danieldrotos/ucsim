@@ -32,9 +32,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // - consider ACON bits
 // - buy some memory to run s51 with 2*4 Meg ROM/XRAM
 
-// strcpy (mem(MEM_ROM) ->addr_format, "0x%06x");
-// strcpy (mem(MEM_XRAM)->addr_format, "0x%06x");
-
 //#include "ddconfig.h"
 
 #include <stdio.h>
@@ -492,67 +489,6 @@ cl_uc390::clear_sfr(void)
   sfr->write(0xe3, 0x09); /* C1C    */
 }
 
-/*
-t_mem
-cl_uc390::read_mem(const char *id, t_addr addr)
-{
-
-  if (strcmp(id,MEM_XRAM_ID)==0 &&
-      addr >= 0x400000 &&
-      (sfr->get (ACON) & 0x02)) // AM1 set: 24-bit flat?
-    {
-      addr -= 0x400000;
-      id = MEM_IXRAM_ID;
-    }
-  return cl_51core::read_mem(id, addr); // 24 bit
-}
-*/
-
-/*
-t_mem
-cl_uc390::get_mem (const char *id, t_addr addr)
-{
-  if (strcmp(id,MEM_XRAM_ID)==0 &&
-      addr >= 0x400000 &&
-      (sfr->get (ACON) & 0x02)) // AM1 set: 24-bit flat?
-    {
-      addr -= 0x400000;
-      id = MEM_IXRAM_ID;
-    }
-  return cl_51core::get_mem (id, addr);
-}
-*/
-
-/*
-void
-cl_uc390::write_mem (const char *id, t_addr addr, t_mem val)
-{
-  if (strcmp(id, MEM_XRAM_ID)==0 &&
-      addr >= 0x400000 &&
-      (sfr->get (ACON) & 0x02)) // AM1 set: 24-bit flat?
-    {
-      addr -= 0x400000;
-      id = MEM_IXRAM_ID;
-    }
-  cl_51core::write_mem (id, addr, val);
-}
-*/
-
-/*
-void
-cl_uc390::set_mem (const char *id, t_addr addr, t_mem val)
-{
-  if (strcmp(id,MEM_XRAM_ID)==0 &&
-      addr >= 0x400000 &&
-      (sfr->get (ACON) & 0x02)) // AM1 set: 24-bit flat?
-    {
-      addr -= 0x400000;
-      id = MEM_IXRAM_ID;
-    }
-  cl_51core::set_mem (id, addr, val);
-}
-*/
-
 
 /*
  *____________________________________________________________________________
@@ -569,7 +505,7 @@ cl_uc390::push_byte (t_mem uc)
       if (sp == 0) // overflow SP
         sfr->write(R51_ESP, sfr->read(R51_ESP) + 1);
       sp += (sfr->read (R51_ESP) & 0x3) * 256;
-      ixram->write(sp, uc);//write_mem (MEM_IXRAM_ID, sp, uc); // fixme
+      ixram->write(sp, uc); // fixme
     }
   else
     {
@@ -846,8 +782,6 @@ cl_uc390::instruction_e0/*inst_movx_a_Sdptr*/ (t_mem/*uchar*/ code)
     a= sfr->read (ph) * 256 + sfr->read (pl);
 
   u8_t v;
-  //v= read_mem (MEM_XRAM_ID,a);
-  //v= xram->read(a);
   if ((a >= 0x400000) &&
       (acon & 0x02))
     v= ixram->read(a-0x400000);
@@ -899,8 +833,6 @@ cl_uc390::instruction_f0/*inst_movx_Sdptr_a*/ (t_mem/*uchar*/ code)
     ixram->write(a-0x400000, acc->read());
   else
     xram->write(a, acc->read());
-  //xram->write(a, acc->read());
-  //write_mem (MEM_XRAM_ID, a, acc->read());
   
   if (dps & 0x20)                      /* auto-switch dptr */
     sfr->write (DPS, dps ^ 1);   /* toggle dual-dptr switch */
@@ -1297,16 +1229,14 @@ cl_uc390::print_regs (class cl_console_base *con)
 
   dps = sfr->get(DPS);
   
-  data = get_mem (MEM_XRAM_ID,
-                  sfr->get (DPX) * 256*256 + sfr->get (DPH) * 256 + sfr->get (DPL));
+  data = xram->get ( sfr->get (DPX) * 256*256 + sfr->get (DPH) * 256 + sfr->get (DPL));
   con->dd_printf ("  %cDPTR0= 0x%02x%02x%02x @DPTR0= 0x%02x %3d %c",
                   dps & 0x01 ? ' ' : dps & 0x20 ? 't' : '*',
                   sfr->get (DPX), sfr->get (DPH), sfr->get (DPL),
                   data, data, isprint (data) ? data : '.');
   con->dd_printf("\n");
 
-  data = get_mem (MEM_XRAM_ID,
-                  sfr->get (DPX1) * 256*256 + sfr->get (DPH1) * 256 + sfr->get (DPL1));
+  data = xram->get ( sfr->get (DPX1) * 256*256 + sfr->get (DPH1) * 256 + sfr->get (DPL1));
   con->dd_printf ("  %cDPTR1= 0x%02x%02x%02x @DPTR1= 0x%02x %3d %c",
                   dps & 0x01 ? dps & 0x20 ? 't' : '*' : ' ',
                   sfr->get (DPX1), sfr->get (DPH1), sfr->get (DPL1),

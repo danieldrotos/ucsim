@@ -62,7 +62,7 @@ cl_serial::init(void)
 {
   set_name("mcs51_uart");
   cl_serial_hw::init();
-  sfr= uc->address_space(MEM_SFR_ID);
+  sfr= ((cl_51core*)uc)->sfr;
   bas= uc->address_space("bits");
   if (sfr)
     {
@@ -109,7 +109,7 @@ cl_serial::new_hw_added(class cl_hw *new_hw)
 void
 cl_serial::added_to_uc(void)
 {
-  class cl_address_space *sfr= uc->address_space(MEM_SFR_ID);
+  class cl_address_space *sfr= ((cl_51core*)uc)->sfr;
   class cl_it_src *is;
   
   uc->it_sources->add(is= new cl_it_src(uc, bmES,

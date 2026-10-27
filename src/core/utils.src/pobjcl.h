@@ -162,6 +162,7 @@ public:
 	  void	   error(t_index code, t_index info);
 
   virtual class cl_base *start(void);
+  virtual class cl_base *first(void) { return start(); }
   virtual class cl_base *next(void);
   virtual class cl_base *actual(void);
   

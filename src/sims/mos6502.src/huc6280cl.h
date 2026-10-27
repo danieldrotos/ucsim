@@ -47,6 +47,7 @@ public:
   virtual void mk_hw_elements(void);
   virtual void make_cpu_hw(void);
   virtual void make_memories(void);
+  // remove later, after intro -i option in sdcc regtests
   virtual class cl_memory *default_load_mem(void) { return romchip; }
   virtual struct dis_entry *get_dis_entry(t_addr addr);
 

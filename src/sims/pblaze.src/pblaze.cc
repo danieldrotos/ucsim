@@ -133,18 +133,6 @@ cl_pblaze::id_string(void)
 /*
  * Making elements of the controller
  */
-t_addr
-cl_pblaze::get_mem_size(enum mem_class type)
-{
-  switch(type)
-    {
-    case MEM_ROM: return rom_size;
-    case MEM_IRAM: return ram_size;
-    case MEM_STACK: return stack_size;
-    default: return(0);
-    }
-}
-
 
 void
 cl_pblaze::mk_hw_elements(void)
@@ -175,23 +163,23 @@ cl_pblaze::make_memories(void)
 
 
   // REGISTERS simulated in SFR memory
-  sfr= as= new cl_address_space(MEM_SFR_ID, 0, 0x22, 8);
+  sfr= as= new cl_address_space("sfr", 0, 0x22, 8);
   as->init();
   address_spaces->add(as);
 
   // ROM 1k 18b
-  rom = as = new cl_address_space(MEM_ROM_ID, 0, rom_size, 18); // picoblaze ma 18b sirokou pamet. kvuli kompatibilite s ucsim (cleneni po bytech) musi byt zvetstena na 24b = 3B
+  rom = as = new cl_address_space("rom", 0, rom_size, 18); // picoblaze ma 18b sirokou pamet. kvuli kompatibilite s ucsim (cleneni po bytech) musi byt zvetstena na 24b = 3B
   as->init();
   address_spaces->add(as);
 
 
   // RAM 8b (size for KCPSM3 is 64, for KCPSM6
-  ram = as= new cl_address_space(MEM_IRAM_ID, 0, ram_size, 8);
+  ram = as= new cl_address_space("iram", 0, ram_size, 8);
   as->init();
   address_spaces->add(as);
 
   // stack 31 10b
-  stack = as = new cl_address_space(MEM_STACK_ID, 0, stack_size, 12);
+  stack = as = new cl_address_space("stack", 0, stack_size, 12);
   as->init();
   address_spaces->add(as);
 
@@ -202,7 +190,7 @@ cl_pblaze::make_memories(void)
   chip = new cl_chip8("sfr_chip", 0x22, 8);
   chip->init();
   memchips->add(chip);
-  ad = new cl_address_decoder(as = address_space(MEM_SFR_ID), chip, 0, 0x21, 0);
+  ad = new cl_address_decoder(as = sfr, chip, 0, 0x21, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -211,7 +199,7 @@ cl_pblaze::make_memories(void)
   chip = new cl_chip32("rom_chip", rom_size, 18);
   chip->init();
   memchips->add(chip);
-  ad = new cl_address_decoder(as = address_space(MEM_ROM_ID), chip, 0, rom_size-1, 0);
+  ad = new cl_address_decoder(as = rom, chip, 0, rom_size-1, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -220,7 +208,7 @@ cl_pblaze::make_memories(void)
   chip= new cl_chip8("ram_chip", ram_size, 8);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as = address_space(MEM_IRAM_ID), chip, 0, ram_size-1, 0);
+  ad= new cl_address_decoder(as = ram, chip, 0, ram_size-1, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -229,7 +217,7 @@ cl_pblaze::make_memories(void)
   chip = new cl_chip8("stack_chip", stack_size, 12);
   chip->init();
   memchips->add(chip);
-  ad= new cl_address_decoder(as = address_space(MEM_STACK_ID), chip, 0, stack_size-1, 0);
+  ad= new cl_address_decoder(as = stack, chip, 0, stack_size-1, 0);
   ad->init();
   as->decoders->add(ad);
   ad->activate(0);
@@ -367,7 +355,7 @@ cl_pblaze::get_disasm_info(t_addr addr,
   int start_addr = addr;
   struct dis_entry_pblaze *dis_e;
 
-  code= get_mem(MEM_ROM_ID, addr++);
+  code= rom->read(addr++);
   dis_e = NULL;
 
   i = 0;

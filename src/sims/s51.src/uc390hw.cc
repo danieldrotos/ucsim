@@ -33,7 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // local
 #include "uc390hwcl.h"
 #include "regs51.h"
-//#include "uc51cl.h"
+#include "uc51cl.h"
 
 
 cl_uc390_hw::cl_uc390_hw (class cl_uc *auc):
@@ -46,7 +46,7 @@ int
 cl_uc390_hw::init(void)
 {
   cl_hw::init();
-  sfr = uc->address_space(MEM_SFR_ID);
+  sfr = ((cl_51core*)uc)->sfr;
   if (sfr)
     {
       cell_dps= register_cell (sfr, DPS  );

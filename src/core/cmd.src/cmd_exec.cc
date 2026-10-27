@@ -344,17 +344,15 @@ COMMAND_DO_WORK_APP(cl_help_cmd)
     cmdset= commander->cmdset;
   if (!cmdset)
     return(false);
-  if (!parm) {
-    for (i= 0; i < cmdset->count; i++)
-      {
-	class cl_cmd *c= (class cl_cmd *)(cmdset->at(i));
-	/*if (c->short_help.nempty())
-	  con->dd_printf("%s\n", c->short_help.c_str());
-	else
-	con->dd_printf("%s\n", c->names->at(0).c_str());*/
-	c->print_short(con);
-      }
-  }
+  if (!parm)
+    {
+      class cl_cmd *c= (class cl_cmd*)cmdset->start();
+      while (c)
+	{
+	  c->print_short(con);  
+	  c= (class cl_cmd*)cmdset->next();
+	}
+    }
   else
     {
       matches= 0;
@@ -419,10 +417,6 @@ cl_help_cmd::do_set(class cl_cmdline *cmdline, int pari,
 	    {
 	      matches++;
 	      cmd_found= cmd;
-	      /*if (cmd->short_help.nempty())
-		con->dd_printf("%s\n", cmd->short_help.c_str());
-	      else
-	      con->dd_printf("%s\n", cmd->names->at(0).c_str());*/
 	      cmd->print_short(con);
 	      //continue;
 	    }

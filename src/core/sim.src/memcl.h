@@ -380,10 +380,9 @@ class cl_memory_cell: public cl_cell_data
   virtual void print_operators(const char *pre, class cl_console_base *con);
 
   virtual class cl_memory_cell &operator=(t_mem v);
+  virtual operator t_mem() { return read(); }
 };
 
-typedef class cl_memory_cell MCELL;
-typedef class cl_memory_cell *MCELLP;
 
 /*
 class cl_bit_cell: public cl_memory_cell
@@ -407,9 +406,6 @@ class cl_cell8: public cl_memory_cell
   virtual void dl(t_mem v);
 };
 
-typedef class cl_cell8 C8;
-typedef class cl_cell8 *CP8;
-
 class cl_bit_cell8: public cl_memory_cell
 {
  public:
@@ -432,9 +428,6 @@ class cl_cell16: public cl_memory_cell
   virtual void dl(t_mem v);
 };
 
-typedef class cl_cell16 C16;
-typedef class cl_cell16 *CP16;
-
 class cl_bit_cell16: public cl_memory_cell
 {
  public:
@@ -455,9 +448,6 @@ class cl_cell32: public cl_memory_cell
   virtual void d(t_mem v);
   virtual void dl(t_mem v);
 };
-
-typedef class cl_cell32 C32;
-typedef class cl_cell32 *CP32;
 
 class cl_mc32: public cl_cell32
 {
@@ -530,6 +520,7 @@ class cl_address_space: public cl_memory
   virtual void download(t_addr, t_mem val);
   
   virtual class cl_memory_cell *get_cell(t_addr addr);
+  virtual class cl_memory_cell &operator[](t_addr addr);
   virtual int get_cell_flag(t_addr addr);
   virtual bool get_cell_flag(t_addr addr, enum cell_flag flag);
   virtual void set_cell_flag(t_addr addr, bool set_to, enum cell_flag flag);
@@ -797,7 +788,7 @@ public:
  * Errors in memory handling
  */
 
-#include "errorcl.h"
+#include "serrcl.h"
 
 class cl_error_mem: public cl_error
 {
@@ -829,6 +820,15 @@ class cl_mem_error_registry: public cl_error_registry
 public:
   cl_mem_error_registry(void);
 };
+
+
+extern class cl_address_space *
+create_memory(chars name, t_addr size, int width, int initial=-1);
+
+typedef class cl_memory_cell MCELL;
+typedef class cl_cell8 C8;
+typedef class cl_cell16 C16;
+typedef class cl_cell32 C32;
 
 
 #endif
