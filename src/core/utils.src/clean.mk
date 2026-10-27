@@ -16,5 +16,6 @@ local_distclean: local_clean
 	rm -f ddconfig.h main.mk Makefile *.dep packages.mk
 	rm -rf autom4te.cache
 	rm -f GPATH GRTAGS GSYMS GTAGS
+	rm -f version.h
 
 sub_distclean:

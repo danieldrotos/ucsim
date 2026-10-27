@@ -35,8 +35,10 @@ apps: $(APPS)
 
 libs: utils_lib cmd_lib sim_lib gui_lib motorola_lib
 
-utils_prep:
-	$(MAKE) -C core/utils.src prep
+utils_prep: $(srcdir)/core/utils.src/version.h
+
+$(srcdir)/core/utils.src/version.h: $(top_srcdir)/.version
+	$(SED) 's/^/#define VERSIONSTR "/' $?|$(SED) 's/$$/"/' >$@
 
 utils_lib:
 	$(MAKE) -C core/utils.src libs
