@@ -55,6 +55,9 @@ cl_ta1::init(void)
 void
 cl_ta1::reset(void)
 {
+  tacsr->W(0);
+  if (use_tapr) tapr->W(1);
+  tacr->W(0);
 }
 
 t_mem
