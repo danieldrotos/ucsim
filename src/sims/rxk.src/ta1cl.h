@@ -38,6 +38,7 @@ class cl_ta1: public cl_hw
   MCELL *perclk;
   MCELL *tacsr, *tapr, *tacr, *tat1r;
   int divby, in_clks;
+  u8_t cnt; // value of downcounter
   u8_t tac; // tacsr WRITE: control
   u8_t tas; // tacsr READ: status
  public:

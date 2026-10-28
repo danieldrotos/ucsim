@@ -38,6 +38,7 @@ cl_ta1::cl_ta1(class cl_uc *auc, bool ause_tapr):
   in_clks= 0;
   tac= 0;
   tas= 0;
+  cnt= 0;
 }
 
 int
@@ -109,7 +110,18 @@ cl_ta1::Tick(int cycles)
 {
   if (tac & 1)
     {
-      
+      while (cycles--)
+	{
+	  if (cnt==0)
+	    {
+	      cnt= tat1r->get();
+	      tas|= 2; // TODO: who will clear?
+	    }
+	  else
+	    {
+	      cnt--;
+	    }
+	}
     }
   return 0;
 }
