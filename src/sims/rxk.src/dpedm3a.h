@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DPEDM3A_HEADER
-#define DPEDM3A_HEADER
+#ifndef RXK_DPEDM3A_HEADER
+#define RXK_DPEDM3A_HEADER
 
 #define PUSH_SU		instruction_ed_66
 #define POP_SU		instruction_ed_6e

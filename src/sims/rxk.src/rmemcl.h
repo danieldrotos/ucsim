@@ -24,8 +24,8 @@ along with UCSIM; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
-#ifndef RMEMCL_HEADER
-#define RMEMCL_HEADER
+#ifndef RXK_RMEMCL_HEADER
+#define RXK_RMEMCL_HEADER
 
 #include "rtypes.h"
 #include "memcl.h"

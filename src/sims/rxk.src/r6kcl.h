@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R6KCL_HEADER
-#define R6KCL_HEADER
+#ifndef RXK_R6KCL_HEADER
+#define RXK_R6KCL_HEADER
 
 #include "r5kcl.h"
 #include "r6kwrap.h"

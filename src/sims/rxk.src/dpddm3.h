@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DPDDM3_HEADER
-#define DPDDM3_HEADER
+#ifndef RXK_DPDDM3_HEADER
+#define RXK_DPDDM3_HEADER
 
 #define LD_IR_mn	instruction_dd_21
 

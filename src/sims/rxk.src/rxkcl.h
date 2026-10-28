@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef RXKCL_HEADER
-#define RXKCL_HEADER
+#ifndef RXK_RXKCL_HEADER
+#define RXK_RXKCL_HEADER
 
 #include "uccl.h"
 #include "rmemcl.h"

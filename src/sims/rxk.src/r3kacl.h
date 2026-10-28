@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R3KACL_HEADER
-#define R3KACL_HEADER
+#ifndef RXK_R3KACL_HEADER
+#define RXK_R3KACL_HEADER
 
 #include "dpedm3a.h"
 

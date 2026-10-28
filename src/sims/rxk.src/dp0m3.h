@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DP0M3_HEADER
-#define DP0M3_HEADER
+#ifndef RXK_DP0M3_HEADER
+#define RXK_DP0M3_HEADER
 
 // opcodes valid in 3k mode only
 

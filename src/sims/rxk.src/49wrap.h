@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef _49WRAP_HEADER
-#define _49WRAP_HEADER
+#ifndef RXK__49WRAP_HEADER
+#define RXK__49WRAP_HEADER
 
 #include "iwrap.h"
 

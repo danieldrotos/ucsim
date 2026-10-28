@@ -25,8 +25,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef RTYPES_HEADER
-#define RTYPES_HEADER
+#ifndef RXK_RTYPES_HEADER
+#define RXK_RTYPES_HEADER
+
 
 #ifdef WORDS_BIGENDIAN
 #define RP(N,N16,NH,NL) union			\
@@ -65,6 +66,14 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   } r32;					\
   } N
 #endif
+
+
+// hw message memories
+enum rxk_hwmsg_t {
+  rxkhw_perclk		= 0,
+  rxkhw_ta1_out		= 1
+};
+
 
 #endif
 

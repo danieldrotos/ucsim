@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GP0M4_HEADER
-#define GP0M4_HEADER
+#ifndef RXK_GP0M4_HEADER
+#define RXK_GP0M4_HEADER
 
 #include "stypes.h"
 
