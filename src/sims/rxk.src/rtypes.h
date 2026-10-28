@@ -71,7 +71,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // hw message memories
 enum rxk_hwmsg_t {
   rxkhw_perclk		= 0,
-  rxkhw_ta1_out		= 1
+  rxkhw_ta1_out		= 1,
+  rxkhw_tastat		= 2, // Timer A status
+  rxkhw_tactrl		= 3, // Timer A control
 };
 
 
