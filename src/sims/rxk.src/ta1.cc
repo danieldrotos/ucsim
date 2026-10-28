@@ -36,14 +36,19 @@ cl_ta1::cl_ta1(class cl_uc *auc, bool ause_tapr):
   use_tapr= ause_tapr;
   divby= use_tapr?1:2;
   in_clks= 0;
+  tac= 0;
+  tas= 0;
 }
 
 int
 cl_ta1::init(void)
 {
   cl_hw::init();
-  tapr= use_tapr?register_cell(uc->rom, 0xa1):0;
   perclk= register_cell(uc->hw8msg, rxkhw_perclk);
+  tacsr= register_cell(uc->rom, 0xa0);
+  tapr= use_tapr?register_cell(uc->rom, 0xa1):0;
+  tat1r= register_cell(uc->rom, 0xa3);
+  tacr= register_cell(uc->rom, 0xa4);
   return 0;
 }
 
@@ -57,6 +62,12 @@ cl_ta1::read(class cl_memory_cell *cell)
 {
   if (cell == tapr)
     ;
+
+  else if (cell==tacsr)
+    {
+      cell->set(tas);
+    }
+  
   conf(cell, NULL);
   return cell->get();
 }
@@ -81,6 +92,11 @@ cl_ta1::write(class cl_memory_cell *cell, t_mem *val)
 	Tick(c);
       in_clks%= divby;
     }
+
+  else if (cell==tacsr)
+    {
+      tac= *val;
+    }
   
   cell->set(*val);
 }
@@ -88,6 +104,10 @@ cl_ta1::write(class cl_memory_cell *cell, t_mem *val)
 int
 cl_ta1::Tick(int cycles)
 {
+  if (tac & 1)
+    {
+      
+    }
   return 0;
 }
 

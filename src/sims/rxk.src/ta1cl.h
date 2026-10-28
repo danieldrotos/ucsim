@@ -35,8 +35,11 @@ class cl_ta1: public cl_hw
 {
  public:
   bool use_tapr;
-  MCELL *tapr, *perclk;
+  MCELL *perclk;
+  MCELL *tacsr, *tapr, *tacr, *tat1r;
   int divby, in_clks;
+  u8_t tac; // tacsr WRITE: control
+  u8_t tas; // tacsr READ: status
  public:
   cl_ta1(class cl_uc *auc, bool ause_tapr);
   virtual int init(void);
