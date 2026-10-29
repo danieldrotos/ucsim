@@ -37,8 +37,6 @@ cl_ta1::cl_ta1(class cl_uc *auc, bool ause_tapr):
   use_tapr= ause_tapr;
   divby= use_tapr?1:2;
   in_clks= 0;
-  tac= 0;
-  tas= 0;
   cnt= 0;
 }
 
@@ -47,6 +45,8 @@ cl_ta1::init(void)
 {
   cl_hw::init();
   perclk = register_cell(ruc->hw8msg, rxkhw_perclk);
+  tastat = register_cell(ruc->hw8msg, rxkhw_tastat);
+  tactrl = register_cell(ruc->hw8msg, rxkhw_tactrl);
   tacsr  = register_cell(ruc->ioi, 0xa0);
   tapr   = use_tapr?register_cell(ruc->ioi, 0xa1):0;
   tat1r  = register_cell(ruc->ioi, 0xa3);
@@ -65,12 +65,26 @@ cl_ta1::reset(void)
 t_mem
 cl_ta1::read(class cl_memory_cell *cell)
 {
-  if (cell == tapr)
+  if (0)
     ;
 
-  else if (cell==tacsr)
+  // hw msg regs
+  else if (cell == tastat)
+    {}
+
+  else if (cell == tactrl)
+    {}
+  
+  // real SFRs
+  else if (cell == tapr)
+    {}
+
+  else if (cell == tacsr)
     {
-      cell->set(tas);
+      // read value from tastat
+      cell->set(tastat->get());
+      // read of TACSR clears status bits
+      tastat->set(0);
     }
   
   conf(cell, NULL);
@@ -83,12 +97,10 @@ cl_ta1::write(class cl_memory_cell *cell, t_mem *val)
   if (conf(cell, val))
     return;
 
-  if (cell==tapr)
-    {
-      *val&= 0x1;
-      divby= *val+1;
-    }
-  
+  if (0)
+    ;
+
+  // hw msg regs
   else if (cell==perclk)
     {
       int c;
@@ -98,9 +110,23 @@ cl_ta1::write(class cl_memory_cell *cell, t_mem *val)
       in_clks%= divby;
     }
 
+  else if (cell == tastat)
+    {}
+
+  else if (cell == tactrl)
+    {}
+
+  // Real SFRs
+  else if (use_tapr && (cell==tapr))
+    {
+      *val&= 0x1;
+      divby= *val+1;
+    }
+  
   else if (cell==tacsr)
     {
-      tac= *val;
+      // copy out written value to tactrl
+      tactrl->set(*val);
     }
   
   cell->set(*val);
@@ -109,14 +135,14 @@ cl_ta1::write(class cl_memory_cell *cell, t_mem *val)
 int
 cl_ta1::Tick(int cycles)
 {
-  if (tac & 1)
+  if (tactrl->get() & 1)
     {
       while (cycles--)
 	{
 	  if (cnt==0)
 	    {
 	      cnt= tat1r->get();
-	      tas|= 2; // TODO: who will clear?
+	      tastat->set(tastat->get() | 2);
 	    }
 	  else
 	    {
