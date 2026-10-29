@@ -48,6 +48,18 @@ cl_ta::init(void)
   tacsr  = register_cell(ruc->ioi, 0xa0);
   tacr   = register_cell(ruc->ioi, 0xa4);
   tatxr  = register_cell(ruc->ioi, tat_regs[id]);
+
+  cl_var *v;
+  v= new cl_var("TACSR", ruc->ioi, 0xa0, "Timer A Control and Status Register");
+  v->init(); ruc->vars->add(v);
+  v= new cl_var("TACR", ruc->ioi, 0xa4, "Timer A Control Register");
+  v->init(); ruc->vars->add(v);
+  chars c, n;
+  c.format("TAT%dR", id);
+  n.format("Timer A%d Time Constant Register", id);
+  v= new cl_var(c, ruc->ioi, tat_regs[id], n);
+  v->init(); ruc->vars->add(v);
+  
   return 0;
 }
 
