@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "ta1cl.h"
+
 #include "r2kcl.h"
 
 
@@ -45,5 +47,20 @@ cl_r2k::id_string(void)
   return "R2K";
 }
 
+void
+cl_r2k::mk_hw_elements(void)
+{
+  class cl_hw *h;
+  cl_uc::mk_hw_elements();
+
+  add_hw(h= mk_ta1());
+  h->init();
+}
+
+class cl_hw *
+cl_r2k::mk_ta1(void)
+{
+  return new cl_ta1(this, false);
+}
 
 /* End of rxk.src/r2k.cc */

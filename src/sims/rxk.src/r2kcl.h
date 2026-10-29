@@ -37,6 +37,8 @@ class cl_r2k: public cl_rxk
   cl_r2k(class cl_sim *asim);
   cl_r2k(class cl_sim *asim, t_addr arom_size);
   virtual const char *id_string(void);
+  virtual void mk_hw_elements(void);
+  virtual class cl_hw *mk_ta1(void);
 };
 
 
