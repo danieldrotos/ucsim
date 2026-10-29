@@ -30,10 +30,13 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "hwcl.h"
 
+#include "rxkcl.h"
+
 
 class cl_ta1: public cl_hw
 {
  public:
+  class cl_rxk *ruc;
   bool use_tapr;
   MCELL *perclk;
   MCELL *tacsr, *tapr, *tacr, *tat1r;

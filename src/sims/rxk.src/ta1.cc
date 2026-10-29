@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 cl_ta1::cl_ta1(class cl_uc *auc, bool ause_tapr):
   cl_hw(auc, HW_TIMER, 0, "A1")
 {
+  ruc= (class cl_rxk *)auc;
   use_tapr= ause_tapr;
   divby= use_tapr?1:2;
   in_clks= 0;
@@ -45,11 +46,11 @@ int
 cl_ta1::init(void)
 {
   cl_hw::init();
-  perclk= register_cell(uc->hw8msg, rxkhw_perclk);
-  tacsr= register_cell(uc->rom, 0xa0);
-  tapr= use_tapr?register_cell(uc->rom, 0xa1):0;
-  tat1r= register_cell(uc->rom, 0xa3);
-  tacr= register_cell(uc->rom, 0xa4);
+  perclk = register_cell(ruc->hw8msg, rxkhw_perclk);
+  tacsr  = register_cell(ruc->ioi, 0xa0);
+  tapr   = use_tapr?register_cell(ruc->ioi, 0xa1):0;
+  tat1r  = register_cell(ruc->ioi, 0xa3);
+  tacr   = register_cell(ruc->ioi, 0xa4);
   return 0;
 }
 
