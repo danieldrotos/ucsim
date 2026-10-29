@@ -183,6 +183,7 @@ public:
   virtual u8_t rR(u8_t z);
   virtual int exec_inst(void);
   virtual int inst_unknown(t_mem code);
+  virtual void do_extra_hw(int cycles);
   virtual void tick5p1(int n) { tick(n); }
   virtual void tick5p2(int n) { tick(n); }
   virtual void tick5p3(int n) { tick(n); }
@@ -191,7 +192,7 @@ public:
   virtual void tick5m1(int n) { tick(n+2); }
   virtual void tick5m2(int n) { tick(n+2); }
   virtual void select_IRR(bool dd) {}
-  
+
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
   class cl_cell16 &destBC(void) { return altd?caBC:cBC; }
   class cl_cell16 &destDE(void) { return altd?caDE:cDE; }

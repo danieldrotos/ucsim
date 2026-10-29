@@ -836,6 +836,12 @@ cl_rxk::inst_unknown(t_mem code)
   return resINV_INST;
 }
 
+void
+cl_rxk::do_extra_hw(int cycles)
+{
+  hw8msg->write(rxkhw_perclk, cycles);
+}
+
 u8_t
 cl_rxk::op8_BC(void)
 {
