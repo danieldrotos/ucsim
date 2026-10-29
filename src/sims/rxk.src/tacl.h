@@ -33,22 +33,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "rxkcl.h"
 
 
-static t_addr tat_regs[13]= {
-  /*  0 */ 0,
-  /*  1 */ 0xa3,
-  /*  2 */ 0xa5,
-  /*  3 */ 0xa7,
-  /*  4 */ 0xa9,
-  /*  5 */ 0xab,
-  /*  6 */ 0xad,
-  /*  7 */ 0xaf,
-  /*  8 */ 0xa6,
-  /*  9 */ 0xa8,
-  /* 10 */ 0xaa,
-  /* 11 */ 0xac,
-  /* 12 */ 0xae
-};
-
 class cl_ta: public cl_hw
 {
  public:
