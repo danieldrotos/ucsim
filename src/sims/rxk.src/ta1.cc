@@ -143,6 +143,8 @@ cl_ta1::Tick(int cycles)
 	    {
 	      cnt= tat1r->get();
 	      tastat->set(tastat->get() | 2);
+	      // pass A1 underflows to users
+	      ruc->hw8msg->write(rxkhw_ta1_out, 1);
 	    }
 	  else
 	    {
