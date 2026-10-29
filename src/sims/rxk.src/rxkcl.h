@@ -162,6 +162,9 @@ public:
   virtual void make_memories(void);
   virtual t_addr chip_size() { return rom_size?rom_size:0x100000; }
 
+  // peripherals
+  virtual bool ta_on(void) { return false; }
+  
   virtual double def_xtal(void) { return 1000000; }
   virtual int clock_per_cycle(void) { return 1; }
   //virtual struct dis_entry *dis_tbl(void);
