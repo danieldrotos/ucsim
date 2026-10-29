@@ -137,6 +137,7 @@ cl_ta1::Tick(int cycles)
 {
   if (tactrl->get() & 1)
     {
+      ruc->hw8msg->write(rxkhw_ta1_in, cycles);
       while (cycles--)
 	{
 	  if (cnt==0)

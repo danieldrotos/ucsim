@@ -70,10 +70,30 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 // hw message memories
 enum rxk_hwmsg_t {
-  rxkhw_perclk		= 0, // Peripheral clock
-  rxkhw_ta1_out		= 1, // Output of timer A1
-  rxkhw_tastat		= 2, // Timer A status
-  rxkhw_tactrl		= 3, // Timer A control
+  rxkhw_perclk,		// Peripheral clock
+  rxkhw_ta1_in,		// Input of timer A1
+  rxkhw_ta1_out,	// Output of timer A1
+  rxkhw_ta2_out,	// Output of timer A2
+  rxkhw_ta3_out,	// Output of timer A3
+  rxkhw_ta4_out,	// Output of timer A4
+  rxkhw_ta5_out,	// Output of timer A5
+  rxkhw_ta6_out,	// Output of timer A6
+  rxkhw_ta7_out,	// Output of timer A7
+  rxkhw_ta8_out,	// Output of timer A8
+  rxkhw_ta9_out,	// Output of timer A9
+  rxkhw_ta10_out,	// Output of timer A10
+  rxkhw_ta11_out,	// Output of timer A11
+  rxkhw_ta12_out,	// Output of timer A12
+  rxkhw_tastat,		// Timer A status
+  rxkhw_tactrl,		// Timer A control
+};
+
+enum rxk_tax_sources_t {
+  rxktaxsrc_a1in,
+  rxktaxsrc_a1out,
+  rxktaxsrc_a12out,
+  rxktaxsrc_sel_a1in_a1out,
+  rxktaxsrc_sel_a1in_a12out
 };
 
 
