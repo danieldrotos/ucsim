@@ -156,6 +156,14 @@ cl_ta1::Tick(int cycles)
 void
 cl_ta1::print_info(class cl_console_base *con)
 {
+  con->dd_printf("CTRL= ");
+  con->print_bin(tactrl->get(), 8);
+  con->dd_printf(" STAT= ");
+  con->print_bin(tastat->get(), 8);
+  con->dd_printf(" CNT= 0x%02x,%3d", cnt, cnt);
+  con->dd_printf(" use_tapr=%s", use_tapr?"yes":"no");
+  con->dd_printf(" divby=%d", divby);
+  con->dd_printf("\n");
 }
 
 
