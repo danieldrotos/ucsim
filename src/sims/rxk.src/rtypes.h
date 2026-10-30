@@ -88,14 +88,6 @@ enum rxk_hwmsg_t {
   rxkhw_tactrl,		// Timer A control
 };
 
-enum rxk_tax_sources_t {
-  rxktaxsrc_a1in,
-  rxktaxsrc_a1out,
-  rxktaxsrc_a12out,
-  rxktaxsrc_sel_a1in_a1out,
-  rxktaxsrc_sel_a1in_a12out
-};
-
 
 #endif
 

@@ -36,6 +36,7 @@ class cl_r3k: public cl_r2k
  public:
   cl_r3k(class cl_sim *asim);
   virtual const char *id_string(void);
+  virtual void mk_hw_elements(void);
   virtual class cl_hw *mk_ta1(void);
 };
 

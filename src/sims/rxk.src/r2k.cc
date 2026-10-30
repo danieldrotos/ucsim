@@ -55,12 +55,19 @@ cl_r2k::mk_hw_elements(void)
 
   add_hw(h= mk_ta1());
   h->init();
+
+  add_hw(h= new cl_tax(this, 2, 0xa4, 0x04, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 3, 0xa4, 0x08, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 4, 0xa4, 0x10, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 5, 0xa4, 0x20, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 6, 0xa4, 0x40, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 7, 0xa4, 0x80, rxkhw_ta1_out)); h->init();
 }
 
 class cl_hw *
 cl_r2k::mk_ta1(void)
 {
-  return new cl_ta1(this, false);
+  return new cl_ta1(this, 0);
 }
 
 /* End of rxk.src/r2k.cc */

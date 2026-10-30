@@ -56,11 +56,10 @@ class cl_ta: public cl_hw
 class cl_ta1: public cl_ta
 {
  public:
-  bool use_tapr;
+  u8_t tapr_mask, pre_div;
   MCELL *tapr;
-  int divby;
- public:
-  cl_ta1(class cl_uc *auc, bool ause_tapr);
+public:
+  cl_ta1(class cl_uc *auc, u8_t atapr_mask);
   virtual int init(void);
   virtual void reset(void);
   virtual t_mem read(class cl_memory_cell *cell);
@@ -72,8 +71,13 @@ class cl_ta1: public cl_ta
 class cl_tax: public cl_ta
 {
  public:
+  t_addr clk_sel_addr, clk_alt_addr;
+  MCELL /* *clk_sel,*/ *clk_alt, *ta1_in;
+  u8_t clk_sel_mask;
  public:
-  cl_tax(class cl_uc *auc, int aid);
+  cl_tax(class cl_uc *auc, int aid,
+	 t_addr aclk_sel_addr, u8_t aclk_sel_mask,
+	 t_addr aclk_alt_addr);
   virtual int init(void);
   virtual void reset(void);
   virtual t_mem read(class cl_memory_cell *cell);

@@ -65,16 +65,12 @@ cl_ta::init(void)
   tacr   = register_cell(ruc->ioi, 0xa4);
   tatxr  = register_cell(ruc->ioi, tat_regs[id]);
 
-  cl_var *v;
-  v= new cl_var("TACSR", ruc->ioi, 0xa0, "Timer A Control and Status Register");
-  v->init(); ruc->vars->add(v);
-  v= new cl_var("TACR", ruc->ioi, 0xa4, "Timer A Control Register");
-  v->init(); ruc->vars->add(v);
+  ruc->mk_mvar(ruc->ioi, 0xa0, "TACSR", "Timer A Control and Status Register");
+  ruc->mk_mvar(ruc->ioi, 0xa4, "TACR" , "Timer A Control Register");
   chars c, n;
   c.format("TAT%dR", id);
   n.format("Timer A%d Time Constant Register", id);
-  v= new cl_var(c, ruc->ioi, tat_regs[id], n);
-  v->init(); ruc->vars->add(v);
+  ruc->mk_mvar(ruc->ioi, tat_regs[id], c, n);
   
   return 0;
 }
@@ -147,7 +143,7 @@ cl_ta::write(class cl_memory_cell *cell, t_mem *val)
 int
 cl_ta::Tick(int cycles)
 {
-  if (ruc->ta_on())
+  if (tacsr->get() & 1)
     {
       if (id == 1)
 	ruc->hw8msg->write(rxkhw_ta1_in, cycles);
@@ -178,32 +174,38 @@ cl_ta::print_info(class cl_console_base *con)
   con->dd_printf(" STAT= ");
   con->print_bin(tastat->get(), 8);
   con->dd_printf(" CNT= 0x%02x,%3d", cnt, cnt);
-  //con->dd_printf(" use_tapr=%s", use_tapr?"yes":"no");
-  //con->dd_printf(" in=preclk/%d", divby);
   con->dd_printf("\n");
 }
 
 
 /*********************************************************************/
 
-cl_ta1::cl_ta1(class cl_uc *auc, bool ause_tapr):
+cl_ta1::cl_ta1(class cl_uc *auc, u8_t atapr_mask):
   cl_ta(auc, 1)
 {
-  use_tapr= ause_tapr;
-  divby= use_tapr?1:2;
+  tapr_mask= atapr_mask;
 }
 
 int
 cl_ta1::init(void)
 {
   cl_ta::init();
-  tapr   = use_tapr?register_cell(ruc->ioi, 0xa1):0;
+  tapr= register_cell(ruc->ioi, 0xa1);
+  if (tapr_mask)
+    {
+      pre_div= tapr->read();
+      ruc->mk_mvar(ruc->ioi, 0xa1, "TAPR", "Timer A Prescale Register");
+    }
+  else
+    pre_div= 1;
   return 0;
 }
 
 void
 cl_ta1::reset(void)
 {
+  if (tapr_mask)
+    tapr->write(1);
 }
 
 t_mem
@@ -233,18 +235,23 @@ cl_ta1::write(class cl_memory_cell *cell, t_mem *val)
   // hw msg regs
   else if (cell==perclk)
     {
-      int c;
-      in_clks+= *val;
-      if ((c= in_clks/divby))
-	Tick(c);
-      in_clks%= divby;
+      int c= *val, t= 0;
+      while (c--)
+	{
+	  if (pre_div == 0)
+	    {
+	      pre_div= tapr_mask?(tapr->read()):1;
+	      t++;
+	    }
+	  else
+	    pre_div--;
+	}
+      Tick(t);
     }
   
   // Real SFRs
-  else if (use_tapr && (cell==tapr))
+  else if (cell==tapr)
     {
-      *val&= 0x1;
-      divby= *val+1;
     }
   
   cell->set(*val);
@@ -254,23 +261,30 @@ void
 cl_ta1::print_info(class cl_console_base *con)
 {
   cl_ta::print_info(con);
-  con->dd_printf(" use_tapr=%s", use_tapr?"yes":"no");
-  con->dd_printf(" in=preclk/%d", divby);
+  con->dd_printf("tapr_mask=0x%02x", tapr_mask);
+  con->dd_printf(" in=perclk/%d", tapr_mask?(tapr->read()+1):2);
   con->dd_printf("\n");
 }
 
 
 /*********************************************************************/
 
-cl_tax::cl_tax(class cl_uc *auc, int aid):
+cl_tax::cl_tax(class cl_uc *auc, int aid,
+	       t_addr aclk_sel_addr, u8_t aclk_sel_mask,
+	       t_addr aclk_alt_addr):
   cl_ta(auc, aid)
 {
+  clk_sel_addr= aclk_sel_addr;
+  clk_sel_mask= aclk_sel_mask;
+  clk_alt_addr= aclk_alt_addr;
 }
 
 int
 cl_tax::init(void)
 {
   cl_ta::init();
+  clk_alt= clk_alt_addr?register_cell(ruc->hw8msg, clk_alt_addr):0;
+  ta1_in = register_cell(ruc->hw8msg, rxkhw_ta1_in);
   return 0;
 }
 
@@ -296,8 +310,21 @@ cl_tax::write(class cl_memory_cell *cell, t_mem *val)
   if (conf(cell, val))
     return;
 
-  cl_ta::write(cell, val);
+  /* Alternate clk source is used if masked bit in
+     selector reg is 1.
+     Default source is input of TA1 */
+  bool alt= clk_alt_addr?
+    (ruc->ioi->read(clk_sel_addr) & clk_sel_mask):
+    false;
   
+  cl_ta::write(cell, val);
+
+  if (0)
+    ;
+
+  else if (alt?(cell == clk_alt):(cell == ta1_in))
+    Tick(*val);
+      
   cell->set(*val);
 }
 
@@ -305,6 +332,11 @@ void
 cl_tax::print_info(class cl_console_base *con)
 {
   cl_ta::print_info(con);
+  bool alt= clk_alt_addr?
+    (ruc->ioi->read(clk_sel_addr) & clk_sel_mask):
+    false;
+  con->dd_printf("in=%s of timer a", alt?"output":"input");
+  con->dd_printf("\n");
 }
 
 
