@@ -41,22 +41,28 @@ cl_r3k::id_string(void)
   return "R3K";
 }
 
-
+/*
 void
 cl_r3k::mk_hw_elements(void)
 {
-  class cl_hw *h;
   cl_r2k::mk_hw_elements();
-
-  add_hw(h= new cl_tax(this,  8, 0, 0, rxkhw_ta1_in)); h->init();
-  add_hw(h= new cl_tax(this,  9, 0, 0, rxkhw_ta1_in)); h->init();
-  add_hw(h= new cl_tax(this, 10, 0, 0, rxkhw_ta1_in)); h->init();
 }
+*/
 
 class cl_hw *
 cl_r3k::mk_ta1(void)
 {
   return new cl_ta1(this, 1);
 }
+
+void
+cl_r3k::make_ta8_10(void)
+{
+  class cl_hw *h;
+  add_hw(h= new cl_tax(this,  8, 0, 0, rxkhw_ta1_in)); h->init();
+  add_hw(h= new cl_tax(this,  9, 0, 0, rxkhw_ta1_in)); h->init();
+  add_hw(h= new cl_tax(this, 10, 0, 0, rxkhw_ta1_in)); h->init();
+}
+
 
 /* End of rxk.src/r3k.cc */

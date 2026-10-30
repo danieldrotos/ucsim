@@ -62,6 +62,8 @@ cl_r2k::mk_hw_elements(void)
   add_hw(h= new cl_tax(this, 5, 0xa4, 0x20, rxkhw_ta1_out)); h->init();
   add_hw(h= new cl_tax(this, 6, 0xa4, 0x40, rxkhw_ta1_out)); h->init();
   add_hw(h= new cl_tax(this, 7, 0xa4, 0x80, rxkhw_ta1_out)); h->init();
+
+  make_ta8_10();
 }
 
 class cl_hw *
