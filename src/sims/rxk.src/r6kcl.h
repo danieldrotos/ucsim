@@ -42,6 +42,8 @@ public:
   cl_r6k(class cl_sim *asim, t_addr arom_size);
   virtual const char *id_string(void);
   virtual int init(void);
+  virtual void mk_hw_elements(void);
+  virtual void make_ta8_10(void);
 
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual char *disassc_cb_6(t_addr addr, chars *comment);
