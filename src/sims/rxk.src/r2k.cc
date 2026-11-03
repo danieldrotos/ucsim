@@ -25,6 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
+#include "tacl.h"
+
 #include "r2kcl.h"
 
 
@@ -45,5 +47,29 @@ cl_r2k::id_string(void)
   return "R2K";
 }
 
+void
+cl_r2k::mk_hw_elements(void)
+{
+  class cl_hw *h;
+  cl_uc::mk_hw_elements();
+
+  add_hw(h= mk_ta1());
+  h->init();
+
+  add_hw(h= new cl_tax(this, 2, 0xa4, 0x04, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 3, 0xa4, 0x08, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 4, 0xa4, 0x10, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 5, 0xa4, 0x20, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 6, 0xa4, 0x40, rxkhw_ta1_out)); h->init();
+  add_hw(h= new cl_tax(this, 7, 0xa4, 0x80, rxkhw_ta1_out)); h->init();
+
+  make_ta8_10();
+}
+
+class cl_hw *
+cl_r2k::mk_ta1(void)
+{
+  return new cl_ta1(this, 0);
+}
 
 /* End of rxk.src/r2k.cc */

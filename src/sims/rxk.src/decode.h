@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef DECODE_HEADER
-#define DECODE_HEADER
+#ifndef RXK_DECODE_HEADER
+#define RXK_DECODE_HEADER
 
 #define ALTD		instruction_76
 #define IOI		instruction_d3

@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R6KWRAP_HEADER
-#define R6KWRAP_HEADER
+#ifndef RXK_R6KWRAP_HEADER
+#define RXK_R6KWRAP_HEADER
 
 
 #define WRAPPER_HEADER

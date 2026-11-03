@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef RXKCL_HEADER
-#define RXKCL_HEADER
+#ifndef RXK_RXKCL_HEADER
+#define RXK_RXKCL_HEADER
 
 #include "uccl.h"
 #include "rmemcl.h"
@@ -162,6 +162,9 @@ public:
   virtual void make_memories(void);
   virtual t_addr chip_size() { return rom_size?rom_size:0x100000; }
 
+  // peripherals
+  virtual bool ta_on(void) { return false; }
+  
   virtual double def_xtal(void) { return 1000000; }
   virtual int clock_per_cycle(void) { return 1; }
   //virtual struct dis_entry *dis_tbl(void);
@@ -183,6 +186,7 @@ public:
   virtual u8_t rR(u8_t z);
   virtual int exec_inst(void);
   virtual int inst_unknown(t_mem code);
+  virtual void do_extra_hw(int cycles);
   virtual void tick5p1(int n) { tick(n); }
   virtual void tick5p2(int n) { tick(n); }
   virtual void tick5p3(int n) { tick(n); }
@@ -191,7 +195,7 @@ public:
   virtual void tick5m1(int n) { tick(n+2); }
   virtual void tick5m2(int n) { tick(n+2); }
   virtual void select_IRR(bool dd) {}
-  
+
   class cl_cell16 &destAF(void) { return altd?caAF:cAF; }
   class cl_cell16 &destBC(void) { return altd?caBC:cBC; }
   class cl_cell16 &destDE(void) { return altd?caDE:cDE; }

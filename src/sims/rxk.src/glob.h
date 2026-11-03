@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef GLOB_HEADER
-#define GLOB_HEADER
+#ifndef RXK_GLOB_HEADER
+#define RXK_GLOB_HEADER
 
 #include "stypes.h"
 #include "iwrap.h"

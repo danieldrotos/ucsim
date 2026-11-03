@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R2KCL_HEADER
-#define R2KCL_HEADER
+#ifndef RXK_R2KCL_HEADER
+#define RXK_R2KCL_HEADER
 
 #include "rxkcl.h"
 
@@ -37,6 +37,10 @@ class cl_r2k: public cl_rxk
   cl_r2k(class cl_sim *asim);
   cl_r2k(class cl_sim *asim, t_addr arom_size);
   virtual const char *id_string(void);
+  virtual void mk_hw_elements(void);
+  virtual class cl_hw *mk_ta1(void);
+  virtual void make_ta8_10(void) {}
+  virtual bool ta_on(void) { return hw8msg->read(rxkhw_tactrl) & 1; }
 };
 
 

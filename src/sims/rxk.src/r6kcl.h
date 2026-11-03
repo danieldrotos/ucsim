@@ -25,8 +25,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 /*@1@*/
 
-#ifndef R6KCL_HEADER
-#define R6KCL_HEADER
+#ifndef RXK_R6KCL_HEADER
+#define RXK_R6KCL_HEADER
 
 #include "r5kcl.h"
 #include "r6kwrap.h"
@@ -42,6 +42,8 @@ public:
   cl_r6k(class cl_sim *asim, t_addr arom_size);
   virtual const char *id_string(void);
   virtual int init(void);
+  virtual void mk_hw_elements(void);
+  virtual void make_ta8_10(void);
 
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual char *disassc_cb_6(t_addr addr, chars *comment);
