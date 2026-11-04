@@ -31,6 +31,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "dregcl.h"
 
+#include "wdcl.h"
+
 #include "f8cl.h"
 
 
@@ -98,6 +100,80 @@ cl_f8::set_PC(t_addr addr)
 }
 
 
+/*
+NUM_IRQ = 2,
+IRQCTRLADDRBASE = 16'h0010,
+TIMER0ADDRBASE = 16'h0018,
+WATCHDOGADDRBASE = 16'h0020,
+GPIO0ADDDRBASE = 16'h0028,
+GPIO1ADDDRBASE = 16'h0030, -- not implemented in hw
+GPIO2ADDDRBASE = 16'h0038
+
+	// Interrupt controller
+	localparam IRQCTRL_ENABLE_ADDR = IRQCTRLADDRBASE + 0;
+	localparam IRQCTRL_ACTIVE_ADDR = IRQCTRLADDRBASE + 2;
+	
+	logic [1:0] irqctrl_enable_dread, irqctrl_active_dread;
+	
+		IRQCTRL_ENABLE_ADDR / 2:
+			read_data_even = {'x, irqctrl_enable_dread[NUM_IRQ-1:0]};
+		IRQCTRL_ACTIVE_ADDR / 2:
+			read_data_even = {'x, irqctrl_active_dread[NUM_IRQ-1:0]};
+	
+	// Timer 0
+	localparam TIMER0_CONFIG_ADDR = TIMER0ADDRBASE + 0;
+	localparam TIMER0_COUNTER_ADDR = TIMER0ADDRBASE + 2;
+	localparam TIMER0_RELOAD_ADDR = TIMER0ADDRBASE + 4;
+	localparam TIMER0_COMPARE_ADDR = TIMER0ADDRBASE + 5;
+	
+	logic [7:0] timer0_config_dread;
+	logic [15:0] timer0_counter_dread, timer0_reload_dread, timer0_compare_dread;
+	
+		TIMER0_CONFIG_ADDR / 2:
+			read_data_even = timer0_config_dread;
+		TIMER0_COUNTER_ADDR / 2:
+			read_data_even = timer0_counter_dread[7:0];
+		TIMER0_RELOAD_ADDR / 2:
+			read_data_even = timer0_reload_dread[7:0];
+		TIMER0_COMPARE_ADDR / 2:
+			read_data_even = timer0_compare_dread[7:0];
+		(TIMER0_COUNTER_ADDR + 1) / 2:
+			read_data_odd = timer0_counter_dread[15:8];
+		(TIMER0_RELOAD_ADDR + 1) / 2:
+			read_data_odd = timer0_reload_dread[15:8];
+		(TIMER0_COMPARE_ADDR + 1) / 2:
+			read_data_odd = timer0_compare_dread[15:8];
+
+	// GPIO0
+	localparam GPIO0_DDR_ADDR = GPIO0ADDDRBASE + 0;
+	localparam GPIO0_ODR_ADDR = GPIO0ADDDRBASE + 2;
+	localparam GPIO0_IDR_ADDR = GPIO0ADDDRBASE + 4;
+	localparam GPIO0_PR_ADDR = GPIO0ADDDRBASE + 6;
+	
+	logic [7:0] gpio0_ddr_dread, gpio0_odr_dread, gpio0_idr_dread, gpio0_pr_dread;
+	
+			GPIO0_DDR_ADDR / 2:
+			read_data_even = gpio0_ddr_dread[7:0];
+		GPIO0_ODR_ADDR / 2:
+			read_data_even = gpio0_odr_dread[7:0];
+		GPIO0_IDR_ADDR / 2:
+			read_data_even = gpio0_idr_dread[7:0];
+		GPIO0_PR_ADDR / 2:
+			read_data_even = gpio0_pr_dread[7:0];
+
+	// GPIO1
+	localparam GPIO1_DDR_ADDR = GPIO1ADDDRBASE + 0;
+	localparam GPIO1_ODR_ADDR = GPIO1ADDDRBASE + 2;
+	localparam GPIO1_IDR_ADDR = GPIO1ADDDRBASE + 4;
+	localparam GPIO1_PR_ADDR = GPIO1ADDDRBASE + 6;
+	
+	// GPIO2
+	localparam GPIO2_DDR_ADDR = GPIO2ADDDRBASE + 0;
+	localparam GPIO2_ODR_ADDR = GPIO2ADDDRBASE + 2;
+	localparam GPIO2_IDR_ADDR = GPIO2ADDDRBASE + 4;
+	localparam GPIO2_PR_ADDR = GPIO2ADDDRBASE + 6;
+ */
+
 void
 cl_f8::mk_hw_elements(void)
 {
@@ -105,6 +181,9 @@ cl_f8::mk_hw_elements(void)
   cl_uc::mk_hw_elements();
 
   add_hw(h= new cl_dreg(this, 0, "dreg"));
+  h->init();
+
+  add_hw(h= new cl_wd(this, 0x0020, "wd"));
   h->init();
 }
 
@@ -121,13 +200,23 @@ cl_f8::make_memories(void)
 {
   class cl_address_space *as;
   class cl_address_decoder *ad;
-  class cl_memory_chip *ram_chip, *prom_chip;
+  class cl_memory_chip *io_chip, *ram_chip, *prom_chip;
 
   // Flat address space
   rom= as= new cl_address_space("rom", 0, 0x10000, 8);
   as->init();
   address_spaces->add(as);
 
+  // IO
+  io_chip= new cl_chip8("io_chip", 0x2000, 8);
+  io_chip->init();
+  memchips->add(io_chip);
+  ad= new cl_address_decoder(as= rom,
+			     io_chip, 0x0000, 0x1fff, 0);
+  ad->init();
+  as->decoders->add(ad);
+  ad->activate(0);
+  
   // RAM
   ram_chip= new cl_chip8("ram_chip", 0x2000, 8);
   ram_chip->init();
