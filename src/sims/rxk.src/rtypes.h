@@ -86,6 +86,8 @@ enum rxk_hwmsg_t {
   rxkhw_ta12_out,	// Output of timer A12
   rxkhw_tastat,		// Timer A status
   rxkhw_tactrl,		// Timer A control
+  rxkhw_tbstat,		// Timer B status  ---- -XX-
+  rxkhw_tbctrl,		// Timer B control ---- -XX-
 };
 
 

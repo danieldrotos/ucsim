@@ -1,0 +1,191 @@
+/*
+ * Simulator of microcontrollers (tb.cc)
+ *
+ * Copyright (C) 2026 Drotos Daniel
+ * 
+ * To contact author send email to dr.dkdb@gmail.com
+ *
+ */
+
+/* This file is part of microcontroller simulator: ucsim.
+
+UCSIM is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+UCSIM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with UCSIM; see the file COPYING.  If not, write to the Free
+Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+02111-1307, USA. */
+/*@1@*/
+
+#include "rtypes.h"
+
+#include "tbcl.h"
+
+
+cl_tb::cl_tb(class cl_uc *auc, int aid):
+  cl_hw(auc, HW_TIMER, aid, "ta")
+{
+  ruc= (class cl_rxk *)auc;
+  in_clks= 0;
+  divby= 1;
+  cnt= 0;
+}
+
+
+int
+cl_tb::init(void)
+{
+  cl_hw::init();
+  tbstat = register_cell(ruc->hw8msg, rxkhw_tbstat);
+  tbctrl = register_cell(ruc->hw8msg, rxkhw_tbctrl);
+  a1in   = register_cell(ruc->hw8msg, rxkhw_ta1_in);
+  a1out  = register_cell(ruc->hw8msg, rxkhw_ta1_out);
+  tbcsr  = register_cell(ruc->ioi, 0xb0);
+  tbcr   = register_cell(ruc->ioi, 0xb1);
+  tbm1r  = register_cell(ruc->ioi, 0xb2);
+  tbl1r  = register_cell(ruc->ioi, 0xb3);
+  tbm2r  = register_cell(ruc->ioi, 0xb4);
+  tbl2r  = register_cell(ruc->ioi, 0xb5);
+  tbcmr  = register_cell(ruc->ioi, 0xbe);
+  tbclr  = register_cell(ruc->ioi, 0xbf);
+  /*
+  ruc->mk_mvar(ruc->ioi, 0xa0, "TACSR", "Timer A Control and Status Register");
+  ruc->mk_mvar(ruc->ioi, 0xa4, "TACR" , "Timer A Control Register");
+  chars c, n;
+  c.format("TAT%dR", id);
+  n.format("Timer A%d Time Constant Register", id);
+  ruc->mk_mvar(ruc->ioi, tat_regs[id], c, n);
+  */
+  return 0;
+}
+
+void
+cl_tb::reset(void)
+{
+  tbcsr->W(0);
+  tbcr->W(0);
+}
+
+
+t_mem
+cl_tb::read(class cl_memory_cell *cell)
+{
+  if (0)
+    ;
+
+  if (cell == tbcsr)
+    {
+      u8_t v= cell->get();
+      v&= ~(0x06);
+      v|= tbstat->get();
+      cell->set(v);
+      // Read of tbcsr clears stat bits
+      tbstat->set(0);
+    }
+  
+  //conf(cell, NULL);
+  return cell->get();
+}
+
+
+void
+cl_tb::write(class cl_memory_cell *cell, t_mem *val)
+{
+  /* should be called by leaf */
+  if (conf(cell, val))
+    return;
+  
+  if (0)
+    ;
+
+  else if (cell == clk_src)
+    Tick(*val);
+  
+  else if (cell == tbstat)
+    {
+      *val&= 0x06;
+    }
+
+  else if (cell == tbctrl)
+    {}
+  
+  else if (cell == tbcsr)
+    {
+      tbctrl->set(*val);
+    }
+
+  else if (cell == tbcr)
+    {
+      set_clk(*val);
+    }
+
+  else if (cell == tbcmr) // read-only
+    return;
+  else if (cell == tbclr) // read-only
+    return;
+  
+  cell->set(*val);
+}
+
+void
+cl_tb::set_clk(u8_t val)
+{
+  switch (val & 0xc0)
+    {
+    case 0x00: clk_src= a1in ; divby= 1; break;
+    case 0x04: clk_src= a1out; divby= 1; break;
+    case 0x08: clk_src= a1in ; divby= 8; break;
+    case 0x0c: clk_src= a1in ; divby= 8; break;
+    }
+}
+
+int
+cl_tb::Tick(int cycles)
+{
+  if (tbcsr->get() & 1)
+    {
+      in_clks+= cycles;
+      int c= in_clks / divby;
+      in_clks%= divby;
+      while (c--)
+	{
+	  count();
+	}
+    }
+  return 0;
+}
+
+void
+cl_tb::count(void)
+{
+  u16_t m1= ((tbm1r->get()&0xc0)>>6)|tbl1r->get();
+  u16_t m2= ((tbm2r->get()&0xc0)>>6)|tbl2r->get();
+  cnt= (cnt+1) & 0x3ff;
+  if (cnt == m1)
+    tbstat->write(tbstat->get() | 0x02);
+  if (cnt == m2)
+    tbstat->write(tbstat->get() | 0x04);
+}
+
+void
+cl_tb::print_info(class cl_console_base *con)
+{/*
+  con->dd_printf("%s[%d]", get_name(), id);
+  con->dd_printf(" CTRL= ");
+  con->print_bin(tactrl->get(), 8);
+  con->dd_printf(" STAT= ");
+  con->print_bin(tastat->get(), 8);
+  con->dd_printf(" CNT= 0x%02x,%3d", cnt, cnt);*/
+  con->dd_printf("\n");
+}
+
+
+/* End of rxk.src/tb.cc */
