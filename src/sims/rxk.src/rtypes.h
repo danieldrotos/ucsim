@@ -84,6 +84,8 @@ enum rxk_hwmsg_t {
   rxkhw_ta10_out,	// Output of timer A10
   rxkhw_ta11_out,	// Output of timer A11
   rxkhw_ta12_out,	// Output of timer A12
+  rxkhw_tb1_out,	// Output 1 of timer B
+  rxkhw_tb2_out,	// Output 2 of timer B
   rxkhw_tastat,		// Timer A status
   rxkhw_tactrl,		// Timer A control
   rxkhw_tbstat,		// Timer B status  ---- -XX-

@@ -174,9 +174,15 @@ void
 cl_tb::counted(u16_t m1, u16_t m2)
 {
   if (cnt == m1)
-    tbstat->write(tbstat->get() | 0x02);
+    {
+      tbstat->write(tbstat->get() | 0x02);
+      ruc->hw8msg->write(rxkhw_tb1_out, 1);
+    }
   if (cnt == m2)
-    tbstat->write(tbstat->get() | 0x04);
+    {
+      tbstat->write(tbstat->get() | 0x04);
+      ruc->hw8msg->write(rxkhw_tb2_out, 1);
+    }
 }
 
 void
