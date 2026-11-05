@@ -42,7 +42,7 @@ class cl_tb: public cl_hw
   MCELL *tbm1r, *tbl1r, *tbm2r, *tbl2r;
   MCELL *tbstat, *tbctrl;
   int in_clks, divby;
-  u16_t cnt;
+  u16_t cnt, cmp1, cmp2;
  public:
   cl_tb(class cl_uc *auc);
   virtual int init(void);
@@ -52,7 +52,7 @@ class cl_tb: public cl_hw
   virtual void set_clk(u8_t val);
   virtual int tick(int cycles) {return(0);}
   virtual int Tick(int cycles);
-  virtual void counted(u16_t m1, u16_t m2);
+  virtual void counted(void);
   virtual void print_info(class cl_console_base *con);
 };
 

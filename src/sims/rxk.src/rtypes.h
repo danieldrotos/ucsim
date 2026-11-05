@@ -71,6 +71,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 // hw message memories
 enum rxk_hwmsg_t {
   rxkhw_perclk,		// Peripheral clock
+  rxkhw_tastat,		// Timer A status
+  rxkhw_tactrl,		// Timer A control
   rxkhw_ta1_in,		// Input of timer A1
   rxkhw_ta1_out,	// Output of timer A1
   rxkhw_ta2_out,	// Output of timer A2
@@ -84,12 +86,10 @@ enum rxk_hwmsg_t {
   rxkhw_ta10_out,	// Output of timer A10
   rxkhw_ta11_out,	// Output of timer A11
   rxkhw_ta12_out,	// Output of timer A12
-  rxkhw_tb1_out,	// Output 1 of timer B
-  rxkhw_tb2_out,	// Output 2 of timer B
-  rxkhw_tastat,		// Timer A status
-  rxkhw_tactrl,		// Timer A control
   rxkhw_tbstat,		// Timer B status  ---- -XX-
   rxkhw_tbctrl,		// Timer B control ---- -XX-
+  rxkhw_tb1_out,	// Output 1 of timer B
+  rxkhw_tb2_out,	// Output 2 of timer B
 };
 
 

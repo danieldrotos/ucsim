@@ -37,6 +37,7 @@ cl_tb::cl_tb(class cl_uc *auc):
   in_clks= 0;
   divby= 1;
   cnt= 0;
+  cmp1= cmp2= 0;
 }
 
 
@@ -131,6 +132,28 @@ cl_tb::write(class cl_memory_cell *cell, t_mem *val)
       set_clk(*val);
     }
 
+  else if (cell == tbm1r)
+    {
+      cmp1&= 0x00ff;
+      cmp1|= ((*val & 0xc0)>>6);
+    }
+  else if (cell == tbm2r)
+    {
+      cmp2&= 0x00ff;
+      cmp2|= ((*val & 0xc0)>>6);
+    }
+
+  else if (cell == tbl1r)
+    {
+      cmp1&= 0x300;
+      cmp1|= (*val & 0xff);
+    }
+  else if (cell == tbl2r)
+    {
+      cmp2&= 0x300;
+      cmp2|= (*val & 0xff);
+    }
+  
   else if (cell == tbcmr) // read-only
     return;
   else if (cell == tbclr) // read-only
@@ -156,29 +179,27 @@ cl_tb::Tick(int cycles)
 {
   if (tbcsr->get() & 1)
     {
-      u16_t m1= ((tbm1r->get()&0xc0)>>6)|tbl1r->get();
-      u16_t m2= ((tbm2r->get()&0xc0)>>6)|tbl2r->get();
       in_clks+= cycles;
       int c= in_clks / divby;
       in_clks%= divby;
       while (c--)
 	{
 	  cnt= (cnt+1) & 0x3ff;
-	  counted(m1, m2);
+	  counted();
 	}
     }
   return 0;
 }
 
 void
-cl_tb::counted(u16_t m1, u16_t m2)
+cl_tb::counted(void)
 {
-  if (cnt == m1)
+  if (cnt == cmp1)
     {
       tbstat->write(tbstat->get() | 0x02);
       ruc->hw8msg->write(rxkhw_tb1_out, 1);
     }
-  if (cnt == m2)
+  if (cnt == cmp2)
     {
       tbstat->write(tbstat->get() | 0x04);
       ruc->hw8msg->write(rxkhw_tb2_out, 1);
@@ -199,7 +220,8 @@ cl_tb::print_info(class cl_console_base *con)
   con->dd_printf("\n");
   u16_t m1= ((tbm1r->get()&0xc0)>>6)|tbl1r->get();
   u16_t m2= ((tbm2r->get()&0xc0)>>6)|tbl2r->get();
-  con->dd_printf("Match1= 0x%03x,%4d Match2= 0x%03x,%4d", m1, m1, m2, m2);
+  con->dd_printf("Compare1= 0x%03x,%4d Compare2= 0x%03x,%4d",
+		 cmp1, cmp1, cmp2, cmp2);
   con->dd_printf("\n");
 }
 
