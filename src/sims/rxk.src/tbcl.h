@@ -57,6 +57,21 @@ class cl_tb: public cl_hw
 };
 
 
+/* Timer B with step register extension, r4k and up */
+
+class cl_tbs: public cl_tb
+{
+public:
+  MCELL *tbsl1r, *tbsm1r, *tbsl2r, *tbsm2r;
+public:
+  cl_tbs(class cl_uc *auc): cl_tb(auc) {}
+  virtual int init(void);
+  virtual int tick(int cycles) {return(0);}
+  virtual void counted(void);
+  virtual void print_info(class cl_console_base *con);
+};
+
+
 #endif
 
 /* End of rxk.src/ta1cl.h */

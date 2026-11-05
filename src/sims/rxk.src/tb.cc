@@ -226,4 +226,56 @@ cl_tb::print_info(class cl_console_base *con)
 }
 
 
+/*
+ */
+
+int
+cl_tbs::init(void)
+{
+  cl_tb::init();
+  tbsm1r  = register_cell(ruc->ioi, 0xba);
+  tbsl1r  = register_cell(ruc->ioi, 0xbb);
+  tbsm2r  = register_cell(ruc->ioi, 0xbc);
+  tbsl2r  = register_cell(ruc->ioi, 0xbd);
+  
+  ruc->mk_mvar(ruc->ioi, 0xba, "TBSM1R" , "Timer B Step MSB 1 Register");
+  ruc->mk_mvar(ruc->ioi, 0xbb, "TBSL1R" , "Timer B Step LSB 1 Register");
+  ruc->mk_mvar(ruc->ioi, 0xbc, "TBSM2R" , "Timer B Step MSB 2 Register");
+  ruc->mk_mvar(ruc->ioi, 0xbd, "TBSL2R" , "Timer B Step LSB 2 Register");
+  return 0;
+}
+
+void
+cl_tbs::counted(void)
+{
+  u8_t c= tbcr->read();
+  if (cnt == cmp1)
+    {
+      tbstat->write(tbstat->get() | 0x02);
+      ruc->hw8msg->write(rxkhw_tb1_out, 1);
+      if (c & 0x10)
+	{
+	  u16_t s1= (tbsm1r->read() & 3)*256 + tbsl1r->read();
+	  cmp1= (cmp1+s1)&0x3ff;
+	}
+    }
+  if (cnt == cmp2)
+    {
+      tbstat->write(tbstat->get() | 0x04);
+      ruc->hw8msg->write(rxkhw_tb2_out, 1);
+      if (c & 0x20)
+	{
+	  u16_t s2= (tbsm2r->read() & 3)*256 + tbsl2r->read();
+	  cmp1= (cmp1+s2)&0x3ff;
+	}
+    }
+}
+
+void
+cl_tbs::print_info(class cl_console_base *con)
+{
+  cl_tb::print_info(con);
+}
+
+
 /* End of rxk.src/tb.cc */
