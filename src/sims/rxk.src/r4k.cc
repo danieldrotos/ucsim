@@ -41,6 +41,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "gpddm4.h"
 #include "gpedm3.h"
 #include "gpedm4.h"
+#include "tbcl.h"
 
 #include "r4kcl.h"
 
@@ -157,6 +158,12 @@ cl_r4k::make_cpu_hw(void)
 {
   add_hw(cpu= new cl_r4k_cpu(this));
   cpu->init();
+}
+
+class cl_hw *
+cl_r4k::mk_tb(void)
+{
+  return new cl_tbs(this);
 }
 
 static struct dis_entry de7f;

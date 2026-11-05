@@ -278,4 +278,27 @@ cl_tbs::print_info(class cl_console_base *con)
 }
 
 
+/*
+ */
+
+int
+cl_tbs6::init(void)
+{
+  cl_tbs::init();
+  a11out  = register_cell(ruc->hw8msg, rxkhw_ta11_out);
+  return 0;
+}
+
+
+void
+cl_tbs6::set_clk(u8_t val)
+{
+  if ((val & 0xc0) == 0xc0)
+    {
+      clk_src= a11out;
+      divby= 1;
+    }
+}
+
+
 /* End of rxk.src/tb.cc */

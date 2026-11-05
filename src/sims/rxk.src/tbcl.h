@@ -71,7 +71,17 @@ public:
   virtual void print_info(class cl_console_base *con);
 };
 
+class cl_tbs6: public cl_tbs
+{
+public:
+  MCELL *a11out;
+public:
+  cl_tbs6(class cl_uc *auc): cl_tbs(auc) {}
+  virtual int init(void);
+  virtual void set_clk(u8_t val);
+};
 
+  
 #endif
 
 /* End of rxk.src/ta1cl.h */
