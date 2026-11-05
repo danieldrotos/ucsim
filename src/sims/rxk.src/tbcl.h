@@ -44,7 +44,7 @@ class cl_tb: public cl_hw
   int in_clks, divby;
   u16_t cnt;
  public:
-  cl_tb(class cl_uc *auc, int aid);
+  cl_tb(class cl_uc *auc);
   virtual int init(void);
   virtual void reset(void);
   virtual t_mem read(class cl_memory_cell *cell);
@@ -52,7 +52,7 @@ class cl_tb: public cl_hw
   virtual void set_clk(u8_t val);
   virtual int tick(int cycles) {return(0);}
   virtual int Tick(int cycles);
-  virtual void count(void);
+  virtual void counted(u16_t m1, u16_t m2);
   virtual void print_info(class cl_console_base *con);
 };
 

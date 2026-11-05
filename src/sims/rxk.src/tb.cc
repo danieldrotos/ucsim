@@ -30,8 +30,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "tbcl.h"
 
 
-cl_tb::cl_tb(class cl_uc *auc, int aid):
-  cl_hw(auc, HW_TIMER, aid, "ta")
+cl_tb::cl_tb(class cl_uc *auc):
+  cl_hw(auc, HW_TIMER, 0, "tb")
 {
   ruc= (class cl_rxk *)auc;
   in_clks= 0;
@@ -56,14 +56,16 @@ cl_tb::init(void)
   tbl2r  = register_cell(ruc->ioi, 0xb5);
   tbcmr  = register_cell(ruc->ioi, 0xbe);
   tbclr  = register_cell(ruc->ioi, 0xbf);
-  /*
-  ruc->mk_mvar(ruc->ioi, 0xa0, "TACSR", "Timer A Control and Status Register");
-  ruc->mk_mvar(ruc->ioi, 0xa4, "TACR" , "Timer A Control Register");
-  chars c, n;
-  c.format("TAT%dR", id);
-  n.format("Timer A%d Time Constant Register", id);
-  ruc->mk_mvar(ruc->ioi, tat_regs[id], c, n);
-  */
+  
+  ruc->mk_mvar(ruc->ioi, 0xb0, "TBCSR", "Timer B Control and Status Register");
+  ruc->mk_mvar(ruc->ioi, 0xb1, "TBCR" , "Timer B Control Register");
+  ruc->mk_mvar(ruc->ioi, 0xb2, "TBM1R" , "Timer B MSB 1 Register");
+  ruc->mk_mvar(ruc->ioi, 0xb3, "TBL1R" , "Timer B LSB 1 Register");
+  ruc->mk_mvar(ruc->ioi, 0xb4, "TBM2R" , "Timer B MSB 2 Register");
+  ruc->mk_mvar(ruc->ioi, 0xb5, "TBL2R" , "Timer B LSB 2 Register");
+  ruc->mk_mvar(ruc->ioi, 0xb4, "TBCMR" , "Timer B Count MSB Register");
+  ruc->mk_mvar(ruc->ioi, 0xb5, "TBCLR" , "Timer B Count LSB Register");
+
   return 0;
 }
 
@@ -81,11 +83,12 @@ cl_tb::read(class cl_memory_cell *cell)
   if (0)
     ;
 
+  /* Real SFRs */
   if (cell == tbcsr)
     {
       u8_t v= cell->get();
       v&= ~(0x06);
-      v|= tbstat->get();
+      v|= (tbstat->get() & 0x06);
       cell->set(v);
       // Read of tbcsr clears stat bits
       tbstat->set(0);
@@ -99,7 +102,6 @@ cl_tb::read(class cl_memory_cell *cell)
 void
 cl_tb::write(class cl_memory_cell *cell, t_mem *val)
 {
-  /* should be called by leaf */
   if (conf(cell, val))
     return;
   
@@ -108,7 +110,8 @@ cl_tb::write(class cl_memory_cell *cell, t_mem *val)
 
   else if (cell == clk_src)
     Tick(*val);
-  
+
+  /* Message registers */
   else if (cell == tbstat)
     {
       *val&= 0x06;
@@ -116,7 +119,8 @@ cl_tb::write(class cl_memory_cell *cell, t_mem *val)
 
   else if (cell == tbctrl)
     {}
-  
+
+  /* Real SFRs */
   else if (cell == tbcsr)
     {
       tbctrl->set(*val);
@@ -152,23 +156,23 @@ cl_tb::Tick(int cycles)
 {
   if (tbcsr->get() & 1)
     {
+      u16_t m1= ((tbm1r->get()&0xc0)>>6)|tbl1r->get();
+      u16_t m2= ((tbm2r->get()&0xc0)>>6)|tbl2r->get();
       in_clks+= cycles;
       int c= in_clks / divby;
       in_clks%= divby;
       while (c--)
 	{
-	  count();
+	  cnt= (cnt+1) & 0x3ff;
+	  counted(m1, m2);
 	}
     }
   return 0;
 }
 
 void
-cl_tb::count(void)
+cl_tb::counted(u16_t m1, u16_t m2)
 {
-  u16_t m1= ((tbm1r->get()&0xc0)>>6)|tbl1r->get();
-  u16_t m2= ((tbm2r->get()&0xc0)>>6)|tbl2r->get();
-  cnt= (cnt+1) & 0x3ff;
   if (cnt == m1)
     tbstat->write(tbstat->get() | 0x02);
   if (cnt == m2)
@@ -177,13 +181,19 @@ cl_tb::count(void)
 
 void
 cl_tb::print_info(class cl_console_base *con)
-{/*
+{
   con->dd_printf("%s[%d]", get_name(), id);
   con->dd_printf(" CTRL= ");
-  con->print_bin(tactrl->get(), 8);
+  con->print_bin(tbctrl->get(), 8);
   con->dd_printf(" STAT= ");
-  con->print_bin(tastat->get(), 8);
-  con->dd_printf(" CNT= 0x%02x,%3d", cnt, cnt);*/
+  con->print_bin(tbstat->get(), 8);
+  con->dd_printf(" CNT= 0x%03x,%4d", cnt, cnt);
+  con->dd_printf("\n");
+  con->dd_printf("inclks=%d divby=%d", in_clks, divby);
+  con->dd_printf("\n");
+  u16_t m1= ((tbm1r->get()&0xc0)>>6)|tbl1r->get();
+  u16_t m2= ((tbm2r->get()&0xc0)>>6)|tbl2r->get();
+  con->dd_printf("Match1= 0x%03x,%4d Match2= 0x%03x,%4d", m1, m1, m2, m2);
   con->dd_printf("\n");
 }
 

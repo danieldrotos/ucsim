@@ -143,10 +143,10 @@ cl_ta::write(class cl_memory_cell *cell, t_mem *val)
 int
 cl_ta::Tick(int cycles)
 {
+  if (id == 1)
+    ruc->hw8msg->write(rxkhw_ta1_in, cycles);
   if (tacsr->get() & 1)
     {
-      if (id == 1)
-	ruc->hw8msg->write(rxkhw_ta1_in, cycles);
       while (cycles--)
 	{
 	  if (cnt==0)
