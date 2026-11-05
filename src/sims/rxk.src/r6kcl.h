@@ -44,6 +44,7 @@ public:
   virtual int init(void);
   virtual void mk_hw_elements(void);
   virtual void make_ta8_10(void);
+  virtual class cl_hw *mk_tb(void);
 
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual char *disassc_cb_6(t_addr addr, chars *comment);

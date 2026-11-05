@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "49wrap.h"
 #include "r6kwrap.h"
 #include "tacl.h"
+#include "tbcl.h"
 #include "rtypes.h"
 
 #include "r6kcl.h"
@@ -90,6 +91,12 @@ cl_r6k::make_ta8_10(void)
   add_hw(h= new cl_tax(this,  8, 0xa2, 0x01, rxkhw_ta12_out)); h->init();
   add_hw(h= new cl_tax(this,  9, 0xa2, 0x02, rxkhw_ta12_out)); h->init();
   add_hw(h= new cl_tax(this, 10, 0xa2, 0x04, rxkhw_ta12_out)); h->init();
+}
+
+class cl_hw *
+cl_r6k::mk_tb(void)
+{
+  return new cl_tbs6(this);
 }
 
 struct dis_entry *
