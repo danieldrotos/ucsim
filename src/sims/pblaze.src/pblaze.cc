@@ -987,7 +987,7 @@ cl_pblaze::read_hex_file(const char *nam, bool check)
   if (value)
     ret = pblaze_read_hex_file(nam);
   else
-    ret = std_read_hex_file(nam, check);
+    ret = /*std_read_hex_file*/cl_uc::read_hex_file(nam, check);
 
   return ret;
 }

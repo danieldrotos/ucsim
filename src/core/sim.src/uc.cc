@@ -1598,6 +1598,7 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f, bool check)
 			    {
 			      set_rom(is, base+addr, rec[i], check);
 			      addr++;
+			      lows[3]= lows[2]= lows[1]= lows[0]= 0;
 			      written++;
 			    }
 			  else if (mem->width <= 16)
@@ -1607,9 +1608,29 @@ cl_uc::read_hex_file(class cl_inspec *is, cl_f *f, bool check)
 				case 0: lows[0]= rec[i]; get_low++; break;
 				case 1: lows[1]= rec[i];
 				  set_rom(is, base+addr, (lows[1]*256)+lows[0], check);
+				  lows[3]= lows[2]= lows[1]= lows[0]= 0;
 				  addr++;
 				  written++;
 				  get_low= 0;
+				  break;
+				}
+			    }
+			  else if (mem->width <= 24)
+			    {
+			      switch (get_low)
+				{
+				case 0: lows[0]= rec[i]; get_low++; break;
+				case 1: lows[1]= rec[i]; get_low++; break;
+				case 2: lows[2]= rec[i];
+				  set_rom(is, base+addr,
+					  (lows[2]<<16)+
+					  (lows[1]<<8)+
+					  (lows[0]),
+					  check);
+				  get_low= 0;
+				  lows[3]= lows[2]= lows[1]= lows[0]= 0;
+				  addr++;
+				  written++;
 				  break;
 				}
 			    }
