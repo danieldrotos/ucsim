@@ -8,4 +8,4 @@ OBJECTS		= srxk.o \
 		  inst.o ialu.o ibranch.o imove.o \
 		  r2k.o r3k.o r3ka.o r4k.o r5k.o r6k.o \
 		  r4kwrap.o r6kwrap.o ddwrap.o edwrap.o 7fwrap.o 49wrap.o \
-		  ta.o tb.o
+		  ta.o tb.o tc.o
