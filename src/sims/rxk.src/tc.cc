@@ -119,15 +119,13 @@ cl_tc::write(class cl_memory_cell *cell, t_mem *val)
 void
 cl_tc::set_clk(u8_t val)
 {
-  /*
-  switch (val & 0xc0)
+  switch (val & 0x0c)
     {
     case 0x00: clk_src= a1in ; divby= 1; break;
     case 0x04: clk_src= a1out; divby= 1; break;
     case 0x08: clk_src= a1in ; divby= 8; break;
     case 0x0c: clk_src= a1in ; divby= 8; break;
     }
-  */
 }
 
 int
@@ -150,18 +148,29 @@ cl_tc::Tick(int cycles)
 void
 cl_tc::counted(void)
 {
-  /*
-  if (cnt == cmp1)
+  u16_t set[4], res[4];
+  set[0]= ruc->ioi->read(0x508) + 256*(ruc->ioi->read(0x509));
+  res[0]= ruc->ioi->read(0x50a) + 256*(ruc->ioi->read(0x50b));
+  set[1]= ruc->ioi->read(0x50c) + 256*(ruc->ioi->read(0x50d));
+  res[1]= ruc->ioi->read(0x50e) + 256*(ruc->ioi->read(0x50f));
+  set[2]= ruc->ioi->read(0x518) + 256*(ruc->ioi->read(0x519));
+  res[2]= ruc->ioi->read(0x51a) + 256*(ruc->ioi->read(0x51b));
+  set[3]= ruc->ioi->read(0x51c) + 256*(ruc->ioi->read(0x51d));
+  res[3]= ruc->ioi->read(0x51e) + 256*(ruc->ioi->read(0x51f));
+  int i;
+  for (i= 0; i < 3; i++)
     {
-      tbstat->write(tbstat->get() | 0x02);
-      ruc->hw8msg->write(rxkhw_tb1_out, 1);
+      if (cnt == set[i])
+	ruc->hw8msg->write(rxkhw_tc0_out+i, 1);
+      if (cnt == res[i])
+	ruc->hw8msg->write(rxkhw_tc0_out+i, 0);
     }
-  if (cnt == cmp2)
+  u16_t arr= ruc->ioi->read(0x502) + 256*(ruc->ioi->read(0x503));
+  if (cnt == arr)
     {
-      tbstat->write(tbstat->get() | 0x04);
-      ruc->hw8msg->write(rxkhw_tb2_out, 1);
+      cnt= 0;
+      tccsr->write(tccsr->read() | 0x02);
     }
-  */
 }
 
 void
@@ -199,7 +208,7 @@ cl_tc6::init(void)
 void
 cl_tc6::set_clk(u8_t val)
 {
-  if ((val & 0xc0) == 0xc0)
+  if ((val & 0x0c) == 0x0c)
     {
       clk_src= a11out;
       divby= 1;

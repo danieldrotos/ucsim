@@ -197,12 +197,12 @@ cl_tb::counted(void)
 {
   if (cnt == cmp1)
     {
-      tbstat->write(tbstat->get() | 0x02);
+      tbstat->write(tbstat->read() | 0x02);
       ruc->hw8msg->write(rxkhw_tb1_out, 1);
     }
   if (cnt == cmp2)
     {
-      tbstat->write(tbstat->get() | 0x04);
+      tbstat->write(tbstat->read() | 0x04);
       ruc->hw8msg->write(rxkhw_tb2_out, 1);
     }
 }
