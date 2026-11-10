@@ -38,7 +38,7 @@ class cl_tc: public cl_hw
  public:
   class cl_rxk *ruc;
   MCELL *clk_src, *a1in, *a1out;
-  MCELL *tccsr, *tccr;
+  MCELL *tccsr, *tccr, *tcbar, *tcbpr;
   int in_clks, divby;
   u16_t cnt, cmp1, cmp2;
  public:
@@ -51,6 +51,7 @@ class cl_tc: public cl_hw
   virtual int tick(int cycles) {return(0);}
   virtual int Tick(int cycles);
   virtual void counted(void);
+  virtual void inc_bpr(void);
   virtual void print_info(class cl_console_base *con);
 };
 

@@ -49,6 +49,8 @@ cl_tc::init(void)
   a1out  = register_cell(ruc->hw8msg, rxkhw_ta1_out);
   tccsr  = register_cell(ruc->ioi, 0x500);
   tccr   = register_cell(ruc->ioi, 0x501);
+  tcbar  = register_cell(ruc->ioi, 0xf8);
+  tcbpr  = register_cell(ruc->ioi, 0xf9);
   /*
   ruc->mk_mvar(ruc->ioi, 0xb0, "TBCSR", "Timer B Control and Status Register");
   ruc->mk_mvar(ruc->ioi, 0xb1, "TBCR" , "Timer B Control Register");
@@ -67,6 +69,7 @@ cl_tc::reset(void)
 {
   tccsr->W(0);
   tccr->W(0);
+  tcbpr->W(2);
 }
 
 
@@ -77,12 +80,21 @@ cl_tc::read(class cl_memory_cell *cell)
     ;
 
   /* Real SFRs */
-  if (cell == tccsr)
+  else if (cell == tccsr)
     {
       // Read of tbcsr clears stat bits
       u8_t v= tccsr->get();
       v&= ~(0x02);
       tccsr->set(v);
+    }
+
+  else if (cell == tcbpr)
+    return 0;
+
+  else if (cell == tcbar)
+    {
+      cell->set(ruc->ioi->read(0x500+tcbpr->get()));
+      inc_bpr();
     }
   
   //conf(cell, NULL);
@@ -113,6 +125,15 @@ cl_tc::write(class cl_memory_cell *cell, t_mem *val)
       set_clk(*val&= 0x0f);
     }
 
+  else if (cell == tcbpr)
+    *val&= 0x1f;
+
+  else if (cell == tcbar)
+    {
+      ruc->ioi->write(0x500+tcbpr->get(), *val);
+      inc_bpr();
+    }
+  
   cell->set(*val);
 }
 
@@ -174,11 +195,31 @@ cl_tc::counted(void)
 }
 
 void
+cl_tc::inc_bpr(void)
+{
+  u8_t v= tcbpr->get();
+  if (v == 2)
+    v++;
+  else if (v == 3)
+    v= 8;
+  else if ((v >= 8) && (v<0xf))
+    v++;
+  else if (v == 0xf)
+    v= 0x18;
+  else if ((v >= 0x18) && (v<0x1f))
+    v++;
+  else
+    v= 2;
+  tcbpr->set(v);
+}
+
+void
 cl_tc::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d]", get_name(), id);
   con->dd_printf(" CS= ");
   con->print_bin(tccsr->get(), 8);
+  con->dd_printf(" BPR= 0x%02x,%3d", tcbpr->get(), tcbpr->get());
   con->dd_printf(" CNT= 0x%04x,%5d", cnt, cnt);
   con->dd_printf("\n");
   con->dd_printf("inclks=%d divby=%d", in_clks, divby);
