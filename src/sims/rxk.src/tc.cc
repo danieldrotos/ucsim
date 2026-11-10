@@ -51,16 +51,28 @@ cl_tc::init(void)
   tccr   = register_cell(ruc->ioi, 0x501);
   tcbar  = register_cell(ruc->ioi, 0xf8);
   tcbpr  = register_cell(ruc->ioi, 0xf9);
-  /*
-  ruc->mk_mvar(ruc->ioi, 0xb0, "TBCSR", "Timer B Control and Status Register");
-  ruc->mk_mvar(ruc->ioi, 0xb1, "TBCR" , "Timer B Control Register");
-  ruc->mk_mvar(ruc->ioi, 0xb2, "TBM1R" , "Timer B MSB 1 Register");
-  ruc->mk_mvar(ruc->ioi, 0xb3, "TBL1R" , "Timer B LSB 1 Register");
-  ruc->mk_mvar(ruc->ioi, 0xb4, "TBM2R" , "Timer B MSB 2 Register");
-  ruc->mk_mvar(ruc->ioi, 0xb5, "TBL2R" , "Timer B LSB 2 Register");
-  ruc->mk_mvar(ruc->ioi, 0xb4, "TBCMR" , "Timer B Count MSB Register");
-  ruc->mk_mvar(ruc->ioi, 0xb5, "TBCLR" , "Timer B Count LSB Register");
-  */
+  ruc->mk_mvar(ruc->ioi, 0x500, "TCCSR" , "Timer C Control and Status Register");
+  ruc->mk_mvar(ruc->ioi, 0x501, "TCCR"  , "Timer C Control Register");
+  ruc->mk_mvar(ruc->ioi, 0x502, "TCDLR" , "Timer C Divider Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x503, "TCDHR" , "Timer C Divider High Register");
+  ruc->mk_mvar(ruc->ioi, 0x508, "TCS0LR", "Timer C Set 0 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x509, "TCS0HR", "Timer C Set 0 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x50a, "TCR0LR", "Timer C Reset 0 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x50b, "TCR0HR", "Timer C Reset 0 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x50c, "TCS1LR", "Timer C Set 1 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x50d, "TCS1HR", "Timer C Set 1 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x50e, "TCR1LR", "Timer C Reset 1 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x50f, "TCR1HR", "Timer C Reset 1 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x518, "TCS2LR", "Timer C Set 2 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x519, "TCS2HR", "Timer C Set 2 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x51a, "TCR2LR", "Timer C Reset 2 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x51b, "TCR2HR", "Timer C Reset 2 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x51c, "TCS3LR", "Timer C Set 3 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x51d, "TCS3HR", "Timer C Set 3 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x51e, "TCR3LR", "Timer C Reset 3 Low Register");
+  ruc->mk_mvar(ruc->ioi, 0x51f, "TCR3HR", "Timer C Reset 3 High Register");
+  ruc->mk_mvar(ruc->ioi, 0x0f8, "TCBAR" , "Timer C Block Access Register");
+  ruc->mk_mvar(ruc->ioi, 0x0f9, "TCBPR" , "Timer C Block Pointer Register");
   return 0;
 }
 
