@@ -179,7 +179,7 @@ cl_tc::counted(void)
   set[3]= ruc->ioi->read(0x51c) + 256*(ruc->ioi->read(0x51d));
   res[3]= ruc->ioi->read(0x51e) + 256*(ruc->ioi->read(0x51f));
   int i;
-  for (i= 0; i < 3; i++)
+  for (i= 0; i < 4; i++)
     {
       if (cnt == set[i])
 	ruc->hw8msg->write(rxkhw_tc0_out+i, 1);
@@ -216,20 +216,27 @@ cl_tc::inc_bpr(void)
 void
 cl_tc::print_info(class cl_console_base *con)
 {
+  u16_t set[4], res[4];
+  set[0]= ruc->ioi->read(0x508) + 256*(ruc->ioi->read(0x509));
+  res[0]= ruc->ioi->read(0x50a) + 256*(ruc->ioi->read(0x50b));
+  set[1]= ruc->ioi->read(0x50c) + 256*(ruc->ioi->read(0x50d));
+  res[1]= ruc->ioi->read(0x50e) + 256*(ruc->ioi->read(0x50f));
+  set[2]= ruc->ioi->read(0x518) + 256*(ruc->ioi->read(0x519));
+  res[2]= ruc->ioi->read(0x51a) + 256*(ruc->ioi->read(0x51b));
+  set[3]= ruc->ioi->read(0x51c) + 256*(ruc->ioi->read(0x51d));
+  res[3]= ruc->ioi->read(0x51e) + 256*(ruc->ioi->read(0x51f));
   con->dd_printf("%s[%d]", get_name(), id);
   con->dd_printf(" CS= ");
   con->print_bin(tccsr->get(), 8);
   con->dd_printf(" BPR= 0x%02x,%3d", tcbpr->get(), tcbpr->get());
   con->dd_printf(" CNT= 0x%04x,%5d", cnt, cnt);
   con->dd_printf("\n");
+  con->dd_printf(" ");
+  int i;
+  for (i= 0; i < 4; i++)
+    con->dd_printf("set[%d]= 0x%04x reset[%d]= 0x%04x\n");
   con->dd_printf("inclks=%d divby=%d", in_clks, divby);
   con->dd_printf("\n");
-  /*
-  u16_t m1= ((tbm1r->get()&0xc0)>>6)|tbl1r->get();
-  u16_t m2= ((tbm2r->get()&0xc0)>>6)|tbl2r->get();
-  con->dd_printf("Compare1= 0x%03x,%4d Compare2= 0x%03x,%4d",
-		 cmp1, cmp1, cmp2, cmp2);
-  */
   con->dd_printf("\n");
 }
 
