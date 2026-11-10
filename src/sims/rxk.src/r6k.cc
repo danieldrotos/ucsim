@@ -30,6 +30,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "r6kwrap.h"
 #include "tacl.h"
 #include "tbcl.h"
+#include "tccl.h"
 #include "rtypes.h"
 
 #include "r6kcl.h"
@@ -97,6 +98,12 @@ class cl_hw *
 cl_r6k::mk_tb(void)
 {
   return new cl_tbs6(this);
+}
+
+class cl_hw *
+cl_r6k::mk_tc(void)
+{
+  return new cl_tc6(this);
 }
 
 struct dis_entry *

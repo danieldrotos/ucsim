@@ -70,6 +70,8 @@ cl_tc::reset(void)
   tccsr->W(0);
   tccr->W(0);
   tcbpr->W(2);
+  ruc->ioi->write(0x502, 0);
+  ruc->ioi->write(0x503, 0);
 }
 
 
@@ -234,7 +236,8 @@ cl_tc::print_info(class cl_console_base *con)
   con->dd_printf(" ");
   int i;
   for (i= 0; i < 4; i++)
-    con->dd_printf("set[%d]= 0x%04x reset[%d]= 0x%04x\n");
+    con->dd_printf("set[%d]= 0x%04x reset[%d]= 0x%04x\n",
+		   i, set[i], res[i]);
   con->dd_printf("inclks=%d divby=%d", in_clks, divby);
   con->dd_printf("\n");
   con->dd_printf("\n");

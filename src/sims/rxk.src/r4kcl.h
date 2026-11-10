@@ -69,6 +69,7 @@ public:
   virtual void make_cpu_hw(void);
   virtual t_addr chip_size() { return rom_size?rom_size:0x1000000; }
   virtual class cl_hw *mk_tb(void);
+  virtual class cl_hw *mk_tc(void);
 
   virtual struct dis_entry *dis_entry(t_addr addr);
   virtual struct dis_entry *dis_6d_entry(t_addr addr);

@@ -42,6 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "gpedm3.h"
 #include "gpedm4.h"
 #include "tbcl.h"
+#include "tccl.h"
 
 #include "r4kcl.h"
 
@@ -164,6 +165,12 @@ class cl_hw *
 cl_r4k::mk_tb(void)
 {
   return new cl_tbs(this);
+}
+
+class cl_hw *
+cl_r4k::mk_tc(void)
+{
+  return new cl_tc(this);
 }
 
 static struct dis_entry de7f;
