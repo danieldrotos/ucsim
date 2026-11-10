@@ -154,10 +154,11 @@ cl_tb::write(class cl_memory_cell *cell, t_mem *val)
       cmp2|= (*val & 0xff);
     }
   
-  else if (cell == tbcmr) // read-only
-    return;
-  else if (cell == tbclr) // read-only
-    return;
+  else if ((cell == tbcmr) || (cell == tbclr)) // read-only
+    {
+      *val= cell->get();
+      return;
+    }
   
   cell->set(*val);
 }
