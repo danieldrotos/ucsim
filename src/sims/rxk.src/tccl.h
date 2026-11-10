@@ -38,7 +38,6 @@ class cl_tc: public cl_hw
  public:
   class cl_rxk *ruc;
   MCELL *clk_src, *a1in, *a1out;
-  MCELL *tcstat, *tcctrl;
   MCELL *tccsr, *tccr;
   int in_clks, divby;
   u16_t cnt, cmp1, cmp2;

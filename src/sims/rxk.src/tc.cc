@@ -45,19 +45,10 @@ int
 cl_tc::init(void)
 {
   cl_hw::init();
-  tcstat = register_cell(ruc->hw8msg, rxkhw_tcstat);
-  tcctrl = register_cell(ruc->hw8msg, rxkhw_tcctrl);
   a1in   = register_cell(ruc->hw8msg, rxkhw_ta1_in);
   a1out  = register_cell(ruc->hw8msg, rxkhw_ta1_out);
-  /*tbcsr  = register_cell(ruc->ioi, 0xb0);
-  tbcr   = register_cell(ruc->ioi, 0xb1);
-  tbm1r  = register_cell(ruc->ioi, 0xb2);
-  tbl1r  = register_cell(ruc->ioi, 0xb3);
-  tbm2r  = register_cell(ruc->ioi, 0xb4);
-  tbl2r  = register_cell(ruc->ioi, 0xb5);
-  tbcmr  = register_cell(ruc->ioi, 0xbe);
-  tbclr  = register_cell(ruc->ioi, 0xbf);
-  */
+  tccsr  = register_cell(ruc->ioi, 0x500);
+  tccr   = register_cell(ruc->ioi, 0x501);
   /*
   ruc->mk_mvar(ruc->ioi, 0xb0, "TBCSR", "Timer B Control and Status Register");
   ruc->mk_mvar(ruc->ioi, 0xb1, "TBCR" , "Timer B Control Register");
@@ -88,14 +79,10 @@ cl_tc::read(class cl_memory_cell *cell)
   /* Real SFRs */
   if (cell == tccsr)
     {
-      /*
-      u8_t v= cell->get();
-      v&= ~(0x06);
-      v|= (tbstat->get() & 0x06);
-      cell->set(v);
       // Read of tbcsr clears stat bits
-      tbstat->set(0);
-      */
+      u8_t v= tccsr->get();
+      v&= ~(0x02);
+      tccsr->set(v);
     }
   
   //conf(cell, NULL);
@@ -115,55 +102,17 @@ cl_tc::write(class cl_memory_cell *cell, t_mem *val)
   else if (cell == clk_src)
     Tick(*val);
 
-  /* Message registers */
-  else if (cell == tcstat)
-    {
-      //*val&= 0x06;
-    }
-
-  else if (cell == tcctrl)
-    {}
-
   /* Real SFRs */
   else if (cell == tccsr)
     {
-      tcctrl->set(*val);
+      *val&= 0x03;
     }
 
   else if (cell == tccr)
     {
-      set_clk(*val);
+      set_clk(*val&= 0x0f);
     }
-  /*
-  else if (cell == tbm1r)
-    {
-      cmp1&= 0x00ff;
-      cmp1|= ((*val & 0xc0)>>6);
-    }
-  else if (cell == tbm2r)
-    {
-      cmp2&= 0x00ff;
-      cmp2|= ((*val & 0xc0)>>6);
-    }
-  */
-  /*
-  else if (cell == tbl1r)
-    {
-      cmp1&= 0x300;
-      cmp1|= (*val & 0xff);
-    }
-  else if (cell == tbl2r)
-    {
-      cmp2&= 0x300;
-      cmp2|= (*val & 0xff);
-    }
-  */
-  /*
-  else if (cell == tbcmr) // read-only
-    return;
-  else if (cell == tbclr) // read-only
-    return;
-  */
+
   cell->set(*val);
 }
 
@@ -219,10 +168,8 @@ void
 cl_tc::print_info(class cl_console_base *con)
 {
   con->dd_printf("%s[%d]", get_name(), id);
-  con->dd_printf(" CTRL= ");
-  con->print_bin(tcctrl->get(), 8);
-  con->dd_printf(" STAT= ");
-  con->print_bin(tcstat->get(), 8);
+  con->dd_printf(" CS= ");
+  con->print_bin(tccsr->get(), 8);
   con->dd_printf(" CNT= 0x%04x,%5d", cnt, cnt);
   con->dd_printf("\n");
   con->dd_printf("inclks=%d divby=%d", in_clks, divby);

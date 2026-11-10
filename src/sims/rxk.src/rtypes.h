@@ -90,8 +90,8 @@ enum rxk_hwmsg_t {
   rxkhw_tbctrl,		// Timer B control ---- -XX-
   rxkhw_tb1_out,	// Output 1 of timer B
   rxkhw_tb2_out,	// Output 2 of timer B
-  rxkhw_tcstat,		// Timer C status  
-  rxkhw_tcctrl,		// Timer C control 
+  //rxkhw_tcstat,		// Timer C status  
+  //rxkhw_tcctrl,		// Timer C control 
 };
 
 
