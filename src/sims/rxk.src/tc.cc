@@ -228,10 +228,12 @@ cl_tc::print_info(class cl_console_base *con)
   set[3]= ruc->ioi->read(0x51c) + 256*(ruc->ioi->read(0x51d));
   res[3]= ruc->ioi->read(0x51e) + 256*(ruc->ioi->read(0x51f));
   con->dd_printf("%s[%d]", get_name(), id);
-  con->dd_printf(" CS= ");
+  con->dd_printf(" CSR= ");
   con->print_bin(tccsr->get(), 8);
   con->dd_printf(" BPR= 0x%02x,%3d", tcbpr->get(), tcbpr->get());
   con->dd_printf(" CNT= 0x%04x,%5d", cnt, cnt);
+  u16_t v= ruc->ioi->read(0x502)+256*(ruc->ioi->read(0x503));
+  con->dd_printf(" DIVR= 0x%04x,%5d", v, v);
   con->dd_printf("\n");
   int i;
   for (i= 0; i < 4; i++)
