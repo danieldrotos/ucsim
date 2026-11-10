@@ -233,11 +233,11 @@ cl_tc::print_info(class cl_console_base *con)
   con->dd_printf(" BPR= 0x%02x,%3d", tcbpr->get(), tcbpr->get());
   con->dd_printf(" CNT= 0x%04x,%5d", cnt, cnt);
   con->dd_printf("\n");
-  con->dd_printf(" ");
   int i;
   for (i= 0; i < 4; i++)
-    con->dd_printf("set[%d]= 0x%04x reset[%d]= 0x%04x\n",
-		   i, set[i], res[i]);
+    con->dd_printf("set[%d]= 0x%04x reset[%d]= 0x%04x out[0]= %d\n",
+		   i, set[i], i, res[i],
+		   ruc->hw8msg->get(rxkhw_tc0_out+i));
   con->dd_printf("inclks=%d divby=%d", in_clks, divby);
   con->dd_printf("\n");
   con->dd_printf("\n");
