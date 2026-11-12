@@ -33,6 +33,8 @@ cl_timer::cl_timer(class cl_uc *auc, t_addr the_addr, const char *aname):
 {
   addr= the_addr;
   set_name(aname);
+  divby= 1;
+  in_clks= 0;
 }
 
 /*
