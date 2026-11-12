@@ -35,7 +35,6 @@ class cl_timer: public cl_hw
 {
 public:
   t_addr addr;
-  MCELL *clk_src;
   MCELL *cfg, *cntl, *cnth;
   int in_clks, divby;
   u16_t cnt;
@@ -45,8 +44,7 @@ public:
   virtual void reset(void);
   virtual t_mem read(class cl_memory_cell *cell);
   virtual void write(class cl_memory_cell *cell, t_mem *val);
-  virtual int tick(int cycles) { return 0; }
-  virtual int Tick(int cycles);
+  virtual int tick(int cycles);
   //virtual void check(void);
   
   virtual void print_info(class cl_console_base *con);

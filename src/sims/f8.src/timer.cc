@@ -105,6 +105,13 @@ cl_timer::write(class cl_memory_cell *cell, t_mem *val)
     ;
   else if (cell == cfg)
     {
+      switch ((*val >> 4) & 3)
+	{
+	case 0: divby=  1; break;
+	case 1: divby=  4; break;
+	case 2: divby= 16; break;
+	case 3: divby= 64; break;
+	}
     }
   else if (cell == cntl)
     {
@@ -116,18 +123,16 @@ cl_timer::write(class cl_memory_cell *cell, t_mem *val)
       cnt&= 0x00ff;
       cnt|= ( (*val & 0xff) << 8 );
     }
-  else if (on && clk_src && (cell == clk_src))
-    Tick(*val);
   
   cell->set(*val);
 }
 
 
 int
-cl_timer::Tick(int cycles)
+cl_timer::tick(int cycles)
 {
   u16_t cmp= uc->rom->read(addr+6)+256*(uc->rom->read(addr+6+1));
-  if (cfg->R() & 1)
+  if ((cfg->R() & 0x0f) == 1)
     {
       in_clks+= cycles;
       int c= in_clks / divby;
@@ -137,12 +142,16 @@ cl_timer::Tick(int cycles)
 	  cnt++;
 	  if (cnt == cmp)
 	    {
-	      
+	      u8_t en= uc->rom->read(0x10);
+	      if (en & 2)
+		uc->rom->write( 0x12, uc->rom->read(0x11) | 2 );	      
 	    }
 	  if (cnt == 0)
 	    {
 	      cnt= uc->rom->read(addr+4)+256*(uc->rom->read(addr+4+1));
-	      
+	      u8_t en= uc->rom->read(0x10);
+	      if (en & 1)
+		uc->rom->write( 0x12, uc->rom->read(0x11) | 1 );
 	    }
 	}
     }
