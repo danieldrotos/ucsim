@@ -92,6 +92,8 @@ cl_f8::reset(void)
   cl_uc::reset();
   clear_prefixes();
   PC= 0x4000;
+  rom->write(0x10, 0);
+  rom->write(0x12, 0);
 }
 
 void
