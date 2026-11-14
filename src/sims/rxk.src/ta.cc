@@ -88,15 +88,6 @@ cl_ta::read(class cl_memory_cell *cell)
   if (0)
     ;
 
-  // hw msg regs
-  /*
-  else if (cell == tastat)
-    {}
-
-  else if (cell == tactrl)
-    {}
-  */
-  
   // real SFRs
   else if (cell == tacsr)
     {
@@ -113,23 +104,11 @@ cl_ta::read(class cl_memory_cell *cell)
 void
 cl_ta::write(class cl_memory_cell *cell, t_mem *val)
 {
-  /* should be called by leaf */
-  /*
-  if (conf(cell, val))
-    return;
-  */
+  /* conf() will be called by descendant */
   
   if (0)
     ;
 
-  /*
-  else if (cell == tastat)
-    {}
-
-  else if (cell == tactrl)
-    {}
-  */
-  
   // Real SFRs
   else if (cell==tacsr)
     {
@@ -143,6 +122,8 @@ cl_ta::write(class cl_memory_cell *cell, t_mem *val)
 int
 cl_ta::Tick(int cycles)
 {
+  if (!on)
+    return 0;
   if (id == 1)
     ruc->hw8msg->write(rxkhw_ta1_in, cycles);
   if (tacsr->get() & 1)
