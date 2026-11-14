@@ -166,6 +166,8 @@ cl_tc::set_clk(u8_t val)
 int
 cl_tc::Tick(int cycles)
 {
+  if (!on)
+    return 0;
   if (tccsr->get() & 1)
     {
       in_clks+= cycles;
