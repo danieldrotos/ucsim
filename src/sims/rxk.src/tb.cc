@@ -178,6 +178,8 @@ cl_tb::set_clk(u8_t val)
 int
 cl_tb::Tick(int cycles)
 {
+  if (!on)
+    return 0;
   if (tbcsr->get() & 1)
     {
       in_clks+= cycles;
@@ -276,6 +278,9 @@ void
 cl_tbs::print_info(class cl_console_base *con)
 {
   cl_tb::print_info(con);
+  u16_t s1= (tbsm1r->read() & 3)*256 + tbsl1r->read();
+  u16_t s2= (tbsm2r->read() & 3)*256 + tbsl2r->read();
+  con->dd_printf("Step1= 0x%04x Step2= 0x%04x\n", s1, s2); 
 }
 
 
