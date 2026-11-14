@@ -52,7 +52,7 @@ void
 cl_r2k::mk_hw_elements(void)
 {
   class cl_hw *h;
-  cl_uc::mk_hw_elements();
+  cl_rxk::mk_hw_elements();
 
   add_hw(h= mk_ta1());
   h->init();
