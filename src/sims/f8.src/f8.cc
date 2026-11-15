@@ -32,6 +32,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "dregcl.h"
 
 #include "wdcl.h"
+#include "timercl.h"
 
 #include "f8cl.h"
 
@@ -91,6 +92,8 @@ cl_f8::reset(void)
   cl_uc::reset();
   clear_prefixes();
   PC= 0x4000;
+  rom->write(0x10, 0);
+  rom->write(0x12, 0);
 }
 
 void
@@ -120,29 +123,6 @@ GPIO2ADDDRBASE = 16'h0038
 		IRQCTRL_ACTIVE_ADDR / 2:
 			read_data_even = {'x, irqctrl_active_dread[NUM_IRQ-1:0]};
 	
-	// Timer 0
-	localparam TIMER0_CONFIG_ADDR = TIMER0ADDRBASE + 0;
-	localparam TIMER0_COUNTER_ADDR = TIMER0ADDRBASE + 2;
-	localparam TIMER0_RELOAD_ADDR = TIMER0ADDRBASE + 4;
-	localparam TIMER0_COMPARE_ADDR = TIMER0ADDRBASE + 5;
-	
-	logic [7:0] timer0_config_dread;
-	logic [15:0] timer0_counter_dread, timer0_reload_dread, timer0_compare_dread;
-	
-		TIMER0_CONFIG_ADDR / 2:
-			read_data_even = timer0_config_dread;
-		TIMER0_COUNTER_ADDR / 2:
-			read_data_even = timer0_counter_dread[7:0];
-		TIMER0_RELOAD_ADDR / 2:
-			read_data_even = timer0_reload_dread[7:0];
-		TIMER0_COMPARE_ADDR / 2:
-			read_data_even = timer0_compare_dread[7:0];
-		(TIMER0_COUNTER_ADDR + 1) / 2:
-			read_data_odd = timer0_counter_dread[15:8];
-		(TIMER0_RELOAD_ADDR + 1) / 2:
-			read_data_odd = timer0_reload_dread[15:8];
-		(TIMER0_COMPARE_ADDR + 1) / 2:
-			read_data_odd = timer0_compare_dread[15:8];
 
 	// GPIO0
 	localparam GPIO0_DDR_ADDR = GPIO0ADDDRBASE + 0;
@@ -181,6 +161,9 @@ cl_f8::mk_hw_elements(void)
   cl_uc::mk_hw_elements();
 
   add_hw(h= new cl_dreg(this, 0, "dreg"));
+  h->init();
+
+  add_hw(h= new cl_timer(this, 0x0018, "timer"));
   h->init();
 
   add_hw(h= new cl_wd(this, 0x0020, "wd"));

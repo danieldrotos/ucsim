@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "glob.h"
 #include "decode.h"
 
+
 #ifdef WORDS_BIGENDIAN
 #define REGPAIR(N,N16,NH,NL) union			\
 		      {				\
