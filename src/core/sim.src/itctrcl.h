@@ -34,7 +34,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_itctr: public cl_hw
 {
  public:
-  cl_itctr(class cl_uc *auc, const char *aname);
+  cl_itctr(class cl_uc *auc, int aid, const char *aname);
   virtual void print_info(class cl_console_base *con);
 };
 

@@ -34,8 +34,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "itctrcl.h"
 
 
-cl_itctr::cl_itctr(class cl_uc *auc, const char *aname):
-  cl_hw(auc, HW_INTERRUPT, 0, aname)
+cl_itctr::cl_itctr(class cl_uc *auc, int aid, const char *aname):
+  cl_hw(auc, HW_INTERRUPT, aid, aname)
 {
 }
 

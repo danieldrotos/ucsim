@@ -38,7 +38,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_itc::cl_itc(class cl_uc *auc):
-  cl_hw(auc, HW_INTERRUPT, 0, "itc")
+  cl_itctr/*hw*/(auc, /*HW_INTERRUPT,*/ 0, "itc")
 {
   int i;
   for (i= 0; i < 8; i++)
