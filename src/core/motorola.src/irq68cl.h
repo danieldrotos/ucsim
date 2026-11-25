@@ -25,6 +25,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA. */
 
 #include "itsrccl.h"
+#include "itctrcl.h"
 
 #include "m6800cl.h"
 
@@ -39,7 +40,7 @@ enum irq_cfg
     m68_nr	= 6
   };
 
-class cl_irq_hw: public cl_hw
+class cl_irq_hw: public cl_itctr
 {
  public:
   class cl_m6800 *muc;
@@ -48,7 +49,6 @@ class cl_irq_hw: public cl_hw
   virtual int init(void);
   virtual unsigned int cfg_size(void) { return m68_nr; }
   virtual const char *cfg_help(t_addr addr);
-  virtual void print_info(class cl_console_base *con);  
 };
 
 
