@@ -146,45 +146,5 @@ cl_interrupt::happen(class cl_hw *where, enum hw_event he, void *params)
     }
 }
 
-/*
-void
-cl_interrupt::print_info(class cl_console_base *con)
-{
-  //int ie= sfr->get(IE);
-  int i;
-
-  con->dd_printf("Interrupts are %s. Interrupt sources:\n",
-		 (uc->it_enabled())?"enabled":"disabled");
-  con->dd_printf("  Handler  En  Pr Req Act Name\n");
-  for (i= 0; i < uc->it_sources->count; i++)
-    {
-      class cl_it_src *is= (class cl_it_src *)(uc->it_sources->at(i));
-      con->dd_printf("  0x%06x", AU(is->addr));
-      con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
-      con->dd_printf(" %2d", uc->priority_of(is->ie_mask));
-      con->dd_printf(" %-3s", (is->pending())?"YES":"no");
-      con->dd_printf(" %-3s", (is->active)?"act":"no");
-      con->dd_printf(" %s", object_name(is));
-      con->dd_printf("\n");
-    }
-  con->dd_printf("Active interrupt service(s):\n");
-  con->dd_printf("  Pr Handler  PC       Source\n");
-  for (i= 0; i < uc->it_levels->count; i++)
-    {
-      class it_level *il= (class it_level *)(uc->it_levels->at(i));
-      if (il->level >= 0)
-	{
-	  con->dd_printf("  %2d", il->level);
-	  con->dd_printf(" 0x%06x", AU(il->addr));
-	  con->dd_printf(" 0x%06x", AU(il->PC));
-	  con->dd_printf(" %s", (il->source)?(object_name(il->source)):
-			 "nothing");
-	  con->dd_printf("\n");
-	}
-    }
-  //print_cfg_info(con);
-}
-*/
-
 
 /* End of s51.src/interrupt.cc */
