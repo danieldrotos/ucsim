@@ -124,7 +124,7 @@ cl_itc::happen(class cl_hw *where, enum hw_event he, void *params)
 {
 }
 
-
+/*
 void
 cl_itc::print_info(class cl_console_base *con)
 {
@@ -138,7 +138,7 @@ cl_itc::print_info(class cl_console_base *con)
       class cl_it_src *is= (class cl_it_src *)(uc->it_sources->at(i));
       con->dd_printf("  0x%06x", AU(is->addr));
       con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
-      con->dd_printf(" %2d", uc->priority_of(/*is->ie_mask*/is->nuof));
+      con->dd_printf(" %2d", uc->priority_of(is->nuof));
       con->dd_printf(" %-3s", (is->pending())?"YES":"no");
       con->dd_printf(" %-3s", (is->active)?"act":"no");
       con->dd_printf(" %s", object_name(is));
@@ -161,6 +161,6 @@ cl_itc::print_info(class cl_console_base *con)
     }
   //print_cfg_info(con);
 }
-
+*/
 
 /* End of stm8.src/itc.cc */

@@ -146,7 +146,7 @@ cl_interrupt::happen(class cl_hw *where, enum hw_event he, void *params)
     }
 }
 
-
+/*
 void
 cl_interrupt::print_info(class cl_console_base *con)
 {
@@ -184,6 +184,7 @@ cl_interrupt::print_info(class cl_console_base *con)
     }
   //print_cfg_info(con);
 }
+*/
 
 
 /* End of s51.src/interrupt.cc */

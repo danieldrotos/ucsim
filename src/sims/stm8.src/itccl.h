@@ -54,7 +54,7 @@ class cl_itc: public cl_itctr/*hw*/
   virtual void reset(void);
   virtual void happen(class cl_hw *where, enum hw_event he, void *params);
 
-  virtual void print_info(class cl_console_base *con);
+  //virtual void print_info(class cl_console_base *con);
 };
 
 
