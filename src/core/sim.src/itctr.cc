@@ -51,7 +51,10 @@ cl_itctr::print_info(class cl_console_base *con)
   for (i= 0; i < uc->it_sources->count; i++)
     {
       class cl_it_src *is= (class cl_it_src *)(uc->it_sources->at(i));
-      con->dd_printf("  0x%06x", AU(is->addr));
+      class cl_it_src *pa= is->get_parent();
+      class cl_it_src *isp= (pa)?pa:is;
+      t_addr a= uc->read_addr(uc->rom, isp->addr);
+      con->dd_printf("  0x%06x", AU(isp->addr));
       con->dd_printf(" %-3s", (is->enabled())?"en":"dis");
       con->dd_printf(" %2d", uc->priority_of(is->nuof));
       con->dd_printf(" %-3s", (is->pending())?"YES":"no");
