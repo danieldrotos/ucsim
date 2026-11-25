@@ -41,7 +41,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_interrupt::cl_interrupt(class cl_uc *auc):
-  cl_hw(auc, HW_INTERRUPT, 0, "irq")
+  cl_itctr/*hw*/(auc, /*HW_INTERRUPT,*/ 0, "irq")
 {
   was_reti= false;
 }

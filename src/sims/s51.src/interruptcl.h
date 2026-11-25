@@ -31,11 +31,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "stypes.h"
 #include "pobjcl.h"
 #include "uccl.h"
+#include "itctrcl.h"
 
 #include "newcmdcl.h"
 
 
-class cl_interrupt: public cl_hw
+class cl_interrupt: public cl_itctr/*hw*/
 {
 public:
   //class cl_address_space *sfr;
