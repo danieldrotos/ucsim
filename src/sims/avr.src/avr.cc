@@ -662,6 +662,12 @@ cl_avr::exec_inst(void)
 /*
  */
 
+t_addr
+cl_avr::read_address(t_addr addr)
+{
+  return rom->read(addr);
+}
+
 int
 cl_avr::push_data(t_mem data)
 {

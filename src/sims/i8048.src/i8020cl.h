@@ -117,7 +117,7 @@ public:
  * i8048 processor
  */
 
-class cl_i8020: public cl_uc
+class cl_i8020: public cl_16le
 {
 protected:
   unsigned int ram_size, rom_size, inner_rom;

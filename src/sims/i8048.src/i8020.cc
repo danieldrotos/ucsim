@@ -50,7 +50,7 @@ cl_flag20_op::write(t_mem val)
  */
 
 cl_i8020::cl_i8020(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   PCmask= 0xfff;
   ram_size= 64;
@@ -64,7 +64,7 @@ cl_i8020::cl_i8020(class cl_sim *asim):
 cl_i8020::cl_i8020(class cl_sim *asim,
 		   unsigned int rom_siz,
 		   unsigned int ram_siz):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   PCmask= 0xfff;
   ram_size= ram_siz;

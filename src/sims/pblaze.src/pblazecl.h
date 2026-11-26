@@ -97,7 +97,8 @@ public:
 
   virtual int exec_inst(void);
   virtual int do_interrupt(void);
-
+  virtual t_addr read_address(t_addr addr) { return rom->read(addr); }
+  
   virtual const char *get_disasm_info(t_addr addr,
                         int *ret_len,
                         int *ret_branch,

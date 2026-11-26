@@ -168,7 +168,8 @@ public:
                                       int *immed_offset,
                                       struct dis_entry **dentry);
   virtual bool is_call(t_addr addr);
-
+  virtual t_addr read_address(t_addr addr) { return rom->read(addr); }
+  
   virtual void reset(void);
 
   // originaly in instcl.h
@@ -269,6 +270,7 @@ public:
   
   virtual int exec_inst(void);
 
+  virtual t_addr read_address(t_addr addr) { return rom->read(addr); }
   virtual char *disassc(t_addr addr, chars *comment);
   virtual void print_regs(class cl_console_base *con);
 };

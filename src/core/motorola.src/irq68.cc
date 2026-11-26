@@ -29,6 +29,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "itsrccl.h"
 
+#include "m6800cl.h"
 #include "irq68cl.h"
 
 
@@ -65,5 +66,12 @@ cl_irq_hw::cfg_help(t_addr addr)
   return cl_hw::cfg_help(addr);
 }
 
+/*
+t_addr
+cl_68_src::isr(void)
+{
+  return ((class cl_m6800 *)uc)->read_addr(uc->rom, addr);
+}
+*/
 
 /* End of motorola.src/irq68.cc */

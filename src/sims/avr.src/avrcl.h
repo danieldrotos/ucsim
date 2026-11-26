@@ -57,6 +57,7 @@ public:
 
   virtual int exec_inst(void);
 
+  virtual t_addr read_address(t_addr addr);
   virtual int push_data(t_mem data);
   virtual int push_addr(t_addr addr);
   virtual int pop_data(t_mem *data);

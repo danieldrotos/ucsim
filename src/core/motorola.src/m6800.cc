@@ -88,7 +88,7 @@ cl_mop16::set_uc(class cl_uc *iuc)
 
 
 cl_m6800::cl_m6800(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16be(asim)
 {
   IRQ_AT	= 0xfff8;
   SWI_AT	= 0xfffa;
@@ -519,7 +519,7 @@ cl_m6800::accept_it(class it_level *il)
       (is == src_swi))
     rCC|= flagI;
   
-  t_addr a= read_addr(rom, is->addr);
+  t_addr a= is->isr();//read_addr(rom, is->addr);
   PC= a;
   
   is->clear();

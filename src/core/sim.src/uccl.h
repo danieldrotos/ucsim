@@ -369,6 +369,8 @@ public:
   virtual class cl_memory *memory(const char *id);
   virtual class cl_memory *default_load_mem(void) { return rom; }
   virtual void remove_chip(class cl_memory *chip);
+  // structural way of memory usage
+  virtual t_addr read_address(t_addr addr)= 0; // always from ROM
   
   // file handling
   virtual cl_f *find_loadable_file(chars nam);
@@ -537,6 +539,29 @@ public:
 public:
   virtual void eram2xram(void) {} // Dirty hack for 51R
   virtual void xram2eram(void) {}
+};
+
+
+// 16 bit address, little-endian byte order
+class cl_16le: public cl_uc
+{
+public:
+  cl_16le(class cl_sim *asim): cl_uc(asim) {};
+  virtual t_addr read_address(t_addr addr)
+  {
+    return rom->read(addr) + rom->read(addr) * 256;
+  }
+};
+
+// 16 bit address, big-endian byte order
+class cl_16be: public cl_uc
+{
+public:
+  cl_16be(class cl_sim *asim): cl_uc(asim) {};
+  virtual t_addr read_address(t_addr addr)
+  {
+    return rom->read(addr) * 256 + rom->read(addr);
+  }
 };
 
 

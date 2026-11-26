@@ -101,7 +101,7 @@ public:
  * Base of MOS6502 processor
  */
 
-class cl_mos6502: public cl_uc  
+class cl_mos6502: public cl_16le  
 {
 public:
   u8_t A, X, Y, SP, CC, i8d;

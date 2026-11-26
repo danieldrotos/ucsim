@@ -116,7 +116,7 @@ enum {
 /*
  * Base of f8 processor
  */
-class cl_f8: public cl_uc
+class cl_f8: public cl_16le
 {
 public:
   REGPAIR(rpX, X, XH, XL); class cl_cell8 cXH, cXL; class cl_cell16 cX;

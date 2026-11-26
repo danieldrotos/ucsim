@@ -160,7 +160,7 @@ public:
  * Base of M6800 processor
  */
 
-class cl_m6800: public cl_uc
+class cl_m6800: public cl_16be
 {
 public:
   struct acc_t acc;
@@ -195,7 +195,7 @@ public:
   virtual t_addr read_addr(class cl_memory *m, t_addr start_addr);
   virtual int inst_length(t_addr addr);
   virtual int longest_inst(void) { return 4; }
-  
+  virtual t_addr read_address(t_addr addr) { return read_addr(rom, addr); }
   virtual void print_regs(class cl_console_base *con);
 
   virtual int exec_inst(void);

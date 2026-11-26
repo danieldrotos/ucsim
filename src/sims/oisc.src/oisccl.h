@@ -74,10 +74,11 @@ public:
   virtual int inst_length(t_addr addr);
   virtual void print_acc(class cl_console_base *con);
   virtual void print_regs(class cl_console_base *con);
-
+  
   virtual void reset(void);
   virtual int exec_inst(void);
 
+  virtual t_addr read_address(t_addr addr) { return rom->read(addr); }
   virtual void init_alu(void);
   virtual u16_t read(u16_t addr);
   virtual u16_t write(u16_t addr, u16_t val);

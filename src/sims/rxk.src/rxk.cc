@@ -45,7 +45,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_rxk_base::cl_rxk_base(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
 }
 

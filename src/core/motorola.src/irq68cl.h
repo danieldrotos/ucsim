@@ -51,5 +51,12 @@ class cl_irq_hw: public cl_itctr
   virtual const char *cfg_help(t_addr addr);
 };
 
-
+/*
+class cl_68_src: public cl_it_src
+{
+public:
+  virtual t_addr isr(void);
+};
+*/
+  
 /* End of motorola.src/irq68cl.h */

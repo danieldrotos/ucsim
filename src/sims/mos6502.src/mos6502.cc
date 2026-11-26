@@ -114,7 +114,7 @@ cl_c65::set(t_mem val)
 #endif
 
 cl_mos6502::cl_mos6502(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   my_id= new chars();
   *my_id= "MOS6502";
@@ -721,7 +721,7 @@ cl_mos6502::accept_it(class it_level *il)
   tick(1);
   vc.wr++;
   
-  t_addr a= read_addr(rom, is->addr);
+  t_addr a= is->isr();
   tick(2);
   vc.rd+= 2;
   PC= a;

@@ -78,7 +78,7 @@ enum flags
 
 class cl_m6809_src_base;
 
-class cl_m6809: public cl_uc
+class cl_m6809: public cl_16be
 {
 public:
   class cl_address_space *regs8;

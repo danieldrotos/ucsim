@@ -73,7 +73,7 @@ public:
 };
 
 
-class cl_51core: public cl_uc
+class cl_51core: public cl_16le
 {
 public:
   // Options

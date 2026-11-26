@@ -41,7 +41,7 @@ cl_avr::ijmp(t_mem code)
 {
   t_addr z;
 
-  z= ram->get(ZH)*256 + ram->get(ZL);
+  z= ram->read(ZH)*256 + ram->read(ZL);
   PC= rom->validate_address((PC & ~0xffff) | z);
   //FIXME: analyze
   return(resGO);

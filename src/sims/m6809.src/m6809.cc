@@ -42,7 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 cl_m6809::cl_m6809(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16be(asim)
 {
 }
 
@@ -2417,7 +2417,7 @@ cl_m6809::accept_it(class it_level *il)
   if (is == src_firq || is == src_nmi)
     reg.CC|= flagF;
   
-  t_addr a= rom->read(is->addr) * 256 + rom->read(is->addr+1);
+  t_addr a= is->isr();
   tick(2);
   vc.rd+= 2;
   PC= a;

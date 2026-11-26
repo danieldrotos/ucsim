@@ -37,7 +37,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base type of Z80 microcontrollers
  */
 
-class cl_hc08: public cl_uc
+class cl_hc08: public cl_16be
 {
 public:
   class cl_address_space *ram, *regs8, *regs16;

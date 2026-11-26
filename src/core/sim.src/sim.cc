@@ -111,7 +111,7 @@ cl_sim::type_entry(chars type_str)
 class cl_uc *
 cl_sim::mk_controller(void)
 {
-  return(new cl_uc(this));
+  return(new cl_16le(this));
 }
 
 

@@ -43,7 +43,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 class cl_it_src: public /*cl_base*/cl_hw
 {
  private:
-  class cl_uc *uc;
+  //class cl_uc *uc;
   bool nmi;
  protected:
   class cl_memory_cell *ie_cell;
@@ -57,7 +57,7 @@ public:
   t_mem  ie_value; // Enabled when masked cell equals to this
   t_mem  src_mask; // Mask of source bit in src_reg
   t_mem  src_value;// Requested when masked cell equals to this
-  t_addr addr;     // Address of service routine
+  t_addr addr;     // Address info of service routine
   bool   clr_bit;  // Request bit must be cleared when IT accepted
   bool   active;   // Acceptance can be disabled
   bool   indirect; // address comes from a vector table from `addr'
@@ -75,6 +75,7 @@ public:
 	    int    apoll_priority);
   virtual ~cl_it_src(void);
   virtual int init(void);
+  virtual t_addr isr(void); // produce addr of ISR
   virtual void set_ie_value(t_mem iv) { ie_value= iv; }
   virtual void set_src_value(t_mem sv) { src_value= sv; }
   virtual void set_cid(int acid) { cid= acid; }

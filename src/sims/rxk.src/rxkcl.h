@@ -110,7 +110,7 @@ enum {
 #define MP t_mem code
 
 
-class cl_rxk_base: public cl_uc
+class cl_rxk_base: public cl_16le
 {
 public:
   cl_rxk_base(class cl_sim *asim);

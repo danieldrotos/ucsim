@@ -536,7 +536,7 @@ cl_bitsfr::write(t_mem val)
  */
 
 cl_51core::cl_51core(struct cpu_entry *Itype, class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   type= Itype;
 

@@ -64,7 +64,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 cl_hc08::cl_hc08(struct cpu_entry *Itype, class cl_sim *asim):
-  cl_uc(asim)
+  cl_16be(asim)
 {
   type= Itype;
 }

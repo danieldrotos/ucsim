@@ -104,7 +104,8 @@ public:
   virtual t_mem inst_ad(t_mem ra, t_mem rb, u32_t c);
   virtual int inst_alu(t_mem code);
   virtual int exec_inst(void);
-
+  virtual t_addr read_address(t_addr addr) { return rom->read(addr); }
+  
   virtual void btn_edge(int btn, bool press);
 };
 

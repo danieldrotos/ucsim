@@ -89,6 +89,12 @@ cl_it_src::init(void)
   return 0;
 }
 
+t_addr
+cl_it_src::isr(void)
+{
+  return indirect ? (uc->read_address(addr)) : addr;
+}
+
 bool
 cl_it_src::is_active(void)
 {

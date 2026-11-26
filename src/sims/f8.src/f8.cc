@@ -42,7 +42,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 cl_f8::cl_f8(struct cpu_entry *Itype, class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   type= Itype;
 }

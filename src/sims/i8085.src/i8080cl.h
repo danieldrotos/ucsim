@@ -114,7 +114,7 @@ public:
  * Base of i8080 processor
  */
 
-class cl_i8080: public cl_uc
+class cl_i8080: public cl_16le
 {
 public:
   REGPAIR(rpAF, AF, A, F);  class cl_cell8 cA, cF;  class cl_cell16 cAF;
