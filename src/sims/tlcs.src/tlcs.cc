@@ -51,7 +51,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 cl_tlcs::cl_tlcs(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   //type= CPU_TLCS;
   //sleep_executed= 0;

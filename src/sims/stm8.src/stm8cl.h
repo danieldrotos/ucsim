@@ -56,7 +56,7 @@ public:
  * Base type of STM8 microcontrollers
  */
 
-class cl_stm8: public cl_uc
+class cl_stm8: public cl_16le
 {
 public:
   class cl_address_space *ram;

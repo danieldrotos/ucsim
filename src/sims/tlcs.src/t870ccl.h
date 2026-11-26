@@ -122,7 +122,7 @@ public:
 };
   
 
-class cl_t870c: public cl_uc
+class cl_t870c: public cl_16le
 {
 public:
   struct rbank_870c_t *rbanks, *rbank;

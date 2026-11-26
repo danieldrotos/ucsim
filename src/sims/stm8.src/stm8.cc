@@ -84,7 +84,7 @@ cl_sp::write(t_mem val)
  */
 
 cl_stm8::cl_stm8(struct cpu_entry *IType, class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   type= IType;
   PCmask = 0xffffff; // The STM8 has a 24-bit program counter.

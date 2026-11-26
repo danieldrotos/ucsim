@@ -229,7 +229,7 @@ static struct name_entry bit_tabXA51[]=
  */
 
 cl_xa::cl_xa(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   type= (struct cpu_entry *)malloc(sizeof(struct cpu_entry));
   type->type= CPU_XA;

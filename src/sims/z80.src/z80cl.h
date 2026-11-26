@@ -39,7 +39,7 @@ class cl_sp_limit_opt;
  * Base type of Z80 microcontrollers
  */
 
-class cl_z80: public cl_uc
+class cl_z80: public cl_16le
 {
 public:
   class cl_memory *ram;

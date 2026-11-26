@@ -54,7 +54,7 @@ cl_t870c_psw_op::write(t_mem val)
 
 
 cl_t870c::cl_t870c(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   regs8[0]= &cA;
   regs8[1]= &cW;

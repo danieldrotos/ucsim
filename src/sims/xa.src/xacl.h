@@ -39,7 +39,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  * Base type of XA microcontrollers
  */
 
-class cl_xa: public cl_uc
+class cl_xa: public cl_16le
 {
 public:
   class cl_address_space *ram;

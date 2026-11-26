@@ -59,7 +59,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 cl_st7::cl_st7(class cl_sim *asim):
-  cl_uc(asim)
+  cl_16be(asim)
 {
   type= (struct cpu_entry *)malloc(sizeof(struct cpu_entry));
   type->type= CPU_ST7;

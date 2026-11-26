@@ -48,7 +48,7 @@ enum tlcs_flags {
  * Base type of TLCS microcontrollers
  */
 
-class cl_tlcs: public cl_uc
+class cl_tlcs: public cl_16le
 {
 protected:
   struct {

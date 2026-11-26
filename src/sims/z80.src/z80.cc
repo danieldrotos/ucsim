@@ -62,7 +62,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  */
 
 cl_z80::cl_z80(struct cpu_entry *Itype, class cl_sim *asim):
-  cl_uc(asim)
+  cl_16le(asim)
 {
   type= Itype;
   BIT_C= 0x01;  // carry status(out of bit 7)
