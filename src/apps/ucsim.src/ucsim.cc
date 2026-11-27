@@ -31,12 +31,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "charscl.h"
 
-class cl_general_uc: public cl_uc
+class cl_general_uc: public cl_16le
 {
 public:
   u8_t r;
 public:
-  cl_general_uc(cl_sim *s): cl_uc(s) {}
+  cl_general_uc(cl_sim *s): cl_16le(s) {}
   virtual void make_memories(void);
   virtual int exec_inst()
   {
